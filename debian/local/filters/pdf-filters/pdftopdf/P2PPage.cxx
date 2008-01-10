@@ -578,6 +578,7 @@ void P2PPage::autoRotate(PDFRectangle *box)
       return;
   }
   rotate(1);
+  position(box,0,0);
 }
 
 P2PPage::OrgPage::OrgPage()
