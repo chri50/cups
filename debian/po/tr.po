@@ -1,0 +1,189 @@
+# Turkish translation of cups.
+# This file is distributed under the same license as the cups package.
+# Gürkan Aslan <gurkan@iaslan.com>, 2004. 
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: cups\n"
+"Report-Msgid-Bugs-To: Source: cups@packages.debian.org\n"
+"POT-Creation-Date: 2007-12-16 15:35+0900\n"
+"PO-Revision-Date: 2004-04-25 10:34+0300\n"
+"Last-Translator: Gürkan Aslan <gurkan@iaslan.com>\n"
+"Language-Team: Turkish <debian-l10n-turkish@lists.debian.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms:  nplurals=1; plural=0;\n"
+
+#. Type: boolean
+#. Description
+#: ../cups-bsd.templates:2001
+msgid "Do you want to set up the BSD lpd compatibility server?"
+msgstr "BSD lpd uyumlu sunucuyu ayarlamak ister misiniz?"
+
+#. Type: boolean
+#. Description
+#: ../cups-bsd.templates:2001
+#, fuzzy
+msgid ""
+"The CUPS package contains a server that can accept BSD-style print jobs and "
+"submit them to CUPS. It should only be set up if other computers are likely "
+"to submit jobs over the network via the \"BSD\" or \"LPR\" services, and "
+"these computers cannot be converted to use the IPP protocol that CUPS uses."
+msgstr ""
+"Bu paket BSD tipi baskı görevlerini kabul edebilen ve onları CUPS'a gönderen "
+"bir sunucu içerir. Eğer diğer bilgisayarlar \"BSD\" veya \"LPR\" servisleri "
+"ile ağ üzerinden görevler gönderiyor ve bu bilgisayarların CUPS'ın "
+"kullandığı IPP protokolünü kullanmalarını sağlamak mümkün olmuyorsa bu "
+"paketin ayarlanması önerilir."
+
+#. Type: boolean
+#. Description
+#: ../cups.templates:2001
+msgid "Do you want CUPS to print unknown jobs as raw jobs?"
+msgstr "CUPS'ın bilinmeyen ham (raw) görevleri yazdırmasını istiyor musunuz?"
+
+#. Type: boolean
+#. Description
+#: ../cups.templates:2001
+#, fuzzy
+msgid ""
+"The Internet Printing Protocol (IPP) enforces a MIME type for all print "
+"jobs. Since not all sources of print jobs can attach an appropriate type, "
+"many jobs get submitted as the MIME type application/octet-stream and could "
+"be rejected if CUPS cannot guess the job's format."
+msgstr ""
+"IPP içindeki tüm yazdırma görevlerine bir MIME tipi atanır.  Her yazdırma "
+"görevine uygun bir MIME tipi atanamayabileceğinden, bir çok görev "
+"application/octet-stream MIME tipiyle gönderilir.  Bundan dolayı, CUPS bir "
+"görevi bu MIME tipinde aldığında, onun hangi biçemde olduğunu saptamaya "
+"çalışır.  Öntanımlı olarak, eğer tam olarak hangi tipte olduğunu "
+"saptayamazsa, görevi geri çevirir."
+
+#. Type: boolean
+#. Description
+#: ../cups.templates:2001
+#, fuzzy
+msgid ""
+"CUPS can handle all such jobs as \"raw\" jobs, which causes them to be sent "
+"directly to the printer without processing."
+msgstr ""
+"CUPS'ın bu MIME tipindeki tanınmayan bütün yazıcı görevlerine  \"raw\" "
+"görevler olarak muamele etmesini sağlamak mümkündür.  Böylece bu tip "
+"görevler herhangi bir işleme tâbî tutulmadan yazıcıya gönderilecektir."
+
+#. Type: boolean
+#. Description
+#: ../cups.templates:2001
+msgid ""
+"It is recommended to choose this option if the server will be accepting "
+"print jobs from Windows computers or Samba servers."
+msgstr ""
+
+#. Type: multiselect
+#. Choices
+#: ../cups.templates:3001
+msgid "ipp"
+msgstr ""
+
+#. Type: multiselect
+#. Choices
+#: ../cups.templates:3001
+msgid "lpd"
+msgstr ""
+
+#. Type: multiselect
+#. Choices
+#: ../cups.templates:3001
+msgid "parallel"
+msgstr ""
+
+#. Type: multiselect
+#. Choices
+#: ../cups.templates:3001
+msgid "scsi"
+msgstr ""
+
+#. Type: multiselect
+#. Choices
+#: ../cups.templates:3001
+msgid "serial"
+msgstr ""
+
+#. Type: multiselect
+#. Choices
+#: ../cups.templates:3001
+msgid "socket"
+msgstr ""
+
+#. Type: multiselect
+#. Choices
+#: ../cups.templates:3001
+msgid "usb"
+msgstr ""
+
+#. Type: multiselect
+#. Choices
+#: ../cups.templates:3001
+msgid "snmp"
+msgstr "snmp"
+
+#. Type: multiselect
+#. Choices
+#: ../cups.templates:3001
+msgid "dnssd"
+msgstr "dnssd"
+
+#. Type: multiselect
+#. Description
+#: ../cups.templates:3002
+msgid "Printer communication backends:"
+msgstr ""
+
+#. Type: multiselect
+#. Description
+#: ../cups.templates:3002
+#, fuzzy
+msgid ""
+"CUPS uses backend programs to communicate with the printer device or port."
+msgstr ""
+"CUPS, yazıcı aygıtı veya portu ile iletişim kurmak için arkayüz programını "
+"kullanır."
+
+#. Type: multiselect
+#. Description
+#: ../cups.templates:3002
+#, fuzzy
+msgid ""
+"Unfortunately, some backend programs are likely to cause some trouble. For "
+"example, some PPC kernels crash with the parallel backend."
+msgstr ""
+"Malesef bazı arkayüz programları sorun çıkartmaktadır. (Örneğin, paralel "
+"arkayüz ile bazı PPC çekirdek çökmeleri gibi)"
+
+#. Type: multiselect
+#. Description
+#: ../cups.templates:3002
+msgid ""
+"Please choose the backend program to be used by CUPS. The default choice "
+"should fit the most common environments."
+msgstr ""
+"Lütfen CUPS tarafından kullanılacak arkayüz programını seçin. Öntanımlı "
+"seçim çoğu ortam için uygundur."
+
+#~ msgid ""
+#~ "If you will be accepting print jobs from Windows computers, you probably "
+#~ "want this option set, as Windows gives all IPP print jobs processed by a "
+#~ "local driver the MIME type application/octet-stream. Samba also submits "
+#~ "its print jobs this way."
+#~ msgstr ""
+#~ "Eğer Windows bilgisayarlardan gelen yazıcı görevlerini kabul etmek "
+#~ "istiyorsanız, muhtemelen bu seçeneği tercih edeceksiniz.  Zira Windows "
+#~ "yerel sürücüdeki tüm IPP yazıcı görevlerine application/octet-stream MIME "
+#~ "tipini atar.  Samba da görevleri bu şekilde gönderir."
+
+#~ msgid "ipp, lpd, parallel, scsi, serial, socket, usb"
+#~ msgstr "ipp, lpd, paralel, scsi, seri, soket, usb"
+
+#~ msgid "Select the backends you want."
+#~ msgstr "İstediğiniz arkayüzü seçin."
