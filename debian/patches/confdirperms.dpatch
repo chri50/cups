@@ -12,7 +12,7 @@ diff -urNad cups-1.3.0~rc2~/man/lppasswd.man cups-1.3.0~rc2/man/lppasswd.man
  that could grant super-user privileges to unprivileged users,
  paranoid system administrators may wish to disable or change the
  ownership of the program to an unprivileged account.
-+(So Debian installs \fllppasswd\fR command with setuid to lp)
++(So Debian installs \fIlppasswd\fR command with setuid to lp)
  .SH SEE ALSO
  \fIlp(1)\fR, \fIlpr(1)\fR,
  .br
