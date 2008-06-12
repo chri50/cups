@@ -22,8 +22,6 @@ unset TMPDIR
 
 test -f $DAEMON || exit 0
 
-set -e
-
 if [ -r /etc/default/cups ]; then
   . /etc/default/cups
 fi
@@ -35,6 +33,12 @@ if [ -z "$TZ" -a -e /etc/timezone ]; then
     TZ=`cat /etc/timezone`
     export TZ
 fi
+
+restart_xprint() {
+    if [ -n "$success" ] && [ -x /etc/init.d/xprint ]; then
+        invoke-rc.d xprint force-reload || true
+    fi
+}
 
 case "$1" in
   start)
@@ -49,26 +53,30 @@ case "$1" in
 	  modprobe -q ppdev || true
 	fi
 
-	start-stop-daemon --start --quiet --oknodo --pidfile "$PIDFILE" --exec $DAEMON
+	start-stop-daemon --start --quiet --oknodo --pidfile "$PIDFILE" --exec $DAEMON && success=1
 
 	log_end_msg $?
+	restart_xprint
 	;;
   stop)
 	log_begin_msg "Stopping $DESC: $NAME"
-	start-stop-daemon --stop --quiet --retry 5 --oknodo --pidfile $PIDFILE --name $NAME
+	start-stop-daemon --stop --quiet --retry 5 --oknodo --pidfile $PIDFILE --name $NAME && success=1
 	log_end_msg $?
+	restart_xprint
 	;;
   reload|force-reload)
        log_begin_msg "Reloading $DESC: $NAME"
-       start-stop-daemon --stop --quiet --pidfile $PIDFILE --name $NAME --signal 1
+       start-stop-daemon --stop --quiet --pidfile $PIDFILE --name $NAME --signal 1 && success=1
        log_end_msg $?
+	restart_xprint
        ;;
   restart)
 	log_begin_msg "Restarting $DESC: $NAME"
 	if start-stop-daemon --stop --quiet --retry 5 --oknodo --pidfile $PIDFILE --name $NAME; then
-		start-stop-daemon --start --quiet --pidfile "$PIDFILE" --exec $DAEMON
+		start-stop-daemon --start --quiet --pidfile "$PIDFILE" --exec $DAEMON && success=1
 	fi
 	log_end_msg $?
+	restart_xprint
 	;;
   status)
 	echo -n "Status of $DESC: "

@@ -1,19 +1,32 @@
+# patches taken from upstream SVN:
+empty_option_value_crash.dpatch
 CVE-2008-1722.dpatch
+pdftops-cups-1.4.dpatch
+pdftops-dont_fail_on_cancel.dpatch
+
+# patches accepted and committed upstream
 freebsd.dpatch
+
+# patches sent upstream
+glibc2.8_build.dpatch
+pidfile.dpatch
+ppd-poll-with-client-conf.dpatch
+HostNameLookups_values.dpatch
+manpage-typos.dpatch
+
+# Debian patches
 removecvstag.dpatch
 quiesce_ipp_logging.dpatch
 default_log_warn.dpatch
 dont_force_ssl.dpatch
 cupsaccept.dpatch
 confdirperms.dpatch
-pidfile.dpatch
 device_uri.dpatch
 classes_crash.dpatch
 reactivate_recommended_driver.dpatch
 include_krb5_h_in_job_h.dpatch
 search_mime_files_in_usr_share.dpatch
-pdftops-cups-1.4.dpatch
-pdftops-dont_fail_on_cancel.dpatch
-ppd-poll-with-client-conf.dpatch
+
+# Ubuntu patches
 ubuntu-disable-browsing.dpatch
 ubuntu-default-error-policy-retry-job.dpatch

@@ -1,3 +1,19 @@
+cups (1.3.7-8~svn472) intrepid; urgency=low
+
+  * Upload current Debian svn head to fix FTBFS.
+  * debian/cups.init.d: Restart xprint on start/stop/reload. (Closes: #285332)
+  * Add empty_option_value_crash.dpatch: Fix crash on cupsd.conf options
+    without a value. (Closes: #250848)
+  * Add glibc2.8_build.dpatch: Fix building with glibc 2.8.
+  * debian/patches/00list: Sort patches by upstream status.
+  * Add HostNameLookups_values.dpatch: Make possible values of HostNameLookups
+    consistent to manpage and to other options in cupsd.conf. (Closes: #379014)
+  * debian/patches/confdirperms.dpatch: Fix typo, thanks Nicolas François!
+  * Add manpage-typos.dpatch: Fix various typos in manpages, thanks Nicolas
+    François! (part of #379014)
+
+ -- Martin Pitt <martin.pitt@ubuntu.com>  Thu, 12 Jun 2008 20:40:15 +0200
+
 cups (1.3.7-7) unstable; urgency=low
 
   * Provide transitional cupsys-common package, to ease apt-get dist-upgrade.

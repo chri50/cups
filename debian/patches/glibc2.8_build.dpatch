@@ -1,0 +1,19 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## glibc2.8_build.dpatch by Martin Pitt <mpitt@debian.org>
+##
+## DP: Fix build with glibc >= 2.8, which hid struct ucred behind _GNU_SOURCE.
+## DP: STR#2860
+
+@DPATCH@
+diff -urNad trunk~/scheduler/auth.c trunk/scheduler/auth.c
+--- trunk~/scheduler/auth.c	2008-03-20 20:58:16.000000000 +0000
++++ trunk/scheduler/auth.c	2008-06-12 17:06:34.000000000 +0000
+@@ -54,6 +54,8 @@
+  * Include necessary headers...
+  */
+ 
++#define _GNU_SOURCE   /* for struct ucred on glibc >= 2.8 */
++
+ #include "cupsd.h"
+ #include <grp.h>
+ #ifdef HAVE_SHADOW_H
