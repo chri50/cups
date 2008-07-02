@@ -14,3 +14,4 @@ usr/include/cups/transcode.h
 usr/include/cups/adminutil.h
 ../../cups/i18n.h usr/include/cups
 usr/share/man/man1/cups-config.1.gz
+usr/share/man/*/man1/cups-config.1.gz
