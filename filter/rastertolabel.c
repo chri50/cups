@@ -1,5 +1,5 @@
 /*
- * "$Id: rastertolabel.c 7406 2008-03-26 16:02:45Z mike $"
+ * "$Id: rastertolabel.c 7721 2008-07-11 22:48:49Z mike $"
  *
  *   Label printer filter for the Common UNIX Printing System (CUPS).
  *
@@ -482,9 +482,6 @@ EndPage(ppd_file_t *ppd,		/* I - PPD file */
 {
   int		val;			/* Option value */
   ppd_choice_t	*choice;		/* Marked choice */
-#if defined(HAVE_SIGACTION) && !defined(HAVE_SIGSET)
-  struct sigaction action;		/* Actions for POSIX signals */
-#endif /* HAVE_SIGACTION && !HAVE_SIGSET */
 
 
   switch (ModelNumber)
@@ -1033,9 +1030,6 @@ PCLCompress(unsigned char *line,	/* I - Line to compress */
     comp_ptr += count;
   }
 
-  line_ptr = CompBuffer;
-  line_end = comp_ptr;
-
  /*
   * Set the length of the data and write it...
   */
@@ -1291,5 +1285,5 @@ main(int  argc,				/* I - Number of command-line arguments */
 
 
 /*
- * End of "$Id: rastertolabel.c 7406 2008-03-26 16:02:45Z mike $".
+ * End of "$Id: rastertolabel.c 7721 2008-07-11 22:48:49Z mike $".
  */

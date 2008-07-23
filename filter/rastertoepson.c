@@ -1,5 +1,5 @@
 /*
- * "$Id: rastertoepson.c 7406 2008-03-26 16:02:45Z mike $"
+ * "$Id: rastertoepson.c 7721 2008-07-11 22:48:49Z mike $"
  *
  *   EPSON ESC/P and ESC/P2 filter for the Common UNIX Printing System
  *   (CUPS).
@@ -322,11 +322,6 @@ StartPage(const ppd_file_t         *ppd,	/* I - PPD file */
 void
 EndPage(const cups_page_header2_t *header)	/* I - Page header */
 {
-#if defined(HAVE_SIGACTION) && !defined(HAVE_SIGSET)
-  struct sigaction action;			/* Actions for POSIX signals */
-#endif /* HAVE_SIGACTION && !HAVE_SIGSET */
-
-
   if (DotBytes && header)
   {
    /*
@@ -1135,5 +1130,5 @@ main(int  argc,				/* I - Number of command-line arguments */
 
 
 /*
- * End of "$Id: rastertoepson.c 7406 2008-03-26 16:02:45Z mike $".
+ * End of "$Id: rastertoepson.c 7721 2008-07-11 22:48:49Z mike $".
  */

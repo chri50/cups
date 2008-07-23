@@ -1,5 +1,5 @@
 /*
- * "$Id: main.c 7393 2008-03-21 21:36:40Z mike $"
+ * "$Id: main.c 7725 2008-07-14 06:16:34Z mike $"
  *
  *   Scheduler main loop for the Common UNIX Printing System (CUPS).
  *
@@ -910,7 +910,7 @@ main(int  argc,				/* I - Number of command-line args */
 #endif /* HAVE_LDAP */
     }
 
-    if (Browsing && BrowseLocalProtocols && current_time > browse_time)
+    if (Browsing && current_time > browse_time)
     {
       cupsdSendBrowseList();
       browse_time = current_time;
@@ -1601,27 +1601,6 @@ process_children(void)
 
     cupsdFinishProcess(pid, name, sizeof(name));
 
-    if (status == SIGTERM)
-      status = 0;
-
-    if (status)
-    {
-      if (WIFEXITED(status))
-	cupsdLogMessage(CUPSD_LOG_ERROR, "PID %d (%s) stopped with status %d!",
-	                pid, name, WEXITSTATUS(status));
-      else
-	cupsdLogMessage(CUPSD_LOG_ERROR, "PID %d (%s) crashed on signal %d!",
-	                pid, name, WTERMSIG(status));
-
-      if (LogLevel < CUPSD_LOG_DEBUG)
-        cupsdLogMessage(CUPSD_LOG_INFO,
-	                "Hint: Try setting the LogLevel to \"debug\" to find "
-			"out more.");
-    }
-    else
-      cupsdLogMessage(CUPSD_LOG_DEBUG, "PID %d (%s) exited with no errors.",
-                      pid, name);
-
    /*
     * Delete certificates for CGI processes...
     */
@@ -1652,6 +1631,9 @@ process_children(void)
 	    job->filters[i] = -pid;
 	  else
 	    job->backend = -pid;
+
+          if (job->state_value == IPP_JOB_CANCELED)
+	    status = 0;			/* Ignore errors when canceling jobs */
 
           if (status && job->status >= 0)
 	  {
@@ -1700,6 +1682,31 @@ process_children(void)
 	  break;
 	}
       }
+
+   /*
+    * Show the exit status as needed...
+    */
+
+    if (status == SIGTERM)
+      status = 0;
+
+    if (status)
+    {
+      if (WIFEXITED(status))
+	cupsdLogMessage(CUPSD_LOG_ERROR, "PID %d (%s) stopped with status %d!",
+	                pid, name, WEXITSTATUS(status));
+      else
+	cupsdLogMessage(CUPSD_LOG_ERROR, "PID %d (%s) crashed on signal %d!",
+	                pid, name, WTERMSIG(status));
+
+      if (LogLevel < CUPSD_LOG_DEBUG)
+        cupsdLogMessage(CUPSD_LOG_INFO,
+	                "Hint: Try setting the LogLevel to \"debug\" to find "
+			"out more.");
+    }
+    else
+      cupsdLogMessage(CUPSD_LOG_DEBUG, "PID %d (%s) exited with no errors.",
+                      pid, name);
   }
 }
 
@@ -1974,5 +1981,5 @@ usage(int status)			/* O - Exit status */
 
 
 /*
- * End of "$Id: main.c 7393 2008-03-21 21:36:40Z mike $".
+ * End of "$Id: main.c 7725 2008-07-14 06:16:34Z mike $".
  */

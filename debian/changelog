@@ -1,3 +1,18 @@
+cups (1.3.8-1) unstable; urgency=low
+
+  * New upstream release: some 20 bug fixes, no new features (see
+    http://www.cups.org/articles.php?L562 for details).
+  * Dropped patches, accepted upstream:
+    - empty_option_value_crash.dpatch
+    - CVE-2008-1722.dpatch
+    - glibc2.8_build.dpatch
+    - HostNameLookups_values.dpatch
+  * manpage-typos.dpatch: Most of this got applied to 1.3.8. The ".Sh" ->
+    ".SS" fix only got applied to trunk, so backport these remaining ones.
+  * manpage-translations.dpatch: Update to new upstream version.
+
+ -- Martin Pitt <mpitt@debian.org>  Wed, 23 Jul 2008 08:58:57 +0200
+
 cups (1.3.7-9) unstable; urgency=low
 
   [ Martin Pitt ]

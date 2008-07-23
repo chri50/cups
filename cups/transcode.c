@@ -1,5 +1,5 @@
 /*
- * "$Id: transcode.c 7224 2008-01-16 23:42:35Z mike $"
+ * "$Id: transcode.c 7721 2008-07-11 22:48:49Z mike $"
  *
  *   Transcoding support for the Common UNIX Printing System (CUPS).
  *
@@ -1642,5 +1642,5 @@ get_vbcs_charmap(
 
 
 /*
- * End of "$Id: transcode.c 7224 2008-01-16 23:42:35Z mike $"
+ * End of "$Id: transcode.c 7721 2008-07-11 22:48:49Z mike $"
  */

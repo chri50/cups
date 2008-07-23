@@ -1,5 +1,5 @@
 /*
- * "$Id: usb-unix.c 7406 2008-03-26 16:02:45Z mike $"
+ * "$Id: usb-unix.c 7721 2008-07-11 22:48:49Z mike $"
  *
  *   USB port backend for the Common UNIX Printing System (CUPS).
  *
@@ -605,5 +605,5 @@ side_cb(int print_fd,			/* I - Print file */
 
 
 /*
- * End of "$Id: usb-unix.c 7406 2008-03-26 16:02:45Z mike $".
+ * End of "$Id: usb-unix.c 7721 2008-07-11 22:48:49Z mike $".
  */
