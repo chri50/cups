@@ -6,8 +6,8 @@
 
 @DPATCH@
 diff -urNad trunk~/man/Makefile trunk/man/Makefile
---- trunk~/man/Makefile	2008-07-02 12:46:30.000000000 +0200
-+++ trunk/man/Makefile	2008-07-02 12:48:07.000000000 +0200
+--- trunk~/man/Makefile	2007-07-13 03:01:14.000000000 +0200
++++ trunk/man/Makefile	2008-07-23 08:51:46.000000000 +0200
 @@ -62,7 +62,12 @@
  # Make everything...
  #
@@ -52,7 +52,7 @@ diff -urNad trunk~/man/Makefile trunk/man/Makefile
  #
 diff -urNad trunk~/man/Makefile.l10n trunk/man/Makefile.l10n
 --- trunk~/man/Makefile.l10n	1970-01-01 01:00:00.000000000 +0100
-+++ trunk/man/Makefile.l10n	2008-07-02 12:48:00.000000000 +0200
++++ trunk/man/Makefile.l10n	2008-07-23 08:51:46.000000000 +0200
 @@ -0,0 +1,209 @@
 +#
 +# "$Id: $"
@@ -265,7 +265,7 @@ diff -urNad trunk~/man/Makefile.l10n trunk/man/Makefile.l10n
 +#
 diff -urNad trunk~/man/fr/Makefile trunk/man/fr/Makefile
 --- trunk~/man/fr/Makefile	1970-01-01 01:00:00.000000000 +0100
-+++ trunk/man/fr/Makefile	2008-07-02 12:48:00.000000000 +0200
++++ trunk/man/fr/Makefile	2008-07-23 08:51:46.000000000 +0200
 @@ -0,0 +1,13 @@
 +#
 +# "$Id: $"
@@ -282,7 +282,7 @@ diff -urNad trunk~/man/fr/Makefile trunk/man/fr/Makefile
 +#
 diff -urNad trunk~/man/po4a/cups.cfg trunk/man/po4a/cups.cfg
 --- trunk~/man/po4a/cups.cfg	1970-01-01 01:00:00.000000000 +0100
-+++ trunk/man/po4a/cups.cfg	2008-07-02 12:48:00.000000000 +0200
++++ trunk/man/po4a/cups.cfg	2008-07-23 08:51:46.000000000 +0200
 @@ -0,0 +1,39 @@
 +[po4a_paths] po4a/po/cups.pot fr:po4a/po/fr.po
 +
@@ -325,8 +325,8 @@ diff -urNad trunk~/man/po4a/cups.cfg trunk/man/po4a/cups.cfg
 +
 diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 --- trunk~/man/po4a/po/fr.po	1970-01-01 01:00:00.000000000 +0100
-+++ trunk/man/po4a/po/fr.po	2008-07-02 12:48:00.000000000 +0200
-@@ -0,0 +1,8401 @@
++++ trunk/man/po4a/po/fr.po	2008-07-23 08:53:21.000000000 +0200
+@@ -0,0 +1,8409 @@
 +# Translation of the cups manpages into French.
 +#
 +# Original translations from:
@@ -337,7 +337,7 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +msgid ""
 +msgstr ""
 +"Project-Id-Version: cups\n"
-+"POT-Creation-Date: 2008-05-02 01:56+0200\n"
++"POT-Creation-Date: 2008-07-23 08:44+0200\n"
 +"PO-Revision-Date: 2008-05-02 02:50+0200\n"
 +"Last-Translator: Nicolas François <nicolas.francois@centraliens.net>\n"
 +"Language-Team: French <debian-l10n-french@lists.debian.org>\n"
@@ -367,10 +367,9 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +msgstr "Common UNIX Printing System"
 +
 +# type: TH
-+#: accept.man:15 classes.conf.man:15 cups-deviced.man.in:15 cupsd.man.in:15
-+#: cups-driverd.man.in:15 cupsenable.man:16 cups-polld.man:15 lpc.man:15
-+#: lpinfo.man:15 lpmove.man:15 lpr.man:15 lprm.man:15 mime.types.man:15
-+#: printers.conf.man:15
++#: accept.man:15 classes.conf.man:15 cupsd.man.in:15 cupsenable.man:16
++#: cups-polld.man:15 lpc.man:15 lpinfo.man:15 lpmove.man:15 lpr.man:15
++#: lprm.man:15 mime.types.man:15 printers.conf.man:15
 +#, no-wrap
 +msgid "12 February 2006"
 +msgstr "12 février 2006"
@@ -625,14 +624,13 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +
 +# type: Plain text
 +#: accept.man:76 backend.man:176 cancel.man:72 classes.conf.man:115
-+#: client.conf.man.in:46 cupsaddsmb.man.in:211 cups-config.man:107
-+#: cupsctl.man:102 cups-deviced.man.in:41 cupsd.man.in:66
-+#: cups-driverd.man.in:102 cupsenable.man:81 cupsfilter.man:70
-+#: cups-lpd.man.in:115 cups-polld.man:35 cups-snmp.conf.man:70
-+#: cupstestdsc.man:47 cupstestppd.man:140 filter.man:218 lpc.man:68
-+#: lpinfo.man:62 lp.man:240 lpmove.man:63 lpoptions.man.in:132 lppasswd.man:59
-+#: lpr.man:115 lprm.man:62 lpstat.man:136 mailto.conf.man:57 mime.convs.man:43
-+#: mime.types.man:91 printers.conf.man:119 subscriptions.conf.man:86
++#: client.conf.man.in:46 cupsaddsmb.man.in:211 cupsctl.man:102 cupsd.man.in:66
++#: cupsenable.man:81 cupsfilter.man:70 cups-lpd.man.in:115 cups-polld.man:35
++#: cups-snmp.conf.man:70 cupstestdsc.man:47 cupstestppd.man:140 filter.man:218
++#: lpc.man:68 lpinfo.man:62 lp.man:240 lpmove.man:63 lpoptions.man.in:132
++#: lppasswd.man:59 lpr.man:115 lprm.man:62 lpstat.man:136 mailto.conf.man:57
++#: mime.convs.man:43 mime.types.man:91 printers.conf.man:119
++#: subscriptions.conf.man:86
 +msgid "Copyright 2007 by Apple Inc."
 +msgstr "Copyright 2007 by Apple Inc."
 +
@@ -1879,10 +1877,11 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +msgstr "cups-config"
 +
 +# type: TH
-+#: cups-config.man:15
++#: cups-config.man:15 cupsd.conf.man.in:15 cups-deviced.man.in:15
++#: cups-driverd.man.in:15 lpq.man:15
 +#, no-wrap
-+msgid "11 February 2006"
-+msgstr "11 février 2006"
++msgid "16 June 2008"
++msgstr "16 juin 2008"
 +
 +# type: Plain text
 +#: cups-config.man:18
@@ -2085,6 +2084,12 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +"patch)."
 +msgstr ""
 +"Afficher la version complète de l'installation CUPS (majeur.mineur.patch)."
++
++# type: Plain text
++#: cups-config.man:107 cupsd.conf.man.in:615 cups-deviced.man.in:41
++#: cups-driverd.man.in:102 lpadmin.man:204 lpq.man:69
++msgid "Copyright 2007-2008 by Apple Inc."
++msgstr "Copyright 2007-2008 par Apple Inc."
 +
 +# type: TH
 +#: cupsctl.man:15
@@ -2313,12 +2318,6 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +#, no-wrap
 +msgid "cupsd.conf"
 +msgstr "cupsd.conf"
-+
-+# type: TH
-+#: cupsd.conf.man.in:15 lpadmin.man:15 lpq.man:15
-+#, no-wrap
-+msgid "2 January 2008"
-+msgstr "2 janvier 2008"
 +
 +# type: Plain text
 +#: cupsd.conf.man.in:18
@@ -3162,14 +3161,14 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +# type: TP
 +#: cupsd.conf.man.in:308
 +#, no-wrap
-+msgid "HostNameLookups Yes"
-+msgstr "HostNameLookups Yes"
++msgid "HostNameLookups On"
++msgstr "HostNameLookups On"
 +
 +# type: TP
 +#: cupsd.conf.man.in:310
 +#, no-wrap
-+msgid "HostNameLookups No"
-+msgstr "HostNameLookups No"
++msgid "HostNameLookups Off"
++msgstr "HostNameLookups Off"
 +
 +# type: TP
 +#: cupsd.conf.man.in:312
@@ -4040,11 +4039,6 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +msgstr ""
 +"B<classes.conf>(5), B<cupsd>(8), B<mime.convs>(5), B<mime.types>(5), "
 +"B<printers.conf>(5), B<subscriptions.conf>(5),"
-+
-+# type: Plain text
-+#: cupsd.conf.man.in:615 lpadmin.man:204 lpq.man:69
-+msgid "Copyright 2007-2008 by Apple Inc."
-+msgstr "Copyright 2007-2008 par Apple Inc."
 +
 +# type: TH
 +#: cups-deviced.man.in:15
@@ -5988,6 +5982,12 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +#, no-wrap
 +msgid "lpadmin"
 +msgstr "lpadmin"
++
++# type: TH
++#: lpadmin.man:15
++#, no-wrap
++msgid "2 January 2008"
++msgstr "2 janvier 2008"
 +
 +# type: Plain text
 +#: lpadmin.man:18
@@ -8651,6 +8651,18 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +"types>(5), B<printers.conf>(5)"
 +
 +# type: TH
++#~ msgid "11 February 2006"
++#~ msgstr "11 février 2006"
++
++# type: TP
++#~ msgid "HostNameLookups Yes"
++#~ msgstr "HostNameLookups Yes"
++
++# type: TP
++#~ msgid "HostNameLookups No"
++#~ msgstr "HostNameLookups No"
++
++# type: TH
 +#~ msgid "Easy Software Products"
 +#~ msgstr "Easy Software Products"
 +
@@ -8661,10 +8673,6 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +# type: Plain text
 +#~ msgid "Copyright 2006 by Easy Software Products, All Rights Reserved."
 +#~ msgstr "Copyright 2006 Easy Software Products, Tous droits réservés."
-+
-+# type: TH
-+#~ msgid "6 June 2006"
-+#~ msgstr "6 juin 2006"
 +
 +# type: TH
 +#~ msgid "13 July 2006"

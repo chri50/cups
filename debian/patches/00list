@@ -1,6 +1,5 @@
 # patches taken from upstream SVN:
-empty_option_value_crash.dpatch
-CVE-2008-1722.dpatch
+manpage-typos.dpatch
 pdftops-cups-1.4.dpatch
 pdftops-dont_fail_on_cancel.dpatch
 
@@ -8,11 +7,8 @@ pdftops-dont_fail_on_cancel.dpatch
 freebsd.dpatch
 
 # patches sent upstream
-glibc2.8_build.dpatch
 pidfile.dpatch
 ppd-poll-with-client-conf.dpatch
-HostNameLookups_values.dpatch
-manpage-typos.dpatch
 # no answer yet, po4a might not be appropriate
 manpage-translations.dpatch
 

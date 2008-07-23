@@ -1,8 +1,29 @@
 #
-# "$Id: 4.3-job-ops.test 7410 2008-03-29 00:34:23Z mike $"
+# "$Id: 4.3-job-ops.test 7551 2008-05-12 16:41:44Z mike $"
 #
 #   Verify that the IPP job operations work.
 #
+{
+	# The name of the test...
+	NAME "Print PostScript Job with bad job-sheets value to Test1"
+
+	# The operation to use
+	OPERATION print-job
+	RESOURCE /printers/Test1
+
+	# The attributes to send
+	GROUP operation
+	ATTR charset attributes-charset utf-8
+	ATTR language attributes-natural-language en
+	ATTR uri printer-uri $method://$hostname:$port/printers/Test1
+	ATTR name requesting-user-name $user
+	ATTR name job-sheets "none\,none"
+
+	FILE testfile.ps
+
+	# What statuses are OK?
+	STATUS client-error-bad-request
+}
 {
 	# The name of the test...
 	NAME "Print PostScript Job to Test1"
@@ -69,7 +90,7 @@
 	ATTR name requesting-user-name $user
 
         GROUP subscription
-	ATTR uri notify-recipient-uri testnotify
+	ATTR uri notify-recipient-uri testnotify:///
 
 	FILE testfile.jpg
 
@@ -146,6 +167,9 @@
 	ATTR language attributes-natural-language en
 	ATTR uri printer-uri $method://$hostname:$port/printers/Test1
 	ATTR name requesting-user-name $user
+
+	GROUP job
+	ATTR keyword job-hold-until weekend
 
 	FILE testfile.pdf
 
@@ -299,5 +323,5 @@
 }
 
 #
-# End of "$Id: 4.3-job-ops.test 7410 2008-03-29 00:34:23Z mike $"
+# End of "$Id: 4.3-job-ops.test 7551 2008-05-12 16:41:44Z mike $"
 #

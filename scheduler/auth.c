@@ -1,5 +1,5 @@
 /*
- * "$Id: auth.c 7384 2008-03-20 20:58:16Z mike $"
+ * "$Id: auth.c 7485 2008-04-21 23:13:22Z mike $"
  *
  *   Authorization routines for the Common UNIX Printing System (CUPS).
  *
@@ -111,7 +111,8 @@ static int		compare_locations(cupsd_location_t *a,
 static char		*cups_crypt(const char *pw, const char *salt);
 #endif /* !HAVE_LIBPAM && !HAVE_USERSEC_H */
 #ifdef HAVE_GSSAPI
-static gss_cred_id_t	get_gss_creds(const char *service_name);
+static gss_cred_id_t	get_gss_creds(const char *service_name,
+			              const char *con_server_name);
 #endif /* HAVE_GSSAPI */
 static char		*get_md5_password(const char *username,
 			                  const char *group, char passwd[33]);
@@ -979,7 +980,7 @@ cupsdAuthorize(cupsd_client_t *con)	/* I - Client connection */
     * Get the server credentials...
     */
 
-    if ((server_creds = get_gss_creds(GSSServiceName)) == NULL)
+    if ((server_creds = get_gss_creds(GSSServiceName, con->servername)) == NULL)
       return;	
 
    /*
@@ -2439,7 +2440,9 @@ cups_crypt(const char *pw,		/* I - Password string */
  */
 
 static gss_cred_id_t			/* O - Server credentials */
-get_gss_creds(const char *service_name)	/* I - Service name */
+get_gss_creds(
+    const char *service_name, 		/* I - Service name */
+    const char *con_server_name)	/* I - Hostname of server */
 {
   OM_uint32	major_status,		/* Major status code */
 		minor_status;		/* Minor status code */
@@ -2447,12 +2450,10 @@ get_gss_creds(const char *service_name)	/* I - Service name */
   gss_cred_id_t	server_creds;		/* Server credentials */
   gss_buffer_desc token = GSS_C_EMPTY_BUFFER;
 					/* Service name token */
-  char		buf[1024],		/* Service name buffer */
-		fqdn[HTTP_MAX_URI];	/* Hostname of server */
+  char		buf[1024];		/* Service name buffer */
 
 
-  snprintf(buf, sizeof(buf), "%s@%s", service_name,
-	   httpGetHostname(NULL, fqdn, sizeof(fqdn)));
+  snprintf(buf, sizeof(buf), "%s@%s", service_name, con_server_name);
 
   token.value  = buf;
   token.length = strlen(buf);
@@ -2685,5 +2686,5 @@ to64(char          *s,			/* O - Output string */
 
 
 /*
- * End of "$Id: auth.c 7384 2008-03-20 20:58:16Z mike $".
+ * End of "$Id: auth.c 7485 2008-04-21 23:13:22Z mike $".
  */

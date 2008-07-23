@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# "$Id: run-stp-tests.sh 7429 2008-04-01 21:30:44Z mike $"
+# "$Id: run-stp-tests.sh 7731 2008-07-14 18:29:58Z mike $"
 #
 #   Perform the complete set of IPP compliance tests specified in the
 #   CUPS Software Test Plan.
@@ -164,8 +164,8 @@ root=`dirname $cwd`
 # will usually cause tests to fail erroneously...
 #
 
-typeset +x LPDEST
-typeset +x PRINTER
+unset LPDEST
+unset PRINTER
 
 #
 # See if we want to use valgrind...
@@ -269,7 +269,11 @@ if test `uname` = Darwin; then
 	ln -s /usr/libexec/cups/filter/pstocupsraster /tmp/cups-$user/bin/filter
 	ln -s /usr/libexec/cups/filter/pstopdffilter /tmp/cups-$user/bin/filter
 
-	ln -s /private/etc/cups/apple.* /tmp/cups-$user
+	if test -f /usr/share/cups/mime/apple.types; then
+		ln -s /usr/share/cups/mime/apple.* /tmp/cups-$user
+	else
+		ln -s /private/etc/cups/apple.* /tmp/cups-$user
+	fi
 else
 	ln -s $root/filter/imagetops /tmp/cups-$user/bin/filter
 	ln -s $root/filter/imagetoraster /tmp/cups-$user/bin/filter
@@ -465,7 +469,8 @@ done
 # Create the test report source file...
 #
 
-strfile=/tmp/cups-$user/cups-str-1.3-`date +%Y-%m-%d`-$user.html
+date=`date "+%Y-%m-%d"`
+strfile=/tmp/cups-$user/cups-str-1.3-$date-$user.html
 
 rm -f $strfile
 cat str-header.html >$strfile
@@ -509,7 +514,7 @@ echo "Running command tests..."
 echo "<H1>2 - Command Tests</H1>" >>$strfile
 echo "<P>This section provides the results to the command tests" >>$strfile
 echo "outlined in the CUPS Software Test Plan. These tests were run on" >>$strfile
-echo `date "+%Y-%m-%d"` by $user on `hostname`. >>$strfile
+echo $date by $user on `hostname`. >>$strfile
 echo "<PRE>" >>$strfile
 
 for file in 5*.sh; do
@@ -550,8 +555,9 @@ echo "<H2>Summary</H2>" >>$strfile
 
 # Pages printed on Test1
 count=`grep '^Test1 ' /tmp/cups-$user/log/page_log | awk 'BEGIN{count=0}{count=count+$7}END{print count}'`
-expected=`expr $pjobs \* 2 + 35`
-if test $count != $expected; then
+expected=`expr $pjobs \* 2 + 34`
+expected2=`expr $expected + 2`
+if test $count -lt $expected -a $count -gt $expected2; then
 	echo "FAIL: Printer 'Test1' produced $count page(s), expected $expected."
 	echo "<P>FAIL: Printer 'Test1' produced $count page(s), expected $expected.</P>" >>$strfile
 	fail=`expr $fail + 1`
@@ -726,6 +732,8 @@ echo ""
 
 if test $fail != 0; then
 	echo "$fail tests failed."
+	cp /tmp/cups-$user/log/error_log error_log-$date-$user
+	cp $strfile .
 else
 	echo "All tests were successful."
 fi
@@ -735,9 +743,13 @@ echo "A HTML report was created in $strfile."
 echo ""
 
 if test $fail != 0; then
+	echo "Copies of the error_log and `basename $strfile` files are in"
+	echo "`pwd`."
+	echo ""
+
 	exit 1
 fi
 
 #
-# End of "$Id: run-stp-tests.sh 7429 2008-04-01 21:30:44Z mike $"
+# End of "$Id: run-stp-tests.sh 7731 2008-07-14 18:29:58Z mike $"
 #
