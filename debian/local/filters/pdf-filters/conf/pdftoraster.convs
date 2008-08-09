@@ -1,0 +1,6 @@
+########################################################################
+#
+# PDF filters
+#
+
+application/vnd.cups-pdf application/vnd.cups-raster	100	pdftoraster

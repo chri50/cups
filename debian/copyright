@@ -190,3 +190,66 @@ fonts/Vera.ttf is Copyright (c) 2003 by Bitstream, Inc.
 ----
 scripting/java/src/com/easysw/cups/Base64Coder.java is Copyright 2003:
 Christian d'Heureuse, Inventec Informatik AG, Switzerland
+
+-------------------------------------------------------------
+
+Copyright for additional components in this Debian package:
+
+The CUPS filters imagetopdf, pdftopdf, pdftoraster are downloaded
+from: http://sourceforge.jp/projects/opfc/files/
+
+Copyright: 
+
+pdftopdf: Copyright (c) 2006-2007, BBR Inc.  All rights reserved.
+
+pdftoraster: Copyright (c) 2008, BBR Inc.  All rights reserved.
+
+imagetopdf:
+
+/*
+ * Image file to PDF filter for the Common UNIX Printing System (CUPS).
+ * developed by BBR Inc. 2006-2007
+
+ * This is based on imagetops.c
+ * imagetops.c copyright notice is follows
+
+ * "$Id: imagetops.c 5379 2006-04-07 13:48:37Z mike $"
+ *
+ *   Image file to PostScript filter for the Common UNIX Printing System (CUPS).
+ *
+ *   Copyright 1993-2006 by Easy Software Products.
+ *
+ *   These coded instructions, statements, and computer programs are the
+ *   property of Easy Software Products and are protected by Federal
+ *   copyright law.  Distribution and use rights are outlined in the file
+ *   "LICENSE.txt" which should have been included with this file.  If this
+ *   file is missing or damaged please contact Easy Software Products
+ *   at:
+ *
+ *       Attn: CUPS Licensing Information
+ *       Easy Software Products
+ *       44141 Airport View Drive, Suite 204
+ *
+ *       Voice: (301) 373-9600
+ *       EMail: cups-info@cups.org
+ *         WWW: http://www.cups.org
+ *
+ *   This file is subject to the Apple OS-Developed Software exception.
+ *
+ */
+
+The license of these filters is the GPL V2, according to their COPYING files.
+
+----
+
+textonly is licensed under the GPL and copyright
+
+Copyright (C) 2003-2006 Red Hat, Inc.
+Copyright (C) 2003-2006 Tim Waugh <twaugh@redhat.com>
+
+----
+
+oopstops is licensed under the GPL V2 or newer. There is no copyright
+notice in the file. The file was contributed by Helge Blischke.
+
+----

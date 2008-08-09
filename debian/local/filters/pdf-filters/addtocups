@@ -1,0 +1,101 @@
+#!/bin/bash
+
+# Silently exit if the changes are already applied
+[ -f $1/filter/imagetopdf.c ] && exit 0
+
+# Copy files
+cp filter/imagetopdf.c $1/filter/
+cp filter/pdftoraster.cxx $1/filter/
+cp conf/imagetopdf.convs $1/conf/
+cp conf/imagetopdf.types $1/conf/
+cp conf/pdftopdf.convs $1/conf/
+cp conf/pdftoraster.convs $1/conf/
+cp conf/pdf.types $1/conf/
+cp config-scripts/cups-pdf-filters.m4 $1/config-scripts/
+
+# Copy directories
+cp -r pdftopdf $1
+
+cd $1
+
+# Edit configure script
+cp configure.in configure.in.pdf-filters
+cp configure configure.pdf-filters
+cp config.h.in config.h.in.pdf-filters
+perl -p -i -e 's/(sinclude\(config-scripts\/cups-defaults\.m4\))/$1\nsinclude(config-scripts\/cups-pdf-filters.m4)/' configure.in
+autoconf
+perl -p -i -e 's:(\#endif\s*\/\*\s*\!_CUPS_CONFIG_H_\s*\*\/):
+
+/* Define to 1 if you have the <dirent.h> header file, and it defines "DIR".
+   */
+\#undef HAVE_DIRENT_H
+
+/* Define to 1 if you have the <ndir.h> header file, and it defines "DIR". */
+\#undef HAVE_NDIR_H
+
+/* Define to 1 if you have the <sys/dir.h> header file, and it defines "DIR".
+   */
+\#undef HAVE_SYS_DIR_H
+
+/* Define to 1 if you have the <sys/ndir.h> header file, and it defines "DIR".
+   */
+\#undef HAVE_SYS_NDIR_H
+
+/* Define to 1 if you have the <zlib.h> header file. */
+\#undef HAVE_ZLIB_H
+
+/* Parser\:\:Parser has two arguments. */
+\#undef PARSER_HAS_2_ARGS
+
+/* Define to 1 if you have the "poppler" library (-lpoppler). */
+\#undef HAVE_LIBPOPPLER
+
+/* New font type enumeration */
+\#undef FONTTYPE_ENUM2
+
+/* GlobalParams\:\:GlobalParams has a argument. */
+\#undef GLOBALPARAMS_HAS_A_ARG
+
+/* Have Stream\:\:getUndecodedStream */
+\#undef HAVE_GETUNDECODEDSTREAM
+
+/* Have UGooString.h */
+\#undef HAVE_UGOOSTRING_H
+
+/* Old CharCodeToUnicode\:\:mapToUnicode */
+\#undef OLD_MAPTOUNICODE
+
+\n$1:' config.h.in
+
+# Edit Makefiles
+cp conf/Makefile conf/Makefile.pdf-filters
+cp filter/Makefile filter/Makefile.pdf-filters
+cp Makefile Makefile.pdf-filters
+perl -p -i -e 's/^(\s*REPLACE\s*=.*)$/$1 imagetopdf.convs imagetopdf.types pdftopdf.convs pdftoraster.convs pdf.types/' conf/Makefile
+perl -p -i -e 's/^(\s*FILTERS\s*=\s+)/$1imagetopdf pdftoraster /' filter/Makefile
+perl -p -i -e 's/^(\s*OBJS\s*=\s+)/$1imagetopdf.o pdftoraster.o /' filter/Makefile
+cat >> filter/Makefile <<EOF
+
+#
+# imagetops
+#
+
+imagetopdf:	imagetopdf.o common.o \$(LIBCUPSIMAGE) \\
+		../cups/\$(LIBCUPS)
+	echo Linking \$@...
+	\$(CC) \$(LDFLAGS) -o \$@ imagetopdf.o common.o \$(LINKCUPSIMAGE) \\
+		\$(IMGLIBS) \$(LIBS)
+
+
+#
+# pdftoraster
+#
+
+pdftoraster:	pdftoraster.o common.o \$(LIBCUPSIMAGE) \\
+		../cups/\$(LIBCUPS)
+	echo Linking \$@...
+	\$(CC) \$(LDFLAGS) -o \$@ pdftoraster.o common.o \$(LINKCUPSIMAGE) \\
+		\$(LIBS)
+
+EOF
+perl -p -i -e 's/^(\s*DIRS\s*=.*\s+filter\s+)/$1pdftopdf /' Makefile
