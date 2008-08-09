@@ -3,7 +3,8 @@ etc/cups/cupsd.conf
 etc/cups/cupsd.conf.default
 etc/cups/snmp.conf
 etc/cups/ppd
-etc/cups/mime.*
+etc/cups/*.convs
+etc/cups/*.types
 usr/lib/cups/backend/* usr/lib/cups/backend-available
 usr/lib/cups/cgi-bin
 usr/lib/cups/monitor
@@ -50,7 +51,8 @@ usr/share/man/man8/cupsfilter.8.gz
 usr/share/man/*/man8/cupsfilter.8.gz
 ../presubj usr/share/bug/cups/
 ../local/backends/* usr/lib/cups/backend-available/
-../local/filters/* usr/lib/cups/filter/
+../local/filters/oopstops usr/lib/cups/filter/
+../local/filters/textonly usr/lib/cups/filter/
 ../local/*.ppd usr/share/ppd/cups-included/
 ../local/*.types etc/cups/
 ../local/*.convs etc/cups/
