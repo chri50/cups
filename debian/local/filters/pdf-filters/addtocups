@@ -71,6 +71,7 @@ perl -p -i -e 's:(\#endif\s*\/\*\s*\!_CUPS_CONFIG_H_\s*\*\/):
 cp conf/Makefile conf/Makefile.pdf-filters
 cp filter/Makefile filter/Makefile.pdf-filters
 cp Makefile Makefile.pdf-filters
+cp Makedefs.in Makedefs.in.pdf-filters
 perl -p -i -e 's/^(\s*REPLACE\s*=.*)$/$1 imagetopdf.convs imagetopdf.types pdftopdf.convs pdftoraster.convs pdf.types/' conf/Makefile
 perl -p -i -e 's/^(\s*FILTERS\s*=\s+)/$1imagetopdf pdftoraster /' filter/Makefile
 perl -p -i -e 's/^(\s*OBJS\s*=\s+)/$1imagetopdf.o pdftoraster.o /' filter/Makefile
@@ -95,7 +96,8 @@ pdftoraster:	pdftoraster.o common.o \$(LIBCUPSIMAGE) \\
 		../cups/\$(LIBCUPS)
 	echo Linking \$@...
 	\$(CC) \$(LDFLAGS) -o \$@ pdftoraster.o common.o \$(LINKCUPSIMAGE) \\
-		\$(LIBS)
+		\$(POPPLER_LIBS)
 
 EOF
 perl -p -i -e 's/^(\s*DIRS\s*=.*\s+filter\s+)/$1pdftopdf /' Makefile
+perl -p -i -e 's/^(\s*LIBS\s*=.*$)/$1\nPOPPLER_LIBS\t=\t\@POPPLER_LIBS\@ \$(LIBS)/' Makedefs.in
