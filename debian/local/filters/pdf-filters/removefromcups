@@ -27,3 +27,4 @@ mv -f config.h.in.pdf-filters config.h.in
 mv -f conf/Makefile.pdf-filters conf/Makefile
 mv -f filter/Makefile.pdf-filters filter/Makefile
 mv -f Makefile.pdf-filters Makefile
+mv -f Makedefs.in.pdf-filters Makedefs.in

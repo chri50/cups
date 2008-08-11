@@ -18,9 +18,11 @@ dnl Switch over to C++.
 AC_LANG(C++)
 
 dnl check poppler
-AC_CHECK_LIB(poppler,main,,
+AC_CHECK_LIB(poppler,main,
+  [ POPPLER_LIBS=-lpoppler],
   [ echo "*** poppler library not found. ***";exit ]
 )
+AC_SUBST(POPPLER_LIBS)
 
 dnl check if GlobalParams::GlobalParams has a argument
 if grep "GlobalParams(char \*cfgFileName)" $POPPLER_SRCDIR/poppler/GlobalParams.h >/dev/null ;then

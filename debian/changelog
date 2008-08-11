@@ -1,3 +1,15 @@
+cups (1.3.8-3) experimental; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/local/filters/pdf-filters/addtocups,
+    debian/local/filters/pdf-filters/removefromcups,
+    debian/local/filters/pdf-filters/config-scripts/cups-pdf-filters.m4,
+    pdftopdf/Makefile: Avoid that all executables and libraries of CUPS
+    get linked against libpoppler. This especially leads to all packages
+    dependent on CUPS needing libpoppler, even for building.
+
+ -- Martin Pitt <mpitt@debian.org>  Mon, 11 Aug 2008 16:48:59 +0200
+
 cups (1.3.8-2) experimental; urgency=low
 
   [ Till Kamppeter ]

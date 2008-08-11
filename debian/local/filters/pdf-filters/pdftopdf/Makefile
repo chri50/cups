@@ -83,7 +83,7 @@ uninstall:
 
 pdftopdf:	pdftopdf.o $(LIBOBJS) ../cups/$(LIBCUPS)
 	echo Linking $@...
-	$(CXX) $(LDFLAGS) -o $@ pdftopdf.o $(LIBOBJS) $(LIBS) $(CXXLIBS) -lm
+	$(CXX) $(LDFLAGS) -o $@ pdftopdf.o $(LIBOBJS) $(POPPLER_LIBS) $(CXXLIBS) -lm
 
 
 #
