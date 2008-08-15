@@ -1,0 +1,20 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## pjl-display-ready-message.dpatch by Johan Kiviniemi <debian@johan.kiviniemi.name>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: According to the PJL spec, one should use RDYMSG DISPLAY = "" to return
+## DP: the display to the normal ready message.
+
+@DPATCH@
+diff -urNad cups~/cups/emit.c cups/cups/emit.c
+--- cups~/cups/emit.c	2008-07-12 01:48:49.000000000 +0300
++++ cups/cups/emit.c	2008-08-15 15:05:01.699303148 +0300
+@@ -475,7 +475,7 @@
+     */
+ 
+     fputs("\033%-12345X@PJL\n", fp);
+-    fputs("@PJL RDYMSG DISPLAY = \"READY\"\n", fp);
++    fputs("@PJL RDYMSG DISPLAY = \"\"\n", fp);
+     fputs(ppd->jcl_end + 9, fp);
+   }
+   else

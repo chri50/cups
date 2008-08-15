@@ -51,6 +51,7 @@ usr/share/man/man8/cupsfilter.8.gz
 usr/share/man/*/man8/cupsfilter.8.gz
 ../presubj usr/share/bug/cups/
 ../local/backends/* usr/lib/cups/backend-available/
+../local/filters/cpdftocps usr/lib/cups/filter/
 ../local/filters/oopstops usr/lib/cups/filter/
 ../local/filters/textonly usr/lib/cups/filter/
 ../local/*.ppd usr/share/ppd/cups-included/

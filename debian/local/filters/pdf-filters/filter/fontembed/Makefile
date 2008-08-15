@@ -3,8 +3,8 @@ LIBOBJ=sfnt.o embed.o embed_sfnt.o dynstring.o
 EXEC=ttfread test_analyze test_pdf
 LIB=libfontembed.a
 
-#CPPFLAGS=-O3 -march=pentium -funroll-all-loops -finline-functions -Wall -g
-CPPFLAGS=-march=pentium -Wall -g
+#CPPFLAGS=-O3 -funroll-all-loops -finline-functions -Wall -g
+CPPFLAGS=-Wall -g
 LDFLAGS=
 
 OBJECTS=$(patsubst %.c,$(PREFIX)%$(SUFFIX).o,\
