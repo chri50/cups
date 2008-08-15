@@ -26,8 +26,7 @@ not delete backup files with the extension ".pdf-filters".
 Below you find the original documentation of the three filters, from
 the original README files.
 
-The COPYING and AUTHORS files of all the three filters are the same.
-They are also included in the root directory of this tarball.
+The COPYING and AUTHORS files are merged from the original packages
 
 
 ===========================================================================
@@ -715,3 +714,48 @@ created PDF data.
 "pdftoraster" creates temporally files if needed. Temporary files are created
 in the location specified by TMPDIR environment variable. Default location
 is "/tmp".
+
+===========================================================================
+
+TEXTTOPDF
+
+This implements a texttopdf filter, and is derived from cups' texttops.
+
+To configure:
+-------------
+
+- texttopdf uses a CUPS_DATADIR/charset/pdf.* (e.g. pdf.utf-8) for
+  font configuration. All the fonts named here MUST also be present
+  under CUPS_DATADIR/fonts/ as TrueType fonts for texttopdf to work.
+  For TrueType Collections (.TTC) you'll have to append '/' and the 
+  number of the font in the collection to the filename charsets/pdf.utf-8
+  (resp. charsets/pdf.* ), for example to use the second font of uming.ttc 
+  use the filename uming.ttc/1
+
+- There are examples of pdf.utf-8 in the cups/data directory,
+  you may use one of these (don't forget to copy / symlink the fonts).
+
+To use:
+-------
+
+The filter is called just like any other cups filter. Have a
+look at test.sh for example. 
+
+Known Issues
+------------
+(Release 0.0.1)
+
+ - text extraction does not work (at least for pdftotext from xpdf)
+   for the resulting pdfs.
+
+ - text wrapping in pretty-printing mode does not respect double-wide
+   characters (CJK), and thus produce wrong results (wrap too late)
+   for lines where they occur.  The fix is not trivial, since all the
+   pretty-printing processing is done without knowledge of / prior to
+   the font configuration (which is where single or double width
+   code-ranges are specified).
+
+ - The hebrew example in test5.pdf shows one of our limitations:
+   Compose glyphs are not composed with the primary glyph but printed
+   as separate glyphs.
+
