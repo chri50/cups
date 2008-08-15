@@ -3,4 +3,4 @@
 # PDF filters
 #
 
-application/pdf		application/vnd.cups-pdf	66	pdftopdf
+application/pdf		application/vnd.cups-pdf	22	pdftopdf

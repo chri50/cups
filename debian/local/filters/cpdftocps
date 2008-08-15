@@ -1,0 +1,69 @@
+#!/bin/sh
+
+# application/vnd.cups-pdf -> application/vnd.cups-postscript filter
+
+# Contributed by Johan Kiviniemi. Licensed under the terms of the CUPS Debian
+# packaging.
+# The typical filter chain using this filter:
+# (something that outputs pdf)
+# -> pdftopdf
+# -> cpdftocps (runs pdftops -> pstops)
+# -> (postscript printer)
+
+# The emit-jcl option can be safely passed through to pstops, since pdftops
+# strips any JCL output by pdftopdf before processing the PDF. pstops then
+# simply does the right thing regarding JCL for pdftops’ output.
+
+set -e
+
+# These options are *not* passed through to pstops, since pdftopdf or
+# equivalent has already processed them.
+MASK='
+  brightness
+  Collate
+  cupsEvenDuplex
+  fitplot
+  gamma
+  hue
+  landscape
+  mirror
+  multiple-document-handling
+  natural-scaling
+  number-up
+  number-up-layout
+  orientation-requested
+  OutputOrder
+  page-border
+  page-bottom
+  page-label
+  page-left
+  page-ranges
+  page-right
+  page-set
+  page-top
+  position
+  saturation
+  scaling
+  sides
+'
+
+# Convert MASK to a regexp.
+MASK_RE=$(
+  set -- $MASK
+  IFS='|'
+  printf "%s" "$*"
+)
+
+# Annihilate all forms of the masked options from $5:
+# - <option>=parameter
+# - <option>   (boolean)
+# - no<option> (boolean)
+MASKED_OPTS=$(
+  printf "%s" "$5" | \
+    sed -r -e 's/(^|\s+)(no)?('"$MASK_RE"')(=\S*)?//g' -e 's/^\s+//'
+)
+
+/usr/lib/cups/filter/pdftops "$@" | \
+  /usr/lib/cups/filter/pstops "$1" "$2" "$3" "$4" "$MASKED_OPTS"
+
+# vim:set et sw=2 sts=2:

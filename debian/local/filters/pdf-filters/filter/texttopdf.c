@@ -61,7 +61,10 @@ EMB_PARAMS *font_load(const char *datadir,const char *font)
   snprintf(filename, sizeof(filename), "%s/fonts/%s", datadir, font);
 
   OTF_FILE *otf=otf_load(filename);
-  assert(otf);
+  if (!otf) {
+    // TODO: try /usr/share/fonts/*/*/%s.ttf
+    return NULL;
+  }
   struct _FONTFILE *ff=malloc(sizeof(struct _FONTFILE));
   assert(ff);
   ff->sfnt=otf; // TODO
@@ -520,10 +523,18 @@ WriteProlog(const char *title,		/* I - Title of job */
 
             if (k==num_fonts) {  // not found
 	      fonts[num_fonts] = Fonts[NumFonts][i] = font_load(datadir,valptr);
+              if (!fonts[num_fonts]) { // font missing/corrupt, replace by first
+                break;
+              }
               fontnames[num_fonts++] = strdup(valptr);
             }
           }
 	}
+
+        /* ignore complete range, when the first font is not available */
+        if (i==0) {
+          continue;
+        }
 
        /*
 	* Fill in remaining fonts as needed...
@@ -737,16 +748,16 @@ WriteProlog(const char *title,		/* I - Title of job */
   else // {{{ Standard ASCII
   {
    /*
-    * Standard ASCII output just uses FreeMono, FreeMono-Bold, and
-    * possibly FreeMono-Oblique.
+    * Standard ASCII output just uses Courier, Courier-Bold, and
+    * possibly Courier-Oblique.
     */
 
     NumFonts = 1;
 
-    Fonts[0][ATTR_NORMAL]     = font_load(datadir,"FreeMono.ttf");
-    Fonts[0][ATTR_BOLD]       = font_load(datadir,"FreeMonoBold.ttf");
-    Fonts[0][ATTR_ITALIC]     = font_load(datadir,"FreeMonoOblique.ttf");
-    Fonts[0][ATTR_BOLDITALIC] = font_load(datadir,"FreeMonoBoldOblique.ttf");
+    Fonts[0][ATTR_NORMAL]     = font_load(datadir,"Courier");
+    Fonts[0][ATTR_BOLD]       = font_load(datadir,"Courier-Bold");
+    Fonts[0][ATTR_ITALIC]     = font_load(datadir,"Courier-Oblique");
+    Fonts[0][ATTR_BOLDITALIC] = font_load(datadir,"Courier-BoldOblique");
 
     Widths[0]     = 1;
     Directions[0] = 1;

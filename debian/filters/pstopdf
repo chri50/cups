@@ -14,7 +14,7 @@
 set -e
 
 PSTOPDF=/usr/bin/ps2pdf13
-OPTIONS="-r150 -dAutoRotatePages=/None -dAutoFilterColorImages=false -dColorImageFilter=/FlateEncode -dNOPLATFONTS"
+OPTIONS="-dAutoRotatePages=/None -dAutoFilterColorImages=false -dColorImageFilter=/FlateEncode -dNOPLATFONTS"
 
 echo "INFO: pstopdf argv[$#] = $@" >&2
 

@@ -87,9 +87,14 @@ binary-post-install/cups::
 	# Move file detection and conversion rules to /usr/share/cups/mime/ so
 	# that the package manager does not consider them conffiles
 	install -d $(DEB_DESTDIR)/../cups/usr/share/cups/mime
-	( cd $(DEB_DESTDIR)/../cups/etc/cups; mv imagetopdf.* pdftopdf.* pdftoraster.* pdf.* texttopdf.* $(DEB_DESTDIR)/../cups/usr/share/cups/mime/ )
+	( cd $(DEB_DESTDIR)/../cups/etc/cups; mv cpdftocps.* imagetopdf.* pdftopdf.* pdftoraster.* pdf.* texttopdf.* $(DEB_DESTDIR)/../cups/usr/share/cups/mime/ )
 	# Simple Ghostscript-based PostScript-to-PDF filter
 	install -m 0755 debian/filters/pstopdf $(DEB_DESTDIR)/../cups/usr/lib/cups/filter
+
+	# Increase the cost of pstops to prefer the PDF filter chain for
+	# PostScript printers.
+	sed -i -r -e '/\spstops$$/ { s/66/100/ }' \
+	  debian/$(cdbs_curpkg)/etc/cups/mime.convs
 
 binary-post-install/libcupsimage2-dev::
 	rm -r debian/libcupsimage2-dev/usr/share/doc/libcupsimage2-dev
