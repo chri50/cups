@@ -6,11 +6,20 @@
 # Copy files
 cp filter/imagetopdf.c $1/filter/
 cp filter/pdftoraster.cxx $1/filter/
+cp filter/texttopdf.c $1/filter/
+cp filter/pdfutils.h $1/filter/
+cp filter/pdfutils.c $1/filter/
+cp -r filter/fontembed $1/filter/
+cp filter/test_pdf1.c $1/filter/
+cp filter/test_pdf2.c $1/filter/
 cp conf/imagetopdf.convs $1/conf/
 cp conf/imagetopdf.types $1/conf/
 cp conf/pdftopdf.convs $1/conf/
 cp conf/pdftoraster.convs $1/conf/
 cp conf/pdf.types $1/conf/
+cp conf/texttopdf.convs $1/conf/
+cp data/pdf.utf-8.heavy $1/data/
+cp data/pdf.utf-8.simple $1/data/
 cp config-scripts/cups-pdf-filters.m4 $1/config-scripts/
 
 # Copy directories
@@ -70,11 +79,13 @@ perl -p -i -e 's:(\#endif\s*\/\*\s*\!_CUPS_CONFIG_H_\s*\*\/):
 # Edit Makefiles
 cp conf/Makefile conf/Makefile.pdf-filters
 cp filter/Makefile filter/Makefile.pdf-filters
+cp data/Makefile data/Makefile.pdf-filters
 cp Makefile Makefile.pdf-filters
 cp Makedefs.in Makedefs.in.pdf-filters
-perl -p -i -e 's/^(\s*REPLACE\s*=.*)$/$1 imagetopdf.convs imagetopdf.types pdftopdf.convs pdftoraster.convs pdf.types/' conf/Makefile
-perl -p -i -e 's/^(\s*FILTERS\s*=\s+)/$1imagetopdf pdftoraster /' filter/Makefile
-perl -p -i -e 's/^(\s*OBJS\s*=\s+)/$1imagetopdf.o pdftoraster.o /' filter/Makefile
+perl -p -i -e 's/^(\s*REPLACE\s*=.*)$/$1 imagetopdf.convs imagetopdf.types pdftopdf.convs pdftoraster.convs pdf.types texttopdf.convs/' conf/Makefile
+perl -p -i -e 's/^(\s*FILTERS\s*=\s+)/$1imagetopdf pdftoraster texttopdf /' filter/Makefile
+perl -p -i -e 's/^(\s*OBJS\s*=\s+)/$1imagetopdf.o pdftoraster.o texttopdf.o pdfutils.o /' filter/Makefile
+perl -p -i -e 's/^(\s*CHARSETS\s*=\s+)/$1pdf.utf-8.heavy pdf.utf-8.simple /' data/Makefile
 cat >> filter/Makefile <<EOF
 
 #
@@ -97,6 +108,19 @@ pdftoraster:	pdftoraster.o common.o \$(LIBCUPSIMAGE) \\
 	echo Linking \$@...
 	\$(CC) \$(LDFLAGS) -o \$@ pdftoraster.o common.o \$(LINKCUPSIMAGE) \\
 		\$(POPPLER_LIBS)
+
+
+#
+# texttopdf
+#
+
+fontembed/libfontembed.a:
+	\$(MAKE) -C fontembed
+
+texttopdf:	texttopdf.o textcommon.o common.o pdfutils.o fontembed/libfontembed.a \\
+		../cups/\$(LIBCUPS)
+	echo Linking \$@...
+	\$(CC) \$(LDFLAGS) -o \$@ texttopdf.o textcommon.o common.o pdfutils.o -Lfontembed -lfontembed \$(LIBS)
 
 EOF
 perl -p -i -e 's/^(\s*DIRS\s*=.*\s+filter\s+)/$1pdftopdf /' Makefile

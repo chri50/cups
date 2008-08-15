@@ -1,3 +1,45 @@
+cups (1.3.8-4) experimental; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/control, debian/rules,
+    debian/local/filters/pdf-filters/filter/pdfutils.h,
+    debian/local/filters/pdf-filters/filter/texttopdf.c,
+    debian/local/filters/pdf-filters/filter/fontembed,
+    debian/local/filters/pdf-filters/filter/test.sh,
+    debian/local/filters/pdf-filters/filter/test_pdf1.c,
+    debian/local/filters/pdf-filters/filter/test_pdf2.c,
+    debian/local/filters/pdf-filters/filter/pdfutils.c,
+    debian/local/filters/pdf-filters/conf/texttopdf.convs,
+    debian/local/filters/pdf-filters/AUTHORS,
+    debian/local/filters/pdf-filters/addtocups,
+    debian/local/filters/pdf-filters/data,
+    debian/local/filters/pdf-filters/data/pdf.utf-8.simple,
+    debian/local/filters/pdf-filters/data/pdf.utf-8.heavy,
+    debian/local/filters/pdf-filters/removefromcups,
+    debian/local/filters/pdf-filters/README: Added texttopdf filter.
+    Added "Depends: ttf-freefont" for the cups package, as the
+    texttopdf filter needs these fonts.
+
+  [ Johan Kiviniemi ]
+  * Add cupsfilter-path-typo.dpatch: Fix a typo in scheduler/cupsfilter.c,
+    which caused filters not to have /bin in their PATH.
+  * debian/filters/pstopdf:
+    - Do not log to /tmp/pstopdf.log. A user running the filter (e.g. via
+      cupsfilter) made all other users (including cups itself) unable to run
+      the filter because of no permission to open the logfile.
+    - Put unquoted variables into quotes where appropriate.
+    - Never create an outfile in the same directory as the given infile; the
+      process might not have write access there.
+    - set -e.
+  * debian/local/filters/pdf-filters/filter/texttopdf.c:
+    - Use FreeMono instead of Courier, since texttopdf requires a TrueType
+      font.
+
+  [ Martin Pitt ]
+  * Bump shlibs version for libcups2 and libcupsimage2. (Closes: #494168)
+
+ -- Martin Pitt <mpitt@debian.org>  Fri, 15 Aug 2008 08:02:32 +0200
+
 cups (1.3.8-3) experimental; urgency=low
 
   [ Till Kamppeter ]

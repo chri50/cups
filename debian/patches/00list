@@ -24,6 +24,7 @@ classes_crash.dpatch
 reactivate_recommended_driver.dpatch
 include_krb5_h_in_job_h.dpatch
 search_mime_files_in_usr_share.dpatch
+cupsfilter-path-typo.dpatch
 
 # Ubuntu patches
 ubuntu-disable-browsing.dpatch

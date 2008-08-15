@@ -11,6 +11,8 @@
 # NO WARRANTY AT ALL
 #
 
+set -e
+
 PSTOPDF=/usr/bin/ps2pdf13
 OPTIONS="-r150 -dAutoRotatePages=/None -dAutoFilterColorImages=false -dColorImageFilter=/FlateEncode -dNOPLATFONTS"
 
@@ -23,46 +25,13 @@ if [ $# -lt 5 -o $# -gt 6 ]; then
 
 fi
 
-jobid=$1
+jobid="$1"
+outfile=$(mktemp "${TMPDIR:-/tmp}/$jobid.pstopdf.out.XXXXXX")
+trap 'rm -f "$outfile"' 0 1 2 13 15
 
-#infile=`mktemp /tmp/$jobid.pstopdf.in.XXXXXX`
-#if [ $? -ne 0 ]; then
-#  echo "ERROR: Error creating tmpfile $infile" >&2
-#  exit 1
-#fi
-#outfile=`mktemp /tmp/$jobid.pstopdf.out.XXXXXX`
-#if [ $? -ne 0 ]; then
-#  echo "ERROR: Error creating tmpfile $outfile" >&2
-#  exit 1
-#fi
+infile="${6:--}"
 
-if [ $# -eq 6 ]; then
+$PSTOPDF $OPTIONS "$infile" "$outfile" >&2
 
-  echo "INFO: file is $6" >&2
-  #cp $6 $infile
-  #rm -f $6
+cat "$outfile"
 
-  infile="$6"
-  outfile="$infile".pdf
-
-  $PSTOPDF $OPTIONS "$infile" "$outfile" 2>&1 >> /tmp/pstopdf.log
-
-else
-
-  outfile=`mktemp /tmp/$jobid.pstopdf.out.XXXXXX`
-  if [ $? -ne 0 ]; then
-    echo "ERROR: Error creating tmpfile $outfile" >&2
-    exit 1
-  fi
-
-  $PSTOPDF $OPTIONS - "$outfile" 2>&1 >> /tmp/pstopdf.log
-
-fi
-
-cat $outfile
-
-# cp "$infile" "$outfile" /tmp/cups/
-
-rm -f "$outfile"
-
-exit 0
