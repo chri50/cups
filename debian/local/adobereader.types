@@ -1,0 +1,4 @@
+# This rule recognizes PostScript with the "No Re-Distill" insertion which Adobe
+# Reader inserts to prevent converting its PostScript print output from
+# encrypted PDF files back to (unencryoted) PDF. 
+application/noredistillps string(0,%!) + contains(0,10240,"ADOBeginClientInjection: DocumentSetup Start <22>No Re-Distill<22>")

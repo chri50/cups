@@ -378,13 +378,18 @@ EMB_PDF_FONTWIDTHS *emb_otf_get_pdf_cidwidths(OTF_FILE *otf,const BITSET glyphs)
 // NOTE: statically allocated string
 const char *get_glyphname(const char *post,unsigned short *to_unicode,unsigned short gid)
 {
+  if (gid==0) {
+    return ".notdef";
+  }
   /*
   ... TODO: consult post table, if there.
   ... otherwise consult fallback table
   ... otherwise generate "uni...".
   ... otherwise unique name c01...
   */
-  return "";
+  static char ret[255];
+  snprintf(ret,250,"c%d",gid);
+  return ret;
 }
 
 struct OUTFILTER_PS {
@@ -399,7 +404,7 @@ static void outfilter_ascii_ps(const char *buf,int len,void *context)  // {{{
   OUTPUT_FN out=of->out;
   int iA;
 
-  if (len*2+of->len > 64000) {
+  if ((of->len/64000)!=(len*2+of->len)/64000) {
     (*out)("00>\n",4,of->ctx);
     (*out)("<",1,of->ctx);
     of->len+=5;
@@ -407,11 +412,12 @@ static void outfilter_ascii_ps(const char *buf,int len,void *context)  // {{{
   char tmp[256];
   while (len>0) {
     for (iA=0;(iA<40)&&(len>0);iA++,len--) {
-      sprintf(tmp+2*iA,"%02x",buf[iA]);
+      sprintf(tmp+2*iA,"%02x",(unsigned char)buf[iA]);
     }
-    tmp[iA]='\n';
+    tmp[2*iA]='\n';
     (*out)(tmp,iA*2+1,of->ctx);
     of->len+=iA*2+1;
+    buf+=iA;
   }
 }
 // }}}
@@ -423,6 +429,7 @@ static void outfilter_binary_ps(const char *buf,int len,void *context)  // {{{
 
   char tmp[100];
   const int l=sprintf(tmp,"%d RD ",len);
+
   (*out)(tmp,l,of->ctx);
   of->len+=l;
 
@@ -508,9 +515,11 @@ int emb_otf_ps(OTF_FILE *otf,unsigned short *encoding,int len,unsigned short *to
   }
   if (binary) {
     dyn_printf(&ds,"/RD { string currentfile exch readstring pop } executeonly def\n");
+    dyn_printf(&ds,"/sfnts[");
+  } else {
+    dyn_printf(&ds,"/sfnts[<");
   }
 
-  dyn_printf(&ds,"/sfnts[");
   if (ds.len<0) {
     free(post);
     free(ds.buf);
@@ -554,17 +563,22 @@ int emb_otf_ps(OTF_FILE *otf,unsigned short *encoding,int len,unsigned short *to
   }
   ret+=of.len;
 
-  dyn_printf(&ds,"] def\n");
+  if (binary) {
+    dyn_printf(&ds,"] def\n");
+  } else {
+    dyn_printf(&ds,">] def\n");
+  }
   // }}} done copying
 
-  const int num_chars=0;
+  const int num_chars=1;
   dyn_printf(&ds,"/CharStrings %d dict dup begin\n",num_chars);
   for (iA=0;iA<num_chars;iA++) {
     const int gid=(encoding)?encoding[iA]:iA;
     dyn_printf(&ds,"/%s %d def\n",get_glyphname(post,to_unicode,gid),gid);
 // ... from cmap [respecting subsetting...]
   }
-  dyn_printf(&ds,"Fontname currentdict end definefont pop\n");
+  dyn_printf(&ds,"end readonly def\n");
+  dyn_printf(&ds,"FontName currentdict end definefont pop\n");
   free(post);
 
   if (ds.len<0) {
