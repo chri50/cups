@@ -2,11 +2,14 @@
 #define EMBED_H
 
 #include "bitset.h"
+#include "fontfile.h"
+#include "iofn.h"
 
 typedef enum { EMB_INPUT_T1,     // type1-lib, with AFM/PFM,PFA/PFB
                EMB_INPUT_TTF,    // sfnt-lib, for TTF(glyf)
                EMB_INPUT_OTF,    // sfnt-lib + cff-lib, for OTF
-               EMB_INPUT_CFF     // cff-lib, for raw CFF
+               EMB_INPUT_CFF,    // cff-lib, for raw CFF
+               EMB_INPUT_STDFONT // don't embed (already present)
                } EMB_INPUT_FORMAT;
 typedef enum { EMB_OUTPUT_T1,    // original type1
                EMB_OUTPUT_TTF,   // ttf(glyf)
@@ -14,8 +17,8 @@ typedef enum { EMB_OUTPUT_T1,    // original type1
                EMB_OUTPUT_SFNT   // OpenType (cff or glyf)
                } EMB_OUTPUT_FORMAT;
 typedef enum { EMB_DEST_NATIVE,  // just subsetting/conversion
-//  TODO       EMB_DEST_PS, 
-               EMB_DEST_PDF16
+               EMB_DEST_PS, 
+               EMB_DEST_PDF16  // TODO? PDF13
                } EMB_DESTINATION;
 
 typedef enum { EMB_RIGHT_FULL=0, EMB_RIGHT_NONE=0x02,
@@ -26,12 +29,11 @@ typedef enum { EMB_RIGHT_FULL=0, EMB_RIGHT_NONE=0x02,
 typedef enum { EMB_A_MULTIBYTE=0x01,    // embedd as multibyte font?
                EMB_A_SUBSET=0x02,       // do subsetting?
                EMB_A_CONVERT_CFF=0x04,  // convert Type1 to CFF?
-               EMB_A_WRAP_SFNT=0x08,    // wrap in sfnt?
+               EMB_A_WRAP_SFNT=0x08,    // wrap in sfnt? (OTF)
 
                EMB_A_CLOSE_FONTFILE=0x8000
                } EMB_ACTIONS;
 
-typedef struct _FONTFILE FONTFILE;
 typedef struct _EMB_PARAMS {
   EMB_INPUT_FORMAT intype;
   EMB_OUTPUT_FORMAT outtype;
@@ -59,10 +61,6 @@ typedef enum { EMB_C_MUST_SUBSET=0x01,     // (fail, when not possible)
                EMB_C_TAKE_FONTFILE=0x8000 // take ownership of fontfile
                } EMB_CONSTRAINTS;
 
-#ifndef OUTPUT_FN_DECLARED
-#define OUTPUT_FN_DECLARED
-typedef void (*OUTPUT_FN)(const char *buf,int len,void *context); // as in sfnt.h 
-#endif
 EMB_PARAMS *emb_new(FONTFILE *font,EMB_DESTINATION dest,EMB_CONSTRAINTS mode);
 int emb_embed(EMB_PARAMS *emb,OUTPUT_FN output,void *context); // returns number of bytes written
 void emb_close(EMB_PARAMS *emb);
@@ -114,5 +112,6 @@ EMB_PDF_FONTWIDTHS *emb_pdf_fontwidths(EMB_PARAMS *emb);
 char *emb_pdf_simple_fontdescr(EMB_PARAMS *emb,EMB_PDF_FONTDESCR *fdes,int fontfile_obj_ref);
 char *emb_pdf_simple_font(EMB_PARAMS *emb,EMB_PDF_FONTDESCR *fdes,EMB_PDF_FONTWIDTHS *fwid,int fontdescr_obj_ref);
 char *emb_pdf_simple_cidfont(EMB_PARAMS *emb,const char *fontname,int descendant_obj_ref);
+char *emb_pdf_simple_stdfont(EMB_PARAMS *emb);
 
 #endif

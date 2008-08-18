@@ -5,11 +5,6 @@
 
 #include "embed.h"
 
-struct _FONTFILE {
-  OTF_FILE *sfnt;
-  // CFF *;
-};
-
 #if 0
 enum { TTF_OTF, TYPE1 } inputFile;
 if (TTF_OTF) {
@@ -49,8 +44,8 @@ static void example_outfn(const char *buf,int len,void *context) // {{{
 
 void example_write_fontdescr(OTF_FILE *otf,const char *outfile) // {{{
 {
-  struct _FONTFILE ff; ff.sfnt=otf; // TODO
-  EMB_PARAMS *emb=emb_new(&ff,
+  FONTFILE *ff=fontfile_open_sfnt(otf);
+  EMB_PARAMS *emb=emb_new(ff,
                           EMB_DEST_PDF16,
 //                          EMB_C_KEEP_T1 
                           EMB_C_FORCE_MULTIBYTE
@@ -96,6 +91,7 @@ void example_write_fontdescr(OTF_FILE *otf,const char *outfile) // {{{
     if (!f) {
       fprintf(stderr,"Opening \"%s\" for writing failed: %m\n",outfile);
       assert(0);
+      emb_close(emb);
       return;
     }
     outlen=emb_embed(emb,example_outfn,f);
@@ -129,6 +125,13 @@ puts("...");
 
   free(fdes);
   free(fwid);
+  emb_close(emb);
+#if 1
+  free(ff); // TODO
+#else
+  ff->sfnt=NULL; // TODO
+  fontfile_close(ff);
+#endif
 }
 // }}}
 

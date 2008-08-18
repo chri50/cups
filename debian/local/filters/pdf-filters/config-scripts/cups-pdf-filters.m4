@@ -58,3 +58,10 @@ fi
 
 dnl Switch back to C.
 AC_LANG(C)
+
+dnl check ijs
+AC_CHECK_LIB(ijs,main,
+  [ IJS_LIBS=-lijs],
+  [ echo "*** ijs library not found. ***";exit ]
+)
+AC_SUBST(IJS_LIBS)

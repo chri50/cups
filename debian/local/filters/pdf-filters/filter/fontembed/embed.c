@@ -13,21 +13,9 @@ EMB_RIGHT_TYPE emb_otf_get_rights(OTF_FILE *otf);
 const char *emb_otf_get_fontname(OTF_FILE *otf);
 EMB_PDF_FONTWIDTHS *emb_otf_get_pdf_widths(OTF_FILE *otf,const unsigned short *encoding,int len,const BITSET glyphs);
 EMB_PDF_FONTWIDTHS *emb_otf_get_pdf_cidwidths(OTF_FILE *otf,const BITSET glyph);
+int emb_otf_ps(OTF_FILE *otf,unsigned short *encoding,int len,unsigned short *to_unicode,OUTPUT_FN output,void *context);
 
 void emb_otf_get_pdf_fontdescr(OTF_FILE *otf,EMB_PDF_FONTDESCR *ret);
-
-struct _FONTFILE {
-  OTF_FILE *sfnt;
-  // ??? *cff;
-};
-void fontfile_close(FONTFILE *ff) 
-{
-  if (ff) {
-    otf_close(ff->sfnt);
-    // ??? cff_close(ff->cff);
-    free(ff);
-  }
-}
 
 static inline int copy_file(FILE *f,OUTPUT_FN output,void *context) // {{{
 {
@@ -79,10 +67,17 @@ EMB_PARAMS *emb_new(FONTFILE *font,EMB_DESTINATION dest,EMB_CONSTRAINTS mode) //
   }
 
   // determine intype
-  // if (font->
-  ret->intype=EMB_INPUT_TTF; // for now
-  ret->rights=emb_otf_get_rights(ret->font->sfnt);
-  const int numGlyphs=ret->font->sfnt->numGlyphs; // TODO
+  int numGlyphs=0;
+  if (font->sfnt) {
+    ret->intype=EMB_INPUT_TTF; // for now
+    ret->rights=emb_otf_get_rights(ret->font->sfnt);
+    numGlyphs=ret->font->sfnt->numGlyphs; // TODO
+  } else if (font->stdname) {
+    ret->intype=EMB_INPUT_STDFONT;
+    ret->rights=EMB_RIGHT_NONE;
+  } else {
+    assert(0);
+  }
 /*
   if ( (ret->intype==EMB_INPUT_CFF)&&
        (ret->cffFont.is_cid()) ) {
@@ -99,6 +94,15 @@ EMB_PARAMS *emb_new(FONTFILE *font,EMB_DESTINATION dest,EMB_CONSTRAINTS mode) //
     } else {
       ret->outtype=EMB_OUTPUT_TTF;
     }
+  } else if (ret->intype==EMB_INPUT_STDFONT) {
+    // the stdfonts are treated as Type1 for now
+    ret->outtype=EMB_OUTPUT_T1;
+    if (mode&EMB_C_FORCE_MULTIBYTE) {
+      fprintf(stderr,"Multibyte stdfonts are not possible\n");
+      emb_close(ret);
+      return NULL;
+    }
+    return ret; // never subset
   } else { // T1, OTF, CFF
     if (ret->intype==EMB_INPUT_T1) {
       ret->plan|=EMB_A_CONVERT_CFF;
@@ -145,6 +149,23 @@ EMB_PARAMS *emb_new(FONTFILE *font,EMB_DESTINATION dest,EMB_CONSTRAINTS mode) //
 int emb_embed(EMB_PARAMS *emb,OUTPUT_FN output,void *context) // {{{
 {
   assert(emb);
+
+  if (emb->dest==EMB_DEST_PS) {
+    int ret=0;
+    const char *fontname=emb_otf_get_fontname(emb->font->sfnt); // TODO!!
+    (*output)("%%BeginFont: ",13,context);
+    (*output)(fontname,strlen(fontname),context);
+    (*output)("\n",1,context);
+    if (emb->intype==EMB_INPUT_TTF) {
+      // do Type42
+      ret=emb_otf_ps(emb->font->sfnt,NULL,4,NULL,output,context); // TODO?
+    } else {
+      assert(0);
+      ret=-1;
+    }
+    (*output)("%%EndFont\n",10,context);
+    return ret;
+  }
 
   if (emb->intype==EMB_INPUT_TTF) {
     assert(emb->font->sfnt);
@@ -337,6 +358,8 @@ EMB_PDF_FONTDESCR *emb_pdf_fontdescr(EMB_PARAMS *emb) // {{{ -  to be freed by u
   if (emb->intype==EMB_INPUT_TTF) {
     assert(emb->font->sfnt);
     fontname=emb_otf_get_fontname(emb->font->sfnt);
+  } else if (emb->intype==EMB_INPUT_STDFONT) {
+    return NULL;
   } else {
     fprintf(stderr,"NOT IMPLEMENTED\n");
     assert(0);
@@ -591,6 +614,33 @@ char *emb_pdf_simple_cidfont(EMB_PARAMS *emb,const char *fontname,int descendant
   NEXT;
 
   len=snprintf(pos,size,">>\n");
+  NEXT;
+
+  return ret;
+}
+// }}}
+
+char *emb_pdf_simple_stdfont(EMB_PARAMS *emb) // {{{ - to be freed by user
+{
+  assert(emb);
+  assert(emb->font->stdname);
+
+  char *ret=NULL,*pos;
+  int len,size;
+
+  size=300;
+  pos=ret=malloc(size);
+  if (!ret) {
+    fprintf(stderr,"Bad alloc: %m\n");
+    return NULL;
+  }
+
+  len=snprintf(pos,size,
+               "<</Type/Font\n"
+               "  /Subtype /Type1\n"
+               "  /BaseFont /%s\n"
+               ">>\n",
+               emb->font->stdname);
   NEXT;
 
   return ret;

@@ -8,7 +8,8 @@ Build-Depends: libpam0g-dev, libtiff4-dev, libjpeg62-dev, zlib1g-dev,
  debhelper (>= 5.0), po-debconf, cdbs (>= 0.4.27), sharutils, 
  dpatch (>= 1.11), libdbus-1-dev, libkrb5-dev | heimdal-dev,
  libavahi-compat-libdnssd-dev, libpoppler-dev, poppler-utils | xpdf-utils,
- lsb-release, po4a (>= 0.31), autotools-dev, autoconf, automake, libtool
+ lsb-release, po4a (>= 0.31), autotools-dev, autoconf, automake, libtool,
+ libijs-dev
 Uploaders: Kenshi Muto <kmuto@debian.org>, 
  Martin Pitt <mpitt@debian.org>, Roger Leigh <rleigh@debian.org>, 
  Martin-Éric Racine <q-funk@iki.fi>, Masayuki Hatta (mhatta) <mhatta@debian.org>,
