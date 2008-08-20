@@ -1,3 +1,0 @@
-# PostScript which is blocked against being converted to PDF will be
-# printed with the old PostScript workflow
-application/noredistillps application/vnd.cups-postscript 22 pstops
