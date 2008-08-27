@@ -67,8 +67,7 @@ Depends: ${shlibs:Depends}, debconf (>= 1.2.9) | debconf-2.0,
  ssl-cert (>= 1.0.11), adduser
 Recommends: cups-client, smbclient (>= 3.0.9), foomatic-filters, avahi-utils, ttf-freefont
 Suggests: cups-bsd, cups-driver-gutenprint, foomatic-db-engine, foomatic-db,
- hplip, xpdf-korean | xpdf-japanese | xpdf-chinese-traditional | xpdf-chinese-simplified, 
- cups-pdf
+ hplip, xpdf-korean | xpdf-japanese | xpdf-chinese-traditional | xpdf-chinese-simplified, cups-pdf, ufw
 Replaces: cupsys-bsd (<< 1.3.7-5), cupsys (<< 1.3.7-6)
 Conflicts: cupsys-bsd (<< 1.3.7-5), cupsys (<< 1.3.7-6)
 Provides: cupsys

@@ -10,3 +10,4 @@ usr/share/ppd/cups-included
 usr/share/ppd/custom
 usr/lib/cups/driver
 usr/local/share/ppd
+etc/ufw/applications.d
