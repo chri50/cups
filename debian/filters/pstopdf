@@ -13,8 +13,11 @@
 
 set -e
 
+PSTOPS=/usr/bin/ps2ps
 PSTOPDF=/usr/bin/ps2pdf13
-OPTIONS="-dAutoRotatePages=/None -dAutoFilterColorImages=false -dColorImageFilter=/FlateEncode -dNOPLATFONTS"
+PSTOPS_OPTIONS="-dAutoRotatePages=/None -dAutoFilterColorImages=false
+                -dNOPLATFONTS -dPARANOIDSAFER -sstdout=%stderr"
+PSTOPDF_OPTIONS="$PSTOPS_OPTIONS -dColorImageFilter=/FlateEncode"
 
 echo "INFO: pstopdf argv[$#] = $@" >&2
 
@@ -25,13 +28,31 @@ if [ $# -lt 5 -o $# -gt 6 ]; then
 
 fi
 
-jobid="$1"
-outfile=$(mktemp "${TMPDIR:-/tmp}/$jobid.pstopdf.out.XXXXXX")
-trap 'rm -f "$outfile"' 0 1 2 13 15
+# Read from given file.
+if [ -n "$6" ]; then
+  exec <"$6"
+fi
 
-infile="${6:--}"
+tempfiles=
+trap 'rm -f $tempfiles' 0 1 2 13 15
 
-$PSTOPDF $OPTIONS "$infile" "$outfile" >&2
+infile=$(mktemp -t pstopdf.XXXXXX)
+tempfiles="$tempfiles $infile"
 
-cat "$outfile"
+cat >"$infile"
+
+DRM_MATCH='^%.*Removing the following.*lines is illegal.*Digital Copyright Act'
+if egrep -q "$DRM_MATCH" "$infile"; then
+  # This PS is DRM-infested. Normalize it with ps2ps first.
+  echo "INFO: Normalizing Adobe Reader PostScript with ps2ps" >&2
+
+  orig_infile="$infile"
+
+  infile=$(mktemp -t pstopdf.XXXXXX)
+  tempfiles="$tempfiles $infile"
+
+  $PSTOPS $PSTOPS_OPTIONS "$orig_infile" "$infile"
+fi
+
+$PSTOPDF $PSTOPDF_OPTIONS -sOUTPUTFILE=%stdout "$infile"
 

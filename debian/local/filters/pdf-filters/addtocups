@@ -6,6 +6,7 @@
 # Copy files
 cp filter/imagetopdf.c $1/filter/
 cp filter/pdftoraster.cxx $1/filter/
+cp filter/pdftoijs.cxx $1/filter/
 cp filter/texttopdf.c $1/filter/
 cp filter/pdfutils.h $1/filter/
 cp filter/pdfutils.c $1/filter/
@@ -83,8 +84,8 @@ cp data/Makefile data/Makefile.pdf-filters
 cp Makefile Makefile.pdf-filters
 cp Makedefs.in Makedefs.in.pdf-filters
 perl -p -i -e 's/^(\s*REPLACE\s*=.*)$/$1 imagetopdf.convs imagetopdf.types pdftopdf.convs pdftoraster.convs pdf.types texttopdf.convs/' conf/Makefile
-perl -p -i -e 's/^(\s*FILTERS\s*=\s+)/$1imagetopdf pdftoraster texttopdf /' filter/Makefile
-perl -p -i -e 's/^(\s*OBJS\s*=\s+)/$1imagetopdf.o pdftoraster.o texttopdf.o pdfutils.o /' filter/Makefile
+perl -p -i -e 's/^(\s*FILTERS\s*=\s+)/$1imagetopdf pdftoraster pdftoijs texttopdf /' filter/Makefile
+perl -p -i -e 's/^(\s*OBJS\s*=\s+)/$1imagetopdf.o pdftoraster.o pdftoijs.o texttopdf.o pdfutils.o /' filter/Makefile
 perl -p -i -e 's/^(\s*CHARSETS\s*=\s+)/$1pdf.utf-8.heavy pdf.utf-8.simple /' data/Makefile
 cat >> filter/Makefile <<EOF
 
@@ -111,6 +112,16 @@ pdftoraster:	pdftoraster.o common.o \$(LIBCUPSIMAGE) \\
 
 
 #
+# pdftoijs
+#
+
+pdftoijs:	pdftoijs.o ../cups/\$(LIBCUPS)
+	echo Linking \$@...
+	\$(CC) \$(LDFLAGS) -o \$@ pdftoijs.o \\
+		\$(POPPLER_LIBS) \$(IJS_LIBS)
+
+
+#
 # texttopdf
 #
 
@@ -125,3 +136,5 @@ texttopdf:	texttopdf.o textcommon.o common.o pdfutils.o fontembed/libfontembed.a
 EOF
 perl -p -i -e 's/^(\s*DIRS\s*=.*\s+filter\s+)/$1pdftopdf /' Makefile
 perl -p -i -e 's/^(\s*LIBS\s*=.*$)/$1\nPOPPLER_LIBS\t=\t\@POPPLER_LIBS\@ \$(LIBS)/' Makedefs.in
+perl -p -i -e 's/^(\s*LIBS\s*=.*$)/$1\nIJS_LIBS\t=\t\@IJS_LIBS\@ \$(LIBS)/' Makedefs.in
+perl -p -i -e 's/^(\s*ALL_CFLAGS\s*=\s*)/$1-Ifontembed /' Makedefs.in

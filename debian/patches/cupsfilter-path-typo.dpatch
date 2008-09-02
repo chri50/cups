@@ -1,9 +1,8 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
 ## cupsfilter-path-typo.dpatch by Johan Kiviniemi <debian@johan.kiviniemi.name>
 ##
-## All lines beginning with `## DP:' are a description of the patch.
 ## DP: Fix a typo in cupsfilter, causing filters not to have /bin in their
-## DP: PATH.
+## DP: PATH. (http://www.cups.org/str.php?L2908, trunk svn r7862)
 
 @DPATCH@
 diff -urNad cups-1.3.8~/scheduler/cupsfilter.c cups-1.3.8/scheduler/cupsfilter.c

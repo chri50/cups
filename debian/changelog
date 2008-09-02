@@ -1,3 +1,53 @@
+cups (1.3.8-6) experimental; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/local/filters/pdf-filters/filter/texttopdf.c,
+    debian/local/filters/pdf-filters/filter/pdfutils.c,
+    debian/local/filters/pdf-filters/filter/test_pdf2.c,
+    debian/local/filters/pdf-filters/filter/fontembed/test_ps.c,
+    debian/local/filters/pdf-filters/filter/fontembed/test_pdf.c,
+    debian/local/filters/pdf-filters/filter/fontembed/sfnt.h,
+    debian/local/filters/pdf-filters/filter/fontembed/main.c,
+    debian/local/filters/pdf-filters/filter/fontembed/iofn.h,
+    debian/local/filters/pdf-filters/filter/fontembed/fontfile.h,
+    debian/local/filters/pdf-filters/filter/fontembed/fontfile.c,
+    debian/local/filters/pdf-filters/filter/fontembed/embed.h,
+    debian/local/filters/pdf-filters/filter/fontembed/embed.c,
+    debian/local/filters/pdf-filters/filter/fontembed/Makefile,
+    debian/local/filters/pdf-filters/addtocups:
+    Fixed crashes of texttopdf on bad or missing fonts, make texttopdf
+    also working without configuration of the fonts (at least for ASCII).
+  * debian/local/filters/pdf-filters/filter/pdftoijs.cxx,
+    debian/local/filters/pdf-filters/conf/HP-PhotoSmart_Pro_B8300-hpijs-pdftoijs.ppd
+    debian/local/filters/pdf-filters/addtocups,
+    debian/local/filters/pdf-filters/config-scripts/cups-pdf-filters.m4,
+    debian/local/filters/pdf-filters/removefromcups,
+    debian/local/filters/pdf-filters/README,
+    debian/control, debian/rules: Added pdftoijs filter.
+
+  [ Johan Kiviniemi ]
+  * debian/filters/pstopdf:
+    - Adobe Reader generates DRM-infested PostScript from encrypted PDF files.
+      This PostScript contains code which stops Ghostscript with an error when
+      one tries to convert it to (now unencrypted) PDF. Change the filter to
+      normalize such PostScript using ps2ps before conversion.
+
+  [ Martin Pitt ]
+  * Add alternative dependency "gsfonts-x11" for ttf-freefonts. 
+    (Closes: #495598)
+  * debian/patches/: Update the status of patches, add some upstream
+    references, update status in 00list.
+  * Drop obsolete include_krb5_h_in_job_h.dpatch, package builds fine in
+    current unstable.
+  * debian/rules: Enable PIE and other compiler flags security enhancements
+    with DEB_BUILD_HARDENING=1. Add hardening-wrapper build dependency. Thanks
+    to Kees Cook!
+  * Add debian/local/cups.ufw.profile: "ufw" firewall profile. Install it
+    for Ubuntu builds only for now, until ufw enters Debian as well. Thanks to
+    Didier Roche and Jamie Strandboge! (https://launchpad.net/bugs/261903)
+
+ -- Martin Pitt <mpitt@debian.org>  Tue, 02 Sep 2008 11:34:54 +0200
+
 cups (1.3.8-5) experimental; urgency=low
 
   [ Till Kamppeter ]

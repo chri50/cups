@@ -19,9 +19,10 @@ Listen localhost:@DEFAULT_IPP_PORT@
 @CUPS_LISTEN_DOMAINSOCKET@
 
 # Show shared printers on the local network.
-Browsing On
+Browsing Off
 BrowseOrder allow,deny
 BrowseAllow all
+BrowseAddress @LOCAL
 
 # Default authentication type, when authentication is required...
 DefaultAuthType Basic

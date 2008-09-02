@@ -9,8 +9,7 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-# This has to be exported to make some magic below work.
-#export DH_OPTIONS
+export DEB_BUILD_HARDENING=1
 
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/autotools.mk
@@ -76,14 +75,16 @@ binary-post-install/cups::
 	# the system-config-printer applet
 	install -D -m 644 packaging/cups-dbus.conf $(DEB_DESTDIR)/../cups/etc/dbus-1/system.d/cups.conf
 
-	# Install AppArmor profile on Ubuntu
+	# Install AppArmor and ufw profile on Ubuntu
 	if [ "`lsb_release -is 2>/dev/null`" = "Ubuntu" ]; then \
 	   install -D -m 644 debian/local/apparmor-profile debian/$(cdbs_curpkg)/etc/apparmor.d/usr.sbin.cupsd; \
+	   install -D -m 644 debian/local/cups.ufw.profile debian/$(cdbs_curpkg)/etc/ufw/applications.d/cups; \
 	fi
 
 	# Install documentation of the PDF CUPS filters
 	install -m 644 debian/local/filters/pdf-filters/README $(DEB_DESTDIR)/../cups/usr/share/doc/cups/README.pdf-filters
 	install -m 644 debian/local/filters/pdf-filters/filter/test.sh $(DEB_DESTDIR)/../cups/usr/share/doc/cups/examples/texttopdf-text.sh
+	install -m 644 debian/local/filters/pdf-filters/conf/HP-PhotoSmart_Pro_B8300-hpijs-pdftoijs.ppd $(DEB_DESTDIR)/../cups/usr/share/doc/cups/examples/
 	# Move file detection and conversion rules to /usr/share/cups/mime/ so
 	# that the package manager does not consider them conffiles
 	install -d $(DEB_DESTDIR)/../cups/usr/share/cups/mime

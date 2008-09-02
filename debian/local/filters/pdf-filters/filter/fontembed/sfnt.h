@@ -1,6 +1,7 @@
 #ifndef _SFNT_H
 #define _SFNT_H
 
+#include <stdio.h>
 #include "bitset.h"
 
 typedef struct {
@@ -9,8 +10,6 @@ typedef struct {
   unsigned int offset;
   unsigned int length;
 } OTF_DIRENT;
-
-typedef struct _IO_FILE FILE;
 
 typedef struct {
   FILE *f;
@@ -54,10 +53,9 @@ const char *otf_get_name(OTF_FILE *otf,int platformID,int encodingID,int languag
 int otf_get_glyph(OTF_FILE *otf,unsigned short gid);
 unsigned short otf_from_unicode(OTF_FILE *otf,int unicode);
 
-#ifndef OUTPUT_FN_DECLARED
-#define OUTPUT_FN_DECLARED
-typedef void (*OUTPUT_FN)(const char *buf,int len,void *context);
-#endif
+
+#include "iofn.h"
+
 int otf_subset(OTF_FILE *otf,BITSET glyphs,OUTPUT_FN output,void *context);
 int otf_ttc_extract(OTF_FILE *otf,OUTPUT_FN output,void *context);
 

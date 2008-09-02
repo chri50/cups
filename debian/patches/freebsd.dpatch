@@ -2,7 +2,7 @@
 ## 04_freebsd.dpatch by Kenshi Muto <kmuto@debian.org>
 ##
 ## All lines beginning with `## DP:' are a description of the patch.
-## DP: Forwarded upstream: http://www.cups.org/str.php?L2367
+## DP: (http://www.cups.org/str.php?L2367, svn trunk r6876)
 
 @DPATCH@
 diff -urNad cups-1.2~/backend/parallel.c cups-1.2/backend/parallel.c

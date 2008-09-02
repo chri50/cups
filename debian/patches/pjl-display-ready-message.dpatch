@@ -1,9 +1,9 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
 ## pjl-display-ready-message.dpatch by Johan Kiviniemi <debian@johan.kiviniemi.name>
 ##
-## All lines beginning with `## DP:' are a description of the patch.
 ## DP: According to the PJL spec, one should use RDYMSG DISPLAY = "" to return
 ## DP: the display to the normal ready message.
+## DP: (http://www.cups.org/str.php?L2909, svn trunk r7863)
 
 @DPATCH@
 diff -urNad cups~/cups/emit.c cups/cups/emit.c

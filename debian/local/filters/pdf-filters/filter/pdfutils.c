@@ -302,6 +302,20 @@ int pdfOut_write_font(pdfOut *pdf,EMB_PARAMS *emb) // {{{
 
   EMB_PDF_FONTDESCR *fdes=emb_pdf_fontdescr(emb);
   if (!fdes) {
+    if (emb->intype==EMB_INPUT_STDFONT) { // std-14 font
+      const int f_obj=pdfOut_add_xref(pdf);
+      char *res=emb_pdf_simple_stdfont(emb);
+      if (!res) {
+        return 0;
+      }
+
+      pdfOut_printf(pdf,"%d 0 obj\n"
+                        "%s"
+                        "endobj\n"
+                        ,f_obj,res);
+      free(res);
+      return f_obj;
+    }
     return 0;
   }
 
