@@ -550,7 +550,7 @@ cupsdReadConfiguration(void)
   cupsdClearString(&BrowseLocalOptions);
   cupsdClearString(&BrowseRemoteOptions);
 
-  cupsdSetString(&ErrorPolicy, "retry-job");
+  cupsdSetString(&ErrorPolicy, "stop-printer");
 
 #ifdef HAVE_LDAP
   cupsdClearString(&BrowseLDAPBindDN);
