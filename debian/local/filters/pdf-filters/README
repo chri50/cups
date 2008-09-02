@@ -2,10 +2,15 @@
 CUPS filters for PDF as standard print job format
 -------------------------------------------------
 
-This tarball contains the three CUPS filters imagetopdf, pdftopdf, and
-pdftoraster, prepared for being compiled together with CUPS.
+This tarball contains the three CUPS filters imagetopdf, texttopdf,
+pdftopdf, pdftoraster, and pdftoijs, prepared for being compiled
+together with CUPS. 
 
 The original filters are from http://sourceforge.jp/projects/opfc/
+
+In addition to what CUPS itself needs you will also need the Poppler
+and the IJS libraries (on distributions install also the appropriate
+"-dev" or "-devel" packages).
 
 There are two scripts in the root directory of the tarball:
 
@@ -759,3 +764,68 @@ Known Issues
    Compose glyphs are not composed with the primary glyph but printed
    as separate glyphs.
 
+===========================================================================
+
+PDFTOIJS
+
+1. INTRODUCTION
+
+"pdftoijs" is a filter for CUPS. It reads PDF files, converts it
+and sends it to an IJS server.
+
+2. LICENSE
+
+Almost source files are under MIT like license. However, "pdftoijs" links
+some "poppler" libraries, and these files are under GNU public license.
+See copyright notice of each file for details.
+
+3. COMMAND LINE
+
+"pdftoijs" is a CUPS filter, and the command line arguments, environment
+variables and configuration files are in accordance with the CUPS filter
+interface.
+
+pdftoijs <job> <user> <title> <num-copies> <options> [<filename>]
+
+"pdftoijs" ignores <job> and <user>.
+<title> is appended into the PDF dictionary as /Title.
+<num-copies> specifies the number of document copies.
+<options> is a CUPS option list.
+<filename> is an input PDF file name.
+
+When omit the <filename>, "pdftoijs" reads a PDF file from the stdin,
+and save it as a temporary file.
+
+4. ENVIRONMENT VARIABLES
+
+This program refers the following environment variable;
+   PPD:  PPD file name of the printer.
+
+5. NEW PPD KEYWORDS
+
+*ijsServer : the ijsserver executable
+*ijsManufacturer, *ijsModel : as used by the ijs server
+*ijsColorspace : the desired output colorspace, one of
+                 'rgb'
+                 'cmyk' (availability depending on poppler compile-options)
+                 'white1', 'black1':  1-bit normal/inverted
+                 'white8', 'black8':  8-bit greyscale normal/inverted
+*ijsResolution [option]=[choice]: the desired output resolution e.g. "600 600"
+*ijsParams [option]=[choice]: custom ijs parameters, separated by ','
+                 (to escape: use \,)
+
+6. COMMAND OPTIONS
+
+(See CUPS documents for details.)
+
+ijsOutputFile : the destination file, stdout otherwise
+
+7. INFORMATION FOR DEVELOPERS
+
+Following information is for developers, not for driver users.
+
+7.1 Temporally files location
+
+"pdftoijs" creates temporally files if needed. Temporary files are created
+in the location specified by TMPDIR environment variable. Default location
+is "/tmp".

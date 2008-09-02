@@ -1,6 +1,6 @@
-SOURCES=main.c sfnt.c embed.c embed_sfnt.c test_analyse.c dynstring.c test_pdf.c
-LIBOBJ=sfnt.o embed.o embed_sfnt.o dynstring.o
-EXEC=ttfread test_analyze test_pdf
+SOURCES=main.c sfnt.c embed.c embed_sfnt.c test_analyse.c dynstring.c test_pdf.c fontfile.c
+LIBOBJ=sfnt.o embed.o embed_sfnt.o dynstring.o fontfile.o
+EXEC=ttfread test_analyze test_pdf test_ps
 LIB=libfontembed.a
 
 #CPPFLAGS=-O3 -funroll-all-loops -finline-functions -Wall -g
@@ -44,4 +44,7 @@ test_analyze: test_analyze.o $(LIB)
 	$(CXX) -o $@ $^ $(LDFLAGS)
 
 test_pdf: test_pdf.o $(LIB)
+	$(CXX) -o $@ $^ $(LDFLAGS)
+
+test_ps: test_ps.o $(LIB)
 	$(CXX) -o $@ $^ $(LDFLAGS)

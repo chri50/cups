@@ -5,10 +5,6 @@
 
 #include <stdio.h>
 
-struct _FONTFILE { // TODO
-  OTF_FILE *sfnt;
-};
-
 static inline void write_string(pdfOut *pdf,EMB_PARAMS *emb,const char *str) // {{{
 {
   assert(pdf);
@@ -57,10 +53,11 @@ int main()
 */
   OTF_FILE *otf=otf_load(fn);
   assert(otf);
-  struct _FONTFILE ff; ff.sfnt=otf; // TODO
-  EMB_PARAMS *emb=emb_new(&ff,
+  FONTFILE *ff=fontfile_open_sfnt(otf);
+  EMB_PARAMS *emb=emb_new(ff,
                           EMB_DEST_PDF16,
-                          EMB_C_FORCE_MULTIBYTE);
+                          EMB_C_FORCE_MULTIBYTE|
+                          EMB_C_TAKE_FONTFILE);
 
   // test
   const int PageWidth=595,PageLength=842;
@@ -103,6 +100,8 @@ int main()
   pdfOut_finish_pdf(pdf);
 
   pdfOut_free(pdf);
+
+  emb_close(emb);
 
   return 0;
 }

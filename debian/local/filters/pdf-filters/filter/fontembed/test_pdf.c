@@ -4,10 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
  
-struct _FONTFILE { // TODO
-  OTF_FILE *sfnt;
-};
-
 static void example_outfn(const char *buf,int len,void *context) // {{{
 {
   FILE *f=(FILE *)context;
@@ -83,11 +79,11 @@ int main(int argc,char **argv)
   }
   OTF_FILE *otf=otf_load(fn);
   assert(otf);
-  struct _FONTFILE ff; ff.sfnt=otf; // TODO
-  EMB_PARAMS *emb=emb_new(&ff,
+  FONTFILE *ff=fontfile_open_sfnt(otf);
+  EMB_PARAMS *emb=emb_new(ff,
                           EMB_DEST_PDF16,
-                          EMB_C_FORCE_MULTIBYTE
-);
+                          EMB_C_FORCE_MULTIBYTE|
+                          EMB_C_TAKE_FONTFILE);
 
   FILE *f=fopen("test.pdf","w");
   assert(f);
@@ -216,7 +212,6 @@ int main(int argc,char **argv)
   fclose(f);
 
   emb_close(emb);
-  otf_close(otf);
 
   return 0;
 }

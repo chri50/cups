@@ -6,6 +6,7 @@
 # Remove files
 rm -f $1/filter/imagetopdf.c
 rm -f $1/filter/pdftoraster.cxx
+rm -f $1/filter/pdftoijs.cxx
 rm -f $1/filter/texttopdf.c
 rm -f $1/filter/pdfutils.h
 rm -f $1/filter/pdfutils.c
