@@ -1,20 +1,23 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
-## 19_cupsaccept.dpatch by Kenshi Muto <kmuto@debian.org>
+## cupsaccept.dpatch by Martin Pitt <mpitt@debian.org>
 ##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: No description.
+## DP: Allow to invoke accept command as cupsaccept/cupsreject, too, for less
+## DP: namespace clobbering and consistency with disable/enable.
+## DP: (http://www.cups.org/str.php?L2936)
 
 @DPATCH@
-diff -urNad cups-1.1.99.b1.r4748~/systemv/accept.c cups-1.1.99.b1.r4748/systemv/accept.c
---- cups-1.1.99.b1.r4748~/systemv/accept.c	2005-02-18 02:18:11.000000000 +0000
-+++ cups-1.1.99.b1.r4748/systemv/accept.c	2005-10-05 12:14:39.401595086 +0000
-@@ -67,6 +67,9 @@
-   else
-     command = argv[0];
+diff -urNad trunk~/systemv/accept.c trunk/systemv/accept.c
+--- trunk~/systemv/accept.c	2008-09-06 13:51:16.000000000 +0200
++++ trunk/systemv/accept.c	2008-09-06 13:56:08.000000000 +0200
+@@ -62,9 +62,9 @@
  
-+  if (strncmp(command, "cups", 4) == 0)
-+    command += 4;
-+
    cancel = 0;
  
-   if (strcmp(command, "accept") == 0)
+-  if (!strcmp(command, "accept"))
++  if (!strcmp(command, "cupsaccept") || !strcmp(command, "accept"))
+     op = CUPS_ACCEPT_JOBS;
+-  else if (!strcmp(command, "reject"))
++  else if (!strcmp(command, "cupsreject") || !strcmp(command, "reject"))
+     op = CUPS_REJECT_JOBS;
+   else if (!strcmp(command, "cupsdisable") || !strcmp(command, "disable"))
+     op = IPP_PAUSE_PRINTER;

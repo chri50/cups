@@ -1,0 +1,33 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## rootbackends-worldreadable.dpatch by  <mpitt@debian.org>
+##
+## DP: Install root backends world-readable, to comply to Debian Policy and
+## DP: because it is both nonsensical to to not do so, and also breaks system
+## DP: checkers, bug reporting, etc.
+## DP: (http://bugs.debian.org/410171, http://www.cups.org/str.php?L2935)
+
+@DPATCH@
+diff -urNad trunk~/backend/Makefile trunk/backend/Makefile
+--- trunk~/backend/Makefile	2007-08-08 21:27:51.000000000 +0200
++++ trunk/backend/Makefile	2008-09-06 18:17:10.000000000 +0200
+@@ -55,7 +55,7 @@
+ install:	all
+ 	$(INSTALL_DIR) -m 755 $(SERVERBIN)/backend
+ 	for file in $(RBACKENDS); do \
+-		$(LIBTOOL) $(INSTALL) -m 700 $$file $(SERVERBIN)/backend; \
++		$(LIBTOOL) $(INSTALL) -m 744 $$file $(SERVERBIN)/backend; \
+ 	done
+ 	for file in $(UBACKENDS); do \
+ 		$(INSTALL_BIN) $$file $(SERVERBIN)/backend; \
+diff -urNad trunk~/scheduler/job.c trunk/scheduler/job.c
+--- trunk~/scheduler/job.c	2008-07-21 21:57:20.000000000 +0200
++++ trunk/scheduler/job.c	2008-09-06 18:17:48.000000000 +0200
+@@ -3406,7 +3406,7 @@
+       else if (stat(command, &backinfo))
+ 	backroot = 0;
+       else
+-        backroot = !(backinfo.st_mode & (S_IRWXG | S_IRWXO));
++        backroot = !(backinfo.st_mode & (S_IXGRP | S_IXOTH));
+ 
+       argv[0] = sani_uri;
+ 

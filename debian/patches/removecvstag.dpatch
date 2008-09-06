@@ -1,8 +1,8 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
 ## 07_removecvstag.dpatch by Kenshi Muto <kmuto@debian.org>
 ##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: Forwarded upstream: http://www.cups.org/str.php?L2369
+## DP: Do not write VCS tags into installed conffiles
+## DP: (http://www.cups.org/str.php?L2369)
 
 @DPATCH@
 diff -urNad cups-1.2~/conf/Makefile cups-1.2/conf/Makefile

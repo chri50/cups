@@ -1,8 +1,7 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
 ## 13_default_log_warn.dpatch by  <mpitt@debian.org>
 ##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: No description.
+## DP: Set default loglevel to 'warning'.
 
 @DPATCH@
 diff -urNad cups~/conf/cupsd.conf.in cups/conf/cupsd.conf.in

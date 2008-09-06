@@ -1,7 +1,6 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
 ## 04_freebsd.dpatch by Kenshi Muto <kmuto@debian.org>
 ##
-## All lines beginning with `## DP:' are a description of the patch.
 ## DP: (http://www.cups.org/str.php?L2367, svn trunk r6876)
 
 @DPATCH@

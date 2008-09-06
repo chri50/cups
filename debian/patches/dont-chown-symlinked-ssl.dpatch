@@ -1,0 +1,30 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## dont-chown-symlinked-ssl.dpatch by Martin Pitt <mpitt@debian.org>
+##
+## DP: Do not clobber permissions of SSL cert/key if they are symbolic links.
+## DP: (http://www.cups.org/str.php?L2937)
+
+@DPATCH@
+diff -urNad trunk~/scheduler/conf.c trunk/scheduler/conf.c
+--- trunk~/scheduler/conf.c	2008-09-06 15:19:13.000000000 +0200
++++ trunk/scheduler/conf.c	2008-09-06 15:19:23.000000000 +0200
+@@ -754,7 +754,8 @@
+   if (ServerCertificate[0] != '/')
+     cupsdSetStringf(&ServerCertificate, "%s/%s", ServerRoot, ServerCertificate);
+ 
+-  if (!strncmp(ServerRoot, ServerCertificate, strlen(ServerRoot)))
++  if (!strncmp(ServerRoot, ServerCertificate, strlen(ServerRoot)) &&
++      !lstat(ServerCertificate, &tmpinfo) && !S_ISLNK(tmpinfo.st_mode))
+   {
+     chown(ServerCertificate, RunUser, Group);
+     chmod(ServerCertificate, 0600);
+@@ -764,7 +765,8 @@
+   if (ServerKey[0] != '/')
+     cupsdSetStringf(&ServerKey, "%s/%s", ServerRoot, ServerKey);
+ 
+-  if (!strncmp(ServerRoot, ServerKey, strlen(ServerRoot)))
++  if (!strncmp(ServerRoot, ServerKey, strlen(ServerRoot)) &&
++      !lstat(ServerKey, &tmpinfo) && !S_ISLNK(tmpinfo.st_mode))
+   {
+     chown(ServerKey, RunUser, Group);
+     chmod(ServerKey, 0600);

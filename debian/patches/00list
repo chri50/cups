@@ -15,18 +15,17 @@ pidfile.dpatch
 ppd-poll-with-client-conf.dpatch
 # no answer yet, po4a might not be appropriate
 manpage-translations.dpatch
+quiesce-bonjour-warning.dpatch
+cupsaccept.dpatch
+dont-chown-symlinked-ssl.dpatch
+rootbackends-worldreadable.dpatch
 
 # patches which should go upstream
-classes_crash.dpatch
+reactivate_recommended_driver.dpatch
 
 # Debian patches
-quiesce_ipp_logging.dpatch
 default_log_warn.dpatch
-dont_force_ssl.dpatch
-cupsaccept.dpatch
 confdirperms.dpatch
-device_uri.dpatch
-reactivate_recommended_driver.dpatch
 
 # Ubuntu patches
 ubuntu-disable-browsing.dpatch

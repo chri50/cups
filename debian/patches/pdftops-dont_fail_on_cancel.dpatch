@@ -3,7 +3,7 @@
 ##
 ## DP: Fix behavioural change in patch from STR #2780 which broke the test
 ## DP: suite: When a job is cancelled, do not report a failure in the exit code
-## DP: of pdftops. (http://www.cups.org/str.php?L2808)
+## DP: of pdftops. (http://www.cups.org/str.php?L2808, upstream svn trunk r7479)
 
 @DPATCH@
 diff -urNad trunk~/filter/pdftops.c trunk/filter/pdftops.c
