@@ -867,7 +867,7 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
       * Set the current device URI for the form to the old one...
       */
 
-      if (strncmp(attr->values[0].string.text, var, strlen(var)) == 0)
+      /* if (strncmp(attr->values[0].string.text, var, strlen(var)) == 0) */
 	cgiSetVariable("DEVICE_URI", attr->values[0].string.text);
     }
 

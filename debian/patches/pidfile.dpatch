@@ -1,8 +1,8 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
 ## 47_pid.dpatch by Kenshi Muto <kmuto@debian.org>
 ##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: Forwarded upstream: http://www.cups.org/str.php?L2465
+## DP: Add support for creating pid files.
+## DP: (http://www.cups.org/str.php?L2465)
 
 @DPATCH@
 diff -urNad trunk~/scheduler/conf.c trunk/scheduler/conf.c

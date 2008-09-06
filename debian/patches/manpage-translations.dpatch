@@ -7,7 +7,7 @@
 @DPATCH@
 diff -urNad trunk~/man/Makefile trunk/man/Makefile
 --- trunk~/man/Makefile	2007-07-13 03:01:14.000000000 +0200
-+++ trunk/man/Makefile	2008-07-23 08:51:46.000000000 +0200
++++ trunk/man/Makefile	2008-09-06 14:25:21.000000000 +0200
 @@ -62,7 +62,12 @@
  # Make everything...
  #
@@ -52,7 +52,7 @@ diff -urNad trunk~/man/Makefile trunk/man/Makefile
  #
 diff -urNad trunk~/man/Makefile.l10n trunk/man/Makefile.l10n
 --- trunk~/man/Makefile.l10n	1970-01-01 01:00:00.000000000 +0100
-+++ trunk/man/Makefile.l10n	2008-07-23 08:51:46.000000000 +0200
++++ trunk/man/Makefile.l10n	2008-09-06 14:25:21.000000000 +0200
 @@ -0,0 +1,209 @@
 +#
 +# "$Id: $"
@@ -265,7 +265,7 @@ diff -urNad trunk~/man/Makefile.l10n trunk/man/Makefile.l10n
 +#
 diff -urNad trunk~/man/fr/Makefile trunk/man/fr/Makefile
 --- trunk~/man/fr/Makefile	1970-01-01 01:00:00.000000000 +0100
-+++ trunk/man/fr/Makefile	2008-07-23 08:51:46.000000000 +0200
++++ trunk/man/fr/Makefile	2008-09-06 14:25:21.000000000 +0200
 @@ -0,0 +1,13 @@
 +#
 +# "$Id: $"
@@ -282,7 +282,7 @@ diff -urNad trunk~/man/fr/Makefile trunk/man/fr/Makefile
 +#
 diff -urNad trunk~/man/po4a/cups.cfg trunk/man/po4a/cups.cfg
 --- trunk~/man/po4a/cups.cfg	1970-01-01 01:00:00.000000000 +0100
-+++ trunk/man/po4a/cups.cfg	2008-07-23 08:51:46.000000000 +0200
++++ trunk/man/po4a/cups.cfg	2008-09-06 14:25:21.000000000 +0200
 @@ -0,0 +1,39 @@
 +[po4a_paths] po4a/po/cups.pot fr:po4a/po/fr.po
 +
@@ -325,8 +325,8 @@ diff -urNad trunk~/man/po4a/cups.cfg trunk/man/po4a/cups.cfg
 +
 diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 --- trunk~/man/po4a/po/fr.po	1970-01-01 01:00:00.000000000 +0100
-+++ trunk/man/po4a/po/fr.po	2008-07-23 08:53:21.000000000 +0200
-@@ -0,0 +1,8409 @@
++++ trunk/man/po4a/po/fr.po	2008-09-06 14:24:39.000000000 +0200
+@@ -0,0 +1,8414 @@
 +# Translation of the cups manpages into French.
 +#
 +# Original translations from:
@@ -337,7 +337,7 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +msgid ""
 +msgstr ""
 +"Project-Id-Version: cups\n"
-+"POT-Creation-Date: 2008-07-23 08:44+0200\n"
++"POT-Creation-Date: 2008-09-06 14:22+0200\n"
 +"PO-Revision-Date: 2008-05-02 02:50+0200\n"
 +"Last-Translator: Nicolas François <nicolas.francois@centraliens.net>\n"
 +"Language-Team: French <debian-l10n-french@lists.debian.org>\n"
@@ -581,7 +581,7 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +#: cups-lpd.man.in:109 cups-polld.man:30 cups-snmp.conf.man:67
 +#: cupstestdsc.man:41 cupstestppd.man:133 filter.man:213 lpadmin.man:198
 +#: lpc.man:62 lpinfo.man:57 lp.man:235 lpmove.man:58 lpoptions.man.in:127
-+#: lppasswd.man:54 lpq.man:63 lpr.man:109 lprm.man:56 lpstat.man:131
++#: lppasswd.man:53 lpq.man:63 lpr.man:109 lprm.man:56 lpstat.man:131
 +#: mailto.conf.man:51 mime.convs.man:37 mime.types.man:85
 +#: printers.conf.man:113 subscriptions.conf.man:80
 +#, no-wrap
@@ -601,7 +601,7 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +#: cups-lpd.man.in:114 cups-polld.man:34 cups-snmp.conf.man:69
 +#: cupstestdsc.man:43 cupstestppd.man:137 filter.man:217 lpadmin.man:203
 +#: lpc.man:67 lpinfo.man:61 lp.man:239 lpmove.man:62 lpoptions.man.in:131
-+#: lppasswd.man:58 lpq.man:68 lpr.man:114 lprm.man:61 lpstat.man:135
++#: lppasswd.man:57 lpq.man:68 lpr.man:114 lprm.man:61 lpstat.man:135
 +#: mailto.conf.man:56 mime.convs.man:42 mime.types.man:90
 +#: printers.conf.man:118 subscriptions.conf.man:85
 +msgid "http://localhost:631/help"
@@ -615,7 +615,7 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +#: cups-lpd.man.in:114 cups-polld.man:34 cups-snmp.conf.man:69
 +#: cupstestdsc.man:46 cupstestppd.man:139 filter.man:217 lpadmin.man:203
 +#: lpc.man:67 lpinfo.man:61 lp.man:239 lpmove.man:62 lpoptions.man.in:131
-+#: lppasswd.man:58 lpq.man:68 lpr.man:114 lprm.man:61 lpstat.man:135
++#: lppasswd.man:57 lpq.man:68 lpr.man:114 lprm.man:61 lpstat.man:135
 +#: mailto.conf.man:56 mime.convs.man:42 mime.types.man:90
 +#: printers.conf.man:118 subscriptions.conf.man:85
 +#, no-wrap
@@ -628,7 +628,7 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +#: cupsenable.man:81 cupsfilter.man:70 cups-lpd.man.in:115 cups-polld.man:35
 +#: cups-snmp.conf.man:70 cupstestdsc.man:47 cupstestppd.man:140 filter.man:218
 +#: lpc.man:68 lpinfo.man:62 lp.man:240 lpmove.man:63 lpoptions.man.in:132
-+#: lppasswd.man:59 lpr.man:115 lprm.man:62 lpstat.man:136 mailto.conf.man:57
++#: lppasswd.man:58 lpr.man:115 lprm.man:62 lpstat.man:136 mailto.conf.man:57
 +#: mime.convs.man:43 mime.types.man:91 printers.conf.man:119
 +#: subscriptions.conf.man:86
 +msgid "Copyright 2007 by Apple Inc."
@@ -7455,24 +7455,29 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +msgstr "PROBLÈMES DE SÉCURITÉ"
 +
 +# type: Plain text
-+#: lppasswd.man:54
++#: lppasswd.man:53
++#, fuzzy
++#| msgid ""
++#| "The I<lppasswd> command is installed setuid to root. While every attempt "
++#| "has been made to make it secure against exploits that could grant super-"
++#| "user privileges to unprivileged users, paranoid system administrators may "
++#| "wish to disable or change the ownership of the program to an unprivileged "
++#| "account.  "
 +msgid ""
 +"The I<lppasswd> command is installed setuid to root. While every attempt has "
 +"been made to make it secure against exploits that could grant super-user "
 +"privileges to unprivileged users, paranoid system administrators may wish to "
-+"disable or change the ownership of the program to an unprivileged account.  "
-+"(So Debian installs I<lppasswd> command with setuid to lp)"
++"disable or change the ownership of the program to an unprivileged account."
 +msgstr ""
 +"La commande B<lppasswd> est installée avec le bit setuid activé. Toutes les "
 +"précautions ont été prises pour empêcher les failles permettant l'accès aux "
 +"privilèges du super-utilisateur par un utilisateur non privilégié. "
 +"Cependant, certains administrateurs systèmes paranoïaques peuvent vouloir "
 +"désactiver ce programme ou en modifier le propriétaire en un utilisateur non "
-+"privilégié (c'est la raison pour laquelle le propriétaire de B<lppasswd> sur "
-+"les systèmes Debian est lp)."
++"privilégié."
 +
 +# type: Plain text
-+#: lppasswd.man:56
++#: lppasswd.man:55
 +msgid "I<lp(1)>, I<lpr(1)>,"
 +msgstr "B<lp>(1), B<lpr>(1),"
 +

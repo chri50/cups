@@ -1,3 +1,35 @@
+cups (1.3.8-8) experimental; urgency=low
+
+  * Remove debian/patches/dont_force_ssl.dpatch; gnome-cups-manager is ancient
+    and removed from Debian, and newer GUIs like system-config-printer get
+    along fine with the default setting.
+  * Add quiesce-bonjour-warning.dpatch: Silence the "Apple Bonjour
+    compatibility layer of Avahi" warning, since it can cause SIGPIPE crashes
+    when being issued in a child process without stderr. (Closes: #497492)
+  * confdirperms.dpatch, manpage-translations.dpatch: Revert note that Debian
+    doesn't install lppasswd suid root, since we do. (Closes: #478280)
+  * debian/control: Drop the "It can be safely removed from your system" from
+    the old package names, since that is untrue until the transition is
+    actually complete. (Closes: #489246)
+  * debian/control: Bump Standards-Version (no actual changes necessary).
+  * Remove classes_crash.dpatch, it has been fixed upstream a while ago.
+  * cupsaccept.dpatch: Rewrite to be consistent with current upstream code,
+    and send it upstream.
+  * Drop quiesce_ipp_logging.dpatch: It was only necessary for the polling
+    from gnome-cups-icon, but fortunately gnome-cups-manager has been removed
+    now.
+  * confdirperms.dpatch: Remove a few hunks which were only relevant for
+    running cups as system user. Remove the SSL certificate bits as well,
+    rewrite it to be upstream compatible, split it out to
+    dont-chown-symlinked-ssl.dpatch, reported it upstream.
+  * Remove device_uri.dpatch, does not seem to be necessary any more.
+  * Add rootbackends-worldreadable.dpatch: Install root backends
+    world-readable, to comply to Debian Policy and because it is both
+    nonsensical to to not do so, and also breaks system checkers, bug
+    reporting, etc. (Closes: #410171)
+
+ -- Martin Pitt <mpitt@debian.org>  Sat, 06 Sep 2008 18:21:01 +0200
+
 cups (1.3.8-7) experimental; urgency=low
 
   * Previous upload had some cruft in the diff.gz which caused some changed

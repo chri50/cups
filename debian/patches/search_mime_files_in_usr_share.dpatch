@@ -1,7 +1,6 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
 ## search_mime_files_in_usr_share.dpatch by  <till.kamppeter@gmail.com>
 ##
-## All lines beginning with `## DP:' are a description of the patch.
 ## DP: http://www.cups.org/str.php?L2719, svn trunk r7670
 
 @DPATCH@
