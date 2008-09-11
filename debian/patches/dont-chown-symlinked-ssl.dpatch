@@ -1,30 +1,90 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
 ## dont-chown-symlinked-ssl.dpatch by Martin Pitt <mpitt@debian.org>
 ##
-## DP: Do not clobber permissions of SSL cert/key if they are symbolic links.
-## DP: (http://www.cups.org/str.php?L2937)
+## DP: Do not clobber permissions of configuration files if they are symbolic
+## DP: links. (http://www.cups.org/str.php?L2937, upstream svn trunk r7912)
 
 @DPATCH@
 diff -urNad trunk~/scheduler/conf.c trunk/scheduler/conf.c
---- trunk~/scheduler/conf.c	2008-09-06 15:19:13.000000000 +0200
-+++ trunk/scheduler/conf.c	2008-09-06 15:19:23.000000000 +0200
-@@ -754,7 +754,8 @@
+--- trunk~/scheduler/conf.c	2008-09-08 09:22:50.000000000 +0200
++++ trunk/scheduler/conf.c	2008-09-08 09:24:02.000000000 +0200
+@@ -217,6 +217,7 @@
+   int		dir_created = 0;	/* Did we create a directory? */
+   char		pathname[1024];		/* File name with prefix */
+   struct stat	fileinfo;		/* Stat buffer */
++  int		is_symlink;		/* Is "filename" a symlink? */
+ 
+ 
+  /*
+@@ -233,7 +234,7 @@
+   * See if we can stat the file/directory...
+   */
+ 
+-  if (stat(filename, &fileinfo))
++  if (lstat(filename, &fileinfo))
+   {
+     if (errno == ENOENT && create_dir)
+     {
+@@ -260,8 +261,18 @@
+       return (create_dir ? -1 : 1);
+   }
+ 
++  if ((is_symlink = S_ISLNK(fileinfo.st_mode)) != 0)
++  {
++    if (stat(filename, &fileinfo))
++    {
++      cupsdLogMessage(CUPSD_LOG_ERROR, "\"%s\" is a bad symlink - %s",
++                      filename, strerror(errno));
++      return (-1);
++    }
++  }
++
+  /*
+-  * Make sure it's a regular file...
++  * Make sure it's a regular file or a directory as needed...
+   */
+ 
+   if (!dir_created && !is_dir && !S_ISREG(fileinfo.st_mode))
+@@ -281,6 +292,13 @@
+   }
+ 
+  /*
++  * If the filename is a symlink, do not change permissions (STR #2937)...
++  */
++
++  if (is_symlink)
++    return (0);
++
++ /*
+   * Fix owner, group, and mode as needed...
+   */
+ 
+@@ -757,21 +775,18 @@
    if (ServerCertificate[0] != '/')
      cupsdSetStringf(&ServerCertificate, "%s/%s", ServerRoot, ServerCertificate);
  
 -  if (!strncmp(ServerRoot, ServerCertificate, strlen(ServerRoot)))
+-  {
+-    chown(ServerCertificate, RunUser, Group);
+-    chmod(ServerCertificate, 0600);
+-  }
 +  if (!strncmp(ServerRoot, ServerCertificate, strlen(ServerRoot)) &&
-+      !lstat(ServerCertificate, &tmpinfo) && !S_ISLNK(tmpinfo.st_mode))
-   {
-     chown(ServerCertificate, RunUser, Group);
-     chmod(ServerCertificate, 0600);
-@@ -764,7 +765,8 @@
++      cupsdCheckPermissions(ServerCertificate, NULL, 0600, RunUser, Group,
++                            0, 0) < 0)
++    return (0);
+ 
+ #  if defined(HAVE_LIBSSL) || defined(HAVE_GNUTLS)
    if (ServerKey[0] != '/')
      cupsdSetStringf(&ServerKey, "%s/%s", ServerRoot, ServerKey);
  
 -  if (!strncmp(ServerRoot, ServerKey, strlen(ServerRoot)))
+-  {
+-    chown(ServerKey, RunUser, Group);
+-    chmod(ServerKey, 0600);
+-  }
 +  if (!strncmp(ServerRoot, ServerKey, strlen(ServerRoot)) &&
-+      !lstat(ServerKey, &tmpinfo) && !S_ISLNK(tmpinfo.st_mode))
-   {
-     chown(ServerKey, RunUser, Group);
-     chmod(ServerKey, 0600);
++      cupsdCheckPermissions(ServerKey, NULL, 0600, RunUser, Group, 0, 0) < 0)
++    return (0);
+ #  endif /* HAVE_LIBSSL || HAVE_GNUTLS */
+ #endif /* HAVE_SSL */
+ 

@@ -14,8 +14,8 @@ Uploaders: Kenshi Muto <kmuto@debian.org>,
  Martin Pitt <mpitt@debian.org>, Roger Leigh <rleigh@debian.org>, 
  Martin-Éric Racine <q-funk@iki.fi>, Masayuki Hatta (mhatta) <mhatta@debian.org>,
  Jeff Licquia <licquia@debian.org>
-Vcs-Svn: svn://svn.debian.org/svn/pkg-cups/cupsys/trunk
-Vcs-Browser: http://svn.debian.org/wsvn/pkg-cups/cupsys/trunk
+Vcs-Bzr: bzr+ssh://bzr.debian.org/pkg-cups/cups/debian-trunk/
+Vcs-Browser: http://bazaar.launchpad.net/~pitti/cups/debian-trunk
 
 Package: libcups2
 Priority: optional
@@ -63,7 +63,7 @@ Architecture: any
 Depends: ${shlibs:Depends}, debconf (>= 1.2.9) | debconf-2.0,
  poppler-utils | xpdf-utils, perl-modules, procps, 
  ghostscript, lsb-base (>= 3), cups-common,  
- ssl-cert (>= 1.0.11), adduser
+ ssl-cert (>= 1.0.11), adduser, bc
 Recommends: cups-client, smbclient (>= 3.0.9), foomatic-filters, avahi-utils, ttf-freefont | gsfonts-x11
 Suggests: cups-bsd, cups-driver-gutenprint, foomatic-db-engine, foomatic-db,
  hplip, xpdf-korean | xpdf-japanese | xpdf-chinese-traditional | xpdf-chinese-simplified, 

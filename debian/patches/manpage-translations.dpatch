@@ -6,8 +6,8 @@
 
 @DPATCH@
 diff -urNad trunk~/man/Makefile trunk/man/Makefile
---- trunk~/man/Makefile	2007-07-13 03:01:14.000000000 +0200
-+++ trunk/man/Makefile	2008-09-06 14:25:21.000000000 +0200
+--- trunk~/man/Makefile	2008-09-11 13:13:21.000000000 +0200
++++ trunk/man/Makefile	2008-09-11 13:13:22.000000000 +0200
 @@ -62,7 +62,12 @@
  # Make everything...
  #
@@ -35,7 +35,7 @@ diff -urNad trunk~/man/Makefile trunk/man/Makefile
  
  #
 @@ -122,6 +132,7 @@
- 	$(LN) accept.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/reject.$(MAN8EXT)
+ 	$(LN) cupsaccept.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/cupsreject.$(MAN8EXT)
  	$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
  	$(LN) cupsenable.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
 +	$(MAKE) -C fr install
@@ -52,7 +52,7 @@ diff -urNad trunk~/man/Makefile trunk/man/Makefile
  #
 diff -urNad trunk~/man/Makefile.l10n trunk/man/Makefile.l10n
 --- trunk~/man/Makefile.l10n	1970-01-01 01:00:00.000000000 +0100
-+++ trunk/man/Makefile.l10n	2008-09-06 14:25:21.000000000 +0200
++++ trunk/man/Makefile.l10n	2008-09-11 13:13:22.000000000 +0200
 @@ -0,0 +1,209 @@
 +#
 +# "$Id: $"
@@ -98,7 +98,7 @@ diff -urNad trunk~/man/Makefile.l10n trunk/man/Makefile.l10n
 +		subscriptions.conf.$(MAN5EXT)
 +MAN7	=	backend.$(MAN7EXT) \
 +		filter.$(MAN7EXT)
-+MAN8	=	accept.$(MAN8EXT) \
++MAN8	=	cupsaccept.$(MAN8EXT) \
 +		cupsaddsmb.$(MAN8EXT) \
 +		cupsctl.$(MAN8EXT) \
 +		cupsfilter.$(MAN8EXT) \
@@ -188,11 +188,11 @@ diff -urNad trunk~/man/Makefile.l10n trunk/man/Makefile.l10n
 +		echo Installing $$file in $(AMANDIR)/man$(MAN8DIR)...; \
 +		$(INSTALL_MAN) $$file $(AMANDIR)/man$(MAN8DIR); \
 +	done
-+	if [ -f reject.$(MAN8EXT) ]; then \
-+		$(RM) $(AMANDIR)/man$(MAN8DIR)/reject.$(MAN8EXT); \
++	if [ -f cupsreject.$(MAN8EXT) ]; then \
++		$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsreject.$(MAN8EXT); \
 +	fi
-+	if [ -f accept.$(MAN8EXT) ]; then \
-+		$(LN) accept.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/reject.$(MAN8EXT); \
++	if [ -f cupsaccept.$(MAN8EXT) ]; then \
++		$(LN) cupsaccept.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/cupsreject.$(MAN8EXT); \
 +	fi
 +	if [ -f cupsdisable.$(MAN8EXT) ]; then \
 +		$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT); \
@@ -222,7 +222,7 @@ diff -urNad trunk~/man/Makefile.l10n trunk/man/Makefile.l10n
 +	for file in $(MAN8); do \
 +		$(RM) $(AMANDIR)/man$(MAN8DIR)/$$file; \
 +	done
-+	$(RM) $(AMANDIR)/man$(MAN8DIR)/reject.$(MAN8EXT)
++	$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsreject.$(MAN8EXT)
 +	$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
 +	-$(RMDIR) $(AMANDIR)/man$(MAN8DIR)
 +
@@ -265,7 +265,7 @@ diff -urNad trunk~/man/Makefile.l10n trunk/man/Makefile.l10n
 +#
 diff -urNad trunk~/man/fr/Makefile trunk/man/fr/Makefile
 --- trunk~/man/fr/Makefile	1970-01-01 01:00:00.000000000 +0100
-+++ trunk/man/fr/Makefile	2008-09-06 14:25:21.000000000 +0200
++++ trunk/man/fr/Makefile	2008-09-11 13:13:22.000000000 +0200
 @@ -0,0 +1,13 @@
 +#
 +# "$Id: $"
@@ -282,11 +282,11 @@ diff -urNad trunk~/man/fr/Makefile trunk/man/fr/Makefile
 +#
 diff -urNad trunk~/man/po4a/cups.cfg trunk/man/po4a/cups.cfg
 --- trunk~/man/po4a/cups.cfg	1970-01-01 01:00:00.000000000 +0100
-+++ trunk/man/po4a/cups.cfg	2008-09-06 14:25:21.000000000 +0200
++++ trunk/man/po4a/cups.cfg	2008-09-11 13:13:22.000000000 +0200
 @@ -0,0 +1,39 @@
 +[po4a_paths] po4a/po/cups.pot fr:po4a/po/fr.po
 +
-+[type: man] accept.man	fr:fr/accept.man
++[type: man] cupsaccept.man	fr:fr/cupsaccept.man
 +[type: man] backend.man	fr:fr/backend.man
 +[type: man] cancel.man	fr:fr/cancel.man
 +[type: man] classes.conf.man	fr:fr/classes.conf.man
@@ -325,7 +325,7 @@ diff -urNad trunk~/man/po4a/cups.cfg trunk/man/po4a/cups.cfg
 +
 diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 --- trunk~/man/po4a/po/fr.po	1970-01-01 01:00:00.000000000 +0100
-+++ trunk/man/po4a/po/fr.po	2008-09-06 14:24:39.000000000 +0200
++++ trunk/man/po4a/po/fr.po	2008-09-11 13:13:38.000000000 +0200
 @@ -0,0 +1,8414 @@
 +# Translation of the cups manpages into French.
 +#
@@ -337,7 +337,7 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +msgid ""
 +msgstr ""
 +"Project-Id-Version: cups\n"
-+"POT-Creation-Date: 2008-09-06 14:22+0200\n"
++"POT-Creation-Date: 2008-09-11 12:06+0200\n"
 +"PO-Revision-Date: 2008-05-02 02:50+0200\n"
 +"Last-Translator: Nicolas François <nicolas.francois@centraliens.net>\n"
 +"Language-Team: French <debian-l10n-french@lists.debian.org>\n"
@@ -346,13 +346,13 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +"Content-Transfer-Encoding: 8bit\n"
 +
 +# type: TH
-+#: accept.man:15
++#: cupsaccept.man:15
 +#, no-wrap
 +msgid "accept"
 +msgstr "accept"
 +
 +# type: TH
-+#: accept.man:15 backend.man:15 cancel.man:15 classes.conf.man:15
++#: cupsaccept.man:15 backend.man:15 cancel.man:15 classes.conf.man:15
 +#: client.conf.man.in:15 cupsaddsmb.man.in:15 cups-config.man:15
 +#: cupsctl.man:15 cupsd.conf.man.in:15 cups-deviced.man.in:15 cupsd.man.in:15
 +#: cups-driverd.man.in:15 cupsenable.man:16 cupsfilter.man:14
@@ -367,7 +367,7 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +msgstr "Common UNIX Printing System"
 +
 +# type: TH
-+#: accept.man:15 classes.conf.man:15 cupsd.man.in:15 cupsenable.man:16
++#: cupsaccept.man:15 classes.conf.man:15 cupsd.man.in:15 cupsenable.man:16
 +#: cups-polld.man:15 lpc.man:15 lpinfo.man:15 lpmove.man:15 lpr.man:15
 +#: lprm.man:15 mime.types.man:15 printers.conf.man:15
 +#, no-wrap
@@ -375,7 +375,7 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +msgstr "12 février 2006"
 +
 +# type: TH
-+#: accept.man:15 backend.man:15 cancel.man:15 classes.conf.man:15
++#: cupsaccept.man:15 backend.man:15 cancel.man:15 classes.conf.man:15
 +#: client.conf.man.in:15 cupsaddsmb.man.in:15 cups-config.man:15
 +#: cupsctl.man:15 cupsd.conf.man.in:15 cups-deviced.man.in:15 cupsd.man.in:15
 +#: cups-driverd.man.in:15 cupsenable.man:16 cupsfilter.man:14
@@ -390,7 +390,7 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +msgstr "Apple Inc."
 +
 +# type: SH
-+#: accept.man:16 backend.man:17 cancel.man:16 classes.conf.man:16
++#: cupsaccept.man:16 backend.man:17 cancel.man:16 classes.conf.man:16
 +#: client.conf.man.in:16 cupsaddsmb.man.in:16 cups-config.man:16
 +#: cupsctl.man:16 cupsd.conf.man.in:16 cups-deviced.man.in:16 cupsd.man.in:16
 +#: cups-driverd.man.in:16 cupsenable.man:17 cupsfilter.man:15
@@ -405,14 +405,14 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +msgstr "NOM"
 +
 +# type: Plain text
-+#: accept.man:18
++#: cupsaccept.man:18
 +msgid "accept/reject - accept/reject jobs sent to a destination"
 +msgstr ""
 +"accept/reject - Accepter/refuser les travaux d'impression envoyés à une "
 +"destination."
 +
 +# type: SH
-+#: accept.man:18 backend.man:20 cancel.man:18 cupsaddsmb.man.in:19
++#: cupsaccept.man:18 backend.man:20 cancel.man:18 cupsaddsmb.man.in:19
 +#: cups-config.man:18 cupsctl.man:18 cups-deviced.man.in:18 cupsd.man.in:18
 +#: cups-driverd.man.in:18 cupsenable.man:19 cupsfilter.man:17
 +#: cups-lpd.man.in:18 cups-polld.man:18 cupstestdsc.man:18 cupstestppd.man:18
@@ -424,7 +424,7 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +msgstr "SYNOPSIS"
 +
 +# type: Plain text
-+#: accept.man:25
++#: cupsaccept.man:25
 +msgid ""
 +"B<accept> [ -E ] [ -U I<username> ] [ -h I<hostname[:port]> ] destination(s)"
 +msgstr ""
@@ -432,7 +432,7 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +"(s)"
 +
 +# type: Plain text
-+#: accept.man:34
++#: cupsaccept.man:34
 +msgid ""
 +"B<reject> [ -E ] [ -U I<username> ] [ -h I<hostname[:port]> ] [ -r "
 +"I<reason> ] destination(s)"
@@ -441,7 +441,7 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +"I<raison> ] destination(s)"
 +
 +# type: SH
-+#: accept.man:34 backend.man:28 cancel.man:33 classes.conf.man:18
++#: cupsaccept.man:34 backend.man:28 cancel.man:33 classes.conf.man:18
 +#: client.conf.man.in:18 cupsaddsmb.man.in:38 cups-config.man:50
 +#: cupsctl.man:29 cupsd.conf.man.in:18 cups-deviced.man.in:21 cupsd.man.in:23
 +#: cups-driverd.man.in:26 cupsenable.man:35 cupsfilter.man:33
@@ -456,7 +456,7 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +msgstr "DESCRIPTION"
 +
 +# type: Plain text
-+#: accept.man:37
++#: cupsaccept.man:37
 +msgid ""
 +"I<accept> instructs the printing system to accept print jobs to the "
 +"specified destinations."
@@ -465,7 +465,7 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +"d'impression vers les destinations spécifiées."
 +
 +# type: Plain text
-+#: accept.man:41
++#: cupsaccept.man:41
 +msgid ""
 +"I<reject> instructs the printing system to reject print jobs to the "
 +"specified destinations. The I<-r> option sets the reason for rejecting print "
@@ -477,7 +477,7 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +"pas fournie, la raison par défaut est « Reason Unknown » (« Raison inconnue »)."
 +
 +# type: SH
-+#: accept.man:41 cancel.man:36 cupsaddsmb.man.in:45 cups-config.man:55
++#: cupsaccept.man:41 cancel.man:36 cupsaddsmb.man.in:45 cups-config.man:55
 +#: cupsctl.man:33 cupsd.man.in:29 cupsfilter.man:37 cups-lpd.man.in:60
 +#: cupstestppd.man:42 lpinfo.man:37 lp.man:65 lpmove.man:44 lppasswd.man:41
 +#: lpq.man:37 lpr.man:41 lprm.man:35 lpstat.man:43
@@ -486,12 +486,12 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +msgstr "OPTIONS"
 +
 +# type: Plain text
-+#: accept.man:44
++#: cupsaccept.man:44
 +msgid "The following options are supported by both I<accept> and I<reject>:"
 +msgstr "Les options suivantes sont reconnues par B<accept> et B<reject> :"
 +
 +# type: TP
-+#: accept.man:44 cancel.man:38 cupsctl.man:35 cupsenable.man:40
++#: cupsaccept.man:44 cancel.man:38 cupsctl.man:35 cupsenable.man:40
 +#: lpadmin.man:172 lpinfo.man:39 lp.man:72 lpmove.man:46 lpoptions.man.in:66
 +#: lpq.man:39 lpr.man:43 lprm.man:37 lpstat.man:45
 +#, no-wrap
@@ -499,13 +499,13 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +msgstr "B<-E>"
 +
 +# type: Plain text
-+#: accept.man:48 cancel.man:42 lpinfo.man:43 lp.man:76 lpmove.man:50
++#: cupsaccept.man:48 cancel.man:42 lpinfo.man:43 lp.man:76 lpmove.man:50
 +#: lpq.man:43 lpr.man:47 lprm.man:41 lpstat.man:49
 +msgid "Forces encryption when connecting to the server."
 +msgstr "Forcer le chiffrement lors de la connexion au serveur."
 +
 +# type: TP
-+#: accept.man:48 cancel.man:42 cupsenable.man:44 lpinfo.man:43 lp.man:76
++#: cupsaccept.man:48 cancel.man:42 cupsenable.man:44 lpinfo.man:43 lp.man:76
 +#: lpmove.man:50 lpoptions.man.in:70 lpq.man:47 lpr.man:63 lprm.man:45
 +#: lpstat.man:53
 +#, no-wrap
@@ -513,29 +513,29 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +msgstr "B<-U> I<utilisateur>"
 +
 +# type: Plain text
-+#: accept.man:52
++#: cupsaccept.man:52
 +msgid "Sets the username that is sent when connecting to the server."
 +msgstr "Indiquer l'utilisateur utilisé pour se connecter au serveur."
 +
 +# type: TP
-+#: accept.man:52 cancel.man:51 lp.man:92
++#: cupsaccept.man:52 cancel.man:51 lp.man:92
 +#, no-wrap
 +msgid "-h hostname[:port]"
 +msgstr "B<-h> I<serveur[:port]>"
 +
 +# type: Plain text
-+#: accept.man:56 cancel.man:55 lp.man:96
++#: cupsaccept.man:56 cancel.man:55 lp.man:96
 +msgid "Chooses an alternate server."
 +msgstr "Utiliser un autre serveur."
 +
 +# type: TP
-+#: accept.man:56 cupsenable.man:56
++#: cupsaccept.man:56 cupsenable.man:56
 +#, no-wrap
 +msgid "-r \"reason\""
 +msgstr "B<-r> I<raison>"
 +
 +# type: Plain text
-+#: accept.man:61
++#: cupsaccept.man:61
 +msgid ""
 +"Sets the reason string that is shown for a printer that is rejecting jobs."
 +msgstr ""
@@ -543,7 +543,7 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +"travail."
 +
 +# type: SH
-+#: accept.man:61 cancel.man:59 cupsd.man.in:54 cupsenable.man:61
++#: cupsaccept.man:61 cancel.man:59 cupsd.man.in:54 cupsenable.man:61
 +#: cups-lpd.man.in:98 filter.man:208 lpadmin.man:187 lpc.man:59 lpinfo.man:55
 +#: lp.man:226 lpoptions.man.in:119 lpr.man:106 lprm.man:53 lpstat.man:123
 +#, no-wrap
@@ -551,7 +551,7 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +msgstr "COMPATIBILITÉ"
 +
 +# type: Plain text
-+#: accept.man:65 cancel.man:63 cupsenable.man:65 lp.man:230
++#: cupsaccept.man:65 cancel.man:63 cupsenable.man:65 lp.man:230
 +msgid ""
 +"Unlike the System V printing system, CUPS allows printer names to contain "
 +"any printable character except SPACE, TAB, \"/\", or \"#\".  Also, printer "
@@ -563,7 +563,7 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +"sensibles à la casse."
 +
 +# type: Plain text
-+#: accept.man:70
++#: cupsaccept.man:70
 +msgid ""
 +"The CUPS versions of I<accept> and I<reject> may ask the user for an access "
 +"password depending on the printing system configuration. This differs from "
@@ -574,7 +574,7 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +"différence des versions System V, qui demandent le mot de passe root."
 +
 +# type: SH
-+#: accept.man:70 backend.man:170 cancel.man:67 classes.conf.man:109
++#: cupsaccept.man:70 backend.man:170 cancel.man:67 classes.conf.man:109
 +#: client.conf.man.in:43 cupsaddsmb.man.in:204 cups-config.man:104
 +#: cupsctl.man:97 cupsd.conf.man.in:608 cups-deviced.man.in:36 cupsd.man.in:58
 +#: cups-driverd.man.in:97 cupsenable.man:74 cupsfilter.man:65
@@ -589,12 +589,12 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +msgstr "VOIR AUSSI"
 +
 +# type: Plain text
-+#: accept.man:73
++#: cupsaccept.man:73
 +msgid "I<cancel(1)>, I<cupsenable(8)>, I<lp(1)>, I<lpadmin(8)>, I<lpstat(1)>,"
 +msgstr "B<cancel>(1), B<cupsenable>(8), B<lp>(1), B<lpadmin>(8), B<lpstat>(1),"
 +
 +# type: Plain text
-+#: accept.man:75 backend.man:174 cancel.man:71 classes.conf.man:114
++#: cupsaccept.man:75 backend.man:174 cancel.man:71 classes.conf.man:114
 +#: client.conf.man.in:45 cups-config.man:106 cupsctl.man:101
 +#: cupsd.conf.man.in:614 cups-deviced.man.in:40 cupsd.man.in:65
 +#: cups-driverd.man.in:101 cupsenable.man:79 cupsfilter.man:69
@@ -608,7 +608,7 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +msgstr "http://localhost:631/help"
 +
 +# type: SH
-+#: accept.man:75 backend.man:175 cancel.man:71 classes.conf.man:114
++#: cupsaccept.man:75 backend.man:175 cancel.man:71 classes.conf.man:114
 +#: client.conf.man.in:45 cupsaddsmb.man.in:210 cups-config.man:106
 +#: cupsctl.man:101 cupsd.conf.man.in:614 cups-deviced.man.in:40
 +#: cupsd.man.in:65 cups-driverd.man.in:101 cupsenable.man:79 cupsfilter.man:69
@@ -623,7 +623,7 @@ diff -urNad trunk~/man/po4a/po/fr.po trunk/man/po4a/po/fr.po
 +msgstr "COPYRIGHT"
 +
 +# type: Plain text
-+#: accept.man:76 backend.man:176 cancel.man:72 classes.conf.man:115
++#: cupsaccept.man:76 backend.man:176 cancel.man:72 classes.conf.man:115
 +#: client.conf.man.in:46 cupsaddsmb.man.in:211 cupsctl.man:102 cupsd.man.in:66
 +#: cupsenable.man:81 cupsfilter.man:70 cups-lpd.man.in:115 cups-polld.man:35
 +#: cups-snmp.conf.man:70 cupstestdsc.man:47 cupstestppd.man:140 filter.man:218

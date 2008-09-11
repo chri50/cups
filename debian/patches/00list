@@ -4,10 +4,12 @@ manpage-typos.dpatch
 search_mime_files_in_usr_share.dpatch
 pdftops-cups-1.4.dpatch
 pdftops-dont_fail_on_cancel.dpatch
+cupsaccept.dpatch
 
 # patches accepted and committed upstream for next 1.3:
 cupsfilter-path-typo.dpatch
 pjl-display-ready-message.dpatch
+dont-chown-symlinked-ssl.dpatch
 
 # patches sent upstream
 removecvstag.dpatch
@@ -16,8 +18,6 @@ ppd-poll-with-client-conf.dpatch
 # no answer yet, po4a might not be appropriate
 manpage-translations.dpatch
 quiesce-bonjour-warning.dpatch
-cupsaccept.dpatch
-dont-chown-symlinked-ssl.dpatch
 rootbackends-worldreadable.dpatch
 
 # patches which should go upstream

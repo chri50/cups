@@ -1,3 +1,26 @@
+cups (1.3.8-10) experimental; urgency=low
+
+  [ Martin Pitt ]
+  * rootbackends-worldreadable.dpatch: Do not run backends as root if they are
+    group or world writable (this is by and large a paranoia fix, though).
+  * dont-chown-symlinked-ssl.dpatch: Replace patch with the upstream committed
+    version, which is more general.
+  * debian/control: Package development moved to bzr, update Vcs- tags.
+  * cupsaccept.dpatch: Replaced with the more comprehensive solution upstream
+    committed to 1.4 trunk. Removed debian/cups-client.links, since the links
+    are now installed by upstream. Adapt manpage-translations.dpatch
+    accordingly.
+  * Move installation of D-BUS configuration files from debian/rules to
+    debian/cups.install.
+  * debian/libcups2-dev.install: Add missing sidechannel.h.
+
+  [ Johan Kiviniemi ]
+  * debian/filters/pstopdf: Apply PPD settings (resolution, page size, page
+    margins) to the conversion (LP: #263049).
+  * debian/control: cups Depends: bc (for margin calculation).
+
+ -- Martin Pitt <mpitt@debian.org>  Thu, 11 Sep 2008 13:43:34 +0200
+
 cups (1.3.8-9) experimental; urgency=low
 
   * Previous upload had some cruft in the diff.gz which caused some changed

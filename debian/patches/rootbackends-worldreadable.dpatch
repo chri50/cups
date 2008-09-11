@@ -27,7 +27,7 @@ diff -urNad trunk~/scheduler/job.c trunk/scheduler/job.c
  	backroot = 0;
        else
 -        backroot = !(backinfo.st_mode & (S_IRWXG | S_IRWXO));
-+        backroot = !(backinfo.st_mode & (S_IXGRP | S_IXOTH));
++        backroot = !(backinfo.st_mode & (S_IWGRP | S_IXGRP | S_IWOTH | S_IXOTH));
  
        argv[0] = sani_uri;
  
