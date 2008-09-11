@@ -41,6 +41,76 @@ tempfiles="$tempfiles $infile"
 
 cat >"$infile"
 
+# Apply PPD settings.
+
+resolution=
+eval "$(printf "%s" "$5" | sed -nre 's/.*(^|\s)Resolution=([0-9.]+(x[0-9.]+)?).*/resolution="${resolution:-\2}"/p')"
+if test -e "$PPD"; then
+  eval "$(sed -nre 's/^\*DefaultResolution:\s+([0-9.]+(x[0-9.]+)?).*/resolution="${resolution:-\1}"/p' "$PPD")"
+fi
+
+pagesize=
+eval "$(printf "%s" "$5" | sed -nre 's/.*(^|\s)(media|PageSize)=(\S+).*/pagesize="${pagesize:-\3}"/p')"
+if test -e "$PPD"; then
+  eval "$(sed -nre 's/^\*DefaultPageSize:\s+(.+)$/pagesize="${pagesize:-\1}"/p' "$PPD")"
+fi
+
+width=
+height=
+tl_x=
+tl_y=
+br_x=
+br_y=
+if test -n "$pagesize" && test -e "$PPD"; then
+  eval "$(sed -nre 's|^\*PaperDimension\s+'"$pagesize"'/[^"]+:\s+"(\S+)\s+(\S+)"$|width="\1"; height="\2"|p' "$PPD")"
+
+  eval "$(sed -nre 's|^\*ImageableArea\s+'"$pagesize"'/[^"]+:\s+"(\S+)\s+(\S+)\s+(\S+)\s+(\S+)"$|tl_x="\1"; tl_y="\2"; br_x="\3"; br_y="\4"|p' "$PPD")"
+fi
+
+margin_l=
+margin_b=
+margin_r=
+margin_t=
+if test -n "$width" && test -n "$height" && \
+   test -n "$tl_x" && test -n "$tl_y" && \
+   test -n "$br_x" && test -n "$br_y"; then
+  margin_l="$tl_x"
+  margin_b="$(printf "scale=8; (%s)-(%s)\n" "$height" "$br_y" | bc)"
+  margin_r="$(printf "scale=8; (%s)-(%s)\n" "$width" "$br_x" | bc)"
+  margin_t="$tl_y"
+fi
+
+inject_ps=
+if test -n "$margin_l" && test -n "$margin_b" && \
+   test -n "$margin_r" && test -n "$margin_t"; then
+  inject_ps="<</.HWMargins[$margin_l $margin_b $margin_r $margin_t] /Margins[0 0]>>setpagedevice"
+fi
+
+ppd_opts=
+if test -n "$resolution"; then
+  ppd_opts="${ppd_opts:+$ppd_opts }-r$resolution"
+fi
+if test -n "$width"; then
+  ppd_opts="${ppd_opts:+$ppd_opts }-dDEVICEWIDTHPOINTS=$width"
+fi
+if test -n "$height"; then
+  ppd_opts="${ppd_opts:+$ppd_opts }-dDEVICEHEIGHTPOINTS=$height"
+fi
+
+# Injection
+if test -n "$inject_ps"; then
+  echo "DEBUG: Injecting PostScript: $inject_ps" >&2
+
+  orig_infile="$infile"
+
+  infile=$(mktemp -t pstopdf.XXXXXX)
+  tempfiles="$tempfiles $infile"
+
+  sed -re "/^%!/ a $inject_ps" "$orig_infile" >"$infile"
+fi
+
+# DRM
+
 DRM_MATCH='^%.*Removing the following.*lines is illegal.*Digital Copyright Act'
 if egrep -q "$DRM_MATCH" "$infile"; then
   # This PS is DRM-infested. Normalize it with ps2ps first.
@@ -51,8 +121,9 @@ if egrep -q "$DRM_MATCH" "$infile"; then
   infile=$(mktemp -t pstopdf.XXXXXX)
   tempfiles="$tempfiles $infile"
 
-  $PSTOPS $PSTOPS_OPTIONS "$orig_infile" "$infile"
+  $PSTOPS $PSTOPS_OPTIONS $ppd_opts "$orig_infile" "$infile"
+  ppd_opts=
 fi
 
-$PSTOPDF $PSTOPDF_OPTIONS -sOUTPUTFILE=%stdout "$infile"
+$PSTOPDF $PSTOPDF_OPTIONS $ppd_opts -sOUTPUTFILE=%stdout "$infile"
 

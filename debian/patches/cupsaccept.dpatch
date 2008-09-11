@@ -3,12 +3,302 @@
 ##
 ## DP: Allow to invoke accept command as cupsaccept/cupsreject, too, for less
 ## DP: namespace clobbering and consistency with disable/enable.
-## DP: (http://www.cups.org/str.php?L2936)
+## DP: (http://www.cups.org/str.php?L2936, upstream svn trunk 7929 to 7932)
 
 @DPATCH@
+diff -urNad trunk~/doc/Makefile trunk/doc/Makefile
+--- trunk~/doc/Makefile	2008-02-20 22:04:09.000000000 +0100
++++ trunk/doc/Makefile	2008-09-11 11:58:07.000000000 +0200
+@@ -119,7 +119,7 @@
+ 			help/glossary.html \
+ 			help/kerberos.html \
+ 			help/license.html \
+-			help/man-accept.html \
++			help/man-cupsaccept.html \
+ 			help/man-backend.html \
+ 			help/man-cancel.html \
+ 			help/man-classes.conf.html \
+diff -urNad trunk~/man/Makefile trunk/man/Makefile
+--- trunk~/man/Makefile	2008-09-08 09:21:41.000000000 +0200
++++ trunk/man/Makefile	2008-09-11 11:58:27.000000000 +0200
+@@ -42,7 +42,7 @@
+ 		subscriptions.conf.$(MAN5EXT)
+ MAN7	=	backend.$(MAN7EXT) \
+ 		filter.$(MAN7EXT)
+-MAN8	=	accept.$(MAN8EXT) \
++MAN8	=	cupsaccept.$(MAN8EXT) \
+ 		cupsaddsmb.$(MAN8EXT) \
+ 		cupsctl.$(MAN8EXT) \
+ 		cupsfilter.$(MAN8EXT) \
+@@ -118,8 +118,8 @@
+ 		echo Installing $$file in $(AMANDIR)/man$(MAN8DIR)...; \
+ 		$(INSTALL_MAN) $$file $(AMANDIR)/man$(MAN8DIR); \
+ 	done
+-	$(RM) $(AMANDIR)/man$(MAN8DIR)/reject.$(MAN8EXT)
+-	$(LN) accept.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/reject.$(MAN8EXT)
++	$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsreject.$(MAN8EXT)
++	$(LN) cupsaccept.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/cupsreject.$(MAN8EXT)
+ 	$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
+ 	$(LN) cupsenable.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
+ 
+diff -urNad trunk~/man/accept.man trunk/man/accept.man
+--- trunk~/man/accept.man	2007-07-11 23:46:42.000000000 +0200
++++ trunk/man/accept.man	1970-01-01 01:00:00.000000000 +0100
+@@ -1,79 +0,0 @@
+-.\"
+-.\" "$Id: accept.man 6649 2007-07-11 21:46:42Z mike $"
+-.\"
+-.\"   accept/reject man page for the Common UNIX Printing System (CUPS).
+-.\"
+-.\"   Copyright 2007 by Apple Inc.
+-.\"   Copyright 1997-2006 by Easy Software Products.
+-.\"
+-.\"   These coded instructions, statements, and computer programs are the
+-.\"   property of Apple Inc. and are protected by Federal copyright
+-.\"   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+-.\"   which should have been included with this file.  If this file is
+-.\"   file is missing or damaged, see the license at "http://www.cups.org/".
+-.\"
+-.TH accept 8 "Common UNIX Printing System" "12 February 2006" "Apple Inc."
+-.SH NAME
+-accept/reject \- accept/reject jobs sent to a destination
+-.SH SYNOPSIS
+-.B accept
+-[ -E ] [ -U
+-.I username
+-] [ -h
+-.I hostname[:port]
+-] destination(s)
+-.br
+-.B reject
+-[ -E ] [ -U
+-.I username
+-] [ -h
+-.I hostname[:port]
+-] [ -r
+-.I reason
+-] destination(s)
+-.SH DESCRIPTION
+-\fIaccept\fR instructs the printing system to accept print jobs to the
+-specified destinations.
+-.LP
+-\fIreject\fR instructs the printing system to reject print jobs to the
+-specified destinations. The \fI-r\fR option sets the reason for rejecting
+-print jobs. If not specified the reason defaults to "Reason Unknown".
+-.SH OPTIONS
+-The following options are supported by both \fIaccept\fR and
+-\fIreject\fR:
+-.TP 5
+--E
+-.br
+-Forces encryption when connecting to the server.
+-.TP 5
+--U username
+-.br
+-Sets the username that is sent when connecting to the server.
+-.TP 5
+--h hostname[:port]
+-.br
+-Chooses an alternate server.
+-.TP 5
+--r "reason"
+-.br
+-Sets the reason string that is shown for a printer that is
+-rejecting jobs.
+-.SH COMPATIBILITY
+-Unlike the System V printing system, CUPS allows printer names to
+-contain any printable character except SPACE, TAB, "/", or "#".
+-Also, printer and class names are \fInot\fR case-sensitive.
+-.LP
+-The CUPS versions of \fIaccept\fR and \fIreject\fR may ask the
+-user for an access password depending on the printing system
+-configuration. This differs from the System V versions which
+-require the root user to execute these commands.
+-.SH SEE ALSO
+-\fIcancel(1)\fR, \fIcupsenable(8)\fR, \fIlp(1)\fR,
+-\fIlpadmin(8)\fR, \fIlpstat(1)\fR,
+-.br
+-http://localhost:631/help
+-.SH COPYRIGHT
+-Copyright 2007 by Apple Inc.
+-.\"
+-.\" End of "$Id: accept.man 6649 2007-07-11 21:46:42Z mike $".
+-.\"
+diff -urNad trunk~/man/cupsaccept.man trunk/man/cupsaccept.man
+--- trunk~/man/cupsaccept.man	1970-01-01 01:00:00.000000000 +0100
++++ trunk/man/cupsaccept.man	2008-09-11 11:58:07.000000000 +0200
+@@ -0,0 +1,79 @@
++.\"
++.\" "$Id: accept.man 6649 2007-07-11 21:46:42Z mike $"
++.\"
++.\"   accept/reject man page for the Common UNIX Printing System (CUPS).
++.\"
++.\"   Copyright 2007 by Apple Inc.
++.\"   Copyright 1997-2006 by Easy Software Products.
++.\"
++.\"   These coded instructions, statements, and computer programs are the
++.\"   property of Apple Inc. and are protected by Federal copyright
++.\"   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
++.\"   which should have been included with this file.  If this file is
++.\"   file is missing or damaged, see the license at "http://www.cups.org/".
++.\"
++.TH accept 8 "Common UNIX Printing System" "12 February 2006" "Apple Inc."
++.SH NAME
++accept/reject \- accept/reject jobs sent to a destination
++.SH SYNOPSIS
++.B accept
++[ -E ] [ -U
++.I username
++] [ -h
++.I hostname[:port]
++] destination(s)
++.br
++.B reject
++[ -E ] [ -U
++.I username
++] [ -h
++.I hostname[:port]
++] [ -r
++.I reason
++] destination(s)
++.SH DESCRIPTION
++\fIaccept\fR instructs the printing system to accept print jobs to the
++specified destinations.
++.LP
++\fIreject\fR instructs the printing system to reject print jobs to the
++specified destinations. The \fI-r\fR option sets the reason for rejecting
++print jobs. If not specified the reason defaults to "Reason Unknown".
++.SH OPTIONS
++The following options are supported by both \fIaccept\fR and
++\fIreject\fR:
++.TP 5
++-E
++.br
++Forces encryption when connecting to the server.
++.TP 5
++-U username
++.br
++Sets the username that is sent when connecting to the server.
++.TP 5
++-h hostname[:port]
++.br
++Chooses an alternate server.
++.TP 5
++-r "reason"
++.br
++Sets the reason string that is shown for a printer that is
++rejecting jobs.
++.SH COMPATIBILITY
++Unlike the System V printing system, CUPS allows printer names to
++contain any printable character except SPACE, TAB, "/", or "#".
++Also, printer and class names are \fInot\fR case-sensitive.
++.LP
++The CUPS versions of \fIaccept\fR and \fIreject\fR may ask the
++user for an access password depending on the printing system
++configuration. This differs from the System V versions which
++require the root user to execute these commands.
++.SH SEE ALSO
++\fIcancel(1)\fR, \fIcupsenable(8)\fR, \fIlp(1)\fR,
++\fIlpadmin(8)\fR, \fIlpstat(1)\fR,
++.br
++http://localhost:631/help
++.SH COPYRIGHT
++Copyright 2007 by Apple Inc.
++.\"
++.\" End of "$Id: accept.man 6649 2007-07-11 21:46:42Z mike $".
++.\"
+diff -urNad trunk~/packaging/cups.list.in trunk/packaging/cups.list.in
+--- trunk~/packaging/cups.list.in	2008-06-25 19:06:24.000000000 +0200
++++ trunk/packaging/cups.list.in	2008-09-11 11:58:07.000000000 +0200
+@@ -288,16 +288,18 @@
+ d 0755 root sys $BINDIR -
+ l 0755 root sys $BINDIR/enable $SBINDIR/accept
+ l 0755 root sys $LIBDIR/accept $SBINDIR/accept
+-d 0755 root sys $SBINDIR -
+-l 0755 root sys $SBINDIR/cupsdisable accept
+-l 0755 root sys $SBINDIR/cupsenable accept
+ l 0755 root sys $BINDIR/disable $SBINDIR/accept
+ d 0755 root sys $LIBDIR -
+ l 0755 root sys $LIBDIR/lpadmin $SBINDIR/lpadmin
+ l 0755 root sys $LIBDIR/reject accept
++d 0755 root sys $SBINDIR -
+ f 0755 root sys $SBINDIR/accept systemv/accept
++l 0755 root sys $SBINDIR/cupsaccept accept
+ f 0755 root sys $SBINDIR/cupsaddsmb systemv/cupsaddsmb
+ f 0755 root sys $SBINDIR/cupsctl systemv/cupsctl
++l 0755 root sys $SBINDIR/cupsdisable accept
++l 0755 root sys $SBINDIR/cupsenable accept
++l 0755 root sys $SBINDIR/cupsreject accept
+ f 0755 root sys $SBINDIR/lpadmin systemv/lpadmin
+ f 0755 root sys $SBINDIR/lpc berkeley/lpc
+ f 0755 root sys $SBINDIR/lpinfo systemv/lpinfo
+@@ -647,8 +649,8 @@
+ f 0644 root sys $MANDIR/man7/backend.$MAN7EXT man/backend.$MAN7EXT
+ f 0644 root sys $MANDIR/man7/filter.$MAN7EXT man/filter.$MAN7EXT
+ 
+-f 0644 root sys $AMANDIR/man$MAN8DIR/accept.$MAN8EXT man/accept.$MAN8EXT
+-l 0644 root sys $AMANDIR/man$MAN8DIR/reject.$MAN8EXT accept.$MAN8EXT
++f 0644 root sys $AMANDIR/man$MAN8DIR/cupsaccept.$MAN8EXT man/cupsaccept.$MAN8EXT
++l 0644 root sys $AMANDIR/man$MAN8DIR/cupsreject.$MAN8EXT cupsaccept.$MAN8EXT
+ f 0644 root sys $AMANDIR/man$MAN8DIR/cupsaddsmb.$MAN8EXT man/cupsaddsmb.$MAN8EXT
+ f 0644 root sys $AMANDIR/man$MAN8DIR/cupsctl.$MAN8EXT man/cupsctl.$MAN8EXT
+ f 0644 root sys $AMANDIR/man$MAN8DIR/cupsfilter.$MAN8EXT man/cupsfilter.$MAN8EXT
+diff -urNad trunk~/systemv/Makefile trunk/systemv/Makefile
+--- trunk~/systemv/Makefile	2007-07-11 23:46:42.000000000 +0200
++++ trunk/systemv/Makefile	2008-09-11 11:58:07.000000000 +0200
+@@ -34,7 +34,8 @@
+ #
+ 
+ clean:
+-	$(RM) $(OBJS) $(TARGETS) cupsdisable cupsenable reject
++	$(RM) $(OBJS) $(TARGETS)
++	$(RM) cupsaccept cupsdisable cupsenable cupsreject reject
+ 
+ 
+ #
+@@ -63,10 +64,14 @@
+ 	$(INSTALL_BIN) cancel $(BINDIR)
+ 	$(INSTALL_BIN) cupstestdsc $(BINDIR)
+ 	$(INSTALL_BIN) cupstestppd $(BINDIR)
++	$(RM) $(SBINDIR)/cupsaccept
++	$(LN) accept $(SBINDIR)/cupsaccept
+ 	$(RM) $(SBINDIR)/cupsdisable
+ 	$(LN) accept $(SBINDIR)/cupsdisable
+ 	$(RM) $(SBINDIR)/cupsenable
+ 	$(LN) accept $(SBINDIR)/cupsenable
++	$(RM) $(SBINDIR)/cupsreject
++	$(LN) accept $(SBINDIR)/cupsreject
+ 	$(INSTALL_BIN) lp $(BINDIR)
+ 	$(INSTALL_BIN) lpoptions $(BINDIR)
+ 	$(INSTALL_BIN) lpstat $(BINDIR)
+@@ -94,8 +99,10 @@
+ 	-$(RMDIR) $(BINDIR)
+ 	$(RM) $(SBINDIR)/accept
+ 	$(RM) $(SBINDIR)/cupsaddsmb
++	$(RM) $(SBINDIR)/cupsaccept
+ 	$(RM) $(SBINDIR)/cupsdisable
+ 	$(RM) $(SBINDIR)/cupsenable
++	$(RM) $(SBINDIR)/cupsreject
+ 	$(RM) $(SBINDIR)/lpadmin
+ 	$(RM) $(SBINDIR)/lpinfo
+ 	$(RM) $(SBINDIR)/lpmove
+@@ -110,10 +117,12 @@
+ accept:	accept.o ../cups/$(LIBCUPS)
+ 	echo Linking $@...
+ 	$(CC) $(LDFLAGS) -o accept accept.o $(LIBS)
+-	$(RM) reject cupsenable cupsdisable
++	$(RM) cupsaccept cupsenable cupsdisable cupsreject reject
+ 	$(LN) accept reject
++	$(LN) accept cupsaccept
+ 	$(LN) accept cupsenable
+ 	$(LN) accept cupsdisable
++	$(LN) accept cupsreject
+ 
+ 
+ #
 diff -urNad trunk~/systemv/accept.c trunk/systemv/accept.c
---- trunk~/systemv/accept.c	2008-09-06 13:51:16.000000000 +0200
-+++ trunk/systemv/accept.c	2008-09-06 13:56:08.000000000 +0200
+--- trunk~/systemv/accept.c	2008-09-08 09:21:41.000000000 +0200
++++ trunk/systemv/accept.c	2008-09-11 11:58:07.000000000 +0200
 @@ -62,9 +62,9 @@
  
    cancel = 0;
