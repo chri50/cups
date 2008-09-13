@@ -1,3 +1,11 @@
+cups (1.3.8-11) experimental; urgency=low
+
+  * debian/rules: Explicitly configure with --with-dbusdir. For some obscure
+    reason, the automatic check fails on the buildds, causing the D-BUS
+    configuratin not to be installed. Fixes FTBFS. (Closes: #498664)
+
+ -- Martin Pitt <mpitt@debian.org>  Sat, 13 Sep 2008 10:59:31 +0200
+
 cups (1.3.8-10) experimental; urgency=low
 
   [ Martin Pitt ]
