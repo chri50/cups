@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# application/vnd.cups-pdf -> application/vnd.cups-raster filter
+
+# Contributed by Till Kamppeter. Licensed under the terms of the CUPS Debian
+# packaging.
+# The typical filter chain using this filter:
+# (something that outputs pdf)
+# -> pdftopdf
+# -> pdftoraster (runs cpdftocps -> pstoraster)
+# -> rasterto ... (printer driver)
+
+# This filter is a Ghostscript-based replacement for the Poppler-based
+# pdftoraster from OpenPrinting Japan. It serves as an interim replacement
+# for the Poppler-based filter, to work around a bug in this filter. This
+# way we assure that printing will work in Ubuntu Intrepid beta. After
+# the beta this script will be replaced by a proper filter.
+
+set -e
+
+/usr/lib/cups/filter/cpdftocps "$@" | \
+  /usr/lib/cups/filter/pstoraster "$@"
+
+# vim:set et sw=2 sts=2:
