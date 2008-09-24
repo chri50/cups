@@ -1,3 +1,13 @@
+cups (1.3.8-11ubuntu2) intrepid; urgency=low
+
+  * debian/filters/pstopdf: PostScript code for margins got inserted at every
+    "%!" in the PostScript input, also at embedded documents. This lead to
+    some files, like the Ubuntu test page 
+    (/usr/share/system-config-printer/testpage-a4.ps) not being printed
+    correctly. Fixed code inhection.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 24 Sep 2008 19:59:31 +0200
+
 cups (1.3.8-11ubuntu1) intrepid; urgency=low
 
   * debian/local/filters/pdftoraster, debian/rules: Interim replacement for

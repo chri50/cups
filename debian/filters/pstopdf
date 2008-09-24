@@ -106,7 +106,7 @@ if test -n "$inject_ps"; then
   infile=$(mktemp -t pstopdf.XXXXXX)
   tempfiles="$tempfiles $infile"
 
-  sed -re "/^%!/ a $inject_ps" "$orig_infile" >"$infile"
+  perl -p -e 'if (! $did) { s:(^%!.*)$:\1\n'"$inject_ps"': && $did++; }' "$orig_infile" > "$infile"
 fi
 
 # DRM
