@@ -199,6 +199,11 @@ void P2PDoc::scale(double zoom)
   catalog->scale(zoom);
 }
 
+void P2PDoc::setMediaBox(PDFRectangle *mediaBoxA)
+{
+  catalog->setMediaBox(mediaBoxA);
+}
+
 int P2PDoc::getNumberOfPages()
 {
   return catalog->getNumberOfPages();

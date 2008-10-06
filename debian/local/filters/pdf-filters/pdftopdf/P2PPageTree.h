@@ -54,6 +54,7 @@ public:
   void rotate(int orientation);
   void position(PDFRectangle *box, int xpos, int ypos);
   void scale(double zoom);
+  void setMediaBox(PDFRectangle *mediaBoxA);
   int getNumberOfPages() { return numPages; }
 private:
   P2PPage **pages;

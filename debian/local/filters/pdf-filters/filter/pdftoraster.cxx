@@ -72,7 +72,7 @@ void parseOpts(int argc, char **argv)
   ppd_file_t *ppd = 0;
 
   if (argc < 6 || argc > 7) {
-    error(-1,"%s job-id user title copies options [file]",
+    error(-1,const_cast<char *>("%s job-id user title copies options [file]"),
       argv[0]);
     exit(1);
   }
@@ -128,6 +128,7 @@ int main(int argc, char *argv[]) {
   enum SplashColorMode cmode;
   int rowpad;
   GBool reverseVideo;
+  Catalog *catalog;
 
   setErrorFunction(::myErrorFun);
 #ifdef GLOBALPARAMS_HAS_A_ARG
@@ -148,7 +149,7 @@ int main(int argc, char *argv[]) {
 
     fd = cupsTempFd(buf,sizeof(buf));
     if (fd < 0) {
-      error(-1,"Can't create temporary file");
+      error(-1,const_cast<char *>("Can't create temporary file"));
       exit(1);
     }
     /* remove name */
@@ -157,19 +158,19 @@ int main(int argc, char *argv[]) {
     /* copy stdin to the tmp file */
     while ((n = read(0,buf,BUFSIZ)) > 0) {
       if (write(fd,buf,n) != n) {
-        error(-1,"Can't copy stdin to temporary file");
+        error(-1,const_cast<char *>("Can't copy stdin to temporary file"));
         close(fd);
 	exit(1);
       }
     }
     if (lseek(fd,0,SEEK_SET) < 0) {
-        error(-1,"Can't rewind temporary file");
+        error(-1,const_cast<char *>("Can't rewind temporary file"));
         close(fd);
 	exit(1);
     }
 
     if ((fp = fdopen(fd,"rb")) == 0) {
-        error(-1,"Can't fdopen temporary file");
+        error(-1,const_cast<char *>("Can't fdopen temporary file"));
         close(fd);
 	exit(1);
     }
@@ -185,7 +186,7 @@ int main(int argc, char *argv[]) {
     FILE *fp;
 
     if ((fp = fopen(argv[6],"rb")) == 0) {
-        error(-1,"Can't open input file %s",argv[6]);
+        error(-1,const_cast<char *>("Can't open input file %s"),argv[6]);
 	exit(1);
     }
     parsePDFTOPDFComment(fp);
@@ -196,6 +197,21 @@ int main(int argc, char *argv[]) {
   if (!doc->isOk()) {
     exitCode = 1;
     goto err1;
+  }
+
+  /*
+   * Make PDF MediaBox the target page size,
+   */
+  catalog = doc->getCatalog();
+  npages = doc->getNumPages();
+  for (i = 1;i <= npages;i++) {
+    Page *page = catalog->getPage(i);
+    PDFRectangle *mediaBox = page->getMediaBox();
+
+    mediaBox->x1 = header.ImagingBoundingBox[0];
+    mediaBox->y1 = header.ImagingBoundingBox[1];
+    mediaBox->x2 = header.ImagingBoundingBox[2];
+    mediaBox->y2 = header.ImagingBoundingBox[3];
   }
 
   /* fix NumCopies, Collate ccording to PDFTOPDFComments */
@@ -212,7 +228,7 @@ int main(int argc, char *argv[]) {
     if (header.cupsColorOrder != CUPS_ORDER_CHUNKED
        || header.cupsBitsPerColor != 8
        || header.cupsBitsPerPixel != 24) {
-      error(-1,"Specified color format is not supported");
+      error(-1,const_cast<char *>("Specified color format is not supported"));
       exit(1);
     }
     cmode = splashModeRGB8;
@@ -226,7 +242,7 @@ int main(int argc, char *argv[]) {
     reverseVideo = gTrue;
   case CUPS_CSPACE_W:
     if (header.cupsColorOrder != CUPS_ORDER_CHUNKED) {
-      error(-1,"Specified color format is not supported");
+      error(-1,const_cast<char *>("Specified color format is not supported"));
       exit(1);
     }
     if (header.cupsBitsPerColor == 1 
@@ -236,7 +252,7 @@ int main(int argc, char *argv[]) {
        && header.cupsBitsPerPixel == 8) {
       cmode = splashModeMono8;
     } else {
-      error(-1,"Specified color format is not supported");
+      error(-1,const_cast<char *>("Specified color format is not supported"));
       exit(1);
     }
     /* set paper color white */
@@ -248,7 +264,7 @@ int main(int argc, char *argv[]) {
     if (header.cupsColorOrder != CUPS_ORDER_CHUNKED
        || header.cupsBitsPerColor != 8
        || header.cupsBitsPerPixel != 32) {
-      error(-1,"Specified color format is not supported");
+      error(-1,const_cast<char *>("Specified color format is not supported"));
       exit(1);
     }
     cmode = splashModeCMYK8;
@@ -261,27 +277,26 @@ int main(int argc, char *argv[]) {
     break;
 #endif
   default:
-    error(-1,"Specified ColorSpace is not supported");
+    error(-1,const_cast<char *>("Specified ColorSpace is not supported"));
     exit(1);
     break;
   }
 
-
   out = new SplashOutputDev(cmode,rowpad/* row padding */,
-    reverseVideo,paperColor,gTrue,gFalse);
+    gFalse,paperColor,gTrue,gFalse);
   out->startDoc(doc->getXRef());
 
   if ((raster = cupsRasterOpen(1,CUPS_RASTER_WRITE)) == 0) {
-        error(-1,"Can't open raster stream");
+        error(-1,const_cast<char *>("Can't open raster stream"));
 	exit(1);
   }
-  npages = doc->getNumPages();
   for (i = 1;i <= npages;i++) {
     SplashBitmap *bitmap;
     unsigned int size;
+    unsigned char *bp;
 
     doc->displayPage(out,i,header.HWResolution[0],
-      header.HWResolution[1],0,gFalse,gFalse,gFalse);
+      header.HWResolution[1],0,gTrue,gTrue,gFalse);
     bitmap = out->getBitmap();
 
     /* write page header */
@@ -289,15 +304,23 @@ int main(int argc, char *argv[]) {
     header.cupsHeight = bitmap->getHeight();
     header.cupsBytesPerLine = bitmap->getRowSize();
     if (!cupsRasterWriteHeader(raster,&header)) {
-        error(-1,"Can't write page %d header",i);
+        error(-1,const_cast<char *>("Can't write page %d header"),i);
 	exit(1);
     }
 
     /* write page image */
     size = bitmap->getRowSize()*bitmap->getHeight();
-    if (cupsRasterWritePixels(raster,(unsigned char *)(bitmap->getDataPtr()),
-         size) != size) {
-        error(-1,"Can't write page %d image",i);
+    bp = (unsigned char *)(bitmap->getDataPtr());
+    if (reverseVideo) {
+      /* reverse image data */
+      unsigned char *p = bp;
+
+      for (unsigned int j = 0;j < size;j++,p++) {
+	*p = ~*p;
+      }
+    }
+    if (cupsRasterWritePixels(raster,bp, size) != size) {
+	error(-1,const_cast<char *>("Can't write page %d image"),i);
 	exit(1);
     }
   }

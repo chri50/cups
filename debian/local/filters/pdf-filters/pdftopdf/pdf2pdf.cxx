@@ -500,6 +500,7 @@ int main(int argc, char *argv[]) {
 #endif
 
   PDFRectangle box(pageLeft,pageBottom,pageRight,pageTop);
+  PDFRectangle mediaBox(0,0,pageWidth,pageLength);
 
   if (argc >=3 && strcmp(argv[2],"-") != 0) {
     if ((outfp = fopen(argv[2],"wb")) == NULL) {
@@ -573,6 +574,14 @@ int main(int argc, char *argv[]) {
   } else if (position) {
     p2pdoc->position(&box,xposition,yposition);
   }
+
+  if (orientation != 0 || naturalScaling != 1.0 || fitplot
+      || numberUp != 1 || position) {
+    /* When changing geometry, 
+       set all pages's mediaBox to the target page size */
+    p2pdoc->setMediaBox(&mediaBox);
+  }
+
   if (P2PDoc::options.collate
       && p2pdoc->getNumberOfPages() == 1
       && !P2PDoc::options.even) {

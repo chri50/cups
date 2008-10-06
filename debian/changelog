@@ -1,3 +1,16 @@
+cups (1.3.8-12) experimental; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/filters/pstopdf,
+    debian/local/filters/pdf-filters/filter/pdftoraster.cxx,
+    debian/local/filters/pdf-filters/pdftopdf/*: Fixed paper
+    size handling of pstopdf, pdftopdf, and pdftoraster which led SpliX
+    to crash (LP: #261363, LP: #268510), fixed monochrome CUPS Raster
+    output of pdftoraster which led to black pages being printed
+    (LP: #269691).
+
+ -- Martin Pitt <mpitt@debian.org>  Mon, 06 Oct 2008 16:33:02 +0200
+
 cups (1.3.8-11) experimental; urgency=low
 
   * debian/rules: Explicitly configure with --with-dbusdir. For some obscure

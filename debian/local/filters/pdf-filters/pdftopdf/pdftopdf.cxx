@@ -577,6 +577,7 @@ int main(int argc, char *argv[]) {
   parseOpts(argc, argv);
 
   PDFRectangle box(pageLeft,pageBottom,pageRight,pageTop);
+  PDFRectangle mediaBox(0,0,pageWidth,pageLength);
 
   if (argc == 6) {
     /* stdin */
@@ -657,6 +658,10 @@ int main(int argc, char *argv[]) {
   } else if (position) {
     p2pdoc->position(&box,xposition,yposition);
   }
+
+  /* set all pages's mediaBox to the target page size */
+  p2pdoc->setMediaBox(&mediaBox);
+
   if ((P2PDoc::options.collate || deviceCollate)
       && p2pdoc->getNumberOfPages() == 1
       && !P2PDoc::options.even) {
