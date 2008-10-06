@@ -93,6 +93,11 @@ void P2PCatalog::scale(double zoom)
   pageTree->scale(zoom);
 }
 
+void P2PCatalog::setMediaBox(PDFRectangle *mediaBoxA)
+{
+  pageTree->setMediaBox(mediaBoxA);
+}
+
 int P2PCatalog::getNumberOfPages()
 {
   return pageTree->getNumberOfPages();

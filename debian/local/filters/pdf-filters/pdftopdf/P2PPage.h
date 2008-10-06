@@ -60,6 +60,7 @@ public:
   void rotate(int orientation);
   void position(PDFRectangle *box, int xpos, int ypos);
   void scale(double zoom);
+  void setMediaBox(PDFRectangle *mediaBoxA) { mediaBox = *mediaBoxA; }
   PDFRectangle *getMediaBox() { return &mediaBox; }
 private:
   struct OrgPage {

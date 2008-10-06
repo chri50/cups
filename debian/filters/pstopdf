@@ -13,13 +13,61 @@
 
 set -e
 
-PSTOPS=/usr/bin/ps2ps
-PSTOPDF=/usr/bin/ps2pdf13
-PSTOPS_OPTIONS="-dAutoRotatePages=/None -dAutoFilterColorImages=false
-                -dNOPLATFONTS -dPARANOIDSAFER -sstdout=%stderr"
-PSTOPDF_OPTIONS="$PSTOPS_OPTIONS -dColorImageFilter=/FlateEncode"
+# These options are *not* passed through to pstops, since pdftopdf or
+# equivalent has already processed them.
+MASK='
+  brightness
+  Collate
+  cupsEvenDuplex
+  fitplot
+  gamma
+  hue
+  landscape
+  mirror
+  multiple-document-handling
+  natural-scaling
+  number-up
+  number-up-layout
+  orientation-requested
+  OutputOrder
+  page-border
+  page-bottom
+  page-label
+  page-left
+  page-ranges
+  page-right
+  page-set
+  page-top
+  position
+  saturation
+  scaling
+  sides
+'
 
-echo "INFO: pstopdf argv[$#] = $@" >&2
+# Convert MASK to a regexp.
+MASK_RE=$(
+  set -- $MASK
+  IFS='|'
+  printf "%s" "$*"
+)
+
+# Annihilate all forms of the masked options from $5:
+# - <option>=parameter
+# - <option>   (boolean)
+# - no<option> (boolean)
+MASKED_OPTS=$(
+  printf "%s" "$5" | \
+    sed -r -e 's/(^|\s+)(no)?('"$MASK_RE"')(=\S*)?//g' -e 's/^\s+//'
+)
+
+PS2PS=/usr/bin/ps2ps
+PSTOPS=/usr/lib/cups/filter/pstops
+PS2PDF=/usr/bin/ps2pdf13
+PS2PS_OPTIONS="-dAutoRotatePages=/None -dAutoFilterColorImages=false
+                -dNOPLATFONTS -dPARANOIDSAFER -sstdout=%stderr"
+PS2PDF_OPTIONS="$PS2PS_OPTIONS -dColorImageFilter=/FlateEncode"
+
+echo "DEBUG: pstopdf argv[$#] = $@" >&2
 
 if [ $# -lt 5 -o $# -gt 6 ]; then
 
@@ -106,7 +154,7 @@ if test -n "$inject_ps"; then
   infile=$(mktemp -t pstopdf.XXXXXX)
   tempfiles="$tempfiles $infile"
 
-  sed -re "/^%!/ a $inject_ps" "$orig_infile" >"$infile"
+  perl -p -e 'if (! $did) { s:(^%!.*)$:\1\n'"$inject_ps"': && $did++; }' "$orig_infile" > "$infile"
 fi
 
 # DRM
@@ -114,16 +162,11 @@ fi
 DRM_MATCH='^%.*Removing the following.*lines is illegal.*Digital Copyright Act'
 if egrep -q "$DRM_MATCH" "$infile"; then
   # This PS is DRM-infested. Normalize it with ps2ps first.
-  echo "INFO: Normalizing Adobe Reader PostScript with ps2ps" >&2
+  echo "DEBUG: Normalizing Adobe Reader PostScript with ps2ps" >&2
 
-  orig_infile="$infile"
-
-  infile=$(mktemp -t pstopdf.XXXXXX)
-  tempfiles="$tempfiles $infile"
-
-  $PSTOPS $PSTOPS_OPTIONS $ppd_opts "$orig_infile" "$infile"
-  ppd_opts=
+  DRMFILTER="$PS2PS $PS2PS_OPTIONS $ppd_opts - -"
+else
+  DRMFILTER=cat
 fi
 
-$PSTOPDF $PSTOPDF_OPTIONS $ppd_opts -sOUTPUTFILE=%stdout "$infile"
-
+$PSTOPS "$1" "$2" "$3" "$4" "$MASKED_OPTS" "$infile" | $DRMFILTER | $PS2PDF $PS2PDF_OPTIONS $ppd_opts - -

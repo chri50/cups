@@ -288,3 +288,12 @@ void P2PPageTree::scale(double zoom)
     pages[i]->scale(zoom);
   }
 }
+
+void P2PPageTree::setMediaBox(PDFRectangle *mediaBoxA)
+{
+  int i;
+
+  for (i = 0;i < numPages;i++) {
+    pages[i]->setMediaBox(mediaBoxA);
+  }
+}
