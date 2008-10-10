@@ -1,5 +1,5 @@
 /*
- * "$Id: dest.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: dest.c 7947 2008-09-16 23:37:56Z mike $"
  *
  *   User-defined destination (and option) support for the Common UNIX
  *   Printing System (CUPS).
@@ -331,7 +331,15 @@ cupsGetDests2(http_t      *http,	/* I - HTTP connection */
   */
 
   num_dests = cups_get_sdests(http, CUPS_GET_PRINTERS, num_dests, dests);
-  num_dests = cups_get_sdests(http, CUPS_GET_CLASSES, num_dests, dests);
+  if (cupsLastError() < IPP_REDIRECTION_OTHER_SITE)
+    num_dests = cups_get_sdests(http, CUPS_GET_CLASSES, num_dests, dests);
+
+  if (cupsLastError() >= IPP_REDIRECTION_OTHER_SITE)
+  {
+    cupsFreeDests(num_dests, *dests);
+    *dests = (cups_dest_t *)0;
+    return (0);
+  }
 
  /*
   * Make a copy of the "real" queues for a later sanity check...
@@ -1293,5 +1301,5 @@ cups_get_sdests(http_t      *http,	/* I - HTTP connection */
 
 
 /*
- * End of "$Id: dest.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: dest.c 7947 2008-09-16 23:37:56Z mike $".
  */

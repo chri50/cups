@@ -1,5 +1,5 @@
 /*
- * "$Id: image-sgilib.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: image-sgilib.c 8039 2008-10-09 20:12:03Z mike $"
  *
  *   SGI image file format library routines for the Common UNIX Printing
  *   System (CUPS).
@@ -640,13 +640,14 @@ read_rle8(FILE           *fp,		/* I - File to read from */
     if (ch & 128)
     {
       for (i = 0; i < count; i ++, row ++, xsize --, length ++)
-        *row = getc(fp);
+        if (xsize > 0)
+	  *row = getc(fp);
     }
     else
     {
       ch = getc(fp);
       length ++;
-      for (i = 0; i < count; i ++, row ++, xsize --)
+      for (i = 0; i < count && xsize > 0; i ++, row ++, xsize --)
         *row = ch;
     }
   }
@@ -685,14 +686,15 @@ read_rle16(FILE           *fp,		/* I - File to read from */
     if (ch & 128)
     {
       for (i = 0; i < count; i ++, row ++, xsize --, length ++)
-        *row = getshort(fp);
+        if (xsize > 0)
+	  *row = getshort(fp);
     }
     else
     {
       ch = getshort(fp);
       length ++;
-      for (i = 0; i < count; i ++, row ++, xsize --)
-        *row = ch;
+      for (i = 0; i < count && xsize > 0; i ++, row ++, xsize --)
+	*row = ch;
     }
   }
 
@@ -885,5 +887,5 @@ write_rle16(FILE           *fp,		/* I - File to write to */
 
 
 /*
- * End of "$Id: image-sgilib.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: image-sgilib.c 8039 2008-10-09 20:12:03Z mike $".
  */

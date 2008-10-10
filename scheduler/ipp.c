@@ -1,5 +1,5 @@
 /*
- * "$Id: ipp.c 7774 2008-07-21 19:57:20Z mike $"
+ * "$Id: ipp.c 7945 2008-09-16 22:39:44Z mike $"
  *
  *   IPP routines for the Common UNIX Printing System (CUPS) scheduler.
  *
@@ -6746,8 +6746,8 @@ get_printers(cupsd_client_t *con,	/* I - Client connection */
   {
     if ((!type || (printer->type & CUPS_PRINTER_CLASS) == type) &&
         (printer->type & printer_mask) == printer_type &&
-	(!location || !printer->location ||
-	 !strcasecmp(printer->location, location)))
+	(!location ||
+	 (printer->location && !strcasecmp(printer->location, location))))
     {
      /*
       * If HideImplicitMembers is enabled, see if this printer or class
@@ -7733,6 +7733,9 @@ print_job(cupsd_client_t  *con,		/* I - Client connection */
                   (int)job->hold_until);
 
   cupsdSaveJob(job);
+
+  cupsdLogMessage(CUPSD_LOG_INFO, "[Job %d] Queued on \"%s\" by \"%s\".",
+                  job->id, job->dest, job->username);
 
  /*
   * Start the job if possible...
@@ -9012,35 +9015,57 @@ send_http_error(
                   ippOpString(con->request->request.op.operation_id),
 		  httpStatus(status));
 
-  if (status == HTTP_UNAUTHORIZED &&
-      printer && printer->num_auth_info_required > 0 &&
-      !strcmp(printer->auth_info_required[0], "negotiate"))
-    cupsdSendError(con, status, CUPSD_AUTH_NEGOTIATE);
-  else if (printer)
+  if (printer)
   {
-    char	resource[HTTP_MAX_URI];	/* Resource portion of URI */
-    cupsd_location_t *auth;		/* Pointer to authentication element */
     int		auth_type;		/* Type of authentication required */
 
 
-    if (printer->type & CUPS_PRINTER_CLASS)
-      snprintf(resource, sizeof(resource), "/classes/%s", printer->name);
-    else
-      snprintf(resource, sizeof(resource), "/printers/%s", printer->name);
+    auth_type = CUPSD_AUTH_NONE;
 
-    if ((auth = cupsdFindBest(resource, HTTP_POST)) == NULL ||
-        auth->type == CUPSD_AUTH_NONE)
-      auth = cupsdFindPolicyOp(printer->op_policy_ptr,
-                               con->request ?
-			           con->request->request.op.operation_id :
-				   IPP_PRINT_JOB);
+    if (status == HTTP_UNAUTHORIZED &&
+        printer->num_auth_info_required > 0 &&
+        !strcmp(printer->auth_info_required[0], "negotiate") &&
+	con->request &&
+	(con->request->request.op.operation_id == IPP_PRINT_JOB ||
+	 con->request->request.op.operation_id == IPP_CREATE_JOB ||
+	 con->request->request.op.operation_id == CUPS_AUTHENTICATE_JOB))
+    {
+     /*
+      * Creating and authenticating jobs requires Kerberos...
+      */
 
-    if (!auth)
-      auth_type = CUPSD_AUTH_NONE;
-    else if (auth->type == CUPSD_AUTH_DEFAULT)
-      auth_type = DefaultAuthType;
+      auth_type = CUPSD_AUTH_NEGOTIATE;
+    }
     else
-      auth_type = auth->type;
+    {
+     /*
+      * Use policy/location-defined authentication requirements...
+      */
+
+      char	resource[HTTP_MAX_URI];	/* Resource portion of URI */
+      cupsd_location_t *auth;		/* Pointer to authentication element */
+
+
+      if (printer->type & CUPS_PRINTER_CLASS)
+	snprintf(resource, sizeof(resource), "/classes/%s", printer->name);
+      else
+	snprintf(resource, sizeof(resource), "/printers/%s", printer->name);
+
+      if ((auth = cupsdFindBest(resource, HTTP_POST)) == NULL ||
+	  auth->type == CUPSD_AUTH_NONE)
+	auth = cupsdFindPolicyOp(printer->op_policy_ptr,
+				 con->request ?
+				     con->request->request.op.operation_id :
+				     IPP_PRINT_JOB);
+
+      if (auth)
+      {
+        if (auth->type == CUPSD_AUTH_DEFAULT)
+	  auth_type = DefaultAuthType;
+	else
+	  auth_type = auth->type;
+      }
+    }
 
     cupsdSendError(con, status, auth_type);
   }
@@ -10258,5 +10283,5 @@ validate_user(cupsd_job_t    *job,	/* I - Job */
 
 
 /*
- * End of "$Id: ipp.c 7774 2008-07-21 19:57:20Z mike $".
+ * End of "$Id: ipp.c 7945 2008-09-16 22:39:44Z mike $".
  */

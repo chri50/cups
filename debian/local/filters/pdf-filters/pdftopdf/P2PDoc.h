@@ -108,6 +108,7 @@ public:
     bool deviceCollate = false);
   int nup(int n, PDFRectangle *box, unsigned int borderFlag,
     unsigned int layout, int xpos, int ypos);
+  void select();
   void fit(PDFRectangle *box, double zoom);
   void mirror();
   void rotate(int orientation);

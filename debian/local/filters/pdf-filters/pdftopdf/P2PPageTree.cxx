@@ -86,18 +86,13 @@ GBool P2PPageTree::checkPageRange(int no, const char *pageSet,
 P2PPageTree::P2PPageTree(Catalog *orgCatalogA, XRef *xrefA)
 {
   int i;
-  int n;
 
   xref = xrefA;
   numPages = orgCatalogA->getNumPages();
   pages = new P2PPage *[numPages];
-  for (n = 0, i = 0;i < numPages;i++) {
-    if (checkPageRange(i+1,P2PDoc::options.pageSet,
-       P2PDoc::options.pageRanges)) {
-      pages[n++] = new P2PPage(orgCatalogA->getPage(i+1),xref);
-    }
+  for (i = 0;i < numPages;i++) {
+    pages[i] = new P2PPage(orgCatalogA->getPage(i+1),xref);
   }
-  numPages = n;
 }
 
 void P2PPageTree::cleanPages(P2PPage **pagesA, int size)
@@ -242,6 +237,24 @@ int P2PPageTree::nup(int n, PDFRectangle *box,
   pages = newPages;
   numPages = size;
   return 0;
+}
+
+void P2PPageTree::select(const char *pageSet, const char *pageRanges)
+{
+  P2PPage **newPages;
+  int i,j;
+
+  newPages = new P2PPage *[numPages];
+  for (i = 0,j = 0;i < numPages;i++) {
+    if (checkPageRange(i+1, pageSet, pageRanges)) {
+      newPages[j ++] = pages[i];
+    } else {
+      delete pages[i];
+    }
+  }
+  delete pages;
+  pages = newPages;
+  numPages = j;
 }
 
 void P2PPageTree::fit(PDFRectangle *box, double zoom)

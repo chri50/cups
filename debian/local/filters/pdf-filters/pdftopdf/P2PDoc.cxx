@@ -174,6 +174,11 @@ int P2PDoc::nup(int n, PDFRectangle *box,
   return catalog->nup(n,box,borderFlag,layout,xpos,ypos);
 }
 
+void P2PDoc::select()
+{
+  catalog->select(options.pageSet,options.pageRanges);
+}
+
 void P2PDoc::fit(PDFRectangle *box, double zoom)
 {
   catalog->fit(box,zoom);

@@ -1,5 +1,5 @@
 /*
- * "$Id: interpret.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: interpret.c 7853 2008-08-21 04:23:42Z mike $"
  *
  *   PPD command interpreter for the Common UNIX Printing System (CUPS).
  *
@@ -249,7 +249,7 @@ cupsRasterInterpretPPD(
   {
     float sc = atof(val);
 
-    if (sc >= 0.5 && sc <= 2.0)
+    if (sc >= 0.1 && sc <= 2.0)
       h->cupsBorderlessScalingFactor = sc;
   }
 
@@ -319,7 +319,7 @@ cupsRasterInterpretPPD(
       (h->cupsBitsPerColor != 1 && h->cupsBitsPerColor != 2 &&
        h->cupsBitsPerColor != 4 && h->cupsBitsPerColor != 8 &&
        h->cupsBitsPerColor != 16) ||
-      h->cupsBorderlessScalingFactor < 0.5 ||
+      h->cupsBorderlessScalingFactor < 0.1 ||
       h->cupsBorderlessScalingFactor > 2.0)
   {
     _cupsRasterAddError("Page header uses unsupported values.\n");
@@ -1641,5 +1641,5 @@ DEBUG_stack(_cups_ps_stack_t *st)	/* I - Stack */
 
 
 /*
- * End of "$Id: interpret.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: interpret.c 7853 2008-08-21 04:23:42Z mike $".
  */

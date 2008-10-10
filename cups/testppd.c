@@ -1,5 +1,5 @@
 /*
- * "$Id: testppd.c 6799 2007-08-15 19:33:36Z mike $"
+ * "$Id: testppd.c 7820 2008-08-01 00:28:44Z mike $"
  *
  *   PPD test program for the Common UNIX Printing System (CUPS).
  *
@@ -81,7 +81,10 @@ static const char	*custom_code =
 			"%%EndFeature\n"
 			"} stopped cleartomark\n"
 			"[{\n"
-			"%%BeginFeature: *StringOption None\n"
+			"%%BeginFeature: *CustomStringOption True\n"
+			"(value\\0502\\051)\n"
+			"(value 1)\n"
+			"StringOption=Custom\n"
 			"%%EndFeature\n"
 			"} stopped cleartomark\n";
 
@@ -149,8 +152,9 @@ main(int  argc,				/* I - Number of command-line arguments */
     if (s)
       free(s);
 
-    fputs("ppdEmitString (custom size): ", stdout);
+    fputs("ppdEmitString (custom size and string): ", stdout);
     ppdMarkOption(ppd, "PageSize", "Custom.400x500");
+    ppdMarkOption(ppd, "StringOption", "{String1=\"value 1\" String2=value(2)}");
 
     if ((s = ppdEmitString(ppd, PPD_ORDER_ANY, 0.0)) != NULL &&
 	!strcmp(s, custom_code))
@@ -372,5 +376,5 @@ main(int  argc,				/* I - Number of command-line arguments */
 
 
 /*
- * End of "$Id: testppd.c 6799 2007-08-15 19:33:36Z mike $".
+ * End of "$Id: testppd.c 7820 2008-08-01 00:28:44Z mike $".
  */

@@ -48,6 +48,7 @@ public:
   virtual void output(P2POutputStream *str, int copies, GBool collate);
   int nup(int n, PDFRectangle *box, unsigned int borderFlag,
     unsigned int layout, int xpos, int ypos);
+  void select(const char *pageSet, const char *pageRanges);
   void fit(PDFRectangle *box, double zoom);
   void mirror();
   void rotate(int orientation);
