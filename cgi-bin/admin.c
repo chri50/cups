@@ -1,5 +1,5 @@
 /*
- * "$Id: admin.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: admin.c 7984 2008-09-26 15:30:29Z mike $"
  *
  *   Administration CGI for the Common UNIX Printing System (CUPS).
  *
@@ -2598,6 +2598,9 @@ do_set_allowed_users(http_t *http)	/* I - HTTP connection */
       while (*ptr == ',' || isspace(*ptr & 255))
 	ptr ++;
 
+      if (!*ptr)
+        break;
+
       if (*ptr == '\'' || *ptr == '\"')
       {
        /*
@@ -2662,6 +2665,9 @@ do_set_allowed_users(http_t *http)	/* I - HTTP connection */
 
         while (*ptr == ',' || isspace(*ptr & 255))
 	  ptr ++;
+
+        if (!*ptr)
+	  break;
 
         if (*ptr == '\'' || *ptr == '\"')
 	{
@@ -3445,5 +3451,5 @@ match_string(const char *a,		/* I - First string */
 
     
 /*
- * End of "$Id: admin.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: admin.c 7984 2008-09-26 15:30:29Z mike $".
  */

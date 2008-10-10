@@ -659,6 +659,8 @@ int main(int argc, char *argv[]) {
     p2pdoc->position(&box,xposition,yposition);
   }
 
+  p2pdoc->select();
+
   /* set all pages's mediaBox to the target page size */
   p2pdoc->setMediaBox(&mediaBox);
 

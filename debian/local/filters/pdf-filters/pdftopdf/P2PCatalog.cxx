@@ -68,6 +68,11 @@ int P2PCatalog::nup(int n, PDFRectangle *box, unsigned int borderFlag,
   return pageTree->nup(n,box,borderFlag,layout,xpos,ypos);
 }
 
+void P2PCatalog::select(const char *pageSet, const char *pageRanges)
+{
+  pageTree->select(pageSet,pageRanges);
+}
+
 void P2PCatalog::fit(PDFRectangle *box, double zoom)
 {
   pageTree->fit(box,zoom);

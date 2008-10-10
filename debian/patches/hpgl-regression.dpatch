@@ -1,0 +1,29 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## hpgl-regression.dpatch by Martin Pitt <mpitt@debian.org>
+##
+## DP: Revert the SP_select_pen() enumeration change introduced in STR #2911,
+## DP: because it changes the color mapping (e. g. "SP1" would now select a
+## DP: white pen instead of a black one, and "SP0" would not be valid at all
+## DP: any more). Also fix a remaining off-by-one loop. (STR #2966)
+@DPATCH@
+diff -urNad trunk~/filter/hpgl-attr.c trunk/filter/hpgl-attr.c
+--- trunk~/filter/hpgl-attr.c	2008-10-09 22:12:03.000000000 +0200
++++ trunk/filter/hpgl-attr.c	2008-10-10 10:55:46.000000000 +0200
+@@ -214,7 +214,7 @@
+             "DEBUG: HP-GL/2 \'NP\' command with invalid number of "
+ 	    "parameters (%d)!\n", num_params);
+ 
+-  for (i = 0; i <= PenCount; i ++)
++  for (i = 0; i < PenCount; i ++)
+     Pens[i].width = PenWidth;
+ 
+   PC_pen_color(0, NULL);
+@@ -433,7 +433,7 @@
+     fprintf(stderr, "DEBUG: HP-GL/2 \'SP\' command with invalid pen (%d)!\n",
+ 	    (int)params[0].value.number);
+   else
+-    PenNumber = (int)params[0].value.number - 1;
++    PenNumber = (int)params[0].value.number;
+ 
+   if (PageDirty)
+     printf("%.3f %.3f %.3f %.2f SP\n", Pens[PenNumber].rgb[0],
