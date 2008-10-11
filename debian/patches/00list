@@ -2,6 +2,9 @@
 manpage-typos.dpatch
 pdftops-cups-1.4.dpatch
 pdftops-dont_fail_on_cancel.dpatch
+CVE-2008-3641_hpgl_filter_overflow.dpatch 
+CVE-2008-3639_sgi_filter_overflow.dpatch
+CVE-2008-3640_texttops_overflow.dpatch
 
 # patches accepted and committed upstream
 freebsd.dpatch
@@ -11,6 +14,8 @@ pidfile.dpatch
 ppd-poll-with-client-conf.dpatch
 # no answer yet, po4a might not be appropriate
 manpage-translations.dpatch
+admin-fr-translation.dpatch
+hpgl-regression.dpatch
 
 # Debian patches
 removecvstag.dpatch
@@ -24,6 +29,7 @@ classes_crash.dpatch
 reactivate_recommended_driver.dpatch
 include_krb5_h_in_job_h.dpatch
 search_mime_files_in_usr_share.dpatch
+cupsfilter-path-typo.dpatch
 
 # Ubuntu patches
 ubuntu-disable-browsing.dpatch
