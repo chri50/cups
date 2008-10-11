@@ -13,8 +13,8 @@ Uploaders: Kenshi Muto <kmuto@debian.org>,
  Martin Pitt <mpitt@debian.org>, Roger Leigh <rleigh@debian.org>, 
  Martin-Éric Racine <q-funk@iki.fi>, Masayuki Hatta (mhatta) <mhatta@debian.org>,
  Jeff Licquia <licquia@debian.org>
-Vcs-Svn: svn://svn.debian.org/svn/pkg-cups/cupsys/trunk
-Vcs-Browser: http://svn.debian.org/wsvn/pkg-cups/cupsys/trunk
+Vcs-Bzr: bzr+ssh://bzr.debian.org/pkg-cups/cups/lenny
+Vcs-Browser: http://bazaar.launchpad.net/~pitti/cups/debian-lenny
 
 Package: libcups2
 Priority: optional

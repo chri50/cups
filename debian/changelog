@@ -1,3 +1,50 @@
+cups (1.3.8-1lenny2) unstable; urgency=high
+
+  * Urgency high due to security fixes.
+  * debian/control: Package development moved to bzr, update Vcs- tags.
+  * Add CVE-2008-3641_hpgl_filter_overflow.dpatch: Fix buffer overflow
+    triggered by invalid number of pens in the HPGL filter. (CVE-2008-3641,
+    STR #2911)
+  * Add CVE-2008-3639_sgi_filter_overflow.dpatch: Fix buffer overflow due to
+    unchecked boundary in the SGI filter. (CVE-2008-3639, STR #2918)
+  * Add CVE-2008-3640_texttops_overflow.dpatch: Fix buffer overflow by
+    specifying invalidly large or negative page metrics. (CVE-2008-3640,
+    STR #2919)
+  * Add hpgl-regression.dpatch: Revert the SP_select_pen() enumeration change
+    introduced in STR #2911, because it changes the color mapping (e. g. "SP1"
+    would now select a white pen instead of a black one, and "SP0" would not
+    be valid at all any more). Also fix a remaining off-by-one loop. (STR
+    #2966)
+  * Add admin-fr-translation.dpatch: Update the French admin.tmpl, to have the
+    missing "Find new printer" button and the "Subscriptions" section. Thanks
+    to Yves-Alexis Perez! (Closes: #475270)
+
+ -- Martin Pitt <mpitt@debian.org>  Sat, 11 Oct 2008 12:53:30 +0200
+
+cups (1.3.8-1lenny1) unstable; urgency=medium
+
+  Cherrypick bug fixes from trunk/experimental which need to go into Lenny.
+  Urgency medium because of an RC bug fix.
+
+  [ Johan Kiviniemi ]
+  * Add cupsfilter-path-typo.dpatch: Fix a typo in scheduler/cupsfilter.c,
+    which caused filters not to have /bin in their PATH.
+  * debian/filters/pstopdf:
+    - Do not log to /tmp/pstopdf.log. A user running the filter (e.g. via
+      cupsfilter) made all other users (including cups itself) unable to run
+      the filter because of no permission to open the logfile.
+    - Put unquoted variables into quotes where appropriate.
+    - Never create an outfile in the same directory as the given infile; the
+      process might not have write access there.
+    - set -e.
+
+  [ Martin Pitt ]
+  * Bump shlibs version for libcups2 and libcupsimage2. (Closes: #494168)
+  * Add missing CVE and more verbose descriptions to security fixes to 1.3.6-1
+    changelog.
+
+ -- Martin Pitt <mpitt@debian.org>  Tue, 02 Sep 2008 08:33:58 +0200
+
 cups (1.3.8-1) unstable; urgency=low
 
   * New upstream release: some 20 bug fixes, no new features (see
@@ -230,7 +277,10 @@ cupsys (1.3.6-2) unstable; urgency=low
 cupsys (1.3.6-1) unstable; urgency=low
 
   * New upstream bugfix release.
-    - Fixes (CVE-2008-0882, bug #467653).
+    - Fixes buffer overflows in filter/hpgl-input.c, possibly exploitable to
+      run arbitrary code with crafted HP-GL files. (CVE-2008-0053)
+    - Fixes double free vulnerability in process_browse_data(),
+      exploitable to remote DoS. (CVE-2008-0882, bug #467653)
   * Remove the following patches which are upstream now:
     - fix_regression_reactivate_net_ifaces_changes_detection.dpatch
     - web-interface-breaks-default-auth-setting.dpatch
