@@ -1,3 +1,13 @@
+cups (1.3.9-2) experimental; urgency=low
+
+  * debian/local/filters/cpdftocps, debian/filters/pstopdf: Avoid duplicate
+    execution of the number of copies. Sending a PostScript job to a
+    non-PostScript printer produced n*n copies instead of n copies, also
+    sending a non-PostScript job to a PostScript printer. A PostScript job
+    sent to a PostScript printer could even produce n*n*n copies (LP: #286048).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon, 20 Oct 2008 08:18:20 +0200
+
 cups (1.3.9-1) experimental; urgency=low
 
   * New upstream security/bug fix release:

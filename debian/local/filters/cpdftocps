@@ -64,6 +64,6 @@ MASKED_OPTS=$(
 )
 
 /usr/lib/cups/filter/pdftops "$@" | \
-  /usr/lib/cups/filter/pstops "$1" "$2" "$3" "$4" "$MASKED_OPTS"
+  /usr/lib/cups/filter/pstops "$1" "$2" "$3" 1 "$MASKED_OPTS"
 
 # vim:set et sw=2 sts=2:

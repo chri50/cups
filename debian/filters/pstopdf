@@ -169,4 +169,4 @@ else
   DRMFILTER=cat
 fi
 
-$PSTOPS "$1" "$2" "$3" "$4" "$MASKED_OPTS" "$infile" | $DRMFILTER | $PS2PDF $PS2PDF_OPTIONS $ppd_opts - -
+$PSTOPS "$1" "$2" "$3" 1 "$MASKED_OPTS" "$infile" | $DRMFILTER | $PS2PDF $PS2PDF_OPTIONS $ppd_opts - -
