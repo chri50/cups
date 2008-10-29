@@ -13,61 +13,15 @@
 
 set -e
 
-# These options are *not* passed through to pstops, since pdftopdf or
-# equivalent has already processed them.
-MASK='
-  brightness
-  Collate
-  cupsEvenDuplex
-  fitplot
-  gamma
-  hue
-  landscape
-  mirror
-  multiple-document-handling
-  natural-scaling
-  number-up
-  number-up-layout
-  orientation-requested
-  OutputOrder
-  page-border
-  page-bottom
-  page-label
-  page-left
-  page-ranges
-  page-right
-  page-set
-  page-top
-  position
-  saturation
-  scaling
-  sides
-'
-
-# Convert MASK to a regexp.
-MASK_RE=$(
-  set -- $MASK
-  IFS='|'
-  printf "%s" "$*"
-)
-
-# Annihilate all forms of the masked options from $5:
-# - <option>=parameter
-# - <option>   (boolean)
-# - no<option> (boolean)
-MASKED_OPTS=$(
-  printf "%s" "$5" | \
-    sed -r -e 's/(^|\s+)(no)?('"$MASK_RE"')(=\S*)?//g' -e 's/^\s+//'
-)
-
 PS2PS=/usr/bin/ps2ps
-PSTOPS=/usr/lib/cups/filter/pstops
 PS2PDF=/usr/bin/ps2pdf13
-PS2PS_OPTIONS="-dAutoRotatePages=/None -dAutoFilterColorImages=false
-                -dNOPLATFONTS -dPARANOIDSAFER -sstdout=%stderr"
-PS2PDF_OPTIONS="$PS2PS_OPTIONS -dColorImageFilter=/FlateEncode"
+PS2PS_OPTIONS="-dAutoRotatePages=/None -dAutoFilterColorImages=false \
+               -dNOPLATFONTS -dPARANOIDSAFER -sstdout=%stderr"
+PS2PDF_OPTIONS="$PS2PS_OPTIONS -dColorImageFilter=/FlateEncode \
+               -dPDFSETTINGS=/printer"
 
 echo "DEBUG: pstopdf argv[$#] = $@" >&2
+echo "DEBUG: PPD: $PPD" >&2
 
 if [ $# -lt 5 -o $# -gt 6 ]; then
 
@@ -96,43 +50,48 @@ eval "$(printf "%s" "$5" | sed -nre 's/.*(^|\s)Resolution=([0-9.]+(x[0-9.]+)?).*
 if test -e "$PPD"; then
   eval "$(sed -nre 's/^\*DefaultResolution:\s+([0-9.]+(x[0-9.]+)?).*/resolution="${resolution:-\1}"/p' "$PPD")"
 fi
+echo "DEBUG: Resolution: $resolution" >&2
 
 pagesize=
 eval "$(printf "%s" "$5" | sed -nre 's/.*(^|\s)(media|PageSize)=(\S+).*/pagesize="${pagesize:-\3}"/p')"
 if test -e "$PPD"; then
-  eval "$(sed -nre 's/^\*DefaultPageSize:\s+(.+)$/pagesize="${pagesize:-\1}"/p' "$PPD")"
+  eval "$(sed -nre 's/^\*DefaultPageSize:\s+(\S+).*/pagesize="${pagesize:-\1}"/p' "$PPD")"
 fi
+echo "DEBUG: Page size: $pagesize" >&2
 
 width=
 height=
-tl_x=
-tl_y=
-br_x=
-br_y=
+bl_x=
+bl_y=
+tr_x=
+tr_y=
 if test -n "$pagesize" && test -e "$PPD"; then
-  eval "$(sed -nre 's|^\*PaperDimension\s+'"$pagesize"'/[^"]+:\s+"(\S+)\s+(\S+)"$|width="\1"; height="\2"|p' "$PPD")"
+  eval "$(sed -nre 's|^\*PaperDimension\s+'"$pagesize"'/[^:]+:\s+"(\S+)\s+(\S+)".*|width="\1"; height="\2"|p' "$PPD")"
 
-  eval "$(sed -nre 's|^\*ImageableArea\s+'"$pagesize"'/[^"]+:\s+"(\S+)\s+(\S+)\s+(\S+)\s+(\S+)"$|tl_x="\1"; tl_y="\2"; br_x="\3"; br_y="\4"|p' "$PPD")"
+  eval "$(sed -nre 's|^\*ImageableArea\s+'"$pagesize"'/[^:]+:\s+"(\S+)\s+(\S+)\s+(\S+)\s+(\S+)".*|bl_x="\1"; bl_y="\2"; tr_x="\3"; tr_y="\4"|p' "$PPD")"
 fi
+echo "DEBUG: Width: $width, height: $height, absolute margins: $tl_x, $tl_y, $br_x, $br_y" >&2
 
 margin_l=
 margin_b=
 margin_r=
 margin_t=
 if test -n "$width" && test -n "$height" && \
-   test -n "$tl_x" && test -n "$tl_y" && \
-   test -n "$br_x" && test -n "$br_y"; then
-  margin_l="$tl_x"
-  margin_b="$(printf "scale=8; (%s)-(%s)\n" "$height" "$br_y" | bc)"
-  margin_r="$(printf "scale=8; (%s)-(%s)\n" "$width" "$br_x" | bc)"
-  margin_t="$tl_y"
+   test -n "$bl_x" && test -n "$bl_y" && \
+   test -n "$tr_x" && test -n "$tr_y"; then
+  margin_l="$bl_x"
+  margin_b="$bl_y"
+  margin_r="$(printf "scale=8; (%s)-(%s)\n" "$width" "$tr_x" | bc)"
+  margin_t="$(printf "scale=8; (%s)-(%s)\n" "$height" "$tr_y" | bc)"
 fi
+echo "DEBUG: Relative margins: $margin_l, $margin_b, $margin_r, $margin_t" >&2
 
 inject_ps=
 if test -n "$margin_l" && test -n "$margin_b" && \
    test -n "$margin_r" && test -n "$margin_t"; then
   inject_ps="<</.HWMargins[$margin_l $margin_b $margin_r $margin_t] /Margins[0 0]>>setpagedevice"
 fi
+echo "DEBUG: PostScript to be injected: $inject_ps" >&2
 
 ppd_opts=
 if test -n "$resolution"; then
@@ -144,6 +103,7 @@ fi
 if test -n "$height"; then
   ppd_opts="${ppd_opts:+$ppd_opts }-dDEVICEHEIGHTPOINTS=$height"
 fi
+echo "DEBUG: PPD options: $ppd_opts" >&2
 
 # Injection
 if test -n "$inject_ps"; then
@@ -169,4 +129,5 @@ else
   DRMFILTER=cat
 fi
 
-$PSTOPS "$1" "$2" "$3" 1 "$MASKED_OPTS" "$infile" | $DRMFILTER | $PS2PDF $PS2PDF_OPTIONS $ppd_opts - -
+echo "DEBUG: Running $DRMFILTER | $PS2PDF $PS2PDF_OPTIONS $ppd_opts - -" >&2
+cat "$infile" | $DRMFILTER | $PS2PDF $PS2PDF_OPTIONS $ppd_opts - -
