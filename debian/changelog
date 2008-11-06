@@ -1,3 +1,22 @@
+cups (1.3.9-2ubuntu1) intrepid-proposed; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/filters/pstopdf: Fixed several bugs in the pstopdf filter. First,
+    removed the use of CUPS' pstops filter for inserting option settings. This
+    also inserts PJL headers and then Ghostscript cannot convert the PostScript
+    to PDF in the next step. Fixed also the sed magic so that the paper size
+    and the margins get really read from the PPD and fixed the calculation of
+    the top and bottom margins, they were exchanged. Fixes LP: #289759,
+    LP: #292690, LP: #282186. Possible fix for LP #293883.
+
+  [ Martin Pitt ]
+  * debian/local/apparmor-profile: Allow dnssd backend to create various less
+    common network protocols (x25, appletalk, etc.) for detection. Also allow
+    it to read /proc/*/net/, which the bonjour avahi library apparently uses.
+    (LP: #254022)
+
+ -- Martin Pitt <martin.pitt@ubuntu.com>  Thu, 06 Nov 2008 17:46:00 +0100
+
 cups (1.3.9-2) experimental; urgency=low
 
   * debian/local/filters/cpdftocps, debian/filters/pstopdf: Avoid duplicate

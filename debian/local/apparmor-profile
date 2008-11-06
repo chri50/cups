@@ -30,6 +30,16 @@
   # the bluetooth backend needs this
   network bluetooth,
 
+  # the dnssd backend uses those
+  network x25 seqpacket,
+  network ax25 dgram,
+  network netrom seqpacket,
+  network rose dgram,
+  network ipx dgram,
+  network appletalk dgram,
+  network econet dgram,
+  network ash dgram,
+
   /bin/bash ixr,
   /bin/dash ixr,
   /bin/hostname ixr,
@@ -51,6 +61,8 @@
   @{PROC}/net/ r,
   @{PROC}/net/* r,
   @{PROC}/sys/dev/parport/** r,
+  @{PROC}/*/net/ r,
+  @{PROC}/*/net/** r,
   /sys/** r,
   /usr/bin/* ixr,
   /usr/sbin/* ixr,
