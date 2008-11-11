@@ -70,7 +70,7 @@ if test -n "$pagesize" && test -e "$PPD"; then
 
   eval "$(sed -nre 's|^\*ImageableArea\s+'"$pagesize"'/[^:]+:\s+"(\S+)\s+(\S+)\s+(\S+)\s+(\S+)".*|bl_x="\1"; bl_y="\2"; tr_x="\3"; tr_y="\4"|p' "$PPD")"
 fi
-echo "DEBUG: Width: $width, height: $height, absolute margins: $tl_x, $tl_y, $br_x, $br_y" >&2
+echo "DEBUG: Width: $width, height: $height, absolute margins: $bl_x, $bl_y, $tr_x, $tr_y" >&2
 
 margin_l=
 margin_b=
