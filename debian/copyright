@@ -195,14 +195,12 @@ Christian d'Heureuse, Inventec Informatik AG, Switzerland
 
 Copyright for additional components in this Debian package:
 
-The CUPS filters imagetopdf, pdftopdf, pdftoraster are downloaded
+The CUPS filters imagetopdf and pdftopdf are downloaded
 from: http://sourceforge.jp/projects/opfc/files/
 
 Copyright: 
 
 pdftopdf: Copyright (c) 2006-2007, BBR Inc.  All rights reserved.
-
-pdftoraster: Copyright (c) 2008, BBR Inc.  All rights reserved.
 
 imagetopdf:
 

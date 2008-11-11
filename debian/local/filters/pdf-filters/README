@@ -3,8 +3,8 @@ CUPS filters for PDF as standard print job format
 -------------------------------------------------
 
 This tarball contains the three CUPS filters imagetopdf, texttopdf,
-pdftopdf, pdftoraster, and pdftoijs, prepared for being compiled
-together with CUPS. 
+pdftopdf, and pdftoijs, prepared for being compiled together with
+CUPS.
 
 The original filters are from http://sourceforge.jp/projects/opfc/
 
@@ -644,80 +644,6 @@ created PDF data.
 
 "pdftopdf" creates temporally files if needed.　Temporary files are created
 in the location specified by TMPDIR environment　variable. Default location
-is "/tmp".
-
-===========================================================================
-
-PDFTORASTER
-
-1. INTRODUCTION
-
-There are two executable programs, "pdftoraster" and "rasterdsp", in this
-package. "pdftoraster" is a filter for CUPS. It reads PDF files, convert it
-and output CUPS raster. 
-
-"pdftoraster" does not support functions that are not related to printing
-features, including interactive features and document interchange features.
-Many of these operators and sections are just ignored.
-Some of these may be output, but those functions are not assured.
-Encryption feature is not supported.
-
-"rasterdsp" is a test program and not installed. It reads CUPS raster file
-and display header contents. If you specify <filename> as its command
-argument, this program creates image files that the names are <filename>
-with sequential page number, and each image file contains each page content.
-Image format is PPM for color, and BMP for monochrome page.
-
-2. LICENSE
-
-Almost source files are under MIT like license. However, "pdftoraster" links
-some "poppler" libraries, and these files are under GNU public license.
-See copyright notice of each file for details.
-
-3. COMMAND LINE
-
-"pdftoraster" is a CUPS filter, and the command line arguments, environment
-variables and configuration files are in accordance with the CUPS filter
-interface.
-
-pdftoraster <job> <user> <title> <num-copies> <options> [<filename>]
-
-"pdftoraster" ignores <job> and <user>.
-<title> is appended into the PDF dictionary as /Title.
-<num-copies> specifies the number of document copies.
-<options> is a CUPS option list.
-<filename> is an input PDF file name.
-
-When omit the <filename>, "pdftoraster" reads a PDF file from the stdin,
-and save it as a temporary file.
-
-4. ENVIRONMENT VARIABLES
-
-This program refers the following environment variable;
-   PPD:  PPD file name of the printer.
-
-5. COMMAND OPTIONS
-
-See CUPS documents for details.
-
-6. INFORMATION FOR DEVELOPERS
-
-Following information is for developers, not for driver users.
-
-6.1 Options handled by a printer or "pdftoraster"
-
-"pdftopdf" outputs the following special comments from the 4th line in the
-created PDF data.
-
-%%PDFTOPDFNumCopies : <copies> --- <copies> specified Number of Copies
-%%PDFTOPDFCollate : <collate> --- <collate> is true or false
-
-"pdftoraster" overrides the command line options by above two option's values.
- 
-6.2 Temporally files location
-
-"pdftoraster" creates temporally files if needed. Temporary files are created
-in the location specified by TMPDIR environment variable. Default location
 is "/tmp".
 
 ===========================================================================

@@ -5,7 +5,6 @@
 
 # Copy files
 cp filter/imagetopdf.c $1/filter/
-cp filter/pdftoraster.cxx $1/filter/
 cp filter/pdftoijs.cxx $1/filter/
 cp filter/texttopdf.c $1/filter/
 cp filter/pdfutils.h $1/filter/
@@ -16,7 +15,6 @@ cp filter/test_pdf2.c $1/filter/
 cp conf/imagetopdf.convs $1/conf/
 cp conf/imagetopdf.types $1/conf/
 cp conf/pdftopdf.convs $1/conf/
-cp conf/pdftoraster.convs $1/conf/
 cp conf/pdf.types $1/conf/
 cp conf/texttopdf.convs $1/conf/
 cp data/pdf.utf-8.heavy $1/data/
@@ -83,9 +81,9 @@ cp filter/Makefile filter/Makefile.pdf-filters
 cp data/Makefile data/Makefile.pdf-filters
 cp Makefile Makefile.pdf-filters
 cp Makedefs.in Makedefs.in.pdf-filters
-perl -p -i -e 's/^(\s*REPLACE\s*=.*)$/$1 imagetopdf.convs imagetopdf.types pdftopdf.convs pdftoraster.convs pdf.types texttopdf.convs/' conf/Makefile
-perl -p -i -e 's/^(\s*FILTERS\s*=\s+)/$1imagetopdf pdftoraster pdftoijs texttopdf /' filter/Makefile
-perl -p -i -e 's/^(\s*OBJS\s*=\s+)/$1imagetopdf.o pdftoraster.o pdftoijs.o texttopdf.o pdfutils.o /' filter/Makefile
+perl -p -i -e 's/^(\s*REPLACE\s*=.*)$/$1 imagetopdf.convs imagetopdf.types pdftopdf.convs pdf.types texttopdf.convs/' conf/Makefile
+perl -p -i -e 's/^(\s*FILTERS\s*=\s+)/$1imagetopdf pdftoijs texttopdf /' filter/Makefile
+perl -p -i -e 's/^(\s*OBJS\s*=\s+)/$1imagetopdf.o pdftoijs.o texttopdf.o pdfutils.o /' filter/Makefile
 perl -p -i -e 's/^(\s*CHARSETS\s*=\s+)/$1pdf.utf-8.heavy pdf.utf-8.simple /' data/Makefile
 cat >> filter/Makefile <<EOF
 
@@ -98,17 +96,6 @@ imagetopdf:	imagetopdf.o common.o \$(LIBCUPSIMAGE) \\
 	echo Linking \$@...
 	\$(CC) \$(LDFLAGS) -o \$@ imagetopdf.o common.o \$(LINKCUPSIMAGE) \\
 		\$(IMGLIBS) \$(LIBS)
-
-
-#
-# pdftoraster
-#
-
-pdftoraster:	pdftoraster.o common.o \$(LIBCUPSIMAGE) \\
-		../cups/\$(LIBCUPS)
-	echo Linking \$@...
-	\$(CC) \$(LDFLAGS) -o \$@ pdftoraster.o common.o \$(LINKCUPSIMAGE) \\
-		\$(POPPLER_LIBS)
 
 
 #
