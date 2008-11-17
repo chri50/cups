@@ -1,3 +1,24 @@
+cups (1.3.9-5) experimental; urgency=low
+
+  * hpgl-regression.dpatch: Replaced with version which got committed
+    upstream.
+  * Add runloop-backchannel-eof-spin.dpatch: Fix backend runloop spin on
+    backchannel EOF (select() returns "ready for read" on EOF). This
+    completely broke printing with e. g. HPJetDirect. Thanks to
+    Samuel Thibault for tracking down the problem! (Closes: #489045)
+  * debian/cups-bsd.postinst: Assume default printcap path (in /var/run/cups/)
+    if not specified in cupsd.conf. This brings back the lost /etc/printcap
+    for legacy applications. (Closes: #482186, LP: #282667)
+  * debian/rules: Drop arm/armel -f-no-stack-protector workaround, since SSP
+    works on these architectures now. (See #469517)
+  * debian/cups-bsd.postinst: Robustify the cupsd.conf parsing for Printcap,
+    as per suggestion from Jo Mills.
+  * rootbackends-worldreadable.dpatch: Apply the same relaxed permission check
+    to cups-deviced, so that backends installed as 0744 don't disappear from
+    printer detecttion. (Closes: #503644, LP: #275407)
+
+ -- Martin Pitt <mpitt@debian.org>  Mon, 17 Nov 2008 08:50:34 +0100
+
 cups (1.3.9-4) experimental; urgency=low
 
   [ Till Kamppeter ]

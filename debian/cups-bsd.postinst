@@ -50,12 +50,12 @@ case "$1" in
 		rm -f /etc/printcap
 	    fi
 
-	    printcap_file=`egrep '^Printcap ' /etc/cups/cupsd.conf | awk '{print $2}'`
-	    if [ "$printcap_file" != "" ]; then
-		touch $printcap_file 2>/dev/null || true
-		if [ ! -e /etc/printcap -a -e $printcap_file ]; then
-		    ln -s $printcap_file /etc/printcap
-		fi
+	    printcap_file=`egrep '^Printcap ' /etc/cups/cupsd.conf | awk '{print $2}' | tail -n 1`
+	    if [ -z "$printcap_file" ]; then
+		printcap_file=/var/run/cups/printcap
+	    fi
+	    if [ ! -e /etc/printcap -a -e $printcap_file ]; then
+	        ln -s $printcap_file /etc/printcap
 	    fi
 	fi
     ;;
