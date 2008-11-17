@@ -7,6 +7,8 @@ pdftops-dont_fail_on_cancel.dpatch
 cupsaccept.dpatch
 
 # patches accepted and committed upstream for next 1.3:
+hpgl-regression.dpatch
+runloop-backchannel-eof-spin.dpatch
 
 # patches sent upstream
 removecvstag.dpatch
@@ -16,7 +18,6 @@ ppd-poll-with-client-conf.dpatch
 manpage-translations.dpatch
 quiesce-bonjour-warning.dpatch
 rootbackends-worldreadable.dpatch
-hpgl-regression.dpatch
 
 # patches which should go upstream
 reactivate_recommended_driver.dpatch
