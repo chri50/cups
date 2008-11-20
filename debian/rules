@@ -73,6 +73,10 @@ binary-post-install/cups::
 	   install -D -m 644 debian/local/apparmor-profile debian/$(cdbs_curpkg)/etc/apparmor.d/usr.sbin.cupsd; \
 	fi
 
+	# Make the serial backend run as root, since /dev/ttyS* are
+	# root:dialout and thus not accessible as user lp
+	chmod go-x debian/$(cdbs_curpkg)/usr/lib/cups/backend-available/serial
+
 binary-post-install/libcupsimage2-dev::
 	rm -r debian/libcupsimage2-dev/usr/share/doc/libcupsimage2-dev
 	ln -s libcupsimage2 debian/libcupsimage2-dev/usr/share/doc/libcupsimage2-dev

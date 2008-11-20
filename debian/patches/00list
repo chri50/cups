@@ -8,6 +8,8 @@ CVE-2008-3640_texttops_overflow.dpatch
 
 # patches accepted and committed upstream
 freebsd.dpatch
+hpgl-regression.dpatch
+runloop-backchannel-eof-spin.dpatch
 
 # patches sent upstream
 pidfile.dpatch
@@ -15,7 +17,6 @@ ppd-poll-with-client-conf.dpatch
 # no answer yet, po4a might not be appropriate
 manpage-translations.dpatch
 admin-fr-translation.dpatch
-hpgl-regression.dpatch
 
 # Debian patches
 removecvstag.dpatch
