@@ -1,3 +1,18 @@
+cups (1.3.9-6) experimental; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/local/filters/cpdftocps: The cpdftocps filter did case-sensitive
+    checking for CUPS options to keep them away from the pstops filter. CUPS
+    treats such options case-insensitive, so in some cass CUPS options got
+    applied twice (LP: #299707).
+
+  [ Martin Pitt ]
+  * debian/rules: Install the serial backend with 0744 permissions to make it
+    run as root, since /dev/ttyS* are root:dialout and thus not accessible as
+    user "lp". Thanks to Chanoch (Ken) Bloom. (part of #506181, LP: #154277)
+
+ -- Martin Pitt <mpitt@debian.org>  Thu, 20 Nov 2008 13:43:27 +0100
+
 cups (1.3.9-5) experimental; urgency=low
 
   * hpgl-regression.dpatch: Replaced with version which got committed
