@@ -1,3 +1,21 @@
+cups (1.3.8-1lenny3) unstable; urgency=medium
+
+  * Urgency medium because of RC bug fix.
+  * debian/cups-bsd.postinst: Assume default printcap path (in /var/run/cups/)
+    if not specified in cupsd.conf. This brings back the lost /etc/printcap
+    for legacy applications. (Closes: #482186, LP: #282667)
+  * hpgl-regression.dpatch: Replaced with version which got committed
+    upstream.
+  * Add runloop-backchannel-eof-spin.dpatch: Fix backend runloop spin on
+    backchannel EOF (select() returns "ready for read" on EOF). This
+    completely broke printing with e. g. HPJetDirect. Thanks to
+    Samuel Thibault for tracking down the problem! (Closes: #489045)
+  * debian/rules: Install the serial backend with 0744 permissions to make it
+    run as root, since /dev/ttyS* are root:dialout and thus not accessible as
+    user "lp". Thanks to Chanoch (Ken) Bloom. (One part of #506181)
+
+ -- Martin Pitt <mpitt@debian.org>  Thu, 20 Nov 2008 09:05:35 +0100
+
 cups (1.3.8-1lenny2) unstable; urgency=high
 
   * Urgency high due to security fixes.
