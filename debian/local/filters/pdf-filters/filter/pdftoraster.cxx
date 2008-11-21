@@ -36,6 +36,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "PDFDoc.h"
 #include "SplashOutputDev.h"
 #include <cups/cups.h>
+#include <cups/image.h>
 #include <stdarg.h>
 #include "Error.h"
 #include "GlobalParams.h"
@@ -259,7 +260,6 @@ int main(int argc, char *argv[]) {
     paperColor[0] = 255;
     rowpad = 1;
     break;
-#ifdef SPLASH_CMYK
   case CUPS_CSPACE_CMYK:
     if (header.cupsColorOrder != CUPS_ORDER_CHUNKED
        || header.cupsBitsPerColor != 8
@@ -267,15 +267,15 @@ int main(int argc, char *argv[]) {
       error(-1,const_cast<char *>("Specified color format is not supported"));
       exit(1);
     }
-    cmode = splashModeCMYK8;
-    /* set paper color white */
-    paperColor[0] = 0;
-    paperColor[1] = 0;
-    paperColor[2] = 0;
-    paperColor[3] = 0;
+    /* make RGB image and convert it to CMYK */
+    cmode = splashModeRGB8;
     rowpad = 4;
+    /* set paper color white */
+    paperColor[0] = 255;
+    paperColor[1] = 255;
+    paperColor[2] = 255;
     break;
-#endif
+    break;
   default:
     error(-1,const_cast<char *>("Specified ColorSpace is not supported"));
     exit(1);
@@ -302,7 +302,11 @@ int main(int argc, char *argv[]) {
     /* write page header */
     header.cupsWidth = bitmap->getWidth();
     header.cupsHeight = bitmap->getHeight();
-    header.cupsBytesPerLine = bitmap->getRowSize();
+    if (header.cupsColorSpace == CUPS_CSPACE_CMYK) {
+	header.cupsBytesPerLine = bitmap->getWidth()*4;;
+    } else {
+	header.cupsBytesPerLine = bitmap->getRowSize();
+    }
     if (!cupsRasterWriteHeader(raster,&header)) {
         error(-1,const_cast<char *>("Can't write page %d header"),i);
 	exit(1);
@@ -319,9 +323,30 @@ int main(int argc, char *argv[]) {
 	*p = ~*p;
       }
     }
-    if (cupsRasterWritePixels(raster,bp, size) != size) {
-	error(-1,const_cast<char *>("Can't write page %d image"),i);
-	exit(1);
+    if (header.cupsColorSpace == CUPS_CSPACE_CMYK) {
+	/* the image is RGB, so convert it to CMYK */
+	unsigned int rowsize = bitmap->getRowSize();
+	unsigned char *dp, *cmykImage;
+
+	header.cupsBytesPerLine = header.cupsWidth*4;
+	size = header.cupsBytesPerLine*header.cupsHeight;
+	cmykImage = new unsigned char [size];
+	dp = cmykImage;
+	for (unsigned int h = 0;h < header.cupsHeight;h++) {
+	    cupsImageRGBToCMYK(bp,dp,header.cupsWidth);
+	    bp += rowsize;
+	    dp += header.cupsBytesPerLine;
+	}
+	if (cupsRasterWritePixels(raster,cmykImage, size) != size) {
+	    error(-1,const_cast<char *>("Can't write page %d image"),i);
+	    exit(1);
+	}
+	delete[] cmykImage;
+    } else {
+	if (cupsRasterWritePixels(raster,bp, size) != size) {
+	    error(-1,const_cast<char *>("Can't write page %d image"),i);
+	    exit(1);
+	}
     }
   }
   cupsRasterClose(raster);

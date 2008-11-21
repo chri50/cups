@@ -8,8 +8,8 @@
 
 @DPATCH@
 diff -urNad trunk~/backend/Makefile trunk/backend/Makefile
---- trunk~/backend/Makefile	2007-08-08 21:27:51.000000000 +0200
-+++ trunk/backend/Makefile	2008-09-06 18:17:10.000000000 +0200
+--- trunk~/backend/Makefile	2008-11-17 08:33:10.000000000 +0100
++++ trunk/backend/Makefile	2008-11-17 08:38:37.000000000 +0100
 @@ -55,7 +55,7 @@
  install:	all
  	$(INSTALL_DIR) -m 755 $(SERVERBIN)/backend
@@ -19,9 +19,21 @@ diff -urNad trunk~/backend/Makefile trunk/backend/Makefile
  	done
  	for file in $(UBACKENDS); do \
  		$(INSTALL_BIN) $$file $(SERVERBIN)/backend; \
+diff -urNad trunk~/scheduler/cups-deviced.c trunk/scheduler/cups-deviced.c
+--- trunk~/scheduler/cups-deviced.c	2008-11-17 08:25:34.000000000 +0100
++++ trunk/scheduler/cups-deviced.c	2008-11-17 08:38:50.000000000 +0100
+@@ -214,7 +214,7 @@
+     backend_argv[1] = NULL;
+ 
+     fp = cupsdPipeCommand(&pid, filename, backend_argv,
+-                          (dent->fileinfo.st_mode & (S_IRWXG | S_IRWXO))
++                          (dent->fileinfo.st_mode & (S_IWGRP | S_IXGRP | S_IWOTH | S_IXOTH))
+ 		              ? normal_user : 0);
+ 
+    /*
 diff -urNad trunk~/scheduler/job.c trunk/scheduler/job.c
---- trunk~/scheduler/job.c	2008-07-21 21:57:20.000000000 +0200
-+++ trunk/scheduler/job.c	2008-09-06 18:17:48.000000000 +0200
+--- trunk~/scheduler/job.c	2008-11-17 08:33:10.000000000 +0100
++++ trunk/scheduler/job.c	2008-11-17 08:38:37.000000000 +0100
 @@ -3406,7 +3406,7 @@
        else if (stat(command, &backinfo))
  	backroot = 0;
