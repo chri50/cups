@@ -60,7 +60,7 @@ MASK_RE=$(
 # - no<option> (boolean)
 MASKED_OPTS=$(
   printf "%s" "$5" | \
-    sed -r -e 's/(^|\s+)(no)?('"$MASK_RE"')(=\S*)?//g' -e 's/^\s+//'
+    sed -r -e 's/(^|\s+)(no)?('"$MASK_RE"')(=\S*)?//gi' -e 's/^\s+//'
 )
 
 /usr/lib/cups/filter/pdftops "$@" | \
