@@ -54,7 +54,7 @@ int P2POutputStream::puts(const char *str)
   return write(str,strlen(str));
 }
 
-int P2POutputStream::putchar(int c)
+int P2POutputStream::putchar(char c)
 {
   int r;
 

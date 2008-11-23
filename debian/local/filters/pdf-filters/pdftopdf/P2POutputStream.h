@@ -46,7 +46,7 @@ public:
   ~P2POutputStream();
   int write(const void *buf, int n);
   int printf(const char *format, ...);
-  int putchar(int c);
+  int putchar(char c);
   int puts(const char *str);
   int getPosition() { return position; }
   GBool canDeflate() {
