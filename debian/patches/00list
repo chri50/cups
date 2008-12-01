@@ -9,6 +9,7 @@ cupsaccept.dpatch
 # patches accepted and committed upstream for next 1.3:
 hpgl-regression.dpatch
 runloop-backchannel-eof-spin.dpatch
+png-image-int-overflow.dpatch
 
 # patches sent upstream
 removecvstag.dpatch

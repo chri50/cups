@@ -43,6 +43,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 /* Constructor */
 P2PPage::P2PPage(Page *orgPageA, XRef *xrefA)
 {
+  int rotateTag;
+
   numOrgPages = 1;
   orgPages = new OrgPage [1];
   orgPages[0].page = orgPageA;
@@ -54,6 +56,32 @@ P2PPage::P2PPage(Page *orgPageA, XRef *xrefA)
   bleedBox = *orgPageA->getBleedBox();
   trimBox = *orgPageA->getTrimBox();
   artBox = *orgPageA->getArtBox();
+
+  /* rotate tag */
+  if ((rotateTag = orgPageA->getRotate()) != 0) {
+    /* Note: rotate tag of PDF is clockwise and 
+     *       orientation-requested attrobute of IPP is anti-clockwise
+     */
+    int orientation = 0;
+    switch (rotateTag) {
+    case 90:
+    case -270:
+	orientation = 3;
+	break;
+    case 180:
+    case -180:
+	orientation = 2;
+	break;
+    case 270:
+    case -90:
+	orientation = 1;
+	break;
+    case 0:
+    default:
+	break;
+    }
+    rotate(orientation);
+  }
 
   /* when 0, use original resource dictionary of orgPages[0] */
   resources = 0;
