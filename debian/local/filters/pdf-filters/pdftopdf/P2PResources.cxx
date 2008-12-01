@@ -125,7 +125,7 @@ void P2PResources::output(P2POutputStream *str, P2PFontResource *fontResource)
   }
   /* output ProcSet */ 
   /* Notice: constant values */
-  str->puts(" /ProcSet [ /PDF /Text ] ");
+  str->puts(" /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ] ");
 
   /* Notice: no Properties */
 

@@ -1,9 +1,24 @@
+cups (1.3.9-9) experimental; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/local/filters/pdf-filters/pdftopdf/P2PPage.cxx,
+    debian/local/filters/pdf-filters/pdftopdf/P2PResources.cxx: Added
+    processing of the rotate tag (LP: #300312).
+
+  [ Martin Pitt ]
+  * Add png-image-int-overflow.dpatch: Fix integer overflow in the PNG image
+    reader (Closes: #507183, STR #2974, CVE-2008-5286)
+
+ -- Martin Pitt <mpitt@debian.org>  Mon, 01 Dec 2008 15:47:10 -0800
+
 cups (1.3.9-8) experimental; urgency=low
 
   * debian/local/filters/pdf-filters/pdftopdf/P2POutputStream.cxx,
     debian/local/filters/pdf-filters/pdftopdf/P2POutputStream.h: Removed
     an endianess dependency from the pdftopdf filter, so that it also
-    works on non-PC platforms like PowerPC (LP: #271350).
+    works on non-PC platforms like PowerPC (LP: #271350). This also fixes the
+    filter on mipsel and makes the test suite, and thus the build, succeed
+    again. (Closes: #500305)
   * debian/filters/pstopdf: Do not supply the margins from the PPD to the
     ps2pdf process, as this breaks full-bleed printing and is also disturbs 
     the printing if PPDs have too conservative margin definitions (LP: #282186).
@@ -403,6 +418,7 @@ cups (1.3.8-1) unstable; urgency=low
 
   * New upstream release: some 20 bug fixes, no new features (see
     http://www.cups.org/articles.php?L562 for details).
+    - Fixes remote DoS through RSS subscriptions. (CVE-2008-5184)
   * Dropped patches, accepted upstream:
     - empty_option_value_crash.dpatch
     - CVE-2008-1722.dpatch
