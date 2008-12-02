@@ -10,6 +10,7 @@ CVE-2008-3640_texttops_overflow.dpatch
 freebsd.dpatch
 hpgl-regression.dpatch
 runloop-backchannel-eof-spin.dpatch
+png-image-int-overflow.dpatch
 
 # patches sent upstream
 pidfile.dpatch
