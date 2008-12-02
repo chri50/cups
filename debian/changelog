@@ -1,3 +1,11 @@
+cups (1.3.8-1lenny4) unstable; urgency=high
+
+  * High urgency due to security bug fix.
+  * Add png-image-int-overflow.dpatch: Fix integer overflow in the PNG image
+    reader (Closes: #507183, STR #2974, CVE-2008-5286)
+
+ -- Martin Pitt <mpitt@debian.org>  Mon, 01 Dec 2008 17:33:18 -0800
+
 cups (1.3.8-1lenny3) unstable; urgency=medium
 
   * Urgency medium because of RC bug fix.
@@ -67,6 +75,7 @@ cups (1.3.8-1) unstable; urgency=low
 
   * New upstream release: some 20 bug fixes, no new features (see
     http://www.cups.org/articles.php?L562 for details).
+    - Fixes remote DoS through RSS subscriptions. (CVE-2008-5184)
   * Dropped patches, accepted upstream:
     - empty_option_value_crash.dpatch
     - CVE-2008-1722.dpatch
