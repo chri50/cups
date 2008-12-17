@@ -66,6 +66,7 @@ namespace {
   int deviceCopies = 1;
   GBool deviceCollate = gFalse;
   GBool deviceReverse = gFalse;
+  GBool autoRotate = gTrue;
 };
 
 void CDECL myErrorFun(int pos, char *msg, va_list args)
@@ -481,6 +482,14 @@ void parseOpts(int argc, char **argv)
   if (checkFeature("pdftopdfContentsCompress",num_options,options)) {
     P2PDoc::options.contentsCompress = gTrue;
   }
+  /* auto rotate */
+  if (cupsGetOption("pdftopdfAutoRotate",num_options,options) != 0 ||
+         ppdFindAttr(ppd,"pdftopdfAutoRotate",0) != 0) {
+      if (!checkFeature("pdftopdfAutoRotate",num_options,options)) {
+	/* disable auto rotate */
+	autoRotate = gFalse;
+      }
+  }
 
   /* pre-loaded fonts */
   if (ppd != 0) {
@@ -661,6 +670,16 @@ int main(int argc, char *argv[]) {
 
   p2pdoc->select();
 
+  if (autoRotate && orientation == 0
+     && naturalScaling == 1.0 && !fitplot && numberUp == 1 && !position) {
+    /* If no translation is specified, do auto-rotate.
+     * This is for compatibility with pdftops filter.
+     */
+    p2pdoc->autoRotate(&mediaBox);
+    p2pdoc->position(&mediaBox,0,0);
+  }
+
+  p2pdoc->setMediaBox(&mediaBox);
   /* set all pages's mediaBox to the target page size */
   p2pdoc->setMediaBox(&mediaBox);
 

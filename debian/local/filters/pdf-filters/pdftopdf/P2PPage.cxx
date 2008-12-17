@@ -560,6 +560,26 @@ void P2PPage::scale(double zoom)
   artBox = cropBox;
 }
 
+void P2PPage::autoRotate(PDFRectangle *box)
+{
+  double mediaWidth = box->x2 - box->x1;
+  if (mediaWidth < 0) mediaWidth = -mediaWidth;
+  double mediaHeight = box->y2 - box->y1;
+  if (mediaHeight < 0) mediaHeight = -mediaHeight;
+  /* only proccess when the page has one original page. */
+  double pageWidth = mediaBox.x2 - mediaBox.x1;
+  if (pageWidth < 0) pageWidth = -pageWidth;
+  double pageHeight = mediaBox.y2 - mediaBox.y1;
+  if (pageHeight < 0) pageHeight = -pageHeight;
+
+  if ((mediaWidth >= pageWidth && mediaHeight >= pageHeight)
+    || (mediaWidth < pageHeight || mediaHeight < pageWidth)) {
+       /* the page is inside the media or rotated page is not inside */
+      return;
+  }
+  rotate(1);
+}
+
 P2PPage::OrgPage::OrgPage()
 {
   page = 0;
