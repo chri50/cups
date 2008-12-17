@@ -204,6 +204,11 @@ void P2PDoc::scale(double zoom)
   catalog->scale(zoom);
 }
 
+void P2PDoc::autoRotate(PDFRectangle *box)
+{
+  catalog->autoRotate(box);
+}
+
 void P2PDoc::setMediaBox(PDFRectangle *mediaBoxA)
 {
   catalog->setMediaBox(mediaBoxA);

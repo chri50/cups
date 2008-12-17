@@ -63,7 +63,23 @@ MASKED_OPTS=$(
     sed -r -e 's/(^|\s+)(no)?('"$MASK_RE"')(=\S*)?//gi' -e 's/^\s+//'
 )
 
-/usr/lib/cups/filter/pdftops "$@" | \
-  /usr/lib/cups/filter/pstops "$1" "$2" "$3" 1 "$MASKED_OPTS"
+tempfiles=
+trap 'rm -f $tempfiles' 0 1 2 13 15
+
+infile=$(mktemp -t cpdftocps.XXXXXX)
+tempfiles="$tempfiles $infile"
+
+cat > "$infile"
+
+copies=`grep '%%PDFTOPDFNumCopies' "$infile" | perl -p -e 's/^.*(\d+)\s*$/\1/'`
+[ -n "$copies" ] || copies=1
+collate=
+grep -q '%%PDFTOPDFCollate\s*:\s*true' "$infile" && collate="collate"
+
+echo "DEBUG: Device copies: $copies; device collate: $collate" 1>&2
+
+cat "$infile" | \
+  /usr/lib/cups/filter/pdftops "$@" | \
+  /usr/lib/cups/filter/pstops "$1" "$2" "$3" "$copies" "$collate $MASKED_OPTS"
 
 # vim:set et sw=2 sts=2:
