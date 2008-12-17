@@ -112,8 +112,9 @@
   # third-party printer drivers; no known structure here
   /opt/** rix,
 
-  # FIXME: no policy ATM for hplip
+  # FIXME: no policy ATM for hplip and Brother drivers
   /usr/bin/hpijs Ux,
+  /usr/Brother/** Ux,
 
   # Kerberos authentication
   /etc/krb5.conf r,

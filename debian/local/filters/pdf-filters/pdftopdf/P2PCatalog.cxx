@@ -98,6 +98,11 @@ void P2PCatalog::scale(double zoom)
   pageTree->scale(zoom);
 }
 
+void P2PCatalog::autoRotate(PDFRectangle *box)
+{
+  pageTree->autoRotate(box);
+}
+
 void P2PCatalog::setMediaBox(PDFRectangle *mediaBoxA)
 {
   pageTree->setMediaBox(mediaBoxA);
