@@ -1,3 +1,29 @@
+cups (1.3.9-2ubuntu5) intrepid-proposed; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/local/filters/pdf-filters/pdftopdf/P2PCatalog.cxx,
+    debian/local/filters/pdf-filters/pdftopdf/P2PCatalog.h,
+    debian/local/filters/pdf-filters/pdftopdf/P2PDoc.cxx,
+    debian/local/filters/pdf-filters/pdftopdf/P2PDoc.h,
+    debian/local/filters/pdf-filters/pdftopdf/P2PPage.cxx,
+    debian/local/filters/pdf-filters/pdftopdf/P2PPage.h,
+    debian/local/filters/pdf-filters/pdftopdf/P2PPageTree.cxx,
+    debian/local/filters/pdf-filters/pdftopdf/P2PPageTree.h,
+    debian/local/filters/pdf-filters/pdftopdf/pdftopdf.cxx,
+    debian/local/filters/pdf-filters/pdftopdf/P2PResources.cxx: Fixed problem
+    of Landscape-oriented PDF files being printed in the wrong orientation
+    (LP: #47649), added processing of the rotate tag (intrepid
+    regression) (LP: #300312).
+  * debian/local/filters/cpdftocps: Made correct number of copies
+    being printed on PostScript printers with hardware copy handling
+    (LP: #286048).
+
+  [ Martin Pitt ]
+  * debian/local/apparmor-profile: Allow cupsd to run Brother drivers.
+    (LP: #237256)
+
+ -- Martin Pitt <martin.pitt@ubuntu.com>  Wed, 17 Dec 2008 08:04:36 +0100
+
 cups (1.3.9-2ubuntu4) intrepid-proposed; urgency=low
 
   * debian/local/filters/pdf-filters/pdftopdf/P2POutputStream.cxx,

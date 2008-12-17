@@ -43,6 +43,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 /* Constructor */
 P2PPage::P2PPage(Page *orgPageA, XRef *xrefA)
 {
+  int rotateTag;
+
   numOrgPages = 1;
   orgPages = new OrgPage [1];
   orgPages[0].page = orgPageA;
@@ -54,6 +56,32 @@ P2PPage::P2PPage(Page *orgPageA, XRef *xrefA)
   bleedBox = *orgPageA->getBleedBox();
   trimBox = *orgPageA->getTrimBox();
   artBox = *orgPageA->getArtBox();
+
+  /* rotate tag */
+  if ((rotateTag = orgPageA->getRotate()) != 0) {
+    /* Note: rotate tag of PDF is clockwise and 
+     *       orientation-requested attrobute of IPP is anti-clockwise
+     */
+    int orientation = 0;
+    switch (rotateTag) {
+    case 90:
+    case -270:
+	orientation = 3;
+	break;
+    case 180:
+    case -180:
+	orientation = 2;
+	break;
+    case 270:
+    case -90:
+	orientation = 1;
+	break;
+    case 0:
+    default:
+	break;
+    }
+    rotate(orientation);
+  }
 
   /* when 0, use original resource dictionary of orgPages[0] */
   resources = 0;
@@ -530,6 +558,26 @@ void P2PPage::scale(double zoom)
   bleedBox = cropBox;
   trimBox = cropBox;
   artBox = cropBox;
+}
+
+void P2PPage::autoRotate(PDFRectangle *box)
+{
+  double mediaWidth = box->x2 - box->x1;
+  if (mediaWidth < 0) mediaWidth = -mediaWidth;
+  double mediaHeight = box->y2 - box->y1;
+  if (mediaHeight < 0) mediaHeight = -mediaHeight;
+  /* only proccess when the page has one original page. */
+  double pageWidth = mediaBox.x2 - mediaBox.x1;
+  if (pageWidth < 0) pageWidth = -pageWidth;
+  double pageHeight = mediaBox.y2 - mediaBox.y1;
+  if (pageHeight < 0) pageHeight = -pageHeight;
+
+  if ((mediaWidth >= pageWidth && mediaHeight >= pageHeight)
+    || (mediaWidth < pageHeight || mediaHeight < pageWidth)) {
+       /* the page is inside the media or rotated page is not inside */
+      return;
+  }
+  rotate(1);
 }
 
 P2PPage::OrgPage::OrgPage()
