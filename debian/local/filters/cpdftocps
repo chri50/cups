@@ -71,7 +71,7 @@ tempfiles="$tempfiles $infile"
 
 cat > "$infile"
 
-copies=`grep '%%PDFTOPDFNumCopies' "$infile" | perl -p -e 's/^.*(\d+)\s*$/\1/'`
+copies=`grep -a '%%PDFTOPDFNumCopies' "$infile" | perl -p -e 's/^.*(\d+)\s*$/\1/'`
 [ -n "$copies" ] || copies=1
 collate=
 grep -q '%%PDFTOPDFCollate\s*:\s*true' "$infile" && collate="collate"
