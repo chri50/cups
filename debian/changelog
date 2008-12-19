@@ -1,3 +1,11 @@
+cups (1.3.9-11) experimental; urgency=low
+
+  * debian/local/filters/cpdftocps: Fixed the fix for the number of copies.
+    In some cases it failed and pstops was called with 0 copies requested
+    (LP: #309314, LP: #300312, LP: #286048).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 19 Dec 2008 15:58:55 +0100
+
 cups (1.3.9-10) experimental; urgency=low
 
   [ Till Kamppeter ]
