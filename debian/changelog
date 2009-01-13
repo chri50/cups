@@ -1,3 +1,11 @@
+cups (1.3.8-1lenny4.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Apply upstream patch to fix client request loop for large request over
+    SSL. (closes: #506702)
+
+ -- Bastian Blank <waldi@debian.org>  Tue, 13 Jan 2009 17:03:55 +0100
+
 cups (1.3.8-1lenny4) unstable; urgency=high
 
   * High urgency due to security bug fix.

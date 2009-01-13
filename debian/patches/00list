@@ -11,6 +11,7 @@ freebsd.dpatch
 hpgl-regression.dpatch
 runloop-backchannel-eof-spin.dpatch
 png-image-int-overflow.dpatch
+client-ssl-hang.dpatch
 
 # patches sent upstream
 pidfile.dpatch
