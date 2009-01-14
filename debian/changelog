@@ -1,3 +1,13 @@
+cups (1.3.9-11ubuntu1) jaunty; urgency=low
+
+  * SECURITY UPDATE: denial of service by adding a large number of RSS
+    subscriptions (LP: #298241)
+    - debian/patches/CVE-2008-5183.dpatch: gracefully handle MaxSubscriptions
+      being reached in scheduler/{ipp.c,subscriptions.c}
+    - CVE-2008-5183
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Wed, 14 Jan 2009 08:28:14 -0500 
+
 cups (1.3.9-11) experimental; urgency=low
 
   * debian/local/filters/cpdftocps: Fixed the fix for the number of copies.
