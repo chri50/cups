@@ -30,3 +30,4 @@ confdirperms.dpatch
 # Ubuntu patches
 ubuntu-disable-browsing.dpatch
 ubuntu-default-error-policy-retry-job.dpatch
+CVE-2008-5183
