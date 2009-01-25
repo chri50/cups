@@ -676,12 +676,13 @@ int main(int argc, char *argv[]) {
      * This is for compatibility with pdftops filter.
      */
     p2pdoc->autoRotate(&mediaBox);
-    p2pdoc->position(&mediaBox,0,0);
   }
 
-  p2pdoc->setMediaBox(&mediaBox);
   /* set all pages's mediaBox to the target page size */
-  p2pdoc->setMediaBox(&mediaBox);
+  if (orientation != 0
+     || naturalScaling != 1.0 || fitplot || numberUp != 1 || position) {
+    p2pdoc->setMediaBox(&mediaBox);
+  }
 
   if ((P2PDoc::options.collate || deviceCollate)
       && p2pdoc->getNumberOfPages() == 1
