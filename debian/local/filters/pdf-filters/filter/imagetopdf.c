@@ -799,8 +799,12 @@ main(int  argc,				/* I - Number of command-line arguments */
 
   if ((val = cupsGetOption("scaling", num_options, options)) != NULL)
     zoom = atoi(val) * 0.01;
-  else if (cupsGetOption("fitplot", num_options, options))
-    zoom = 1.0;
+  else if (((val =
+	     cupsGetOption("fit-to-page", num_options, options)) != NULL) ||
+	   ((val = cupsGetOption("fitplot", num_options, options)) != NULL))
+    if (!strcasecmp(val, "yes") || !strcasecmp(val, "on") ||
+	!strcasecmp(val, "true"))
+      zoom = 1.0;
 
   if ((val = cupsGetOption("ppi", num_options, options)) != NULL)
     if (sscanf(val, "%dx%d", &xppi, &yppi) < 2)

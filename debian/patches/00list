@@ -3,7 +3,6 @@ freebsd.dpatch
 manpage-typos.dpatch
 search_mime_files_in_usr_share.dpatch
 pdftops-cups-1.4.dpatch
-pdftops-dont_fail_on_cancel.dpatch
 cupsaccept.dpatch
 
 # patches accepted and committed upstream for next 1.3:

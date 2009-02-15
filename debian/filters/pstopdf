@@ -20,7 +20,7 @@ PS2PS_OPTIONS="-dAutoRotatePages=/None -dAutoFilterColorImages=false \
 PS2PDF_OPTIONS="$PS2PS_OPTIONS -dColorImageFilter=/FlateEncode \
                -dPDFSETTINGS=/printer"
 
-echo "DEBUG: pstopdf argv[$#] = $@" >&2
+echo "DEBUG: pstopdf $# args: $@" >&2
 echo "DEBUG: PPD: $PPD" >&2
 
 if [ $# -lt 5 -o $# -gt 6 ]; then
@@ -52,43 +52,47 @@ if test -e "$PPD"; then
 fi
 echo "DEBUG: Resolution: $resolution" >&2
 
-pagesize=
-eval "$(printf "%s" "$5" | sed -nre 's/.*(^|\s)(media|PageSize)=(\S+).*/pagesize="${pagesize:-\3}"/p')"
-if test -e "$PPD"; then
-  eval "$(sed -nre 's/^\*DefaultPageSize:\s+(\S+).*/pagesize="${pagesize:-\1}"/p' "$PPD")"
-fi
-echo "DEBUG: Page size: $pagesize" >&2
-
 width=
 height=
 bl_x=
 bl_y=
 tr_x=
 tr_y=
-if test -n "$pagesize" && test -e "$PPD"; then
-  eval "$(sed -nre 's|^\*PaperDimension\s+'"$pagesize"'/[^:]+:\s+"(\S+)\s+(\S+)".*|width="\1"; height="\2"|p' "$PPD")"
-
-  eval "$(sed -nre 's|^\*ImageableArea\s+'"$pagesize"'/[^:]+:\s+"(\S+)\s+(\S+)\s+(\S+)\s+(\S+)".*|bl_x="\1"; bl_y="\2"; tr_x="\3"; tr_y="\4"|p' "$PPD")"
-fi
-echo "DEBUG: Width: $width, height: $height, absolute margins: $bl_x, $bl_y, $tr_x, $tr_y" >&2
-
 margin_l=
 margin_b=
 margin_r=
 margin_t=
-if test -n "$width" && test -n "$height" && \
-   test -n "$bl_x" && test -n "$bl_y" && \
-   test -n "$tr_x" && test -n "$tr_y"; then
-  margin_l="$bl_x"
-  margin_b="$bl_y"
-  margin_r="$(printf "scale=8; (%s)-(%s)\n" "$width" "$tr_x" | bc)"
-  margin_t="$(printf "scale=8; (%s)-(%s)\n" "$height" "$tr_y" | bc)"
-fi
-echo "DEBUG: Relative margins: $margin_l, $margin_b, $margin_r, $margin_t" >&2
+# Apply a paper size to the conversion process only if the "fitplot" or
+# "fit-to-page" option is supplied
+if echo "$5" | egrep -q '\b(fitplot|fit-to-page)\b'; then
+    pagesize=
+    eval "$(printf "%s" "$5" | sed -nre 's/.*(^|\s)(media|PageSize)=(\S+).*/pagesize="${pagesize:-\3}"/p')"
+    if test -e "$PPD"; then
+	eval "$(sed -nre 's/^\*DefaultPageSize:\s+(\S+).*/pagesize="${pagesize:-\1}"/p' "$PPD")"
+    fi
+    echo "DEBUG: Page size: $pagesize" >&2
 
-if test -n "$margin_l" && test -n "$margin_b" && \
-   test -n "$margin_r" && test -n "$margin_t"; then
-  inject_ps="<</.HWMargins[$margin_l $margin_b $margin_r $margin_t] /Margins[0 0]>>setpagedevice"
+    if test -n "$pagesize" && test -e "$PPD"; then
+	eval "$(sed -nre 's|^\*PaperDimension\s+'"$pagesize"'/[^:]+:\s+"(\S+)\s+(\S+)".*|width="\1"; height="\2"|p' "$PPD")"
+
+	eval "$(sed -nre 's|^\*ImageableArea\s+'"$pagesize"'/[^:]+:\s+"(\S+)\s+(\S+)\s+(\S+)\s+(\S+)".*|bl_x="\1"; bl_y="\2"; tr_x="\3"; tr_y="\4"|p' "$PPD")"
+    fi
+    echo "DEBUG: Width: $width, height: $height, absolute margins: $bl_x, $bl_y, $tr_x, $tr_y" >&2
+
+    if test -n "$width" && test -n "$height" && \
+	test -n "$bl_x" && test -n "$bl_y" && \
+	test -n "$tr_x" && test -n "$tr_y"; then
+	margin_l="$bl_x"
+	margin_b="$bl_y"
+	margin_r="$(printf "scale=8; (%s)-(%s)\n" "$width" "$tr_x" | bc)"
+	margin_t="$(printf "scale=8; (%s)-(%s)\n" "$height" "$tr_y" | bc)"
+    fi
+    echo "DEBUG: Relative margins: $margin_l, $margin_b, $margin_r, $margin_t" >&2
+
+    if test -n "$margin_l" && test -n "$margin_b" && \
+	test -n "$margin_r" && test -n "$margin_t"; then
+	inject_ps="<</.HWMargins[$margin_l $margin_b $margin_r $margin_t] /Margins[0 0]>>setpagedevice"
+    fi
 fi
 
 ppd_opts=

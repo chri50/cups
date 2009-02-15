@@ -1,3 +1,31 @@
+cups (1.3.9-13) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/local/filters/pdf-filters/filter/imagetopdf.c: Added support for
+    the new "fit-to-page" option (new, more intuitive name for "fitplot").
+  * debian/filters/pstopdf: Only apply paper size if the "fitplot" or the
+    "fit-to-page" option is set.
+  * debian/local/filters/cpdftocps: Only the last digit of the number of
+    copies was used (LP: #309314).
+  * debian/local/filters/pdf-filters/pdftopdf/pdftopdf.cxx: Do not preceed the
+    PDF output with a newline (LP: #303691). Only impose the page size from
+    the PPD file to all pages if the "fitplot" or the "fit-to-page" option is 
+    set. This prevented from automatic paper tray switching to the correct paper
+    sizes when a multiple-page-size document is printed (partial fix for
+    LP: #310575).
+  * debian/patches/pdftops-cups-1.4.dpatch: Updated from CUPS 1.4 SVN. Contains
+    fixes for multiple-page-size document printing (partial fix for
+    LP: #310575).
+  * debian/patches/pdftops-dont_fail_on_cancel.dpatch: Removed, should be
+    fixed in the new upstream version of pdftops.
+
+  [ Martin Pitt ]
+  * debian/patches/pdftops-cups-1.4.dpatch: Add definition of
+    HAVE_PDFTOPS and CUPS_PDFTOPS, so that the filter actually gets
+    again built with pdftops support. (Fixes Till's change from above).
+
+ -- Martin Pitt <mpitt@debian.org>  Sun, 15 Feb 2009 18:39:03 +0100
+
 cups (1.3.9-12) experimental; urgency=low
 
   [ Till Kamppeter ]
