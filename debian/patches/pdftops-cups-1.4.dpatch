@@ -7,8 +7,8 @@
 
 @DPATCH@
 diff -urNad trunk~/filter/Makefile trunk/filter/Makefile
---- trunk~/filter/Makefile	2008-04-06 11:14:48.000000000 -0500
-+++ trunk/filter/Makefile	2008-04-09 23:00:00.000000000 -0500
+--- trunk~/filter/Makefile	2009-02-15 18:32:04.000000000 +0100
++++ trunk/filter/Makefile	2009-02-15 18:33:02.196769748 +0100
 @@ -19,7 +19,7 @@
  
  
@@ -38,16 +38,16 @@ diff -urNad trunk~/filter/Makefile trunk/filter/Makefile
  #
  # rastertolabel
 diff -urNad trunk~/filter/pdftops.c trunk/filter/pdftops.c
---- trunk~/filter/pdftops.c	1969-12-31 18:00:00.000000000 -0600
-+++ trunk/filter/pdftops.c	2008-04-09 23:00:12.000000000 -0500
-@@ -0,0 +1,335 @@
+--- trunk~/filter/pdftops.c	1970-01-01 01:00:00.000000000 +0100
++++ trunk/filter/pdftops.c	2009-02-15 18:33:10.841513287 +0100
+@@ -0,0 +1,405 @@
 +/*
 + * "$Id$"
 + *
 + *   PDF to PostScript filter front-end for the Common UNIX Printing
 + *   System (CUPS).
 + *
-+ *   Copyright 2007-2008 by Apple Inc.
++ *   Copyright 2007-2009 by Apple Inc.
 + *   Copyright 1997-2006 by Easy Software Products.
 + *
 + *   These coded instructions, statements, and computer programs are the
@@ -73,6 +73,9 @@ diff -urNad trunk~/filter/pdftops.c trunk/filter/pdftops.c
 +#include <sys/wait.h>
 +#include <errno.h>
 +
++#define CUPS_GHOSTSCRIPT "/usr/bin/gs"
++#define HAVE_PDFTOPS 1
++#define CUPS_PDFTOPS "/usr/bin/pdftops"
 +
 +/*
 + * Local functions...
@@ -104,14 +107,15 @@ diff -urNad trunk~/filter/pdftops.c trunk/filter/pdftops.c
 +  int		num_options;		/* Number of options */
 +  cups_option_t	*options;		/* Options */
 +  const char	*val;			/* Option value */
-+  int		orientation;		/* Output orientation */
++  int		orientation,		/* Output orientation */
++                fit;			/* Fit output to default page size? */
 +  ppd_file_t	*ppd;			/* PPD file */
 +  ppd_size_t	*size;			/* Current page size */
 +  int		pdfpid,			/* Process ID for pdftops */
 +		pdfwaitpid,		/* Process ID from wait() */
 +		pdfstatus,		/* Status from pdftops */
 +		pdfargc;		/* Number of args for pdftops */
-+  char		*pdfargv[100],		/* Arguments for pdftops */
++  char		*pdfargv[100],		/* Arguments for pdftops/gs */
 +		pdfwidth[255],		/* Paper width */
 +		pdfheight[255];		/* Paper height */
 +#if defined(HAVE_SIGACTION) && !defined(HAVE_SIGSET)
@@ -200,11 +204,22 @@ diff -urNad trunk~/filter/pdftops.c trunk/filter/pdftops.c
 +  cupsMarkOptions(ppd, num_options, options);
 +
 + /*
-+  * Build the command-line for the pdftops filter...
++  * Build the command-line for the pdftops or gs filter...
 +  */
 +
++#ifdef HAVE_PDFTOPS
 +  pdfargv[0] = (char *)"pdftops";
 +  pdfargc    = 1;
++#else
++  pdfargv[0] = (char *)"gs";
++  pdfargv[1] = (char *)"-q";
++  pdfargv[2] = (char *)"-dNOPAUSE";
++  pdfargv[3] = (char *)"-dBATCH";
++  pdfargv[4] = (char *)"-dSAFER";
++  pdfargv[5] = (char *)"-sDEVICE=pswrite";
++  pdfargv[6] = (char *)"-sOUTPUTFILE=%stdout";
++  pdfargc    = 7;
++#endif /* HAVE_PDFTOPS */
 +
 +  if (ppd)
 +  {
@@ -214,24 +229,45 @@ diff -urNad trunk~/filter/pdftops.c trunk/filter/pdftops.c
 +
 +    if (ppd->language_level == 1)
 +    {
++#ifdef HAVE_PDFTOPS
 +      pdfargv[pdfargc++] = (char *)"-level1";
 +      pdfargv[pdfargc++] = (char *)"-noembtt";
++#else
++      pdfargv[pdfargc++] = (char *)"-dLanguageLevel=1";
++#endif /* HAVE_PDFTOPS */
 +    }
 +    else if (ppd->language_level == 2)
 +    {
++#ifdef HAVE_PDFTOPS
 +      pdfargv[pdfargc++] = (char *)"-level2";
 +      if (!ppd->ttrasterizer)
 +	pdfargv[pdfargc++] = (char *)"-noembtt";
++#else
++      pdfargv[pdfargc++] = (char *)"-dLanguageLevel=2";
++#endif /* HAVE_PDFTOPS */
 +    }
 +    else
++#ifdef HAVE_PDFTOPS
 +      pdfargv[pdfargc++] = (char *)"-level3";
++#else
++      pdfargv[pdfargc++] = (char *)"-dLanguageLevel=3";
++#endif /* HAVE_PDFTOPS */
++
++    if ((val = cupsGetOption("fitplot", num_options, options)) == NULL)
++      val = cupsGetOption("fit-to-page", num_options, options);
++
++    if (val && strcasecmp(val, "no") && strcasecmp(val, "off") &&
++	strcasecmp(val, "false"))
++      fit = 1;
++    else
++      fit = 0;
 +
 +   /*
 +    * Set output page size...
 +    */
 +
 +    size = ppdPageSize(ppd, NULL);
-+    if (size)
++    if (size && fit)
 +    {
 +     /*
 +      * Got the size, now get the orientation...
@@ -261,6 +297,7 @@ diff -urNad trunk~/filter/pdftops.c trunk/filter/pdftops.c
 +	  orientation ^= 1;
 +      }
 +
++#ifdef HAVE_PDFTOPS
 +      if (orientation & 1)
 +      {
 +	snprintf(pdfwidth, sizeof(pdfwidth), "%.0f", size->length);
@@ -276,17 +313,41 @@ diff -urNad trunk~/filter/pdftops.c trunk/filter/pdftops.c
 +      pdfargv[pdfargc++] = pdfwidth;
 +      pdfargv[pdfargc++] = (char *)"-paperh";
 +      pdfargv[pdfargc++] = pdfheight;
++      pdfargv[pdfargc++] = (char *)"-expand";
++
++#else
++      if (orientation & 1)
++      {
++	snprintf(pdfwidth, sizeof(pdfwidth), "-dDEVICEWIDTHPOINTS=%.0f",
++	         size->length);
++	snprintf(pdfheight, sizeof(pdfheight), "-dDEVICEHEIGHTPOINTS=%.0f",
++	         size->width);
++      }
++      else
++      {
++	snprintf(pdfwidth, sizeof(pdfwidth), "-dDEVICEWIDTHPOINTS=%.0f",
++	         size->width);
++	snprintf(pdfheight, sizeof(pdfheight), "-dDEVICEHEIGHTPOINTS=%.0f",
++	         size->length);
++      }
++
++      pdfargv[pdfargc++] = pdfwidth;
++      pdfargv[pdfargc++] = pdfheight;
++#endif /* HAVE_PDFTOPS */
 +    }
 +  }
 +
-+  if ((val = cupsGetOption("fitplot", num_options, options)) != NULL &&
-+      strcasecmp(val, "no") && strcasecmp(val, "off") &&
-+      strcasecmp(val, "false"))
-+    pdfargv[pdfargc++] = (char *)"-expand";
-+
++#ifdef HAVE_PDFTOPS
 +  pdfargv[pdfargc++] = filename;
 +  pdfargv[pdfargc++] = (char *)"-";
-+  pdfargv[pdfargc]   = NULL;
++#else
++  pdfargv[pdfargc++] = (char *)"-c";
++  pdfargv[pdfargc++] = (char *)"save pop";
++  pdfargv[pdfargc++] = (char *)"-f";
++  pdfargv[pdfargc++] = filename;
++#endif /* HAVE_PDFTOPS */
++
++  pdfargv[pdfargc] = NULL;
 +
 +  if ((pdfpid = fork()) == 0)
 +  {
@@ -294,8 +355,14 @@ diff -urNad trunk~/filter/pdftops.c trunk/filter/pdftops.c
 +    * Child comes here...
 +    */
 +
-+    execv("/usr/bin/pdftops", pdfargv);
-+    perror(_("ERROR: Unable to execute pdftops filter"));
++#ifdef HAVE_PDFTOPS
++    execv(CUPS_PDFTOPS, pdfargv);
++    perror(_("ERROR: Unable to execute pdftops program"));
++#else
++    execv(CUPS_GHOSTSCRIPT, pdfargv);
++    perror(_("ERROR: Unable to execute gs program"));
++#endif /* HAVE_PDFTOPS */
++
 +    exit(1);
 +  }
 +  else if (pdfpid < 0)
@@ -304,7 +371,12 @@ diff -urNad trunk~/filter/pdftops.c trunk/filter/pdftops.c
 +    * Unable to fork!
 +    */
 +
-+    perror(_("ERROR: Unable to execute pdftops filter"));
++#ifdef HAVE_PDFTOPS
++    perror(_("ERROR: Unable to execute pdftops program"));
++#else
++    perror(_("ERROR: Unable to execute gs program"));
++#endif /* HAVE_PDFTOPS */
++
 +    pdfstatus = 1;
 +  }
 +  else
@@ -313,37 +385,35 @@ diff -urNad trunk~/filter/pdftops.c trunk/filter/pdftops.c
 +    * Parent comes here...
 +    */
 +
-+    while ((pdfwaitpid = wait(&pdfstatus)) < 0 && errno == EINTR)
++    while ((pdfwaitpid = wait(&pdfstatus)) != pdfpid && errno == EINTR)
 +    {
 +     /*
 +      * Wait until we get a valid process ID or the job is canceled...
 +      */
 +
 +      if (job_canceled)
-+	break;
++      {
++        kill(pdfpid, SIGTERM);
++	job_canceled = 0;
++      }
 +    }
 +
-+    if (pdfwaitpid != pdfpid)
-+    {
-+      kill(pdfpid, SIGTERM);
-+      pdfstatus = 1;
-+    }
-+    else if (pdfstatus)
++    if (pdfstatus)
 +    {
 +      if (WIFEXITED(pdfstatus))
 +      {
-+        pdfstatus = WEXITSTATUS(pdfstatus);
++	pdfstatus = WEXITSTATUS(pdfstatus);
 +
-+        fprintf(stderr,
-+	                _("ERROR: pdftops filter exited with status %d!\n"),
++	fprintf(stderr,
++			_("ERROR: pdftops filter exited with status %d!\n"),
 +			pdfstatus);
 +      }
 +      else
 +      {
-+        pdfstatus = WTERMSIG(pdfstatus);
++	pdfstatus = WTERMSIG(pdfstatus);
 +
-+        fprintf(stderr,
-+	                _("ERROR: pdftops filter crashed on signal %d!\n"),
++	fprintf(stderr,
++			_("ERROR: pdftops filter crashed on signal %d!\n"),
 +			pdfstatus);
 +      }
 +    }
@@ -377,9 +447,9 @@ diff -urNad trunk~/filter/pdftops.c trunk/filter/pdftops.c
 + * End of "$Id$".
 + */
 diff -urNad trunk~/test/run-stp-tests.sh trunk/test/run-stp-tests.sh
---- trunk~/test/run-stp-tests.sh	2008-04-09 22:59:59.000000000 -0500
-+++ trunk/test/run-stp-tests.sh	2008-04-09 23:00:00.000000000 -0500
-@@ -273,7 +273,7 @@
+--- trunk~/test/run-stp-tests.sh	2009-02-15 18:32:04.000000000 +0100
++++ trunk/test/run-stp-tests.sh	2009-02-15 18:33:02.196769748 +0100
+@@ -277,7 +277,7 @@
  else
  	ln -s $root/filter/imagetops /tmp/cups-$user/bin/filter
  	ln -s $root/filter/imagetoraster /tmp/cups-$user/bin/filter
