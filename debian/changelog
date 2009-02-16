@@ -1,3 +1,18 @@
+cups (1.3.9-14) unstable; urgency=low
+
+  * debian/patches/pdftops-cups-1.4.dpatch: Revert previous change to
+    define HAVE_PDFTOPS and CUPS_PDFTOPS, since Till says the filter
+    should actually use ghostscript now. Add ghostscript build
+    dependency instead. (LP: #329991)
+  * Add drop_unnecessary_dependencies.dpatch: Do not link libcups.so
+    and libcupsimage.so against unnecessary libraries. This avoids
+    unnecessary package dependencies for both libcups, as well as for
+    packages using cups-config. (Closes: #438067)
+  * debian/control: Drop XSBC-Original-Maintainer Ubuntu-ism which
+    accidentally crept in in r607.
+
+ -- Martin Pitt <mpitt@debian.org>  Mon, 16 Feb 2009 18:05:21 +0100
+
 cups (1.3.9-13) unstable; urgency=low
 
   [ Till Kamppeter ]

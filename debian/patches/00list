@@ -21,6 +21,7 @@ quiesce-bonjour-warning.dpatch
 rootbackends-worldreadable.dpatch
 
 # patches which should go upstream
+drop_unnecessary_dependencies.dpatch
 reactivate_recommended_driver.dpatch
 
 # Debian patches
