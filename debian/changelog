@@ -1,3 +1,14 @@
+cups (1.3.9-14ubuntu2) jaunty; urgency=low
+
+  * Add debian/local/apport-hook.py: Apport package hook, thanks to
+    Brian Murray! Install it in debian/rules if we build for Ubuntu.
+    (LP: #334080)
+  * debian/rules: Move init script priority to 50, so that cups starts later
+    in the boot sequence. There is no reason why it should start so early
+    (before e. g. gdm). Do the transition on upgrades in debian/cups.postinst.
+
+ -- Martin Pitt <mpitt@debian.org>  Fri, 27 Feb 2009 09:16:01 +0100
+
 cups (1.3.9-14) unstable; urgency=low
 
   * debian/patches/pdftops-cups-1.4.dpatch: Revert previous change to
