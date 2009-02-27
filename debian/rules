@@ -21,7 +21,7 @@ DEB_CONFIGURE_EXTRA_FLAGS := --with-optim=$(DEB_OPTFLAGS) --libdir=/usr/lib --ma
 
 DEB_MAKE_INSTALL_TARGET := install BUILDROOT=$(DEB_DESTDIR)
 DEB_INSTALL_CHANGELOGS_ALL := CHANGES.txt
-DEB_DH_INSTALLINIT_ARGS := -u'start 20 2 3 4 5 . stop 80 1 .'
+DEB_DH_INSTALLINIT_ARGS := -u'start 50 2 3 4 5 . stop 80 1 .'
 DEB_DH_STRIP_ARGS := --dbg-package=cups-dbg
 DEB_DH_FIXPERMS_ARGS := -Xusr/lib/cups/backend-available
 DEB_DH_COMPRESS_ARGS := -Xusr/share/doc/libcups2-dev/examples/scripting
