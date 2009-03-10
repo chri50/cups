@@ -139,6 +139,17 @@ EOF
         if [ -e /etc/apparmor.d/usr.sbin.cupsd ] && [ -x /etc/init.d/apparmor ]; then
             invoke-rc.d apparmor force-reload || true
         fi
+
+	# init.d priority transition
+	if dpkg --compare-versions "$2" le-nl "1.3.9-15"; then
+	    for l in 2 3 4 5; do
+		old=/etc/rc${l}.d/S20cups
+		new=/etc/rc${l}.d/S50cups
+		if [ -e "$old" ] && [ ! -e "$new" ]; then
+		    mv "$old" "$new"
+		fi
+	    done
+	fi
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

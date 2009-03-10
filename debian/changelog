@@ -1,3 +1,28 @@
+cups (1.3.9-15) unstable; urgency=low
+
+  * Add debian/local/apport-hook.py: Apport package hook, thanks to
+    Brian Murray! Install it in debian/rules if we build for Ubuntu.
+    (LP: #334080)
+  * debian/rules: Move init script priority to 50, so that cups starts later
+    in the boot sequence. There is no reason why it should start so early
+    (before e. g. gdm). Do the transition on upgrades in debian/cups.postinst.
+  * debian/control: Promote ttf-freefont from Recommends to Depends, since the
+    PDF filter chain needs it. (Closes: #516335)
+  * debian/control: Add "Breaks: foomatic-filters (<< 4.0)", and bump
+    Recommends: version. Earlier foomatic-filters do not support the PDF
+    filter chain. (Closes: #511009)
+  * debian/local/apparmor-profile: Add a few missing rules for Kerberos
+    authentication. (LP: #324645)
+  * Add bzr-builddeb configuration (merge mode).
+  * debian/watch: Update so that it works again.
+  * debian/local/apparmor-profile: Allow cups to read /etc/likewise, for
+    authentication. (LP: #303927)
+  * Add testsuite-increase-wait-timeout.dpatch: Increase test suite's timeout
+    for waiting for jobs to 10 minutes, for slower architectures like arm and
+    m68k. (Closes: #518787)
+
+ -- Martin Pitt <mpitt@debian.org>  Tue, 10 Mar 2009 13:46:19 +0100
+
 cups (1.3.9-14) unstable; urgency=low
 
   * debian/patches/pdftops-cups-1.4.dpatch: Revert previous change to
