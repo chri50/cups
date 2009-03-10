@@ -23,6 +23,7 @@ rootbackends-worldreadable.dpatch
 # patches which should go upstream
 drop_unnecessary_dependencies.dpatch
 reactivate_recommended_driver.dpatch
+testsuite-increase-wait-timeout.dpatch
 
 # Debian patches
 default_log_warn.dpatch

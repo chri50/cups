@@ -21,7 +21,7 @@ DEB_CONFIGURE_EXTRA_FLAGS := --with-optim=$(DEB_OPTFLAGS) --libdir=/usr/lib --ma
 
 DEB_MAKE_INSTALL_TARGET := install BUILDROOT=$(DEB_DESTDIR)
 DEB_INSTALL_CHANGELOGS_ALL := CHANGES.txt
-DEB_DH_INSTALLINIT_ARGS := -u'start 20 2 3 4 5 . stop 80 1 .'
+DEB_DH_INSTALLINIT_ARGS := -u'start 50 2 3 4 5 . stop 80 1 .'
 DEB_DH_STRIP_ARGS := --dbg-package=cups-dbg
 DEB_DH_FIXPERMS_ARGS := -Xusr/lib/cups/backend-available
 DEB_DH_COMPRESS_ARGS := -Xusr/share/doc/libcups2-dev/examples/scripting
@@ -67,10 +67,11 @@ binary-post-install/cups::
 
 	dh_usrlocal
 
-	# Install AppArmor and ufw profile on Ubuntu
+	# Install AppArmor, ufw profile, and Apport hook on Ubuntu
 	if [ "`lsb_release -is 2>/dev/null`" = "Ubuntu" ]; then \
 	   install -D -m 644 debian/local/apparmor-profile debian/$(cdbs_curpkg)/etc/apparmor.d/usr.sbin.cupsd; \
 	   install -D -m 644 debian/local/cups.ufw.profile debian/$(cdbs_curpkg)/etc/ufw/applications.d/cups; \
+	   install -D -m 644 debian/local/apport-hook.py debian/$(cdbs_curpkg)/usr/share/apport/package-hooks/source_cups.py; \
 	fi
 
 	# Install documentation of the PDF CUPS filters
