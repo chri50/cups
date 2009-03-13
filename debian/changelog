@@ -1,3 +1,16 @@
+cups (1.3.9-2ubuntu8) intrepid-proposed; urgency=low
+
+  * debian/local/filters/cpdftocps: Only the last digit of the number of
+    copies was used (LP: #309314).
+  * debian/patches/pdftops-cups-1.4.dpatch: Let the pdftops filter only emit
+    PostScript level 2 and not level 3, as some PostScript printers have
+    problems with PostScript level 3 from Poppler, even if they are level 3
+    printers (LP: #277404).
+  * debian/local/filters/pdf-filters/pdftopdf/pdftopdf.cxx: Do not preceed the
+    PDF output with a newline (LP: #303691).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 13 Mar 2009 19:08:02 +0100
+
 cups (1.3.9-2ubuntu7) intrepid-proposed; urgency=low
 
   * debian/local/filters/pdf-filters/pdftopdf/P2PPage.cxx,

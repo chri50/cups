@@ -224,7 +224,7 @@ diff -urNad trunk~/filter/pdftops.c trunk/filter/pdftops.c
 +	pdfargv[pdfargc++] = (char *)"-noembtt";
 +    }
 +    else
-+      pdfargv[pdfargc++] = (char *)"-level3";
++      pdfargv[pdfargc++] = (char *)"-level2";
 +
 +   /*
 +    * Set output page size...
