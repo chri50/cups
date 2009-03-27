@@ -1,3 +1,32 @@
+cups (1.3.9-16) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/local/filters/pdf-filters/pdftopdf/P2PResources.cxx: Fixed
+    corruption of output when generating mmultiple copies of EOG or GIMP
+    output files (LP: #345183).
+  * debian/cups.postinst: Silenced non-fatal error messages when
+    post-instyall script updates PPDs and there are PPDs not belonging to
+    a CUPS queue in /etc/cups/ppd/ (LP: #345866).
+
+  [ Martin Pitt ]
+  * debian/local/apparmor-profile: Drop 'm' permission for /etc/passwd and
+    friends, which was a workaround for a kernel apparmor bug on i386. This is
+    fixed in current kernels. Thanks to Kees Cook for pointing this out!
+    (LP: #270663)
+  * debian/cups.install: Do not install the unnecessary (and broken) D-BUS
+    configuration file any more. All cupsd does is to send signals, which are
+    allowed by default. It does not provide any D-BUS service right now. Also
+    remove the obsolete file on upgrades in debian/cups.preinst.
+    (Closes: #510634, LP: #318742)
+  * Add logfiles_adm_readable.dpatch: Make log files readable by group "adm".
+    (LP: #345953)
+  * debian/changelog: Fix cruft at the end of file.
+  * debian/local/apparmor-profile: Explicitly deny access to /dev/tty and
+    writing access to /etc/krb5.conf, so that accesses to them do not create
+    log spewage. (LP: #348556)
+
+ -- Martin Pitt <mpitt@debian.org>  Fri, 27 Mar 2009 09:35:56 +0100
+
 cups (1.3.9-15) unstable; urgency=low
 
   * Add debian/local/apport-hook.py: Apport package hook, thanks to
@@ -3223,7 +3252,3 @@ cupsys (1.0.1-1) unstable; urgency=low
   * Initial Release.
 
  -- Jeff Licquia <licquia@debian.org>  Sun,  6 Nov 1999 20:58:02 -0500
-
-Local variables:
-mode: debian-changelog
-End:

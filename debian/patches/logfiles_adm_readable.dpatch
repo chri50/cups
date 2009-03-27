@@ -1,0 +1,56 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## logfiles_adm_readable.dpatch by Martin Pitt <mpitt@debian.org>
+##
+## DP: Make log files readable to group "adm", if present.
+## DP: https://launchpad.net/bugs/345953
+
+@DPATCH@
+diff -urNad cups-1.3.9~/scheduler/log.c cups-1.3.9/scheduler/log.c
+--- cups-1.3.9~/scheduler/log.c	2008-07-12 00:48:49.000000000 +0200
++++ cups-1.3.9/scheduler/log.c	2009-03-23 16:32:01.450244780 +0100
+@@ -29,6 +29,7 @@
+ #include "cupsd.h"
+ #include <stdarg.h>
+ #include <syslog.h>
++#include <grp.h>
+ 
+ 
+ /*
+@@ -462,6 +463,7 @@
+ 		filename[1024],		/* Formatted log filename */
+ 		*ptr;			/* Pointer into filename */
+   const char	*logptr;		/* Pointer into log filename */
++  struct group  *loggrp;		/* Group entry of log filename */
+ 
+ 
+  /*
+@@ -472,6 +474,11 @@
+     return (1);
+ 
+  /*
++  * Use adm group if possible, fall back to Group
++  */
++ loggrp = getgrnam("adm");
++
++ /*
+   * Format the filename as needed...
+   */
+ 
+@@ -564,7 +571,7 @@
+       * Change ownership and permissions of non-device logs...
+       */
+ 
+-      fchown(cupsFileNumber(*lf), RunUser, Group);
++      fchown(cupsFileNumber(*lf), RunUser, loggrp ? loggrp->gr_gid : Group);
+       fchmod(cupsFileNumber(*lf), LogFilePerm);
+     }
+   }
+@@ -600,7 +607,7 @@
+     * Change ownership and permissions of non-device logs...
+     */
+ 
+-    fchown(cupsFileNumber(*lf), RunUser, Group);
++    fchown(cupsFileNumber(*lf), RunUser, loggrp ? loggrp->gr_gid : Group);
+     fchmod(cupsFileNumber(*lf), LogFilePerm);
+   }
+ 

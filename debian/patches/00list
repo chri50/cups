@@ -26,6 +26,7 @@ reactivate_recommended_driver.dpatch
 testsuite-increase-wait-timeout.dpatch
 
 # Debian patches
+logfiles_adm_readable.dpatch
 default_log_warn.dpatch
 confdirperms.dpatch
 

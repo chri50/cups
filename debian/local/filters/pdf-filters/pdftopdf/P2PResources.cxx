@@ -274,9 +274,7 @@ void P2PResources::setupPattern()
   int i;
 
   if (patternDict != NULL) {
-    delete[] patternDict;
-    patternDict = 0;
-    nPattern = 0;
+    return;
   }
   if (dictionaries[Pattern] == 0) return;
   nPattern = dictionaries[Pattern]->getLength();
