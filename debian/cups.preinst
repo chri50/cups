@@ -65,6 +65,11 @@ case "$1" in
             mv_conffile /etc/pam.d/cupsys /etc/pam.d/cups
             mv_conffile /etc/logrotate.d/cupsys /etc/logrotate.d/cups
         fi
+
+	# does not need d-bus configuration, only sends signals
+	if dpkg --compare-versions "$2" lt-nl '1.3.9-16'; then
+            rm -f /etc/dbus-1/system.d/cups.conf
+	fi
     ;;
 
     abort-upgrade)

@@ -5,7 +5,6 @@ etc/cups/snmp.conf
 etc/cups/ppd
 etc/cups/*.convs
 etc/cups/*.types
-etc/dbus-1/
 usr/lib/cups/backend/* usr/lib/cups/backend-available
 usr/lib/cups/cgi-bin
 usr/lib/cups/monitor

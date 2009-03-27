@@ -186,22 +186,24 @@ if [ "$1" = configure ]; then
 	tempfiles="$tempfiles $tmpfile1"
 	lpinfo -m | grep -E $driverregexp > $tmpfile1
 	cd /etc/cups/ppd
-	for ppd in `ls -1 *.ppd 2>/dev/null`; do
+	for ppd in *.ppd; do
+	    [ -r "$ppd" ] || continue
 	    queue=${ppd%.ppd}
-	    nickname=`grep '\*NickName:' $ppd | cut -d '"' -f 2 | perl -p -e 's/\n$//' | perl -p -e "$gennicknameregexp" | perl -p -e 's/(\W)/\\\\$1/g'`
-	    lang=`grep '\*LanguageVersion:' $ppd | cut -d ' ' -f 2 | perl -e 'print lc(<>)' | perl -p -e 's/[\r\n]//gs'`
+	    lpstat -p "$queue" >/dev/null 2>&1 || continue
+	    nickname=`grep '\*NickName:' "$ppd" | cut -d '"' -f 2 | perl -p -e 's/\n$//' | perl -p -e "$gennicknameregexp" | perl -p -e 's/(\W)/\\\\$1/g'`
+	    lang=`grep '\*LanguageVersion:' "$ppd" | cut -d ' ' -f 2 | perl -e 'print lc(<>)' | perl -p -e 's/[\r\n]//gs'`
 	    ppdfound="0"
 	    englishppduri=""
 	    tmpfile2=`mktemp -t updateppds.XXXXXX`
 	    tempfiles="$tempfiles $tmpfile2"
 	    cat $tmpfile1 | perl -p -e "$gennicknameregexp" | grep -E '^\S+\s+.*'"$nickname"'$' | cut -d ' ' -f 1 > $tmpfile2
 	    while read newppduri; do
-		[ "$ppdfound" = "0" ] && lpadmin -p $queue -m $newppduri
-		newlang=`grep '\*LanguageVersion:' $ppd | cut -d ' ' -f 2 | perl -e 'print lc(<>)' | perl -p -e 's/[\r\n]//gs'`
+		[ "$ppdfound" = "0" ] && lpadmin -p "$queue" -m $newppduri 2>/dev/null || continue
+		newlang=`grep '\*LanguageVersion:' "$ppd" | cut -d ' ' -f 2 | perl -e 'print lc(<>)' | perl -p -e 's/[\r\n]//gs'`
 		[ "$newlang" = "$lang" ] && ppdfound="1"
 		[ "$newlang" = "english" ] && englishppduri="$newppduri"
 	    done < $tmpfile2
-	    [ "$ppdfound" = "0" ] && [ ! -z "$englishppduri" ] && lpadmin -p $queue -m $englishppduri && ppdfound="1"
+	    [ "$ppdfound" = "0" ] && [ ! -z "$englishppduri" ] && lpadmin -p "$queue" -m $englishppduri 2>/dev/null && ppdfound="1"
 	    [ "$ppdfound" = "1" ] && echo PPD for printer $queue updated >&2
 	done
     fi
