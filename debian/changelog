@@ -1,3 +1,16 @@
+cups (1.3.9-17) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/filters/pstopdf: Added "-dDoNumCopies" to the "ps2pdf" call in
+    the pstopdf CUPS filter, so that Ghostscript takes into account
+    /#copies and /NumCopies when converting incoming PostScript to PDF
+    (Ghostscript upstream bug #690355, LP: #320391).
+
+  [ Martin Pitt ]
+  * debian/control: Update section of cups-dbg to "debug".
+
+ -- Martin Pitt <mpitt@debian.org>  Sun, 05 Apr 2009 18:04:33 -0700
+
 cups (1.3.9-16) unstable; urgency=low
 
   [ Till Kamppeter ]
@@ -5,7 +18,7 @@ cups (1.3.9-16) unstable; urgency=low
     corruption of output when generating mmultiple copies of EOG or GIMP
     output files (LP: #345183).
   * debian/cups.postinst: Silenced non-fatal error messages when
-    post-instyall script updates PPDs and there are PPDs not belonging to
+    post-install script updates PPDs and there are PPDs not belonging to
     a CUPS queue in /etc/cups/ppd/ (LP: #345866).
 
   [ Martin Pitt ]

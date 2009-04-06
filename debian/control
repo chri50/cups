@@ -193,7 +193,7 @@ Description: Common UNIX Printing System(tm) - common files
 
 Package: cups-dbg
 Priority: extra
-Section: libdevel
+Section: debug
 Architecture: any
 Depends: cups (= ${binary:Version})
 Conflicts: cupsys-dbg (<< 1.3.7-6)

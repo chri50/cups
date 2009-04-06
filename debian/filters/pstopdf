@@ -18,7 +18,7 @@ PS2PDF=/usr/bin/ps2pdf13
 PS2PS_OPTIONS="-dAutoRotatePages=/None -dAutoFilterColorImages=false \
                -dNOPLATFONTS -dPARANOIDSAFER -sstdout=%stderr"
 PS2PDF_OPTIONS="$PS2PS_OPTIONS -dColorImageFilter=/FlateEncode \
-               -dPDFSETTINGS=/printer"
+               -dDoNumCopies -dPDFSETTINGS=/printer"
 
 echo "DEBUG: pstopdf $# args: $@" >&2
 echo "DEBUG: PPD: $PPD" >&2
