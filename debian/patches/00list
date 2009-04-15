@@ -33,3 +33,6 @@ confdirperms.dpatch
 # Ubuntu patches
 ubuntu-disable-browsing.dpatch
 ubuntu-default-error-policy-retry-job.dpatch
+
+# Security patches
+CVE-2009-0163.dpatch
