@@ -1,5 +1,5 @@
 /*
- * "$Id: lpstat.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: lpstat.c 8146 2008-11-19 19:50:56Z mike $"
  *
  *   "lpstat" command for the Common UNIX Printing System (CUPS).
  *
@@ -1432,18 +1432,23 @@ show_jobs(http_t     *http,		/* I - HTTP connection to server */
   *
   *    attributes-charset
   *    attributes-natural-language
-  *    job-uri
+  *    printer-uri
   *    requested-attributes
+  *    requesting-user-name
+  *    which-jobs
   */
 
   request = ippNewRequest(IPP_GET_JOBS);
+
+  ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri",
+               NULL, "ipp://localhost/");
 
   ippAddStrings(request, IPP_TAG_OPERATION, IPP_TAG_KEYWORD,
                 "requested-attributes", sizeof(jattrs) / sizeof(jattrs[0]),
 		NULL, jattrs);
 
-  ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "job-uri",
-               NULL, "ipp://localhost/jobs/");
+  ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_NAME, "requesting-user-name",
+               NULL, cupsUser());
 
   ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_KEYWORD, "which-jobs",
                NULL, which);
@@ -2266,5 +2271,5 @@ show_scheduler(http_t *http)	/* I - HTTP connection to server */
 
 
 /*
- * End of "$Id: lpstat.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: lpstat.c 8146 2008-11-19 19:50:56Z mike $".
  */

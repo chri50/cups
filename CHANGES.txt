@@ -1,5 +1,96 @@
-CHANGES.txt - 2008-10-09
+CHANGES.txt - 2009-04-16
 ------------------------
+
+CHANGES IN CUPS V1.3.10
+
+	- Documentation fixes (STR #2994, STR #2995, STR #3008, STR #3056,
+	  STR #3057)
+	- SECURITY: The scheduler now protects against DNS rebinding attacks
+	  (STR #3118)
+	- SECURITY: Fixed TIFF integer overflow in image filters (STR #3031)
+	- The scheduler did not support the job-hold-until attribute with the
+	  Restart-Job operation (STR #3130)
+	- SECURITY: The PNG image reading code did not validate the
+	  image size properly, leading to a potential buffer overflow
+	  (STR #2974)
+	- The rastertohp driver did not set the 1-sided printing mode when
+	  needed (STR #3131)
+	- Now use a wrapper program instead of our fork of the Xpdf code to
+	  support printing of PDF files. The new wrapper supports using Xpdf,
+	  poppler, or Ghostscript to convert PDF files to PostScript (STR #3129)
+	- Long job names caused problems with some PJL printers (STR #3125)
+	- The lpq command did not work when showing all destinations (STR #3117)
+	- The scheduler used a codeset name of UTF8 which is not supported on
+	  Solaris (STR #3113)
+	- cupsGetJobs() did not work with a NULL destination (STR #3107)
+	- Fixed a localization problem for option choices (incorrectly) named
+	  "Custom" (STR #3106)
+	- The fallback OpenSSL random number seeding would not work (STR #3079)
+	- The scheduler might miss a child signal, causing high CPU usage.
+	- The scheduler did not enforce quotas after the job history was
+	  unloaded (STR #3078)
+	- The job-k-limit, job-page-limit, and job-quota-period attributes
+	  could not be set using the lpadmin command (STR #3077)
+	- httpSeparateURI() did not error out on URIs with a missing port
+	  number after a colon.
+	- Fixed a Valgrind-detected initialization error when creating a
+	  missing directory on startup.
+	- The scheduler did not always read all of the HTTP headers from a
+	  CGI script/program.
+        - The scheduler did not always set the "air" property in Bonjour/DNS-SD
+          registrations.
+	- The scheduler incorrectly compared Mac OS X UUIDs for access
+	  control, preventing access in certain configurations.
+        - The IPP backend incorrectly reset the required authentication
+	  to Kerberos when authentication failed.
+	- The scheduler no longer looks up the local hostname by default;
+	  turn on hostname lookups to restore the previous behavior.
+	- The scheduler did not always load MIME type rules correctly
+	  (STR #3059)
+	- The test page did not format correctly on A4 paper (STR #3060)
+	- The web interface sometimes incorrectly redirected users to
+	  127.0.0.1 (STR #3022)
+	- cupsPrintFile*() did not send the document filename for single
+	  file submissions (STR #3055)
+	- The scheduler did not update the member-names attribute when
+	  removing the last printer from a class.
+	- The scheduler did not report PPD Products with parenthesis
+	  in them properly (STR #3046)
+	- The wrong italic fonts were listed in the UTF-8 charset file
+	  for the text filter.
+	- The backends did not return an OK status for the
+	  CUPS_SC_CMD_GET_BIDI side-channel command (STR #3029)
+	- The scheduler did not purge jobs that were missing a
+	  time-at-creation attribute, indicating a bad job control file
+	  (STR #3030)
+	- The "-o job-hold-until=week-end" option did not work properly
+	  (STR #3025)
+	- The Solaris USB printer device does not support select or poll
+	  (STR #3028)
+	- The scheduler would crash if you exceeded the MaxSubscriptions
+	  limit.
+	- The lp "-H immediate" option did not specify that the job
+	  should not be held (STR #3013)
+	- The scheduler did not support the "Connection: close"
+	  HTTP header (STR #3010)
+	- The mailto notifier didn't terminate messages properly
+	  (STR #3011)
+	- Backends could spin trying to read back-channel data
+	  (STR #3001)
+	- The HP-GL/2 filter was using the wrong default colors
+	  (STR #2966)
+	- The scheduler incorrectly allowed Get-Jobs operations without a
+	  printer-uri (STR #2996)
+	- The compression option was not being encoded properly
+	  (STR #2997)
+	- Added a missing character map for JIS-X0213/ShiftJIS.
+	- The scheduler now rejects ATTR: messages with empty values.
+	- The scheduler could consume all CPU handling closed connections
+	  (STR #2988)
+	- Fixed some configure script bugs with rc/xinetd directories
+	  (STR #2970)
+	- The Epson sample driver PPDs contained errors (STR #2979)
+
 
 CHANGES IN CUPS V1.3.9
 

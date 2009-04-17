@@ -1,9 +1,9 @@
 /*
- * "$Id: http-support.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: http-support.c 8292 2009-01-27 20:24:32Z mike $"
  *
  *   HTTP support routines for the Common UNIX Printing System (CUPS) scheduler.
  *
- *   Copyright 2007 by Apple Inc.
+ *   Copyright 2007-2009 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -1059,6 +1059,12 @@ httpSeparateURI(
       * Yes, collect the port number...
       */
 
+      if (!isdigit(uri[1] & 255))
+      {
+        *port = 0;
+        return (HTTP_URI_BAD_PORT);
+      }
+
       *port = strtol(uri + 1, (char **)&uri, 10);
 
       if (*uri != '/' && *uri)
@@ -1336,5 +1342,5 @@ http_copy_encode(char       *dst,	/* O - Destination buffer */
 
 
 /*
- * End of "$Id: http-support.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: http-support.c 8292 2009-01-27 20:24:32Z mike $".
  */

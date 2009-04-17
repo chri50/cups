@@ -1,9 +1,9 @@
 /*
- * "$Id: lp.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: lp.c 8142 2008-11-18 00:43:55Z mike $"
  *
  *   "lp" command for the Common UNIX Printing System (CUPS).
  *
- *   Copyright 2007 by Apple Inc.
+ *   Copyright 2007-2008 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -446,8 +446,12 @@ main(int  argc,				/* I - Number of command-line arguments */
               num_options = cupsAddOption("job-hold-until", "no-hold",
 	                                  num_options, &options);
 	    else if (!strcmp(val, "immediate"))
+	    {
+              num_options = cupsAddOption("job-hold-until", "no-hold",
+	                                  num_options, &options);
               num_options = cupsAddOption("job-priority", "100",
 	                                  num_options, &options);
+	    }
 	    else if (!strcmp(val, "restart"))
 	    {
 	      if (job_id < 1)
@@ -831,5 +835,5 @@ sighandler(int s)			/* I - Signal number */
 
 
 /*
- * End of "$Id: lp.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: lp.c 8142 2008-11-18 00:43:55Z mike $".
  */

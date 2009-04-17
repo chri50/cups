@@ -1,5 +1,5 @@
 /*
- * "$Id: util.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: util.c 8407 2009-03-05 18:44:14Z mike $"
  *
  *   Printing utilities for the Common UNIX Printing System (CUPS).
  *
@@ -504,7 +504,7 @@ cupsGetJobs2(http_t     *http,		/* I - HTTP connection */
     }
   }
   else
-    strcpy(uri, "ipp://localhost/jobs");
+    strcpy(uri, "ipp://localhost/");
 
 
  /*
@@ -1253,6 +1253,21 @@ cupsPrintFiles2(http_t        *http,	/* I - HTTP connection */
     ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_NAME, "job-name", NULL,
                  title);
 
+  if (num_files == 1)
+  {
+   /*
+    * Add the original document filename...
+    */
+
+    if ((base = strrchr(files[0], '/')) != NULL)
+      base ++;
+    else
+      base = files[0];
+
+    ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_NAME, "document-name",
+		 NULL, base);
+  }
+
  /*
   * Then add all options...
   */
@@ -1638,5 +1653,5 @@ cups_get_printer_uri(
 
 
 /*
- * End of "$Id: util.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: util.c 8407 2009-03-05 18:44:14Z mike $".
  */

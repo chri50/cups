@@ -1,5 +1,5 @@
 /*
- * "$Id: type.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: type.c 8241 2009-01-13 21:02:16Z mike $"
  *
  *   MIME typing routines for the Common UNIX Printing System (CUPS).
  *
@@ -187,8 +187,7 @@ mimeAddTypeRule(mime_type_t *mt,	/* I - Type to add to */
     else if (*rule == '+' && current != NULL)
     {
       if (logic != MIME_MAGIC_AND &&
-          current != NULL && current->prev != NULL &&
-	  current->prev->prev != NULL)
+          current != NULL && current->prev != NULL)
       {
        /*
         * OK, we have more than 1 rule in the current tree level...  Make a
@@ -1150,5 +1149,5 @@ patmatch(const char *s,		/* I - String to match against */
 
 
 /*
- * End of "$Id: type.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: type.c 8241 2009-01-13 21:02:16Z mike $".
  */

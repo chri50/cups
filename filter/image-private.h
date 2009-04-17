@@ -1,5 +1,5 @@
 /*
- * "$Id: image-private.h 6649 2007-07-11 21:46:42Z mike $"
+ * "$Id: image-private.h 8510 2009-04-16 18:26:25Z mike $"
  *
  *   Private image library definitions for the Common UNIX Printing
  *   System (CUPS).
@@ -41,8 +41,8 @@
 
 #  define CUPS_IMAGE_MAX_WIDTH	0x07ffffff
 					/* 2^27-1 to allow for 15-channel data */
-#  define CUPS_IMAGE_MAX_HEIGHT	0x7fffffff
-					/* 2^31-1 */
+#  define CUPS_IMAGE_MAX_HEIGHT	0x3fffffff
+					/* 2^30-1 */
 
 #  define CUPS_TILE_SIZE	256	/* 256x256 pixel tiles */
 #  define CUPS_TILE_MINIMUM	10	/* Minimum number of tiles */
@@ -214,5 +214,5 @@ extern void		_cupsRasterClearError(void);
 #endif /* !_CUPS_IMAGE_PRIVATE_H_ */
 
 /*
- * End of "$Id: image-private.h 6649 2007-07-11 21:46:42Z mike $".
+ * End of "$Id: image-private.h 8510 2009-04-16 18:26:25Z mike $".
  */

@@ -1,5 +1,5 @@
 /*
- * "$Id: ipp.c 7987 2008-09-26 21:59:39Z mike $"
+ * "$Id: ipp.c 8268 2009-01-20 23:32:16Z mike $"
  *
  *   IPP backend for the Common UNIX Printing System (CUPS).
  *
@@ -1190,6 +1190,19 @@ main(int  argc,				/* I - Number of command-line args */
   check_printer_state(http, uri, resource, argv[2], version, job_id);
 
  /*
+  * Update auth-info-required as needed...
+  */
+
+  if (ipp_status == IPP_NOT_AUTHORIZED)
+  {
+    if (!strncmp(httpGetField(http, HTTP_FIELD_WWW_AUTHENTICATE),
+                 "Negotiate", 9))
+      fputs("ATTR: auth-info-required=negotiate\n", stderr);
+    else
+      fputs("ATTR: auth-info-required=username,password\n", stderr);
+  }
+
+ /*
   * Free memory...
   */
 
@@ -1222,15 +1235,7 @@ main(int  argc,				/* I - Number of command-line args */
   */
 
   if (ipp_status == IPP_NOT_AUTHORIZED)
-  {
-   /*
-    * Authorization failures here mean that we need Kerberos.  Username +
-    * password authentication is handled in the password_cb function.
-    */
-
-    fputs("ATTR: auth-info-required=negotiate\n", stderr);
     return (CUPS_BACKEND_AUTH_REQUIRED);
-  }
   else if (ipp_status > IPP_OK_CONFLICT)
     return (CUPS_BACKEND_FAILED);
   else
@@ -1868,5 +1873,5 @@ sigterm_handler(int sig)		/* I - Signal */
 
 
 /*
- * End of "$Id: ipp.c 7987 2008-09-26 21:59:39Z mike $".
+ * End of "$Id: ipp.c 8268 2009-01-20 23:32:16Z mike $".
  */

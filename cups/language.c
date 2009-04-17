@@ -1,5 +1,5 @@
 /*
- * "$Id: language.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: language.c 8118 2008-11-12 19:35:30Z mike $"
  *
  *   I18N/language support for the Common UNIX Printing System (CUPS).
  *
@@ -134,7 +134,8 @@ static const char * const lang_encodings[] =
 			  "unknown",		"unknown",
 			  "unknown",		"unknown",
 			  "euc-cn",		"euc-jp",
-			  "euc-kr",		"euc-tw"
+			  "euc-kr",		"euc-tw",
+			  "jis-x0213"
 			};
 
 #ifdef __APPLE__
@@ -423,7 +424,8 @@ cupsLangGet(const char *language)	/* I - Language or locale */
 		  "",		"",		"",		"",
 		  "",		"",		"",		"",
 
-		  "EUCCN",	"EUCJP",	"EUCKR",	"EUCTW"
+		  "EUCCN",	"EUCJP",	"EUCKR",	"EUCTW",
+		  "SHIFT_JISX0213"
 		};
 
 
@@ -1302,5 +1304,5 @@ cups_unquote(char       *d,		/* O - Unquoted string */
 
 
 /*
- * End of "$Id: language.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: language.c 8118 2008-11-12 19:35:30Z mike $".
  */

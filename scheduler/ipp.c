@@ -1,5 +1,5 @@
 /*
- * "$Id: ipp.c 7945 2008-09-16 22:39:44Z mike $"
+ * "$Id: ipp.c 8451 2009-03-18 16:30:29Z mike $"
  *
  *   IPP routines for the Common UNIX Printing System (CUPS) scheduler.
  *
@@ -321,7 +321,8 @@ cupsdProcessIPPRequest(
       */
 
       attr = con->request->attrs;
-      if (attr && !strcmp(attr->name, "attributes-charset") &&
+      if (attr && attr->name &&
+          !strcmp(attr->name, "attributes-charset") &&
 	  (attr->value_tag & IPP_TAG_MASK) == IPP_TAG_CHARSET)
 	charset = attr;
       else
@@ -330,7 +331,8 @@ cupsdProcessIPPRequest(
       if (attr)
         attr = attr->next;
 
-      if (attr && !strcmp(attr->name, "attributes-natural-language") &&
+      if (attr && attr->name &&
+          !strcmp(attr->name, "attributes-natural-language") &&
 	  (attr->value_tag & IPP_TAG_MASK) == IPP_TAG_LANGUAGE)
 	language = attr;
       else
@@ -2119,23 +2121,24 @@ add_job_subscriptions(
     if (mask == CUPSD_EVENT_NONE)
       mask = CUPSD_EVENT_JOB_COMPLETED;
 
-    sub = cupsdAddSubscription(mask, cupsdFindDest(job->dest), job, recipient,
-                               0);
-
-    sub->interval = interval;
-
-    cupsdSetString(&sub->owner, job->username);
-
-    if (user_data)
+    if ((sub = cupsdAddSubscription(mask, cupsdFindDest(job->dest), job,
+                                    recipient, 0)) != NULL)
     {
-      sub->user_data_len = user_data->values[0].unknown.length;
-      memcpy(sub->user_data, user_data->values[0].unknown.data,
-             sub->user_data_len);
-    }
+      sub->interval = interval;
 
-    ippAddSeparator(con->response);
-    ippAddInteger(con->response, IPP_TAG_SUBSCRIPTION, IPP_TAG_INTEGER,
-                  "notify-subscription-id", sub->id);
+      cupsdSetString(&sub->owner, job->username);
+
+      if (user_data)
+      {
+	sub->user_data_len = user_data->values[0].unknown.length;
+	memcpy(sub->user_data, user_data->values[0].unknown.data,
+	       sub->user_data_len);
+      }
+
+      ippAddSeparator(con->response);
+      ippAddInteger(con->response, IPP_TAG_SUBSCRIPTION, IPP_TAG_INTEGER,
+		    "notify-subscription-id", sub->id);
+    }
 
     if (attr)
       attr = attr->next;
@@ -3690,20 +3693,8 @@ check_quotas(cupsd_client_t  *con,	/* I - Client connection */
 	                  "Access control entry \"%s\" not a valid user name; "
 			  "entry ignored", p->users[i]);
 	}
-	else
-	{
-	  if ((mbr_err = mbr_check_membership(usr_uuid, usr2_uuid,
-	                                      &is_member)) != 0)
-          {
-	    cupsdLogMessage(CUPSD_LOG_DEBUG,
-			    "check_quotas: User \"%s\" identity check failed "
-			    "(err=%d)", p->users[i], mbr_err);
-	    is_member = 0;
-	  }
-
-	  if (is_member)
-	    break;
-	}
+	else if (!uuid_compare(usr_uuid, usr2_uuid))
+	  break;
       }
 #else
       else if (!strcasecmp(username, p->users[i]))
@@ -5590,7 +5581,12 @@ create_subscription(
     else
       job = NULL;
 
-    sub = cupsdAddSubscription(mask, printer, job, recipient, 0);
+    if ((sub = cupsdAddSubscription(mask, printer, job, recipient, 0)) == NULL)
+    {
+      send_ipp_status(con, IPP_TOO_MANY_SUBSCRIPTIONS,
+		      _("There are too many subscriptions."));
+      return;
+    }
 
     if (job)
       cupsdLogMessage(CUPSD_LOG_DEBUG, "Added subscription %d for job %d",
@@ -5978,12 +5974,17 @@ get_jobs(cupsd_client_t  *con,		/* I - Client connection */
   * Is the destination valid?
   */
 
+  if (strcmp(uri->name, "printer-uri"))
+  {
+    send_ipp_status(con, IPP_BAD_REQUEST, _("No printer-uri in request!"));
+    return;
+  }
+
   httpSeparateURI(HTTP_URI_CODING_ALL, uri->values[0].string.text, scheme,
                   sizeof(scheme), username, sizeof(username), host,
 		  sizeof(host), &port, resource, sizeof(resource));
 
-  if (!strcmp(resource, "/") ||
-      (!strncmp(resource, "/jobs", 5) && strlen(resource) <= 6))
+  if (!strcmp(resource, "/") || !strcmp(resource, "/jobs"))
   {
     dest    = NULL;
     dtype   = (cups_ptype_t)0;
@@ -8244,12 +8245,12 @@ restart_job(cupsd_client_t  *con,	/* I - Client connection */
 {
   ipp_attribute_t *attr;		/* Current attribute */
   int		jobid;			/* Job ID */
+  cupsd_job_t	*job;			/* Job information */
   char		method[HTTP_MAX_URI],	/* Method portion of URI */
 		username[HTTP_MAX_URI],	/* Username portion of URI */
 		host[HTTP_MAX_URI],	/* Host portion of URI */
 		resource[HTTP_MAX_URI];	/* Resource portion of URI */
   int		port;			/* Port portion of URI */
-  cupsd_job_t	*job;			/* Job information */
 
 
   cupsdLogMessage(CUPSD_LOG_DEBUG2, "restart_job(%p[%d], %s)", con,
@@ -8357,10 +8358,36 @@ restart_job(cupsd_client_t  *con,	/* I - Client connection */
   }
 
  /*
-  * Restart the job and return...
+  * See if the job-hold-until attribute is specified...
   */
 
-  cupsdRestartJob(job);
+  if ((attr = ippFindAttribute(con->request, "job-hold-until",
+                               IPP_TAG_KEYWORD)) == NULL)
+    attr = ippFindAttribute(con->request, "job-hold-until", IPP_TAG_NAME);
+
+  if (attr && strcmp(attr->values[0].string.text, "no-hold"))
+  {
+   /*
+    * Return the job to a held state...
+    */
+
+    cupsdLogMessage(CUPSD_LOG_DEBUG,
+	            "[Job %d] Restarted by \"%s\" with job-hold-until=%s.",
+                    job->id, username, attr->values[0].string.text);
+    cupsdSetJobHoldUntil(job, attr->values[0].string.text);
+
+    cupsdAddEvent(CUPSD_EVENT_JOB_CONFIG_CHANGED | CUPSD_EVENT_JOB_STATE,
+                  NULL, job, "Job restarted by user with job-hold-until=%s",
+		  attr->values[0].string.text);
+  }
+  else
+  {
+   /*
+    * Restart the job...
+    */
+
+    cupsdRestartJob(job);
+  }
 
   cupsdLogMessage(CUPSD_LOG_INFO, "[Job %d] Restarted by \"%s\".", jobid,
                   username);
@@ -10283,5 +10310,5 @@ validate_user(cupsd_job_t    *job,	/* I - Job */
 
 
 /*
- * End of "$Id: ipp.c 7945 2008-09-16 22:39:44Z mike $".
+ * End of "$Id: ipp.c 8451 2009-03-18 16:30:29Z mike $".
  */
