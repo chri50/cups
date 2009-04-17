@@ -1,5 +1,5 @@
 /*
- * "$Id: image-png.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: image-png.c 8065 2008-10-17 16:59:33Z mike $"
  *
  *   PNG image routines for the Common UNIX Printing System (CUPS).
  *
@@ -178,7 +178,7 @@ _cupsImageReadPNG(
     {
       bufsize = img->xsize * img->ysize;
 
-      if ((bufsize / img->ysize) != img->xsize)
+      if ((bufsize / img->xsize) != img->ysize)
       {
 	fprintf(stderr, "DEBUG: PNG image dimensions (%ux%u) too large!\n",
 		(unsigned)width, (unsigned)height);
@@ -190,7 +190,7 @@ _cupsImageReadPNG(
     {
       bufsize = img->xsize * img->ysize * 3;
 
-      if ((bufsize / (img->ysize * 3)) != img->xsize)
+      if ((bufsize / (img->xsize * 3)) != img->ysize)
       {
 	fprintf(stderr, "DEBUG: PNG image dimensions (%ux%u) too large!\n",
 		(unsigned)width, (unsigned)height);
@@ -311,5 +311,5 @@ _cupsImageReadPNG(
 
 
 /*
- * End of "$Id: image-png.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: image-png.c 8065 2008-10-17 16:59:33Z mike $".
  */

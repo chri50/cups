@@ -1,5 +1,5 @@
 /*
- * "$Id: socket.c 7882 2008-08-28 20:22:20Z mike $"
+ * "$Id: socket.c 8170 2008-12-08 21:08:49Z mike $"
  *
  *   AppSocket backend for the Common UNIX Printing System (CUPS).
  *
@@ -471,6 +471,7 @@ side_cb(int print_fd,			/* I - Print file */
         break;
 
     case CUPS_SC_CMD_GET_BIDI :
+	status  = CUPS_SC_STATUS_OK;
         data[0] = use_bc;
         datalen = 1;
         break;
@@ -538,5 +539,5 @@ wait_bc(int device_fd,			/* I - Socket */
 
 
 /*
- * End of "$Id: socket.c 7882 2008-08-28 20:22:20Z mike $".
+ * End of "$Id: socket.c 8170 2008-12-08 21:08:49Z mike $".
  */

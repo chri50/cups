@@ -1,5 +1,5 @@
 /*
- * "$Id: mailto.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: mailto.c 8134 2008-11-17 16:19:47Z mike $"
  *
  *   "mailto" notifier for the Common UNIX Printing System (CUPS).
  *
@@ -315,7 +315,7 @@ email_message(const char *to,		/* I - Recipient of message */
   cupsFilePrintf(fp, "Content-Type: text/plain%s", nl);
   cupsFilePuts(fp, nl);
   cupsFilePrintf(fp, "%s%s", text, nl);
-  cupsFilePrintf(fp, ".\n", nl);
+  cupsFilePrintf(fp, ".%s", nl);
 
  /*
   * Close the connection to the mail server...
@@ -786,5 +786,5 @@ print_attributes(ipp_t *ipp,		/* I - IPP request */
 
 
 /*
- * End of "$Id: mailto.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: mailto.c 8134 2008-11-17 16:19:47Z mike $".
  */

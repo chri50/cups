@@ -1,5 +1,5 @@
 /*
- * "$Id: serial.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: serial.c 8170 2008-12-08 21:08:49Z mike $"
  *
  *   Serial port backend for the Common UNIX Printing System (CUPS).
  *
@@ -1280,6 +1280,7 @@ side_cb(int print_fd,			/* I - Print file */
         break;
 
     case CUPS_SC_CMD_GET_BIDI :
+	status  = CUPS_SC_STATUS_OK;
         data[0] = use_bc;
         datalen = 1;
         break;
@@ -1295,5 +1296,5 @@ side_cb(int print_fd,			/* I - Print file */
 
 
 /*
- * End of "$Id: serial.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: serial.c 8170 2008-12-08 21:08:49Z mike $".
  */

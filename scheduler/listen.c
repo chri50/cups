@@ -1,10 +1,10 @@
 /*
- * "$Id: listen.c 6788 2007-08-13 17:20:14Z mike $"
+ * "$Id: listen.c 8258 2009-01-15 19:12:15Z mike $"
  *
  *   Server listening routines for the Common UNIX Printing System (CUPS)
  *   scheduler.
  *
- *   Copyright 2007 by Apple Inc.
+ *   Copyright 2007-2009 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -141,18 +141,6 @@ cupsdStartListening(void)
 
   cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdStartListening: %d Listeners",
                   cupsArrayCount(Listeners));
-
- /*
-  * Get the server's IP address...
-  */
-
-  if (ServerAddrs)
-    httpAddrFreeList(ServerAddrs);
-
-  if ((ServerAddrs = httpAddrGetList(ServerName, AF_UNSPEC, NULL)) == NULL)
-    cupsdLogMessage(CUPSD_LOG_ERROR,
-                    "Unable to find IP address for server name \"%s\"!\n",
-		    ServerName);
 
  /*
   * Setup socket listeners...
@@ -428,5 +416,5 @@ cupsdStopListening(void)
 
 
 /*
- * End of "$Id: listen.c 6788 2007-08-13 17:20:14Z mike $".
+ * End of "$Id: listen.c 8258 2009-01-15 19:12:15Z mike $".
  */

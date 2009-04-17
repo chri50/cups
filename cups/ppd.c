@@ -1,5 +1,5 @@
 /*
- * "$Id: ppd.c 7908 2008-09-03 20:21:01Z mike $"
+ * "$Id: ppd.c 8118 2008-11-12 19:35:30Z mike $"
  *
  *   PPD file routines for the Common UNIX Printing System (CUPS).
  *
@@ -350,7 +350,7 @@ _ppdGetEncoding(const char *name)	/* I - LanguageEncoding string */
   else if (!strcasecmp(name, "ISOLatin5"))
     return (CUPS_ISO8859_5);
   else if (!strcasecmp(name, "JIS83-RKSJ"))
-    return (CUPS_WINDOWS_932);
+    return (CUPS_JIS_X0213);
   else if (!strcasecmp(name, "MacStandard"))
     return (CUPS_MAC_ROMAN);
   else if (!strcasecmp(name, "WindowsANSI"))
@@ -3219,5 +3219,5 @@ ppd_read(cups_file_t    *fp,		/* I - File to read from */
 
 
 /*
- * End of "$Id: ppd.c 7908 2008-09-03 20:21:01Z mike $".
+ * End of "$Id: ppd.c 8118 2008-11-12 19:35:30Z mike $".
  */

@@ -1,9 +1,9 @@
 /*
- * "$Id: emit.c 7864 2008-08-26 03:43:28Z mike $"
+ * "$Id: emit.c 8427 2009-03-11 22:05:11Z mike $"
  *
  *   PPD code emission routines for the Common UNIX Printing System (CUPS).
  *
- *   Copyright 2007-2008 by Apple Inc.
+ *   Copyright 2007-2009 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -333,7 +333,8 @@ ppdEmitJCL(ppd_file_t *ppd,		/* I - PPD file record */
 	   const char *title)		/* I - Title */
 {
   char		*ptr;			/* Pointer into JCL string */
-  char		temp[81];		/* Local title string */
+  char		temp[65],		/* Local title string */
+		displaymsg[33];		/* Local display string */
 
 
  /*
@@ -400,14 +401,39 @@ ppdEmitJCL(ppd_file_t *ppd,		/* I - PPD file record */
       }
 
    /*
-    * Eliminate any path info from the job title...
+    * Clean up the job title...
     */
 
     if ((ptr = strrchr(title, '/')) != NULL)
+    {
+     /*
+      * Only show basename of file path...
+      */
+
       title = ptr + 1;
+    }
+
+    if (!strncmp(title, "smbprn.", 7))
+    {
+     /*
+      * Skip leading smbprn.######## from Samba jobs...
+      */
+
+      for (title += 7; *title && isdigit(*title & 255); title ++);
+      for (; *title && isspace(*title & 255); title ++);
+
+      if ((ptr = strstr(title, " - ")) != NULL)
+      {
+       /*
+	* Skip application name in "Some Application - Title of job"...
+	*/
+
+	title = ptr + 3;
+      }
+    }
 
    /*
-    * Replace double quotes with single quotes and 8-bit characters with
+    * Replace double quotes with single quotes and UTF-8 characters with
     * question marks so that the title does not cause a PJL syntax error.
     */
 
@@ -416,16 +442,24 @@ ppdEmitJCL(ppd_file_t *ppd,		/* I - PPD file record */
     for (ptr = temp; *ptr; ptr ++)
       if (*ptr == '\"')
         *ptr = '\'';
-      else if (charset && (*ptr & 128))
+      else if (!charset && (*ptr & 128))
         *ptr = '?';
+
+   /*
+    * CUPS STR #3125: Long PJL JOB NAME causes problems with some printers
+    *
+    * Generate the display message, truncating at 32 characters + nul to avoid
+    * issues with some printer's PJL implementations...
+    */
+
+    snprintf(displaymsg, sizeof(displaymsg), "%d %s %s", job_id, user, temp);
 
    /*
     * Send PJL JOB and PJL RDYMSG commands before we enter PostScript mode...
     */
 
-    fprintf(fp, "@PJL JOB NAME = \"%s\" DISPLAY = \"%d %s %s\"\n", temp,
-            job_id, user, temp);
-    fprintf(fp, "@PJL RDYMSG DISPLAY = \"%d %s %s\"\n", job_id, user, temp);
+    fprintf(fp, "@PJL JOB NAME = \"%s\" DISPLAY = \"%s\"\n", temp, displaymsg);
+    fprintf(fp, "@PJL RDYMSG DISPLAY = \"%s\"\n", displaymsg);
   }
   else
     fputs(ppd->jcl_begin, fp);
@@ -1094,5 +1128,5 @@ ppd_sort(ppd_choice_t **c1,	/* I - First choice */
 
 
 /*
- * End of "$Id: emit.c 7864 2008-08-26 03:43:28Z mike $".
+ * End of "$Id: emit.c 8427 2009-03-11 22:05:11Z mike $".
  */
