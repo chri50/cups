@@ -1,3 +1,18 @@
+cups (1.3.9-17ubuntu2) jaunty-proposed; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/filters/pstopdf: Call Ghostscript with the default paper size
+    (from PPD or from CUPS filter command line) on its command line. Some
+    applications generate PostScript without PageSize requests.
+    Multi-page-size jobs do not get broken by this as Ghostscript uses the
+    given page size only as default and gives priority to page sizes requested
+    by the document (contrary to Poppler). (LP: #357732)
+
+  [ Martin Pitt ]
+  * debian/control: Update Vcs-Bzr: for Jaunty branch.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Tue, 21 Apr 2009 13:07:29 +0200
+
 cups (1.3.9-17ubuntu1) jaunty; urgency=low
 
   * SECURITY UPDATE: fix integer overflow via large TIFF file (LP: #361866)
