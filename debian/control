@@ -15,8 +15,7 @@ Uploaders: Kenshi Muto <kmuto@debian.org>,
  Martin Pitt <mpitt@debian.org>, Roger Leigh <rleigh@debian.org>, 
  Martin-Éric Racine <q-funk@iki.fi>, Masayuki Hatta (mhatta) <mhatta@debian.org>,
  Jeff Licquia <licquia@debian.org>
-Vcs-Bzr: bzr+ssh://bzr.debian.org/pkg-cups/cups/debian-trunk/
-Vcs-Browser: http://bazaar.launchpad.net/~pitti/cups/debian-trunk
+Vcs-Bzr: http://bazaar.launchpad.net/~ubuntu-core-dev/cups/jaunty/
 
 Package: libcups2
 Priority: optional
