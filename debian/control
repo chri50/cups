@@ -21,7 +21,7 @@ Package: libcups2
 Priority: optional
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Suggests: cups-common
 Conflicts:  libcupsys2 (<< 1.3.7-6)
 Replaces: libcupsys2 (<< 1.3.7-6)
@@ -42,7 +42,7 @@ Package: libcupsimage2
 Priority: optional
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Common UNIX Printing System(tm) - image libs
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
  general replacement for lpd and the like.  It supports the Internet 
@@ -60,12 +60,12 @@ Package: cups
 Priority: optional
 Section: net
 Architecture: any
-Depends: ${shlibs:Depends}, debconf (>= 1.2.9) | debconf-2.0,
+Depends: ${shlibs:Depends}, ${misc:Depends}, debconf (>= 1.2.9) | debconf-2.0,
  poppler-utils | xpdf-utils, perl-modules, procps, 
  ghostscript, lsb-base (>= 3), cups-common,  
  ssl-cert (>= 1.0.11), adduser, bc, ttf-freefont
-Recommends: cups-client, smbclient (>= 3.0.9), foomatic-filters (>= 4.0), avahi-utils
-Suggests: cups-bsd, cups-driver-gutenprint, foomatic-db-engine, foomatic-db,
+Recommends: cups-client, smbclient (>= 3.0.9), foomatic-filters (>= 4.0), cups-driver-gutenprint, avahi-utils
+Suggests: cups-bsd, foomatic-db-engine, foomatic-db,
  hplip, xpdf-korean | xpdf-japanese | xpdf-chinese-traditional | xpdf-chinese-simplified, 
  cups-pdf
 Replaces: cupsys-bsd (<< 1.3.7-5), cupsys (<< 1.3.7-6)
@@ -88,7 +88,7 @@ Package: cups-client
 Priority: optional
 Section: net
 Architecture: any
-Depends: ${shlibs:Depends}, cups-common, adduser
+Depends: ${shlibs:Depends}, ${misc:Depends}, cups-common, adduser
 Suggests: cups, kdeprint, gtklp, cups-pt, xpp, cups-bsd
 Conflicts: lprng, cupsys-client (<< 1.3.7-6)
 Replaces: cupsys-client (<< 1.3.7-6)
@@ -109,7 +109,8 @@ Package: libcups2-dev
 Priority: optional
 Section: libdevel
 Architecture: any
-Depends: libcups2 (= ${binary:Version}), libgnutls-dev, libkrb5-dev | heimdal-dev
+Depends: ${shlibs:Depends}, ${misc:Depends}, libcups2 (= ${binary:Version}), 
+ libgnutls-dev, libkrb5-dev | heimdal-dev
 Conflicts: libcupsys2-dev (<< 1.3.7-6)
 Replaces: libcupsys2-dev (<< 1.3.7-6)
 Provides: libcupsys2-dev
@@ -132,7 +133,8 @@ Package: libcupsimage2-dev
 Priority: optional
 Section: libdevel
 Architecture: any
-Depends: libcupsimage2 (= ${binary:Version}), libcups2-dev (= ${binary:Version}), 
+Depends: ${shlibs:Depends}, ${misc:Depends}, 
+ libcupsimage2 (= ${binary:Version}), libcups2-dev (= ${binary:Version}), 
  libpng-dev, libtiff4-dev, libjpeg62-dev, zlib1g-dev
 Description: Common UNIX Printing System(tm) - image development files
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
@@ -151,9 +153,10 @@ Package: cups-bsd
 Priority: extra
 Section: net
 Architecture: any
-Depends: ${shlibs:Depends}, cups-client (= ${binary:Version}),
+Depends: ${shlibs:Depends}, ${misc:Depends}, 
+ cups-client (= ${binary:Version}),
  debconf | debconf-2.0, update-inetd, cups-common
-Recommends: cups
+Suggests: cups
 Conflicts: lpr, lprng, cupsys-bsd (<< 1.3.7-6)
 Replaces: lpr, cupsys-bsd (<< 1.3.7-6)
 Provides: lpr, cupsys-bsd
@@ -195,7 +198,7 @@ Package: cups-dbg
 Priority: extra
 Section: debug
 Architecture: any
-Depends: cups (= ${binary:Version})
+Depends: ${shlibs:Depends}, ${misc:Depends}, cups (= ${binary:Version})
 Conflicts: cupsys-dbg (<< 1.3.7-6)
 Replaces: cupsys-dbg (<< 1.3.7-6)
 Description: Common UNIX Printing System(tm) - debugging symbols
@@ -214,7 +217,7 @@ Package: cupsys
 Priority: extra
 Section: oldlibs
 Architecture: all
-Depends: cups
+Depends: ${misc:Depends}, cups
 Description: Common UNIX Printing System (transitional package)
  This is a dummy package to ease transition to new package name.
 
@@ -222,7 +225,7 @@ Package: cupsys-client
 Priority: extra
 Section: oldlibs
 Architecture: all
-Depends: cups-client
+Depends: ${misc:Depends}, cups-client
 Description: Common UNIX Printing System (transitional package)
  This is a dummy package to ease transition to new package name.
 
@@ -230,7 +233,7 @@ Package: cupsys-common
 Priority: extra
 Section: oldlibs
 Architecture: all
-Depends: cups-common
+Depends: ${misc:Depends}, cups-common
 Description: Common UNIX Printing System (transitional package)
  This is a dummy package to ease transition to new package name.
 
@@ -238,7 +241,7 @@ Package: cupsys-bsd
 Priority: extra
 Section: oldlibs
 Architecture: all
-Depends: cups-bsd
+Depends: ${misc:Depends}, cups-bsd
 Description: Common UNIX Printing System (transitional package)
  This is a dummy package to ease transition to new package name.
 
@@ -246,7 +249,7 @@ Package: cupsys-dbg
 Priority: extra
 Section: oldlibs
 Architecture: all
-Depends: cups-dbg
+Depends: ${misc:Depends}, cups-dbg (>= ${binary:Version})
 Description: Common UNIX Printing System (transitional package)
  This is a dummy package to ease transition to new package name.
 
@@ -254,7 +257,7 @@ Package: libcupsys2
 Priority: extra
 Section: oldlibs
 Architecture: all
-Depends: libcups2
+Depends: ${misc:Depends}, libcups2
 Description: Common UNIX Printing System (transitional package)
  This is a dummy package to ease transition to new package name.
 
@@ -262,6 +265,6 @@ Package: libcupsys2-dev
 Priority: extra
 Section: oldlibs
 Architecture: all
-Depends: libcups2-dev
+Depends: ${misc:Depends}, libcups2-dev
 Description: Common UNIX Printing System (transitional package)
  This is a dummy package to ease transition to new package name.

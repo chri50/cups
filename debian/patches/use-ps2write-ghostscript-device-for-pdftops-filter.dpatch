@@ -1,0 +1,36 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## use-ps2write-ghostscript-device-for-pdftops-filter.dpatch by  <till.kamppeter@gmail.com>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Use "ps2write" instead of "pswrite" Ghostscript output device
+## DP: in the "pdftops" CUPS filter. Deactivated as "ps2write" crashes
+## DP: on test/testfile.pdf of CUPS test suite, see Ghostscript bug
+## DP: http://bugs.ghostscript.com/show_bug.cgi?id=690475
+## DP:
+## DP: Use the Ghostscript output device "ps2write" instead of "pswrite" for
+## DP: the Ghostscript call in the pdftops filter. The "pswrite" turns the
+## DP: text characters into bitmaps and this causes several problems. Note that
+## DP: the "ps2write" produces PostScript which is not DSC-conforming. So it can
+## DP: only be used in filters which are called after the page management (N-up,
+## DP: selected pages, reverse order, ...). This is the case for a PDF-based
+## DP: printing workflow like in Debian and Ubuntu (page management by pdftopdf,
+## DP: pdftops filter to turn PDF into PostScript afterwards, for PostScript
+## DP: printers) and not for the old PostScript-based printing like in upstream 
+## DP: CUPS (pdftops turns incoming PDF into PostScript for page management by
+## DP: the pstops filter). Therefore this patch is classified as a Debian patch
+## DP: and not a patch for upstream CUPS (can change when Ghostscript gets
+## DP: appropriately fixed). Fixes LP: #361772, LP: #362186, LP: #369503).
+
+@DPATCH@
+diff -urNad cups-1.3.10~/filter/pdftops.c cups-1.3.10/filter/pdftops.c
+--- cups-1.3.10~/filter/pdftops.c	2009-03-12 22:34:21.000000000 +0100
++++ cups-1.3.10/filter/pdftops.c	2009-05-11 09:57:27.000000000 +0200
+@@ -171,7 +171,7 @@
+   pdfargv[2] = (char *)"-dNOPAUSE";
+   pdfargv[3] = (char *)"-dBATCH";
+   pdfargv[4] = (char *)"-dSAFER";
+-  pdfargv[5] = (char *)"-sDEVICE=pswrite";
++  pdfargv[5] = (char *)"-sDEVICE=ps2write";
+   pdfargv[6] = (char *)"-sOUTPUTFILE=%stdout";
+   pdfargc    = 7;
+ #endif /* HAVE_PDFTOPS */
