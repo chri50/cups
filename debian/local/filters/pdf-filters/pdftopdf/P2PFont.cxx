@@ -1102,7 +1102,7 @@ end_setup:
 P2PFontDict::~P2PFontDict()
 {
   if (font != 0) {
-    delete font;
+    font->decRefCnt();
   }
   /* fontDescriptor is pointed by multiple FontDict,
      so, don't delete it here.  it is deleted by P2PXRef::clean() */

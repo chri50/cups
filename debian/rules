@@ -46,7 +46,7 @@ common-post-build-arch::
 cleanbuilddir::
 	rm -f man/client.conf.man packaging/cups.list
 	rm -f conf/mime.convs conf/snmp.conf init/org.cups.cups-lpd.plist
-	-make distclean
+	[ ! -f Makedefs ] || make distclean
 	# Remove source code of extra filters for PDF printing workflow
 	( cd debian/local/filters/pdf-filters/; sh ./removefromcups ../../../.. )
 
@@ -55,6 +55,9 @@ common-install-prehook-impl::
 
 binary-post-install/cups::
 	(cd $(DEB_DESTDIR)/../cups/usr/share/doc/cups && ln -sf ../../cups/doc-root online-docs)
+
+	# Ensure that we don't ship anything in /var/run
+	rm -rf $(DEB_DESTDIR)/../cups/var/run
 
 	# Install PPDs into /usr/share/ppd/cups-included/<Manufacturer>, see
 	# http://wiki.debian.org/PpdFileStructureSpecification
@@ -106,7 +109,3 @@ binary-post-install/libcups2-dev::
 binary-post-install/cups-client::
 	rm -r debian/cups-client/usr/share/doc/cups-client
 	ln -s libcups2 debian/cups-client/usr/share/doc/cups-client
-
-binary-post-install/cups-common::
-	# Configure fonts for texttopdf
-	ln -s /usr/share/cups/charsets/pdf.utf-8.simple $(DEB_DESTDIR)/../cups-common/usr/share/cups/charsets/pdf.utf-8

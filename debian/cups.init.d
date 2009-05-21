@@ -22,6 +22,8 @@ unset TMPDIR
 
 test -x $DAEMON || exit 0
 
+mkdir -p /var/run/cups/certs
+
 if [ -r /etc/default/cups ]; then
   . /etc/default/cups
 fi
