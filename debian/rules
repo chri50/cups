@@ -75,7 +75,7 @@ binary-post-install/cups::
 
 	# Make the serial backend run as root, since /dev/ttyS* are
 	# root:dialout and thus not accessible as user lp
-	chmod go-x debian/$(cdbs_curpkg)/usr/lib/cups/backend-available/serial
+	chmod go-rx debian/$(cdbs_curpkg)/usr/lib/cups/backend-available/serial
 
 binary-post-install/libcupsimage2-dev::
 	rm -r debian/libcupsimage2-dev/usr/share/doc/libcupsimage2-dev

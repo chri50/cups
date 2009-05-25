@@ -5,6 +5,8 @@ pdftops-dont_fail_on_cancel.dpatch
 CVE-2008-3641_hpgl_filter_overflow.dpatch 
 CVE-2008-3639_sgi_filter_overflow.dpatch
 CVE-2008-3640_texttops_overflow.dpatch
+CVE-2009-0163_tiff_read_overflow.dpatch
+CVE-2009-0949.dpatch
 
 # patches accepted and committed upstream
 freebsd.dpatch
