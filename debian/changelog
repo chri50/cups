@@ -1,3 +1,23 @@
+cups (1.3.8-1+lenny6) stable-security; urgency=high
+
+  * Non-maintainer upload by the Security Team.
+  * Fix null pointer dereference on handling IPP_TAG_UNSUPPORTED
+    leading to denial of service attacks (CVE-2009-0949).
+
+ -- Nico Golde <nion@debian.org>  Mon, 25 May 2009 11:18:46 +0000
+
+cups (1.3.8-1lenny5) stable-security; urgency=low
+
+  * Add CVE-2009-0163_tiff_read_overflow.dpatch: Fix integer overflow induced
+    heap buffer overflow in the _cupsImageReadTIFF() function. Discovered by
+    iDefense. (CVE-2009-0163)
+  * debian/rules: Remove group/other read permissions from the serial backend,
+    so that it can run as root and thus is actually able to access /dev/ttyS*.
+    In unstable this is fixed with a patch which relaxes the permissions
+    checks, but that's too intrusive for a stable update. (Closes: #516945)
+
+ -- Martin Pitt <mpitt@debian.org>  Sat, 04 Apr 2009 05:59:15 -0700
+
 cups (1.3.8-1lenny4.1) unstable; urgency=medium
 
   * Non-maintainer upload.
