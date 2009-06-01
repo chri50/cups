@@ -1,3 +1,12 @@
+cups (1.3.9-17ubuntu3.1) jaunty-security; urgency=low
+
+  * SECURITY UPDATE: Remote denial-of-service via IPP_TAG_UNSUPPORTED tags.
+    - debian/patches/CVE-2009-0949.dpatch: make sure the name field exists
+      in scheduler/ipp.c.
+    - CVE-2009-0949
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Mon, 01 Jun 2009 10:24:49 -0400
+
 cups (1.3.9-17ubuntu3) jaunty-proposed; urgency=low
 
   * debian/filters/pstopdf: Make pstopdf also reading default values from the

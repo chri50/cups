@@ -36,3 +36,4 @@ ubuntu-default-error-policy-retry-job.dpatch
 
 # Security patches
 CVE-2009-0163.dpatch
+CVE-2009-0949
