@@ -1,3 +1,64 @@
+cups (1.3.10-3) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/cups.install, debian/rules: Move added *.convs and *.types files to
+    /usr/share/cups/mime/ so that they are not considered config files
+    by dpkg.
+  * debian/local/text.convs: Turn all text input formats to text/plain at
+    a high cost, so that the text-only printer (which accepts only text/plain)
+    accepts them (LP: #385797).
+  * debian/rules: Switch the pdftops filter back to Poppler, as Ghostscript
+    has a lot of problems in generating PostScript (LP: #382379).
+  * debian/patches/poppler-based-pdftops-fixes.dpatch: Fixes for the pdftops
+    filter in Poppler mode: Do not emit PostScript level 3 as it Poppler's
+    PostScript level 3 output is not compatible with HP's PostScript printers
+    (LP: #277404); Added support for the new "-origpagesizes" option of
+    Poppler's pdftops, so that documents with pages of different sizes get
+    correctly printed (LP: #310575).
+  * debian/filters/pstopdf: Do not call Ghostscript with asymmetric resolutions
+    (like 1200x600 dpi), as it leads to problems with images in some cases.
+    See http://bugs.ghostscript.com/show_bug.cgi?id=690504.
+  * debian/local/filters/pdf-filters/pdftopdf/P2PObject.h,
+    debian/local/filters/pdf-filters/pdftopdf/P2POutput.cxx: Fixed infinite
+    loop which occured for some PDF files (LP: #382880).
+  * debian/filters/pstopdf: Make it also correctly working if PaperDimension
+    and ImageableArea entries in the PPD have no translation strings. Thanks
+    to Koji Otani to find the bug.
+  * debian/local/filters/pdf-filters/pdftoopvp/,
+    debian/local/filters/pdf-filters/README,
+    debian/local/filters/pdf-filters/addtocups,
+    debian/local/filters/pdf-filters/removefromcups,
+    debian/local/filters/pdf-filters/config-scripts/cups-pdf-filters.m4:
+    Added pdftoopvp CUPS filter as part of the PDF filter add-on.
+  * debian/cups.install: Make /etc/fonts/conf.d/99pdftoopvp.conf of pdftoopvp
+    be installed as part of the cups package
+  * debian/control: Added build dependencies needed by pdftoopvp: liblcms1-dev,
+    libfreetype6-dev, libfontconfig1-dev
+  * debian/control: Moved dependency on cups-client to Depends:, as
+    cups-client is needed by the post-install script for the update of the
+    PPDs of existing print queues.
+  * debian/cups.postinst: Case-insensitive check for model names when updating
+    PPDs of already existing print queues.
+
+  [ Martin Pitt ]
+  * Add gnutls-pkgconfig.dpatch: Use "pkg-config gnutls" instead of deprecated
+    libgnutls-config. (Closes: #529903)
+  * Bump Standards-Version to 3.8.1 (no changes necessary).
+  * debian/control: Point Vcs-Browser: to bzr.d.o. loggerhead, and use http://
+    URL for Vcs-Bzr.
+  * debian/control: Drop ghostscript build dependency again, pdftops filter
+    uses poppler again. Also Drop alternative xpdf-utils build dependency,
+    since configure now checks for poppler's pdftops capabilities.
+  * debian/control, debian/rules: Do a build-time check if pdftops supports
+    -origpagesizes, and dynamically set the poppler-utils dependency. This is
+    a hack until https://bugs.freedesktop.org/show_bug.cgi?id=19777 makes it
+    into Debian.
+  * debian/cups.install, debian/local/filters/pdf-filters/addtocups: Disable
+    new pdftoopvp filter for now, since sid does not yet have poppler 0.11.
+    Lower libpoppler-dev build dependency again.
+
+ -- Martin Pitt <mpitt@debian.org>  Thu, 11 Jun 2009 12:19:33 +0200
+
 cups (1.3.10-2) unstable; urgency=low
 
   [ Till Kamppeter ]

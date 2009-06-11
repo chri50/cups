@@ -139,7 +139,7 @@ void P2POutput::outputRef(Ref *ref, P2POutputStream *str, XRef *xref)
 
   if ((p2pobj = P2PObject::find(ref->num,ref->gen)) == 0) {
     xref->fetch(ref->num,ref->gen,&obj);
-    p2pobj = new P2PObj(&obj);
+    p2pobj = new P2PObj(&obj, ref->num, ref->gen);
     obj.free();
   }
   P2PXRef::put(p2pobj);

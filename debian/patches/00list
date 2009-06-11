@@ -3,6 +3,7 @@ freebsd.dpatch
 manpage-typos.dpatch
 search_mime_files_in_usr_share.dpatch
 cupsaccept.dpatch
+gnutls-pkgconfig.dpatch
 
 # patches accepted and committed upstream for next 1.3:
 pdftops-testsuite.dpatch
@@ -20,6 +21,7 @@ rootbackends-worldreadable.dpatch
 drop_unnecessary_dependencies.dpatch
 reactivate_recommended_driver.dpatch
 testsuite-increase-wait-timeout.dpatch
+poppler-based-pdftops-fixes.dpatch
 
 # Debian patches
 logfiles_adm_readable.dpatch

@@ -9,7 +9,6 @@ rm -f $1/filter/pdftoijs.cxx
 rm -f $1/filter/texttopdf.c
 rm -f $1/filter/pdfutils.h
 rm -f $1/filter/pdfutils.c
-rm -rf $1/filter/fontembed
 rm -f $1/filter/test_pdf1.c
 rm -f $1/filter/test_pdf2.c
 rm -f $1/conf/imagetopdf.convs
@@ -22,7 +21,9 @@ rm -f $1/data/pdf.utf-8.simple
 rm -f $1/config-scripts/cups-pdf-filters.m4
 
 # Remove directories
+rm -rf $1/filter/fontembed
 rm -rf $1/pdftopdf
+rm -rf $1/pdftoopvp
 
 cd $1
 

@@ -196,7 +196,7 @@ if [ "$1" = configure ]; then
 	    englishppduri=""
 	    tmpfile2=`mktemp -t updateppds.XXXXXX`
 	    tempfiles="$tempfiles $tmpfile2"
-	    cat $tmpfile1 | perl -p -e "$gennicknameregexp" | grep -E '^\S+\s+.*'"$nickname"'$' | cut -d ' ' -f 1 > $tmpfile2
+	    cat $tmpfile1 | perl -p -e "$gennicknameregexp" | grep -i "$nickname"'$' | cut -d ' ' -f 1 > $tmpfile2
 	    while read newppduri; do
 		[ "$ppdfound" = "0" ] && lpadmin -p "$queue" -m $newppduri 2>/dev/null || continue
 		newlang=`grep '\*LanguageVersion:' "$ppd" | cut -d ' ' -f 2 | perl -e 'print lc(<>)' | perl -p -e 's/[\r\n]//gs'`

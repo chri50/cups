@@ -52,6 +52,23 @@ if test -e "$PPD"; then
 fi
 echo "DEBUG: Resolution: $resolution" >&2
 
+if test -n "$resolution"; then
+  # If the resolution is not symmetric, use the lower of the two,
+  # Ghostscript developers recommend to use square resolutions for the
+  # pdfwrite and ps2write output devices.
+  # See http://bugs.ghostscript.com/show_bug.cgi?id=690504
+  xres=
+  yres=
+  eval "$(printf "%s" "$resolution" | sed -nre 's/.*(^|\s)([0-9]+)x([0-9]+).*/xres="\2"; yres="\3"/p')"
+  if test -n "$xres" && test -n "$yres"; then
+    if [ "$xres" -lt "$yres" ]; then
+      resolution=$xres
+    else
+      resolution=$yres
+    fi
+  fi
+fi
+
 width=
 height=
 bl_x=
@@ -102,9 +119,9 @@ if test -n "$customw" && test -n "$customh"; then
 	fi
     fi
 elif test -n "$pagesize" && test -e "$PPD"; then
-    eval "$(sed -nre 's|^\*PaperDimension\s+'"$pagesize"'/[^:]+:\s*"(\S+)\s+(\S+)".*|width="\1"; height="\2"|p' "$PPD")"
+    eval "$(sed -nre 's|^\*PaperDimension\s+'"$pagesize"'(/[^:]+\|):\s*"(\S+)\s+(\S+)".*|width="\2"; height="\3"|p' "$PPD")"
 
-    eval "$(sed -nre 's|^\*ImageableArea\s+'"$pagesize"'/[^:]+:\s*"(\S+)\s+(\S+)\s+(\S+)\s+(\S+)".*|bl_x="\1"; bl_y="\2"; tr_x="\3"; tr_y="\4"|p' "$PPD")"
+    eval "$(sed -nre 's|^\*ImageableArea\s+'"$pagesize"'(/[^:]+\|):\s*"(\S+)\s+(\S+)\s+(\S+)\s+(\S+)".*|bl_x="\2"; bl_y="\3"; tr_x="\4"; tr_y="\5"|p' "$PPD")"
 fi
 
 test -n "$bl_x" || bl_x=0

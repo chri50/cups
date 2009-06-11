@@ -17,7 +17,7 @@ include /usr/share/cdbs/1/rules/dpatch.mk
 
 unpatch: deapply-dpatches
 
-DEB_CONFIGURE_EXTRA_FLAGS := --with-optim=$(DEB_OPTFLAGS) --libdir=/usr/lib --mandir=/usr/share/man --with-docdir=/usr/share/cups/doc-root --localedir=/usr/share/cups/locale --enable-slp --enable-libpaper --enable-ssl --enable-gnutls --disable-openssl --enable-threads --enable-static --enable-dbus --with-dbusdir=/etc/dbus-1 --enable-gssapi --with-pdftops=gs --disable-launchd --with-cups-group=lp --with-system-groups=lpadmin --with-printcap=/var/run/cups/printcap --with-log-file-perm=0640 CFLAGS="$(CFLAGS)"
+DEB_CONFIGURE_EXTRA_FLAGS := --with-optim=$(DEB_OPTFLAGS) --libdir=/usr/lib --mandir=/usr/share/man --with-docdir=/usr/share/cups/doc-root --localedir=/usr/share/cups/locale --enable-slp --enable-libpaper --enable-ssl --enable-gnutls --disable-openssl --enable-threads --enable-static --enable-dbus --with-dbusdir=/etc/dbus-1 --enable-gssapi --with-pdftops=pdftops --disable-launchd --with-cups-group=lp --with-system-groups=lpadmin --with-printcap=/var/run/cups/printcap --with-log-file-perm=0640 CFLAGS="$(CFLAGS)"
 
 DEB_MAKE_INSTALL_TARGET := install BUILDROOT=$(DEB_DESTDIR)
 DEB_INSTALL_CHANGELOGS_ALL := CHANGES.txt
@@ -32,6 +32,14 @@ else
 DEB_MAKE_CHECK_TARGET := check
 endif
 LDFLAGS := -Wl,--as-needed
+
+# Auto-dependency hack until the new poppler pdftops with -origpagesizes is
+# available in Debian (See https://bugs.freedesktop.org/show_bug.cgi?id=19777)
+ifneq ($(findstring -origpagesizes,$(shell pdftops --help 2>&1)),)
+DEB_DH_GENCONTROL_ARGS += -- "-Vpdftops-Depends=poppler-utils (>= 0.11.0-0ubuntu3)"
+else
+DEB_DH_GENCONTROL_ARGS += -- "-Vpdftops-Depends=poppler-utils | xpdf-utils"
+endif
 
 post-patches::
 	# Add source code of extra filters for PDF printing workflow
@@ -84,7 +92,7 @@ binary-post-install/cups::
 	# Move file detection and conversion rules to /usr/share/cups/mime/ so
 	# that the package manager does not consider them conffiles
 	install -d $(DEB_DESTDIR)/../cups/usr/share/cups/mime
-	( cd $(DEB_DESTDIR)/../cups/etc/cups; mv cpdftocps.* imagetopdf.* pdftopdf.* pdf.* texttopdf.* $(DEB_DESTDIR)/../cups/usr/share/cups/mime/ )
+	( cd $(DEB_DESTDIR)/../cups/etc/cups; mv imagetopdf.* pdftopdf.* pdf.* texttopdf.* $(DEB_DESTDIR)/../cups/usr/share/cups/mime/ )
 	# Simple Ghostscript-based PostScript-to-PDF filter
 	install -m 0755 debian/filters/pstopdf $(DEB_DESTDIR)/../cups/usr/lib/cups/filter
 
