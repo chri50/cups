@@ -131,7 +131,8 @@ private:
 class P2PObj : public P2PObject {
 public:
   P2PObj() {}
-  P2PObj(Object *objA) {
+  P2PObj(Object *objA, int orgNumA = -1, int orgGenA = -1) 
+     : P2PObject(orgNumA, orgGenA) {
     objA->copy(&obj);
   }
 

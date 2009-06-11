@@ -5,6 +5,7 @@ etc/cups/snmp.conf
 etc/cups/ppd
 etc/cups/*.convs
 etc/cups/*.types
+#etc/fonts/conf.d/99pdftoopvp.conf
 usr/lib/cups/backend/* usr/lib/cups/backend-available
 usr/lib/cups/cgi-bin
 usr/lib/cups/monitor
@@ -55,7 +56,7 @@ usr/share/man/*/man8/cupsfilter.8.gz
 ../local/filters/oopstops usr/lib/cups/filter/
 ../local/filters/textonly usr/lib/cups/filter/
 ../local/*.ppd usr/share/ppd/cups-included/
-../local/*.types etc/cups/
-../local/*.convs etc/cups/
+../local/*.types usr/share/cups/mime/
+../local/*.convs usr/share/cups/mime/
 ../local/pdftops.conf etc/cups/
 ../local/acroread.conf etc/cups/

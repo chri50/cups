@@ -9,7 +9,6 @@ cp filter/pdftoijs.cxx $1/filter/
 cp filter/texttopdf.c $1/filter/
 cp filter/pdfutils.h $1/filter/
 cp filter/pdfutils.c $1/filter/
-cp -r filter/fontembed $1/filter/
 cp filter/test_pdf1.c $1/filter/
 cp filter/test_pdf2.c $1/filter/
 cp conf/imagetopdf.convs $1/conf/
@@ -22,7 +21,9 @@ cp data/pdf.utf-8.simple $1/data/
 cp config-scripts/cups-pdf-filters.m4 $1/config-scripts/
 
 # Copy directories
+cp -r filter/fontembed $1/filter/
 cp -r pdftopdf $1
+#cp -r pdftoopvp $1
 
 cd $1
 
@@ -31,8 +32,39 @@ cp configure.in configure.in.pdf-filters
 cp configure configure.pdf-filters
 cp config.h.in config.h.in.pdf-filters
 perl -p -i -e 's/(sinclude\(config-scripts\/cups-defaults\.m4\))/$1\nsinclude(config-scripts\/cups-pdf-filters.m4)/' configure.in
+aclocal
 autoconf
 perl -p -i -e 's:(\#endif\s*\/\*\s*\!_CUPS_CONFIG_H_\s*\*\/):
+
+/* CUPS Version is 1.1 */
+\#undef CUPS_1_1
+
+/* Use libjpeg instead of builtin jpeg decoder. */
+\#undef ENABLE_LIBJPEG
+
+/* Use zlib instead of builtin zlib decoder. */
+\#undef ENABLE_ZLIB
+
+/* Have FreeType2 include files */
+\#undef HAVE_FREETYPE_H
+
+/* Define to 1 if you have the <inttypes.h> header file. */
+\#undef HAVE_INTTYPES_H
+
+/* Define to 1 if you have the "cups" library (-lcups). */
+\#define HAVE_LIBCUPS 1
+
+/* Define to 1 if you have the <memory.h> header file. */
+\#undef HAVE_MEMORY_H
+
+/* have new GfxFontType */
+\#undef HAVE_NEW_GFX_FONTTYPE
+
+/* Define to 1 if you have the "popen" function. */
+\#undef HAVE_POPEN
+
+/* Define to 1 if you have the <stdint.h> header file. */
+\#undef HAVE_STDINT_H
 
 /* Define to 1 if you have the <dirent.h> header file, and it defines "DIR".
    */
@@ -72,6 +104,12 @@ perl -p -i -e 's:(\#endif\s*\/\*\s*\!_CUPS_CONFIG_H_\s*\*\/):
 
 /* Old CharCodeToUnicode\:\:mapToUnicode */
 \#undef OLD_MAPTOUNICODE
+
+/* Poppler uses CMS */
+\#undef USE_CMS
+
+/* Poppler data dir */
+\#undef POPPLER_DATADIR
 
 \n$1:' config.h.in
 
@@ -121,7 +159,10 @@ texttopdf:	texttopdf.o textcommon.o common.o pdfutils.o fontembed/libfontembed.a
 	\$(CC) \$(LDFLAGS) -o \$@ texttopdf.o textcommon.o common.o pdfutils.o -Lfontembed -lfontembed \$(LIBS)
 
 EOF
-perl -p -i -e 's/^(\s*DIRS\s*=.*\s+filter\s+)/$1pdftopdf /' Makefile
+#perl -p -i -e 's/^(\s*DIRS\s*=.*\s+filter\s+)/$1pdftopdf pdftoopvp /' Makefile
 perl -p -i -e 's/^(\s*LIBS\s*=.*$)/$1\nPOPPLER_LIBS\t=\t\@POPPLER_LIBS\@ \$(LIBS)/' Makedefs.in
 perl -p -i -e 's/^(\s*LIBS\s*=.*$)/$1\nIJS_LIBS\t=\t\@IJS_LIBS\@ \$(LIBS)/' Makedefs.in
+perl -p -i -e 's/^(\s*LIBS\s*=.*$)/$1\nFREETYPE_LIBS\t=\t\@FREETYPE_LIBS\@ \$(LIBS)/' Makedefs.in
+perl -p -i -e 's/^(\s*LIBS\s*=.*$)/$1\nFONTCONFIG_LIBS\t=\t\@FONTCONFIG_LIBS\@ \$(LIBS)/' Makedefs.in
 perl -p -i -e 's/^(\s*ALL_CFLAGS\s*=\s*)/$1-Ifontembed /' Makedefs.in
+perl -p -i -e 's/^(\s*ALL_CXXFLAGS\s*=\s*)/$1-Ioprs -Iopvp -I..\/opvp -I..\/.. /' Makedefs.in
