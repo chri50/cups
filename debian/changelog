@@ -1,3 +1,17 @@
+cups (1.3.10-4) unstable; urgency=low
+
+  * Add ghostscript-cups dependency. (LP: #385606)
+  * debian/control: Add back dropped comma, which led to the ssl-cert
+    dependency being dropped. (Closes: #532845)
+  * debian/local/apparmor-profile: Allow reading /proc/sys/crypto/**. 
+    (LP: #335898)
+  * debian/local/apparmor-profile: Allow dac_override to cups-pdf. This is
+    unfortunate, but required with some $HOME permissions; the profile is very
+    tight, so this shouldn't actually considerably increase privileges.
+    (LP: #224365)
+
+ -- Martin Pitt <mpitt@debian.org>  Fri, 12 Jun 2009 11:32:28 +0200
+
 cups (1.3.10-3) unstable; urgency=low
 
   [ Till Kamppeter ]
