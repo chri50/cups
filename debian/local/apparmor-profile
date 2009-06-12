@@ -61,6 +61,7 @@
   @{PROC}/sys/dev/parport/** r,
   @{PROC}/*/net/ r,
   @{PROC}/*/net/** r,
+  @{PROC}/sys/crypto/** r,
   /sys/** r,
   /usr/bin/* ixr,
   /usr/sbin/* ixr,
@@ -138,6 +139,9 @@
   capability fsetid,
   capability setgid,
   capability setuid,
+
+  # unfortunate, but required for when $HOME is 700
+  capability dac_override,
 
   /bin/dash ixr,
   /bin/bash ixr,
