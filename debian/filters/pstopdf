@@ -18,7 +18,7 @@ PS2PDF=/usr/bin/ps2pdf13
 PS2PS_OPTIONS="-dAutoRotatePages=/None -dAutoFilterColorImages=false \
                -dNOPLATFONTS -dPARANOIDSAFER -sstdout=%stderr"
 PS2PDF_OPTIONS="$PS2PS_OPTIONS -dColorImageFilter=/FlateEncode \
-               -dDoNumCopies -dPDFSETTINGS=/printer"
+                -dPDFSETTINGS=/printer"
 
 echo "DEBUG: pstopdf $# args: $@" >&2
 echo "DEBUG: PPD: $PPD" >&2
@@ -42,6 +42,17 @@ infile=$(mktemp -t pstopdf.XXXXXX)
 tempfiles="$tempfiles $infile"
 
 cat >"$infile"
+
+# Did CUPS already take care of the number of copies? If not, we have to do it
+
+donumcopies=
+numcopies="$4"
+if test -z "$numcopies"; then
+    numcopies=1
+fi
+if test "$numcopies" -le "1"; then
+    donumcopies="-dDoNumCopies"
+fi
 
 # Apply PPD settings.
 
@@ -188,5 +199,5 @@ else
   DRMFILTER=cat
 fi
 
-echo "DEBUG: Running $DRMFILTER | $PS2PDF $PS2PDF_OPTIONS $ppd_opts - -" >&2
-cat "$infile" | $DRMFILTER | $PS2PDF $PS2PDF_OPTIONS $ppd_opts - -
+echo "DEBUG: Running $DRMFILTER | $PS2PDF $PS2PDF_OPTIONS $donumcopies $ppd_opts - -" >&2
+cat "$infile" | $DRMFILTER | $PS2PDF $PS2PDF_OPTIONS $donumcopies $ppd_opts - -
