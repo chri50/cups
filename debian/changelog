@@ -1,3 +1,21 @@
+cups (1.3.9-17ubuntu3.2) jaunty-proposed; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/rules: Switch the pdftops filter back to Poppler, as Ghostscript
+    has a lot of problems in generating PostScript (LP: #382379).
+  * debian/patches/pdftops-cups-1.4.dpatch: Fixes for the pdftops
+    filter in Poppler mode: Do not emit PostScript level 3 as it Poppler's
+    PostScript level 3 output is not compatible with HP's PostScript printers
+    (LP: #277404); Added support for the new "-origpagesizes" option of
+    Poppler's pdftops, so that documents with pages of different sizes get
+    correctly printed (LP: #310575).
+
+  [ Martin Pitt ]
+  * debian/control: Bump poppler-utils dependency to the version which
+    provides -origpagesizes.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Thu, 18 Jun 2009 09:52:48 +0200
+
 cups (1.3.9-17ubuntu3.1) jaunty-security; urgency=low
 
   * SECURITY UPDATE: Remote denial-of-service via IPP_TAG_UNSUPPORTED tags.
