@@ -17,7 +17,7 @@ include /usr/share/cdbs/1/rules/dpatch.mk
 
 unpatch: deapply-dpatches
 
-DEB_CONFIGURE_EXTRA_FLAGS := --with-optim=$(DEB_OPTFLAGS) --libdir=/usr/lib --mandir=/usr/share/man --with-docdir=/usr/share/cups/doc-root --localedir=/usr/share/cups/locale --enable-slp --enable-libpaper --enable-ssl --enable-gnutls --disable-openssl --enable-threads --enable-static --enable-dbus --with-dbusdir=/etc/dbus-1 --enable-gssapi --disable-pdftops --disable-launchd --with-cups-group=lp --with-system-groups=lpadmin --with-printcap=/var/run/cups/printcap --with-log-file-perm=0640 CFLAGS="$(CFLAGS)"
+DEB_CONFIGURE_EXTRA_FLAGS := --with-optim=$(DEB_OPTFLAGS) --libdir=/usr/lib --mandir=/usr/share/man --with-docdir=/usr/share/cups/doc-root --localedir=/usr/share/cups/locale --enable-slp --enable-libpaper --enable-ssl --enable-gnutls --disable-openssl --enable-threads --enable-static --enable-dbus --with-dbusdir=/etc/dbus-1 --enable-gssapi --disable-pdftops --disable-launchd --with-cups-group=lp --with-system-groups=lpadmin --with-printcap=/var/run/cups/printcap --with-log-file-perm=0640 CFLAGS="$(CFLAGS) -DHAVE_PDFTOPS -DHAVE_PDFTOPS_WITH_ORIGPAGESIZES"
 
 DEB_MAKE_INSTALL_TARGET := install BUILDROOT=$(DEB_DESTDIR)
 DEB_INSTALL_CHANGELOGS_ALL := CHANGES.txt
