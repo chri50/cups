@@ -1,0 +1,122 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## printer-filtering.dpatch by Stéphane Graber <stgraber@ubuntu.com>
+##
+## DP: Filter printers based on PRINTER_LIST (by Julien Desfossez at Revolution Linux)
+
+@DPATCH@
+=== modified file 'cups-1.3.9/cups/ipp.c'
+--- cups-1.3.9/cups/ipp.c	2009-01-22 22:25:42 +0000
++++ cups-1.3.9/cups/ipp.c	2009-01-28 21:47:34 +0000
+@@ -988,6 +988,103 @@ ippRead(http_t *http,			/* I - HTTP conn
+                     http->blocking || http->used != 0, NULL, ipp));
+ }
+ 
++/*
++ * 'ippFilterPrinters()' - Filter printer list based on environment variables
++ */
++ipp_state_t				/* O - Current state */
++ippFilterPrinters(ipp_t      *ipp)	/* I - IPP data */
++{
++  char *env_printer_list = NULL;
++  char *result_printer_list;
++  char delim_printers[] = ",";
++  char **printer_list_array;
++  char *default_printer_env;
++  int printer_list_size = 0;
++  ipp_attribute_t	*filtertmpattr;
++  ipp_attribute_t	*filtertmpattr2;
++  ipp_attribute_t 	**prevattr = NULL;
++  int i = 0;
++  int found = 0;
++
++  /*
++   * First we create an array from PRINTER and PRINTER_LIST
++   */
++  if(getenv("PRINTER") != NULL) {
++    default_printer_env = getenv("PRINTER");
++    printer_list_size++;
++  } else {
++    default_printer_env = (char *)malloc(sizeof(char));
++    default_printer_env = "";
++  }
++
++  env_printer_list = strdup(getenv("PRINTER_LIST"));
++  result_printer_list = strtok(env_printer_list, delim_printers);
++  while(result_printer_list) {
++    if(default_printer_env && strcasecmp(result_printer_list, default_printer_env) != 0)
++      printer_list_size++;
++    result_printer_list = strtok( NULL, delim_printers);
++  }
++
++  printer_list_array = (char **)malloc(printer_list_size * sizeof(char *));
++
++  env_printer_list = strdup(getenv("PRINTER_LIST"));
++
++  result_printer_list = strtok(env_printer_list, delim_printers);
++  while(result_printer_list) {
++    /*
++     * Don't add the default printer if it's defined
++     */
++    if(strcasecmp(result_printer_list, default_printer_env) != 0) {
++      printer_list_array[i] = (char *)malloc(sizeof(result_printer_list));
++      printer_list_array[i++] = result_printer_list;
++    }
++    result_printer_list = strtok( NULL, delim_printers);
++  }
++
++  if(strcasecmp(default_printer_env, "") != 0)
++    printer_list_array[printer_list_size-1] = default_printer_env;
++
++  /*
++   *	prev = NULL
++   * 	for filtertmpattr :
++   *		if name == printer_name && printer_name in list
++   *			found = 1
++   *		if name == NULL || next == NULL
++   *			if found == 0
++   *				if prev == NULL
++   *					ipp->attrs = next.next
++   *				else
++   *					prev.next = next.next
++   *			prev = next
++   *			found = 0
++   */
++    for (filtertmpattr = ipp->attrs; filtertmpattr != NULL; filtertmpattr = filtertmpattr->next) {
++      if ((filtertmpattr->value_tag == IPP_TAG_NAME) && 
++                   (strcasecmp(filtertmpattr->name, "printer-name") == 0)) {
++        for(i = 0; i < printer_list_size; i++) {
++          if (printer_list_array[i] &&  filtertmpattr->values[0].string.text && 
++                   (strcasecmp(filtertmpattr->values[0].string.text, printer_list_array[i]) == 0)) {
++            found = 1;
++          }
++        }
++      }
++    if(filtertmpattr->name == NULL || filtertmpattr->next == NULL) {	// the last attribute
++      if(found == 0) {    // not found so we remove it
++        if(prevattr == NULL) {
++          ipp->attrs = filtertmpattr->next;
++        } else {
++          filtertmpattr2 = *prevattr;
++          filtertmpattr2->next = filtertmpattr->next;
++        }
++      } else {
++        prevattr = &(filtertmpattr->next);
++        found = 0;
++      }
++    }
++  }
++  return 0;
++}
++
+ 
+ /*
+  * 'ippReadFile()' - Read data for an IPP message from a file.
+@@ -1117,6 +1214,8 @@ ippReadIO(void       *src,		/* I - Data 
+ 	    */
+ 
+             DEBUG_puts("ippReadIO: IPP_TAG_END!");
++            if(getenv("PRINTER_LIST"))
++	            ippFilterPrinters(ipp);
+ 
+ 	    ipp->state = IPP_DATA;
+ 	    break;

@@ -1,5 +1,5 @@
 #
-# "$Id: Makefile 8429 2009-03-12 21:34:21Z mike $"
+# "$Id: Makefile 8697 2009-06-05 17:55:57Z mike $"
 #
 #   Top-level Makefile for the Common UNIX Printing System (CUPS).
 #
@@ -290,11 +290,11 @@ dist:	all
 		*BSD*) $(MAKE) $(MFLAGS) bsd;; \
 		Darwin*) $(MAKE) $(MFLAGS) osx;; \
 		IRIX*) $(MAKE) $(MFLAGS) tardist;; \
-		Linux*) $(MAKE) $(MFLAGS) rpm;; \
+		Linux*) test ! -x /usr/bin/rpm || $(MAKE) $(MFLAGS) rpm;; \
 		SunOS*) $(MAKE) $(MFLAGS) pkg;; \
 	esac
 
 
 #
-# End of "$Id: Makefile 8429 2009-03-12 21:34:21Z mike $".
+# End of "$Id: Makefile 8697 2009-06-05 17:55:57Z mike $".
 #

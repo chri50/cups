@@ -34,12 +34,12 @@
 
 Summary: Common UNIX Printing System
 Name: cups
-Version: 1.3.10
+Version: 1.3.11
 Release: 1
 Epoch: 1
 License: GPL
 Group: System Environment/Daemons
-Source: ftp://ftp.easysw.com/pub/cups/1.3.10/cups-1.3.10-source.tar.gz
+Source: ftp://ftp.easysw.com/pub/cups/1.3.11/cups-1.3.11-source.tar.gz
 Url: http://www.cups.org
 Packager: Anonymous <anonymous@foo.com>
 Vendor: Apple Inc.

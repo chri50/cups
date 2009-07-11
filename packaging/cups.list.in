@@ -1,10 +1,10 @@
 #
-# "$Id: cups.list.in 7692 2008-06-25 17:06:24Z mike $"
+# "$Id: cups.list.in 8557 2009-04-27 18:08:58Z mike $"
 #
 #   ESP Package Manager (EPM) file list for the Common UNIX Printing
 #   System (CUPS).
 #
-#   Copyright 2007-2008 by Apple Inc.
+#   Copyright 2007-2009 by Apple Inc.
 #   Copyright 1997-2007 by Easy Software Products, all rights reserved.
 #
 #   These coded instructions, statements, and computer programs are the
@@ -16,7 +16,7 @@
 
 # Product information
 %product Common UNIX Printing System
-%copyright 2007-2008 by Apple Inc.
+%copyright 2007-2009 by Apple Inc.
 %vendor Apple Inc.
 #%license LICENSE.txt
 %readme LICENSE.txt
@@ -268,7 +268,7 @@ f 0755 root sys $SERVERBIN/filter/imagetops filter/imagetops
 f 0755 root sys $SERVERBIN/filter/imagetoraster filter/imagetoraster
 %endif
 %if PDFTOPS
-f 0755 root sys $SERVERBIN/filter/pdftops pdftops/pdftops
+f 0755 root sys $SERVERBIN/filter/pdftops filter/pdftops
 %endif
 f 0755 root sys $SERVERBIN/filter/pstops filter/pstops
 f 0755 root sys $SERVERBIN/filter/rastertolabel filter/rastertolabel
@@ -712,5 +712,5 @@ f 0644 root sys $XINETD/cups-lpd init/cups-lpd
 %subpackage
 
 #
-# End of "$Id: cups.list.in 7692 2008-06-25 17:06:24Z mike $".
+# End of "$Id: cups.list.in 8557 2009-04-27 18:08:58Z mike $".
 #
