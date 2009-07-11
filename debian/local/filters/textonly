@@ -114,7 +114,7 @@ while [ "$COPIES" -gt 0 ]; do
 
   if [ "$SENDFF" == "True" ]
     then
-    echo -ne \\14
+    echo -ne \\014
   fi
 
   COPIES=$(($COPIES - 1))

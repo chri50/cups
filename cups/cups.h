@@ -1,5 +1,5 @@
 /*
- * "$Id: cups.h 8065 2008-10-17 16:59:33Z mike $"
+ * "$Id: cups.h 8575 2009-04-29 16:29:01Z mike $"
  *
  *   API definitions for the Common UNIX Printing System (CUPS).
  *
@@ -59,10 +59,10 @@ extern "C" {
  * Constants...
  */
 
-#  define CUPS_VERSION		1.0310
+#  define CUPS_VERSION		1.0311
 #  define CUPS_VERSION_MAJOR	1
 #  define CUPS_VERSION_MINOR	3
-#  define CUPS_VERSION_PATCH	10
+#  define CUPS_VERSION_PATCH	11
 #  define CUPS_DATE_ANY		-1
 
 
@@ -256,5 +256,5 @@ extern void		cupsSetDefaultDest(const char *name,
 #endif /* !_CUPS_CUPS_H_ */
 
 /*
- * End of "$Id: cups.h 8065 2008-10-17 16:59:33Z mike $".
+ * End of "$Id: cups.h 8575 2009-04-29 16:29:01Z mike $".
  */

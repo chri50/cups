@@ -1,5 +1,5 @@
 /*
- * "$Id: ipp.c 8451 2009-03-18 16:30:29Z mike $"
+ * "$Id: ipp.c 8722 2009-06-18 21:42:45Z mike $"
  *
  *   IPP routines for the Common UNIX Printing System (CUPS) scheduler.
  *
@@ -1124,6 +1124,12 @@ add_class(cupsd_client_t  *con,		/* I - Client connection */
 	send_ipp_status(con, IPP_NOT_FOUND,
                 	_("The printer or class was not found."));
 	return;
+      }
+      else if (dtype & CUPS_PRINTER_CLASS)
+      {
+        send_ipp_status(con, IPP_BAD_REQUEST,
+			_("Nested classes are not allowed!"));
+        return;
       }
 
      /*
@@ -6656,6 +6662,7 @@ get_printers(cupsd_client_t *con,	/* I - Client connection */
   const char	*username;		/* Current user */
   char		*first_printer_name;	/* first-printer-name attribute */
   cups_array_t	*ra;			/* Requested attributes array */
+  int		local;			/* Local connection? */
 
 
   cupsdLogMessage(CUPSD_LOG_DEBUG2, "get_printers(%p[%d], %x)", con,
@@ -6713,6 +6720,8 @@ get_printers(cupsd_client_t *con,	/* I - Client connection */
   else
     printer_mask = 0;
 
+  local = httpAddrLocalhost(&(con->clientaddr));
+
   if ((attr = ippFindAttribute(con->request, "printer-location",
                                IPP_TAG_TEXT)) != NULL)
     location = attr->values[0].string.text;
@@ -6745,6 +6754,9 @@ get_printers(cupsd_client_t *con,	/* I - Client connection */
        count < limit && printer;
        printer = (cupsd_printer_t *)cupsArrayNext(Printers))
   {
+    if (!local && !printer->shared)
+      continue;
+
     if ((!type || (printer->type & CUPS_PRINTER_CLASS) == type) &&
         (printer->type & printer_mask) == printer_type &&
 	(!location ||
@@ -10310,5 +10322,5 @@ validate_user(cupsd_job_t    *job,	/* I - Job */
 
 
 /*
- * End of "$Id: ipp.c 8451 2009-03-18 16:30:29Z mike $".
+ * End of "$Id: ipp.c 8722 2009-06-18 21:42:45Z mike $".
  */

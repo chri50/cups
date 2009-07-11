@@ -1,3 +1,30 @@
+cups (1.3.11-1) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/local/filters/textonly: Adding a final form feed to the job (via
+    PPD option) did not work (LP: #396673).
+  * debian/local/filters/pdf-filters/filter/imagetopdf.c: imagetopdf proceeded
+    the PDF output with a blank line. This made some filters misbehave.
+  * debian/patches/read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.dpatch:
+    Make CUPS read the number of copies out of Windows print jobs reliably by
+    also considering lines like "%%BeginNonPPDFeature: NumCopies 2". Thanks
+    to Dan Sheridan from Adelard (djs at adelard dot com) for this improvement
+    of the patch.
+
+  [ Stéphane Graber ]
+  * Add printer-filtering.dpatch: Add support for printer filtering.
+    With this patch, when the PRINTER_LIST environment variable is defined
+    only the printers (comma separated) in it will be displayed.
+
+  [ Martin Pitt ]
+  * New upstream bug fix release. See http://www.cups.org/articles.php?L586
+    for details.
+  * Drop pdftops-testsuite.dpatch (fixed upstream).
+  * poppler-based-pdftops-fixes.dpatch, search_mime_files_in_usr_share.dpatch:
+    Update to new upstream version.
+
+ -- Martin Pitt <mpitt@debian.org>  Sat, 11 Jul 2009 17:27:03 +0200
+
 cups (1.3.10-5) unstable; urgency=low
 
   * debian/patches/read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.dpatch:
