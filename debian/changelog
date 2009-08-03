@@ -1,3 +1,22 @@
+cups (1.3.11-1ubuntu1) karmic; urgency=low
+
+  [ Till Kamppeter ]
+  * Rebuilt against Poppler 0.11.2 due to ABI change in Poppler (LP: #409962).
+  * debian/cups.init.d: Trigger udev event for all USB printers right after
+    starting the CUPS daemon to run the udev callouts for the printers. This
+    allows automatic print queue setup and re-enabling print queues also if
+    the printer is cold-plugged (connected before CUPS and/or udev got
+    started).
+  * debian/cups.init.d: Set CUPS RIP cache to 1/4 of the total RAM when CUPS
+    is started. This way CUPS Raster drivers get enough memory for reliable
+    and quick operation even if large paper sizes with high resolutions are
+    printed.
+
+  [ Martin Pitt ]
+  * debian/local/apparmor-profile: Allow cups-pdf to run /bin/cp.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Tue,  4 Aug 2009 00:39:33 +0100
+
 cups (1.3.11-1) unstable; urgency=low
 
   [ Till Kamppeter ]
