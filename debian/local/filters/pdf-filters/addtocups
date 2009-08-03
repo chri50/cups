@@ -23,7 +23,7 @@ cp config-scripts/cups-pdf-filters.m4 $1/config-scripts/
 # Copy directories
 cp -r filter/fontembed $1/filter/
 cp -r pdftopdf $1
-#cp -r pdftoopvp $1
+cp -r pdftoopvp $1
 
 cd $1
 
