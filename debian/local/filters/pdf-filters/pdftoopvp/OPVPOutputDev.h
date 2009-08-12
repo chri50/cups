@@ -130,21 +130,26 @@ public:
   //----- image drawing
   virtual void drawImageMask(GfxState *state, Object *ref, Stream *str,
 			     int width, int height, GBool invert,
+			     GBool interpolate,
 			     GBool inlineImg);
   virtual void drawImage(GfxState *state, Object *ref, Stream *str,
 			 int width, int height, GfxImageColorMap *colorMap,
+			 GBool interpolate,
 			 int *maskColors, GBool inlineImg);
   virtual void drawMaskedImage(GfxState *state, Object *ref, Stream *str,
 			       int width, int height,
 			       GfxImageColorMap *colorMap,
+			       GBool interpolate,
 			       Stream *maskStr, int maskWidth, int maskHeight,
-			       GBool maskInvert);
+			       GBool maskInvert, GBool maskeInterpolate);
   virtual void drawSoftMaskedImage(GfxState *state, Object *ref, Stream *str,
 				   int width, int height,
 				   GfxImageColorMap *colorMap,
+				   GBool interpolate,
 				   Stream *maskStr,
 				   int maskWidth, int maskHeight,
-				   GfxImageColorMap *maskColorMap);
+				   GfxImageColorMap *maskColorMap,
+				   GBool maskInterpolate);
 
   //----- Type 3 font operators
   virtual void type3D0(GfxState *state, double wx, double wy);

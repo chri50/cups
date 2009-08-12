@@ -272,6 +272,7 @@ void OPVPOutputDev::startDoc(XRef *xrefA) {
 #endif
 #if HAVE_FREETYPE_FREETYPE_H || HAVE_FREETYPE_H
 				    globalParams->getEnableFreeType(),
+				    globalParams->getForceNoFTAutoHinting(),
 #endif
 				    globalParams->getAntialias());
   for (i = 0; i < nT3Fonts; ++i) {
@@ -591,7 +592,6 @@ void OPVPOutputDev::doUpdateFont(GfxState *state) {
 	goto err2;
       }
       break;
-#ifdef HAVE_NEW_GFX_FONTTYPE
     case fontType1COT:
       if (!(fontFile = fontEngine->loadOpenTypeT1CFont(
 			   id,
@@ -604,7 +604,6 @@ void OPVPOutputDev::doUpdateFont(GfxState *state) {
       }
       break;
     case fontTrueTypeOT:
-#endif
     case fontTrueType:
 	if (fileName)
 	 ff = FoFiTrueType::load(fileName->getCString());
@@ -639,7 +638,6 @@ void OPVPOutputDev::doUpdateFont(GfxState *state) {
 	goto err2;
       }
       break;
-#ifdef HAVE_NEW_GFX_FONTTYPE
     case fontCIDType0COT:
       if (!(fontFile = fontEngine->loadOpenTypeCFFFont(
 			   id,
@@ -651,7 +649,6 @@ void OPVPOutputDev::doUpdateFont(GfxState *state) {
       }
       break;
     case fontCIDType2OT:
-#endif
     case fontCIDType2:
       codeToGID = NULL;
       n = 0;
@@ -1053,6 +1050,7 @@ GBool OPVPOutputDev::imageMaskSrc(void *data, SplashColorPtr line) {
 
 void OPVPOutputDev::drawImageMask(GfxState *state, Object *ref, Stream *str,
 				    int width, int height, GBool invert,
+				    GBool interpolate,
 				    GBool inlineImg) {
   double *ctm;
   SplashCoord mat[6];
@@ -1316,6 +1314,7 @@ GBool OPVPOutputDev::alphaImageSrc(void *data, SplashColorPtr line,
 void OPVPOutputDev::drawImage(GfxState *state, Object *ref, Stream *str,
 				int width, int height,
 				GfxImageColorMap *colorMap,
+			        GBool interpolate,
 				int *maskColors, GBool inlineImg) {
   double *ctm;
   SplashCoord mat[6];
@@ -1538,8 +1537,10 @@ GBool OPVPOutputDev::maskedImageSrc(void *data, SplashColorPtr line,
 void OPVPOutputDev::drawMaskedImage(GfxState *state, Object *ref,
 				      Stream *str, int width, int height,
 				      GfxImageColorMap *colorMap,
+				      GBool interpolate,
 				      Stream *maskStr, int maskWidth,
-				      int maskHeight, GBool maskInvert) {
+				      int maskHeight, GBool maskInvert,
+				      GBool maskInterpolate) {
   double *ctm;
   SplashCoord mat[6];
   SplashOutMaskedImageData imgData;
@@ -1690,9 +1691,11 @@ void OPVPOutputDev::drawMaskedImage(GfxState *state, Object *ref,
 void OPVPOutputDev::drawSoftMaskedImage(GfxState *state, Object *ref,
 					  Stream *str, int width, int height,
 					  GfxImageColorMap *colorMap,
+					  GBool interpolate,
 					  Stream *maskStr,
 					  int maskWidth, int maskHeight,
-					  GfxImageColorMap *maskColorMap) {
+					  GfxImageColorMap *maskColorMap,
+					  GBool maskInterpolate) {
   double *ctm;
   SplashCoord mat[6];
   SplashOutImageData imgData;
