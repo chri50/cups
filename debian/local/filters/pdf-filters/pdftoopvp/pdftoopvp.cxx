@@ -577,11 +577,7 @@ exit(0);
   }
 
   // read config file
-#ifdef GLOBALPARAMS_HAS_A_ARG
-  globalParams = new GlobalParams(0);
-#else
   globalParams = new GlobalParams();
-#endif
   if (enableFreeTypeStr[0]) {
     if (!globalParams->setEnableFreeType(enableFreeTypeStr)) {
       error(-1,"Bad '-freetype' value on command line");

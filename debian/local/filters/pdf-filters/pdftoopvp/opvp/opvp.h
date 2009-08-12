@@ -64,7 +64,7 @@ typedef unsigned int opvp_rop_t;		/* raster operation */
 #define OPVP_FIX_FLOOR_WIDTH    (sizeof(int)*8-OPVP_FIX_FRACT_WIDTH)
 
 /* convert macro */
-#define	OPVP_I2FIX(i,fix)	(fix=i<<OPVP_FIX_FRACT_WIDTH)
+#define	OPVP_I2FIX(i,fix)	(fix=(i)<<OPVP_FIX_FRACT_WIDTH)
 #define	OPVP_F2FIX(f,fix)	(fix=((int)floor(f)<<OPVP_FIX_FRACT_WIDTH)\
 				    |((int)((f-floor(f))*OPVP_FIX_FRACT_DENOM)\
 				      &(OPVP_FIX_FRACT_DENOM-1)))
