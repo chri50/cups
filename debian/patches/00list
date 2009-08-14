@@ -25,7 +25,7 @@ read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.dpatch
 
 # Debian patches
 logfiles_adm_readable.dpatch
-default_log_warn.dpatch
+default_log_settings.dpatch
 confdirperms.dpatch
 #use-ps2write-ghostscript-device-for-pdftops-filter.dpatch
 printer-filtering.dpatch
