@@ -1,3 +1,18 @@
+cups (1.3.11-1ubuntu7) karmic; urgency=low
+
+  * debian/cups-bsd.postinst, debian/cups.postinst: Moved handling of
+    /etc/printcap symlink from the post-install script of the cups-bsd
+    package to the cups package. Should assure that the symlink gets
+    also set on initial system installation (LP: #415825).
+
+  * debian/local/filters/cpdftocps: Updated filter to not use the pdftops
+    filter of CUPS, as from version 1.3.11 on CUPS' pdftops filter integrates
+    the call of pstops, and in the PDF workflow this would duplicate the
+    application of page management options, like N-up, even/odd pages, and
+    even the number of copies for some printers (LP: #412709).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Thu, 20 Aug 2009 22:16:33 +0100
+	
 cups (1.3.11-1ubuntu6) karmic; urgency=low
 
   * debian/patches/default_log_warn.dpatch,

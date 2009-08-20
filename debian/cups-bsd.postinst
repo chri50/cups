@@ -40,24 +40,6 @@ case "$1" in
 	if [ "$RET" = "true" ]; then
 	    update-inetd --add 'printer stream tcp nowait lp /usr/lib/cups/daemon/cups-lpd cups-lpd'
 	fi
-
-	# Manage printcap file and associated symlinks
-	if [ -e /etc/cups/cupsd.conf ]; then
-	    if [ -e /etc/printcap.cups ]; then
-		rm -f /etc/printcap.cups
-	    fi
-	    if [ -L /etc/printcap -a ! -e /etc/printcap ]; then
-		rm -f /etc/printcap
-	    fi
-
-	    printcap_file=`egrep '^Printcap ' /etc/cups/cupsd.conf | awk '{print $2}' | tail -n 1`
-	    if [ -z "$printcap_file" ]; then
-		printcap_file=/var/run/cups/printcap
-	    fi
-	    if [ ! -e /etc/printcap -a -e $printcap_file ]; then
-	        ln -s $printcap_file /etc/printcap
-	    fi
-	fi
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
