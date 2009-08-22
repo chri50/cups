@@ -60,3 +60,4 @@ usr/share/man/*/man8/cupsfilter.8.gz
 ../local/*.convs usr/share/cups/mime/
 ../local/pdftops.conf etc/cups/
 ../local/acroread.conf etc/cups/
+etc/fonts/conf.d/99pdftoopvp.conf

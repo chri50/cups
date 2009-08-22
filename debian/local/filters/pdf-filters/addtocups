@@ -23,7 +23,7 @@ cp config-scripts/cups-pdf-filters.m4 $1/config-scripts/
 # Copy directories
 cp -r filter/fontembed $1/filter/
 cp -r pdftopdf $1
-#cp -r pdftoopvp $1
+cp -r pdftoopvp $1
 
 cd $1
 
@@ -159,7 +159,7 @@ texttopdf:	texttopdf.o textcommon.o common.o pdfutils.o fontembed/libfontembed.a
 	\$(CC) \$(LDFLAGS) -o \$@ texttopdf.o textcommon.o common.o pdfutils.o -Lfontembed -lfontembed \$(LIBS)
 
 EOF
-#perl -p -i -e 's/^(\s*DIRS\s*=.*\s+filter\s+)/$1pdftoopvp /' Makefile
+perl -p -i -e 's/^(\s*DIRS\s*=.*\s+filter\s+)/$1pdftoopvp /' Makefile
 perl -p -i -e 's/^(\s*DIRS\s*=.*\s+filter\s+)/$1pdftopdf /' Makefile
 perl -p -i -e 's/^(\s*LIBS\s*=.*$)/$1\nPOPPLER_LIBS\t=\t\@POPPLER_LIBS\@ \$(LIBS)/' Makedefs.in
 perl -p -i -e 's/^(\s*LIBS\s*=.*$)/$1\nIJS_LIBS\t=\t\@IJS_LIBS\@ \$(LIBS)/' Makedefs.in

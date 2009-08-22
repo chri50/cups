@@ -145,6 +145,7 @@
 
   /bin/dash ixr,
   /bin/bash ixr,
+  /bin/cp ixr,
   /etc/papersize r,
   /etc/cups/cups-pdf.conf r,
   @{HOME}/PDF/ rw,
