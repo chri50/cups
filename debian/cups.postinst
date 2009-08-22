@@ -136,8 +136,9 @@ EOF
         fi
 
         # Reload AppArmor profile if present
-        if [ -e /etc/apparmor.d/usr.sbin.cupsd ] && [ -x /etc/init.d/apparmor ]; then
-            invoke-rc.d apparmor force-reload || true
+        APP_PROFILE="/etc/apparmor.d/usr.sbin.cupsd"
+        if [ -f "$APP_PROFILE" ] && aa-status --enabled 2>/dev/null; then
+            apparmor_parser -r "$APP_PROFILE" || true
         fi
 
 	# init.d priority transition
@@ -168,6 +169,24 @@ esac
 #DEBHELPER#
 
 if [ "$1" = configure ]; then
+    # Manage printcap file and associated symlinks
+    if [ -e /etc/cups/cupsd.conf ]; then
+	if [ -e /etc/printcap.cups ]; then
+	    rm -f /etc/printcap.cups
+	fi
+	if [ -L /etc/printcap -a ! -e /etc/printcap ]; then
+	    rm -f /etc/printcap
+	fi
+
+	printcap_file=`egrep '^Printcap ' /etc/cups/cupsd.conf | awk '{print $2}' | tail -n 1`
+	if [ -z "$printcap_file" ]; then
+	    printcap_file=/var/run/cups/printcap
+	fi
+	if [ ! -e /etc/printcap -a -e $printcap_file ]; then
+	    ln -s $printcap_file /etc/printcap
+	fi
+    fi
+
     # Do the following only if CUPS is running and the needed CUPS tools
     # are available
     if which lpstat > /dev/null 2>&1 && \

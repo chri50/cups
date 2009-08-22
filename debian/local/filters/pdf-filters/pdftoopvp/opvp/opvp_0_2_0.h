@@ -63,9 +63,9 @@ typedef	struct {
 				 fix.floor=floor(f))
 #else
 typedef	int	OPVP_Fix;
-#define	OPVP_i2Fix(i,fix)	(fix=i<<8)
+#define	OPVP_i2Fix(i,fix)	(fix=(i)<<8)
 #define	OPVP_f2Fix(f,fix)	(fix=((int)floor(f)<<8)\
-				    |((int)((f-floor(f))*OPVP_FIX_FRACT_DENOM)\
+				   |((int)(((f)-floor(f))*OPVP_FIX_FRACT_DENOM)\
 				      &0x000000ff))
 #endif
 

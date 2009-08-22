@@ -7,12 +7,16 @@
 diff -urNad cups~/conf/cupsd.conf.in cups/conf/cupsd.conf.in
 --- cups~/conf/cupsd.conf.in	2006-04-12 16:32:11.000000000 +0200
 +++ cups/conf/cupsd.conf.in	2006-04-12 17:04:58.000000000 +0200
-@@ -8,7 +8,7 @@
+@@ -8,7 +8,11 @@
  
  # Log general information in error_log - change "info" to "debug" for
  # troubleshooting...
 -LogLevel info
 +LogLevel warning
- 
++
++# Deactivate CUPS' internal logrotating, as we provide a better one, especially
++# LogLevel debug2 gets usable now
++MaxLogSize 0
+
  # Administrator user group...
  SystemGroup @CUPS_SYSTEM_GROUPS@
