@@ -45,6 +45,8 @@ post-patches::
 	# Add source code of extra filters for PDF printing workflow
 	( cd debian/local/filters/pdf-filters/; sh ./addtocups ../../../.. )
 	touch pdftopdf/Dependencies
+	touch pdftoopvp/Dependencies
+	touch pdftoopvp/oprs/Dependencies
 
 common-post-build-arch::
 	# Fix permissions of filters/backends installed from debian/local/
