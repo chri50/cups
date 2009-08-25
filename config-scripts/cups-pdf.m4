@@ -1,5 +1,5 @@
 dnl
-dnl "$Id: cups-pdf.m4 8429 2009-03-12 21:34:21Z mike $"
+dnl "$Id: cups-pdf.m4 8760 2009-08-07 22:30:30Z mike $"
 dnl
 dnl   PDF filter configuration stuff for the Common UNIX Printing System (CUPS).
 dnl
@@ -13,12 +13,7 @@ dnl   which should have been included with this file.  If this file is
 dnl   file is missing or damaged, see the license at "http://www.cups.org/".
 dnl
 
-AC_ARG_ENABLE(pdftops, [  --enable-pdftops        build pdftops filter, default=auto ])
-AC_ARG_WITH(pdftops, [  --with-pdftops          set pdftops filter (gs,pdftops,none), default=pdftops ])
-
-if test "x$enable_pdftops" = xno -a "x$with_pdftops" = x; then
-	with_pdftops=no
-fi
+AC_ARG_WITH(pdftops, [  --with-pdftops          set pdftops filter (gs,/path/to/gs,pdftops,/path/to/pdftops,none), default=pdftops ])
 
 PDFTOPS=""
 CUPS_PDFTOPS=""
@@ -52,6 +47,12 @@ case "x$with_pdftops" in
 	fi
 	;;
 
+	x/*/gs) # Use /path/to/gs without any check:
+	CUPS_GHOSTSCRIPT="$with_pdftops"
+	AC_DEFINE(HAVE_GHOSTSCRIPT)
+	PDFTOPS="pdftops"
+	;;
+
 	xpdftops)
 	AC_PATH_PROG(CUPS_PDFTOPS, pdftops)
 	if test "x$CUPS_PDFTOPS" != x; then
@@ -62,6 +63,20 @@ case "x$with_pdftops" in
 		exit 1
 	fi
 	;;
+
+	x/*/pdftops) # Use /path/to/pdftops without any check:
+	CUPS_PDFTOPS="$with_pdftops"
+	AC_DEFINE(HAVE_PDFTOPS)
+	PDFTOPS="pdftops"
+	;;
+
+	xnone) # Make no pdftops filter if with_pdftops=none:
+	;;
+
+	*) # Invalid with_pdftops value:
+	AC_MSG_ERROR(Invalid with_pdftops value!)
+	exit 1
+	;;
 esac
 
 AC_DEFINE_UNQUOTED(CUPS_PDFTOPS, "$CUPS_PDFTOPS")
@@ -69,5 +84,5 @@ AC_DEFINE_UNQUOTED(CUPS_GHOSTSCRIPT, "$CUPS_GHOSTSCRIPT")
 AC_SUBST(PDFTOPS)
 
 dnl
-dnl End of "$Id: cups-pdf.m4 8429 2009-03-12 21:34:21Z mike $".
+dnl End of "$Id: cups-pdf.m4 8760 2009-08-07 22:30:30Z mike $".
 dnl

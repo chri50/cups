@@ -18,6 +18,11 @@ dnl @author Alexandre Oliva
 dnl @version 2005-07-29
 dnl @license AllPermissive
 
+dnl Do we have CUPS 1.4 or newer?
+if test "`echo $CUPS_VERSION | cut -d '.' -f 2`" -ge "4"; then
+   AC_DEFINE(CUPS_1_4, 1, [CUPS Version is 1.4 or newer])
+fi
+
 AC_DEFUN([AC_DEFINE_DIR], [
   prefix_NONE=
   exec_prefix_NONE=

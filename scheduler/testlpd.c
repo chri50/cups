@@ -1,5 +1,5 @@
 /*
- * "$Id: testlpd.c 6789 2007-08-13 19:52:43Z mike $"
+ * "$Id: testlpd.c 8700 2009-06-05 21:38:52Z mike $"
  *
  *   cups-lpd test program for the Common UNIX Printing System (CUPS).
  *
@@ -145,13 +145,11 @@ main(int  argc,				/* I - Number of command-line arguments */
     * Child goes here...
     */
 
-    close(0);
-    dup(cupslpd_stdin[0]);
+    dup2(cupslpd_stdin[0], 0);
     close(cupslpd_stdin[0]);
     close(cupslpd_stdin[1]);
 
-    close(1);
-    dup(cupslpd_stdout[1]);
+    dup2(cupslpd_stdout[1], 1);
     close(cupslpd_stdout[0]);
     close(cupslpd_stdout[1]);
 
@@ -550,5 +548,5 @@ usage(void)
 
 
 /*
- * End of "$Id: testlpd.c 6789 2007-08-13 19:52:43Z mike $".
+ * End of "$Id: testlpd.c 8700 2009-06-05 21:38:52Z mike $".
  */

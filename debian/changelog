@@ -1,3 +1,262 @@
+cups (1.4.0~svn8773-1) experimental; urgency=low
+
+  * New upstream prerelease snapshot.
+    [ Changes listed explicitly here as they are not yet available on
+      www.cups.org ]
+    1. accept and reject; the accept and reject commands have been
+       officially renamed to cupsaccept and cupsreject. The old names are
+       still supported via symlinks.
+    2. cupsdisable and cupsenable; the cupsdisable command now supports a
+       --hold option to stop printing after the current job and the
+       cupsenable command now supports a --release option to release
+       pending jobs for printing.
+    3. cupsfilter; the cupsfilter program now supports filtering of
+       already-queued print job files and can also run printer-specific
+       filters specified in the PPD file.
+    4. cupstestdsc; the cupstestdsc utility has been improved to better
+       detect problems with PostScript print files.
+    5. cupstestppd; the cupstestppd utility has been improved to test new
+       PPD keywords and better detect impossible constraints.
+    6. lpadmin; the lpadmin command now supports options to hold and
+       release new jobs on a printer or all printers.
+    7. lpoptions; the lpoptions command now describes custom options and
+       their parameters.
+    8. lppasswd; the lppasswd program is no longer installed setuid by
+       default.
+    9. lpstat; the lpstat command now supports a -H option to show the
+       current default server and no longer slows down when a printer is
+       specified.
+   10. Look-n-feel; the web interface has been given a new look.
+   11. PHP support; the "php-cgi" program is used, when available, to
+       process PHP pages in the CUPS web interface.
+   12. Printer configuration; improvements have been made to the add and
+       modify printer pages.
+   13. Printer options; the Set Default Options page now provides a
+       "query" button that queries the default and installed options from
+       the printer.
+   14. Printer sharing; the "share printer" and "unshare printer" buttons
+       are now only shown when printer sharing is enabled in the
+       scheduler.
+   15. Security; the web interface has been updated to support
+       authentication for printing of test pages and RSS subscription
+       operations.
+   16. Server settings; the Administration page now provides access to
+       common "advanced" server settings.
+   17. Bonjour (DNS-SD) printing support; a new mdns backend provides
+       Bonjour-based printer discovery and the ipp, lpd, and socket
+       backends now support Bonjour address resolution.
+   18. Bonjour (DNS-SD) perforance tuning; the scheduler now only uses a
+       single file descriptor for printer sharing. It previously used one
+       per printer.
+   19. Bonjour (DNS-SD) web interface registry; when remote access is
+       enabled, the scheduler can register the web interface for easier
+       access.
+   20. LPD client support; the cups-lpd mini-daemon now provides the
+       document-name for print jobs and supports specification of a CUPS
+       server.
+   21. PWG Port Monitor MIB; the snmp backend now supports the PWG Port
+       Monitor MIB to better choose the device URI to use.
+   22. SNMP-based monitoring; the ipp, lpd, and socket backends now report
+       supply levels and printer status using SNMP queries.
+   23. IPP/2.x support; CUPS now conforms to the draft IPP/2.0 and IPP/2.1
+       specifications.
+   24. CUPS-Add-Modify-Printer operation; the scheduler now supports
+       setting the printer-state-reasons attribute using this operation.
+   25. CUPS-Get-Document operation; the scheduler now supports a "get
+       document" operation to download files from a print job.
+   26. Device location; the scheduler and backend discovery interface now
+       support a device-location attribute.
+   27. Hold-New-Jobs and Release-Held-New-Jobs operations; the scheduler
+       now supports the Hold-New-Jobs and Release-Held-New-Jobs
+       operations.
+   28. Access control; the scheduler now supports multiple addresses in
+       Allow and Deny lines. It also now returns a HTTP 403 (forbidden)
+       status when a user authenticates successfully but is not allowed to
+       perform an operation.
+   29. Access logging; the scheduler now supports an AccessLogLevel
+       directive to control what is logged in the access_log file.
+   30. Configuration files; the default cupsd.conf file now provides an
+       "authenticated" policy for easy authenticated sharing of printers.
+   31. Default LogLevel; the default LogLevel is now "warn" instead of
+       "info".
+   32. Automatic debug logging; the scheduler now records up to the last N
+       (default 200) debug messages for failed print jobs.
+   33. Default paper size; the scheduler now supports a DefaultPaperSize
+       directive to override the default paper size defined by the locale
+       or libpaper configuration.
+   34. Encryption support; the scheduler now supports a SSLOptions
+       directive to optionally support Windows clients in "FIPS" mode. It
+       also now loads both the server and CA certificates (if present)
+       from the ServerCertificate file.
+   35. Error logging; the scheduler now logs unsuccessful operations as
+       errors in the error_log file.
+   36. Error policies; the scheduler now supports a retry-current-job
+       error policy that retries the current job immediately.
+   37. Fatal error handling; the scheduler now supports a FatalErrors
+       directive to control which startup errors should be considered
+       fatal.
+   38. Filter command-line; the scheduer now passes the
+       job-originating-host-name attribute as a CUPS option to filters and
+       backends.
+   39. Filter environment; the scheduler now includes CUPS_JOBTYPE,
+       PRINTER_INFO, and PRINTER_LOCATION variables in the environment
+       passed to filters and backends.
+   40. Job progress; the scheduler now supports a job-media-progress
+       attribute to track the printing progress of each page.
+   41. MIME database; MIME types now support a priority attribute to
+       override the default (alphabetical) rules of precedence.
+   42. Page logging; the scheduler now supports a PageLogFormat directive
+       to control the format of the page_log file.
+   43. PAM support; the scheduler now sets more PAM attributes to better
+       support third-party authentication schemes.
+   44. PDF job ticket support; the scheduler now supports cupsJobTicket
+       comments at the beginning of PDF print jobs.
+   45. Performance tuning; the scheduler now coalesces configuration and
+       state file changes to reduce the amount of disk activity and caches
+       printer attributes to further reduce startup time.
+   46. Printcap support; the scheduler no longer clears the printcap file
+       when shutting down, and can now create XML "plist" printcap files
+       as well.
+   47. RSS subscriptions; the scheduler now starts the notifier for RSS
+       subscriptions after creation so the feed is available immediately.
+   48. Sandbox support; the scheduler now runs child processes using
+       restrictive policies on Mac OS X for improved security and job
+       isolation.
+   49. Test option; the scheduler now supports a test mode via the "-t"
+       option.
+   50. Device discovery; the cups-deviced helper now runs backends in
+       parallel for faster discovery and streams the results of discovery
+       as the backends provide them.
+   51. Driver development kit; the CUPS DDK is now a standard part of
+       CUPS.
+   52. Driver information file support; the cups-driverd helper program
+       now directly supports PPD compiler driver information files.
+   53. Dynamic PPD support; drivers can now set PPD keywords dynamically
+       using PPD: messages.
+   54. Generic PostScript command filter; a new CUPS command file filter
+       for PostScript printers provides auto-configuration, self-test
+       page, and status and supply level reporting functions.
+   55. New printer drivers; new generic PostScript and PCL drivers provide
+       improved support for laser printers, the CUPS DDK drivers offer
+       support for many HP DesignJet printers, and new label drivers offer
+       support for Seiko and Tharo label printers.
+   56. PJL support; the cupsPJLDisplay PPD attribute controls the PJL
+       commands used to display the current user and job on the printer.
+   57. PPD compiler improvements; the PPD compiler now supports Mac OS X
+       .strings files, OID query strings, conditional directives, long
+       file names, and a test mode. It also fixes many other bugs from the
+       CUPS DDK 1.2.3 release.
+   58. USB printer support; the usb backend now uses libusb when available
+       to allow it to better work with third-party scanning and printing
+       solutions.
+   59. Banner filter; the bundled banner ("job-sheets") pages are now
+       generated using a new banner filter provides easier customization
+       and better support for UTF-8 text.
+   60. Image filters; the standard image filters now support image files
+       larger than 2GB.
+   61. PDF filter; the pdftops filter has been replaced with a wrapper
+       program that runs the Xpdf, poppler, or Ghostscript PDF to
+       PostScript utilities.
+   62. Backend API; a new cupsBackendReport function is provided to report
+       a device from a backend and handles any needed quoting of the
+       make-and-model, info, device-id, and location strings.
+   63. Device discovery; the new cupsGetDevices function streams
+       discovered devices to an application-provided callback function.
+   64. IPP API; the IPP read and write functions no longer use a large
+       stack-based buffer when reading and writing IPP attributes.
+   65. PPD support; several new functions are provided: cupsGetPPD3,
+       cupsResolveConflicts, ppdInstallableConflict, ppdLocalizeAttr,
+       ppdLocalizeMarkerName and ppdPageSizeLimits.
+   66. Side-Channel API; new cupsSideChannelSNMPGet and
+       cupsSideChannelSNMPWalk functions allow printer drivers to do SNMP
+       queries via the standard network backends.
+   67. Streaming API; a new streaming request API provides asynchronous
+       job creation and request submission.
+  * debian/patches/freebsd.dpatch,
+    debian/patches/manpage-typos.dpatch,
+    debian/patches/search_mime_files_in_usr_share.dpatch,
+    debian/patches/cupsaccept.dpatch,
+    debian/patches/gnutls-pkgconfig.dpatch: Removed backport patches of upstream
+    features.
+  * debian/patches/testsuite-increase-wait-timeout.dpatch: Removed, fixed
+    upstream.
+  * debian/patches/removecvstag.dpatch,
+    debian/patches/pidfile.dpatch,
+    debian/patches/ppd-poll-with-client-conf.dpatch,
+    debian/patches/quiesce-bonjour-warning.dpatch,
+    debian/patches/rootbackends-worldreadable.dpatch,
+    debian/patches/drop_unnecessary_dependencies.dpatch,
+    debian/patches/reactivate_recommended_driver.dpatch,
+    debian/patches/default_log_settings.dpatch,
+    debian/patches/confdirperms.dpatch,
+    debian/patches/printer-filtering.dpatch,
+    debian/patches/ubuntu-disable-browsing.dpatch: Regenerated.
+  * debian/local/backends/dnssd, debian/control, debian/cups.install,
+    debian/rules: "dnssd" backend removed, DNS-SD discovery backend is now
+    provided upstream.
+  * debian/patches/dns-sd-check-typo.dpatch: Fixed typo in upstream code to
+    check for the availability of dns_sd.h.
+  * debian/patches/dnssd-avahi.dpatch: Added avahi support for the "dnssd" CUPS
+    backend (patch from Fedora). CUPS' DNS-SD support does not build with the
+    libdns_sd of avahi.
+  * debian/patches/show-compile-command-lines.dpatch: Show compiler command
+    lines in the output of the "make" process.
+  * debian/control: Added libusb-dev to the build dependencies, the new USB
+    printer backend uses libusb and not any more the usblp kernel module.
+  * debian/control: Added libavahi-common-dev and libavahi-client-dev to
+    the build dependencies, for the avahi patch for the DNS-SD support.
+  * debian/control: Added new packages for the new shared libraries and also
+    cups-ppdc for the PPD manipulation utilities of the former CUPS DDk. Added
+    transitional package for CUPS DDK. Added Conflicts:/Replaces: as cupsddk
+    is replaced by cups-ppdc and the files of cupsddk-drivers go into the
+    main cups package.
+  * debian/rules: Added "--enable-libusb" to the ./configure command line.
+  * debian/rules: Added "--enable-avahi" to the ./configure command line.
+  * debian/rules: Call autoconf, as we have an SVN snapshot currently.
+  * debian/rules: Updated individual file installation and adaptation steps
+    for the new CUPS version.
+  * debian/libcups2-dev.install: Added new header file versioning.h.
+  * debian/libcupscgi1-dev.install, debian/libcupscgi1.install,
+    debian/libcupsdriver1-dev.install, debian/libcupsdriver1.install,
+    debian/libcupsmime1-dev.install, debian/libcupsmime1.install,
+    debian/libcupsppdc1-dev.install, debian/libcupsppdc1.install: Added install
+    file lists for newly added libraries.
+  * debian/cups-ppdc.install: File list for new cups-ppdc package. This package
+    holds the PPD file manipulation tools which were in CUPS DDK formerly.
+  * debian/cups-common.install, debian/cups.install: Updated for new CUPS
+    version.
+  * debian/cups.install, debian/cups-client.install, debian/cups-ppdc.install:
+    Commented out lines for missing translated man pages.
+  * debian/cups.postinst: Do not create the /usr/share/ppd/1-local-admin
+    and /usr/share/ppd/2-third-party links. They are not needed with current
+    CUPS and they also break the test procedure during package build.
+  * debian/libcups2.postinst, debian/libcupsimage2.postinst: Removed no-op
+    maintainer scripts.
+  * debian/local/filters/pdf-filters/addtocups,
+    debian/local/filters/pdf-filters/config-scripts/cups-pdf-filters.m4,
+    debian/local/filters/pdf-filters/filter/texttopdf.c: Let ./configure
+    script check the CUPS version so that in texttopdf.c a missing variable
+    can get defined if CUPS is 1.4.x or newer.
+  * debian/local/filters/pdf-filters/pdftoopvp/Makefile,
+    debian/local/filters/pdf-filters/pdftopdf/Makefile: Added missing
+    "unittests", "install-data", "install-headers", "install-libs",
+    "install-exec", "libs", "apihelp", and "framedhelp" targets to the
+    Makefiles of the PDF filters.
+
+  [ Martin Pitt ]
+  * debian/cups.install, debian/local/filters/pdf-filters/addtocups: Enable
+    pdftoopvp filter.
+  * Add disable-pdftoopvp-with-old-poppler.dpatch: Disable pdftoopvp if we
+    build against a poppler older than 0.11, since pdftoopvp needs that new
+    API. (This uses pkg-config --atleast-version in the dpatch script header.)
+  * ubuntu-disable-browsing.dpatch: Restore Ubuntu check.
+  * dnssd-avahi.dpatch: Add upstream bug link.
+  * dnssd-avahi.dpatch: Do not error out of the dnssd backend if system D-Bus
+    is not running. This unbreaks the test suite when running in a build
+    environment.
+
+ -- Martin Pitt <mpitt@debian.org>  Tue, 25 Aug 2009 22:07:17 +0200
+
 cups (1.3.11-2) unstable; urgency=low
 
   [ Till Kamppeter ]

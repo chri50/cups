@@ -1,9 +1,9 @@
 dnl
-dnl "$Id: cups-launchd.m4 6649 2007-07-11 21:46:42Z mike $"
+dnl "$Id: cups-launchd.m4 8344 2009-02-10 17:05:35Z mike $"
 dnl
 dnl   launchd stuff for the Common UNIX Printing System (CUPS).
 dnl
-dnl   Copyright 2007 by Apple Inc.
+dnl   Copyright 2007-2009 by Apple Inc.
 dnl   Copyright 1997-2005 by Easy Software Products, all rights reserved.
 dnl
 dnl   These coded instructions, statements, and computer programs are the
@@ -14,7 +14,7 @@ dnl   file is missing or damaged, see the license at "http://www.cups.org/".
 dnl
 
 
-AC_ARG_ENABLE(launchd, [  --enable-launchd        turn on launchd support, default=yes])
+AC_ARG_ENABLE(launchd, [  --disable-launchd       disable launchd support])
 
 DEFAULT_LAUNCHD_CONF=""
 LAUNCHDLIBS=""
@@ -40,5 +40,5 @@ AC_SUBST(DEFAULT_LAUNCHD_CONF)
 AC_SUBST(LAUNCHDLIBS)
 
 dnl
-dnl End of "$Id: cups-launchd.m4 6649 2007-07-11 21:46:42Z mike $".
+dnl End of "$Id: cups-launchd.m4 8344 2009-02-10 17:05:35Z mike $".
 dnl

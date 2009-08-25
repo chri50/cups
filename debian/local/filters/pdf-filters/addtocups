@@ -39,6 +39,9 @@ perl -p -i -e 's:(\#endif\s*\/\*\s*\!_CUPS_CONFIG_H_\s*\*\/):
 /* CUPS Version is 1.1 */
 \#undef CUPS_1_1
 
+/* CUPS Version is 1.4 or newer */
+\#undef CUPS_1_4
+
 /* Use libjpeg instead of builtin jpeg decoder. */
 \#undef ENABLE_LIBJPEG
 
@@ -159,7 +162,7 @@ texttopdf:	texttopdf.o textcommon.o common.o pdfutils.o fontembed/libfontembed.a
 	\$(CC) \$(LDFLAGS) -o \$@ texttopdf.o textcommon.o common.o pdfutils.o -Lfontembed -lfontembed \$(LIBS)
 
 EOF
-#perl -p -i -e 's/^(\s*DIRS\s*=.*\s+filter\s+)/$1pdftoopvp /' Makefile
+perl -p -i -e 's/^(\s*DIRS\s*=.*\s+filter\s+)/$1pdftoopvp /' Makefile
 perl -p -i -e 's/^(\s*DIRS\s*=.*\s+filter\s+)/$1pdftopdf /' Makefile
 perl -p -i -e 's/^(\s*LIBS\s*=.*$)/$1\nPOPPLER_LIBS\t=\t\@POPPLER_LIBS\@ \$(LIBS)/' Makedefs.in
 perl -p -i -e 's/^(\s*LIBS\s*=.*$)/$1\nIJS_LIBS\t=\t\@IJS_LIBS\@ \$(LIBS)/' Makedefs.in

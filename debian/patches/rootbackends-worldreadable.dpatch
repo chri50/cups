@@ -1,45 +1,46 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
-## rootbackends-worldreadable.dpatch by  <mpitt@debian.org>
+## rootbackends-worldreadable.dpatch by  <till.kamppeter@gmail.com>
 ##
+## All lines beginning with `## DP:' are a description of the patch.
 ## DP: Install root backends world-readable, to comply to Debian Policy and
 ## DP: because it is both nonsensical to to not do so, and also breaks system
 ## DP: checkers, bug reporting, etc.
 ## DP: (http://bugs.debian.org/410171, http://www.cups.org/str.php?L2935)
 
 @DPATCH@
-diff -urNad trunk~/backend/Makefile trunk/backend/Makefile
---- trunk~/backend/Makefile	2008-11-17 08:33:10.000000000 +0100
-+++ trunk/backend/Makefile	2008-11-17 08:38:37.000000000 +0100
-@@ -55,7 +55,7 @@
- install:	all
+diff -urNad cups-1.4.0~svn8773~/backend/Makefile cups-1.4.0~svn8773/backend/Makefile
+--- cups-1.4.0~svn8773~/backend/Makefile	2009-08-23 12:15:53.000000000 +0200
++++ cups-1.4.0~svn8773/backend/Makefile	2009-08-23 17:59:27.000000000 +0200
+@@ -84,7 +84,7 @@
+ install-exec:
  	$(INSTALL_DIR) -m 755 $(SERVERBIN)/backend
  	for file in $(RBACKENDS); do \
--		$(LIBTOOL) $(INSTALL) -m 700 $$file $(SERVERBIN)/backend; \
-+		$(LIBTOOL) $(INSTALL) -m 744 $$file $(SERVERBIN)/backend; \
+-		$(LIBTOOL) $(INSTALL_BIN) -m 700 $$file $(SERVERBIN)/backend; \
++		$(LIBTOOL) $(INSTALL_BIN) -m 744 $$file $(SERVERBIN)/backend; \
  	done
  	for file in $(UBACKENDS); do \
  		$(INSTALL_BIN) $$file $(SERVERBIN)/backend; \
-diff -urNad trunk~/scheduler/cups-deviced.c trunk/scheduler/cups-deviced.c
---- trunk~/scheduler/cups-deviced.c	2008-11-17 08:25:34.000000000 +0100
-+++ trunk/scheduler/cups-deviced.c	2008-11-17 08:38:50.000000000 +0100
-@@ -214,7 +214,7 @@
-     backend_argv[1] = NULL;
+diff -urNad cups-1.4.0~svn8773~/scheduler/cups-deviced.c cups-1.4.0~svn8773/scheduler/cups-deviced.c
+--- cups-1.4.0~svn8773~/scheduler/cups-deviced.c	2009-08-23 12:16:58.000000000 +0200
++++ cups-1.4.0~svn8773/scheduler/cups-deviced.c	2009-08-23 18:02:43.000000000 +0200
+@@ -282,7 +282,7 @@
+     */
  
-     fp = cupsdPipeCommand(&pid, filename, backend_argv,
--                          (dent->fileinfo.st_mode & (S_IRWXG | S_IRWXO))
-+                          (dent->fileinfo.st_mode & (S_IWGRP | S_IXGRP | S_IWOTH | S_IXOTH))
- 		              ? normal_user : 0);
+     start_backend(dent->filename,
+-                  !(dent->fileinfo.st_mode & (S_IRWXG | S_IRWXO)));
++                  !(dent->fileinfo.st_mode & (S_IWGRP | S_IXGRP | S_IWOTH | S_IXOTH)));
+   }
  
-    /*
-diff -urNad trunk~/scheduler/job.c trunk/scheduler/job.c
---- trunk~/scheduler/job.c	2008-11-17 08:33:10.000000000 +0100
-+++ trunk/scheduler/job.c	2008-11-17 08:38:37.000000000 +0100
-@@ -3406,7 +3406,7 @@
+   cupsDirClose(dir);
+diff -urNad cups-1.4.0~svn8773~/scheduler/job.c cups-1.4.0~svn8773/scheduler/job.c
+--- cups-1.4.0~svn8773~/scheduler/job.c	2009-08-23 12:16:58.000000000 +0200
++++ cups-1.4.0~svn8773/scheduler/job.c	2009-08-23 18:04:03.000000000 +0200
+@@ -1088,7 +1088,7 @@
        else if (stat(command, &backinfo))
  	backroot = 0;
        else
 -        backroot = !(backinfo.st_mode & (S_IRWXG | S_IRWXO));
 +        backroot = !(backinfo.st_mode & (S_IWGRP | S_IXGRP | S_IWOTH | S_IXOTH));
  
-       argv[0] = sani_uri;
+       argv[0] = job->printer->sanitized_device_uri;
  

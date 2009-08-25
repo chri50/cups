@@ -1,5 +1,5 @@
 /*
- * "$Id: testnotify.c 6649 2007-07-11 21:46:42Z mike $"
+ * "$Id: testnotify.c 7997 2008-10-01 21:20:33Z mike $"
  *
  *   Test notifier for the Common UNIX Printing System (CUPS).
  *
@@ -52,6 +52,7 @@ main(int  argc,				/* I - Number of command-line arguments */
   fprintf(stderr, "DEBUG: argc=%d\n", argc);
   for (i = 0; i < argc; i ++)
     fprintf(stderr, "DEBUG: argv[%d]=\"%s\"\n", i, argv[i]);
+  fprintf(stderr, "DEBUG: TMPDIR=\"%s\"\n", getenv("TMPDIR"));
 
   for (;;)
   {
@@ -280,5 +281,5 @@ print_attributes(ipp_t *ipp,		/* I - IPP request */
 
 
 /*
- * End of "$Id: testnotify.c 6649 2007-07-11 21:46:42Z mike $".
+ * End of "$Id: testnotify.c 7997 2008-10-01 21:20:33Z mike $".
  */

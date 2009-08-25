@@ -1,5 +1,5 @@
 /*
- * "$Id: ipp-private.h 7262 2008-01-28 23:10:10Z mike $"
+ * "$Id: ipp-private.h 7990 2008-09-28 04:42:10Z mike $"
  *
  *   Private IPP definitions for the Common UNIX Printing System (CUPS).
  *
@@ -35,8 +35,23 @@ extern "C" {
 
 
 /*
+ * Constants...
+ */
+
+#  define IPP_BUF_SIZE	(IPP_MAX_LENGTH + 2)
+					/* Size of buffer */
+
+
+/*
  * Structures...
  */
+
+typedef struct _ipp_buffer_s		/**** Read/write buffer ****/
+{
+  unsigned char		d[IPP_BUF_SIZE];/* Data buffer */
+  struct _ipp_buffer_s	*next;		/* Next buffer in list */
+  int			used;		/* Is this buffer used? */
+} _ipp_buffer_t;
 
 typedef struct				/**** Attribute mapping data ****/
 {
@@ -66,5 +81,5 @@ extern void		_ippFreeAttr(ipp_attribute_t *);
 #endif /* !_CUPS_IPP_H_ */
 
 /*
- * End of "$Id: ipp-private.h 7262 2008-01-28 23:10:10Z mike $".
+ * End of "$Id: ipp-private.h 7990 2008-09-28 04:42:10Z mike $".
  */

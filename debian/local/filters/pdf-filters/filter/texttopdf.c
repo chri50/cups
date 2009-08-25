@@ -34,6 +34,14 @@
 #include <assert.h>
 #include "fontembed/sfnt.h"
 
+/*
+ * Globals...
+ */
+
+#ifdef CUPS_1_4 /* CUPS 1.4.x or newer */
+int     UTF8 = 0;               /* Use UTF-8 encoding? */
+#endif /* CUPS_1_4 */
+
 EMB_PARAMS *font_load(const char *datadir,const char *font);
 
 static int bits_used(BITSET bits,int len) // {{{

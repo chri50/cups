@@ -1,5 +1,5 @@
 /*
- * "$Id: hpgl-vector.c 8124 2008-11-13 06:32:59Z mike $"
+ * "$Id: hpgl-vector.c 8123 2008-11-13 06:31:30Z mike $"
  *
  *   HP-GL/2 vector routines for the Common UNIX Printing System (CUPS).
  *
@@ -769,5 +769,5 @@ plot_points(int     num_params,	/* I - Number of parameters */
 
 
 /*
- * End of "$Id: hpgl-vector.c 8124 2008-11-13 06:32:59Z mike $".
+ * End of "$Id: hpgl-vector.c 8123 2008-11-13 06:31:30Z mike $".
  */
