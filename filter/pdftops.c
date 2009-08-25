@@ -1,5 +1,5 @@
 /*
- * "$Id: pdftops.c 8676 2009-05-22 19:30:50Z mike $"
+ * "$Id: pdftops.c 8675 2009-05-22 19:30:39Z mike $"
  *
  *   PDF to PostScript filter front-end for the Common UNIX Printing
  *   System (CUPS).
@@ -133,8 +133,7 @@ main(int  argc,				/* I - Number of command-line args */
 
     if ((fd = cupsTempFd(tempfile, sizeof(tempfile))) < 0)
     {
-      _cupsLangPrintf(stderr, _("ERROR: Unable to copy PDF file: %s\n"),
-		      strerror(errno));
+      _cupsLangPrintError(_("ERROR: Unable to copy PDF file"));
       return (1);
     }
 
@@ -410,8 +409,7 @@ main(int  argc,				/* I - Number of command-line args */
 
   if (pipe(pstops_pipe))
   {
-    _cupsLangPrintf(stderr, _("ERROR: Unable to create pipe: %s\n"),
-                    strerror(errno));
+    _cupsLangPrintError(_("ERROR: Unable to create pipe"));
 
     exit_status = 1;
     goto error;
@@ -429,12 +427,10 @@ main(int  argc,				/* I - Number of command-line args */
 
 #ifdef HAVE_PDFTOPS
     execv(CUPS_PDFTOPS, pdf_argv);
-    _cupsLangPrintf(stderr, _("ERROR: Unable to execute pdftops program: %s\n"),
-                    strerror(errno));
+    _cupsLangPrintError(_("ERROR: Unable to execute pdftops program"));
 #else
     execv(CUPS_GHOSTSCRIPT, pdf_argv);
-    _cupsLangPrintf(stderr, _("ERROR: Unable to execute gs program: %s\n"),
-                    strerror(errno));
+    _cupsLangPrintError(_("ERROR: Unable to execute gs program"));
 #endif /* HAVE_PDFTOPS */
 
     exit(1);
@@ -446,11 +442,9 @@ main(int  argc,				/* I - Number of command-line args */
     */
 
 #ifdef HAVE_PDFTOPS
-    _cupsLangPrintf(stderr, _("ERROR: Unable to execute pdftops program: %s\n"),
-                    strerror(errno));
+    _cupsLangPrintError(_("ERROR: Unable to execute pdftops program"));
 #else
-    _cupsLangPrintf(stderr, _("ERROR: Unable to execute gs program: %s\n"),
-                    strerror(errno));
+    _cupsLangPrintError(_("ERROR: Unable to execute gs program"));
 #endif /* HAVE_PDFTOPS */
 
     exit_status = 1;
@@ -470,8 +464,7 @@ main(int  argc,				/* I - Number of command-line args */
     close(pstops_pipe[1]);
 
     execv(pstops_path, pstops_argv);
-    _cupsLangPrintf(stderr, _("ERROR: Unable to execute pstops program: %s\n"),
-                    strerror(errno));
+    _cupsLangPrintError(_("ERROR: Unable to execute pstops program"));
 
     exit(1);
   }
@@ -481,8 +474,7 @@ main(int  argc,				/* I - Number of command-line args */
     * Unable to fork!
     */
 
-    _cupsLangPrintf(stderr, _("ERROR: Unable to execute pstops program: %s\n"),
-                    strerror(errno));
+    _cupsLangPrintError(_("ERROR: Unable to execute pstops program"));
 
     exit_status = 1;
     goto error;
@@ -603,5 +595,5 @@ cancel_job(int sig)			/* I - Signal number (unused) */
 
 
 /*
- * End of "$Id: pdftops.c 8676 2009-05-22 19:30:50Z mike $".
+ * End of "$Id: pdftops.c 8675 2009-05-22 19:30:39Z mike $".
  */

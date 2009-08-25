@@ -1,5 +1,5 @@
 /*
- * "$Id: testhttp.c 8292 2009-01-27 20:24:32Z mike $"
+ * "$Id: testhttp.c 8771 2009-08-20 18:14:49Z mike $"
  *
  *   HTTP test program for the Common UNIX Printing System (CUPS).
  *
@@ -25,7 +25,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "http.h"
+#include "http-private.h"
 #include "string.h"
 
 
@@ -93,6 +93,8 @@ static uri_test_t	uri_tests[] =	/* URI test data */
 			    "ipp", "username:password", "fe80::200:1234:5678:9abc%eth0", "/ipp", 999, 999 },
 			  { HTTP_URI_OK, "http://server/admin?DEVICE_URI=usb://HP/Photosmart%25202600%2520series?serial=MY53OK70V10400",
 			    "http", "", "server", "/admin?DEVICE_URI=usb://HP/Photosmart%25202600%2520series?serial=MY53OK70V10400", 80, 0 },
+			  { HTTP_URI_OK, "lpd://Acme%20Laser%20(01%3A23%3A45).local._tcp._printer/",
+			    "lpd", "", "Acme Laser (01:23:45).local._tcp._printer", "/", 515, 0 },
 
 			  /* Missing scheme */
 			  { HTTP_URI_MISSING_SCHEME, "/path/to/file/index.html",
@@ -245,7 +247,7 @@ main(int  argc,				/* I - Number of command-line arguments */
     for (i = 0, j = 0; i < (int)(sizeof(base64_tests) / sizeof(base64_tests[0])); i ++)
     {
       httpEncode64_2(encode, sizeof(encode), base64_tests[i][0],
-                     strlen(base64_tests[i][0]));
+                     (int)strlen(base64_tests[i][0]));
       decodelen = (int)sizeof(decode);
       httpDecode64_2(decode, &decodelen, base64_tests[i][1]);
 
@@ -320,6 +322,10 @@ main(int  argc,				/* I - Number of command-line arguments */
         printf("PASS (%d address(es) for %s)\n", i, hostname);
 
       httpAddrFreeList(addrlist);
+    }
+    else if (isdigit(hostname[0] & 255))
+    {
+      puts("FAIL (ignored because hostname is numeric)");
     }
     else
     {
@@ -450,6 +456,29 @@ main(int  argc,				/* I - Number of command-line arguments */
 
     return (failures);
   }
+  else if (strstr(argv[1], "._tcp"))
+  {
+   /*
+    * Test resolving an mDNS name.
+    */
+
+    char	resolved[1024];		/* Resolved URI */
+
+
+    printf("_httpResolveURI(%s): ", argv[1]);
+    fflush(stdout);
+
+    if (!_httpResolveURI(argv[1], resolved, sizeof(resolved), 1))
+    {
+      puts("FAIL");
+      return (1);
+    }
+    else
+    {
+      printf("PASS (%s)\n", resolved);
+      return (0);
+    }
+  }
   else if (!strcmp(argv[1], "-u") && argc == 3)
   {
    /*
@@ -543,5 +572,5 @@ main(int  argc,				/* I - Number of command-line arguments */
 
 
 /*
- * End of "$Id: testhttp.c 8292 2009-01-27 20:24:32Z mike $".
+ * End of "$Id: testhttp.c 8771 2009-08-20 18:14:49Z mike $".
  */

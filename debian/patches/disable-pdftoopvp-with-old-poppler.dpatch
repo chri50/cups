@@ -1,0 +1,30 @@
+#! /bin/sh -e
+## disable-pdftoopvp-with-old-poppler.dpatch by Martin Pitt <mpitt@debian.org>
+##
+## DP: Disable pdftoopvp if we build with a poppler older than 0.11, since it
+## DP: needs that new API.
+
+pkg-config --atleast-version=0.11 poppler && { echo -n '(ignored)' >&2; exit 0; } || true
+
+. /usr/share/dpatch/dpatch-run
+@DPATCH@
+diff -urNad cups-1.4.0~svn8773~/debian/cups.install cups-1.4.0~svn8773/debian/cups.install
+--- cups-1.4.0~svn8773~/debian/cups.install	2009-08-25 17:11:25.000000000 +0200
++++ cups-1.4.0~svn8773/debian/cups.install	2009-08-25 17:14:21.934237424 +0200
+@@ -60,4 +60,3 @@
+ ../local/*.convs usr/share/cups/mime/
+ ../local/pdftops.conf etc/cups/
+ ../local/acroread.conf etc/cups/
+-etc/fonts/conf.d/99pdftoopvp.conf
+diff -urNad cups-1.4.0~svn8773~/debian/local/filters/pdf-filters/addtocups cups-1.4.0~svn8773/debian/local/filters/pdf-filters/addtocups
+--- cups-1.4.0~svn8773~/debian/local/filters/pdf-filters/addtocups	2009-08-25 17:11:25.000000000 +0200
++++ cups-1.4.0~svn8773/debian/local/filters/pdf-filters/addtocups	2009-08-25 17:14:09.664684594 +0200
+@@ -162,7 +162,7 @@
+ 	\$(CC) \$(LDFLAGS) -o \$@ texttopdf.o textcommon.o common.o pdfutils.o -Lfontembed -lfontembed \$(LIBS)
+ 
+ EOF
+-perl -p -i -e 's/^(\s*DIRS\s*=.*\s+filter\s+)/$1pdftoopvp /' Makefile
++#perl -p -i -e 's/^(\s*DIRS\s*=.*\s+filter\s+)/$1pdftoopvp /' Makefile
+ perl -p -i -e 's/^(\s*DIRS\s*=.*\s+filter\s+)/$1pdftopdf /' Makefile
+ perl -p -i -e 's/^(\s*LIBS\s*=.*$)/$1\nPOPPLER_LIBS\t=\t\@POPPLER_LIBS\@ \$(LIBS)/' Makedefs.in
+ perl -p -i -e 's/^(\s*LIBS\s*=.*$)/$1\nIJS_LIBS\t=\t\@IJS_LIBS\@ \$(LIBS)/' Makedefs.in

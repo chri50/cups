@@ -1,39 +1,40 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
-## drop_unnecessary_dependencies.dpatch by Martin Pitt <mpitt@debian.org>
+## drop_unnecessary_dependencies.dpatch by  <till.kamppeter@gmail.com>
 ##
+## All lines beginning with `## DP:' are a description of the patch.
 ## DP: Do not link libcups.so and libcupsimage.so against unnecessary libraries.
 ## DP: This avoids unnecessary package dependencies for both libcups, as well
 ## DP: as for packages using cups-config (Debian #438067).
 
 @DPATCH@
-diff -urNad trunk~/Makedefs.in trunk/Makedefs.in
---- trunk~/Makedefs.in	2009-02-16 17:07:47.000000000 +0100
-+++ trunk/Makedefs.in	2009-02-16 17:09:21.115060271 +0100
-@@ -121,7 +121,7 @@
- CXXFLAGS	=	@CPPFLAGS@ @CXXFLAGS@
- CXXLIBS		=	@CXXLIBS@
- DSOFLAGS	=	@DSOFLAGS@
+diff -urNad cups-1.4.0~svn8773~/Makedefs.in cups-1.4.0~svn8773/Makedefs.in
+--- cups-1.4.0~svn8773~/Makedefs.in	2009-08-23 12:16:58.000000000 +0200
++++ cups-1.4.0~svn8773/Makedefs.in	2009-08-23 18:12:14.000000000 +0200
+@@ -132,7 +132,7 @@
+ DBUS_NOTIFIERLIBS =	@DBUS_NOTIFIERLIBS@
+ DNSSD_BACKEND	=	@DNSSD_BACKEND@
+ DSOFLAGS	=	-L../cups @DSOFLAGS@
 -DSOLIBS		=	@DSOLIBS@ $(COMMONLIBS)
 +DSOLIBS		=	@DSOLIBS@
  DNSSDLIBS	=	@DNSSDLIBS@
  FONTS		=	@FONTS@
  IMGLIBS		=	@IMGLIBS@
-@@ -132,9 +132,9 @@
+@@ -144,9 +144,9 @@
  LEGACY_BACKENDS	=	@LEGACY_BACKENDS@
  LIBCUPSORDER	=	@LIBCUPSORDER@
  LIBCUPSIMAGEORDER =	@LIBCUPSIMAGEORDER@
--LINKCUPS	=	@LINKCUPS@ $(SSLLIBS)
-+LINKCUPS	=	@LINKCUPS@
+-LINKCUPS	=	@LINKCUPS@ $(SSLLIBS) $(DNSSDLIBS)
++LINKCUPS	=	@LINKCUPS@ $(DNSSDLIBS)
  LINKCUPSIMAGE	=	@LINKCUPSIMAGE@
 -LIBS		=	$(LINKCUPS) $(COMMONLIBS)
 +LIBS		=	$(LINKCUPS) $(SSLLIBS) $(COMMONLIBS)
  OPTIM		=	@OPTIM@
  OPTIONS		=
  PAMLIBS		=	@PAMLIBS@
-diff -urNad trunk~/config-scripts/cups-gssapi.m4 trunk/config-scripts/cups-gssapi.m4
---- trunk~/config-scripts/cups-gssapi.m4	2009-02-16 17:07:47.000000000 +0100
-+++ trunk/config-scripts/cups-gssapi.m4	2009-02-16 17:08:12.105208948 +0100
-@@ -40,7 +40,7 @@
+diff -urNad cups-1.4.0~svn8773~/config-scripts/cups-gssapi.m4 cups-1.4.0~svn8773/config-scripts/cups-gssapi.m4
+--- cups-1.4.0~svn8773~/config-scripts/cups-gssapi.m4	2009-08-23 12:15:59.000000000 +0200
++++ cups-1.4.0~svn8773/config-scripts/cups-gssapi.m4	2009-08-23 18:14:52.000000000 +0200
+@@ -41,7 +41,7 @@
  				# Other platforms just ask for GSSAPI
  				CFLAGS="`$KRB5CONFIG --cflags gssapi` $CFLAGS"		
  				CPPFLAGS="`$KRB5CONFIG --cflags gssapi` $CPPFLAGS"		
@@ -42,60 +43,60 @@ diff -urNad trunk~/config-scripts/cups-gssapi.m4 trunk/config-scripts/cups-gssap
  				;;
  		esac
  		AC_DEFINE(HAVE_GSSAPI, 1, [Whether GSSAPI is available])
-diff -urNad trunk~/cups/Makefile trunk/cups/Makefile
---- trunk~/cups/Makefile	2009-02-16 17:07:47.000000000 +0100
-+++ trunk/cups/Makefile	2009-02-16 17:08:12.107055551 +0100
-@@ -230,7 +230,7 @@
- 
+diff -urNad cups-1.4.0~svn8773~/cups/Makefile cups-1.4.0~svn8773/cups/Makefile
+--- cups-1.4.0~svn8773~/cups/Makefile	2009-08-23 12:16:16.000000000 +0200
++++ cups-1.4.0~svn8773/cups/Makefile	2009-08-23 18:21:18.000000000 +0200
+@@ -291,7 +291,7 @@
  libcups.so.2 libcups.sl.2:	$(LIBOBJS)
  	echo Linking $@...
--	$(DSO) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(LIBOBJS) $(LIBGSSAPI) $(SSLLIBS) $(COMMONLIBS) $(LIBZ)
-+	$(DSO) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(LIBOBJS) $(LIBGSSAPI) $(SSLLIBS) -lpthread $(LIBZ)
+ 	$(DSO) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(LIBOBJS) $(LIBGSSAPI) \
+-		$(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
++		$(SSLLIBS) $(DNSSDLIBS) -lpthread $(LIBZ)
  	$(RM) `basename $@ .2`
  	$(LN) $@ `basename $@ .2`
  
-@@ -242,7 +242,7 @@
- 32bit/libcups.so.2:	$(LIB32OBJS)
+@@ -304,7 +304,7 @@
  	echo Linking 32-bit $@...
  	-mkdir 32bit
--	$(DSO) $(ARCH32FLAGS) $(DSO32FLAGS) -o $@ $(LIB32OBJS) $(LIBGSSAPI) $(SSLLIBS) $(COMMONLIBS) $(LIBZ)
-+	$(DSO) $(ARCH32FLAGS) $(DSO32FLAGS) -o $@ $(LIB32OBJS) $(LIBGSSAPI) $(SSLLIBS) -lpthread $(LIBZ)
+ 	$(DSO) $(ARCH32FLAGS) $(DSO32FLAGS) -o $@ $(LIB32OBJS) $(LIBGSSAPI) \
+-		$(DNSSDLIBS) $(SSLLIBS) $(COMMONLIBS) $(LIBZ)
++		$(DNSSDLIBS) $(SSLLIBS) -lpthread $(LIBZ)
  	$(RM) 32bit/libcups.so
  	$(LN) libcups.so.2 32bit/libcups.so
  
-@@ -254,7 +254,7 @@
- 64bit/libcups.so.2:	$(LIB64OBJS)
+@@ -317,7 +317,7 @@
  	echo Linking 64-bit $@...
  	-mkdir 64bit
--	$(DSO) $(ARCH64FLAGS) $(DSO64FLAGS) -o $@ $(LIB64OBJS) $(LIBGSSAPI) $(SSLLIBS) $(COMMONLIBS) $(LIBZ)
-+	$(DSO) $(ARCH64FLAGS) $(DSO64FLAGS) -o $@ $(LIB64OBJS) $(LIBGSSAPI) $(SSLLIBS) -lpthread $(LIBZ)
+ 	$(DSO) $(ARCH64FLAGS) $(DSO64FLAGS) -o $@ $(LIB64OBJS) $(LIBGSSAPI) \
+-		$(DNSSDLIBS) $(SSLLIBS) $(COMMONLIBS) $(LIBZ)
++		$(DNSSDLIBS) $(SSLLIBS) -lpthread $(LIBZ)
  	$(RM) 64bit/libcups.so
  	$(LN) libcups.so.2 64bit/libcups.so
  
-@@ -271,7 +271,7 @@
- 		-compatibility_version 2.0.0 \
+@@ -335,7 +335,7 @@
  		-exported_symbols_list libcups.exp \
  		-sectorder __TEXT __text $(LIBCUPSORDER) \
--		$(LIBOBJS) $(LIBGSSAPI) $(SSLLIBS) $(COMMONLIBS) $(LIBZ)
-+		$(LIBOBJS) $(LIBGSSAPI) $(SSLLIBS) -lpthread $(LIBZ)
+ 		$(LIBOBJS) $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
+-		$(COMMONLIBS) $(LIBZ)
++		-lpthread $(LIBZ)
  	$(RM) libcups.dylib
  	$(LN) $@ libcups.dylib
  
-@@ -282,7 +282,7 @@
- 
- libcups_s.a:	$(LIBOBJS) libcups_s.exp
+@@ -348,7 +348,7 @@
  	echo Creating $@...
--	$(DSO) $(DSOFLAGS) -Wl,-bexport:libcups_s.exp -o libcups_s.o $(LIBOBJS) $(LIBGSSAPI) $(SSLLIBS) $(COMMONLIBS) $(LIBZ) -lm
-+	$(DSO) $(DSOFLAGS) -Wl,-bexport:libcups_s.exp -o libcups_s.o $(LIBOBJS) $(LIBGSSAPI) $(SSLLIBS) -lpthread $(LIBZ)
+ 	$(DSO) $(DSOFLAGS) -Wl,-bexport:libcups_s.exp -o libcups_s.o \
+ 		$(LIBOBJS) $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
+-		$(COMMONLIBS) $(LIBZ) -lm
++		-lpthread $(LIBZ)
  	$(RM) $@
  	$(AR) $(ARFLAGS) $@ libcups_s.o
  
-@@ -294,7 +294,7 @@
- libcups.la:    $(LIBOBJS)
+@@ -361,7 +361,7 @@
  	echo Linking $@...
- 	$(CC) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(LIBOBJS:.o=.lo) -rpath $(LIBDIR) \
--		-version-info 2:8 $(LIBGSSAPI) $(SSLLIBS) $(COMMONLIBS) $(LIBZ)
-+		-version-info 2:8 $(LIBGSSAPI) $(SSLLIBS) -lpthread $(LIBZ)
+ 	$(CC) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(LIBOBJS:.o=.lo) \
+ 		-rpath $(LIBDIR) -version-info 2:8 $(LIBGSSAPI) $(SSLLIBS) \
+-		$(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
++		$(DNSSDLIBS) -lpthread $(LIBZ)
  
  
  #

@@ -1,0 +1,18 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## show-compile-command-lines.dpatch by  <till.kamppeter@gmail.com>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: No description.
+
+@DPATCH@
+diff -urNad cups-1.4.0~svn8773~/Makedefs.in cups-1.4.0~svn8773/Makedefs.in
+--- cups-1.4.0~svn8773~/Makedefs.in	2009-08-23 12:16:58.000000000 +0200
++++ cups-1.4.0~svn8773/Makedefs.in	2009-08-23 20:48:34.000000000 +0200
+@@ -258,7 +258,6 @@
+ # Rules...
+ #
+ 
+-.SILENT:
+ .SUFFIXES:	.1 .1.gz .1m .1m.gz .3 .3.gz .5 .5.gz .7 .7.gz .8 .8.gz .a .c .cxx .h .man .o .32.o .64.o .gz
+ 
+ .c.o:

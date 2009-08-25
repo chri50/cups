@@ -42,6 +42,15 @@ all:	$(TARGETS)
 
 
 #
+# Blank targets to satisfy the main Makefile of CUPS ...
+#
+
+libs:
+apihelp:
+framedhelp:
+
+
+#
 # Clean all object files...
 #
 
@@ -62,10 +71,17 @@ depend:
 # Install the filter...
 #
 
-install:	all
+install:	install-data install-headers install-libs install-exec
+
+install-data:
+
+install-exec:	all
 	$(INSTALL_DIR) -m 755 $(SERVERBIN)/filter
 	$(INSTALL_BIN) pdftopdf $(SERVERBIN)/filter
 
+install-headers:
+
+install-libs:
 
 #
 # Uninstall the filter...
@@ -92,6 +108,17 @@ pdftopdf:	pdftopdf.o $(LIBOBJS) ../cups/$(LIBCUPS)
 
 include Dependencies
 
+#
+# Dependencies...
+#
+
+include Dependencies
+
+#
+# Make unit tests...
+#
+
+unittests:
 
 #
 # End of "$Id: Makefile 6649 2007-07-11 21:46:42Z till $".

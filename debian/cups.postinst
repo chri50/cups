@@ -113,13 +113,6 @@ EOF
 	if [ -f /etc/cups/printers.conf ]; then
 	  chown root:lp /etc/cups/printers.conf ; chmod 600 /etc/cups/printers.conf
 	fi
-	# Add symlink to local files required by LSB
-	if [ ! -e /usr/share/ppd/1-local-admin -a ! -L /usr/share/ppd/1-local-admin ]; then
-	  ln -s /usr/local/share/ppd /usr/share/ppd/1-local-admin
-	fi
-	if [ ! -e /usr/share/ppd/2-third-party -a ! -L /usr/share/ppd/2-third-party ]; then
-	  ln -s /opt/share/ppd /usr/share/ppd/2-third-party
-	fi
 
         # symlink snakeoil SSL certificate if present
         if [ -e /etc/ssl/certs/ssl-cert-snakeoil.pem -a \

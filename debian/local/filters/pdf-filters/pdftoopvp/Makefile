@@ -26,6 +26,15 @@ all:	$(TARGETS)
 
 
 #
+# Blank targets to satisfy the main Makefile of CUPS ...
+#
+
+libs:
+apihelp:
+framedhelp:
+
+
+#
 # Clean all object files...
 #
 
@@ -46,12 +55,19 @@ depend:
 # Install the filter...
 #
 
-install:	all
-	$(INSTALL_DIR) -m 755 $(SERVERBIN)/filter
-	$(INSTALL_BIN) pdftoopvp $(SERVERBIN)/filter
+install:	install-data install-headers install-libs install-exec
+
+install-data:	all
 	$(INSTALL_DIR) -m 755 $(BUILDROOT)$(sysconfdir)/fonts/conf.d
 	$(INSTALL_BIN) 99pdftoopvp.conf $(BUILDROOT)$(sysconfdir)/fonts/conf.d
 
+install-exec:	all
+	$(INSTALL_DIR) -m 755 $(SERVERBIN)/filter
+	$(INSTALL_BIN) pdftoopvp $(SERVERBIN)/filter
+
+install-headers:
+
+install-libs:
 
 #
 # Uninstall the filter...
@@ -84,6 +100,11 @@ pdftoopvp:	pdftoopvp.o $(LIBOBJS) ../cups/$(LIBCUPS) oprs/liboprs.a
 
 include Dependencies
 
+#
+# Make unit tests...
+#
+
+unittests:
 
 #
 # End of "$Id: Makefile 6649 2007-07-11 21:46:42Z till $".

@@ -1,6 +1,7 @@
 usr/bin/cups-config
 usr/lib/libcups.so
 usr/lib/libcups.a
+usr/include/cups/adminutil.h
 usr/include/cups/array.h
 usr/include/cups/backend.h
 usr/include/cups/cups.h
@@ -12,7 +13,7 @@ usr/include/cups/language.h
 usr/include/cups/ppd.h
 usr/include/cups/sidechannel.h
 usr/include/cups/transcode.h
-usr/include/cups/adminutil.h
+usr/include/cups/versioning.h
 ../../cups/i18n.h usr/include/cups
 usr/share/man/man1/cups-config.1.gz
 usr/share/man/*/man1/cups-config.1.gz

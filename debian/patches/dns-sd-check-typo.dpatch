@@ -1,0 +1,19 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## dns-sd-check-typo.dpatch by  <till.kamppeter@gmail.com>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: No description.
+
+@DPATCH@
+diff -urNad cups-1.4.0~svn8773~/config-scripts/cups-dnssd.m4 cups-1.4.0~svn8773/config-scripts/cups-dnssd.m4
+--- cups-1.4.0~svn8773~/config-scripts/cups-dnssd.m4	2009-08-23 12:15:59.000000000 +0200
++++ cups-1.4.0~svn8773/config-scripts/cups-dnssd.m4	2009-08-23 19:34:29.000000000 +0200
+@@ -43,7 +43,7 @@
+ 				AC_MSG_CHECKING(for current version of dns_sd library)
+ 				SAVELIBS="$LIBS"
+ 				LIBS="$LIBS -ldns_sd"
+-				AC_TRY_COMPILE([#include <dns_sd.h],
++				AC_TRY_COMPILE([#include <dns_sd.h>],
+ 					[int constant = kDNSServiceFlagsShareConnection;
+ 					unsigned char txtRecord[100];
+ 					uint8_t valueLen;

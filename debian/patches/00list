@@ -1,11 +1,6 @@
-# patches backported from upstream SVN trunk for 1.4:
-freebsd.dpatch
-manpage-typos.dpatch
-search_mime_files_in_usr_share.dpatch
-cupsaccept.dpatch
-gnutls-pkgconfig.dpatch
+# patches backported from upstream SVN trunk for 1.5:
 
-# patches accepted and committed upstream for next 1.3:
+# patches accepted and committed upstream for next 1.4:
 
 # patches sent upstream
 removecvstag.dpatch
@@ -15,11 +10,12 @@ ppd-poll-with-client-conf.dpatch
 manpage-translations.dpatch
 quiesce-bonjour-warning.dpatch
 rootbackends-worldreadable.dpatch
+dns-sd-check-typo.dpatch
+dnssd-avahi.dpatch
 
 # patches which should go upstream
 drop_unnecessary_dependencies.dpatch
 reactivate_recommended_driver.dpatch
-testsuite-increase-wait-timeout.dpatch
 poppler-based-pdftops-fixes.dpatch
 read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.dpatch
 
@@ -29,6 +25,8 @@ default_log_settings.dpatch
 confdirperms.dpatch
 #use-ps2write-ghostscript-device-for-pdftops-filter.dpatch
 printer-filtering.dpatch
+show-compile-command-lines.dpatch
+disable-pdftoopvp-with-old-poppler.dpatch
 
 # Ubuntu patches
 ubuntu-disable-browsing.dpatch

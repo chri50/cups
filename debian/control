@@ -7,10 +7,11 @@ Build-Depends: libpam0g-dev, libtiff4-dev, libjpeg62-dev, zlib1g-dev,
  libpng12-dev, libslp-dev, libgnutls-dev, libpaper-dev, libldap2-dev,
  debhelper (>= 5.0), po-debconf, cdbs (>= 0.4.27), sharutils, 
  dpatch (>= 1.11), libdbus-1-dev, libkrb5-dev | heimdal-dev,
- libavahi-compat-libdnssd-dev, libpoppler-dev (>= 0.10.0),
+ libavahi-compat-libdnssd-dev, libavahi-common-dev, libavahi-client-dev,
+ libpoppler-dev (>= 0.10.0), pkg-config,
  poppler-utils, lsb-release, po4a (>= 0.31), autotools-dev, autoconf, automake,
  libtool, libijs-dev, hardening-wrapper, liblcms1-dev, libfreetype6-dev,
- libfontconfig1-dev, pkg-config
+ libfontconfig1-dev, pkg-config, libusb-dev
 Uploaders: Kenshi Muto <kmuto@debian.org>, 
  Martin Pitt <mpitt@debian.org>, Roger Leigh <rleigh@debian.org>, 
  Martin-Éric Racine <q-funk@iki.fi>, Masayuki Hatta (mhatta) <mhatta@debian.org>,
@@ -27,7 +28,7 @@ Suggests: cups-common
 Conflicts:  libcupsys2 (<< 1.3.7-6)
 Replaces: libcupsys2 (<< 1.3.7-6)
 Provides: libcupsys2
-Description: Common UNIX Printing System(tm) - libs
+Description: Common UNIX Printing System(tm) - Core library
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
  general replacement for lpd and the like.  It supports the Internet 
  Printing Protocol (IPP), and has its own filtering driver model for 
@@ -44,7 +45,7 @@ Priority: optional
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Common UNIX Printing System(tm) - image libs
+Description: Common UNIX Printing System(tm) - Raster image library
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
  general replacement for lpd and the like.  It supports the Internet 
  Printing Protocol (IPP), and has its own filtering driver model for 
@@ -52,6 +53,78 @@ Description: Common UNIX Printing System(tm) - image libs
  .
  This package provides the image libraries for handling the CUPS
  raster format.
+ .
+ The terms "Common UNIX Printing System" and "CUPS" are trademarks of
+ Easy Software Products (www.easysw.com), and refer to the original
+ source packages from which these packages are made.
+
+Package: libcupscgi1
+Priority: optional
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Common UNIX Printing System(tm) - CGI library
+ The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
+ general replacement for lpd and the like.  It supports the Internet 
+ Printing Protocol (IPP), and has its own filtering driver model for 
+ handling various document types.
+ .
+ This package provides a shared library for CGI programs in the
+ CUPS web interface
+ .
+ The terms "Common UNIX Printing System" and "CUPS" are trademarks of
+ Easy Software Products (www.easysw.com), and refer to the original
+ source packages from which these packages are made.
+
+Package: libcupsdriver1
+Priority: optional
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Common UNIX Printing System(tm) - Driver library
+ The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
+ general replacement for lpd and the like.  It supports the Internet 
+ Printing Protocol (IPP), and has its own filtering driver model for 
+ handling various document types.
+ .
+ This package provides a shared library with useful functions for printer
+ drivers.
+ .
+ The terms "Common UNIX Printing System" and "CUPS" are trademarks of
+ Easy Software Products (www.easysw.com), and refer to the original
+ source packages from which these packages are made.
+
+Package: libcupsmime1
+Priority: optional
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Common UNIX Printing System(tm) - MIME library
+ The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
+ general replacement for lpd and the like.  It supports the Internet 
+ Printing Protocol (IPP), and has its own filtering driver model for 
+ handling various document types.
+ .
+ This package provides a shared library for file type detection and
+ file conversion filter chain building.
+ .
+ The terms "Common UNIX Printing System" and "CUPS" are trademarks of
+ Easy Software Products (www.easysw.com), and refer to the original
+ source packages from which these packages are made.
+
+Package: libcupsppdc1
+Priority: optional
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Common UNIX Printing System(tm) - PPD manipulation library
+ The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
+ general replacement for lpd and the like.  It supports the Internet 
+ Printing Protocol (IPP), and has its own filtering driver model for 
+ handling various document types.
+ .
+ This package provides the base shared library for generating and
+ manipulating PPD files.
  .
  The terms "Common UNIX Printing System" and "CUPS" are trademarks of
  Easy Software Products (www.easysw.com), and refer to the original
@@ -66,14 +139,13 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, debconf (>= 1.2.9) | debconf-2.0,
  ghostscript, lsb-base (>= 3), cups-common, cups-client,
  ssl-cert (>= 1.0.11), adduser, bc, ttf-freefont
 Recommends: foomatic-filters (>= 4.0), 
- cups-driver-gutenprint, avahi-utils,
- ghostscript-cups
+ cups-driver-gutenprint, ghostscript-cups, cups-ppdc
 Suggests: cups-bsd, foomatic-db-engine, foomatic-db,
  hplip, xpdf-korean | xpdf-japanese | xpdf-chinese-traditional | xpdf-chinese-simplified, 
  cups-pdf, smbclient (>= 3.0.9)
-Replaces: cupsys-bsd (<< 1.3.7-5), cupsys (<< 1.3.7-6)
-Conflicts: cupsys-bsd (<< 1.3.7-5), cupsys (<< 1.3.7-6)
-Provides: cupsys
+Replaces: cupsddk-drivers (<< 1.4.0), cupsys-bsd (<< 1.3.7-5), cupsys (<< 1.3.7-6)
+Conflicts: cupsddk-drivers (<< 1.4.0), cupsys-bsd (<< 1.3.7-5), cupsys (<< 1.3.7-6)
+Provides: cupsddk-drivers, cupsys
 Breaks: foomatic-filters (<< 4.0)
 Description: Common UNIX Printing System(tm) - server
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
@@ -117,7 +189,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, libcups2 (= ${binary:Version}),
 Conflicts: libcupsys2-dev (<< 1.3.7-6)
 Replaces: libcupsys2-dev (<< 1.3.7-6)
 Provides: libcupsys2-dev
-Description: Common UNIX Printing System(tm) - development files
+Description: Common UNIX Printing System(tm) - Development files CUPS library
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
  general replacement for lpd and the like.  It supports the Internet 
  Printing Protocol (IPP), and has its own filtering driver model for 
@@ -139,7 +211,7 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, 
  libcupsimage2 (= ${binary:Version}), libcups2-dev (= ${binary:Version}), 
  libpng-dev, libtiff4-dev, libjpeg62-dev, zlib1g-dev
-Description: Common UNIX Printing System(tm) - image development files
+Description: Common UNIX Printing System(tm) - Development files CUPS image library
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
  general replacement for lpd and the like.  It supports the Internet 
  Printing Protocol (IPP), and has its own filtering driver model for 
@@ -147,6 +219,82 @@ Description: Common UNIX Printing System(tm) - image development files
  .
  This package provides the files necessary for developing applications
  that use the CUPS raster image format.
+ .
+ The terms "Common UNIX Printing System" and "CUPS" are trademarks of
+ Easy Software Products (www.easysw.com), and refer to the original
+ source packages from which these packages are made.
+
+Package: libcupscgi1-dev
+Priority: optional
+Section: libdevel
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libcupscgi1 (= ${binary:Version}),
+ libcups2-dev (= ${binary:Version})
+Description: Common UNIX Printing System(tm) - Development files for CGI library
+ The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
+ general replacement for lpd and the like.  It supports the Internet 
+ Printing Protocol (IPP), and has its own filtering driver model for 
+ handling various document types.
+ .
+ This package provides the files necessary for developing CGI programs
+ for the CUPS web interface using libcupscgi.
+ .
+ The terms "Common UNIX Printing System" and "CUPS" are trademarks of
+ Easy Software Products (www.easysw.com), and refer to the original
+ source packages from which these packages are made.
+
+Package: libcupsdriver1-dev
+Priority: optional
+Section: libdevel
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libcupsdriver1 (= ${binary:Version}),
+ libcups2-dev (= ${binary:Version}), libcupsimage2-dev (= ${binary:Version})
+Description: Common UNIX Printing System(tm) - Development files driver library
+ The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
+ general replacement for lpd and the like.  It supports the Internet 
+ Printing Protocol (IPP), and has its own filtering driver model for 
+ handling various document types.
+ .
+ This package provides the files necessary for developing printer drivers
+ using libcupsdriver.
+ .
+ The terms "Common UNIX Printing System" and "CUPS" are trademarks of
+ Easy Software Products (www.easysw.com), and refer to the original
+ source packages from which these packages are made.
+
+Package: libcupsmime1-dev
+Priority: optional
+Section: libdevel
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libcupsmime1 (= ${binary:Version}),
+ libcups2-dev (= ${binary:Version})
+Description: Common UNIX Printing System(tm) - Development files MIME library
+ The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
+ general replacement for lpd and the like.  It supports the Internet 
+ Printing Protocol (IPP), and has its own filtering driver model for 
+ handling various document types.
+ .
+ This package provides the files necessary for developing programs
+ using libcupsmime.
+ .
+ The terms "Common UNIX Printing System" and "CUPS" are trademarks of
+ Easy Software Products (www.easysw.com), and refer to the original
+ source packages from which these packages are made.
+
+Package: libcupsppdc1-dev
+Priority: optional
+Section: libdevel
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libcupsppdc1 (= ${binary:Version}),
+ libcups2-dev (= ${binary:Version})
+Description: Common UNIX Printing System(tm) - Development files PPD library
+ The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
+ general replacement for lpd and the like.  It supports the Internet 
+ Printing Protocol (IPP), and has its own filtering driver model for 
+ handling various document types.
+ .
+ This package provides the files necessary for developing programs
+ using libcupsppdc.
  .
  The terms "Common UNIX Printing System" and "CUPS" are trademarks of
  Easy Software Products (www.easysw.com), and refer to the original
@@ -192,6 +340,26 @@ Description: Common UNIX Printing System(tm) - common files
  handling various document types.
  .
  This package provides common files for CUPS server and client packages.
+ .
+ The terms "Common UNIX Printing System" and "CUPS" are trademarks of
+ Easy Software Products (www.easysw.com), and refer to the original
+ source packages from which these packages are made.
+
+Package: cups-ppdc
+Priority: optional
+Section: net
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, cups-common
+Conflicts: cupsddk (<< 1.4.0)
+Replaces: cupsddk (<< 1.4.0)
+Provides: cupsddk
+Description: Common UNIX Printing System(tm) - PPD manipulation utilities
+ The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
+ general replacement for lpd and the like.  It supports the Internet 
+ Printing Protocol (IPP), and has its own filtering driver model for 
+ handling various document types.
+ .
+ This package provides utilities to generate and manipulate PPD files.
  .
  The terms "Common UNIX Printing System" and "CUPS" are trademarks of
  Easy Software Products (www.easysw.com), and refer to the original
@@ -271,3 +439,12 @@ Architecture: all
 Depends: ${misc:Depends}, libcups2-dev
 Description: Common UNIX Printing System (transitional package)
  This is a dummy package to ease transition to new package name.
+
+Package: cupsddk
+Priority: extra
+Section: oldlibs
+Architecture: all
+Depends: ${misc:Depends}, cups-ppdc
+Description: Common UNIX Printing System (transitional package)
+ This is a dummy package to ease transition to new package name.
+
