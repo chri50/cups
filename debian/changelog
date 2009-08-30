@@ -1,3 +1,16 @@
+cups (1.4.0-1) experimental; urgency=low
+
+  [ Martin Pitt ]
+  * Final 1.4.0 release.
+  * Add ppdc-locale-formatting.dpatch: Fix locale handling in ppdc to avoid
+    broken PPD files in non-English locales. (STR#3300)
+
+  [ Till Kamppeter ]
+  * debian/control: Let the cups package only suggest cups-ppdc and not
+    recommend it, as cups-ppdc is only interesting for developers.
+
+ -- Martin Pitt <mpitt@debian.org>  Sun, 30 Aug 2009 21:20:46 +0200
+
 cups (1.4.0~svn8773-1) experimental; urgency=low
 
   * New upstream prerelease snapshot.

@@ -1,4 +1,5 @@
 # patches backported from upstream SVN trunk for 1.5:
+ppdc-locale-formatting.dpatch
 
 # patches accepted and committed upstream for next 1.4:
 

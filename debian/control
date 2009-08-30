@@ -139,8 +139,8 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, debconf (>= 1.2.9) | debconf-2.0,
  ghostscript, lsb-base (>= 3), cups-common, cups-client,
  ssl-cert (>= 1.0.11), adduser, bc, ttf-freefont
 Recommends: foomatic-filters (>= 4.0), 
- cups-driver-gutenprint, ghostscript-cups, cups-ppdc
-Suggests: cups-bsd, foomatic-db-engine, foomatic-db,
+ cups-driver-gutenprint, ghostscript-cups
+Suggests: cups-bsd, cups-ppdc, foomatic-db-engine, foomatic-db,
  hplip, xpdf-korean | xpdf-japanese | xpdf-chinese-traditional | xpdf-chinese-simplified, 
  cups-pdf, smbclient (>= 3.0.9)
 Replaces: cupsddk-drivers (<< 1.4.0), cupsys-bsd (<< 1.3.7-5), cupsys (<< 1.3.7-6)
