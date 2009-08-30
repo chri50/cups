@@ -1,3 +1,8 @@
+dnl Do we have CUPS 1.4 or newer?
+if test "`echo $CUPS_VERSION | cut -d '.' -f 2`" -ge "4"; then
+   AC_DEFINE(CUPS_1_4, 1, [CUPS Version is 1.4 or newer])
+fi
+
 dnl @synopsis AC_DEFINE_DIR(VARNAME, DIR [, DESCRIPTION])
 dnl
 dnl This macro sets VARNAME to the expansion of the DIR variable,
@@ -17,11 +22,6 @@ dnl @author Guido Draheim <guidod@gmx.de>
 dnl @author Alexandre Oliva
 dnl @version 2005-07-29
 dnl @license AllPermissive
-
-dnl Do we have CUPS 1.4 or newer?
-if test "`echo $CUPS_VERSION | cut -d '.' -f 2`" -ge "4"; then
-   AC_DEFINE(CUPS_1_4, 1, [CUPS Version is 1.4 or newer])
-fi
 
 AC_DEFUN([AC_DEFINE_DIR], [
   prefix_NONE=
