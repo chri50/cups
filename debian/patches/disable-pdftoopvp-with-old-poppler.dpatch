@@ -8,17 +8,18 @@ pkg-config --atleast-version=0.11 poppler && { echo -n '(ignored)' >&2; exit 0; 
 
 . /usr/share/dpatch/dpatch-run
 @DPATCH@
-diff -urNad cups-1.4.0~svn8773~/debian/cups.install cups-1.4.0~svn8773/debian/cups.install
---- cups-1.4.0~svn8773~/debian/cups.install	2009-08-25 17:11:25.000000000 +0200
-+++ cups-1.4.0~svn8773/debian/cups.install	2009-08-25 17:14:21.934237424 +0200
-@@ -60,4 +60,3 @@
+diff -urNad cups-1.4.0~/debian/cups.install cups-1.4.0/debian/cups.install
+--- cups-1.4.0~/debian/cups.install	2009-08-31 17:33:15.000000000 +0200
++++ cups-1.4.0/debian/cups.install	2009-08-31 17:33:46.279852049 +0200
+@@ -60,5 +60,4 @@
  ../local/*.convs usr/share/cups/mime/
  ../local/pdftops.conf etc/cups/
  ../local/acroread.conf etc/cups/
 -etc/fonts/conf.d/99pdftoopvp.conf
-diff -urNad cups-1.4.0~svn8773~/debian/local/filters/pdf-filters/addtocups cups-1.4.0~svn8773/debian/local/filters/pdf-filters/addtocups
---- cups-1.4.0~svn8773~/debian/local/filters/pdf-filters/addtocups	2009-08-25 17:11:25.000000000 +0200
-+++ cups-1.4.0~svn8773/debian/local/filters/pdf-filters/addtocups	2009-08-25 17:14:09.664684594 +0200
+ ../blacklist-cups.conf etc/modprobe.d/
+diff -urNad cups-1.4.0~/debian/local/filters/pdf-filters/addtocups cups-1.4.0/debian/local/filters/pdf-filters/addtocups
+--- cups-1.4.0~/debian/local/filters/pdf-filters/addtocups	2009-08-31 17:33:15.000000000 +0200
++++ cups-1.4.0/debian/local/filters/pdf-filters/addtocups	2009-08-31 17:33:28.868849738 +0200
 @@ -162,7 +162,7 @@
  	\$(CC) \$(LDFLAGS) -o \$@ texttopdf.o textcommon.o common.o pdfutils.o -Lfontembed -lfontembed \$(LIBS)
  

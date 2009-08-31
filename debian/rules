@@ -98,6 +98,9 @@ binary-post-install/cups::
 	# Make the serial backend run as root, since /dev/ttyS* are
 	# root:dialout and thus not accessible as user lp
 	chmod go-x debian/$(cdbs_curpkg)/usr/lib/cups/backend-available/serial
+	# Make the usb backend run as root, since /dev/bus/usb/* are root:root,
+	# and cups does not use the usblp kernel module any more
+	chmod go-x debian/$(cdbs_curpkg)/usr/lib/cups/backend-available/usb
 
 binary-post-install/libcupsimage2-dev::
 	rm -r debian/libcupsimage2-dev/usr/share/doc/libcupsimage2-dev
