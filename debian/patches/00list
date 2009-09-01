@@ -1,5 +1,6 @@
 # patches backported from upstream SVN trunk for 1.5:
 ppdc-locale-formatting.dpatch
+usb-backend-infinite-loop-on-end-of-job.dpatch
 
 # patches accepted and committed upstream for next 1.4:
 
