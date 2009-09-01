@@ -1,0 +1,33 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## usb-backend-infinite-loop-on-end-of-job.dpatch by  <till.kamppeter@gmail.com>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: No description.
+
+@DPATCH@
+diff -urNad cups-1.4.0~/backend/usb-libusb.c cups-1.4.0/backend/usb-libusb.c
+--- cups-1.4.0~/backend/usb-libusb.c	2009-08-08 00:24:14.000000000 +0200
++++ cups-1.4.0/backend/usb-libusb.c	2009-08-31 20:19:31.000000000 +0200
+@@ -179,7 +179,12 @@
+       }
+ 
+       if (pfds[1].revents & POLLIN)
+-        tbytes += side_cb(printer, print_fd);
++      {
++        if ((bytes = side_cb(printer, print_fd)) < 0)
++	  pfds[1].events = 0;		/* Filter has gone away... */
++	else
++          tbytes += bytes;
++      }
+     }
+   }
+ 
+@@ -747,7 +752,7 @@
+   if (cupsSideChannelRead(&command, &status, data, &datalen, 1.0))
+   {
+     _cupsLangPuts(stderr, _("WARNING: Failed to read side-channel request!\n"));
+-    return (0);
++    return (-1);
+   }
+ 
+   switch (command)
