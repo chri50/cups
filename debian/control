@@ -9,7 +9,7 @@ Build-Depends: libpam0g-dev, libtiff4-dev, libjpeg62-dev, zlib1g-dev,
  dpatch (>= 1.11), libdbus-1-dev, libkrb5-dev | heimdal-dev,
  libavahi-compat-libdnssd-dev, libavahi-common-dev, libavahi-client-dev,
  libpoppler-dev (>= 0.10.0), pkg-config,
- poppler-utils, lsb-release, po4a (>= 0.31), autotools-dev, autoconf, automake,
+ poppler-utils, lsb-release, po4a (>= 0.31), autotools-dev, autoconf, automake, 
  libtool, libijs-dev, hardening-wrapper, liblcms1-dev, libfreetype6-dev,
  libfontconfig1-dev, pkg-config, libusb-dev
 Uploaders: Kenshi Muto <kmuto@debian.org>, 
@@ -383,62 +383,6 @@ Description: Common UNIX Printing System(tm) - debugging symbols
  The terms "Common UNIX Printing System" and "CUPS" are trademarks of
  Easy Software Products (www.easysw.com), and refer to the original
  source packages from which these packages are made.
-
-Package: cupsys
-Priority: extra
-Section: oldlibs
-Architecture: all
-Depends: ${misc:Depends}, cups
-Description: Common UNIX Printing System (transitional package)
- This is a dummy package to ease transition to new package name.
-
-Package: cupsys-client
-Priority: extra
-Section: oldlibs
-Architecture: all
-Depends: ${misc:Depends}, cups-client
-Description: Common UNIX Printing System (transitional package)
- This is a dummy package to ease transition to new package name.
-
-Package: cupsys-common
-Priority: extra
-Section: oldlibs
-Architecture: all
-Depends: ${misc:Depends}, cups-common
-Description: Common UNIX Printing System (transitional package)
- This is a dummy package to ease transition to new package name.
-
-Package: cupsys-bsd
-Priority: extra
-Section: oldlibs
-Architecture: all
-Depends: ${misc:Depends}, cups-bsd
-Description: Common UNIX Printing System (transitional package)
- This is a dummy package to ease transition to new package name.
-
-Package: cupsys-dbg
-Priority: extra
-Section: oldlibs
-Architecture: all
-Depends: ${misc:Depends}, cups-dbg (>= ${binary:Version})
-Description: Common UNIX Printing System (transitional package)
- This is a dummy package to ease transition to new package name.
-
-Package: libcupsys2
-Priority: extra
-Section: oldlibs
-Architecture: all
-Depends: ${misc:Depends}, libcups2
-Description: Common UNIX Printing System (transitional package)
- This is a dummy package to ease transition to new package name.
-
-Package: libcupsys2-dev
-Priority: extra
-Section: oldlibs
-Architecture: all
-Depends: ${misc:Depends}, libcups2-dev
-Description: Common UNIX Printing System (transitional package)
- This is a dummy package to ease transition to new package name.
 
 Package: cupsddk
 Priority: extra

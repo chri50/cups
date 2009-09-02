@@ -1,3 +1,23 @@
+cups (1.4.0-3.1) karmic; urgency=low
+
+  Urgent bzr head upload to karmic to unbreak printing for Alpha-5.
+
+  [ Till Kamppeter ]
+  * debian/patches/usb-backend-infinite-loop-on-end-of-job.dpatch: Fixed the
+    patch so that the usb backend really terminates after a job (LP: #420797).
+  * debian/local/apparmor-profile: cupsd needs also to be allowed to read
+    the /dev/bus/usb/ directory, given with the "/" in the end. This should
+    finally fix LP: #420015.
+
+  [ Martin Pitt ]
+  * debian/control: Drop the transitional cupsys packages.
+  * printer-filtering.dpatch: Fix sometimes overzealous filtering, thanks to
+    Stéphane Graber!
+  * debian/rules: Drop autoconf call on build again, we have a proper upstream
+    release.
+
+ -- Martin Pitt <martin.pitt@ubuntu.com>  Wed, 02 Sep 2009 17:01:51 +0200
+
 cups (1.4.0-3) experimental; urgency=low
 
   [ Till Kamppeter ]
