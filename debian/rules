@@ -43,7 +43,6 @@ endif
 
 post-patches::
 	# Add source code of extra filters for PDF printing workflow
-	autoconf # We have an SVN snapshot currently
 	( cd debian/local/filters/pdf-filters/; sh ./addtocups ../../../.. )
 	touch pdftopdf/Dependencies
 	touch pdftoopvp/Dependencies

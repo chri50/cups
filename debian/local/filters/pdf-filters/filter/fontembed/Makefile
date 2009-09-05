@@ -4,7 +4,7 @@ EXEC=ttfread test_analyze test_pdf test_ps
 LIB=libfontembed.a
 
 #CPPFLAGS=-O3 -funroll-all-loops -finline-functions -Wall -g
-CPPFLAGS=-Wall -g
+CPPFLAGS=-Wall -g -fPIC
 LDFLAGS=
 
 OBJECTS=$(patsubst %.c,$(PREFIX)%$(SUFFIX).o,\

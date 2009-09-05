@@ -43,7 +43,7 @@ restart_xprint() {
 }
 
 set_ripcache() {
-    cupsctl RIPCache=`awk '/^MemTotal/ { print $2 / 4 }' /proc/meminfo`"k"
+    cupsctl -h localhost RIPCache=`awk '/^MemTotal/ { print $2 / 4 }' /proc/meminfo`"k"
 }
 
 coldplug_usb_printers() {

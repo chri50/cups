@@ -59,7 +59,7 @@ install:	install-data install-headers install-libs install-exec
 
 install-data:	all
 	$(INSTALL_DIR) -m 755 $(BUILDROOT)$(sysconfdir)/fonts/conf.d
-	$(INSTALL_BIN) 99pdftoopvp.conf $(BUILDROOT)$(sysconfdir)/fonts/conf.d
+	$(INSTALL_BIN) -m 644 99pdftoopvp.conf $(BUILDROOT)$(sysconfdir)/fonts/conf.d
 
 install-exec:	all
 	$(INSTALL_DIR) -m 755 $(SERVERBIN)/filter
