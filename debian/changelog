@@ -1,3 +1,39 @@
+cups (1.4.0-4) unstable; urgency=low
+
+  Upload 1.4 to unstable.
+
+  [ Till Kamppeter ]
+  * debian/patches/usb-backend-infinite-loop-on-end-of-job.dpatch: Fixed the
+    patch so that the usb backend really terminates after a job (LP: #420797).
+  * debian/local/apparmor-profile: cupsd needs also to be allowed to read
+    the /dev/bus/usb/ directory, given with the "/" in the end. This should
+    finally fix LP: #420015.
+
+  [ Martin Pitt ]
+  * debian/control: Drop the transitional cupsys packages.
+  * printer-filtering.dpatch: Fix sometimes overzealous filtering, thanks to
+    Stéphane Graber!
+  * debian/rules: Drop autoconf call on build again, we have a proper upstream
+    release.
+  * debian/cups.postinst, debian/cups.init.d: Call lpstat, lpadmin, and
+    cupsctl with "-h localhost" to avoid querying network printers set up in
+    /etc/cups/client.conf, and asking for passwords. Thanks to Martin-Éric
+    Racine for tracking this down and the solution! (Closes: #543468)
+  * debian/control: Bump Standards-Version to 3.8.3 (no changes).
+  * debian/cups.postinst: Use signal names instead of numbers for trap.
+    Quiesces a lintian bashism warning.
+  * Add debian/README.source.
+  * debian/local/filters/pdf-filters/filter/fontembed/Makefile: Build
+    libfontembed with -fPIC to also work on HPPA. (Closes: #543973)
+  * debian/local/filters/pdf-filters/pdftoopvp/Makefile: Don't install font
+    configuration file as executable.
+  * debian/cups.lintian-overrides: Update for currently installed backends.
+  * debian/control: Re-add transitional cupsys packages (except the
+    libraries), they are still needed for upgrades from Ubuntu 8.04. Add the
+    "You can safely remove after upgrade" note to their description.
+
+ -- Martin Pitt <mpitt@debian.org>  Sat, 05 Sep 2009 15:31:07 +0200
+
 cups (1.4.0-3) experimental; urgency=low
 
   [ Till Kamppeter ]

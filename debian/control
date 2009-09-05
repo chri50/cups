@@ -2,14 +2,14 @@ Source: cups
 Priority: optional
 Section: net
 Maintainer: Debian CUPS Maintainers <pkg-cups-devel@lists.alioth.debian.org>
-Standards-Version: 3.8.1
+Standards-Version: 3.8.3
 Build-Depends: libpam0g-dev, libtiff4-dev, libjpeg62-dev, zlib1g-dev,
  libpng12-dev, libslp-dev, libgnutls-dev, libpaper-dev, libldap2-dev,
  debhelper (>= 5.0), po-debconf, cdbs (>= 0.4.27), sharutils, 
  dpatch (>= 1.11), libdbus-1-dev, libkrb5-dev | heimdal-dev,
  libavahi-compat-libdnssd-dev, libavahi-common-dev, libavahi-client-dev,
  libpoppler-dev (>= 0.10.0), pkg-config,
- poppler-utils, lsb-release, po4a (>= 0.31), autotools-dev, autoconf, automake,
+ poppler-utils, lsb-release, po4a (>= 0.31), autotools-dev, autoconf, automake, 
  libtool, libijs-dev, hardening-wrapper, liblcms1-dev, libfreetype6-dev,
  libfontconfig1-dev, pkg-config, libusb-dev
 Uploaders: Kenshi Muto <kmuto@debian.org>, 
@@ -391,6 +391,8 @@ Architecture: all
 Depends: ${misc:Depends}, cups
 Description: Common UNIX Printing System (transitional package)
  This is a dummy package to ease transition to new package name.
+ .
+ You can safely remove it after the upgrade.
 
 Package: cupsys-client
 Priority: extra
@@ -399,6 +401,8 @@ Architecture: all
 Depends: ${misc:Depends}, cups-client
 Description: Common UNIX Printing System (transitional package)
  This is a dummy package to ease transition to new package name.
+ .
+ You can safely remove it after the upgrade.
 
 Package: cupsys-common
 Priority: extra
@@ -407,6 +411,8 @@ Architecture: all
 Depends: ${misc:Depends}, cups-common
 Description: Common UNIX Printing System (transitional package)
  This is a dummy package to ease transition to new package name.
+ .
+ You can safely remove it after the upgrade.
 
 Package: cupsys-bsd
 Priority: extra
@@ -415,6 +421,8 @@ Architecture: all
 Depends: ${misc:Depends}, cups-bsd
 Description: Common UNIX Printing System (transitional package)
  This is a dummy package to ease transition to new package name.
+ .
+ You can safely remove it after the upgrade.
 
 Package: cupsys-dbg
 Priority: extra
@@ -423,22 +431,8 @@ Architecture: all
 Depends: ${misc:Depends}, cups-dbg (>= ${binary:Version})
 Description: Common UNIX Printing System (transitional package)
  This is a dummy package to ease transition to new package name.
-
-Package: libcupsys2
-Priority: extra
-Section: oldlibs
-Architecture: all
-Depends: ${misc:Depends}, libcups2
-Description: Common UNIX Printing System (transitional package)
- This is a dummy package to ease transition to new package name.
-
-Package: libcupsys2-dev
-Priority: extra
-Section: oldlibs
-Architecture: all
-Depends: ${misc:Depends}, libcups2-dev
-Description: Common UNIX Printing System (transitional package)
- This is a dummy package to ease transition to new package name.
+ .
+ You can safely remove it after the upgrade.
 
 Package: cupsddk
 Priority: extra
