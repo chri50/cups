@@ -1,3 +1,12 @@
+cups (1.4.0-5) unstable; urgency=low
+
+  * Drop shlibs files and add symbols files for all libraries, to avoid too
+    weak dependencies. (Closes: #545244)
+  * debian/control: Tighten dependencies between server, client, and -common
+    versions.
+
+ -- Martin Pitt <mpitt@debian.org>  Sun, 06 Sep 2009 13:17:12 +0200
+
 cups (1.4.0-4) unstable; urgency=low
 
   Upload 1.4 to unstable.
