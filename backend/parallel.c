@@ -1,5 +1,5 @@
 /*
- * "$Id: parallel.c 8169 2008-12-08 21:08:01Z mike $"
+ * "$Id: parallel.c 8807 2009-08-31 18:45:43Z mike $"
  *
  *   Parallel port backend for the Common UNIX Printing System (CUPS).
  *
@@ -59,7 +59,7 @@
  */
 
 static void	list_devices(void);
-static void	side_cb(int print_fd, int device_fd, int snmp_fd,
+static int	side_cb(int print_fd, int device_fd, int snmp_fd,
 		        http_addr_t *addr, int use_bc);
 
 
@@ -615,7 +615,7 @@ list_devices(void)
  * 'side_cb()' - Handle side-channel requests...
  */
 
-static void
+static int				/* O - 0 on success, -1 on error */
 side_cb(int         print_fd,		/* I - Print file */
         int         device_fd,		/* I - Device file */
         int         snmp_fd,		/* I - SNMP socket (unused) */
@@ -634,10 +634,7 @@ side_cb(int         print_fd,		/* I - Print file */
   datalen = sizeof(data);
 
   if (cupsSideChannelRead(&command, &status, data, &datalen, 1.0))
-  {
-    _cupsLangPuts(stderr, _("WARNING: Failed to read side-channel request!\n"));
-    return;
-  }
+    return (-1);
 
   switch (command)
   {
@@ -680,10 +677,10 @@ side_cb(int         print_fd,		/* I - Print file */
 	break;
   }
 
-  cupsSideChannelWrite(command, status, data, datalen, 1.0);
+  return (cupsSideChannelWrite(command, status, data, datalen, 1.0));
 }
 
 
 /*
- * End of "$Id: parallel.c 8169 2008-12-08 21:08:01Z mike $".
+ * End of "$Id: parallel.c 8807 2009-08-31 18:45:43Z mike $".
  */

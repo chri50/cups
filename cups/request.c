@@ -1,5 +1,5 @@
 /*
- * "$Id: request.c 8728 2009-06-26 17:29:22Z mike $"
+ * "$Id: request.c 8801 2009-08-29 06:05:14Z mike $"
  *
  *   IPP utilities for the Common UNIX Printing System (CUPS).
  *
@@ -266,7 +266,9 @@ cupsDoIORequest(http_t     *http,	/* I - Connection to server or @code CUPS_HTTP
 
     DEBUG_printf(("2cupsDoIORequest: status=%d", status));
 
-    if (status == HTTP_FORBIDDEN || status >= HTTP_SERVER_ERROR)
+    if (status >= HTTP_BAD_REQUEST &&
+	status != HTTP_UNAUTHORIZED &&
+	status != HTTP_UPGRADE_REQUIRED)
     {
       httpFlush(http);
       _cupsSetHTTPError(status);
@@ -905,5 +907,5 @@ _cupsSetHTTPError(http_status_t status)	/* I - HTTP status code */
 
 
 /*
- * End of "$Id: request.c 8728 2009-06-26 17:29:22Z mike $".
+ * End of "$Id: request.c 8801 2009-08-29 06:05:14Z mike $".
  */

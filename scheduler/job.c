@@ -1,5 +1,5 @@
 /*
- * "$Id: job.c 8754 2009-07-14 23:17:24Z mike $"
+ * "$Id: job.c 8801 2009-08-29 06:05:14Z mike $"
  *
  *   Job management routines for the Common UNIX Printing System (CUPS).
  *
@@ -2297,17 +2297,32 @@ cupsdSetJobState(
     case IPP_JOB_ABORTED :
     case IPP_JOB_CANCELED :
     case IPP_JOB_COMPLETED :
+        if (newstate == IPP_JOB_CANCELED)
+	{
+	 /*
+	  * Remove the job from the active list if there are no processes still
+	  * running for it...
+	  */
+
+	  for (i = 0; job->filters[i] < 0; i++);
+
+	  if (!job->filters[i] && job->backend <= 0)
+	    cupsArrayRemove(ActiveJobs, job);
+	}
+	else
+	{
+	 /*
+	  * Otherwise just remove the job from the active list immediately...
+	  */
+
+	  cupsArrayRemove(ActiveJobs, job);
+	}
+
        /*
         * Expire job subscriptions since the job is now "completed"...
 	*/
 
         cupsdExpireSubscriptions(NULL, job);
-
-       /*
-	* Remove the job from the active list...
-	*/
-
-	cupsArrayRemove(ActiveJobs, job);
 
 #ifdef __APPLE__
        /*
@@ -3848,6 +3863,11 @@ start_job(cupsd_job_t     *job,		/* I - Job ID */
   fcntl(job->side_pipes[1], F_SETFL,
 	fcntl(job->side_pipes[1], F_GETFL) | O_NONBLOCK);
 
+  fcntl(job->side_pipes[0], F_SETFD,
+	fcntl(job->side_pipes[0], F_GETFD) | FD_CLOEXEC);
+  fcntl(job->side_pipes[1], F_SETFD,
+	fcntl(job->side_pipes[1], F_GETFD) | FD_CLOEXEC);
+
  /*
   * Now start the first file in the job...
   */
@@ -4387,5 +4407,5 @@ update_job_attrs(cupsd_job_t *job,	/* I - Job to update */
 
 
 /*
- * End of "$Id: job.c 8754 2009-07-14 23:17:24Z mike $".
+ * End of "$Id: job.c 8801 2009-08-29 06:05:14Z mike $".
  */

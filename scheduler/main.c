@@ -1,5 +1,5 @@
 /*
- * "$Id: main.c 8656 2009-05-18 15:43:32Z mike $"
+ * "$Id: main.c 8783 2009-08-28 17:51:05Z mike $"
  *
  *   Scheduler main loop for the Common UNIX Printing System (CUPS).
  *
@@ -1793,6 +1793,18 @@ process_children(void)
 	    cupsdContinueJob(job);
 	  }
 	}
+	else if (job->state_value == IPP_JOB_CANCELED)
+	{
+	 /*
+	  * Remove the job from the active list if there are no processes still
+	  * running for it...
+	  */
+
+	  for (i = 0; job->filters[i] < 0; i++);
+
+	  if (!job->filters[i] && job->backend <= 0)
+	    cupsArrayRemove(ActiveJobs, job);
+	}
       }
     }
 
@@ -2137,5 +2149,5 @@ usage(int status)			/* O - Exit status */
 
 
 /*
- * End of "$Id: main.c 8656 2009-05-18 15:43:32Z mike $".
+ * End of "$Id: main.c 8783 2009-08-28 17:51:05Z mike $".
  */

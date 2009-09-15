@@ -4,10 +4,8 @@
 ## All lines beginning with `## DP:' are a description of the patch.
 ## DP: http://www.cups.org/str.php?L3066
 
-@DPATCH@
-diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd.c
---- cups-1.4.0~svn8773~/backend/dnssd.c	2009-08-23 12:15:53.000000000 +0200
-+++ cups-1.4.0~svn8773/backend/dnssd.c	2009-08-23 20:29:54.000000000 +0200
+--- cups-1.4.0/backend/dnssd.c.avahi	2009-08-07 23:27:12.000000000 +0100
++++ cups-1.4.0/backend/dnssd.c	2009-09-04 14:57:04.730388833 +0100
 @@ -22,6 +22,7 @@
   *   exec_backend()          - Execute the backend that corresponds to the
   *                             resolved service name.
@@ -36,17 +34,20 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
  
  
  /*
-@@ -52,7 +64,9 @@
+@@ -52,7 +64,12 @@ typedef enum
  
  typedef struct
  {
 +#ifdef HAVE_DNSSD
    DNSServiceRef	ref;			/* Service reference for resolve */
 +#endif /* HAVE_DNSSD */
++#ifdef HAVE_AVAHI
++  int		resolved;		/* Did we resolve the device? */
++#endif /* HAVE_AVAHI */
    char		*name,			/* Service name */
  		*domain,		/* Domain name */
  		*fullName,		/* Full name */
-@@ -64,6 +78,20 @@
+@@ -64,6 +81,20 @@ typedef struct
  		sent;			/* Did we list the device? */
  } cups_device_t;
  
@@ -67,7 +68,7 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
  
  /*
   * Local globals...
-@@ -77,6 +105,7 @@
+@@ -77,6 +108,7 @@ static int		job_canceled = 0;
   * Local functions...
   */
  
@@ -75,7 +76,7 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
  static void		browse_callback(DNSServiceRef sdRef,
  			                DNSServiceFlags flags,
  				        uint32_t interfaceIndex,
-@@ -92,12 +121,6 @@
+@@ -92,12 +124,6 @@ static void		browse_local_callback(DNSSe
  					      const char *regtype,
  					      const char *replyDomain,
  					      void *context);
@@ -88,7 +89,7 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
  static void		query_callback(DNSServiceRef sdRef,
  			               DNSServiceFlags flags,
  				       uint32_t interfaceIndex,
-@@ -106,9 +129,111 @@
+@@ -106,9 +132,111 @@ static void		query_callback(DNSServiceRe
  				       uint16_t rrclass, uint16_t rdlen,
  				       const void *rdata, uint32_t ttl,
  				       void *context);
@@ -200,7 +201,7 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
  
  /*
   * 'main()' - Browse for printers.
-@@ -119,6 +244,13 @@
+@@ -119,6 +247,13 @@ main(int  argc,				/* I - Number of comm
       char *argv[])			/* I - Command-line arguments */
  {
    const char	*name;			/* Backend name */
@@ -214,7 +215,7 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
    DNSServiceRef	main_ref,		/* Main service reference */
  		fax_ipp_ref,		/* IPP fax service reference */
  		ipp_ref,		/* IPP service reference */
-@@ -130,12 +262,11 @@
+@@ -130,12 +265,11 @@ main(int  argc,				/* I - Number of comm
  		pdl_datastream_ref,	/* AppSocket service reference */
  		printer_ref,		/* LPD service reference */
  		riousbprint_ref;	/* Remote IO service reference */
@@ -232,7 +233,7 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
  #if defined(HAVE_SIGACTION) && !defined(HAVE_SIGSET)
    struct sigaction action;		/* Actions for POSIX signals */
  #endif /* HAVE_SIGACTION && !HAVE_SIGSET */
-@@ -194,6 +325,49 @@
+@@ -194,6 +328,49 @@ main(int  argc,				/* I - Number of comm
    * Browse for different kinds of printers...
    */
  
@@ -282,7 +283,7 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
    if (DNSServiceCreateConnection(&main_ref) != kDNSServiceErr_NoError)
    {
      perror("ERROR: Unable to create service connection");
-@@ -245,6 +419,7 @@
+@@ -245,6 +422,7 @@ main(int  argc,				/* I - Number of comm
    riousbprint_ref = main_ref;
    DNSServiceBrowse(&riousbprint_ref, kDNSServiceFlagsShareConnection, 0,
                     "_riousbprint._tcp", NULL, browse_callback, devices);
@@ -290,7 +291,7 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
  
   /*
    * Loop until we are killed...
-@@ -252,6 +427,9 @@
+@@ -252,6 +430,9 @@ main(int  argc,				/* I - Number of comm
  
    while (!job_canceled)
    {
@@ -300,7 +301,7 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
      FD_ZERO(&input);
      FD_SET(fd, &input);
  
-@@ -271,11 +449,35 @@
+@@ -271,11 +452,35 @@ main(int  argc,				/* I - Number of comm
      }
      else
      {
@@ -336,7 +337,7 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
        cups_device_t *best;		/* Best matching device */
        char	device_uri[1024];	/* Device URI */
        int	count;			/* Number of queries */
-@@ -285,6 +487,7 @@
+@@ -285,6 +490,7 @@ main(int  argc,				/* I - Number of comm
                 best = NULL, count = 0;
             device;
  	   device = (cups_device_t *)cupsArrayNext(devices))
@@ -344,13 +345,18 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
          if (!device->ref && !device->sent)
  	{
  	 /*
-@@ -313,14 +516,18 @@
+@@ -313,14 +519,23 @@ main(int  argc,				/* I - Number of comm
  	      count ++;
            }
  	}
 -	else if (!device->sent)
 +	else
 +#endif /* HAVE_DNSSD */
++#ifdef HAVE_AVAHI
++	if (!device->resolved)
++	  continue;
++        else
++#endif /* HAVE_AVAHI */
 +	if (!device->sent)
  	{
 +#ifdef HAVE_DNSSD
@@ -364,7 +370,7 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
  
            if (!best)
  	    best = device;
-@@ -372,6 +579,7 @@
+@@ -372,6 +587,7 @@ main(int  argc,				/* I - Number of comm
   * 'browse_callback()' - Browse devices.
   */
  
@@ -372,7 +378,7 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
  static void
  browse_callback(
      DNSServiceRef       sdRef,		/* I - Service reference */
-@@ -405,12 +613,14 @@
+@@ -405,12 +621,14 @@ browse_callback(
  
    get_device((cups_array_t *)context, serviceName, regtype, replyDomain);
  }
@@ -387,7 +393,7 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
  static void
  browse_local_callback(
      DNSServiceRef       sdRef,		/* I - Service reference */
-@@ -456,6 +666,7 @@
+@@ -456,6 +674,7 @@ browse_local_callback(
  	  device->fullName);
    device->sent = 1;
  }
@@ -395,7 +401,7 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
  
  
  /*
-@@ -528,6 +739,32 @@
+@@ -528,6 +747,32 @@ exec_backend(char **argv)		/* I - Comman
    exit(CUPS_BACKEND_STOP);
  }
  
@@ -428,7 +434,7 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
  
  /*
   * 'get_device()' - Create or update a device.
-@@ -550,18 +787,7 @@
+@@ -550,18 +795,7 @@ get_device(cups_array_t *devices,	/* I -
    */
  
    key.name = (char *)serviceName;
@@ -448,7 +454,7 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
  
    for (device = cupsArrayFind(devices, &key);
         device;
-@@ -581,8 +807,14 @@
+@@ -581,8 +815,14 @@ get_device(cups_array_t *devices,	/* I -
          free(device->domain);
  	device->domain = strdup(replyDomain);
  
@@ -463,7 +469,17 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
  	free(device->fullName);
  	device->fullName = strdup(fullName);
        }
-@@ -609,7 +841,13 @@
+@@ -602,6 +842,9 @@ get_device(cups_array_t *devices,	/* I -
+   device->domain   = strdup(replyDomain);
+   device->type     = key.type;
+   device->priority = 50;
++#ifdef HAVE_AVAHI
++  device->resolved = 0;
++#endif /* HAVE_AVAHI */
+ 
+   cupsArrayAdd(devices, device);
+ 
+@@ -609,7 +852,13 @@ get_device(cups_array_t *devices,	/* I -
    * Set the "full name" of this service, which is used for queries...
    */
  
@@ -477,7 +493,7 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
    device->fullName = strdup(fullName);
  
    return (device);
-@@ -620,6 +858,7 @@
+@@ -620,6 +869,7 @@ get_device(cups_array_t *devices,	/* I -
   * 'query_callback()' - Process query data.
   */
  
@@ -485,7 +501,7 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
  static void
  query_callback(
      DNSServiceRef       sdRef,		/* I - Service reference */
-@@ -639,7 +878,7 @@
+@@ -639,7 +889,7 @@ query_callback(
  		*ptr;			/* Pointer into string */
    cups_device_t	dkey,			/* Search key */
  		*device;		/* Device */
@@ -494,7 +510,7 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
  
    fprintf(stderr, "DEBUG2: query_callback(sdRef=%p, flags=%x, "
                    "interfaceIndex=%d, errorCode=%d, fullName=\"%s\", "
-@@ -673,84 +912,211 @@
+@@ -673,84 +923,212 @@ query_callback(
    if ((ptr = strstr(name, "._")) != NULL)
      *ptr = '\0';
  
@@ -593,13 +609,13 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
 +    * Let the main loop know to announce the device.
 +    */
 +
++    device->resolved = 1;
 +    avahi_got_callback = 1;
 +  }
    else
 -    dkey.type = CUPS_DEVICE_RIOUSBPRINT;
 +    fprintf (stderr, "DEBUG: Ignoring TXT record for \"%s\"...\n", name);
- 
--  for (device = cupsArrayFind(devices, &dkey);
++
 +  avahi_service_resolver_free (resolver);
 +}
 +
@@ -660,7 +676,8 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
 +    }
 +
 +    break;
-+
+ 
+-  for (device = cupsArrayFind(devices, &dkey);
 +  case AVAHI_BROWSER_REMOVE:
 +  case AVAHI_BROWSER_ALL_FOR_NOW:
 +  case AVAHI_BROWSER_CACHE_EXHAUSTED:
@@ -733,7 +750,9 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
 -	  break;
 -
 -        datanext = data + datalen;
--
++	char *key;
++	char *value;
+ 
 -        for (ptr = key; data < datanext && *data != '='; data ++)
 -	  *ptr++ = *data;
 -	*ptr = '\0';
@@ -741,9 +760,7 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
 -	if (data < datanext && *data == '=')
 -	{
 -	  data ++;
-+	char *key;
-+	char *value;
- 
+-
 -	  if (data < datanext)
 -	    memcpy(value, data, datanext - data);
 -	  value[datanext - data] = '\0';
@@ -758,7 +775,7 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
          if (!strncasecmp(key, "usb_", 4))
  	{
  	 /*
-@@ -805,6 +1171,10 @@
+@@ -805,6 +1183,10 @@ query_callback(
  	  if (device->type == CUPS_DEVICE_PRINTER)
  	    device->sent = 1;
  	}
@@ -769,7 +786,7 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
        }
  
        if (device->device_id)
-@@ -854,11 +1224,9 @@
+@@ -854,11 +1236,9 @@ query_callback(
      }
    }
  
@@ -782,10 +799,27 @@ diff -urNad cups-1.4.0~svn8773~/backend/dnssd.c cups-1.4.0~svn8773/backend/dnssd
  /*
   * 'sigterm_handler()' - Handle termination signals...
   */
-diff -urNad cups-1.4.0~svn8773~/config-scripts/cups-dnssd.m4 cups-1.4.0~svn8773/config-scripts/cups-dnssd.m4
---- cups-1.4.0~svn8773~/config-scripts/cups-dnssd.m4	2009-08-23 12:15:59.000000000 +0200
-+++ cups-1.4.0~svn8773/config-scripts/cups-dnssd.m4	2009-08-23 20:29:54.000000000 +0200
-@@ -27,6 +27,21 @@
+diff -up cups-1.4.0/config.h.in.avahi cups-1.4.0/config.h.in
+--- cups-1.4.0/config.h.in.avahi	2009-06-10 16:51:21.000000000 +0100
++++ cups-1.4.0/config.h.in	2009-09-04 14:57:04.733388405 +0100
+@@ -336,6 +336,13 @@
+ 
+ 
+ /*
++ * Do we have Avahi for DNS Service Discovery?
++ */
++
++#undef HAVE_AVAHI
++
++
++/*
+  * Do we have <sys/ioctl.h>?
+  */
+ 
+diff -up cups-1.4.0/config-scripts/cups-dnssd.m4.avahi cups-1.4.0/config-scripts/cups-dnssd.m4
+--- cups-1.4.0/config-scripts/cups-dnssd.m4.avahi	2009-02-10 17:05:35.000000000 +0000
++++ cups-1.4.0/config-scripts/cups-dnssd.m4	2009-09-04 14:57:04.731388902 +0100
+@@ -27,6 +27,21 @@ AC_ARG_WITH(dnssd-includes, [  --with-dn
  DNSSDLIBS=""
  DNSSD_BACKEND=""
  
@@ -807,649 +841,9 @@ diff -urNad cups-1.4.0~svn8773~/config-scripts/cups-dnssd.m4 cups-1.4.0~svn8773/
  if test x$enable_dnssd != xno; then
  	AC_CHECK_HEADER(dns_sd.h, [
  		case "$uname" in
-diff -urNad cups-1.4.0~svn8773~/config.h.in cups-1.4.0~svn8773/config.h.in
---- cups-1.4.0~svn8773~/config.h.in	2009-08-23 12:16:58.000000000 +0200
-+++ cups-1.4.0~svn8773/config.h.in	2009-08-23 20:29:54.000000000 +0200
-@@ -336,6 +336,13 @@
- 
- 
- /*
-+ * Do we have Avahi for DNS Service Discovery?
-+ */
-+
-+#undef HAVE_AVAHI
-+
-+
-+/*
-  * Do we have <sys/ioctl.h>?
-  */
- 
-diff -urNad cups-1.4.0~svn8773~/config.h.in.orig cups-1.4.0~svn8773/config.h.in.orig
---- cups-1.4.0~svn8773~/config.h.in.orig	1970-01-01 01:00:00.000000000 +0100
-+++ cups-1.4.0~svn8773/config.h.in.orig	2009-08-23 12:16:58.000000000 +0200
-@@ -0,0 +1,619 @@
-+/*
-+ * "$Id: config.h.in 8704 2009-06-10 15:51:21Z mike $"
-+ *
-+ *   Configuration file for the Common UNIX Printing System (CUPS).
-+ *
-+ *   Copyright 2007-2009 by Apple Inc.
-+ *   Copyright 1997-2007 by Easy Software Products.
-+ *
-+ *   These coded instructions, statements, and computer programs are the
-+ *   property of Apple Inc. and are protected by Federal copyright
-+ *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
-+ *   which should have been included with this file.  If this file is
-+ *   file is missing or damaged, see the license at "http://www.cups.org/".
-+ */
-+
-+#ifndef _CUPS_CONFIG_H_
-+#define _CUPS_CONFIG_H_
-+
-+/*
-+ * Version of software...
-+ */
-+
-+#define CUPS_SVERSION	""
-+#define CUPS_MINIMAL	""
-+
-+
-+/*
-+ * Default user and groups...
-+ */
-+
-+#define CUPS_DEFAULT_USER	"lp"
-+#define CUPS_DEFAULT_GROUP	"sys"
-+#define CUPS_DEFAULT_SYSTEM_GROUPS	"sys root system"
-+#define CUPS_DEFAULT_PRINTOPERATOR_AUTH	"@SYSTEM"
-+
-+
-+/*
-+ * Default file permissions...
-+ */
-+
-+#define CUPS_DEFAULT_CONFIG_FILE_PERM	0640
-+#define CUPS_DEFAULT_LOG_FILE_PERM	0644
-+
-+
-+/*
-+ * Default logging settings...
-+ */
-+
-+#define CUPS_DEFAULT_LOG_LEVEL	"warn"
-+#define CUPS_DEFAULT_ACCESS_LOG_LEVEL "actions"
-+
-+
-+/*
-+ * Default fatal error settings...
-+ */
-+
-+#define CUPS_DEFAULT_FATAL_ERRORS	"config"
-+
-+
-+/*
-+ * Default browsing settings...
-+ */
-+
-+#define CUPS_DEFAULT_BROWSING	1
-+#define CUPS_DEFAULT_BROWSE_LOCAL_PROTOCOLS	"CUPS"
-+#define CUPS_DEFAULT_BROWSE_REMOTE_PROTOCOLS	"CUPS"
-+#define CUPS_DEFAULT_BROWSE_SHORT_NAMES	1
-+#define CUPS_DEFAULT_DEFAULT_SHARED 1
-+#define CUPS_DEFAULT_IMPLICIT_CLASSES	1
-+#define CUPS_DEFAULT_USE_NETWORK_DEFAULT 1
-+
-+
-+/*
-+ * Default IPP port...
-+ */
-+
-+#define CUPS_DEFAULT_IPP_PORT	631
-+
-+
-+/*
-+ * Default printcap file...
-+ */
-+
-+#define CUPS_DEFAULT_PRINTCAP	"/etc/printcap"
-+
-+
-+/*
-+ * Default Samba and LPD config files...
-+ */
-+
-+#define CUPS_DEFAULT_SMB_CONFIG_FILE	""
-+#define CUPS_DEFAULT_LPD_CONFIG_FILE	""
-+
-+
-+/*
-+ * Default MaxCopies value...
-+ */
-+
-+#define CUPS_DEFAULT_MAX_COPIES	100
-+
-+
-+/*
-+ * Do we have domain socket support?
-+ */
-+
-+#undef CUPS_DEFAULT_DOMAINSOCKET
-+
-+
-+/*
-+ * Where are files stored?
-+ *
-+ * Note: These are defaults, which can be overridden by environment
-+ *       variables at run-time...
-+ */
-+
-+#define CUPS_BINDIR	"/usr/bin"
-+#define CUPS_CACHEDIR	"/var/cache/cups"
-+#define CUPS_DATADIR    "/usr/share/cups"
-+#define CUPS_DOCROOT	"/usr/share/doc/cups"
-+#define CUPS_FONTPATH	"/usr/share/cups/fonts"
-+#define CUPS_LOCALEDIR	"/usr/share/locale"
-+#define CUPS_LOGDIR	"/var/logs/cups"
-+#define CUPS_REQUESTS	"/var/spool/cups"
-+#define CUPS_SBINDIR	"/usr/sbin"
-+#define CUPS_SERVERBIN	"/usr/lib/cups"
-+#define CUPS_SERVERROOT	"/etc/cups"
-+#define CUPS_STATEDIR	"/var/run/cups"
-+
-+
-+/*
-+ * Do we have various image libraries?
-+ */
-+
-+#undef HAVE_LIBPNG
-+#undef HAVE_LIBZ
-+#undef HAVE_LIBJPEG
-+#undef HAVE_LIBTIFF
-+
-+
-+/*
-+ * Do we have PAM stuff?
-+ */
-+
-+#ifndef HAVE_LIBPAM
-+#define HAVE_LIBPAM 0
-+#endif /* !HAVE_LIBPAM */
-+
-+#undef HAVE_PAM_PAM_APPL_H
-+#undef HAVE_PAM_SET_ITEM
-+#undef HAVE_PAM_SETCRED
-+
-+
-+/*
-+ * Do we have <shadow.h>?
-+ */
-+
-+#undef HAVE_SHADOW_H
-+
-+
-+/*
-+ * Do we have <crypt.h>?
-+ */
-+
-+#undef HAVE_CRYPT_H
-+
-+
-+/*
-+ * Do we have <scsi/sg.h>?
-+ */
-+
-+#undef HAVE_SCSI_SG_H
-+
-+
-+/*
-+ * Use <string.h>, <strings.h>, and/or <bstring.h>?
-+ */
-+
-+#undef HAVE_STRING_H
-+#undef HAVE_STRINGS_H
-+#undef HAVE_BSTRING_H
-+
-+/*
-+ * Do we have the long long type?
-+ */
-+
-+#undef HAVE_LONG_LONG
-+
-+#ifdef HAVE_LONG_LONG
-+#  define CUPS_LLFMT	"%lld"
-+#  define CUPS_LLCAST	(long long)
-+#else
-+#  define CUPS_LLFMT	"%ld"
-+#  define CUPS_LLCAST	(long)
-+#endif /* HAVE_LONG_LONG */
-+
-+/*
-+ * Do we have the strtoll() function?
-+ */
-+
-+#undef HAVE_STRTOLL
-+
-+#ifndef HAVE_STRTOLL
-+#  define strtoll(nptr,endptr,base) strtol((nptr), (endptr), (base))
-+#endif /* !HAVE_STRTOLL */
-+
-+/*
-+ * Do we have the strXXX() functions?
-+ */
-+
-+#undef HAVE_STRDUP
-+#undef HAVE_STRCASECMP
-+#undef HAVE_STRNCASECMP
-+#undef HAVE_STRLCAT
-+#undef HAVE_STRLCPY
-+
-+
-+/*
-+ * Do we have the geteuid() function?
-+ */
-+
-+#undef HAVE_GETEUID
-+
-+
-+/*
-+ * Do we have the vsyslog() function?
-+ */
-+
-+#undef HAVE_VSYSLOG
-+
-+
-+/*
-+ * Do we have the (v)snprintf() functions?
-+ */
-+
-+#undef HAVE_SNPRINTF
-+#undef HAVE_VSNPRINTF
-+
-+
-+/*
-+ * What signal functions to use?
-+ */
-+
-+#undef HAVE_SIGSET
-+#undef HAVE_SIGACTION
-+
-+
-+/*
-+ * What wait functions to use?
-+ */
-+
-+#undef HAVE_WAITPID
-+#undef HAVE_WAIT3
-+
-+
-+/*
-+ * Do we have the mallinfo function and malloc.h?
-+ */
-+
-+#undef HAVE_MALLINFO
-+#undef HAVE_MALLOC_H
-+
-+
-+/*
-+ * Do we have the POSIX ACL functions?
-+ */
-+
-+#undef HAVE_ACL_INIT
-+
-+
-+/*
-+ * Do we have the langinfo.h header file?
-+ */
-+
-+#undef HAVE_LANGINFO_H
-+
-+
-+/*
-+ * Which encryption libraries do we have?
-+ */
-+
-+#undef HAVE_CDSASSL
-+#undef HAVE_GNUTLS
-+#undef HAVE_LIBSSL
-+#undef HAVE_SSL
-+
-+
-+/*
-+ * What Security framework headers do we have?
-+ */
-+
-+#undef HAVE_AUTHORIZATION_H
-+#undef HAVE_SECPOLICY_H
-+#undef HAVE_SECPOLICYPRIV_H
-+#undef HAVE_SECBASEPRIV_H
-+#undef HAVE_SECIDENTITYSEARCHPRIV_H
-+
-+
-+/*
-+ * Do we have the SecIdentitySearchCreateWithPolicy function?
-+ */
-+
-+#undef HAVE_SECIDENTITYSEARCHCREATEWITHPOLICY
-+
-+
-+/*
-+ * Do we have the SLP library?
-+ */
-+
-+#undef HAVE_LIBSLP
-+
-+
-+/*
-+ * Do we have an LDAP library?
-+ */
-+
-+#undef HAVE_LDAP
-+#undef HAVE_OPENLDAP
-+#undef HAVE_MOZILLA_LDAP
-+#undef HAVE_LDAP_SSL_H
-+#undef HAVE_LDAP_SSL
-+#undef HAVE_LDAP_REBIND_PROC
-+
-+
-+/*
-+ * Do we have libpaper?
-+ */
-+
-+#undef HAVE_LIBPAPER
-+
-+
-+/*
-+ * Do we have DNS Service Discovery (aka Bonjour)?
-+ */
-+
-+#undef HAVE_DNSSD
-+
-+
-+/*
-+ * Do we have <sys/ioctl.h>?
-+ */
-+
-+#undef HAVE_SYS_IOCTL_H
-+
-+
-+/*
-+ * Does the "tm" structure contain the "tm_gmtoff" member?
-+ */
-+
-+#undef HAVE_TM_GMTOFF
-+
-+
-+/*
-+ * Do we have rresvport_af()?
-+ */
-+
-+#undef HAVE_RRESVPORT_AF
-+
-+
-+/*
-+ * Do we have getaddrinfo()?
-+ */
-+
-+#undef HAVE_GETADDRINFO
-+
-+
-+/*
-+ * Do we have getnameinfo()?
-+ */
-+
-+#undef HAVE_GETNAMEINFO
-+
-+
-+/*
-+ * Do we have getifaddrs()?
-+ */
-+
-+#undef HAVE_GETIFADDRS
-+
-+
-+/*
-+ * Do we have hstrerror()?
-+ */
-+
-+#undef HAVE_HSTRERROR
-+
-+
-+/*
-+ * Do we have res_init()?
-+ */
-+
-+#undef HAVE_RES_INIT
-+
-+
-+/*
-+ * Do we have <resolv.h>
-+ */
-+
-+#undef HAVE_RESOLV_H
-+
-+
-+/*
-+ * Do we have the <sys/sockio.h> header file?
-+ */
-+
-+#undef HAVE_SYS_SOCKIO_H
-+
-+
-+/*
-+ * Does the sockaddr structure contain an sa_len parameter?
-+ */
-+
-+#undef HAVE_STRUCT_SOCKADDR_SA_LEN
-+
-+
-+/*
-+ * Do we have the AIX usersec.h header file?
-+ */
-+
-+#undef HAVE_USERSEC_H
-+
-+
-+/*
-+ * Do we have pthread support?
-+ */
-+
-+#undef HAVE_PTHREAD_H
-+
-+
-+/*
-+ * Do we have launchd support?
-+ */
-+
-+#undef HAVE_LAUNCH_H
-+#undef HAVE_LAUNCHD
-+#define CUPS_DEFAULT_LAUNCHD_CONF ""
-+
-+
-+/*
-+ * Various scripting languages...
-+ */
-+
-+#undef HAVE_JAVA
-+#define CUPS_JAVA	"/usr/bin/java"
-+#undef HAVE_PERL
-+#define CUPS_PERL	"/usr/bin/perl"
-+#undef HAVE_PHP
-+#define CUPS_PHP	"/usr/bin/php"
-+#undef HAVE_PYTHON
-+#define CUPS_PYTHON	"/usr/bin/python"
-+
-+
-+/*
-+ * Location of the poppler/Xpdf pdftops program...
-+ */
-+
-+#undef HAVE_PDFTOPS
-+#define CUPS_PDFTOPS	"/usr/bin/pdftops"
-+
-+
-+/*
-+ * Location of the Ghostscript gs program...
-+ */
-+
-+#undef HAVE_GHOSTSCRIPT
-+#define CUPS_GHOSTSCRIPT "/usr/bin/gs"
-+
-+
-+/*
-+ * Do we have Darwin's CoreFoundation and SystemConfiguration frameworks?
-+ */
-+
-+#undef HAVE_COREFOUNDATION
-+#undef HAVE_SYSTEMCONFIGURATION
-+
-+
-+/*
-+ * Do we have CoreFoundation public and private headers?
-+ */
-+
-+#undef HAVE_COREFOUNDATION_H
-+#undef HAVE_CFPRIV_H
-+#undef HAVE_CFBUNDLEPRIV_H
-+
-+
-+/*
-+ * Do we have MacOSX 10.4's mbr_XXX functions()?
-+ */
-+
-+#undef HAVE_MEMBERSHIP_H
-+#undef HAVE_MEMBERSHIPPRIV_H
-+#undef HAVE_MBR_UID_TO_UUID
-+
-+
-+/*
-+ * Do we have Darwin's notify_post() header and function?
-+ */
-+
-+#undef HAVE_NOTIFY_H
-+#undef HAVE_NOTIFY_POST
-+
-+
-+/*
-+ * Do we have DBUS?
-+ */
-+
-+#undef HAVE_DBUS
-+#undef HAVE_DBUS_MESSAGE_ITER_INIT_APPEND
-+
-+
-+/*
-+ * Do we have the AppleTalk/at_proto.h header?
-+ */
-+
-+#undef HAVE_APPLETALK_AT_PROTO_H
-+
-+
-+/*
-+ * Do we have the GSSAPI support library (for Kerberos support)?
-+ */
-+
-+#undef HAVE_GSSAPI
-+#undef HAVE_GSSAPI_H
-+#undef HAVE_GSSAPI_GSSAPI_H
-+#undef HAVE_GSSAPI_GSSAPI_GENERIC_H
-+#undef HAVE_GSSAPI_GSSAPI_KRB5_H
-+#undef HAVE_GSSKRB5_REGISTER_ACCEPTOR_IDENTITY
-+#undef HAVE_GSS_C_NT_HOSTBASED_SERVICE
-+#undef HAVE_KRB5_CC_NEW_UNIQUE
-+#undef HAVE_KRB5_IPC_CLIENT_SET_TARGET_UID
-+#undef HAVE_KRB5_H
-+#undef HAVE_HEIMDAL
-+
-+
-+/*
-+ * Default GSS service name...
-+ */
-+
-+#define CUPS_DEFAULT_GSSSERVICENAME	""
-+
-+
-+/*
-+ * Select/poll interfaces...
-+ */
-+
-+#undef HAVE_POLL
-+#undef HAVE_EPOLL
-+#undef HAVE_KQUEUE
-+
-+
-+/*
-+ * Do we have the <dlfcn.h> header?
-+ */
-+
-+#undef HAVE_DLFCN_H
-+
-+
-+/*
-+ * Do we have <sys/param.h>?
-+ */
-+
-+#undef HAVE_SYS_PARAM_H
-+
-+
-+/*
-+ * Do we have <sys/ucred.h>?
-+ */
-+
-+#undef HAVE_SYS_UCRED_H
-+
-+
-+/*
-+ * Do we have removefile()?
-+ */
-+
-+#undef HAVE_REMOVEFILE
-+
-+
-+/*
-+ * Do we have <sandbox.h>?
-+ */
-+
-+#undef HAVE_SANDBOX_H
-+
-+
-+/*
-+ * Which random number generator function to use...
-+ */
-+
-+#undef HAVE_RANDOM
-+#undef HAVE_MRAND48
-+#undef HAVE_LRAND48
-+
-+
-+/*
-+ * Do we have vproc_transaction_begin/end?
-+ */
-+
-+#undef HAVE_VPROC_TRANSACTION_BEGIN
-+
-+
-+/*
-+ * Do we have libusb?
-+ */
-+
-+#undef HAVE_USB_H
-+
-+
-+/*
-+ * Do we have libwrap and tcpd.h?
-+ */
-+
-+#undef HAVE_TCPD_H
-+
-+
-+#endif /* !_CUPS_CONFIG_H_ */
-+
-+/*
-+ * End of "$Id: config.h.in 8704 2009-06-10 15:51:21Z mike $".
-+ */
-diff -urNad cups-1.4.0~svn8773~/cups/http-support.c cups-1.4.0~svn8773/cups/http-support.c
---- cups-1.4.0~svn8773~/cups/http-support.c	2009-08-23 12:16:16.000000000 +0200
-+++ cups-1.4.0~svn8773/cups/http-support.c	2009-08-23 20:29:54.000000000 +0200
+diff -up cups-1.4.0/cups/http-support.c.avahi cups-1.4.0/cups/http-support.c
+--- cups-1.4.0/cups/http-support.c.avahi	2009-06-12 01:21:58.000000000 +0100
++++ cups-1.4.0/cups/http-support.c	2009-09-04 14:57:04.736398674 +0100
 @@ -55,6 +55,11 @@
  #  include <dns_sd.h>
  #  include <poll.h>
@@ -1462,7 +856,7 @@ diff -urNad cups-1.4.0~svn8773~/cups/http-support.c cups-1.4.0~svn8773/cups/http
  
  
  /*
-@@ -121,6 +126,24 @@
+@@ -121,6 +126,24 @@ static void		resolve_callback(DNSService
  					 void *context);
  #endif /* HAVE_DNSSD */
  
@@ -1487,7 +881,7 @@ diff -urNad cups-1.4.0~svn8773~/cups/http-support.c cups-1.4.0~svn8773/cups/http
  
  /*
   * 'httpAssembleURI()' - Assemble a uniform resource identifier from its
-@@ -1349,15 +1372,26 @@
+@@ -1349,15 +1372,26 @@ _httpResolveURI(
  
    if (strstr(hostname, "._tcp"))
    {
@@ -1516,7 +910,7 @@ diff -urNad cups-1.4.0~svn8773~/cups/http-support.c cups-1.4.0~svn8773/cups/http
  
  
      if (logit)
-@@ -1395,8 +1429,13 @@
+@@ -1395,8 +1429,13 @@ _httpResolveURI(
      if (domain)
        *domain++ = '\0';
  
@@ -1530,7 +924,7 @@ diff -urNad cups-1.4.0~svn8773~/cups/http-support.c cups-1.4.0~svn8773/cups/http
  
      resolved_uri[0] = '\0';
  
-@@ -1411,6 +1450,7 @@
+@@ -1411,6 +1450,7 @@ _httpResolveURI(
  
      uri = NULL;
  
@@ -1538,7 +932,7 @@ diff -urNad cups-1.4.0~svn8773~/cups/http-support.c cups-1.4.0~svn8773/cups/http
      if (DNSServiceCreateConnection(&ref) == kDNSServiceErr_NoError)
      {
        localref = ref;
-@@ -1486,6 +1526,36 @@
+@@ -1486,6 +1526,36 @@ _httpResolveURI(
  
        DNSServiceRefDeallocate(ref);
      }
@@ -1575,7 +969,7 @@ diff -urNad cups-1.4.0~svn8773~/cups/http-support.c cups-1.4.0~svn8773/cups/http
  
      if (logit)
      {
-@@ -1497,13 +1567,13 @@
+@@ -1497,13 +1567,13 @@ _httpResolveURI(
        fputs("STATE: -connecting-to-device\n", stderr);
      }
  
@@ -1591,7 +985,7 @@ diff -urNad cups-1.4.0~svn8773~/cups/http-support.c cups-1.4.0~svn8773/cups/http
  
      if (logit && !uri)
        _cupsLangPuts(stderr, _("Unable to find printer!\n"));
-@@ -1708,6 +1778,105 @@
+@@ -1708,6 +1778,105 @@ resolve_callback(
  }
  #endif /* HAVE_DNSSD */
  
@@ -1697,1721 +1091,3 @@ diff -urNad cups-1.4.0~svn8773~/cups/http-support.c cups-1.4.0~svn8773/cups/http
  
  /*
   * End of "$Id: http-support.c 8705 2009-06-12 00:21:58Z mike $".
-diff -urNad cups-1.4.0~svn8773~/cups/http-support.c.orig cups-1.4.0~svn8773/cups/http-support.c.orig
---- cups-1.4.0~svn8773~/cups/http-support.c.orig	1970-01-01 01:00:00.000000000 +0100
-+++ cups-1.4.0~svn8773/cups/http-support.c.orig	2009-08-23 12:16:16.000000000 +0200
-@@ -0,0 +1,1714 @@
-+/*
-+ * "$Id: http-support.c 8705 2009-06-12 00:21:58Z mike $"
-+ *
-+ *   HTTP support routines for the Common UNIX Printing System (CUPS) scheduler.
-+ *
-+ *   Copyright 2007-2009 by Apple Inc.
-+ *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
-+ *
-+ *   These coded instructions, statements, and computer programs are the
-+ *   property of Apple Inc. and are protected by Federal copyright
-+ *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
-+ *   which should have been included with this file.  If this file is
-+ *   file is missing or damaged, see the license at "http://www.cups.org/".
-+ *
-+ *   This file is subject to the Apple OS-Developed Software exception.
-+ *
-+ * Contents:
-+ *
-+ *   httpAssembleURI()    - Assemble a uniform resource identifier from its
-+ *                          components.
-+ *   httpAssembleURIf()   - Assemble a uniform resource identifier from its
-+ *                          components with a formatted resource.
-+ *   httpDecode64()       - Base64-decode a string.
-+ *   httpDecode64_2()     - Base64-decode a string.
-+ *   httpEncode64()       - Base64-encode a string.
-+ *   httpEncode64_2()     - Base64-encode a string.
-+ *   httpGetDateString()  - Get a formatted date/time string from a time value.
-+ *   httpGetDateString2() - Get a formatted date/time string from a time value.
-+ *   httpGetDateTime()    - Get a time value from a formatted date/time string.
-+ *   httpSeparate()       - Separate a Universal Resource Identifier into its
-+ *                          components.
-+ *   httpSeparate2()      - Separate a Universal Resource Identifier into its
-+ *                          components.
-+ *   httpSeparateURI()    - Separate a Universal Resource Identifier into its
-+ *                          components.
-+ *   httpStatus()         - Return a short string describing a HTTP status code.
-+ *   _cups_hstrerror()    - hstrerror() emulation function for Solaris and
-+ *                          others...
-+ *   _httpEncodeURI()     - Percent-encode a HTTP request URI.
-+ *   _httpResolveURI()    - Resolve a DNS-SD URI.
-+ *   http_copy_decode()   - Copy and decode a URI.
-+ *   http_copy_encode()   - Copy and encode a URI.
-+ *   resolve_callback()   - Build a device URI for the given service name.
-+ */
-+
-+/*
-+ * Include necessary headers...
-+ */
-+
-+#include "debug.h"
-+#include "globals.h"
-+#include <stdlib.h>
-+#include <errno.h>
-+#ifdef HAVE_DNSSD
-+#  include <dns_sd.h>
-+#  include <poll.h>
-+#endif /* HAVE_DNSSD */
-+
-+
-+/*
-+ * Local types...
-+ */
-+
-+typedef struct _http_uribuf_s		/* URI buffer */
-+{
-+  char		*buffer;		/* Pointer to buffer */
-+  size_t	bufsize;		/* Size of buffer */
-+} _http_uribuf_t;
-+
-+
-+/*
-+ * Local globals...
-+ */
-+
-+static const char * const http_days[7] =
-+			{
-+			  "Sun",
-+			  "Mon",
-+			  "Tue",
-+			  "Wed",
-+			  "Thu",
-+			  "Fri",
-+			  "Sat"
-+			};
-+static const char * const http_months[12] =
-+			{
-+			  "Jan",
-+			  "Feb",
-+			  "Mar",
-+			  "Apr",
-+			  "May",
-+			  "Jun",
-+		          "Jul",
-+			  "Aug",
-+			  "Sep",
-+			  "Oct",
-+			  "Nov",
-+			  "Dec"
-+			};
-+
-+
-+/*
-+ * Local functions...
-+ */
-+
-+static const char	*http_copy_decode(char *dst, const char *src,
-+			                  int dstsize, const char *term,
-+					  int decode);
-+static char		*http_copy_encode(char *dst, const char *src,
-+			                  char *dstend, const char *reserved,
-+					  const char *term, int encode);
-+#ifdef HAVE_DNSSD
-+static void		resolve_callback(DNSServiceRef sdRef,
-+					 DNSServiceFlags flags,
-+					 uint32_t interfaceIndex,
-+					 DNSServiceErrorType errorCode,
-+					 const char *fullName,
-+					 const char *hostTarget,
-+					 uint16_t port, uint16_t txtLen,
-+					 const unsigned char *txtRecord,
-+					 void *context);
-+#endif /* HAVE_DNSSD */
-+
-+
-+/*
-+ * 'httpAssembleURI()' - Assemble a uniform resource identifier from its
-+ *                       components.
-+ *
-+ * This function escapes reserved characters in the URI depending on the
-+ * value of the "encoding" argument.  You should use this function in
-+ * place of traditional string functions whenever you need to create a
-+ * URI string.
-+ *
-+ * @since CUPS 1.2/Mac OS X 10.5@
-+ */
-+
-+http_uri_status_t			/* O - URI status */
-+httpAssembleURI(
-+    http_uri_coding_t encoding,		/* I - Encoding flags */
-+    char              *uri,		/* I - URI buffer */
-+    int               urilen,		/* I - Size of URI buffer */
-+    const char        *scheme,		/* I - Scheme name */
-+    const char        *username,	/* I - Username */
-+    const char        *host,		/* I - Hostname or address */
-+    int               port,		/* I - Port number */
-+    const char        *resource)	/* I - Resource */
-+{
-+  char		*ptr,			/* Pointer into URI buffer */
-+		*end;			/* End of URI buffer */
-+
-+
-+ /*
-+  * Range check input...
-+  */
-+
-+  if (!uri || urilen < 1 || !scheme || port < 0)
-+  {
-+    if (uri)
-+      *uri = '\0';
-+
-+    return (HTTP_URI_BAD_ARGUMENTS);
-+  }
-+
-+ /*
-+  * Assemble the URI starting with the scheme...
-+  */
-+
-+  end = uri + urilen - 1;
-+  ptr = http_copy_encode(uri, scheme, end, NULL, NULL, 0);
-+
-+  if (!ptr)
-+    goto assemble_overflow;
-+
-+  if (!strcmp(scheme, "mailto"))
-+  {
-+   /*
-+    * mailto: only has :, no //...
-+    */
-+
-+    if (ptr < end)
-+      *ptr++ = ':';
-+    else
-+      goto assemble_overflow;
-+  }
-+  else
-+  {
-+   /*
-+    * Schemes other than mailto: all have //...
-+    */
-+
-+    if ((ptr + 2) < end)
-+    {
-+      *ptr++ = ':';
-+      *ptr++ = '/';
-+      *ptr++ = '/';
-+    }
-+    else
-+      goto assemble_overflow;
-+  }
-+
-+ /*
-+  * Next the username and hostname, if any...
-+  */
-+
-+  if (host)
-+  {
-+    if (username && *username)
-+    {
-+     /*
-+      * Add username@ first...
-+      */
-+
-+      ptr = http_copy_encode(ptr, username, end, "/?@", NULL,
-+                             encoding & HTTP_URI_CODING_USERNAME);
-+
-+      if (!ptr)
-+        goto assemble_overflow;
-+
-+      if (ptr < end)
-+	*ptr++ = '@';
-+      else
-+        goto assemble_overflow;
-+    }
-+
-+   /*
-+    * Then add the hostname.  Since IPv6 is a particular pain to deal
-+    * with, we have several special cases to deal with.  If we get
-+    * an IPv6 address with brackets around it, assume it is already in
-+    * URI format.  Since DNS-SD service names can sometimes look like
-+    * raw IPv6 addresses, we specifically look for "._tcp" in the name,
-+    * too...
-+    */
-+
-+    if (host[0] != '[' && strchr(host, ':') && !strstr(host, "._tcp"))
-+    {
-+     /*
-+      * We have a raw IPv6 address...
-+      */
-+
-+      if (strchr(host, '%'))
-+      {
-+       /*
-+        * We have a link-local address, add "[v1." prefix...
-+	*/
-+
-+	if ((ptr + 4) < end)
-+	{
-+	  *ptr++ = '[';
-+	  *ptr++ = 'v';
-+	  *ptr++ = '1';
-+	  *ptr++ = '.';
-+	}
-+	else
-+          goto assemble_overflow;
-+      }
-+      else
-+      {
-+       /*
-+        * We have a normal address, add "[" prefix...
-+	*/
-+
-+	if (ptr < end)
-+	  *ptr++ = '[';
-+	else
-+          goto assemble_overflow;
-+      }
-+
-+     /*
-+      * Copy the rest of the IPv6 address, and terminate with "]".
-+      */
-+
-+      while (ptr < end && *host)
-+      {
-+        if (*host == '%')
-+	{
-+          *ptr++ = '+';			/* Convert zone separator */
-+	  host ++;
-+	}
-+	else
-+	  *ptr++ = *host++;
-+      }
-+
-+      if (*host)
-+        goto assemble_overflow;
-+
-+      if (ptr < end)
-+	*ptr++ = ']';
-+      else
-+        goto assemble_overflow;
-+    }
-+    else
-+    {
-+     /*
-+      * Otherwise, just copy the host string...
-+      */
-+
-+      ptr = http_copy_encode(ptr, host, end, ":/?#[]@\\", NULL,
-+                             encoding & HTTP_URI_CODING_HOSTNAME);
-+
-+      if (!ptr)
-+        goto assemble_overflow;
-+    }
-+
-+   /*
-+    * Finish things off with the port number...
-+    */
-+
-+    if (port > 0)
-+    {
-+      snprintf(ptr, end - ptr + 1, ":%d", port);
-+      ptr += strlen(ptr);
-+
-+      if (ptr >= end)
-+	goto assemble_overflow;
-+    }
-+  }
-+
-+ /*
-+  * Last but not least, add the resource string...
-+  */
-+
-+  if (resource)
-+  {
-+    char	*query;			/* Pointer to query string */
-+
-+
-+   /*
-+    * Copy the resource string up to the query string if present...
-+    */
-+
-+    query = strchr(resource, '?');
-+    ptr   = http_copy_encode(ptr, resource, end, NULL, "?",
-+                             encoding & HTTP_URI_CODING_RESOURCE);
-+    if (!ptr)
-+      goto assemble_overflow;
-+
-+    if (query)
-+    {
-+     /*
-+      * Copy query string without encoding...
-+      */
-+
-+      ptr = http_copy_encode(ptr, query, end, NULL, NULL,
-+			     encoding & HTTP_URI_CODING_QUERY);
-+      if (!ptr)
-+	goto assemble_overflow;
-+    }
-+  }
-+  else if (ptr < end)
-+    *ptr++ = '/';
-+  else
-+    goto assemble_overflow;
-+
-+ /*
-+  * Nul-terminate the URI buffer and return with no errors...
-+  */
-+
-+  *ptr = '\0';
-+
-+  return (HTTP_URI_OK);
-+
-+ /*
-+  * Clear the URI string and return an overflow error; I don't usually
-+  * like goto's, but in this case it makes sense...
-+  */
-+
-+  assemble_overflow:
-+
-+  *uri = '\0';
-+  return (HTTP_URI_OVERFLOW);
-+}
-+
-+
-+/*
-+ * 'httpAssembleURIf()' - Assemble a uniform resource identifier from its
-+ *                        components with a formatted resource.
-+ *
-+ * This function creates a formatted version of the resource string
-+ * argument "resourcef" and escapes reserved characters in the URI
-+ * depending on the value of the "encoding" argument.  You should use
-+ * this function in place of traditional string functions whenever
-+ * you need to create a URI string.
-+ *
-+ * @since CUPS 1.2/Mac OS X 10.5@
-+ */
-+
-+http_uri_status_t			/* O - URI status */
-+httpAssembleURIf(
-+    http_uri_coding_t encoding,		/* I - Encoding flags */
-+    char              *uri,		/* I - URI buffer */
-+    int               urilen,		/* I - Size of URI buffer */
-+    const char        *scheme,		/* I - Scheme name */
-+    const char        *username,	/* I - Username */
-+    const char        *host,		/* I - Hostname or address */
-+    int               port,		/* I - Port number */
-+    const char        *resourcef,	/* I - Printf-style resource */
-+    ...)				/* I - Additional arguments as needed */
-+{
-+  va_list	ap;			/* Pointer to additional arguments */
-+  char		resource[1024];		/* Formatted resource string */
-+  int		bytes;			/* Bytes in formatted string */
-+
-+
-+ /*
-+  * Range check input...
-+  */
-+
-+  if (!uri || urilen < 1 || !scheme || port < 0 || !resourcef)
-+  {
-+    if (uri)
-+      *uri = '\0';
-+
-+    return (HTTP_URI_BAD_ARGUMENTS);
-+  }
-+
-+ /*
-+  * Format the resource string and assemble the URI...
-+  */
-+
-+  va_start(ap, resourcef);
-+  bytes = vsnprintf(resource, sizeof(resource), resourcef, ap);
-+  va_end(ap);
-+
-+  if (bytes >= sizeof(resource))
-+  {
-+    *uri = '\0';
-+    return (HTTP_URI_OVERFLOW);
-+  }
-+  else
-+    return (httpAssembleURI(encoding,  uri, urilen, scheme, username, host,
-+                            port, resource));
-+}
-+
-+
-+/*
-+ * 'httpDecode64()' - Base64-decode a string.
-+ *
-+ * This function is deprecated. Use the httpDecode64_2() function instead
-+ * which provides buffer length arguments.
-+ *
-+ * @deprecated@
-+ */
-+
-+char *					/* O - Decoded string */
-+httpDecode64(char       *out,		/* I - String to write to */
-+             const char *in)		/* I - String to read from */
-+{
-+  int	outlen;				/* Output buffer length */
-+
-+
-+ /*
-+  * Use the old maximum buffer size for binary compatibility...
-+  */
-+
-+  outlen = 512;
-+
-+  return (httpDecode64_2(out, &outlen, in));
-+}
-+
-+
-+/*
-+ * 'httpDecode64_2()' - Base64-decode a string.
-+ *
-+ * @since CUPS 1.1.21/Mac OS X 10.4@
-+ */
-+
-+char *					/* O  - Decoded string */
-+httpDecode64_2(char       *out,		/* I  - String to write to */
-+	       int        *outlen,	/* IO - Size of output string */
-+               const char *in)		/* I  - String to read from */
-+{
-+  int	pos,				/* Bit position */
-+	base64;				/* Value of this character */
-+  char	*outptr,			/* Output pointer */
-+	*outend;			/* End of output buffer */
-+
-+
-+ /*
-+  * Range check input...
-+  */
-+
-+  if (!out || !outlen || *outlen < 1 || !in)
-+    return (NULL);
-+
-+  if (!*in)
-+  {
-+    *out    = '\0';
-+    *outlen = 0;
-+
-+    return (out);
-+  }
-+
-+ /*
-+  * Convert from base-64 to bytes...
-+  */
-+
-+  for (outptr = out, outend = out + *outlen - 1, pos = 0; *in != '\0'; in ++)
-+  {
-+   /*
-+    * Decode this character into a number from 0 to 63...
-+    */
-+
-+    if (*in >= 'A' && *in <= 'Z')
-+      base64 = *in - 'A';
-+    else if (*in >= 'a' && *in <= 'z')
-+      base64 = *in - 'a' + 26;
-+    else if (*in >= '0' && *in <= '9')
-+      base64 = *in - '0' + 52;
-+    else if (*in == '+')
-+      base64 = 62;
-+    else if (*in == '/')
-+      base64 = 63;
-+    else if (*in == '=')
-+      break;
-+    else
-+      continue;
-+
-+   /*
-+    * Store the result in the appropriate chars...
-+    */
-+
-+    switch (pos)
-+    {
-+      case 0 :
-+          if (outptr < outend)
-+            *outptr = base64 << 2;
-+	  pos ++;
-+	  break;
-+      case 1 :
-+          if (outptr < outend)
-+            *outptr++ |= (base64 >> 4) & 3;
-+          if (outptr < outend)
-+	    *outptr = (base64 << 4) & 255;
-+	  pos ++;
-+	  break;
-+      case 2 :
-+          if (outptr < outend)
-+            *outptr++ |= (base64 >> 2) & 15;
-+          if (outptr < outend)
-+	    *outptr = (base64 << 6) & 255;
-+	  pos ++;
-+	  break;
-+      case 3 :
-+          if (outptr < outend)
-+            *outptr++ |= base64;
-+	  pos = 0;
-+	  break;
-+    }
-+  }
-+
-+  *outptr = '\0';
-+
-+ /*
-+  * Return the decoded string and size...
-+  */
-+
-+  *outlen = (int)(outptr - out);
-+
-+  return (out);
-+}
-+
-+
-+/*
-+ * 'httpEncode64()' - Base64-encode a string.
-+ *
-+ * This function is deprecated. Use the httpEncode64_2() function instead
-+ * which provides buffer length arguments.
-+ *
-+ * @deprecated@
-+ */
-+
-+char *					/* O - Encoded string */
-+httpEncode64(char       *out,		/* I - String to write to */
-+             const char *in)		/* I - String to read from */
-+{
-+  return (httpEncode64_2(out, 512, in, (int)strlen(in)));
-+}
-+
-+
-+/*
-+ * 'httpEncode64_2()' - Base64-encode a string.
-+ *
-+ * @since CUPS 1.1.21/Mac OS X 10.4@
-+ */
-+
-+char *					/* O - Encoded string */
-+httpEncode64_2(char       *out,		/* I - String to write to */
-+	       int        outlen,	/* I - Size of output string */
-+               const char *in,		/* I - String to read from */
-+	       int        inlen)	/* I - Size of input string */
-+{
-+  char		*outptr,		/* Output pointer */
-+		*outend;		/* End of output buffer */
-+  static const char base64[] =		/* Base64 characters... */
-+  		{
-+		  "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-+		  "abcdefghijklmnopqrstuvwxyz"
-+		  "0123456789"
-+		  "+/"
-+  		};
-+
-+
-+ /*
-+  * Range check input...
-+  */
-+
-+  if (!out || outlen < 1 || !in)
-+    return (NULL);
-+
-+ /*
-+  * Convert bytes to base-64...
-+  */
-+
-+  for (outptr = out, outend = out + outlen - 1; inlen > 0; in ++, inlen --)
-+  {
-+   /*
-+    * Encode the up to 3 characters as 4 Base64 numbers...
-+    */
-+
-+    if (outptr < outend)
-+      *outptr ++ = base64[(in[0] & 255) >> 2];
-+
-+    if (outptr < outend)
-+    {
-+      if (inlen > 1)
-+        *outptr ++ = base64[(((in[0] & 255) << 4) | ((in[1] & 255) >> 4)) & 63];
-+      else
-+        *outptr ++ = base64[((in[0] & 255) << 4) & 63];
-+    }
-+
-+    in ++;
-+    inlen --;
-+    if (inlen <= 0)
-+    {
-+      if (outptr < outend)
-+        *outptr ++ = '=';
-+      if (outptr < outend)
-+        *outptr ++ = '=';
-+      break;
-+    }
-+
-+    if (outptr < outend)
-+    {
-+      if (inlen > 1)
-+        *outptr ++ = base64[(((in[0] & 255) << 2) | ((in[1] & 255) >> 6)) & 63];
-+      else
-+        *outptr ++ = base64[((in[0] & 255) << 2) & 63];
-+    }
-+
-+    in ++;
-+    inlen --;
-+    if (inlen <= 0)
-+    {
-+      if (outptr < outend)
-+        *outptr ++ = '=';
-+      break;
-+    }
-+
-+    if (outptr < outend)
-+      *outptr ++ = base64[in[0] & 63];
-+  }
-+
-+  *outptr = '\0';
-+
-+ /*
-+  * Return the encoded string...
-+  */
-+
-+  return (out);
-+}
-+
-+
-+/*
-+ * 'httpGetDateString()' - Get a formatted date/time string from a time value.
-+ *
-+ * @deprecated@
-+ */
-+
-+const char *				/* O - Date/time string */
-+httpGetDateString(time_t t)		/* I - UNIX time */
-+{
-+  _cups_globals_t *cg = _cupsGlobals();	/* Pointer to library globals */
-+
-+
-+  return (httpGetDateString2(t, cg->http_date, sizeof(cg->http_date)));
-+}
-+
-+
-+/*
-+ * 'httpGetDateString2()' - Get a formatted date/time string from a time value.
-+ *
-+ * @since CUPS 1.2/Mac OS X 10.5@
-+ */
-+
-+const char *				/* O - Date/time string */
-+httpGetDateString2(time_t t,		/* I - UNIX time */
-+                   char   *s,		/* I - String buffer */
-+		   int    slen)		/* I - Size of string buffer */
-+{
-+  struct tm	*tdate;			/* UNIX date/time data */
-+
-+
-+  tdate = gmtime(&t);
-+  snprintf(s, slen, "%s, %02d %s %d %02d:%02d:%02d GMT",
-+           http_days[tdate->tm_wday], tdate->tm_mday,
-+	   http_months[tdate->tm_mon], tdate->tm_year + 1900,
-+	   tdate->tm_hour, tdate->tm_min, tdate->tm_sec);
-+
-+  return (s);
-+}
-+
-+
-+/*
-+ * 'httpGetDateTime()' - Get a time value from a formatted date/time string.
-+ */
-+
-+time_t					/* O - UNIX time */
-+httpGetDateTime(const char *s)		/* I - Date/time string */
-+{
-+  int		i;			/* Looping var */
-+  char		mon[16];		/* Abbreviated month name */
-+  int		day, year;		/* Day of month and year */
-+  int		hour, min, sec;		/* Time */
-+  int		days;			/* Number of days since 1970 */
-+  static const int normal_days[] =	/* Days to a month, normal years */
-+		{ 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
-+  static const int leap_days[] =	/* Days to a month, leap years */
-+		{ 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366 };
-+
-+
-+  DEBUG_printf(("2httpGetDateTime(s=\"%s\")", s));
-+
-+ /*
-+  * Extract the date and time from the formatted string...
-+  */
-+
-+  if (sscanf(s, "%*s%d%15s%d%d:%d:%d", &day, mon, &year, &hour, &min, &sec) < 6)
-+    return (0);
-+
-+  DEBUG_printf(("4httpGetDateTime: day=%d, mon=\"%s\", year=%d, hour=%d, "
-+                "min=%d, sec=%d", day, mon, year, hour, min, sec));
-+
-+ /*
-+  * Convert the month name to a number from 0 to 11.
-+  */
-+
-+  for (i = 0; i < 12; i ++)
-+    if (!strcasecmp(mon, http_months[i]))
-+      break;
-+
-+  if (i >= 12)
-+    return (0);
-+
-+  DEBUG_printf(("4httpGetDateTime: i=%d", i));
-+
-+ /*
-+  * Now convert the date and time to a UNIX time value in seconds since
-+  * 1970.  We can't use mktime() since the timezone may not be UTC but
-+  * the date/time string *is* UTC.
-+  */
-+
-+  if ((year & 3) == 0 && ((year % 100) != 0 || (year % 400) == 0))
-+    days = leap_days[i] + day - 1;
-+  else
-+    days = normal_days[i] + day - 1;
-+
-+  DEBUG_printf(("4httpGetDateTime: days=%d", days));
-+
-+  days += (year - 1970) * 365 +		/* 365 days per year (normally) */
-+          ((year - 1) / 4 - 492) -	/* + leap days */
-+	  ((year - 1) / 100 - 19) +	/* - 100 year days */
-+          ((year - 1) / 400 - 4);	/* + 400 year days */
-+
-+  DEBUG_printf(("4httpGetDateTime: days=%d\n", days));
-+
-+  return (days * 86400 + hour * 3600 + min * 60 + sec);
-+}
-+
-+
-+/*
-+ * 'httpSeparate()' - Separate a Universal Resource Identifier into its
-+ *                    components.
-+ *
-+ * This function is deprecated; use the httpSeparateURI() function instead.
-+ *
-+ * @deprecated@
-+ */
-+
-+void
-+httpSeparate(const char *uri,		/* I - Universal Resource Identifier */
-+             char       *scheme,	/* O - Scheme [32] (http, https, etc.) */
-+	     char       *username,	/* O - Username [1024] */
-+	     char       *host,		/* O - Hostname [1024] */
-+	     int        *port,		/* O - Port number to use */
-+             char       *resource)	/* O - Resource/filename [1024] */
-+{
-+  httpSeparateURI(HTTP_URI_CODING_ALL, uri, scheme, 32, username,
-+                  HTTP_MAX_URI, host, HTTP_MAX_URI, port, resource,
-+		  HTTP_MAX_URI);
-+}
-+
-+
-+/*
-+ * 'httpSeparate2()' - Separate a Universal Resource Identifier into its
-+ *                     components.
-+ *
-+ * This function is deprecated; use the httpSeparateURI() function instead.
-+ *
-+ * @since CUPS 1.1.21/Mac OS X 10.4@
-+ * @deprecated@
-+ */
-+
-+void
-+httpSeparate2(const char *uri,		/* I - Universal Resource Identifier */
-+              char       *scheme,	/* O - Scheme (http, https, etc.) */
-+	      int        schemelen,	/* I - Size of scheme buffer */
-+	      char       *username,	/* O - Username */
-+	      int        usernamelen,	/* I - Size of username buffer */
-+	      char       *host,		/* O - Hostname */
-+	      int        hostlen,	/* I - Size of hostname buffer */
-+	      int        *port,		/* O - Port number to use */
-+              char       *resource,	/* O - Resource/filename */
-+	      int        resourcelen)	/* I - Size of resource buffer */
-+{
-+  httpSeparateURI(HTTP_URI_CODING_ALL, uri, scheme, schemelen, username,
-+                  usernamelen, host, hostlen, port, resource, resourcelen);
-+}
-+
-+
-+/*
-+ * 'httpSeparateURI()' - Separate a Universal Resource Identifier into its
-+ *                       components.
-+ *
-+ * @since CUPS 1.2/Mac OS X 10.5@
-+ */
-+
-+http_uri_status_t			/* O - Result of separation */
-+httpSeparateURI(
-+    http_uri_coding_t decoding,		/* I - Decoding flags */
-+    const char        *uri,		/* I - Universal Resource Identifier */
-+    char              *scheme,		/* O - Scheme (http, https, etc.) */
-+    int               schemelen,	/* I - Size of scheme buffer */
-+    char              *username,	/* O - Username */
-+    int               usernamelen,	/* I - Size of username buffer */
-+    char              *host,		/* O - Hostname */
-+    int               hostlen,		/* I - Size of hostname buffer */
-+    int               *port,		/* O - Port number to use */
-+    char              *resource,	/* O - Resource/filename */
-+    int               resourcelen)	/* I - Size of resource buffer */
-+{
-+  char			*ptr,		/* Pointer into string... */
-+			*end;		/* End of string */
-+  const char		*sep;		/* Separator character */
-+  http_uri_status_t	status;		/* Result of separation */
-+
-+
-+ /*
-+  * Initialize everything to blank...
-+  */
-+
-+  if (scheme && schemelen > 0)
-+    *scheme = '\0';
-+
-+  if (username && usernamelen > 0)
-+    *username = '\0';
-+
-+  if (host && hostlen > 0)
-+    *host = '\0';
-+
-+  if (port)
-+    *port = 0;
-+
-+  if (resource && resourcelen > 0)
-+    *resource = '\0';
-+
-+ /*
-+  * Range check input...
-+  */
-+
-+  if (!uri || !port || !scheme || schemelen <= 0 || !username ||
-+      usernamelen <= 0 || !host || hostlen <= 0 || !resource ||
-+      resourcelen <= 0)
-+    return (HTTP_URI_BAD_ARGUMENTS);
-+
-+  if (!*uri)
-+    return (HTTP_URI_BAD_URI);
-+
-+ /*
-+  * Grab the scheme portion of the URI...
-+  */
-+
-+  status = HTTP_URI_OK;
-+
-+  if (!strncmp(uri, "//", 2))
-+  {
-+   /*
-+    * Workaround for HP IPP client bug...
-+    */
-+
-+    strlcpy(scheme, "ipp", schemelen);
-+    status = HTTP_URI_MISSING_SCHEME;
-+  }
-+  else if (*uri == '/')
-+  {
-+   /*
-+    * Filename...
-+    */
-+
-+    strlcpy(scheme, "file", schemelen);
-+    status = HTTP_URI_MISSING_SCHEME;
-+  }
-+  else
-+  {
-+   /*
-+    * Standard URI with scheme...
-+    */
-+
-+    for (ptr = scheme, end = scheme + schemelen - 1;
-+         *uri && *uri != ':' && ptr < end;)
-+      if (isalnum(*uri & 255) || *uri == '-' || *uri == '+' || *uri == '.')
-+        *ptr++ = *uri++;
-+      else
-+        break;
-+
-+    *ptr = '\0';
-+
-+    if (*uri != ':')
-+    {
-+      *scheme = '\0';
-+      return (HTTP_URI_BAD_SCHEME);
-+    }
-+
-+    uri ++;
-+  }
-+
-+ /*
-+  * Set the default port number...
-+  */
-+
-+  if (!strcmp(scheme, "http"))
-+    *port = 80;
-+  else if (!strcmp(scheme, "https"))
-+    *port = 443;
-+  else if (!strcmp(scheme, "ipp"))
-+    *port = 631;
-+  else if (!strcasecmp(scheme, "lpd"))
-+    *port = 515;
-+  else if (!strcmp(scheme, "socket"))	/* Not yet registered with IANA... */
-+    *port = 9100;
-+  else if (strcmp(scheme, "file") && strcmp(scheme, "mailto"))
-+    status = HTTP_URI_UNKNOWN_SCHEME;
-+
-+ /*
-+  * Now see if we have a hostname...
-+  */
-+
-+  if (!strncmp(uri, "//", 2))
-+  {
-+   /*
-+    * Yes, extract it...
-+    */
-+
-+    uri += 2;
-+
-+   /*
-+    * Grab the username, if any...
-+    */
-+
-+    if ((sep = strpbrk(uri, "@/")) != NULL && *sep == '@')
-+    {
-+     /*
-+      * Get a username:password combo...
-+      */
-+
-+      uri = http_copy_decode(username, uri, usernamelen, "@",
-+                             decoding & HTTP_URI_CODING_USERNAME);
-+
-+      if (!uri)
-+      {
-+        *username = '\0';
-+        return (HTTP_URI_BAD_USERNAME);
-+      }
-+
-+      uri ++;
-+    }
-+
-+   /*
-+    * Then the hostname/IP address...
-+    */
-+
-+    if (*uri == '[')
-+    {
-+     /*
-+      * Grab IPv6 address...
-+      */
-+
-+      uri ++;
-+      if (!strncmp(uri, "v1.", 3))
-+        uri += 3;			/* Skip IPvN leader... */
-+
-+      uri = http_copy_decode(host, uri, hostlen, "]",
-+                             decoding & HTTP_URI_CODING_HOSTNAME);
-+
-+      if (!uri)
-+      {
-+        *host = '\0';
-+        return (HTTP_URI_BAD_HOSTNAME);
-+      }
-+
-+     /*
-+      * Validate value...
-+      */
-+
-+      if (*uri != ']')
-+      {
-+        *host = '\0';
-+        return (HTTP_URI_BAD_HOSTNAME);
-+      }
-+
-+      uri ++;
-+
-+      for (ptr = host; *ptr; ptr ++)
-+        if (*ptr == '+')
-+	{
-+	 /*
-+	  * Convert zone separator to % and stop here...
-+	  */
-+
-+	  *ptr = '%';
-+	  break;
-+	}
-+	else if (*ptr != ':' && *ptr != '.' && !isxdigit(*ptr & 255))
-+	{
-+	  *host = '\0';
-+	  return (HTTP_URI_BAD_HOSTNAME);
-+	}
-+    }
-+    else
-+    {
-+     /*
-+      * Validate the hostname or IPv4 address first...
-+      */
-+
-+      for (ptr = (char *)uri; *ptr; ptr ++)
-+        if (strchr(":?/", *ptr))
-+	  break;
-+        else if (!strchr("abcdefghijklmnopqrstuvwxyz"
-+			 "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-+			 "0123456789"
-+	        	 "-._~"
-+			 "%"
-+			 "!$&'()*+,;=\\", *ptr))
-+	{
-+	  *host = '\0';
-+	  return (HTTP_URI_BAD_HOSTNAME);
-+	}
-+
-+     /*
-+      * Then copy the hostname or IPv4 address to the buffer...
-+      */
-+
-+      uri = http_copy_decode(host, uri, hostlen, ":?/",
-+                             decoding & HTTP_URI_CODING_HOSTNAME);
-+
-+      if (!uri)
-+      {
-+        *host = '\0';
-+        return (HTTP_URI_BAD_HOSTNAME);
-+      }
-+    }
-+
-+   /*
-+    * Validate hostname for file scheme - only empty and localhost are
-+    * acceptable.
-+    */
-+
-+    if (!strcmp(scheme, "file") && strcmp(host, "localhost") && host[0])
-+    {
-+      *host = '\0';
-+      return (HTTP_URI_BAD_HOSTNAME);
-+    }
-+
-+   /*
-+    * See if we have a port number...
-+    */
-+
-+    if (*uri == ':')
-+    {
-+     /*
-+      * Yes, collect the port number...
-+      */
-+
-+      if (!isdigit(uri[1] & 255))
-+      {
-+        *port = 0;
-+        return (HTTP_URI_BAD_PORT);
-+      }
-+
-+      *port = strtol(uri + 1, (char **)&uri, 10);
-+
-+      if (*uri != '/' && *uri)
-+      {
-+        *port = 0;
-+        return (HTTP_URI_BAD_PORT);
-+      }
-+    }
-+  }
-+
-+ /*
-+  * The remaining portion is the resource string...
-+  */
-+
-+  if (*uri == '?' || !*uri)
-+  {
-+   /*
-+    * Hostname but no path...
-+    */
-+
-+    status    = HTTP_URI_MISSING_RESOURCE;
-+    *resource = '/';
-+
-+   /*
-+    * Copy any query string...
-+    */
-+
-+    if (*uri == '?')
-+      uri = http_copy_decode(resource + 1, uri, resourcelen - 1, NULL,
-+                             decoding & HTTP_URI_CODING_QUERY);
-+    else
-+      resource[1] = '\0';
-+  }
-+  else
-+  {
-+    uri = http_copy_decode(resource, uri, resourcelen, "?",
-+                           decoding & HTTP_URI_CODING_RESOURCE);
-+
-+    if (uri && *uri == '?')
-+    {
-+     /*
-+      * Concatenate any query string...
-+      */
-+
-+      char *resptr = resource + strlen(resource);
-+
-+      uri = http_copy_decode(resptr, uri, resourcelen - (int)(resptr - resource),
-+                             NULL, decoding & HTTP_URI_CODING_QUERY);
-+    }
-+  }
-+
-+  if (!uri)
-+  {
-+    *resource = '\0';
-+    return (HTTP_URI_BAD_RESOURCE);
-+  }
-+
-+ /*
-+  * Return the URI separation status...
-+  */
-+
-+  return (status);
-+}
-+
-+
-+/*
-+ * 'httpStatus()' - Return a short string describing a HTTP status code.
-+ *
-+ * The returned string is localized to the current POSIX locale and is based
-+ * on the status strings defined in RFC 2616.
-+ */
-+
-+const char *				/* O - Localized status string */
-+httpStatus(http_status_t status)	/* I - HTTP status code */
-+{
-+  const char	*s;			/* Status string */
-+  _cups_globals_t *cg = _cupsGlobals();	/* Global data */
-+
-+
-+  if (!cg->lang_default)
-+    cg->lang_default = cupsLangDefault();
-+
-+  switch (status)
-+  {
-+    case HTTP_CONTINUE :
-+        s = _("Continue");
-+	break;
-+    case HTTP_SWITCHING_PROTOCOLS :
-+        s = _("Switching Protocols");
-+	break;
-+    case HTTP_OK :
-+        s = _("OK");
-+	break;
-+    case HTTP_CREATED :
-+        s = _("Created");
-+	break;
-+    case HTTP_ACCEPTED :
-+        s = _("Accepted");
-+	break;
-+    case HTTP_NO_CONTENT :
-+        s = _("No Content");
-+	break;
-+    case HTTP_MOVED_PERMANENTLY :
-+        s = _("Moved Permanently");
-+	break;
-+    case HTTP_SEE_OTHER :
-+        s = _("See Other");
-+	break;
-+    case HTTP_NOT_MODIFIED :
-+        s = _("Not Modified");
-+	break;
-+    case HTTP_BAD_REQUEST :
-+        s = _("Bad Request");
-+	break;
-+    case HTTP_UNAUTHORIZED :
-+    case HTTP_AUTHORIZATION_CANCELED :
-+        s = _("Unauthorized");
-+	break;
-+    case HTTP_FORBIDDEN :
-+        s = _("Forbidden");
-+	break;
-+    case HTTP_NOT_FOUND :
-+        s = _("Not Found");
-+	break;
-+    case HTTP_REQUEST_TOO_LARGE :
-+        s = _("Request Entity Too Large");
-+	break;
-+    case HTTP_URI_TOO_LONG :
-+        s = _("URI Too Long");
-+	break;
-+    case HTTP_UPGRADE_REQUIRED :
-+        s = _("Upgrade Required");
-+	break;
-+    case HTTP_NOT_IMPLEMENTED :
-+        s = _("Not Implemented");
-+	break;
-+    case HTTP_NOT_SUPPORTED :
-+        s = _("Not Supported");
-+	break;
-+    case HTTP_EXPECTATION_FAILED :
-+        s = _("Expectation Failed");
-+	break;
-+    case HTTP_SERVICE_UNAVAILABLE :
-+        s = _("Service Unavailable");
-+	break;
-+    case HTTP_SERVER_ERROR :
-+        s = _("Internal Server Error");
-+	break;
-+
-+    default :
-+        s = _("Unknown");
-+	break;
-+  }
-+
-+  return (_cupsLangString(cg->lang_default, s));
-+}
-+
-+
-+#ifndef HAVE_HSTRERROR
-+/*
-+ * '_cups_hstrerror()' - hstrerror() emulation function for Solaris and others...
-+ */
-+
-+const char *				/* O - Error string */
-+_cups_hstrerror(int error)		/* I - Error number */
-+{
-+  static const char * const errors[] =	/* Error strings */
-+		{
-+		  "OK",
-+		  "Host not found.",
-+		  "Try again.",
-+		  "Unrecoverable lookup error.",
-+		  "No data associated with name."
-+		};
-+
-+
-+  if (error < 0 || error > 4)
-+    return ("Unknown hostname lookup error.");
-+  else
-+    return (errors[error]);
-+}
-+#endif /* !HAVE_HSTRERROR */
-+
-+
-+/*
-+ * '_httpEncodeURI()' - Percent-encode a HTTP request URI.
-+ */
-+
-+char *					/* O - Encoded URI */
-+_httpEncodeURI(char       *dst,		/* I - Destination buffer */
-+               const char *src,		/* I - Source URI */
-+	       size_t     dstsize)	/* I - Size of destination buffer */
-+{
-+  http_copy_encode(dst, src, dst + dstsize - 1, NULL, NULL, 1);
-+  return (dst);
-+}
-+
-+
-+/*
-+ * '_httpResolveURI()' - Resolve a DNS-SD URI.
-+ */
-+
-+const char *				/* O - Resolved URI */
-+_httpResolveURI(
-+    const char *uri,			/* I - DNS-SD URI */
-+    char       *resolved_uri,		/* I - Buffer for resolved URI */
-+    size_t     resolved_size,		/* I - Size of URI buffer */
-+    int        logit)			/* I - Log progress to stderr? */
-+{
-+  char			scheme[32],	/* URI components... */
-+			userpass[256],
-+			hostname[1024],
-+			resource[1024];
-+  int			port;
-+#ifdef DEBUG
-+  http_uri_status_t	status;		/* URI decode status */
-+#endif /* DEBUG */
-+
-+
-+  DEBUG_printf(("4_httpResolveURI(uri=\"%s\", resolved_uri=%p, "
-+                "resolved_size=" CUPS_LLFMT ")", uri, resolved_uri,
-+		CUPS_LLCAST resolved_size));
-+
-+ /*
-+  * Get the device URI...
-+  */
-+
-+#ifdef DEBUG
-+  if ((status = httpSeparateURI(HTTP_URI_CODING_ALL, uri, scheme,
-+                                sizeof(scheme), userpass, sizeof(userpass),
-+				hostname, sizeof(hostname), &port, resource,
-+				sizeof(resource))) < HTTP_URI_OK)
-+#else
-+  if (httpSeparateURI(HTTP_URI_CODING_ALL, uri, scheme,
-+		      sizeof(scheme), userpass, sizeof(userpass),
-+		      hostname, sizeof(hostname), &port, resource,
-+		      sizeof(resource)) < HTTP_URI_OK)
-+#endif /* DEBUG */
-+  {
-+    if (logit)
-+      _cupsLangPrintf(stderr, _("Bad device URI \"%s\"!\n"), uri);
-+
-+    DEBUG_printf(("6_httpResolveURI: httpSeparateURI returned %d!", status));
-+    DEBUG_puts("5_httpResolveURI: Returning NULL");
-+    return (NULL);
-+  }
-+
-+ /*
-+  * Resolve it as needed...
-+  */
-+
-+  if (strstr(hostname, "._tcp"))
-+  {
-+#ifdef HAVE_DNSSD
-+    DNSServiceRef	ref,		/* DNS-SD master service reference */
-+			domainref,	/* DNS-SD service reference for domain */
-+			localref;	/* DNS-SD service reference for .local */
-+    int			domainsent = 0;	/* Send the domain resolve? */
-+    char		*regtype,	/* Pointer to type in hostname */
-+			*domain;	/* Pointer to domain in hostname */
-+    _http_uribuf_t	uribuf;		/* URI buffer */
-+    struct pollfd	polldata;	/* Polling data */
-+
-+
-+    if (logit)
-+      fprintf(stderr, "DEBUG: Resolving \"%s\"...\n", hostname);
-+
-+   /*
-+    * Separate the hostname into service name, registration type, and domain...
-+    */
-+
-+    for (regtype = strstr(hostname, "._tcp") - 2;
-+         regtype > hostname;
-+	 regtype --)
-+      if (regtype[0] == '.' && regtype[1] == '_')
-+      {
-+       /*
-+        * Found ._servicetype in front of ._tcp...
-+	*/
-+
-+        *regtype++ = '\0';
-+	break;
-+      }
-+
-+    if (regtype <= hostname)
-+    {
-+      DEBUG_puts("5_httpResolveURI: Bad hostname, returning NULL");
-+      return (NULL);
-+    }
-+
-+    for (domain = strchr(regtype, '.');
-+         domain;
-+	 domain = strchr(domain + 1, '.'))
-+      if (domain[1] != '_')
-+        break;
-+
-+    if (domain)
-+      *domain++ = '\0';
-+
-+    uribuf.buffer  = resolved_uri;
-+    uribuf.bufsize = resolved_size;
-+
-+    resolved_uri[0] = '\0';
-+
-+    DEBUG_printf(("6_httpResolveURI: Resolving hostname=\"%s\", regtype=\"%s\", "
-+                  "domain=\"%s\"\n", hostname, regtype, domain));
-+    if (logit)
-+    {
-+      fputs("STATE: +connecting-to-device\n", stderr);
-+      fprintf(stderr, "DEBUG: Resolving \"%s\", regtype=\"%s\", "
-+                      "domain=\"local.\"...\n", hostname, regtype);
-+    }
-+
-+    uri = NULL;
-+
-+    if (DNSServiceCreateConnection(&ref) == kDNSServiceErr_NoError)
-+    {
-+      localref = ref;
-+      if (DNSServiceResolve(&localref, kDNSServiceFlagsShareConnection, 0,
-+			    hostname, regtype, "local.", resolve_callback,
-+			    &uribuf) == kDNSServiceErr_NoError)
-+      {
-+	int	fds;			/* Number of ready descriptors */
-+	time_t	timeout,		/* Poll timeout */
-+		start_time = time(NULL);/* Start time */
-+
-+	for (;;)
-+	{
-+	  if (logit)
-+	    _cupsLangPuts(stderr, _("INFO: Looking for printer...\n"));
-+
-+	 /*
-+	  * For the first minute, wakeup every 2 seconds to emit a
-+	  * "looking for printer" message...
-+	  */
-+
-+	  timeout = (time(NULL) < (start_time + 60)) ? 2000 : -1;
-+
-+	  polldata.fd     = DNSServiceRefSockFD(ref);
-+	  polldata.events = POLLIN;
-+
-+	  fds = poll(&polldata, 1, timeout);
-+
-+	  if (fds < 0)
-+	  {
-+	    if (errno != EINTR && errno != EAGAIN)
-+	    {
-+	      DEBUG_printf(("5_httpResolveURI: poll error: %s", strerror(errno)));
-+	      break;
-+	    }
-+	  }
-+	  else if (fds == 0)
-+	  {
-+	   /*
-+	    * Wait 2 seconds for a response to the local resolve; if nothing
-+	    * comes in, do an additional domain resolution...
-+	    */
-+
-+	    if (domainsent == 0 && strcasecmp(domain, "local."))
-+	    {
-+	      if (logit)
-+		fprintf(stderr,
-+		        "DEBUG: Resolving \"%s\", regtype=\"%s\", "
-+			"domain=\"%s\"...\n", hostname, regtype, domain);
-+  
-+	      domainref = ref;
-+	      if (DNSServiceResolve(&domainref, kDNSServiceFlagsShareConnection, 0,
-+				    hostname, regtype, domain, resolve_callback,
-+				    &uribuf) == kDNSServiceErr_NoError)
-+		domainsent = 1;
-+	    }
-+	  }
-+	  else
-+	  {
-+	    if (DNSServiceProcessResult(ref) == kDNSServiceErr_NoError)
-+	    {
-+	      uri = resolved_uri;
-+	      break;
-+	    }
-+	  }
-+	}
-+
-+	if (domainsent)
-+	  DNSServiceRefDeallocate(domainref);
-+
-+	DNSServiceRefDeallocate(localref);
-+      }
-+
-+      DNSServiceRefDeallocate(ref);
-+    }
-+
-+    if (logit)
-+    {
-+      if (uri)
-+        fprintf(stderr, "DEBUG: Resolved as \"%s\"...\n", uri);
-+      else
-+        fputs("DEBUG: Unable to resolve URI!\n", stderr);
-+
-+      fputs("STATE: -connecting-to-device\n", stderr);
-+    }
-+
-+#else
-+   /*
-+    * No DNS-SD support...
-+    */
-+
-+    uri = NULL;
-+#endif /* HAVE_DNSSD */
-+
-+    if (logit && !uri)
-+      _cupsLangPuts(stderr, _("Unable to find printer!\n"));
-+  }
-+
-+  DEBUG_printf(("5_httpResolveURI: Returning \"%s\"", uri));
-+
-+  return (uri);
-+}
-+
-+
-+/*
-+ * 'http_copy_decode()' - Copy and decode a URI.
-+ */
-+
-+static const char *			/* O - New source pointer or NULL on error */
-+http_copy_decode(char       *dst,	/* O - Destination buffer */ 
-+                 const char *src,	/* I - Source pointer */
-+		 int        dstsize,	/* I - Destination size */
-+		 const char *term,	/* I - Terminating characters */
-+		 int        decode)	/* I - Decode %-encoded values */
-+{
-+  char	*ptr,				/* Pointer into buffer */
-+	*end;				/* End of buffer */
-+  int	quoted;				/* Quoted character */
-+
-+
-+ /*
-+  * Copy the src to the destination until we hit a terminating character
-+  * or the end of the string.
-+  */
-+
-+  for (ptr = dst, end = dst + dstsize - 1;
-+       *src && (!term || !strchr(term, *src));
-+       src ++)
-+    if (ptr < end)
-+    {
-+      if (*src == '%' && decode)
-+      {
-+        if (isxdigit(src[1] & 255) && isxdigit(src[2] & 255))
-+	{
-+	 /*
-+	  * Grab a hex-encoded character...
-+	  */
-+
-+          src ++;
-+	  if (isalpha(*src))
-+	    quoted = (tolower(*src) - 'a' + 10) << 4;
-+	  else
-+	    quoted = (*src - '0') << 4;
-+
-+          src ++;
-+	  if (isalpha(*src))
-+	    quoted |= tolower(*src) - 'a' + 10;
-+	  else
-+	    quoted |= *src - '0';
-+
-+          *ptr++ = quoted;
-+	}
-+	else
-+	{
-+	 /*
-+	  * Bad hex-encoded character...
-+	  */
-+
-+	  *ptr = '\0';
-+	  return (NULL);
-+	}
-+      }
-+      else
-+	*ptr++ = *src;
-+    }
-+
-+  *ptr = '\0';
-+
-+  return (src);
-+}
-+
-+
-+/*
-+ * 'http_copy_encode()' - Copy and encode a URI.
-+ */
-+
-+static char *				/* O - End of current URI */
-+http_copy_encode(char       *dst,	/* O - Destination buffer */ 
-+                 const char *src,	/* I - Source pointer */
-+		 char       *dstend,	/* I - End of destination buffer */
-+                 const char *reserved,	/* I - Extra reserved characters */
-+		 const char *term,	/* I - Terminating characters */
-+		 int        encode)	/* I - %-encode reserved chars? */
-+{
-+  static const char hex[] = "0123456789ABCDEF";
-+
-+
-+  while (*src && dst < dstend)
-+  {
-+    if (term && *src == *term)
-+      return (dst);
-+
-+    if (encode && (*src == '%' || *src <= ' ' || *src & 128 ||
-+                   (reserved && strchr(reserved, *src))))
-+    {
-+     /*
-+      * Hex encode reserved characters...
-+      */
-+
-+      if ((dst + 2) >= dstend)
-+        break;
-+
-+      *dst++ = '%';
-+      *dst++ = hex[(*src >> 4) & 15];
-+      *dst++ = hex[*src & 15];
-+
-+      src ++;
-+    }
-+    else
-+      *dst++ = *src++;
-+  }
-+
-+  *dst = '\0';
-+
-+  if (*src)
-+    return (NULL);
-+  else
-+    return (dst);
-+}
-+
-+
-+#ifdef HAVE_DNSSD
-+/*
-+ * 'resolve_callback()' - Build a device URI for the given service name.
-+ */
-+
-+static void
-+resolve_callback(
-+    DNSServiceRef       sdRef,		/* I - Service reference */
-+    DNSServiceFlags     flags,		/* I - Results flags */
-+    uint32_t            interfaceIndex,	/* I - Interface number */
-+    DNSServiceErrorType errorCode,	/* I - Error, if any */
-+    const char          *fullName,	/* I - Full service name */
-+    const char          *hostTarget,	/* I - Hostname */
-+    uint16_t            port,		/* I - Port number */
-+    uint16_t            txtLen,		/* I - Length of TXT record */
-+    const unsigned char *txtRecord,	/* I - TXT record data */
-+    void                *context)	/* I - Pointer to URI buffer */
-+{
-+  const char		*scheme;	/* URI scheme */
-+  char			rp[257];	/* Remote printer */
-+  const void		*value;		/* Value from TXT record */
-+  uint8_t		valueLen;	/* Length of value */
-+  _http_uribuf_t	*uribuf;	/* URI buffer */
-+
-+
-+  DEBUG_printf(("7resolve_callback(sdRef=%p, flags=%x, interfaceIndex=%u, "
-+	        "errorCode=%d, fullName=\"%s\", hostTarget=\"%s\", port=%u, "
-+	        "txtLen=%u, txtRecord=%p, context=%p)", sdRef, flags,
-+	        interfaceIndex, errorCode, fullName, hostTarget, port, txtLen,
-+	        txtRecord, context));
-+
-+ /*
-+  * Figure out the scheme from the full name...
-+  */
-+
-+  if (strstr(fullName, "._ipp") || strstr(fullName, "._fax-ipp"))
-+    scheme = "ipp";
-+  else if (strstr(fullName, "._printer."))
-+    scheme = "lpd";
-+  else if (strstr(fullName, "._pdl-datastream."))
-+    scheme = "socket";
-+  else
-+    scheme = "riousbprint";
-+
-+ /*
-+  * Extract the "remote printer" key from the TXT record...
-+  */
-+
-+  if ((value = TXTRecordGetValuePtr(txtLen, txtRecord, "rp",
-+                                    &valueLen)) != NULL)
-+  {
-+   /*
-+    * Convert to resource by concatenating with a leading "/"...
-+    */
-+
-+    rp[0] = '/';
-+    memcpy(rp + 1, value, valueLen);
-+    rp[valueLen + 1] = '\0';
-+  }
-+  else
-+    rp[0] = '\0';
-+
-+ /*
-+  * Assemble the final device URI...
-+  */
-+
-+  uribuf = (_http_uribuf_t *)context;
-+
-+  httpAssembleURI(HTTP_URI_CODING_ALL, uribuf->buffer, uribuf->bufsize, scheme,
-+                  NULL, hostTarget, ntohs(port), rp);
-+
-+  DEBUG_printf(("8resolve_callback: Resolved URI is \"%s\"...",
-+                uribuf->buffer));
-+}
-+#endif /* HAVE_DNSSD */
-+
-+
-+/*
-+ * End of "$Id: http-support.c 8705 2009-06-12 00:21:58Z mike $".
-+ */

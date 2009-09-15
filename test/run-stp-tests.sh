@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# "$Id: run-stp-tests.sh 8563 2009-04-27 21:15:23Z mike $"
+# "$Id: run-stp-tests.sh 8783 2009-08-28 17:51:05Z mike $"
 #
 #   Perform the complete set of IPP compliance tests specified in the
 #   CUPS Software Test Plan.
@@ -251,6 +251,7 @@ ln -s $root/notifier /tmp/cups-$user/bin
 ln -s $root/scheduler /tmp/cups-$user/bin/daemon
 ln -s $root/filter/bannertops /tmp/cups-$user/bin/filter
 ln -s $root/filter/commandtops /tmp/cups-$user/bin/filter
+ln -s $root/filter/gziptoany /tmp/cups-$user/bin/filter
 ln -s $root/filter/hpgltops /tmp/cups-$user/bin/filter
 ln -s $root/filter/pstops /tmp/cups-$user/bin/filter
 ln -s $root/filter/rastertoepson /tmp/cups-$user/bin/filter
@@ -843,5 +844,5 @@ if test $fail != 0; then
 fi
 
 #
-# End of "$Id: run-stp-tests.sh 8563 2009-04-27 21:15:23Z mike $"
+# End of "$Id: run-stp-tests.sh 8783 2009-08-28 17:51:05Z mike $"
 #
