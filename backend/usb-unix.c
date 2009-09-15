@@ -1,5 +1,5 @@
 /*
- * "$Id: usb-unix.c 8169 2008-12-08 21:08:01Z mike $"
+ * "$Id: usb-unix.c 8807 2009-08-31 18:45:43Z mike $"
  *
  *   USB port backend for the Common UNIX Printing System (CUPS).
  *
@@ -36,7 +36,7 @@
  */
 
 static int	open_device(const char *uri, int *use_bc);
-static void	side_cb(int print_fd, int device_fd, int snmp_fd,
+static int	side_cb(int print_fd, int device_fd, int snmp_fd,
 		        http_addr_t *addr, int use_bc);
 
 
@@ -579,10 +579,7 @@ side_cb(int         print_fd,		/* I - Print file */
   datalen = sizeof(data);
 
   if (cupsSideChannelRead(&command, &status, data, &datalen, 1.0))
-  {
-    _cupsLangPuts(stderr, _("WARNING: Failed to read side-channel request!\n"));
-    return;
-  }
+    return (-1);
 
   switch (command)
   {
@@ -625,10 +622,10 @@ side_cb(int         print_fd,		/* I - Print file */
 	break;
   }
 
-  cupsSideChannelWrite(command, status, data, datalen, 1.0);
+  return (cupsSideChannelWrite(command, status, data, datalen, 1.0));
 }
 
 
 /*
- * End of "$Id: usb-unix.c 8169 2008-12-08 21:08:01Z mike $".
+ * End of "$Id: usb-unix.c 8807 2009-08-31 18:45:43Z mike $".
  */

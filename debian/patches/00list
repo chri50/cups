@@ -1,6 +1,4 @@
 # patches backported from upstream SVN trunk for 1.5:
-ppdc-locale-formatting.dpatch
-usb-backend-infinite-loop-on-end-of-job.dpatch
 
 # patches accepted and committed upstream for next 1.4:
 
@@ -12,7 +10,6 @@ ppd-poll-with-client-conf.dpatch
 manpage-translations.dpatch
 quiesce-bonjour-warning.dpatch
 rootbackends-worldreadable.dpatch
-dns-sd-check-typo.dpatch
 dnssd-avahi.dpatch
 
 # patches which should go upstream

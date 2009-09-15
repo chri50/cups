@@ -70,6 +70,11 @@ case "$1" in
 	if dpkg --compare-versions "$2" lt-nl '1.3.9-16'; then
             rm -f /etc/dbus-1/system.d/cups.conf
 	fi
+
+	# Obsolete symlinks, and they wreak havoc now
+	if dpkg --compare-versions "$2" lt-nl '1.4.0-6'; then
+	    rm -f /usr/share/ppd/1-local-admin /usr/share/ppd/2-third-party
+	fi
     ;;
 
     abort-upgrade)

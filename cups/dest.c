@@ -1,5 +1,5 @@
 /*
- * "$Id: dest.c 8627 2009-05-13 21:39:17Z mike $"
+ * "$Id: dest.c 8789 2009-08-28 22:54:34Z mike $"
  *
  *   User-defined destination (and option) support for the Common UNIX
  *   Printing System (CUPS).
@@ -557,7 +557,7 @@ cupsGetNamedDest(http_t     *http,	/* I - Connection to server or @code CUPS_HTT
     * configuration file does not exist.  Find out the real default.
     */
 
-    if (!cups_get_sdests(http, CUPS_GET_DEFAULT, name, 0, &dest))
+    if (!cups_get_sdests(http, CUPS_GET_DEFAULT, NULL, 0, &dest))
       return (NULL);
   }
 
@@ -1800,7 +1800,7 @@ cups_get_sdests(http_t      *http,	/* I - Connection to server or CUPS_HTTP_DEFA
   ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_NAME,
                "requesting-user-name", NULL, cupsUser());
 
-  if (name)
+  if (name && op != CUPS_GET_DEFAULT)
   {
     httpAssembleURIf(HTTP_URI_CODING_ALL, uri, sizeof(uri), "ipp", NULL,
                      "localhost", ippPort(), "/printers/%s", name);
@@ -2053,5 +2053,5 @@ cups_make_string(
 
 
 /*
- * End of "$Id: dest.c 8627 2009-05-13 21:39:17Z mike $".
+ * End of "$Id: dest.c 8789 2009-08-28 22:54:34Z mike $".
  */

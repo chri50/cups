@@ -1,3 +1,31 @@
+cups (1.4.1-1) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/cups.postinst: Fixed "lpstat -r" check for the auto update of
+    PPDs of existing queues. "lpstat -r" exits always with status 0, we must
+    check the actual output.
+  * debian/cups.postinst: Updated PPD auto update, so that it works with the
+    new CUPS sample driver PPDs which are dynamically generated now.
+
+  [ Martin Pitt ]
+  * New upstream bug fix release.
+  * Drop patches accepted  upstream:
+    - ppdc-locale-formatting.dpatch
+    - usb-backend-infinite-loop-on-end-of-job.dpatch
+    - dns-sd-check-typo.dpatch
+  * debian/cups.preinst: Add cleanup of obsolete symlinks in /usr/share/ppd/.
+    Drop cleanup from debian/cups.prerm. (Closes: #545298)
+  * debian/control: Add udev dependency, since the init script calls udevadm.
+    (LP: #429880)
+  * debian/cups.postinst, debian/cups.init.d: Call client tools with 
+    "-h /var/run/cups/cups.sock" instead of "-h localhost", just in case the
+    server isn't configured to listen on a TCP port.
+  * dnssd-avahi.dpatch: Update to latest Fedora version, which fixes the dnssd
+    backend so that it only reports devices once avahi resolution has
+    completed.  This makes it report Device IDs.
+
+ -- Martin Pitt <mpitt@debian.org>  Tue, 15 Sep 2009 11:30:07 +0200
+
 cups (1.4.0-5) unstable; urgency=low
 
   * Drop shlibs files and add symbols files for all libraries, to avoid too

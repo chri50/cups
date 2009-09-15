@@ -1,5 +1,5 @@
 /*
- * "$Id: backend-private.h 8643 2009-05-16 02:24:05Z mike $"
+ * "$Id: backend-private.h 8807 2009-08-31 18:45:43Z mike $"
  *
  *   Backend support definitions for the Common UNIX Printing System (CUPS).
  *
@@ -276,16 +276,16 @@ extern int		backendGetDeviceID(int fd, char *device_id,
 extern int		backendGetMakeModel(const char *device_id,
 			                    char *make_model,
 				            int make_model_size);
-extern void		backendNetworkSideCB(int print_fd, int device_fd,
+extern int		backendNetworkSideCB(int print_fd, int device_fd,
 			                     int snmp_fd, http_addr_t *addr,
 					     int use_bc);
 extern ssize_t		backendRunLoop(int print_fd, int device_fd, int snmp_fd,
 			               http_addr_t *addr, int use_bc,
-				       void (*side_cb)(int print_fd,
-				                       int device_fd,
-						       int snmp_fd,
-						       http_addr_t *addr,
-						       int use_bc));
+				       int (*side_cb)(int print_fd,
+				                      int device_fd,
+						      int snmp_fd,
+						      http_addr_t *addr,
+						      int use_bc));
 extern int		backendSNMPSupplies(int snmp_fd, http_addr_t *addr,
 			                    int *page_count,
 					    int *printer_state);
@@ -297,5 +297,5 @@ extern int		backendSNMPSupplies(int snmp_fd, http_addr_t *addr,
 
 
 /*
- * End of "$Id: backend-private.h 8643 2009-05-16 02:24:05Z mike $".
+ * End of "$Id: backend-private.h 8807 2009-08-31 18:45:43Z mike $".
  */

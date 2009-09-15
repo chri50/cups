@@ -20,12 +20,6 @@ set -e
 case "$1" in
     remove)
 	(cd /usr/lib/cups/backend && rm -f http ipp lpd parallel scsi serial socket usb snmp dnssd)
-	if [ -L /usr/share/ppd/1-local-admin ]; then
-	  rm -f /usr/share/ppd/1-local-admin
-	fi
-	if [ -L /usr/share/ppd/2-third-party ]; then
-	  rm -f /usr/share/ppd/2-third-party
-	fi
         ;;
     upgrade|deconfigure)
         ;;

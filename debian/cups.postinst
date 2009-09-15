@@ -185,9 +185,9 @@ if [ "$1" = configure ]; then
     if which lpstat > /dev/null 2>&1 && \
 	which lpinfo > /dev/null 2>&1 && \
 	which lpadmin > /dev/null 2>&1 && \
-	lpstat -h localhost -r > /dev/null 2>&1; then
+	LC_ALL=C lpstat -h /var/run/cups/cups.sock -r | grep -v not > /dev/null 2>&1; then
  	# Update the PPD files of all already installed print queues
-	driverregexp='^lsb/usr/cups-included/'
+	driverregexp='lsb/usr/cups-included/|drv:///sample.drv/'
 	gennicknameregexp='s/,\s*\d+\.\d+[\d\.]*$//i'
 	[ ! -z "$gennicknameregexp" ] && \
 	    gennicknameregexp="; $gennicknameregexp"
@@ -196,12 +196,12 @@ if [ "$1" = configure ]; then
 	trap 'rm -f $tempfiles; exit 0' 0 HUP INT QUIT ILL ABRT PIPE TERM
 	tmpfile1=`mktemp -t updateppds.XXXXXX`
 	tempfiles="$tempfiles $tmpfile1"
-	lpinfo -h localhost -m | grep -E $driverregexp > $tmpfile1
+	lpinfo -h /var/run/cups/cups.sock -m | grep -E $driverregexp > $tmpfile1
 	cd /etc/cups/ppd
 	for ppd in *.ppd; do
 	    [ -r "$ppd" ] || continue
 	    queue=${ppd%.ppd}
-	    lpstat -h localhost -p "$queue" >/dev/null 2>&1 || continue
+	    lpstat -h /var/run/cups/cups.sock -p "$queue" >/dev/null 2>&1 || continue
 	    nickname=`grep '\*NickName:' "$ppd" | cut -d '"' -f 2 | perl -p -e 's/\n$//' | perl -p -e "$gennicknameregexp" | perl -p -e 's/(\W)/\\\\$1/g'`
 	    lang=`grep '\*LanguageVersion:' "$ppd" | cut -d ' ' -f 2 | perl -e 'print lc(<>)' | perl -p -e 's/[\r\n]//gs'`
 	    ppdfound="0"
@@ -210,12 +210,12 @@ if [ "$1" = configure ]; then
 	    tempfiles="$tempfiles $tmpfile2"
 	    cat $tmpfile1 | perl -p -e "$gennicknameregexp" | grep -i "$nickname"'$' | cut -d ' ' -f 1 > $tmpfile2
 	    while read newppduri; do
-		[ "$ppdfound" = "0" ] && lpadmin -h localhost -p "$queue" -m $newppduri 2>/dev/null || continue
+		[ "$ppdfound" = "0" ] && lpadmin -h /var/run/cups/cups.sock -p "$queue" -m $newppduri 2>/dev/null || continue
 		newlang=`grep '\*LanguageVersion:' "$ppd" | cut -d ' ' -f 2 | perl -e 'print lc(<>)' | perl -p -e 's/[\r\n]//gs'`
 		[ "$newlang" = "$lang" ] && ppdfound="1"
 		[ "$newlang" = "english" ] && englishppduri="$newppduri"
 	    done < $tmpfile2
-	    [ "$ppdfound" = "0" ] && [ ! -z "$englishppduri" ] && lpadmin -h localhost -p "$queue" -m $englishppduri 2>/dev/null && ppdfound="1"
+	    [ "$ppdfound" = "0" ] && [ ! -z "$englishppduri" ] && lpadmin -h /var/run/cups/cups.sock -p "$queue" -m $englishppduri 2>/dev/null && ppdfound="1"
 	    [ "$ppdfound" = "1" ] && echo PPD for printer $queue updated >&2
 	done
     fi
