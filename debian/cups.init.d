@@ -42,14 +42,13 @@ restart_xprint() {
     fi
 }
 
-set_ripcache() {
-    cupsctl -h /var/run/cups/cups.sock RIPCache=`awk '/^MemTotal/ { print $2 / 4 }' /proc/meminfo`"k"
-}
-
 coldplug_usb_printers() {
-    udevadm trigger --subsystem-match=usb \
-                    --attr-match=bInterfaceClass=07 \
-                    --attr-match=bInterfaceSubClass=01
+    if type udevadm > /dev/null 2>&1 && [ -x /lib/udev/udev-configure-printer ]; then
+	for printer in `udevadm trigger --verbose --dry-run --subsystem-match=usb \
+		--attr-match=bInterfaceClass=07 --attr-match=bInterfaceSubClass=01`; do
+	    /lib/udev/udev-configure-printer add "${printer#/sys}"
+	done
+    fi
 }
 
 case "$1" in
@@ -67,7 +66,6 @@ case "$1" in
 
 	start-stop-daemon --start --quiet --oknodo --pidfile "$PIDFILE" --exec $DAEMON && success=1
 
-	set_ripcache
 	coldplug_usb_printers
 	log_end_msg $?
 	restart_xprint

@@ -257,7 +257,6 @@ MASK='
   position
   saturation
   scaling
-  sides
 '
 
 # Convert MASK to a regexp.
