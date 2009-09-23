@@ -1,6 +1,7 @@
 # patches backported from upstream SVN trunk for 1.5:
 
 # patches accepted and committed upstream for next 1.4:
+maintain-default-option-settings.dpatch
 
 # patches sent upstream
 removecvstag.dpatch
@@ -14,9 +15,11 @@ dnssd-avahi.dpatch
 
 # patches which should go upstream
 drop_unnecessary_dependencies.dpatch
+manual-section-for-drv.dpatch
 reactivate_recommended_driver.dpatch
 poppler-based-pdftops-fixes.dpatch
 read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.dpatch
+dynamic-default-ripcache-size.dpatch
 
 # Debian patches
 logfiles_adm_readable.dpatch

@@ -1,3 +1,40 @@
+cups (1.4.1-2) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/local/filters/cpdftocps: Double-sided printing did not work on
+    PostScript printers when the "sides" command line option for "lp"/"lpr"
+    was used (LP: #411392).
+  * debian/patches/maintain-default-option-settings.dpatch: For options with
+    an underscore (or any other allowed non-alphanumeric character) in their
+    names the default settings were not conserved when the PPD got replaced
+    ("lpadmin -p ... -m ...", system-config-printer, automatic PPD update
+    for existing print queues). Fixes LP: #432902 and CUPS STR #3340.
+
+  [ Martin Pitt ]
+  * debian/cups.init.d: Don't actually re-trigger udev events for printer
+    coldplugging, since according to Scott James Remnant this slows down boot
+    and kills kittens. Instead, just call it with --dry-run and manually call
+    udev-configure-printer.
+  * debian/cups.init.d: Only run udevadm if udev and the callout are actually
+    available. Drop udev dependency to a suggests. This unbreaks cups on
+    platforms which do not have udev, such as kfreebsd. (Closes: #546922)
+  * debian/cups.init.d: Drop "cupsctl RIPCache" setting. It changes our
+    conffile (causing dpkg prompts on upgrade), and overwrites the admin's
+    setting without warning.
+  * Add dynamic-default-ripcache-size.dpatch: Replace above functionality by
+    setting the internal default value of RIPCache to MemTotal/4, if not given
+    in the configuration file.
+  * debian/rules: Do not let the usb backend run as root in Ubuntu any more,
+    since that has a recent enough udev. Still keep it for Debian.
+  * debian/cups-ppdc.install: Update path for Martin-Éric's section change of
+    drv manpage.
+ 
+  [ Martin-Éric Racine ]
+  * Add manual-section-for-drv.dpatch: Fix incorrect man section 7 -> 1 as
+    reported by Lintian.
+
+ -- Martin Pitt <mpitt@debian.org>  Wed, 23 Sep 2009 23:58:15 +0200
+
 cups (1.4.1-1) unstable; urgency=low
 
   [ Till Kamppeter ]
