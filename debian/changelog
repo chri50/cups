@@ -1,3 +1,21 @@
+cups (1.4.1-4) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/patches/usb-backend-both-usblp-and-libusb.dpatch: Make the USB
+    backend supporting both printer access via libusb and via the usblp kernel
+    module. Make it also printing via libusb if the URI for the queue was
+    generated via usblp and vice versa. This should solve most USB printing
+    problems which occured on the transition to CUPS 1.4.x (LP: #420015,
+    LP: #436495; Closes: #546558, #545288, #545453).
+
+  [ Martin Pitt ]
+  * debian/rules: Make the USB backend run as root again, udev rules do not
+    cover all printers. (LP: #420015)
+  * Drop debian/blacklist-cups.conf, and remove it on upgrade. With Till's fix
+    from above this is not necessary any more.
+
+ -- Martin Pitt <mpitt@debian.org>  Wed, 30 Sep 2009 15:17:53 +0200
+
 cups (1.4.1-3) unstable; urgency=low
 
   * Add disable-pie-mipsen.dpatch: Disable PIE on mipsen, its binutils

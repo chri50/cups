@@ -75,6 +75,12 @@ case "$1" in
 	if dpkg --compare-versions "$2" lt-nl '1.4.0-6'; then
 	    rm -f /usr/share/ppd/1-local-admin /usr/share/ppd/2-third-party
 	fi
+
+	# blacklist was installed for some weeks (intra-squeeze and karmic),
+	# remove it again (now USB backend works with both)
+	if dpkg --compare-versions "$2" lt-nl '1.4.1-4'; then
+	    rm -f /etc/modprobe.d/blacklist-cups.conf
+	fi
     ;;
 
     abort-upgrade)

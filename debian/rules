@@ -80,13 +80,12 @@ binary-post-install/cups::
 	   install -D -m 644 debian/local/apparmor-profile debian/$(cdbs_curpkg)/etc/apparmor.d/usr.sbin.cupsd; \
 	   install -D -m 644 debian/local/cups.ufw.profile debian/$(cdbs_curpkg)/etc/ufw/applications.d/cups; \
 	   install -D -m 644 debian/local/apport-hook.py debian/$(cdbs_curpkg)/usr/share/apport/package-hooks/source_cups.py; \
-	else \
-	   chmod go-x debian/$(cdbs_curpkg)/usr/lib/cups/backend-available/usb; \
 	fi
-        # ^ Make the usb backend run as root, since /dev/bus/usb/* are
-        # root:root in udev < 147, and cups does not use the usblp kernel
-        # module any more; this is fixed in udev 147 (and thus in Ubuntu
-        # 9.10), but not in Debian yet.
+	# Make the usb backend run as root, since /dev/bus/usb/* are
+	# root:root in udev < 147, and cups does not use the usblp kernel
+	# module any more; udev 147 makes most of those printers accessible to
+	# lp, but apparently not all of them
+	chmod go-x debian/$(cdbs_curpkg)/usr/lib/cups/backend-available/usb; \
 
 	# Install documentation of the PDF CUPS filters
 	install -m 644 debian/local/filters/pdf-filters/README $(DEB_DESTDIR)/../cups/usr/share/doc/cups/README.pdf-filters
