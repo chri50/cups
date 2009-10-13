@@ -12,6 +12,7 @@ manpage-translations.dpatch
 quiesce-bonjour-warning.dpatch
 rootbackends-worldreadable.dpatch
 dnssd-avahi.dpatch
+usb-backend-both-usblp-and-libusb.dpatch
 
 # patches which should go upstream
 drop_unnecessary_dependencies.dpatch
@@ -20,7 +21,7 @@ reactivate_recommended_driver.dpatch
 poppler-based-pdftops-fixes.dpatch
 read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.dpatch
 dynamic-default-ripcache-size.dpatch
-usb-backend-both-usblp-and-libusb.dpatch
+do-not-broadcast-with-hostnames.dpatch
 
 # Debian patches
 logfiles_adm_readable.dpatch
@@ -30,7 +31,7 @@ confdirperms.dpatch
 printer-filtering.dpatch
 show-compile-command-lines.dpatch
 disable-pdftoopvp-with-old-poppler.dpatch
-disable-pie-mipsen.dpatch
+ppdc-dynamic-linking.dpatch
 
 # Ubuntu patches
 ubuntu-disable-browsing.dpatch

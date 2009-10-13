@@ -1,3 +1,28 @@
+cups (1.4.1-5) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/patches/do-not-broadcast-with-hostnames.dpatch: Do not use host
+    names for broadcasting print queues and managing print queues broadcasted
+    from other servers by default. Many networks do not have valid host names
+    for all machines (LP: #449586).
+  * debian/cups.postinst: Clear cache for upgrade to CUPS 1.4.x (LP: #420490).
+  * usb-backend-both-usblp-and-libusb.dpatch: Removed some lines which were
+    temporarily inserted for debugging.
+
+  [ Martin Pitt ]
+  * usb-backend-both-usblp-and-libusb.dpatch: Add upstream link.
+  * Drop: disable-pie-mipsen.dpatch: Didn't help to fix the mipsen segfault.
+  * debian/cups.postinst: Simplify structure and avoid calling invoke-rc.d in
+    Till's change above.
+  * Add ppdc-dynamic-linking.dpatch: Dynamically link ppdc, to work around
+    segfault on mipsen. Thanks to Sune Vuorela! (Closes: #548246)
+
+  [ Tormod Volden ]
+  * debian/cups.init.d: honour blacklist when loading ppdev and lp kernel
+    modules (LP: #424795)
+
+ -- Martin Pitt <mpitt@debian.org>  Tue, 13 Oct 2009 09:57:11 +0200
+
 cups (1.4.1-4) unstable; urgency=low
 
   [ Till Kamppeter ]

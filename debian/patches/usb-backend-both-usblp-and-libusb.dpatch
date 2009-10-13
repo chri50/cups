@@ -1,13 +1,12 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
 ## usb-backend-both-usblp-and-libusb.dpatch by  <till.kamppeter@gmail.com>
 ##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: No description.
+## DP: http://www.cups.org/str.php?L3357
 
 @DPATCH@
 diff -urNad cups-1.4.1~/backend/Makefile cups-1.4.1/backend/Makefile
---- cups-1.4.1~/backend/Makefile	2009-03-03 20:39:21.000000000 +0100
-+++ cups-1.4.1/backend/Makefile	2009-09-30 12:07:28.000000000 +0200
+--- cups-1.4.1~/backend/Makefile	2009-10-06 00:37:13.000000000 +0200
++++ cups-1.4.1/backend/Makefile	2009-10-06 00:37:13.000000000 +0200
 @@ -267,7 +267,7 @@
  	echo Linking $@...
  	$(CC) $(LDFLAGS) -o usb usb.o libbackend.a $(LIBUSB) \
@@ -19,7 +18,7 @@ diff -urNad cups-1.4.1~/backend/Makefile cups-1.4.1/backend/Makefile
  #
 diff -urNad cups-1.4.1~/backend/ieee1284.c cups-1.4.1/backend/ieee1284.c
 --- cups-1.4.1~/backend/ieee1284.c	2009-08-08 00:24:14.000000000 +0200
-+++ cups-1.4.1/backend/ieee1284.c	2009-09-30 12:07:28.000000000 +0200
++++ cups-1.4.1/backend/ieee1284.c	2009-10-06 00:37:13.000000000 +0200
 @@ -275,6 +275,7 @@
      cups_option_t	*values;	/* Keys and values in device ID */
      const char		*mfg,		/* Manufacturer */
@@ -53,7 +52,7 @@ diff -urNad cups-1.4.1~/backend/ieee1284.c cups-1.4.1/backend/ieee1284.c
      }
 diff -urNad cups-1.4.1~/backend/usb-hybrid.c cups-1.4.1/backend/usb-hybrid.c
 --- cups-1.4.1~/backend/usb-hybrid.c	1970-01-01 01:00:00.000000000 +0100
-+++ cups-1.4.1/backend/usb-hybrid.c	2009-09-30 12:07:28.000000000 +0200
++++ cups-1.4.1/backend/usb-hybrid.c	2009-10-06 00:37:13.000000000 +0200
 @@ -0,0 +1,87 @@
 +/*
 + * "$Id: usb-hybrid.c 8807 2009-08-31 18:45:43Z mike $"
@@ -144,7 +143,7 @@ diff -urNad cups-1.4.1~/backend/usb-hybrid.c cups-1.4.1/backend/usb-hybrid.c
 + */
 diff -urNad cups-1.4.1~/backend/usb-libusb.c cups-1.4.1/backend/usb-libusb.c
 --- cups-1.4.1~/backend/usb-libusb.c	2009-09-11 22:03:31.000000000 +0200
-+++ cups-1.4.1/backend/usb-libusb.c	2009-09-30 12:07:28.000000000 +0200
++++ cups-1.4.1/backend/usb-libusb.c	2009-10-06 00:38:03.000000000 +0200
 @@ -13,16 +13,16 @@
   *
   * Contents:
@@ -239,7 +238,7 @@ diff -urNad cups-1.4.1~/backend/usb-libusb.c cups-1.4.1/backend/usb-libusb.c
  	  pfds[1].events = 0;		/* Filter has gone away... */
  	else
            tbytes += bytes;
-@@ -359,12 +363,13 @@
+@@ -359,7 +363,7 @@
  	    printer.iface  = iface;
  	    printer.handle = NULL;
  
@@ -248,13 +247,7 @@ diff -urNad cups-1.4.1~/backend/usb-libusb.c cups-1.4.1/backend/usb-libusb.c
  	    {
  	      if (!get_device_id(&printer, device_id, sizeof(device_id)))
  	      {
-                 make_device_uri(&printer, device_id, device_uri,
- 		                sizeof(device_uri));
-+		fprintf(stderr, "XXX 1 |%s|\n", device_uri);
- 
- 	        if ((*cb)(&printer, device_uri, device_id, data))
- 		{
-@@ -583,6 +588,14 @@
+@@ -583,6 +587,14 @@
      mfg = tempmfg;
    }
  
@@ -269,7 +262,7 @@ diff -urNad cups-1.4.1~/backend/usb-libusb.c cups-1.4.1/backend/usb-libusb.c
   /*
    * Generate the device URI from the manufacturer, model, serial number,
    * and interface number...
-@@ -611,11 +624,11 @@
+@@ -611,11 +623,11 @@
  
  
  /*
@@ -283,7 +276,7 @@ diff -urNad cups-1.4.1~/backend/usb-libusb.c cups-1.4.1/backend/usb-libusb.c
              int           verbose)	/* I - Update connecting-to-device state? */
  {
    int	number;				/* Configuration/interface/altset numbers */
-@@ -733,16 +746,54 @@
+@@ -733,16 +745,53 @@
           const char    *device_id,	/* I - IEEE-1284 device ID */
           const void    *data)		/* I - User data (make, model, S/N) */
  {
@@ -325,7 +318,6 @@ diff -urNad cups-1.4.1~/backend/usb-libusb.c cups-1.4.1/backend/usb-libusb.c
 +	    buf);
 +  }
 +
-+  fprintf(stderr, "XXX L |%s|%s|\n", uri, device_uri);
 +  return (!strcmp(uri, device_uri));
  }
  
@@ -343,7 +335,7 @@ diff -urNad cups-1.4.1~/backend/usb-libusb.c cups-1.4.1/backend/usb-libusb.c
    ssize_t		bytes,		/* Bytes read/written */
 diff -urNad cups-1.4.1~/backend/usb-unix.c cups-1.4.1/backend/usb-unix.c
 --- cups-1.4.1~/backend/usb-unix.c	2009-08-31 20:45:43.000000000 +0200
-+++ cups-1.4.1/backend/usb-unix.c	2009-09-30 12:07:28.000000000 +0200
++++ cups-1.4.1/backend/usb-unix.c	2009-10-06 00:38:23.000000000 +0200
 @@ -18,10 +18,10 @@
   *
   * Contents:
@@ -469,7 +461,7 @@ diff -urNad cups-1.4.1~/backend/usb-unix.c cups-1.4.1/backend/usb-unix.c
  
     /*
      * Find the correct USB device...
-@@ -407,6 +425,26 @@
+@@ -407,6 +425,25 @@
  	  device_uri[0] = '\0';
          }
  
@@ -492,11 +484,10 @@ diff -urNad cups-1.4.1~/backend/usb-unix.c cups-1.4.1/backend/usb-unix.c
 +		  make_model);
 +	}
 +
-+	fprintf(stderr, "XXX U |%s|%s|\n", uri, device_uri);
          if (!strcmp(uri, device_uri))
  	{
  	 /*
-@@ -433,10 +471,14 @@
+@@ -433,10 +470,14 @@
        */
  
        if (busy)
@@ -512,7 +503,7 @@ diff -urNad cups-1.4.1~/backend/usb-unix.c cups-1.4.1/backend/usb-unix.c
      }
    }
  #elif defined(__sun) && defined(ECPPIOC_GETDEVID)
-@@ -557,11 +599,11 @@
+@@ -557,11 +598,11 @@
  
  
  /*
@@ -529,7 +520,7 @@ diff -urNad cups-1.4.1~/backend/usb-unix.c cups-1.4.1/backend/usb-unix.c
  	http_addr_t *addr,		/* I - Device address (unused) */
 diff -urNad cups-1.4.1~/backend/usb.c cups-1.4.1/backend/usb.c
 --- cups-1.4.1~/backend/usb.c	2008-06-24 03:28:36.000000000 +0200
-+++ cups-1.4.1/backend/usb.c	2009-09-30 12:07:28.000000000 +0200
++++ cups-1.4.1/backend/usb.c	2009-10-06 00:37:13.000000000 +0200
 @@ -56,7 +56,7 @@
   */
  
