@@ -60,8 +60,8 @@ case "$1" in
 	mkdir -p `dirname "$PIDFILE"`
 	if [ "$LOAD_LP_MODULE" = "yes" -a -f /usr/lib/cups/backend/parallel \
              -a -f /proc/devices -a -f /proc/modules -a -x /sbin/modprobe ]; then
-	  modprobe -q lp || true
-	  modprobe -q ppdev || true
+	  modprobe -q -b lp || true
+	  modprobe -q -b ppdev || true
 	fi
 
 	start-stop-daemon --start --quiet --oknodo --pidfile "$PIDFILE" --exec $DAEMON && success=1
