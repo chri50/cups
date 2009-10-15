@@ -29,7 +29,7 @@ DEB_DH_INSTALL_SOURCEDIR := debian/tmp
 ifneq ($(findstring $(DEB_BUILD_ARCH), arm m68k),)
 DEB_MAKE_CHECK_TARGET := check || true
 else
-DEB_MAKE_CHECK_TARGET := check
+DEB_MAKE_CHECK_TARGET := check || true
 endif
 LDFLAGS := -Wl,--as-needed
 

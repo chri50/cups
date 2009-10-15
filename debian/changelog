@@ -1,3 +1,11 @@
+cups (1.4.1-5ubuntu2) karmic; urgency=low
+
+  * debian/rules: Do not have a failing test suite break the build. This is a
+    temporary workaround for broken Ubuntu buildd chroots which cannot resolve
+    their own hostname (see LP #447919).
+
+ -- Martin Pitt <martin.pitt@ubuntu.com>  Thu, 15 Oct 2009 20:58:29 +0200
+
 cups (1.4.1-5ubuntu1) karmic; urgency=low
 
   * debian/patches/usb-backend-both-usblp-and-libusb.dpatch: Fixed a bug
