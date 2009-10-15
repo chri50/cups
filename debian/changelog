@@ -1,3 +1,15 @@
+cups (1.4.1-5ubuntu1) karmic; urgency=low
+
+  * debian/patches/usb-backend-both-usblp-and-libusb.dpatch: Fixed a bug
+    of modifying the URI of the current print queue when comparing it with
+    discovered URIs. Made the USB backend also compatible with URIS generated
+    by old versions of CUPS, without serial number or with "serial=?"
+    (LP: #450513).
+  * debian/cups.init.d: Make cold-plugging of USB printers also correctly
+    work if the usblp kernel module is loaded.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Thu, 15 Oct 2009 18:32:20 +0200
+
 cups (1.4.1-5) unstable; urgency=low
 
   [ Till Kamppeter ]
