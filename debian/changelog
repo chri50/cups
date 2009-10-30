@@ -1,3 +1,16 @@
+cups (1.4.1-5ubuntu2.1) karmic-security; urgency=low
+
+  * SECURITY UPDATE: XSS and CRLF injection in headers
+    - debian/patches/CVE-2009-2820.dpatch: Introduce cgiClearVariables() in
+      cgi-bin/{var.c,cgi.h,libcupscgi.exp}. Clear out variables in
+      cgi-bin/{classes,help,ipp-var,jobs,printers}.c. Encode URL string and
+      clear out variables in cgi-bin/admin.c. Filter more characters in
+      cgi-bin/template.c.
+    - debian/libcupscgi1.symbols: add new symbol from security patch
+    - CVE-2009-2820
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 30 Oct 2009 14:02:38 -0400
+
 cups (1.4.1-5ubuntu2) karmic; urgency=low
 
   * debian/rules: Do not have a failing test suite break the build. This is a
