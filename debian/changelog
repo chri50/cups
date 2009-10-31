@@ -1,3 +1,18 @@
+cups (1.3.9-17ubuntu3.4) jaunty-security; urgency=low
+
+  * SECURITY UPDATE: XSS and CRLF injection in headers
+    - debian/patches/CVE-2009-2820.dpatch: Introduce cgiClearVariables() in
+      cgi-bin/{var.c,cgi.h}. Clear out variables in
+      cgi-bin/{classes,help,ipp-var,jobs,printers}.c. Encode URL string and
+      clear out variables in cgi-bin/admin.c. Filter more characters in
+      cgi-bin/template.c.
+    - CVE-2009-2820
+  * debian/rules: Do not have a failing test suite break the build. This is a
+    temporary workaround for broken Ubuntu buildd chroots which cannot resolve
+    their own hostname (see LP #447919).
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Sat, 31 Oct 2009 19:20:16 -0400
+
 cups (1.3.9-17ubuntu3.2) jaunty-proposed; urgency=low
 
   [ Till Kamppeter ]
