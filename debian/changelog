@@ -1,3 +1,15 @@
+cups (1.3.9-2ubuntu9.3) intrepid-security; urgency=low
+
+  * SECURITY UPDATE: XSS and CRLF injection in headers
+    - debian/patches/CVE-2009-2820.dpatch: Introduce cgiClearVariables() in
+      cgi-bin/{var.c,cgi.h}. Clear out variables in
+      cgi-bin/{classes,help,ipp-var,jobs,printers}.c. Encode URL string and
+      clear out variables in cgi-bin/admin.c. Filter more characters in
+      cgi-bin/template.c.
+    - CVE-2009-2820
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 30 Oct 2009 21:36:11 -0400
+
 cups (1.3.9-2ubuntu9.2) intrepid-security; urgency=low
 
   * SECURITY UPDATE: Remote denial-of-service via IPP_TAG_UNSUPPORTED tags.
