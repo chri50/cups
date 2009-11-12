@@ -1,3 +1,42 @@
+cups (1.4.2-1) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/patches/log-debug-history-nearly-unlimited.dpatch: Made automatic
+    debug logging of failed jobs (without need of "LogLevel debug") practically
+    unlimited by raising the default limit from 200 to 99999 lines.
+  * debian/local/filters/pdf-filters/pdftopdf/pdftopdf.cxx: pdftopdf did
+    note collate for printers when they have "Collate" and 
+    "cupsManualCopies:True" in the PPD. Thanks to Koji Otani from BBR Japan 
+    for the fix.
+  * debian/local/filters/cpdftocps: Fixed turning off duplex via command line
+    (http://bugs.linux-foundation.org/show_bug.cgi?id=397).
+  * debian/patches/usb-backend-both-usblp-and-libusb.dpatch: Fixed a bug
+    of modifying the URI of the current print queue when comparing it with
+    discovered URIs. Made the USB backend also compatible with URIS generated
+    by old versions of CUPS, without serial number or with "serial=?"
+    (LP: #450513).
+  * debian/cups.init.d: Make cold-plugging of USB printers also correctly
+    work if the usblp kernel module is loaded.
+
+  [ Martin Pitt ]
+  * New upstream security/bug fix release:
+    - The CUPS web interface was vulnerable to several XSS and HTTP
+      header/body attacks via attribute injection (STR #3367, STR #3401,
+      CVE-2009-2820; Closes: #555666)
+  * Drop maintain-default-option-settings.dpatch, applied upstream.
+  * Update patches to new upstream version.
+  * debian/control: Drop trademark stuff from package descriptions. No other
+    package does that, and it's uninteresting here. The current ones with
+    "easysw" were out of date, too. (Closes: #552781)
+  * Now that poppler 0.12 is in Debian, drop
+    disable-pdftoopvp-with-old-poppler.dpatch and bump libpoppler-dev build
+    dependency.
+  * poppler now ships fofi include files, which fixes the build.
+    (Closes: #552818, #552223); rebuilding against new poppler ABI fixes
+    uninstallability (Closes: #552456)
+
+ -- Martin Pitt <mpitt@debian.org>  Thu, 12 Nov 2009 15:03:41 +0100
+
 cups (1.4.1-5) unstable; urgency=low
 
   [ Till Kamppeter ]

@@ -516,7 +516,7 @@ void parseOpts(int argc, char **argv)
   }
 
   /* check collate device */
-  if (P2PDoc::options.collate) {
+  if (P2PDoc::options.collate && !ppd->manual_copies) {
     if ((choice = ppdFindMarkedChoice(ppd,"Collate")) != NULL &&
        !strcasecmp(choice->choice,"true")) {
       ppd_option_t *opt;

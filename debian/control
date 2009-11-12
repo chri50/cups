@@ -8,7 +8,7 @@ Build-Depends: libpam0g-dev, libtiff4-dev, libjpeg62-dev, zlib1g-dev,
  debhelper (>= 5.0), po-debconf, cdbs (>= 0.4.27), sharutils, 
  dpatch (>= 1.11), libdbus-1-dev, libkrb5-dev | heimdal-dev,
  libavahi-compat-libdnssd-dev, libavahi-common-dev, libavahi-client-dev,
- libpoppler-dev (>= 0.10.0), pkg-config,
+ libpoppler-dev (>= 0.12), pkg-config,
  poppler-utils, lsb-release, po4a (>= 0.31), autotools-dev, autoconf, automake, 
  libtool, libijs-dev, hardening-wrapper, liblcms1-dev, libfreetype6-dev,
  libfontconfig1-dev, pkg-config, libusb-dev
@@ -35,10 +35,6 @@ Description: Common UNIX Printing System(tm) - Core library
  handling various document types.
  .
  This package provides the base shared libraries for CUPS.
- .
- The terms "Common UNIX Printing System" and "CUPS" are trademarks of
- Easy Software Products (www.easysw.com), and refer to the original
- source packages from which these packages are made.
 
 Package: libcupsimage2
 Priority: optional
@@ -53,10 +49,6 @@ Description: Common UNIX Printing System(tm) - Raster image library
  .
  This package provides the image libraries for handling the CUPS
  raster format.
- .
- The terms "Common UNIX Printing System" and "CUPS" are trademarks of
- Easy Software Products (www.easysw.com), and refer to the original
- source packages from which these packages are made.
 
 Package: libcupscgi1
 Priority: optional
@@ -71,10 +63,6 @@ Description: Common UNIX Printing System(tm) - CGI library
  .
  This package provides a shared library for CGI programs in the
  CUPS web interface
- .
- The terms "Common UNIX Printing System" and "CUPS" are trademarks of
- Easy Software Products (www.easysw.com), and refer to the original
- source packages from which these packages are made.
 
 Package: libcupsdriver1
 Priority: optional
@@ -89,10 +77,6 @@ Description: Common UNIX Printing System(tm) - Driver library
  .
  This package provides a shared library with useful functions for printer
  drivers.
- .
- The terms "Common UNIX Printing System" and "CUPS" are trademarks of
- Easy Software Products (www.easysw.com), and refer to the original
- source packages from which these packages are made.
 
 Package: libcupsmime1
 Priority: optional
@@ -107,10 +91,6 @@ Description: Common UNIX Printing System(tm) - MIME library
  .
  This package provides a shared library for file type detection and
  file conversion filter chain building.
- .
- The terms "Common UNIX Printing System" and "CUPS" are trademarks of
- Easy Software Products (www.easysw.com), and refer to the original
- source packages from which these packages are made.
 
 Package: libcupsppdc1
 Priority: optional
@@ -125,10 +105,6 @@ Description: Common UNIX Printing System(tm) - PPD manipulation library
  .
  This package provides the base shared library for generating and
  manipulating PPD files.
- .
- The terms "Common UNIX Printing System" and "CUPS" are trademarks of
- Easy Software Products (www.easysw.com), and refer to the original
- source packages from which these packages are made.
 
 Package: cups
 Priority: optional
@@ -155,10 +131,6 @@ Description: Common UNIX Printing System(tm) - server
  handling various document types.
  .
  This package provides the CUPS scheduler/daemon and related files.
- .
- The terms "Common UNIX Printing System" and "CUPS" are trademarks of
- Easy Software Products (www.easysw.com), and refer to the original
- source packages from which these packages are made.
 
 Package: cups-client
 Priority: optional
@@ -177,10 +149,6 @@ Description: Common UNIX Printing System(tm) - client programs (SysV)
  handling various document types.
  .
  This package provides the System V style print client programs.
- .
- The terms "Common UNIX Printing System" and "CUPS" are trademarks of
- Easy Software Products (www.easysw.com), and refer to the original
- source packages from which these packages are made.
 
 Package: libcups2-dev
 Priority: optional
@@ -201,10 +169,6 @@ Description: Common UNIX Printing System(tm) - Development files CUPS library
  applications and CUPS drivers, as well as examples how to communicate
  with cups from different programming languages (Perl, Java, and
  PHP).
- .
- The terms "Common UNIX Printing System" and "CUPS" are trademarks of
- Easy Software Products (www.easysw.com), and refer to the original
- source packages from which these packages are made.
 
 Package: libcupsimage2-dev
 Priority: optional
@@ -221,10 +185,6 @@ Description: Common UNIX Printing System(tm) - Development files CUPS image libr
  .
  This package provides the files necessary for developing applications
  that use the CUPS raster image format.
- .
- The terms "Common UNIX Printing System" and "CUPS" are trademarks of
- Easy Software Products (www.easysw.com), and refer to the original
- source packages from which these packages are made.
 
 Package: libcupscgi1-dev
 Priority: optional
@@ -240,10 +200,6 @@ Description: Common UNIX Printing System(tm) - Development files for CGI library
  .
  This package provides the files necessary for developing CGI programs
  for the CUPS web interface using libcupscgi.
- .
- The terms "Common UNIX Printing System" and "CUPS" are trademarks of
- Easy Software Products (www.easysw.com), and refer to the original
- source packages from which these packages are made.
 
 Package: libcupsdriver1-dev
 Priority: optional
@@ -259,10 +215,6 @@ Description: Common UNIX Printing System(tm) - Development files driver library
  .
  This package provides the files necessary for developing printer drivers
  using libcupsdriver.
- .
- The terms "Common UNIX Printing System" and "CUPS" are trademarks of
- Easy Software Products (www.easysw.com), and refer to the original
- source packages from which these packages are made.
 
 Package: libcupsmime1-dev
 Priority: optional
@@ -278,10 +230,6 @@ Description: Common UNIX Printing System(tm) - Development files MIME library
  .
  This package provides the files necessary for developing programs
  using libcupsmime.
- .
- The terms "Common UNIX Printing System" and "CUPS" are trademarks of
- Easy Software Products (www.easysw.com), and refer to the original
- source packages from which these packages are made.
 
 Package: libcupsppdc1-dev
 Priority: optional
@@ -297,10 +245,6 @@ Description: Common UNIX Printing System(tm) - Development files PPD library
  .
  This package provides the files necessary for developing programs
  using libcupsppdc.
- .
- The terms "Common UNIX Printing System" and "CUPS" are trademarks of
- Easy Software Products (www.easysw.com), and refer to the original
- source packages from which these packages are made.
 
 Package: cups-bsd
 Priority: extra
@@ -322,10 +266,6 @@ Description: Common UNIX Printing System(tm) - BSD commands
  This package provides the BSD commands for interacting with CUPS.  It
  is provided separately to allow CUPS to coexist with other printing
  systems (to a small degree).
- .
- The terms "Common UNIX Printing System" and "CUPS" are trademarks of
- Easy Software Products (www.easysw.com), and refer to the original
- source packages from which these packages are made.
 
 Package: cups-common
 Priority: optional
@@ -342,10 +282,6 @@ Description: Common UNIX Printing System(tm) - common files
  handling various document types.
  .
  This package provides common files for CUPS server and client packages.
- .
- The terms "Common UNIX Printing System" and "CUPS" are trademarks of
- Easy Software Products (www.easysw.com), and refer to the original
- source packages from which these packages are made.
 
 Package: cups-ppdc
 Priority: optional
@@ -362,10 +298,6 @@ Description: Common UNIX Printing System(tm) - PPD manipulation utilities
  handling various document types.
  .
  This package provides utilities to generate and manipulate PPD files.
- .
- The terms "Common UNIX Printing System" and "CUPS" are trademarks of
- Easy Software Products (www.easysw.com), and refer to the original
- source packages from which these packages are made.
 
 Package: cups-dbg
 Priority: extra
@@ -381,10 +313,6 @@ Description: Common UNIX Printing System(tm) - debugging symbols
  handling various document types.
  .
  This package provides the debugging symbols of CUPS.
- .
- The terms "Common UNIX Printing System" and "CUPS" are trademarks of
- Easy Software Products (www.easysw.com), and refer to the original
- source packages from which these packages are made.
 
 Package: cupsys
 Priority: extra

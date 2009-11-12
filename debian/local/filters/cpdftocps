@@ -54,9 +54,9 @@ echo "DEBUG: PostScript Level: $pslevel" >&2
 
 duplex=no
 if test -e "$PPD"; then
-    eval "$(sed -nre 's/^\*Default(sides|Duplex|EFDuplex|EFDuplexing|KD03Duplex|JCLDuplex):\s*(two-sided|Duplex|On|True|Yes|1).*/duplex="yes"/pi' "$PPD")"
+    eval "$(sed -nre 's/^\*Default(sides|Duplex|EFDuplex|EFDuplexing|KD03Duplex|JCLDuplex):\s*(two-sided|Duplex|On|True|Yes|1)\b.*/duplex="yes"/pi' "$PPD")"
 fi
-eval "$(printf "%s" "$5" | sed -nre 's/.*(^|\s)(sides|Duplex|EFDuplex|EFDuplexing|KD03Duplex|JCLDuplex)=(two-sided|Duplex|On|True|Yes|1).*/duplex="yes"/pi')"
+eval "$(printf "%s" "$5" | sed -nre 's/.*(^|\s)(sides|Duplex|EFDuplex|EFDuplexing|KD03Duplex|JCLDuplex)=(two-sided|Duplex|On|True|Yes|1)\b.*/duplex="yes"/pi')"
 echo "DEBUG: Duplex: $duplex" >&2
 
 resolution=

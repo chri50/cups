@@ -1,9 +1,9 @@
 #
-# "$Id: Makefile 8015 2008-10-05 19:33:44Z mike $"
+# "$Id: Makefile 8841 2009-10-07 16:24:25Z mike $"
 #
 #   Template makefile for the Common UNIX Printing System (CUPS).
 #
-#   Copyright 2007-2008 by Apple Inc.
+#   Copyright 2007-2009 by Apple Inc.
 #   Copyright 1993-2007 by Easy Software Products.
 #
 #   These coded instructions, statements, and computer programs are the
@@ -149,7 +149,7 @@ install-languages:
 		if test -d $$lang; then \
 			$(INSTALL_DIR) -m 755 $(DATADIR)/templates/$$lang; \
 			for file in $(FILES); do \
-				$(INSTALL_DATA) $$lang/$$file $(DATADIR)/templates/$$lang 2>/dev/null || true; \
+				$(INSTALL_DATA) $$lang/$$file $(DATADIR)/templates/$$lang >/dev/null 2>&1 || true; \
 			done \
 		fi \
 	done
@@ -197,5 +197,5 @@ uninstall-languages:
 
 
 #
-# End of "$Id: Makefile 8015 2008-10-05 19:33:44Z mike $".
+# End of "$Id: Makefile 8841 2009-10-07 16:24:25Z mike $".
 #

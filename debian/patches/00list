@@ -1,7 +1,6 @@
 # patches backported from upstream SVN trunk for 1.5:
 
 # patches accepted and committed upstream for next 1.4:
-maintain-default-option-settings.dpatch
 
 # patches sent upstream
 removecvstag.dpatch
@@ -30,8 +29,8 @@ confdirperms.dpatch
 #use-ps2write-ghostscript-device-for-pdftops-filter.dpatch
 printer-filtering.dpatch
 show-compile-command-lines.dpatch
-disable-pdftoopvp-with-old-poppler.dpatch
 ppdc-dynamic-linking.dpatch
+log-debug-history-nearly-unlimited.dpatch
 
 # Ubuntu patches
 ubuntu-disable-browsing.dpatch

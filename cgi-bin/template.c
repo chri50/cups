@@ -1,5 +1,5 @@
 /*
- * "$Id: template.c 7219 2008-01-14 22:00:02Z mike $"
+ * "$Id: template.c 8859 2009-11-09 23:01:17Z mike $"
  *
  *   CGI template function.
  *
@@ -675,6 +675,8 @@ cgi_puts(const char *s,			/* I - String to output */
       fputs("&gt;", out);
     else if (*s == '\"')
       fputs("&quot;", out);
+    else if (*s == '\'')
+      fputs("&#39;", out);
     else if (*s == '&')
       fputs("&amp;", out);
     else
@@ -695,7 +697,7 @@ cgi_puturi(const char *s,		/* I - String to output */
 {
   while (*s)
   {
-    if (strchr("%&+ <>#=", *s) || *s & 128)
+    if (strchr("%@&+ <>#=", *s) || *s < ' ' || *s & 128)
       fprintf(out, "%%%02X", *s & 255);
     else
       putc(*s, out);
@@ -706,5 +708,5 @@ cgi_puturi(const char *s,		/* I - String to output */
 
 
 /*
- * End of "$Id: template.c 7219 2008-01-14 22:00:02Z mike $".
+ * End of "$Id: template.c 8859 2009-11-09 23:01:17Z mike $".
  */
