@@ -1,5 +1,5 @@
 /*
- * "$Id: sidechannel.h 8627 2009-05-13 21:39:17Z mike $"
+ * "$Id: sidechannel.h 8827 2009-09-22 23:20:35Z mike $"
  *
  *   Side-channel API definitions for the Common UNIX Printing System (CUPS).
  *
@@ -55,6 +55,7 @@ typedef enum cups_sc_bidi_e cups_sc_bidi_t;
 
 enum cups_sc_command_e			/**** Request command codes ****/
 {
+  CUPS_SC_CMD_NONE = 0,			/* No command @private@ */
   CUPS_SC_CMD_SOFT_RESET = 1,		/* Do a soft reset */
   CUPS_SC_CMD_DRAIN_OUTPUT = 2,		/* Drain all pending output */
   CUPS_SC_CMD_GET_BIDI = 3,		/* Return bidirectional capabilities */
@@ -131,5 +132,5 @@ extern cups_sc_status_t	cupsSideChannelSNMPWalk(const char *oid, double timeout,
 #endif /* !_CUPS_SIDECHANNEL_H_ */
 
 /*
- * End of "$Id: sidechannel.h 8627 2009-05-13 21:39:17Z mike $".
+ * End of "$Id: sidechannel.h 8827 2009-09-22 23:20:35Z mike $".
  */

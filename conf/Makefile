@@ -1,5 +1,5 @@
 #
-# "$Id: Makefile 8497 2009-04-12 23:04:51Z mike $"
+# "$Id: Makefile 8825 2009-09-22 21:53:31Z mike $"
 #
 #   Configuration file makefile for the Common UNIX Printing System (CUPS).
 #
@@ -90,7 +90,7 @@ install-data:
 	done
 	-if test x$(PAMDIR) != x; then \
 		$(INSTALL_DIR) -m 755 $(BUILDROOT)$(PAMDIR); \
-		if test -r $(BUILDROOT)$(PAMDIR)/cups/$(PAMFILE) ; then \
+		if test -r $(BUILDROOT)$(PAMDIR)/cups ; then \
 			$(INSTALL_DATA) $(PAMFILE) $(BUILDROOT)$(PAMDIR)/cups.N ; \
 		else \
 			$(INSTALL_DATA) $(PAMFILE) $(BUILDROOT)$(PAMDIR)/cups ; \
@@ -139,5 +139,5 @@ uninstall:
 
 
 #
-# End of "$Id: Makefile 8497 2009-04-12 23:04:51Z mike $".
+# End of "$Id: Makefile 8825 2009-09-22 21:53:31Z mike $".
 #

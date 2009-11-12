@@ -1,5 +1,5 @@
 /*
- * "$Id: cgi.h 8243 2009-01-14 00:44:55Z mike $"
+ * "$Id: cgi.h 8859 2009-11-09 23:01:17Z mike $"
  *
  *   CGI support library definitions.
  *
@@ -54,6 +54,7 @@ typedef struct cgi_file_s		/**** Uploaded file data ****/
 extern void		cgiAbort(const char *title, const char *stylesheet,
 			         const char *format, ...);
 extern int		cgiCheckVariables(const char *names);
+extern void		cgiClearVariables(void);
 extern void		*cgiCompileSearch(const char *query);
 extern void		cgiCopyTemplateFile(FILE *out, const char *tmpl);
 extern void		cgiCopyTemplateLang(const char *tmpl);
@@ -101,5 +102,5 @@ extern const char	*cgiText(const char *message);
 #endif /* !_CUPS_CGI_H_ */
 
 /*
- * End of "$Id: cgi.h 8243 2009-01-14 00:44:55Z mike $".
+ * End of "$Id: cgi.h 8859 2009-11-09 23:01:17Z mike $".
  */

@@ -1,5 +1,5 @@
 dnl
-dnl "$Id: cups-common.m4 8783 2009-08-28 17:51:05Z mike $"
+dnl "$Id: cups-common.m4 8841 2009-10-07 16:24:25Z mike $"
 dnl
 dnl   Common configuration stuff for the Common UNIX Printing System (CUPS).
 dnl
@@ -20,7 +20,7 @@ dnl Set the name of the config header file...
 AC_CONFIG_HEADER(config.h)
 
 dnl Version number information...
-CUPS_VERSION=1.4.1
+CUPS_VERSION=1.4.2
 CUPS_REVISION=
 #if test -z "$CUPS_REVISION" -a -d .svn; then
 #	CUPS_REVISION="-r`svnversion . | awk -F: '{print $NF}' | sed -e '1,$s/[[a-zA-Z]]*//g'`"
@@ -266,11 +266,6 @@ if test "x$enable_dbus" != xno; then
 				dbus_message_iter_init_append,
 				AC_DEFINE(HAVE_DBUS_MESSAGE_ITER_INIT_APPEND),,
 				`$PKGCONFIG --libs dbus-1`)
-			if $PKGCONFIG --exists glib-2.0 && $PKGCONFIG --exists dbus-glib-1; then
-				DBUS_NOTIFIER="dbus"
-				DBUS_NOTIFIERLIBS="`$PKGCONFIG --libs glib-2.0` `$PKGCONFIG --libs dbus-glib-1` `$PKGCONFIG --libs dbus-1`"
-				CFLAGS="$CFLAGS `$PKGCONFIG --cflags glib-2.0`"
-			fi
 		else
 			AC_MSG_RESULT(no)
 		fi
@@ -289,7 +284,6 @@ LEGACY_BACKENDS="parallel scsi"
 
 case $uname in
         Darwin*)
-#		FONTS=""
 		LEGACY_BACKENDS=""
                 BACKLIBS="$BACKLIBS -framework IOKit"
                 CUPSDLIBS="$CUPSDLIBS -sectorder __TEXT __text cupsd.order -e start -framework IOKit -framework SystemConfiguration -weak_framework ApplicationServices"
@@ -355,5 +349,5 @@ AC_SUBST(FONTS)
 AC_SUBST(LEGACY_BACKENDS)
 
 dnl
-dnl End of "$Id: cups-common.m4 8783 2009-08-28 17:51:05Z mike $".
+dnl End of "$Id: cups-common.m4 8841 2009-10-07 16:24:25Z mike $".
 dnl
