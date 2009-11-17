@@ -1,3 +1,14 @@
+cups (1.4.2-2) unstable; urgency=low
+
+  * debian/control, debian/rules: Drop dpkg-substvars hack for poppler-utils
+    dependency, since 0.12 is in Debian now. Bump poppler-utils dependency.
+  * debian/rules: Don't fail the build on test suite failure on Ubuntu, since
+    its buildds currently can't resolve their own hostname. (See LP#447919)
+  * poppler is now built on all architectures, so cups will build on amd64,
+    too. (Closes: #556359)
+
+ -- Martin Pitt <mpitt@debian.org>  Tue, 17 Nov 2009 07:13:55 -0600
+
 cups (1.4.2-1) unstable; urgency=low
 
   [ Till Kamppeter ]
