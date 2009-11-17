@@ -29,17 +29,9 @@ DEB_DH_INSTALL_SOURCEDIR := debian/tmp
 ifneq ($(findstring $(DEB_BUILD_ARCH), arm m68k),)
 DEB_MAKE_CHECK_TARGET := check || true
 else
-DEB_MAKE_CHECK_TARGET := check
+DEB_MAKE_CHECK_TARGET := check || [ "`lsb_release -is 2>/dev/null`" = "Ubuntu" ]
 endif
 LDFLAGS := -Wl,--as-needed
-
-# Auto-dependency hack until the new poppler pdftops with -origpagesizes is
-# available in Debian (See https://bugs.freedesktop.org/show_bug.cgi?id=19777)
-ifneq ($(findstring -origpagesizes,$(shell pdftops --help 2>&1)),)
-DEB_DH_GENCONTROL_ARGS += -- "-Vpdftops-Depends=poppler-utils (>= 0.11.0-0ubuntu3)"
-else
-DEB_DH_GENCONTROL_ARGS += -- "-Vpdftops-Depends=poppler-utils | xpdf-utils"
-endif
 
 post-patches::
 	# Add source code of extra filters for PDF printing workflow
