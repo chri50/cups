@@ -1,3 +1,11 @@
+cups (1.4.2-3) unstable; urgency=low
+
+  * pdftopdf, pdftoopvp: Patch to build with poppler 0.12.2, which broke ABI
+    without bumping SONAME or even just shlibs :-(. Thanks to Jonathan Guthrie
+    for the patch! (Closes: #558755)
+
+ -- Martin Pitt <mpitt@debian.org>  Mon, 30 Nov 2009 22:58:04 +0100
+
 cups (1.4.2-2) unstable; urgency=low
 
   * debian/control, debian/rules: Drop dpkg-substvars hack for poppler-utils
