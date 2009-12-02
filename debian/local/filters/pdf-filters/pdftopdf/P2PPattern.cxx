@@ -210,7 +210,7 @@ P2PPattern::OrgPattern::OrgPattern(int orgNumA, int orgGenA, XRef *xref)
   pattern = 0;
   refCount = 1;
   xref->fetch(orgNumA,orgGenA,&orgObj);
-  if ((pattern = GfxPattern::parse(&orgObj, NULL)) == 0) {
+  if ((pattern = GfxPattern::parse(&orgObj)) == 0) {
     error(-1,const_cast<char *>("Bad Pattern"));
   }
 }
@@ -220,7 +220,7 @@ P2PPattern::OrgPattern::OrgPattern(Object *objA)
   pattern = 0;
   refCount = 1;
   objA->copy(&orgObj);
-  if ((pattern = GfxPattern::parse(&orgObj, NULL)) == 0) {
+  if ((pattern = GfxPattern::parse(&orgObj)) == 0) {
     error(-1,const_cast<char *>("Bad Pattern"));
   }
 }
