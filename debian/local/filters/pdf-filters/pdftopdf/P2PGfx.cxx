@@ -699,7 +699,11 @@ void P2PGfx::doImage(Stream *istr)
       }
     }
     if (!obj1.isNull()) {
+#ifdef OLD_CS_PARSE
       colorSpace = GfxColorSpace::parse(&obj1);
+#else
+      colorSpace = GfxColorSpace::parse(&obj1, NULL);
+#endif
     }
     obj1.free();
     if (!colorSpace) {

@@ -91,7 +91,7 @@ oprs/liboprs.a:
 
 pdftoopvp:	pdftoopvp.o $(LIBOBJS) ../cups/$(LIBCUPS) oprs/liboprs.a
 	echo Linking $@...
-	$(CXX) $(LDFLAGS) -o $@ pdftoopvp.o $(LIBOBJS) oprs/liboprs.a $(POPPLER_LIBS) $(FREETYPE_LIBS) $(FONTCONFIG_LIBS) $(CXXLIBS) -ldl
+	$(CXX) $(LDFLAGS) -o $@ pdftoopvp.o $(LIBOBJS) oprs/liboprs.a $(POPPLER_LIBS) $(FREETYPE_LIBS) $(FONTCONFIG_LIBS) $(CXXLIBS) -lpng -ldl
 
 
 #
