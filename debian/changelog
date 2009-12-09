@@ -1,3 +1,21 @@
+cups (1.4.2-5) unstable; urgency=low
+
+  * debian/local/filters/pdf-filters/addtocups,
+    debian/local/filters/pdf-filters/config-scripts/cups-pdf-filters.m4,
+    debian/local/filters/pdf-filters/pdftoopvp/Makefile,
+    debian/local/filters/pdf-filters/pdftoopvp/OPVPOutputDev.cxx,
+    debian/local/filters/pdf-filters/pdftopdf/P2PGfx.cxx,
+    debian/local/filters/pdf-filters/pdftopdf/P2PPattern.cxx: Synced
+    the PDF CUPS filters with upstream. This introduces a change by Koji Otani
+    to also support Poppler 0.12.2 and newer with a change in its API/ABI.
+    This version compiles with both the new and the old Poppler, but it 
+    runs only with the Poppler with which it got compiled. This allows to
+    build this package with both Ubuntu which ships the unchanged upstream
+    version of Poppler 0.12.2 and Debian where the ABI changes got reverted
+    by a Debian-only patch.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 09 Dec 2009 15:04:39 +0100
+
 cups (1.4.2-4) unstable; urgency=high
 
   * High urgency, since this fixes a security issue and should not block the

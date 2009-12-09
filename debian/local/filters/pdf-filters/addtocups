@@ -108,6 +108,9 @@ perl -p -i -e 's:(\#endif\s*\/\*\s*\!_CUPS_CONFIG_H_\s*\*\/):
 /* Old CharCodeToUnicode\:\:mapToUnicode */
 \#undef OLD_MAPTOUNICODE
 
+/* Old GfxColorSpace\:\:parse */
+\#undef OLD_CS_PARSE
+
 /* Poppler uses CMS */
 \#undef USE_CMS
 

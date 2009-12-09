@@ -123,6 +123,12 @@ if grep "mapToUnicode(.*Unicode[ ][ ]*\*u" $POPPLER_SRCDIR/poppler/CharCodeToUni
     AC_DEFINE([OLD_MAPTOUNICODE],,[Old CharCodeToUnicode::mapToUnicode])
 fi
 
+dnl check GfxColorSpace::parse interface
+CPPFLAGS="$CPPFLAGS -I$POPPLER_SRCDIR/poppler"
+if grep "GfxColorSpace *\*parse(Object *\*csObj)" $POPPLER_SRCDIR/poppler/GfxState.h >/dev/null ;then
+    AC_DEFINE([OLD_CS_PARSE],,[Old GfxColorSpace::parse])
+fi
+
 dnl check new GfxFontType
 if grep "fontType1C0T" $POPPLER_SRCDIR/poppler/GfxFont.h >/dev/null ;then
     AC_DEFINE([HAVE_NEW_GFX_FONTTYPE],,[have new GfxFontType])
