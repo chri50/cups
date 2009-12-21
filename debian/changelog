@@ -1,3 +1,18 @@
+cups (1.4.2-6) unstable; urgency=medium
+
+  [ Till Kamppeter ]
+  * Urgency medium, this only fixes a highly visible crash.
+  * debian/local/filters/pdf-filters/pdftopdf/P2PGfx.cxx: Fixed segfault of
+    the pdftopdf filter when the input PDF file has ICC-profile-based color
+    space inline images. Thanks to Koji Otani for the fix. Fixes:
+    LP: #407344, LP: #466119, LP: #467919, LP: #475330, LP: #488752.
+
+  [ Martin Pitt ]
+  * debian/rules: Have a failed test suite fail the build on Ubuntu again,
+    buildds were fixed. (LP: #447919)
+
+ -- Martin Pitt <martin.pitt@ubuntu.com>  Mon, 21 Dec 2009 10:19:44 +0100
+
 cups (1.4.2-5) unstable; urgency=low
 
   * debian/local/filters/pdf-filters/addtocups,
