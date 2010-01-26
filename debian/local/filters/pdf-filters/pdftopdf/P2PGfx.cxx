@@ -110,9 +110,14 @@ P2PGfx::P2PGfx(XRef *xrefA, P2POutputStream *strA,
   str = strA;
   fontResource = fontResourceA;
   resources = resourcesA;
+
+  /* make dummy GfxState for initializing color space */
+  PDFRectangle box;
+  GfxState state(72,72,&box,0,gFalse);
 }
 
 P2PGfx::~P2PGfx() {
+  state.clean();
 }
 
 void P2PGfx::outputContents(Object *obj, P2PResourceMap *mappingTableA,

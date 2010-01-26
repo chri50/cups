@@ -1093,7 +1093,7 @@ static void write_font_str(float x,float y,int fontid, lchar_t *str, int len)
 
     if (otf) { // TODO?
       pdfOut_printf(pdf,"  %.3f Tz\n",
-                        FontScaleX*600.0/(otf_get_width(otf,0)*1000.0/otf->unitsPerEm)*100.0/FontScaleY); // TODO?
+                        FontScaleX*600.0/(otf_get_width(otf,4)*1000.0/otf->unitsPerEm)*100.0/FontScaleY); // TODO?
     } else {
       pdfOut_printf(pdf,"  %.3f Tz\n",
                         FontScaleX*100.0/FontScaleY); // TODO?
