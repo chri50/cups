@@ -146,7 +146,17 @@ public:
 
       getNum(&num,&gen);
       if (num > 0) outputBegin(str);
-      P2POutput::outputObject(&obj,str,xref);
+      if (obj.isRef()) {
+        Object fobj;
+        Ref ref;
+
+        ref = obj.getRef();
+        xref->fetch(ref.num,ref.gen,&fobj);
+        P2POutput::outputObject(&fobj,str,xref);
+        fobj.free();
+      } else {
+        P2POutput::outputObject(&obj,str,xref);
+      }
       str->putchar('\n');
       if (num > 0) outputEnd(str);
     }

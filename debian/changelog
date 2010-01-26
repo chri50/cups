@@ -1,3 +1,26 @@
+cups (1.4.1-5ubuntu2.2) karmic-proposed; urgency=low
+
+  * debian/local/filters/pdf-filters/filter/texttopdf.c: Workaround for
+    bug in ttf-freefont which messed up the output of the texttopdf filter.
+    Thanks to Hin-Tak Leung and Steve White to find this solution (LP: #447961).
+  * debian/local/filters/pdf-filters/pdftopdf/P2PDoc.cxx,
+    debian/local/filters/pdf-filters/pdftopdf/P2PGfx.cxx,
+    debian/local/filters/pdf-filters/pdftopdf/P2PGfx.h,
+    debian/local/filters/pdf-filters/pdftopdf/P2PObject.h,
+    debian/local/filters/pdf-filters/pdftopdf/P2POutput.cxx: Upstream
+    fix from Koji Otani for the following: (1) Fixed some memory leak;
+    (2) pdftopdf now delays fetching a referenced object until when it is
+    written to the output. This fixes memory hogging with N-up output
+    (N pages per sheet). The fix is mainly done by (2). This fixes
+    LP: #508731.
+  * debian/local/filters/pdf-filters/pdftopdf/P2PGfx.cxx: Fixed segfault of
+    the pdftopdf filter when the input PDF file has ICC-profile-based color
+    space inline images. Thanks to Koji Otani for the fix. Fixes LP: #407344.
+  * debian/local/filters/cpdftocps: Fixed turning off duplex via command line
+    (http://bugs.linux-foundation.org/show_bug.cgi?id=397, LP: #487902).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Tue, 26 Jan 2010 12:10:20 +0100
+
 cups (1.4.1-5ubuntu2.1) karmic-security; urgency=low
 
   * SECURITY UPDATE: XSS and CRLF injection in headers
