@@ -116,8 +116,9 @@ EOF
     # symlink snakeoil SSL certificate if present
     if [ -e /etc/ssl/certs/ssl-cert-snakeoil.pem -a \
 	  -e /etc/ssl/private/ssl-cert-snakeoil.key -a \
-	  -n "`getent group ssl-cert`" -a ! -e /etc/cups/ssl/server.crt -a \
-	  ! -e /etc/cups/ssl/server.key ]; then
+	  -n "`getent group ssl-cert`" -a ! -e /etc/cups/ssl/server.crt \
+	  -a ! -e /etc/cups/ssl/server.key -a ! -h /etc/cups/ssl/server.crt \
+	  -a ! -h /etc/cups/ssl/server.key ]; then
 	 ln -s /etc/ssl/certs/ssl-cert-snakeoil.pem /etc/cups/ssl/server.crt
 	 ln -s /etc/ssl/private/ssl-cert-snakeoil.key /etc/cups/ssl/server.key
     fi 

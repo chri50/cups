@@ -68,19 +68,23 @@ private:
       next = 0;
     }
 
+    void clean() {
+        while (next != 0) {
+            restore();
+        }
+    }
+
     ~P2PGfxState() {
-      if (next != 0) {
-	delete next;
-      }
+        clean();
     }
 
     void copy(P2PGfxState *src) {
       font = src->font;
     }
 
-    P2PGfxState(P2PGfxState *src) {
+    P2PGfxState(P2PGfxState *src, P2PGfxState *nextA) {
       copy(src);
-      next = 0;
+      next = nextA;
     }
 
     P2PFontDict *getFont() { return font; }
@@ -90,12 +94,18 @@ private:
     }
 
     void save() {
-      next = new P2PGfxState(this);
+      next = new P2PGfxState(this,next);
     }
+
     void restore() {
       if (next != 0) {
-	copy(next);
-	next = next->next;
+        /* remove next */
+        P2PGfxState *oldNext = next;
+	next = oldNext->next;
+        oldNext->next = 0;
+
+	copy(oldNext);
+        delete oldNext;
       }
     }
   private:

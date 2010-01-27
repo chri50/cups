@@ -117,6 +117,7 @@ P2PGfx::P2PGfx(XRef *xrefA, P2POutputStream *strA,
 }
 
 P2PGfx::~P2PGfx() {
+  state.clean();
 }
 
 void P2PGfx::outputContents(Object *obj, P2PResourceMap *mappingTableA,
