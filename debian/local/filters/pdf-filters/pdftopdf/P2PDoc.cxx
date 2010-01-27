@@ -60,11 +60,6 @@ void P2PDoc::output(P2POutputStream *str, int deviceCopies, bool deviceCollate)
   char	version[10];
   XRef *xref = orgDoc->getXRef();
   Object obj;
-  GBool outputTitle = gFalse;
-  GBool outputCreationDate = gFalse;
-  GBool outputModDate = gFalse;
-  GBool outputTrapped = gFalse;
-  GBool outputProducer = gFalse;
 
   /* get time data */
   curtime = time(NULL);
@@ -102,52 +97,15 @@ void P2PDoc::output(P2POutputStream *str, int deviceCopies, bool deviceCollate)
     num,gen);
 
   str->puts("/Info << ");
-  if (orgDoc->getDocInfo(&obj) == 0) {
-    Dict *info = obj.getDict();
-    int i;
-    int n = info->getLength();
-
-    for (i = 0;i < n;i++) {
-#ifdef HAVE_UGOOSTRING_H
-      char *key = info->getKey(i)->getCString();
-#else
-      char *key = info->getKey(i);
-#endif
-      Object val;
-
-      if (info->getValNF(i,&val) != 0) {
-	P2POutput::outputName(key,str);
-	str->putchar(' ');
-	P2POutput::outputObject(&val,str,xref);
-	if (strcmp(key,"Producer") == 0) {
-	  outputProducer = gTrue;
-	} else if (strcmp(key,"Trapped") == 0) {
-	  outputTrapped = gTrue;
-	} else if (strcmp(key,"ModDate") == 0) {
-	  outputModDate = gTrue;
-	} else if (strcmp(key,"CreationDate") == 0) {
-	  outputCreationDate = gTrue;
-	} else if (strcmp(key,"Title") == 0) {
-	  outputTitle = gTrue;
-	}
-      }
-
-      val.free();
-#ifdef HAVE_UGOOSTRING_H
-      delete[] key;
-#endif
-    }
-    obj.free();
-  }
-  if (!outputTitle && options.title != 0) {
+  if (options.title != 0) {
     str->puts("/Title ");
     P2POutput::outputString(options.title,strlen(options.title),str);
     str->putchar(' ');
   }
-  if (!outputCreationDate) str->printf("/CreationDate (%s) ",curdate);
-  if (!outputModDate) str->printf("/ModDate (%s) ",curdate);
-  if (!outputProducer) str->puts("/Producer (pdftopdf) ");
-  if (!outputTrapped) str->puts("/Trapped /False");
+  str->printf("/CreationDate (%s) ",curdate);
+  str->printf("/ModDate (%s) ",curdate);
+  str->puts("/Producer (pdftopdf) ");
+  str->puts("/Trapped /False");
   str->puts(" >>\n");
 
   str->puts(">>\n");
