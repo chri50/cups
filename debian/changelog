@@ -1,3 +1,20 @@
+cups (1.4.2-8) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * dynamic-default-ripcache-size.dpatch: Fixed the copy of thr new function
+    cupsdDefaultRIPCacheSize() which goes into the cupsfilter utility. It did
+    not return its result and made cupsfilter segfaulting independent of the
+    input (LP: #442283).
+
+  [ Martin Pitt ]
+  * debian/control: Update libjpeg62-dev build/binary dependency to
+    libjpeg8-dev | libjpeg-dev. (Closes: #569230)
+  * Acknowledge Bdale Garbee's NMU to work around bad pdftotext behaviour due
+    to a bug in ttf-freefont. This has been worked around in texttopdf itself
+    in the previous upload (see LP #447961). (Closes: #519643)
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Thu, 11 Feb 2010 14:26:33 +0100
+
 cups (1.4.2-7) unstable; urgency=low
 
   [ Till Kamppeter ]
