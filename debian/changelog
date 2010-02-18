@@ -1,3 +1,15 @@
+cups (1.4.2-9) unstable; urgency=low
+
+  * debian/control: Build depend on virtual libjpeg-dev package only.
+    (Closes: #570381)
+  * debian/cups.init.d: Fix syntax error which caused coldplug_usb_printers()
+    to needlessly run udev-configure-printer for all USB devices.
+  * Bump Standards-Version to 3.8.4 (no changes necesssary).
+  * debian/libcupscgi1.symbols: Add new symbol from 1.4.2.
+  * debian/cups.init.d: Add missing $remote_fs dependency.
+
+ -- Martin Pitt <mpitt@debian.org>  Thu, 18 Feb 2010 15:16:26 +0100
+
 cups (1.4.2-8) unstable; urgency=low
 
   [ Till Kamppeter ]

@@ -1,5 +1,6 @@
 libcupscgi.so.1 libcupscgi1 #MINVER#
  cgiCheckVariables@Base 1.4.0
+ cgiClearVariables@Base 1.4.2
  cgiCompileSearch@Base 1.4.0
  cgiCopyTemplateFile@Base 1.4.0
  cgiCopyTemplateLang@Base 1.4.0
