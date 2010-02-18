@@ -2,8 +2,8 @@ Source: cups
 Priority: optional
 Section: net
 Maintainer: Debian CUPS Maintainers <pkg-cups-devel@lists.alioth.debian.org>
-Standards-Version: 3.8.3
-Build-Depends: libpam0g-dev, libtiff4-dev, libjpeg8-dev | libjpeg-dev, zlib1g-dev,
+Standards-Version: 3.8.4
+Build-Depends: libpam0g-dev, libtiff4-dev, libjpeg-dev, zlib1g-dev,
  libpng12-dev, libslp-dev, libgnutls-dev, libpaper-dev, libldap2-dev,
  debhelper (>= 5.0), po-debconf, cdbs (>= 0.4.27), sharutils, 
  dpatch (>= 1.11), libdbus-1-dev, libkrb5-dev | heimdal-dev,

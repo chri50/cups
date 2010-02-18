@@ -1,8 +1,8 @@
 #! /bin/sh
 ### BEGIN INIT INFO
 # Provides:          cups
-# Required-Start:    $syslog
-# Required-Stop:     $syslog
+# Required-Start:    $syslog $remote_fs
+# Required-Stop:     $syslog $remote_fs
 # Should-Start:      $network avahi
 # Should-Stop:       $network
 # X-Start-Before:    samba
@@ -46,7 +46,7 @@ coldplug_usb_printers() {
     if type udevadm > /dev/null 2>&1 && [ -x /lib/udev/udev-configure-printer ]; then
 	for printer in `udevadm trigger --verbose --dry-run --subsystem-match=usb \
 		--attr-match=bInterfaceClass=07 --attr-match=bInterfaceSubClass=01 2>/dev/null || true; \
-	                udevadm trigger --verbose --dry-run --subsystem-match=usb 
+	                udevadm trigger --verbose --dry-run --subsystem-match=usb \
 		--sysname-match='lp[0-9]*' 2>/dev/null || true`; do
 	    /lib/udev/udev-configure-printer add "${printer#/sys}"
 	done
