@@ -1,3 +1,18 @@
+cups (1.4.1-5ubuntu2.4) karmic-security; urgency=low
+
+  * SECURITY UPDATE: denial of service via use-after-free
+    - debian/patches/CVE-2009-3553.dpatch: check fdptr->use and
+      cupsd_inactive_fds in scheduler/select.c.
+    - CVE-2009-3553
+    - CVE-2010-0302
+  * SECURITY UPDATE: privilege escalation via lppasswd tool
+    - debian/patches/CVE-2010-0393.dpatch: don't allow environment
+      variables to override directories in cups/globals.c and
+      systemv/lppasswd.c.
+    - CVE-2010-0393
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Thu, 25 Feb 2010 10:42:36 -0500
+
 cups (1.4.1-5ubuntu2.2) karmic-proposed; urgency=low
 
   * debian/local/filters/pdf-filters/filter/texttopdf.c: Workaround for
