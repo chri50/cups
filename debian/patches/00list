@@ -8,6 +8,7 @@ CVE-2008-3640_texttops_overflow.dpatch
 CVE-2009-0163_tiff_read_overflow.dpatch
 CVE-2009-0949.dpatch
 CVE-2009-2820.dpatch
+CVE-2010-0393.dpatch
 
 # patches accepted and committed upstream
 freebsd.dpatch
