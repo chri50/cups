@@ -13,6 +13,7 @@ quiesce-bonjour-warning.dpatch
 rootbackends-worldreadable.dpatch
 dnssd-avahi.dpatch
 usb-backend-both-usblp-and-libusb.dpatch
+CVE-2010-0393.dpatch
 
 # patches which should go upstream
 drop_unnecessary_dependencies.dpatch

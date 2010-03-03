@@ -1,3 +1,12 @@
+cups (1.4.2-9.1) unstable; urgency=high
+
+  * Non-maintainer upload by the Security Team.
+  * Fix loading of localized message string from arbitrary files
+    through exporting the LOCALEDIR environment variable when lppasswd
+    has a setuid bit set (CVE-2010-0393).
+
+ -- Nico Golde <nion@debian.org>  Wed, 03 Mar 2010 21:28:13 +0100
+
 cups (1.4.2-9) unstable; urgency=low
 
   * debian/control: Build depend on virtual libjpeg-dev package only.
