@@ -1,3 +1,10 @@
+cups (1.3.9-17ubuntu3.7) jaunty-proposed; urgency=low
+
+   * debian/patches/fix-lpstat.dpatch: Fix lpstat to work correctly against
+     CUPS 1.4 servers. (LP: #497606)
+
+ -- Evan Broder <broder@mit.edu>  Wed, 03 Mar 2010 20:29:00 -0500
+
 cups (1.3.9-17ubuntu3.6) jaunty-security; urgency=low
 
   * SECURITY UPDATE: denial of service via use-after-free

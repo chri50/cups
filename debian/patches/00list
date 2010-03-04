@@ -10,6 +10,7 @@ hpgl-regression.dpatch
 runloop-backchannel-eof-spin.dpatch
 png-image-int-overflow.dpatch
 CVE-2008-5183.dpatch
+fix-lpstat.dpatch
 
 # patches sent upstream
 removecvstag.dpatch
