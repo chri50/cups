@@ -268,7 +268,9 @@ int main(int argc, char *argv[]) {
   int rowpad;
   GBool reverseVideo;
 
+#ifndef __arm__
   setErrorFunction(::myErrorFun);
+#endif
 #ifdef GLOBALPARAMS_HAS_A_ARG
   globalParams = new GlobalParams(0);
 #else

@@ -221,7 +221,9 @@ int main(int argc, char *argv[]) {
   GooString colorProfilePath("opvp.icc");
 
   exitCode = 99;
+#ifndef __arm__
   setErrorFunction(::myErrorFun);
+#endif
 
   // parse args
   int num_options;

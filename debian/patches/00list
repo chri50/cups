@@ -4,7 +4,6 @@
 select_use_after_free.dpatch
 
 # patches sent upstream
-removecvstag.dpatch
 pidfile.dpatch
 ppd-poll-with-client-conf.dpatch
 # no answer yet, po4a might not be appropriate
@@ -13,8 +12,11 @@ quiesce-bonjour-warning.dpatch
 rootbackends-worldreadable.dpatch
 dnssd-avahi.dpatch
 usb-backend-both-usblp-and-libusb.dpatch
+CVE-2010-0393.dpatch
 
 # patches which should go upstream
+removecvstag.dpatch
+no-conffile-timestamp.dpatch
 drop_unnecessary_dependencies.dpatch
 manual-section-for-drv.dpatch
 reactivate_recommended_driver.dpatch
