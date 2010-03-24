@@ -1,3 +1,33 @@
+cups (1.4.2-10) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/local/filters/pdf-filters/pdftopdf/P2PDoc.cxx: Output of the
+    pdftopdf filter was not completely complying with the Adobe specs for PDF.
+    Thanks to Duncan Lock for finding and reporting the bug and supplying a
+    fix (LP: #544636).
+
+  [ Martin Pitt ]
+  * Add no-conffile-timestamp.dpatch: Disable time stamps in conffiles, to
+    avoid ever-changing files in /etc. Thanks Joey Hess!
+    (Rejected upstream, STR#3067; Closes: #549673)
+  * CVE-2010-0393.dpatch: Replace with patch from upstream, and tag
+    header. (Closes: #572940)
+  * debian/local/filters/pdf-filters/*: Disable call of setErrorFunction() on
+    armel for now, since armel's libpoppler is broken. This works around
+    #575262, so that cups can finally go into testing again (which is more
+    than overdue).
+
+ -- Martin Pitt <mpitt@debian.org>  Wed, 24 Mar 2010 16:50:56 +0100
+
+cups (1.4.2-9.1) unstable; urgency=high
+
+  * Non-maintainer upload by the Security Team.
+  * Fix loading of localized message string from arbitrary files
+    through exporting the LOCALEDIR environment variable when lppasswd
+    has a setuid bit set (CVE-2010-0393).
+
+ -- Nico Golde <nion@debian.org>  Wed, 03 Mar 2010 21:28:13 +0100
+
 cups (1.4.2-9) unstable; urgency=low
 
   * debian/control: Build depend on virtual libjpeg-dev package only.

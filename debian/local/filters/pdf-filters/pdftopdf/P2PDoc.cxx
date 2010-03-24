@@ -60,11 +60,30 @@ void P2PDoc::output(P2POutputStream *str, int deviceCopies, bool deviceCollate)
   char	version[10];
   XRef *xref = orgDoc->getXRef();
   Object obj;
+  Dict documentInfo(xref);
 
   /* get time data */
   curtime = time(NULL);
   curtm = localtime(&curtime);
   strftime(curdate, sizeof(curdate),"D:%Y%m%d%H%M%S%z", curtm);
+
+  /*
+   *  fill document info 
+   */
+  if (options.title != 0) {
+    documentInfo.add(strdup("Title"),(new Object())->initString(new GooString(options.title)));
+  }
+  documentInfo.add(strdup("CreationDate"),(new Object())->initString(new GooString(curdate)));
+  documentInfo.add(strdup("ModDate"),(new Object())->initString(new GooString(curdate)));
+  documentInfo.add(strdup("Producer"),(new Object())->initString(new GooString("pdftopdf")));
+
+  /* Hack to produce "/False". Object::initBool results wrongly in "false" */
+  documentInfo.add(strdup("Trapped"),(new Object())->initName("False"));
+
+  obj.initDict(&documentInfo);
+  P2PObj object(&obj);
+  P2PXRef::put(&object);
+
 
   /* output header */
   snprintf(version,sizeof(version),"%%PDF-%d.%d\n",
@@ -96,17 +115,8 @@ void P2PDoc::output(P2POutputStream *str, int deviceCopies, bool deviceCollate)
   str->printf("<< /Size %d /Root %d %d R \n",P2PXRef::getNObjects(),
     num,gen);
 
-  str->puts("/Info << ");
-  if (options.title != 0) {
-    str->puts("/Title ");
-    P2POutput::outputString(options.title,strlen(options.title),str);
-    str->putchar(' ');
-  }
-  str->printf("/CreationDate (%s) ",curdate);
-  str->printf("/ModDate (%s) ",curdate);
-  str->puts("/Producer (pdftopdf) ");
-  str->puts("/Trapped /False");
-  str->puts(" >>\n");
+  object.getNum(&num,&gen);
+  str->printf("   /Info %d %d R\n",num,gen);
 
   str->puts(">>\n");
   str->puts("startxref\n");

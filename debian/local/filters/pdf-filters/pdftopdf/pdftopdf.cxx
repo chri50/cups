@@ -585,7 +585,9 @@ int main(int argc, char *argv[]) {
   P2PDoc *p2pdoc;
   P2POutputStream *str;
 
+#ifndef __arm__
   setErrorFunction(::myErrorFun);
+#endif
 #ifdef GLOBALPARAMS_HAS_A_ARG
   globalParams = new GlobalParams(0);
 #else
