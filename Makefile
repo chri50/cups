@@ -1,9 +1,9 @@
 #
-# "$Id: Makefile 8735 2009-07-01 04:01:31Z mike $"
+# "$Id: Makefile 8959 2010-01-18 22:10:29Z mike $"
 #
 #   Top-level Makefile for the Common UNIX Printing System (CUPS).
 #
-#   Copyright 2007-2009 by Apple Inc.
+#   Copyright 2007-2010 by Apple Inc.
 #   Copyright 1997-2007 by Easy Software Products, all rights reserved.
 #
 #   These coded instructions, statements, and computer programs are the
@@ -139,13 +139,15 @@ depend:
 
 #
 # Run the clang.llvm.org static code analysis tool on the C sources.
+# (at least checker-231 is required for scan-build to work this way)
 #
 
-.PHONY: clang
+.PHONY: clang clang-changes
 clang:
 	$(RM) -r clang
-	scan-build -V -k -o `pwd`/clang $(MAKE) $(MFLAGS) \
-		CC=ccc-analyzer CXX=ccc-analyzer clean all
+	scan-build -V -k -o `pwd`/clang $(MAKE) $(MFLAGS) clean all
+clang-changes:
+	scan-build -V -k -o `pwd`/clang $(MAKE) $(MFLAGS) all
 
 
 #
@@ -431,5 +433,5 @@ dist:	all
 
 
 #
-# End of "$Id: Makefile 8735 2009-07-01 04:01:31Z mike $".
+# End of "$Id: Makefile 8959 2010-01-18 22:10:29Z mike $".
 #

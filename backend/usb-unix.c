@@ -1,11 +1,11 @@
 /*
- * "$Id: usb-unix.c 8819 2009-09-22 18:47:36Z mike $"
+ * "$Id: usb-unix.c 8912 2009-12-08 02:13:42Z mike $"
  *
  *   USB port backend for the Common UNIX Printing System (CUPS).
  *
  *   This file is included from "usb.c" when compiled on UNIX/Linux.
  *
- *   Copyright 2007-2008 by Apple Inc.
+ *   Copyright 2007-2009 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -187,10 +187,10 @@ print_device(const char *uri,		/* I - Device URI */
     * select() or poll(), so we can't support the sidechannel either...
     */
 
-    tbytes = backendRunLoop(print_fd, device_fd, -1, NULL, use_bc, NULL);
+    tbytes = backendRunLoop(print_fd, device_fd, -1, NULL, use_bc, 1, NULL);
 
 #else
-    tbytes = backendRunLoop(print_fd, device_fd, -1, NULL, use_bc, side_cb);
+    tbytes = backendRunLoop(print_fd, device_fd, -1, NULL, use_bc, 1, side_cb);
 #endif /* __sun */
 
     if (print_fd != 0 && tbytes >= 0)
@@ -627,5 +627,5 @@ side_cb(int         print_fd,		/* I - Print file */
 
 
 /*
- * End of "$Id: usb-unix.c 8819 2009-09-22 18:47:36Z mike $".
+ * End of "$Id: usb-unix.c 8912 2009-12-08 02:13:42Z mike $".
  */

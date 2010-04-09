@@ -1,5 +1,5 @@
 /*
- * "$Id: network.c 8807 2009-08-31 18:45:43Z mike $"
+ * "$Id: network.c 8896 2009-11-20 01:27:57Z mike $"
  *
  *   Common network APIs for the Common UNIX Printing System (CUPS).
  *
@@ -170,9 +170,13 @@ backendNetworkSideCB(
 
 	        case CUPS_ASN1_BIT_STRING :
 	        case CUPS_ASN1_OCTET_STRING :
-		    i = (int)(sizeof(data) - (dataptr - data));
-		    if (packet.object_value.string.num_bytes < i)
+		    if (packet.object_value.string.num_bytes < 0)
+		      i = 0;
+		    else if (packet.object_value.string.num_bytes < 
+			     (sizeof(data) - (dataptr - data)))
 		      i = packet.object_value.string.num_bytes;
+		    else
+		      i = (int)(sizeof(data) - (dataptr - data));
 
 		    memcpy(dataptr, packet.object_value.string.bytes, i);
 
@@ -286,5 +290,5 @@ backendNetworkSideCB(
 
 
 /*
- * End of "$Id: network.c 8807 2009-08-31 18:45:43Z mike $".
+ * End of "$Id: network.c 8896 2009-11-20 01:27:57Z mike $".
  */

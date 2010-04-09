@@ -1,9 +1,9 @@
 /*
- * "$Id: admin.c 8859 2009-11-09 23:01:17Z mike $"
+ * "$Id: admin.c 8952 2010-01-15 02:10:32Z mike $"
  *
  *   Administration CGI for the Common UNIX Printing System (CUPS).
  *
- *   Copyright 2007-2009 by Apple Inc.
+ *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -52,8 +52,7 @@
  * Local globals...
  */
 
-static int	current_device;		/* Current device for add/modify */
-static time_t	last_device_time;	/* Last update time for device list */
+static int	current_device = 0;	/* Current device shown */
 
 
 /*
@@ -293,6 +292,21 @@ choose_device_cb(
     const char *title)			/* I - Page title */
 {
  /*
+  * For modern browsers, start a multi-part page so we can show that something
+  * is happening.  Non-modern browsers just get everything at the end...
+  */
+
+  if (current_device == 0 && cgiSupportsMultipart())
+  {
+    cgiStartMultipart();
+    cgiStartHTML(title);
+    cgiCopyTemplateLang("choose-device.tmpl");
+    cgiEndHTML();
+    fflush(stdout);
+  }
+
+
+ /*
   * Add the device to the array...
   */
 
@@ -304,23 +318,6 @@ choose_device_cb(
   cgiSetArray("device_location", current_device, device_location);
 
   current_device ++;
-
-  if (time(NULL) > last_device_time && cgiSupportsMultipart())
-  {
-   /*
-    * Update the page...
-    */
-
-    if (!last_device_time)
-      cgiStartMultipart();
-
-    cgiStartHTML(title);
-    cgiCopyTemplateLang("choose-device.tmpl");
-    cgiEndHTML();
-    fflush(stdout);
-
-    time(&last_device_time);
-  }
 }
 
 
@@ -972,7 +969,8 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
 	  if (isalnum(*uriptr & 255) || *uriptr == '_' || *uriptr == '-' ||
 	      *uriptr == '.')
 	    *tptr++ = *uriptr;
-	  else if ((*uriptr == ' ' || *uriptr == '/') && tptr[-1] != '_')
+	  else if ((*uriptr == ' ' || *uriptr == '/') && tptr > template &&
+	           tptr[-1] != '_')
 	    *tptr++ = '_';
 	  else if (*uriptr == '?' || *uriptr == '(')
 	    break;
@@ -1001,31 +999,28 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
     }
 
    /*
-    * Scan for devices for up to 30 seconds, updating the page as we find
-    * them...
+    * Scan for devices for up to 30 seconds...
     */
 
     fputs("DEBUG: Getting list of devices...\n", stderr);
 
-    last_device_time = 0;
-    current_device   = 0;
+    current_device = 0;
     if (cupsGetDevices(http, 30, CUPS_INCLUDE_ALL, CUPS_EXCLUDE_NONE,
                        (cups_device_cb_t)choose_device_cb,
 		       (void *)title) == IPP_OK)
     {
       fputs("DEBUG: Got device list!\n", stderr);
 
-      if (!cgiSupportsMultipart())
-      {
-       /*
-        * Non-modern browsers that don't support multi-part documents get
-	* everything at the end...
-	*/
+      if (cgiSupportsMultipart())
+        cgiStartMultipart();
 
-	cgiStartHTML(title);
-	cgiCopyTemplateLang("choose-device.tmpl");
-	cgiEndHTML();
-      }
+      cgiSetVariable("CUPS_GET_DEVICES_DONE", "1");
+      cgiStartHTML(title);
+      cgiCopyTemplateLang("choose-device.tmpl");
+      cgiEndHTML();
+
+      if (cgiSupportsMultipart())
+        cgiEndMultipart();
     }
     else
     {
@@ -1046,16 +1041,6 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
         return;
       }
     }
-
-   /*
-    * Show the final selection page...
-    */
-
-    cgiSetVariable("CUPS_GET_DEVICES_DONE", "1");
-    cgiStartHTML(title);
-    cgiCopyTemplateLang("choose-device.tmpl");
-    cgiEndHTML();
-    cgiEndMultipart();
   }
   else if (strchr(var, '/') == NULL)
   {
@@ -1121,6 +1106,11 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
         if ((attr = ippFindAttribute(oldinfo, "printer-location",
 	                             IPP_TAG_TEXT)) != NULL)
           cgiSetVariable("PRINTER_LOCATION", attr->values[0].string.text);
+
+	if ((attr = ippFindAttribute(oldinfo, "printer-is-shared",
+				     IPP_TAG_BOOLEAN)) != NULL)
+	  cgiSetVariable("PRINTER_IS_SHARED",
+			 attr->values[0].boolean ? "1" : "0");
       }
 
       cgiCopyTemplateLang("modify-printer.tmpl");
@@ -1256,7 +1246,7 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
       * Got the list of PPDs, see if the user has selected a make...
       */
 
-      if (cgiSetIPPVars(response, NULL, NULL, NULL, 0) == 0)
+      if (cgiSetIPPVars(response, NULL, NULL, NULL, 0) == 0 && !modify)
       {
        /*
         * No PPD files with this make, try again with all makes...
@@ -1292,8 +1282,11 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
 	*/
 
         cgiStartHTML(title);
-	cgiSetVariable("CURRENT_MAKE_AND_MODEL",
-	               cgiGetArray("PPD_MAKE_AND_MODEL", 0));
+	if (!cgiGetVariable("PPD_MAKE"))
+	  cgiSetVariable("PPD_MAKE", cgiGetVariable("CURRENT_MAKE"));
+	if (!modify)
+	  cgiSetVariable("CURRENT_MAKE_AND_MODEL",
+	                 cgiGetArray("PPD_MAKE_AND_MODEL", 0));
 	cgiCopyTemplateLang("choose-model.tmpl");
         cgiEndHTML();
       }
@@ -1585,7 +1578,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
 #ifdef HAVE_GSSAPI
     char		default_auth_type[255];
 					/* DefaultAuthType value */
-    const char		*val;		/* Setting value */ 
+    const char		*val;		/* Setting value */
 #endif /* HAVE_GSSAPI */
 
 
@@ -1657,7 +1650,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
 	  strcat(local_protocols, "slp");
       }
 #endif /* HAVE_SLP */
-      
+
       if (cgiGetVariable("BROWSE_REMOTE_CUPS"))
 	strcpy(remote_protocols, "cups");
       else
@@ -1910,7 +1903,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
       cgiSetVariable("ERROR", strerror(errno));
       cgiCopyTemplateLang("error.tmpl");
       cgiEndHTML();
-      
+
       perror(tempfile);
       return;
     }
@@ -1922,7 +1915,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
       cgiSetVariable("ERROR", strerror(errno));
       cgiCopyTemplateLang("error.tmpl");
       cgiEndHTML();
-      
+
       perror(tempfile);
       close(tempfd);
       unlink(tempfile);
@@ -3312,11 +3305,16 @@ do_set_options(http_t *http,		/* I - HTTP connection */
     for (option = ppdFirstOption(ppd);
          option;
 	 option = ppdNextOption(ppd))
+    {
       if ((var = cgiGetVariable(option->keyword)) != NULL)
       {
 	have_options = 1;
 	ppdMarkOption(ppd, option->keyword, var);
+	fprintf(stderr, "DEBUG: Set %s to %s...\n", option->keyword, var);
       }
+      else
+        fprintf(stderr, "DEBUG: Didn't find %s...\n", option->keyword);
+    }
   }
 
   if (!have_options || ppdConflicts(ppd))
@@ -3337,7 +3335,7 @@ do_set_options(http_t *http,		/* I - HTTP connection */
           ((ppdattr = ppdFindAttr(ppd, "cupsCommands", NULL)) != NULL &&
            ppdattr->value && strstr(ppdattr->value, "AutoConfigure")))
         cgiSetVariable("HAVE_AUTOCONFIGURE", "YES");
-      else 
+      else
       {
         for (i = 0; i < ppd->num_filters; i ++)
 	  if (!strncmp(ppd->filters[i], "application/vnd.cups-postscript", 31))
@@ -3423,6 +3421,16 @@ do_set_options(http_t *http,		/* I - HTTP connection */
 	    {
 	      cgiSetArray("ckeyword", k, option->keyword);
 	      cgiSetArray("ckeytext", k, option->text);
+
+	      for (m = 0; m < option->num_choices; m ++)
+	      {
+	        if (option->choices[m].marked)
+	        {
+	          cgiSetArray("cchoice", k, option->choices[m].text);
+	          break;
+	        }
+              }
+
 	      k ++;
 	    }
 
@@ -3441,7 +3449,7 @@ do_set_options(http_t *http,		/* I - HTTP connection */
 	  cgiSetVariable("GROUP", group->text);
 
 	cgiCopyTemplateLang("option-header.tmpl");
-	
+
 	for (j = group->num_options, option = group->options;
 	     j > 0;
 	     j --, option ++)
@@ -4085,7 +4093,7 @@ get_option_value(
 
     snprintf(buffer, bufsize, "Custom.%gx%g%s", width, length, uval);
   }
-  else if (cupsArrayCount(coption->params) == 1) 
+  else if (cupsArrayCount(coption->params) == 1)
   {
     cparam = ppdFirstCustomParam(coption);
     snprintf(keyword, sizeof(keyword), "%s.%s", coption->keyword, cparam->name);
@@ -4289,5 +4297,5 @@ get_points(double     number,		/* I - Original number */
 
 
 /*
- * End of "$Id: admin.c 8859 2009-11-09 23:01:17Z mike $".
+ * End of "$Id: admin.c 8952 2010-01-15 02:10:32Z mike $".
  */

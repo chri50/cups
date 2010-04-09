@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# "$Id: run-stp-tests.sh 8783 2009-08-28 17:51:05Z mike $"
+# "$Id: run-stp-tests.sh 8914 2009-12-09 06:10:22Z mike $"
 #
 #   Perform the complete set of IPP compliance tests specified in the
 #   CUPS Software Test Plan.
@@ -275,11 +275,6 @@ ln -s $root/data/*.h /tmp/cups-$user/share/ppdc
 ln -s $root/data/*.defs /tmp/cups-$user/share/ppdc
 ln -s $root/templates /tmp/cups-$user/share
 
-if test $ssltype != 0; then
-	mkdir $root/ssl
-	cp server.* $root/ssl
-fi
-
 #
 # Mac OS X filters and configuration files...
 #
@@ -437,6 +432,7 @@ fi
 
 export SHLIB_PATH
 
+CUPS_DISABLE_APPLE_DEFAULT=yes; export CUPS_DISABLE_APPLE_DEFAULT
 CUPS_SERVER=localhost:8631; export CUPS_SERVER
 CUPS_SERVERROOT=/tmp/cups-$user; export CUPS_SERVERROOT
 CUPS_STATEDIR=/tmp/cups-$user; export CUPS_STATEDIR
@@ -844,5 +840,5 @@ if test $fail != 0; then
 fi
 
 #
-# End of "$Id: run-stp-tests.sh 8783 2009-08-28 17:51:05Z mike $"
+# End of "$Id: run-stp-tests.sh 8914 2009-12-09 06:10:22Z mike $"
 #

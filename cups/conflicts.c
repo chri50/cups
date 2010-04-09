@@ -1,5 +1,5 @@
 /*
- * "$Id: conflicts.c 8660 2009-05-18 22:55:15Z mike $"
+ * "$Id: conflicts.c 8912 2009-12-08 02:13:42Z mike $"
  *
  *   Option marking routines for the Common UNIX Printing System (CUPS).
  *
@@ -583,8 +583,12 @@ ppdConflicts(ppd_file_t *ppd)		/* I - PPD to check */
   * Clear all conflicts...
   */
 
+  cupsArraySave(ppd->options);
+
   for (o = ppdFirstOption(ppd); o; o = ppdNextOption(ppd))
     o->conflicted = 0;
+
+  cupsArrayRestore(ppd->options);
 
  /*
   * Test for conflicts...
@@ -641,7 +645,7 @@ ppdInstallableConflict(
   DEBUG_printf(("2ppdInstallableConflict(ppd=%p, option=\"%s\", choice=\"%s\")",
                 ppd, option, choice));
 
- /* 
+ /*
   * Range check input...
   */
 
@@ -1139,5 +1143,5 @@ ppd_test_constraints(
 
 
 /*
- * End of "$Id: conflicts.c 8660 2009-05-18 22:55:15Z mike $".
+ * End of "$Id: conflicts.c 8912 2009-12-08 02:13:42Z mike $".
  */

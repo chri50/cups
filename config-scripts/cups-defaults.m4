@@ -1,5 +1,5 @@
 dnl
-dnl "$Id: cups-defaults.m4 8841 2009-10-07 16:24:25Z mike $"
+dnl "$Id: cups-defaults.m4 8929 2009-12-15 22:40:37Z mike $"
 dnl
 dnl   Default cupsd configuration settings for the Common UNIX Printing System
 dnl   (CUPS).
@@ -208,6 +208,10 @@ AC_ARG_WITH(cups_user, [  --with-cups-user        set default user for CUPS],
 		AC_MSG_RESULT(no password file, using "$CUPS_USER")
 	fi)
 
+if test "x$CUPS_USER" = "xroot" -o "x$CUPS_USER" = "x0"; then
+	AC_MSG_ERROR([The default user for CUPS cannot be root!])
+fi
+
 AC_ARG_WITH(cups_group, [  --with-cups-group       set default group for CUPS],
 	CUPS_GROUP="$withval",
 	AC_MSG_CHECKING(for default print group)
@@ -237,6 +241,10 @@ AC_ARG_WITH(cups_group, [  --with-cups-group       set default group for CUPS],
 		CUPS_GROUP="nobody"
 		AC_MSG_RESULT(no group file, using "$CUPS_GROUP")
 	fi)
+
+if test "x$CUPS_GROUP" = "xroot" -o "x$CUPS_GROUP" = "xwheel" -o "x$CUPS_GROUP" = "x0"; then
+	AC_MSG_ERROR([The default group for CUPS cannot be root!])
+fi
 
 AC_ARG_WITH(system_groups, [  --with-system-groups    set default system groups for CUPS],
 	CUPS_SYSTEM_GROUPS="$withval",
@@ -269,8 +277,13 @@ AC_ARG_WITH(system_groups, [  --with-system-groups    set default system groups 
 		fi
 	fi)
 
-
 CUPS_PRIMARY_SYSTEM_GROUP="`echo $CUPS_SYSTEM_GROUPS | awk '{print $1}'`"
+
+for group in $CUPS_SYSTEM_GROUPS; do
+	if test "x$CUPS_GROUP" = "x$group"; then
+		AC_MSG_ERROR([The default system groups cannot contain the default CUPS group!])
+	fi
+done
 
 AC_SUBST(CUPS_USER)
 AC_SUBST(CUPS_GROUP)
@@ -435,5 +448,5 @@ AC_SUBST(BANNERTOPS)
 AC_SUBST(TEXTTOPS)
 
 dnl
-dnl End of "$Id: cups-defaults.m4 8841 2009-10-07 16:24:25Z mike $".
+dnl End of "$Id: cups-defaults.m4 8929 2009-12-15 22:40:37Z mike $".
 dnl

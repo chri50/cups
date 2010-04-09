@@ -1,5 +1,5 @@
 /*
- * "$Id: testfile.c 8771 2009-08-20 18:14:49Z mike $"
+ * "$Id: testfile.c 8938 2009-12-18 23:52:01Z mike $"
  *
  *   File test program for the Common UNIX Printing System (CUPS).
  *
@@ -375,9 +375,9 @@ random_tests(void)
     fputs("cupsFileSeek(), cupsFileRead(): ", stdout);
 
     for (num_records = (pass + 1) * 256, count = (pass + 1) * 256,
-             record = rand() % num_records;
+             record = CUPS_RAND() % num_records;
          count > 0;
-	 count --, record = (record + (rand() & 31) - 16 + num_records) %
+	 count --, record = (record + (CUPS_RAND() & 31) - 16 + num_records) %
 	                    num_records)
     {
      /*
@@ -471,14 +471,10 @@ read_write_tests(int compression)	/* I - Use compression? */
   * Initialize the write buffer with random data...
   */
 
-#ifdef WIN32
-  srand((unsigned)time(NULL));
-#else
-  srand(time(NULL));
-#endif /* WIN32 */
+  CUPS_SRAND(time(NULL));
 
   for (i = 0; i < (int)sizeof(writebuf); i ++)
-    writebuf[i] = rand();
+    writebuf[i] = CUPS_RAND();
 
  /*
   * cupsFileOpen(write)
@@ -823,5 +819,5 @@ read_write_tests(int compression)	/* I - Use compression? */
 
 
 /*
- * End of "$Id: testfile.c 8771 2009-08-20 18:14:49Z mike $".
+ * End of "$Id: testfile.c 8938 2009-12-18 23:52:01Z mike $".
  */

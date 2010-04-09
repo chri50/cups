@@ -1,5 +1,5 @@
 /*
- * "$Id: lpd.c 8731 2009-06-26 18:26:36Z mike $"
+ * "$Id: lpd.c 8938 2009-12-18 23:52:01Z mike $"
  *
  *   Line Printer Daemon backend for the Common UNIX Printing System (CUPS).
  *
@@ -447,7 +447,8 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
 
     _cupsLangPuts(stderr, _("INFO: Copying print data...\n"));
 
-    backendRunLoop(-1, fd, snmp_fd, &(addrlist->addr), 0, backendNetworkSideCB);
+    backendRunLoop(-1, fd, snmp_fd, &(addrlist->addr), 0, 0, 
+		   backendNetworkSideCB);
 
     if (snmp_fd >= 0)
       _cupsSNMPClose(snmp_fd);
@@ -797,7 +798,6 @@ lpd_queue(const char *hostname,		/* I - Host to connect to */
 
       error = errno;
       close(fd);
-      fd = -1;
 
       if (addr->next)
         continue;
@@ -1376,5 +1376,5 @@ sigterm_handler(int sig)		/* I - Signal */
 
 
 /*
- * End of "$Id: lpd.c 8731 2009-06-26 18:26:36Z mike $".
+ * End of "$Id: lpd.c 8938 2009-12-18 23:52:01Z mike $".
  */

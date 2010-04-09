@@ -1,5 +1,5 @@
 /*
- * "$Id: lpq.c 8406 2009-03-05 18:42:58Z mike $"
+ * "$Id: lpq.c 8929 2009-12-15 22:40:37Z mike $"
  *
  *   "lpq" command for the Common UNIX Printing System (CUPS).
  *
@@ -340,7 +340,18 @@ show_jobs(const char *command,		/* I - Command name */
   char		resource[1024];		/* Resource string */
   char		rankstr[255];		/* Rank string */
   char		namestr[1024];		/* Job name string */
-  static const char *ranks[10] =	/* Ranking strings */
+  static const char * const jobattrs[] =/* Job attributes we want to see */
+		{
+		  "copies",
+		  "job-id",
+		  "job-k-octets",
+		  "job-name",
+		  "job-originating-user-name",
+		  "job-printer-uri",
+		  "job-priority",
+		  "job-state"
+		};
+  static const char * const ranks[10] =	/* Ranking strings */
 		{
 		  "th",
 		  "st",
@@ -368,6 +379,7 @@ show_jobs(const char *command,		/* I - Command name */
   *    attributes-charset
   *    attributes-natural-language
   *    job-uri or printer-uri
+  *    requested-attributes
   */
 
   request = ippNewRequest(id ? IPP_GET_JOB_ATTRIBUTES : IPP_GET_JOBS);
@@ -396,6 +408,10 @@ show_jobs(const char *command,		/* I - Command name */
                  "requesting-user-name", NULL, user);
     ippAddBoolean(request, IPP_TAG_OPERATION, "my-jobs", 1);
   }
+
+  ippAddStrings(request, IPP_TAG_OPERATION, IPP_TAG_KEYWORD,
+                "requested-attributes",
+                (int)(sizeof(jobattrs) / sizeof(jobattrs[0])), NULL, jobattrs);
 
  /*
   * Do the request and get back a response...
@@ -666,5 +682,5 @@ usage(void)
 
 
 /*
- * End of "$Id: lpq.c 8406 2009-03-05 18:42:58Z mike $".
+ * End of "$Id: lpq.c 8929 2009-12-15 22:40:37Z mike $".
  */
