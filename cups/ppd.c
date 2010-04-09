@@ -1,5 +1,5 @@
 /*
- * "$Id: ppd.c 8671 2009-05-22 15:41:09Z mike $"
+ * "$Id: ppd.c 8900 2009-11-20 17:06:25Z mike $"
  *
  *   PPD file routines for the Common UNIX Printing System (CUPS).
  *
@@ -352,11 +352,13 @@ ppdErrorString(ppd_status_t status)	/* I - PPD status */
 		  _("Illegal option keyword string"),
 		  _("Illegal translation string"),
 		  _("Illegal whitespace character"),
-		  _("Bad custom parameter")
+		  _("Bad custom parameter"),
+		  _("Missing option keyword"),
+		  _("Bad value string")
 		};
 
 
-  if (status < PPD_OK || status > PPD_ILLEGAL_WHITESPACE)
+  if (status < PPD_OK || status >= PPD_MAX_STATUS)
     return (_cupsLangString(cupsLangDefault(), _("Unknown")));
   else
     return (_cupsLangString(cupsLangDefault(), messages[status]));
@@ -1177,6 +1179,37 @@ ppdOpen2(cups_file_t *fp)		/* I - File to read from */
     }
     else if (!strcmp(keyword, "JobPatchFile"))
     {
+     /*
+      * CUPS STR #3421: Check for "*JobPatchFile: int: string"
+      */
+
+      if (isdigit(*string & 255))
+      {
+        for (sptr = string + 1; isdigit(*sptr & 255); sptr ++);
+
+        if (*sptr == ':')
+        {
+         /*
+          * Found "*JobPatchFile: int: string"...
+          */
+
+          cg->ppd_status = PPD_BAD_VALUE;
+
+	  goto error;
+        }
+      }
+
+      if (!name[0])
+      {
+       /*
+        * Found "*JobPatchFile: string"...
+        */
+
+        cg->ppd_status = PPD_MISSING_OPTION_KEYWORD;
+
+	goto error;
+      }
+
       if (ppd->patches == NULL)
         ppd->patches = strdup(string);
       else
@@ -3114,5 +3147,5 @@ ppd_read(cups_file_t    *fp,		/* I - File to read from */
 
 
 /*
- * End of "$Id: ppd.c 8671 2009-05-22 15:41:09Z mike $".
+ * End of "$Id: ppd.c 8900 2009-11-20 17:06:25Z mike $".
  */

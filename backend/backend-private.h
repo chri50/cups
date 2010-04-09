@@ -1,5 +1,5 @@
 /*
- * "$Id: backend-private.h 8807 2009-08-31 18:45:43Z mike $"
+ * "$Id: backend-private.h 8912 2009-12-08 02:13:42Z mike $"
  *
  *   Backend support definitions for the Common UNIX Printing System (CUPS).
  *
@@ -33,6 +33,26 @@
 #  include <errno.h>
 #  include <cups/string.h>
 #  include <signal.h>
+
+#  ifdef __linux
+#    include <sys/ioctl.h>
+#    include <linux/lp.h>
+#    define IOCNR_GET_DEVICE_ID		1
+#    define LPIOC_GET_DEVICE_ID(len)	_IOC(_IOC_READ, 'P', IOCNR_GET_DEVICE_ID, len)
+#    include <linux/parport.h>
+#    include <linux/ppdev.h>
+#    include <unistd.h>
+#    include <fcntl.h>
+#  endif /* __linux */
+
+#  ifdef __sun
+#    ifdef __sparc
+#      include <sys/ecppio.h>
+#    else
+#      include <sys/ioccom.h>
+#      include <sys/ecppsys.h>
+#    endif /* __sparc */
+#  endif /* __sun */
 
 
 /*
@@ -280,7 +300,8 @@ extern int		backendNetworkSideCB(int print_fd, int device_fd,
 			                     int snmp_fd, http_addr_t *addr,
 					     int use_bc);
 extern ssize_t		backendRunLoop(int print_fd, int device_fd, int snmp_fd,
-			               http_addr_t *addr, int use_bc,
+			               http_addr_t *addr, int use_bc, 
+			               int update_state, 
 				       int (*side_cb)(int print_fd,
 				                      int device_fd,
 						      int snmp_fd,
@@ -297,5 +318,5 @@ extern int		backendSNMPSupplies(int snmp_fd, http_addr_t *addr,
 
 
 /*
- * End of "$Id: backend-private.h 8807 2009-08-31 18:45:43Z mike $".
+ * End of "$Id: backend-private.h 8912 2009-12-08 02:13:42Z mike $".
  */

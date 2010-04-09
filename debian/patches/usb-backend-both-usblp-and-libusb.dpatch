@@ -4,9 +4,9 @@
 ## DP: http://www.cups.org/str.php?L3357
 
 @DPATCH@
-diff -urNad cups-1.4.2~/backend/Makefile cups-1.4.2/backend/Makefile
---- cups-1.4.2~/backend/Makefile	2009-11-12 14:50:53.092720352 +0100
-+++ cups-1.4.2/backend/Makefile	2009-11-12 14:50:53.482720894 +0100
+diff -urNad cups-1.4.3~/backend/Makefile cups-1.4.3/backend/Makefile
+--- cups-1.4.3~/backend/Makefile	2010-04-09 15:56:03.735720821 +0200
++++ cups-1.4.3/backend/Makefile	2010-04-09 15:56:04.335705387 +0200
 @@ -267,7 +267,7 @@
  	echo Linking $@...
  	$(CC) $(LDFLAGS) -o usb usb.o libbackend.a $(LIBUSB) \
@@ -16,10 +16,10 @@ diff -urNad cups-1.4.2~/backend/Makefile cups-1.4.2/backend/Makefile
  
  
  #
-diff -urNad cups-1.4.2~/backend/ieee1284.c cups-1.4.2/backend/ieee1284.c
---- cups-1.4.2~/backend/ieee1284.c	2009-08-08 00:24:14.000000000 +0200
-+++ cups-1.4.2/backend/ieee1284.c	2009-11-12 14:50:53.482720894 +0100
-@@ -275,6 +275,7 @@
+diff -urNad cups-1.4.3~/backend/ieee1284.c cups-1.4.3/backend/ieee1284.c
+--- cups-1.4.3~/backend/ieee1284.c	2009-12-08 03:13:42.000000000 +0100
++++ cups-1.4.3/backend/ieee1284.c	2010-04-09 15:56:04.335705387 +0200
+@@ -255,6 +255,7 @@
      cups_option_t	*values;	/* Keys and values in device ID */
      const char		*mfg,		/* Manufacturer */
  			*mdl,		/* Model */
@@ -27,7 +27,7 @@ diff -urNad cups-1.4.2~/backend/ieee1284.c cups-1.4.2/backend/ieee1284.c
  			*sern;		/* Serial number */
      char		temp[256],	/* Temporary manufacturer string */
  			*tempptr;	/* Pointer into temp string */
-@@ -305,10 +306,20 @@
+@@ -285,10 +286,20 @@
      }
      else
      {
@@ -50,9 +50,9 @@ diff -urNad cups-1.4.2~/backend/ieee1284.c cups-1.4.2/backend/ieee1284.c
  
        mfg = temp;
      }
-diff -urNad cups-1.4.2~/backend/usb-hybrid.c cups-1.4.2/backend/usb-hybrid.c
---- cups-1.4.2~/backend/usb-hybrid.c	1970-01-01 01:00:00.000000000 +0100
-+++ cups-1.4.2/backend/usb-hybrid.c	2009-11-12 14:50:53.482720894 +0100
+diff -urNad cups-1.4.3~/backend/usb-hybrid.c cups-1.4.3/backend/usb-hybrid.c
+--- cups-1.4.3~/backend/usb-hybrid.c	1970-01-01 01:00:00.000000000 +0100
++++ cups-1.4.3/backend/usb-hybrid.c	2010-04-09 15:56:04.345707078 +0200
 @@ -0,0 +1,87 @@
 +/*
 + * "$Id: usb-hybrid.c 8807 2009-08-31 18:45:43Z mike $"
@@ -141,9 +141,9 @@ diff -urNad cups-1.4.2~/backend/usb-hybrid.c cups-1.4.2/backend/usb-hybrid.c
 +/*
 + * End of "$Id: usb-hybrid.c 8807 2009-08-31 18:45:43Z mike $".
 + */
-diff -urNad cups-1.4.2~/backend/usb-libusb.c cups-1.4.2/backend/usb-libusb.c
---- cups-1.4.2~/backend/usb-libusb.c	2009-09-11 22:03:31.000000000 +0200
-+++ cups-1.4.2/backend/usb-libusb.c	2009-11-12 14:50:53.482720894 +0100
+diff -urNad cups-1.4.3~/backend/usb-libusb.c cups-1.4.3/backend/usb-libusb.c
+--- cups-1.4.3~/backend/usb-libusb.c	2009-09-11 22:03:31.000000000 +0200
++++ cups-1.4.3/backend/usb-libusb.c	2010-04-09 15:56:04.345707078 +0200
 @@ -13,16 +13,16 @@
   *
   * Contents:
@@ -353,9 +353,9 @@ diff -urNad cups-1.4.2~/backend/usb-libusb.c cups-1.4.2/backend/usb-libusb.c
          int           print_fd)		/* I - File to print */
  {
    ssize_t		bytes,		/* Bytes read/written */
-diff -urNad cups-1.4.2~/backend/usb-unix.c cups-1.4.2/backend/usb-unix.c
---- cups-1.4.2~/backend/usb-unix.c	2009-09-22 20:47:36.000000000 +0200
-+++ cups-1.4.2/backend/usb-unix.c	2009-11-12 14:51:47.080261855 +0100
+diff -urNad cups-1.4.3~/backend/usb-unix.c cups-1.4.3/backend/usb-unix.c
+--- cups-1.4.3~/backend/usb-unix.c	2009-12-08 03:13:42.000000000 +0100
++++ cups-1.4.3/backend/usb-unix.c	2010-04-09 15:56:30.799666933 +0200
 @@ -18,10 +18,10 @@
   *
   * Contents:
@@ -422,11 +422,11 @@ diff -urNad cups-1.4.2~/backend/usb-unix.c cups-1.4.2/backend/usb-unix.c
    }
    while (device_fd < 0);
 @@ -190,7 +195,7 @@
-     tbytes = backendRunLoop(print_fd, device_fd, -1, NULL, use_bc, NULL);
+     tbytes = backendRunLoop(print_fd, device_fd, -1, NULL, use_bc, 1, NULL);
  
  #else
--    tbytes = backendRunLoop(print_fd, device_fd, -1, NULL, use_bc, side_cb);
-+    tbytes = backendRunLoop(print_fd, device_fd, -1, NULL, use_bc, side_cb_unix);
+-    tbytes = backendRunLoop(print_fd, device_fd, -1, NULL, use_bc, 1, side_cb);
++    tbytes = backendRunLoop(print_fd, device_fd, -1, NULL, use_bc, 1, side_cb_unix);
  #endif /* __sun */
  
      if (print_fd != 0 && tbytes >= 0)
@@ -560,10 +560,9 @@ diff -urNad cups-1.4.2~/backend/usb-unix.c cups-1.4.2/backend/usb-unix.c
          int         device_fd,		/* I - Device file */
          int         snmp_fd,		/* I - SNMP socket (unused) */
  	http_addr_t *addr,		/* I - Device address (unused) */
-diff -urNad cups-1.4.2~/backend/usb-unix.c.rej cups-1.4.2/backend/usb-unix.c.rej
-diff -urNad cups-1.4.2~/backend/usb.c cups-1.4.2/backend/usb.c
---- cups-1.4.2~/backend/usb.c	2008-06-24 03:28:36.000000000 +0200
-+++ cups-1.4.2/backend/usb.c	2009-11-12 14:50:53.482720894 +0100
+diff -urNad cups-1.4.3~/backend/usb.c cups-1.4.3/backend/usb.c
+--- cups-1.4.3~/backend/usb.c	2008-06-24 03:28:36.000000000 +0200
++++ cups-1.4.3/backend/usb.c	2010-04-09 15:56:04.345707078 +0200
 @@ -56,7 +56,7 @@
   */
  

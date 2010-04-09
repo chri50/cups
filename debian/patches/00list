@@ -1,7 +1,6 @@
 # patches backported from upstream SVN trunk for 1.5:
 
 # patches accepted and committed upstream for next 1.4:
-select_use_after_free.dpatch
 
 # patches sent upstream
 pidfile.dpatch
@@ -12,7 +11,7 @@ quiesce-bonjour-warning.dpatch
 rootbackends-worldreadable.dpatch
 dnssd-avahi.dpatch
 usb-backend-both-usblp-and-libusb.dpatch
-CVE-2010-0393.dpatch
+select_use_after_free.dpatch
 
 # patches which should go upstream
 removecvstag.dpatch

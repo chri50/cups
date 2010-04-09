@@ -1,5 +1,5 @@
 /*
- * "$Id: cgi.h 8859 2009-11-09 23:01:17Z mike $"
+ * "$Id: cgi.h 8980 2010-02-08 17:33:31Z mike $"
  *
  *   CGI support library definitions.
  *
@@ -32,6 +32,14 @@
 #  include <cups/array.h>
 #  include "help-index.h"
 
+
+/*
+ * C++ magic...
+ */
+
+#  ifdef __cplusplus
+extern "C" {
+#  endif /* __cplusplus */
 
 /*
  * Types...
@@ -99,8 +107,12 @@ extern void		cgiStartMultipart(void);
 extern int		cgiSupportsMultipart(void);
 extern const char	*cgiText(const char *message);
 
+#  ifdef __cplusplus
+}
+#  endif /* __cplusplus */
+
 #endif /* !_CUPS_CGI_H_ */
 
 /*
- * End of "$Id: cgi.h 8859 2009-11-09 23:01:17Z mike $".
+ * End of "$Id: cgi.h 8980 2010-02-08 17:33:31Z mike $".
  */

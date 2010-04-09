@@ -1,5 +1,5 @@
 /*
- * "$Id: socket.c 8707 2009-06-12 04:02:45Z mike $"
+ * "$Id: socket.c 8896 2009-11-20 01:27:57Z mike $"
  *
  *   AppSocket backend for the Common UNIX Printing System (CUPS).
  *
@@ -393,7 +393,7 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
       lseek(print_fd, 0, SEEK_SET);
     }
 
-    tbytes = backendRunLoop(print_fd, device_fd, snmp_fd, &(addr->addr), 1,
+    tbytes = backendRunLoop(print_fd, device_fd, snmp_fd, &(addr->addr), 1, 0, 
                             backendNetworkSideCB);
 
     if (print_fd != 0 && tbytes >= 0)
@@ -505,5 +505,5 @@ wait_bc(int device_fd,			/* I - Socket */
 
 
 /*
- * End of "$Id: socket.c 8707 2009-06-12 04:02:45Z mike $".
+ * End of "$Id: socket.c 8896 2009-11-20 01:27:57Z mike $".
  */

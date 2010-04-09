@@ -1,5 +1,5 @@
 /*
- * "$Id: snmp.c 8254 2009-01-14 22:40:58Z mike $"
+ * "$Id: snmp.c 8912 2009-12-08 02:13:42Z mike $"
  *
  *   SNMP discovery backend for the Common UNIX Printing System (CUPS).
  *
@@ -999,7 +999,7 @@ read_snmp_response(int fd)		/* I - SNMP socket file descriptor */
 		       DEVICE_PRODUCT, LexmarkProductOID2);
 	_cupsSNMPWrite(fd, &(packet.address), CUPS_SNMP_VERSION_1,
 	               packet.community, CUPS_ASN1_GET_REQUEST,
-		       DEVICE_URI, LexmarkDeviceIdOID);
+		       DEVICE_ID, LexmarkDeviceIdOID);
 	_cupsSNMPWrite(fd, &(packet.address), CUPS_SNMP_VERSION_1,
 	               packet.community, CUPS_ASN1_GET_REQUEST,
 		       DEVICE_PRODUCT, XeroxProductOID);
@@ -1054,7 +1054,9 @@ read_snmp_response(int fd)		/* I - SNMP socket file descriptor */
 	break;
 
     case DEVICE_ID :
-	if (device && packet.object_type == CUPS_ASN1_OCTET_STRING)
+	if (device && packet.object_type == CUPS_ASN1_OCTET_STRING &&
+	    (!device->id ||
+	     strlen(device->id) < packet.object_value.string.num_bytes))
 	{
 	 /*
 	  * Update an existing cache entry...
@@ -1107,7 +1109,7 @@ read_snmp_response(int fd)		/* I - SNMP socket file descriptor */
 
     case DEVICE_URI :
 	if (device && packet.object_type == CUPS_ASN1_OCTET_STRING &&
-	    !device->uri)
+	    !device->uri && packet.object_value.string.num_bytes > 0)
 	{
 	 /*
 	  * Update an existing cache entry...
@@ -1335,5 +1337,5 @@ update_cache(snmp_cache_t *device,	/* I - Device */
 
 
 /*
- * End of "$Id: snmp.c 8254 2009-01-14 22:40:58Z mike $".
+ * End of "$Id: snmp.c 8912 2009-12-08 02:13:42Z mike $".
  */

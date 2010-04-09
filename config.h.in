@@ -1,5 +1,5 @@
 /*
- * "$Id: config.h.in 8704 2009-06-10 15:51:21Z mike $"
+ * "$Id: config.h.in 8938 2009-12-18 23:52:01Z mike $"
  *
  *   Configuration file for the Common UNIX Printing System (CUPS).
  *
@@ -586,9 +586,23 @@
  * Which random number generator function to use...
  */
 
+#undef HAVE_ARC4RANDOM
 #undef HAVE_RANDOM
-#undef HAVE_MRAND48
 #undef HAVE_LRAND48
+
+#ifdef HAVE_ARC4RANDOM
+#  define CUPS_RAND() arc4random()
+#  define CUPS_SRAND(v) arc4random_stir()
+#elif defined(HAVE_RANDOM)
+#  define CUPS_RAND() random()
+#  define CUPS_SRAND(v) srandom(v)
+#elif defined(HAVE_LRAND48)
+#  define CUPS_RAND() lrand48()
+#  define CUPS_SRAND(v) srand48(v)
+#else
+#  define CUPS_RAND() rand()
+#  define CUPS_SRAND(v) srand(v)
+#endif /* HAVE_ARC4RANDOM */
 
 
 /*
@@ -615,5 +629,5 @@
 #endif /* !_CUPS_CONFIG_H_ */
 
 /*
- * End of "$Id: config.h.in 8704 2009-06-10 15:51:21Z mike $".
+ * End of "$Id: config.h.in 8938 2009-12-18 23:52:01Z mike $".
  */
