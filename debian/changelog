@@ -1,3 +1,16 @@
+cups (1.4.3-1ubuntu1) lucid-proposed; urgency=low
+
+  * debian/filters/pstopdf: Fixed the problem of the UseCIEColor warning of
+    Ghostscript correctly. The file format converter should not do any kind
+    of color correction but simply pass the colors through (LP: #578181).
+  * debian/patches/cups-deviced-allow-device-ids-with-newline.dpatch: Some
+    printers have broken device IDs with newline characters inside. These
+    break the cups-deviced printer discovery mechanism and so the printers
+    get ignored. This patch allows newline characters in device IDs
+    (LP: #468701).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 14 May 2010 15:51:54 +0200
+
 cups (1.4.3-1) unstable; urgency=low
 
   [ Till Kamppeter ]
