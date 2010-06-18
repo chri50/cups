@@ -11,6 +11,7 @@ libcupscgi.so.1 libcupscgi1 #MINVER#
  cgiFreeSearch@Base 1.4.0
  cgiGetArray@Base 1.4.0
  cgiGetAttributes@Base 1.4.0
+ cgiGetCookie@Base 1.4.1-5ubuntu2.6
  cgiGetFile@Base 1.4.0
  cgiGetIPPObjects@Base 1.4.0
  cgiGetSize@Base 1.4.0
@@ -23,6 +24,7 @@ libcupscgi.so.1 libcupscgi1 #MINVER#
  cgiPrintTestPage@Base 1.4.0
  cgiRewriteURL@Base 1.4.0
  cgiSetArray@Base 1.4.0
+ cgiSetCookie@Base 1.4.1-5ubuntu2.6
  cgiSetIPPObjectVars@Base 1.4.0
  cgiSetIPPVars@Base 1.4.0
  cgiSetServerVersion@Base 1.4.0
