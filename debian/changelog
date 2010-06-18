@@ -1,3 +1,27 @@
+cups (1.4.3-1ubuntu1.2) lucid-security; urgency=low
+
+  * SECURITY UPDATE: cross-site request forgery in admin interface
+    - debian/patches/CVE-2010-0540.dpatch: add unpredictable session token
+      to cgi-bin/cgi.h, cgi-bin/libcupscgi.exp, cgi-bin/template.c,
+      cgi-bin/var.c, templates/*.tmpl.
+    - CVE-2010-0540
+  * SECURITY UPDATE: denial of service or arbitrary code execution in
+    texttops image filter
+    - debian/patches/CVE-2010-0542.dpatch: make sure calloc succeeded in
+      filter/texttops.c.
+    - CVE-2010-0542
+  * SECURITY UPDATE: web interface memory disclosure
+    - debian/patches/CVE-2010-1748.dpatch: validate data in cgi-bin/var.c.
+    - CVE-2010-1748
+  * SECURITY UPDATE: file overwrite vulnerability
+    - debian/patches/security-str3510.dpatch: introduce cups_open() in
+      cups/file.c and use to make sure hard-linked or symlinked files don't
+      get overwritten as root.
+    - No CVE number
+  * debian/libcupscgi1.symbols: Add new symbols
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 18 Jun 2010 09:20:00 -0400
+
 cups (1.4.3-1ubuntu1) lucid-proposed; urgency=low
 
   * debian/filters/pstopdf: Fixed the problem of the UseCIEColor warning of

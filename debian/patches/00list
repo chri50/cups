@@ -38,3 +38,7 @@ log-debug-history-nearly-unlimited.dpatch
 # Ubuntu patches
 ubuntu-disable-browsing.dpatch
 ubuntu-default-error-policy-retry-job.dpatch
+CVE_2010-0540
+CVE_2010-0542
+CVE_2010-1748
+security-str3510
