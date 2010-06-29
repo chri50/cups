@@ -1,5 +1,5 @@
 /*
- * "$Id: policy.c 7673 2008-06-18 22:31:26Z mike $"
+ * "$Id: policy.c 9061 2010-03-30 22:07:33Z mike $"
  *
  *   Policy routines for the Common UNIX Printing System (CUPS).
  *
@@ -213,10 +213,24 @@ cupsdDeleteAllPolicies(void)
 {
   cupsd_policy_t	*p;		/* Current policy */
   cupsd_location_t	*po;		/* Current policy op */
+  cupsd_printer_t	*printer;	/* Current printer */
 
 
   if (!Policies)
     return;
+
+ /*
+  * First clear the policy pointers for all printers...
+  */
+
+  for (printer = (cupsd_printer_t *)cupsArrayFirst(Printers);
+       printer;
+       printer = (cupsd_printer_t *)cupsArrayNext(Printers))
+    printer->op_policy_ptr = NULL;
+
+ /*
+  * Then free all of the policies...
+  */
 
   for (p = (cupsd_policy_t *)cupsArrayFirst(Policies);
        p;
@@ -348,5 +362,5 @@ hash_op(cupsd_location_t *op)		/* I - Operation */
 
 
 /*
- * End of "$Id: policy.c 7673 2008-06-18 22:31:26Z mike $".
+ * End of "$Id: policy.c 9061 2010-03-30 22:07:33Z mike $".
  */

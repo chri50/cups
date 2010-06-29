@@ -1,5 +1,5 @@
 /*
- * "$Id: listen.c 8257 2009-01-15 00:59:02Z mike $"
+ * "$Id: listen.c 9120 2010-04-23 18:56:34Z mike $"
  *
  *   Server listening routines for the Common UNIX Printing System (CUPS)
  *   scheduler.
@@ -250,7 +250,8 @@ cupsdStartListening(void)
 	unlink(lis->address.un.sun_path);
 
        /*
-	* Save the curent umask and set it to 0...
+	* Save the current umask and set it to 0 so that all users can access
+	* the domain socket...
 	*/
 
 	mask = umask(0);
@@ -438,5 +439,5 @@ cupsdStopListening(void)
 
 
 /*
- * End of "$Id: listen.c 8257 2009-01-15 00:59:02Z mike $".
+ * End of "$Id: listen.c 9120 2010-04-23 18:56:34Z mike $".
  */

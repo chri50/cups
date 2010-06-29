@@ -1,9 +1,9 @@
 /*
- * "$Id: texttops.c 8104 2008-11-06 16:42:18Z mike $"
+ * "$Id: texttops.c 9152 2010-06-16 00:39:16Z mike $"
  *
  *   Text to PostScript filter for the Common UNIX Printing System (CUPS).
  *
- *   Copyright 2007-2008 by Apple Inc.
+ *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 1993-2007 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -181,8 +181,20 @@ WriteProlog(const char *title,		/* I - Title of job */
     exit(1);
   }
 
-  Page    = calloc(sizeof(lchar_t *), SizeLines);
-  Page[0] = calloc(sizeof(lchar_t), SizeColumns * SizeLines);
+  if ((Page = calloc(sizeof(lchar_t *), SizeLines)) == NULL)
+  {
+    _cupsLangPrintf(stderr, _("ERROR: Unable to print %dx%d text page!\n"),
+                    SizeColumns, SizeLines);
+    exit(1);
+  }
+
+  if ((Page[0] = calloc(sizeof(lchar_t), SizeColumns * SizeLines)) == NULL)
+  {
+    _cupsLangPrintf(stderr, _("ERROR: Unable to print %dx%d text page!\n"),
+                    SizeColumns, SizeLines);
+    exit(1);
+  }
+
   for (i = 1; i < SizeLines; i ++)
     Page[i] = Page[0] + i * SizeColumns;
 
@@ -1142,5 +1154,5 @@ write_text(const char *s)	/* I - String to write */
 
 
 /*
- * End of "$Id: texttops.c 8104 2008-11-06 16:42:18Z mike $".
+ * End of "$Id: texttops.c 9152 2010-06-16 00:39:16Z mike $".
  */

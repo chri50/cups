@@ -95,13 +95,6 @@ EOF
     # activate new backends on upgrades
     db_fset cupsys/backend changed false
     
-    if dpkg --compare-versions "$2" lt-nl "1.3.4-2"; then
-	for module in snmp scsi serial dnssd; do
-	    [ -e /usr/lib/cups/backend/$module ] || \
-	    ln /usr/lib/cups/backend-available/$module /usr/lib/cups/backend/$module
-	done
-    fi
-    
     # Resync Debconf database with real state
     list=`( cd /usr/lib/cups/backend && for f in ipp lpd parallel scsi serial socket usb snmp dnssd; do [ -e $f ] && echo -n "$f, "; done ) | sed -e 's/, $//'`
     db_set cupsys/backend $list;
@@ -122,11 +115,6 @@ EOF
 	 ln -s /etc/ssl/certs/ssl-cert-snakeoil.pem /etc/cups/ssl/server.crt
 	 ln -s /etc/ssl/private/ssl-cert-snakeoil.key /etc/cups/ssl/server.key
     fi 
-
-    # Remove shutdown and reboot links; this init script does not need them.
-    if dpkg --compare-versions "$2" lt-nl "1.3.6-2"; then
-	rm -f /etc/rc0.d/K??cups /etc/rc6.d/K??cups
-    fi
 
     # Reload AppArmor profile if present
     APP_PROFILE="/etc/apparmor.d/usr.sbin.cupsd"
@@ -166,6 +154,11 @@ EOF
 	if [ ! -e /etc/printcap -a -e $printcap_file ]; then
 	    ln -s $printcap_file /etc/printcap
 	fi
+    fi
+
+    # Clean up after some broken cups-pdf versions
+    if dpkg --compare-versions "$2" lt-nl "1.4.4-1"; then
+	chmod 755 /usr/lib/cups/backend /usr/lib/cups/backend-available
     fi
 fi
 

@@ -491,9 +491,7 @@ int main(int argc, char *argv[]) {
   P2POutputStream *str;
   FILE *outfp;
 
-#ifndef __arm__
   setErrorFunction(::myErrorFun);
-#endif
   parseOpts(&argc, argv);
 #ifdef GLOBALPARAMS_HAS_A_ARG
   globalParams = new GlobalParams(0);

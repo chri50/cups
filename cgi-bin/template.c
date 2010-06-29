@@ -1,5 +1,5 @@
 /*
- * "$Id: template.c 8980 2010-02-08 17:33:31Z mike $"
+ * "$Id: template.c 9061 2010-03-30 22:07:33Z mike $"
  *
  *   CGI template function.
  *
@@ -369,6 +369,20 @@ cgi_copy(FILE *out,			/* I - Output file */
 
         continue;
       }
+      else if (name[0] == '$')
+      {
+       /*
+        * Insert cookie value or nothing if not defined.
+	*/
+
+        if ((value = cgiGetCookie(name + 1)) != NULL)
+	  outptr = value;
+	else
+	{
+	  outval[0] = '\0';
+	  outptr    = outval;
+	}
+      }
       else
       {
        /*
@@ -715,5 +729,5 @@ cgi_puturi(const char *s,		/* I - String to output */
 
 
 /*
- * End of "$Id: template.c 8980 2010-02-08 17:33:31Z mike $".
+ * End of "$Id: template.c 9061 2010-03-30 22:07:33Z mike $".
  */

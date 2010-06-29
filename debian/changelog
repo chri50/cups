@@ -1,3 +1,46 @@
+cups (1.4.4-1) unstable; urgency=medium
+
+  [ Till Kamppeter ]
+  * debian/cups.init.d: When loading kernel modules for the parallel port
+    load also the "parport_pc" module (LP: #369850).
+  * debian/filters/pstopdf: Fixed the problem of the UseCIEColor warning of
+    Ghostscript correctly. The file format converter should not do any kind
+    of color correction but simply pass the colors through (LP: #578181).
+  * debian/patches/cups-deviced-allow-device-ids-with-newline.dpatch: Some
+    printers have broken device IDs with newline characters inside. These
+    break the cups-deviced printer discovery mechanism and so the printers
+    get ignored. This patch allows newline characters in device IDs
+    (LP: #468701).
+
+  [ Martin Pitt ]
+  * New upstream bug fix/security release. Therefore "medium" urgency.
+    - CUPS could overwrite files as root in directories owned or writable by
+      non-root users. [STR #3510, CVE-2010-2431]
+    - The web interface now includes additional CSRF protection.
+      [STR #3498, CVE-2010-0540] 
+    - The texttops filter did not check the results of allocations.
+      [STR #3516, CVE-2010-0542]
+    - The web admin interface could disclose the contents of memory.
+      [STR #3577, CVE-2010-1748]
+  * Drop select_use_after_free.dpatch: Applied upstream.
+  * do-not-broadcast-with-hostnames.dpatch: Update to apply to new version.
+  * debian/libcups2.symbols, debian/libcupscgi1.symbols: Update for new
+    version.
+  * Add support-gzipped-charmaps.dpatch: Support gzipped charset → UTF8 maps;
+    they compress very well and take a lot of space.
+  * debian/rules: Compress /usr/share/cups/charmaps/*.txt in cups-common.
+  * debian/local/filters/pdf-filters/*: Reenable call of setErrorFunction() on
+    armel, now that poppler on arm has been fixed (see #575262)
+  * debian/cups.postinst: Drop some obsolete transition code.
+  * debian/cups.postinst: Some versions of cups-pdf (and perhaps other
+    packages) changed the permissions of /usr/lib/cups/backend. Fix that
+    during upgrade. (Closes: #582942)
+  * debian/control: Drop all the transitional cupsys* packages and the
+    remaining provides/conflicts/replaces on them. All packages in sid are now
+    transitioned to the new package names, and Lenny already had them.
+
+ -- Martin Pitt <mpitt@debian.org>  Tue, 29 Jun 2010 19:03:39 +0200
+
 cups (1.4.3-1) unstable; urgency=low
 
   [ Till Kamppeter ]

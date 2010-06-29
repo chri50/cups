@@ -1,5 +1,5 @@
 .\"
-.\" "$Id: cupstestppd.man 8421 2009-03-09 21:59:55Z mike $"
+.\" "$Id: cupstestppd.man 9120 2010-04-23 18:56:34Z mike $"
 .\"
 .\"   cupstestppd man page for the Common UNIX Printing System (CUPS).
 .\"
@@ -12,12 +12,14 @@
 .\"   which should have been included with this file.  If this file is
 .\"   file is missing or damaged, see the license at "http://www.cups.org/".
 .\"
-.TH cupstestppd 1 "CUPS" "2 March 2009" "Apple Inc."
+.TH cupstestppd 1 "CUPS" "19 November 2009" "Apple Inc."
 .SH NAME
 cupstestppd \- test conformance of ppd files
 .SH SYNOPSIS
 .B cupstestppd
-[ -R
+[ -I
+.I category
+] [ -R
 .I rootdir
 ] [ -W
 .I category
@@ -41,6 +43,18 @@ on the command-line. The second form tests the PPD file provided
 on the standard input.
 .SH OPTIONS
 \fIcupstestppd\fR supports the following options:
+.TP 5
+-I filename
+.br
+Ignores all PCFileName warnings.
+.TP 5
+-I filters
+.br
+Ignores all filter errors.
+.TP 5
+-I profiles
+.br
+Ignores all profile errors.
 .TP 5
 -R rootdir
 .br
@@ -147,5 +161,5 @@ Adobe PostScript Printer Description File Format Specification, Version 4.3.
 .SH COPYRIGHT
 Copyright 2007-2009 by Apple Inc.
 .\"
-.\" End of "$Id: cupstestppd.man 8421 2009-03-09 21:59:55Z mike $".
+.\" End of "$Id: cupstestppd.man 9120 2010-04-23 18:56:34Z mike $".
 .\"

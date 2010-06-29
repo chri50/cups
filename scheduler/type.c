@@ -1,5 +1,5 @@
 /*
- * "$Id: type.c 8580 2009-04-29 22:10:31Z mike $"
+ * "$Id: type.c 9133 2010-05-05 00:44:55Z mike $"
  *
  *   MIME typing routines for the Common UNIX Printing System (CUPS).
  *
@@ -522,15 +522,18 @@ mimeAddTypeRule(mime_type_t *mt,	/* I - Type to add to */
 	    if (length[1] == 1)
 	      temp->value.charv = value[1][0];
 	    else
-	      temp->value.charv = (char)strtol(value[1], NULL, 0);
+	      temp->value.charv = (unsigned char)strtol(value[1], NULL, 0);
+
+	    DEBUG_printf(("1mimeAddTypeRule: CHAR(%d,0x%02x)", temp->offset,
+	                  temp->value.charv));
 	    break;
 	case MIME_MAGIC_SHORT :
 	    temp->offset       = strtol(value[0], NULL, 0);
-	    temp->value.shortv = (short)strtol(value[1], NULL, 0);
+	    temp->value.shortv = (unsigned short)strtol(value[1], NULL, 0);
 	    break;
 	case MIME_MAGIC_INT :
 	    temp->offset     = strtol(value[0], NULL, 0);
-	    temp->value.intv = (int)strtol(value[1], NULL, 0);
+	    temp->value.intv = (unsigned)strtol(value[1], NULL, 0);
 	    break;
 	case MIME_MAGIC_LOCALE :
 	    if (length[0] > (sizeof(temp->value.localev) - 1))
@@ -1171,5 +1174,5 @@ patmatch(const char *s,		/* I - String to match against */
 
 
 /*
- * End of "$Id: type.c 8580 2009-04-29 22:10:31Z mike $".
+ * End of "$Id: type.c 9133 2010-05-05 00:44:55Z mike $".
  */

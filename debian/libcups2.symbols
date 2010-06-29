@@ -1,6 +1,4 @@
 libcups.so.2 libcups2 #MINVER#
- (optional)_cupsAdminGetServerSettings@Base 1.4.0
- (optional)_cupsAdminSetServerSettings@Base 1.4.0
  (optional)_cupsCharmapFlush@Base 1.4.0
  (optional)_cupsCharmapFree@Base 1.4.0
  (optional)_cupsCharmapGet@Base 1.4.0
@@ -18,9 +16,6 @@ libcups.so.2 libcups2 #MINVER#
  (optional)_cupsMessageFree@Base 1.4.0
  (optional)_cupsMessageLoad@Base 1.4.0
  (optional)_cupsMessageLookup@Base 1.4.0
- (optional)_cupsPWGMediaByLegacy@Base 1.4.0
- (optional)_cupsPWGMediaByName@Base 1.4.0
- (optional)_cupsPWGMediaBySize@Base 1.4.0
  (optional)_cupsSNMPClose@Base 1.4.0
  (optional)_cupsSNMPCopyOID@Base 1.4.0
  (optional)_cupsSNMPDefaultCommunity@Base 1.4.0
@@ -53,10 +48,8 @@ libcups.so.2 libcups2 #MINVER#
  (optional)_httpAddrPort@Base 1.4.0
  (optional)_httpCreate@Base 1.4.0
  (optional)_httpEncodeURI@Base 1.4.0
- (optional)_httpReadGNUTLS@Base 1.4.0
  (optional)_httpResolveURI@Base 1.4.0
  (optional)_httpWait@Base 1.4.0
- (optional)_httpWriteGNUTLS@Base 1.4.0
  (optional)_ippAddAttr@Base 1.4.0
  (optional)_ippFindOption@Base 1.4.0
  (optional)_ippFreeAttr@Base 1.4.0

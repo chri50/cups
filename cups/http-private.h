@@ -1,5 +1,5 @@
 /*
- * "$Id: http-private.h 8488 2009-04-07 15:48:14Z mike $"
+ * "$Id: http-private.h 9104 2010-04-12 04:03:53Z mike $"
  *
  *   Private HTTP definitions for the Common UNIX Printing System (CUPS).
  *
@@ -98,6 +98,7 @@ extern BIO_METHOD *_httpBIOMethods(void);
  * The GNU TLS library is more of a "bare metal" SSL/TLS library...
  */
 #    include <gnutls/gnutls.h>
+#    include <gcrypt.h>
 
 typedef struct
 {
@@ -272,5 +273,5 @@ extern int		_httpWait(http_t *http, int msec, int usessl);
 #endif /* !_CUPS_HTTP_PRIVATE_H_ */
 
 /*
- * End of "$Id: http-private.h 8488 2009-04-07 15:48:14Z mike $".
+ * End of "$Id: http-private.h 9104 2010-04-12 04:03:53Z mike $".
  */
