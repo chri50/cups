@@ -1,5 +1,5 @@
 /*
- * "$Id: cups-driverd.cxx 8955 2010-01-18 16:18:29Z mike $"
+ * "$Id: cups-driverd.cxx 9107 2010-04-14 22:10:52Z mike $"
  *
  *   PPD/driver support for the Common UNIX Printing System (CUPS).
  *
@@ -1480,6 +1480,15 @@ load_ppds(const char *d,		/* I - Actual directory */
 
       continue;
     }
+    else if ((ptr = filename + strlen(filename) - 6) > filename &&
+             !strcmp(ptr, ".plist"))
+    {
+     /*
+      * Skip plist files in the PPDs directory...
+      */
+
+      continue;
+    }
 
    /*
     * See if this file has been scanned before...
@@ -2477,5 +2486,5 @@ regex_string(const char *s)		/* I - String to compare */
 
 
 /*
- * End of "$Id: cups-driverd.cxx 8955 2010-01-18 16:18:29Z mike $".
+ * End of "$Id: cups-driverd.cxx 9107 2010-04-14 22:10:52Z mike $".
  */

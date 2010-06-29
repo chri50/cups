@@ -1,10 +1,9 @@
 /*
- * "$Id: network.c 8566 2009-04-28 00:23:38Z mike $"
+ * "$Id: network.c 9098 2010-04-09 22:42:09Z mike $"
  *
- *   Network interface functions for the Common UNIX Printing System
- *   (CUPS) scheduler.
+ *   Network interface functions for the CUPS scheduler.
  *
- *   Copyright 2007-2009 by Apple Inc.
+ *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -155,7 +154,11 @@ cupsdNetIFUpdate(void)
     * Try looking up the hostname for the address as needed...
     */
 
+#ifdef __APPLE__
+    if (HostNameLookups)
+#else
     if (HostNameLookups || RemotePort)
+#endif /* __APPLE__ */
       httpAddrLookup((http_addr_t *)(addr->ifa_addr), hostname,
                      sizeof(hostname));
     else
@@ -302,5 +305,5 @@ compare_netif(cupsd_netif_t *a,		/* I - First network interface */
 
 
 /*
- * End of "$Id: network.c 8566 2009-04-28 00:23:38Z mike $".
+ * End of "$Id: network.c 9098 2010-04-09 22:42:09Z mike $".
  */

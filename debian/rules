@@ -95,6 +95,10 @@ binary-post-install/cups::
 	# root:dialout and thus not accessible as user lp
 	chmod go-x debian/$(cdbs_curpkg)/usr/lib/cups/backend-available/serial
 
+binary-post-install/cups-common::
+	# Compress charmaps
+	gzip -9 debian/$(cdbs_curpkg)/usr/share/cups/charmaps/*.txt
+
 binary-post-install/libcupsimage2-dev::
 	rm -r debian/libcupsimage2-dev/usr/share/doc/libcupsimage2-dev
 	ln -s libcupsimage2 debian/libcupsimage2-dev/usr/share/doc/libcupsimage2-dev

@@ -14,11 +14,15 @@
 set -e
 
 PS2PS=/usr/bin/ps2ps
-PS2PDF=/usr/bin/ps2pdf13
+GS=/usr/bin/gs
+
 PS2PS_OPTIONS="-dAutoRotatePages=/None -dAutoFilterColorImages=false \
                -dNOPLATFONTS -dPARANOIDSAFER -sstdout=%stderr"
-PS2PDF_OPTIONS="$PS2PS_OPTIONS -dColorImageFilter=/FlateEncode \
-                -dPDFSETTINGS=/printer -dUseCIEColor"
+PS2PDF_OPTIONS="-q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -dCompatibilityLevel=1.3"
+PS2PDF_OPTIONS="$PS2PDF_OPTIONS $PS2PS_OPTIONS"
+PS2PDF_OPTIONS="$PS2PDF_OPTIONS -dColorImageFilter=/FlateEncode \
+                -dPDFSETTINGS=/printer \
+                -dColorConversionStrategy=/LeaveColorUnchanged"
 
 echo "DEBUG: pstopdf $# args: $@" >&2
 echo "DEBUG: PPD: $PPD" >&2
@@ -199,5 +203,5 @@ else
   DRMFILTER=cat
 fi
 
-echo "DEBUG: Running $DRMFILTER | $PS2PDF $PS2PDF_OPTIONS $donumcopies $ppd_opts - -" >&2
-cat "$infile" | $DRMFILTER | $PS2PDF $PS2PDF_OPTIONS $donumcopies $ppd_opts - -
+echo "DEBUG: Running $DRMFILTER | $GS $PS2PDF_OPTIONS $donumcopies $ppd_opts -sOutputFile=- $OPTIONS -c .setpdfwrite -f -" >&2
+cat "$infile" | $DRMFILTER | $GS $PS2PDF_OPTIONS $donumcopies $ppd_opts -sOutputFile=- $OPTIONS -c .setpdfwrite -f -

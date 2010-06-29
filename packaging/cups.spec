@@ -1,11 +1,11 @@
 #
-# "$Id: cups.spec.in 8748 2009-07-07 16:52:34Z mike $"
+# "$Id: cups.spec.in 9120 2010-04-23 18:56:34Z mike $"
 #
 #   RPM "spec" file for CUPS.
 #
 #   Original version by Jason McMullan <jmcc@ontv.com>.
 #
-#   Copyright 2007-2009 by Apple Inc.
+#   Copyright 2007-2010 by Apple Inc.
 #   Copyright 1999-2007 by Easy Software Products, all rights reserved.
 #
 #   These coded instructions, statements, and computer programs are the
@@ -34,12 +34,12 @@
 
 Summary: CUPS
 Name: cups
-Version: 1.4.3
+Version: 1.4.4
 Release: 1
 Epoch: 1
 License: GPL
 Group: System Environment/Daemons
-Source: ftp://ftp.easysw.com/pub/cups/1.4.3/cups-1.4.3-source.tar.gz
+Source: http://ftp.easysw.com/pub/cups/1.4.4/cups-1.4.4-source.tar.gz
 Url: http://www.cups.org
 Packager: Anonymous <anonymous@foo.com>
 Vendor: Apple Inc.
@@ -240,6 +240,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/doc/cups/es/*
 %dir /usr/share/doc/cups/eu
 /usr/share/doc/cups/eu/*
+%dir /usr/share/doc/cups/id
+/usr/share/doc/cups/id/*
+%dir /usr/share/doc/cups/it
+/usr/share/doc/cups/it/*
 %dir /usr/share/doc/cups/ja
 /usr/share/doc/cups/ja/*
 %dir /usr/share/doc/cups/pl
@@ -365,5 +369,5 @@ rm -rf $RPM_BUILD_ROOT
 
 
 #
-# End of "$Id: cups.spec.in 8748 2009-07-07 16:52:34Z mike $".
+# End of "$Id: cups.spec.in 9120 2010-04-23 18:56:34Z mike $".
 #

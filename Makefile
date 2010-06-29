@@ -1,7 +1,7 @@
 #
-# "$Id: Makefile 8959 2010-01-18 22:10:29Z mike $"
+# "$Id: Makefile 9120 2010-04-23 18:56:34Z mike $"
 #
-#   Top-level Makefile for the Common UNIX Printing System (CUPS).
+#   Top-level Makefile for CUPS.
 #
 #   Copyright 2007-2010 by Apple Inc.
 #   Copyright 1997-2007 by Easy Software Products, all rights reserved.
@@ -14,13 +14,6 @@
 #
 
 include Makedefs
-
-
-#
-# Don't run top-level build targets in parallel...
-#
-
-.NOTPARALLEL:
 
 
 #
@@ -402,7 +395,7 @@ docset:	apihelp
 
 
 #
-# Make software distributions using EPM (http://www.easysw.com/epm/)...
+# Make software distributions using EPM (http://www.epmhome.org/)...
 #
 
 EPMFLAGS	=	-v --output-dir dist $(EPMARCH)
@@ -433,5 +426,12 @@ dist:	all
 
 
 #
-# End of "$Id: Makefile 8959 2010-01-18 22:10:29Z mike $".
+# Don't run top-level build targets in parallel...
+#
+
+.NOTPARALLEL:
+
+
+#
+# End of "$Id: Makefile 9120 2010-04-23 18:56:34Z mike $".
 #

@@ -1,9 +1,9 @@
 /*
- * "$Id: select.c 8950 2010-01-14 22:40:19Z mike $"
+ * "$Id: select.c 9157 2010-06-16 05:27:41Z mike $"
  *
  *   Select abstraction functions for the Common UNIX Printing System (CUPS).
  *
- *   Copyright 2007-2009 by Apple Inc.
+ *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 2006-2007 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -454,7 +454,8 @@ cupsdDoSelect(long timeout)		/* I - Timeout in seconds */
     if (fdptr->read_cb && event->filter == EVFILT_READ)
       (*(fdptr->read_cb))(fdptr->data);
 
-    if (fdptr->use > 1 && fdptr->write_cb && event->filter == EVFILT_WRITE)
+    if (fdptr->use > 1 && fdptr->write_cb && event->filter == EVFILT_WRITE &&
+        !cupsArrayFind(cupsd_inactive_fds, fdptr))
       (*(fdptr->write_cb))(fdptr->data);
 
     release_fd(fdptr);
@@ -500,7 +501,8 @@ cupsdDoSelect(long timeout)		/* I - Timeout in seconds */
 	  (*(fdptr->read_cb))(fdptr->data);
 
 	if (fdptr->use > 1 && fdptr->write_cb &&
-	    (event->events & (EPOLLOUT | EPOLLERR | EPOLLHUP)))
+            (event->events & (EPOLLOUT | EPOLLERR | EPOLLHUP)) &&
+            !cupsArrayFind(cupsd_inactive_fds, fdptr))
 	  (*(fdptr->write_cb))(fdptr->data);
 
 	release_fd(fdptr);
@@ -945,5 +947,5 @@ find_fd(int fd)				/* I - File descriptor */
 
 
 /*
- * End of "$Id: select.c 8950 2010-01-14 22:40:19Z mike $".
+ * End of "$Id: select.c 9157 2010-06-16 05:27:41Z mike $".
  */

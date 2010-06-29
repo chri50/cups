@@ -64,6 +64,7 @@ case "$1" in
              -a -f /proc/devices -a -f /proc/modules -a -x /sbin/modprobe ]; then
 	  modprobe -q -b lp || true
 	  modprobe -q -b ppdev || true
+	  modprobe -q -b parport_pc || true
 	fi
 
 	start-stop-daemon --start --quiet --oknodo --pidfile "$PIDFILE" --exec $DAEMON && success=1
