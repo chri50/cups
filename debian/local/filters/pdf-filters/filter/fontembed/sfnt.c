@@ -776,7 +776,9 @@ unsigned short otf_from_unicode(OTF_FILE *otf,int unicode) // {{{ 0 = missing
 
 #include "bitset.h"
 
-static int otf_subset_glyf(OTF_FILE *otf,int gid,BITSET glyphs) // {{{  include components of compund glyphs, returns additional space requirements
+// include components (set bit in >glyphs) of currently loaded compound glyph (with >curgid)
+// returns additional space requirements (when bits below >donegid are touched)
+static int otf_subset_glyf(OTF_FILE *otf,int curgid,int donegid,BITSET glyphs) // {{{
 {
   int ret=0;
   if (get_SHORT(otf->gly)>=0) { // not composite
@@ -795,11 +797,11 @@ static int otf_subset_glyf(OTF_FILE *otf,int gid,BITSET glyphs) // {{{  include 
       const int len=otf_get_glyph(otf,sub_gid);
       assert(len>0);
       bit_set(glyphs,sub_gid);
-      if (sub_gid<gid) {
+      if (sub_gid<donegid) {
         ret+=len;
-        ret+=otf_subset_glyf(otf,sub_gid,glyphs); // composite of composites?, e.g. in DejaVu
+        ret+=otf_subset_glyf(otf,sub_gid,donegid,glyphs); // composite of composites?, e.g. in DejaVu
       }
-      const int res=otf_get_glyph(otf,gid); // reload current glyph
+      const int res=otf_get_glyph(otf,curgid); // reload current glyph
       assert(res);
     }
     
@@ -845,7 +847,7 @@ int otf_subset2(OTF_FILE *otf,BITSET glyphs,OUTPUT_FN output,void *context) // {
         return -1;
       } else if (len>0) {
         glyfSize+=len;
-        len=otf_subset_glyf(otf,iA,glyphs);
+        len=otf_subset_glyf(otf,iA,iA,glyphs);
         if (len<0) {
           assert(0);
           return -1;
@@ -1198,7 +1200,7 @@ int otf_subset(OTF_FILE *otf,BITSET glyphs,OUTPUT_FN output,void *context) // {{
   assert(glyphs);
   assert(output);
 
-  int iA,iB,b,c;
+  int iA,b,c;
   int ret=0;
 
   // first pass: include all required glyphs
@@ -1216,7 +1218,7 @@ int otf_subset(OTF_FILE *otf,BITSET glyphs,OUTPUT_FN output,void *context) // {{
         return -1;
       } else if (len>0) {
         glyfSize+=len;
-        len=otf_subset_glyf(otf,iA,glyphs);
+        len=otf_subset_glyf(otf,iA,iA,glyphs);
         if (len<0) {
           assert(0);
           return -1;

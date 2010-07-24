@@ -1,3 +1,27 @@
+cups (1.4.4-2) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/local/filters/pdf-filters/filter/fontembed/bitset.h,
+    debian/local/filters/pdf-filters/filter/fontembed/sfnt.c,
+    debian/local/filters/pdf-filters/filter/texttopdf.c: Fixed bug with
+    subsetting certain composite chars (LP: #605479).
+  * debian/local/acroread.conf, debian/local/pdftops.conf, debian/cups.install:
+    Removed /etc/cups/acroread.conf and /etc/cups/pdftops.conf. These two files
+    were used by the alternative pdftops filter from Helge Blischke. As we
+    switched back to the original pdftops filter these files are not needed any
+    more (LP: #605564).
+  * debian/local/filters/cpdftocps: The PostScript level from the PPD file
+    was not used, but always the default value "2" instead. This made Xerox
+    color laser printers crash on some files. Thanks to Roel van Os for the
+    patch (LP: #600972).
+
+  [ Martin Pitt ]
+  * debian/control: Reintroduce the libcupsys2{-dev} Provides:, since some
+    third-party printer drivers still depend on them. (LP: #433311)
+  * debian/control: Have libcups2 break older cups versions. (Closes: #588643)
+
+ -- Martin Pitt <mpitt@debian.org>  Sat, 24 Jul 2010 19:38:50 +0200
+
 cups (1.4.4-1) unstable; urgency=medium
 
   [ Till Kamppeter ]
@@ -17,7 +41,7 @@ cups (1.4.4-1) unstable; urgency=medium
     - CUPS could overwrite files as root in directories owned or writable by
       non-root users. [STR #3510, CVE-2010-2431]
     - The web interface now includes additional CSRF protection.
-      [STR #3498, CVE-2010-0540] 
+      [STR #3498, CVE-2010-0540]
     - The texttops filter did not check the results of allocations.
       [STR #3516, CVE-2010-0542]
     - The web admin interface could disclose the contents of memory.
