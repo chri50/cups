@@ -48,7 +48,12 @@ fi
 
 pslevel=2
 if test -e "$PPD"; then
-    eval "$(sed -nre 's/^\*LanguageLevel:\s*\"?([0-9]+)\"?.*/pslevel="${pslevel:-\1}"/pi' "$PPD")"
+    # Read LanguageLevel from PPD file
+    eval "$(sed -nre 's/^\*LanguageLevel:\s*\"?([0-9]+)\"?.*/pslevel_from_ppd="\1"/pi' "$PPD")"
+    # If the PPD file specifies a LanguageLevel: use it
+    if test -n "$pslevel_from_ppd"; then
+         pslevel=$pslevel_from_ppd
+    fi
 fi
 echo "DEBUG: PostScript Level: $pslevel" >&2
 

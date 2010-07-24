@@ -38,25 +38,11 @@
  * Globals...
  */
 
-#ifdef CUPS_1_4 /* CUPS 1.4.x or newer */
-int     UTF8 = 0;               /* Use UTF-8 encoding? */
+#ifdef CUPS_1_4 /* CUPS 1.4.x or newer: only UTF8 is supported */
+int     UTF8 = 1;               /* Use UTF-8 encoding? */
 #endif /* CUPS_1_4 */
 
 EMB_PARAMS *font_load(const char *datadir,const char *font);
-
-static int bits_used(BITSET bits,int len) // {{{
-{
-  len=((len+31)&~31)/8;
-  while (len>0) {
-    if (*bits) {
-      return 1;
-    }
-    bits++;
-    len--;
-  }
-  return 0;
-}
-// }}}
 
 EMB_PARAMS *font_load(const char *datadir,const char *font)
 {
@@ -404,6 +390,7 @@ WriteProlog(const char *title,		/* I - Title of job */
     line[strlen(line) - 1] = '\0'; /* Drop \n */
     for (lineptr = line + 7; isspace(*lineptr & 255); lineptr ++); /* Skip whitespace */
 
+#ifndef CUPS_1_4 /* CUPS 1.4.x or newer: support for non-utf8 removed */
     if (strcmp(lineptr, "8bit") == 0) // {{{
     {
      /*
@@ -589,9 +576,9 @@ WriteProlog(const char *title,		/* I - Title of job */
       while (fgets(line, sizeof(line), fp) != NULL);
 
       fclose(fp);
-    } // }}}
-    else if (strcmp(lineptr, "utf8") == 0) // {{{
-    {
+    } else // }}}
+#endif
+    if (strcmp(lineptr, "utf8") == 0) { // {{{
      /*
       * UTF-8 (Unicode) text...
       */
@@ -1093,7 +1080,8 @@ static void write_font_str(float x,float y,int fontid, lchar_t *str, int len)
 
     if (otf) { // TODO?
       pdfOut_printf(pdf,"  %.3f Tz\n",
-                        FontScaleX*600.0/(otf_get_width(otf,4)*1000.0/otf->unitsPerEm)*100.0/FontScaleY); // TODO?
+                        FontScaleX*600.0/(otf_get_width(otf,4)*1000.0/otf->unitsPerEm)*100.0/FontScaleY); // TODO? 
+      // gid==4 is usually '!', the char after space. We just need "the" width for the monospaced font. gid==0 is bad, and space might also be bad.
     } else {
       pdfOut_printf(pdf,"  %.3f Tz\n",
                         FontScaleX*100.0/FontScaleY); // TODO?
