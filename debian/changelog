@@ -1,3 +1,11 @@
+cups (1.4.4-2ubuntu1) maverick; urgency=low
+
+  * debian/libcups2.symbols:
+    - update missing symbols
+  * No other change upload to build against current poppler library ABI.
+
+ -- Didier Roche <didrocks@ubuntu.com>  Thu, 05 Aug 2010 12:17:09 +0200
+
 cups (1.4.4-2) unstable; urgency=low
 
   [ Till Kamppeter ]

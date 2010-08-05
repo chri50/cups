@@ -63,6 +63,27 @@ libcups.so.2 libcups2 #MINVER#
  (optional)_ppdLocalizedAttr@Base 1.4.0
  (optional)_ppdNormalizeMakeAndModel@Base 1.4.0
  (optional)_ppdParseOptions@Base 1.4.0
+ _pwgCreateWithFile@Base 1.4.4-2ubuntu1
+ _pwgCreateWithPPD@Base 1.4.4-2ubuntu1
+ _pwgDestroy@Base 1.4.4-2ubuntu1
+ _pwgGenerateSize@Base 1.4.4-2ubuntu1
+ _pwgGetBin@Base 1.4.4-2ubuntu1
+ _pwgGetInputSlot@Base 1.4.4-2ubuntu1
+ _pwgGetMediaType@Base 1.4.4-2ubuntu1
+ _pwgGetOutputBin@Base 1.4.4-2ubuntu1
+ _pwgGetPageSize@Base 1.4.4-2ubuntu1
+ _pwgGetSize@Base 1.4.4-2ubuntu1
+ _pwgGetSource@Base 1.4.4-2ubuntu1
+ _pwgGetType@Base 1.4.4-2ubuntu1
+ _pwgInitSize@Base 1.4.4-2ubuntu1
+ _pwgInputSlotForSource@Base 1.4.4-2ubuntu1
+ _pwgMediaForLegacy@Base 1.4.4-2ubuntu1
+ _pwgMediaForPPD@Base 1.4.4-2ubuntu1
+ _pwgMediaForPWG@Base 1.4.4-2ubuntu1
+ _pwgMediaForSize@Base 1.4.4-2ubuntu1
+ _pwgMediaTypeForType@Base 1.4.4-2ubuntu1
+ _pwgPageSizeForMedia@Base 1.4.4-2ubuntu1
+ _pwgWriteFile@Base 1.4.4-2ubuntu1
  cupsAddDest@Base 1.4.0
  cupsAddOption@Base 1.4.0
  cupsAdminCreateWindowsPPD@Base 1.4.0
