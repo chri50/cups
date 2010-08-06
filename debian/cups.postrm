@@ -35,6 +35,10 @@ case "$1" in
 	rm -f /etc/cups/printers.conf* /etc/cups/classes.conf.* \
 		/var/lib/cups/ppds.dat /etc/cups/raw.convs /etc/cups/raw.types
 	rmdir /etc/cups 2>/dev/null || true
+	rm -f /etc/apparmor.d/disable/usr.sbin.cupsd || true
+	rm -f /etc/apparmor.d/force-complain/usr.sbin.cupsd || true
+	rm -f /etc/apparmor.d/local/usr.sbin.cupsd || true
+	rmdir /etc/apparmor.d/local 2>/dev/null || true
 	;;
     remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
         ;;

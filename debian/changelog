@@ -1,3 +1,10 @@
+cups (1.4.4-2ubuntu2) maverick; urgency=low
+
+  * debian/cups.post{inst,rm}: update for local include file
+  * debian/local/apparmor-profile: add local include file
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 06 Aug 2010 17:49:04 -0500
+
 cups (1.4.4-2ubuntu1) maverick; urgency=low
 
   * debian/libcups2.symbols:
