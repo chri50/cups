@@ -1,22 +1,5 @@
 libcupsimage.so.2 libcupsimage2 #MINVER#
- (optional)_cupsImagePutCol@Base 1.4.0
- (optional)_cupsImagePutRow@Base 1.4.0
- (optional)_cupsImageReadBMP@Base 1.4.0
- (optional)_cupsImageReadGIF@Base 1.4.0
- (optional)_cupsImageReadJPEG@Base 1.4.0
- (optional)_cupsImageReadPIX@Base 1.4.0
- (optional)_cupsImageReadPNG@Base 1.4.0
- (optional)_cupsImageReadPNM@Base 1.4.0
- (optional)_cupsImageReadPhotoCD@Base 1.4.0
- (optional)_cupsImageReadSGI@Base 1.4.0
- (optional)_cupsImageReadSunRaster@Base 1.4.0
- (optional)_cupsImageReadTIFF@Base 1.4.0
- (optional)_cupsImageZoomDelete@Base 1.4.0
- (optional)_cupsImageZoomFill@Base 1.4.0
- (optional)_cupsImageZoomNew@Base 1.4.0
- (optional)_cupsRasterAddError@Base 1.4.0
- (optional)_cupsRasterClearError@Base 1.4.0
- (optional)_cupsRasterExecPS@Base 1.4.0
+ (optional|regex)|^_cups.*@Base$" 1.4.0
  cupsImageCMYKToBlack@Base 1.4.0
  cupsImageCMYKToCMY@Base 1.4.0
  cupsImageCMYKToCMYK@Base 1.4.0
