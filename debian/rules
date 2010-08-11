@@ -17,7 +17,7 @@ include /usr/share/cdbs/1/rules/dpatch.mk
 
 unpatch: deapply-dpatches
 
-DEB_CONFIGURE_EXTRA_FLAGS := --with-optim=$(DEB_OPTFLAGS) --libdir=/usr/lib --mandir=/usr/share/man --with-docdir=/usr/share/cups/doc-root --localedir=/usr/share/cups/locale --enable-slp --enable-libpaper --enable-ssl --enable-gnutls --disable-openssl --enable-threads --enable-static --enable-libusb --enable-dbus --with-dbusdir=/etc/dbus-1 --enable-gssapi --enable-avahi --with-pdftops=pdftops --disable-launchd --with-cups-group=lp --with-system-groups=lpadmin --with-printcap=/var/run/cups/printcap --with-log-file-perm=0640 CFLAGS="$(CFLAGS)"
+DEB_CONFIGURE_EXTRA_FLAGS := --with-optim=$(DEB_OPTFLAGS) --libdir=/usr/lib --mandir=/usr/share/man --with-docdir=/usr/share/cups/doc-root --localedir=/usr/share/cups/locale --enable-slp --enable-libpaper --enable-ssl --enable-gnutls --disable-openssl --disable-threads --enable-static --enable-libusb --enable-dbus --with-dbusdir=/etc/dbus-1 --enable-gssapi --enable-avahi --with-pdftops=pdftops --disable-launchd --with-cups-group=lp --with-system-groups=lpadmin --with-printcap=/var/run/cups/printcap --with-log-file-perm=0640 CFLAGS="$(CFLAGS)"
 
 DEB_MAKE_INSTALL_TARGET := install BUILDROOT=$(DEB_DESTDIR)
 DEB_INSTALL_CHANGELOGS_ALL := CHANGES.txt
@@ -32,6 +32,8 @@ else
 DEB_MAKE_CHECK_TARGET := check
 endif
 LDFLAGS := -Wl,--as-needed
+DPKG_GENSYMBOLS_CHECK_LEVEL=4
+export DPKG_GENSYMBOLS_CHECK_LEVEL
 
 post-patches::
 	# Add source code of extra filters for PDF printing workflow
