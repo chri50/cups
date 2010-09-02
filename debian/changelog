@@ -1,3 +1,21 @@
+cups (1.4.4-3ubuntu1) maverick; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/patches/dynamic-default-ripcache-size.dpatch,
+    debian/patches/non-ubuntu-dynamic-default-ripcache-size.dpatch,
+    debian/patches/ubuntu-default-ripcache-size-auto.dpatch:
+    Replaced patch for letting CUPS default RIP_MAX_CACHE to 1/4 of the
+    system's RAM by a patch defaulting RIP_MAX_CACHE to "auto" only in
+    Ubuntu as there we have a Ghostscript version which managers its
+    needed memory size automatically. In non-Ubuntu distributions we stay
+    with the 1/4 of system RAM patch.
+
+  [ Martin Pitt ]
+  * debian/control: Drop perl-modules dependency. The only script that uses
+    perl is oopstops, which uses IO::Handle, and this is in perl-base.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Thu,  2 Sep 2010 20:03:33 +0200
+
 cups (1.4.4-3) unstable; urgency=low
 
   [ Jamie Strandboge ]
