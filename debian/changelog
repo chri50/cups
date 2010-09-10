@@ -1,3 +1,22 @@
+cups (1.4.4-3ubuntu2) maverick; urgency=low
+
+  * debian/patches/cups-snmp-oids-device-id-hp-ricoh.dpatch: Let the "snmp"
+    backend also use the manufacturer-specific MIBs of HP and Ricoh to
+    obtain the device IDs of network-connected printers. This way we get more
+    reliable information about make and model and in addition the supported
+    page description languages, which allow to identify whether an optional
+    PostScript add-on is installed or for an unsupported printer which
+    generic PPD is the best choice (requested by Ricoh, thanks to Tim Waugh
+    from Red Hat to create the patch).
+  * debian/patches/non-ubuntu-dynamic-default-ripcache-size.dpatch,
+    debian/patches/ubuntu-default-ripcache-size-auto.dpatch,
+    debian/patches/default-ripcache-size-auto.dpatch: Let RIP_MAX_CACHE
+    default to "auto" in Ubuntu AND Debian. Debian's Ghostscript also
+    has the patch for automatic memory management for the CUPS Raster
+    output device.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 10 Sep 2010 21:03:33 +0200
+
 cups (1.4.4-3ubuntu1) maverick; urgency=low
 
   [ Till Kamppeter ]
@@ -6,9 +25,9 @@ cups (1.4.4-3ubuntu1) maverick; urgency=low
     debian/patches/ubuntu-default-ripcache-size-auto.dpatch:
     Replaced patch for letting CUPS default RIP_MAX_CACHE to 1/4 of the
     system's RAM by a patch defaulting RIP_MAX_CACHE to "auto" only in
-    Ubuntu as there we have a Ghostscript version which managers its
+    Ubuntu as there we have a Ghostscript version which manages its
     needed memory size automatically. In non-Ubuntu distributions we stay
-    with the 1/4 of system RAM patch.
+    with the 1/4 of system RAM patch. See also LP: #628030.
 
   [ Martin Pitt ]
   * debian/control: Drop perl-modules dependency. The only script that uses
