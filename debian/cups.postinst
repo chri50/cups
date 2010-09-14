@@ -42,6 +42,10 @@ if [ "$1" = configure ]; then
     if [ -L /usr/share/cups/model/cups-included ]; then
 	rm -f /usr/share/cups/model/cups-included
     fi
+    
+    # set up custom PPD directory
+    chown root:lpadmin /usr/share/ppd/custom 2>/dev/null || true
+    chmod 3775 /usr/share/ppd/custom 2>/dev/null || true
 
     # Generate raw MIME handling files if they don't already exist.
     if [ ! -e /etc/cups/raw.types ]; then

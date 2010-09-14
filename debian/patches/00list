@@ -20,9 +20,10 @@ manual-section-for-drv.dpatch
 reactivate_recommended_driver.dpatch
 poppler-based-pdftops-fixes.dpatch
 read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.dpatch
-dynamic-default-ripcache-size.dpatch
 do-not-broadcast-with-hostnames.dpatch
 cups-deviced-allow-device-ids-with-newline
+default-ripcache-size-auto.dpatch
+cups-snmp-oids-device-id-hp-ricoh.dpatch
 
 # Debian patches
 logfiles_adm_readable.dpatch
@@ -38,3 +39,4 @@ support-gzipped-charmaps.dpatch
 # Ubuntu patches
 ubuntu-disable-browsing.dpatch
 ubuntu-default-error-policy-retry-job.dpatch
+ubuntu-upstart.dpatch

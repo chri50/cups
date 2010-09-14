@@ -1,3 +1,37 @@
+cups (1.4.4-4) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * default-ripcache-size-auto.dpatch: Replaced patch for letting CUPS default
+    RIP_MAX_CACHE to 1/4 of the system's RAM by a patch defaulting
+    RIP_MAX_CACHE to "auto". See LP: #628030.
+  * debian/patches/cups-snmp-oids-device-id-hp-ricoh.dpatch: Let the "snmp"
+    backend also use the manufacturer-specific MIBs of HP and Ricoh to
+    obtain the device IDs of network-connected printers. This way we get more
+    reliable information about make and model and in addition the supported
+    page description languages, which allow to identify whether an optional
+    PostScript add-on is installed or for an unsupported printer which
+    generic PPD is the best choice (requested by Ricoh, thanks to Tim Waugh
+    from Red Hat to create the patch).
+
+  [ Martin Pitt ]
+  * debian/control: Drop perl-modules dependency. The only script that uses
+    perl is oopstops, which uses IO::Handle, and this is in perl-base.
+  * debian/control, debian/rules, ubuntu-*.dpatch: Replace lsb_release call
+    with dpkg-vendor, and drop lsb-release build dependency.
+  * Upstartify for Ubuntu:
+    - Add ubuntu-upstart.dpatch: Add debian/cups.upstart script, which now
+      causes Samba to wait for cups to start. Don't have it in debian/ by
+      default, since dh_installinit unconditionally prefers it over .init.
+    - debian/rules: Call dh_installinit with --upstart-only when building on
+      Ubuntu.
+    - debian/cups.preinst: Remove old init script on upgrades when running on
+      Ubuntu.
+  * debian/cups.preinst: Remove some obsolete transitional code.
+  * debian/cups.init.d, debian/cups.postinst: Move custom PPD directory setup
+    from init script into postinst. No need to do that on every boot.
+
+ -- Martin Pitt <mpitt@debian.org>  Tue, 14 Sep 2010 18:49:39 +0200
+
 cups (1.4.4-3) unstable; urgency=low
 
   [ Jamie Strandboge ]
