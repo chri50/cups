@@ -9,7 +9,7 @@ Build-Depends: libpam0g-dev, libtiff4-dev, libjpeg-dev, zlib1g-dev,
  dpatch (>= 1.11), libdbus-1-dev, libkrb5-dev | heimdal-dev,
  libavahi-compat-libdnssd-dev, libavahi-common-dev, libavahi-client-dev,
  libpoppler-dev (>= 0.12.2-2), pkg-config,
- poppler-utils, lsb-release, po4a (>= 0.31), autotools-dev, autoconf, automake, 
+ poppler-utils, po4a (>= 0.31), autotools-dev, autoconf, automake, 
  libtool, libijs-dev, hardening-wrapper, liblcms1-dev, libfreetype6-dev,
  libfontconfig1-dev, pkg-config, libusb-dev
 Uploaders: Kenshi Muto <kmuto@debian.org>, 
@@ -110,13 +110,13 @@ Priority: optional
 Section: net
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, debconf (>= 1.2.9) | debconf-2.0,
- poppler-utils (>= 0.12), perl-modules, procps, ghostscript, lsb-base (>= 3),
+ poppler-utils (>= 0.12), procps, ghostscript, lsb-base (>= 3),
  cups-common (>= ${source:Upstream-Version}), 
  cups-client (>= ${binary:Version}),
  ssl-cert (>= 1.0.11), adduser, bc, ttf-freefont
 Recommends: foomatic-filters (>= 4.0), 
  cups-driver-gutenprint, ghostscript-cups
-Suggests: cups-bsd, cups-ppdc, foomatic-db-engine, foomatic-db,
+Suggests: cups-bsd, cups-ppdc, foomatic-db-compressed-ppds | foomatic-db,
  hplip, xpdf-korean | xpdf-japanese | xpdf-chinese-traditional | xpdf-chinese-simplified, 
  cups-pdf, smbclient (>= 3.0.9), udev
 Replaces: cupsddk-drivers (<< 1.4.0)

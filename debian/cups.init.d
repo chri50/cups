@@ -56,8 +56,6 @@ coldplug_usb_printers() {
 case "$1" in
   start)
 	log_begin_msg "Starting $DESC: $NAME"
-	chown root:lpadmin /usr/share/ppd/custom 2>/dev/null || true
-	chmod 3775 /usr/share/ppd/custom 2>/dev/null || true
 
 	mkdir -p `dirname "$PIDFILE"`
 	if [ "$LOAD_LP_MODULE" = "yes" -a -f /usr/lib/cups/backend/parallel \

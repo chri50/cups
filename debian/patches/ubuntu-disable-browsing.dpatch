@@ -6,7 +6,7 @@
 ## DP: https://wiki.ubuntu.com/DefaultNetworkServices). This is only applied
 ## DP: when building on Ubuntu.
 
-[ "`lsb_release -is 2>/dev/null`" = "Ubuntu" ] || { echo -n '(ignored)' >&2; exit 0; }
+dpkg-vendor --is ubuntu || { echo -n '(ignored)' >&2; exit 0; }
 . /usr/share/dpatch/dpatch-run
 
 @DPATCH@
