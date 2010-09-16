@@ -1,3 +1,22 @@
+cups (1.4.4-5) unstable; urgency=low
+
+  [ Martin Pitt ]
+  * ubuntu-upstart.dpatch: Drop the dependency "on starting smbd", it causes
+    samba to hang on package upgrades or manual restarts. There doesn't seem
+    to be a good way to express this dependency right now. (LP: #639768)
+    Instead, send a SIGHUP to smbd if it is running, which causes it to reload
+    printers.
+
+  [ Till Kamppeter ]
+  * pstops-based-workflow-only-for-printing-ps-on-a-ps-printer.dpatch:
+    Let CUPS use the former PostScript-based filter chain only if the input
+    file is PostScript and the printer is a PostScript printer with
+    manufacturer-supplied PPD file. This avoids ugly PS->PDF->PS conversions
+    which are bad for the performance and sometimes cause issues
+    (Closes: #593338, requested by Ricoh).
+
+ -- Martin Pitt <mpitt@debian.org>  Thu, 16 Sep 2010 18:57:06 +0200
+
 cups (1.4.4-4) unstable; urgency=low
 
   [ Till Kamppeter ]
