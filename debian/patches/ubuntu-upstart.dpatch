@@ -16,7 +16,7 @@ dpkg-vendor --is ubuntu || { echo -n '(ignored)' >&2; exit 0; }
 +description     "CUPS printing spooler/server"
 +author          "Michael Sweet <msweet@apple.com>"
 +
-+start on ((starting smbd or filesystem)
++start on (filesystem
 +          and started dbus
 +          and stopped udevtrigger)
 +stop on runlevel [016]
