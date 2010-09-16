@@ -1,0 +1,19 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## pstops-based-workflow-only-for-printing-ps-on-a-ps-printer.dpatch by  <till.kamppeter@gmail.com>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: No description.
+
+@DPATCH@
+diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.4~/conf/mime.convs.in cups-1.4.4/conf/mime.convs.in
+--- cups-1.4.4~/conf/mime.convs.in	2009-12-08 03:13:42.000000000 +0100
++++ cups-1.4.4/conf/mime.convs.in	2010-09-16 18:43:27.623100136 +0200
+@@ -39,7 +39,7 @@
+ #
+ 
+ application/pdf			application/vnd.cups-postscript	66	pdftops
+-application/postscript		application/vnd.cups-postscript	66	pstops
++application/postscript		application/vnd.cups-postscript	65	pstops
+ application/vnd.hp-HPGL		application/postscript		66	hpgltops
+ application/x-cshell		application/postscript		33	texttops
+ application/x-csource		application/postscript		33	texttops

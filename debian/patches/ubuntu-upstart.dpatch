@@ -8,15 +8,16 @@ dpkg-vendor --is ubuntu || { echo -n '(ignored)' >&2; exit 0; }
 . /usr/share/dpatch/dpatch-run
 
 @DPATCH@
+diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.4~/debian/cups.upstart cups-1.4.4/debian/cups.upstart
 --- cups-1.4.4~/debian/cups.upstart	1970-01-01 01:00:00.000000000 +0100
-+++ cups-1.4.4/debian/cups.upstart	2010-09-14 18:37:40.492181002 +0200
-@@ -0,0 +1,40 @@
++++ cups-1.4.4/debian/cups.upstart	2010-09-16 18:37:20.183116001 +0200
+@@ -0,0 +1,46 @@
 +# cups - CUPS Printing spooler and server
 +
 +description     "CUPS printing spooler/server"
 +author          "Michael Sweet <msweet@apple.com>"
 +
-+start on ((starting smbd or filesystem)
++start on (filesystem
 +          and started dbus
 +          and stopped udevtrigger)
 +stop on runlevel [016]
@@ -49,5 +50,11 @@ dpkg-vendor --is ubuntu || { echo -n '(ignored)' >&2; exit 0; }
 +                --sysname-match='lp[0-9]*' 2>/dev/null || true`; do
 +            /lib/udev/udev-configure-printer add "${printer#/sys}"
 +        done
++    fi
++
++    # poke Samba to reload printers
++    smbd=`status smbd | awk '/start\/running, process [[:digit:]]+/ { print $NF}'`
++    if [ -n "$smbd" ]; then
++        kill -HUP "$smbd"
 +    fi
 +end script
