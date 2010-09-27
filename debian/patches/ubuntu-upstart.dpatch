@@ -10,8 +10,8 @@ dpkg-vendor --is ubuntu || { echo -n '(ignored)' >&2; exit 0; }
 @DPATCH@
 diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.4~/debian/cups.upstart cups-1.4.4/debian/cups.upstart
 --- cups-1.4.4~/debian/cups.upstart	1970-01-01 01:00:00.000000000 +0100
-+++ cups-1.4.4/debian/cups.upstart	2010-09-16 18:37:20.183116001 +0200
-@@ -0,0 +1,46 @@
++++ cups-1.4.4/debian/cups.upstart	2010-09-27 17:41:54.141991001 +0200
+@@ -0,0 +1,51 @@
 +# cups - CUPS Printing spooler and server
 +
 +description     "CUPS printing spooler/server"
@@ -21,6 +21,8 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
 +          and started dbus
 +          and stopped udevtrigger)
 +stop on runlevel [016]
++
++expect fork
 +
 +pre-start script
 +    [ -x /usr/sbin/cupsd ]
@@ -39,9 +41,12 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
 +    mkdir -p /var/run/cups/certs
 +end script
 +
-+exec /usr/sbin/cupsd -f
++exec /usr/sbin/cupsd
 +
 +post-start script
++    # wait until daemon is ready
++    while [ ! -e /var/run/cups/cups.sock ]; do sleep 0.5; done
++    
 +    # coldplug USB printers
 +    if type udevadm > /dev/null 2>&1 && [ -x /lib/udev/udev-configure-printer ]; then
 +        for printer in `udevadm trigger --verbose --dry-run --subsystem-match=usb \
