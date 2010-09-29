@@ -18,7 +18,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
 +author          "Michael Sweet <msweet@apple.com>"
 +
 +start on (filesystem
-+          and started dbus
++          and (started dbus or runlevel [2345])
 +          and stopped udevtrigger)
 +stop on runlevel [016]
 +

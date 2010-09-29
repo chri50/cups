@@ -1,3 +1,11 @@
+cups (1.4.4-6ubuntu2) maverick; urgency=low
+
+  * ubuntu-upstart.dpatch: If D-BUS is not available, start on runlevels 2 to
+    5, so that this also works in server environments. Patch cherrypicked from
+    packaging trunk. (LP: #650893)
+
+ -- Martin Pitt <martin.pitt@ubuntu.com>  Wed, 29 Sep 2010 11:01:42 +0200
+
 cups (1.4.4-6ubuntu1) maverick; urgency=low
 
   * ubuntu-upstart.dpatch: Wait until daemon is ready, to avoid race
