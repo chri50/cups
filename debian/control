@@ -114,7 +114,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, debconf (>= 1.2.9) | debconf-2.0,
  poppler-utils (>= 0.12), procps, ghostscript, lsb-base (>= 3),
  cups-common (>= ${source:Upstream-Version}), 
  cups-client (>= ${binary:Version}),
- ssl-cert (>= 1.0.11), adduser, bc, ttf-freefont
+ ssl-cert (>= 1.0.11), adduser, bc, ttf-freefont, cups-ppdc
 Recommends: foomatic-filters (>= 4.0), 
  cups-driver-gutenprint, ghostscript-cups
 Suggests: cups-bsd, cups-ppdc, foomatic-db-compressed-ppds | foomatic-db,

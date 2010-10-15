@@ -1,3 +1,11 @@
+cups (1.4.4-6ubuntu2.1) maverick-proposed; urgency=low
+
+  * debian/control: Added dependency on "cups-ppdc" package to the "cups"
+    package, so that the PPDs of the drivers which come with CUPS get built
+    (LP: #485383).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 15 Oct 2010 13:04:33 +0200
+
 cups (1.4.4-6ubuntu2) maverick; urgency=low
 
   * ubuntu-upstart.dpatch: If D-BUS is not available, start on runlevels 2 to
