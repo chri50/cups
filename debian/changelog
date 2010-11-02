@@ -1,3 +1,13 @@
+cups (1.4.4-6ubuntu2.2) maverick-security; urgency=low
+
+  * SECURITY UPDATE: denial of service and possible code execution via
+    invalid free
+    - debian/patches/CVE-2010-2941.dpatch: skip over and reserve unused
+      tags in cups/ipp.{c,h}.
+    - CVE-2010-2941
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Tue, 02 Nov 2010 10:21:01 -0400
+
 cups (1.4.4-6ubuntu2.1) maverick-proposed; urgency=low
 
   * debian/control: Added dependency on "cups-ppdc" package to the "cups"
