@@ -1,3 +1,13 @@
+cups (1.4.1-5ubuntu2.7) karmic-security; urgency=low
+
+  * SECURITY UPDATE: denial of service and possible code execution via
+    invalid free
+    - debian/patches/CVE-2010-2941.dpatch: skip over and reserve unused
+      tags in cups/ipp.{c,h}.
+    - CVE-2010-2941
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Tue, 02 Nov 2010 11:10:37 -0400
+
 cups (1.4.1-5ubuntu2.6) karmic-security; urgency=low
 
   * SECURITY UPDATE: cross-site request forgery in admin interface
