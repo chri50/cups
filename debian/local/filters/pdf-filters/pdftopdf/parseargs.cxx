@@ -6,6 +6,22 @@
  * Copyright 1996-2003 Glyph & Cog, LLC
  */
 
+/*========================================================================
+
+ Modified under the Poppler project - http://poppler.freedesktop.org
+
+ Poppler project changes to this file are under the GPLv2 or later license
+
+ All changes made under the Poppler project to this file are licensed
+ under GPL version 2 or later
+
+ Copyright (C) 2008, 2009 Albert Astals Cid <aacid@kde.org>
+
+ To see a description of the changes please see the Changelog file that
+ came with your tarball or type make ChangeLog if you are building from git
+
+========================================================================*/
+
 #include <stdio.h>
 #include <stddef.h>
 #include <string.h>
@@ -13,11 +29,13 @@
 #include <ctype.h>
 #include "parseargs.h"
 
-static ArgDesc *findArg(ArgDesc *args, char *arg);
-static GBool grabArg(ArgDesc *arg, int i, int *argc, char *argv[]);
+#include "goo/gstrtod.h"
 
-GBool parseArgs(ArgDesc *args, int *argc, char *argv[]) {
-  ArgDesc *arg;
+static const ArgDesc *findArg(const ArgDesc *args, char *arg);
+static GBool grabArg(const ArgDesc *arg, int i, int *argc, char *argv[]);
+
+GBool parseArgs(const ArgDesc *args, int *argc, char *argv[]) {
+  const ArgDesc *arg;
   int i, j;
   GBool ok;
 
@@ -39,8 +57,8 @@ GBool parseArgs(ArgDesc *args, int *argc, char *argv[]) {
   return ok;
 }
 
-void printUsage(char *program, char *otherArgs, ArgDesc *args) {
-  ArgDesc *arg;
+void printUsage(char *program, char *otherArgs, const ArgDesc *args) {
+  const ArgDesc *arg;
   char *typ;
   int w, w1;
 
@@ -84,8 +102,8 @@ void printUsage(char *program, char *otherArgs, ArgDesc *args) {
   }
 }
 
-static ArgDesc *findArg(ArgDesc *args, char *arg) {
-  ArgDesc *p;
+static const ArgDesc *findArg(const ArgDesc *args, char *arg) {
+  const ArgDesc *p;
 
   for (p = args; p->arg; ++p) {
     if (p->kind < argFlagDummy && !strcmp(p->arg, arg))
@@ -94,7 +112,7 @@ static ArgDesc *findArg(ArgDesc *args, char *arg) {
   return NULL;
 }
 
-static GBool grabArg(ArgDesc *arg, int i, int *argc, char *argv[]) {
+static GBool grabArg(const ArgDesc *arg, int i, int *argc, char *argv[]) {
   int n;
   int j;
   GBool ok;
@@ -117,7 +135,7 @@ static GBool grabArg(ArgDesc *arg, int i, int *argc, char *argv[]) {
     break;
   case argFP:
     if (i + 1 < *argc && isFP(argv[i+1])) {
-      *(double *)arg->val = atof(argv[i+1]);
+      *(double *)arg->val = gatof(argv[i+1]);
       n = 2;
     } else {
       ok = gFalse;

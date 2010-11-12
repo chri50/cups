@@ -64,7 +64,7 @@ clean:
 #
 
 depend:
-	makedepend -Y -I.. -fDependencies $(OBJS:.o=.cxx) parseargs.c >/dev/null 2>&1
+	makedepend -Y -I.. -fDependencies $(OBJS:.o=.cxx) >/dev/null 2>&1
 
 
 #
@@ -99,7 +99,7 @@ uninstall:
 
 pdftopdf:	pdftopdf.o $(LIBOBJS) ../cups/$(LIBCUPS)
 	echo Linking $@...
-	$(CXX) $(LDFLAGS) -o $@ pdftopdf.o $(LIBOBJS) $(POPPLER_LIBS) $(CXXLIBS) -lm
+	$(CXX) $(LDFLAGS) -o $@ pdftopdf.o $(LIBOBJS) $(POPPLER_LIBS) $(CXXLIBS) -lm -lz
 
 
 #

@@ -1,6 +1,7 @@
 # patches backported from upstream SVN trunk for 1.5:
 
 # patches accepted and committed upstream for next 1.4:
+CVE-2010-2941.dpatch
 
 # patches sent upstream
 pidfile.dpatch

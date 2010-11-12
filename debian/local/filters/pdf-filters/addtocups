@@ -148,7 +148,7 @@ imagetopdf:	imagetopdf.o common.o \$(LIBCUPSIMAGE) \\
 
 pdftoijs:	pdftoijs.o ../cups/\$(LIBCUPS)
 	echo Linking \$@...
-	\$(CC) \$(LDFLAGS) -o \$@ pdftoijs.o \\
+	\$(CXX) \$(LDFLAGS) -o \$@ pdftoijs.o \\
 		\$(POPPLER_LIBS) \$(IJS_LIBS)
 
 

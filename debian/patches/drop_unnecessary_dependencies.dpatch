@@ -31,18 +31,6 @@ diff -urNad cups-1.4.0~svn8773~/Makedefs.in cups-1.4.0~svn8773/Makedefs.in
  OPTIM		=	@OPTIM@
  OPTIONS		=
  PAMLIBS		=	@PAMLIBS@
-diff -urNad cups-1.4.0~svn8773~/config-scripts/cups-gssapi.m4 cups-1.4.0~svn8773/config-scripts/cups-gssapi.m4
---- cups-1.4.0~svn8773~/config-scripts/cups-gssapi.m4	2009-08-23 12:15:59.000000000 +0200
-+++ cups-1.4.0~svn8773/config-scripts/cups-gssapi.m4	2009-08-23 18:14:52.000000000 +0200
-@@ -41,7 +41,7 @@
- 				# Other platforms just ask for GSSAPI
- 				CFLAGS="`$KRB5CONFIG --cflags gssapi` $CFLAGS"		
- 				CPPFLAGS="`$KRB5CONFIG --cflags gssapi` $CPPFLAGS"		
--				LIBGSSAPI="`$KRB5CONFIG --libs gssapi`"
-+				LIBGSSAPI="-lgssapi_krb5"
- 				;;
- 		esac
- 		AC_DEFINE(HAVE_GSSAPI, 1, [Whether GSSAPI is available])
 diff -urNad cups-1.4.0~svn8773~/cups/Makefile cups-1.4.0~svn8773/cups/Makefile
 --- cups-1.4.0~svn8773~/cups/Makefile	2009-08-23 12:16:16.000000000 +0200
 +++ cups-1.4.0~svn8773/cups/Makefile	2009-08-23 18:21:18.000000000 +0200
