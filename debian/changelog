@@ -1,3 +1,44 @@
+cups (1.4.4-7) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/local/filters/pdf-filters/pdftopdf/parseargs.c,
+    debian/local/filters/pdf-filters/pdftopdf/parseargs.cxx,
+    debian/local/filters/pdf-filters/pdftopdf/parseargs.h,
+    debian/local/filters/pdf-filters/pdftopdf/Makefile: Made pdftopdf
+    building with Poppler 0.15.x. Thanks to Koji Otani for this patch.
+  * debian/control: Added dependency on "cups-ppdc" package to the "cups"
+    package, so that the PPDs of the drivers which come with CUPS get built
+    (LP: #485383).
+
+  [ Martin Pitt ]
+  * ubuntu-upstart.dpatch: Wait until daemon is ready, to avoid race
+    conditions with init scripts which expect cups tools to work right after
+    restarting it. (LP: #647369)
+  * ubuntu-upstart.dpatch: If D-BUS is not available, start on runlevels 2 to
+    5, so that this also works in server environments. (LP: #650893)
+  * debian/local/apparmor-profile: Allow access to /usr/local/lib/cups/**.
+    (LP: #160092)
+  * debian/local/apparmor-profile: Allow reading /usr/local/**, in case
+    third-party printer drivers need auxiliary files.
+  * debian/local/apparmor-profile: Allow reading /var/run/**. (LP: #659961)
+  * ubuntu-upstart.dpatch: Time out after 5 seconds when the local socket
+    doesn't get created. Apparently a lot of users disable it in cupsd.conf.
+    (LP: #672438)
+  * debian/local/filters/pdf-filters/addtocups: Link pdftoijs with $(CXX),
+    since it's a C++ program. Fixes FTBFS with gcc 4.5.
+  * debian/local/filters/pdf-filters/pdftopdf/Makefile: Explicitly pdftopdf
+    with -lz. gcc 4.5 does not automatically link to transitive library
+    dependencies any more.
+  * drop_unnecessary_dependencies.dpatch: Drop hunk for reduced krb5/gssapi
+    linkage. With gcc 4.5, we now need -lkrb5.
+  
+  [ Marc Deslauriers ]
+  * Add CVE-2010-2941.dpatch: Fix denial of service and possible code execution
+    via invalid free. Skip over and reserve unused tags in cups/ipp.{c,h}.
+    [CVE-2010-2941]
+
+ -- Martin Pitt <mpitt@debian.org>  Fri, 12 Nov 2010 11:07:33 +0100
+
 cups (1.4.4-6) unstable; urgency=low
 
   * debian/cups.preinst: Go back to using lsb-release, since dpkg-vendor is
