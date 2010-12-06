@@ -1,5 +1,5 @@
 /*
- * "$Id: file.c 9160 2010-06-16 20:25:12Z mike $"
+ * "$Id: file.c 9233 2010-08-10 06:15:55Z mike $"
  *
  *   File functions for the Common UNIX Printing System (CUPS).
  *
@@ -494,7 +494,7 @@ cupsFileGetConf(cups_file_t *fp,	/* I  - CUPS file */
         // Strip the comment and any trailing whitespace...
 	while (ptr > buf)
 	{
-	  if (!isspace(ptr[-1] & 255))
+	  if (!_cups_isspace(ptr[-1]))
 	    break;
 
 	  ptr --;
@@ -508,7 +508,7 @@ cupsFileGetConf(cups_file_t *fp,	/* I  - CUPS file */
     * Strip leading whitespace...
     */
 
-    for (ptr = buf; isspace(*ptr & 255); ptr ++);
+    for (ptr = buf; _cups_isspace(*ptr); ptr ++);
 
     if (ptr > buf)
       _cups_strcpy(buf, ptr);
@@ -524,7 +524,7 @@ cupsFileGetConf(cups_file_t *fp,	/* I  - CUPS file */
       */
 
       for (ptr = buf; *ptr; ptr ++)
-        if (isspace(*ptr & 255))
+        if (_cups_isspace(*ptr))
 	  break;
 
       if (*ptr)
@@ -533,7 +533,7 @@ cupsFileGetConf(cups_file_t *fp,	/* I  - CUPS file */
         * Have a value, skip any other spaces...
 	*/
 
-        while (isspace(*ptr & 255))
+        while (_cups_isspace(*ptr))
 	  *ptr++ = '\0';
 
         if (*ptr)
@@ -557,7 +557,7 @@ cupsFileGetConf(cups_file_t *fp,	/* I  - CUPS file */
 	  return (buf);
 	}
 
-        while (ptr > *value && isspace(*ptr & 255))
+        while (ptr > *value && _cups_isspace(*ptr))
 	  *ptr-- = '\0';
       }
 
@@ -2437,5 +2437,5 @@ cups_write(cups_file_t *fp,		/* I - CUPS file */
 
 
 /*
- * End of "$Id: file.c 9160 2010-06-16 20:25:12Z mike $".
+ * End of "$Id: file.c 9233 2010-08-10 06:15:55Z mike $".
  */

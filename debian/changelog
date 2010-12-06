@@ -1,3 +1,34 @@
+cups (1.4.5-1) unstable; urgency=low
+
+  [ Martin Pitt ]
+  * New upstream bug fix/security release. The security issue
+    (CVE-2010-2941) was already fixed by a backported patch in the previous
+    upload.
+  * Drop CVE-2010-2941.dpatch, upstream now.
+  * Drop manual-section-for-drv.dpatch, obsolete with new upstream version.
+  * dnssd-avahi.dpatch: Unfuzz for new upstream version.
+  * debian/control: Drop xpdf-* CJK suggests, they got removed from squeeze.
+    (Closes: #603467)
+  * debian/control: Clean up obsolete suggests.
+  * Update Catalan debconf translations, thanks Jordi Mallach!
+    (Closes: #601138)
+  * debian/cups-ppdc.install: Drop drv manpage, doesn't exist any more.
+
+  [ Till Kamppeter ]
+  * debian/local/filters/pdf-filters/pdftopdf/P2PForm.cxx,
+    debian/local/filters/pdf-filters/pdftopdf/P2PForm.h,
+    debian/local/filters/pdf-filters/pdftopdf/Makefile,
+    debian/local/filters/pdf-filters/pdftopdf/P2PMatrix.h,
+    debian/local/filters/pdf-filters/pdftopdf/P2PPage.cxx,
+    debian/local/filters/pdf-filters/pdftopdf/P2PPage.h,
+    debian/local/filters/pdf-filters/pdftopdf/P2PResources.cxx,
+    debian/local/filters/pdf-filters/pdftopdf/P2PResources.h: Make
+    pdftopdf working with PDF files which use "Form" without "Resource"
+    dictionary. Thanks to Koji Otani for this patch and to Nicola
+    Ruggero for reporting the problem and sending sample files.
+
+ -- Martin Pitt <mpitt@debian.org>  Mon, 06 Dec 2010 19:40:56 +0100
+
 cups (1.4.4-7) unstable; urgency=low
 
   [ Till Kamppeter ]
@@ -35,7 +66,7 @@ cups (1.4.4-7) unstable; urgency=low
   [ Marc Deslauriers ]
   * Add CVE-2010-2941.dpatch: Fix denial of service and possible code execution
     via invalid free. Skip over and reserve unused tags in cups/ipp.{c,h}.
-    [CVE-2010-2941]
+    [CVE-2010-2941] (Closes: #603344)
 
  -- Martin Pitt <mpitt@debian.org>  Fri, 12 Nov 2010 11:07:33 +0100
 

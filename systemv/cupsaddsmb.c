@@ -1,5 +1,5 @@
 /*
- * "$Id: cupsaddsmb.c 7033 2007-10-19 02:11:28Z mike $"
+ * "$Id: cupsaddsmb.c 9258 2010-08-13 01:34:04Z mike $"
  *
  *   "cupsaddsmb" command for the Common UNIX Printing System (CUPS).
  *
@@ -224,6 +224,7 @@ export_dest(http_t     *http,		/* I - Connection to server */
   int		status;			/* Status of export */
   char		ppdfile[1024],		/* PPD file for printer drivers */
 		prompt[1024];		/* Password prompt */
+  int		tries;			/* Number of tries */
 
 
  /*
@@ -243,7 +244,7 @@ export_dest(http_t     *http,		/* I - Connection to server */
   * Try to export it...
   */
 
-  for (status = 0; !status;)
+  for (status = 0, tries = 0; !status && tries < 3; tries ++)
   {
    /*
     * Get the password, as needed...
@@ -298,5 +299,5 @@ usage(void)
 
 
 /*
- * End of "$Id: cupsaddsmb.c 7033 2007-10-19 02:11:28Z mike $".
+ * End of "$Id: cupsaddsmb.c 9258 2010-08-13 01:34:04Z mike $".
  */

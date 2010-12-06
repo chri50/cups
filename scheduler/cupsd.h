@@ -1,5 +1,5 @@
 /*
- * "$Id: cupsd.h 8481 2009-04-02 22:53:56Z mike $"
+ * "$Id: cupsd.h 9310 2010-09-21 22:34:57Z mike $"
  *
  *   Main header file for the Common UNIX Printing System (CUPS) scheduler.
  *
@@ -161,8 +161,10 @@ VAR int			MaxFDs		VALUE(0);
 
 VAR time_t		ReloadTime	VALUE(0);
 					/* Time of reload request... */
-VAR int			NeedReload	VALUE(RELOAD_ALL);
+VAR int			NeedReload	VALUE(RELOAD_ALL),
 					/* Need to load configuration? */
+			DoingShutdown	VALUE(0);
+					/* Shutting down the scheduler? */
 VAR void		*DefaultProfile	VALUE(0);
 					/* Default security profile */
 
@@ -242,5 +244,5 @@ extern int	cupsdRemoveFile(const char *filename);
 
 
 /*
- * End of "$Id: cupsd.h 8481 2009-04-02 22:53:56Z mike $".
+ * End of "$Id: cupsd.h 9310 2010-09-21 22:34:57Z mike $".
  */

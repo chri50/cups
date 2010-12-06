@@ -116,9 +116,8 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, debconf (>= 1.2.9) | debconf-2.0,
  ssl-cert (>= 1.0.11), adduser, bc, ttf-freefont, cups-ppdc
 Recommends: foomatic-filters (>= 4.0), 
  cups-driver-gutenprint, ghostscript-cups
-Suggests: cups-bsd, cups-ppdc, foomatic-db-compressed-ppds | foomatic-db,
- hplip, xpdf-korean | xpdf-japanese | xpdf-chinese-traditional | xpdf-chinese-simplified, 
- cups-pdf, smbclient (>= 3.0.9), udev
+Suggests: cups-bsd, foomatic-db-compressed-ppds | foomatic-db,
+ hplip, cups-pdf, smbclient (>= 3.0.9), udev
 Replaces: cupsddk-drivers (<< 1.4.0)
 Conflicts: cupsddk-drivers (<< 1.4.0)
 Provides: cupsddk-drivers
@@ -137,7 +136,7 @@ Section: net
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, 
  cups-common (>= ${source:Upstream-Version}), adduser
-Suggests: cups, kdeprint, gtklp, cups-pt, xpp, cups-bsd
+Suggests: cups, xpp, cups-bsd
 Conflicts: lprng
 Description: Common UNIX Printing System(tm) - client programs (SysV)
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 

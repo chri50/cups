@@ -55,7 +55,13 @@ public:
   static const char *dictNames[NDict];
   P2PResources(XRef *xrefA);
   ~P2PResources();
-  void output(P2POutputStream *str, P2PFontResource *fontResource);
+  void output(P2POutputStream *str);
+  void setP2PFontResource(P2PFontResource *fontResourceA) {
+    fontResource = fontResourceA;
+  }
+  P2PFontResource *getP2PFontResource() {
+    return fontResource;
+  }
   /* merge resources and return mapping table */
   P2PResourceMap *merge(Dict *res);
   P2PResourceMap *merge(P2PResources *res);
@@ -87,6 +93,9 @@ private:
   unsigned int resourceNo;
   P2PPatternDict *patternDict;
   int nPattern;
+  P2PFontResource *fontResource;
+  P2PObject **oldForms;
+  int nOldForms;
 
   void mergeOneDict(Dict *dst, Dict *src, Dict *map, GBool unify);
 #ifdef HAVE_UGOOSTRING_H
@@ -99,6 +108,7 @@ private:
 #else
   void addMap(char *org, char *mapped, Dict *map);
 #endif
+  void handleOldForm(P2PResourceMap *map);
 };
 
 /* resource name mapping table */

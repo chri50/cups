@@ -1,7 +1,7 @@
 /*
-* "$Id: usb-darwin.c 9157 2010-06-16 05:27:41Z mike $"
+* "$Id: usb-darwin.c 9319 2010-09-28 19:10:26Z mike $"
 *
-* Copyright 2005-2009 Apple Inc. All rights reserved.
+* Copyright 2005-2010 Apple Inc. All rights reserved.
 *
 * IMPORTANT:  This Apple software is supplied to you by Apple Computer,
 * Inc. ("Apple") in consideration of your agreement to the following
@@ -112,6 +112,12 @@ extern char **environ;
 
 #define DEBUG_WRITES 0
 
+/*
+ * WAIT_EOF_DELAY is number of seconds we'll wait for responses from
+ * the printer after we've finished sending all the data
+ */
+#define WAIT_EOF_DELAY			7
+#define WAIT_SIDE_DELAY			3
 #define DEFAULT_TIMEOUT			5000L
 
 #define	USB_INTERFACE_KIND		CFUUIDGetUUIDBytes(kIOUSBInterfaceInterfaceID190)
@@ -241,6 +247,11 @@ typedef struct globals_s
   Boolean		wait_eof;
   int			drain_output;	/* Drain all pending output */
   int			bidi_flag;	/* 0=unidirectional, 1=bidirectional */
+
+  pthread_mutex_t	sidechannel_thread_mutex;
+  pthread_cond_t	sidechannel_thread_cond;
+  int			sidechannel_thread_stop;
+  int			sidechannel_thread_done;
 } globals_t;
 
 
@@ -281,8 +292,8 @@ static void status_timer_cb(CFRunLoopTimerRef timer, void *info);
 #if defined(__i386__) || defined(__x86_64__)
 static pid_t	child_pid;		/* Child PID */
 static void run_legacy_backend(int argc, char *argv[], int fd);	/* Starts child backend process running as a ppc executable */
-static void sigterm_handler(int sig);	/* SIGTERM handler */
 #endif /* __i386__ || __x86_64__ */
+static void sigterm_handler(int sig);	/* SIGTERM handler */
 
 #ifdef PARSE_PS_ERRORS
 static const char *next_line (const char *buffer);
@@ -333,6 +344,7 @@ print_device(const char *uri,		/* I - Device URI */
   UInt32	  bytes;		/* Bytes written */
   struct timeval  *timeout,		/* Timeout pointer */
 		  stimeout;		/* Timeout for select() */
+  struct timespec cond_timeout;		/* pthread condition timeout */
 
 
  /*
@@ -476,6 +488,12 @@ print_device(const char *uri,		/* I - Device URI */
 
   if (have_sidechannel)
   {
+    g.sidechannel_thread_stop = 0;
+    g.sidechannel_thread_done = 0;
+
+    pthread_cond_init(&g.sidechannel_thread_cond, NULL);
+    pthread_mutex_init(&g.sidechannel_thread_mutex, NULL);
+
     if (pthread_create(&sidechannel_thread_id, NULL, sidechannel_thread, NULL))
     {
       _cupsLangPuts(stderr, _("ERROR: Fatal USB error\n"));
@@ -732,6 +750,104 @@ print_device(const char *uri,		/* I - Device URI */
 
   fprintf(stderr, "DEBUG: Sent %lld bytes...\n", (off_t)total_bytes);
 
+  if (!print_fd)
+  {
+   /*
+    * Re-enable the SIGTERM handler so pthread_kill() will work...
+    */
+  
+    struct sigaction	action;		/* POSIX signal action */
+
+    memset(&action, 0, sizeof(action));
+
+    sigemptyset(&action.sa_mask);
+    sigaddset(&action.sa_mask, SIGTERM);
+    action.sa_handler = sigterm_handler;
+    sigaction(SIGTERM, &action, NULL);
+  }
+
+ /*
+  * Wait for the side channel thread to exit...
+  */
+
+  if (have_sidechannel)
+  {
+    close(CUPS_SC_FD);
+    pthread_mutex_lock(&g.readwrite_lock_mutex);
+    g.readwrite_lock = 0;
+    pthread_cond_signal(&g.readwrite_lock_cond);
+    pthread_mutex_unlock(&g.readwrite_lock_mutex);
+
+    g.sidechannel_thread_stop = 1;
+    pthread_mutex_lock(&g.sidechannel_thread_mutex);
+    if (!g.sidechannel_thread_done)
+    {
+     /*
+      * Wait for the side-channel thread to exit...
+      */
+
+      cond_timeout.tv_sec  = time(NULL) + WAIT_SIDE_DELAY;
+      cond_timeout.tv_nsec = 0;
+      if (pthread_cond_timedwait(&g.sidechannel_thread_cond,
+			         &g.sidechannel_thread_mutex,
+				 &cond_timeout) != 0)
+      {
+       /*
+	* Force the side-channel thread to exit...
+	*/
+
+	fputs("DEBUG: Force the side-channel thread to exit...\n", stderr);
+	pthread_kill(sidechannel_thread_id, SIGTERM);
+      }
+    }
+    pthread_mutex_unlock(&g.sidechannel_thread_mutex);
+
+    pthread_join(sidechannel_thread_id, NULL);
+
+    pthread_cond_destroy(&g.sidechannel_thread_cond);
+    pthread_mutex_destroy(&g.sidechannel_thread_mutex);
+  }
+
+  pthread_cond_destroy(&g.readwrite_lock_cond);
+  pthread_mutex_destroy(&g.readwrite_lock_mutex);
+
+ /*
+  * Signal the read thread to stop...
+  */
+
+  g.read_thread_stop = 1;
+
+ /*
+  * Give the read thread WAIT_EOF_DELAY seconds to complete all the data. If
+  * we are not signaled in that time then force the thread to exit.
+  */
+
+  pthread_mutex_lock(&g.read_thread_mutex);
+
+  if (!g.read_thread_done)
+  {
+    cond_timeout.tv_sec = time(NULL) + WAIT_EOF_DELAY;
+    cond_timeout.tv_nsec = 0;
+
+    if (pthread_cond_timedwait(&g.read_thread_cond, &g.read_thread_mutex,
+                               &cond_timeout) != 0)
+    {
+     /*
+      * Force the read thread to exit...
+      */
+
+      g.wait_eof = 0;
+      fputs("DEBUG: Force the read thread to exit...\n", stderr);
+      pthread_kill(read_thread_id, SIGTERM);
+    }
+  }
+  pthread_mutex_unlock(&g.read_thread_mutex);
+
+  pthread_join(read_thread_id, NULL);	/* wait for the read thread to return */
+
+  pthread_cond_destroy(&g.read_thread_cond);
+  pthread_mutex_destroy(&g.read_thread_mutex);
+
  /*
   * Close the connection and input file and general clean up...
   */
@@ -940,7 +1056,12 @@ sidechannel_thread(void *reference)
 	  break;
     }
   }
-  while (1);
+  while (!g.sidechannel_thread_stop);
+
+  pthread_mutex_lock(&g.sidechannel_thread_mutex);
+  g.sidechannel_thread_done = 1;
+  pthread_cond_signal(&g.sidechannel_thread_cond);
+  pthread_mutex_unlock(&g.sidechannel_thread_mutex);
 
   return NULL;
 }
@@ -1276,7 +1397,10 @@ static kern_return_t load_classdriver(CFStringRef	    driverPath,
   {
     fprintf(stderr, "DEBUG: Unable to load class driver \"%s\": %s\n",
 	    bundlestr, strerror(errno));
-    return (kr);
+    if (errno == ENOENT)
+      return (load_classdriver(NULL, intf, printerDriver));
+    else
+      return (kr);
   }
   else if (bundleinfo.st_mode & S_IWOTH)
   {
@@ -1928,6 +2052,8 @@ static void run_legacy_backend(int argc,
 
   exit(exitstatus);
 }
+#endif /* __i386__ || __x86_64__ */
+
 
 /*
  * 'sigterm_handler()' - SIGTERM handler.
@@ -1936,8 +2062,11 @@ static void run_legacy_backend(int argc,
 static void
 sigterm_handler(int sig)		/* I - Signal */
 {
-  /* If we started a child process pass the signal on to it...
-   */
+#if defined(__i386__) || defined(__x86_64__)
+ /*
+  * If we started a child process pass the signal on to it...
+  */
+
   if (child_pid)
   {
    /*
@@ -1959,9 +2088,8 @@ sigterm_handler(int sig)		/* I - Signal */
       exit(CUPS_BACKEND_STOP);
     }
   }
-}
-
 #endif /* __i386__ || __x86_64__ */
+}
 
 
 #ifdef PARSE_PS_ERRORS
@@ -2128,5 +2256,5 @@ static void get_device_id(cups_sc_status_t *status,
 
 
 /*
- * End of "$Id: usb-darwin.c 9157 2010-06-16 05:27:41Z mike $".
+ * End of "$Id: usb-darwin.c 9319 2010-09-28 19:10:26Z mike $".
  */

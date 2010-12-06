@@ -1,5 +1,5 @@
 #
-# "$Id: Makefile 8841 2009-10-07 16:24:25Z mike $"
+# "$Id: Makefile 9259 2010-08-13 04:11:46Z mike $"
 #
 #   Documentation makefile for the Common UNIX Printing System (CUPS).
 #
@@ -28,6 +28,7 @@ WEBIMAGES	=	\
 			images/color-wheel.png \
 			images/cups.png \
 			images/cups-icon.png \
+			images/generic.png \
 			images/left.gif \
 			images/right.gif \
 			images/sel.gif \
@@ -69,7 +70,6 @@ HELPFILES	=	\
 			help/man-cupsenable.html \
 			help/man-cupstestdsc.html \
 			help/man-cupstestppd.html \
-			help/man-drv.html \
 			help/man-filter.html \
 			help/man-lp.html \
 			help/man-lpadmin.html \

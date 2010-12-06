@@ -1,5 +1,5 @@
 /*
- * "$Id: globals.h 9061 2010-03-30 22:07:33Z mike $"
+ * "$Id: globals.h 9170 2010-06-22 03:06:13Z mike $"
  *
  *   Global variable definitions for the Common UNIX Printing System (CUPS).
  *
@@ -26,6 +26,7 @@
 #  include "http-private.h"
 #  include "cups.h"
 #  include "i18n.h"
+#  include "ppd-private.h"
 #  include "pwg-private.h"
 
 #  ifdef HAVE_PTHREAD_H
@@ -164,5 +165,5 @@ extern char		*_cupsUserDefault(char *name, size_t namesize);
 #endif /* !_CUPS_GLOBALS_H_ */
 
 /*
- * End of "$Id: globals.h 9061 2010-03-30 22:07:33Z mike $".
+ * End of "$Id: globals.h 9170 2010-06-22 03:06:13Z mike $".
  */

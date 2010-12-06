@@ -26,6 +26,7 @@ LIBOBJS	=	\
 		P2PPattern.o \
 		P2PCharCodeToUnicode.o \
 		P2PCMap.o \
+		P2PForm.o \
 		parseargs.o \
 		UGooString.o
 
