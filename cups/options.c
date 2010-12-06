@@ -1,5 +1,5 @@
 /*
- * "$Id: options.c 8554 2009-04-27 17:18:37Z mike $"
+ * "$Id: options.c 9233 2010-08-10 06:15:55Z mike $"
  *
  *   Option routines for the Common UNIX Printing System (CUPS).
  *
@@ -282,7 +282,7 @@ cupsParseOptions(
   * Skip leading spaces...
   */
 
-  while (isspace(*ptr & 255))
+  while (_cups_isspace(*ptr))
     ptr ++;
 
  /*
@@ -296,7 +296,7 @@ cupsParseOptions(
     */
 
     name = ptr;
-    while (!isspace(*ptr & 255) && *ptr != '=' && *ptr)
+    while (!strchr("\f\n\r\t\v =", *ptr) && *ptr)
       ptr ++;
 
    /*
@@ -310,7 +310,7 @@ cupsParseOptions(
     * Skip trailing spaces...
     */
 
-    while (isspace(*ptr & 255))
+    while (_cups_isspace(*ptr))
       *ptr++ = '\0';
 
     if ((sep = *ptr) == '=')
@@ -339,7 +339,7 @@ cupsParseOptions(
 
     value = ptr;
 
-    while (*ptr && !isspace(*ptr & 255))
+    while (*ptr && !_cups_isspace(*ptr))
     {
       if (*ptr == ',')
         ptr ++;
@@ -394,7 +394,7 @@ cupsParseOptions(
 	* Normal space-delimited string...
 	*/
 
-	while (!isspace(*ptr & 255) && *ptr)
+	while (*ptr && !_cups_isspace(*ptr))
 	{
 	  if (*ptr == '\\' && ptr[1])
 	    _cups_strcpy(ptr, ptr + 1);
@@ -413,7 +413,7 @@ cupsParseOptions(
     * Skip trailing whitespace...
     */
 
-    while (isspace(*ptr & 255))
+    while (_cups_isspace(*ptr))
       ptr ++;
 
    /*
@@ -625,5 +625,5 @@ cups_find_option(
 
 
 /*
- * End of "$Id: options.c 8554 2009-04-27 17:18:37Z mike $".
+ * End of "$Id: options.c 9233 2010-08-10 06:15:55Z mike $".
  */

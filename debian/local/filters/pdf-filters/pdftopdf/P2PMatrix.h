@@ -100,6 +100,12 @@ public:
       break;
     case 0:
     default:
+      m0 = mat[0];
+      m1 = mat[1];
+      m2 = mat[2];
+      m3 = mat[3];
+      m4 = mat[4];
+      m5 = mat[5];
       break;
     }
     mat[0] = m0;mat[1] = m1;mat[2] = m2;

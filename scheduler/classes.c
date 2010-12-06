@@ -1,5 +1,5 @@
 /*
- * "$Id: classes.c 9061 2010-03-30 22:07:33Z mike $"
+ * "$Id: classes.c 9258 2010-08-13 01:34:04Z mike $"
  *
  *   Printer class routines for the Common UNIX Printing System (CUPS).
  *
@@ -41,6 +41,7 @@ cupsd_printer_t *			/* O - New class */
 cupsdAddClass(const char *name)		/* I - Name of class */
 {
   cupsd_printer_t	*c;		/* New class */
+  char			uri[1024];	/* Class URI */
 
 
  /*
@@ -55,8 +56,10 @@ cupsdAddClass(const char *name)		/* I - Name of class */
 
     c->type = CUPS_PRINTER_CLASS;
 
-    cupsdSetStringf(&c->uri, "ipp://%s:%d/classes/%s", ServerName, RemotePort,
-                    name);
+    httpAssembleURIf(HTTP_URI_CODING_ALL, uri, sizeof(uri), "ipp", NULL,
+		     ServerName, RemotePort, "/classes/%s", name);
+    cupsdSetString(&c->uri, uri);
+
     cupsdSetString(&c->error_policy, "retry-current-job");
   }
 
@@ -722,7 +725,7 @@ cupsdSaveAllClasses(void)
   */
 
   fchown(cupsFileNumber(fp), RunUser, Group);
-  fchmod(cupsFileNumber(fp), 0600);
+  fchmod(cupsFileNumber(fp), ConfigFilePerm);
 
  /*
   * Write a small header to the file...
@@ -877,5 +880,5 @@ cupsdUpdateImplicitClasses(void)
 
 
 /*
- * End of "$Id: classes.c 9061 2010-03-30 22:07:33Z mike $".
+ * End of "$Id: classes.c 9258 2010-08-13 01:34:04Z mike $".
  */

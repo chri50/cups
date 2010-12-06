@@ -1,5 +1,5 @@
 /*
- * "$Id: request.c 9061 2010-03-30 22:07:33Z mike $"
+ * "$Id: request.c 9322 2010-10-01 22:40:38Z mike $"
  *
  *   IPP utilities for the Common UNIX Printing System (CUPS).
  *
@@ -884,10 +884,10 @@ _cupsSetHTTPError(http_status_t status)	/* I - HTTP status code */
 	break;
 
     case HTTP_UNAUTHORIZED :
-    case HTTP_AUTHORIZATION_CANCELED :
-	_cupsSetError(IPP_NOT_AUTHORIZED, httpStatus(status), 0);
+	_cupsSetError(IPP_NOT_AUTHENTICATED, httpStatus(status), 0);
 	break;
 
+    case HTTP_AUTHORIZATION_CANCELED :
     case HTTP_FORBIDDEN :
 	_cupsSetError(IPP_FORBIDDEN, httpStatus(status), 0);
 	break;
@@ -918,5 +918,5 @@ _cupsSetHTTPError(http_status_t status)	/* I - HTTP status code */
 
 
 /*
- * End of "$Id: request.c 9061 2010-03-30 22:07:33Z mike $".
+ * End of "$Id: request.c 9322 2010-10-01 22:40:38Z mike $".
  */

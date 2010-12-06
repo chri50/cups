@@ -1,5 +1,5 @@
 /*
- * "$Id: auth.c 9061 2010-03-30 22:07:33Z mike $"
+ * "$Id: auth.c 9233 2010-08-10 06:15:55Z mike $"
  *
  *   Authentication functions for the Common UNIX Printing System (CUPS).
  *
@@ -251,7 +251,7 @@ cupsDoAuthentication(
     authorization = httpGetField(http, HTTP_FIELD_WWW_AUTHENTICATE);
 
     authorization += 9;
-    while (*authorization && isspace(*authorization & 255))
+    while (*authorization && _cups_isspace(*authorization))
       authorization ++;
 
     if (*authorization)
@@ -720,5 +720,5 @@ cups_local_auth(http_t *http)		/* I - HTTP connection to server */
 
 
 /*
- * End of "$Id: auth.c 9061 2010-03-30 22:07:33Z mike $".
+ * End of "$Id: auth.c 9233 2010-08-10 06:15:55Z mike $".
  */

@@ -1,5 +1,5 @@
 /*
- * "$Id: auth.c 8685 2009-05-26 22:01:23Z mike $"
+ * "$Id: auth.c 9329 2010-10-06 20:07:44Z mike $"
  *
  *   Authorization routines for the Common UNIX Printing System (CUPS).
  *
@@ -1003,7 +1003,7 @@ cupsdAuthorize(cupsd_client_t *con)	/* I - Client connection */
     if (!*authorization)
     {
       cupsdLogMessage(CUPSD_LOG_DEBUG2,
-                      "cupsdAuthorize: No authentication data specified.");
+		      "cupsdAuthorize: No authentication data specified.");
       return;
     }
 
@@ -1014,7 +1014,7 @@ cupsdAuthorize(cupsd_client_t *con)	/* I - Client connection */
     len                = strlen(authorization);
     input_token.value  = malloc(len);
     input_token.value  = httpDecode64_2(input_token.value, &len,
-		                        authorization);
+					authorization);
     input_token.length = len;
 
    /*
@@ -1038,7 +1038,7 @@ cupsdAuthorize(cupsd_client_t *con)	/* I - Client connection */
     if (GSS_ERROR(major_status))
     {
       cupsdLogGSSMessage(CUPSD_LOG_DEBUG, major_status, minor_status,
-                         "cupsdAuthorize: Error accepting GSSAPI security "
+			 "cupsdAuthorize: Error accepting GSSAPI security "
 			 "context");
 
       if (context != GSS_C_NO_CONTEXT)
@@ -1054,7 +1054,7 @@ cupsdAuthorize(cupsd_client_t *con)	/* I - Client connection */
 
     if (!con->gss_creds)
       cupsdLogMessage(CUPSD_LOG_DEBUG,
-                      "cupsdAuthorize: No delegated credentials!");
+		      "cupsdAuthorize: No delegated credentials!");
 
     if (major_status == GSS_S_CONTINUE_NEEDED)
       cupsdLogGSSMessage(CUPSD_LOG_DEBUG, major_status, minor_status,
@@ -1067,7 +1067,7 @@ cupsdAuthorize(cupsd_client_t *con)	/* I - Client connection */
       if (GSS_ERROR(major_status))
       {
 	cupsdLogGSSMessage(CUPSD_LOG_DEBUG, major_status, minor_status,
-                           "cupsdAuthorize: Error getting username");
+			   "cupsdAuthorize: Error getting username");
 	gss_release_cred(&minor_status, &con->gss_creds);
 	gss_release_name(&minor_status, &client_name);
 	gss_delete_sec_context(&minor_status, &context, GSS_C_NO_BUFFER);
@@ -2857,5 +2857,5 @@ to64(char          *s,			/* O - Output string */
 
 
 /*
- * End of "$Id: auth.c 8685 2009-05-26 22:01:23Z mike $".
+ * End of "$Id: auth.c 9329 2010-10-06 20:07:44Z mike $".
  */

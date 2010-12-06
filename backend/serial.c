@@ -1,5 +1,5 @@
 /*
- * "$Id: serial.c 8807 2009-08-31 18:45:43Z mike $"
+ * "$Id: serial.c 9282 2010-08-31 15:56:40Z mike $"
  *
  *   Serial port backend for the Common UNIX Printing System (CUPS).
  *
@@ -502,7 +502,7 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
   * stdin (otherwise you can't cancel raw jobs...)
   */
 
-  if (print_fd != 0)
+  if (!print_fd)
   {
 #ifdef HAVE_SIGSET /* Use System V signals over POSIX to avoid bugs */
     sigset(SIGTERM, SIG_IGN);
@@ -1326,5 +1326,5 @@ side_cb(int print_fd,			/* I - Print file */
 
 
 /*
- * End of "$Id: serial.c 8807 2009-08-31 18:45:43Z mike $".
+ * End of "$Id: serial.c 9282 2010-08-31 15:56:40Z mike $".
  */

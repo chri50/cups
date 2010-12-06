@@ -1,5 +1,5 @@
 /*
- * "$Id: string.c 8532 2009-04-20 21:37:14Z mike $"
+ * "$Id: string.c 9261 2010-08-13 21:54:11Z mike $"
  *
  *   String functions for the Common UNIX Printing System (CUPS).
  *
@@ -41,6 +41,7 @@
 #include <limits.h>
 #include "array.h"
 #include "debug.h"
+#define _CUPS_STRING_C_
 #include "string.h"
 #ifdef HAVE_PTHREAD_H
 #  include <pthread.h>
@@ -428,7 +429,7 @@ _cupsStrScand(const char   *buf,	/* I - Pointer to number */
   * Skip leading whitespace...
   */
 
-  while (isspace(*buf & 255))
+  while (_cups_isspace(*buf))
     buf ++;
 
  /*
@@ -789,5 +790,5 @@ compare_sp_items(_cups_sp_item_t *a,	/* I - First item */
 
 
 /*
- * End of "$Id: string.c 8532 2009-04-20 21:37:14Z mike $".
+ * End of "$Id: string.c 9261 2010-08-13 21:54:11Z mike $".
  */

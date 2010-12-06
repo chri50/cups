@@ -2,4 +2,3 @@ usr/bin/ppd*
 usr/share/cups/ppdc/*.h
 usr/share/cups/examples/
 usr/share/man/man?/ppd*.?.gz
-usr/share/man/man?/drv.?.gz

@@ -1,9 +1,9 @@
 /*
- * "$Id: lppasswd.c 9061 2010-03-30 22:07:33Z mike $"
+ * "$Id: lppasswd.c 9287 2010-08-31 18:40:17Z mike $"
  *
- *   MD5 password program for the Common UNIX Printing System (CUPS).
+ *   MD5 password program for CUPS.
  *
- *   Copyright 2007 by Apple Inc.
+ *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -497,5 +497,5 @@ usage(FILE *fp)		/* I - File to send usage to */
 
 
 /*
- * End of "$Id: lppasswd.c 9061 2010-03-30 22:07:33Z mike $".
+ * End of "$Id: lppasswd.c 9287 2010-08-31 18:40:17Z mike $".
  */

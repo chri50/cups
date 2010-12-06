@@ -48,6 +48,7 @@ P2PPage::P2PPage(Page *orgPageA, XRef *xrefA)
   numOrgPages = 1;
   orgPages = new OrgPage [1];
   orgPages[0].page = orgPageA;
+  fontResource = 0;
 
   xref = xrefA;
   mediaBox = *orgPageA->getMediaBox();
@@ -93,6 +94,7 @@ P2PPage::P2PPage(PDFRectangle *mediaBoxA, XRef *xrefA)
   numOrgPages = 1;
   orgPages = new OrgPage [1];
   orgPages[0].page = 0;
+  fontResource = 0;
 
   xref = xrefA;
   if (mediaBoxA != 0) {
@@ -219,6 +221,7 @@ P2PPage::P2PPage(int n, P2PPage **pages, int len, PDFRectangle *box,
   bleedBox = cropBox;
   trimBox = cropBox;
   artBox = cropBox;
+  fontResource = 0;
 
   if (n == 8 || n == 6 || n == 2) {
     /* Rotating is reqiured, layout change is needed.
@@ -260,6 +263,10 @@ P2PPage::P2PPage(int n, P2PPage **pages, int len, PDFRectangle *box,
 
 P2PPage::~P2PPage()
 {
+  if (fontResource != 0) {
+    delete fontResource;
+    fontResource = 0;
+  }
   if (resources != 0) {
     delete resources;
     resources = 0;
@@ -302,7 +309,7 @@ void P2PPage::transPDFRectangle(PDFRectangle *rect, P2PMatrix *matA)
 }
 
 void P2PPage::outputSelf(P2POutputStream *str, P2PPageTree *tree,
-  P2PObject *copiedObj, P2PFontResource *fontResource)
+  P2PObject *copiedObj)
 {
   if (copiedObj == 0) {
     outputBegin(str);
@@ -337,7 +344,7 @@ void P2PPage::outputSelf(P2POutputStream *str, P2PPageTree *tree,
 
     str->puts("\n/Resources ");
     if (resources != 0) {
-      resources->output(str,fontResource);
+      resources->output(str);
     } else {
       Dict *dict = orgPages[0].page->getResourceDict();
 
@@ -367,7 +374,7 @@ void P2PPage::outputSelf(P2POutputStream *str, P2PPageTree *tree,
   }
 }
 
-void P2PPage::outputContents(P2POutputStream *str, P2PFontResource *fontResource)
+void P2PPage::outputContents(P2POutputStream *str)
 {
   int i;
   int start;
@@ -465,9 +472,10 @@ void P2PPage::outputContents(P2POutputStream *str, P2PFontResource *fontResource
 
 void P2PPage::output(P2POutputStream *str, P2PPageTree *tree, P2PObject *copiedObj)
 {
-  P2PFontResource fontResource;
-  P2PFontResource *fr = 0;
-
+  if (fontResource != 0) {
+    delete fontResource;
+    fontResource = 0;
+  }
   if (resources == 0 && orgPages[0].page != 0/* not empty page */) {
     /* make P2PResource for pattern handling */
     /* when number-upped, page must have P2PResource already. 
@@ -476,21 +484,26 @@ void P2PPage::output(P2POutputStream *str, P2PPageTree *tree, P2PObject *copiedO
     orgPages[0].mappingTable 
 	= resources->merge(orgPages[0].page->getResourceDict());
   }
-  /* setup pattern dict for translation */
-  if (resources != 0) resources->setupPattern();
   if (copiedObj == 0) {
     if (P2PDoc::options.fontEmbedding && orgPages[0].page != 0) {
       /* only not empty page */
+      fontResource = new P2PFontResource();
       if (resources != 0) {
-	fontResource.setup(resources,xref);
+	fontResource->setup(resources,xref);
       } else {
-	fontResource.setup(orgPages[0].page->getResourceDict(),xref);
+	fontResource->setup(orgPages[0].page->getResourceDict(),xref);
       }
-      fr = &fontResource;
     }
   }
-  outputContents(str,fr);
-  outputSelf(str,tree,copiedObj,fr);
+  if (resources != 0) {
+    /* setup pattern dict for translation */
+    resources->setupPattern();
+
+    resources->setP2PFontResource(fontResource);
+  }
+
+  outputContents(str);
+  outputSelf(str,tree,copiedObj);
 }
 
 void P2PPage::fit(PDFRectangle *box, double zoom)

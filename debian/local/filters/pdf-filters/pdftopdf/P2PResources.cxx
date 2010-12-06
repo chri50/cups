@@ -32,6 +32,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "goo/gmem.h"
 #include "P2PResources.h"
 #include "P2PFont.h"
+#include "P2PForm.h"
 
 P2PResourceMap::P2PResourceMap()
 {
@@ -73,6 +74,9 @@ P2PResources::P2PResources(XRef *xrefA)
   resourceNo = 0;
   patternDict = 0;
   nPattern = 0;
+  fontResource = 0;
+  oldForms = 0;
+  nOldForms = 0;
 }
 
 P2PResources::~P2PResources()
@@ -85,9 +89,12 @@ P2PResources::~P2PResources()
     }
   }
   if (patternDict != 0) delete[] patternDict;
+  if (oldForms != 0) delete[] oldForms;
+  /* fontResource is deleted in other Class,
+     Don't delete it */
 }
 
-void P2PResources::output(P2POutputStream *str, P2PFontResource *fontResource)
+void P2PResources::output(P2POutputStream *str)
 {
   int i;
   str->puts("<<");
@@ -115,6 +122,30 @@ void P2PResources::output(P2POutputStream *str, P2PFontResource *fontResource)
 	}
 	str->puts(">>\n");
       }
+    } else if (i == XObject && nOldForms > 0 && dictionaries[i] != 0) {
+      int j;
+
+      /* There is any old form in XObject dictionary */
+      Dict *xobjDict = dictionaries[i];
+      int n = xobjDict->getLength();
+      str->printf(" /%s << ",dictNames[i]);
+      for (j = 0;j < n;j++) {
+        char *key = xobjDict->getKey(j);
+
+        P2POutput::outputName(key,str);
+        str->putchar(' ');
+        if (j < nOldForms && oldForms[j] != 0) {
+          oldForms[j]->outputRef(str);
+        } else {
+          Object obj;
+
+          xobjDict->getValNF(j,&obj);
+          P2POutput::outputObject(&obj,str,xref);
+          obj.free();
+        }
+        str->putchar('\n');
+      }
+      str->puts(">>\n");
     } else {
       if (dictionaries[i] != 0) {
 	str->printf(" /%s ",dictNames[i]);
@@ -130,6 +161,47 @@ void P2PResources::output(P2POutputStream *str, P2PFontResource *fontResource)
   /* Notice: no Properties */
 
   str->puts(">>");
+}
+
+void P2PResources::handleOldForm(P2PResourceMap *map)
+{
+  int n;
+  int i;
+
+  /* find Forms without Resources and replace them */
+  Dict *xobjDict = dictionaries[XObject];
+  if (xobjDict == 0) return;
+  n = xobjDict->getLength();
+  for (i = 0;i < n;i++) {
+    Object xobj;
+    Object obj;
+    Dict *strDict;
+    P2PForm *form;
+
+    xobjDict->getVal(i,&xobj);
+    if (!xobj.isStream()) continue;
+    strDict = xobj.streamGetDict();
+    strDict->lookupNF("Subtype",&obj);
+    if (!obj.isName() || strcmp("Form",obj.getName()) != 0) continue;
+    obj.free();
+    strDict->lookupNF("Resources",&obj);
+    if (!obj.isNull()) continue;
+    /* found a Form without Resource,
+      replace it with a refrence to a P2PForm */
+    form = new P2PForm(&xobj,this,map);
+    xobj.free();
+    if (nOldForms < n) {
+        P2PObject **oldp = oldForms;
+        nOldForms = n;
+        oldForms = new P2PObject *[n];
+        if (oldp != 0) {
+            memcpy(oldForms,oldp,n*sizeof(P2PForm *));
+        } else {
+            memset(oldForms,0,n*sizeof(P2PForm *));
+        }
+    }
+    oldForms[i] = form;
+  }
 }
 
 P2PResourceMap *P2PResources::merge(Dict *res)
@@ -155,6 +227,7 @@ P2PResourceMap *P2PResources::merge(Dict *res)
       obj.free();
     }
   }
+  handleOldForm(map);
   return map;
 }
 
@@ -178,7 +251,7 @@ P2PResourceMap *P2PResources::merge(P2PResources *res)
         i != Pattern);
     }
   }
-
+  handleOldForm(map);
   return map;
 }
 

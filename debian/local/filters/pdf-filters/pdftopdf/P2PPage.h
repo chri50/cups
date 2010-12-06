@@ -98,10 +98,11 @@ private:
   PDFRectangle artBox;
   P2PResources *resources;
   XRef *xref;
+  P2PFontResource *fontResource;
 
-  void outputContents(P2POutputStream *str, P2PFontResource *fontResource);
+  void outputContents(P2POutputStream *str);
   void outputSelf(P2POutputStream *str, P2PPageTree *tree,
-    P2PObject *copiedObj, P2PFontResource *fontResource);
+    P2PObject *copiedObj);
   static void outputPDFRectangle(PDFRectangle *rect, P2POutputStream *str);
   static void outputPDFRectangleForPath(PDFRectangle *rect,
       P2POutputStream *str);
