@@ -7,9 +7,8 @@ pidfile.dpatch
 ppd-poll-with-client-conf.dpatch
 # no answer yet, po4a might not be appropriate
 manpage-translations.dpatch
-quiesce-bonjour-warning.dpatch
 rootbackends-worldreadable.dpatch
-dnssd-avahi.dpatch
+cups-avahi.dpatch
 usb-backend-both-usblp-and-libusb.dpatch
 
 # patches which should go upstream
@@ -23,6 +22,7 @@ do-not-broadcast-with-hostnames.dpatch
 cups-deviced-allow-device-ids-with-newline
 default-ripcache-size-auto.dpatch
 cups-snmp-oids-device-id-hp-ricoh.dpatch
+usb-backend-no-segfault-on-bad-device-id.dpatch
 
 # Debian patches
 logfiles_adm_readable.dpatch

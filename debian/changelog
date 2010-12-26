@@ -1,3 +1,35 @@
+cups (1.4.5-1ubuntu1) natty; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/patches/cups-avahi.dpatch: Added patch from Tim Waugh from Red Hat
+    to implement full Avahi support, not only for printer discovery by the
+    "dnssd" backend but also for print queue broadcasting and browsing by the
+    scheduler (CUPS daemon). Fixes LP: #465916.
+  * debian/patches/dnssd-avahi.dpatch: Removed, is part of new
+    cups-avahi.dpatch.
+  * debian/patches/quiesce-bonjour-warning.dpatch: Removed, not needed any
+    more with the new cups-avahi.dpatch.
+  * debian/patches/usb-backend-no-segfault-on-bad-device-id.dpatch: Assure
+    that the device ID string read from a USB device can never be a mess: Try
+    other byte order for device ID string length also if length is too small,
+    empty the read device ID string if there is an IOCTL failure, reject ID
+    strings with unprintable characters, clean white space in the ID string,
+    and finally accept the empty ID string as an unknown device. This
+    overcomes the problem that USB-to-Parallel adapter cables do not
+    report back a usable ID string. With these changes it is at least possible
+    to use one adapter cable per computer if the cables do not report unique
+    serial numbers via libusb and any number of adapter cables if they do
+    report serial numbers via libusb. Real USB printers can always be used,
+    also if there are other printers connected with an adapter cable
+    (LP: #468701, LP: #564917).
+
+  [ Martin Pitt ]
+  * debian/local/apparmor-profile: Explicitly deny access to ttyUSB* to
+    silence noise. This is presumably an extra control channel for some USB
+    printers, but cupsd can't use it anyway. (LP: #692892)
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Sun, 26 Dec 2010 18:07:33 +0100
+
 cups (1.4.5-1) unstable; urgency=low
 
   [ Martin Pitt ]
