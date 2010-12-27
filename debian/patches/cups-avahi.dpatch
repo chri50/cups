@@ -2,7 +2,7 @@
 ## cups-avahi.dpatch by  <till.kamppeter@gmail.com>
 ##
 ## All lines beginning with `## DP:' are a description of the patch.
-## DP: No description.
+## DP: http://www.cups.org/str.php?L3066
 
 @DPATCH@
 diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.5~/backend/dnssd.c cups-1.4.5/backend/dnssd.c
@@ -271,8 +271,8 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
 +			     0, avahi_client_callback, NULL, &error);
 +  if (!client)
 +  {
-+    perror ("ERROR: Unable to create avahi client");
-+    return (1);
++    perror ("DEBUG: Unable to create avahi client");
++    return (0);
 +  }
 +
 +  avahi_service_browser_new (client, AVAHI_IF_UNSPEC,
