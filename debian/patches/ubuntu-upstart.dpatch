@@ -17,7 +17,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
 +description     "CUPS printing spooler/server"
 +author          "Michael Sweet <msweet@apple.com>"
 +
-+start on (filesystem
++start on (filesystem and started avahi-daemon
 +          and (started dbus or runlevel [2345])
 +          and stopped udevtrigger)
 +stop on runlevel [016]

@@ -1,3 +1,19 @@
+cups (1.4.5-1ubuntu2) natty; urgency=low
+
+  * debian/control: Added dependency on avahi-daemon to the "cups" package
+    as the CUPS daemon now only starts if avahi-daemon is running. Also
+    build-depend on avahi-daemon so that the test suite can run the CUPS
+    daemon.
+  * debian/patches/ubuntu-upstart.dpatch: Let CUPS daemon start wait for the
+    avahi-daemon to be running.
+  * debian/patches/cups-avahi.dpatch: Make the "dnssd" CUPS backend not
+    error out if the system D-Bus is not running. This unbreaks the test
+    suite when running in a build environment (see Martin Pitt's changes
+    in the 1.4.0~svn8773-1 upload).
+  * debian/patches/cups-avahi.dpatch: Added upstream bug link.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon, 27 Dec 2010 10:28:33 +0100
+
 cups (1.4.5-1ubuntu1) natty; urgency=low
 
   [ Till Kamppeter ]
