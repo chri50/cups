@@ -1,3 +1,17 @@
+cups (1.4.5-1ubuntu4) natty; urgency=low
+
+  * debian/patches/configure-default-browse-protocols.dpatch: Fixed handling
+    of "--with-local_protocols=..." and "--with-remote_protocols=..." on the
+    command line of "./configure". Now (quoted) values with spaces, like
+    "CUPS dnssd" are treated correctly.
+  * debian/patches/cups-avahi.dpatch: Register printers for Avahi-based
+    DNS-SD broadcasting only if browsing is turned on and DNS-SD is one
+    of the "BrowseLocalProtocols" in cupsd.conf.
+  * debian/patches/cups-avahi.dpatch: Added NULL checks to the compare
+    function dnssdComparePrinters() to sort the DNSSDPrinters array.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 29 Dec 2010 22:41:33 +0100
+
 cups (1.4.5-1ubuntu3) natty; urgency=low
 
   * debian/rules: Added "--with-local_protocols='CUPS dnssd'
