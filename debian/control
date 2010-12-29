@@ -8,7 +8,7 @@ Build-Depends: libpam0g-dev, libtiff4-dev, libjpeg-dev, zlib1g-dev,
  debhelper (>= 5.0), po-debconf, cdbs (>= 0.4.27), sharutils, 
  dpatch (>= 1.11), libdbus-1-dev, libkrb5-dev | heimdal-dev,
  libavahi-compat-libdnssd-dev, libavahi-common-dev, libavahi-client-dev,
- avahi-daemon, libpoppler-dev (>= 0.12.2-2), pkg-config,
+ libpoppler-dev (>= 0.12.2-2), pkg-config,
  poppler-utils, po4a (>= 0.31), autotools-dev, autoconf, automake, 
  libtool, libijs-dev, hardening-wrapper, liblcms1-dev, libfreetype6-dev,
  libfontconfig1-dev, pkg-config, libusb-dev
@@ -113,8 +113,8 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, debconf (>= 1.2.9) | debconf-2.0,
  poppler-utils (>= 0.12), procps, ghostscript, lsb-base (>= 3),
  cups-common (>= ${source:Upstream-Version}), 
  cups-client (>= ${binary:Version}),
- ssl-cert (>= 1.0.11), adduser, bc, ttf-freefont, cups-ppdc, avahi-daemon
-Recommends: foomatic-filters (>= 4.0), 
+ ssl-cert (>= 1.0.11), adduser, bc, ttf-freefont, cups-ppdc
+Recommends: avahi-daemon, foomatic-filters (>= 4.0), 
  cups-driver-gutenprint, ghostscript-cups
 Suggests: cups-bsd, foomatic-db-compressed-ppds | foomatic-db,
  hplip, cups-pdf, smbclient (>= 3.0.9), udev

@@ -1,3 +1,24 @@
+cups (1.4.5-1ubuntu3) natty; urgency=low
+
+  * debian/rules: Added "--with-local_protocols='CUPS dnssd'
+    --with-remote_protocols='CUPS dnssd'" to the command line of "./configure".
+    This adds support for DNS-SD-based browsing and broadcasting by default.
+  * debian/control: Removed the build and run-time dependencies on
+    avahi-daemon again. With the fixes on the cups-avahi.dpatch CUPS
+    works also without running Avahi daemon now. Put avahi-daemon only
+    into Recommends: for the "cups" package, as DNS-SD broadcasting
+    makes CUPS working together with Mac OS X.
+  * debian/patches/ubuntu-upstart.dpatch: Removed any interaction between CUPS
+    and avahi-daemon, as the improved cups-avahi.dpatch lets CUPS automatically
+    connect with avahi-daemon as soon as it gets started.
+  * debian/patches/cups-avahi.dpatch: Fixed several segfaults by adding missing
+    initializations and NULL checks, made Avahi client stopping and restarting
+    when the Avahi daemon disappears and reappears, to make CUPS running
+    independently on the Avahi daemon but with DNS-SD services while the Avahi
+    daemon is running.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 29 Dec 2010 18:37:33 +0100
+
 cups (1.4.5-1ubuntu2) natty; urgency=low
 
   * debian/control: Added dependency on avahi-daemon to the "cups" package
