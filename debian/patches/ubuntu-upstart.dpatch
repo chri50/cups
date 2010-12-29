@@ -17,12 +17,12 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
 +description     "CUPS printing spooler/server"
 +author          "Michael Sweet <msweet@apple.com>"
 +
-+start on (filesystem and started avahi-daemon
++start on (filesystem
 +          and (started dbus or runlevel [2345])
 +          and stopped udevtrigger)
 +stop on runlevel [016]
 +
-+expect fork
++respawn
 +
 +pre-start script
 +    [ -x /usr/sbin/cupsd ]
@@ -41,7 +41,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
 +    mkdir -p /var/run/cups/certs
 +end script
 +
-+exec /usr/sbin/cupsd
++exec /usr/sbin/cupsd -F
 +
 +post-start script
 +    # wait until daemon is ready
