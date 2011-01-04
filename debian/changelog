@@ -1,3 +1,11 @@
+cups (1.4.5-1ubuntu5) natty; urgency=low
+
+  * Use AppArmor profile loading helper (LP: #690040):
+    - debian/patches/ubuntu-upstart.dpatch: load profile.
+    - debian/control: Depend on upstart.
+
+ -- Kees Cook <kees@ubuntu.com>  Mon, 03 Jan 2011 17:16:27 -0800
+
 cups (1.4.5-1ubuntu4) natty; urgency=low
 
   * debian/patches/configure-default-browse-protocols.dpatch: Fixed handling

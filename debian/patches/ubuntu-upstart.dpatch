@@ -11,7 +11,7 @@ dpkg-vendor --is ubuntu || { echo -n '(ignored)' >&2; exit 0; }
 diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.4~/debian/cups.upstart cups-1.4.4/debian/cups.upstart
 --- cups-1.4.4~/debian/cups.upstart	1970-01-01 01:00:00.000000000 +0100
 +++ cups-1.4.4/debian/cups.upstart	2010-11-12 10:30:26.543971001 +0100
-@@ -0,0 +1,59 @@
+@@ -0,0 +1,60 @@
 +# cups - CUPS Printing spooler and server
 +
 +description     "CUPS printing spooler/server"
@@ -39,6 +39,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
 +    fi
 +    
 +    mkdir -p /var/run/cups/certs
++    /lib/init/apparmor-profile-load usr.sbin.cupsd
 +end script
 +
 +exec /usr/sbin/cupsd -F
