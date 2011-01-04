@@ -1,3 +1,11 @@
+cups (1.4.4-6ubuntu2.3) maverick-security; urgency=low
+
+  * ubuntu-upstart.dpatch: update to explicitly load the AppArmor profile
+    to avoid race condition where cups could load before AppArmor and run
+    unconfined (LP: #690040)
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 04 Jan 2011 09:52:12 -0600
+
 cups (1.4.4-6ubuntu2.2) maverick-security; urgency=low
 
   * SECURITY UPDATE: denial of service and possible code execution via
