@@ -1,3 +1,51 @@
+cups (1.4.5-2) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/patches/cups-avahi.dpatch: Added patch from Tim Waugh from Red Hat
+    to implement full Avahi support, not only for printer discovery by the
+    "dnssd" backend but also for print queue broadcasting and browsing by the
+    scheduler (CUPS daemon). Fixes LP: #465916.
+  * debian/patches/dnssd-avahi.dpatch: Removed, is part of new
+    cups-avahi.dpatch.
+  * debian/patches/quiesce-bonjour-warning.dpatch: Removed, not needed any
+    more with the new cups-avahi.dpatch.
+  * debian/rules: Added "--with-local_protocols='CUPS dnssd'
+    --with-remote_protocols='CUPS dnssd'" to the command line of "./configure".
+    This adds support for DNS-SD-based browsing and broadcasting by default.
+  * debian/patches/configure-default-browse-protocols.dpatch: Fixed handling
+    of "--with-local_protocols=..." and "--with-remote_protocols=..." on the
+    command line of "./configure". Now (quoted) values with spaces, like
+    "CUPS dnssd" are treated correctly.
+  * debian/patches/usb-backend-no-segfault-on-bad-device-id.dpatch: Assure
+    that the device ID string read from a USB device can never be a mess: Try
+    other byte order for device ID string length also if length is too small,
+    empty the read device ID string if there is an IOCTL failure, reject ID
+    strings with unprintable characters, clean white space in the ID string,
+    and finally accept the empty ID string as an unknown device. This
+    overcomes the problem that USB-to-Parallel adapter cables do not
+    report back a usable ID string. With these changes it is at least possible
+    to use one adapter cable per computer if the cables do not report unique
+    serial numbers via libusb and any number of adapter cables if they do
+    report serial numbers via libusb. Real USB printers can always be used,
+    also if there are other printers connected with an adapter cable
+    (LP: #468701, LP: #564917).
+
+  [ Martin Pitt ]
+  * debian/local/apparmor-profile: Explicitly deny access to ttyUSB* to
+    silence noise. This is presumably an extra control channel for some USB
+    printers, but cupsd can't use it anyway. (LP: #692892)
+  * ubuntu-upstart.dpatch: Drop reloading of Samba. It didn't work in some
+    cases, and is better fixed in samba's upstart script (start cups in its
+    pre-start).
+  * debian/rules: Set LC_MESSAGES=C to avoid breaking the test suite in
+    non-English locales. This is a temporary fix until it is resolved upstream
+    (see http://www.cups.org/str.php?L3765).
+
+  [ Kees Cook ]
+  * ubuntu-upstart.dpatch: Use AppArmor profile loading helper. (LP: #690040)
+
+ -- Martin Pitt <mpitt@debian.org>  Tue, 04 Jan 2011 11:02:32 +0100
+
 cups (1.4.5-1) unstable; urgency=low
 
   [ Martin Pitt ]

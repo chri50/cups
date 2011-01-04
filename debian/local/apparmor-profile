@@ -50,6 +50,7 @@
   /dev/bus/usb/ r,
   /dev/bus/usb/** rw,
   /dev/parport* rw,
+  deny /dev/ttyUSB* rw, # silence noise
   /etc/cups/ rw,
   /etc/cups/** rw,
   /etc/foomatic/* r,
