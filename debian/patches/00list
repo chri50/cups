@@ -41,3 +41,13 @@ cupsfilter-path-typo.dpatch
 # Ubuntu patches
 ubuntu-disable-browsing.dpatch
 ubuntu-default-error-policy-retry-job.dpatch
+
+# Security backports
+CVE-2008-5183.dpatch
+CVE-2010-0542.dpatch
+CVE-2010-1748.dpatch
+CVE-2010-2941.dpatch
+CVE-2009-3553.dpatch
+CVE-2010-0540.dpatch
+CVE-2010-2431.dpatch
+CVE-2010-2432.dpatch
