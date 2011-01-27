@@ -1,3 +1,9 @@
+cups (1.4.5-1ubuntu6) natty; urgency=low
+
+  * No change upload to rebuild against new poppler
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 27 Jan 2011 10:22:27 -0600
+
 cups (1.4.5-1ubuntu5) natty; urgency=low
 
   * Use AppArmor profile loading helper (LP: #690040):
