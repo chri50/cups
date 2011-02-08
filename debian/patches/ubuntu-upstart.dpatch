@@ -39,7 +39,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
 +    fi
 +    
 +    mkdir -p /var/run/cups/certs
-+    /lib/init/apparmor-profile-load usr.sbin.cupsd || :
++    [ -x /lib/init/apparmor-profile-load ] && /lib/init/apparmor-profile-load usr.sbin.cupsd
 +end script
 +
 +exec /usr/sbin/cupsd -F

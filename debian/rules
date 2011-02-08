@@ -72,7 +72,6 @@ binary-post-install/cups::
 	rm -rf $(DEB_DESTDIR)/../cups/var/run
 
 	# PPD directories
-	rmdir $(DEB_DESTDIR)/../cups/usr/share/cups/model
 	mkdir -p "$(DEB_DESTDIR)/../cups/usr/share/ppd/cups-included/"
 
 	dh_usrlocal
@@ -90,17 +89,20 @@ binary-post-install/cups::
 	# lp, but apparently not all of them
 	chmod go-x debian/$(cdbs_curpkg)/usr/lib/cups/backend-available/usb; \
 
+	# Modify the file names and cost factors for the Poppler-based
+	# pdftoraster filter of the PDF filter add-on so that it does not
+	# conflict with Ghostscript's pdftoraster and is used with priority
+	mv $(DEB_DESTDIR)/../cups/usr/lib/cups/filter/pdftoraster $(DEB_DESTDIR)/../cups/usr/lib/cups/filter/pdftoraster-poppler
+	mv $(DEB_DESTDIR)/../cups/usr/share/cups/mime/pdftoraster.convs $(DEB_DESTDIR)/../cups/usr/share/cups/mime/pdftoraster-poppler.convs
+	sed -i -r -e '/\spdftoraster$$/ { s/pdftoraster/pdftoraster-poppler/; s/66/50/ }' \
+	  $(DEB_DESTDIR)/../cups/usr/share/cups/mime/pdftoraster-poppler.convs
+
 	# Install documentation of the PDF CUPS filters
 	install -m 644 debian/local/filters/pdf-filters/README $(DEB_DESTDIR)/../cups/usr/share/doc/cups/README.pdf-filters
 	install -m 644 debian/local/filters/pdf-filters/filter/test.sh $(DEB_DESTDIR)/../cups/usr/share/doc/cups/examples/texttopdf-text.sh
 	install -m 644 debian/local/filters/pdf-filters/conf/HP-PhotoSmart_Pro_B8300-hpijs-pdftoijs.ppd $(DEB_DESTDIR)/../cups/usr/share/doc/cups/examples/
 	# Simple Ghostscript-based PostScript-to-PDF filter
 	install -m 0755 debian/filters/pstopdf $(DEB_DESTDIR)/../cups/usr/lib/cups/filter
-
-	# Increase the cost of pstops to prefer the PDF filter chain for
-	# PostScript printers.
-	sed -i -r -e '/\spstops$$/ { s/66/100/ }' \
-	  debian/tmp/usr/share/cups/mime/mime.convs
 
 	# Make the serial backend run as root, since /dev/ttyS* are
 	# root:dialout and thus not accessible as user lp
