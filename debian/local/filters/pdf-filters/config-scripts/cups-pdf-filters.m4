@@ -41,11 +41,22 @@ dnl refers to ${prefix}.  Thus we have to use `eval' twice.
 dnl General checks
 
 AC_HEADER_DIRENT
+AC_CHECK_HEADERS([stdlib.h])
+AC_CHECK_HEADERS([sys/stat.h])
+AC_CHECK_HEADERS([sys/types.h])
+AC_CHECK_HEADERS([unistd.h])
 AC_CHECK_HEADERS([zlib.h])
 
 dnl Needed for pdftopdf filter compilation
 
 CXXFLAGS="-DPDFTOPDF $CXXFLAGS"
+
+dnl check lcms
+AC_CHECK_LIB(lcms,main,
+  [ LCMS_LIBS=-llcms],
+  [ echo "*** lcms library not found. ***";exit ]
+)
+AC_SUBST(LCMS_LIBS)
 
 dnl poppler source dir
 

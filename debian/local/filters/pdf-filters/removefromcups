@@ -11,11 +11,13 @@ rm -f $1/filter/pdfutils.h
 rm -f $1/filter/pdfutils.c
 rm -f $1/filter/test_pdf1.c
 rm -f $1/filter/test_pdf2.c
+rm -f $1/filter/pdftoraster.cxx
 rm -f $1/conf/imagetopdf.convs
 rm -f $1/conf/imagetopdf.types
 rm -f $1/conf/pdftopdf.convs
 rm -f $1/conf/pdf.types
 rm -f $1/conf/texttopdf.convs
+rm -f $1/conf/pdftoraster.convs
 rm -f $1/data/pdf.utf-8.heavy
 rm -f $1/data/pdf.utf-8.simple
 rm -f $1/config-scripts/cups-pdf-filters.m4

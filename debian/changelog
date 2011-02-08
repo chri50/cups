@@ -1,3 +1,36 @@
+cups (1.4.5-3) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/rules: Do not remove the /usr/share/cups/model/ directory, some
+    manufacturer-supplied printer drivers (like from Brother) still use it.
+  * debian/rules: Remove a cost factor change for pstops. It is not used any
+    more and overridden by
+    pstops-based-workflow-only-for-printing-ps-on-a-ps-printer.dpatch
+  * debian/local/filters/pdf-filters/filter/pdftoraster.cxx,
+    debian/local/filters/pdf-filters/conf/pdftoraster.convs,
+    debian/local/filters/pdf-filters/README,
+    debian/local/filters/pdf-filters/addtocups
+    debian/local/filters/pdf-filters/conf/HP-PhotoSmart_Pro_B8300-hpijs-pdftoijs.ppd,
+    debian/local/filters/pdf-filters/config-scripts/cups-pdf-filters.m4,
+    debian/local/filters/pdf-filters/removefromcups: Upstream changes of
+    the PDF filter add-on package:
+     o Added the Poppler-based pdftoraster filter. This filter is much faster
+       than the Ghostscript-based filter (LP: #668800).
+     o Cleaned up the sample PPD file for pdftoijs (does not go into the
+       Debian/Ubuntu package of CUPS).
+  * debian/rules: Rename the newly added Poppler-based pdftoraster filter
+    to pdftoraster-poppler to not conflict with Ghostscript's pdftoraster
+    and lower its cost factor so that it is prioritized against Ghostscript's
+    filter.
+  * debian/patches/cups-avahi.dpatch: Updated to fix assertion failure
+    (LP: #707592, Red Hat bug #672143).
+
+  [ Martin Pitt ]
+  * debian/patches/ubuntu-upstart.dpatch: Don't ignore failures from
+    apparmor-profile-load.
+
+ -- Martin Pitt <mpitt@debian.org>  Tue, 08 Feb 2011 10:46:25 +0100
+
 cups (1.4.5-2) unstable; urgency=low
 
   [ Till Kamppeter ]
