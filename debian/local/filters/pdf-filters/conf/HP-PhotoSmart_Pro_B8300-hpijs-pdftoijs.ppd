@@ -14,12 +14,6 @@
 *ModelName:     "HP PhotoSmart Pro B8300"
 *ShortNickName: "HP PhotoSmart Pro B8300 hpijs"
 *NickName:      "HP PhotoSmart Pro B8300 CUPS/pdftoijs/hpijs"
-*PSVersion:	"(3010.000) 550"
-*PSVersion:	"(3010.000) 651"
-*PSVersion:	"(3010.000) 652"
-*PSVersion:	"(3010.000) 653"
-*PSVersion:	"(3010.000) 704"
-*PSVersion:	"(3010.000) 705"
 *PSVersion:	"(3010.000) 800"
 *LanguageLevel:	"3"
 *ColorDevice:	True
@@ -56,9 +50,7 @@
 *MaxMediaWidth: 100000
 *MaxMediaHeight: 100000
 *NonUIOrderDependency: 105 AnySetup *CustomPageSize
-*CustomPageSize True: "pop pop pop pop pop
-%%"
-*End
+*CustomPageSize True: ""
 *ParamCustomPageSize Width: 1 points 36 100000
 *ParamCustomPageSize Height: 2 points 36 100000
 *ParamCustomPageSize Orientation: 3 int 0 0

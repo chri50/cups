@@ -5,9 +5,9 @@
 ## DP: Debian #548246
 
 @DPATCH@
-diff -urNad cups-1.4.1~/ppdc/Makefile cups-1.4.1/ppdc/Makefile
---- cups-1.4.1~/ppdc/Makefile	2009-05-27 01:27:06.000000000 +0200
-+++ cups-1.4.1/ppdc/Makefile	2009-10-13 09:29:29.859258406 +0200
+diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/ppdc/Makefile cups-1.4.6/ppdc/Makefile
+--- cups-1.4.6~/ppdc/Makefile	2011-01-06 23:21:05.000000000 +0100
++++ cups-1.4.6/ppdc/Makefile	2011-02-19 22:24:28.000495073 +0100
 @@ -237,14 +237,14 @@
  # genstrings - generate GNU gettext strings.
  #
@@ -58,7 +58,7 @@ diff -urNad cups-1.4.1~/ppdc/Makefile cups-1.4.1/ppdc/Makefile
 +	LD_LIBRARY_PATH=.:../cups/ ./ppdc-static -I ../data sample.drv
 +	LD_LIBRARY_PATH=.:../cups/ ./ppdi-static -I ../data -o sample-import.drv ppd/*
 +	LD_LIBRARY_PATH=.:../cups/ ./ppdc-static -I ../data -d ppd2 sample-import.drv
- 	if diff -qr ppd ppd2; then \
+ 	if diff -r ppd ppd2 >/dev/null; then \
  		echo PPD import OK; \
  	else \
 @@ -326,7 +326,7 @@

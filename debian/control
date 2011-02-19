@@ -14,7 +14,7 @@ Build-Depends: libpam0g-dev, libtiff4-dev, libjpeg-dev, zlib1g-dev,
  libfontconfig1-dev, pkg-config, libusb-dev
 Uploaders: Kenshi Muto <kmuto@debian.org>, 
  Martin Pitt <mpitt@debian.org>, Roger Leigh <rleigh@debian.org>, 
- Martin-Éric Racine <q-funk@iki.fi>, Masayuki Hatta (mhatta) <mhatta@debian.org>,
+ Martin-Éric Racine <martin-eric.racine@iki.fi>, Masayuki Hatta (mhatta) <mhatta@debian.org>,
  Jeff Licquia <licquia@debian.org>
 Vcs-Bzr: http://bzr.debian.org/pkg-cups/cups/debian-trunk/
 Vcs-Browser: http://bzr.debian.org/loggerhead/pkg-cups/cups/debian-trunk/
@@ -115,9 +115,9 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, debconf (>= 1.2.9) | debconf-2.0,
  cups-client (>= ${binary:Version}),
  ssl-cert (>= 1.0.11), adduser, bc, ttf-freefont, cups-ppdc
 Recommends: avahi-daemon, foomatic-filters (>= 4.0), 
- cups-driver-gutenprint, ghostscript-cups
+ cups-driver-gutenprint, ghostscript-cups, smbclient
 Suggests: cups-bsd, foomatic-db-compressed-ppds | foomatic-db,
- hplip, cups-pdf, smbclient (>= 3.0.9), udev
+ hplip, cups-pdf, udev
 Replaces: cupsddk-drivers (<< 1.4.0)
 Conflicts: cupsddk-drivers (<< 1.4.0)
 Provides: cupsddk-drivers

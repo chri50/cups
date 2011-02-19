@@ -1,5 +1,5 @@
 /*
- * "$Id: cups.h 9171 2010-06-22 03:18:27Z mike $"
+ * "$Id: cups.h 9377 2010-11-17 19:59:14Z mike $"
  *
  *   API definitions for CUPS.
  *
@@ -61,10 +61,10 @@ extern "C" {
  * Constants...
  */
 
-#  define CUPS_VERSION		1.0405
+#  define CUPS_VERSION		1.0406
 #  define CUPS_VERSION_MAJOR	1
 #  define CUPS_VERSION_MINOR	4
-#  define CUPS_VERSION_PATCH	5
+#  define CUPS_VERSION_PATCH	6
 
 #  define CUPS_BC_FD		3	/* Back-channel file descriptor for select/poll */
 #  define CUPS_DATE_ANY		(time_t)-1
@@ -336,5 +336,5 @@ extern http_status_t	cupsWriteRequestData(http_t *http, const char *buffer,
 #endif /* !_CUPS_CUPS_H_ */
 
 /*
- * End of "$Id: cups.h 9171 2010-06-22 03:18:27Z mike $".
+ * End of "$Id: cups.h 9377 2010-11-17 19:59:14Z mike $".
  */
