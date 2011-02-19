@@ -1,5 +1,16 @@
-CHANGES.txt - 2010-11-11
+CHANGES.txt - 2011-01-06
 ------------------------
+
+CHANGES IN CUPS V1.4.6
+
+	- Fixed a "make check" issue on Solaris (STR #3729)
+	- Regression: The pstops filter did not support landscape printing of
+	  PostScript files (STR #3722)
+	- The scheduler killed retried (fax) jobs after restarting them
+	  (STR #3697)
+	- The cupsAdminSetServerSettings() function disabled sharing when
+	  debug logging was enabled (STR #3712)
+
 
 CHANGES IN CUPS V1.4.5
 

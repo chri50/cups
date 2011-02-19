@@ -1,3 +1,17 @@
+cups (1.4.6-1) unstable; urgency=low
+
+  * New upstream release.
+
+  [ Martin Pitt ]
+  * ppdc-dynamic-linking.dpatch: Update to new upstream version.
+  * debian/control: Bump smbclient from Suggests to Recommends.
+    (Closes: #595771)
+
+  [ Martin-Éric Racine ]
+  * Updated my contact info in debian/control.
+
+ -- Martin Pitt <mpitt@debian.org>  Sat, 19 Feb 2011 22:41:08 +0100
+
 cups (1.4.5-3) unstable; urgency=low
 
   [ Till Kamppeter ]
