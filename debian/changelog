@@ -1,3 +1,18 @@
+cups (1.4.6-2) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/printer.schema: Added missing "printerType" attribute. Thanks to
+    Mario Fetka for the hint (LP: #724980).
+
+  [ Martin Pitt ]
+  * ubuntu-upstart.dpatch: Fix start failure if apparmor-profile-load doesn't
+    exist. Thanks Zach! (LP: #728592)
+
+  [ Martin-Éric Racine ]
+  * Added Recommends:smbclient to cups-client (Closes: #616015).
+
+ -- Martin Pitt <mpitt@debian.org>  Tue, 15 Mar 2011 15:11:19 +0100
+
 cups (1.4.6-1) unstable; urgency=low
 
   * New upstream release.
@@ -4304,15 +4319,6 @@ cupsys (1.1.4-2) unstable; urgency=high
 
  -- Jeff Licquia <licquia@debian.org>  Sat, 18 Nov 2000 00:55:48 -0500
 
-cupsys (1.0.4-8) stable; urgency=high
-
-  * Security fix: the default configuration now no longer allows people
-    to connect to printers except from localhost.  The previous default
-    configuration allowed anyone to connect to any printer from any
-    location; not a smart security move.
-
- -- Jeff Licquia <licquia@debian.org>  Sat, 18 Nov 2000 00:37:06 -0500
-
 cupsys (1.1.4-1) unstable; urgency=low
 
   * New upstream version.
@@ -4364,6 +4370,15 @@ cupsys (1.1.0-0b3d1) unstable; urgency=low
     replacement for lpr.
 
  -- Jeff Licquia <licquia@debian.org>  Sun, 14 May 2000 00:08:23 -0500
+
+cupsys (1.0.4-8) stable; urgency=high
+
+  * Security fix: the default configuration now no longer allows people
+    to connect to printers except from localhost.  The previous default
+    configuration allowed anyone to connect to any printer from any
+    location; not a smart security move.
+
+ -- Jeff Licquia <licquia@debian.org>  Sat, 18 Nov 2000 00:37:06 -0500
 
 cupsys (1.0.4-7) frozen unstable; urgency=high
 
