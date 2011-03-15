@@ -136,6 +136,7 @@ Section: net
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, 
  cups-common (>= ${source:Upstream-Version}), adduser
+Recommends: smbclient
 Suggests: cups, xpp, cups-bsd
 Conflicts: lprng
 Description: Common UNIX Printing System(tm) - client programs (SysV)
