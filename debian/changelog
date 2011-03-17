@@ -1,3 +1,23 @@
+cups (1.4.6-3) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/local/filters/pdf-filters/filter/pdftoraster.cxx: Latest bug fixes
+    from upstream:
+     o Respect the "*RequiresPageRegion" attribute of the PPD files in the
+       same way as pstops does (LP: #405116).
+     o Change default rendering intent to PERCEPTUAL.
+     o Use external ICC color profile also with CMYK color space.
+  * debian/local/filters/pdf-filters/pdftopdf/pdftopdf.cxx: Latest bug fixes
+    from upstream:
+     o Support ipp-attribute-fidelity option and MirrorPrint choice. This is
+       needed that appropriate options in printing dialogs and printer setup
+       tools are respected.
+
+  [ Martin Pitt ]
+  * debian/control: Downgrade smbclient to Recommends. (Closes: #618545)
+
+ -- Martin Pitt <mpitt@debian.org>  Thu, 17 Mar 2011 10:49:04 +0100
+
 cups (1.4.6-2) unstable; urgency=low
 
   [ Till Kamppeter ]

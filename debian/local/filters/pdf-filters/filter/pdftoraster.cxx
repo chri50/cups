@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2008,2009,2010 BBR Inc.  All rights reserved.
+Copyright (c) 2008-2011 BBR Inc.  All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -146,6 +146,7 @@ namespace {
   cmsHPROFILE popplerColorProfile = NULL;
   cmsHTRANSFORM colorTransform = NULL;
   cmsCIEXYZ D65WhitePoint;
+  int renderingIntent = INTENT_PERCEPTUAL;
 };
 
 static void CDECL myErrorFun(int pos, char *msg, va_list args)
@@ -249,11 +250,48 @@ static GBool getColorProfilePath(ppd_file_t *ppd, GooString *path)
     return gFalse;
 }
 
+static void  handleRqeuiresPageRegion() {
+  ppd_choice_t *mf;
+  ppd_choice_t *is;
+  ppd_attr_t *rregions = NULL;
+  ppd_size_t *size;
+
+  if ((size = ppdPageSize(ppd,NULL)) == NULL) return;
+  mf = ppdFindMarkedChoice(ppd,"ManualFeed");
+  if ((is = ppdFindMarkedChoice(ppd,"InputSlot")) != NULL) {
+    rregions = ppdFindAttr(ppd,"RequiresPageRegion",is->choice);
+  }
+  if (rregions == NULL) {
+    rregions = ppdFindAttr(ppd,"RequiresPageRegion","All");
+  }
+  if (!strcasecmp(size->name,"Custom") || (!mf && !is) ||
+      (mf && !strcasecmp(mf->choice,"False") &&
+       (!is || (is->code && !is->code[0]))) ||
+      (!rregions && ppd->num_filters > 0)) {
+    ppdMarkOption(ppd,"PageSize",size->name);
+  } else if (rregions && rregions->value
+      && !strcasecmp(rregions->value,"True")) {
+    ppdMarkOption(ppd,"PageRegion",size->name);
+  } else {
+    ppd_choice_t *page;
+
+    if ((page = ppdFindMarkedChoice(ppd,"PageSize")) != NULL) {
+      page->marked = 0;
+      cupsArrayRemove(ppd->marked,page);
+    }
+    if ((page = ppdFindMarkedChoice(ppd,"PageRegion")) != NULL) {
+      page->marked = 0;
+      cupsArrayRemove(ppd->marked, page);
+    }
+  }
+}
+
 static void parseOpts(int argc, char **argv)
 {
   int num_options = 0;
   cups_option_t *options = 0;
   GooString profilePath;
+  ppd_attr_t *attr;
 
   if (argc < 6 || argc > 7) {
     error(-1,const_cast<char *>("%s job-id user title copies options [file]"),
@@ -270,10 +308,22 @@ static void parseOpts(int argc, char **argv)
   options = NULL;
   num_options = cupsParseOptions(argv[5],0,&options);
   cupsMarkOptions(ppd,num_options,options);
+  handleRqeuiresPageRegion();
   cupsRasterInterpretPPD(&header,ppd,num_options,options,0);
+  attr = ppdFindAttr(ppd,"pdftorasterRenderingIntent",NULL);
+  if (attr != NULL && attr->value != NULL) {
+    if (strcasecmp(attr->value,"PERCEPTUAL") != 0) {
+      renderingIntent = INTENT_PERCEPTUAL;
+    } else if (strcasecmp(attr->value,"RELATIVE_COLORIMETRIC") != 0) {
+      renderingIntent = INTENT_RELATIVE_COLORIMETRIC;
+    } else if (strcasecmp(attr->value,"SATURATION") != 0) {
+      renderingIntent = INTENT_SATURATION;
+    } else if (strcasecmp(attr->value,"ABSOLUTE_COLORIMETRIC") != 0) {
+      renderingIntent = INTENT_ABSOLUTE_COLORIMETRIC;
+    }
+  }
   if (header.Duplex) {
     /* analyze options relevant to Duplex */
-    ppd_attr_t *attr;
     const char *backside = "";
     /* APDuplexRequiresFlippedMargin */
     enum {
@@ -1140,8 +1190,9 @@ static void selectConvertFunc(cups_raster_t *raster)
 {
   /* select convertLine function */
 
-  if (header.cupsColorOrder == CUPS_ORDER_CHUNKED
-       || header.cupsNumColors == 1) {
+  if ((colorProfile == NULL || popplerColorProfile == colorProfile) 
+      && (header.cupsColorOrder == CUPS_ORDER_CHUNKED
+       || header.cupsNumColors == 1)) {
     if (selectSpecialCase()) return;
   }
 
@@ -1216,7 +1267,7 @@ static void selectConvertFunc(cups_raster_t *raster)
             colorProfile,
             COLORSPACE_SH(dcst) |
             CHANNELS_SH(header.cupsNumColors) | BYTES_SH(bytes),
-            INTENT_RELATIVE_COLORIMETRIC,0)) == 0) {
+            renderingIntent,0)) == 0) {
       error(-1,const_cast<char *>("Can't create color transform"));
       exit(1);
     }
