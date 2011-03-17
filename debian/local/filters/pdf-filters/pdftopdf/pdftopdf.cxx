@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2006-2007, BBR Inc.  All rights reserved.
+Copyright (c) 2006-2011, BBR Inc.  All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -184,8 +184,11 @@ void parseOpts(int argc, char **argv)
     P2PDoc::options.copies = atoi(choice->choice);
   }
   if (P2PDoc::options.copies == 0) P2PDoc::options.copies = 1;
-  if ((val = cupsGetOption("fitplot", num_options, options)) == NULL)
-    val = cupsGetOption("fit-to-page", num_options, options);
+  if ((val = cupsGetOption("fitplot", num_options, options)) == NULL) {
+    if ((val = cupsGetOption("fit-to-page", num_options, options)) == NULL) {
+        val = cupsGetOption("ipp-attribute-fidelity", num_options, options);
+    }
+  }
   if (val && strcasecmp(val, "no") && strcasecmp(val, "off") &&
       strcasecmp(val, "false"))
     fitplot = gTrue;
@@ -396,7 +399,14 @@ void parseOpts(int argc, char **argv)
   P2PDoc::options.pageSet = cupsGetOption("page-set",num_options,options);
   P2PDoc::options.pageRanges = cupsGetOption("page-ranges",num_options,options);
 
-  if ((val = cupsGetOption("mirror",num_options,options)) != 0 &&
+  if ((choice = ppdFindMarkedChoice(ppd, "MirrorPrint")) != NULL) {
+    val = choice->choice;
+    choice->marked =0;
+    if (val && (!strcasecmp(val, "true") || !strcasecmp(val, "on") ||
+                    !strcasecmp(val, "yes"))) {
+      mirror = gTrue;
+    }
+  } else if ((val = cupsGetOption("mirror",num_options,options)) != 0 &&
       (!strcasecmp(val,"true") || !strcasecmp(val,"on") ||
        !strcasecmp(val,"yes"))) {
     mirror = gTrue;
