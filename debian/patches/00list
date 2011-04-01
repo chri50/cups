@@ -1,6 +1,7 @@
 # patches backported from upstream SVN trunk for 1.5:
 
 # patches accepted and committed upstream for next 1.4:
+fix-broken-ipv6-uris.dpatch
 
 # patches sent upstream
 pidfile.dpatch

@@ -1,3 +1,20 @@
+cups (1.4.6-4) unstable; urgency=low
+
+  * debian/patches/fix-broken-ipv6-uris.dpatch: When accessing the web
+    interface via http: (unencrypted) and one does an adminstrative task
+    which requires encryption, on upgrading to https: (encrypted) mode
+    IPv6 IP addresses without "[...]" get inserted into the URL and the
+    browser cannot parse the URL correctly. Fixed with a patch from upstream
+    (LP: #744674).
+  * debian/rules: Convert cups.png (CUPS logo for test page) to RGBA, as the
+    original 8-bit-per-pixel color map format leads to a crash in libpng. This
+    prevents the CUPS test page and the banner pages from printing
+    (LP: #710881).
+  * debian/control: Add ImageMagick to the build dependencies, as it is
+    needed for the CUPS logo image conversion.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 01 Apr 2011 11:06:02 +0200
+
 cups (1.4.6-3) unstable; urgency=low
 
   [ Till Kamppeter ]

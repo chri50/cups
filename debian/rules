@@ -108,6 +108,13 @@ binary-post-install/cups::
 	# root:dialout and thus not accessible as user lp
 	chmod go-x debian/$(cdbs_curpkg)/usr/lib/cups/backend-available/serial
 
+	# Convert cups.png (CUPS logo for test page) to RGBA, as the original
+	# 8-bit-per-pixel color map format leads to a crash in libpng. This
+	# prevents the CUPS test page and the banner pages from printing
+	# (LP: #710881).
+	convert debian/$(cdbs_curpkg)/usr/share/cups/doc-root/images/cups.png PNG32:cups.png && \
+        mv -f cups.png debian/$(cdbs_curpkg)/usr/share/cups/doc-root/images/
+
 binary-post-install/cups-common::
 	# Compress charmaps
 	gzip -9 debian/$(cdbs_curpkg)/usr/share/cups/charmaps/*.txt

@@ -11,7 +11,7 @@ Build-Depends: libpam0g-dev, libtiff4-dev, libjpeg-dev, zlib1g-dev,
  libpoppler-dev (>= 0.12.2-2), pkg-config,
  poppler-utils, po4a (>= 0.31), autotools-dev, autoconf, automake, 
  libtool, libijs-dev, hardening-wrapper, liblcms1-dev, libfreetype6-dev,
- libfontconfig1-dev, pkg-config, libusb-dev
+ libfontconfig1-dev, pkg-config, libusb-dev, imagemagick
 Uploaders: Kenshi Muto <kmuto@debian.org>, 
  Martin Pitt <mpitt@debian.org>, Roger Leigh <rleigh@debian.org>, 
  Martin-Éric Racine <martin-eric.racine@iki.fi>, Masayuki Hatta (mhatta) <mhatta@debian.org>,
