@@ -1,3 +1,10 @@
+cups (1.4.3-1ubuntu1.4) lucid-proposed; urgency=low
+
+  * debian/cups.init.d: reload samba after start if it is present so
+    that printers are shown in samba. (LP: #494141)
+
+ -- Clint Byrum <clint@ubuntu.com>  Mon, 04 Apr 2011 02:05:18 -0700
+
 cups (1.4.3-1ubuntu1.3) lucid-security; urgency=low
 
   * SECURITY UPDATE: denial of service and possible code execution via

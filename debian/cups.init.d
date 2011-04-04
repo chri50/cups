@@ -42,6 +42,12 @@ restart_xprint() {
     fi
 }
 
+reload_samba() {
+    if [ -n "$success" ] && [ -x /etc/init.d/smbd ]; then
+        invoke-rc.d smbd reload > /dev/null || true
+    fi
+}
+
 coldplug_usb_printers() {
     if type udevadm > /dev/null 2>&1 && [ -x /lib/udev/udev-configure-printer ]; then
 	for printer in `udevadm trigger --verbose --dry-run --subsystem-match=usb \
@@ -71,6 +77,7 @@ case "$1" in
 	coldplug_usb_printers
 	log_end_msg $?
 	restart_xprint
+	reload_samba
 	;;
   stop)
 	log_begin_msg "Stopping $DESC: $NAME"
@@ -91,6 +98,7 @@ case "$1" in
 	fi
 	log_end_msg $?
 	restart_xprint
+	reload_samba
 	;;
   status)
 	echo -n "Status of $DESC: "
