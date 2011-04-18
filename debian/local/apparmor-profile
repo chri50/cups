@@ -150,6 +150,7 @@
 
   # unfortunate, but required for when $HOME is 700
   capability dac_override,
+  capability dac_read_search,
 
   /bin/dash ixr,
   /bin/bash ixr,

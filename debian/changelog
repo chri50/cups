@@ -1,3 +1,19 @@
+cups (1.4.6-5) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/patches/cups-avahi.dpatch: Updated the patch to add Avahi support
+    to the newest state of the art from
+    http://twaugh.fedorapeople.org/cups-avahi/ (upstream of the patch),
+    in the hope to fix CUPS crashers like LP #759031, #754567, #711875,
+    #751770.
+
+  [ Martin Pitt ]
+  * debian/local/apparmor-profile: Add cap_dac_read_search for cups-pdf. This
+    circumvents the sandboxing even more, but with cups-pdf's architecture
+    there is no way around it. (LP: #295536)
+
+ -- Martin Pitt <mpitt@debian.org>  Mon, 18 Apr 2011 19:22:20 +0200
+
 cups (1.4.6-4) unstable; urgency=low
 
   * debian/patches/fix-broken-ipv6-uris.dpatch: When accessing the web
