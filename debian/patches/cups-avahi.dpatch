@@ -3,11 +3,13 @@
 ##
 ## All lines beginning with `## DP:' are a description of the patch.
 ## DP: http://www.cups.org/str.php?L3066
+## DP: All patches from http://twaugh.fedorapeople.org/cups-avahi/ taken
+## DP: Apr 18, 2011
 
 @DPATCH@
-diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.5~/backend/dnssd.c cups-1.4.5/backend/dnssd.c
---- cups-1.4.5~/backend/dnssd.c	2009-08-08 00:27:12.000000000 +0200
-+++ cups-1.4.5/backend/dnssd.c	2011-02-03 19:31:29.405909983 +0100
+diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/backend/dnssd.c cups-1.4.6/backend/dnssd.c
+--- cups-1.4.6~/backend/dnssd.c	2009-08-08 00:27:12.000000000 +0200
++++ cups-1.4.6/backend/dnssd.c	2011-04-18 17:52:20.610467085 +0200
 @@ -15,14 +15,21 @@
   *
   * Contents:
@@ -831,9 +833,9 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  /*
   * 'sigterm_handler()' - Handle termination signals...
   */
-diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.5~/config-scripts/cups-dnssd.m4 cups-1.4.5/config-scripts/cups-dnssd.m4
---- cups-1.4.5~/config-scripts/cups-dnssd.m4	2009-08-29 00:54:34.000000000 +0200
-+++ cups-1.4.5/config-scripts/cups-dnssd.m4	2011-02-03 19:31:29.405909983 +0100
+diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/config-scripts/cups-dnssd.m4 cups-1.4.6/config-scripts/cups-dnssd.m4
+--- cups-1.4.6~/config-scripts/cups-dnssd.m4	2009-08-29 00:54:34.000000000 +0200
++++ cups-1.4.6/config-scripts/cups-dnssd.m4	2011-04-18 17:51:50.460490783 +0200
 @@ -27,6 +27,21 @@
  DNSSDLIBS=""
  DNSSD_BACKEND=""
@@ -856,9 +858,9 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  if test x$enable_dnssd != xno; then
  	AC_CHECK_HEADER(dns_sd.h, [
  		case "$uname" in
-diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.5~/config.h.in cups-1.4.5/config.h.in
---- cups-1.4.5~/config.h.in	2010-08-13 06:11:46.000000000 +0200
-+++ cups-1.4.5/config.h.in	2011-02-03 19:31:29.405909983 +0100
+diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/config.h.in cups-1.4.6/config.h.in
+--- cups-1.4.6~/config.h.in	2010-08-13 06:11:46.000000000 +0200
++++ cups-1.4.6/config.h.in	2011-04-18 17:51:50.460490783 +0200
 @@ -344,6 +344,13 @@
  
  
@@ -873,9 +875,9 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
   * Do we have <sys/ioctl.h>?
   */
  
-diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.5~/cups/http-support.c cups-1.4.5/cups/http-support.c
---- cups-1.4.5~/cups/http-support.c	2010-10-02 00:40:38.000000000 +0200
-+++ cups-1.4.5/cups/http-support.c	2011-02-03 19:31:29.405909983 +0100
+diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/cups/http-support.c cups-1.4.6/cups/http-support.c
+--- cups-1.4.6~/cups/http-support.c	2010-10-02 00:40:38.000000000 +0200
++++ cups-1.4.6/cups/http-support.c	2011-04-18 17:52:20.610467085 +0200
 @@ -41,6 +41,10 @@
   *   http_copy_decode()   - Copy and decode a URI.
   *   http_copy_encode()   - Copy and encode a URI.
@@ -1143,9 +1145,9 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  /*
   * End of "$Id: http-support.c 9322 2010-10-01 22:40:38Z mike $".
   */
-diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.5~/scheduler/Makefile cups-1.4.5/scheduler/Makefile
---- cups-1.4.5~/scheduler/Makefile	2010-04-23 20:56:34.000000000 +0200
-+++ cups-1.4.5/scheduler/Makefile	2011-02-03 19:31:29.405909983 +0100
+diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/scheduler/Makefile cups-1.4.6/scheduler/Makefile
+--- cups-1.4.6~/scheduler/Makefile	2010-04-23 20:56:34.000000000 +0200
++++ cups-1.4.6/scheduler/Makefile	2011-04-18 17:53:22.510418065 +0200
 @@ -17,6 +17,7 @@
  
  CUPSDOBJS =	\
@@ -1164,10 +1166,10 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  LIBOBJS =	\
  		filter.o \
  		mime.o \
-diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.5~/scheduler/avahi.c cups-1.4.5/scheduler/avahi.c
---- cups-1.4.5~/scheduler/avahi.c	1970-01-01 01:00:00.000000000 +0100
-+++ cups-1.4.5/scheduler/avahi.c	2011-02-03 19:31:29.405909983 +0100
-@@ -0,0 +1,443 @@
+diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/scheduler/avahi.c cups-1.4.6/scheduler/avahi.c
+--- cups-1.4.6~/scheduler/avahi.c	1970-01-01 01:00:00.000000000 +0100
++++ cups-1.4.6/scheduler/avahi.c	2011-04-18 17:53:32.960409731 +0200
+@@ -0,0 +1,445 @@
 +/*
 + * "$Id$"
 + *
@@ -1370,8 +1372,10 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
 +  watched_fd = cupsArrayFind (cups_poll->watched_fds, &key);
 +  if (watched_fd == NULL) {
 +    watched_fd = malloc(sizeof(cupsd_watched_fd_t));
-+    if (watched_fd == NULL)
++    if (watched_fd == NULL) {
++      free (watch);
 +      return (NULL);
++    }
 +
 +    watched_fd->fd = fd;
 +    watched_fd->occurred = 0;
@@ -1611,9 +1615,9 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
 +/*
 + * End of "$Id$".
 + */
-diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.5~/scheduler/avahi.h cups-1.4.5/scheduler/avahi.h
---- cups-1.4.5~/scheduler/avahi.h	1970-01-01 01:00:00.000000000 +0100
-+++ cups-1.4.5/scheduler/avahi.h	2011-02-03 19:31:29.405909983 +0100
+diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/scheduler/avahi.h cups-1.4.6/scheduler/avahi.h
+--- cups-1.4.6~/scheduler/avahi.h	1970-01-01 01:00:00.000000000 +0100
++++ cups-1.4.6/scheduler/avahi.h	2011-04-18 17:53:22.510418065 +0200
 @@ -0,0 +1,49 @@
 +/*
 + * "$Id$"
@@ -1664,9 +1668,9 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
 +/*
 + * End of "$Id$".
 + */
-diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.5~/scheduler/cupsd.h cups-1.4.5/scheduler/cupsd.h
---- cups-1.4.5~/scheduler/cupsd.h	2010-09-22 00:34:57.000000000 +0200
-+++ cups-1.4.5/scheduler/cupsd.h	2011-02-03 19:31:29.405909983 +0100
+diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/scheduler/cupsd.h cups-1.4.6/scheduler/cupsd.h
+--- cups-1.4.6~/scheduler/cupsd.h	2010-09-22 00:34:57.000000000 +0200
++++ cups-1.4.6/scheduler/cupsd.h	2011-04-18 17:52:51.360442785 +0200
 @@ -147,6 +147,15 @@
  
  typedef void (*cupsd_selfunc_t)(void *data);
@@ -1712,9 +1716,9 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  extern int	cupsdRemoveFile(const char *filename);
  
  
-diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.5~/scheduler/dirsvc.c cups-1.4.5/scheduler/dirsvc.c
---- cups-1.4.5~/scheduler/dirsvc.c	2010-04-23 20:56:34.000000000 +0200
-+++ cups-1.4.5/scheduler/dirsvc.c	2011-02-03 19:31:51.345884913 +0100
+diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/scheduler/dirsvc.c cups-1.4.6/scheduler/dirsvc.c
+--- cups-1.4.6~/scheduler/dirsvc.c	2010-04-23 20:56:34.000000000 +0200
++++ cups-1.4.6/scheduler/dirsvc.c	2011-04-18 18:28:24.748310979 +0200
 @@ -27,6 +27,7 @@
   *   ldap_connect()             - Start new LDAP connection
   *   ldap_reconnect()           - Reconnect to LDAP Server
@@ -2516,7 +2520,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  
    cupsArrayDelete(DNSSDPrinters);
    DNSSDPrinters = NULL;
-@@ -2911,6 +2938,272 @@
+@@ -2911,6 +2938,275 @@
  
  
  /*
@@ -2702,6 +2706,9 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
 +  * Calculate the buffer size
 +  */
 +
++  if (count <= 0)
++    return (NULL);
++
 +  for (length = i = 0; i < count; i++)
 +    length += 1 + strlen(keyvalue[i][0]) + 
 +	      (keyvalue[i][1] ? 1 + strlen(keyvalue[i][1]) : 0);
@@ -2789,7 +2796,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
   * 'dnssdUpdate()' - Handle DNS-SD queries.
   */
  
-@@ -2931,6 +3224,146 @@
+@@ -2931,6 +3227,146 @@
  #endif /* HAVE_DNSSD */
  
  
@@ -2806,7 +2813,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
 +  AvahiStringList *strlst = NULL;
 +  char **elements;
 +  size_t len;
-+  int i;
++  int i = 0;
 +
 +  elements = malloc ((1 + count) * sizeof (char *));
 +  if (!elements)
@@ -2936,9 +2943,9 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  /*
   * 'get_auth_info_required()' - Get the auth-info-required value to advertise.
   */
-diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.5~/scheduler/dirsvc.h cups-1.4.5/scheduler/dirsvc.h
---- cups-1.4.5~/scheduler/dirsvc.h	2009-05-14 19:54:37.000000000 +0200
-+++ cups-1.4.5/scheduler/dirsvc.h	2011-02-03 19:31:51.345884913 +0100
+diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/scheduler/dirsvc.h cups-1.4.6/scheduler/dirsvc.h
+--- cups-1.4.6~/scheduler/dirsvc.h	2009-05-14 19:54:37.000000000 +0200
++++ cups-1.4.6/scheduler/dirsvc.h	2011-04-18 18:28:14.428322284 +0200
 @@ -32,6 +32,10 @@
  #  endif /* HAVE_LDAP_SSL_H */
  #endif /* HAVE_LDAP */
@@ -3011,10 +3018,10 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  #ifdef HAVE_LDAP
  extern void	cupsdUpdateLDAPBrowse(void);
  #endif /* HAVE_LDAP */
-diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.5~/scheduler/main.c cups-1.4.5/scheduler/main.c
---- cups-1.4.5~/scheduler/main.c	2011-02-03 19:31:29.195910222 +0100
-+++ cups-1.4.5/scheduler/main.c	2011-02-03 19:31:29.405909983 +0100
-@@ -137,6 +137,10 @@
+diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/scheduler/main.c cups-1.4.6/scheduler/main.c
+--- cups-1.4.6~/scheduler/main.c	2010-09-22 00:34:57.000000000 +0200
++++ cups-1.4.6/scheduler/main.c	2011-04-18 17:53:41.600402839 +0200
+@@ -135,6 +135,10 @@
    cupsd_listener_t	*lis;		/* Current listener */
    time_t		current_time,	/* Current time */
  			activity,	/* Client activity timer */
@@ -3025,7 +3032,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  			browse_time,	/* Next browse send time */
  			senddoc_time,	/* Send-Document time */
  			expire_time,	/* Subscription expire time */
-@@ -163,6 +167,10 @@
+@@ -161,6 +165,10 @@
    int			launchd_idle_exit;
  					/* Idle exit on select timeout? */
  #endif	/* HAVE_LAUNCHD */
@@ -3036,7 +3043,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  
  
  #ifdef HAVE_GETEUID
-@@ -553,6 +561,14 @@
+@@ -551,6 +559,14 @@
  
    httpInitialize();
  
@@ -3051,7 +3058,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
    cupsdStartServer();
  
   /*
-@@ -683,6 +699,9 @@
+@@ -676,6 +692,9 @@
    */
  
    current_time  = time(NULL);
@@ -3061,7 +3068,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
    browse_time   = current_time;
    event_time    = current_time;
    expire_time   = current_time;
-@@ -897,6 +916,26 @@
+@@ -890,6 +909,26 @@
      }
  #endif /* __APPLE__ */
  
@@ -3088,7 +3095,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  #ifndef __APPLE__
     /*
      * Update the network interfaces once a minute...
-@@ -1953,6 +1992,10 @@
+@@ -1915,6 +1954,10 @@
    cupsd_job_t		*job;		/* Job information */
    cupsd_subscription_t	*sub;		/* Subscription information */
    const char		*why;		/* Debugging aid */
@@ -3099,7 +3106,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  
  
   /*
-@@ -1995,6 +2038,19 @@
+@@ -1957,6 +2000,19 @@
    }
  #endif /* __APPLE__ */
  
@@ -3119,9 +3126,9 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
   /*
    * Check whether we are accepting new connections...
    */
-diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.5~/scheduler/printers.c cups-1.4.5/scheduler/printers.c
---- cups-1.4.5~/scheduler/printers.c	2010-09-22 20:35:07.000000000 +0200
-+++ cups-1.4.5/scheduler/printers.c	2011-02-03 19:31:29.405909983 +0100
+diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/scheduler/printers.c cups-1.4.6/scheduler/printers.c
+--- cups-1.4.6~/scheduler/printers.c	2010-09-22 20:35:07.000000000 +0200
++++ cups-1.4.6/scheduler/printers.c	2011-04-18 17:53:41.600402839 +0200
 @@ -928,10 +928,10 @@
    cupsdClearString(&p->alert);
    cupsdClearString(&p->alert_description);
@@ -3190,9 +3197,9 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  
      if (ppdFindAttr(ppd, "APRemoteQueueID", NULL))
        p->type |= CUPS_PRINTER_REMOTE;
-diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.5~/scheduler/printers.h cups-1.4.5/scheduler/printers.h
---- cups-1.4.5~/scheduler/printers.h	2010-03-31 00:07:33.000000000 +0200
-+++ cups-1.4.5/scheduler/printers.h	2011-02-03 19:31:29.405909983 +0100
+diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/scheduler/printers.h cups-1.4.6/scheduler/printers.h
+--- cups-1.4.6~/scheduler/printers.h	2010-03-31 00:07:33.000000000 +0200
++++ cups-1.4.6/scheduler/printers.h	2011-04-18 17:53:41.600402839 +0200
 @@ -16,6 +16,9 @@
  #ifdef HAVE_DNSSD
  #  include <dns_sd.h>
@@ -3232,9 +3239,9 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  } cupsd_printer_t;
  
  
-diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.5~/scheduler/timeout.c cups-1.4.5/scheduler/timeout.c
---- cups-1.4.5~/scheduler/timeout.c	1970-01-01 01:00:00.000000000 +0100
-+++ cups-1.4.5/scheduler/timeout.c	2011-02-03 19:31:29.405909983 +0100
+diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/scheduler/timeout.c cups-1.4.6/scheduler/timeout.c
+--- cups-1.4.6~/scheduler/timeout.c	1970-01-01 01:00:00.000000000 +0100
++++ cups-1.4.6/scheduler/timeout.c	2011-04-18 17:52:51.360442785 +0200
 @@ -0,0 +1,195 @@
 +/*
 + * "$Id$"
