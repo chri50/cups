@@ -1,3 +1,13 @@
+cups (1.4.6-5ubuntu1) natty; urgency=low
+
+  * Revert calling "convert" on the banner PNGs (r961); the file is already
+    correct in the source. The format conversion happens in Ubuntu's
+    pkgbinarymangler, so it does not affect Debian builds at all and also this
+    cannot be circumvented that way. Instead, blacklist this package from
+    pkgstripfiles. (LP: #710881)
+
+ -- Martin Pitt <martin.pitt@ubuntu.com>  Tue, 19 Apr 2011 21:55:20 +0200
+
 cups (1.4.6-5) unstable; urgency=low
 
   [ Till Kamppeter ]
