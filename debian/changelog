@@ -1,3 +1,17 @@
+cups (1.4.6-5ubuntu1.1) natty-proposed; urgency=low
+
+    * debian/filters/pstopdf: Let pstopdf determine the page size via
+    the "PageSize" or "PageRegion" setting in the 5th command line
+    argument and not via "media". The "media" setting is usually
+    inserted by CUPS and uses a PWG name of the paper size and not the
+    name used in the PPD file. This makes Ghostscript being called
+    without paper size setting and so a PDF file in the default paper
+    size (A4/Letter) is passed on, breaking any printout from applications
+    which send jobs in PostScript and which have a non-default paper
+    size (LP: #787635).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Tue, 24 May 2011 17:58:02 +0200
+
 cups (1.4.6-5ubuntu1) natty; urgency=low
 
   * Revert calling "convert" on the banner PNGs (r961); the file is already
