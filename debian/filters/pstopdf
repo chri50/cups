@@ -98,7 +98,7 @@ pagesize=
 unit=
 customw=
 customh=
-eval "$(printf "%s" "$5" | sed -nre 's/.*(^|\s)(media|PageSize)=(\S+).*/pagesize="${pagesize:-\3}"/p')"
+eval "$(printf "%s" "$5" | sed -nre 's/.*(^|\s)(PageSize|PageRegion)=(\S+).*/pagesize="${pagesize:-\3}"/p')"
 if test -e "$PPD"; then
     eval "$(sed -nre 's/^\*DefaultPageSize:\s*(\S+).*/pagesize="${pagesize:-\1}"/p' "$PPD")"
 fi
