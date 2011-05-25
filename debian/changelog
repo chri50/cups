@@ -1,3 +1,26 @@
+cups (1.4.6-6) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/filters/pstopdf: Let pstopdf determine the page size via
+    the "PageSize" or "PageRegion" setting in the 5th command line
+    argument and not via "media". The "media" setting is usually
+    inserted by CUPS and uses a PWG name of the paper size and not the
+    name used in the PPD file. This makes Ghostscript being called
+    without paper size setting and so a PDF file in the default paper
+    size (A4/Letter) is passed on, breaking any printout from applications
+    which send jobs in PostScript and which have a non-default paper
+    size (LP: #787635).
+
+  [ Martin Pitt ]
+  * Revert calling "convert" on the banner PNGs (r961); the file is already
+    correct in the source. The format conversion happens in Ubuntu's
+    pkgbinarymangler, so it does not affect Debian builds at all and also this
+    cannot be circumvented that way. Instead, blacklist this package from
+    pkgstripfiles. (LP: #710881)
+  * Bump Standards-Version to 3.9.2 (no changes necessary).
+
+ -- Martin Pitt <mpitt@debian.org>  Wed, 25 May 2011 07:03:55 +0200
+
 cups (1.4.6-5) unstable; urgency=low
 
   [ Till Kamppeter ]

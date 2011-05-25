@@ -13,6 +13,9 @@ export DEB_BUILD_HARDENING=1
 # http://www.cups.org/str.php?L3765
 export LC_MESSAGES=C
 
+# work around libpng crash on our test PNGs with 8 bit colormaps (LP #710881)
+export NO_PNG_PKG_MANGLE=1
+
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/autotools.mk
 include /usr/share/cdbs/1/rules/dpatch.mk
@@ -107,13 +110,6 @@ binary-post-install/cups::
 	# Make the serial backend run as root, since /dev/ttyS* are
 	# root:dialout and thus not accessible as user lp
 	chmod go-x debian/$(cdbs_curpkg)/usr/lib/cups/backend-available/serial
-
-	# Convert cups.png (CUPS logo for test page) to RGBA, as the original
-	# 8-bit-per-pixel color map format leads to a crash in libpng. This
-	# prevents the CUPS test page and the banner pages from printing
-	# (LP: #710881).
-	convert debian/$(cdbs_curpkg)/usr/share/cups/doc-root/images/cups.png PNG32:cups.png && \
-        mv -f cups.png debian/$(cdbs_curpkg)/usr/share/cups/doc-root/images/
 
 binary-post-install/cups-common::
 	# Compress charmaps
