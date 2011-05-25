@@ -2,7 +2,7 @@ Source: cups
 Priority: optional
 Section: net
 Maintainer: Debian CUPS Maintainers <pkg-cups-devel@lists.alioth.debian.org>
-Standards-Version: 3.8.4
+Standards-Version: 3.9.2
 Build-Depends: libpam0g-dev, libtiff4-dev, libjpeg-dev, zlib1g-dev,
  libpng12-dev, libslp-dev, libgnutls-dev, libpaper-dev, libldap2-dev,
  debhelper (>= 5.0), po-debconf, cdbs (>= 0.4.27), sharutils, 
@@ -11,7 +11,7 @@ Build-Depends: libpam0g-dev, libtiff4-dev, libjpeg-dev, zlib1g-dev,
  libpoppler-dev (>= 0.12.2-2), pkg-config,
  poppler-utils, po4a (>= 0.31), autotools-dev, autoconf, automake, 
  libtool, libijs-dev, hardening-wrapper, liblcms1-dev, libfreetype6-dev,
- libfontconfig1-dev, pkg-config, libusb-dev, imagemagick
+ libfontconfig1-dev, pkg-config, libusb-dev
 Uploaders: Kenshi Muto <kmuto@debian.org>, 
  Martin Pitt <mpitt@debian.org>, Roger Leigh <rleigh@debian.org>, 
  Martin-Éric Racine <martin-eric.racine@iki.fi>, Masayuki Hatta (mhatta) <mhatta@debian.org>,
