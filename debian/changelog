@@ -1,3 +1,28 @@
+cups (1.4.6-5ubuntu1.2) natty-proposed; urgency=low
+
+  * debian/patches/cups-avahi.dpatch: Updated Avahi patch so that it does
+    not generate too long service names which Avahi does not accept. Printers
+    did not get advertized via DNS-SD then. (LP: #793265).
+  * debian/patches/cups-avahi.dpatch: Updated Avahi patch to add the text
+    field entry "URF=none" and the service subtype "_universal" so that
+    mDNS/Bonjour-advertized printers are recognized by AirPrint clients
+    (iPhone/iPad with iOS 4.2 or newer). (LP: #711779).
+  * debian/patches/cups-avahi.dpatch: In contrary to the libdns_sd API the
+    Avahi API requires port numbers in host order and not in network order.
+    This made the Avahi-based DNS-SD broadcasting of CUPS advertizing wronmg
+    port numbers. Updated the Avahi patch to fix it. Thanks to Tim Waugh
+    from Red Hat on confirming this (LP: #792309).
+  * debian/local/filters/pdf-filters/pdftopdf/P2PResources.cxx: Fixed
+    memory leak in pdftopdf filter which made the filter taking up several
+    gigabytes when processing certain PDF files. Thanks to upstream
+    author Koji Otani for the quick fix (LP: #790378).
+  * debian/local/pstopdf.convs, debian/local/pstopdf.types: Do not apply
+    the PDF printing workflow to PostScript input coming from the Adobe
+    Reader. If this PostScript comes from an encrypted (DRM) PDF, it cannot
+    be converted to PDF again by Ghostscript (LP: #782309).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon,  5 Jun 2011 13:51:59 +0200
+
 cups (1.4.6-5ubuntu1.1) natty-proposed; urgency=low
 
     * debian/filters/pstopdf: Let pstopdf determine the page size via

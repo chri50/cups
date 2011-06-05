@@ -179,13 +179,24 @@ void P2PResources::handleOldForm(P2PResourceMap *map)
     P2PForm *form;
 
     xobjDict->getVal(i,&xobj);
-    if (!xobj.isStream()) continue;
+    if (!xobj.isStream()) {
+        xobj.free();
+        continue;
+    }
     strDict = xobj.streamGetDict();
     strDict->lookupNF("Subtype",&obj);
-    if (!obj.isName() || strcmp("Form",obj.getName()) != 0) continue;
+    if (!obj.isName() || strcmp("Form",obj.getName()) != 0) {
+        obj.free();
+        xobj.free();
+        continue;
+    }
     obj.free();
     strDict->lookupNF("Resources",&obj);
-    if (!obj.isNull()) continue;
+    if (!obj.isNull()) {
+        obj.free();
+        xobj.free();
+        continue;
+    }
     /* found a Form without Resource,
       replace it with a refrence to a P2PForm */
     form = new P2PForm(&xobj,this,map);
