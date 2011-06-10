@@ -1,0 +1,89 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## usb-backend-accept-old-usblp-uris.dpatch by  <till.kamppeter@gmail.com>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: No description.
+
+@DPATCH@
+diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/backend/usb-libusb.c cups-1.4.6/backend/usb-libusb.c
+--- cups-1.4.6~/backend/usb-libusb.c	2010-08-13 03:34:04.000000000 +0200
++++ cups-1.4.6/backend/usb-libusb.c	2011-06-10 09:49:28.844027360 +0200
+@@ -584,6 +584,14 @@
+     mfg = tempmfg;
+   }
+ 
++  if (!strncasecmp(mdl, mfg, strlen(mfg)))
++  {
++    mdl += strlen(mfg);
++
++    while (isspace(*mdl & 255))
++      mdl ++;
++    }
++
+  /*
+   * Generate the device URI from the manufacturer, model, serial number,
+   * and interface number...
+@@ -734,7 +742,62 @@
+          const char    *device_id,	/* I - IEEE-1284 device ID */
+          const void    *data)		/* I - User data (make, model, S/N) */
+ {
+-  return (!strcmp((char *)data, device_uri));
++  char *uri = (char *)data,
++       *str1,
++       *str2,
++       buf[255],
++       requested_uri[1024],
++       detected_uri[1024];
++
++  /* Work on copies of the uris */
++  strncpy(requested_uri, uri, sizeof(requested_uri));
++  requested_uri[sizeof(requested_uri) - 1] = '\0';
++  strncpy(detected_uri, device_uri, sizeof(detected_uri));
++  detected_uri[sizeof(detected_uri) - 1] = '\0';
++
++  /*
++   * libusb-discovered URIs can have an "interface" specification and this
++   * never happens for usblp-discovered URIs, so remove the "interface"
++   * specification from the URI which we are checking currently. This way a
++   * queue for a usblp-discovered printer can now be accessed via libusb
++   */
++  if (((str1 = strstr(requested_uri, "interface=")) == NULL) &&
++      ((str2 = strstr(detected_uri, "interface=")) != NULL))
++  {
++    *(str2 - 1) = '\0';
++    if (backendGetMakeModel(device_id, buf, sizeof(buf)) == 0)
++      fprintf(stderr, "WARNING: The %s printer connected to this machine can have multiple interfaces. To make use of them and so access the full functionality of this printer, please recreate the print queue so that it gets an updated device URI with interface speciofication.\n",
++	      buf);
++  }
++
++  /*
++   * Old URI with "serial=?". Cut this part off and consider this as
++   * an URI without serial number
++   */
++  if ((str1 = strstr(requested_uri, "serial=?")) != NULL)
++   *(str1 - 1) = '\0';
++
++  /*
++   * libusb-discovered URIs can have a "serial" specification when the
++   * usblp-discovered URI for the same printer does not have one, as
++   * with libusb we can discover serial numbers also with other methods
++   * than only via the device ID. Therefore we accept also a
++   * usblp-discovered printer without serial number as a match. This we
++   * do by removing the serial number from the detected (libusb-discovered)
++   * URI before comparing. Also warn the user because of the incapability
++   * of the usblp-based access to distinguish printers by the serial
++   * number.
++   */
++  if (((str1 = strstr(requested_uri, "serial=")) == NULL) &&
++      ((str2 = strstr(detected_uri, "serial=")) != NULL))
++  {
++    *(str2 - 1) = '\0';
++    if (backendGetMakeModel(device_id, buf, sizeof(buf)) == 0)
++      fprintf(stderr, "WARNING: If you have more than one %s printer connected to this machine, please recreate the print queues so that they get updated device URIs with serial numbers. Otherwise CUPS will not be able to distinguish them.\n",
++	      buf);
++  }
++
++  return (!strcmp(requested_uri, device_uri));
+ }
+ 
+ 

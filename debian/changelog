@@ -1,3 +1,27 @@
+cups (1.4.6-8) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/patches/usb-backend-accept-old-usblp-uris.dpatch: Let the
+    libusb-based "usb" backend accept also the old device URIs from the
+    usblp-kernel-module-based "usb" backend, so that printing stays working
+    for users who update from an old CUPS package with the usblp-based backend
+    without needing to migrate the URIs. Warnings in error_log tell about
+    the use of old URIs and the advantages of updating them.
+  * debian/patches/cups-deviced-allow-device-ids-with-newline.dpatch: Fixed
+    segfault happening sometimes when a device with a newline in its device
+    ID is found.
+
+  [ Martin Pitt ]
+  * Drop usb-backend-both-usblp-and-libusb.dpatch. It's causing crashes, and
+    upstream does not want it either. Instead, add a blacklist file
+    debian/local/blacklist-cups-usblp.patch and install it into
+    /etc/modprobe.d/; that way, we don't require kernels to disable usblp, and
+    allow other spoolers than cups to work.
+  * debian/cups.postinst: rmmod usblp on upgrades from earlier versions or
+    fresh installs, to make above change effective without reboots as well.
+
+ -- Martin Pitt <mpitt@debian.org>  Fri, 10 Jun 2011 11:35:33 +0200
+
 cups (1.4.6-7) unstable; urgency=low
 
   * debian/patches/cups-avahi.dpatch: Updated Avahi patch so that it does

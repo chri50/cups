@@ -5,10 +5,10 @@
 ## DP: No description.
 
 @DPATCH@
-diff -urNad cups-1.4.3~/scheduler/cups-deviced.c cups-1.4.3/scheduler/cups-deviced.c
---- cups-1.4.3~/scheduler/cups-deviced.c	2010-05-01 20:46:33.781056284 +0200
-+++ cups-1.4.3/scheduler/cups-deviced.c	2010-05-01 20:47:15.469852901 +0200
-@@ -577,15 +577,28 @@
+diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/scheduler/cups-deviced.c cups-1.4.6/scheduler/cups-deviced.c
+--- cups-1.4.6~/scheduler/cups-deviced.c	2011-06-08 23:26:19.369984078 +0200
++++ cups-1.4.6/scheduler/cups-deviced.c	2011-06-08 23:26:52.659835390 +0200
+@@ -577,15 +577,30 @@
  
      if (*ptr == '\"')
      {
@@ -24,7 +24,7 @@ diff -urNad cups-1.4.3~/scheduler/cups-deviced.c cups-1.4.3/scheduler/cups-devic
 +	  *ptr = ' ';
 +	  ptr ++;
 +	  *ptr = 0;
-+	  if (!cupsFileGets(backend->pipe, ptr, sizeof(line) - (ptr - line)))
++	  if (!cupsFileGets(backend->pipe, ptr, sizeof(line) - (ptr - temp)))
 +	  {
 +	    cupsFileClose(backend->pipe);
 +	    backend->pipe = NULL;
@@ -33,6 +33,8 @@ diff -urNad cups-1.4.3~/scheduler/cups-deviced.c cups-1.4.3/scheduler/cups-devic
 +	    return (-1);
 +	  }
 +	}
++	if (!*ptr)
++	  goto error;
        }
  
 -      if (*ptr != '\"')

@@ -10,7 +10,7 @@ ppd-poll-with-client-conf.dpatch
 manpage-translations.dpatch
 rootbackends-worldreadable.dpatch
 cups-avahi.dpatch
-usb-backend-both-usblp-and-libusb.dpatch
+usb-backend-no-segfault-on-bad-device-id.dpatch
 
 # patches which should go upstream
 removecvstag.dpatch
@@ -23,8 +23,8 @@ do-not-broadcast-with-hostnames.dpatch
 cups-deviced-allow-device-ids-with-newline
 default-ripcache-size-auto.dpatch
 cups-snmp-oids-device-id-hp-ricoh.dpatch
-usb-backend-no-segfault-on-bad-device-id.dpatch
 configure-default-browse-protocols.dpatch
+usb-backend-accept-old-usblp-uris.dpatch
 
 # Debian patches
 logfiles_adm_readable.dpatch
