@@ -180,6 +180,10 @@ EOM
     if dpkg --compare-versions "$2" lt-nl "1.4.4-1"; then
 	chmod 755 /usr/lib/cups/backend /usr/lib/cups/backend-available
     fi
+
+    if dpkg --compare-versions "$2" lt "1.4.6-8"; then
+	rmmod usblp || :
+    fi
 fi
 
 #DEBHELPER#

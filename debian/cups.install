@@ -59,3 +59,4 @@ usr/share/man/man8/cupsfilter.8.gz
 ../local/*.types usr/share/cups/mime/
 ../local/*.convs usr/share/cups/mime/
 etc/fonts/conf.d/99pdftoopvp.conf
+../local/blacklist-cups-usblp.conf etc/modprobe.d
