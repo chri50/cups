@@ -1,3 +1,18 @@
+cups (1.4.6-9) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/patches/usb-backend-accept-old-usblp-uris.dpatch: Fixed bugs in
+    the patch which got introduced by the upstream clean-up and by the fix
+    of a potential segfault.
+  * debian/patches/usb-backend-accept-old-usblp-uris.dpatch:
+    Patch got accepted upstream, replaced it by the version from
+    the upstream trunk (1.5.x).
+
+  [ Martin Pitt ]
+  * debian/cups.postinst: Quiesce errors from rmmod. (Closes: #630109)
+
+ -- Martin Pitt <mpitt@debian.org>  Wed, 15 Jun 2011 06:39:52 +0200
+
 cups (1.4.6-8) unstable; urgency=low
 
   [ Till Kamppeter ]

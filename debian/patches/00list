@@ -1,4 +1,6 @@
 # patches backported from upstream SVN trunk for 1.5:
+usb-backend-no-segfault-on-bad-device-id.dpatch
+usb-backend-accept-old-usblp-uris
 
 # patches accepted and committed upstream for next 1.4:
 fix-broken-ipv6-uris.dpatch
@@ -10,7 +12,6 @@ ppd-poll-with-client-conf.dpatch
 manpage-translations.dpatch
 rootbackends-worldreadable.dpatch
 cups-avahi.dpatch
-usb-backend-no-segfault-on-bad-device-id.dpatch
 
 # patches which should go upstream
 removecvstag.dpatch
@@ -24,7 +25,6 @@ cups-deviced-allow-device-ids-with-newline
 default-ripcache-size-auto.dpatch
 cups-snmp-oids-device-id-hp-ricoh.dpatch
 configure-default-browse-protocols.dpatch
-usb-backend-accept-old-usblp-uris.dpatch
 
 # Debian patches
 logfiles_adm_readable.dpatch
