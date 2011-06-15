@@ -2,88 +2,123 @@
 ## usb-backend-accept-old-usblp-uris.dpatch by  <till.kamppeter@gmail.com>
 ##
 ## All lines beginning with `## DP:' are a description of the patch.
-## DP: No description.
+## DP: http://www.cups.org/str.php?L3860
 
 @DPATCH@
 diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/backend/usb-libusb.c cups-1.4.6/backend/usb-libusb.c
 --- cups-1.4.6~/backend/usb-libusb.c	2010-08-13 03:34:04.000000000 +0200
-+++ cups-1.4.6/backend/usb-libusb.c	2011-06-10 09:49:28.844027360 +0200
-@@ -584,6 +584,14 @@
++++ cups-1.4.6/backend/usb-libusb.c	2011-06-15 01:29:16.881551293 +0200
+@@ -505,6 +505,7 @@
+ 		*mdl,			/* Model */
+ 		*des,			/* Description */
+ 		*sern;			/* Serial number */
++  size_t	mfglen;			/* Length of manufacturer string */
+   char		tempmfg[256],		/* Temporary manufacturer string */
+ 		tempsern[256],		/* Temporary serial number string */
+ 		*tempptr;		/* Pointer into temp string */
+@@ -584,6 +585,16 @@
      mfg = tempmfg;
    }
  
-+  if (!strncasecmp(mdl, mfg, strlen(mfg)))
-+  {
-+    mdl += strlen(mfg);
++  mfglen = strlen(mfg);
 +
-+    while (isspace(*mdl & 255))
++  if (!strncasecmp(mdl, mfg, mfglen) && _cups_isspace(mdl[mfglen]))
++  {
++    mdl += mfglen + 1;
++
++    while (_cups_isspace(*mdl))
 +      mdl ++;
-+    }
++  }
 +
   /*
    * Generate the device URI from the manufacturer, model, serial number,
    * and interface number...
-@@ -734,7 +742,62 @@
+@@ -734,7 +745,87 @@
           const char    *device_id,	/* I - IEEE-1284 device ID */
           const void    *data)		/* I - User data (make, model, S/N) */
  {
 -  return (!strcmp((char *)data, device_uri));
-+  char *uri = (char *)data,
-+       *str1,
-+       *str2,
-+       buf[255],
-+       requested_uri[1024],
-+       detected_uri[1024];
++  char	requested_uri[1024],		/* Requested URI */
++	*requested_ptr,			/* Pointer into requested URI */
++	detected_uri[1024],		/* Detected URI */
++	*detected_ptr;			/* Pointer into detected URI */
 +
-+  /* Work on copies of the uris */
-+  strncpy(requested_uri, uri, sizeof(requested_uri));
-+  requested_uri[sizeof(requested_uri) - 1] = '\0';
-+  strncpy(detected_uri, device_uri, sizeof(detected_uri));
-+  detected_uri[sizeof(detected_uri) - 1] = '\0';
 +
-+  /*
-+   * libusb-discovered URIs can have an "interface" specification and this
-+   * never happens for usblp-discovered URIs, so remove the "interface"
-+   * specification from the URI which we are checking currently. This way a
-+   * queue for a usblp-discovered printer can now be accessed via libusb
-+   */
-+  if (((str1 = strstr(requested_uri, "interface=")) == NULL) &&
-+      ((str2 = strstr(detected_uri, "interface=")) != NULL))
++ /*
++  * If we have an exact match, stop now...
++  */
++
++  if (!strcmp((char *)data, device_uri))
++    return (1);
++
++ /*
++  * Work on copies of the URIs...
++  */
++
++  strlcpy(requested_uri, (char *)data, sizeof(requested_uri));
++  strlcpy(detected_uri, device_uri, sizeof(detected_uri));
++
++ /*
++  * libusb-discovered URIs can have an "interface" specification and this
++  * never happens for usblp-discovered URIs, so remove the "interface"
++  * specification from the URI which we are checking currently. This way a
++  * queue for a usblp-discovered printer can now be accessed via libusb.
++  *
++  * Similarly, strip "?serial=NNN...NNN" as needed.
++  */
++
++  if ((requested_ptr = strstr(requested_uri, "?interface=")) == NULL)
++    requested_ptr = strstr(requested_uri, "&interface=");
++  if ((detected_ptr = strstr(detected_uri, "?interface=")) == NULL)
++    detected_ptr = strstr(detected_uri, "&interface=");
++
++  if (!requested_ptr && detected_ptr)
 +  {
-+    *(str2 - 1) = '\0';
-+    if (backendGetMakeModel(device_id, buf, sizeof(buf)) == 0)
-+      fprintf(stderr, "WARNING: The %s printer connected to this machine can have multiple interfaces. To make use of them and so access the full functionality of this printer, please recreate the print queue so that it gets an updated device URI with interface speciofication.\n",
-+	      buf);
++   /*
++    * Strip "[?&]interface=nnn" from the detected printer.
++    */
++
++    *detected_ptr = '\0';
++  }
++  else if (requested_ptr && !detected_ptr)
++  {
++   /*
++    * Strip "[?&]interface=nnn" from the requested printer.
++    */
++
++    *requested_ptr = '\0';
 +  }
 +
-+  /*
-+   * Old URI with "serial=?". Cut this part off and consider this as
-+   * an URI without serial number
-+   */
-+  if ((str1 = strstr(requested_uri, "serial=?")) != NULL)
-+   *(str1 - 1) = '\0';
-+
-+  /*
-+   * libusb-discovered URIs can have a "serial" specification when the
-+   * usblp-discovered URI for the same printer does not have one, as
-+   * with libusb we can discover serial numbers also with other methods
-+   * than only via the device ID. Therefore we accept also a
-+   * usblp-discovered printer without serial number as a match. This we
-+   * do by removing the serial number from the detected (libusb-discovered)
-+   * URI before comparing. Also warn the user because of the incapability
-+   * of the usblp-based access to distinguish printers by the serial
-+   * number.
-+   */
-+  if (((str1 = strstr(requested_uri, "serial=")) == NULL) &&
-+      ((str2 = strstr(detected_uri, "serial=")) != NULL))
++  if ((requested_ptr = strstr(requested_uri, "?serial=?")) != NULL)
 +  {
-+    *(str2 - 1) = '\0';
-+    if (backendGetMakeModel(device_id, buf, sizeof(buf)) == 0)
-+      fprintf(stderr, "WARNING: If you have more than one %s printer connected to this machine, please recreate the print queues so that they get updated device URIs with serial numbers. Otherwise CUPS will not be able to distinguish them.\n",
-+	      buf);
++   /*
++    * Strip "?serial=?" from the requested printer.  This is a special
++    * case, as "?serial=?" means no serial number and not the serial
++    * number '?'.  This is not covered by the checks below...
++    */
++
++    *requested_ptr = '\0';
 +  }
 +
-+  return (!strcmp(requested_uri, device_uri));
++  if ((requested_ptr = strstr(requested_uri, "?serial=")) == NULL &&
++      (detected_ptr = strstr(detected_uri, "?serial=")) != NULL)
++  {
++   /*
++    * Strip "?serial=nnn" from the detected printer.
++    */
++
++    *detected_ptr = '\0';
++  }
++  else if (requested_ptr && !detected_ptr)
++  {
++   /*
++    * Strip "?serial=nnn" from the requested printer.
++    */
++
++    *requested_ptr = '\0';
++  }
++
++  return (!strcmp(requested_uri, detected_uri));
  }
  
  

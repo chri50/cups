@@ -182,7 +182,7 @@ EOM
     fi
 
     if dpkg --compare-versions "$2" lt "1.4.6-8"; then
-	rmmod usblp || :
+	rmmod usblp 2>/dev/null || :
     fi
 fi
 
