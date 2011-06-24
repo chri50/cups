@@ -1,3 +1,12 @@
+cups (1.4.6-5ubuntu1.3) natty-proposed; urgency=low
+
+  * debian/patches/cups-avahi.dpatch: Updated Avahi patch to fix places in
+    the CUPS source code where libdns_sd is supported but not Avahi.
+    especially accept being called with a hostname with ".local" domain
+    so that AirPrint works without "ServerAlias *" in cupsd.conf (LP: #801306).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 24 Jun 2011 13:30:59 +0200
+
 cups (1.4.6-5ubuntu1.2) natty-proposed; urgency=low
 
   * debian/patches/cups-avahi.dpatch: Updated Avahi patch so that it does
