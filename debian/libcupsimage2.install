@@ -1,1 +1,1 @@
-usr/lib/libcupsimage.so.*
+usr/lib/*/libcupsimage.so.*

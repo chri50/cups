@@ -1,6 +1,6 @@
 usr/bin/cups-config
-usr/lib/libcups.so
-usr/lib/libcups.a
+usr/lib/*/libcups.so
+usr/lib/*/libcups.a
 usr/include/cups/adminutil.h
 usr/include/cups/array.h
 usr/include/cups/backend.h

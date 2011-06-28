@@ -1,1 +1,1 @@
-usr/lib/libcupsmime.so.*
+usr/lib/*/libcupsmime.so.*

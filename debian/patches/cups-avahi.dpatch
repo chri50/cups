@@ -9,7 +9,7 @@
 @DPATCH@
 diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/backend/dnssd.c cups-1.4.6/backend/dnssd.c
 --- cups-1.4.6~/backend/dnssd.c	2009-08-08 00:27:12.000000000 +0200
-+++ cups-1.4.6/backend/dnssd.c	2011-06-06 12:27:49.578717416 +0200
++++ cups-1.4.6/backend/dnssd.c	2011-06-24 12:42:48.585805825 +0200
 @@ -15,14 +15,21 @@
   *
   * Contents:
@@ -833,9 +833,42 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  /*
   * 'sigterm_handler()' - Handle termination signals...
   */
+diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/cgi-bin/admin.c cups-1.4.6/cgi-bin/admin.c
+--- cups-1.4.6~/cgi-bin/admin.c	2010-06-22 23:42:44.000000000 +0200
++++ cups-1.4.6/cgi-bin/admin.c	2011-06-24 12:49:05.875620683 +0200
+@@ -1619,7 +1619,7 @@
+       else
+ 	local_protocols[0] = '\0';
+ 
+-#ifdef HAVE_DNSSD
++#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
+       if (cgiGetVariable("BROWSE_LOCAL_DNSSD"))
+       {
+ 	if (local_protocols[0])
+@@ -1627,7 +1627,7 @@
+ 	else
+ 	  strcat(local_protocols, "dnssd");
+       }
+-#endif /* HAVE_DNSSD */
++#endif /* defined(HAVE_DNSSD) || defined(HAVE_AVAHI) */
+ 
+ #ifdef HAVE_LDAP
+       if (cgiGetVariable("BROWSE_LOCAL_LDAP"))
+@@ -2693,9 +2693,9 @@
+ #endif /* HAVE_GSSAPI */
+   cgiSetVariable("KERBEROS", "");
+ 
+-#ifdef HAVE_DNSSD
++#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
+   cgiSetVariable("HAVE_DNSSD", "1");
+-#endif /* HAVE_DNSSD */
++#endif /* defined(HAVE_DNSSD) || defined(HAVE_AVAHI) */
+ 
+ #ifdef HAVE_LDAP
+   cgiSetVariable("HAVE_LDAP", "1");
 diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/config-scripts/cups-dnssd.m4 cups-1.4.6/config-scripts/cups-dnssd.m4
 --- cups-1.4.6~/config-scripts/cups-dnssd.m4	2009-08-29 00:54:34.000000000 +0200
-+++ cups-1.4.6/config-scripts/cups-dnssd.m4	2011-06-06 12:27:49.578717416 +0200
++++ cups-1.4.6/config-scripts/cups-dnssd.m4	2011-06-24 12:42:48.585805825 +0200
 @@ -27,6 +27,21 @@
  DNSSDLIBS=""
  DNSSD_BACKEND=""
@@ -860,7 +893,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  		case "$uname" in
 diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/config.h.in cups-1.4.6/config.h.in
 --- cups-1.4.6~/config.h.in	2010-08-13 06:11:46.000000000 +0200
-+++ cups-1.4.6/config.h.in	2011-06-06 12:27:49.578717416 +0200
++++ cups-1.4.6/config.h.in	2011-06-24 12:42:48.585805825 +0200
 @@ -344,6 +344,13 @@
  
  
@@ -877,7 +910,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  
 diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/cups/http-support.c cups-1.4.6/cups/http-support.c
 --- cups-1.4.6~/cups/http-support.c	2010-10-02 00:40:38.000000000 +0200
-+++ cups-1.4.6/cups/http-support.c	2011-06-06 12:27:49.578717416 +0200
++++ cups-1.4.6/cups/http-support.c	2011-06-24 12:42:48.585805825 +0200
 @@ -41,6 +41,10 @@
   *   http_copy_decode()   - Copy and decode a URI.
   *   http_copy_encode()   - Copy and encode a URI.
@@ -1147,7 +1180,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
   */
 diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/scheduler/Makefile cups-1.4.6/scheduler/Makefile
 --- cups-1.4.6~/scheduler/Makefile	2010-04-23 20:56:34.000000000 +0200
-+++ cups-1.4.6/scheduler/Makefile	2011-06-06 12:27:49.578717416 +0200
++++ cups-1.4.6/scheduler/Makefile	2011-06-24 12:42:48.585805825 +0200
 @@ -17,6 +17,7 @@
  
  CUPSDOBJS =	\
@@ -1168,7 +1201,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  		mime.o \
 diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/scheduler/avahi.c cups-1.4.6/scheduler/avahi.c
 --- cups-1.4.6~/scheduler/avahi.c	1970-01-01 01:00:00.000000000 +0100
-+++ cups-1.4.6/scheduler/avahi.c	2011-06-06 12:27:49.578717416 +0200
++++ cups-1.4.6/scheduler/avahi.c	2011-06-24 12:42:48.585805825 +0200
 @@ -0,0 +1,445 @@
 +/*
 + * "$Id$"
@@ -1617,7 +1650,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
 + */
 diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/scheduler/avahi.h cups-1.4.6/scheduler/avahi.h
 --- cups-1.4.6~/scheduler/avahi.h	1970-01-01 01:00:00.000000000 +0100
-+++ cups-1.4.6/scheduler/avahi.h	2011-06-06 12:27:49.578717416 +0200
++++ cups-1.4.6/scheduler/avahi.h	2011-06-24 12:42:48.585805825 +0200
 @@ -0,0 +1,49 @@
 +/*
 + * "$Id$"
@@ -1668,9 +1701,30 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
 +/*
 + * End of "$Id$".
 + */
+diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/scheduler/client.c cups-1.4.6/scheduler/client.c
+--- cups-1.4.6~/scheduler/client.c	2010-10-17 06:13:56.000000000 +0200
++++ cups-1.4.6/scheduler/client.c	2011-06-24 12:45:16.075731684 +0200
+@@ -5079,7 +5079,7 @@
+ 	    !strncmp(host, "[::1]:", 6));
+   }
+ 
+-#ifdef HAVE_DNSSD
++#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
+  /*
+   * Check if the hostname is something.local (Bonjour); if so, allow it.
+   */
+@@ -5088,7 +5088,7 @@
+       (!strcasecmp(end, ".local") || !strncasecmp(end, ".local:", 7) ||
+        !strcasecmp(end, ".local.") || !strncasecmp(end, ".local.:", 8)))
+     return (1);
+-#endif /* HAVE_DNSSD */
++#endif /* defined(HAVE_DNSSD) || defined(HAVE_AVAHI) */
+ 
+  /*
+   * Check if the hostname is an IP address...
 diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/scheduler/cupsd.h cups-1.4.6/scheduler/cupsd.h
 --- cups-1.4.6~/scheduler/cupsd.h	2010-09-22 00:34:57.000000000 +0200
-+++ cups-1.4.6/scheduler/cupsd.h	2011-06-06 12:27:49.578717416 +0200
++++ cups-1.4.6/scheduler/cupsd.h	2011-06-24 12:42:48.585805825 +0200
 @@ -147,6 +147,15 @@
  
  typedef void (*cupsd_selfunc_t)(void *data);
@@ -1718,7 +1772,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  
 diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/scheduler/dirsvc.c cups-1.4.6/scheduler/dirsvc.c
 --- cups-1.4.6~/scheduler/dirsvc.c	2010-04-23 20:56:34.000000000 +0200
-+++ cups-1.4.6/scheduler/dirsvc.c	2011-06-06 12:28:12.688705346 +0200
++++ cups-1.4.6/scheduler/dirsvc.c	2011-06-24 12:42:48.595805813 +0200
 @@ -27,6 +27,7 @@
   *   ldap_connect()             - Start new LDAP connection
   *   ldap_reconnect()           - Reconnect to LDAP Server
@@ -1727,7 +1781,15 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
   *   cupsdStartBrowsing()       - Start sending and receiving broadcast
   *                                information.
   *   cupsdStartPolling()        - Start polling servers as needed.
-@@ -97,7 +98,16 @@
+@@ -83,6 +84,7 @@
+  */
+ 
+ #include "cupsd.h"
++#include <assert.h>
+ #include <grp.h>
+ 
+ #ifdef HAVE_DNSSD
+@@ -97,8 +99,18 @@
  #    endif /* HAVE_SYSTEMCONFIGURATION */
  #  endif /* __APPLE__ */
  #endif /* HAVE_DNSSD */
@@ -1735,16 +1797,18 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
 +#  include <avahi-common/domain.h>
 +#endif /* HAVE_AVAHI */
  
+ 
 +#ifdef HAVE_DNSSD
 +typedef char *cupsd_txt_record_t;
 +#endif /* HAVE_DNSSD */
 +#ifdef HAVE_AVAHI
 +typedef AvahiStringList *cupsd_txt_record_t;
 +#endif /* HAVE_AVAHI */
- 
++
  /*
   * Local functions...
-@@ -159,15 +169,20 @@
+  */
+@@ -159,15 +171,20 @@
  static void	update_smb(int onoff);
  
  
@@ -1769,7 +1833,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  static char	*dnssdPackTxtRecord(int *txt_len, char *keyvalue[][2],
  		                    int count);
  static void	dnssdRegisterCallback(DNSServiceRef sdRef,
-@@ -175,11 +190,20 @@
+@@ -175,11 +192,20 @@
  				      DNSServiceErrorType errorCode,
  				      const char *name, const char *regtype,
  				      const char *domain, void *context);
@@ -1792,7 +1856,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  #ifdef HAVE_LDAP
  static const char * const ldap_attrs[] =/* CUPS LDAP attributes */
  		{
-@@ -283,10 +307,10 @@
+@@ -283,10 +309,10 @@
      ldap_dereg_printer(p);
  #endif /* HAVE_LDAP */
  
@@ -1806,7 +1870,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  }
  
  
-@@ -694,10 +718,10 @@
+@@ -694,10 +720,10 @@
      slpRegisterPrinter(p); */
  #endif /* HAVE_LIBSLP */
  
@@ -1820,7 +1884,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  }
  
  
-@@ -1411,6 +1435,23 @@
+@@ -1411,6 +1437,23 @@
  }
  #endif /* HAVE_LDAP */
  
@@ -1844,7 +1908,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  
  /*
   * 'cupsdStartBrowsing()' - Start sending and receiving broadcast information.
-@@ -1535,13 +1576,16 @@
+@@ -1535,13 +1578,16 @@
    else
      BrowseSocket = -1;
  
@@ -1862,7 +1926,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
     /*
      * First create a "master" connection for all registrations...
      */
-@@ -1566,6 +1610,7 @@
+@@ -1566,6 +1612,7 @@
        fcntl(fd, F_SETFD, fcntl(fd, F_GETFD) | FD_CLOEXEC);
  
        cupsdAddSelect(fd, (cupsd_selfunc_t)dnssdUpdate, NULL, NULL);
@@ -1870,7 +1934,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  
       /*
        * Then get the port we use for registrations.  If we are not listening
-@@ -1607,9 +1652,16 @@
+@@ -1607,9 +1654,16 @@
        */
  
        cupsdUpdateDNSSDName();
@@ -1888,7 +1952,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  
  #ifdef HAVE_LIBSLP
    if ((BrowseLocalProtocols | BrowseRemoteProtocols) & BROWSE_SLP)
-@@ -1835,10 +1887,10 @@
+@@ -1835,10 +1889,10 @@
      BrowseSocket = -1;
    }
  
@@ -1902,7 +1966,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  
  #ifdef HAVE_LIBSLP
    if (((BrowseLocalProtocols | BrowseRemoteProtocols) & BROWSE_SLP) &&
-@@ -1903,7 +1955,7 @@
+@@ -1903,7 +1957,7 @@
  }
  
  
@@ -1911,7 +1975,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  /*
   * 'cupsdUpdateDNSSDName()' - Update the computer name we use for browsing...
   */
-@@ -1911,7 +1963,12 @@
+@@ -1911,7 +1965,12 @@
  void
  cupsdUpdateDNSSDName(void)
  {
@@ -1924,7 +1988,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
    char		webif[1024];		/* Web interface share name */
  #ifdef HAVE_COREFOUNDATION_H
    SCDynamicStoreRef sc;			/* Context for dynamic store */
-@@ -2043,6 +2100,7 @@
+@@ -2043,6 +2102,7 @@
      else
        strlcpy(webif, "CUPS Web Interface", sizeof(webif));
  
@@ -1932,7 +1996,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
      if (WebIFRef)
        DNSServiceRefDeallocate(WebIFRef);
  
-@@ -2055,6 +2113,42 @@
+@@ -2055,6 +2115,42 @@
  				    NULL)) != kDNSServiceErr_NoError)
        cupsdLogMessage(CUPSD_LOG_ERROR,
  		      "DNS-SD web interface registration failed: %d", error);
@@ -1975,7 +2039,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
    }
  }
  #endif /* HAVE_DNSSD */
-@@ -2300,162 +2394,7 @@
+@@ -2300,162 +2396,7 @@
  }
  
  
@@ -2139,7 +2203,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  /*
   * 'dnssdComparePrinters()' - Compare the registered names of two printers.
   */
-@@ -2464,7 +2403,16 @@
+@@ -2464,7 +2405,16 @@
  dnssdComparePrinters(cupsd_printer_t *a,/* I - First printer */
                       cupsd_printer_t *b)/* I - Second printer */
  {
@@ -2157,7 +2221,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  }
  
  
-@@ -2479,6 +2427,10 @@
+@@ -2479,6 +2429,10 @@
  {
    cupsdLogMessage(CUPSD_LOG_DEBUG2, "dnssdDeregisterPrinter(%s)", p->name);
  
@@ -2168,7 +2232,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
   /*
    * Closing the socket deregisters the service
    */
-@@ -2514,6 +2466,23 @@
+@@ -2514,6 +2468,23 @@
      free(p->printer_txt);
      p->printer_txt = NULL;
    }
@@ -2192,7 +2256,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  
   /*
    * Remove the printer from the array of DNS-SD printers, then clear the
-@@ -2526,110 +2495,6 @@
+@@ -2526,110 +2497,6 @@
  
  
  /*
@@ -2303,33 +2367,36 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
   * 'dnssdRegisterPrinter()' - Start sending broadcast information for a printer
   *		              or update the broadcast contents.
   */
-@@ -2637,19 +2502,37 @@
+@@ -2637,19 +2504,38 @@
  static void 
  dnssdRegisterPrinter(cupsd_printer_t *p)/* I - Printer */
  {
 +#ifdef HAVE_DNSSD
    DNSServiceErrorType	se;		/* dnssd errors */
    char			*ipp_txt,	/* IPP TXT record buffer */
- 			*printer_txt,	/* LPD TXT record buffer */
+-			*printer_txt,	/* LPD TXT record buffer */
 -			name[1024],	/* Service name */
- 			*nameptr;	/* Pointer into name */
+-			*nameptr;	/* Pointer into name */
++    			*printer_txt;	/* LPD TXT record buffer */
    int			ipp_len,	/* IPP TXT record length */
  			printer_len;	/* LPD TXT record length */
++  char			name[1024];	/* Service name */
 +#endif /* HAVE_DNSSD */
 +#ifdef HAVE_AVAHI
 +  int			ret;		/* Error code */
 +  AvahiStringList	*ipp_txt,	/* IPP TXT record list */
 +			*printer_txt;	/* LPD TXT record buffer */
++  char			name[AVAHI_LABEL_MAX];	/* Service name */
 +#endif /* HAVE_AVAHI */
-+  char			name[1024];	/* Service name */
    const char		*regtype;	/* Registration type */
-+  char			regsubtype[64]; /* Registration subtype */
- 
++  char			regsubtype[64], /* Registration subtype */
++			*nameptr;	/* Pointer into name */
++
  
 +#ifdef HAVE_DNSSD
 +  if (!DNSSDRef)
 +    return;
-+
+ 
    cupsdLogMessage(CUPSD_LOG_DEBUG2, "dnssdRegisterPrinter(%s) %s", p->name,
                    !p->ipp_ref ? "new" : "update");
  
@@ -2342,64 +2409,46 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
   /*
    * If per-printer sharing was just disabled make sure we're not
    * registered before returning.
-@@ -2668,14 +2551,53 @@
+@@ -2668,12 +2554,36 @@
    if (p->info && strlen(p->info) > 0)
    {
      if (DNSSDComputerName)
+-      snprintf(name, sizeof(name), "%s @ %s", p->info, DNSSDComputerName);
 +    {
-+#ifdef HAVE_DNSSD
-       snprintf(name, sizeof(name), "%s @ %s", p->info, DNSSDComputerName);
-+#endif /* HAVE_DNSSD */
-+#ifdef HAVE_AVAHI
-+      strlcpy(name, p->info, AVAHI_LABEL_MAX);
-+      snprintf(name +
-+	       (AVAHI_LABEL_MAX - 4 - strlen(DNSSDComputerName) <=
-+		strlen(p->info)
-+		? AVAHI_LABEL_MAX - 4 - strlen(DNSSDComputerName)
-+		: strlen(p->info)),
-+	       AVAHI_LABEL_MAX, " @ %s", DNSSDComputerName);
-+#endif /* HAVE_AVAHI */
++     /*
++      * Make sure there is room for at least 15 characters of
++      * DNSSDComputerName.
++      */
++
++      assert(sizeof(name) >= 15 + 4);
++      nameptr = name + strlcpy(name, p->info,
++			       sizeof(name) - 4 -
++			       strnlen(DNSSDComputerName, 15));
++      nameptr += strlcpy(nameptr, " @ ", sizeof(name) - (nameptr - name));
++      strlcpy(nameptr, DNSSDComputerName, sizeof(name) - (nameptr - name));
 +    }
      else
-+    {
        strlcpy(name, p->info, sizeof(name));
-+#ifdef HAVE_AVAHI
-+      name[AVAHI_LABEL_MAX - 1] = 0;
-+#endif /* HAVE_AVAHI */
-+    }
    }
--  else if (DNSSDComputerName)
+   else if (DNSSDComputerName)
 -    snprintf(name, sizeof(name), "%s @ %s", p->name, DNSSDComputerName);
-   else
--    strlcpy(name, p->name, sizeof(name));
 +  {
-+    if (DNSSDComputerName)
-+    {
-+#ifdef HAVE_DNSSD
-+      snprintf(name, sizeof(name), "%s @ %s", p->name, DNSSDComputerName);
-+#endif /* HAVE_DNSSD */
-+#ifdef HAVE_AVAHI
-+      strlcpy(name, p->name, AVAHI_LABEL_MAX);
-+      snprintf(name +
-+	       (AVAHI_LABEL_MAX - 4 - strlen(DNSSDComputerName) <=
-+		strlen(p->name)
-+		? AVAHI_LABEL_MAX - 4 - strlen(DNSSDComputerName)
-+		: strlen(p->name)),
-+	       AVAHI_LABEL_MAX, " @ %s", DNSSDComputerName);
-+#endif /* HAVE_AVAHI */
-+    }
-+    else
-+    {
-+      strlcpy(name, p->name, sizeof(name));
-+#ifdef HAVE_AVAHI
-+      name[AVAHI_LABEL_MAX - 1] = 0;
-+#endif /* HAVE_AVAHI */
-+    }
++   /*
++    * Make sure there is room for at least 15 characters of
++    * DNSSDComputerName.
++    */
++
++    assert(sizeof(name) >= 15 + 4);
++    nameptr = name + strlcpy(name, p->info,
++			     sizeof(name) - 4 -
++			     strnlen(DNSSDComputerName, 15));
++    nameptr += strlcpy(nameptr, " @ ", sizeof(name) - (nameptr - name));
++    strlcpy(nameptr, DNSSDComputerName, sizeof(name) - (nameptr - name));
 +  }
+   else
+     strlcpy(name, p->name, sizeof(name));
  
-  /*
-   * If an existing printer was renamed, unregister it and start over...
-@@ -2694,6 +2616,7 @@
+@@ -2694,6 +2604,7 @@
    * Register IPP and (optionally) LPD...
    */
  
@@ -2407,7 +2456,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
    ipp_len = 0;				/* anti-compiler-warning-code */
    ipp_txt = dnssdBuildTxtRecord(&ipp_len, p, 0);
  
-@@ -2860,6 +2783,157 @@
+@@ -2860,6 +2771,160 @@
      if (printer_txt)
        free(printer_txt);
    }
@@ -2493,7 +2542,10 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
 +		    "type \"%s\"", p->name, name, regtype);
 +
 +    if (!p->avahi_group)
++    {
++      ret = 0;
 +      goto add_failed;
++    }
 +
 +    ret = avahi_entry_group_add_service_strlst (p->avahi_group,
 +						AVAHI_IF_UNSPEC,
@@ -2565,7 +2617,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  }
  
  
-@@ -2872,6 +2946,10 @@
+@@ -2872,6 +2937,10 @@
  {
    cupsd_printer_t	*p;		/* Current printer */
  
@@ -2576,7 +2628,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  
   /*
    * De-register the individual printers
-@@ -2882,6 +2960,7 @@
+@@ -2882,6 +2951,7 @@
         p = (cupsd_printer_t *)cupsArrayNext(Printers))
      dnssdDeregisterPrinter(p);
  
@@ -2584,7 +2636,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
   /*
    * Shutdown the rest of the service refs...
    */
-@@ -2902,6 +2981,7 @@
+@@ -2902,6 +2972,7 @@
  
    DNSServiceRefDeallocate(DNSSDRef);
    DNSSDRef = NULL;
@@ -2592,7 +2644,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  
    cupsArrayDelete(DNSSDPrinters);
    DNSSDPrinters = NULL;
-@@ -2911,6 +2991,278 @@
+@@ -2911,6 +2982,278 @@
  
  
  /*
@@ -2871,7 +2923,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
   * 'dnssdUpdate()' - Handle DNS-SD queries.
   */
  
-@@ -2931,6 +3283,146 @@
+@@ -2931,6 +3274,146 @@
  #endif /* HAVE_DNSSD */
  
  
@@ -3020,7 +3072,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
   */
 diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/scheduler/dirsvc.h cups-1.4.6/scheduler/dirsvc.h
 --- cups-1.4.6~/scheduler/dirsvc.h	2009-05-14 19:54:37.000000000 +0200
-+++ cups-1.4.6/scheduler/dirsvc.h	2011-06-06 12:27:49.578717416 +0200
++++ cups-1.4.6/scheduler/dirsvc.h	2011-06-24 12:42:48.595805813 +0200
 @@ -32,6 +32,10 @@
  #  endif /* HAVE_LDAP_SSL_H */
  #endif /* HAVE_LDAP */
@@ -3093,9 +3145,30 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  #ifdef HAVE_LDAP
  extern void	cupsdUpdateLDAPBrowse(void);
  #endif /* HAVE_LDAP */
+diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/scheduler/ipp.c cups-1.4.6/scheduler/ipp.c
+--- cups-1.4.6~/scheduler/ipp.c	2010-10-06 22:07:44.000000000 +0200
++++ cups-1.4.6/scheduler/ipp.c	2011-06-24 12:46:37.405691785 +0200
+@@ -5571,7 +5571,7 @@
+     ippAddDate(con->response, IPP_TAG_PRINTER, "printer-current-time",
+                ippTimeToDate(curtime));
+ 
+-#ifdef HAVE_DNSSD
++#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
+   if (!ra || cupsArrayFind(ra, "printer-dns-sd-name"))
+   {
+     if (printer->reg_name)
+@@ -5581,7 +5581,7 @@
+       ippAddInteger(con->response, IPP_TAG_PRINTER, IPP_TAG_NOVALUE,
+                    "printer-dns-sd-name", 0);
+   }
+-#endif /* HAVE_DNSSD */
++#endif /* defined(HAVE_DNSSD) || defined(HAVE_AVAHI) */
+ 
+   if (!ra || cupsArrayFind(ra, "printer-error-policy"))
+     ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_NAME,
 diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/scheduler/main.c cups-1.4.6/scheduler/main.c
---- cups-1.4.6~/scheduler/main.c	2011-06-06 12:27:49.358717527 +0200
-+++ cups-1.4.6/scheduler/main.c	2011-06-06 12:27:49.578717416 +0200
+--- cups-1.4.6~/scheduler/main.c	2011-06-24 12:42:48.315805963 +0200
++++ cups-1.4.6/scheduler/main.c	2011-06-24 12:42:48.595805813 +0200
 @@ -137,6 +137,10 @@
    cupsd_listener_t	*lis;		/* Current listener */
    time_t		current_time,	/* Current time */
@@ -3203,7 +3276,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
    */
 diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/scheduler/printers.c cups-1.4.6/scheduler/printers.c
 --- cups-1.4.6~/scheduler/printers.c	2010-09-22 20:35:07.000000000 +0200
-+++ cups-1.4.6/scheduler/printers.c	2011-06-06 12:27:49.578717416 +0200
++++ cups-1.4.6/scheduler/printers.c	2011-06-24 12:42:48.595805813 +0200
 @@ -928,10 +928,10 @@
    cupsdClearString(&p->alert);
    cupsdClearString(&p->alert_description);
@@ -3274,7 +3347,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
        p->type |= CUPS_PRINTER_REMOTE;
 diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/scheduler/printers.h cups-1.4.6/scheduler/printers.h
 --- cups-1.4.6~/scheduler/printers.h	2010-03-31 00:07:33.000000000 +0200
-+++ cups-1.4.6/scheduler/printers.h	2011-06-06 12:27:49.578717416 +0200
++++ cups-1.4.6/scheduler/printers.h	2011-06-24 12:42:48.595805813 +0200
 @@ -16,6 +16,9 @@
  #ifdef HAVE_DNSSD
  #  include <dns_sd.h>
@@ -3316,7 +3389,7 @@ diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' 
  
 diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.6~/scheduler/timeout.c cups-1.4.6/scheduler/timeout.c
 --- cups-1.4.6~/scheduler/timeout.c	1970-01-01 01:00:00.000000000 +0100
-+++ cups-1.4.6/scheduler/timeout.c	2011-06-06 12:27:49.578717416 +0200
++++ cups-1.4.6/scheduler/timeout.c	2011-06-24 12:42:48.595805813 +0200
 @@ -0,0 +1,195 @@
 +/*
 + * "$Id$"

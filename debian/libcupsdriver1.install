@@ -1,1 +1,1 @@
-usr/lib/libcupsdriver.so.*
+usr/lib/*/libcupsdriver.so.*
