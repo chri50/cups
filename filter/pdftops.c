@@ -302,7 +302,9 @@ main(int  argc,				/* I - Number of command-line args */
     }
     else
 #ifdef HAVE_PDFTOPS
-      pdf_argv[pdf_argc++] = (char *)"-level3";
+      /* Do not emit PS Level 3 with Poppler, some HP PostScript printers
+         do not like it. See https://bugs.launchpad.net/bugs/277404. */
+      pdf_argv[pdf_argc++] = (char *)"-level2";
 #else
       pdf_argv[pdf_argc++] = (char *)"-dLanguageLevel=3";
 #endif /* HAVE_PDFTOPS */
@@ -388,7 +390,18 @@ main(int  argc,				/* I - Number of command-line args */
       pdf_argv[pdf_argc++] = pdf_width;
       pdf_argv[pdf_argc++] = pdf_height;
 #endif /* HAVE_PDFTOPS */
+    } 
+#if defined(HAVE_PDFTOPS) && defined(HAVE_PDFTOPS_WITH_ORIGPAGESIZES)
+    else
+    {
+     /*
+      *  Use the page sizes of the original PDF document, this way documents
+      *  which contain pages of different sizes can be printed correctly
+      */
+
+      pdf_argv[pdf_argc++] = (char *)"-origpagesizes";
     }
+#endif /* HAVE_PDFTOPS && HAVE_PDFTOPS_WITH_ORIGPAGESIZES */
   }
 
 #ifdef HAVE_PDFTOPS
