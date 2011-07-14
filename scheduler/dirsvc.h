@@ -32,6 +32,10 @@
 #  endif /* HAVE_LDAP_SSL_H */
 #endif /* HAVE_LDAP */
 
+#ifdef HAVE_AVAHI
+#  include <avahi-client/publish.h>
+#endif /* HAVE_AVAHI */
+
 /*
  * Browse protocols...
  */
@@ -132,17 +136,20 @@ VAR int			PollPipe	VALUE(0);
 VAR cupsd_statbuf_t	*PollStatusBuffer VALUE(NULL);
 					/* Status buffer for pollers */
 
-#ifdef HAVE_DNSSD
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
+VAR int			DNSSDPort	VALUE(0);
+					/* Port number to register */
 VAR char		*DNSSDComputerName VALUE(NULL),
 					/* Computer/server name */
 			*DNSSDHostName	VALUE(NULL);
 					/* Hostname */
-VAR cups_array_t	*DNSSDAlias	VALUE(NULL);
-					/* List of dynamic ServerAlias's */
-VAR int			DNSSDPort	VALUE(0);
-					/* Port number to register */
 VAR cups_array_t	*DNSSDPrinters	VALUE(NULL);
 					/* Printers we have registered */
+#endif /* HAVE_DNSSD || HAVE_AVAHI */
+
+#ifdef HAVE_DNSSD
+VAR cups_array_t	*DNSSDAlias	VALUE(NULL);
+					/* List of dynamic ServerAlias's */
 VAR DNSServiceRef	DNSSDRef	VALUE(NULL),
 					/* Master DNS-SD service reference */
 			WebIFRef	VALUE(NULL),
@@ -150,6 +157,17 @@ VAR DNSServiceRef	DNSSDRef	VALUE(NULL),
 			RemoteRef	VALUE(NULL);
 					/* Remote printer browse reference */
 #endif /* HAVE_DNSSD */
+
+#ifdef HAVE_AVAHI
+VAR AvahiCupsPoll	*AvahiCupsPollHandle	VALUE(NULL);
+					/* AvahiCupsPoll object */
+VAR AvahiClient		*AvahiCupsClient	VALUE(NULL);
+					/* AvahiClient object */
+VAR int			AvahiCupsClientConnecting	VALUE(0);
+					/* AvahiClient object (waiting) */
+VAR AvahiEntryGroup	*AvahiWebIFGroup	VALUE(NULL);
+					/* Web interface entry group */
+#endif /* HAVE_AVAHI */
 
 #ifdef HAVE_LIBSLP
 VAR SLPHandle		BrowseSLPHandle	VALUE(NULL);
@@ -194,13 +212,14 @@ extern void	cupsdRegisterPrinter(cupsd_printer_t *p);
 extern void	cupsdRestartPolling(void);
 extern void	cupsdSaveRemoteCache(void);
 extern void	cupsdSendBrowseList(void);
+extern void	cupsdStartAvahiClient(void);
 extern void	cupsdStartBrowsing(void);
 extern void	cupsdStartPolling(void);
 extern void	cupsdStopBrowsing(void);
 extern void	cupsdStopPolling(void);
-#ifdef HAVE_DNSSD
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
 extern void	cupsdUpdateDNSSDName(void);
-#endif /* HAVE_DNSSD */
+#endif /* defined(HAVE_DNSSD) || defined(HAVE_AVAHI) */
 #ifdef HAVE_LDAP
 extern void	cupsdUpdateLDAPBrowse(void);
 #endif /* HAVE_LDAP */
