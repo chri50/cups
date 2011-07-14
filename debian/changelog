@@ -1,3 +1,17 @@
+cups (1.4.7-1ubuntu2) oneiric; urgency=low
+
+  Upload current Debian bzr packaging trunk.
+
+  [ Jamie Strandboge ]
+  * debian/local/apparmor-profile: we need to allow both /var/run and /run
+    for upgrades (LP: #810687)
+
+  [ Martin Pitt ]
+  * debian/local/apparmor-profile: Allow cupsd to write /run/samba.
+    (LP: #812035)
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 14 Jul 2011 14:48:31 -0500
+
 cups (1.4.7-1) unstable; urgency=low
 
   * New upstream version.
