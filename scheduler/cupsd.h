@@ -147,6 +147,15 @@ extern const char *cups_hstrerror(int);
 
 typedef void (*cupsd_selfunc_t)(void *data);
 
+#ifdef HAVE_AVAHI
+/*
+ * Timeout callback function type...
+ */
+
+typedef struct _cupsd_timeout_s cupsd_timeout_t;
+typedef void (*cupsd_timeoutfunc_t)(cupsd_timeout_t *timeout, void *data);
+#endif /* HAVE_AVAHI */
+
 
 /*
  * Globals...
@@ -188,6 +197,9 @@ VAR PSQUpdateQuotaProcPtr PSQUpdateQuotaProc
 					/* Apple PrintService quota function */
 #endif /* __APPLE__ && HAVE_DLFCN_H */
 
+#ifdef HAVE_AVAHI
+VAR cups_array_t *Timeouts;		/* Timed callbacks for main loop */
+#endif /* HAVE_AVAHI */
 
 
 
@@ -240,6 +252,18 @@ extern int	cupsdIsSelecting(int fd);
 extern void	cupsdRemoveSelect(int fd);
 extern void	cupsdStartSelect(void);
 extern void	cupsdStopSelect(void);
+
+#ifdef HAVE_AVAHI
+extern void     cupsdInitTimeouts(void);
+extern cupsd_timeout_t *cupsdAddTimeout (const struct timeval *tv,
+					 cupsd_timeoutfunc_t cb,
+					 void *data);
+extern cupsd_timeout_t *cupsdNextTimeout (long *delay);
+extern void     cupsdRunTimeout (cupsd_timeout_t *timeout);
+extern void     cupsdUpdateTimeout (cupsd_timeout_t *timeout,
+				    const struct timeval *tv);
+extern void     cupsdRemoveTimeout (cupsd_timeout_t *timeout);
+#endif /* HAVE_AVAHI */
 
 extern int	cupsdRemoveFile(const char *filename);
 
