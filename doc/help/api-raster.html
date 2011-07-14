@@ -4,7 +4,7 @@
 <head>
 <title>Raster API</title>
 <meta name="keywords" content="Programming">
-<meta name="creator" content="Mini-XML v2.6">
+<meta name="creator" content="Mini-XML v2.7">
 <style type="text/css"><!--
 BODY {
   font-family: lucida grande, geneva, helvetica, arial, sans-serif;
@@ -338,7 +338,7 @@ div.contents ul.subcontents li {
 <body>
 <div class='body'>
 <!--
-  "$Id: api-raster.html 9283 2010-08-31 18:07:49Z mike $"
+  "$Id: api-raster.html 9728 2011-04-28 21:21:24Z mike $"
 
   Raster API header for the Common UNIX Printing System (CUPS).
 
@@ -386,7 +386,7 @@ div.contents ul.subcontents li {
 <li><a href="#FUNCTIONS">Functions</a><ul class="code">
 <li><a href="#cupsRasterClose" title="Close a raster stream.">cupsRasterClose</a></li>
 <li><a href="#cupsRasterInterpretPPD" title="Interpret PPD commands to create a page header.">cupsRasterInterpretPPD</a></li>
-<li><a href="#cupsRasterOpen" title="Open a raster stream.">cupsRasterOpen</a></li>
+<li><a href="#cupsRasterOpen" title="Open a raster stream using a file descriptor.">cupsRasterOpen</a></li>
 <li><a href="#cupsRasterReadHeader" title="Read a raster page header and store it in a
 version 1 page header structure.">cupsRasterReadHeader</a></li>
 <li><a href="#cupsRasterReadHeader2" title="Read a raster page header and store it in a
@@ -429,11 +429,11 @@ page header structure.">cupsRasterWriteHeader2</a></li>
 	<li><a href="#cups_orient_e" title="Orientation attribute values">cups_orient_e</a></li>
 </ul></li>
 <!--
-  "$Id: api-raster.html 9283 2010-08-31 18:07:49Z mike $"
+  "$Id: api-raster.html 9728 2011-04-28 21:21:24Z mike $"
 
-  Raster API introduction for the Common UNIX Printing System (CUPS).
+  Raster API introduction for CUPS.
 
-  Copyright 2007-2008 by Apple Inc.
+  Copyright 2007-2011 by Apple Inc.
   Copyright 1997-2006 by Easy Software Products, all rights reserved.
 
   These coded instructions, statements, and computer programs are the
@@ -655,7 +655,7 @@ are supported.
 
 </p>
 <h3 class="function"><a name="cupsRasterOpen">cupsRasterOpen</a></h3>
-<p class="description">Open a raster stream.</p>
+<p class="description">Open a raster stream using a file descriptor.</p>
 <p class="code">
 <a href="#cups_raster_t">cups_raster_t</a> *cupsRasterOpen (<br>
 &nbsp;&nbsp;&nbsp;&nbsp;int fd,<br>
@@ -666,7 +666,9 @@ are supported.
 <dt>fd</dt>
 <dd class="description">File descriptor</dd>
 <dt>mode</dt>
-<dd class="description">Mode - <code>CUPS_RASTER_READ</code>, <code>CUPS_RASTER_WRITE</code>, or <code>CUPS_RASTER_WRITE_COMPRESSED</code></dd>
+<dd class="description">Mode - <code>CUPS_RASTER_READ</code>,
+<code>CUPS_RASTER_WRITE</code>, or
+<code>CUPS_RASTER_WRITE_COMPRESSED</code></dd>
 </dl>
 <h4 class="returnvalue">Return Value</h4>
 <p class="description">New stream</p>
@@ -677,8 +679,8 @@ image processor (RIP) filters that generate raster data, &quot;fd&quot; will be 
 (stdout).<br>
 <br>
 When writing raster data, the <code>CUPS_RASTER_WRITE</code> or
-<code>CUPS_RASTER_WRITE_COMPRESS</code> mode can be used - compressed output
-is generally 25-50% smaller but adds a 100-300% execution time overhead.</p>
+<code>CUPS_RASTER_WRITE_COMPRESS</code> mode can be used - compressed output is
+generally 25-50% smaller but adds a 100-300% execution time overhead.</p>
 <h3 class="function"><span class="info">&nbsp;DEPRECATED&nbsp;</span><a name="cupsRasterReadHeader">cupsRasterReadHeader</a></h3>
 <p class="description">Read a raster page header and store it in a
 version 1 page header structure.</p>

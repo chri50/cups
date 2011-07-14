@@ -1,5 +1,5 @@
 /*
- * "$Id: pstops.c 9376 2010-11-17 19:58:22Z mike $"
+ * "$Id: pstops.c 9426 2011-01-06 22:48:42Z mike $"
  *
  *   PostScript filter for the Common UNIX Printing System (CUPS).
  *
@@ -2927,9 +2927,6 @@ start_nup(pstops_doc_t *doc,		/* I - Document information */
   else if (doc->number_up > 1 || doc->fitplot)
     doc_printf(doc, "%.1f %.1f translate\n", PageLeft, PageBottom);
 
-  if (doc->mirror)
-    doc_printf(doc, "%.1f 0.0 translate -1 1 scale\n", PageWidth);
-
   switch (doc->number_up)
   {
     default :
@@ -3279,6 +3276,13 @@ start_nup(pstops_doc_t *doc,		/* I - Document information */
                bboxx + margin, bboxy + margin,
                bboxw - 2 * margin, bboxl - 2 * margin);
   }
+
+ /*
+  * Mirror the page as needed...
+  */
+
+  if (doc->mirror)
+    doc_printf(doc, "%.1f 0.0 translate -1 1 scale\n", PageWidth);
 }
 
 
@@ -3523,5 +3527,5 @@ write_options(
 
 
 /*
- * End of "$Id: pstops.c 9376 2010-11-17 19:58:22Z mike $".
+ * End of "$Id: pstops.c 9426 2011-01-06 22:48:42Z mike $".
  */

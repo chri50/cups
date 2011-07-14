@@ -1,0 +1,37 @@
+Author: till.kamppeter@gmail.com
+
+Index: cups-1.4.7/scheduler/client.c
+===================================================================
+--- cups-1.4.7.orig/scheduler/client.c	2011-07-14 13:26:26.000000000 +0200
++++ cups-1.4.7/scheduler/client.c	2011-07-14 13:27:59.849798506 +0200
+@@ -430,7 +430,7 @@
+     {
+       if (httpAddrLocalhost(&temp))
+         strlcpy(con->servername, "localhost", sizeof(con->servername));
+-      else if (HostNameLookups || RemotePort)
++      else if (HostNameLookups)
+         httpAddrLookup(&temp, con->servername, sizeof(con->servername));
+       else
+         httpAddrString(&temp, con->servername, sizeof(con->servername));
+@@ -443,7 +443,7 @@
+     {
+       if (httpAddrLocalhost(&temp))
+         strlcpy(con->servername, "localhost", sizeof(con->servername));
+-      else if (HostNameLookups || RemotePort)
++      else if (HostNameLookups)
+         httpAddrLookup(&temp, con->servername, sizeof(con->servername));
+       else
+         httpAddrString(&temp, con->servername, sizeof(con->servername));
+Index: cups-1.4.7/scheduler/conf.c
+===================================================================
+--- cups-1.4.7.orig/scheduler/conf.c	2011-07-14 13:26:17.000000000 +0200
++++ cups-1.4.7/scheduler/conf.c	2011-07-14 13:27:59.849798506 +0200
+@@ -752,7 +752,7 @@
+     cupsdAddAlias(ServerAlias, temp);
+     cupsdLogMessage(CUPSD_LOG_DEBUG, "Added auto ServerAlias %s", temp);
+ 
+-    if (HostNameLookups || RemotePort)
++    if (HostNameLookups)
+     {
+       struct hostent	*host;		/* Host entry to get FQDN */
+ 

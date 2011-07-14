@@ -1,0 +1,118 @@
+Description: Add support for creating pid files.
+Author: Maritn Pitt <mpitt@debian.org>
+Bug: http://www.cups.org/str.php?L2465
+
+Index: cups-1.4.6/scheduler/conf.c
+===================================================================
+--- cups-1.4.6.orig/scheduler/conf.c	2011-07-14 13:02:02.999772047 +0200
++++ cups-1.4.6/scheduler/conf.c	2011-07-14 13:02:07.039772116 +0200
+@@ -182,7 +182,8 @@
+ #endif /* HAVE_AUTHORIZATION_H */
+   { "TempDir",			&TempDir,		CUPSD_VARTYPE_PATHNAME },
+   { "Timeout",			&Timeout,		CUPSD_VARTYPE_INTEGER },
+-  { "UseNetworkDefault",	&UseNetworkDefault,	CUPSD_VARTYPE_BOOLEAN }
++  { "UseNetworkDefault",	&UseNetworkDefault,	CUPSD_VARTYPE_BOOLEAN },
++  { "PidFile",			&PidFile,		CUPSD_VARTYPE_STRING }
+ };
+ #define NUM_VARS	(sizeof(variables) / sizeof(variables[0]))
+ 
+@@ -504,6 +505,7 @@
+   cupsdSetString(&RemoteRoot, "remroot");
+   cupsdSetString(&ServerHeader, "CUPS/1.4");
+   cupsdSetString(&StateDir, CUPS_STATEDIR);
++  cupsdSetString(&PidFile, "/var/run/cups/cupsd.pid");
+ 
+   if (!strcmp(CUPS_DEFAULT_PRINTCAP, "/etc/printers.conf"))
+     PrintcapFormat = PRINTCAP_SOLARIS;
+Index: cups-1.4.6/scheduler/conf.h
+===================================================================
+--- cups-1.4.6.orig/scheduler/conf.h	2011-07-14 13:02:03.029772051 +0200
++++ cups-1.4.6/scheduler/conf.h	2011-07-14 13:02:07.039772116 +0200
+@@ -246,6 +246,8 @@
+ VAR int			SSLOptions		VALUE(CUPSD_SSL_NONE);
+ 					/* SSL/TLS options */
+ #endif /* HAVE_SSL */
++VAR char		*PidFile		VALUE(NULL);
++					/* Debian CUPS pid file */
+ 
+ #ifdef HAVE_LAUNCHD
+ VAR int			LaunchdTimeout		VALUE(DEFAULT_KEEPALIVE);
+Index: cups-1.4.6/scheduler/main.c
+===================================================================
+--- cups-1.4.6.orig/scheduler/main.c	2011-07-14 13:02:03.009772047 +0200
++++ cups-1.4.6/scheduler/main.c	2011-07-14 13:02:07.049772117 +0200
+@@ -94,6 +94,8 @@
+ static void		sigterm_handler(int sig);
+ static long		select_timeout(int fds);
+ static void		usage(int status);
++int			write_pid(void);
++int			remove_pid(void);
+ 
+ 
+ /*
+@@ -614,6 +616,11 @@
+   }
+ #endif /* __sgi */
+ 
++  if (write_pid() == 0) {
++    cupsdLogMessage(CUPSD_LOG_ERROR, "Unable to write pid file");
++    return (1);
++  }
++
+  /*
+   * Initialize authentication certificates...
+   */
+@@ -1209,10 +1216,41 @@
+ 
+   cupsdStopSelect();
+ 
++  remove_pid();
++
+   return (!stop_scheduler);
+ }
+ 
+ 
++/* 'write_pid()' - Write PID file.
++   'remove_pid()' - Delete PID file.
++*/
++int
++write_pid()
++{
++  FILE *f;
++  int fd;
++  int pid;
++  if (((fd = open(PidFile, O_RDWR|O_CREAT, 0644)) == -1)
++      || ((f = fdopen(fd, "r+")) == NULL) ) {
++    return 0;
++  }
++  pid = getpid();
++  if (!fprintf(f, "%d\n", pid)) {
++    close(fd);
++    return 0;
++  }
++  fflush(f);
++  close(fd);
++
++  return pid;
++}
++
++int
++remove_pid() {
++  return unlink(PidFile);
++}
++
+ /*
+  * 'cupsdCheckProcess()' - Tell the main loop to check for dead children.
+  */
+Index: cups-1.4.6/test/run-stp-tests.sh
+===================================================================
+--- cups-1.4.6.orig/test/run-stp-tests.sh	2011-07-14 13:02:02.989772049 +0200
++++ cups-1.4.6/test/run-stp-tests.sh	2011-07-14 13:02:07.049772117 +0200
+@@ -340,6 +340,7 @@
+ DocumentRoot $root/doc
+ RequestRoot /tmp/cups-$user/spool
+ TempDir /tmp/cups-$user/spool/temp
++PidFile /tmp/cups-$user/cupsd.pid
+ MaxSubscriptions 3
+ MaxLogSize 0
+ AccessLog /tmp/cups-$user/log/access_log

@@ -18,9 +18,6 @@ export NO_PNG_PKG_MANGLE=1
 
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/autotools.mk
-include /usr/share/cdbs/1/rules/dpatch.mk
-
-unpatch: deapply-dpatches
 
 DEB_CONFIGURE_EXTRA_FLAGS := --with-optim=$(DEB_OPTFLAGS) --libdir=/usr/lib/$(DEB_HOST_MULTIARCH) --mandir=/usr/share/man --with-docdir=/usr/share/cups/doc-root --localedir=/usr/share/cups/locale --enable-slp --enable-libpaper --enable-ssl --enable-gnutls --disable-openssl --disable-threads --enable-static --enable-libusb --enable-dbus --with-dbusdir=/etc/dbus-1 --enable-gssapi --enable-avahi --with-pdftops=pdftops --disable-launchd --with-cups-group=lp --with-system-groups=lpadmin --with-printcap=/var/run/cups/printcap --with-log-file-perm=0640 CFLAGS="$(CFLAGS)" --with-local_protocols='CUPS dnssd' --with-remote_protocols='CUPS dnssd'
 
@@ -52,11 +49,27 @@ post-patches::
 	touch pdftopdf/Dependencies
 	touch pdftoopvp/Dependencies
 	touch pdftoopvp/oprs/Dependencies
+	set -e; if dpkg-vendor --is ubuntu && ! [ -e debian/patches/ubuntu/stamp-applied ]; then \
+	    echo '---- Applying Ubuntu specific patches'; \
+	    for p in debian/patches/ubuntu/*; do \
+	        patch -p1 --no-backup-if-mismatch < $$p; \
+	    done; \
+	    touch debian/patches/ubuntu/stamp-applied; \
+	fi
 
 common-post-build-arch::
 	# Fix permissions of filters/backends installed from debian/local/
 	chmod 755 debian/local/filters/*
 	#chmod 755 debian/local/backends/*
+
+clean::
+	if [ -e debian/patches/ubuntu/stamp-applied ]; then \
+	    echo '---- Unapplying Ubuntu specific patches'; \
+	    for p in debian/patches/ubuntu/*; do \
+	        patch -Rp1 --no-backup-if-mismatch < $$p; \
+	    done; \
+	    rm debian/patches/ubuntu/stamp-applied; \
+	fi
 
 cleanbuilddir::
 	rm -f man/client.conf.man packaging/cups.list
@@ -64,9 +77,16 @@ cleanbuilddir::
 	[ ! -f Makedefs ] || make distclean
 	# Remove source code of extra filters for PDF printing workflow
 	( cd debian/local/filters/pdf-filters/; sh ./removefromcups ../../../.. )
+	rm -f debian/*.upstart # master copy is in debian/local
 
 common-install-prehook-impl::
 	(cd fonts && $(MAKE) install BUILDROOT=$(DEB_DESTDIR))
+
+	# Use upstart script on Ubuntu; we need to hide it away for Debian
+	# builds, as dh_installinit does not have a --sysvinit-only
+	if dpkg-vendor --is ubuntu; then \
+	    cp debian/local/*.upstart debian; \
+	fi
 
 binary-post-install/cups::
 	(cd $(DEB_DESTDIR)/../cups/usr/share/doc/cups && ln -sf ../../cups/doc-root online-docs)

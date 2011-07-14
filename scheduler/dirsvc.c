@@ -1,5 +1,5 @@
 /*
- * "$Id: dirsvc.c 9120 2010-04-23 18:56:34Z mike $"
+ * "$Id: dirsvc.c 9503 2011-01-22 00:07:22Z mike $"
  *
  *   Directory services routines for the Common UNIX Printing System (CUPS).
  *
@@ -2545,6 +2545,9 @@ dnssdPackTxtRecord(int  *txt_len,	/* O - TXT record length */
  /*
   * Calculate the buffer size
   */
+
+  if (count <= 0)
+    return (NULL);
 
   for (length = i = 0; i < count; i++)
     length += 1 + strlen(keyvalue[i][0]) + 
@@ -5545,5 +5548,5 @@ update_smb(int onoff)			/* I - 1 = turn on, 0 = turn off */
 
 
 /*
- * End of "$Id: dirsvc.c 9120 2010-04-23 18:56:34Z mike $".
+ * End of "$Id: dirsvc.c 9503 2011-01-22 00:07:22Z mike $".
  */

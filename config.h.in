@@ -1,9 +1,9 @@
 /*
- * "$Id: config.h.in 9259 2010-08-13 04:11:46Z mike $"
+ * "$Id: config.h.in 9452 2011-01-10 07:39:37Z mike $"
  *
  *   Configuration file for CUPS.
  *
- *   Copyright 2007-2010 by Apple Inc.
+ *   Copyright 2007-2011 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -289,6 +289,7 @@
  */
 
 #undef HAVE_AUTHORIZATION_H
+#undef HAVE_SECITEM_H
 #undef HAVE_SECITEMPRIV_H
 #undef HAVE_SECPOLICY_H
 #undef HAVE_SECPOLICYPRIV_H
@@ -669,5 +670,5 @@
 #endif /* !_CUPS_CONFIG_H_ */
 
 /*
- * End of "$Id: config.h.in 9259 2010-08-13 04:11:46Z mike $".
+ * End of "$Id: config.h.in 9452 2011-01-10 07:39:37Z mike $".
  */

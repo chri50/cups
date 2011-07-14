@@ -1,0 +1,65 @@
+Author: till.kamppeter@gmail.com
+
+Index: cups-1.4.7/config-scripts/cups-pdf.m4
+===================================================================
+--- cups-1.4.7.orig/config-scripts/cups-pdf.m4	2011-07-14 13:28:49.049799342 +0200
++++ cups-1.4.7/config-scripts/cups-pdf.m4	2011-07-14 13:29:05.239799617 +0200
+@@ -79,6 +79,12 @@
+ 	;;
+ esac
+ 
++if test "x$CUPS_PDFTOPS" != x; then
++	if `$CUPS_PDFTOPS -h 2>&1 | grep -q -- -origpagesizes 2>/dev/null`; then
++		AC_DEFINE(HAVE_PDFTOPS_WITH_ORIGPAGESIZES)
++	fi
++fi
++
+ AC_DEFINE_UNQUOTED(CUPS_PDFTOPS, "$CUPS_PDFTOPS")
+ AC_DEFINE_UNQUOTED(CUPS_GHOSTSCRIPT, "$CUPS_GHOSTSCRIPT")
+ AC_SUBST(PDFTOPS)
+Index: cups-1.4.7/config.h.in
+===================================================================
+--- cups-1.4.7.orig/config.h.in	2011-07-14 13:28:57.809799491 +0200
++++ cups-1.4.7/config.h.in	2011-07-14 13:29:05.239799617 +0200
+@@ -476,6 +476,7 @@
+  */
+ 
+ #undef HAVE_PDFTOPS
++#undef HAVE_PDFTOPS_WITH_ORIGPAGESIZES
+ #define CUPS_PDFTOPS	"/usr/bin/pdftops"
+ 
+ 
+Index: cups-1.4.7/filter/pdftops.c
+===================================================================
+--- cups-1.4.7.orig/filter/pdftops.c	2011-07-14 13:28:49.069799345 +0200
++++ cups-1.4.7/filter/pdftops.c	2011-07-14 13:29:05.239799617 +0200
+@@ -302,7 +302,9 @@
+     }
+     else
+ #ifdef HAVE_PDFTOPS
+-      pdf_argv[pdf_argc++] = (char *)"-level3";
++      /* Do not emit PS Level 3 with Poppler, some HP PostScript printers
++         do not like it. See https://bugs.launchpad.net/bugs/277404. */
++      pdf_argv[pdf_argc++] = (char *)"-level2";
+ #else
+       pdf_argv[pdf_argc++] = (char *)"-dLanguageLevel=3";
+ #endif /* HAVE_PDFTOPS */
+@@ -388,7 +390,18 @@
+       pdf_argv[pdf_argc++] = pdf_width;
+       pdf_argv[pdf_argc++] = pdf_height;
+ #endif /* HAVE_PDFTOPS */
++    } 
++#if defined(HAVE_PDFTOPS) && defined(HAVE_PDFTOPS_WITH_ORIGPAGESIZES)
++    else
++    {
++     /*
++      *  Use the page sizes of the original PDF document, this way documents
++      *  which contain pages of different sizes can be printed correctly
++      */
++
++      pdf_argv[pdf_argc++] = (char *)"-origpagesizes";
+     }
++#endif /* HAVE_PDFTOPS && HAVE_PDFTOPS_WITH_ORIGPAGESIZES */
+   }
+ 
+ #ifdef HAVE_PDFTOPS

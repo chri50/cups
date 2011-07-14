@@ -1,5 +1,5 @@
 /*
- * "$Id: socket.c 9061 2010-03-30 22:07:33Z mike $"
+ * "$Id: socket.c 9454 2011-01-10 08:02:55Z mike $"
  *
  *   AppSocket backend for the Common UNIX Printing System (CUPS).
  *
@@ -72,9 +72,11 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
 		sep;			/* Option separator */
   int		print_fd;		/* Print file */
   int		copies;			/* Number of copies to print */
-  time_t	start_time,		/* Time of first connect */
-		current_time,		/* Current time */
+  time_t	start_time;		/* Time of first connect */
+#ifdef __APPLE__
+  time_t	current_time,		/* Current time */
 		wait_time;		/* Time to wait before shutting down socket */
+#endif /* __APPLE__ */
   int		recoverable;		/* Recoverable error shown? */
   int		contimeout;		/* Connection timeout */
   int		waiteof;		/* Wait for end-of-file? */
@@ -507,5 +509,5 @@ wait_bc(int device_fd,			/* I - Socket */
 
 
 /*
- * End of "$Id: socket.c 9061 2010-03-30 22:07:33Z mike $".
+ * End of "$Id: socket.c 9454 2011-01-10 08:02:55Z mike $".
  */

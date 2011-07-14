@@ -1,9 +1,9 @@
 /*
- * "$Id: cupsd.h 9310 2010-09-21 22:34:57Z mike $"
+ * "$Id: cupsd.h 9470 2011-01-11 07:05:58Z mike $"
  *
- *   Main header file for the Common UNIX Printing System (CUPS) scheduler.
+ *   Main header file for the CUPS scheduler.
  *
- *   Copyright 2007-2009 by Apple Inc.
+ *   Copyright 2007-2011 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -218,6 +218,7 @@ extern void	cupsdSetEnvf(const char *name, const char *value, ...)
 __attribute__ ((__format__ (__printf__, 2, 3)))
 #endif /* __GNUC__ */
 ;
+extern void	cupsdUpdateEnv(void);
 
 extern void	*cupsdCreateProfile(int job_id);
 extern void	cupsdDestroyProfile(void *profile);
@@ -244,5 +245,5 @@ extern int	cupsdRemoveFile(const char *filename);
 
 
 /*
- * End of "$Id: cupsd.h 9310 2010-09-21 22:34:57Z mike $".
+ * End of "$Id: cupsd.h 9470 2011-01-11 07:05:58Z mike $".
  */
