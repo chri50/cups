@@ -1,9 +1,9 @@
 /*
- * "$Id: cupsd.h 9310 2010-09-21 22:34:57Z mike $"
+ * "$Id: cupsd.h 9470 2011-01-11 07:05:58Z mike $"
  *
- *   Main header file for the Common UNIX Printing System (CUPS) scheduler.
+ *   Main header file for the CUPS scheduler.
  *
- *   Copyright 2007-2009 by Apple Inc.
+ *   Copyright 2007-2011 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -147,6 +147,15 @@ extern const char *cups_hstrerror(int);
 
 typedef void (*cupsd_selfunc_t)(void *data);
 
+#ifdef HAVE_AVAHI
+/*
+ * Timeout callback function type...
+ */
+
+typedef struct _cupsd_timeout_s cupsd_timeout_t;
+typedef void (*cupsd_timeoutfunc_t)(cupsd_timeout_t *timeout, void *data);
+#endif /* HAVE_AVAHI */
+
 
 /*
  * Globals...
@@ -188,6 +197,9 @@ VAR PSQUpdateQuotaProcPtr PSQUpdateQuotaProc
 					/* Apple PrintService quota function */
 #endif /* __APPLE__ && HAVE_DLFCN_H */
 
+#ifdef HAVE_AVAHI
+VAR cups_array_t *Timeouts;		/* Timed callbacks for main loop */
+#endif /* HAVE_AVAHI */
 
 
 
@@ -218,6 +230,7 @@ extern void	cupsdSetEnvf(const char *name, const char *value, ...)
 __attribute__ ((__format__ (__printf__, 2, 3)))
 #endif /* __GNUC__ */
 ;
+extern void	cupsdUpdateEnv(void);
 
 extern void	*cupsdCreateProfile(int job_id);
 extern void	cupsdDestroyProfile(void *profile);
@@ -240,9 +253,21 @@ extern void	cupsdRemoveSelect(int fd);
 extern void	cupsdStartSelect(void);
 extern void	cupsdStopSelect(void);
 
+#ifdef HAVE_AVAHI
+extern void     cupsdInitTimeouts(void);
+extern cupsd_timeout_t *cupsdAddTimeout (const struct timeval *tv,
+					 cupsd_timeoutfunc_t cb,
+					 void *data);
+extern cupsd_timeout_t *cupsdNextTimeout (long *delay);
+extern void     cupsdRunTimeout (cupsd_timeout_t *timeout);
+extern void     cupsdUpdateTimeout (cupsd_timeout_t *timeout,
+				    const struct timeval *tv);
+extern void     cupsdRemoveTimeout (cupsd_timeout_t *timeout);
+#endif /* HAVE_AVAHI */
+
 extern int	cupsdRemoveFile(const char *filename);
 
 
 /*
- * End of "$Id: cupsd.h 9310 2010-09-21 22:34:57Z mike $".
+ * End of "$Id: cupsd.h 9470 2011-01-11 07:05:58Z mike $".
  */

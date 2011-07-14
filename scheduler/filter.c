@@ -1,5 +1,5 @@
 /*
- * "$Id: filter.c 7694 2008-06-26 00:23:20Z mike $"
+ * "$Id: filter.c 9706 2011-04-22 04:42:06Z mike $"
  *
  *   File type conversion routines for the Common UNIX Printing System (CUPS).
  *
@@ -121,6 +121,7 @@ mimeAddFilter(mime_t      *mime,	/* I - MIME database */
     strlcpy(temp->filter, filter, sizeof(temp->filter));
 
     cupsArrayAdd(mime->filters, temp);
+    cupsArrayAdd(mime->srcs, temp);
   }
 
  /*
@@ -403,5 +404,5 @@ find_filters(mime_t           *mime,	/* I - MIME database */
 
 
 /*
- * End of "$Id: filter.c 7694 2008-06-26 00:23:20Z mike $".
+ * End of "$Id: filter.c 9706 2011-04-22 04:42:06Z mike $".
  */

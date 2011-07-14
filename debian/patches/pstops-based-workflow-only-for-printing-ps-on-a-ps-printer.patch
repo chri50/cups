@@ -1,0 +1,13 @@
+Author; till.kamppeter@gmail.com
+
+--- cups-1.4.4~/conf/mime.convs.in	2009-12-08 03:13:42.000000000 +0100
++++ cups-1.4.4/conf/mime.convs.in	2010-09-16 18:43:27.623100136 +0200
+@@ -39,7 +39,7 @@
+ #
+ 
+ application/pdf			application/vnd.cups-postscript	66	pdftops
+-application/postscript		application/vnd.cups-postscript	66	pstops
++application/postscript		application/vnd.cups-postscript	65	pstops
+ application/vnd.hp-HPGL		application/postscript		66	hpgltops
+ application/x-cshell		application/postscript		33	texttops
+ application/x-csource		application/postscript		33	texttops

@@ -165,7 +165,7 @@ VAR int			ClassifyOverride	VALUE(0),
 					/* Allow overrides? */
 			ConfigFilePerm		VALUE(0640),
 					/* Permissions for config files */
-			LogDebugHistory		VALUE(200),
+			LogDebugHistory		VALUE(99999),
 					/* Amount of automatic debug history */
 			FatalErrors		VALUE(CUPSD_FATAL_CONFIG),
 					/* Which errors are fatal? */
@@ -246,6 +246,8 @@ VAR char		*ServerKey		VALUE(NULL);
 VAR int			SSLOptions		VALUE(CUPSD_SSL_NONE);
 					/* SSL/TLS options */
 #endif /* HAVE_SSL */
+VAR char		*PidFile		VALUE(NULL);
+					/* Debian CUPS pid file */
 
 #ifdef HAVE_LAUNCHD
 VAR int			LaunchdTimeout		VALUE(DEFAULT_KEEPALIVE);

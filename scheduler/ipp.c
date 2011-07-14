@@ -1,9 +1,9 @@
 /*
- * "$Id: ipp.c 9329 2010-10-06 20:07:44Z mike $"
+ * "$Id: ipp.c 9528 2011-02-14 23:47:29Z mike $"
  *
  *   IPP routines for the Common UNIX Printing System (CUPS) scheduler.
  *
- *   Copyright 2007-2010 by Apple Inc.
+ *   Copyright 2007-2011 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   This file contains Kerberos support code, copyright 2006 by
@@ -1958,7 +1958,7 @@ add_job(cupsd_client_t  *con,		/* I - Client connection */
   }
   else if ((attr = ippFindAttribute(job->attrs, "job-sheets",
                                     IPP_TAG_ZERO)) != NULL)
-    job->sheets = attr;
+    job->job_sheets = attr;
 
  /*
   * Fill in the response info...
@@ -3403,41 +3403,54 @@ apple_register_profiles(
         * See if this is the default profile...
 	*/
 
-        if (!default_profile_id)
+        if (!default_profile_id && q1_choice && q2_choice && q3_choice)
 	{
-	  if (q2_choice)
-	  {
-	    if (q3_choice)
-	    {
-	      snprintf(selector, sizeof(selector), "%s.%s.%s",
-	               q1_choice, q2_choice, q3_choice);
-              if (!strcmp(selector, attr->spec))
-	        default_profile_id = profile_id;
-            }
+	  snprintf(selector, sizeof(selector), "%s.%s.%s", q1_choice, q2_choice,
+	           q3_choice);
+	  if (!strcmp(selector, attr->spec))
+	    default_profile_id = profile_id;
+	}
 
-            if (!default_profile_id)
-	    {
-	      snprintf(selector, sizeof(selector), "%s.%s.", q1_choice,
-	               q2_choice);
-              if (!strcmp(selector, attr->spec))
-	        default_profile_id = profile_id;
-	    }
-          }
+        if (!default_profile_id && q1_choice && q2_choice)
+	{
+	  snprintf(selector, sizeof(selector), "%s.%s.", q1_choice, q2_choice);
+	  if (!strcmp(selector, attr->spec))
+	    default_profile_id = profile_id;
+	}
 
-          if (!default_profile_id && q3_choice)
-	  {
-	    snprintf(selector, sizeof(selector), "%s..%s", q1_choice,
-	             q3_choice);
-	    if (!strcmp(selector, attr->spec))
-	      default_profile_id = profile_id;
-	  }
+        if (!default_profile_id && q1_choice && q3_choice)
+	{
+	  snprintf(selector, sizeof(selector), "%s..%s", q1_choice, q3_choice);
+	  if (!strcmp(selector, attr->spec))
+	    default_profile_id = profile_id;
+	}
 
-          if (!default_profile_id)
-	  {
-	    snprintf(selector, sizeof(selector), "%s..", q1_choice);
-	    if (!strcmp(selector, attr->spec))
-	      default_profile_id = profile_id;
-	  }
+        if (!default_profile_id && q1_choice)
+	{
+	  snprintf(selector, sizeof(selector), "%s..", q1_choice);
+	  if (!strcmp(selector, attr->spec))
+	    default_profile_id = profile_id;
+	}
+
+        if (!default_profile_id && q2_choice && q3_choice)
+	{
+	  snprintf(selector, sizeof(selector), ".%s.%s", q2_choice, q3_choice);
+	  if (!strcmp(selector, attr->spec))
+	    default_profile_id = profile_id;
+	}
+
+        if (!default_profile_id && q2_choice)
+	{
+	  snprintf(selector, sizeof(selector), ".%s.", q2_choice);
+	  if (!strcmp(selector, attr->spec))
+	    default_profile_id = profile_id;
+	}
+
+        if (!default_profile_id && q3_choice)
+	{
+	  snprintf(selector, sizeof(selector), "..%s", q3_choice);
+	  if (!strcmp(selector, attr->spec))
+	    default_profile_id = profile_id;
 	}
       }
 
@@ -5001,7 +5014,11 @@ copy_banner(cupsd_client_t *con,	/* I - Client connection */
 	  case IPP_TAG_ENUM :
 	      if (!strncmp(s, "time-at-", 8))
 	      {
-	        struct timeval tv = { attr->values[i].integer, 0 };
+	        struct timeval tv;	/* Time value */
+
+		tv.tv_sec  = attr->values[i].integer;
+		tv.tv_usec = 0;
+
 	        cupsFilePuts(out, cupsdGetDateTime(&tv, CUPSD_TIME_STANDARD));
 	      }
 	      else
@@ -5571,7 +5588,7 @@ copy_printer_attrs(
     ippAddDate(con->response, IPP_TAG_PRINTER, "printer-current-time",
                ippTimeToDate(curtime));
 
-#ifdef HAVE_DNSSD
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
   if (!ra || cupsArrayFind(ra, "printer-dns-sd-name"))
   {
     if (printer->reg_name)
@@ -5581,7 +5598,7 @@ copy_printer_attrs(
       ippAddInteger(con->response, IPP_TAG_PRINTER, IPP_TAG_NOVALUE,
                    "printer-dns-sd-name", 0);
   }
-#endif /* HAVE_DNSSD */
+#endif /* defined(HAVE_DNSSD) || defined(HAVE_AVAHI) */
 
   if (!ra || cupsArrayFind(ra, "printer-error-policy"))
     ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_NAME,
@@ -6775,7 +6792,8 @@ get_document(cupsd_client_t  *con,	/* I - Client connection */
   * Check policy...
   */
 
-  if ((status = cupsdCheckPolicy(DefaultPolicyPtr, con, NULL)) != HTTP_OK)
+  if ((status = cupsdCheckPolicy(DefaultPolicyPtr, con, 
+                                 job->username)) != HTTP_OK)
   {
     send_http_error(con, status, NULL);
     return;
@@ -8948,6 +8966,11 @@ read_job_ticket(cupsd_client_t *con)	/* I - Client connection */
   ipp_attribute_t	*attr,		/* Current attribute */
 			*attr2,		/* Job attribute */
 			*prev2;		/* Previous job attribute */
+  int                   foundfirstpage; /* Did we find the first page already
+					   in the PostScript input? */
+  int                   num_copies;     /* Number of copies according to
+					   PostScript command in input file */
+  char                  *s, *t, buffer[10];
 
 
  /*
@@ -9006,6 +9029,85 @@ read_job_ticket(cupsd_client_t *con)	/* I - Client connection */
     */
 
     num_options = cupsParseOptions(line + 15, num_options, &options);
+  }
+
+ /*
+  * Read option settings embedded in the file...
+  */
+
+  foundfirstpage = 0;
+
+  while (cupsFileGets(fp, line, sizeof(line)))
+  {
+   /*
+    * Stop at the second page, we read also the settings of the first PageSetup
+    * to work around a bug in OpenOffice.org. This app puts options intended
+    * for the whole document into the page setup of the first page
+    */
+
+    if (!strncmp(line, "%%Page:", 7))
+    {
+      if (foundfirstpage == 1)
+	break;
+      foundfirstpage = 1;
+    }
+
+   /*
+    * Add the embedded option settings to the option array...
+    */
+
+    s = NULL;
+    if (!strncmp(line, "%%BeginFeature:", 15))
+      s = line + 15;
+    else if (!strncmp(line, "%%IncludeFeature:", 17))
+      s = line + 17;
+    else if (!strncmp(line, "%%BeginNonPPDFeature:", 21))
+      s = line + 21;
+
+    if (s && (t = strstr(s, "NumCopies")) != NULL)
+    {
+      t += 9;
+      while ((*t == ' ') || (*t == '\t')) t++;
+      if (sscanf(t, "%9d", &num_copies) == 1)
+      {
+	sprintf(buffer, "%d", num_copies);
+	num_options = cupsAddOption("copies", buffer, num_options, &options);
+      }      
+    } 
+    else if (s)
+    {
+      while ((*s == ' ') || (*s == '\t')) s++;
+      if (*s == '*') s++;
+      t = s;
+      while (*t && (*t != ' ') && (*t != '\t')) t++;
+      if ((*t == ' ') || (*t == '\t')) *t = '=';
+      num_options = cupsParseOptions(s, num_options, &options);
+    }
+
+   /*
+    * Read out "/#copies XXX def" and "/NumCopies XXX def" expressions from
+    * PostScript input. Some apps insert these expressions to set the
+    * number of copies.
+    */
+
+    s = NULL;
+    if ((s = strstr(line, "/#copies")) != NULL)
+      s += 8;
+    else if ((s = strstr(line, "/NumCopies")) != NULL)
+      s += 10;
+    if (s)
+    {
+      while ((*s == ' ') || (*s == '\t')) s++;
+      if (sscanf(s, "%9d %as ", &num_copies, &t) == 2)
+      {
+	if (!strncmp(t, "def", 3))
+	{
+	  sprintf(buffer, "%d", num_copies);
+	  num_options = cupsAddOption("copies", buffer, num_options, &options);
+	}
+	free(t);
+      }
+    }
   }
 
  /*
@@ -10026,8 +10128,9 @@ send_document(cupsd_client_t  *con,	/* I - Client connection */
     if (!filetype)
       filetype = mimeType(MimeDatabase, super, type);
 
-    cupsdLogJob(job, CUPSD_LOG_DEBUG, "Request file type is %s/%s.",
-		filetype->super, filetype->type);
+    if (filetype)
+      cupsdLogJob(job, CUPSD_LOG_DEBUG, "Request file type is %s/%s.",
+		  filetype->super, filetype->type);
   }
   else
     filetype = mimeType(MimeDatabase, super, type);
@@ -11596,5 +11699,5 @@ validate_user(cupsd_job_t    *job,	/* I - Job */
 
 
 /*
- * End of "$Id: ipp.c 9329 2010-10-06 20:07:44Z mike $".
+ * End of "$Id: ipp.c 9528 2011-02-14 23:47:29Z mike $".
  */

@@ -1,9 +1,9 @@
 /*
- * "$Id: admin.c 9181 2010-06-22 21:42:44Z mike $"
+ * "$Id: admin.c 9582 2011-03-04 19:28:38Z mike $"
  *
- *   Administration CGI for the Common UNIX Printing System (CUPS).
+ *   Administration CGI for CUPS.
  *
- *   Copyright 2007-2010 by Apple Inc.
+ *   Copyright 2007-2011 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -145,7 +145,30 @@ main(int  argc,				/* I - Number of command-line arguments */
 
     fprintf(stderr, "DEBUG: op=\"%s\"...\n", op);
 
-    if (!strcmp(op, "set-allowed-users"))
+    if (!*op)
+    {
+      const char *printer = getenv("PRINTER_NAME"),
+					/* Printer or class name */
+		*server_port = getenv("SERVER_PORT");
+					/* Port number string */
+      int	port = atoi(server_port ? server_port : "0");
+      					/* Port number */
+      char	uri[1024];		/* URL */
+
+      if (printer)
+        httpAssembleURIf(HTTP_URI_CODING_ALL, uri, sizeof(uri),
+	                 getenv("HTTPS") ? "https" : "http", NULL,
+			 getenv("SERVER_NAME"), port, "/%s/%s",
+			 cgiGetVariable("IS_CLASS") ? "classes" : "printers",
+			 printer);
+      else
+        httpAssembleURI(HTTP_URI_CODING_ALL, uri, sizeof(uri),
+	                getenv("HTTPS") ? "https" : "http", NULL,
+			getenv("SERVER_NAME"), port, "/admin");
+
+      printf("Location: %s\n\n", uri);
+    }
+    else if (!strcmp(op, "set-allowed-users"))
       do_set_allowed_users(http);
     else if (!strcmp(op, "set-as-default"))
       do_set_default(http);
@@ -1003,7 +1026,7 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
     fputs("DEBUG: Getting list of devices...\n", stderr);
 
     current_device = 0;
-    if (cupsGetDevices(http, 30, CUPS_INCLUDE_ALL, CUPS_EXCLUDE_NONE,
+    if (cupsGetDevices(http, 5, CUPS_INCLUDE_ALL, CUPS_EXCLUDE_NONE,
                        (cups_device_cb_t)choose_device_cb,
 		       (void *)title) == IPP_OK)
     {
@@ -1040,7 +1063,8 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
       }
     }
   }
-  else if (strchr(var, '/') == NULL)
+  else if (!strchr(var, '/') ||
+           (!strncmp(var, "lpd://", 6) && !strchr(var + 6, '/')))
   {
     if ((attr = ippFindAttribute(oldinfo, "device-uri", IPP_TAG_URI)) != NULL)
     {
@@ -1619,7 +1643,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
       else
 	local_protocols[0] = '\0';
 
-#ifdef HAVE_DNSSD
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
       if (cgiGetVariable("BROWSE_LOCAL_DNSSD"))
       {
 	if (local_protocols[0])
@@ -1627,7 +1651,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
 	else
 	  strcat(local_protocols, "dnssd");
       }
-#endif /* HAVE_DNSSD */
+#endif /* defined(HAVE_DNSSD) || defined(HAVE_AVAHI) */
 
 #ifdef HAVE_LDAP
       if (cgiGetVariable("BROWSE_LOCAL_LDAP"))
@@ -2583,7 +2607,8 @@ do_list_printers(http_t *http)		/* I - HTTP connection */
 	      if (isalnum(*ptr & 255) || *ptr == '_' || *ptr == '-' ||
 	          *ptr == '.')
 	        *option_ptr++ = *ptr;
-	      else if ((*ptr == ' ' || *ptr == '/') && option_ptr[-1] != '_')
+	      else if ((*ptr == ' ' || *ptr == '/') && option_ptr > option &&
+	               option_ptr[-1] != '_')
 	        *option_ptr++ = '_';
 	      else if (*ptr == '?' || *ptr == '(')
 	        break;
@@ -2693,9 +2718,9 @@ do_menu(http_t *http)			/* I - HTTP connection */
 #endif /* HAVE_GSSAPI */
   cgiSetVariable("KERBEROS", "");
 
-#ifdef HAVE_DNSSD
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
   cgiSetVariable("HAVE_DNSSD", "1");
-#endif /* HAVE_DNSSD */
+#endif /* defined(HAVE_DNSSD) || defined(HAVE_AVAHI) */
 
 #ifdef HAVE_LDAP
   cgiSetVariable("HAVE_LDAP", "1");
@@ -4295,5 +4320,5 @@ get_points(double     number,		/* I - Original number */
 
 
 /*
- * End of "$Id: admin.c 9181 2010-06-22 21:42:44Z mike $".
+ * End of "$Id: admin.c 9582 2011-03-04 19:28:38Z mike $".
  */

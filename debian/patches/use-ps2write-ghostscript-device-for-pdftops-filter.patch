@@ -1,0 +1,18 @@
+Description: Use "ps2write" instead of "pswrite" Ghostscript output device in the "pdftops" CUPS filter. Deactivated as "ps2write" crashes on test/testfile.pdf of CUPS test suite, see Ghostscript bug http://bugs.ghostscript.com/show_bug.cgi?id=690475. Use the Ghostscript output device "ps2write" instead of "pswrite" for the Ghostscript call in the pdftops filter. The "pswrite" turns the text characters into bitmaps and this causes several problems. Note that the "ps2write" produces PostScript which is not DSC-conforming. So it can only be used in filters which are called after the page management (N-up, selected pages, reverse order, ...). This is the case for a PDF-based printing workflow like in Debian and Ubuntu (page management by pdftopdf, pdftops filter to turn PDF into PostScript afterwards, for PostScript printers) and not for the old PostScript-based printing like in upstream CUPS (pdftops turns incoming PDF into PostScript for page management by the pstops filter). Therefore this patch is classified as a Debian patch and not a patch for upstream CUPS (can change when Ghostscript gets
+appropriately fixed). 
+Author: till.kamppeter@gmail.com
+Bug-Ubuntu: https://launchpad.net/bugs/361772
+Bug-Ubuntu: https://launchpad.net/bugs/362186
+Bug-Ubuntu: https://launchpad.net/bugs/369503
+
+--- cups-1.3.10~/filter/pdftops.c	2009-03-12 22:34:21.000000000 +0100
++++ cups-1.3.10/filter/pdftops.c	2009-05-11 09:57:27.000000000 +0200
+@@ -171,7 +171,7 @@
+   pdfargv[2] = (char *)"-dNOPAUSE";
+   pdfargv[3] = (char *)"-dBATCH";
+   pdfargv[4] = (char *)"-dSAFER";
+-  pdfargv[5] = (char *)"-sDEVICE=pswrite";
++  pdfargv[5] = (char *)"-sDEVICE=ps2write";
+   pdfargv[6] = (char *)"-sOUTPUTFILE=%stdout";
+   pdfargc    = 7;
+ #endif /* HAVE_PDFTOPS */

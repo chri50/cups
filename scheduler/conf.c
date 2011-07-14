@@ -1,9 +1,9 @@
 /*
- * "$Id: conf.c 9273 2010-08-31 04:18:38Z mike $"
+ * "$Id: conf.c 9470 2011-01-11 07:05:58Z mike $"
  *
  *   Configuration routines for the Common UNIX Printing System (CUPS).
  *
- *   Copyright 2007-2010 by Apple Inc.
+ *   Copyright 2007-2011 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -182,7 +182,8 @@ static const cupsd_var_t	variables[] =
 #endif /* HAVE_AUTHORIZATION_H */
   { "TempDir",			&TempDir,		CUPSD_VARTYPE_PATHNAME },
   { "Timeout",			&Timeout,		CUPSD_VARTYPE_INTEGER },
-  { "UseNetworkDefault",	&UseNetworkDefault,	CUPSD_VARTYPE_BOOLEAN }
+  { "UseNetworkDefault",	&UseNetworkDefault,	CUPSD_VARTYPE_BOOLEAN },
+  { "PidFile",			&PidFile,		CUPSD_VARTYPE_STRING }
 };
 #define NUM_VARS	(sizeof(variables) / sizeof(variables[0]))
 
@@ -496,7 +497,7 @@ cupsdReadConfiguration(void)
   cupsdSetString(&ErrorLog, CUPS_LOGDIR "/error_log");
   cupsdSetString(&PageLog, CUPS_LOGDIR "/page_log");
   cupsdSetString(&PageLogFormat,
-                 "%p %j %u %T %P %C %{job-billing} "
+                 "%p %u %j %T %P %C %{job-billing} "
 		 "%{job-originating-host-name} %{job-name} %{media} %{sides}");
   cupsdSetString(&Printcap, CUPS_DEFAULT_PRINTCAP);
   cupsdSetString(&PrintcapGUI, "/usr/bin/glpoptions");
@@ -504,6 +505,7 @@ cupsdReadConfiguration(void)
   cupsdSetString(&RemoteRoot, "remroot");
   cupsdSetString(&ServerHeader, "CUPS/1.4");
   cupsdSetString(&StateDir, CUPS_STATEDIR);
+  cupsdSetString(&PidFile, "/var/run/cups/cupsd.pid");
 
   if (!strcmp(CUPS_DEFAULT_PRINTCAP, "/etc/printers.conf"))
     PrintcapFormat = PRINTCAP_SOLARIS;
@@ -540,7 +542,7 @@ cupsdReadConfiguration(void)
 
   cupsdClearString(&DefaultPaperSize);
 
-  cupsdSetString(&RIPCache, "8m");
+  cupsdSetString(&RIPCache, "auto");
 
   cupsdSetString(&TempDir, NULL);
 
@@ -620,7 +622,7 @@ cupsdReadConfiguration(void)
   KeepAlive                = TRUE;
   KeepAliveTimeout         = DEFAULT_KEEPALIVE;
   ListenBackLog            = SOMAXCONN;
-  LogDebugHistory          = 200;
+  LogDebugHistory          = 99999;
   LogFilePerm              = CUPS_DEFAULT_LOG_FILE_PERM;
   LogLevel                 = CUPSD_LOG_WARN;
   LogTimeFormat            = CUPSD_TIME_STANDARD;
@@ -695,6 +697,12 @@ cupsdReadConfiguration(void)
 #endif  /* __APPLE__ */
 
  /*
+  * Setup environment variables...
+  */
+
+  cupsdInitEnv();
+
+ /*
   * Read the configuration file...
   */
 
@@ -744,7 +752,7 @@ cupsdReadConfiguration(void)
     cupsdAddAlias(ServerAlias, temp);
     cupsdLogMessage(CUPSD_LOG_DEBUG, "Added auto ServerAlias %s", temp);
 
-    if (HostNameLookups || RemotePort)
+    if (HostNameLookups)
     {
       struct hostent	*host;		/* Host entry to get FQDN */
 
@@ -973,8 +981,10 @@ cupsdReadConfiguration(void)
 			     Group, 1, 1) < 0 ||
        cupsdCheckPermissions(ServerRoot, "ssl", 0700, RunUser,
 			     Group, 1, 0) < 0 ||
+       /* Never alter permissions of central conffile
        cupsdCheckPermissions(ServerRoot, "cupsd.conf", ConfigFilePerm, RunUser,
 			     Group, 0, 0) < 0 ||
+       */
        cupsdCheckPermissions(ServerRoot, "classes.conf", 0600, RunUser,
 			     Group, 0, 0) < 0 ||
        cupsdCheckPermissions(ServerRoot, "printers.conf", 0600, RunUser,
@@ -1037,10 +1047,10 @@ cupsdReadConfiguration(void)
   }
 
  /*
-  * Setup environment variables...
+  * Update environment variables...
   */
 
-  cupsdInitEnv();
+  cupsdUpdateEnv();
 
  /*
   * Update default paper size setting as needed...
@@ -3853,5 +3863,5 @@ read_policy(cups_file_t *fp,		/* I - Configuration file */
 
 
 /*
- * End of "$Id: conf.c 9273 2010-08-31 04:18:38Z mike $".
+ * End of "$Id: conf.c 9470 2011-01-11 07:05:58Z mike $".
  */

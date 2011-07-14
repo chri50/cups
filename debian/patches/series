@@ -1,0 +1,38 @@
+# patches backported from upstream SVN trunk for 1.5:
+usb-backend-no-segfault-on-bad-device-id.patch
+usb-backend-accept-old-usblp-uris.patch
+
+# patches accepted and committed upstream for next 1.4:
+
+# patches sent upstream
+pidfile.patch
+ppd-poll-with-client-conf.patch
+# no answer yet, po4a might not be appropriate
+manpage-translations.patch
+rootbackends-worldreadable.patch
+cups-avahi.patch
+
+# patches which should go upstream
+removecvstag.patch
+no-conffile-timestamp.patch
+drop_unnecessary_dependencies.patch
+reactivate_recommended_driver.patch
+poppler-based-pdftops-fixes.patch
+read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.patch
+do-not-broadcast-with-hostnames.patch
+cups-deviced-allow-device-ids-with-newline.patch
+default-ripcache-size-auto.patch
+cups-snmp-oids-device-id-hp-ricoh.patch
+configure-default-browse-protocols.patch
+
+# Debian patches
+logfiles_adm_readable.patch
+default_log_settings.patch
+confdirperms.patch
+#use-ps2write-ghostscript-device-for-pdftops-filter.patch
+printer-filtering.patch
+show-compile-command-lines.patch
+ppdc-dynamic-linking.patch
+log-debug-history-nearly-unlimited.patch
+support-gzipped-charmaps.patch
+pstops-based-workflow-only-for-printing-ps-on-a-ps-printer.patch

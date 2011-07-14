@@ -32,6 +32,7 @@
 #include "cupsd.h"
 #include <stdarg.h>
 #include <syslog.h>
+#include <grp.h>
 
 
 /*
@@ -795,6 +796,7 @@ check_log_file(cups_file_t **lf,	/* IO - Log file */
 		filename[1024],		/* Formatted log filename */
 		*ptr;			/* Pointer into filename */
   const char	*logptr;		/* Pointer into log filename */
+  struct group  *loggrp;		/* Group entry of log filename */
 
 
  /*
@@ -803,6 +805,11 @@ check_log_file(cups_file_t **lf,	/* IO - Log file */
 
   if (!lf || !logname || !logname[0])
     return (1);
+
+ /*
+  * Use adm group if possible, fall back to Group
+  */
+ loggrp = getgrnam("adm");
 
  /*
   * Format the filename as needed...
@@ -914,7 +921,7 @@ check_log_file(cups_file_t **lf,	/* IO - Log file */
       * Change ownership and permissions of non-device logs...
       */
 
-      fchown(cupsFileNumber(*lf), RunUser, Group);
+      fchown(cupsFileNumber(*lf), RunUser, loggrp ? loggrp->gr_gid : Group);
       fchmod(cupsFileNumber(*lf), LogFilePerm);
     }
   }
@@ -953,7 +960,7 @@ check_log_file(cups_file_t **lf,	/* IO - Log file */
     * Change ownership and permissions of non-device logs...
     */
 
-    fchown(cupsFileNumber(*lf), RunUser, Group);
+    fchown(cupsFileNumber(*lf), RunUser, loggrp ? loggrp->gr_gid : Group);
     fchmod(cupsFileNumber(*lf), LogFilePerm);
   }
 

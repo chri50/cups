@@ -1,5 +1,5 @@
 /*
- * "$Id: cups-polld.c 7198 2008-01-08 00:12:17Z mike $"
+ * "$Id: cups-polld.c 9470 2011-01-11 07:05:58Z mike $"
  *
  *   Polling daemon for the Common UNIX Printing System (CUPS).
  *
@@ -315,7 +315,7 @@ poll_server(http_t      *http,		/* I - HTTP connection */
     fprintf(stderr, "DEBUG: %s Found %d printers.\n", prefix, max_count);
 
     count     = 0;
-    max_count = max_count / interval + 1;
+    max_count = 2 * max_count / interval + 1;
 
    /*
     * Loop through the printers or classes returned in the list...
@@ -471,5 +471,5 @@ sighup_handler(int sig)			/* I - Signal number */
 
 
 /*
- * End of "$Id: cups-polld.c 7198 2008-01-08 00:12:17Z mike $".
+ * End of "$Id: cups-polld.c 9470 2011-01-11 07:05:58Z mike $".
  */

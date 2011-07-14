@@ -1,9 +1,9 @@
 /*
- * "$Id: transcode.c 8635 2009-05-14 21:18:35Z mike $"
+ * "$Id: transcode.c 9696 2011-04-18 16:25:38Z mike $"
  *
- *   Transcoding support for the Common UNIX Printing System (CUPS).
+ *   Transcoding support for CUPS.
  *
- *   Copyright 2007-2009 by Apple Inc.
+ *   Copyright 2007-2011 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -279,7 +279,7 @@ cupsCharsetToUTF8(
   * Handle identity conversions...
   */
 
-  if (encoding == CUPS_UTF8 ||
+  if (encoding == CUPS_UTF8 || encoding <= CUPS_US_ASCII ||
       encoding < 0 || encoding >= CUPS_ENCODING_VBCS_END)
   {
     strlcpy((char *)dest, src, maxout);
@@ -385,13 +385,14 @@ cupsUTF8ToCharset(
   * Handle UTF-8 to ISO-8859-1 directly...
   */
 
-  if (encoding == CUPS_ISO8859_1)
+  if (encoding == CUPS_ISO8859_1 || encoding == CUPS_US_ASCII)
   {
-    int		ch;			/* Character from string */
+    int		ch,			/* Character from string */
+		maxch;			/* Maximum character for charset */
     char	*destptr,		/* Pointer into ISO-8859-1 buffer */
 		*destend;		/* End of ISO-8859-1 buffer */
 
-
+    maxch   = encoding == CUPS_ISO8859_1 ? 256 : 128;
     destptr = dest;
     destend = dest + maxout - 1;
 
@@ -403,7 +404,7 @@ cupsUTF8ToCharset(
       {
 	ch = ((ch & 0x1f) << 6) | (*src++ & 0x3f);
 
-	if (ch < 256)
+	if (ch < maxch)
           *destptr++ = ch;
 	else
           *destptr++ = '?';
@@ -1450,6 +1451,7 @@ get_sbcs_charmap(
   cups_ucs2_t	*crow;			/* Pointer to UCS-2 row in 'char2uni' */
   cups_sbcs_t	*srow;			/* Pointer to SBCS row in 'uni2char' */
   char		line[256];		/* Line from charset map file */
+  char		gzfilename[1027];	/* Filename with .gz suffix */
 
 
  /*
@@ -1476,9 +1478,14 @@ get_sbcs_charmap(
 
   if ((fp = cupsFileOpen(filename, "r")) == NULL)
   {
-    DEBUG_printf(("8get_sbcs_charmap: Returning NULL (%s)", strerror(errno)));
+    snprintf (gzfilename, sizeof(gzfilename), "%s.gz", filename);
 
-    return (NULL);
+    if ((fp = cupsFileOpen(gzfilename, "r")) == NULL)
+    {
+      DEBUG_printf(("8get_sbcs_charmap: Returning NULL (%s)", strerror(errno)));
+
+      return (NULL);
+    }
   }
 
  /*
@@ -1602,6 +1609,7 @@ get_vbcs_charmap(
   char		line[256];		/* Line from charset map file */
   int		i;			/* Loop variable */
   int		legacy;			/* 32-bit legacy char */
+  char		gzfilename[1027];	/* Filename with .gz suffix */
 
 
   DEBUG_printf(("7get_vbcs_charmap(encoding=%d, filename=\"%s\")\n",
@@ -1628,9 +1636,14 @@ get_vbcs_charmap(
 
   if ((fp = cupsFileOpen(filename, "r")) == NULL)
   {
-    DEBUG_printf(("8get_vbcs_charmap: Returning NULL (%s)", strerror(errno)));
+    snprintf (gzfilename, sizeof(gzfilename), "%s.gz", filename);
 
-    return (NULL);
+    if ((fp = cupsFileOpen(gzfilename, "r")) == NULL)
+    {
+      DEBUG_printf(("8get_vbcs_charmap: Returning NULL (%s)", strerror(errno)));
+
+      return (NULL);
+    }
   }
 
  /*
@@ -1821,5 +1834,5 @@ get_vbcs_charmap(
 
 
 /*
- * End of "$Id: transcode.c 8635 2009-05-14 21:18:35Z mike $"
+ * End of "$Id: transcode.c 9696 2011-04-18 16:25:38Z mike $"
  */

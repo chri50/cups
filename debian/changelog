@@ -1,3 +1,32 @@
+cups (1.4.7-1) unstable; urgency=low
+
+  * New upstream version.
+
+  [ Till Kamppeter ]
+  * debian/patches/ubuntu-upstart.dpatch: Updated the patch to add support
+    to the new device enumeration functionality of udev-configure-printer.
+    This way we do not need to retrigger the printers. Retriggering is only
+    needed if udev rules change. A fallback to the old bahavior is provided
+    so that this CUPS package continues to work with older versions of
+    udev-configure-printer.
+
+  [ Martin Pitt ]
+  * Update patches for new upstream release.
+  * Drop fix-broken-ipv6-uris.patch, applied upstream.
+  * debian/local/apparmor-profile: /var/run → /run transition. (LP: #810270)
+  * Drop debian/patches/ubuntu-upstart.dpatch and move the upstart script to
+    debian/local/cups.upstart. In debian/rules, copy it to debian/, and remove
+    that again during clean. This is a slightly easier workaround for a
+    nonexisting "dh_installinit --sysvinit-only" option than the previous
+    creation of the upstart file with an ubuntu specific dpatch.
+  * debian/patches/, debian/rules, debian/control, debian/source/format: Move
+    to source format "3.0 (quilt)" and convert our dpatches to quilt patches.
+    Drop dpatch build dependency.
+  * Move Ubuntu specific patches to debian/patches/ubuntu. In debian/rules,
+    apply them when building on Ubuntu. Add "patch" build dependency.
+
+ -- Martin Pitt <mpitt@debian.org>  Thu, 14 Jul 2011 15:02:36 +0200
+
 cups (1.4.6-11) unstable; urgency=low
 
   [ Till Kamppeter ]

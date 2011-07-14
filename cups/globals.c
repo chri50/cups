@@ -1,5 +1,5 @@
 /*
- * "$Id: globals.c 9161 2010-06-16 22:34:03Z mike $"
+ * "$Id: globals.c 9595 2011-03-11 05:56:56Z mike $"
  *
  *   Global variable access routines for the Common UNIX Printing System (CUPS).
  *
@@ -195,8 +195,9 @@ globals_destructor(void *value)		/* I - Data to free */
     free(buffer);
   }
 
-  cupsArrayDelete(cg->pwg_size_lut);
   cupsArrayDelete(cg->leg_size_lut);
+  cupsArrayDelete(cg->ppd_size_lut);
+  cupsArrayDelete(cg->pwg_size_lut);
 
   free(value);
 }
@@ -244,5 +245,5 @@ _cupsGlobals(void)
 
 
 /*
- * End of "$Id: globals.c 9161 2010-06-16 22:34:03Z mike $".
+ * End of "$Id: globals.c 9595 2011-03-11 05:56:56Z mike $".
  */
