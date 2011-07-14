@@ -1451,6 +1451,7 @@ get_sbcs_charmap(
   cups_ucs2_t	*crow;			/* Pointer to UCS-2 row in 'char2uni' */
   cups_sbcs_t	*srow;			/* Pointer to SBCS row in 'uni2char' */
   char		line[256];		/* Line from charset map file */
+  char		gzfilename[1027];	/* Filename with .gz suffix */
 
 
  /*
@@ -1477,9 +1478,14 @@ get_sbcs_charmap(
 
   if ((fp = cupsFileOpen(filename, "r")) == NULL)
   {
-    DEBUG_printf(("8get_sbcs_charmap: Returning NULL (%s)", strerror(errno)));
+    snprintf (gzfilename, sizeof(gzfilename), "%s.gz", filename);
 
-    return (NULL);
+    if ((fp = cupsFileOpen(gzfilename, "r")) == NULL)
+    {
+      DEBUG_printf(("8get_sbcs_charmap: Returning NULL (%s)", strerror(errno)));
+
+      return (NULL);
+    }
   }
 
  /*
@@ -1603,6 +1609,7 @@ get_vbcs_charmap(
   char		line[256];		/* Line from charset map file */
   int		i;			/* Loop variable */
   int		legacy;			/* 32-bit legacy char */
+  char		gzfilename[1027];	/* Filename with .gz suffix */
 
 
   DEBUG_printf(("7get_vbcs_charmap(encoding=%d, filename=\"%s\")\n",
@@ -1629,9 +1636,14 @@ get_vbcs_charmap(
 
   if ((fp = cupsFileOpen(filename, "r")) == NULL)
   {
-    DEBUG_printf(("8get_vbcs_charmap: Returning NULL (%s)", strerror(errno)));
+    snprintf (gzfilename, sizeof(gzfilename), "%s.gz", filename);
 
-    return (NULL);
+    if ((fp = cupsFileOpen(gzfilename, "r")) == NULL)
+    {
+      DEBUG_printf(("8get_vbcs_charmap: Returning NULL (%s)", strerror(errno)));
+
+      return (NULL);
+    }
   }
 
  /*
