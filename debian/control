@@ -1,7 +1,8 @@
 Source: cups
 Priority: optional
 Section: net
-Maintainer: Debian CUPS Maintainers <pkg-cups-devel@lists.alioth.debian.org>
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: Debian CUPS Maintainers <pkg-cups-devel@lists.alioth.debian.org>
 Standards-Version: 3.9.2
 Build-Depends: libpam0g-dev, libtiff4-dev, libjpeg-dev, zlib1g-dev,
  libpng12-dev, libslp-dev, libgnutls-dev, libpaper-dev, libldap2-dev,
@@ -122,7 +123,7 @@ Priority: optional
 Section: net
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, debconf (>= 1.2.9) | debconf-2.0,
- poppler-utils (>= 0.12), procps, ghostscript, lsb-base (>= 3),
+ poppler-utils (>= 0.12), procps, ghostscript (>= 9.02~), lsb-base (>= 3),
  cups-common (>= ${source:Upstream-Version}), 
  cups-client (>= ${binary:Version}),
  ssl-cert (>= 1.0.11), adduser, bc, ttf-freefont, cups-ppdc
