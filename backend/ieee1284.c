@@ -55,6 +55,7 @@ backendGetDeviceID(
 #  if defined(__sun) && defined(ECPPIOC_GETDEVID)
   struct ecpp_device_id did;		/* Device ID buffer */
 #  endif /* __sun && ECPPIOC_GETDEVID */
+  char  *c;
 
 
   DEBUG_printf(("backendGetDeviceID(fd=%d, device_id=%p, device_id_size=%d, "
@@ -176,7 +177,7 @@ backendGetDeviceID(
       * and then limit the length to the size of our buffer...
       */
 
-      if (length > device_id_size)
+      if ((length > device_id_size) || (length < 14))
 	length = (((unsigned)device_id[1] & 255) << 8) +
 		 ((unsigned)device_id[0] & 255);
 
@@ -214,11 +215,15 @@ backendGetDeviceID(
 	device_id[length] = '\0';
       }
     }
-#    ifdef DEBUG
     else
+    {
+#    ifdef DEBUG
       DEBUG_printf(("backendGetDeviceID: ioctl failed - %s\n",
                     strerror(errno)));
 #    endif /* DEBUG */
+      /* Clean up after failed attempt to get device ID */
+      *device_id = '\0';
+    }
 #  endif /* __linux */
 
 #   if defined(__sun) && defined(ECPPIOC_GETDEVID)
@@ -246,13 +251,23 @@ backendGetDeviceID(
 #  endif /* __sun && ECPPIOC_GETDEVID */
   }
 
+ /*
+  * Check whether device ID is valid. Turn line breaks and tabs to spaces
+  * and abort device IDs with non-printable characters
+  */
+  for (c = device_id; *c; c++)
+    if (isspace(*c))
+      *c = ' ';
+    else if (!isprint(*c))
+    {
+      *device_id = '\0';
+      break;
+    }
+
   DEBUG_printf(("backendGetDeviceID: device_id=\"%s\"\n", device_id));
 
   if (scheme && uri)
     *uri = '\0';
-
-  if (!*device_id)
-    return (-1);
 
  /*
   * Get the make and model...
