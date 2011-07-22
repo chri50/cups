@@ -932,10 +932,10 @@ cupsdDeletePrinter(
   cupsdClearString(&p->alert);
   cupsdClearString(&p->alert_description);
 
-#ifdef HAVE_DNSSD
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
   cupsdClearString(&p->product);
   cupsdClearString(&p->pdl);
-#endif /* HAVE_DNSSD */
+#endif /* defined(HAVE_DNSSD) || defined(HAVE_AVAHI) */
 
   cupsArrayDelete(p->filetypes);
 
@@ -1294,9 +1294,9 @@ cupsdLoadAllPrinters(void)
     {
       if (value)
       {
-#ifdef HAVE_DNSSD
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
         p->product = _cupsStrAlloc(value);
-#endif /* HAVE_DNSSD */
+#endif /* defined(HAVE_DNSSD) || defined(HAVE_AVAHI) */
       }
       else
 	cupsdLogMessage(CUPSD_LOG_ERROR,
@@ -1710,10 +1710,10 @@ cupsdSaveAllPrinters(void)
 
     cupsFilePrintf(fp, "Type %d\n", printer->type);
 
-#ifdef HAVE_DNSSD
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
     if (printer->product)
       cupsFilePutConf(fp, "Product", printer->product);
-#endif /* HAVE_DNSSD */
+#endif /* defined(HAVE_DNSSD) || defined(HAVE_AVAHI) */
 
     for (ptr = (char *)cupsArrayFirst(printer->filters);
          ptr;
@@ -3837,7 +3837,7 @@ add_printer_formats(cupsd_printer_t *p)	/* I - Printer */
     attr->values[i].string.text = _cupsStrAlloc(mimetype);
   }
 
-#ifdef HAVE_DNSSD
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
   {
     char		pdl[1024];	/* Buffer to build pdl list */
     mime_filter_t	*filter;	/* MIME filter looping var */
@@ -3891,7 +3891,7 @@ add_printer_formats(cupsd_printer_t *p)	/* I - Printer */
 
     cupsdSetString(&p->pdl, pdl);
   }
-#endif /* HAVE_DNSSD */
+#endif /* defined(HAVE_DNSSD) || defined(HAVE_AVAHI) */
 }
 
 
@@ -4958,9 +4958,9 @@ load_ppd(cupsd_printer_t *p)		/* I - Printer */
 	attr->values[i].string.text = _cupsStrAlloc("bcp");
     }
 
-#ifdef HAVE_DNSSD
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
     cupsdSetString(&p->product, ppd->product);
-#endif /* HAVE_DNSSD */
+#endif /* defined(HAVE_DNSSD) || defined(HAVE_AVAHI) */
 
     if (ppdFindAttr(ppd, "APRemoteQueueID", NULL))
       p->type |= CUPS_PRINTER_REMOTE;
