@@ -340,6 +340,7 @@ PassEnv LOCALEDIR
 DocumentRoot $root/doc
 RequestRoot /tmp/cups-$user/spool
 TempDir /tmp/cups-$user/spool/temp
+PidFile /tmp/cups-$user/cupsd.pid
 MaxSubscriptions 3
 MaxLogSize 0
 AccessLog /tmp/cups-$user/log/access_log
