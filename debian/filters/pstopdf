@@ -17,7 +17,7 @@ PS2PS=/usr/bin/ps2ps
 GS=/usr/bin/gs
 
 PS2PS_OPTIONS="-dAutoRotatePages=/None -dAutoFilterColorImages=false \
-               -dNOPLATFONTS -dPARANOIDSAFER -sstdout=%stderr"
+               -dNOPLATFONTS -dPARANOIDSAFER -dNOINTERPOLATE -sstdout=%stderr"
 PS2PDF_OPTIONS="-q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -dCompatibilityLevel=1.3"
 PS2PDF_OPTIONS="$PS2PDF_OPTIONS $PS2PS_OPTIONS"
 PS2PDF_OPTIONS="$PS2PDF_OPTIONS -dColorImageFilter=/FlateEncode \
