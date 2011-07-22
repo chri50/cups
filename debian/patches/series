@@ -24,12 +24,12 @@ cups-deviced-allow-device-ids-with-newline.patch
 default-ripcache-size-auto.patch
 cups-snmp-oids-device-id-hp-ricoh.patch
 configure-default-browse-protocols.patch
+use-ps2write-ghostscript-device-for-pdftops-filter.patch
 
 # Debian patches
 logfiles_adm_readable.patch
 default_log_settings.patch
 confdirperms.patch
-#use-ps2write-ghostscript-device-for-pdftops-filter.patch
 printer-filtering.patch
 show-compile-command-lines.patch
 ppdc-dynamic-linking.patch
