@@ -1,3 +1,10 @@
+cups (1.4.7-1ubuntu5) oneiric; urgency=low
+
+  * debian/control: Added Replaces/Breaks on older Ghostscript versions
+    (ghostscript-cups binary package) for smooth updating (LP: #815206).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon, 25 Jul 2011 09:13:11 +0200
+
 cups (1.4.7-1ubuntu4) oneiric; urgency=low
 
   Reupload Debian packaging trunk for the FTBFS fix (missing ghostscript build
