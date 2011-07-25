@@ -9,6 +9,10 @@
 # for troubleshooting...
 LogLevel @CUPS_LOG_LEVEL@
 
+# Deactivate CUPS' internal logrotating, as we provide a better one, especially
+# LogLevel debug2 gets usable now
+MaxLogSize 0
+
 # Administrator user group...
 SystemGroup @CUPS_SYSTEM_GROUPS@
 @CUPS_SYSTEM_AUTHKEY@
