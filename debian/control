@@ -128,13 +128,13 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, debconf (>= 1.2.9) | debconf-2.0,
  cups-client (>= ${binary:Version}),
  ssl-cert (>= 1.0.11), adduser, bc, ttf-freefont, cups-ppdc
 Recommends: avahi-daemon, foomatic-filters (>= 4.0), 
- cups-driver-gutenprint, ghostscript-cups
+ cups-driver-gutenprint, ghostscript-cups (>= 9.02~)
 Suggests: cups-bsd, foomatic-db-compressed-ppds | foomatic-db,
  hplip, cups-pdf, udev, smbclient
-Replaces: cupsddk-drivers (<< 1.4.0)
+Replaces: cupsddk-drivers (<< 1.4.0), ghostscript-cups (<< 9.02~)
 Conflicts: cupsddk-drivers (<< 1.4.0)
 Provides: cupsddk-drivers
-Breaks: foomatic-filters (<< 4.0)
+Breaks: foomatic-filters (<< 4.0), ghostscript-cups (<< 9.02~)
 Description: Common UNIX Printing System(tm) - server
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
  general replacement for lpd and the like.  It supports the Internet 
