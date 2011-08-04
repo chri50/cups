@@ -270,9 +270,10 @@ main(int  argc,				/* I - Number of command-line args */
   pdf_argv[2] = (char *)"-dNOPAUSE";
   pdf_argv[3] = (char *)"-dBATCH";
   pdf_argv[4] = (char *)"-dSAFER";
-  pdf_argv[5] = (char *)"-sDEVICE=pswrite";
-  pdf_argv[6] = (char *)"-sOUTPUTFILE=%stdout";
-  pdf_argc    = 7;
+  pdf_argv[5] = (char *)"-dNOINTERPOLATE";
+  pdf_argv[6] = (char *)"-sDEVICE=ps2write";
+  pdf_argv[7] = (char *)"-sOUTPUTFILE=%stdout";
+  pdf_argc    = 8;
 #endif /* HAVE_PDFTOPS */
 
   if (ppd)
