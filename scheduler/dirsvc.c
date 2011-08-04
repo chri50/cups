@@ -27,6 +27,7 @@
  *   ldap_connect()             - Start new LDAP connection
  *   ldap_reconnect()           - Reconnect to LDAP Server
  *   ldap_disconnect()          - Disconnect from LDAP Server
+ *   cupsdStartAvahiClient()    - Start an Avahi client if needed
  *   cupsdStartBrowsing()       - Start sending and receiving broadcast
  *                                information.
  *   cupsdStartPolling()        - Start polling servers as needed.
@@ -83,6 +84,7 @@
  */
 
 #include "cupsd.h"
+#include <assert.h>
 #include <grp.h>
 
 #ifdef HAVE_DNSSD
@@ -97,7 +99,17 @@
 #    endif /* HAVE_SYSTEMCONFIGURATION */
 #  endif /* __APPLE__ */
 #endif /* HAVE_DNSSD */
+#ifdef HAVE_AVAHI
+#  include <avahi-common/domain.h>
+#endif /* HAVE_AVAHI */
 
+
+#ifdef HAVE_DNSSD
+typedef char *cupsd_txt_record_t;
+#endif /* HAVE_DNSSD */
+#ifdef HAVE_AVAHI
+typedef AvahiStringList *cupsd_txt_record_t;
+#endif /* HAVE_AVAHI */
 
 /*
  * Local functions...
@@ -159,15 +171,20 @@ static void	update_polling(void);
 static void	update_smb(int onoff);
 
 
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
+static cupsd_txt_record_t dnssdBuildTxtRecord(int *txt_len, cupsd_printer_t *p,
+					      int for_lpd);
+static void	dnssdDeregisterPrinter(cupsd_printer_t *p);
+static int	dnssdComparePrinters(cupsd_printer_t *a, cupsd_printer_t *b);
+static void	dnssdRegisterPrinter(cupsd_printer_t *p);
+static void	dnssdStop(void);
+#endif /* defined(HAVE_DNSSD) || defined(HAVE_AVAHI) */
+
 #ifdef HAVE_DNSSD
 #  ifdef HAVE_COREFOUNDATION
 static void	dnssdAddAlias(const void *key, const void *value,
 		              void *context);
 #  endif /* HAVE_COREFOUNDATION */
-static char	*dnssdBuildTxtRecord(int *txt_len, cupsd_printer_t *p,
-		                     int for_lpd);
-static int	dnssdComparePrinters(cupsd_printer_t *a, cupsd_printer_t *b);
-static void	dnssdDeregisterPrinter(cupsd_printer_t *p);
 static char	*dnssdPackTxtRecord(int *txt_len, char *keyvalue[][2],
 		                    int count);
 static void	dnssdRegisterCallback(DNSServiceRef sdRef,
@@ -175,10 +192,19 @@ static void	dnssdRegisterCallback(DNSServiceRef sdRef,
 				      DNSServiceErrorType errorCode,
 				      const char *name, const char *regtype,
 				      const char *domain, void *context);
-static void	dnssdRegisterPrinter(cupsd_printer_t *p);
-static void	dnssdStop(void);
 static void	dnssdUpdate(void);
 #endif /* HAVE_DNSSD */
+
+#ifdef HAVE_AVAHI
+static AvahiStringList *avahiPackTxtRecord(char *keyvalue[][2],
+					   int count);
+static void	avahi_entry_group_cb (AvahiEntryGroup *group,
+				      AvahiEntryGroupState state,
+				      void *userdata);
+static void	avahi_client_cb (AvahiClient *client,
+				 AvahiClientState state,
+				 void *userdata);
+#endif /* HAVE_AVAHI */
 
 #ifdef HAVE_LDAP
 static const char * const ldap_attrs[] =/* CUPS LDAP attributes */
@@ -283,10 +309,10 @@ cupsdDeregisterPrinter(
     ldap_dereg_printer(p);
 #endif /* HAVE_LDAP */
 
-#ifdef HAVE_DNSSD
-  if (removeit && (BrowseLocalProtocols & BROWSE_DNSSD) && DNSSDRef)
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
+  if (removeit && (BrowseLocalProtocols & BROWSE_DNSSD))
     dnssdDeregisterPrinter(p);
-#endif /* HAVE_DNSSD */
+#endif /* defined(HAVE_DNSSD) || defined(HAVE_AVAHI) */
 }
 
 
@@ -694,10 +720,10 @@ cupsdRegisterPrinter(cupsd_printer_t *p)/* I - Printer */
     slpRegisterPrinter(p); */
 #endif /* HAVE_LIBSLP */
 
-#ifdef HAVE_DNSSD
-  if ((BrowseLocalProtocols & BROWSE_DNSSD) && DNSSDRef)
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
+  if ((BrowseLocalProtocols & BROWSE_DNSSD))
     dnssdRegisterPrinter(p);
-#endif /* HAVE_DNSSD */
+#endif /* defined(HAVE_DNSSD) || defined(HAVE_AVAHI) */
 }
 
 
@@ -1411,6 +1437,23 @@ ldap_disconnect(LDAP *ld)		/* I - LDAP handle */
 }
 #endif /* HAVE_LDAP */
 
+#ifdef HAVE_AVAHI
+/*
+ * 'cupsdStartAvahiClient()' - Start an Avahi client if needed
+ */
+
+void
+cupsdStartAvahiClient(void) {
+  if (!AvahiCupsClient && !AvahiCupsClientConnecting)
+  {
+    if (!AvahiCupsPollHandle)
+      AvahiCupsPollHandle = avahi_cups_poll_new ();
+    if (AvahiCupsPollHandle)
+      avahi_client_new (avahi_cups_poll_get (AvahiCupsPollHandle),
+			AVAHI_CLIENT_NO_FAIL, avahi_client_cb, NULL, NULL);
+  }
+}
+#endif /* HAVE_AVAHI */
 
 /*
  * 'cupsdStartBrowsing()' - Start sending and receiving broadcast information.
@@ -1535,13 +1578,16 @@ cupsdStartBrowsing(void)
   else
     BrowseSocket = -1;
 
-#ifdef HAVE_DNSSD
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
   if ((BrowseLocalProtocols | BrowseRemoteProtocols) & BROWSE_DNSSD)
   {
+#ifdef HAVE_DNSSD
     DNSServiceErrorType error;		/* Error from service creation */
+#endif /* HAVE_DNSSD */
     cupsd_listener_t	*lis;		/* Current listening socket */
 
 
+#ifdef HAVE_DNSSD
    /*
     * First create a "master" connection for all registrations...
     */
@@ -1566,6 +1612,7 @@ cupsdStartBrowsing(void)
       fcntl(fd, F_SETFD, fcntl(fd, F_GETFD) | FD_CLOEXEC);
 
       cupsdAddSelect(fd, (cupsd_selfunc_t)dnssdUpdate, NULL, NULL);
+#endif /* HAVE_DNSSD */
 
      /*
       * Then get the port we use for registrations.  If we are not listening
@@ -1607,9 +1654,16 @@ cupsdStartBrowsing(void)
       */
 
       cupsdUpdateDNSSDName();
+#ifdef HAVE_DNSSD
     }
-  }
 #endif /* HAVE_DNSSD */
+  }
+#endif /* defined(HAVE_DNSSD) || defined(HAVE_AVAHI) */
+
+#ifdef HAVE_AVAHI
+  if ((BrowseLocalProtocols | BrowseRemoteProtocols) & BROWSE_DNSSD)
+    cupsdStartAvahiClient();
+#endif /* HAVE_AVAHI */
 
 #ifdef HAVE_LIBSLP
   if ((BrowseLocalProtocols | BrowseRemoteProtocols) & BROWSE_SLP)
@@ -1835,10 +1889,10 @@ cupsdStopBrowsing(void)
     BrowseSocket = -1;
   }
 
-#ifdef HAVE_DNSSD
-  if ((BrowseLocalProtocols & BROWSE_DNSSD) && DNSSDRef)
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
+  if ((BrowseLocalProtocols & BROWSE_DNSSD))
     dnssdStop();
-#endif /* HAVE_DNSSD */
+#endif /* defined(HAVE_DNSSD) || defined(HAVE_AVAHI) */
 
 #ifdef HAVE_LIBSLP
   if (((BrowseLocalProtocols | BrowseRemoteProtocols) & BROWSE_SLP) &&
@@ -1903,7 +1957,7 @@ cupsdStopPolling(void)
 }
 
 
-#ifdef HAVE_DNSSD
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
 /*
  * 'cupsdUpdateDNSSDName()' - Update the computer name we use for browsing...
  */
@@ -1911,7 +1965,12 @@ cupsdStopPolling(void)
 void
 cupsdUpdateDNSSDName(void)
 {
+#ifdef HAVE_DNSSD
   DNSServiceErrorType error;		/* Error from service creation */
+#endif /* HAVE_DNSSD */
+#ifdef HAVE_AVAHI
+  int		ret;			/* Error from service creation */
+#endif /* HAVE_AVAHI */
   char		webif[1024];		/* Web interface share name */
 #ifdef HAVE_COREFOUNDATION_H
   SCDynamicStoreRef sc;			/* Context for dynamic store */
@@ -2043,6 +2102,7 @@ cupsdUpdateDNSSDName(void)
     else
       strlcpy(webif, "CUPS Web Interface", sizeof(webif));
 
+#ifdef HAVE_DNSSD
     if (WebIFRef)
       DNSServiceRefDeallocate(WebIFRef);
 
@@ -2055,6 +2115,42 @@ cupsdUpdateDNSSDName(void)
 				    NULL)) != kDNSServiceErr_NoError)
       cupsdLogMessage(CUPSD_LOG_ERROR,
 		      "DNS-SD web interface registration failed: %d", error);
+#endif /* HAVE_DNSSD */
+
+#ifdef HAVE_AVAHI
+    if (!AvahiCupsClient)
+     /*
+      * Client not yet running.
+      */
+      return;
+
+    if (AvahiWebIFGroup)
+      avahi_entry_group_reset (AvahiWebIFGroup);
+    else
+      AvahiWebIFGroup = avahi_entry_group_new (AvahiCupsClient,
+					       avahi_entry_group_cb,
+					       NULL);
+
+    if (AvahiWebIFGroup)
+    {
+      ret = avahi_entry_group_add_service (AvahiWebIFGroup,
+					   AVAHI_IF_UNSPEC,
+					   AVAHI_PROTO_UNSPEC,
+					   0, /* flags */
+					   webif, /* name */
+					   "_http._tcp", /* type */
+					   NULL, /* domain */
+					   NULL, /* host */
+					   DNSSDPort, /* port */
+					   "path=/", NULL);
+      if (ret == 0)
+	ret = avahi_entry_group_commit (AvahiWebIFGroup);
+
+      if (ret != 0)
+	cupsdLogMessage (CUPSD_LOG_ERROR,
+			 "Avahi web interface registration failed: %d", ret);
+    }
+#endif /* HAVE_AVAHI */
   }
 }
 #endif /* HAVE_DNSSD */
@@ -2300,162 +2396,7 @@ dequote(char       *d,			/* I - Destination string */
 }
 
 
-#ifdef HAVE_DNSSD
-#  ifdef HAVE_COREFOUNDATION
-/*
- * 'dnssdAddAlias()' - Add a DNS-SD alias name.
- */
-
-static void
-dnssdAddAlias(const void *key,		/* I - Key */
-              const void *value,	/* I - Value (domain) */
-	      void       *context)	/* I - Unused */
-{
-  char	valueStr[1024],			/* Domain string */
-	hostname[1024];			/* Complete hostname */
-
-
-  (void)context;
-
-  if (CFGetTypeID((CFStringRef)value) == CFStringGetTypeID() &&
-      CFStringGetCString((CFStringRef)value, valueStr, sizeof(valueStr),
-                         kCFStringEncodingUTF8))
-  {
-    snprintf(hostname, sizeof(hostname), "%s.%s", DNSSDHostName, valueStr);
-    if (!DNSSDAlias)
-      DNSSDAlias = cupsArrayNew(NULL, NULL);
-
-    cupsdAddAlias(DNSSDAlias, hostname);
-    cupsdLogMessage(CUPSD_LOG_DEBUG, "Added Back to My Mac ServerAlias %s",
-		    hostname);
-  }
-  else
-    cupsdLogMessage(CUPSD_LOG_ERROR,
-                    "Bad Back to My Mac domain in dynamic store!");
-}
-#  endif /* HAVE_COREFOUNDATION */
-
-
-/*
- * 'dnssdBuildTxtRecord()' - Build a TXT record from printer info.
- */
-
-static char *				/* O - TXT record */
-dnssdBuildTxtRecord(
-    int             *txt_len,		/* O - TXT record length */
-    cupsd_printer_t *p,			/* I - Printer information */
-    int             for_lpd)		/* I - 1 = LPD, 0 = IPP */
-{
-  int		i;			/* Looping var */
-  char		adminurl_str[256],	/* URL for th admin page */
-		type_str[32],		/* Type to string buffer */
-		state_str[32],		/* State to string buffer */
-		rp_str[1024],		/* Queue name string buffer */
-		air_str[1024],		/* auth-info-required string buffer */
-		*keyvalue[32][2];	/* Table of key/value pairs */
-
-
- /*
-  * Load up the key value pairs...
-  */
-
-  i = 0;
-
-  keyvalue[i  ][0] = "txtvers";
-  keyvalue[i++][1] = "1";
-
-  keyvalue[i  ][0] = "qtotal";
-  keyvalue[i++][1] = "1";
-
-  keyvalue[i  ][0] = "rp";
-  keyvalue[i++][1] = rp_str;
-  if (for_lpd)
-    strlcpy(rp_str, p->name, sizeof(rp_str));
-  else
-    snprintf(rp_str, sizeof(rp_str), "%s/%s", 
-	     (p->type & CUPS_PRINTER_CLASS) ? "classes" : "printers", p->name);
-
-  keyvalue[i  ][0] = "ty";
-  keyvalue[i++][1] = p->make_model ? p->make_model : "Unknown";
-
-  httpAssembleURIf(HTTP_URI_CODING_ALL, adminurl_str, sizeof(adminurl_str),
-                   "http", NULL, DNSSDHostName, DNSSDPort, "/%s/%s",
-		   (p->type & CUPS_PRINTER_CLASS) ? "classes" : "printers",
-		   p->name);
-  keyvalue[i  ][0] = "adminurl";
-  keyvalue[i++][1] = adminurl_str;
-
-  keyvalue[i  ][0] = "note";
-  keyvalue[i++][1] = p->location ? p->location : "";
-
-  keyvalue[i  ][0] = "priority";
-  keyvalue[i++][1] = for_lpd ? "100" : "0";
-
-  keyvalue[i  ][0] = "product";
-  keyvalue[i++][1] = p->product ? p->product : "Unknown";
-
-  snprintf(type_str, sizeof(type_str), "0x%X", p->type | CUPS_PRINTER_REMOTE);
-  snprintf(state_str, sizeof(state_str), "%d", p->state);
-
-  keyvalue[i  ][0] = "printer-state";
-  keyvalue[i++][1] = state_str;
-
-  keyvalue[i  ][0] = "printer-type";
-  keyvalue[i++][1] = type_str;
-
-  keyvalue[i  ][0] = "Transparent";
-  keyvalue[i++][1] = "T";
-
-  keyvalue[i  ][0] = "Binary";
-  keyvalue[i++][1] = "T";
-
-  keyvalue[i  ][0] = "Fax";
-  keyvalue[i++][1] = (p->type & CUPS_PRINTER_FAX) ? "T" : "F";
-
-  keyvalue[i  ][0] = "Color";
-  keyvalue[i++][1] = (p->type & CUPS_PRINTER_COLOR) ? "T" : "F";
-
-  keyvalue[i  ][0] = "Duplex";
-  keyvalue[i++][1] = (p->type & CUPS_PRINTER_DUPLEX) ? "T" : "F";
-
-  keyvalue[i  ][0] = "Staple";
-  keyvalue[i++][1] = (p->type & CUPS_PRINTER_STAPLE) ? "T" : "F";
-
-  keyvalue[i  ][0] = "Copies";
-  keyvalue[i++][1] = (p->type & CUPS_PRINTER_COPIES) ? "T" : "F";
-
-  keyvalue[i  ][0] = "Collate";
-  keyvalue[i++][1] = (p->type & CUPS_PRINTER_COLLATE) ? "T" : "F";
-
-  keyvalue[i  ][0] = "Punch";
-  keyvalue[i++][1] = (p->type & CUPS_PRINTER_PUNCH) ? "T" : "F";
-
-  keyvalue[i  ][0] = "Bind";
-  keyvalue[i++][1] = (p->type & CUPS_PRINTER_BIND) ? "T" : "F";
-
-  keyvalue[i  ][0] = "Sort";
-  keyvalue[i++][1] = (p->type & CUPS_PRINTER_SORT) ? "T" : "F";
-
-  keyvalue[i  ][0] = "Scan";
-  keyvalue[i++][1] = (p->type & CUPS_PRINTER_MFP) ? "T" : "F";
-
-  keyvalue[i  ][0] = "pdl";
-  keyvalue[i++][1] = p->pdl ? p->pdl : "application/postscript";
-
-  if (get_auth_info_required(p, air_str, sizeof(air_str)))
-  {
-    keyvalue[i  ][0] = "air";
-    keyvalue[i++][1] = air_str;
-  }
-
- /*
-  * Then pack them into a proper txt record...
-  */
-
-  return (dnssdPackTxtRecord(txt_len, keyvalue, i));
-}
-
-
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
 /*
  * 'dnssdComparePrinters()' - Compare the registered names of two printers.
  */
@@ -2464,7 +2405,16 @@ static int				/* O - Result of comparison */
 dnssdComparePrinters(cupsd_printer_t *a,/* I - First printer */
                      cupsd_printer_t *b)/* I - Second printer */
 {
-  return (strcasecmp(a->reg_name, b->reg_name));
+  if (!a->reg_name)
+    if (!b->reg_name)
+      return 0;
+    else
+      return -1;
+  else 
+    if (!b->reg_name)
+      return 1;
+    else
+      return (strcasecmp(a->reg_name, b->reg_name));
 }
 
 
@@ -2478,6 +2428,10 @@ dnssdDeregisterPrinter(
     cupsd_printer_t *p)			/* I - Printer */
 {
   cupsdLogMessage(CUPSD_LOG_DEBUG2, "dnssdDeregisterPrinter(%s)", p->name);
+
+#ifdef HAVE_DNSSD
+  if (!DNSSDRef)
+    return;
 
  /*
   * Closing the socket deregisters the service
@@ -2514,6 +2468,23 @@ dnssdDeregisterPrinter(
     free(p->printer_txt);
     p->printer_txt = NULL;
   }
+#endif /* HAVE_DNSSD */
+#ifdef HAVE_AVAHI
+  if (p->avahi_group)
+  {
+    avahi_entry_group_reset (p->avahi_group);
+    avahi_entry_group_free (p->avahi_group);
+    p->avahi_group = NULL;
+
+    if (p->ipp_txt)
+      avahi_string_list_free (p->ipp_txt);
+
+    if (p->printer_txt)
+      avahi_string_list_free (p->printer_txt);
+
+    p->ipp_txt = p->printer_txt = NULL;
+  }
+#endif /* HAVE_AVAHI */
 
  /*
   * Remove the printer from the array of DNS-SD printers, then clear the
@@ -2526,113 +2497,6 @@ dnssdDeregisterPrinter(
 
 
 /*
- * 'dnssdPackTxtRecord()' - Pack an array of key/value pairs into the
- *                          TXT record format.
- */
-
-static char *				/* O - TXT record */
-dnssdPackTxtRecord(int  *txt_len,	/* O - TXT record length */
-		   char *keyvalue[][2],	/* I - Table of key value pairs */
-		   int  count)		/* I - Items in table */
-{
-  int  i;				/* Looping var */
-  int  length;				/* Length of TXT record */
-  int  length2;				/* Length of value */
-  char *txtRecord;			/* TXT record buffer */
-  char *cursor;				/* Looping pointer */
-
-
- /*
-  * Calculate the buffer size
-  */
-
-  if (count <= 0)
-    return (NULL);
-
-  for (length = i = 0; i < count; i++)
-    length += 1 + strlen(keyvalue[i][0]) + 
-	      (keyvalue[i][1] ? 1 + strlen(keyvalue[i][1]) : 0);
-
- /*
-  * Allocate and fill it
-  */
-
-  txtRecord = malloc(length);
-  if (txtRecord)
-  {
-    *txt_len = length;
-
-    for (cursor = txtRecord, i = 0; i < count; i++)
-    {
-     /*
-      * Drop in the p-string style length byte followed by the data
-      */
-
-      length  = strlen(keyvalue[i][0]);
-      length2 = keyvalue[i][1] ? 1 + strlen(keyvalue[i][1]) : 0;
-
-      *cursor++ = (unsigned char)(length + length2);
-
-      memcpy(cursor, keyvalue[i][0], length);
-      cursor += length;
-
-      if (length2)
-      {
-        length2 --;
-	*cursor++ = '=';
-	memcpy(cursor, keyvalue[i][1], length2);
-	cursor += length2;
-      }
-    }
-  }
-
-  return (txtRecord);
-}
-
-
-/*
- * 'dnssdRegisterCallback()' - DNSServiceRegister callback.
- */
-
-static void
-dnssdRegisterCallback(
-    DNSServiceRef	sdRef,		/* I - DNS Service reference */
-    DNSServiceFlags	flags,		/* I - Reserved for future use */
-    DNSServiceErrorType	errorCode,	/* I - Error code */
-    const char		*name,     	/* I - Service name */
-    const char		*regtype,  	/* I - Service type */
-    const char		*domain,   	/* I - Domain. ".local" for now */
-    void		*context)	/* I - User-defined context */
-{
-  cupsd_printer_t *p = (cupsd_printer_t *)context;
-					/* Current printer */
-
-
-  cupsdLogMessage(CUPSD_LOG_DEBUG2, "dnssdRegisterCallback(%s, %s) for %s (%s)",
-                  name, regtype, p ? p->name : "Web Interface",
-		  p ? (p->reg_name ? p->reg_name : "(null)") : "NA");
-
-  if (errorCode)
-  {
-    cupsdLogMessage(CUPSD_LOG_ERROR, 
-		    "DNSServiceRegister failed with error %d", (int)errorCode);
-    return;
-  }
-  else if (p && (!p->reg_name || strcasecmp(name, p->reg_name)))
-  {
-    cupsdLogMessage(CUPSD_LOG_INFO, "Using service name \"%s\" for \"%s\"",
-                    name, p->name);
-
-    cupsArrayRemove(DNSSDPrinters, p);
-    cupsdSetString(&p->reg_name, name);
-    cupsArrayAdd(DNSSDPrinters, p);
-
-    LastEvent |= CUPSD_EVENT_PRINTER_MODIFIED;
-  }
-}
-
-
-/*
  * 'dnssdRegisterPrinter()' - Start sending broadcast information for a printer
  *		              or update the broadcast contents.
  */
@@ -2640,18 +2504,37 @@ dnssdRegisterCallback(
 static void 
 dnssdRegisterPrinter(cupsd_printer_t *p)/* I - Printer */
 {
+#ifdef HAVE_DNSSD
   DNSServiceErrorType	se;		/* dnssd errors */
   char			*ipp_txt,	/* IPP TXT record buffer */
-			*printer_txt,	/* LPD TXT record buffer */
-			name[1024],	/* Service name */
-			*nameptr;	/* Pointer into name */
+    			*printer_txt;	/* LPD TXT record buffer */
   int			ipp_len,	/* IPP TXT record length */
 			printer_len;	/* LPD TXT record length */
+  char			name[1024];	/* Service name */
+#endif /* HAVE_DNSSD */
+#ifdef HAVE_AVAHI
+  int			ret;		/* Error code */
+  AvahiStringList	*ipp_txt,	/* IPP TXT record list */
+			*printer_txt;	/* LPD TXT record buffer */
+  char			name[AVAHI_LABEL_MAX];	/* Service name */
+#endif /* HAVE_AVAHI */
   const char		*regtype;	/* Registration type */
+  char			regsubtype[64], /* Registration subtype */
+			*nameptr;	/* Pointer into name */
 
+
+#ifdef HAVE_DNSSD
+  if (!DNSSDRef)
+    return;
 
   cupsdLogMessage(CUPSD_LOG_DEBUG2, "dnssdRegisterPrinter(%s) %s", p->name,
                   !p->ipp_ref ? "new" : "update");
+
+#endif /* HAVE_DNSSD */
+#ifdef HAVE_AVAHI
+  cupsdLogMessage(CUPSD_LOG_DEBUG2, "dnssdRegisterPrinter(%s) %s", p->name,
+		  !p->avahi_group ? "new" : "update");
+#endif /* HAVE_AVAHI */
 
  /*
   * If per-printer sharing was just disabled make sure we're not
@@ -2671,12 +2554,36 @@ dnssdRegisterPrinter(cupsd_printer_t *p)/* I - Printer */
   if (p->info && strlen(p->info) > 0)
   {
     if (DNSSDComputerName)
-      snprintf(name, sizeof(name), "%s @ %s", p->info, DNSSDComputerName);
+    {
+     /*
+      * Make sure there is room for at least 15 characters of
+      * DNSSDComputerName.
+      */
+
+      assert(sizeof(name) >= 15 + 4);
+      nameptr = name + strlcpy(name, p->info,
+			       sizeof(name) - 4 -
+			       strnlen(DNSSDComputerName, 15));
+      nameptr += strlcpy(nameptr, " @ ", sizeof(name) - (nameptr - name));
+      strlcpy(nameptr, DNSSDComputerName, sizeof(name) - (nameptr - name));
+    }
     else
       strlcpy(name, p->info, sizeof(name));
   }
   else if (DNSSDComputerName)
-    snprintf(name, sizeof(name), "%s @ %s", p->name, DNSSDComputerName);
+  {
+   /*
+    * Make sure there is room for at least 15 characters of
+    * DNSSDComputerName.
+    */
+
+    assert(sizeof(name) >= 15 + 4);
+    nameptr = name + strlcpy(name, p->info,
+			     sizeof(name) - 4 -
+			     strnlen(DNSSDComputerName, 15));
+    nameptr += strlcpy(nameptr, " @ ", sizeof(name) - (nameptr - name));
+    strlcpy(nameptr, DNSSDComputerName, sizeof(name) - (nameptr - name));
+  }
   else
     strlcpy(name, p->name, sizeof(name));
 
@@ -2697,6 +2604,7 @@ dnssdRegisterPrinter(cupsd_printer_t *p)/* I - Printer */
   * Register IPP and (optionally) LPD...
   */
 
+#ifdef HAVE_DNSSD
   ipp_len = 0;				/* anti-compiler-warning-code */
   ipp_txt = dnssdBuildTxtRecord(&ipp_len, p, 0);
 
@@ -2863,6 +2771,160 @@ dnssdRegisterPrinter(cupsd_printer_t *p)/* I - Printer */
     if (printer_txt)
       free(printer_txt);
   }
+#endif /* HAVE_DNSSD */
+#ifdef HAVE_AVAHI
+  if (!AvahiCupsClient)
+   /*
+    * Client not running yet.  The client callback will call us again later.
+    */
+    return;
+
+  ipp_txt = dnssdBuildTxtRecord(NULL, p, 0);
+  printer_txt = dnssdBuildTxtRecord(NULL, p, 1);
+  regtype = (p->type & CUPS_PRINTER_FAX) ? "_fax-ipp._tcp" : "_ipp._tcp";
+  snprintf(regsubtype, sizeof(regsubtype), "_universal._sub.%s", regtype);
+
+  if (p->avahi_group && p->ipp_txt && ipp_txt &&
+      !avahi_string_list_equal (p->ipp_txt, ipp_txt))
+  {
+   /*
+    * Update the existing registration...
+    */
+
+    avahi_string_list_free (p->ipp_txt);
+
+    if (p->printer_txt)
+      avahi_string_list_free (p->printer_txt);
+
+    ret = avahi_entry_group_update_service_txt_strlst (p->avahi_group,
+						       AVAHI_IF_UNSPEC,
+						       AVAHI_PROTO_UNSPEC,
+						       0, name, regtype, NULL,
+						       ipp_txt);
+    if (ret < 0)
+      goto update_failed;
+
+    p->ipp_txt = ipp_txt;
+    ipp_txt = NULL;
+
+    if (BrowseLocalProtocols & BROWSE_LPD)
+    {
+      ret = avahi_entry_group_update_service_txt_strlst (p->avahi_group,
+							 AVAHI_IF_UNSPEC,
+							 AVAHI_PROTO_UNSPEC,
+							 0, name,
+							 "_printer._tcp", NULL,
+							 printer_txt);
+
+      if (ret < 0)
+	goto update_failed;
+
+      p->printer_txt = printer_txt;
+      printer_txt = NULL;
+    }
+
+    ret = avahi_entry_group_commit (p->avahi_group);
+    if (ret < 0)
+    {
+    update_failed:
+      cupsdLogMessage (CUPSD_LOG_ERROR,
+		       "Failed to update TXT record for %s: %d",
+		       name, ret);
+      avahi_entry_group_reset (p->avahi_group);
+      avahi_entry_group_free (p->avahi_group);
+      p->avahi_group = NULL;
+      ipp_txt = p->ipp_txt;
+      p->ipp_txt = NULL;
+    }
+  }
+
+  if (!p->avahi_group)
+  {
+   /*
+    * Initial registration.  Use the _fax subtype for fax queues...
+    */
+
+    p->avahi_group = avahi_entry_group_new (AvahiCupsClient,
+					    avahi_entry_group_cb,
+					    p);
+
+    cupsdLogMessage(CUPSD_LOG_DEBUG,
+		    "Registering Avahi printer %s with name \"%s\" and "
+		    "type \"%s\"", p->name, name, regtype);
+
+    if (!p->avahi_group)
+    {
+      ret = 0;
+      goto add_failed;
+    }
+
+    ret = avahi_entry_group_add_service_strlst (p->avahi_group,
+						AVAHI_IF_UNSPEC,
+						AVAHI_PROTO_UNSPEC,
+						0, name, regtype, NULL, NULL,
+						DNSSDPort,
+						ipp_txt);
+    if (ret < 0)
+      goto add_failed;
+
+    p->ipp_txt = ipp_txt;
+    ipp_txt = NULL;
+
+    if (BrowseLocalProtocols & BROWSE_LPD)
+    {
+      cupsdLogMessage(CUPSD_LOG_DEBUG,
+		      "Registering Avahi printer %s with name \"%s\" and "
+		      "type \"_printer._tcp\"", p->name, name);
+
+      ret = avahi_entry_group_add_service_strlst (p->avahi_group,
+						  AVAHI_IF_UNSPEC,
+						  AVAHI_PROTO_UNSPEC,
+						  0, name,
+						  "_printer._tcp", NULL, NULL,
+						  515,
+						  printer_txt);
+      if (ret < 0)
+	goto add_failed;
+
+      p->printer_txt = printer_txt;
+      printer_txt = NULL;
+    }
+
+
+    ret = avahi_entry_group_add_service_subtype(p->avahi_group,
+						AVAHI_IF_UNSPEC,
+						AVAHI_PROTO_UNSPEC,
+						0, name,
+						regtype, NULL,
+						regsubtype);
+    if (ret < 0)
+      goto add_failed;
+
+    ret = avahi_entry_group_commit (p->avahi_group);
+
+    if (ret < 0)
+    {
+    add_failed:
+      cupsdLogMessage (CUPSD_LOG_ERROR,
+		       "Failed to add Avahi entry for %s: %d",
+		       name, ret);
+      if (p->avahi_group)
+      {
+	avahi_entry_group_reset (p->avahi_group);
+	avahi_entry_group_free (p->avahi_group);
+	p->avahi_group = NULL;
+      }
+      ipp_txt = p->ipp_txt;
+      p->ipp_txt = NULL;
+    }
+  }
+
+  if (ipp_txt)
+    avahi_string_list_free (ipp_txt);
+
+  if (printer_txt)
+    avahi_string_list_free (printer_txt);
+#endif /* HAVE_AVAHI */
 }
 
 
@@ -2875,6 +2937,10 @@ dnssdStop(void)
 {
   cupsd_printer_t	*p;		/* Current printer */
 
+#ifdef HAVE_DNSSD
+  if (!DNSSDRef)
+    return;
+#endif /* HAVE_DNSSD */
 
  /*
   * De-register the individual printers
@@ -2885,6 +2951,7 @@ dnssdStop(void)
        p = (cupsd_printer_t *)cupsArrayNext(Printers))
     dnssdDeregisterPrinter(p);
 
+#ifdef HAVE_DNSSD
  /*
   * Shutdown the rest of the service refs...
   */
@@ -2905,11 +2972,284 @@ dnssdStop(void)
 
   DNSServiceRefDeallocate(DNSSDRef);
   DNSSDRef = NULL;
+#endif /* HAVE_DNSSD */
 
   cupsArrayDelete(DNSSDPrinters);
   DNSSDPrinters = NULL;
 
   DNSSDPort = 0;
+}
+
+
+/*
+ * 'dnssdBuildTxtRecord()' - Build a TXT record from printer info.
+ */
+
+static cupsd_txt_record_t		/* O - TXT record */
+dnssdBuildTxtRecord(
+    int             *txt_len,		/* O - TXT record length */
+    cupsd_printer_t *p,			/* I - Printer information */
+    int             for_lpd)		/* I - 1 = LPD, 0 = IPP */
+{
+  int		i;			/* Looping var */
+  char		adminurl_str[256],	/* URL for th admin page */
+		type_str[32],		/* Type to string buffer */
+		state_str[32],		/* State to string buffer */
+		rp_str[1024],		/* Queue name string buffer */
+		air_str[1024],		/* auth-info-required string buffer */
+		*keyvalue[32][2];	/* Table of key/value pairs */
+
+
+ /*
+  * Load up the key value pairs...
+  */
+
+  i = 0;
+
+  keyvalue[i  ][0] = "txtvers";
+  keyvalue[i++][1] = "1";
+
+  keyvalue[i  ][0] = "qtotal";
+  keyvalue[i++][1] = "1";
+
+  keyvalue[i  ][0] = "rp";
+  keyvalue[i++][1] = rp_str;
+  if (for_lpd)
+    strlcpy(rp_str, p->name, sizeof(rp_str));
+  else
+    snprintf(rp_str, sizeof(rp_str), "%s/%s", 
+	     (p->type & CUPS_PRINTER_CLASS) ? "classes" : "printers", p->name);
+
+  keyvalue[i  ][0] = "ty";
+  keyvalue[i++][1] = p->make_model ? p->make_model : "Unknown";
+
+  httpAssembleURIf(HTTP_URI_CODING_ALL, adminurl_str, sizeof(adminurl_str),
+                   "http", NULL, DNSSDHostName, DNSSDPort, "/%s/%s",
+		   (p->type & CUPS_PRINTER_CLASS) ? "classes" : "printers",
+		   p->name);
+  keyvalue[i  ][0] = "adminurl";
+  keyvalue[i++][1] = adminurl_str;
+
+  keyvalue[i  ][0] = "note";
+  keyvalue[i++][1] = p->location ? p->location : "";
+
+  keyvalue[i  ][0] = "priority";
+  keyvalue[i++][1] = for_lpd ? "100" : "0";
+
+  keyvalue[i  ][0] = "product";
+  keyvalue[i++][1] = p->product ? p->product : "Unknown";
+
+  snprintf(type_str, sizeof(type_str), "0x%X", p->type | CUPS_PRINTER_REMOTE);
+  snprintf(state_str, sizeof(state_str), "%d", p->state);
+
+  keyvalue[i  ][0] = "printer-state";
+  keyvalue[i++][1] = state_str;
+
+  keyvalue[i  ][0] = "printer-type";
+  keyvalue[i++][1] = type_str;
+
+  keyvalue[i  ][0] = "Transparent";
+  keyvalue[i++][1] = "T";
+
+  keyvalue[i  ][0] = "Binary";
+  keyvalue[i++][1] = "T";
+
+  keyvalue[i  ][0] = "Fax";
+  keyvalue[i++][1] = (p->type & CUPS_PRINTER_FAX) ? "T" : "F";
+
+  keyvalue[i  ][0] = "Color";
+  keyvalue[i++][1] = (p->type & CUPS_PRINTER_COLOR) ? "T" : "F";
+
+  keyvalue[i  ][0] = "Duplex";
+  keyvalue[i++][1] = (p->type & CUPS_PRINTER_DUPLEX) ? "T" : "F";
+
+  keyvalue[i  ][0] = "Staple";
+  keyvalue[i++][1] = (p->type & CUPS_PRINTER_STAPLE) ? "T" : "F";
+
+  keyvalue[i  ][0] = "Copies";
+  keyvalue[i++][1] = (p->type & CUPS_PRINTER_COPIES) ? "T" : "F";
+
+  keyvalue[i  ][0] = "Collate";
+  keyvalue[i++][1] = (p->type & CUPS_PRINTER_COLLATE) ? "T" : "F";
+
+  keyvalue[i  ][0] = "Punch";
+  keyvalue[i++][1] = (p->type & CUPS_PRINTER_PUNCH) ? "T" : "F";
+
+  keyvalue[i  ][0] = "Bind";
+  keyvalue[i++][1] = (p->type & CUPS_PRINTER_BIND) ? "T" : "F";
+
+  keyvalue[i  ][0] = "Sort";
+  keyvalue[i++][1] = (p->type & CUPS_PRINTER_SORT) ? "T" : "F";
+
+  keyvalue[i  ][0] = "Scan";
+  keyvalue[i++][1] = (p->type & CUPS_PRINTER_MFP) ? "T" : "F";
+
+  keyvalue[i  ][0] = "pdl";
+  keyvalue[i++][1] = p->pdl ? p->pdl : "application/postscript";
+
+  keyvalue[i  ][0] = "URF";
+  keyvalue[i++][1] = "none";
+
+  if (get_auth_info_required(p, air_str, sizeof(air_str)))
+  {
+    keyvalue[i  ][0] = "air";
+    keyvalue[i++][1] = air_str;
+  }
+
+ /*
+  * Then pack them into a proper txt record...
+  */
+
+#ifdef HAVE_DNSSD
+  return (dnssdPackTxtRecord(txt_len, keyvalue, i));
+#endif /* HAVE_DNSSD */
+#ifdef HAVE_AVAHI
+  return (avahiPackTxtRecord(keyvalue, i));
+#endif /* HAVE_AVAHI */
+}
+#endif /* defined(HAVE_DNSSD) || defined(HAVE_AVAHI) */
+
+
+#ifdef HAVE_DNSSD
+#  ifdef HAVE_COREFOUNDATION
+/*
+ * 'dnssdAddAlias()' - Add a DNS-SD alias name.
+ */
+
+static void
+dnssdAddAlias(const void *key,		/* I - Key */
+              const void *value,	/* I - Value (domain) */
+	      void       *context)	/* I - Unused */
+{
+  char	valueStr[1024],			/* Domain string */
+	hostname[1024];			/* Complete hostname */
+
+
+  (void)context;
+
+  if (CFGetTypeID((CFStringRef)value) == CFStringGetTypeID() &&
+      CFStringGetCString((CFStringRef)value, valueStr, sizeof(valueStr),
+                         kCFStringEncodingUTF8))
+  {
+    snprintf(hostname, sizeof(hostname), "%s.%s", DNSSDHostName, valueStr);
+    if (!DNSSDAlias)
+      DNSSDAlias = cupsArrayNew(NULL, NULL);
+
+    cupsdAddAlias(DNSSDAlias, hostname);
+    cupsdLogMessage(CUPSD_LOG_DEBUG, "Added Back to My Mac ServerAlias %s",
+		    hostname);
+  }
+  else
+    cupsdLogMessage(CUPSD_LOG_ERROR,
+                    "Bad Back to My Mac domain in dynamic store!");
+}
+#  endif /* HAVE_COREFOUNDATION */
+
+
+/*
+ * 'dnssdPackTxtRecord()' - Pack an array of key/value pairs into the
+ *                          TXT record format.
+ */
+
+static char *				/* O - TXT record */
+dnssdPackTxtRecord(int  *txt_len,	/* O - TXT record length */
+		   char *keyvalue[][2],	/* I - Table of key value pairs */
+		   int  count)		/* I - Items in table */
+{
+  int  i;				/* Looping var */
+  int  length;				/* Length of TXT record */
+  int  length2;				/* Length of value */
+  char *txtRecord;			/* TXT record buffer */
+  char *cursor;				/* Looping pointer */
+
+
+ /*
+  * Calculate the buffer size
+  */
+
+  if (count <= 0)
+    return (NULL);
+
+  for (length = i = 0; i < count; i++)
+    length += 1 + strlen(keyvalue[i][0]) + 
+	      (keyvalue[i][1] ? 1 + strlen(keyvalue[i][1]) : 0);
+
+ /*
+  * Allocate and fill it
+  */
+
+  txtRecord = malloc(length);
+  if (txtRecord)
+  {
+    *txt_len = length;
+
+    for (cursor = txtRecord, i = 0; i < count; i++)
+    {
+     /*
+      * Drop in the p-string style length byte followed by the data
+      */
+
+      length  = strlen(keyvalue[i][0]);
+      length2 = keyvalue[i][1] ? 1 + strlen(keyvalue[i][1]) : 0;
+
+      *cursor++ = (unsigned char)(length + length2);
+
+      memcpy(cursor, keyvalue[i][0], length);
+      cursor += length;
+
+      if (length2)
+      {
+        length2 --;
+	*cursor++ = '=';
+	memcpy(cursor, keyvalue[i][1], length2);
+	cursor += length2;
+      }
+    }
+  }
+
+  return (txtRecord);
+}
+
+
+/*
+ * 'dnssdRegisterCallback()' - DNSServiceRegister callback.
+ */
+
+static void
+dnssdRegisterCallback(
+    DNSServiceRef	sdRef,		/* I - DNS Service reference */
+    DNSServiceFlags	flags,		/* I - Reserved for future use */
+    DNSServiceErrorType	errorCode,	/* I - Error code */
+    const char		*name,     	/* I - Service name */
+    const char		*regtype,  	/* I - Service type */
+    const char		*domain,   	/* I - Domain. ".local" for now */
+    void		*context)	/* I - User-defined context */
+{
+  cupsd_printer_t *p = (cupsd_printer_t *)context;
+					/* Current printer */
+
+
+  cupsdLogMessage(CUPSD_LOG_DEBUG2, "dnssdRegisterCallback(%s, %s) for %s (%s)",
+                  name, regtype, p ? p->name : "Web Interface",
+		  p ? (p->reg_name ? p->reg_name : "(null)") : "NA");
+
+  if (errorCode)
+  {
+    cupsdLogMessage(CUPSD_LOG_ERROR, 
+		    "DNSServiceRegister failed with error %d", (int)errorCode);
+    return;
+  }
+  else if (p && (!p->reg_name || strcasecmp(name, p->reg_name)))
+  {
+    cupsdLogMessage(CUPSD_LOG_INFO, "Using service name \"%s\" for \"%s\"",
+                    name, p->name);
+
+    cupsArrayRemove(DNSSDPrinters, p);
+    cupsdSetString(&p->reg_name, name);
+    cupsArrayAdd(DNSSDPrinters, p);
+
+    LastEvent |= CUPSD_EVENT_PRINTER_MODIFIED;
+  }
 }
 
 
@@ -2932,6 +3272,146 @@ dnssdUpdate(void)
   }
 }
 #endif /* HAVE_DNSSD */
+
+
+#ifdef HAVE_AVAHI
+/*
+ * 'avahiPackTxtRecord()' - Pack an array of key/value pairs into an
+ *                          AvahiStringList.
+ */
+
+static AvahiStringList *		/* O - new string list */
+avahiPackTxtRecord(char *keyvalue[][2],	/* I - Table of key value pairs */
+		   int count)		/* I - Items in table */
+{
+  AvahiStringList *strlst = NULL;
+  char **elements;
+  size_t len;
+  int i = 0;
+
+  elements = malloc ((1 + count) * sizeof (char *));
+  if (!elements)
+    goto cleanup;
+
+  for (i = 0; i < count; i++)
+  {
+    len = (1 + strlen (keyvalue[i][0]) +
+	   (keyvalue[i][1] ? 1 + strlen (keyvalue[i][1]) : 1));
+    elements[i] = malloc (len * sizeof (char));
+    if (!elements[i])
+      goto cleanup;
+
+    snprintf (elements[i], len, "%s=%s", keyvalue[i][0], keyvalue[i][1]);
+  }
+
+  strlst = avahi_string_list_new_from_array ((const char **) elements, count);
+
+cleanup:
+  while (--i >= 0)
+    free (elements[i]);
+
+  free (elements);
+  return (strlst);
+}
+
+
+/*
+ * 'avahi_entry_group_cb()' - Avahi entry group callback function.
+ */
+static void
+avahi_entry_group_cb (AvahiEntryGroup *group,
+		      AvahiEntryGroupState state,
+		      void *userdata)
+{
+  char *name;
+
+  if (userdata)
+    name = ((cupsd_printer_t *) userdata)->reg_name;
+  else
+    name = "CUPS web interface";
+
+  switch (state)
+  {
+  case AVAHI_ENTRY_GROUP_UNCOMMITED:
+  case AVAHI_ENTRY_GROUP_REGISTERING:
+    break;
+
+  case AVAHI_ENTRY_GROUP_ESTABLISHED:
+    cupsdLogMessage (CUPSD_LOG_DEBUG,
+		     "Avahi entry group established for %s", name);
+    break;
+
+  default:
+    cupsdLogMessage (CUPSD_LOG_DEBUG,
+		     "Avahi entry group %s has state %d",
+		     name, state);
+    break;
+  }
+}
+
+/*
+ * 'avahi_client_cb()' - Avahi client callback function.
+ */
+static void
+avahi_client_cb (AvahiClient *client,
+		 AvahiClientState state,
+		 void *userdata)
+{
+  cupsd_printer_t *printer;
+  switch (state)
+  {
+  case AVAHI_CLIENT_S_RUNNING:
+   /*
+    * Avahi client started successfully.
+    */
+    AvahiCupsClient = client;
+    AvahiCupsClientConnecting = 0;
+    cupsdLogMessage (CUPSD_LOG_DEBUG, "Avahi client started");
+
+    cupsdUpdateDNSSDName ();
+
+    for (printer = (cupsd_printer_t *)cupsArrayFirst(Printers);
+	 printer;
+	 printer = (cupsd_printer_t *)cupsArrayNext(Printers))
+      if (Browsing && (BrowseLocalProtocols & BROWSE_DNSSD) &&
+	  (!(printer->type & (CUPS_PRINTER_REMOTE | CUPS_PRINTER_IMPLICIT |
+			      CUPS_PRINTER_SCANNER))) && printer->shared)
+	dnssdRegisterPrinter (printer);
+
+    break;
+
+  case AVAHI_CLIENT_CONNECTING:
+   /*
+    * No Avahi daemon, client is waiting.
+    */
+    AvahiCupsClientConnecting = 1;
+    cupsdLogMessage (CUPSD_LOG_DEBUG, "Avahi client connecting");
+    break;
+
+  case AVAHI_CLIENT_FAILURE:
+   /*
+    * Avahi client failed, close it to allow a clean restart.
+    */
+    cupsdLogMessage (CUPSD_LOG_ERROR,
+		     "Avahi client failed, "
+		     "closing client to allow a clean restart");
+
+    for (printer = (cupsd_printer_t *)cupsArrayFirst(Printers);
+	 printer;
+	 printer = (cupsd_printer_t *)cupsArrayNext(Printers))
+      dnssdDeregisterPrinter (printer);
+
+    avahi_client_free(client);
+    AvahiCupsClientConnecting = 0;
+    AvahiCupsClient = NULL;
+
+    break;
+
+  default:
+    cupsdLogMessage (CUPSD_LOG_DEBUG, "Avahi client state: %d", state);
+  }
+}
+#endif /* HAVE_AVAHI */
 
 
 /*
