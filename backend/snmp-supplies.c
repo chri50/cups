@@ -1,5 +1,5 @@
 /*
- * "$Id: snmp-supplies.c 9592 2011-03-10 03:50:59Z mike $"
+ * "$Id: snmp-supplies.c 9853 2011-07-06 20:27:31Z mike $"
  *
  *   SNMP supplies functions for CUPS.
  *
@@ -233,7 +233,10 @@ backendSNMPSupplies(
 
     for (i = 0, ptr = value; i < num_supplies; i ++, ptr += strlen(ptr))
     {
-      percent = 100 * supplies[i].level / supplies[i].max_capacity;
+      if (supplies[i].max_capacity > 0)
+	percent = 100 * supplies[i].level / supplies[i].max_capacity;
+      else
+        percent = 50;
 
       if (percent <= 10)
       {
@@ -986,5 +989,5 @@ utf16_to_utf8(
 
 
 /*
- * End of "$Id: snmp-supplies.c 9592 2011-03-10 03:50:59Z mike $".
+ * End of "$Id: snmp-supplies.c 9853 2011-07-06 20:27:31Z mike $".
  */

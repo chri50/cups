@@ -1,5 +1,5 @@
 dnl
-dnl "$Id: cups-common.m4 9482 2011-01-14 18:57:44Z mike $"
+dnl "$Id: cups-common.m4 9853 2011-07-06 20:27:31Z mike $"
 dnl
 dnl   Common configuration stuff for CUPS.
 dnl
@@ -20,7 +20,7 @@ dnl Set the name of the config header file...
 AC_CONFIG_HEADER(config.h)
 
 dnl Version number information...
-CUPS_VERSION=1.4.7
+CUPS_VERSION=1.4.8
 CUPS_REVISION=
 #if test -z "$CUPS_REVISION" -a -d .svn; then
 #	CUPS_REVISION="-r`svnversion . | awk -F: '{print $NF}' | sed -e '1,$s/[[a-zA-Z]]*//g'`"
@@ -338,7 +338,7 @@ case $uname in
  		AC_ARG_WITH(operkey, [  --with-operkey          set the default operator @AUTHKEY value],
 			default_operkey="$withval",
 			default_operkey="default")
- 
+
 		AC_CHECK_HEADER(Security/Authorization.h, [
 			AC_DEFINE(HAVE_AUTHORIZATION_H)
 
@@ -371,5 +371,5 @@ AC_SUBST(FONTS)
 AC_SUBST(LEGACY_BACKENDS)
 
 dnl
-dnl End of "$Id: cups-common.m4 9482 2011-01-14 18:57:44Z mike $".
+dnl End of "$Id: cups-common.m4 9853 2011-07-06 20:27:31Z mike $".
 dnl

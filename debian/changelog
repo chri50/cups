@@ -1,3 +1,47 @@
+cups (1.4.8-2) unstable; urgency=low
+
+  * debian/control: Unbreak Maintainer: field. (Closes: #636574)
+
+ -- Martin Pitt <mpitt@debian.org>  Thu, 04 Aug 2011 13:28:47 +0200
+
+cups (1.4.8-1) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/filters/pstopdf: Added "-dNOINTERPOLATE" to the Ghostscript command
+    line, this makes Ghostscript vastly faster.
+  * debian/patches/use-ps2write-ghostscript-device-for-pdftops-filter.patch:
+    Regenerated the patch, as we actually use it now. The "ps2write" output
+    device produces finally DSC-conforming PostScript and so we can use
+    Ghostscript for the pdftops filter. Made the patch also adding the
+    "-dNOINTERPOLATE" to the Ghostscript command line.
+  * debian/patches/series: Reactivated
+    use-ps2write-ghostscript-device-for-pdftops-filter.patch and promoted it
+    to the patches which should be submitted upstream.
+  * debian/rules: Build CUPS with a Ghostscript-based pdftops filter.
+  * debian/rules: Do not rename the pdftoraster filter of the PDF filter
+    add-on any more as Ghostscript has the unified gstoraster filter now.
+    Change the cost factor to make Ghostscript's filter being preferred.
+  * debian/control: Let the "cups" package require at least version 9.02
+    of Ghostscript, as this version does not ship a filter named pdftoraster
+    any more. Added Replaces/Breaks on older Ghostscript versions
+    (ghostscript-cups binary package) for smooth updating.
+
+  [ Jamie Strandboge ]
+  * debian/local/apparmor-profile: we need to allow both /var/run and /run
+    for upgrades (LP: #810687)
+
+  [ Martin Pitt ]
+  * New upstream bug fix release, fixing two regressions from 1.4.7.
+    (Closes: #635842)
+  * debian/watch: Look for tar.bz2 instead of tar.gz now.
+  * debian/local/apparmor-profile: Explicitly deny cupsd to write /run/samba,
+    to avoid dmesg errors. (LP: #812035)
+  * debian/control: Slightly relax ghostscript dependency to also match
+    current Debian version.
+  * debian/control: Add missing ghostscript build dependency.
+
+ -- Martin Pitt <mpitt@debian.org>  Thu, 04 Aug 2011 09:35:35 +0200
+
 cups (1.4.7-1) unstable; urgency=low
 
   * New upstream version.
