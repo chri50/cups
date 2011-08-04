@@ -1,5 +1,5 @@
 /*
- * "$Id: job.c 9716 2011-04-22 22:38:01Z mike $"
+ * "$Id: job.c 9855 2011-07-14 15:43:07Z mike $"
  *
  *   Job management routines for the CUPS scheduler.
  *
@@ -291,7 +291,7 @@ cupsdCheckJobs(void)
 
     if (job->kill_time && job->kill_time <= curtime)
     {
-      cupsdLogMessage(CUPSD_LOG_ERROR, "[Job %d] Stopping unresponsive job!", 
+      cupsdLogMessage(CUPSD_LOG_ERROR, "[Job %d] Stopping unresponsive job!",
 		      job->id);
 
       stop_job(job, CUPSD_JOB_FORCE);
@@ -1274,14 +1274,19 @@ cupsdDeleteJob(cupsd_job_t       *job,	/* I - Job */
     free(job->compressions);
     free(job->filetypes);
 
-    while (job->num_files > 0)
+    if (action == CUPSD_JOB_PURGE)
     {
-      snprintf(filename, sizeof(filename), "%s/d%05d-%03d", RequestRoot,
-	       job->id, job->num_files);
-      unlink(filename);
+      while (job->num_files > 0)
+      {
+	snprintf(filename, sizeof(filename), "%s/d%05d-%03d", RequestRoot,
+		 job->id, job->num_files);
+	unlink(filename);
 
-      job->num_files --;
+	job->num_files --;
+      }
     }
+    else
+      job->num_files = 0;
   }
 
   if (job->history)
@@ -3160,7 +3165,7 @@ get_options(cupsd_job_t *job,		/* I - Job */
 				 IPP_TAG_ZERO)) != NULL &&
 	(attr->value_tag == IPP_TAG_KEYWORD ||
 	 attr->value_tag == IPP_TAG_NAME) &&
-	(ppd = _pwgGetOutputBin(pwg, attr->values[0].string.text)) != NULL) 
+	(ppd = _pwgGetOutputBin(pwg, attr->values[0].string.text)) != NULL)
     {
      /*
       * Map output-bin to OutputBin option...
@@ -4606,5 +4611,5 @@ update_job_attrs(cupsd_job_t *job,	/* I - Job to update */
 
 
 /*
- * End of "$Id: job.c 9716 2011-04-22 22:38:01Z mike $".
+ * End of "$Id: job.c 9855 2011-07-14 15:43:07Z mike $".
  */
