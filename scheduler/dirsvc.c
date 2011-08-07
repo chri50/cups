@@ -791,7 +791,7 @@ cupsdSaveRemoteCache(void)
   strftime(temp, sizeof(temp) - 1, "%Y-%m-%d %H:%M", curdate);
 
   cupsFilePuts(fp, "# Remote cache file for " CUPS_SVERSION "\n");
-  cupsFilePrintf(fp, "# Written by cupsd on %s\n", temp);
+  cupsFilePrintf(fp, "# Written by cupsd\n");
 
  /*
   * Write each local printer known to the system...
