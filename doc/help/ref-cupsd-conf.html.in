@@ -133,7 +133,7 @@ to the access log file. The following levels are defined:</P>
 <H3>Description</H3>
 
 <P>The <CODE>Allow</CODE> directive specifies a hostname, IP
-address, or network that is allowed access to the server. 
+address, or network that is allowed access to the server.
 <CODE>Allow</CODE> directives are cumulative, so multiple
 <CODE>Allow</CODE> directives can be used to allow access for
 multiple hosts or networks.</P>
@@ -1483,6 +1483,48 @@ the file is assumed to be relative to the <A
 HREF="#ServerRoot"><CODE>ServerRoot</CODE></A> directory.</P>
 
 
+<H2 CLASS="title"><SPAN CLASS="info">CUPS 1.5</SPAN><A NAME="JobPrivateAccess">JobPrivateAccess</A></H2>
+
+<H3>Examples</H3>
+
+<PRE CLASS="command">
+JobPrivateAccess all
+JobPrivateAccess default
+JobPrivateAccess {user|@group|@ACL|@OWNER|@SYSTEM}+
+</PRE>
+
+<H3>Description</H3>
+
+<P>The <CODE>JobPrivateAccess</CODE> directive specifies the access list for a
+job's private values. The "default" access list is "@OWNER @SYSTEM". "@ACL" maps
+to the printer's requesting-user-name-allowed or requesting-user-name-denied
+values.</P>
+
+<P>The <CODE>JobPrivateAccess</CODE> directive must appear inside a <A
+HREF="#Policy"><CODE>Policy</CODE></A> section.</P>
+
+
+<H2 CLASS="title"><SPAN CLASS="info">CUPS 1.5</SPAN><A NAME="JobPrivateValues">JobPrivateValues</A></H2>
+
+<H3>Examples</H3>
+
+<PRE CLASS="command">
+JobPrivateValues all
+JobPrivateValues default
+JobPrivateValues none
+JobPrivateValues attribute-name-1 [ ... attribute-name-N ]
+</PRE>
+
+<H3>Description</H3>
+
+<P>The <CODE>JobPrivateValues</CODE> directive specifies the list of job values
+to make private. The "default" values are "job-name",
+"job-originating-host-name", and "job-originating-user-name".</P>
+
+<P>The <CODE>JobPrivateValues</CODE> directive must appear inside a <A
+HREF="#Policy"><CODE>Policy</CODE></A> section.</P>
+
+
 <H2 CLASS="title"><SPAN CLASS="info">CUPS 1.2/Mac OS X 10.5</SPAN><A NAME="JobRetryInterval">JobRetryInterval</A></H2>
 
 <H3>Examples</H3>
@@ -2650,7 +2692,7 @@ appear inside a <A HREF="#Location"><CODE>Location</CODE></A> or
 <H3>Examples</H3>
 
 <PRE CLASS="command">
-RIPCache 8m
+RIPCache 128m
 RIPCache 1g
 RIPCache 2048k
 </PRE>
@@ -2661,7 +2703,7 @@ RIPCache 2048k
 memory cache used by Raster Image Processor ("RIP") filters such
 as <CODE>imagetoraster</CODE> and <CODE>pstoraster</CODE>. The
 size can be suffixed with a "k" for kilobytes, "m" for megabytes,
-or "g" for gigabytes. The default cache size is "8m", or 8
+or "g" for gigabytes. The default cache size is "128m", or 128
 megabytes.</P>
 
 
@@ -2740,6 +2782,7 @@ HREF="#ServerName"><CODE>ServerName</CODE></A>.</P>
 ServerAlias althost
 ServerAlias foo.example.com
 ServerAlias bar.example.com
+ServerAlias one.example.com two.example.com
 ServerAlias *
 </PRE>
 
@@ -2985,6 +3028,49 @@ on for secure connections. Multiple <CODE>SSLPort</CODE> lines
 can be specified to listen on multiple ports.</P>
 
 
+<H2 CLASS="title"><SPAN CLASS="info">CUPS 1.5</SPAN><A NAME="SubscriptionPrivateAccess">SubscriptionPrivateAccess</A></H2>
+
+<H3>Examples</H3>
+
+<PRE CLASS="command">
+SubscriptionPrivateAccess all
+SubscriptionPrivateAccess default
+SubscriptionPrivateAccess {user|@group|@ACL|@OWNER|@SYSTEM}+
+</PRE>
+
+<H3>Description</H3>
+
+<P>The <CODE>SubscriptionPrivateAccess</CODE> directive specifies the access list for a
+subscription's private values. The "default" access list is "@OWNER @SYSTEM".
+"@ACL" maps to the printer's requesting-user-name-allowed or
+requesting-user-name-denied values.</P>
+
+<P>The <CODE>SubscriptionPrivateAccess</CODE> directive must appear inside a <A
+HREF="#Policy"><CODE>Policy</CODE></A> section.</P>
+
+
+<H2 CLASS="title"><SPAN CLASS="info">CUPS 1.5</SPAN><A NAME="SubscriptionPrivateValues">SubscriptionPrivateValues</A></H2>
+
+<H3>Examples</H3>
+
+<PRE CLASS="command">
+SubscriptionPrivateValues all
+SubscriptionPrivateValues default
+SubscriptionPrivateValues none
+SubscriptionPrivateValues attribute-name-1 [ ... attribute-name-N ]
+</PRE>
+
+<H3>Description</H3>
+
+<P>The <CODE>SubscriptionPrivateValues</CODE> directive specifies the list of
+subscription values to make private. The "default" values are "notify-events",
+"notify-pull-method", "notify-recipient-uri", "notify-subscriber-user-name", and
+"notify-user-data".</P>
+
+<P>The <CODE>SubscriptionPrivateValues</CODE> directive must appear inside a <A
+HREF="#Policy"><CODE>Policy</CODE></A> section.</P>
+
+
 <H2 CLASS="title"><A NAME="SystemGroup">SystemGroup</A></H2>
 
 <H3>Examples</H3>
@@ -3094,6 +3180,19 @@ user whose ID is 0.</P>
 
 </BLOCKQUOTE>
 
+
+<H2 CLASS="title"><SPAN CLASS="INFO">CUPS 1.5</SPAN><A NAME="WebInterface">WebInterface</A></H2>
+
+<H3>Examples</H3>
+
+<PRE CLASS="command">
+WebInterface yes
+WebInterface no
+</PRE>
+
+<H3>Description</H3>
+
+<P>The <CODE>WebInterface</CODE> directive specifies whether the web interface is enabled. The default value is <CODE>@CUPS_WEBIF@</CODE>.</P>
 
 </BODY>
 </HTML>

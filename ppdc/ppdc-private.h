@@ -1,9 +1,9 @@
 //
-// "$Id: ppdc-private.h 8698 2009-06-05 20:49:06Z mike $"
+// "$Id: ppdc-private.h 9042 2010-03-24 00:45:34Z mike $"
 //
 //   Private definitions for the CUPS PPD Compiler.
 //
-//   Copyright 2009 by Apple Inc.
+//   Copyright 2009-2010 by Apple Inc.
 //
 //   These coded instructions, statements, and computer programs are the
 //   property of Apple Inc. and are protected by Federal copyright
@@ -20,9 +20,7 @@
 //
 
 #  include "ppdc.h"
-#  include <cups/debug.h>
-#  include <cups/globals.h>
-#  include <errno.h>
+#  include <cups/cups-private.h>
 
 
 //
@@ -38,5 +36,5 @@
 #endif // !_PPDC_PRIVATE_H_
 
 //
-// End of "$Id: ppdc-private.h 8698 2009-06-05 20:49:06Z mike $".
+// End of "$Id: ppdc-private.h 9042 2010-03-24 00:45:34Z mike $".
 //

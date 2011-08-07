@@ -1,5 +1,5 @@
 #
-# "$Id: Makefile 9484 2011-01-17 05:41:04Z mike $"
+# "$Id: Makefile 9483 2011-01-17 05:40:28Z mike $"
 #
 #   Documentation makefile for CUPS.
 #
@@ -73,6 +73,8 @@ HELPFILES	=	\
 			help/man-cupstestdsc.html \
 			help/man-cupstestppd.html \
 			help/man-filter.html \
+			help/man-ipptool.html \
+			help/man-ipptoolfile.html \
 			help/man-lp.html \
 			help/man-lpadmin.html \
 			help/man-lpc.html \
@@ -197,6 +199,8 @@ install-languages:
 		fi; \
 	done
 
+install-langbundle:
+
 
 #
 # Install programs...
@@ -243,6 +247,8 @@ uninstall-languages:
 		$(RM) $(DOCDIR)/$$lang/cups.css; \
 		$(RMDIR) $(DOCDIR)/$$lang; \
 	done
+
+install-langbundle:
 
 
 #

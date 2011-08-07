@@ -1,9 +1,9 @@
 dnl
-dnl "$Id: cups-directories.m4 8497 2009-04-12 23:04:51Z mike $"
+dnl "$Id: cups-directories.m4 9771 2011-05-12 05:21:56Z mike $"
 dnl
-dnl   Directory stuff for the Common UNIX Printing System (CUPS).
+dnl   Directory stuff for CUPS.
 dnl
-dnl   Copyright 2007 by Apple Inc.
+dnl   Copyright 2007-2011 by Apple Inc.
 dnl   Copyright 1997-2007 by Easy Software Products, all rights reserved.
 dnl
 dnl   These coded instructions, statements, and computer programs are the
@@ -118,6 +118,17 @@ if test "$libdir" = "\${exec_prefix}/lib"; then
 	esac
 fi
 
+dnl Setup private include directory...
+AC_ARG_WITH(privateinclude, [  --with-privateinclude   set path for private include files, default=none],privateinclude="$withval",privateinclude="")
+if test "x$privateinclude" != x -a "x$privateinclude" != xnone; then
+	PRIVATEINCLUDE="$privateinclude/cups"
+else
+	privateinclude=""
+	PRIVATEINCLUDE=""
+fi
+AC_SUBST(privateinclude)
+AC_SUBST(PRIVATEINCLUDE)
+
 dnl Setup init.d locations...
 AC_ARG_WITH(rcdir, [  --with-rcdir            set path for rc scripts],rcdir="$withval",rcdir="")
 AC_ARG_WITH(rclevels, [  --with-rclevels         set run levels for rc scripts],rclevels="$withval",rclevels="2 3 5")
@@ -142,7 +153,7 @@ if test x$rcdir = x; then
 			# Darwin and MacOS X...
 			if test -x /sbin/launchd; then
 				INITDDIR="/System/Library/LaunchDaemons"
-			else 
+			else
 				INITDDIR="/System/Library/StartupItems/PrintingServices"
 			fi
 			;;
@@ -425,5 +436,5 @@ AC_DEFINE_UNQUOTED(CUPS_STATEDIR, "$CUPS_STATEDIR")
 AC_SUBST(CUPS_STATEDIR)
 
 dnl
-dnl End of "$Id: cups-directories.m4 8497 2009-04-12 23:04:51Z mike $".
+dnl End of "$Id: cups-directories.m4 9771 2011-05-12 05:21:56Z mike $".
 dnl

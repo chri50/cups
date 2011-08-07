@@ -1,9 +1,9 @@
 <!--
-  "$Id: api-array.header 8627 2009-05-13 21:39:17Z mike $"
+  "$Id: api-array.header 9771 2011-05-12 05:21:56Z mike $"
 
-  Array API header for the Common UNIX Printing System (CUPS).
+  Array API header for CUPS.
 
-  Copyright 2008-2009 by Apple Inc.
+  Copyright 2008-2011 by Apple Inc.
 
   These coded instructions, statements, and computer programs are the
   property of Apple Inc. and are protected by Federal copyright

@@ -24,6 +24,7 @@
 #include "OPVPOutputDev.h"
 #include "Gfx.h"
 #include <cups/cups.h>
+#include <cups/ppd.h>
 #include "Error.h"
 #include "mcheck.h"
 

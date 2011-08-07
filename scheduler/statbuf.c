@@ -1,10 +1,9 @@
 /*
- * "$Id: statbuf.c 8459 2009-03-20 16:45:12Z mike $"
+ * "$Id: statbuf.c 9350 2010-11-04 23:23:25Z mike $"
  *
- *   Status buffer routines for the Common UNIX Printing System (CUPS)
- *   scheduler.
+ *   Status buffer routines for the CUPS scheduler.
  *
- *   Copyright 2007-2009 by Apple Inc.
+ *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -327,5 +326,5 @@ cupsdStatBufUpdate(
 
 
 /*
- * End of "$Id: statbuf.c 8459 2009-03-20 16:45:12Z mike $".
+ * End of "$Id: statbuf.c 9350 2010-11-04 23:23:25Z mike $".
  */

@@ -1,5 +1,5 @@
 /*
- * "$Id: printers.c 9470 2011-01-11 07:05:58Z mike $"
+ * "$Id: printers.c 9793 2011-05-20 03:49:49Z mike $"
  *
  *   Printer status CGI for CUPS.
  *
@@ -174,15 +174,15 @@ main(int  argc,				/* I - Number of command-line arguments */
       do_printer_op(http, printer, CUPS_REJECT_JOBS, cgiText(_("Reject Jobs")));
     else if (!strcmp(op, "purge-jobs"))
       do_printer_op(http, printer, IPP_PURGE_JOBS, cgiText(_("Purge Jobs")));
-    else if (!strcasecmp(op, "print-self-test-page"))
+    else if (!_cups_strcasecmp(op, "print-self-test-page"))
       cgiPrintCommand(http, printer, "PrintSelfTestPage",
                       cgiText(_("Print Self-Test Page")));
-    else if (!strcasecmp(op, "clean-print-heads"))
+    else if (!_cups_strcasecmp(op, "clean-print-heads"))
       cgiPrintCommand(http, printer, "Clean all",
                       cgiText(_("Clean Print Heads")));
-    else if (!strcasecmp(op, "print-test-page"))
+    else if (!_cups_strcasecmp(op, "print-test-page"))
       cgiPrintTestPage(http, printer);
-    else if (!strcasecmp(op, "move-jobs"))
+    else if (!_cups_strcasecmp(op, "move-jobs"))
       cgiMoveJobs(http, printer, 0);
     else
     {
@@ -398,7 +398,7 @@ show_all_printers(http_t     *http,	/* I - Connection to server */
     cgiSetVariable("TOTAL", val);
 
     if ((var = cgiGetVariable("ORDER")) != NULL)
-      ascending = !strcasecmp(var, "asc");
+      ascending = !_cups_strcasecmp(var, "asc");
     else
       ascending = 1;
 
@@ -574,5 +574,5 @@ show_printer(http_t     *http,		/* I - Connection to server */
 
 
 /*
- * End of "$Id: printers.c 9470 2011-01-11 07:05:58Z mike $".
+ * End of "$Id: printers.c 9793 2011-05-20 03:49:49Z mike $".
  */

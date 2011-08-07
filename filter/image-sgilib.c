@@ -1,10 +1,9 @@
 /*
- * "$Id: image-sgilib.c 8040 2008-10-09 20:13:21Z mike $"
+ * "$Id: image-sgilib.c 9771 2011-05-12 05:21:56Z mike $"
  *
- *   SGI image file format library routines for the Common UNIX Printing
- *   System (CUPS).
+ *   SGI image file format library routines for CUPS.
  *
- *   Copyright 2007-2008 by Apple Inc.
+ *   Copyright 2007-2011 by Apple Inc.
  *   Copyright 1993-2005 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -887,5 +886,5 @@ write_rle16(FILE           *fp,		/* I - File to write to */
 
 
 /*
- * End of "$Id: image-sgilib.c 8040 2008-10-09 20:13:21Z mike $".
+ * End of "$Id: image-sgilib.c 9771 2011-05-12 05:21:56Z mike $".
  */

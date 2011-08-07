@@ -1,9 +1,9 @@
 /*
- * "$Id: jobs.c 8859 2009-11-09 23:01:17Z mike $"
+ * "$Id: jobs.c 9771 2011-05-12 05:21:56Z mike $"
  *
- *   Job status CGI for the Common UNIX Printing System (CUPS).
+ *   Job status CGI for CUPS.
  *
- *   Copyright 2007-2008 by Apple Inc.
+ *   Copyright 2007-2011 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -210,5 +210,5 @@ do_job_op(http_t      *http,		/* I - HTTP connection */
 
 
 /*
- * End of "$Id: jobs.c 8859 2009-11-09 23:01:17Z mike $".
+ * End of "$Id: jobs.c 9771 2011-05-12 05:21:56Z mike $".
  */

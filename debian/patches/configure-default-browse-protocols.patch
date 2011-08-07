@@ -1,8 +1,8 @@
 Author: till.kamppeter@gmail.com
 
---- cups-1.4.5~/config-scripts/cups-defaults.m4	2009-12-15 23:40:37.000000000 +0100
-+++ cups-1.4.5/config-scripts/cups-defaults.m4	2010-12-29 22:25:18.932283043 +0100
-@@ -81,7 +81,7 @@
+--- a/config-scripts/cups-defaults.m4
++++ b/config-scripts/cups-defaults.m4
+@@ -95,7 +95,7 @@
  	default_local_protocols="$withval",
  	default_local_protocols="default")
  
@@ -11,7 +11,7 @@ Author: till.kamppeter@gmail.com
  	if test "x$default_local_protocols" = "xdefault"; then
  		if test "x$DNSSDLIBS" != "x"; then
  		CUPS_BROWSE_LOCAL_PROTOCOLS="CUPS dnssd"
-@@ -104,7 +104,7 @@
+@@ -118,7 +118,7 @@
  	default_remote_protocols="$withval",
  	default_remote_protocols="default")
  

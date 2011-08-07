@@ -1,5 +1,5 @@
 /*
- * "$Id: usb-libusb.c 9582 2011-03-04 19:28:38Z mike $"
+ * "$Id: usb-libusb.c 9831 2011-06-14 23:03:29Z mike $"
  *
  *   Libusb interface code for CUPS.
  *
@@ -31,6 +31,7 @@
 
 #include <usb.h>
 #include <poll.h>
+#include <cups/cups-private.h>
 
 
 /*
@@ -113,8 +114,8 @@ print_device(const char *uri,		/* I - Device URI */
 
   while ((printer = find_device(print_cb, uri)) == NULL)
   {
-    _cupsLangPuts(stderr,
-		  _("INFO: Waiting for printer to become available...\n"));
+    _cupsLangPrintFilter(stderr, "INFO",
+			 _("Waiting for printer to become available."));
     sleep(5);
   }
 
@@ -174,9 +175,8 @@ print_device(const char *uri,		/* I - Device URI */
 	  if (usb_bulk_write(printer->handle, printer->write_endp, buffer,
 	                        bytes, 3600000) < 0)
 	  {
-	    _cupsLangPrintf(stderr,
-			    _("ERROR: Unable to write %d bytes to printer!\n"),
-			    (int)bytes);
+	    _cupsLangPrintFilter(stderr, "ERROR",
+			         _("Unable to send data to printer."));
 	    tbytes = -1;
 	    break;
 	  }
@@ -515,7 +515,7 @@ make_device_uri(
   * Get the make, model, and serial numbers...
   */
 
-  num_values = _ppdGet1284Values(device_id, &values);
+  num_values = _cupsGet1284Values(device_id, &values);
 
   if ((sern = cupsGetOption("SERIALNUMBER", num_values, values)) == NULL)
     if ((sern = cupsGetOption("SERN", num_values, values)) == NULL)
@@ -559,9 +559,9 @@ make_device_uri(
 
   if (mfg)
   {
-    if (!strcasecmp(mfg, "Hewlett-Packard"))
+    if (!_cups_strcasecmp(mfg, "Hewlett-Packard"))
       mfg = "HP";
-    else if (!strcasecmp(mfg, "Lexmark International"))
+    else if (!_cups_strcasecmp(mfg, "Lexmark International"))
       mfg = "Lexmark";
   }
   else
@@ -868,9 +868,8 @@ side_cb(usb_printer_t *printer,		/* I - Printer */
 	    while (usb_bulk_write(printer->handle, printer->write_endp, buffer,
 				  bytes, 5000) < 0)
 	    {
-	      _cupsLangPrintf(stderr,
-			      _("ERROR: Unable to write %d bytes to printer!\n"),
-			      (int)bytes);
+	      _cupsLangPrintFilter(stderr, "ERROR",
+			           _("Unable to send data to printer."));
 	      tbytes = -1;
 	      break;
 	    }
@@ -921,6 +920,6 @@ side_cb(usb_printer_t *printer,		/* I - Printer */
 
 
 /*
- * End of "$Id: usb-libusb.c 9582 2011-03-04 19:28:38Z mike $".
+ * End of "$Id: usb-libusb.c 9831 2011-06-14 23:03:29Z mike $".
  */
 

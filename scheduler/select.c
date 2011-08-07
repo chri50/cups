@@ -1,7 +1,7 @@
 /*
- * "$Id: select.c 9157 2010-06-16 05:27:41Z mike $"
+ * "$Id: select.c 9350 2010-11-04 23:23:25Z mike $"
  *
- *   Select abstraction functions for the Common UNIX Printing System (CUPS).
+ *   Select abstraction functions for the CUPS scheduler.
  *
  *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 2006-2007 by Easy Software Products.
@@ -947,5 +947,5 @@ find_fd(int fd)				/* I - File descriptor */
 
 
 /*
- * End of "$Id: select.c 9157 2010-06-16 05:27:41Z mike $".
+ * End of "$Id: select.c 9350 2010-11-04 23:23:25Z mike $".
  */

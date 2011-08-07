@@ -1,9 +1,9 @@
 /*
- * "$Id: help-index.h 8884 2009-11-17 21:57:54Z mike $"
+ * "$Id: help-index.h 9771 2011-05-12 05:21:56Z mike $"
  *
- *   Online help index definitions for the Common UNIX Printing System (CUPS).
+ *   Online help index definitions for CUPS.
  *
- *   Copyright 2007 by Apple Inc.
+ *   Copyright 2007-2011 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -83,5 +83,5 @@ extern help_index_t	*helpSearchIndex(help_index_t *hi, const char *query,
 #endif /* !_CUPS_HELP_INDEX_H_ */
 
 /*
- * End of "$Id: help-index.h 8884 2009-11-17 21:57:54Z mike $".
+ * End of "$Id: help-index.h 9771 2011-05-12 05:21:56Z mike $".
  */

@@ -1,5 +1,5 @@
 #
-# "$Id: Makefile 9423 2011-01-06 22:21:05Z mike $"
+# "$Id: Makefile 9422 2011-01-06 22:20:15Z mike $"
 #
 #   Makefile for the CUPS PPD Compiler.
 #
@@ -237,11 +237,11 @@ framedhelp:
 # genstrings - generate GNU gettext strings.
 #
 
-genstrings:		genstrings.o libcupsppdc.so ../cups/libcups.a \
+genstrings:		genstrings.o libcupsppdc.so ../cups/$(LIBCUPSSTATIC) \
 			sample.drv ../data/media.defs
 	echo Linking $@...
 	$(CXX) $(ARCHFLAGS) $(LDFLAGS) -o genstrings genstrings.o \
-		-lcupsppdc ../cups/libcups.a $(LIBGSSAPI) $(SSLLIBS) \
+		-lcupsppdc ../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) \
 		$(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
 	echo Generating localization strings...
 	LD_LIBRARY_PATH=.:../cups/ ./genstrings >sample.c
@@ -256,10 +256,10 @@ ppdc:			ppdc.o $(LIBCUPSPPDC) ../cups/$(LIBCUPS)
 	$(CXX) $(LDFLAGS) -o $@ ppdc.o -L. -lcupsppdc $(LIBS)
 
 
-ppdc-static:		ppdc.o libcupsppdc.a  ../cups/libcups.a foo.drv foo-fr.po
+ppdc-static:		ppdc.o libcupsppdc.a ../cups/$(LIBCUPSSTATIC) foo.drv foo-fr.po
 	echo Linking $@...
 	$(CXX) $(ARCHFLAGS) $(LDFLAGS) -o ppdc-static ppdc.o -lcupsppdc \
-		../cups/libcups.a $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
+		../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
 		$(COMMONLIBS) $(LIBZ)
 	echo Testing PPD compiler...
 	LD_LIBRARY_PATH=.:../cups/ ./ppdc-static -l en,fr -I ../data foo.drv
@@ -284,10 +284,10 @@ ppdi:			ppdi.o $(LIBCUPSPPDC) ../cups/$(LIBCUPS)
 	$(CXX) $(LDFLAGS) -o $@ ppdi.o -L. -lcupsppdc $(LIBS)
 
 
-ppdi-static:		ppdc-static ppdi.o libcupsppdc.a  ../cups/libcups.a
+ppdi-static:		ppdc-static ppdi.o libcupsppdc.a  ../cups/$(LIBCUPSSTATIC)
 	echo Linking $@...
 	$(CXX) $(ARCHFLAGS) $(LDFLAGS) -o ppdi-static ppdi.o -lcupsppdc \
-		../cups/libcups.a $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
+		../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
 		$(COMMONLIBS) $(LIBZ)
 	echo Testing PPD importer...
 	$(RM) -r ppd ppd2 sample-import.drv
@@ -324,10 +324,10 @@ ppdpo:			ppdpo.o $(LIBCUPSPPDC) ../cups/$(LIBCUPS)
 # testcatalog, test ppdcCatalog class.
 #
 
-testcatalog:		testcatalog.o libcupsppdc.a ../cups/libcups.a
+testcatalog:		testcatalog.o libcupsppdc.a ../cups/$(LIBCUPSSTATIC)
 	echo Linking $@...
 	$(CXX) $(LDFLAGS) -o $@ testcatalog.o -lcupsppdc \
-		../cups/libcups.a $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
+		../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
 		$(COMMONLIBS) $(LIBZ)
 
 
@@ -400,5 +400,5 @@ include Dependencies
 
 
 #
-# End of "$Id: Makefile 9423 2011-01-06 22:21:05Z mike $".
+# End of "$Id: Makefile 9422 2011-01-06 22:20:15Z mike $".
 #

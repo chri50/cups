@@ -1,9 +1,9 @@
 /*
- * "$Id: sysman.h 8095 2008-10-31 21:23:58Z mike $"
+ * "$Id: sysman.h 9350 2010-11-04 23:23:25Z mike $"
  *
- *   System management definitions for the Common UNIX Printing System (CUPS).
+ *   System management definitions for the CUPS scheduler.
  *
- *   Copyright 2007-2008 by Apple Inc.
+ *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 2006 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -60,5 +60,5 @@ extern void	cupsdStopSystemMonitor(void);
 
 
 /*
- * End of "$Id: sysman.h 8095 2008-10-31 21:23:58Z mike $".
+ * End of "$Id: sysman.h 9350 2010-11-04 23:23:25Z mike $".
  */

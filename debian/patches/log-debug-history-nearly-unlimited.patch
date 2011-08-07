@@ -1,10 +1,8 @@
 Author: till.kamppeter@gmail.com
 
-Index: cups-1.4.6/scheduler/conf.c
-===================================================================
---- cups-1.4.6.orig/scheduler/conf.c	2011-07-14 13:02:57.619772979 +0200
-+++ cups-1.4.6/scheduler/conf.c	2011-07-14 13:03:03.479773075 +0200
-@@ -622,7 +622,7 @@
+--- a/scheduler/conf.c
++++ b/scheduler/conf.c
+@@ -625,7 +625,7 @@
    KeepAlive                = TRUE;
    KeepAliveTimeout         = DEFAULT_KEEPALIVE;
    ListenBackLog            = SOMAXCONN;
@@ -13,10 +11,8 @@ Index: cups-1.4.6/scheduler/conf.c
    LogFilePerm              = CUPS_DEFAULT_LOG_FILE_PERM;
    LogLevel                 = CUPSD_LOG_WARN;
    LogTimeFormat            = CUPSD_TIME_STANDARD;
-Index: cups-1.4.6/scheduler/conf.h
-===================================================================
---- cups-1.4.6.orig/scheduler/conf.h	2011-07-14 13:02:07.039772116 +0200
-+++ cups-1.4.6/scheduler/conf.h	2011-07-14 13:03:03.479773075 +0200
+--- a/scheduler/conf.h
++++ b/scheduler/conf.h
 @@ -165,7 +165,7 @@
  					/* Allow overrides? */
  			ConfigFilePerm		VALUE(0640),

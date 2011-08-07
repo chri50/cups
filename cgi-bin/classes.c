@@ -1,5 +1,5 @@
 /*
- * "$Id: classes.c 9470 2011-01-11 07:05:58Z mike $"
+ * "$Id: classes.c 9793 2011-05-20 03:49:49Z mike $"
  *
  *   Class status CGI for CUPS.
  *
@@ -171,9 +171,9 @@ main(int  argc,				/* I - Number of command-line arguments */
       do_class_op(http, pclass, CUPS_REJECT_JOBS, cgiText(_("Reject Jobs")));
     else if (!strcmp(op, "purge-jobs"))
       do_class_op(http, pclass, IPP_PURGE_JOBS, cgiText(_("Purge Jobs")));
-    else if (!strcasecmp(op, "print-test-page"))
+    else if (!_cups_strcasecmp(op, "print-test-page"))
       cgiPrintTestPage(http, pclass);
-    else if (!strcasecmp(op, "move-jobs"))
+    else if (!_cups_strcasecmp(op, "move-jobs"))
       cgiMoveJobs(http, pclass, 0);
     else
     {
@@ -381,7 +381,7 @@ show_all_classes(http_t     *http,	/* I - Connection to server */
     cgiSetVariable("TOTAL", val);
 
     if ((var = cgiGetVariable("ORDER")) != NULL)
-      ascending = !strcasecmp(var, "asc");
+      ascending = !_cups_strcasecmp(var, "asc");
     else
       ascending = 1;
 
@@ -554,5 +554,5 @@ show_class(http_t     *http,		/* I - Connection to server */
 
 
 /*
- * End of "$Id: classes.c 9470 2011-01-11 07:05:58Z mike $".
+ * End of "$Id: classes.c 9793 2011-05-20 03:49:49Z mike $".
  */

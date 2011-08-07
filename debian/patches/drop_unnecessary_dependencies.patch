@@ -2,12 +2,9 @@ Description: Do not link libcups.so and libcupsimage.so against unnecessary libr
 Author: Martin Pitt <mpitt@debian.org>
 Bug-Debian: http://bugs.debian.org/438067
 
-@DPATCH@
-Index: cups-1.4.6/Makedefs.in
-===================================================================
---- cups-1.4.6.orig/Makedefs.in	2011-07-14 13:02:00.959772015 +0200
-+++ cups-1.4.6/Makedefs.in	2011-07-14 13:02:32.379772550 +0200
-@@ -132,7 +132,7 @@
+--- a/Makedefs.in
++++ b/Makedefs.in
+@@ -145,7 +145,7 @@
  DBUS_NOTIFIERLIBS =	@DBUS_NOTIFIERLIBS@
  DNSSD_BACKEND	=	@DNSSD_BACKEND@
  DSOFLAGS	=	-L../cups @DSOFLAGS@
@@ -16,23 +13,21 @@ Index: cups-1.4.6/Makedefs.in
  DNSSDLIBS	=	@DNSSDLIBS@
  FONTS		=	@FONTS@
  IMGLIBS		=	@IMGLIBS@
-@@ -144,9 +144,9 @@
+@@ -155,9 +155,9 @@
+ 			-L../scheduler @LDARCHFLAGS@ \
+ 			@LDFLAGS@ @RELROFLAGS@ @PIEFLAGS@ $(OPTIM)
  LEGACY_BACKENDS	=	@LEGACY_BACKENDS@
- LIBCUPSORDER	=	@LIBCUPSORDER@
- LIBCUPSIMAGEORDER =	@LIBCUPSIMAGEORDER@
--LINKCUPS	=	@LINKCUPS@ $(SSLLIBS) $(DNSSDLIBS)
-+LINKCUPS	=	@LINKCUPS@ $(DNSSDLIBS)
+-LINKCUPS	=	@LINKCUPS@ $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(LIBZ)
++LINKCUPS	=	@LINKCUPS@ $(LIBGSSAPI) $(DNSSDLIBS) $(LIBZ)
  LINKCUPSIMAGE	=	@LINKCUPSIMAGE@
 -LIBS		=	$(LINKCUPS) $(COMMONLIBS)
 +LIBS		=	$(LINKCUPS) $(SSLLIBS) $(COMMONLIBS)
  OPTIM		=	@OPTIM@
  OPTIONS		=
  PAMLIBS		=	@PAMLIBS@
-Index: cups-1.4.6/cups/Makefile
-===================================================================
---- cups-1.4.6.orig/cups/Makefile	2011-07-14 13:02:00.979772014 +0200
-+++ cups-1.4.6/cups/Makefile	2011-07-14 13:02:32.379772550 +0200
-@@ -294,7 +294,7 @@
+--- a/cups/Makefile
++++ b/cups/Makefile
+@@ -316,7 +316,7 @@
  libcups.so.2 libcups.sl.2:	$(LIBOBJS)
  	echo Linking $@...
  	$(DSO) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(LIBOBJS) $(LIBGSSAPI) \
@@ -41,7 +36,7 @@ Index: cups-1.4.6/cups/Makefile
  	$(RM) `basename $@ .2`
  	$(LN) $@ `basename $@ .2`
  
-@@ -307,7 +307,7 @@
+@@ -329,7 +329,7 @@
  	echo Linking 32-bit $@...
  	-mkdir 32bit
  	$(DSO) $(ARCH32FLAGS) $(DSO32FLAGS) -o $@ $(LIB32OBJS) $(LIBGSSAPI) \
@@ -50,7 +45,7 @@ Index: cups-1.4.6/cups/Makefile
  	$(RM) 32bit/libcups.so
  	$(LN) libcups.so.2 32bit/libcups.so
  
-@@ -320,7 +320,7 @@
+@@ -342,7 +342,7 @@
  	echo Linking 64-bit $@...
  	-mkdir 64bit
  	$(DSO) $(ARCH64FLAGS) $(DSO64FLAGS) -o $@ $(LIB64OBJS) $(LIBGSSAPI) \
@@ -59,16 +54,16 @@ Index: cups-1.4.6/cups/Makefile
  	$(RM) 64bit/libcups.so
  	$(LN) libcups.so.2 64bit/libcups.so
  
-@@ -338,7 +338,7 @@
- 		-exported_symbols_list libcups.exp \
- 		-sectorder __TEXT __text $(LIBCUPSORDER) \
+@@ -363,7 +363,7 @@
+ 		-compatibility_version 2.0.0 \
+ 		-exported_symbols_list t.exp \
  		$(LIBOBJS) $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
 -		$(COMMONLIBS) $(LIBZ)
 +		-lpthread $(LIBZ)
- 	$(RM) libcups.dylib
+ 	$(RM) libcups.dylib t.exp
  	$(LN) $@ libcups.dylib
  
-@@ -351,7 +351,7 @@
+@@ -376,7 +376,7 @@
  	echo Creating $@...
  	$(DSO) $(DSOFLAGS) -Wl,-bexport:libcups_s.exp -o libcups_s.o \
  		$(LIBOBJS) $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
@@ -77,10 +72,10 @@ Index: cups-1.4.6/cups/Makefile
  	$(RM) $@
  	$(AR) $(ARFLAGS) $@ libcups_s.o
  
-@@ -364,7 +364,7 @@
+@@ -389,7 +389,7 @@
  	echo Linking $@...
  	$(CC) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(LIBOBJS:.o=.lo) \
- 		-rpath $(LIBDIR) -version-info 2:8 $(LIBGSSAPI) $(SSLLIBS) \
+ 		-rpath $(LIBDIR) -version-info 2:9 $(LIBGSSAPI) $(SSLLIBS) \
 -		$(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
 +		$(DNSSDLIBS) -lpthread $(LIBZ)
  

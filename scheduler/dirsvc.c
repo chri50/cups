@@ -1,9 +1,9 @@
 /*
- * "$Id: dirsvc.c 9503 2011-01-22 00:07:22Z mike $"
+ * "$Id: dirsvc.c 9793 2011-05-20 03:49:49Z mike $"
  *
- *   Directory services routines for the Common UNIX Printing System (CUPS).
+ *   Directory services routines for the CUPS scheduler.
  *
- *   Copyright 2007-2010 by Apple Inc.
+ *   Copyright 2007-2011 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -188,7 +188,7 @@ static void	dnssdAddAlias(const void *key, const void *value,
 static char	*dnssdPackTxtRecord(int *txt_len, char *keyvalue[][2],
 		                    int count);
 static void	dnssdRegisterCallback(DNSServiceRef sdRef,
-		                      DNSServiceFlags flags, 
+		                      DNSServiceFlags flags,
 				      DNSServiceErrorType errorCode,
 				      const char *name, const char *regtype,
 				      const char *domain, void *context);
@@ -218,7 +218,7 @@ static const char * const ldap_attrs[] =/* CUPS LDAP attributes */
 		};
 #endif /* HAVE_LDAP */
 
-#ifdef HAVE_LIBSLP 
+#ifdef HAVE_LIBSLP
 /*
  * SLP definitions...
  */
@@ -231,7 +231,7 @@ static const char * const ldap_attrs[] =/* CUPS LDAP attributes */
 #  define SLP_CUPS_SRVLEN	15
 
 
-/* 
+/*
  * Printer service URL structure
  */
 
@@ -261,7 +261,7 @@ static SLPBoolean	slp_url_callback(SLPHandle hslp, const char *srvurl,
 
 
 /*
- * 'cupsdDeregisterPrinter()' - Stop sending broadcast information for a 
+ * 'cupsdDeregisterPrinter()' - Stop sending broadcast information for a
  *				local printer and remove any pending
  *                              references to remote printers.
  */
@@ -356,7 +356,7 @@ cupsdLoadRemoteCache(void)
   */
 
   snprintf(line, sizeof(line), "%s/remote.cache", CacheDir);
-  if ((fp = cupsFileOpen(line, "r")) == NULL)
+  if ((fp = cupsdOpenConfFile(line)) == NULL)
     return;
 
  /*
@@ -373,8 +373,8 @@ cupsdLoadRemoteCache(void)
     * Decode the directive...
     */
 
-    if (!strcasecmp(line, "<Printer") ||
-        !strcasecmp(line, "<DefaultPrinter"))
+    if (!_cups_strcasecmp(line, "<Printer") ||
+        !_cups_strcasecmp(line, "<DefaultPrinter"))
     {
      /*
       * <Printer name> or <DefaultPrinter name>
@@ -414,7 +414,7 @@ cupsdLoadRemoteCache(void)
         * Set the default printer as needed...
 	*/
 
-        if (!strcasecmp(line, "<DefaultPrinter"))
+        if (!_cups_strcasecmp(line, "<DefaultPrinter"))
 	  DefaultPrinter = p;
       }
       else
@@ -424,8 +424,8 @@ cupsdLoadRemoteCache(void)
         break;
       }
     }
-    else if (!strcasecmp(line, "<Class") ||
-             !strcasecmp(line, "<DefaultClass"))
+    else if (!_cups_strcasecmp(line, "<Class") ||
+             !_cups_strcasecmp(line, "<DefaultClass"))
     {
      /*
       * <Class name> or <DefaultClass name>
@@ -455,7 +455,7 @@ cupsdLoadRemoteCache(void)
         * Set the default printer as needed...
 	*/
 
-        if (!strcasecmp(line, "<DefaultClass"))
+        if (!_cups_strcasecmp(line, "<DefaultClass"))
 	  DefaultPrinter = p;
       }
       else
@@ -465,8 +465,8 @@ cupsdLoadRemoteCache(void)
         break;
       }
     }
-    else if (!strcasecmp(line, "</Printer>") ||
-             !strcasecmp(line, "</Class>"))
+    else if (!_cups_strcasecmp(line, "</Printer>") ||
+             !_cups_strcasecmp(line, "</Class>"))
     {
       if (p != NULL)
       {
@@ -487,22 +487,30 @@ cupsdLoadRemoteCache(void)
       cupsdLogMessage(CUPSD_LOG_ERROR,
                       "Syntax error on line %d of remote.cache.", linenum);
     }
-    else if (!strcasecmp(line, "Info"))
+    else if (!_cups_strcasecmp(line, "UUID"))
+    {
+      if (value && !strncmp(value, "urn:uuid:", 9))
+        cupsdSetString(&(p->uuid), value);
+      else
+        cupsdLogMessage(CUPSD_LOG_ERROR,
+	                "Bad UUID on line %d of remote.cache.", linenum);
+    }
+    else if (!_cups_strcasecmp(line, "Info"))
     {
       if (value)
 	cupsdSetString(&p->info, value);
     }
-    else if (!strcasecmp(line, "MakeModel"))
+    else if (!_cups_strcasecmp(line, "MakeModel"))
     {
       if (value)
 	cupsdSetString(&p->make_model, value);
     }
-    else if (!strcasecmp(line, "Location"))
+    else if (!_cups_strcasecmp(line, "Location"))
     {
       if (value)
 	cupsdSetString(&p->location, value);
     }
-    else if (!strcasecmp(line, "DeviceURI"))
+    else if (!_cups_strcasecmp(line, "DeviceURI"))
     {
       if (value)
       {
@@ -518,7 +526,7 @@ cupsdLoadRemoteCache(void)
 	cupsdLogMessage(CUPSD_LOG_ERROR,
 	                "Syntax error on line %d of remote.cache.", linenum);
     }
-    else if (!strcasecmp(line, "Option") && value)
+    else if (!_cups_strcasecmp(line, "Option") && value)
     {
      /*
       * Option name value
@@ -537,7 +545,7 @@ cupsdLoadRemoteCache(void)
 	                               &(p->options));
       }
     }
-    else if (!strcasecmp(line, "Reason"))
+    else if (!_cups_strcasecmp(line, "Reason"))
     {
       if (value)
       {
@@ -556,15 +564,15 @@ cupsdLoadRemoteCache(void)
 	cupsdLogMessage(CUPSD_LOG_ERROR,
 	                "Syntax error on line %d of remote.cache.", linenum);
     }
-    else if (!strcasecmp(line, "State"))
+    else if (!_cups_strcasecmp(line, "State"))
     {
      /*
       * Set the initial queue state...
       */
 
-      if (value && !strcasecmp(value, "idle"))
+      if (value && !_cups_strcasecmp(value, "idle"))
         p->state = IPP_PRINTER_IDLE;
-      else if (value && !strcasecmp(value, "stopped"))
+      else if (value && !_cups_strcasecmp(value, "stopped"))
       {
         p->state = IPP_PRINTER_STOPPED;
 	cupsdSetPrinterReasons(p, "+paused");
@@ -573,7 +581,7 @@ cupsdLoadRemoteCache(void)
 	cupsdLogMessage(CUPSD_LOG_ERROR,
 	                "Syntax error on line %d of remote.cache.", linenum);
     }
-    else if (!strcasecmp(line, "StateMessage"))
+    else if (!_cups_strcasecmp(line, "StateMessage"))
     {
      /*
       * Set the initial queue state message...
@@ -582,27 +590,27 @@ cupsdLoadRemoteCache(void)
       if (value)
 	strlcpy(p->state_message, value, sizeof(p->state_message));
     }
-    else if (!strcasecmp(line, "Accepting"))
+    else if (!_cups_strcasecmp(line, "Accepting"))
     {
      /*
       * Set the initial accepting state...
       */
 
       if (value &&
-          (!strcasecmp(value, "yes") ||
-           !strcasecmp(value, "on") ||
-           !strcasecmp(value, "true")))
+          (!_cups_strcasecmp(value, "yes") ||
+           !_cups_strcasecmp(value, "on") ||
+           !_cups_strcasecmp(value, "true")))
         p->accepting = 1;
       else if (value &&
-               (!strcasecmp(value, "no") ||
-        	!strcasecmp(value, "off") ||
-        	!strcasecmp(value, "false")))
+               (!_cups_strcasecmp(value, "no") ||
+        	!_cups_strcasecmp(value, "off") ||
+        	!_cups_strcasecmp(value, "false")))
         p->accepting = 0;
       else
 	cupsdLogMessage(CUPSD_LOG_ERROR,
 	                "Syntax error on line %d of remote.cache.", linenum);
     }
-    else if (!strcasecmp(line, "Type"))
+    else if (!_cups_strcasecmp(line, "Type"))
     {
       if (value)
         p->type = atoi(value);
@@ -610,7 +618,7 @@ cupsdLoadRemoteCache(void)
 	cupsdLogMessage(CUPSD_LOG_ERROR,
 	                "Syntax error on line %d of remote.cache.", linenum);
     }
-    else if (!strcasecmp(line, "BrowseTime"))
+    else if (!_cups_strcasecmp(line, "BrowseTime"))
     {
       if (value)
       {
@@ -623,7 +631,7 @@ cupsdLoadRemoteCache(void)
 	cupsdLogMessage(CUPSD_LOG_ERROR,
 	                "Syntax error on line %d of remote.cache.", linenum);
     }
-    else if (!strcasecmp(line, "JobSheets"))
+    else if (!_cups_strcasecmp(line, "JobSheets"))
     {
      /*
       * Set the initial job sheets...
@@ -655,23 +663,23 @@ cupsdLoadRemoteCache(void)
 	cupsdLogMessage(CUPSD_LOG_ERROR,
 	                "Syntax error on line %d of remote.cache.", linenum);
     }
-    else if (!strcasecmp(line, "AllowUser"))
+    else if (!_cups_strcasecmp(line, "AllowUser"))
     {
       if (value)
       {
         p->deny_users = 0;
-        cupsdAddPrinterUser(p, value);
+        cupsdAddString(&(p->users), value);
       }
       else
 	cupsdLogMessage(CUPSD_LOG_ERROR,
 	                "Syntax error on line %d of remote.cache.", linenum);
     }
-    else if (!strcasecmp(line, "DenyUser"))
+    else if (!_cups_strcasecmp(line, "DenyUser"))
     {
       if (value)
       {
         p->deny_users = 1;
-        cupsdAddPrinterUser(p, value);
+        cupsdAddString(&(p->users), value);
       }
       else
 	cupsdLogMessage(CUPSD_LOG_ERROR,
@@ -752,9 +760,11 @@ void
 cupsdSaveRemoteCache(void)
 {
   int			i;		/* Looping var */
-  cups_file_t		*fp;		/* printers.conf file */
-  char			temp[1024],	/* Temporary string */
-			value[2048];	/* Value string */
+  cups_file_t		*fp;		/* remote.cache file */
+  char			filename[1024],	/* remote.cache filename */
+			temp[1024],	/* Temporary string */
+			value[2048],	/* Value string */
+			*name;		/* Current user name */
   cupsd_printer_t	*printer;	/* Current printer class */
   time_t		curtime;	/* Current time */
   struct tm		*curdate;	/* Current date */
@@ -765,23 +775,12 @@ cupsdSaveRemoteCache(void)
   * Create the remote.cache file...
   */
 
-  snprintf(temp, sizeof(temp), "%s/remote.cache", CacheDir);
+  snprintf(filename, sizeof(filename), "%s/remote.cache", CacheDir);
 
-  if ((fp = cupsFileOpen(temp, "w")) == NULL)
-  {
-    cupsdLogMessage(CUPSD_LOG_ERROR,
-                    "Unable to save remote.cache - %s", strerror(errno));
+  if ((fp = cupsdCreateConfFile(filename, ConfigFilePerm)) == NULL)
     return;
-  }
-  else
-    cupsdLogMessage(CUPSD_LOG_DEBUG, "Saving remote.cache...");
 
- /*
-  * Restrict access to the file...
-  */
-
-  fchown(cupsFileNumber(fp), getuid(), Group);
-  fchmod(cupsFileNumber(fp), ConfigFilePerm);
+  cupsdLogMessage(CUPSD_LOG_DEBUG, "Saving remote.cache...");
 
  /*
   * Write a small header to the file...
@@ -825,6 +824,8 @@ cupsdSaveRemoteCache(void)
 
     cupsFilePrintf(fp, "BrowseTime %d\n", (int)printer->browse_expire);
 
+    cupsFilePrintf(fp, "UUID %s\n", printer->uuid);
+
     if (printer->info)
       cupsFilePutConf(fp, "Info", printer->info);
 
@@ -855,9 +856,10 @@ cupsdSaveRemoteCache(void)
              printer->job_sheets[1]);
     cupsFilePutConf(fp, "JobSheets", value);
 
-    for (i = 0; i < printer->num_users; i ++)
-      cupsFilePutConf(fp, printer->deny_users ? "DenyUser" : "AllowUser",
-                      printer->users[i]);
+    for (name = (char *)cupsArrayFirst(printer->users);
+	 name;
+	 name = (char *)cupsArrayNext(printer->users))
+      cupsFilePutConf(fp, printer->deny_users ? "DenyUser" : "AllowUser", name);
 
     for (i = printer->num_options, option = printer->options;
          i > 0;
@@ -873,7 +875,7 @@ cupsdSaveRemoteCache(void)
       cupsFilePuts(fp, "</Printer>\n");
   }
 
-  cupsFileClose(fp);
+  cupsdCloseCreatedConfFile(fp, filename);
 }
 
 
@@ -1037,6 +1039,11 @@ ldap_rebind_proc(
   struct berval	bval;			/* Bind value */
 #    endif /* LDAP_API_VERSION > 3000 */
 
+
+  (void)request;
+  (void)msgid;
+  (void)params;
+
  /*
   * Bind to new LDAP server...
   */
@@ -1161,9 +1168,9 @@ ldap_connect(void)
   * LDAP stuff currently only supports ldapi EXTERNAL SASL binds...
   */
 
-  if (!BrowseLDAPServer || !strcasecmp(BrowseLDAPServer, "localhost")) 
+  if (!BrowseLDAPServer || !_cups_strcasecmp(BrowseLDAPServer, "localhost"))
     rc = ldap_initialize(&TempBrowseLDAPHandle, "ldapi:///");
-  else	
+  else
     rc = ldap_initialize(&TempBrowseLDAPHandle, BrowseLDAPServer);
 
 #  else /* HAVE_OPENLDAP */
@@ -1342,7 +1349,7 @@ ldap_connect(void)
   bval.bv_val = BrowseLDAPPassword;
   bval.bv_len = (BrowseLDAPPassword == NULL) ? 0 : strlen(BrowseLDAPPassword);
 
-  if (!BrowseLDAPServer || !strcasecmp(BrowseLDAPServer, "localhost"))
+  if (!BrowseLDAPServer || !_cups_strcasecmp(BrowseLDAPServer, "localhost"))
     rc = ldap_sasl_bind_s(TempBrowseLDAPHandle, NULL, "EXTERNAL", &bv, NULL,
                           NULL, NULL);
   else
@@ -1629,16 +1636,8 @@ cupsdStartBrowsing(void)
 	if (httpAddrLocalhost(&(lis->address)))
 	  continue;
 
-	if (lis->address.addr.sa_family == AF_INET)
-	{
-	  DNSSDPort = ntohs(lis->address.ipv4.sin_port);
-	  break;
-	}
-	else if (lis->address.addr.sa_family == AF_INET6)
-	{
-	  DNSSDPort = ntohs(lis->address.ipv6.sin6_port);
-	  break;
-	}
+        DNSSDPort = _httpAddrPort(&(lis->address));
+	break;
       }
 
      /*
@@ -1668,7 +1667,7 @@ cupsdStartBrowsing(void)
 #ifdef HAVE_LIBSLP
   if ((BrowseLocalProtocols | BrowseRemoteProtocols) & BROWSE_SLP)
   {
-   /* 
+   /*
     * Open SLP handle...
     */
 
@@ -1898,7 +1897,7 @@ cupsdStopBrowsing(void)
   if (((BrowseLocalProtocols | BrowseRemoteProtocols) & BROWSE_SLP) &&
       BrowseSLPHandle)
   {
-   /* 
+   /*
     * Close SLP handle...
     */
 
@@ -1972,13 +1971,13 @@ cupsdUpdateDNSSDName(void)
   int		ret;			/* Error from service creation */
 #endif /* HAVE_AVAHI */
   char		webif[1024];		/* Web interface share name */
-#ifdef HAVE_COREFOUNDATION_H
+#  ifdef HAVE_SYSTEMCONFIGURATION
   SCDynamicStoreRef sc;			/* Context for dynamic store */
   CFDictionaryRef btmm;			/* Back-to-My-Mac domains */
   CFStringEncoding nameEncoding;	/* Encoding of computer name */
   CFStringRef	nameRef;		/* Host name CFString */
   char		nameBuffer[1024];	/* C-string buffer */
-#endif	/* HAVE_COREFOUNDATION_H */
+#  endif /* HAVE_SYSTEMCONFIGURATION */
 
 
  /*
@@ -1994,7 +1993,7 @@ cupsdUpdateDNSSDName(void)
   * Get the computer name as a c-string...
   */
 
-#ifdef HAVE_COREFOUNDATION_H
+#  ifdef HAVE_SYSTEMCONFIGURATION
   sc = SCDynamicStoreCreate(kCFAllocatorDefault, CFSTR("cupsd"), NULL, NULL);
 
   if (sc)
@@ -2085,7 +2084,7 @@ cupsdUpdateDNSSDName(void)
     CFRelease(sc);
   }
   else
-#endif	/* HAVE_COREFOUNDATION_H */
+#  endif /* HAVE_SYSTEMCONFIGURATION */
   {
     cupsdSetString(&DNSSDComputerName, ServerName);
     cupsdSetString(&DNSSDHostName, ServerName);
@@ -2203,7 +2202,7 @@ cupsdUpdateLDAPBrowse(void)
   * and temporary disable LDAP updates...
   */
 
-  if (rc != LDAP_SUCCESS) 
+  if (rc != LDAP_SUCCESS)
   {
     if (BrowseLDAPUpdate && ((rc == LDAP_SERVER_DOWN) || (rc == LDAP_CONNECT_ERROR)))
     {
@@ -2286,7 +2285,7 @@ cupsdUpdateLDAPBrowse(void)
 #endif /* HAVE_LDAP */
 
 
-#ifdef HAVE_LIBSLP 
+#ifdef HAVE_LIBSLP
 /*
  * 'cupsdUpdateSLPBrowse()' - Get browsing information via SLP.
  */
@@ -2308,7 +2307,7 @@ cupsdUpdateSLPBrowse(void)
 
   BrowseSLPRefresh = time(NULL) + BrowseInterval;
 
- /* 
+ /*
   * Poll for remote printers using SLP...
   */
 
@@ -2329,7 +2328,7 @@ cupsdUpdateSLPBrowse(void)
 
     next = s->next;
 
-   /* 
+   /*
     * Load a cupsd_printer_t structure with the SLP service attributes...
     */
 
@@ -2361,7 +2360,7 @@ cupsdUpdateSLPBrowse(void)
     cupsdClearString(&p.make_model);
 
     free(s);
-  }       
+  }
 }
 #endif /* HAVE_LIBSLP */
 
@@ -2410,7 +2409,7 @@ dnssdComparePrinters(cupsd_printer_t *a,/* I - First printer */
       return 0;
     else
       return -1;
-  else 
+  else
     if (!b->reg_name)
       return 1;
     else
@@ -2501,16 +2500,17 @@ dnssdDeregisterPrinter(
  *		              or update the broadcast contents.
  */
 
-static void 
+static void
 dnssdRegisterPrinter(cupsd_printer_t *p)/* I - Printer */
 {
 #ifdef HAVE_DNSSD
   DNSServiceErrorType	se;		/* dnssd errors */
   char			*ipp_txt,	/* IPP TXT record buffer */
-    			*printer_txt;	/* LPD TXT record buffer */
+			*printer_txt;	/* LPD TXT record buffer */
   int			ipp_len,	/* IPP TXT record length */
 			printer_len;	/* LPD TXT record length */
   char			name[1024];	/* Service name */
+  int			printer_port;	/* LPD port number */
 #endif /* HAVE_DNSSD */
 #ifdef HAVE_AVAHI
   int			ret;		/* Error code */
@@ -2519,7 +2519,7 @@ dnssdRegisterPrinter(cupsd_printer_t *p)/* I - Printer */
   char			name[AVAHI_LABEL_MAX];	/* Service name */
 #endif /* HAVE_AVAHI */
   const char		*regtype;	/* Registration type */
-  char			regsubtype[64], /* Registration subtype */
+  char			regsubtype[64],	/* Registration subtype */
 			*nameptr;	/* Pointer into name */
 
 
@@ -2572,10 +2572,10 @@ dnssdRegisterPrinter(cupsd_printer_t *p)/* I - Printer */
   }
   else if (DNSSDComputerName)
   {
-   /*
-    * Make sure there is room for at least 15 characters of
-    * DNSSDComputerName.
-    */
+     /*
+      * Make sure there is room for at least 15 characters of
+      * DNSSDComputerName.
+      */
 
     assert(sizeof(name) >= 15 + 4);
     nameptr = name + strlcpy(name, p->info,
@@ -2644,13 +2644,12 @@ dnssdRegisterPrinter(cupsd_printer_t *p)/* I - Printer */
   if (!p->ipp_ref)
   {
    /*
-    * Initial registration.  Use the _fax subtype for fax queues...
+    * Initial registration.  Use the _fax-ipp regtype for fax queues...
     */
 
-    regtype = (p->type & CUPS_PRINTER_FAX) ? "_fax-ipp._tcp" :
-                                             "_ipp._tcp,_cups";
+    regtype = (p->type & CUPS_PRINTER_FAX) ? "_fax-ipp._tcp" : DNSSDRegType;
 
-    cupsdLogMessage(CUPSD_LOG_DEBUG, 
+    cupsdLogMessage(CUPSD_LOG_DEBUG,
 		    "Registering DNS-SD printer %s with name \"%s\" and "
 		    "type \"%s\"", p->name, name, regtype);
 
@@ -2702,75 +2701,82 @@ dnssdRegisterPrinter(cupsd_printer_t *p)/* I - Printer */
 
   if (BrowseLocalProtocols & BROWSE_LPD)
   {
-    printer_len = 0;			/* anti-compiler-warning-code */
-    printer_txt = dnssdBuildTxtRecord(&printer_len, p, 1);
-
-    if (p->printer_ref &&
-	(printer_len != p->printer_len ||
-	 memcmp(printer_txt, p->printer_txt, printer_len)))
-    {
-     /*
-      * Update the existing registration...
-      */
-
-      /* A TTL of 0 means use record's original value (Radar 3176248) */
-      if ((se = DNSServiceUpdateRecord(p->printer_ref, NULL, 0, printer_len,
-			               printer_txt,
-				       0)) == kDNSServiceErr_NoError)
-      {
-	if (p->printer_txt)
-	  free(p->printer_txt);
-
-	p->printer_txt = printer_txt;
-	p->printer_len = printer_len;
-	printer_txt    = NULL;
-      }
-      else
-      {
-       /*
-	* Failed to update record, lets close this reference and move on...
-	*/
-
-	cupsdLogMessage(CUPSD_LOG_ERROR,
-			"Unable to update LPD DNS-SD record for %s - %d",
-			p->name, se);
-
-	DNSServiceRefDeallocate(p->printer_ref);
-	p->printer_ref = NULL;
-      }
-    }
-    
-    if (!p->printer_ref)
-    {
-     /*
-      * Initial registration...
-      */
-
-      cupsdLogMessage(CUPSD_LOG_DEBUG, 
-		      "Registering DNS-SD printer %s with name \"%s\" and "
-		      "type \"_printer._tcp\"", p->name, name);
-
-      p->printer_ref = DNSSDRef;
-      if ((se = DNSServiceRegister(&p->printer_ref,
-                                   kDNSServiceFlagsShareConnection,
-				   0, name, "_printer._tcp", NULL, NULL,
-				   htons(515), printer_len, printer_txt,
-				   dnssdRegisterCallback,
-				   p)) == kDNSServiceErr_NoError)
-      {
-	p->printer_txt = printer_txt;
-	p->printer_len = printer_len;
-	printer_txt    = NULL;
-      }
-      else
-	cupsdLogMessage(CUPSD_LOG_WARN,
-	                "DNS-SD LPD registration of \"%s\" failed: %d",
-			p->name, se);
-    }
-
-    if (printer_txt)
-      free(printer_txt);
+    printer_len  = 0;			/* anti-compiler-warning-code */
+    printer_port = 515;
+    printer_txt  = dnssdBuildTxtRecord(&printer_len, p, 1);
   }
+  else
+  {
+    printer_len  = 0;
+    printer_port = 0;
+    printer_txt  = NULL;
+  }
+
+  if (p->printer_ref &&
+      (printer_len != p->printer_len ||
+       memcmp(printer_txt, p->printer_txt, printer_len)))
+  {
+   /*
+    * Update the existing registration...
+    */
+
+    /* A TTL of 0 means use record's original value (Radar 3176248) */
+    if ((se = DNSServiceUpdateRecord(p->printer_ref, NULL, 0, printer_len,
+				     printer_txt,
+				     0)) == kDNSServiceErr_NoError)
+    {
+      if (p->printer_txt)
+	free(p->printer_txt);
+
+      p->printer_txt = printer_txt;
+      p->printer_len = printer_len;
+      printer_txt    = NULL;
+    }
+    else
+    {
+     /*
+      * Failed to update record, lets close this reference and move on...
+      */
+
+      cupsdLogMessage(CUPSD_LOG_ERROR,
+		      "Unable to update LPD DNS-SD record for %s - %d",
+		      p->name, se);
+
+      DNSServiceRefDeallocate(p->printer_ref);
+      p->printer_ref = NULL;
+    }
+  }
+
+  if (!p->printer_ref)
+  {
+   /*
+    * Initial registration...
+    */
+
+    cupsdLogMessage(CUPSD_LOG_DEBUG,
+		    "Registering DNS-SD printer %s with name \"%s\" and "
+		    "type \"_printer._tcp\"", p->name, name);
+
+    p->printer_ref = DNSSDRef;
+    if ((se = DNSServiceRegister(&p->printer_ref,
+				 kDNSServiceFlagsShareConnection,
+				 0, name, "_printer._tcp", NULL, NULL,
+				 htons(printer_port), printer_len, printer_txt,
+				 dnssdRegisterCallback,
+				 p)) == kDNSServiceErr_NoError)
+    {
+      p->printer_txt = printer_txt;
+      p->printer_len = printer_len;
+      printer_txt    = NULL;
+    }
+    else
+      cupsdLogMessage(CUPSD_LOG_WARN,
+		      "DNS-SD LPD registration of \"%s\" failed: %d",
+		      p->name, se);
+  }
+
+  if (printer_txt)
+    free(printer_txt);
 #endif /* HAVE_DNSSD */
 #ifdef HAVE_AVAHI
   if (!AvahiCupsClient)
@@ -2992,7 +2998,8 @@ dnssdBuildTxtRecord(
     int             for_lpd)		/* I - 1 = LPD, 0 = IPP */
 {
   int		i;			/* Looping var */
-  char		adminurl_str[256],	/* URL for th admin page */
+  char		admin_hostname[256],	/* .local hostname for admin page */
+		adminurl_str[256],	/* URL for th admin page */
 		type_str[32],		/* Type to string buffer */
 		state_str[32],		/* State to string buffer */
 		rp_str[1024],		/* Queue name string buffer */
@@ -3017,14 +3024,15 @@ dnssdBuildTxtRecord(
   if (for_lpd)
     strlcpy(rp_str, p->name, sizeof(rp_str));
   else
-    snprintf(rp_str, sizeof(rp_str), "%s/%s", 
+    snprintf(rp_str, sizeof(rp_str), "%s/%s",
 	     (p->type & CUPS_PRINTER_CLASS) ? "classes" : "printers", p->name);
 
   keyvalue[i  ][0] = "ty";
   keyvalue[i++][1] = p->make_model ? p->make_model : "Unknown";
 
+  snprintf(admin_hostname, sizeof(admin_hostname), "%s.local", DNSSDHostName);
   httpAssembleURIf(HTTP_URI_CODING_ALL, adminurl_str, sizeof(adminurl_str),
-                   "http", NULL, DNSSDHostName, DNSSDPort, "/%s/%s",
+                   "http", NULL, admin_hostname, DNSSDPort, "/%s/%s",
 		   (p->type & CUPS_PRINTER_CLASS) ? "classes" : "printers",
 		   p->name);
   keyvalue[i  ][0] = "adminurl";
@@ -3037,22 +3045,33 @@ dnssdBuildTxtRecord(
   keyvalue[i++][1] = for_lpd ? "100" : "0";
 
   keyvalue[i  ][0] = "product";
-  keyvalue[i++][1] = p->product ? p->product : "Unknown";
+  keyvalue[i++][1] = (p->pc && p->pc->product) ? p->pc->product : "Unknown";
 
-  snprintf(type_str, sizeof(type_str), "0x%X", p->type | CUPS_PRINTER_REMOTE);
-  snprintf(state_str, sizeof(state_str), "%d", p->state);
+  keyvalue[i  ][0] = "pdl";
+  keyvalue[i++][1] = p->pdl ? p->pdl : "application/postscript";
 
-  keyvalue[i  ][0] = "printer-state";
-  keyvalue[i++][1] = state_str;
+  keyvalue[i  ][0] = "URF";
+  keyvalue[i++][1] = "none";
 
-  keyvalue[i  ][0] = "printer-type";
-  keyvalue[i++][1] = type_str;
+  if (get_auth_info_required(p, air_str, sizeof(air_str)))
+  {
+    keyvalue[i  ][0] = "air";
+    keyvalue[i++][1] = air_str;
+  }
+
+  keyvalue[i  ][0] = "UUID";
+  keyvalue[i++][1] = p->uuid + 9;
+
+#ifdef HAVE_SSL
+  keyvalue[i  ][0] = "TLS";
+  keyvalue[i++][1] = "1.2";
+#endif /* HAVE_SSL */
 
   keyvalue[i  ][0] = "Transparent";
-  keyvalue[i++][1] = "T";
+  keyvalue[i++][1] = "F";
 
   keyvalue[i  ][0] = "Binary";
-  keyvalue[i++][1] = "T";
+  keyvalue[i++][1] = "F";
 
   keyvalue[i  ][0] = "Fax";
   keyvalue[i++][1] = (p->type & CUPS_PRINTER_FAX) ? "T" : "F";
@@ -3084,17 +3103,14 @@ dnssdBuildTxtRecord(
   keyvalue[i  ][0] = "Scan";
   keyvalue[i++][1] = (p->type & CUPS_PRINTER_MFP) ? "T" : "F";
 
-  keyvalue[i  ][0] = "pdl";
-  keyvalue[i++][1] = p->pdl ? p->pdl : "application/postscript";
+  snprintf(type_str, sizeof(type_str), "0x%X", p->type | CUPS_PRINTER_REMOTE);
+  snprintf(state_str, sizeof(state_str), "%d", p->state);
 
-  keyvalue[i  ][0] = "URF";
-  keyvalue[i++][1] = "none";
+  keyvalue[i  ][0] = "printer-state";
+  keyvalue[i++][1] = state_str;
 
-  if (get_auth_info_required(p, air_str, sizeof(air_str)))
-  {
-    keyvalue[i  ][0] = "air";
-    keyvalue[i++][1] = air_str;
-  }
+  keyvalue[i  ][0] = "printer-type";
+  keyvalue[i++][1] = type_str;
 
  /*
   * Then pack them into a proper txt record...
@@ -3125,6 +3141,7 @@ dnssdAddAlias(const void *key,		/* I - Key */
 	hostname[1024];			/* Complete hostname */
 
 
+  (void)key;
   (void)context;
 
   if (CFGetTypeID((CFStringRef)value) == CFStringGetTypeID() &&
@@ -3171,7 +3188,7 @@ dnssdPackTxtRecord(int  *txt_len,	/* O - TXT record length */
     return (NULL);
 
   for (length = i = 0; i < count; i++)
-    length += 1 + strlen(keyvalue[i][0]) + 
+    length += 1 + strlen(keyvalue[i][0]) +
 	      (keyvalue[i][1] ? 1 + strlen(keyvalue[i][1]) : 0);
 
  /*
@@ -3235,7 +3252,7 @@ dnssdRegisterCallback(
 
   if (errorCode)
   {
-    cupsdLogMessage(CUPSD_LOG_ERROR, 
+    cupsdLogMessage(CUPSD_LOG_ERROR,
 		    "DNSServiceRegister failed with error %d", (int)errorCode);
     return;
   }
@@ -3489,7 +3506,7 @@ get_auth_info_required(
     return (buffer);
   }
 
-  return (NULL);
+  return ("none");
 }
 
 
@@ -3525,13 +3542,13 @@ get_hostconfig(const char *name)	/* I - Name of service */
 
       *ptr++ = '\0';
 
-      if (!strcasecmp(line, name))
+      if (!_cups_strcasecmp(line, name))
       {
        /*
         * Found the service, see if it is set to "-NO-"...
 	*/
 
-	if (!strncasecmp(ptr, "-NO-", 4))
+	if (!_cups_strncasecmp(ptr, "-NO-", 4))
 	  state = 0;
         break;
       }
@@ -3577,7 +3594,7 @@ is_local_queue(const char *uri,		/* I - Printer URI */
   * Check for local server addresses...
   */
 
-  if (!strcasecmp(host, ServerName) && port == LocalPort)
+  if (!_cups_strcasecmp(host, ServerName) && port == LocalPort)
     return (1);
 
   cupsdNetIFUpdate();
@@ -3585,7 +3602,7 @@ is_local_queue(const char *uri,		/* I - Printer URI */
   for (iface = (cupsd_netif_t *)cupsArrayFirst(NetIFList);
        iface;
        iface = (cupsd_netif_t *)cupsArrayNext(NetIFList))
-    if (!strcasecmp(host, iface->hostname) && port == iface->port)
+    if (!_cups_strcasecmp(host, iface->hostname) && port == iface->port)
       return (1);
 
  /*
@@ -3625,7 +3642,8 @@ process_browse_data(
 					/* Local make and model */
   cupsd_printer_t *p;			/* Printer information */
   const char	*ipp_options,		/* ipp-options value */
-		*lease_duration;	/* lease-duration value */
+		*lease_duration,	/* lease-duration value */
+		*uuid;			/* uuid value */
   int		is_class;		/* Is this queue a class? */
 
 
@@ -3714,6 +3732,7 @@ process_browse_data(
   hptr     = strchr(host, '.');
   sptr     = strchr(ServerName, '.');
   is_class = type & CUPS_PRINTER_CLASS;
+  uuid     = cupsGetOption("uuid", num_attrs, attrs);
 
   if (!ServerNameIsIP && sptr != NULL && hptr != NULL)
   {
@@ -3723,7 +3742,7 @@ process_browse_data(
 
     while (hptr != NULL)
     {
-      if (!strcasecmp(hptr, sptr))
+      if (!_cups_strcasecmp(hptr, sptr))
       {
         *hptr = '\0';
 	break;
@@ -3794,7 +3813,7 @@ process_browse_data(
 
       if (p->type & CUPS_PRINTER_IMPLICIT)
         p = NULL;			/* Don't replace implicit classes */
-      else if (p->hostname && strcasecmp(p->hostname, host))
+      else if (p->hostname && _cups_strcasecmp(p->hostname, host))
       {
        /*
 	* Short name exists but is for a different host.  If this is a remote
@@ -3926,6 +3945,12 @@ process_browse_data(
     update  = 1;
   }
 
+  if (uuid && strcmp(p->uuid, uuid))
+  {
+    cupsdSetString(&p->uuid, uuid);
+    update = 1;
+  }
+
   if (location && (!p->location || strcmp(p->location, location)))
   {
     cupsdSetString(&p->location, location);
@@ -3999,7 +4024,7 @@ process_browse_data(
 		  is_class ? "Class" : "Printer", p->name);
 
     cupsdExpireSubscriptions(p, NULL);
- 
+
     cupsdDeletePrinter(p, 1);
     cupsdUpdateImplicitClasses();
     cupsdMarkDirty(CUPSD_DIRTY_PRINTCAP | CUPSD_DIRTY_REMOTE);
@@ -4088,7 +4113,7 @@ process_implicit_classes(void)
     cupsArraySave(Printers);
 
     if (len > 0 &&
-	!strncasecmp(p->name, name + offset, len) &&
+	!_cups_strncasecmp(p->name, name + offset, len) &&
 	(p->name[len] == '\0' || p->name[len] == '@'))
     {
      /*
@@ -4096,7 +4121,7 @@ process_implicit_classes(void)
       * we have a class, and if this printer is a member...
       */
 
-      if (pclass && strcasecmp(pclass->name, name))
+      if (pclass && _cups_strcasecmp(pclass->name, name))
       {
 	if (update)
 	  cupsdSetPrinterAttrs(pclass);
@@ -4334,9 +4359,10 @@ send_cups_browse(cupsd_printer_t *p)	/* I - Printer to send */
 			   (p->type & CUPS_PRINTER_CLASS) ? "/classes/%s" :
 			                                    "/printers/%s",
 			   p->name);
-	  snprintf(packet, sizeof(packet), "%x %x %s \"%s\" \"%s\" \"%s\" %s%s\n",
+	  snprintf(packet, sizeof(packet),
+	           "%x %x %s \"%s\" \"%s\" \"%s\" %s%s uuid=%s\n",
         	   type, p->state, uri, location, info, make_model,
-		   p->browse_attrs ? p->browse_attrs : "", air);
+		   p->browse_attrs ? p->browse_attrs : "", air, p->uuid);
 
 	  bytes = strlen(packet);
 
@@ -4376,9 +4402,9 @@ send_cups_browse(cupsd_printer_t *p)	/* I - Printer to send */
 			                                    "/printers/%s",
 			   p->name);
 	  snprintf(packet, sizeof(packet),
-	           "%x %x %s \"%s\" \"%s\" \"%s\" %s%s\n",
+	           "%x %x %s \"%s\" \"%s\" \"%s\" %s%s uuid=%s\n",
         	   type, p->state, uri, location, info, make_model,
-		   p->browse_attrs ? p->browse_attrs : "", air);
+		   p->browse_attrs ? p->browse_attrs : "", air, p->uuid);
 
 	  bytes = strlen(packet);
 
@@ -4401,9 +4427,10 @@ send_cups_browse(cupsd_printer_t *p)	/* I - Printer to send */
       * the default server name...
       */
 
-      snprintf(packet, sizeof(packet), "%x %x %s \"%s\" \"%s\" \"%s\" %s%s\n",
+      snprintf(packet, sizeof(packet),
+               "%x %x %s \"%s\" \"%s\" \"%s\" %s%s uuid=%s\n",
        	       type, p->state, p->uri, location, info, make_model,
-	       p->browse_attrs ? p->browse_attrs : "", air);
+	       p->browse_attrs ? p->browse_attrs : "", air, p->uuid);
 
       bytes = strlen(packet);
       cupsdLogMessage(CUPSD_LOG_DEBUG2,
@@ -4652,7 +4679,7 @@ send_ldap_ou(char *ou,			/* I - Servername/ou to register */
   ou_value[1] = NULL;
   desc[0]     = descstring;
   desc[1]     = NULL;
-  
+
   mods[0].mod_type   = "ou";
   mods[0].mod_values = ou_value;
   mods[1].mod_type   = "description";
@@ -4990,7 +5017,7 @@ send_ldap_browse(cupsd_printer_t *p)	/* I - Printer to register */
       }
     }
   }
-  else 
+  else
   {
    /*
     * No LDAP entry exists for the printer.  Printer has never been registered,
@@ -5190,7 +5217,7 @@ send_slp_browse(cupsd_printer_t *p)	/* I - Printer to register */
                   p->name);
 
  /*
-  * Make the SLP service URL that conforms to the IANA 
+  * Make the SLP service URL that conforms to the IANA
   * 'printer:' template.
   */
 
@@ -5345,7 +5372,7 @@ send_slp_browse(cupsd_printer_t *p)	/* I - Printer to register */
 
 
 /*
- * 'slp_attr_callback()' - SLP attribute callback 
+ * 'slp_attr_callback()' - SLP attribute callback
  */
 
 static SLPBoolean			/* O - SLP_TRUE for success */
@@ -5396,7 +5423,7 @@ slp_attr_callback(
  * 'slp_dereg_printer()' - SLPDereg() the specified printer
  */
 
-static void 
+static void
 slp_dereg_printer(cupsd_printer_t *p)	/* I - Printer */
 {
   char	srvurl[HTTP_MAX_URI];		/* Printer service URI */
@@ -5407,7 +5434,7 @@ slp_dereg_printer(cupsd_printer_t *p)	/* I - Printer */
   if (!(p->type & CUPS_PRINTER_REMOTE))
   {
    /*
-    * Make the SLP service URL that conforms to the IANA 
+    * Make the SLP service URL that conforms to the IANA
     * 'printer:' template.
     */
 
@@ -5532,7 +5559,7 @@ slp_url_callback(
 
   strlcpy(s->url, srvurl, sizeof(s->url));
 
- /* 
+ /*
   * Link the SLP service URL into the head of the list
   */
 
@@ -5580,7 +5607,7 @@ update_cups_browse(void)
   */
 
   srclen = sizeof(srcaddr);
-  if ((bytes = recvfrom(BrowseSocket, packet, sizeof(packet) - 1, 0, 
+  if ((bytes = recvfrom(BrowseSocket, packet, sizeof(packet) - 1, 0,
                         (struct sockaddr *)&srcaddr, &srclen)) < 0)
   {
    /*
@@ -5654,7 +5681,7 @@ update_cups_browse(void)
 
   if (BrowseACL)
   {
-    if (httpAddrLocalhost(&srcaddr) || !strcasecmp(srcname, "localhost"))
+    if (httpAddrLocalhost(&srcaddr) || !_cups_strcasecmp(srcname, "localhost"))
     {
      /*
       * Access from localhost (127.0.0.1) is always allowed...
@@ -5677,24 +5704,20 @@ update_cups_browse(void)
 	case CUPSD_AUTH_ALLOW : /* Order Deny,Allow */
             auth = CUPSD_AUTH_ALLOW;
 
-            if (cupsdCheckAuth(address, srcname, len,
-	        	  BrowseACL->num_deny, BrowseACL->deny))
+            if (cupsdCheckAuth(address, srcname, len, BrowseACL->deny))
 	      auth = CUPSD_AUTH_DENY;
 
-            if (cupsdCheckAuth(address, srcname, len,
-	        	  BrowseACL->num_allow, BrowseACL->allow))
+            if (cupsdCheckAuth(address, srcname, len, BrowseACL->allow))
 	      auth = CUPSD_AUTH_ALLOW;
 	    break;
 
 	case CUPSD_AUTH_DENY : /* Order Allow,Deny */
             auth = CUPSD_AUTH_DENY;
 
-            if (cupsdCheckAuth(address, srcname, len,
-	        	  BrowseACL->num_allow, BrowseACL->allow))
+            if (cupsdCheckAuth(address, srcname, len, BrowseACL->allow))
 	      auth = CUPSD_AUTH_ALLOW;
 
-            if (cupsdCheckAuth(address, srcname, len,
-	        	  BrowseACL->num_deny, BrowseACL->deny))
+            if (cupsdCheckAuth(address, srcname, len, BrowseACL->deny))
 	      auth = CUPSD_AUTH_DENY;
 	    break;
       }
@@ -5806,7 +5829,7 @@ update_cups_browse(void)
   */
 
   for (i = 0; i < NumRelays; i ++)
-    if (cupsdCheckAuth(address, srcname, len, 1, &(Relays[i].from)))
+    if (cupsdCheckAuth(address, srcname, len, Relays[i].from))
       if (sendto(BrowseSocket, packet, bytes, 0,
                  (struct sockaddr *)&(Relays[i].to),
 		 httpAddrLength(&(Relays[i].to))) <= 0)
@@ -6028,5 +6051,5 @@ update_smb(int onoff)			/* I - 1 = turn on, 0 = turn off */
 
 
 /*
- * End of "$Id: dirsvc.c 9503 2011-01-22 00:07:22Z mike $".
+ * End of "$Id: dirsvc.c 9793 2011-05-20 03:49:49Z mike $".
  */

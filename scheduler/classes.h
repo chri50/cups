@@ -1,7 +1,7 @@
 /*
- * "$Id: classes.h 9061 2010-03-30 22:07:33Z mike $"
+ * "$Id: classes.h 9350 2010-11-04 23:23:25Z mike $"
  *
- *   Printer class definitions for the Common UNIX Printing System (CUPS).
+ *   Printer class definitions for the CUPS scheduler.
  *
  *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 1997-2005 by Easy Software Products, all rights reserved.
@@ -32,5 +32,5 @@ extern void		cupsdUpdateImplicitClasses(void);
 
 
 /*
- * End of "$Id: classes.h 9061 2010-03-30 22:07:33Z mike $".
+ * End of "$Id: classes.h 9350 2010-11-04 23:23:25Z mike $".
  */

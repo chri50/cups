@@ -1,9 +1,9 @@
 /*
- * "$Id: getputfile.c 8585 2009-04-30 22:15:05Z mike $"
+ * "$Id: getputfile.c 9042 2010-03-24 00:45:34Z mike $"
  *
- *   Get/put file functions for the Common UNIX Printing System (CUPS).
+ *   Get/put file functions for CUPS.
  *
- *   Copyright 2007-2009 by Apple Inc.
+ *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -26,13 +26,7 @@
  * Include necessary headers...
  */
 
-#include "globals.h"
-#include "cups.h"
-#include "language.h"
-#include "debug.h"
-#include <stdlib.h>
-#include <ctype.h>
-#include <errno.h>
+#include "cups-private.h"
 #include <fcntl.h>
 #include <sys/stat.h>
 #if defined(WIN32) || defined(__EMX__)
@@ -504,5 +498,5 @@ cupsPutFile(http_t     *http,		/* I - Connection to server or @code CUPS_HTTP_DE
 
 
 /*
- * End of "$Id: getputfile.c 8585 2009-04-30 22:15:05Z mike $".
+ * End of "$Id: getputfile.c 9042 2010-03-24 00:45:34Z mike $".
  */

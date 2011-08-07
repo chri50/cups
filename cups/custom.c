@@ -1,5 +1,5 @@
 /*
- * "$Id: custom.c 9426 2011-01-06 22:48:42Z mike $"
+ * "$Id: custom.c 9793 2011-05-20 03:49:49Z mike $"
  *
  *   PPD custom option routines for CUPS.
  *
@@ -35,8 +35,7 @@
  * Include necessary headers.
  */
 
-#include "globals.h"
-#include "debug.h"
+#include "cups-private.h"
 
 
 /*
@@ -79,7 +78,7 @@ ppdFindCustomParam(ppd_coption_t *opt,	/* I - Custom option */
   for (param = (ppd_cparam_t *)cupsArrayFirst(opt->params);
        param;
        param = (ppd_cparam_t *)cupsArrayNext(opt->params))
-    if (!strcasecmp(param->name, name))
+    if (!_cups_strcasecmp(param->name, name))
       break;
 
   return (param);
@@ -119,5 +118,5 @@ ppdNextCustomParam(ppd_coption_t *opt)	/* I - Custom option */
 
 
 /*
- * End of "$Id: custom.c 9426 2011-01-06 22:48:42Z mike $".
+ * End of "$Id: custom.c 9793 2011-05-20 03:49:49Z mike $".
  */

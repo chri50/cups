@@ -39,6 +39,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "SplashOutputDev.h"
 #include "GfxState.h"
 #include <cups/cups.h>
+#include <cups/ppd.h>
 #include <stdarg.h>
 #include "Error.h"
 #include "GlobalParams.h"

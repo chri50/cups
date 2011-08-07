@@ -1,11 +1,9 @@
 Description: Do not mess with the permissions of cupsd.conf.
 Author: Martin Pitt <mpitt@debian.org>
 
-Index: cups-1.4.7/scheduler/conf.c
-===================================================================
---- cups-1.4.7.orig/scheduler/conf.c	2011-07-14 13:29:15.229799787 +0200
-+++ cups-1.4.7/scheduler/conf.c	2011-07-14 13:29:17.879799834 +0200
-@@ -981,8 +981,10 @@
+--- a/scheduler/conf.c
++++ b/scheduler/conf.c
+@@ -997,8 +997,10 @@
  			     Group, 1, 1) < 0 ||
         cupsdCheckPermissions(ServerRoot, "ssl", 0700, RunUser,
  			     Group, 1, 0) < 0 ||

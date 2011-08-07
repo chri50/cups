@@ -1,9 +1,9 @@
 /*
- * "$Id: ieee1284.c 9098 2010-04-09 22:42:09Z mike $"
+ * "$Id: ieee1284.c 9828 2011-06-14 06:38:24Z mike $"
  *
- *   IEEE-1284 support functions for the Common UNIX Printing System (CUPS).
+ *   IEEE-1284 support functions for CUPS.
  *
- *   Copyright 2007-2009 by Apple Inc.
+ *   Copyright 2007-2011 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -26,6 +26,7 @@
  */
 
 #include "backend-private.h"
+#include <cups/cups-private.h>
 
 
 /*
@@ -45,6 +46,15 @@ backendGetDeviceID(
     int        uri_size)		/* I - Size of buffer */
 {
 #ifdef __APPLE__ /* This function is a no-op */
+  (void)fd;
+  (void)device_id;
+  (void)device_id_size;
+  (void)make_model;
+  (void)make_model_size;
+  (void)scheme;
+  (void)uri;
+  (void)uri_size;
+
   return (-1);
 
 #else /* Get the device ID from the specified file descriptor... */
@@ -55,7 +65,7 @@ backendGetDeviceID(
 #  if defined(__sun) && defined(ECPPIOC_GETDEVID)
   struct ecpp_device_id did;		/* Device ID buffer */
 #  endif /* __sun && ECPPIOC_GETDEVID */
-  char  *c;
+  char	*ptr;				/* Pointer into device ID */
 
 
   DEBUG_printf(("backendGetDeviceID(fd=%d, device_id=%p, device_id_size=%d, "
@@ -177,7 +187,7 @@ backendGetDeviceID(
       * and then limit the length to the size of our buffer...
       */
 
-      if ((length > device_id_size) || (length < 14))
+      if (length > device_id_size || length < 14)
 	length = (((unsigned)device_id[1] & 255) << 8) +
 		 ((unsigned)device_id[0] & 255);
 
@@ -217,11 +227,8 @@ backendGetDeviceID(
     }
     else
     {
-#    ifdef DEBUG
       DEBUG_printf(("backendGetDeviceID: ioctl failed - %s\n",
                     strerror(errno)));
-#    endif /* DEBUG */
-      /* Clean up after failed attempt to get device ID */
       *device_id = '\0';
     }
 #  endif /* __linux */
@@ -252,14 +259,17 @@ backendGetDeviceID(
   }
 
  /*
-  * Check whether device ID is valid. Turn line breaks and tabs to spaces
-  * and abort device IDs with non-printable characters
+  * Check whether device ID is valid. Turn line breaks and tabs to spaces and
+  * reject device IDs with non-printable characters.
   */
-  for (c = device_id; *c; c++)
-    if (isspace(*c))
-      *c = ' ';
-    else if (!isprint(*c))
+
+  for (ptr = device_id; *ptr; ptr ++)
+    if (_cups_isspace(*ptr))
+      *ptr = ' ';
+    else if ((*ptr & 255) < ' ' || *ptr == 127)
     {
+      DEBUG_printf(("backendGetDeviceID: Bad device_id character %d.",
+                    *ptr & 255));
       *device_id = '\0';
       break;
     }
@@ -268,6 +278,9 @@ backendGetDeviceID(
 
   if (scheme && uri)
     *uri = '\0';
+
+  if (!*device_id)
+    return (-1);
 
  /*
   * Get the make and model...
@@ -295,7 +308,7 @@ backendGetDeviceID(
     * Get the make, model, and serial numbers...
     */
 
-    num_values = _ppdGet1284Values(device_id, &values);
+    num_values = _cupsGet1284Values(device_id, &values);
 
     if ((sern = cupsGetOption("SERIALNUMBER", num_values, values)) == NULL)
       if ((sern = cupsGetOption("SERN", num_values, values)) == NULL)
@@ -309,9 +322,9 @@ backendGetDeviceID(
 
     if (mfg)
     {
-      if (!strcasecmp(mfg, "Hewlett-Packard"))
+      if (!_cups_strcasecmp(mfg, "Hewlett-Packard"))
         mfg = "HP";
-      else if (!strcasecmp(mfg, "Lexmark International"))
+      else if (!_cups_strcasecmp(mfg, "Lexmark International"))
         mfg = "Lexmark";
     }
     else
@@ -327,7 +340,7 @@ backendGetDeviceID(
     if (!mdl)
       mdl = "";
 
-    if (!strncasecmp(mdl, mfg, strlen(mfg)))
+    if (!_cups_strncasecmp(mdl, mfg, strlen(mfg)))
     {
       mdl += strlen(mfg);
 
@@ -388,7 +401,7 @@ backendGetMakeModel(
   * Look for the description field...
   */
 
-  num_values = _ppdGet1284Values(device_id, &values);
+  num_values = _cupsGet1284Values(device_id, &values);
 
   if ((mdl = cupsGetOption("MODEL", num_values, values)) == NULL)
     mdl = cupsGetOption("MDL", num_values, values);
@@ -402,7 +415,7 @@ backendGetMakeModel(
     if ((mfg = cupsGetOption("MANUFACTURER", num_values, values)) == NULL)
       mfg = cupsGetOption("MFG", num_values, values);
 
-    if (!mfg || !strncasecmp(mdl, mfg, strlen(mfg)))
+    if (!mfg || !_cups_strncasecmp(mdl, mfg, strlen(mfg)))
     {
      /*
       * Just copy the model string, since it has the manufacturer...
@@ -418,10 +431,7 @@ backendGetMakeModel(
 
       char	temp[1024];		/* Temporary make and model */
 
-      if (mfg)
-	snprintf(temp, sizeof(temp), "%s %s", mfg, mdl);
-      else
-	snprintf(temp, sizeof(temp), "%s", mdl);
+      snprintf(temp, sizeof(temp), "%s %s", mfg, mdl);
 
       _ppdNormalizeMakeAndModel(temp, make_model, make_model_size);
     }
@@ -477,5 +487,5 @@ backendGetMakeModel(
 
 
 /*
- * End of "$Id: ieee1284.c 9098 2010-04-09 22:42:09Z mike $".
+ * End of "$Id: ieee1284.c 9828 2011-06-14 06:38:24Z mike $".
  */

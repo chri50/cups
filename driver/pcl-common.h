@@ -1,9 +1,9 @@
 /*
- * "$Id: pcl-common.h 7404 2008-03-26 15:31:53Z mike $"
+ * "$Id: pcl-common.h 9042 2010-03-24 00:45:34Z mike $"
  *
  *   Common HP-PCL definitions for CUPS.
  *
- *   Copyright 2007 by Apple Inc.
+ *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 1993-2005 by Easy Software Products, All Rights Reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -17,7 +17,7 @@
  * Include necessary headers...
  */
 
-#include <cups/string.h>
+#include <cups/string-private.h>
 #include "data/pcl.h"
 
 
@@ -67,5 +67,5 @@ extern void	pjl_write(ppd_file_t *ppd, const char *format,
 			  int num_options, cups_option_t *options);
 
 /*
- * End of "$Id: pcl-common.h 7404 2008-03-26 15:31:53Z mike $".
+ * End of "$Id: pcl-common.h 9042 2010-03-24 00:45:34Z mike $".
  */

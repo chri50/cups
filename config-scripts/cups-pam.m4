@@ -1,9 +1,9 @@
 dnl
-dnl "$Id: cups-pam.m4 8825 2009-09-22 21:53:31Z mike $"
+dnl "$Id: cups-pam.m4 9771 2011-05-12 05:21:56Z mike $"
 dnl
-dnl   PAM stuff for the Common UNIX Printing System (CUPS).
+dnl   PAM stuff for CUPS.
 dnl
-dnl   Copyright 2007-2009 by Apple Inc.
+dnl   Copyright 2007-2011 by Apple Inc.
 dnl   Copyright 1997-2005 by Easy Software Products, all rights reserved.
 dnl
 dnl   These coded instructions, statements, and computer programs are the
@@ -98,5 +98,5 @@ AC_SUBST(PAMMOD)
 AC_SUBST(PAMMODAUTH)
 
 dnl
-dnl End of "$Id: cups-pam.m4 8825 2009-09-22 21:53:31Z mike $".
+dnl End of "$Id: cups-pam.m4 9771 2011-05-12 05:21:56Z mike $".
 dnl

@@ -2,21 +2,19 @@ Description: Add support for creating pid files.
 Author: Maritn Pitt <mpitt@debian.org>
 Bug: http://www.cups.org/str.php?L2465
 
-Index: cups-1.4.6/scheduler/conf.c
-===================================================================
---- cups-1.4.6.orig/scheduler/conf.c	2011-07-14 13:02:02.999772047 +0200
-+++ cups-1.4.6/scheduler/conf.c	2011-07-14 13:02:07.039772116 +0200
-@@ -182,7 +182,8 @@
- #endif /* HAVE_AUTHORIZATION_H */
+--- a/scheduler/conf.c
++++ b/scheduler/conf.c
+@@ -184,7 +184,8 @@
    { "TempDir",			&TempDir,		CUPSD_VARTYPE_PATHNAME },
    { "Timeout",			&Timeout,		CUPSD_VARTYPE_INTEGER },
--  { "UseNetworkDefault",	&UseNetworkDefault,	CUPSD_VARTYPE_BOOLEAN }
-+  { "UseNetworkDefault",	&UseNetworkDefault,	CUPSD_VARTYPE_BOOLEAN },
+   { "UseNetworkDefault",	&UseNetworkDefault,	CUPSD_VARTYPE_BOOLEAN },
+-  { "WebInterface",		&WebInterface,		CUPSD_VARTYPE_BOOLEAN }
++  { "WebInterface",		&WebInterface,		CUPSD_VARTYPE_BOOLEAN },
 +  { "PidFile",			&PidFile,		CUPSD_VARTYPE_STRING }
  };
  #define NUM_VARS	(sizeof(variables) / sizeof(variables[0]))
  
-@@ -504,6 +505,7 @@
+@@ -507,6 +508,7 @@
    cupsdSetString(&RemoteRoot, "remroot");
    cupsdSetString(&ServerHeader, "CUPS/1.4");
    cupsdSetString(&StateDir, CUPS_STATEDIR);
@@ -24,10 +22,8 @@ Index: cups-1.4.6/scheduler/conf.c
  
    if (!strcmp(CUPS_DEFAULT_PRINTCAP, "/etc/printers.conf"))
      PrintcapFormat = PRINTCAP_SOLARIS;
-Index: cups-1.4.6/scheduler/conf.h
-===================================================================
---- cups-1.4.6.orig/scheduler/conf.h	2011-07-14 13:02:03.029772051 +0200
-+++ cups-1.4.6/scheduler/conf.h	2011-07-14 13:02:07.039772116 +0200
+--- a/scheduler/conf.h
++++ b/scheduler/conf.h
 @@ -246,6 +246,8 @@
  VAR int			SSLOptions		VALUE(CUPSD_SSL_NONE);
  					/* SSL/TLS options */
@@ -37,11 +33,9 @@ Index: cups-1.4.6/scheduler/conf.h
  
  #ifdef HAVE_LAUNCHD
  VAR int			LaunchdTimeout		VALUE(DEFAULT_KEEPALIVE);
-Index: cups-1.4.6/scheduler/main.c
-===================================================================
---- cups-1.4.6.orig/scheduler/main.c	2011-07-14 13:02:03.009772047 +0200
-+++ cups-1.4.6/scheduler/main.c	2011-07-14 13:02:07.049772117 +0200
-@@ -94,6 +94,8 @@
+--- a/scheduler/main.c
++++ b/scheduler/main.c
+@@ -85,6 +85,8 @@
  static void		sigterm_handler(int sig);
  static long		select_timeout(int fds);
  static void		usage(int status);
@@ -50,7 +44,7 @@ Index: cups-1.4.6/scheduler/main.c
  
  
  /*
-@@ -614,6 +616,11 @@
+@@ -588,6 +590,11 @@
    }
  #endif /* __sgi */
  
@@ -62,7 +56,7 @@ Index: cups-1.4.6/scheduler/main.c
   /*
    * Initialize authentication certificates...
    */
-@@ -1209,10 +1216,41 @@
+@@ -1172,10 +1179,41 @@
  
    cupsdStopSelect();
  
@@ -102,13 +96,11 @@ Index: cups-1.4.6/scheduler/main.c
 +}
 +
  /*
-  * 'cupsdCheckProcess()' - Tell the main loop to check for dead children.
+  * 'cupsdAddString()' - Copy and add a string to an array.
   */
-Index: cups-1.4.6/test/run-stp-tests.sh
-===================================================================
---- cups-1.4.6.orig/test/run-stp-tests.sh	2011-07-14 13:02:02.989772049 +0200
-+++ cups-1.4.6/test/run-stp-tests.sh	2011-07-14 13:02:07.049772117 +0200
-@@ -340,6 +340,7 @@
+--- a/test/run-stp-tests.sh
++++ b/test/run-stp-tests.sh
+@@ -351,6 +351,7 @@
  DocumentRoot $root/doc
  RequestRoot /tmp/cups-$user/spool
  TempDir /tmp/cups-$user/spool/temp

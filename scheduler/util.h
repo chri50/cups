@@ -1,9 +1,9 @@
 /*
- * "$Id: util.h 8388 2009-02-25 16:37:27Z mike $"
+ * "$Id: util.h 9755 2011-05-09 22:53:31Z mike $"
  *
- *   Mini-daemon utility definitions for the Common UNIX Printing System (CUPS).
+ *   Mini-daemon utility definitions for CUPS.
  *
- *   Copyright 2007-2009 by Apple Inc.
+ *   Copyright 2007-2011 by Apple Inc.
  *   Copyright 1997-2005 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -20,6 +20,7 @@
  * Include necessary headers...
  */
 
+#  include <cups/array-private.h>
 #  include <cups/file-private.h>
 #  include <signal.h>
 
@@ -66,5 +67,5 @@ extern void		cupsdSendIPPTrailer(void);
 #endif /* !_CUPSD_UTIL_H_ */
 
 /*
- * End of "$Id: util.h 8388 2009-02-25 16:37:27Z mike $".
+ * End of "$Id: util.h 9755 2011-05-09 22:53:31Z mike $".
  */

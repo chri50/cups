@@ -1,9 +1,9 @@
 /*
- * "$Id: phpcups.h 6649 2007-07-11 21:46:42Z mike $"
+ * "$Id: phpcups.h 9771 2011-05-12 05:21:56Z mike $"
  *
- *   PHP module include file for the Common UNIX Printing System (CUPS).
+ *   PHP module include file for CUPS.
  *
- *   Copyright 2007 by Apple Inc.
+ *   Copyright 2007-2011 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -22,10 +22,7 @@
 
 #  include <cups/cups.h>
 #  include <cups/language.h>
-#  include <cups/debug.h>
-#  include <stdlib.h>
-#  include <ctype.h>
-#  include <errno.h>
+#  include <cups/debug-private.h>
 #  include <fcntl.h>
 #  include <sys/stat.h>
 #  if defined(WIN32) || defined(__EMX__)
@@ -66,5 +63,5 @@ PHP_FUNCTION(cups_print_files);
 
 
 /*
- * End of "$Id: phpcups.h 6649 2007-07-11 21:46:42Z mike $".
+ * End of "$Id: phpcups.h 9771 2011-05-12 05:21:56Z mike $".
  */

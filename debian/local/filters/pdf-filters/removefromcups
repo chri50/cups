@@ -27,6 +27,9 @@ rm -rf $1/filter/fontembed
 rm -rf $1/pdftopdf
 rm -rf $1/pdftoopvp
 
+# Remove links
+[ -h cups/i18n.h ] && rm $1/cups/i18n.h
+
 cd $1
 
 # Restore configure script
