@@ -1,9 +1,9 @@
 dnl
-dnl "$Id: cups-network.m4 7918 2008-09-08 22:03:01Z mike $"
+dnl "$Id: cups-network.m4 9771 2011-05-12 05:21:56Z mike $"
 dnl
-dnl   Networking stuff for the Common UNIX Printing System (CUPS).
+dnl   Networking stuff for CUPS.
 dnl
-dnl   Copyright 2007-2008 by Apple Inc.
+dnl   Copyright 2007-2011 by Apple Inc.
 dnl   Copyright 1997-2005 by Easy Software Products, all rights reserved.
 dnl
 dnl   These coded instructions, statements, and computer programs are the
@@ -70,5 +70,5 @@ AC_CHECK_HEADERS(AppleTalk/at_proto.h,AC_DEFINE(HAVE_APPLETALK_AT_PROTO_H),,
 	[#include <netat/appletalk.h>])
 
 dnl
-dnl End of "$Id: cups-network.m4 7918 2008-09-08 22:03:01Z mike $".
+dnl End of "$Id: cups-network.m4 9771 2011-05-12 05:21:56Z mike $".
 dnl

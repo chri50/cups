@@ -1,9 +1,9 @@
 dnl
-dnl "$Id: cups-3264.m4 8524 2009-04-19 21:18:45Z mike $"
+dnl "$Id: cups-3264.m4 9771 2011-05-12 05:21:56Z mike $"
 dnl
-dnl   32/64-bit library support stuff for the Common UNIX Printing System (CUPS).
+dnl   32/64-bit library support stuff for CUPS.
 dnl
-dnl   Copyright 2007-2009 by Apple Inc.
+dnl   Copyright 2007-2011 by Apple Inc.
 dnl   Copyright 1997-2006 by Easy Software Products, all rights reserved.
 dnl
 dnl   These coded instructions, statements, and computer programs are the
@@ -136,5 +136,5 @@ case "$uname" in
 esac
 
 dnl
-dnl End of "$Id: cups-3264.m4 8524 2009-04-19 21:18:45Z mike $".
+dnl End of "$Id: cups-3264.m4 9771 2011-05-12 05:21:56Z mike $".
 dnl

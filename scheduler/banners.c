@@ -1,9 +1,9 @@
 /*
- * "$Id: banners.c 7221 2008-01-16 22:20:08Z mike $"
+ * "$Id: banners.c 9793 2011-05-20 03:49:49Z mike $"
  *
- *   Banner routines for the Common UNIX Printing System (CUPS).
+ *   Banner routines for the CUPS scheduler.
  *
- *   Copyright 2007-2008 by Apple Inc.
+ *   Copyright 2007-2011 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -192,7 +192,7 @@ compare_banners(
     const cupsd_banner_t *b0,		/* I - First banner */
     const cupsd_banner_t *b1)		/* I - Second banner */
 {
-  return (strcasecmp(b0->name, b1->name));
+  return (_cups_strcasecmp(b0->name, b1->name));
 }
 
 
@@ -220,5 +220,5 @@ free_banners(void)
 
 
 /*
- * End of "$Id: banners.c 7221 2008-01-16 22:20:08Z mike $".
+ * End of "$Id: banners.c 9793 2011-05-20 03:49:49Z mike $".
  */

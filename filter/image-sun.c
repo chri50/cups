@@ -1,9 +1,9 @@
 /*
- * "$Id: image-sun.c 7223 2008-01-16 23:41:19Z mike $"
+ * "$Id: image-sun.c 9771 2011-05-12 05:21:56Z mike $"
  *
- *   Sun Raster image file routines for the Common UNIX Printing System (CUPS).
+ *   Sun Raster image file routines for CUPS.
  *
- *   Copyright 2007-2008 by Apple Inc.
+ *   Copyright 2007-2011 by Apple Inc.
  *   Copyright 1993-2007 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -403,5 +403,5 @@ read_unsigned(FILE *fp)			/* I - File to read from */
 
 
 /*
- * End of "$Id: image-sun.c 7223 2008-01-16 23:41:19Z mike $".
+ * End of "$Id: image-sun.c 9771 2011-05-12 05:21:56Z mike $".
  */

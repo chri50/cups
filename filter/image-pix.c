@@ -1,9 +1,9 @@
 /*
- * "$Id: image-pix.c 7221 2008-01-16 22:20:08Z mike $"
+ * "$Id: image-pix.c 9771 2011-05-12 05:21:56Z mike $"
  *
- *   Alias PIX image routines for the Common UNIX Printing System (CUPS).
+ *   Alias PIX image routines for CUPS.
  *
- *   Copyright 2007-2008 by Apple Inc.
+ *   Copyright 2007-2011 by Apple Inc.
  *   Copyright 1993-2007 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -236,5 +236,5 @@ read_short(FILE *fp)			/* I - File to read from */
 
 
 /*
- * End of "$Id: image-pix.c 7221 2008-01-16 22:20:08Z mike $".
+ * End of "$Id: image-pix.c 9771 2011-05-12 05:21:56Z mike $".
  */

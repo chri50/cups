@@ -1,5 +1,5 @@
 /*
- * "$Id: server.c 9104 2010-04-12 04:03:53Z mike $"
+ * "$Id: server.c 9632 2011-03-21 02:12:14Z mike $"
  *
  *   Server start/stop routines for the CUPS scheduler.
  *
@@ -34,7 +34,7 @@
  * Local globals...
  */
 
-static int	started = 0;
+static int		started = 0;	/* Did we start the server already? */
 
 
 /*
@@ -131,7 +131,7 @@ cupsdStopServer(void)
   * Send one last notification as the server shuts down.
   */
 
-  cupsdLogMessage(CUPSD_LOG_DEBUG,
+  cupsdLogMessage(CUPSD_LOG_DEBUG2,
                   "notify_post(\"com.apple.printerListChange\") last");
   notify_post("com.apple.printerListChange");
 #endif /* HAVE_NOTIFY_POST */
@@ -180,5 +180,5 @@ cupsdStopServer(void)
 
 
 /*
- * End of "$Id: server.c 9104 2010-04-12 04:03:53Z mike $".
+ * End of "$Id: server.c 9632 2011-03-21 02:12:14Z mike $".
  */

@@ -1,9 +1,9 @@
 /*
- * "$Id: testsupplies.c 7502 2008-04-28 21:30:12Z mike $"
+ * "$Id: testsupplies.c 9771 2011-05-12 05:21:56Z mike $"
  *
- *   SNMP supplies test program for the Common UNIX Printing System (CUPS).
+ *   SNMP supplies test program for CUPS.
  *
- *   Copyright 2008 by Apple Inc.
+ *   Copyright 2008-2011 by Apple Inc.
  *
  *   These coded instructions, statements, and computer programs are the
  *   property of Apple Inc. and are protected by Federal copyright
@@ -79,5 +79,5 @@ main(int  argc,				/* I - Number of command-line args */
 
 
 /*
- * End of "$Id: testsupplies.c 7502 2008-04-28 21:30:12Z mike $".
+ * End of "$Id: testsupplies.c 9771 2011-05-12 05:21:56Z mike $".
  */

@@ -1,9 +1,9 @@
 #
-# "$Id: Makefile 8106 2008-11-11 00:57:12Z mike $"
+# "$Id: Makefile 9771 2011-05-12 05:21:56Z mike $"
 #
-#   Fonts makefile for the Common UNIX Printing System (CUPS).
+#   Fonts makefile for CUPS.
 #
-#   Copyright 2007-2008 by Apple Inc.
+#   Copyright 2007-2011 by Apple Inc.
 #   Copyright 1993-2006 by Easy Software Products.
 #
 #   These coded instructions, statements, and computer programs are the
@@ -114,5 +114,5 @@ uninstall:
 
 
 #
-# End of "$Id: Makefile 8106 2008-11-11 00:57:12Z mike $".
+# End of "$Id: Makefile 9771 2011-05-12 05:21:56Z mike $".
 #

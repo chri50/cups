@@ -1,9 +1,9 @@
 /*
- * "$Id: testsnmp.c 8254 2009-01-14 22:40:58Z mike $"
+ * "$Id: testsnmp.c 9099 2010-04-11 07:16:05Z mike $"
  *
- *   SNMP test program for the Common UNIX Printing System (CUPS).
+ *   SNMP test program for CUPS.
  *
- *   Copyright 2008-2009 by Apple Inc.
+ *   Copyright 2008-2010 by Apple Inc.
  *
  *   These coded instructions, statements, and computer programs are the
  *   property of Apple Inc. and are protected by Federal copyright
@@ -25,10 +25,7 @@
  * Include necessary headers...
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
-#include "string.h"
+#include "cups-private.h"
 #include "snmp-private.h"
 
 
@@ -303,5 +300,5 @@ usage(void)
 
 
 /*
- * End of "$Id: testsnmp.c 8254 2009-01-14 22:40:58Z mike $".
+ * End of "$Id: testsnmp.c 9099 2010-04-11 07:16:05Z mike $".
  */

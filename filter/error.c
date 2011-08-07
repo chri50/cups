@@ -1,9 +1,9 @@
 /*
- * "$Id: error.c 8673 2009-05-22 17:34:15Z mike $"
+ * "$Id: error.c 9771 2011-05-12 05:21:56Z mike $"
  *
- *   Raster error handling for the Common UNIX Printing System (CUPS).
+ *   Raster error handling for CUPS.
  *
- *   Copyright 2007-2008 by Apple Inc.
+ *   Copyright 2007-2011 by Apple Inc.
  *   Copyright 2007 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -78,7 +78,7 @@ _cupsRasterAddError(const char *f,	/* I - Printf-style error message */
   if (bytes >= sizeof(s))
     return;
 
-  if (bytes > (buf->end - buf->current))
+  if (bytes > (size_t)(buf->end - buf->current))
   {
    /*
     * Allocate more memory...
@@ -192,7 +192,7 @@ get_error_buffer(void)
   _cups_raster_error_t *buf;		/* Pointer to error buffer */
 
 
- /* 
+ /*
   * Initialize the global data exactly once...
   */
 
@@ -283,5 +283,5 @@ get_error_buffer(void)
 
 
 /*
- * End of "$Id: error.c 8673 2009-05-22 17:34:15Z mike $".
+ * End of "$Id: error.c 9771 2011-05-12 05:21:56Z mike $".
  */

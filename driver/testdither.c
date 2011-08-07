@@ -1,7 +1,7 @@
 /*
- * "$Id: testdither.c 7306 2008-02-15 00:52:38Z mike $"
+ * "$Id: testdither.c 9042 2010-03-24 00:45:34Z mike $"
  *
- *   Dither test program for ESP Print Pro.
+ *   Dither test program for CUPS.
  *
  *   Try the following:
  *
@@ -12,7 +12,7 @@
  *       testdither 0 210 383 > filename.ppm
  *       testdither 0 82 255 > filename.ppm
  *
- *   Copyright 2007 by Apple Inc.
+ *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 1993-2005 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -32,7 +32,7 @@
  */
 
 #include "driver.h"
-#include <cups/string.h>
+#include <cups/string-private.h>
 
 
 /*
@@ -187,5 +187,5 @@ usage(void)
 
 
 /*
- * End of "$Id: testdither.c 7306 2008-02-15 00:52:38Z mike $".
+ * End of "$Id: testdither.c 9042 2010-03-24 00:45:34Z mike $".
  */

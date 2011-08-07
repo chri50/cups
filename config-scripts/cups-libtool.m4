@@ -1,9 +1,9 @@
 dnl
-dnl "$Id: cups-libtool.m4 8344 2009-02-10 17:05:35Z mike $"
+dnl "$Id: cups-libtool.m4 9771 2011-05-12 05:21:56Z mike $"
 dnl
-dnl   Libtool stuff for the Common UNIX Printing System (CUPS).
+dnl   Libtool stuff for CUPS.
 dnl
-dnl   Copyright 2007-2009 by Apple Inc.
+dnl   Copyright 2007-2011 by Apple Inc.
 dnl   Copyright 1997-2005 by Easy Software Products, all rights reserved.
 dnl
 dnl   These coded instructions, statements, and computer programs are the
@@ -35,5 +35,5 @@ if test x$LIBTOOL != x; then
 fi
 
 dnl
-dnl End of "$Id: cups-libtool.m4 8344 2009-02-10 17:05:35Z mike $".
+dnl End of "$Id: cups-libtool.m4 9771 2011-05-12 05:21:56Z mike $".
 dnl

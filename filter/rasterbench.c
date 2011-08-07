@@ -1,9 +1,9 @@
 /*
- * "$Id: rasterbench.c 8938 2009-12-18 23:52:01Z mike $"
+ * "$Id: rasterbench.c 9771 2011-05-12 05:21:56Z mike $"
  *
- *   Raster benchmark program for the Common UNIX Printing System (CUPS).
+ *   Raster benchmark program for CUPS.
  *
- *   Copyright 2007-2008 by Apple Inc.
+ *   Copyright 2007-2011 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -351,5 +351,5 @@ write_test(int         fd,		/* I - File descriptor to write to */
 
 
 /*
- * End of "$Id: rasterbench.c 8938 2009-12-18 23:52:01Z mike $".
+ * End of "$Id: rasterbench.c 9771 2011-05-12 05:21:56Z mike $".
  */

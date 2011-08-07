@@ -1,9 +1,9 @@
 /*
- * "$Id: ipp.c 9357 2010-11-11 17:40:35Z mike $"
+ * "$Id: ipp.c 9793 2011-05-20 03:49:49Z mike $"
  *
  *   Internet Printing Protocol functions for CUPS.
  *
- *   Copyright 2007-2010 by Apple Inc.
+ *   Copyright 2007-2011 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -60,11 +60,7 @@
  * Include necessary headers...
  */
 
-#include "http-private.h"
-#include "globals.h"
-#include "debug.h"
-#include <stdlib.h>
-#include <errno.h>
+#include "cups-private.h"
 #ifdef WIN32
 #  include <io.h>
 #endif /* WIN32 */
@@ -427,7 +423,7 @@ ippAddString(ipp_t      *ipp,		/* I - IPP message */
   * Force value to be English for the POSIX locale...
   */
 
-  if (type == IPP_TAG_LANGUAGE && !strcasecmp(value, "C"))
+  if (type == IPP_TAG_LANGUAGE && !_cups_strcasecmp(value, "C"))
     value = "en";
 
  /*
@@ -517,7 +513,7 @@ ippAddStrings(
     {
       if ((int)type & IPP_TAG_COPY)
         value->string.text = (char *)values[i];
-      else if (type == IPP_TAG_LANGUAGE && !strcasecmp(values[i], "C"))
+      else if (type == IPP_TAG_LANGUAGE && !_cups_strcasecmp(values[i], "C"))
       {
        /*
 	* Force language to be English for the POSIX locale...
@@ -934,7 +930,7 @@ ippFindNextAttribute(ipp_t      *ipp,	/* I - IPP message */
 
     value_tag = (ipp_tag_t)(attr->value_tag & IPP_TAG_MASK);
 
-    if (attr->name != NULL && strcasecmp(attr->name, name) == 0 &&
+    if (attr->name != NULL && _cups_strcasecmp(attr->name, name) == 0 &&
         (value_tag == type || type == IPP_TAG_ZERO ||
 	 (value_tag == IPP_TAG_TEXTLANG && type == IPP_TAG_TEXT) ||
 	 (value_tag == IPP_TAG_NAMELANG && type == IPP_TAG_NAME)))
@@ -3206,5 +3202,5 @@ _ipp_free_attr(ipp_attribute_t *attr)	/* I - Attribute to free */
 
 
 /*
- * End of "$Id: ipp.c 9357 2010-11-11 17:40:35Z mike $".
+ * End of "$Id: ipp.c 9793 2011-05-20 03:49:49Z mike $".
  */

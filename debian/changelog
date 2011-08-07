@@ -1,3 +1,78 @@
+cups (1.5.0-1) experimental; urgency=low
+
+  [ Till Kamppeter ]
+  * New upstream release
+  * debian/patches/usb-backend-no-segfault-on-bad-device-id.patch,
+    debian/patches/usb-backend-accept-old-usblp-uris.patch,
+    debian/patches/use-ps2write-ghostscript-device-for-pdftops-filter.patch:
+    Removed, included upstream.
+  * debian/patches/poppler-based-pdftops-fixes.patch,
+    debian/patches/do-not-emit-ps-level-3-with-poppler.patch: Replaced patch
+    by a new one only containing the parts which remain after removing the
+    parts included upstream.
+  * debian/patches/pidfile.patch,
+    debian/patches/ppd-poll-with-client-conf.patch,
+    debian/patches/cups-avahi.patch,
+    debian/patches/drop_unnecessary_dependencies.patch,
+    debian/patches/do-not-broadcast-with-hostnames.patch,
+    debian/patches/ppdc-dynamic-linking.patch,
+    debian/patches/pstops-based-workflow-only-for-printing-ps-on-a-ps-printer.patch:
+    Manually regenerated to adapt to upstream changes.
+  * debian/patches/manpage-translations.patch,
+    debian/patches/rootbackends-worldreadable.patch,
+    debian/patches/no-conffile-timestamp.patch,
+    debian/patches/read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.patch,
+    debian/patches/cups-snmp-oids-device-id-hp-ricoh.patch,
+    debian/patches/configure-default-browse-protocols.patch,
+    debian/patches/logfiles_adm_readable.patch,
+    debian/patches/confdirperms.patch,
+    debian/patches/printer-filtering.patch,
+    debian/patches/show-compile-command-lines.patch,
+    debian/patches/log-debug-history-nearly-unlimited.patch:
+    Refreshed using quilt.
+  * debian/patches/default-ripcache-size-auto.patch: Dropped, as once,
+    Ghostscript 9.04 is ignoring the cache size value as it crashes easily
+    otherwise (Ghostscript upstream bug #691586) and second, CUPS defaults to
+    more reasonable 128 MB (now only used for imagetops).
+  * debian/patches/support-gzipped-charmaps.patch: Dropped, as the SBCS and
+    VBCS character maps are not used any more by CUPS.
+  * debian/rules: Enable threads in the ./configure command line, as otherwise
+    CUPS 1.5.0 does not build at all.
+  * debian/local/filters/pdf-filters/filter/pdftoijs.cxx,
+    debian/local/filters/pdf-filters/filter/pdftoraster.cxx,
+    debian/local/filters/pdf-filters/pdftoopvp/pdftoopvp.cxx,
+    debian/local/filters/pdf-filters/pdftopdf/pdftopdf.cxx: Under CUPS 1.5.x.
+    all programs using the PPD API of CUPS need to explicitly include
+    "<cups/ppd.h>". Updated the PDF filter add-on package.
+  * debian/local/filters/pdf-filters/addtocups: Make the addition of the
+    pdftopdf and pdftoopvp directories also work with CUPS 1.5.x.
+  * debian/local/filters/pdf-filters/addtocups,
+    debian/local/filters/pdf-filters/removefromcups: Added a symbolic link
+    cups/i18n.h, so that texttopdf builds.
+  * debian/cups-client.install: Install the new ipptool and its sample
+    files and manpages.
+  * debian/cups-client.install: Commented out lines for dropped man page
+    translations: ipptool, lppasswd, client.conf, ipptoolfile, cupsenable,
+    lpadmin, lpinfo, cupsreject, cupsdisable, cupsaccept
+  * debian/cups-common.install, debian/rules: The /usr/share/cups/charmaps
+    directory got removed from CUPS.
+  * debian/libcups2-dev.install: cups/i18n.h got renamed to
+    cups/language-private.h. Install this as /usr/include/cups/i18n.h.
+  * debian/libcups2.symbols, debian/libcupsmime1.symbols: Updated.
+  * debian/cups.lintian-overrides, debian/cups.postinst, debian/cups.prerm,
+    debian/cups.templates, debian/local/apparmor-profile: The "scsi"
+    CUPS backend got dropped upstream, removed its treatment from these files.
+
+  [ Martin Pitt ]
+  * Add Serbian (Cyrillic) debconf translations, thanks Zlatan Todoric.
+    (Closes: #635105)
+  * Add Serbian (Latin) debconf translations, thanks Zlatan Todoric.
+    (Closes: #635108)
+  * debian/local/apparmor-profile: Allow access to serial printers on USB
+    adapters. (LP: #677432)
+
+ -- Martin Pitt <mpitt@debian.org>  Sun, 07 Aug 2011 12:53:12 +0200
+
 cups (1.4.8-2) unstable; urgency=low
 
   * debian/control: Unbreak Maintainer: field. (Closes: #636574)
@@ -42,6 +117,50 @@ cups (1.4.8-1) unstable; urgency=low
 
  -- Martin Pitt <mpitt@debian.org>  Thu, 04 Aug 2011 09:35:35 +0200
 
+cups (1.4.7-1ubuntu5) oneiric; urgency=low
+
+  * debian/control: Added Replaces/Breaks on older Ghostscript versions
+    (ghostscript-cups binary package) for smooth updating (LP: #815206).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon, 25 Jul 2011 09:13:11 +0200
+
+cups (1.4.7-1ubuntu4) oneiric; urgency=low
+
+  Reupload Debian packaging trunk for the FTBFS fix (missing ghostscript build
+  dep).
+
+  [ Till Kamppeter ]
+  * debian/filters/pstopdf: Added "-dNOINTERPOLATE" to the Ghostscript command
+    line, this makes Ghostscript vastly faster.
+  * debian/patches/use-ps2write-ghostscript-device-for-pdftops-filter.patch:
+    Regenerated the patch, as we actually use it now. The "ps2write" output
+    device produces finally DSC-conforming PostScript and so we can use
+    Ghostscript for the pdftops filter. Made the patch also adding the
+    "-dNOINTERPOLATE" to the Ghostscript command line.
+  * debian/patches/series: Reactivated
+    use-ps2write-ghostscript-device-for-pdftops-filter.patch and promoted it
+    to the patches which should be submitted upstream.
+  * debian/rules: Build CUPS with a Ghostscript-based pdftops filter.
+  * debian/rules: Do not rename the pdftoraster filter of the PDF filter
+    add-on any more as Ghostscript has the unified gstoraster filter now.
+    Change the cost factor to make Ghostscript's filter being preferred.
+  * debian/control: Let the "cups" package require at least version 9.02
+    of Ghostscript, as this version does not ship a filter named pdftoraster
+    any more.
+
+  [ Jamie Strandboge ]
+  * debian/local/apparmor-profile: we need to allow both /var/run and /run
+    for upgrades (LP: #810687)
+
+  [ Martin Pitt ]
+  * debian/local/apparmor-profile: Explicitly deny cupsd to write /run/samba,
+    to avoid dmesg errors. (LP: #812035)
+  * debian/control: Slightly relax ghostscript dependency to also match
+    current Debian version.
+  * debian/control: Add missing ghostscript build dependency.
+
+ -- Martin Pitt <martin.pitt@ubuntu.com>  Fri, 22 Jul 2011 08:04:49 +0200
+
 cups (1.4.7-1) unstable; urgency=low
 
   * New upstream version.
@@ -50,7 +169,7 @@ cups (1.4.7-1) unstable; urgency=low
   * debian/patches/ubuntu-upstart.dpatch: Updated the patch to add support
     to the new device enumeration functionality of udev-configure-printer.
     This way we do not need to retrigger the printers. Retriggering is only
-    needed if udev rules change. A fallback to the old bahavior is provided
+    needed if udev rules change. A fallback to the old behavior is provided
     so that this CUPS package continues to work with older versions of
     udev-configure-printer.
 

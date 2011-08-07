@@ -1,9 +1,9 @@
 #
-# "$Id: Makefile 8841 2009-10-07 16:24:25Z mike $"
+# "$Id: Makefile 9771 2011-05-12 05:21:56Z mike $"
 #
-#   Template makefile for the Common UNIX Printing System (CUPS).
+#   Template makefile for CUPS.
 #
-#   Copyright 2007-2009 by Apple Inc.
+#   Copyright 2007-2011 by Apple Inc.
 #   Copyright 1993-2007 by Easy Software Products.
 #
 #   These coded instructions, statements, and computer programs are the
@@ -154,6 +154,7 @@ install-languages:
 		fi \
 	done
 
+install-langbundle:
 
 
 #
@@ -195,7 +196,9 @@ uninstall-languages:
 		$(RMDIR) $(DATADIR)/templates/$$lang; \
 	done
 
+uninstall-langbundle:
+
 
 #
-# End of "$Id: Makefile 8841 2009-10-07 16:24:25Z mike $".
+# End of "$Id: Makefile 9771 2011-05-12 05:21:56Z mike $".
 #

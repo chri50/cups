@@ -1,9 +1,9 @@
 #
-# "$Id: Makefile 8497 2009-04-12 23:04:51Z mike $"
+# "$Id: Makefile 9771 2011-05-12 05:21:56Z mike $"
 #
-#   Notifier makefile for the Common UNIX Printing System (CUPS).
+#   Notifier makefile for CUPS.
 #
-#   Copyright 2007-2008 by Apple Inc.
+#   Copyright 2007-2011 by Apple Inc.
 #   Copyright 1997-2007 by Easy Software Products, all rights reserved.
 #
 #   These coded instructions, statements, and computer programs are the
@@ -158,5 +158,5 @@ include Dependencies
 
 
 #
-# End of "$Id: Makefile 8497 2009-04-12 23:04:51Z mike $".
+# End of "$Id: Makefile 9771 2011-05-12 05:21:56Z mike $".
 #

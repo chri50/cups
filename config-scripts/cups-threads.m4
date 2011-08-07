@@ -1,9 +1,9 @@
 dnl
-dnl "$Id: cups-threads.m4 8344 2009-02-10 17:05:35Z mike $"
+dnl "$Id: cups-threads.m4 9771 2011-05-12 05:21:56Z mike $"
 dnl
-dnl   Threading stuff for the Common UNIX Printing System (CUPS).
+dnl   Threading stuff for CUPS.
 dnl
-dnl   Copyright 2007-2009 by Apple Inc.
+dnl   Copyright 2007-2011 by Apple Inc.
 dnl   Copyright 1997-2005 by Easy Software Products, all rights reserved.
 dnl
 dnl   These coded instructions, statements, and computer programs are the
@@ -50,5 +50,5 @@ fi
 AC_SUBST(PTHREAD_FLAGS)
 
 dnl
-dnl End of "$Id: cups-threads.m4 8344 2009-02-10 17:05:35Z mike $".
+dnl End of "$Id: cups-threads.m4 9771 2011-05-12 05:21:56Z mike $".
 dnl

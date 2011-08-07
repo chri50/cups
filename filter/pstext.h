@@ -1,10 +1,9 @@
 /*
- * "$Id: pstext.h 7995 2008-10-01 04:48:33Z mike $"
+ * "$Id: pstext.h 9042 2010-03-24 00:45:34Z mike $"
  *
- *   Common PostScript text definitions for the Common UNIX Printing System
- *   (CUPS).
+ *   Common PostScript text definitions for CUPS.
  *
- *   Copyright 2008 by Apple Inc.
+ *   Copyright 2008-2010 by Apple Inc.
  *
  *   These coded instructions, statements, and computer programs are the
  *   property of Apple Inc. and are protected by Federal copyright
@@ -71,5 +70,5 @@ extern void		psTextUTF32(ps_text_t *fonts, float size, int style,
 
 
 /*
- * End of "$Id: pstext.h 7995 2008-10-01 04:48:33Z mike $".
+ * End of "$Id: pstext.h 9042 2010-03-24 00:45:34Z mike $".
  */

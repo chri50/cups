@@ -1,9 +1,9 @@
 /*
- * "$Id: commandtopclx.c 7306 2008-02-15 00:52:38Z mike $"
+ * "$Id: commandtopclx.c 9793 2011-05-20 03:49:49Z mike $"
  *
  *   Advanced PCL command filter for CUPS.
  *
- *   Copyright 2007 by Apple Inc.
+ *   Copyright 2007-2011 by Apple Inc.
  *   Copyright 1993-2005 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -22,9 +22,8 @@
  * Include necessary headers...
  */
 
-#include <cups/cups.h>
+#include <cups/cups-private.h>
 #include "driver.h"
-#include <cups/string.h>
 #include "data/pcl.h"
 
 
@@ -54,7 +53,9 @@ main(int  argc,					/* I - Number of command-line arguments */
     * and return.
     */
 
-    fputs("ERROR: commandtopclx job-id user title copies options [file]\n", stderr);
+    _cupsLangPrintf(stderr,
+                    _("Usage: %s job-id user title copies options [file]"),
+		    argv[0]);
     return (1);
   }
 
@@ -122,7 +123,7 @@ main(int  argc,					/* I - Number of command-line arguments */
     * Parse the command...
     */
 
-    if (strncasecmp(lineptr, "Clean", 5) == 0 &&
+    if (_cups_strncasecmp(lineptr, "Clean", 5) == 0 &&
         (ppd->model_number & PCL_INKJET))
     {
      /*
@@ -167,5 +168,5 @@ main(int  argc,					/* I - Number of command-line arguments */
 
 
 /*
- * End of "$Id: commandtopclx.c 7306 2008-02-15 00:52:38Z mike $".
+ * End of "$Id: commandtopclx.c 9793 2011-05-20 03:49:49Z mike $".
  */

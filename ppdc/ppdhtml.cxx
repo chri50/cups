@@ -1,9 +1,9 @@
 //
-// "$Id: ppdhtml.cxx 8484 2009-04-03 17:35:17Z mike $"
+// "$Id: ppdhtml.cxx 9636 2011-03-21 22:02:00Z mike $"
 //
 //   PPD to HTML utility for the CUPS PPD Compiler.
 //
-//   Copyright 2007-2008 by Apple Inc.
+//   Copyright 2007-2011 by Apple Inc.
 //   Copyright 2002-2005 by Easy Software Products.
 //
 //   These coded instructions, statements, and computer programs are the
@@ -169,17 +169,18 @@ main(int  argc,				// I - Number of command-line arguments
 static void
 usage(void)
 {
-  _cupsLangPuts(stdout,
-                _("Usage: ppdhtml [options] filename.drv >filename.html\n"
-		  "  -D name=value        Set named variable to value.\n"
-		  "Options:\n"
-		  "  -I include-dir    Add include directory to search "
-		  "path.\n"));
+  _cupsLangPuts(stdout, _("Usage: ppdhtml [options] filename.drv "
+                          ">filename.html"));
+  _cupsLangPuts(stdout, _("Options:"));
+  _cupsLangPuts(stdout, _("  -D name=value           Set named variable to "
+                          "value."));
+  _cupsLangPuts(stdout, _("  -I include-dir          Add include directory "
+                          "to search path."));
 
   exit(1);
 }
 
 
 //
-// End of "$Id: ppdhtml.cxx 8484 2009-04-03 17:35:17Z mike $".
+// End of "$Id: ppdhtml.cxx 9636 2011-03-21 22:02:00Z mike $".
 //

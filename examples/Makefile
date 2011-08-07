@@ -1,9 +1,9 @@
 #
-# "$Id: Makefile 8067 2008-10-17 22:09:29Z mike $"
+# "$Id: Makefile 9771 2011-05-12 05:21:56Z mike $"
 #
-#   PPD compiler example makefile for the Common UNIX Printing System (CUPS).
+#   PPD compiler example makefile for CUPS.
 #
-#   Copyright 2007-2008 by Apple Inc.
+#   Copyright 2007-2011 by Apple Inc.
 #   Copyright 2002-2005 by Easy Software Products.
 #
 #   These coded instructions, statements, and computer programs are the
@@ -124,5 +124,5 @@ uninstall:
 
 
 #
-# End of "$Id: Makefile 8067 2008-10-17 22:09:29Z mike $".
+# End of "$Id: Makefile 9771 2011-05-12 05:21:56Z mike $".
 #

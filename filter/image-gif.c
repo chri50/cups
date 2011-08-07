@@ -1,9 +1,9 @@
 /*
- * "$Id: image-gif.c 9841 2011-06-20 20:37:51Z mike $"
+ * "$Id: image-gif.c 9840 2011-06-20 20:37:39Z mike $"
  *
- *   GIF image routines for the Common UNIX Printing System (CUPS).
+ *   GIF image routines for CUPS.
  *
- *   Copyright 2007-2008 by Apple Inc.
+ *   Copyright 2007-2011 by Apple Inc.
  *   Copyright 1993-2007 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -462,10 +462,10 @@ gif_read_image(FILE         *fp,	/* I - Input file */
   pass      = 0;
   code_size = getc(fp);
 
-  if (code_size > GIF_MAX_BITS || !pixels)
+  if (!pixels)
     return (-1);
 
-  if (gif_read_lzw(fp, 1, code_size) < 0)
+  if (code_size > GIF_MAX_BITS || gif_read_lzw(fp, 1, code_size) < 0)
   {
     free(pixels);
     return (-1);
@@ -688,5 +688,5 @@ gif_read_lzw(FILE *fp,			/* I - File to read from */
 
 
 /*
- * End of "$Id: image-gif.c 9841 2011-06-20 20:37:51Z mike $".
+ * End of "$Id: image-gif.c 9840 2011-06-20 20:37:39Z mike $".
  */

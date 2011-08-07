@@ -1,7 +1,7 @@
 /*
- * "$Id: getdevices.c 9061 2010-03-30 22:07:33Z mike $"
+ * "$Id: getdevices.c 9055 2010-03-25 23:06:26Z mike $"
  *
- *   cupsGetDevices implementation for the Common UNIX Printing System (CUPS).
+ *   cupsGetDevices implementation for CUPS.
  *
  *   Copyright 2008-2010 by Apple Inc.
  *
@@ -22,8 +22,7 @@
  * Include necessary headers...
  */
 
-#include "globals.h"
-#include "debug.h"
+#include "cups-private.h"
 
 
 /*
@@ -280,5 +279,5 @@ cupsGetDevices(
 
 
 /*
- * End of "$Id: getdevices.c 9061 2010-03-30 22:07:33Z mike $".
+ * End of "$Id: getdevices.c 9055 2010-03-25 23:06:26Z mike $".
  */

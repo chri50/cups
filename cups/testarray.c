@@ -1,9 +1,9 @@
 /*
- * "$Id: testarray.c 8532 2009-04-20 21:37:14Z mike $"
+ * "$Id: testarray.c 9099 2010-04-11 07:16:05Z mike $"
  *
- *   Array test program for the Common UNIX Printing System (CUPS).
+ *   Array test program for CUPS.
  *
- *   Copyright 2007-2009 by Apple Inc.
+ *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -25,13 +25,10 @@
  * Include necessary headers...
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <cups/string.h>
-#include <errno.h>
+#include "string-private.h"
+#include "debug-private.h"
 #include "array.h"
 #include "dir.h"
-#include "debug.h"
 
 
 /*
@@ -479,5 +476,5 @@ load_words(const char   *filename,	/* I - File to load */
 
 
 /*
- * End of "$Id: testarray.c 8532 2009-04-20 21:37:14Z mike $".
+ * End of "$Id: testarray.c 9099 2010-04-11 07:16:05Z mike $".
  */

@@ -1,9 +1,9 @@
 .\"
-.\" "$Id: lpc.man 8421 2009-03-09 21:59:55Z mike $"
+.\" "$Id: lpc.man 9771 2011-05-12 05:21:56Z mike $"
 .\"
-.\"   lpc man page for the Common UNIX Printing System (CUPS).
+.\"   lpc man page for CUPS.
 .\"
-.\"   Copyright 2007-2009 by Apple Inc.
+.\"   Copyright 2007-2011 by Apple Inc.
 .\"   Copyright 1997-2006 by Easy Software Products.
 .\"
 .\"   These coded instructions, statements, and computer programs are the
@@ -65,7 +65,7 @@ standard Berkeley or LPRng commands.
 .br
 http://localhost:631/help
 .SH COPYRIGHT
-Copyright 2007-2009 by Apple Inc.
+Copyright 2007-2011 by Apple Inc.
 .\"
-.\" End of "$Id: lpc.man 8421 2009-03-09 21:59:55Z mike $".
+.\" End of "$Id: lpc.man 9771 2011-05-12 05:21:56Z mike $".
 .\"

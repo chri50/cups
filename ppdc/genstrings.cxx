@@ -1,5 +1,5 @@
 //
-// "$Id: genstrings.cxx 9120 2010-04-23 18:56:34Z mike $"
+// "$Id: genstrings.cxx 9793 2011-05-20 03:49:49Z mike $"
 //
 //   GNU gettext message generator for the CUPS PPD Compiler.
 //
@@ -7,7 +7,7 @@
 //   the standard media and sample driver strings.  The results are picked up
 //   by GNU gettext and placed in the CUPS message catalog.
 //
-//   Copyright 2008-2010 by Apple Inc.
+//   Copyright 2008-2011 by Apple Inc.
 //
 //   These coded instructions, statements, and computer programs are the
 //   property of Apple Inc. and are protected by Federal copyright
@@ -126,7 +126,7 @@ add_ui_strings(ppdcDriver  *d,		// I - Driver data
     if (!g->options->count)
       continue;
 
-    if (strcasecmp(g->name->value, "General"))
+    if (_cups_strcasecmp(g->name->value, "General"))
       catalog->add_message(g->text->value);
 
     for (o = (ppdcOption *)g->options->first();
@@ -211,5 +211,5 @@ write_cstring(const char *s)		/* I - String to write */
 
 
 //
-// End of "$Id: genstrings.cxx 9120 2010-04-23 18:56:34Z mike $".
+// End of "$Id: genstrings.cxx 9793 2011-05-20 03:49:49Z mike $".
 //

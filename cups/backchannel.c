@@ -1,9 +1,9 @@
 /*
- * "$Id: backchannel.c 8635 2009-05-14 21:18:35Z mike $"
+ * "$Id: backchannel.c 9042 2010-03-24 00:45:34Z mike $"
  *
- *   Backchannel functions for the Common UNIX Printing System (CUPS).
+ *   Backchannel functions for CUPS.
  *
- *   Copyright 2007-2008 by Apple Inc.
+ *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -195,5 +195,5 @@ cups_setup(fd_set         *set,		/* I - Set for select() */
 
 
 /*
- * End of "$Id: backchannel.c 8635 2009-05-14 21:18:35Z mike $".
+ * End of "$Id: backchannel.c 9042 2010-03-24 00:45:34Z mike $".
  */

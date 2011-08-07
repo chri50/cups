@@ -1,9 +1,9 @@
 /*
- * "$Id: testcmyk.c 7315 2008-02-15 22:26:48Z mike $"
+ * "$Id: testcmyk.c 9042 2010-03-24 00:45:34Z mike $"
  *
- *   Test the CMYK color separation code for ESP Print Pro.
+ *   Test the CMYK color separation code for CUPS.
  *
- *   Copyright 2007 by Apple Inc.
+ *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 1993-2006 by Easy Software Products, All Rights Reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -23,7 +23,7 @@
  * Include necessary headers.
  */
 
-#include <cups/string.h>
+#include <cups/string-private.h>
 #include "driver.h"
 #include <sys/stat.h>
 
@@ -433,5 +433,5 @@ test_rgb(int        num_comps,		/* I - Number of components */
 
 
 /*
- * End of "$Id: testcmyk.c 7315 2008-02-15 22:26:48Z mike $".
+ * End of "$Id: testcmyk.c 9042 2010-03-24 00:45:34Z mike $".
  */

@@ -1,9 +1,9 @@
 #
-# "$Id: Makefile 7871 2008-08-27 21:12:43Z mike $"
+# "$Id: Makefile 9771 2011-05-12 05:21:56Z mike $"
 #
-#   Port monitor makefile for the Common UNIX Printing System (CUPS).
+#   Port monitor makefile for CUPS.
 #
-#   Copyright 2007-2008 by Apple Inc.
+#   Copyright 2007-2011 by Apple Inc.
 #   Copyright 2006 by Easy Software Products.
 #
 #   These coded instructions, statements, and computer programs are the
@@ -137,10 +137,10 @@ tbcp:	tbcp.o ../cups/$(LIBCUPS)
 #
 # Dependencies...
 #
-  
+
 include Dependencies
 
 
 #
-# End of "$Id: Makefile 7871 2008-08-27 21:12:43Z mike $".
+# End of "$Id: Makefile 9771 2011-05-12 05:21:56Z mike $".
 #

@@ -1,9 +1,9 @@
 #
-# "$Id: Makefile 8825 2009-09-22 21:53:31Z mike $"
+# "$Id: Makefile 9771 2011-05-12 05:21:56Z mike $"
 #
-#   Configuration file makefile for the Common UNIX Printing System (CUPS).
+#   Configuration file makefile for CUPS.
 #
-#   Copyright 2007-2008 by Apple Inc.
+#   Copyright 2007-2011 by Apple Inc.
 #   Copyright 1993-2006 by Easy Software Products.
 #
 #   These coded instructions, statements, and computer programs are the
@@ -139,5 +139,5 @@ uninstall:
 
 
 #
-# End of "$Id: Makefile 8825 2009-09-22 21:53:31Z mike $".
+# End of "$Id: Makefile 9771 2011-05-12 05:21:56Z mike $".
 #

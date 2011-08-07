@@ -1,5 +1,5 @@
 /*
- * "$Id: dither.c 8938 2009-12-18 23:52:01Z mike $"
+ * "$Id: dither.c 8937 2009-12-18 23:50:23Z mike $"
  *
  *   Dithering routines for CUPS.
  *
@@ -302,5 +302,5 @@ cupsDitherNew(int width)	/* I - Width of output in pixels */
 
 
 /*
- * End of "$Id: dither.c 8938 2009-12-18 23:52:01Z mike $".
+ * End of "$Id: dither.c 8937 2009-12-18 23:50:23Z mike $".
  */

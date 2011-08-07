@@ -1,9 +1,9 @@
 /*
- * "$Id: testbackend.c 8689 2009-05-27 18:32:43Z mike $"
+ * "$Id: testbackend.c 9042 2010-03-24 00:45:34Z mike $"
  *
- *   Backend test program for the Common UNIX Printing System (CUPS).
+ *   Backend test program for CUPS.
  *
- *   Copyright 2007-2009 by Apple Inc.
+ *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 1997-2005 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -26,14 +26,11 @@
  * Include necessary headers.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <cups/string.h>
+#include <cups/string-private.h>
 #include <cups/cups.h>
 #include <cups/sidechannel.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <errno.h>
 #include <sys/wait.h>
 #include <signal.h>
 
@@ -650,5 +647,5 @@ walk_cb(const char *oid,		/* I - OID */
 
 
 /*
- * End of "$Id: testbackend.c 8689 2009-05-27 18:32:43Z mike $".
+ * End of "$Id: testbackend.c 9042 2010-03-24 00:45:34Z mike $".
  */

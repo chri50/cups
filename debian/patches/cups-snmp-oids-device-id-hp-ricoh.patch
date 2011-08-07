@@ -1,8 +1,8 @@
 Author: till.kamppeter@gmail.com
 
---- cups-1.4.4~/backend/snmp.c	2009-12-08 03:13:42.000000000 +0100
-+++ cups-1.4.4/backend/snmp.c	2010-09-10 20:46:02.013335153 +0200
-@@ -194,6 +194,8 @@
+--- a/backend/snmp.c
++++ b/backend/snmp.c
+@@ -187,6 +187,8 @@
  static const int	LexmarkProductOID[] = { 1,3,6,1,4,1,641,2,1,2,1,2,1,-1 };
  static const int	LexmarkProductOID2[] = { 1,3,6,1,4,1,674,10898,100,2,1,2,1,2,1,-1 };
  static const int	LexmarkDeviceIdOID[] = { 1,3,6,1,4,1,641,2,1,2,1,3,1,-1 };
@@ -11,7 +11,7 @@ Author: till.kamppeter@gmail.com
  static const int	XeroxProductOID[] = { 1,3,6,1,4,1,128,2,1,3,1,2,0,-1 };
  static cups_array_t	*DeviceURIs = NULL;
  static int		HostNameLookups = 0;
-@@ -1001,8 +1003,14 @@
+@@ -1004,8 +1006,14 @@
  	               packet.community, CUPS_ASN1_GET_REQUEST,
  		       DEVICE_ID, LexmarkDeviceIdOID);
  	_cupsSNMPWrite(fd, &(packet.address), CUPS_SNMP_VERSION_1,

@@ -2,10 +2,8 @@ Description: Filter printers based on PRINTER_LIST
 Author: Julien Desfossez at Revolution Linux
 
 === modified file 'cups-1.3.9/cups/ipp.c'
-Index: cups-1.4.6/cups/ipp.c
-===================================================================
---- cups-1.4.6.orig/cups/ipp.c	2011-07-14 13:02:00.039771997 +0200
-+++ cups-1.4.6/cups/ipp.c	2011-07-14 13:02:58.349772990 +0200
+--- a/cups/ipp.c
++++ b/cups/ipp.c
 @@ -40,6 +40,7 @@
   *   ippNewRequest()        - Allocate a new IPP message.
   *   ippRead()              - Read data for an IPP message from a HTTP
@@ -14,7 +12,7 @@ Index: cups-1.4.6/cups/ipp.c
   *   ippReadFile()          - Read data for an IPP message from a file.
   *   ippReadIO()            - Read data for an IPP message.
   *   ippTimeToDate()        - Convert from UNIX time to RFC 1903 format.
-@@ -991,6 +992,120 @@
+@@ -987,6 +988,120 @@
    return (temp);
  }
  
@@ -135,7 +133,7 @@ Index: cups-1.4.6/cups/ipp.c
  
  /*
   *  'ippNewRequest()' - Allocate a new IPP request message.
-@@ -1198,6 +1313,8 @@
+@@ -1194,6 +1309,8 @@
  	    */
  
              DEBUG_puts("2ippReadIO: IPP_TAG_END!");

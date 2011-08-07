@@ -1,9 +1,9 @@
 /*
- * "$Id: testadmin.c 8179 2008-12-10 05:03:11Z mike $"
+ * "$Id: testadmin.c 9042 2010-03-24 00:45:34Z mike $"
  *
- *   Admin function test program for the Common UNIX Printing System (CUPS).
+ *   Admin function test program for CUPS.
  *
- *   Copyright 2007-2008 by Apple Inc.
+ *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 2006 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -25,7 +25,7 @@
  */
 
 #include "adminutil.h"
-#include "string.h"
+#include "string-private.h"
 
 
 /*
@@ -116,5 +116,5 @@ show_settings(
 
 
 /*
- * End of "$Id: testadmin.c 8179 2008-12-10 05:03:11Z mike $".
+ * End of "$Id: testadmin.c 9042 2010-03-24 00:45:34Z mike $".
  */

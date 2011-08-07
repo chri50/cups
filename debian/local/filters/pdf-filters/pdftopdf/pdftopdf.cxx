@@ -37,6 +37,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "P2PDoc.h"
 #include "P2POutputStream.h"
 #include <cups/cups.h>
+#include <cups/ppd.h>
 #include <stdarg.h>
 #include "Error.h"
 #include "GlobalParams.h"
