@@ -38,7 +38,7 @@ Bug-Debian: http://bugs.debian.org/549673
   /*
 --- a/scheduler/printers.c
 +++ b/scheduler/printers.c
-@@ -1489,7 +1489,7 @@
+@@ -1551,7 +1551,7 @@
    strftime(temp, sizeof(temp) - 1, "%Y-%m-%d %H:%M", curdate);
  
    cupsFilePuts(fp, "# Printer configuration file for " CUPS_SVERSION "\n");

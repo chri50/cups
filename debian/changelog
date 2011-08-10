@@ -1,3 +1,22 @@
+cups (1.5.0-1ubuntu1) oneiric; urgency=low
+
+  * debian/patches/colord-support.patch: Added colord support. Thanks to
+    Richard Hughes from Red Hat for the patch (LP: #787767).
+  * debian/patches/no-conffile-timestamp.patch,
+    debian/patches/read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.patch,
+    debian/patches/show-compile-command-lines.patch: Refreshed with quilt.
+  * debian/control: Added "Recommends: colord" to the cups binary package.
+  * debian/rules: Deactivated test suite failures only for this upload as the
+    test suite must be adapted to colord. It changes the number of warnings
+    in error_log which makes the test suite fail.
+  * debian/local/filters/pdf-filters/pdftopdf/P2PFont.cxx,
+    debian/local/filters/pdf-filters/pdftopdf/P2POutput.cxx,
+    debian/local/filters/pdf-filters/pdftopdf/pdf2pdf.cxx: Several bug fixes
+    on the pdftopdf filter from the upstream author Koji Otani. This fixes
+    especially LP: #780935.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 10 Aug 2011 15:09:11 +0200
+
 cups (1.5.0-1) experimental; urgency=low
 
   [ Till Kamppeter ]
