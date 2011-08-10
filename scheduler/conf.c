@@ -184,7 +184,8 @@ static const cupsd_var_t	variables[] =
   { "TempDir",			&TempDir,		CUPSD_VARTYPE_PATHNAME },
   { "Timeout",			&Timeout,		CUPSD_VARTYPE_INTEGER },
   { "UseNetworkDefault",	&UseNetworkDefault,	CUPSD_VARTYPE_BOOLEAN },
-  { "WebInterface",		&WebInterface,		CUPSD_VARTYPE_BOOLEAN }
+  { "WebInterface",		&WebInterface,		CUPSD_VARTYPE_BOOLEAN },
+  { "PidFile",			&PidFile,		CUPSD_VARTYPE_STRING }
 };
 #define NUM_VARS	(sizeof(variables) / sizeof(variables[0]))
 
@@ -507,6 +508,7 @@ cupsdReadConfiguration(void)
   cupsdSetString(&RemoteRoot, "remroot");
   cupsdSetString(&ServerHeader, "CUPS/1.4");
   cupsdSetString(&StateDir, CUPS_STATEDIR);
+  cupsdSetString(&PidFile, "/var/run/cups/cupsd.pid");
 
   if (!strcmp(CUPS_DEFAULT_PRINTCAP, "/etc/printers.conf"))
     PrintcapFormat = PRINTCAP_SOLARIS;
