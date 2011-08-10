@@ -28,6 +28,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
 #include <config.h>
+#include <string.h>
 #include "goo/gmem.h"
 #include "UGooString.h"
 #include "P2POutput.h"
@@ -173,6 +174,7 @@ void P2POutput::outputName(const char *name, P2POutputStream *str, Dict *mapDict
   char *nameStr = const_cast<char *>(name);
 #endif
   Object obj;
+  static char *punctures = "()<>[]{}/%#";
 
   if (mapDict != 0 && mapDict->lookupNF(nameStr,&obj) != 0) {
     if (obj.isName()) {
@@ -182,7 +184,7 @@ void P2POutput::outputName(const char *name, P2POutputStream *str, Dict *mapDict
   }
   str->putchar('/');
   for (p = name;*p != '\0';p++) {
-    if (*p >= 33 && *p <= 126 && *p != '/' && *p != '#') {
+    if (*p >= 33 && *p <= 126 && strchr(punctures,*p) == 0) {
       str->putchar(*p);
     } else {
       str->printf("#%02x",*p & 0xff);
