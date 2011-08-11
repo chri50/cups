@@ -46,6 +46,7 @@
 #define COLORD_SPACE_RGB      "rgb"       /* RGB colorspace */
 #define COLORD_SPACE_CMYK     "cmyk"      /* CMYK colorspace */
 #define COLORD_SPACE_GRAY     "gray"      /* Gray colorspace */
+#define COLORD_SPACE_UNKNOWN  "unknown"   /* Unknown colorspace */
 
 #define COLORD_MODE_PHYSICAL  "physical"  /* Actual device */
 #define COLORD_MODE_VIRTUAL   "virtual"   /* Virtual device with no hardware */
@@ -113,6 +114,7 @@ static void
 colordCreateProfile (cups_array_t *profiles,    /* I - Profiles array */
                      const char *printer_name,  /* I - Printer name */
                      const char *qualifier,     /* I - Profile qualifier */
+                     const char *colorspace,    /* I - Profile colorspace */
                      const char **format,       /* I - Profile qualifier format */
                      const char *iccfile,       /* I - ICC filename */
                      const char *scope)         /* I - The scope of the profile, e.g.
@@ -163,6 +165,7 @@ colordCreateProfile (cups_array_t *profiles,    /* I - Profiles array */
                                    &dict);
   message_dict_add_strings(&dict, "Qualifier", qualifier);
   message_dict_add_strings(&dict, "Format", format_str);
+  message_dict_add_strings(&dict, "Colorspace", colorspace);
   if (iccfile != NULL)
     message_dict_add_strings(&dict, "Filename", iccfile);
   dbus_message_iter_close_container(&args, &dict);
@@ -263,6 +266,7 @@ colordCreateDevice (cupsd_printer_t *p,         /* I - Printer */
                     ppd_file_t *ppd,            /* I - PPD file */
                     cups_array_t *profiles,     /* I - Profiles array */
                     const char *colorspace,     /* I - Device colorspace, e.g. 'rgb' */
+                    char **format,              /* I - Device qualifier format */
                     const char *relation,       /* I - Profile relation, either 'soft' or 'hard' */
                     const char *scope)          /* I - The scope of the device, e.g.
                                                        'normal', 'temp' or 'disk' */
@@ -277,6 +281,7 @@ colordCreateDevice (cupsd_printer_t *p,         /* I - Printer */
   char                  *default_profile_path = NULL;
                                                 /* Default profile path */
   char                  device_id[1024];        /* Device ID as understood by colord */
+  char                  format_str[1024];       /* Qualifier format as a string */
 
  /*
   * Create the device...
@@ -294,6 +299,12 @@ colordCreateDevice (cupsd_printer_t *p,         /* I - Printer */
   dbus_message_iter_append_basic(&args, DBUS_TYPE_STRING, &device_path);
   dbus_message_iter_append_basic(&args, DBUS_TYPE_STRING, &scope);
 
+  /* mush the qualifier format into a simple string */
+  snprintf(format_str, sizeof(format_str), "%s.%s.%s",
+           format[0],
+           format[1],
+           format[2]);
+
   /* set initial properties */
   dbus_message_iter_open_container(&args,
                                  DBUS_TYPE_ARRAY,
@@ -307,6 +318,7 @@ colordCreateDevice (cupsd_printer_t *p,         /* I - Printer */
     message_dict_add_strings(&dict, "Model", ppd->modelname);
   if (p->sanitized_device_uri != NULL)
     message_dict_add_strings(&dict, "Serial", p->sanitized_device_uri);
+  message_dict_add_strings(&dict, "Format", format_str);
   message_dict_add_strings(&dict, "Kind", COLORD_KIND_PRINTER);
   dbus_message_iter_close_container(&args, &dict);
 
@@ -442,7 +454,7 @@ colordGetQualifierFormat(ppd_file_t *ppd)
     tmp += 7;
   format[0] = strdup(tmp);
 
-  /* get 2st section */
+  /* get 2nd section */
   tmp = "cupsICCQualifier2";
   attr = ppdFindAttr(ppd, tmp, NULL);
   if (attr != NULL)
@@ -460,7 +472,7 @@ colordGetQualifierFormat(ppd_file_t *ppd)
     tmp += 7;
   format[1] = strdup(tmp);
 
-  /* get 3st section */
+  /* get 3rd section */
   tmp = "cupsICCQualifier3";
   attr = ppdFindAttr(ppd, tmp, NULL);
   if (attr != NULL)
@@ -499,10 +511,20 @@ colordRegisterPrinter(cupsd_printer_t *p)    /* I - printer */
   int                   i;              /* Loop counter */
 
  /*
+  * Do nothing for discovered printers as they will have local color
+  * correction
+  */
+
+  if (p->type & CUPS_PRINTER_DISCOVERED)
+    return;
+
+ /*
   * Ensure we have a DBus connection
   */
 
   colordStart();
+  if (con == NULL)
+    return;
 
  /*
   * Try opening the PPD file for this printer...
@@ -511,7 +533,7 @@ colordRegisterPrinter(cupsd_printer_t *p)    /* I - printer */
   snprintf(ppdfile, sizeof(ppdfile), "%s/ppd/%s.ppd", ServerRoot, p->name);
   if ((ppd = ppdOpenFile(ppdfile)) == NULL)
   {
-    cupsdLogMessage(CUPSD_LOG_WARN,
+    cupsdLogMessage(CUPSD_LOG_DEBUG,
                     "cannot open %s",
                     ppdfile);
     return;
@@ -551,6 +573,7 @@ colordRegisterPrinter(cupsd_printer_t *p)    /* I - printer */
       colordCreateProfile(profiles,
                           p->name,
                           attr->spec,
+                          COLORD_SPACE_UNKNOWN,
                           (const char **)format,
                           iccfile,
                           COLORD_SCOPE_TEMP);
@@ -563,6 +586,7 @@ colordRegisterPrinter(cupsd_printer_t *p)    /* I - printer */
   colordCreateProfile(profiles,
                       p->name,
                       "Gray..",
+                      COLORD_SPACE_GRAY,
                       (const char **)format,
                       NULL,
                       COLORD_SCOPE_TEMP);
@@ -580,6 +604,7 @@ colordRegisterPrinter(cupsd_printer_t *p)    /* I - printer */
         colordCreateProfile(profiles,
                             p->name,
                             "RGB..",
+                            COLORD_SPACE_RGB,
                             (const char **)format,
                             NULL,
                             COLORD_SCOPE_TEMP);
@@ -590,6 +615,7 @@ colordRegisterPrinter(cupsd_printer_t *p)    /* I - printer */
         colordCreateProfile(profiles,
                             p->name,
                             "CMYK..",
+                            COLORD_SPACE_CMYK,
                             (const char **)format,
                             NULL,
                             COLORD_SCOPE_TEMP);
@@ -601,6 +627,7 @@ colordRegisterPrinter(cupsd_printer_t *p)    /* I - printer */
         colordCreateProfile(profiles,
                             p->name,
                             "DeviceN..",
+                            COLORD_SPACE_UNKNOWN,
                             (const char **)format,
                             NULL,
                             COLORD_SCOPE_TEMP);
@@ -617,6 +644,7 @@ colordRegisterPrinter(cupsd_printer_t *p)    /* I - printer */
                       ppd,
                       profiles,
                       device_colorspace,
+                      format,
                       COLORD_RELATION_SOFT,
                       COLORD_SCOPE_TEMP);
 
@@ -646,6 +674,8 @@ colordUnregisterPrinter(cupsd_printer_t *p)  /* I - printer */
   */
 
   colordStart();
+  if (con == NULL)
+    return;
 
  /*
   * Just delete the device itself, and leave the profiles registered
