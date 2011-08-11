@@ -1,7 +1,13 @@
+cups (1.5.0-1ubuntu2) oneiric; urgency=low
+
+  * debian/patches/colord-support.patch: Updated patch from Richard Hughes.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Thu, 11 Aug 2011 11:11:11 +0200
+
 cups (1.5.0-1ubuntu1) oneiric; urgency=low
 
   * debian/patches/colord-support.patch: Added colord support. Thanks to
-    Richard Hughes from Red Hat for the patch (LP: #787767).
+    Richard Hughes from Red Hat for the patch (LP: #787767, CUPS STR #3808).
   * debian/patches/no-conffile-timestamp.patch,
     debian/patches/read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.patch,
     debian/patches/show-compile-command-lines.patch: Refreshed with quilt.
