@@ -16,7 +16,7 @@ Bug-Debian: http://bugs.debian.org/549673
   /*
 --- a/scheduler/dirsvc.c
 +++ b/scheduler/dirsvc.c
-@@ -791,7 +791,7 @@
+@@ -792,7 +792,7 @@
    strftime(temp, sizeof(temp) - 1, "%Y-%m-%d %H:%M", curdate);
  
    cupsFilePuts(fp, "# Remote cache file for " CUPS_SVERSION "\n");

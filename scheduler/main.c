@@ -124,7 +124,7 @@ main(int  argc,				/* I - Number of command-line args */
 			activity,	/* Client activity timer */
 #ifdef HAVE_AVAHI
 			avahi_client_time, /* Time for next Avahi client
-					   check */
+					      check */
 #endif /* HAVE_AVAHI */
 			browse_time,	/* Next browse send time */
 			senddoc_time,	/* Send-Document time */

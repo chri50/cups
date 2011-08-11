@@ -136,17 +136,17 @@ VAR cupsd_statbuf_t	*PollStatusBuffer VALUE(NULL);
 					/* Status buffer for pollers */
 
 #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
-VAR int			DNSSDPort	VALUE(0);
-					/* Port number to register */
 VAR char		*DNSSDComputerName VALUE(NULL),
 					/* Computer/server name */
 			*DNSSDHostName	VALUE(NULL),
 					/* Hostname */
 			*DNSSDRegType VALUE(NULL);
 					/* Bonjour registration type */
+VAR int			DNSSDPort	VALUE(0);
+					/* Port number to register */
 VAR cups_array_t	*DNSSDPrinters	VALUE(NULL);
 					/* Printers we have registered */
-#endif /* HAVE_DNSSD || HAVE_AVAHI */
+#endif /* defined(HAVE_DNSSD) || defined(HAVE_AVAHI) */
 
 #ifdef HAVE_DNSSD
 VAR cups_array_t	*DNSSDAlias	VALUE(NULL);
@@ -165,7 +165,7 @@ VAR AvahiCupsPoll	*AvahiCupsPollHandle	VALUE(NULL);
 VAR AvahiClient		*AvahiCupsClient	VALUE(NULL);
 					/* AvahiClient object */
 VAR int			AvahiCupsClientConnecting	VALUE(0);
-					/* AvahiClient object (waiting) */
+					/* Is AvahiClient object connecting? */
 VAR AvahiEntryGroup	*AvahiWebIFGroup	VALUE(NULL);
 					/* Web interface entry group */
 #endif /* HAVE_AVAHI */
