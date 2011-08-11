@@ -1,3 +1,18 @@
+cups (1.5.0-1ubuntu3) oneiric; urgency=low
+
+  * debian/patches/cups-avahi.patch: Resynced with patch upstream (Tim Waugh,
+    Red Hat), via "git clone http://twaugh.fedorapeople.org/cups-avahi.git;
+    cd cups-avahi, git diff origin/master origin/avahi-services-1.5 >
+    ../cups-1.5-avahi.patch" and replacing cups-avahi.patch by the resulting
+    patch.
+  * debian/patches/airprint-support.patch: The changes for supporting Apple's
+    AirPrint are not in Tim Waugh's upstream repository of cups-avahi.patch.
+    Therefore we carry these changes in a separate patch to make syncing
+    with Tim's patch easier.
+  * debian/patches/no-conffile-timestamp.patch: Refreshed with quilt.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Thu, 11 Aug 2011 13:47:11 +0200
+
 cups (1.5.0-1ubuntu2) oneiric; urgency=low
 
   * debian/patches/colord-support.patch: Updated patch from Richard Hughes.

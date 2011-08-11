@@ -12,6 +12,7 @@ cups-avahi.patch
 colord-support.patch
 
 # patches which should go upstream
+airprint-support.patch
 removecvstag.patch
 no-conffile-timestamp.patch
 drop_unnecessary_dependencies.patch
