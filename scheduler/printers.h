@@ -99,8 +99,8 @@ struct cupsd_printer_s
   _ppd_cache_t	*pc;			/* PPD cache and mapping data */
 
 #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
-  char		*reg_name;		/* Name used for service registration */
-  char		*pdl;			/* pdl value for TXT record */
+  char		*reg_name,		/* Name used for service registration */
+		*pdl;			/* pdl value for TXT record */
 #endif /* defined(HAVE_DNSSD) || defined(HAVE_AVAHI) */
 #ifdef HAVE_DNSSD
   char		*ipp_txt,		/* IPP TXT record contents */
@@ -112,7 +112,7 @@ struct cupsd_printer_s
 #endif /* HAVE_DNSSD */
 #ifdef HAVE_AVAHI
   AvahiStringList *ipp_txt,		/* IPP TXT record */
-		  *printer_txt;		/* LPD TXT record */
+		*printer_txt;		/* LPD TXT record */
   AvahiEntryGroup *avahi_group;		/* Avahi entry group */
 #endif /* HAVE_AVAHI */
 };
@@ -180,6 +180,10 @@ extern const char	*cupsdValidateDest(const char *uri,
 			        	   cups_ptype_t *dtype,
 					   cupsd_printer_t **printer);
 extern void		cupsdWritePrintcap(void);
+extern void		cupsdCmsRegisterPrinter(cupsd_printer_t *p);
+extern void		cupsdCmsUnregisterPrinter(cupsd_printer_t *p);
+extern void		cupsdCmsStart(void);
+extern void		cupsdCmsStop(void);
 
 
 /*

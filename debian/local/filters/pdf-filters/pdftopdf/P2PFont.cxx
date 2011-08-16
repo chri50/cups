@@ -743,7 +743,8 @@ void P2PFontDict::doReadFontDescriptor(Object *dictObj,
   P2PObject *p;
   int faceIndex = 0;
 
-  if (dict->lookupNF(const_cast<char *>("FontDescriptor"),&obj) == 0) {
+  if (dict->lookupNF(const_cast<char *>("FontDescriptor"),&obj) == 0
+       || obj.isNull()) {
     /* no FontDescriptor */
     error(-1,const_cast<char *>("Font:%s has no FontDescriptor entry.\n"),name);
     return;
@@ -880,7 +881,8 @@ void P2PFontDict::readCIDFontDescriptor(GfxFontType type, const char *name,
   Dict *dict = fontDict.getDict();
   int num = -1, gen = -1;
 
-  if (dict->lookup(const_cast<char *>("DescendantFonts"),&obj) == 0) {
+  if (dict->lookup(const_cast<char *>("DescendantFonts"),&obj) == 0
+       || obj.isNull()) {
     /* no DescendantFonts */
     error(-1,const_cast<char *>("Font:%s has no DescendantFonts entry.\n"),name);
     return;
@@ -902,12 +904,12 @@ void P2PFontDict::readCIDFontDescriptor(GfxFontType type, const char *name,
       xref->fetch(num,gen,&descendant);
     }
   }
-  if (!descendant.isDict()) {
-    error(-1,const_cast<char *>("Font:%s has illegal DescendantFonts entry.\n"),name);
-    goto end_read1;
-  }
-  doReadFontDescriptor(&descendant,type,name,xref);
   if (cidFontDict == 0) {
+    if (!descendant.isDict()) {
+      error(-1,const_cast<char *>("Font:%s has illegal DescendantFonts entry.\n"),name);
+      goto end_read1;
+    }
+    doReadFontDescriptor(&descendant,type,name,xref);
     cidFontDict = new P2PCIDFontDict(&descendant,font,type,
       embeddedType,fontDescriptor,num,gen);
     if (num > 0) P2PXRef::put(cidFontDict);

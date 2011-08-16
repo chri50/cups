@@ -126,7 +126,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, debconf (>= 1.2.9) | debconf-2.0,
  cups-common (>= ${source:Upstream-Version}), 
  cups-client (>= ${binary:Version}),
  ssl-cert (>= 1.0.11), adduser, bc, ttf-freefont, cups-ppdc
-Recommends: avahi-daemon, foomatic-filters (>= 4.0), 
+Recommends: avahi-daemon, colord, foomatic-filters (>= 4.0), 
  cups-driver-gutenprint, ghostscript-cups (>= 9.02~)
 Suggests: cups-bsd, foomatic-db-compressed-ppds | foomatic-db,
  hplip, cups-pdf, udev, smbclient

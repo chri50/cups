@@ -1,3 +1,37 @@
+cups (1.5.0-2) unstable; urgency=low
+
+  [ Didier Raboud ]
+  * Add a dpkg trigger to update the queues' PPDs on (cooperative) driver
+    upgrades (Closes: #637978).
+
+  [ Till Kamppeter ]
+  * debian/patches/cups-avahi.patch: Resynced with patch upstream (Tim Waugh,
+    Red Hat), via "git clone http://twaugh.fedorapeople.org/cups-avahi.git;
+    cd cups-avahi, git diff origin/master origin/avahi-services-1.5 >
+    ../cups-1.5-avahi.patch" and replacing cups-avahi.patch by the resulting
+    patch.
+  * debian/patches/airprint-support.patch: The changes for supporting Apple's
+    AirPrint are not in Tim Waugh's upstream repository of cups-avahi.patch.
+    Therefore we carry these changes in a separate patch to make syncing
+    with Tim's patch easier.
+  * debian/patches/no-conffile-timestamp.patch: Refreshed with quilt.
+  * debian/patches/colord-support.patch: Added colord support. Thanks to
+    Richard Hughes from Red Hat for the patch (LP: #787767, CUPS STR #3808).
+  * debian/patches/no-conffile-timestamp.patch,
+    debian/patches/read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.patch,
+    debian/patches/show-compile-command-lines.patch: Refreshed with quilt.
+  * debian/control: Added "Recommends: colord" to the cups binary package.
+  * debian/rules: Deactivated test suite failures only for this upload as the
+    test suite must be adapted to colord. It changes the number of warnings
+    in error_log which makes the test suite fail.
+  * debian/local/filters/pdf-filters/pdftopdf/P2PFont.cxx,
+    debian/local/filters/pdf-filters/pdftopdf/P2POutput.cxx,
+    debian/local/filters/pdf-filters/pdftopdf/pdf2pdf.cxx: Several bug fixes
+    on the pdftopdf filter from the upstream author Koji Otani. This fixes
+    especially LP: #780935.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Tue, 16 Aug 2011 17:30:37 +0200
+
 cups (1.5.0-1) experimental; urgency=low
 
   [ Till Kamppeter ]
