@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2007, BBR Inc.  All rights reserved.
+Copyright (c) 2007-2009, BBR Inc.  All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -582,6 +582,8 @@ int main(int argc, char *argv[]) {
     p2pdoc->setMediaBox(&mediaBox);
   }
 
+  p2pdoc->select();
+
   if (P2PDoc::options.collate
       && p2pdoc->getNumberOfPages() == 1
       && !P2PDoc::options.even) {
@@ -590,6 +592,7 @@ int main(int argc, char *argv[]) {
 	so check this here */
     P2PDoc::options.collate = gFalse;
   }
+
 
   str = new P2POutputStream(outfp); /* PDF start here */
   p2pdoc->output(str);
