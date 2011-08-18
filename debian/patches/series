@@ -10,6 +10,7 @@ manpage-translations.patch
 rootbackends-worldreadable.patch
 cups-avahi.patch
 colord-support.patch
+cups-driverd-recognize-cached-drv-generated-ppds.patch
 
 # patches which should go upstream
 airprint-support.patch

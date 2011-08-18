@@ -159,6 +159,11 @@ EOM
 	rm /var/cache/cups/* 2> /dev/null || :
     fi
 
+    # Clear PPD cache if we upgrade to 1.5.x
+    if dpkg --compare-versions "$2" lt-nl "1.5.0-3"; then
+	rm /var/cache/cups/ppds.dat 2> /dev/null || :
+    fi
+
     # Manage printcap file and associated symlinks
     if [ -e /etc/cups/cupsd.conf ]; then
 	if [ -e /etc/printcap.cups ]; then
@@ -191,8 +196,8 @@ fi
 
 # ppd_updater is supposed to be launched only with a running CUPS.
 ppd_updater () {
-	driverregexp=$1
-	gennicknameregexp=$2
+	driverregexp="$1"
+	gennicknameregexp="$2"
 
 	[ ! -z "$gennicknameregexp" ] && \
 	    gennicknameregexp="; $gennicknameregexp"
@@ -211,7 +216,7 @@ ppd_updater () {
 	    englishppduri=""
 	    tmpfile2=`mktemp -t updateppds.XXXXXX`
 	    tempfiles="$tempfiles $tmpfile2"
-	    cat $tmpfile1 | perl -p -e "$gennicknameregexp" | grep -E '^\S+\s+.*'"$nickname"'$' | cut -d ' ' -f 1 > $tmpfile2
+	    cat $tmpfile1 | perl -p -e "$gennicknameregexp; s/\n*$/\n/s" | grep -E '^\S+\s+.*'"$nickname"'$' | cut -d ' ' -f 1 > $tmpfile2
 	    while read newppduri; do
 		[ "$ppdfound" = "0" ] && lpadmin -h /var/run/cups/cups.sock -p "$queue" -m $newppduri 2>/dev/null || continue
 		newlang=`grep '\*LanguageVersion:' "$ppd" | cut -d ' ' -f 2 | perl -e 'print lc(<>)' | perl -p -e 's/[\r\n]//gs'`
@@ -221,6 +226,7 @@ ppd_updater () {
 	    [ "$ppdfound" = "0" ] && [ ! -z "$englishppduri" ] && lpadmin -h /var/run/cups/cups.sock -p "$queue" -m $englishppduri 2>/dev/null && ppdfound="1"
 	    [ "$ppdfound" = "1" ] && echo PPD for printer $queue updated >&2
 	done
+	return 0
 }
 
 # Do the following only if CUPS is running and the needed CUPS tools
@@ -243,6 +249,7 @@ if which lpstat > /dev/null 2>&1 && \
 	elif [ "$1" = triggered ] && [ "$2" = /usr/share/cups/ppd-updaters ] ; then
 		# Update external drivers' queues.
 		for driver in `ls /usr/share/cups/ppd-updaters`; do
+			echo "Updating PPD files for $driver ..."
 			. /usr/share/cups/ppd-updaters/${driver};
 			ppd_updater "${DRIVER_REGEXP}" "${GENNICKNAME_REGEXP}"
 		done
