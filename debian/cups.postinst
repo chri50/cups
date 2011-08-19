@@ -204,7 +204,7 @@ ppd_updater () {
 	gennicknameregexp='s/\s*\(recommended\)//'"$gennicknameregexp"
 	tmpfile1=`mktemp -t updateppds.XXXXXX`
 	tempfiles="$tempfiles $tmpfile1"
-	grep -E $driverregexp $tmpfile0 > $tmpfile1
+	grep -E $driverregexp $tmpfile0 > $tmpfile1 || :
 	cd /etc/cups/ppd
 	for ppd in *.ppd; do
 	    [ -r "$ppd" ] || continue
