@@ -1,3 +1,12 @@
+cups (1.5.0-4) unstable; urgency=low
+
+  * debian/cups.postinst: Another fix for the PPD updater: Let the PPD updater
+    not stop altogether in the case that for one driver there is no entry at all
+    in the output of "lpinfo -m". This is for example the case for
+    foomatic-db-engine if foomatic-db is not installed.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 19 Aug 2011 06:38:18 +0200
+
 cups (1.5.0-3) unstable; urgency=low
 
   * debian/patches/cups-driverd-recognize-cached-drv-generated-ppds.patch:
