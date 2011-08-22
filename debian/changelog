@@ -1,3 +1,22 @@
+cups (1.5.0-5) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/cups.postinst: When executing the trigger on *.ppd-updater files of
+    printer driver packages, log the modification dates of the *.ppd-updater
+    (are more or less the build dates of the driver packages) after updating
+    the PPDs of the existing queues for this package and only update again if
+    the *.ppd-updater file has a different modification date (package got
+    replaced). This avoids unnecessary updates and so long delays when one
+    printer driver package gets updated.
+  * debian/control: Added myself to Uploaders: to avoid Lintian warnings about
+    unlogged NMUs.
+
+  [ Martin Pitt ]
+  * debian/control: Bump Breaks: cups version for libcups2, as cupsd seems to
+    use internal private symbols from this library. (Closes: #638462)
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon, 22 Aug 2011 12:13:43 +0200
+
 cups (1.5.0-4) unstable; urgency=low
 
   * debian/cups.postinst: Another fix for the PPD updater: Let the PPD updater

@@ -15,7 +15,8 @@ Build-Depends: libpam0g-dev, libtiff4-dev, libjpeg-dev, zlib1g-dev,
 Uploaders: Kenshi Muto <kmuto@debian.org>, 
  Martin Pitt <mpitt@debian.org>, Roger Leigh <rleigh@debian.org>, 
  Martin-Éric Racine <martin-eric.racine@iki.fi>, Masayuki Hatta (mhatta) <mhatta@debian.org>,
- Jeff Licquia <licquia@debian.org>
+ Jeff Licquia <licquia@debian.org>,
+ Till Kamppeter <till.kamppeter@gmail.com>
 Vcs-Bzr: http://bzr.debian.org/pkg-cups/cups/debian-trunk/
 Vcs-Browser: http://bzr.debian.org/loggerhead/pkg-cups/cups/debian-trunk/
 
@@ -26,7 +27,7 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Suggests: cups-common
 Provides: libcupsys2
-Breaks: cups (<< 1.4.4)
+Breaks: cups (<< 1.5.0)
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
 Description: Common UNIX Printing System(tm) - Core library
