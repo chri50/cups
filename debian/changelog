@@ -1,3 +1,17 @@
+cups (1.4.4-6ubuntu2.4) maverick-security; urgency=low
+
+  * SECURITY UPDATE: arbitrary code execution via missing code words
+    - debian/patches/CVE-2011-2896.dpatch: improve logic in
+      filter/image-gif.c.
+    - CVE-2011-2896
+  * SECURITY UPDATE: arbitrary code execution via incorrect code word
+    handling
+    - debian/patches/CVE-2011-3170.dpatch: don't overflow in
+      filter/image-gif.c.
+    - CVE-2011-3170
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Mon, 12 Sep 2011 09:20:08 -0400
+
 cups (1.4.4-6ubuntu2.3) maverick-security; urgency=low
 
   * ubuntu-upstart.dpatch: update to explicitly load the AppArmor profile
