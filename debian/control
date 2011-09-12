@@ -1,7 +1,8 @@
 Source: cups
 Priority: optional
 Section: net
-Maintainer: Debian CUPS Maintainers <pkg-cups-devel@lists.alioth.debian.org>
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: Debian CUPS Maintainers <pkg-cups-devel@lists.alioth.debian.org>
 Standards-Version: 3.8.4
 Build-Depends: libpam0g-dev, libtiff4-dev, libjpeg-dev, zlib1g-dev,
  libpng12-dev, libslp-dev, libgnutls-dev, libpaper-dev, libldap2-dev,
