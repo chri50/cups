@@ -1,3 +1,19 @@
+cups (1.4.3-1ubuntu1.5) lucid-security; urgency=low
+
+  * SECURITY UPDATE: arbitrary code execution via missing code words
+    - debian/patches/CVE-2011-2896.dpatch: improve logic in
+      filter/image-gif.c.
+    - CVE-2011-2896
+  * SECURITY UPDATE: arbitrary code execution via incorrect code word
+    handling
+    - debian/patches/CVE-2011-3170.dpatch: don't overflow in
+      filter/image-gif.c.
+    - CVE-2011-3170
+  * This update does _not_ contain the changes from the 1.4.3-1ubuntu1.4
+    package that was in -proposed.
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Mon, 12 Sep 2011 09:25:57 -0400
+
 cups (1.4.3-1ubuntu1.3) lucid-security; urgency=low
 
   * SECURITY UPDATE: denial of service and possible code execution via
