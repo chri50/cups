@@ -1,3 +1,17 @@
+cups (1.4.6-5ubuntu1.4) natty-security; urgency=low
+
+  * SECURITY UPDATE: arbitrary code execution via missing code words
+    - debian/patches/CVE-2011-2896.dpatch: improve logic in
+      filter/image-gif.c.
+    - CVE-2011-2896
+  * SECURITY UPDATE: arbitrary code execution via incorrect code word
+    handling
+    - debian/patches/CVE-2011-3170.dpatch: don't overflow in
+      filter/image-gif.c.
+    - CVE-2011-3170
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Mon, 12 Sep 2011 09:02:13 -0400
+
 cups (1.4.6-5ubuntu1.3) natty-proposed; urgency=low
 
   * debian/patches/cups-avahi.dpatch: Updated Avahi patch to fix places in
