@@ -14,11 +14,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups\n"
-"Report-Msgid-Bugs-To: Source: cups@packages.debian.org\n"
-"POT-Creation-Date: 2007-12-16 15:35+0900\n"
+"Report-Msgid-Bugs-To: cups@packages.debian.org\n"
+"POT-Creation-Date: 2011-09-15 12:02+0200\n"
 "PO-Revision-Date: 2007-12-16 15:37+0900\n"
 "Last-Translator: Miroslav Kure <kurem@debian.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
+"Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -106,12 +107,6 @@ msgstr "paralelní"
 #. Type: multiselect
 #. Choices
 #: ../cups.templates:3001
-msgid "scsi"
-msgstr "scsi"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
 msgid "serial"
 msgstr "sériový"
 
@@ -171,6 +166,9 @@ msgid ""
 msgstr ""
 "Vyberte ovladač, který má CUPS  použít. Implicitní volba se hodí do většiny "
 "běžných prostředí."
+
+#~ msgid "scsi"
+#~ msgstr "scsi"
 
 #~ msgid ""
 #~ "If you will be accepting print jobs from Windows computers, you probably "

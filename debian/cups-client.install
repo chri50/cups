@@ -55,4 +55,4 @@ usr/share/man/man8/cupsaccept.8.gz
 #usr/share/man/*/man8/cupsaccept.8.gz
 usr/share/man/man8/cupsctl.8.gz
 usr/share/man/*/man8/cupsctl.8.gz
-usr/share/cups/ipptool
+usr/share/cups/ipptool/*.test

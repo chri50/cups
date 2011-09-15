@@ -7,11 +7,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups\n"
-"Report-Msgid-Bugs-To: Source: cups@packages.debian.org\n"
-"POT-Creation-Date: 2007-12-16 15:35+0900\n"
+"Report-Msgid-Bugs-To: cups@packages.debian.org\n"
+"POT-Creation-Date: 2011-09-15 12:02+0200\n"
 "PO-Revision-Date: 2007-04-08 23:35+0100\n"
 "Last-Translator: Miguel Figueiredo <elmig@debianpt.org>\n"
 "Language-Team: Portuguese <traduz@debianpt.org>\n"
+"Language: pt\n"
 "MIME-Version: 1.0n\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -31,8 +32,8 @@ msgid ""
 "to submit jobs over the network via the \"BSD\" or \"LPR\" services, and "
 "these computers cannot be converted to use the IPP protocol that CUPS uses."
 msgstr ""
-"O pacote cups contém um servidor que pode aceitar trabalhos de impressão "
-"do estilo BSD e submetê-los ao CUPS. Deve ser apenas configurado se possui "
+"O pacote cups contém um servidor que pode aceitar trabalhos de impressão do "
+"estilo BSD e submetê-los ao CUPS. Deve ser apenas configurado se possui "
 "outros computadores que submetam trabalhos na rede através de serviços \"BSD"
 "\" ou \"LPR\", e que esses computadores não possam ser convertidos para usar "
 "o protocolo IPP que o CUPS usa."
@@ -100,12 +101,6 @@ msgstr "paralela"
 #. Type: multiselect
 #. Choices
 #: ../cups.templates:3001
-msgid "scsi"
-msgstr "scsi"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
 msgid "serial"
 msgstr "série"
 
@@ -167,6 +162,9 @@ msgid ""
 msgstr ""
 "Escolha qual o 'backend' a ser usado pelo CUPS. A escolha por omissão deve "
 "servir a maioria dos ambientes mais comuns."
+
+#~ msgid "scsi"
+#~ msgstr "scsi"
 
 #~ msgid ""
 #~ "If you will be accepting print jobs from Windows computers, you probably "
