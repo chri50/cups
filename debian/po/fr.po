@@ -7,11 +7,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: Source: cups@packages.debian.org\n"
-"POT-Creation-Date: 2007-12-14 11:54+0530\n"
+"Report-Msgid-Bugs-To: cups@packages.debian.org\n"
+"POT-Creation-Date: 2011-09-15 12:02+0200\n"
 "PO-Revision-Date: 2007-12-14 11:57+0530\n"
 "Last-Translator: Christian Perrier <bubulle@debian.org>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -36,8 +37,8 @@ msgstr ""
 "Le paquet de CUPS fournit un serveur capable d'accepter des demandes "
 "d'impression au style BSD et de les donner à CUPS. Ne le configurez que si "
 "des postes du réseau ne sont capable de communiquer avec le serveur qu'avec "
-"les services « BSD » ou « LPR » et ne gèrent pas le protocole IPP utilisé par "
-"CUPS."
+"les services « BSD » ou « LPR » et ne gèrent pas le protocole IPP utilisé "
+"par CUPS."
 
 #. Type: boolean
 #. Description
@@ -102,12 +103,6 @@ msgstr "parallèle"
 #. Type: multiselect
 #. Choices
 #: ../cups.templates:3001
-msgid "scsi"
-msgstr "SCSI"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
 msgid "serial"
 msgstr "série"
 
@@ -168,3 +163,6 @@ msgid ""
 "Please choose the backend program to be used by CUPS. The default choice "
 "should fit the most common environments."
 msgstr "Le choix par défaut est adapté à la majorité des environnements."
+
+#~ msgid "scsi"
+#~ msgstr "SCSI"

@@ -26,7 +26,7 @@ libcups.so.2 libcups2 #MINVER#
  cupsArrayInsert@Base 1.4.0
  cupsArrayLast@Base 1.4.0
  cupsArrayNew2@Base 1.4.0
- cupsArrayNew3@Base 1.5.0-0ubuntu1
+ cupsArrayNew3@Base 1.5.0
  cupsArrayNew@Base 1.4.0
  cupsArrayNext@Base 1.4.0
  cupsArrayPrev@Base 1.4.0
@@ -129,8 +129,8 @@ libcups.so.2 libcups2 #MINVER#
  cupsResolveConflicts@Base 1.4.0
  cupsSendRequest@Base 1.4.0
  cupsServer@Base 1.4.0
- cupsSetClientCertCB@Base 1.5.0-0ubuntu1
- cupsSetCredentials@Base 1.5.0-0ubuntu1
+ cupsSetClientCertCB@Base 1.5.0
+ cupsSetCredentials@Base 1.5.0
  cupsSetDefaultDest@Base 1.4.0
  cupsSetDests2@Base 1.4.0
  cupsSetDests@Base 1.4.0
@@ -138,7 +138,7 @@ libcups.so.2 libcups2 #MINVER#
  cupsSetPasswordCB2@Base 1.4.0
  cupsSetPasswordCB@Base 1.4.0
  cupsSetServer@Base 1.4.0
- cupsSetServerCertCB@Base 1.5.0-0ubuntu1
+ cupsSetServerCertCB@Base 1.5.0
  cupsSetUser@Base 1.4.0
  cupsSideChannelDoRequest@Base 1.4.0
  cupsSideChannelRead@Base 1.4.0
@@ -154,7 +154,7 @@ libcups.so.2 libcups2 #MINVER#
  cupsUTF8ToUTF32@Base 1.4.0
  cupsUser@Base 1.4.0
  cupsWriteRequestData@Base 1.4.0
- httpAddCredential@Base 1.5.0-0ubuntu1
+ httpAddCredential@Base 1.5.0
  httpAddrAny@Base 1.4.0
  httpAddrConnect@Base 1.4.0
  httpAddrEqual@Base 1.4.0
@@ -173,7 +173,7 @@ libcups.so.2 libcups2 #MINVER#
  httpClose@Base 1.4.0
  httpConnect@Base 1.4.0
  httpConnectEncrypt@Base 1.4.0
- httpCopyCredentials@Base 1.5.0-0ubuntu1
+ httpCopyCredentials@Base 1.5.0
  httpDecode64@Base 1.4.0
  httpDecode64_2@Base 1.4.0
  httpDelete@Base 1.4.0
@@ -183,7 +183,7 @@ libcups.so.2 libcups2 #MINVER#
  httpError@Base 1.4.0
  httpFlush@Base 1.4.0
  httpFlushWrite@Base 1.4.0
- httpFreeCredentials@Base 1.5.0-0ubuntu1
+ httpFreeCredentials@Base 1.5.0
  httpGet@Base 1.4.0
  httpGetAuthString@Base 1.4.0
  httpGetBlocking@Base 1.4.0
@@ -218,11 +218,11 @@ libcups.so.2 libcups2 #MINVER#
  httpSeparateURI@Base 1.4.0
  httpSetAuthString@Base 1.4.0
  httpSetCookie@Base 1.4.0
- httpSetCredentials@Base 1.5.0-0ubuntu1
+ httpSetCredentials@Base 1.5.0
  httpSetExpect@Base 1.4.0
  httpSetField@Base 1.4.0
  httpSetLength@Base 1.4.0
- httpSetTimeout@Base 1.5.0-0ubuntu1
+ httpSetTimeout@Base 1.5.0
  httpStatus@Base 1.4.0
  httpTrace@Base 1.4.0
  httpUpdate@Base 1.4.0

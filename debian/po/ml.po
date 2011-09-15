@@ -2,17 +2,18 @@
 # Copyright (C) 2007 THE cups' COPYRIGHT HOLDER
 # This file is distributed under the same license as the cups package.
 # Praveen|പ്രവീണ്‍ A|എ <pravi.a@gmail.com>, 2007.
-# 
-# 
+#
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: cups 20070331\n"
-"Report-Msgid-Bugs-To: Source: cups@packages.debian.org\n"
-"POT-Creation-Date: 2007-12-16 15:35+0900\n"
+"Report-Msgid-Bugs-To: cups@packages.debian.org\n"
+"POT-Creation-Date: 2011-09-15 12:02+0200\n"
 "PO-Revision-Date: 2007-03-31 07:18+0530\n"
 "Last-Translator: Praveen|പ്രവീണ്‍ A|എ <pravi.a@gmail.com>\n"
 "Language-Team: Swathanthra|സ്വതന്ത്ര Malayalam|മലയാളം Computing|കമ്പ്യൂട്ടിങ്ങ്  <smc-"
 "discuss@googlegroups.com>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -101,12 +102,6 @@ msgstr "parallel"
 #. Type: multiselect
 #. Choices
 #: ../cups.templates:3001
-msgid "scsi"
-msgstr "scsi"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
 msgid "serial"
 msgstr "serial"
 
@@ -168,3 +163,6 @@ msgid ""
 msgstr ""
 "ദയവായി CUPS ഉപയോഗിയ്ക്കുന്ന ബാക്കെന്‍ഡ് പ്രോഗ്രാം തിരഞ്ഞെടുക്കുക. ഡിഫാള്‍ട്ടായി തിരഞ്ഞെടുത്ത വില "
 "സാധാരണയായുള്ള അധിക പരിസ്ഥിതികളിലും ചേരും."
+
+#~ msgid "scsi"
+#~ msgstr "scsi"

@@ -5,11 +5,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.4.6-9\n"
-"Report-Msgid-Bugs-To: Source: cups@packages.debian.org\n"
-"POT-Creation-Date: 2007-12-16 15:35+0900\n"
+"Report-Msgid-Bugs-To: cups@packages.debian.org\n"
+"POT-Creation-Date: 2011-09-15 12:02+0200\n"
 "PO-Revision-Date: 2011-07-22 19:03+0100\n"
 "Last-Translator: Zlatan Todoric <zlatan.todoric@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -30,9 +31,11 @@ msgid ""
 "these computers cannot be converted to use the IPP protocol that CUPS uses."
 msgstr ""
 "(CUPS) пакети садрже сервер који може прихватити (BSD) стил штампања и "
-"пребацити их (CUPS). Треба бити само намјештен ако остали рачунари могу"
-"намјестити рад преко мреже помоћу \"BSD\" или \"LPR\" сервиса, те ови рачунари"
-"не могу бити конвертовани кориштењем (IPP) протокола који (CUPS) користи."
+"пребацити их (CUPS). Треба бити само намјештен ако остали рачунари "
+"могунамјестити рад преко мреже помоћу \"BSD\" или \"LPR\" сервиса, те ови "
+"рачунарине могу бити конвертовани кориштењем (IPP) протокола који (CUPS) "
+"користи."
+
 #. Type: boolean
 #. Description
 #: ../cups.templates:2001
@@ -49,9 +52,10 @@ msgid ""
 "be rejected if CUPS cannot guess the job's format."
 msgstr ""
 "(Internet Printing Protocol (IPP)) примјењује (MIME) тип за сва штампања."
-"Како сви извори штампања не могу придодати одговарајући тип, многе радње"
-"попримају (MIME) тип апликација и могу бити одбијене ако (CUPS) не препозна"
-"формат радње."
+"Како сви извори штампања не могу придодати одговарајући тип, многе "
+"радњепопримају (MIME) тип апликација и могу бити одбијене ако (CUPS) не "
+"препознаформат радње."
+
 #. Type: boolean
 #. Description
 #: ../cups.templates:2001
@@ -61,6 +65,7 @@ msgid ""
 msgstr ""
 "(CUPS) може да обавља све радње као (\"raw\") радње, што значи да их шаље "
 "директно штампачу без провјере."
+
 #. Type: boolean
 #. Description
 #: ../cups.templates:2001
@@ -68,8 +73,9 @@ msgid ""
 "It is recommended to choose this option if the server will be accepting "
 "print jobs from Windows computers or Samba servers."
 msgstr ""
-"Препоручује се одабирање ове опције ако ће сервер примати захтеве за штампање "
-"од (Windows) рачунара или Самба сервера."
+"Препоручује се одабирање ове опције ако ће сервер примати захтеве за "
+"штампање од (Windows) рачунара или Самба сервера."
+
 #. Type: multiselect
 #. Choices
 #: ../cups.templates:3001
@@ -87,12 +93,6 @@ msgstr "(lpd)"
 #: ../cups.templates:3001
 msgid "parallel"
 msgstr "паралелно"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
-msgid "scsi"
-msgstr "(scsi)"
 
 #. Type: multiselect
 #. Choices
@@ -136,7 +136,9 @@ msgstr "Комуникациона системска подршка за шта
 msgid ""
 "CUPS uses backend programs to communicate with the printer device or port."
 msgstr ""
-"(CUPS) користи програме за системску подршку да би комуницирао са штампачем или портом."
+"(CUPS) користи програме за системску подршку да би комуницирао са штампачем "
+"или портом."
+
 #. Type: multiselect
 #. Description
 #: ../cups.templates:3002
@@ -144,8 +146,9 @@ msgid ""
 "Unfortunately, some backend programs are likely to cause some trouble. For "
 "example, some PPC kernels crash with the parallel backend."
 msgstr ""
-"Нажалост, неки програми за системску подршку могу проузрочити проблеме. На"
-"примјер, нека (PPC) језгра крахирају на паралелној системској подршци."
+"Нажалост, неки програми за системску подршку могу проузрочити проблеме. "
+"Напримјер, нека (PPC) језгра крахирају на паралелној системској подршци."
+
 #. Type: multiselect
 #. Description
 #: ../cups.templates:3002
@@ -155,3 +158,6 @@ msgid ""
 msgstr ""
 "Молимо вас одаберите програм за системску подршку који ће (CUPS) користити. "
 "Подразумијевана опција подржава већину окружења."
+
+#~ msgid "scsi"
+#~ msgstr "(scsi)"

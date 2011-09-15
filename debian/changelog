@@ -1,3 +1,18 @@
+cups (1.5.0-6) unstable; urgency=low
+
+  * debian/cups-client.install: Do not install the jpg/pdf/ps ipptool test
+    files. They are quite large, and not used anywhere by cups itself.
+  * debian/libcups2.symbols, debian/libcupsmime1.symbols: Drop revisions from
+    new symbols of 1.5.0.
+  * debian/local/apparmor-profile: Some third-party filters install themselves
+    into a subdirectory of /usr/lib/cups/filter, adjust rule. (See LP #160092)
+  * debian/control: Force libcups2 (>= 1.5) dependency on libcupsmime1, as it
+    uses private symbols from libcups2. (Closes: #641182)
+  * debian/libcupsmime1.symbols: Drop Debian revision suffix.
+  * Update debconf translations (debconf-updatepo).
+
+ -- Martin Pitt <mpitt@debian.org>  Thu, 15 Sep 2011 12:03:27 +0200
+
 cups (1.5.0-5) unstable; urgency=low
 
   [ Till Kamppeter ]

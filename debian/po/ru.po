@@ -18,11 +18,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups_1.2.7-4_ru.po\n"
-"Report-Msgid-Bugs-To: Source: cups@packages.debian.org\n"
-"POT-Creation-Date: 2007-12-16 15:35+0900\n"
+"Report-Msgid-Bugs-To: cups@packages.debian.org\n"
+"POT-Creation-Date: 2011-09-15 12:02+0200\n"
 "PO-Revision-Date: 2007-04-05 11:27+0300\n"
 "Last-Translator: Sergey Alyoshin <alyoshin.s@gmail.com>\n"
 "Language-Team: Russian <debian-l10n-russian@lists.debian.org>\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -111,12 +112,6 @@ msgstr "parallel"
 #. Type: multiselect
 #. Choices
 #: ../cups.templates:3001
-msgid "scsi"
-msgstr "scsi"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
 msgid "serial"
 msgstr "serial"
 
@@ -178,6 +173,9 @@ msgid ""
 msgstr ""
 "Выберите интерфейсную программу, которая будет использоваться CUPS. Выбор по "
 "умолчанию должен работать с большинством оборудования."
+
+#~ msgid "scsi"
+#~ msgstr "scsi"
 
 #~ msgid ""
 #~ "If you will be accepting print jobs from Windows computers, you probably "

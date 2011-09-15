@@ -1,4 +1,4 @@
-# 
+#
 #    Translators, if you are not familiar with the PO format, gettext
 #    documentation is worth reading, especially sections dedicated to
 #    this format, e.g. by running:
@@ -14,11 +14,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups 1.1.20candidate6\n"
-"Report-Msgid-Bugs-To: Source: cups@packages.debian.org\n"
-"POT-Creation-Date: 2007-12-16 15:35+0900\n"
+"Report-Msgid-Bugs-To: cups@packages.debian.org\n"
+"POT-Creation-Date: 2011-09-15 12:02+0200\n"
 "PO-Revision-Date: 2007-03-30 17:47+0100\n"
 "Last-Translator: Bart Cornelis <cobaco@skolelinux.no>\n"
 "Language-Team: Debian Dutch <debian-l10n-dutch@lists.debian.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -110,12 +111,6 @@ msgstr "parallel"
 #. Type: multiselect
 #. Choices
 #: ../cups.templates:3001
-msgid "scsi"
-msgstr "scsi"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
 msgid "serial"
 msgstr "serieel"
 
@@ -177,6 +172,9 @@ msgid ""
 msgstr ""
 "Welk backend-programma wilt u CUPS laten gebruiken?. De standaardwaarde zou "
 "voor de meeste omgevingen moeten voldoen."
+
+#~ msgid "scsi"
+#~ msgstr "scsi"
 
 #~ msgid ""
 #~ "If you will be accepting print jobs from Windows computers, you probably "

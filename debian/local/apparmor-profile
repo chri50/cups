@@ -96,7 +96,7 @@
   /usr/lib/cups/notifier/* ixr,
   # filters and drivers (PPD generators) are always run as non-root,
   # and there are a lot of third-party drivers which we cannot predict
-  /usr/lib/cups/filter/* Uxr, 
+  /usr/lib/cups/filter/** Uxr, 
   /usr/lib/cups/driver/* Uxr,
   /usr/local/** r,
   /usr/local/lib/cups/** rix,
