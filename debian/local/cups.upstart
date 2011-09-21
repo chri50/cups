@@ -9,6 +9,7 @@ start on (filesystem
 stop on runlevel [016]
 
 respawn
+respawn limit 3 12
 
 pre-start script
     [ -x /usr/sbin/cupsd ]
@@ -34,7 +35,7 @@ exec /usr/sbin/cupsd -F
 
 post-start script
     # wait until daemon is ready
-    timeout=10
+    timeout=6
     while [ ! -e /var/run/cups/cups.sock ]; do 
         sleep 0.5
 	timeout=$((timeout-1))

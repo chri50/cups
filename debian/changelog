@@ -1,3 +1,18 @@
+cups (1.5.0-6bzr1) oneiric; urgency=low
+
+  Upload current Debian packaging bzr.
+
+  * debian/local/cups.upstart: Lower the timeout for waiting for the socket
+    to 3 seconds. Tweak the respawn count and limit to be longer than the
+    socket poll time, so that a continuously failing cupsd process will not
+    cause an eternal respawn loop. (LP: #854490)
+  * debian/control: Have libcupsmime1 break pre-1.5 versions of cups as well,
+    so that we avoid having a configured "cups" packae with an upgraded, but
+    unconfigured libcupsmime1 package. This takes care of LP: #854490 during
+    upgrades.
+
+ -- Martin Pitt <martin.pitt@ubuntu.com>  Wed, 21 Sep 2011 08:04:56 +0200
+
 cups (1.5.0-6) unstable; urgency=low
 
   * debian/cups-client.install: Do not install the jpg/pdf/ps ipptool test
