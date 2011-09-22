@@ -91,6 +91,7 @@ Priority: optional
 Section: libs
 Architecture: any
 Depends: libcups2 (>= 1.5~), ${shlibs:Depends}, ${misc:Depends}
+Breaks: cups (<< 1.5.0)
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
 Description: Common UNIX Printing System(tm) - MIME library

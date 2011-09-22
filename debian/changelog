@@ -1,3 +1,27 @@
+cups (1.5.0-7) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/patches/dnssd-reg-array-linear-search.patch: Let the array of
+    DNS-SD-registered printers be searched linearly and not binarily by
+    the DNS-SD service name, as due to another bug the DNS-SD service name
+    is not correctly set in some array elements (LP: #855445). Not
+    reporting upstream yet, as the original bug can be in the Avahi
+    support patch.
+
+  [ Martin Pitt ]
+  * debian/local/cups.upstart: Lower the timeout for waiting for the socket
+    to 3 seconds. Tweak the respawn count and limit to be longer than the
+    socket poll time, so that a continuously failing cupsd process will not
+    cause an eternal respawn loop. (LP: #854490)
+  * debian/control: Have libcupsmime1 break pre-1.5 versions of cups as well,
+    so that we avoid having a configured "cups" packae with an upgraded, but
+    unconfigured libcupsmime1 package. This takes care of LP: #854490 during
+    upgrades.
+  * debian/rules: Configure with --enable-debug, to stop the upstream build
+    system stripping all our binaries. This fixes the cups-dbg package.
+
+ -- Martin Pitt <mpitt@debian.org>  Thu, 22 Sep 2011 19:57:54 +0200
+
 cups (1.5.0-6) unstable; urgency=low
 
   * debian/cups-client.install: Do not install the jpg/pdf/ps ipptool test
