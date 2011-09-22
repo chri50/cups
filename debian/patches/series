@@ -34,3 +34,4 @@ show-compile-command-lines.patch
 ppdc-dynamic-linking.patch
 log-debug-history-nearly-unlimited.patch
 pstops-based-workflow-only-for-printing-ps-on-a-ps-printer.patch
+dnssd-reg-array-linear-search.patch

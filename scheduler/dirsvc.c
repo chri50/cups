@@ -1650,8 +1650,7 @@ cupsdStartBrowsing(void)
       */
 
       if (BrowseRemoteProtocols & BROWSE_DNSSD)
-        DNSSDPrinters = cupsArrayNew((cups_array_func_t)dnssdComparePrinters,
-	                             NULL);
+        DNSSDPrinters = cupsArrayNew(NULL, NULL);
 
      /*
       * Set the computer name and register the web interface...
