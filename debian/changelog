@@ -1,3 +1,13 @@
+cups (1.5.0-8) unstable; urgency=medium
+
+  * Urgency medium due to security fix. The previous version wasn't in testing
+    yet, but already matured for half of the usual period, so it will still
+    be 10 days in sum.
+  * Add 00svn_gif_overflow.patch: Fix heap overflow with broken/crafted GIF
+    files. Patch taken from upstream svn. [CVE-2011-3170]
+
+ -- Martin Pitt <mpitt@debian.org>  Tue, 27 Sep 2011 14:46:38 +0200
+
 cups (1.5.0-7) unstable; urgency=low
 
   [ Till Kamppeter ]
