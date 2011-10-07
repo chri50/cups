@@ -1,3 +1,16 @@
+cups (1.5.0-8ubuntu1) oneiric-proposed; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/patches/cups-avahi.patch: Updated patch from upstream (Red Hat)
+    to fix crashes of the CUPS daemon when using the timeout function call
+    functionality (LP: #860691, LP: #860498).
+
+  [ Martin Pitt ]
+  * debian/local/apparmor-profile: Also allow cups to map libraries under
+    /usr/local/. (LP: #860765)
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri,  7 Oct 2011 17:01:43 +0200
+
 cups (1.5.0-8) unstable; urgency=medium
 
   * Urgency medium due to security fix. The previous version wasn't in testing
