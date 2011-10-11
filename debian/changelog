@@ -1,3 +1,13 @@
+cups (1.5.0-8ubuntu2) oneiric-proposed; urgency=low
+
+  * debian/patches/do-not-suppress-inputslot-setting-with-empty-ap-d-inputslot.patch:
+    CUPS adds the option setting "AP_D_InputSlot=" to every job. This overrides
+    the InputSlot option and so the InputSlot setting and even the default
+    setting for InputSlot in the PPD get never used, rendering InputSlot
+    useless (LP: #872527).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Tue, 11 Oct 2011 23:32:43 +0200
+
 cups (1.5.0-8ubuntu1) oneiric-proposed; urgency=low
 
   [ Till Kamppeter ]
