@@ -1,3 +1,12 @@
+cups (1.5.0-8ubuntu3) oneiric-proposed; urgency=low
+
+  * debian/control:
+    - properly Provides/Conflicts/Replaces: libcupsys2 to ensure that
+      the apt resolver can calculate the upgrade in a multiarch scenario
+      where a old libcupsys2 package is installed (LP: #874835)
+
+ -- Michael Vogt <michael.vogt@ubuntu.com>  Wed, 19 Oct 2011 10:45:43 +0200
+
 cups (1.5.0-8ubuntu2) oneiric-proposed; urgency=low
 
   * debian/patches/do-not-suppress-inputslot-setting-with-empty-ap-d-inputslot.patch:

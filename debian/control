@@ -1,7 +1,8 @@
 Source: cups
 Priority: optional
 Section: net
-Maintainer: Debian CUPS Maintainers <pkg-cups-devel@lists.alioth.debian.org>
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: Debian CUPS Maintainers <pkg-cups-devel@lists.alioth.debian.org>
 Standards-Version: 3.9.2
 Build-Depends: libpam0g-dev, libtiff4-dev, libjpeg-dev, zlib1g-dev,
  libpng12-dev, libslp-dev, libgnutls-dev, libpaper-dev, libldap2-dev,
@@ -26,9 +27,11 @@ Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Suggests: cups-common
-Provides: libcupsys2
 Breaks: cups (<< 1.5.0)
 Pre-Depends: ${misc:Pre-Depends}
+Provides: libcupsys2
+Conflicts: libcupsys2
+Replaces: libcupsys2
 Multi-Arch: same
 Description: Common UNIX Printing System(tm) - Core library
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
