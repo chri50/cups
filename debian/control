@@ -27,6 +27,8 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Suggests: cups-common
 Provides: libcupsys2
+Conflicts: libcupsys2
+Replaces: libcupsys2
 Breaks: cups (<< 1.5.0)
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
