@@ -1454,14 +1454,23 @@ ldap_disconnect(LDAP *ld)		/* I - LDAP handle */
 void
 cupsdStartAvahiClient(void)
 {
+  int error = 0;
+
   if (!AvahiCupsClient && !AvahiCupsClientConnecting)
   {
     if (!AvahiCupsPollHandle)
       AvahiCupsPollHandle = avahi_cups_poll_new ();
 
     if (AvahiCupsPollHandle)
-      avahi_client_new (avahi_cups_poll_get (AvahiCupsPollHandle),
-			AVAHI_CLIENT_NO_FAIL, avahi_client_cb, NULL, NULL);
+    {
+      if (avahi_client_new (avahi_cups_poll_get (AvahiCupsPollHandle),
+			    AVAHI_CLIENT_NO_FAIL,
+			    avahi_client_cb, NULL,
+			    &error) != NULL)
+	AvahiCupsClientConnecting = 1;
+      else
+	cupsdLogMessage (CUPSD_LOG_WARN, "Avahi client failed: %d", error);
+    }
   }
 }
 #endif /* HAVE_AVAHI */
@@ -3473,8 +3482,14 @@ avahi_client_cb (AvahiClient *client,
    /*
     * No Avahi daemon, client is waiting.
     */
-    AvahiCupsClientConnecting = 1;
     cupsdLogMessage (CUPSD_LOG_DEBUG, "Avahi client connecting");
+    break;
+
+  case AVAHI_CLIENT_S_REGISTERING:
+    /*
+     * Not yet registered.
+     */
+    cupsdLogMessage (CUPSD_LOG_DEBUG, "Avahi client registering");
     break;
 
   case AVAHI_CLIENT_FAILURE:

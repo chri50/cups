@@ -57,17 +57,37 @@ struct _cupsd_timeout_s
  */
 
 static int
+compare_addrs (void *p0, void *p1)
+{
+  if (p0 == p1)
+    return (0);
+  if (p0 < p1)
+    return (-1);
+  return (1);
+}
+
+static int
 compare_timeouts (cupsd_timeout_t *p0, cupsd_timeout_t *p1)
 {
+  int addrsdiff = compare_addrs (p0, p1);
+  int tvdiff;
+
+  if (addrsdiff == 0)
+    return (0);
+
   if (!p0->enabled || !p1->enabled)
   {
     if (!p0->enabled && !p1->enabled)
-      return (0);
+      return (addrsdiff);
 
     return (p0->enabled ? -1 : 1);
   }
 
-  return (avahi_timeval_compare (&p0->when, &p1->when));
+  tvdiff = avahi_timeval_compare (&p0->when, &p1->when);
+  if (tvdiff != 0)
+    return (tvdiff);
+
+  return (addrsdiff);
 }
 
 

@@ -1,3 +1,28 @@
+cups (1.5.0-9) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/patches/do-not-suppress-inputslot-setting-with-empty-ap-d-inputslot.patch:
+    CUPS adds the option setting "AP_D_InputSlot=" to every job. This overrides
+    the InputSlot option and so the InputSlot setting and even the default
+    setting for InputSlot in the PPD get never used, rendering InputSlot
+    useless (LP: #872527).
+  * debian/patches/cups-avahi.patch: Updated patch from upstream (Red Hat)
+    to fix crashes of the CUPS daemon when using the timeout function call
+    functionality (LP: #860691, LP: #860498).
+
+  [ Martin Pitt ]
+  * debian/local/apparmor-profile: Also allow cups to map libraries under
+    /usr/local/. (LP: #860765)
+  * cups-avahi.patch: Make sure to guard against retrying the Avahi connection
+    whilst already doing so. Thanks to Tim Waugh for the patch! (LP: #877967)
+
+  [ Michael Vogt ]
+  * debian/control: Add Conflicts/Replaces: libcupsys2 to ensure that the apt
+    resolver can calculate the upgrade in a multiarch scenario where a old
+    libcupsys2 package is installed (LP: #874835)
+
+ -- Martin Pitt <mpitt@debian.org>  Wed, 19 Oct 2011 14:57:50 +0200
+
 cups (1.5.0-8) unstable; urgency=medium
 
   * Urgency medium due to security fix. The previous version wasn't in testing
