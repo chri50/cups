@@ -1,0 +1,38 @@
+--- a/backend/usb-libusb.c
++++ b/backend/usb-libusb.c
+@@ -32,6 +32,7 @@
+ #include <usb.h>
+ #include <poll.h>
+ #include <cups/cups-private.h>
++#include <linux/usbdevice_fs.h>
+ 
+ 
+ /*
+@@ -119,6 +120,27 @@
+     sleep(5);
+   }
+ 
++ /*
++  * Reset printer device ...
++  */
++
++  if (usb_reset(printer->handle) < 0)
++  {
++    _cupsLangPrintFilter(stderr, "ERROR",
++			 _("Unable to reset printer."));
++  }
++  /* we have to close and reopen the device after the reset, but
++     for reopening it we cannot do a simple "open_device(printer, 1)"
++     as with this some printers, like the HP LaserJet 3390, crash and
++     reboot and the job gets dropped. Therefore we need to reinitialize
++     the connection by calling "find_device(print_cb, uri)" again. */
++  close_device(printer);
++  while ((printer = find_device(print_cb, uri)) == NULL)
++  {
++    _cupsLangPrintFilter(stderr, "INFO",
++			 _("Waiting for printer to become available."));
++    sleep(5);
++  }
+ 
+  /*
+   * If we are printing data from a print driver on stdin, ignore SIGTERM
