@@ -1,3 +1,14 @@
+cups (1.5.0-8ubuntu4) oneiric-proposed; urgency=low
+
+  * debian/patches/usb-backend-reset-printer-before-printing.patch: When
+    using the "usb" CUPS backend, reset the printer before each job as
+    otherwise on some printers subsequent jobs will come out as garbage
+    (LP: #872483).
+  * cups-avahi.patch: Make sure to guard against retrying the Avahi connection
+    whilst already doing so. Thanks to Tim Waugh for the patch! (LP: #877967)
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Thu, 20 Oct 2011 12:27:43 +0200
+
 cups (1.5.0-8ubuntu3) oneiric-proposed; urgency=low
 
   * debian/control:
