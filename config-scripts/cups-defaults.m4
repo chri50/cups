@@ -95,7 +95,7 @@ AC_ARG_WITH(local_protocols, [  --with-local-protocols  set default BrowseLocalP
 	default_local_protocols="$withval",
 	default_local_protocols="default")
 
-if test x$with_local_protocols != xno; then
+if test "x$with_local_protocols" != "xno"; then
 	if test "x$default_local_protocols" = "xdefault"; then
 		if test "x$DNSSDLIBS" != "x"; then
 		CUPS_BROWSE_LOCAL_PROTOCOLS="CUPS dnssd"
@@ -118,7 +118,7 @@ AC_ARG_WITH(remote_protocols, [  --with-remote-protocols set default BrowseRemot
 	default_remote_protocols="$withval",
 	default_remote_protocols="default")
 
-if test x$with_remote_protocols != xno; then
+if test "x$with_remote_protocols" != "xno"; then
 	if test "x$default_remote_protocols" = "xdefault"; then
 		if test "$uname" = "Darwin" -a $uversion -ge 90; then
 			CUPS_BROWSE_REMOTE_PROTOCOLS=""
