@@ -261,12 +261,13 @@ if which lpstat > /dev/null 2>&1 && \
 		# of PPDs when the corresponding package was not changed.
 	        logfile=/var/cache/cups/ppd-updates
 		touch $logfile
-		for driver in `ls /usr/share/cups/ppd-updaters`; do
-			modtime=`ls -l --time-style=+%s /usr/share/cups/ppd-updaters/$driver | perl -p -e 's/^\s*\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+(\S+)\s+(\S+)\s*$/$1\n/'`
+		for driverfile in `ls /usr/share/cups/ppd-updaters`; do
+		        driver=`echo $driverfile | perl -p -e 's/\.ppd-updater$//'`
+			modtime=`ls -l --time-style=+%s /usr/share/cups/ppd-updaters/$driverfile | perl -p -e 's/^\s*\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+(\S+)\s+(\S+)\s*$/$1\n/'`
 			oldmodtime=`cat $logfile | grep " $driver$" | cut -d ' ' -f 1`
 			if [ "$modtime" != "$oldmodtime" ]; then
 				echo "Updating PPD files for $driver ..."
-				. /usr/share/cups/ppd-updaters/${driver}
+				. /usr/share/cups/ppd-updaters/${driverfile}
 				ppd_updater "${DRIVER_REGEXP}" "${GENNICKNAME_REGEXP}"
 				cat $logfile | grep -v " $driver$" > $logfile.new || touch $logfile.new
 				echo "$modtime $driver" >> $logfile.new
