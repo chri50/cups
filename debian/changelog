@@ -1,3 +1,33 @@
+cups (1.5.0-11) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/patches/usb-backend-gracefully-fail-on-more-cases-of-bad-device-id.patch:
+    When reading out the device ID check also for too short lengths of the
+    device ID and also in this case try to change the byte order of the length
+    bytes and fail if the device ID lenght is still too short (LP: #887094).
+  * debian/patches/usb-backend-skip-set-configuration-set-interface.patch:
+    Avoid unneeded SET_CONFIGURATION and SET_INTERFACE requests after the
+    printer has already been configured. This often leads to subsequent jobs
+    coming out as garbage or not at all (CUPS STR #3965, LP: #872483).
+  * debian/patches/usb-backend-reset-printer-before-printing.patch: Removed,
+    as we are using the less invasive approach of CUPS STR #3965 now.
+    This also removes the Linux specific #include, causing FTBFS on non-Linux
+    platforms. (Closes: #647666)
+  * debian/cups.postinst: Allow PPD updater trigger files in
+    /usr/share/cups/ppd-updaters/ also be named
+    printer-driver-<driver>.ppd-updater and not only <driver> or
+    <driver>.ppd-updater. This makes it easier to provide these
+    files in the printer driver packages when we rename all binary packages
+    of printer drivers to "printer-driver-<driver>".
+
+  [ Martin-Éric Racine ]
+  * debian/control: 
+    + Added the Homepage field.
+    + Cleaned up duplicate Build-Depends.
+  * Removed |libheimdal-dev alternative from Build-Depends (Closes: #648105)
+
+ -- Martin Pitt <mpitt@debian.org>  Fri, 11 Nov 2011 15:48:39 +0100
+
 cups (1.5.0-10) unstable; urgency=low
 
   * debian/cups.postinst: Allow PPD updater trigger files in
