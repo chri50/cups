@@ -32,7 +32,6 @@
 #include <usb.h>
 #include <poll.h>
 #include <cups/cups-private.h>
-#include <linux/usbdevice_fs.h>
 
 
 /*
@@ -120,27 +119,6 @@ print_device(const char *uri,		/* I - Device URI */
     sleep(5);
   }
 
- /*
-  * Reset printer device ...
-  */
-
-  if (usb_reset(printer->handle) < 0)
-  {
-    _cupsLangPrintFilter(stderr, "ERROR",
-			 _("Unable to reset printer."));
-  }
-  /* we have to close and reopen the device after the reset, but
-     for reopening it we cannot do a simple "open_device(printer, 1)"
-     as with this some printers, like the HP LaserJet 3390, crash and
-     reboot and the job gets dropped. Therefore we need to reinitialize
-     the connection by calling "find_device(print_cb, uri)" again. */
-  close_device(printer);
-  while ((printer = find_device(print_cb, uri)) == NULL)
-  {
-    _cupsLangPrintFilter(stderr, "INFO",
-			 _("Waiting for printer to become available."));
-    sleep(5);
-  }
 
  /*
   * If we are printing data from a print driver on stdin, ignore SIGTERM
@@ -452,14 +430,25 @@ get_device_id(usb_printer_t *printer,	/* I - Printer */
   * Check to see if the length is larger than our buffer; first
   * assume that the vendor incorrectly implemented the 1284 spec,
   * and then limit the length to the size of our buffer...
+  * Consider a length < 14 as too short, as the minimum valid device
+  * ID ("MFG:x;MDL:y;") is 12 bytes long and so we have at least 14
+  * bytes with the two length bytes...
+  * Especially the length in the memmove() call cannot get negative then,
+  * causing the backend to segfault.
   */
 
-  if (length > bufsize)
+  if ((length > bufsize) || (length < 14))
     length = (((unsigned)buffer[1] & 255) << 8) +
 	     ((unsigned)buffer[0] & 255);
 
   if (length > bufsize)
     length = bufsize;
+
+  if (length < 14)
+  {
+    *buffer = '\0';
+    return (-1);
+  }
 
   length -= 2;
 
@@ -653,6 +642,7 @@ open_device(usb_printer_t *printer,	/* I - Printer */
             int           verbose)	/* I - Update connecting-to-device state? */
 {
   int	number;				/* Configuration/interface/altset numbers */
+  char current_bConfiguration;
 
 
  /*
@@ -669,27 +659,40 @@ open_device(usb_printer_t *printer,	/* I - Printer */
   if ((printer->handle = usb_open(printer->device)) == NULL)
     return (-1);
 
- /*
-  * Then set the desired configuration...
-  */
 
   if (verbose)
     fputs("STATE: +connecting-to-device\n", stderr);
 
-  number = printer->device->config[printer->conf].bConfigurationValue;
-
-  if (usb_set_configuration(printer->handle, number) < 0)
+ /*
+  * Set the desired configuration, but only if it needs changing. Some
+  * printers (e.g., Samsung) don't like usb_set_configuration. It will succeed,
+  * but the following print job is sometimes silently lost by the printer.
+  */
+  if (usb_control_msg(printer->handle,
+                USB_TYPE_STANDARD | USB_ENDPOINT_IN | USB_RECIP_DEVICE,
+                8, /* GET_CONFIGURATION */
+                0, 0, &current_bConfiguration, 1, 5000) != 1)
   {
-   /*
-    * If the set fails, chances are that the printer only supports a
-    * single configuration.  Technically these printers don't conform to
-    * the USB printer specification, but otherwise they'll work...
-    */
+    current_bConfiguration = 0;   /* Failed. Assume not configured */
+  }
+    
+  number = printer->device->config[printer->conf].bConfigurationValue;
+  if (number != current_bConfiguration)
+  {
 
-    if (errno != EBUSY)
-      fprintf(stderr, "DEBUG: Failed to set configuration %d for %04x:%04x\n",
-              number, printer->device->descriptor.idVendor,
-	      printer->device->descriptor.idProduct);
+    if (usb_set_configuration(printer->handle, number) < 0)
+    {
+     /*
+      * If the set fails, chances are that the printer only supports a
+      * single configuration.  Technically these printers don't conform to
+      * the USB printer specification, but otherwise they'll work...
+      */
+
+      if (errno != EBUSY)
+        fprintf(stderr, "DEBUG: Failed to set configuration %d for %04x:%04x\n",
+                number, printer->device->descriptor.idVendor,
+	        printer->device->descriptor.idProduct);
+    }
   }
 
  /*
@@ -722,20 +725,24 @@ open_device(usb_printer_t *printer,	/* I - Printer */
 #endif /* 0 */
 
  /*
-  * Set alternate setting...
+  * Set alternate setting, but only if there is more than one option.
+  * Some printers (e.g., Samsung) don't like usb_set_altinterface.
   */
-
-  number = printer->device->config[printer->conf].interface[printer->iface].
-               altsetting[printer->altset].bAlternateSetting;
-  while (usb_set_altinterface(printer->handle, number) < 0)
+  if (printer->device->config[printer->conf].interface[printer->iface].
+          num_altsetting > 1)
   {
-    if (errno != EBUSY)
-      fprintf(stderr,
-              "DEBUG: Failed to set alternate interface %d for %04x:%04x: %s\n",
-              number, printer->device->descriptor.idVendor,
-	      printer->device->descriptor.idProduct, strerror(errno));
+    number = printer->device->config[printer->conf].interface[printer->iface].
+                 altsetting[printer->altset].bAlternateSetting;
+    while (usb_set_altinterface(printer->handle, number) < 0)
+    {
+      if (errno != EBUSY)
+        fprintf(stderr,
+                "DEBUG: Failed to set alternate interface %d for %04x:%04x: %s\n",
+                number, printer->device->descriptor.idVendor,
+	        printer->device->descriptor.idProduct, strerror(errno));
 
-    goto error;
+      goto error;
+    }
   }
 
   if (verbose)
