@@ -1,3 +1,18 @@
+cups (1.5.0-8ubuntu5) oneiric-proposed; urgency=low
+
+  * debian/patches/usb-backend-gracefully-fail-on-more-cases-of-bad-device-id.patch:
+    When reading out the device ID check also for too short lengths of the
+    device ID and also in this case try to chjange the byte order of the length
+    bytes and fail if the device ID lenght is still too short (LP: #887094).
+  * debian/patches/usb-backend-skip-set-configuration-set-interface.patch:
+    Avoid unneeded SET_CONFIGURATION and SET_INTERFACE requests after the
+    printer has already been configured. This often leads to subsequent jobs
+    coming out as garbage or not at all.
+  * debian/patches/usb-backend-reset-printer-before-printing.patch: Removed,
+    as we are trying the less invasive approach of CUPS STR #3965.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 11 Nov 2011 16:01:43 +0100
+
 cups (1.5.0-8ubuntu4) oneiric-proposed; urgency=low
 
   * debian/patches/usb-backend-reset-printer-before-printing.patch: When
