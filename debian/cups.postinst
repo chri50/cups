@@ -262,7 +262,7 @@ if which lpstat > /dev/null 2>&1 && \
 	        logfile=/var/cache/cups/ppd-updates
 		touch $logfile
 		for driverfile in `ls /usr/share/cups/ppd-updaters`; do
-		        driver=`echo $driverfile | perl -p -e 's/\.ppd-updater$//'`
+		        driver=`echo $driverfile | perl -p -e 's/\.ppd-updater$//' | perl -p -e 's/^printer-driver-//'`
 			modtime=`ls -l --time-style=+%s /usr/share/cups/ppd-updaters/$driverfile | perl -p -e 's/^\s*\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+(\S+)\s+(\S+)\s*$/$1\n/'`
 			oldmodtime=`cat $logfile | grep " $driver$" | cut -d ' ' -f 1`
 			if [ "$modtime" != "$oldmodtime" ]; then

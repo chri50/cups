@@ -12,9 +12,10 @@ rootbackends-worldreadable.patch
 cups-avahi.patch
 colord-support.patch
 cups-driverd-recognize-cached-drv-generated-ppds.patch
-usb-backend-reset-printer-before-printing.patch
+usb-backend-skip-set-configuration-set-interface.patch
 
 # patches which should go upstream
+usb-backend-gracefully-fail-on-more-cases-of-bad-device-id.patch
 airprint-support.patch
 removecvstag.patch
 no-conffile-timestamp.patch
