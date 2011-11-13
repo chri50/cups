@@ -1,3 +1,23 @@
+cups (1.5.0-12) unstable; urgency=low
+
+  [ Martin-Éric Racine ]
+  * debian/control: cups-ppdc: move from net/optional to utils/optional
+    to match the repository override's correct assumption.
+  * Fixed: Lintian: W: spelling-error-in-changelog: lenght length.
+  * Fixed: Lintian: I: conflicts-with-version: cupsddk-drivers (<< 1.4.0).
+  * Fixed: Lintian: I: conflicts-with-version: cupsddk (<< 1.4.0).
+  * Fixed: Lintian: W: symbols-file-contains-debian-revision: 1.5.0-0ubuntu1
+    (-0ubuntu1 version removed): _mimeError@Base and mimeNew@Base.
+  * Removed |libheimdal-dev from libcups2-dev Depends. (Closes: #648105)
+
+  [ Martin Pitt ]
+  * Add debian/source/options: Ignore .bzr-builddeb/, for developers who use
+    bzr, but not bzr-buildpackage.
+  * debian/cups.lintian-overrides: Quiesce "possible-missing-stop" warning, we
+    quite deliberately do not run the init script on levels 0 and 6.
+
+ -- Martin Pitt <mpitt@debian.org>  Sun, 13 Nov 2011 14:39:22 +0100
+
 cups (1.5.0-11) unstable; urgency=low
 
   [ Till Kamppeter ]
