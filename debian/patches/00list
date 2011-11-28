@@ -42,3 +42,7 @@ pstops-based-workflow-only-for-printing-ps-on-a-ps-printer.dpatch
 ubuntu-disable-browsing.dpatch
 ubuntu-default-error-policy-retry-job.dpatch
 ubuntu-upstart.dpatch
+
+# Security patches
+str3867.dpatch
+str3914.dpatch
