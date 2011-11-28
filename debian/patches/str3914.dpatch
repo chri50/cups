@@ -1,0 +1,40 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## str3914.dpatch by Yves-Alexis Perez <corsac@debian.org>
+##
+## DP: Fix heap overflow with broken/crafted GIF files [CVE-2011-3170]
+## DP: http://cups.org/str.php?L3914
+
+@DPATCH@
+diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.4~/filter/image-gif.c cups-1.4.4/filter/image-gif.c
+--- cups-1.4.4~/filter/image-gif.c	2008-07-12 00:46:21.000000000 +0200
++++ cups-1.4.4/filter/image-gif.c	2011-11-08 14:37:10.310009040 +0100
+@@ -654,11 +654,13 @@
+ 
+     if (code >= max_code)
+     {
+-      *sp++ = firstcode;
+-      code  = oldcode;
++      if (sp < (stack + 8192))
++	*sp++ = firstcode;
++
++      code = oldcode;
+     }
+ 
+-    while (code >= clear_code)
++    while (code >= clear_code && sp < (stack + 8192))
+     {
+       *sp++ = table[1][code];
+       if (code == table[0][code])
+@@ -667,8 +669,10 @@
+       code = table[0][code];
+     }
+ 
+-    *sp++ = firstcode = table[1][code];
+-    code  = max_code;
++    if (sp < (stack + 8192))
++      *sp++ = firstcode = table[1][code];
++
++    code = max_code;
+ 
+     if (code < 4096)
+     {
