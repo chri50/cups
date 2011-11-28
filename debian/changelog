@@ -1,3 +1,13 @@
+cups (1.3.8-1+lenny10) oldstable-security; urgency=high
+
+  * Non-maintainer upload by the Security Team.
+  * debian/patches:
+    - str3867 added, fix an infinite loop / heap-based buffer overflow in the
+      gif_read_lzw() function (CVE-2011-2896)
+    - str3914 added, complete the fix for the previous issue (CVE-2011-3170).
+
+ -- Yves-Alexis Perez <yves-alexis.perez@ssi.gouv.fr>  Mon, 28 Nov 2011 15:07:53 +0100
+
 cups (1.3.8-1+lenny9) oldstable-security; urgency=high
 
   * Non-maintainer upload by Security Team
