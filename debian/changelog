@@ -1,3 +1,24 @@
+cups (1.5.0-8ubuntu6) oneiric-proposed; urgency=low
+
+  * debian/patches/ipp-patch-r8950+.patch: Revert the IPP backend to the state
+    of CUPS 1.4.x, as the 1.5.x versiuon has major regressions (LP: #877958,
+    LP: #879625, LP: #881843, LP: #883585, Closes: #638521, CUPS STR #3966,
+    CUPS STR #3967). This patch will get removed as soon as upstream has fixed 
+    all these regressions. As upstream did not announce any new features for
+    the IPP backend in the release notes for 1.5.x, we assume that with this
+    step no features will get lost.
+  * debian/patches/dont-send-malformed-dbus-messages.patch: Do not send D-Bus
+    notifications with too few parameters when there are parameters which
+    cannot be added to the D-Bus request, especially invalid UTF-8 strings.
+    This made gnome-session-daemon crash (LP: #893676, CUPS STR #3984).
+  * debian/local/filters/cpdftocps: The cpdftocps filter (used for PostScript
+    printers and for drivers with PPDs which are not PDF-aware) did not
+    recognize the duplex setting correctly, making duplex not working on
+    many common printers (LP: #897723).
+  * debian/local/filters/cpdftocps: Cleaned up the header comments.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Tue, 29 Nov 2011 21:49:41 +0100
+
 cups (1.5.0-8ubuntu5) oneiric-proposed; urgency=low
 
   * debian/patches/usb-backend-gracefully-fail-on-more-cases-of-bad-device-id.patch:
