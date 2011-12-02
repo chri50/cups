@@ -1,21 +1,19 @@
 #!/bin/sh
 
-#!/bin/sh
-
 # application/vnd.cups-pdf -> application/vnd.cups-postscript filter
 
 # Contributed by Johan Kiviniemi, Robert Sander <robert.sander@epigenomics.com>,
 # and Till Kamppeter. Licensed under the terms of the CUPS Debian
 # packaging.
 # The typical filter chain using this filter:
-# (something that outputs pdf)
+# (something that outputs PDF)
 # -> pdftopdf
 # -> cpdftocps (runs Poppler's pdftops and then CUPS' pstops)
-# -> (postscript printer)
+# -> (PostScript printer)
 
 # The emit-jcl option can be safely passed through to pstops, since pdftops
 # strips any JCL output by pdftopdf before processing the PDF. pstops then
-# simply does the right thing regarding JCL for pdftops’ output.
+# simply does the right thing regarding JCL for pdftops' output.
 # $Id: $
 #
 
@@ -45,7 +43,6 @@ if [ -n "$6" ]; then
 fi
 
 # Apply PPD settings.
-
 pslevel=2
 if test -e "$PPD"; then
     # Read LanguageLevel from PPD file
@@ -59,9 +56,9 @@ echo "DEBUG: PostScript Level: $pslevel" >&2
 
 duplex=no
 if test -e "$PPD"; then
-    eval "$(sed -nre 's/^\*Default(sides|Duplex|EFDuplex|EFDuplexing|KD03Duplex|JCLDuplex):\s*(two-sided|Duplex|On|True|Yes|1)\b.*/duplex="yes"/pi' "$PPD")"
+    eval "$(sed -nre 's/^\*Default(sides|Duplex|EFDuplex|EFDuplexing|KD03Duplex|JCLDuplex):\s*(two-sided|Duplex(|(|No)Tumble)|On|True|Yes|1)\b.*/duplex="yes"/pi' "$PPD")"
 fi
-eval "$(printf "%s" "$5" | sed -nre 's/.*(^|\s)(sides|Duplex|EFDuplex|EFDuplexing|KD03Duplex|JCLDuplex)=(two-sided|Duplex|On|True|Yes|1)\b.*/duplex="yes"/pi')"
+eval "$(printf "%s" "$5" | sed -nre 's/.*(^|\s)(sides|Duplex|EFDuplex|EFDuplexing|KD03Duplex|JCLDuplex)=(two-sided|Duplex(|(|No)Tumble)|On|True|Yes|1)\b.*/duplex="yes"/pi')"
 echo "DEBUG: Duplex: $duplex" >&2
 
 resolution=
@@ -277,7 +274,7 @@ MASK_RE=$(
 # - no<option> (boolean)
 MASKED_OPTS=$(
   printf "%s" "$5" | \
-    sed -r -e 's/(^|\s+)(no)?('"$MASK_RE"')(=\S*)?//gi' -e 's/^\s+//'
+    sed -r -e 's/(^|\s+)(no)?('"$MASK_RE"')(=\S*)?\b//gi' -e 's/^\s+//'
 )
 
 copies=`grep -a '%%PDFTOPDFNumCopies' "$ifile" | perl -p -e 's/^\D*(\d+)\s*$/\1/'`
