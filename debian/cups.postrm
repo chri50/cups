@@ -28,6 +28,9 @@ case "$1" in
 	rm -rf /var/run/cups
 	rm -rf /var/cache/cups
 	rm -rf /var/spool/cups
+	rm -f /etc/cups/ssl/server.crt
+	rm -f /etc/cups/ssl/server.key
+	rm -rf /etc/cups/ssl
 	rm -rf /etc/cups/interfaces
 	rm -rf /etc/cups/ppd
 	rm -rf /etc/cups/passwd.md5

@@ -99,7 +99,7 @@ EOF
 
     # activate new backends on upgrades
     db_fset cupsys/backend changed false
-    
+
     # Resync Debconf database with real state
     list=`( cd /usr/lib/cups/backend && for f in ipp lpd parallel serial socket usb snmp dnssd; do [ -e $f ] && echo -n "$f, "; done ) | sed -e 's/, $//'`
     db_set cupsys/backend $list;
@@ -119,7 +119,7 @@ EOF
 	  -a ! -h /etc/cups/ssl/server.key ]; then
 	 ln -s /etc/ssl/certs/ssl-cert-snakeoil.pem /etc/cups/ssl/server.crt
 	 ln -s /etc/ssl/private/ssl-cert-snakeoil.key /etc/cups/ssl/server.key
-    fi 
+    fi
 
     APP_PROFILE=/etc/apparmor.d/usr.sbin.cupsd
     if [ -f "$APP_PROFILE" ]; then
