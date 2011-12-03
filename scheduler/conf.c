@@ -650,7 +650,7 @@ cupsdReadConfiguration(void)
   Browsing                 = CUPS_DEFAULT_BROWSING;
   DefaultShared            = CUPS_DEFAULT_DEFAULT_SHARED;
 
-#ifdef HAVE_DNSSD
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
   cupsdSetString(&DNSSDRegType, "_ipp._tcp,_cups");
 #endif /* HAVE_DNSSD */
 
