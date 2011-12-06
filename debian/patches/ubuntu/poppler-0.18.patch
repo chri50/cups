@@ -1,0 +1,11 @@
+--- old/pdftoopvp/OPVPOutputDev.cxx	2011-12-06 13:48:29 +0000
++++ new/pdftoopvp/OPVPOutputDev.cxx	2011-12-06 13:48:58 +0000
+@@ -273,6 +273,7 @@
+ #if HAVE_FREETYPE_FREETYPE_H || HAVE_FREETYPE_H
+ 				    globalParams->getEnableFreeType(),
+ 				    gFalse,
++				    gFalse,
+ #endif
+ 				    globalParams->getAntialias());
+   for (i = 0; i < nT3Fonts; ++i) {
+
