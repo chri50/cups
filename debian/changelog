@@ -1,3 +1,16 @@
+cups (1.5.0-13bzr1) precise; urgency=low
+
+  Upload current Debian packaging trunk.
+
+  * debian/local/filters/pdf-filters/pdftoopvp/OPVPOutputDev.{h,cxx}: Drop
+    definition of drawLink(). It is not being used anywhere and uses the
+    "Link" class which is gone in poppler 0.18.
+  * Add debian/patches/ubuntu/poppler-0.18.patch: Port SplashFontEngine()
+    constructor call to poppler 0.18 API. Keep it as Ubuntu patch until Debian
+    gets poppler 0.18, too.
+
+ -- Martin Pitt <martin.pitt@ubuntu.com>  Tue, 06 Dec 2011 15:23:34 +0100
+
 cups (1.5.0-13) unstable; urgency=low
 
   [ Till Kamppeter ]
