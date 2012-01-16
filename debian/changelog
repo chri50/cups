@@ -1,3 +1,23 @@
+cups (1.5.0-14) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/patches/usb-backend-libusb-1.0.patch: Migrated the "usb" CUPS
+    backend to libusb 1.0.x, as libusb 0.1.x is deprecated and not maintained
+    upstream any more. Also make printers working independent of what gets
+    reported as their device ID, including random characters or nothing. This
+    should especially make all USB->Parallel adapters work (LP: #910272).
+  * debian/control: Build-depend on libusb-1.0-0-dev instead of on libusb-dev.
+
+  [ Martin Pitt ]
+  * debian/local/filters/pdf-filters/pdftoopvp/OPVPOutputDev.{h,cxx}: Drop
+    definition of drawLink(). It is not being used anywhere and uses the
+    "Link" class which is gone in poppler 0.18.
+  * Add debian/patches/ubuntu/poppler-0.18.patch: Port SplashFontEngine()
+    constructor call to poppler 0.18 API. Keep it as Ubuntu patch until Debian
+    gets poppler 0.18, too. (Closes: #645507)
+
+ -- Martin Pitt <mpitt@debian.org>  Mon, 16 Jan 2012 10:51:53 +0100
+
 cups (1.5.0-13) unstable; urgency=low
 
   [ Till Kamppeter ]

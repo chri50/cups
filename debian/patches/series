@@ -29,6 +29,7 @@ cups-deviced-allow-device-ids-with-newline.patch
 cups-snmp-oids-device-id-hp-ricoh.patch
 configure-default-browse-protocols.patch
 do-not-suppress-inputslot-setting-with-empty-ap-d-inputslot.patch
+usb-backend-libusb-1.0.patch
 
 # Debian patches
 logfiles_adm_readable.patch

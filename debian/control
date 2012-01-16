@@ -20,7 +20,7 @@ Build-Depends:
  libijs-dev, libjpeg-dev, liblcms1-dev, libldap2-dev, 
  libkrb5-dev,
  libpam0g-dev, libpaper-dev, libpng12-dev, libpoppler-dev (>= 0.12.2-2), 
- libslp-dev, libtiff4-dev, libtool, libusb-dev, 
+ libslp-dev, libtiff4-dev, libtool, libusb-1.0-0-dev, 
  patch, pkg-config, po4a (>= 0.31~), po-debconf, poppler-utils, 
  sharutils, zlib1g-dev
 Homepage: http://www.cups.org
