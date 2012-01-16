@@ -210,8 +210,8 @@ AC_CHECK_FUNCS(removefile)
 dnl See if we have libusb...
 AC_ARG_ENABLE(libusb, [  --enable-libusb         use libusb for USB printing])
 
-LIBUSB=""
-AC_SUBST(LIBUSB)
+LIBUSB_CFLAGS=""
+LIBUSB_LIBS=""
 
 if test x$enable_libusb = xyes; then
 	check_libusb=yes
@@ -222,11 +222,14 @@ else
 fi
 
 if test $check_libusb = yes; then
-	AC_CHECK_LIB(usb, usb_get_string_simple,[
-		AC_CHECK_HEADER(usb.h,
-			AC_DEFINE(HAVE_USB_H)
-			LIBUSB="-lusb")])
+	PKG_CHECK_MODULES(LIBUSB, libusb-1.0 >= 1.0.0)
+	if test -n "$LIBUSB_LIBS"; then
+		AC_DEFINE(HAVE_USB_H)
+	fi
 fi
+
+AC_SUBST(LIBUSB_CFLAGS)
+AC_SUBST(LIBUSB_LIBS)
 
 dnl See if we have libwrap for TCP wrappers support...
 AC_ARG_ENABLE(tcp_wrappers, [  --enable-tcp-wrappers   use libwrap for TCP wrappers support])
