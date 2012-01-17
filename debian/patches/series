@@ -31,6 +31,7 @@ configure-default-browse-protocols.patch
 do-not-suppress-inputslot-setting-with-empty-ap-d-inputslot.patch
 
 # Debian patches
+usb-backend-generate-device-uri-without-device-id.patch
 logfiles_adm_readable.patch
 default_log_settings.patch
 confdirperms.patch
