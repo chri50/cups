@@ -361,25 +361,23 @@ find_device(usb_cb_t   cb,		/* I - Callback function */
 
             if (!open_device(&printer, data != NULL))
 	    {
-	      if (!get_device_id(&printer, device_id, sizeof(device_id)))
-	      {
-                make_device_uri(&printer, device_id, device_uri,
-		                sizeof(device_uri));
+	      get_device_id(&printer, device_id, sizeof(device_id));
+	      make_device_uri(&printer, device_id, device_uri,
+			      sizeof(device_uri));
 
-	        if ((*cb)(&printer, device_uri, device_id, data))
-		{
-		  printer.read_endp  = printer.device->config[printer.conf].
+	      if ((*cb)(&printer, device_uri, device_id, data))
+	      {
+		printer.read_endp  = printer.device->config[printer.conf].
 				           interface[printer.iface].
 					   altsetting[printer.altset].
 					   endpoint[printer.read_endp].
 					   bEndpointAddress;
-		  printer.write_endp = printer.device->config[printer.conf].
+		printer.write_endp = printer.device->config[printer.conf].
 					   interface[printer.iface].
 					   altsetting[printer.altset].
 					   endpoint[printer.write_endp].
 					   bEndpointAddress;
-		  return (&printer);
-		}
+		return (&printer);
               }
 
               close_device(&printer);
@@ -481,7 +479,8 @@ list_cb(usb_printer_t *printer,		/* I - Printer */
   * Get the device URI and make/model strings...
   */
 
-  backendGetMakeModel(device_id, make_model, sizeof(make_model));
+  if (backendGetMakeModel(device_id, make_model, sizeof(make_model)))
+    strlcpy(make_model, "Unknown", sizeof(make_model));
 
  /*
   * Report the printer...
@@ -514,7 +513,7 @@ make_device_uri(
   cups_option_t	*values;		/* 1284 parameters */
   const char	*mfg,			/* Manufacturer */
 		*mdl,			/* Model */
-		*des,			/* Description */
+		*des = NULL,		/* Description */
 		*sern;			/* Serial number */
   size_t	mfglen;			/* Length of manufacturer string */
   char		tempmfg[256],		/* Temporary manufacturer string */
@@ -594,6 +593,19 @@ make_device_uri(
       *tempptr = '\0';
 
     mfg = tempmfg;
+  }
+
+  if (!mdl)
+  {
+   /*
+    * No model?  Use description...
+    */
+    if (des)
+      mdl = des; /* We remove the manufacturer name below */
+    else if (!strncasecmp(mfg, "Unknown", 7))
+      mdl = "Printer";
+    else
+      mdl = "Unknown Model";
   }
 
   mfglen = strlen(mfg);
