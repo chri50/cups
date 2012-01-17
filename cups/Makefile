@@ -316,7 +316,7 @@ uninstall64bit:
 libcups.so.2 libcups.sl.2:	$(LIBOBJS)
 	echo Linking $@...
 	$(DSO) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(LIBOBJS) $(LIBGSSAPI) \
-		$(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+		$(SSLLIBS) $(DNSSDLIBS) -lpthread $(LIBZ)
 	$(RM) `basename $@ .2`
 	$(LN) $@ `basename $@ .2`
 
@@ -329,7 +329,7 @@ libcups.so.2 libcups.sl.2:	$(LIBOBJS)
 	echo Linking 32-bit $@...
 	-mkdir 32bit
 	$(DSO) $(ARCH32FLAGS) $(DSO32FLAGS) -o $@ $(LIB32OBJS) $(LIBGSSAPI) \
-		$(DNSSDLIBS) $(SSLLIBS) $(COMMONLIBS) $(LIBZ)
+		$(DNSSDLIBS) $(SSLLIBS) -lpthread $(LIBZ)
 	$(RM) 32bit/libcups.so
 	$(LN) libcups.so.2 32bit/libcups.so
 
@@ -342,7 +342,7 @@ libcups.so.2 libcups.sl.2:	$(LIBOBJS)
 	echo Linking 64-bit $@...
 	-mkdir 64bit
 	$(DSO) $(ARCH64FLAGS) $(DSO64FLAGS) -o $@ $(LIB64OBJS) $(LIBGSSAPI) \
-		$(DNSSDLIBS) $(SSLLIBS) $(COMMONLIBS) $(LIBZ)
+		$(DNSSDLIBS) $(SSLLIBS) -lpthread $(LIBZ)
 	$(RM) 64bit/libcups.so
 	$(LN) libcups.so.2 64bit/libcups.so
 
@@ -363,7 +363,7 @@ libcups.2.dylib:	$(LIBOBJS) $(LIBCUPSORDER)
 		-compatibility_version 2.0.0 \
 		-exported_symbols_list t.exp \
 		$(LIBOBJS) $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
-		$(COMMONLIBS) $(LIBZ)
+		-lpthread $(LIBZ)
 	$(RM) libcups.dylib t.exp
 	$(LN) $@ libcups.dylib
 
@@ -376,7 +376,7 @@ libcups_s.a:	$(LIBOBJS) libcups_s.exp
 	echo Creating $@...
 	$(DSO) $(DSOFLAGS) -Wl,-bexport:libcups_s.exp -o libcups_s.o \
 		$(LIBOBJS) $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
-		$(COMMONLIBS) $(LIBZ) -lm
+		-lpthread $(LIBZ)
 	$(RM) $@
 	$(AR) $(ARFLAGS) $@ libcups_s.o
 
@@ -389,7 +389,7 @@ libcups.la:    $(LIBOBJS)
 	echo Linking $@...
 	$(CC) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(LIBOBJS:.o=.lo) \
 		-rpath $(LIBDIR) -version-info 2:9 $(LIBGSSAPI) $(SSLLIBS) \
-		$(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+		$(DNSSDLIBS) -lpthread $(LIBZ)
 
 
 #
