@@ -1,3 +1,7 @@
+Description: USB backend: Gracefully fail on more cases of bad device ID
+Bug: http://www.cups.org/str.php?L3978
+Author: Till Kamppeter
+
 --- a/backend/usb-libusb.c
 +++ b/backend/usb-libusb.c
 @@ -430,15 +430,26 @@

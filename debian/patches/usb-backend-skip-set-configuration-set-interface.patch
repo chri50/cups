@@ -1,3 +1,7 @@
+Description: USB backend: Skip set_configuration and set_interface if not needed
+Bug: http://www.cups.org/str.php?L3965
+Author: Henry Wong (henry at stuffedcow dot net)
+
 --- a/backend/usb-libusb.c
 +++ b/backend/usb-libusb.c
 @@ -631,6 +631,7 @@

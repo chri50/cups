@@ -526,7 +526,8 @@ list_cb(usb_printer_t *printer,		/* I - Printer */
   * Get the device URI and make/model strings...
   */
 
-  backendGetMakeModel(device_id, make_model, sizeof(make_model));
+  if (backendGetMakeModel(device_id, make_model, sizeof(make_model)))
+    strlcpy(make_model, "Unknown", sizeof(make_model));
 
  /*
   * Report the printer...
@@ -653,7 +654,7 @@ make_device_uri(
     if (des)
       mdl = des; /* We remove the manufacturer name below */
     else if (!strncasecmp(mfg, "Unknown", 7))
-      mdl = "Model";
+      mdl = "Printer";
     else
       mdl = "Unknown Model";
   }
