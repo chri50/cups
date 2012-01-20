@@ -14,9 +14,11 @@ colord-support.patch
 cups-driverd-recognize-cached-drv-generated-ppds.patch
 usb-backend-skip-set-configuration-set-interface.patch
 dont-send-malformed-dbus-messages.patch
+usb-backend-gracefully-fail-on-more-cases-of-bad-device-id.patch
+usb-backend-libusb-1.0.patch
+execute-commandtops-commands.patch
 
 # patches which should go upstream
-usb-backend-gracefully-fail-on-more-cases-of-bad-device-id.patch
 airprint-support.patch
 removecvstag.patch
 no-conffile-timestamp.patch
@@ -29,7 +31,6 @@ cups-deviced-allow-device-ids-with-newline.patch
 cups-snmp-oids-device-id-hp-ricoh.patch
 configure-default-browse-protocols.patch
 do-not-suppress-inputslot-setting-with-empty-ap-d-inputslot.patch
-usb-backend-libusb-1.0.patch
 
 # Debian patches
 logfiles_adm_readable.patch

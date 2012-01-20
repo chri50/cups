@@ -1,3 +1,24 @@
+cups (1.5.0-15) unstable; urgency=low
+
+  * debian/patches/execute-commandtops-commands.patch: When sending maintenance
+    command files to PostScript printers the commands got printed as plain text
+    and not executed, due to the "commandtops" filter not being executed
+    (CUPS STR #4007).
+  * debian/patches/series,
+    debian/patches/usb-backend-gracefully-fail-on-more-cases-of-bad-device-id.patch,
+    debian/patches/usb-backend-libusb-1.0.patch,
+    debian/patches/usb-backend-skip-set-configuration-set-interface.patch:
+    Added references to the upstream bugs under which these patches got
+    submitted upstream as header comments. Also moved the entries in the series
+    file to the section of patches submitted upstream.
+  * debian/patches/usb-backend-libusb-1.0.patch: Updated the patch to correctly
+    generate the make/model string if no device ID could be found. Before,
+    arbitrary memory content was picked up, not only giving an ugly listing
+    of the ID-less printer in printer setup tools but also a being a potential
+    crash bug.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 20 Jan 2012 10:02:27 +0100
+
 cups (1.5.0-14) unstable; urgency=low
 
   [ Till Kamppeter ]

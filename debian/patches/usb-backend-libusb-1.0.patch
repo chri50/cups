@@ -1,3 +1,7 @@
+Description: Migration of the libusb-based "usb" backend to libusb 1.0.x
+Bug: http://www.cups.org/str.php?L3477
+Author: Till Kamppeter
+
 --- a/Makedefs.in
 +++ b/Makedefs.in
 @@ -93,6 +93,8 @@
@@ -321,7 +325,17 @@
    {
      *buffer = '\0';
      return (-1);
-@@ -509,12 +554,14 @@
+@@ -481,7 +526,8 @@
+   * Get the device URI and make/model strings...
+   */
+ 
+-  backendGetMakeModel(device_id, make_model, sizeof(make_model));
++  if (backendGetMakeModel(device_id, make_model, sizeof(make_model)))
++    strlcpy(make_model, "Unknown", sizeof(make_model));
+ 
+  /*
+   * Report the printer...
+@@ -509,12 +555,14 @@
      char          *uri,			/* I - Device URI buffer */
      size_t        uri_size)		/* I - Size of device URI buffer */
  {
@@ -337,7 +351,7 @@
  		*sern;			/* Serial number */
    size_t	mfglen;			/* Length of manufacturer string */
    char		tempmfg[256],		/* Temporary manufacturer string */
-@@ -531,16 +578,18 @@
+@@ -531,16 +579,18 @@
    if ((sern = cupsGetOption("SERIALNUMBER", num_values, values)) == NULL)
      if ((sern = cupsGetOption("SERN", num_values, values)) == NULL)
        if ((sern = cupsGetOption("SN", num_values, values)) == NULL &&
@@ -361,7 +375,7 @@
          if (length > 0)
  	{
  	  tempsern[length] = '\0';
-@@ -596,6 +645,19 @@
+@@ -596,6 +646,19 @@
      mfg = tempmfg;
    }
  
@@ -373,7 +387,7 @@
 +    if (des)
 +      mdl = des; /* We remove the manufacturer name below */
 +    else if (!strncasecmp(mfg, "Unknown", 7))
-+      mdl = "Model";
++      mdl = "Printer";
 +    else
 +      mdl = "Unknown Model";
 +  }
@@ -381,7 +395,7 @@
    mfglen = strlen(mfg);
  
    if (!strncasecmp(mdl, mfg, mfglen) && _cups_isspace(mdl[mfglen]))
-@@ -641,7 +703,13 @@
+@@ -641,7 +704,13 @@
  open_device(usb_printer_t *printer,	/* I - Printer */
              int           verbose)	/* I - Update connecting-to-device state? */
  {
@@ -396,7 +410,7 @@
    char current_bConfiguration;
  
  
-@@ -656,7 +724,7 @@
+@@ -656,7 +725,7 @@
    * Try opening the printer...
    */
  
@@ -405,7 +419,7 @@
      return (-1);
  
  
-@@ -665,22 +733,27 @@
+@@ -665,22 +734,27 @@
  
   /*
    * Set the desired configuration, but only if it needs changing. Some
@@ -443,7 +457,7 @@
      {
       /*
        * If the set fails, chances are that the printer only supports a
-@@ -688,37 +761,62 @@
+@@ -688,37 +762,62 @@
        * the USB printer specification, but otherwise they'll work...
        */
  
@@ -520,7 +534,7 @@
  
        goto error;
      }
-@@ -728,23 +826,27 @@
+@@ -728,23 +827,27 @@
    * Set alternate setting, but only if there is more than one option.
    * Some printers (e.g., Samsung) don't like usb_set_altinterface.
    */
@@ -555,7 +569,7 @@
    if (verbose)
      fputs("STATE: -connecting-to-device\n", stderr);
  
-@@ -759,7 +861,7 @@
+@@ -759,7 +862,7 @@
    if (verbose)
      fputs("STATE: -connecting-to-device\n", stderr);
  
@@ -564,7 +578,7 @@
    printer->handle = NULL;
  
    return (-1);
-@@ -868,9 +970,10 @@
+@@ -868,9 +971,10 @@
  side_cb(usb_printer_t *printer,		/* I - Printer */
          int           print_fd)		/* I - File to print */
  {
@@ -577,7 +591,7 @@
    struct pollfd		pfd;		/* Poll descriptor */
    cups_sc_command_t	command;	/* Request command */
    cups_sc_status_t	status;		/* Request/response status */
-@@ -894,8 +997,9 @@
+@@ -894,8 +998,9 @@
  	{
  	  if ((bytes = read(print_fd, buffer, sizeof(buffer))) > 0)
  	  {
