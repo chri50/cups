@@ -17,7 +17,7 @@ Build-Depends:
  ghostscript (>= 9.02~), hardening-wrapper, 
  libavahi-client-dev, libavahi-common-dev, libavahi-compat-libdnssd-dev, 
  libdbus-1-dev, libfontconfig1-dev, libfreetype6-dev, libgnutls-dev, 
- libijs-dev, libjpeg-dev, liblcms1-dev, libldap2-dev, 
+ libijs-dev, libjpeg-dev, libldap2-dev, 
  libkrb5-dev,
  libpam0g-dev, libpaper-dev, libpng12-dev, libpoppler-dev (>= 0.12.2-2), 
  libslp-dev, libtiff4-dev, libtool, libusb-1.0-0-dev, 
@@ -136,7 +136,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, debconf (>= 1.2.9) | debconf-2.0,
  poppler-utils (>= 0.12), procps, ghostscript (>= 9.02~), lsb-base (>= 3),
  cups-common (>= ${source:Upstream-Version}), 
  cups-client (>= ${binary:Version}),
- ssl-cert (>= 1.0.11), adduser, bc, ttf-freefont, cups-ppdc
+ ssl-cert (>= 1.0.11), adduser, bc, cups-ppdc, cups-filters
 Recommends: avahi-daemon, colord, foomatic-filters (>= 4.0), 
  cups-driver-gutenprint, ghostscript-cups (>= 9.02~)
 Suggests: cups-bsd, foomatic-db-compressed-ppds | foomatic-db,

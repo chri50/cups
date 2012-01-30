@@ -1,3 +1,51 @@
+cups (1.5.0-16) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/filters/, debian/local/backends/, debian/local/filters/,
+    debian/local/cpdftocps.convs, debian/local/oopstops.convs,
+    debian/local/oopstops.types, debian/local/postscript.ppd,
+    debian/local/pstopdf.convs, debian/local/pstopdf.types,
+    debian/local/text.convs, debian/local/textonly.ppd, debian/cups.install,
+    debian/cups-common.links, debian/cups.links, debian/rules: Removed all
+    add-on filters and backends which now get hosted by OpenPrinting in the
+    OpenPrinting CUPS filters package (Debian package "cups-filters"). Also
+    removed some obsolete or redundant filters/backends/PPDs: mailto, oopstops,
+    dvipipetops, samba-to-ps, postscript.ppd, pdf.ppd.
+  * debian/rules: Removed filters, backends, and MIME conversion rules from
+    upstream CUPS which have now moved to the cups-filters package.
+  * debian/rules: Do not apply the PDF filters add-on package any more as
+    the filters are supplied by cups-filters now. Call aclocal and
+    autoconf explicitly, as the add-on package does not call them for us
+    any more.
+  * debian/control: Let the cups binary package depend on cups-filters, so
+    that the moved filters and backends stay available.
+  * debian/control: Do not build-depend on liblcms1-dev any more. We do not
+    have the PDF filters in this package any more.
+  * debian/control: Do not depend on ttf-freefont any more.
+  * debian/cups.lintian-overrides: Removed entries for serial and parallel
+    backends.
+  * debian/cups.postinst, debian/cups.prerm, debian/cups.templates,
+    Updated debconf for the removal of the parallel and serial backends.
+  * debian/patches/ubuntu/poppler-0.18.patch: Removed, as the CUPS package
+    does not contain the PDF filters any more.
+
+  [ Martin Pitt ]
+  * debian/rules: Stop setting LC_MESSAGES, this was fixed upstream in the
+    test suite a while ago.
+  * Drop debian/dirs: Unnecessary.
+  * Drop debian/suid: Not used anywhere, and the time when cups shipped suid
+    backends is long gone.
+  * Drop debian/docs: Redundant with debian/cups.docs.
+  * Drop debian/patches/pdftops-testsuite.patch: Not applied, and fixed
+    upstream.
+  * manpage-translations.patch: Update German translations, thanks Helge
+    Kreutzmann. (Closes: #630217)
+  * Add Polish debconf translations, thanks Michał Kułach. (Closes: #657670)
+  * debian/local/apparmor-profile: Allow cups-pdf to read /var/spool/cups.
+    (LP: #923538)
+
+ -- Martin Pitt <mpitt@debian.org>  Mon, 30 Jan 2012 08:35:28 +0100
+
 cups (1.5.0-15) unstable; urgency=low
 
   * debian/patches/execute-commandtops-commands.patch: When sending maintenance

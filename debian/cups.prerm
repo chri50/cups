@@ -19,7 +19,7 @@ set -e
 
 case "$1" in
     remove)
-	(cd /usr/lib/cups/backend && rm -f http ipp lpd parallel serial socket usb snmp dnssd)
+	(cd /usr/lib/cups/backend && rm -f http ipp lpd socket usb snmp dnssd)
         ;;
     upgrade|deconfigure)
         ;;

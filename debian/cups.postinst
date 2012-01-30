@@ -85,10 +85,10 @@ EOF
     # Set up backends
     db_get cupsys/backend && SELECTED=$RET
     # We remove the scsi backend from the output as it got removed in CUPS 1.5.0
-    list=`echo $SELECTED | sed -e 's/, /,/g' | sed -e 's/scsi,*//g'`
+    list=`echo $SELECTED | sed -e 's/, /,/g' | sed -e 's/scsi,*//g' | sed -e 's/parallel,*//g' | sed -e 's/serial,*//g'`
     save_IFS=$IFS
     IFS=,
-    (cd /usr/lib/cups/backend && rm -f http ipp lpd parallel serial socket usb snmp dnssd)
+    (cd /usr/lib/cups/backend && rm -f http ipp lpd socket usb snmp dnssd)
     for module in $list; do
       ln /usr/lib/cups/backend-available/$module /usr/lib/cups/backend/$module
       if [ "$module" = "ipp" ]; then
@@ -101,7 +101,7 @@ EOF
     db_fset cupsys/backend changed false
 
     # Resync Debconf database with real state
-    list=`( cd /usr/lib/cups/backend && for f in ipp lpd parallel serial socket usb snmp dnssd; do [ -e $f ] && echo -n "$f, "; done ) | sed -e 's/, $//'`
+    list=`( cd /usr/lib/cups/backend && for f in ipp lpd socket usb snmp dnssd; do [ -e $f ] && echo -n "$f, "; done ) | sed -e 's/, $//'`
     db_set cupsys/backend $list;
 
     if [ -f /etc/cups/classes.conf ]; then

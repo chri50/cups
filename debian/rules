@@ -10,8 +10,6 @@
 #export DH_VERBOSE=1
 
 export DEB_BUILD_HARDENING=1
-# http://www.cups.org/str.php?L3765
-export LC_MESSAGES=C
 
 # work around libpng crash on our test PNGs with 8 bit colormaps (LP #710881)
 export NO_PNG_PKG_MANGLE=1
@@ -45,11 +43,6 @@ DPKG_GENSYMBOLS_CHECK_LEVEL=4
 export DPKG_GENSYMBOLS_CHECK_LEVEL
 
 post-patches::
-	# Add source code of extra filters for PDF printing workflow
-	( cd debian/local/filters/pdf-filters/; sh ./addtocups ../../../.. )
-	touch pdftopdf/Dependencies
-	touch pdftoopvp/Dependencies
-	touch pdftoopvp/oprs/Dependencies
 	set -e; if dpkg-vendor --is ubuntu && ! [ -e debian/patches/ubuntu/stamp-applied ]; then \
 	    echo '---- Applying Ubuntu specific patches'; \
 	    for p in debian/patches/ubuntu/*; do \
@@ -57,11 +50,9 @@ post-patches::
 	    done; \
 	    touch debian/patches/ubuntu/stamp-applied; \
 	fi
-
-common-post-build-arch::
-	# Fix permissions of filters/backends installed from debian/local/
-	chmod 755 debian/local/filters/*
-	#chmod 755 debian/local/backends/*
+	# Rebuild ./configure to get build system patches working
+	aclocal
+	autoconf
 
 clean::
 	if [ -e debian/patches/ubuntu/stamp-applied ]; then \
@@ -76,8 +67,6 @@ cleanbuilddir::
 	rm -f man/client.conf.man packaging/cups.list
 	rm -f conf/mime.convs conf/snmp.conf init/org.cups.cups-lpd.plist
 	[ ! -f Makedefs ] || make distclean
-	# Remove source code of extra filters for PDF printing workflow
-	( cd debian/local/filters/pdf-filters/; sh ./removefromcups ../../../.. )
 	rm -f debian/*.upstart # master copy is in debian/local
 
 common-install-prehook-impl::
@@ -92,11 +81,32 @@ common-install-prehook-impl::
 binary-post-install/cups::
 	(cd $(DEB_DESTDIR)/../cups/usr/share/doc/cups && ln -sf ../../cups/doc-root online-docs)
 
+	# Remove all files which get replaced by the ones in the cups-filters
+	# package
+	rm debian/$(cdbs_curpkg)/usr/lib/cups/backend*/serial
+	rm debian/$(cdbs_curpkg)/usr/lib/cups/backend*/parallel
+	rm debian/$(cdbs_curpkg)/usr/lib/cups/filter/bannertops
+	rm debian/$(cdbs_curpkg)/usr/lib/cups/filter/commandtoescpx
+	rm debian/$(cdbs_curpkg)/usr/lib/cups/filter/commandtopclx
+	rm debian/$(cdbs_curpkg)/usr/lib/cups/filter/imagetops
+	rm debian/$(cdbs_curpkg)/usr/lib/cups/filter/imagetoraster
+	rm debian/$(cdbs_curpkg)/usr/lib/cups/filter/pdftops
+	rm debian/$(cdbs_curpkg)/usr/lib/cups/filter/rastertoescpx
+	rm debian/$(cdbs_curpkg)/usr/lib/cups/filter/rastertopclx
+	rm debian/$(cdbs_curpkg)/usr/lib/cups/filter/texttops
+	rm -rf debian/$(cdbs_curpkg)/usr/share/cups/banners
+	rm debian/$(cdbs_curpkg)/usr/share/cups/data/testprint
+	rm debian/$(cdbs_curpkg)/usr/share/cups/data/psglyphs
+	rm debian/$(cdbs_curpkg)/usr/share/cups/fonts/*
+
+	# Comment out conversion rules for removed filters
+	perl -p -i -e 's:^(.*\s+(pdftops|texttops|imagetops|bannertops|imagetoraster)\s*)$$:#\1:' debian/$(cdbs_curpkg)/usr/share/cups/mime/mime.convs
+
 	# Ensure that we don't ship anything in /var/run
 	rm -rf $(DEB_DESTDIR)/../cups/var/run
 
 	# PPD directories
-	mkdir -p "$(DEB_DESTDIR)/../cups/usr/share/ppd/cups-included/"
+	#mkdir -p "$(DEB_DESTDIR)/../cups/usr/share/ppd/cups-included/"
 
 	# PPD-updating triggers directory
 	mkdir -p "$(DEB_DESTDIR)/../cups/usr/share/cups/ppd-updaters/"
@@ -116,21 +126,8 @@ binary-post-install/cups::
 	# lp, but apparently not all of them
 	chmod go-x debian/$(cdbs_curpkg)/usr/lib/cups/backend-available/usb; \
 
-	# Modify the cost factor for the Poppler-based pdftoraster filter of
-	# the PDF filter add-on so that Ghostscript's gstoraster gets preferred.
-	sed -i -r -e '/\spdftoraster$$/ { s/66/100/ }' \
-	  $(DEB_DESTDIR)/../cups/usr/share/cups/mime/pdftoraster.convs
-
-	# Install documentation of the PDF CUPS filters
-	install -m 644 debian/local/filters/pdf-filters/README $(DEB_DESTDIR)/../cups/usr/share/doc/cups/README.pdf-filters
-	install -m 644 debian/local/filters/pdf-filters/filter/test.sh $(DEB_DESTDIR)/../cups/usr/share/doc/cups/examples/texttopdf-text.sh
-	install -m 644 debian/local/filters/pdf-filters/conf/HP-PhotoSmart_Pro_B8300-hpijs-pdftoijs.ppd $(DEB_DESTDIR)/../cups/usr/share/doc/cups/examples/
-	# Simple Ghostscript-based PostScript-to-PDF filter
-	install -m 0755 debian/filters/pstopdf $(DEB_DESTDIR)/../cups/usr/lib/cups/filter
-
-	# Make the serial backend run as root, since /dev/ttyS* are
-	# root:dialout and thus not accessible as user lp
-	chmod go-x debian/$(cdbs_curpkg)/usr/lib/cups/backend-available/serial
+binary-post-install/cups-common::
+	rm debian/$(cdbs_curpkg)/usr/share/cups/charsets/utf-8
 
 binary-post-install/libcupsimage2-dev::
 	rm -r debian/libcupsimage2-dev/usr/share/doc/libcupsimage2-dev
