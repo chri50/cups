@@ -165,5 +165,6 @@
   /usr/lib/ghostscript/** mr,
   /usr/share/** r,
   /var/log/cups/cups-pdf_log w,
+  /var/spool/cups/** r,
   /var/spool/cups-pdf/** rw,
 }
