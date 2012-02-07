@@ -715,7 +715,7 @@ backend_init_supplies(
       *ptr++ = ',';
 
     *ptr++ = '\"';
-    for (name_ptr = supplies[i].name; *name_ptr;)
+    for (name_ptr = supplies[i].name; *name_ptr && *name_ptr != ',';)
     {
       if (*name_ptr == '\\' || *name_ptr == '\"')
         *ptr++ = '\\';
