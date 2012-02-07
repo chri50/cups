@@ -896,6 +896,8 @@ main(int  argc,				/* I - Number of command-line args */
 	if (!strncmp(httpGetField(http, HTTP_FIELD_WWW_AUTHENTICATE),
 		     "Negotiate", 9))
 	  auth_info_required = "negotiate";
+	else
+	  auth_info_required = "username,password";
 
 	fprintf(stderr, "ATTR: auth-info-required=%s\n", auth_info_required);
 	return (CUPS_BACKEND_AUTH_REQUIRED);
@@ -1155,6 +1157,7 @@ main(int  argc,				/* I - Number of command-line args */
     for (i = 0; i < format_sup->num_values; i ++)
       if (!_cups_strcasecmp(final_content_type, format_sup->values[i].string.text))
       {
+        fprintf(stderr, "DEBUG: Selected document_type %s\n", final_content_type);
         document_format = final_content_type;
 	break;
       }
@@ -1165,7 +1168,8 @@ main(int  argc,				/* I - Number of command-line args */
 	if (!_cups_strcasecmp("application/octet-stream",
 	                format_sup->values[i].string.text))
 	{
-	  document_format = "application/octet-stream";
+	  fprintf(stderr, "DEBUG: No document_type, forcing to NULL\n");
+	  document_format = NULL;
 	  break;
 	}
     }
@@ -1188,8 +1192,17 @@ main(int  argc,				/* I - Number of command-line args */
 
     _cupsLangPrintFilter(stderr, "INFO", _("Copying print data."));
 
+    /*
+     * Need to write the existing buffer out to the file, otherwise we lose
+     * the PCL header for example.
+     */
+    if (write(fd, buffer, bytes)<0)
+    {
+      fprintf(stderr, "Error writing bytes to temporary file! errno=%d\n", errno);
+      return (-1);
+    }
     compatsize = backendRunLoop(-1, fd, snmp_fd, &(addrlist->addr), 0, 0,
-		                backendNetworkSideCB);
+		                backendNetworkSideCB) + bytes;
 
     close(fd);
 
@@ -1268,6 +1281,8 @@ main(int  argc,				/* I - Number of command-line args */
       if (!strncmp(httpGetField(http, HTTP_FIELD_WWW_AUTHENTICATE),
 		   "Negotiate", 9))
 	auth_info_required = "negotiate";
+	    else
+	      auth_info_required = "username,password";
 
       goto cleanup;
     }
@@ -1435,6 +1450,8 @@ main(int  argc,				/* I - Number of command-line args */
 	  if (!strncmp(httpGetField(http, HTTP_FIELD_WWW_AUTHENTICATE),
 		       "Negotiate", 9))
 	    auth_info_required = "negotiate";
+	  else
+	    auth_info_required = "username,password";
 	}
 	else
 	  sleep(10);

@@ -44,6 +44,8 @@
 #define CUPS_OPC_LIFE_OVER		32
 #define CUPS_TONER_LOW			64
 #define CUPS_TONER_EMPTY		128
+#define CUPS_WASTE_FULL			256
+#define CUPS_CLEANER_LIFE_OVER		512
 
 
 /*
@@ -56,6 +58,8 @@ typedef struct				/**** Printer supply data ****/
 	color[8];			/* Color: "#RRGGBB" or "none" */
   int	colorant,			/* Colorant index */
 	type,				/* Supply type */
+	class,				/* Supply class (consumed/filled) */
+	units,				/* Supply units (capacity & level)*/
 	max_capacity,			/* Maximum capacity */
 	level;				/* Current level value */
 } backend_supplies_t;
@@ -146,6 +150,20 @@ static const int	prtMarkerSuppliesType[] =
 			(sizeof(prtMarkerSuppliesType) /
 			 sizeof(prtMarkerSuppliesType[0]));
 			 		/* Offset to supply index */
+static const int	prtMarkerSuppliesSupplyUnit[] =
+			{ CUPS_OID_prtMarkerSuppliesSupplyUnit, -1 },
+					/* Type OID */
+			prtMarkerSuppliesSupplyUnitOffset =
+			(sizeof(prtMarkerSuppliesSupplyUnit) /
+			 sizeof(prtMarkerSuppliesSupplyUnit[0]));
+			 		/* Offset to supply index */
+static const int	prtMarkerSuppliesClass[] =
+			{ CUPS_OID_prtMarkerSuppliesClass, -1 },
+					/* Type OID */
+			prtMarkerSuppliesClassOffset =
+			(sizeof(prtMarkerSuppliesClass) /
+			 sizeof(prtMarkerSuppliesClass[0]));
+			 		/* Offset to supply index */
 
 static const backend_state_t const printer_states[] =
 			{
@@ -173,7 +191,9 @@ static const backend_state_t const supply_states[] =
 			  { CUPS_OPC_NEAR_EOL, "opc-near-eol-report" },
 			  { CUPS_OPC_LIFE_OVER, "opc-life-over-warning" },
 			  { CUPS_TONER_LOW, "toner-low-report" },
-			  { CUPS_TONER_EMPTY, "toner-empty-warning" }
+			  { CUPS_TONER_EMPTY, "toner-empty-warning" },
+			  { CUPS_WASTE_FULL, "waste-receptacle-full-warning" },
+			  { CUPS_CLEANER_LIFE_OVER, "cleaner-life-over-warning" }
 			};
 
 
@@ -229,12 +249,40 @@ backendSNMPSupplies(
 
     for (i = 0, ptr = value; i < num_supplies; i ++, ptr += strlen(ptr))
     {
+      /* RFC 3805 specifies the following special values for
+       *  prtMarkerSuppliesLevel:
+       *  -1   other; sub-unit places no restrictions on this parameter
+       *  -2   unknown
+       *  -3   some supply or remaining space (depending on if supply is
+       *         consumed or filled)
+       */
       if (supplies[i].max_capacity > 0 && supplies[i].level >= 0)
-	percent = 100 * supplies[i].level / supplies[i].max_capacity;
+      {
+        if (supplies[i].units == CUPS_TC_percent)
+	  percent = supplies[i].level;
+        else
+	  percent = 100 * supplies[i].level / supplies[i].max_capacity;
+      }
+      else if (supplies[i].level == CUPS_TC_somesupply)
+         percent = 50;
       else
-        percent = 50;
+        percent = -1;
 
-      if (percent <= 5)
+      if (i)
+        *ptr++ = ',';
+
+      sprintf(ptr, "%d", percent);
+
+      /* normalize percent (for status purposes) if supply is filled (rather
+       *  than consumed) and don't evaluate status for supply types that are
+       *  neither consumed nor filled
+       */
+      if (supplies[i].class == CUPS_TC_receptacleThatIsFilled && percent >= 0)
+        percent = (percent < 100) ? 100 - percent : 0;
+      else if (supplies[i].class == CUPS_TC_other)
+        continue;
+
+      if (percent >= 0 && percent <= 5)
       {
         switch (supplies[i].type)
         {
@@ -247,6 +295,9 @@ backendSNMPSupplies(
               break;
           case CUPS_TC_wasteToner :
           case CUPS_TC_wasteInk :
+          case CUPS_TC_wasteWax :
+              if (percent <= 1)
+                new_supply_state |= CUPS_WASTE_FULL;
               break;
           case CUPS_TC_ink :
           case CUPS_TC_inkCartridge :
@@ -273,16 +324,12 @@ backendSNMPSupplies(
               else
                 new_supply_state |= CUPS_OPC_NEAR_EOL;
               break;
+          case CUPS_TC_cleanerUnit:
+              if (percent <= 1)
+                new_supply_state |= CUPS_CLEANER_LIFE_OVER;
+              break;
         }
       }
-
-      if (i)
-        *ptr++ = ',';
-
-      if (supplies[i].max_capacity > 0 && supplies[i].level >= 0)
-        sprintf(ptr, "%d", percent);
-      else
-        strcpy(ptr, "-1");
     }
 
     fprintf(stderr, "ATTR: marker-levels=%s\n", value);
@@ -668,7 +715,7 @@ backend_init_supplies(
       *ptr++ = ',';
 
     *ptr++ = '\"';
-    for (name_ptr = supplies[i].name; *name_ptr;)
+    for (name_ptr = supplies[i].name; *name_ptr && *name_ptr != ',';)
     {
       if (*name_ptr == '\\' || *name_ptr == '\"')
         *ptr++ = '\\';
@@ -743,7 +790,7 @@ backend_walk_cb(cups_snmp_t *packet,	/* I - SNMP packet */
       if (supplies[j].colorant == i)
       {
 	for (k = 0; k < (int)(sizeof(colors) / sizeof(colors[0])); k ++)
-	  if (!strcmp(colors[k][0], (char *)packet->object_value.string.bytes))
+	  if (!strcasecmp(colors[k][0], (char *)packet->object_value.string.bytes))
 	  {
 	    strcpy(supplies[j].color, colors[k][1]);
 	    break;
@@ -916,6 +963,44 @@ backend_walk_cb(cups_snmp_t *packet,	/* I - SNMP packet */
       num_supplies = i;
 
     supplies[i - 1].type = packet->object_value.integer;
+  }
+  else if (_cupsSNMPIsOIDPrefixed(packet, prtMarkerSuppliesSupplyUnit))
+  {
+   /*
+    * Get marker supply units...
+    */
+
+    i = packet->object_name[prtMarkerSuppliesSupplyUnitOffset];
+    if (i < 1 || i > CUPS_MAX_SUPPLIES ||
+        packet->object_type != CUPS_ASN1_INTEGER)
+      return;
+
+    fprintf(stderr, "DEBUG2: prtMarkerSuppliesSupplyUnit.1.%d = %d\n", i,
+            packet->object_value.integer);
+
+    if (i > num_supplies)
+      num_supplies = i;
+
+    supplies[i - 1].units = packet->object_value.integer;
+  }
+  else if (_cupsSNMPIsOIDPrefixed(packet, prtMarkerSuppliesClass))
+  {
+   /*
+    * Get marker class...
+    */
+
+    i = packet->object_name[prtMarkerSuppliesClassOffset];
+    if (i < 1 || i > CUPS_MAX_SUPPLIES ||
+        packet->object_type != CUPS_ASN1_INTEGER)
+      return;
+
+    fprintf(stderr, "DEBUG2: prtMarkerSuppliesClass.1.%d = %d\n", i,
+            packet->object_value.integer);
+
+    if (i > num_supplies)
+      num_supplies = i;
+
+    supplies[i - 1].class = packet->object_value.integer;
   }
 }
 
