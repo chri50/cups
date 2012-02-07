@@ -1,4 +1,12 @@
-cups (1.5.2-1) precise; urgency=low
+cups (1.5.2-2) unstable; urgency=low
+
+  * debian/patches/series: Actually add the new patches for the IPP backend and
+    the SNMP supply level check (LP: #879625, LP: #881843, LP: #925086,
+    LP: #926457).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Tue, 07 Feb 2012 17:57:57 +0100
+
+cups (1.5.2-1) unstable; urgency=low
 
   [ Till Kamppeter ]
   * New upstream release

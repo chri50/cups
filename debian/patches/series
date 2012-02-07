@@ -11,6 +11,15 @@ rootbackends-worldreadable.patch
 cups-avahi.patch
 colord-support.patch
 usb-backend-libusb-1.0.patch
+fix-supply-level-computation-for-percent-supply-unit.patch
+fix-supply-levels-for-enumerated-prtmarkersupplieslevel.patch
+fix-status-reports-when-supply-levels-grow.patch
+add-status-reports-for-full-waste-trays-and-cleaner-unit-eol.patch
+match-marker-colorants-which-use-non-standard-string.patch
+truncate-marker-supply-names-at-comma.patch
+ipp-backend-fails-to-trigger-authentication-prompts.patch
+ipp-backend-missing-document-type.patch
+ipp-backend-http-1.0-fallback-fix.patch
 
 # patches which should go upstream
 airprint-support.patch
