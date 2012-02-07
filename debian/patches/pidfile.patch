@@ -14,9 +14,9 @@ Bug: http://www.cups.org/str.php?L2465
  };
  #define NUM_VARS	(sizeof(variables) / sizeof(variables[0]))
  
-@@ -507,6 +508,7 @@
-   cupsdSetString(&RemoteRoot, "remroot");
-   cupsdSetString(&ServerHeader, "CUPS/1.4");
+@@ -508,6 +509,7 @@
+   cupsdSetStringf(&ServerHeader, "CUPS/%d.%d", CUPS_VERSION_MAJOR,
+                   CUPS_VERSION_MINOR);
    cupsdSetString(&StateDir, CUPS_STATEDIR);
 +  cupsdSetString(&PidFile, "/var/run/cups/cupsd.pid");
  

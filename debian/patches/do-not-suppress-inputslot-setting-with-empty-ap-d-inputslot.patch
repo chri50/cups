@@ -1,6 +1,6 @@
 --- a/cups/mark.c
 +++ b/cups/mark.c
-@@ -788,6 +788,11 @@
+@@ -790,6 +790,11 @@
  
    if (!_cups_strcasecmp(option, "AP_D_InputSlot"))
    {

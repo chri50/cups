@@ -1,5 +1,5 @@
 /*
- * "$Id: array-private.h 9755 2011-05-09 22:53:31Z mike $"
+ * "$Id: array-private.h 10035 2011-09-30 22:52:42Z mike $"
  *
  *   Private array definitions for CUPS.
  *
@@ -21,7 +21,7 @@
  * Include necessary headers...
  */
 
-#  include "array.h"
+#  include <cups/array.h>
 
 
 /*
@@ -47,5 +47,5 @@ extern cups_array_t	*_cupsArrayNewStrings(const char *s) _CUPS_API_1_5;
 #endif /* !_CUPS_ARRAY_PRIVATE_H_ */
 
 /*
- * End of "$Id: array-private.h 9755 2011-05-09 22:53:31Z mike $".
+ * End of "$Id: array-private.h 10035 2011-09-30 22:52:42Z mike $".
  */

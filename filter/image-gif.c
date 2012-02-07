@@ -1,5 +1,5 @@
 /*
- * "$Id: image-gif.c 9840 2011-06-20 20:37:39Z mike $"
+ * "$Id: image-gif.c 9865 2011-08-06 04:38:04Z mike $"
  *
  *   GIF image routines for CUPS.
  *
@@ -692,5 +692,5 @@ gif_read_lzw(FILE *fp,			/* I - File to read from */
 
 
 /*
- * End of "$Id: image-gif.c 9840 2011-06-20 20:37:39Z mike $".
+ * End of "$Id: image-gif.c 9865 2011-08-06 04:38:04Z mike $".
  */

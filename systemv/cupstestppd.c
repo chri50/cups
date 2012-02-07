@@ -1,5 +1,5 @@
 /*
- * "$Id: cupstestppd.c 9793 2011-05-20 03:49:49Z mike $"
+ * "$Id: cupstestppd.c 10042 2011-10-03 17:32:43Z mike $"
  *
  *   PPD test program for CUPS.
  *
@@ -439,13 +439,29 @@ main(int  argc,				/* I - Number of command-line args */
           attr->value)
         ppdversion = (int)(10 * _cupsStrScand(attr->value, NULL, loc) + 0.5);
 
-      for (j = 0; j < ppd->num_filters; j ++)
-        if (strstr(ppd->filters[j], "application/vnd.cups-raster"))
-	{
-	  if (!test_raster(ppd, verbose))
-	    errors ++;
-	  break;
+      if ((attr = ppdFindAttr(ppd, "cupsFilter2", NULL)) != NULL)
+      {
+        do
+        {
+	  if (strstr(attr->value, "application/vnd.cups-raster"))
+	  {
+	    if (!test_raster(ppd, verbose))
+	      errors ++;
+	    break;
+	  }
 	}
+	while ((attr = ppdFindNextAttr(ppd, "cupsFilter2", NULL)) != NULL);
+      }
+      else
+      {
+	for (j = 0; j < ppd->num_filters; j ++)
+	  if (strstr(ppd->filters[j], "application/vnd.cups-raster"))
+	  {
+	    if (!test_raster(ppd, verbose))
+	      errors ++;
+	    break;
+	  }
+      }
 
      /*
       * Look for default keywords with no matching option...
@@ -2304,11 +2320,12 @@ check_filters(ppd_file_t *ppd,		/* I - PPD file */
 	      int        verbose,	/* I - Verbosity level */
 	      int        warn)		/* I - Warnings only? */
 {
-  int		i;			/* Looping var */
   ppd_attr_t	*attr;			/* PPD attribute */
   const char	*ptr;			/* Pointer into string */
   char		super[16],		/* Super-type for filter */
 		type[256],		/* Type for filter */
+		dstsuper[16],		/* Destination super-type for filter */
+		dsttype[256],		/* Destination type for filter */
 		program[1024],		/* Program/filter name */
 		pathprog[1024];		/* Complete path to program/filter */
   int		cost;			/* Cost of filter */
@@ -2322,9 +2339,26 @@ check_filters(ppd_file_t *ppd,		/* I - PPD file */
   * cupsFilter
   */
 
-  for (i = 0; i < ppd->num_filters; i ++)
+  for (attr = ppdFindAttr(ppd, "cupsFilter", NULL);
+       attr;
+       attr = ppdFindNextAttr(ppd, "cupsFilter", NULL))
   {
-    if (sscanf(ppd->filters[i], "%15[^/]/%255s%d%*[ \t]%1023[^\n]", super, type,
+    if (strcmp(attr->name, "cupsFilter"))
+    {
+      if (!warn && !errors && !verbose)
+	_cupsLangPuts(stdout, _(" FAIL"));
+
+      if (verbose >= 0)
+	_cupsLangPrintf(stdout,
+			_("      %s  Bad spelling of %s - should be %s."),
+			prefix, attr->name, "cupsFilter");
+
+      if (!warn)
+        errors ++;
+    }
+
+    if (!attr->value ||
+        sscanf(attr->value, "%15[^/]/%255s%d%*[ \t]%1023[^\n]", super, type,
                &cost, program) != 4)
     {
       if (!warn && !errors && !verbose)
@@ -2333,7 +2367,7 @@ check_filters(ppd_file_t *ppd,		/* I - PPD file */
       if (verbose >= 0)
 	_cupsLangPrintf(stdout,
 			_("      %s  Bad cupsFilter value \"%s\"."),
-			prefix, ppd->filters[i]);
+			prefix, attr->value);
 
       if (!warn)
         errors ++;
@@ -2384,6 +2418,102 @@ check_filters(ppd_file_t *ppd,		/* I - PPD file */
       }
       else
         errors = valid_path("cupsFilter", pathprog, errors, verbose, warn);
+    }
+  }
+
+ /*
+  * cupsFilter2
+  */
+
+  for (attr = ppdFindAttr(ppd, "cupsFilter2", NULL);
+       attr;
+       attr = ppdFindNextAttr(ppd, "cupsFilter2", NULL))
+  {
+    if (strcmp(attr->name, "cupsFilter2"))
+    {
+      if (!warn && !errors && !verbose)
+	_cupsLangPuts(stdout, _(" FAIL"));
+
+      if (verbose >= 0)
+	_cupsLangPrintf(stdout,
+			_("      %s  Bad spelling of %s - should be %s."),
+			prefix, attr->name, "cupsFilter2");
+
+      if (!warn)
+        errors ++;
+    }
+
+    if (!attr->value ||
+	sscanf(attr->value, "%15[^/]/%255s%*[ \t]%15[^/]/%255s%d%*[ \t]%1023[^\n]",
+	       super, type, dstsuper, dsttype, &cost, program) != 6)
+    {
+      if (!warn && !errors && !verbose)
+	_cupsLangPuts(stdout, _(" FAIL"));
+
+      if (verbose >= 0)
+	_cupsLangPrintf(stdout,
+			_("      %s  Bad cupsFilter2 value \"%s\"."),
+			prefix, attr->value);
+
+      if (!warn)
+        errors ++;
+    }
+    else if (strcmp(program, "-"))
+    {
+      if (strncmp(program, "maxsize(", 8) &&
+          (ptr = strchr(program + 8, ')')) != NULL)
+      {
+	ptr ++;
+	while (_cups_isspace(*ptr))
+	  ptr ++;
+
+	_cups_strcpy(program, ptr);
+      }
+
+      if (program[0] == '/')
+	snprintf(pathprog, sizeof(pathprog), "%s%s", root, program);
+      else
+      {
+	if ((ptr = getenv("CUPS_SERVERBIN")) == NULL)
+	  ptr = CUPS_SERVERBIN;
+
+	if (*ptr == '/' || !*root)
+	  snprintf(pathprog, sizeof(pathprog), "%s%s/filter/%s", root, ptr,
+		   program);
+	else
+	  snprintf(pathprog, sizeof(pathprog), "%s/%s/filter/%s", root, ptr,
+		   program);
+      }
+
+      if (stat(pathprog, &fileinfo))
+      {
+	if (!warn && !errors && !verbose)
+	  _cupsLangPuts(stdout, _(" FAIL"));
+
+	if (verbose >= 0)
+	  _cupsLangPrintf(stdout, _("      %s  Missing %s file \"%s\"."),
+	                  prefix, "cupsFilter2", pathprog);
+
+	if (!warn)
+	  errors ++;
+      }
+      else if (fileinfo.st_uid != 0 ||
+               (fileinfo.st_mode & MODE_WRITE) ||
+	       (fileinfo.st_mode & MODE_MASK) != MODE_PROGRAM)
+      {
+	if (!warn && !errors && !verbose)
+	  _cupsLangPuts(stdout, _(" FAIL"));
+
+	if (verbose >= 0)
+	  _cupsLangPrintf(stdout,
+	                  _("      %s  Bad permissions on %s file \"%s\"."),
+			  prefix, "cupsFilter2", pathprog);
+
+	if (!warn)
+	  errors ++;
+      }
+      else
+        errors = valid_path("cupsFilter2", pathprog, errors, verbose, warn);
     }
   }
 
@@ -3050,7 +3180,7 @@ check_sizes(ppd_file_t *ppd,		/* I - PPD file */
 
    /*
     * Verify that the size name is Adobe standard name if it's a standard size
-    * and the dementional name if it's not a standard size.  Suffix should be
+    * and the dimentional name if it's not a standard size.  Suffix should be
     * .Fullbleed, etc., or numeric, e.g., Letter, Letter.Fullbleed,
     * Letter.Transverse, Letter1, Letter2, 4x8, 55x91mm, 55x91mm.Fullbleed, etc.
     */
@@ -3068,39 +3198,53 @@ check_sizes(ppd_file_t *ppd,		/* I - PPD file */
 
       if (pwg_media && pwg_media->ppd)
       {
+        size_t ppdlen = strlen(pwg_media->ppd);
+					/* Length of standard PPD name */
+
         strlcpy(buf, pwg_media->ppd, sizeof(buf));
 
         if (size->left == 0 && size->bottom == 0 &&
 	    size->right == size->width && size->top == size->length)
         {
           snprintf(buf, sizeof(buf), "%s.Fullbleed", pwg_media->ppd);
-	  if (strcmp(size->name, buf))
-	    is_ok = 0;
-        }
-        else if (size->width > size->length)
-        {
-	  if ((ptr = pwg_media->ppd + strlen(pwg_media->ppd) - 7)
-	          >= pwg_media->ppd && !strcmp(ptr, "Rotated"))
+	  if (_cups_strcasecmp(size->name, buf))
 	  {
+	   /*
+	    * Allow an additional qualifier such as ".WithTab"...
+	    */
+
+	    size_t buflen = strlen(buf);/* Length of full bleed name */
+
+            if (_cups_strncasecmp(size->name, buf, buflen) ||
+                size->name[buflen] != '.')
+	      is_ok = 0;
+	  }
+        }
+        else if (strcmp(size->name, buf) && size->width > size->length)
+        {
+          if (!strcmp(pwg_media->ppd, "DoublePostcardRotated"))
+            strlcpy(buf, "DoublePostcard", sizeof(buf));
+          else
+	    snprintf(buf, sizeof(buf), "%sRotated", pwg_media->ppd);
+
+	  if (strcmp(size->name, buf))
+	  {
+	    snprintf(buf, sizeof(buf), "%s.Transverse", pwg_media->ppd);
 	    if (strcmp(size->name, buf))
 	      is_ok = 0;
 	  }
-	  else
-	  {
-	    snprintf(buf, sizeof(buf), "%sRotated", pwg_media->ppd);
-	    if (strcmp(size->name, buf))
-	    {
-	      snprintf(buf, sizeof(buf), "%s.Transverse", pwg_media->ppd);
-	      if (strcmp(size->name, buf))
-		is_ok = 0;
-	    }
-	  }
         }
-	else
-        {
-	  if ((!strncmp(size->name, pwg_media->ppd, strlen(pwg_media->ppd))))
+	else if (!strncmp(size->name, pwg_media->ppd, ppdlen))
+	{
+	 /*
+	  * Check for a proper qualifier (number, "Small", or .something)...
+	  */
+
+	  ptr = size->name + ppdlen;
+
+	  if (isdigit(*ptr & 255))
           {
-            for (ptr = size->name + strlen(pwg_media->ppd); *ptr; ptr ++)
+            for (ptr ++; *ptr; ptr ++)
             {
               if (!isdigit(*ptr & 255))
 	      {
@@ -3109,9 +3253,20 @@ check_sizes(ppd_file_t *ppd,		/* I - PPD file */
 	      }
             }
           }
-          else
-            is_ok = 0;
+          else if (*ptr != '.' && *ptr && strcmp(ptr, "Small"))
+	    is_ok = 0;
         }
+	else
+	{
+	 /*
+	  * Check for EnvSizeName as well...
+	  */
+
+	  snprintf(buf, sizeof(buf), "Env%s", pwg_media->ppd);
+
+	  if (strcmp(size->name, buf))
+	    is_ok = 0;
+	}
 
         if (!is_ok)
           _cupsLangPrintf(stdout,
@@ -3126,7 +3281,7 @@ check_sizes(ppd_file_t *ppd,		/* I - PPD file */
         length_tmp = (fabs(size->length - ceil(size->length)) < 0.1) ?
 	                 ceil(size->length) : size->length;
 
-        if (fmod(width_tmp, 18.0) == 0.0 && fmod(length_tmp, 18.0) == 0.0)
+        if (fmod(width_tmp, 18.0) == 0.0 || fmod(length_tmp, 18.0) == 0.0)
         {
           width_inch  = width_tmp / 72.0;
           length_inch = length_tmp / 72.0;
@@ -3147,10 +3302,16 @@ check_sizes(ppd_file_t *ppd,		/* I - PPD file */
         else if (size->width > size->length)
           strlcat(buf, ".Transverse", sizeof(buf));
 
-        if (strcmp(size->name, buf))
-          _cupsLangPrintf(stdout,
-                          _("      %s  Size \"%s\" should be \"%s\"."),
-                          prefix, size->name, buf);
+        if (_cups_strcasecmp(size->name, buf))
+        {
+          size_t buflen = strlen(buf);	/* Length of proposed name */
+
+          if (_cups_strncasecmp(size->name, buf, buflen) ||
+              strcmp(size->name + buflen, "in"))
+	    _cupsLangPrintf(stdout,
+			    _("      %s  Size \"%s\" should be \"%s\"."),
+			    prefix, size->name, buf);
+        }
       }
     }
   }
@@ -3791,5 +3952,5 @@ valid_utf8(const char *s)		/* I - String to check */
 
 
 /*
- * End of "$Id: cupstestppd.c 9793 2011-05-20 03:49:49Z mike $".
+ * End of "$Id: cupstestppd.c 10042 2011-10-03 17:32:43Z mike $".
  */

@@ -1,5 +1,5 @@
 /*
- * "$Id: dnssd.c 9815 2011-06-05 16:58:33Z mike $"
+ * "$Id: dnssd.c 10017 2011-09-26 18:46:46Z mike $"
  *
  *   DNS-SD discovery backend for CUPS.
  *
@@ -211,7 +211,7 @@ parse_txt_record_pair (cups_txt_records_t *txt)
   */
 
   datalen = *data++;
-  if (!datalen || (data + datalen) >= txt->dataend)
+  if (!datalen || (data + datalen) > txt->dataend)
     return NULL;
   txt->datanext = data + datalen;
 
@@ -409,7 +409,7 @@ main(int  argc,				/* I - Number of command-line args */
                    "_ipp-tls._tcp", NULL, browse_callback, devices);
 
   ipps_ref = main_ref;
-  DNSServiceBrowse(&ipp_ref, kDNSServiceFlagsShareConnection, 0,
+  DNSServiceBrowse(&ipps_ref, kDNSServiceFlagsShareConnection, 0,
                    "_ipps._tcp", NULL, browse_callback, devices);
 
   local_fax_ipp_ref = main_ref;
@@ -428,7 +428,7 @@ main(int  argc,				/* I - Number of command-line args */
                    "_ipp-tls._tcp", NULL, browse_local_callback, devices);
 
   local_ipps_ref = main_ref;
-  DNSServiceBrowse(&local_ipp_ref, kDNSServiceFlagsShareConnection,
+  DNSServiceBrowse(&local_ipps_ref, kDNSServiceFlagsShareConnection,
                    kDNSServiceInterfaceIndexLocalOnly,
 		   "_ipps._tcp", NULL, browse_local_callback, devices);
 
@@ -1370,5 +1370,5 @@ unquote(char       *dst,		/* I - Destination buffer */
 
 
 /*
- * End of "$Id: dnssd.c 9815 2011-06-05 16:58:33Z mike $".
+ * End of "$Id: dnssd.c 10017 2011-09-26 18:46:46Z mike $".
  */

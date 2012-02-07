@@ -88,6 +88,7 @@
 "      %s  Bad UTF-8 \"%s\" translation string for option %s, choice %s." = "      %s  Bad UTF-8 \"%s\" translation string for option %s, choice %s.";
 "      %s  Bad UTF-8 \"%s\" translation string for option %s." = "      %s  Bad UTF-8 \"%s\" translation string for option %s.";
 "      %s  Bad cupsFilter value \"%s\"." = "      %s  Bad cupsFilter value \"%s\".";
+"      %s  Bad cupsFilter2 value \"%s\"." = "      %s  Bad cupsFilter2 value \"%s\".";
 "      %s  Bad cupsICCProfile %s." = "      %s  Bad cupsICCProfile %s.";
 "      %s  Bad cupsPreFilter value \"%s\"." = "      %s  Bad cupsPreFilter value \"%s\".";
 "      %s  Bad cupsUIConstraints %s: \"%s\"" = "      %s  Bad cupsUIConstraints %s: \"%s\"";
@@ -804,6 +805,23 @@
 "HP" = "HP";
 "Hanging Folder" = "Hanging Folder";
 "Hanging Folder - 9/16 x 2\"" = "Hanging Folder - 9/16 x 2\"";
+"IPP 1setOf attribute with incompatible value tags." = "IPP 1setOf attribute with incompatible value tags.";
+"IPP attribute has no name." = "IPP attribute has no name.";
+"IPP begCollection value not 0 bytes." = "IPP begCollection value not 0 bytes.";
+"IPP boolean value not 1 byte." = "IPP boolean value not 1 byte.";
+"IPP date value not 11 bytes." = "IPP date value not 11 bytes.";
+"IPP endCollection value not 0 bytes." = "IPP endCollection value not 0 bytes.";
+"IPP enum value not 4 bytes." = "IPP enum value not 4 bytes.";
+"IPP integer value not 4 bytes." = "IPP integer value not 4 bytes.";
+"IPP language length overflows value." = "IPP language length overflows value.";
+"IPP member name is not empty." = "IPP member name is not empty.";
+"IPP name larger than 32767 bytes." = "IPP name larger than 32767 bytes.";
+"IPP nameWithLanguage value less than minimum 4 bytes." = "IPP nameWithLanguage value less than minimum 4 bytes.";
+"IPP rangeOfInteger value not 8 bytes." = "IPP rangeOfInteger value not 8 bytes.";
+"IPP resolution value not 9 bytes." = "IPP resolution value not 9 bytes.";
+"IPP string length overflows value." = "IPP string length overflows value.";
+"IPP textWithLanguage value less than minimum 4 bytes." = "IPP textWithLanguage value less than minimum 4 bytes.";
+"IPP value larger than 32767 bytes." = "IPP value larger than 32767 bytes.";
 "ISOLatin1" = "ISOLatin1";
 "Illegal control character" = "Illegal control character";
 "Illegal main keyword string" = "Illegal main keyword string";
@@ -889,6 +907,7 @@
 "Missing document-number attribute." = "Missing document-number attribute.";
 "Missing double quote on line %d." = "Missing double quote on line %d.";
 "Missing form variable" = "Missing form variable";
+"Missing last-document attribute in request." = "Missing last-document attribute in request.";
 "Missing media or media-col." = "Missing media or media-col.";
 "Missing media-size in media-col." = "Missing media-size in media-col.";
 "Missing notify-subscription-ids attribute." = "Missing notify-subscription-ids attribute.";
@@ -1179,7 +1198,6 @@
 "Unable to change printer:" = "Unable to change printer:";
 "Unable to change server settings:" = "Unable to change server settings:";
 "Unable to connect to host." = "Unable to connect to host.";
-"Unable to connect to server" = "Unable to connect to server";
 "Unable to contact printer, queuing on next printer in class." = "Unable to contact printer, queuing on next printer in class.";
 "Unable to copy 64-bit CUPS printer driver files (%d)." = "Unable to copy 64-bit CUPS printer driver files (%d).";
 "Unable to copy 64-bit Windows printer driver files (%d)." = "Unable to copy 64-bit Windows printer driver files (%d).";

@@ -3,10 +3,8 @@ Bug: http://www.cups.org/str.php?L3066
 Author: Tim Waugh
 Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
 
-Index: cups-1.5.0/backend/dnssd.c
-===================================================================
---- cups-1.5.0.orig/backend/dnssd.c	2011-06-05 18:58:33.000000000 +0200
-+++ cups-1.5.0/backend/dnssd.c	2011-10-19 14:55:45.156686885 +0200
+--- a/backend/dnssd.c
++++ b/backend/dnssd.c
 @@ -15,14 +15,21 @@
   *
   * Contents:
@@ -180,7 +178,7 @@ Index: cups-1.5.0/backend/dnssd.c
 +  */
 +
 +  datalen = *data++;
-+  if (!datalen || (data + datalen) >= txt->dataend)
++  if (!datalen || (data + datalen) > txt->dataend)
 +    return NULL;
 +  txt->datanext = data + datalen;
 +
@@ -785,7 +783,7 @@ Index: cups-1.5.0/backend/dnssd.c
 -
 -        datalen = *data++;
 -
--        if (!datalen || (data + datalen) >= dataend)
+-        if (!datalen || (data + datalen) > dataend)
 -	  break;
 -
 -        datanext = data + datalen;
@@ -847,10 +845,8 @@ Index: cups-1.5.0/backend/dnssd.c
  /*
   * 'sigterm_handler()' - Handle termination signals...
   */
-Index: cups-1.5.0/config-scripts/cups-dnssd.m4
-===================================================================
---- cups-1.5.0.orig/config-scripts/cups-dnssd.m4	2011-05-12 07:21:56.000000000 +0200
-+++ cups-1.5.0/config-scripts/cups-dnssd.m4	2011-10-19 14:55:45.156686885 +0200
+--- a/config-scripts/cups-dnssd.m4
++++ b/config-scripts/cups-dnssd.m4
 @@ -23,6 +23,21 @@
  DNSSDLIBS=""
  DNSSD_BACKEND=""
@@ -873,10 +869,8 @@ Index: cups-1.5.0/config-scripts/cups-dnssd.m4
  if test x$enable_dnssd != xno; then
  	AC_CHECK_HEADER(dns_sd.h, [
  		case "$uname" in
-Index: cups-1.5.0/config.h.in
-===================================================================
---- cups-1.5.0.orig/config.h.in	2011-06-16 22:12:16.000000000 +0200
-+++ cups-1.5.0/config.h.in	2011-10-19 14:55:45.160686885 +0200
+--- a/config.h.in
++++ b/config.h.in
 @@ -390,6 +390,13 @@
  
  
@@ -891,10 +885,8 @@ Index: cups-1.5.0/config.h.in
   * Do we have <sys/ioctl.h>?
   */
  
-Index: cups-1.5.0/cups/http-support.c
-===================================================================
---- cups-1.5.0.orig/cups/http-support.c	2011-06-11 00:06:26.000000000 +0200
-+++ cups-1.5.0/cups/http-support.c	2011-10-19 14:55:45.160686885 +0200
+--- a/cups/http-support.c
++++ b/cups/http-support.c
 @@ -43,6 +43,10 @@
   *   http_copy_decode()   - Copy and decode a URI.
   *   http_copy_encode()   - Copy and encode a URI.
@@ -1049,7 +1041,7 @@ Index: cups-1.5.0/cups/http-support.c
  
      if ((options & _HTTP_RESOLVE_STDERR) && !uri)
        _cupsLangPrintFilter(stderr, "ERROR", _("Unable to find printer."));
-@@ -1895,6 +1974,116 @@
+@@ -1914,6 +1993,116 @@
  #endif /* HAVE_DNSSD */
  
  
@@ -1164,12 +1156,10 @@ Index: cups-1.5.0/cups/http-support.c
 +
 +
  /*
-  * End of "$Id: http-support.c 9820 2011-06-10 22:06:26Z mike $".
+  * End of "$Id: http-support.c 10017 2011-09-26 18:46:46Z mike $".
   */
-Index: cups-1.5.0/scheduler/Makefile
-===================================================================
---- cups-1.5.0.orig/scheduler/Makefile	2011-05-12 00:17:34.000000000 +0200
-+++ cups-1.5.0/scheduler/Makefile	2011-10-19 14:55:45.164686885 +0200
+--- a/scheduler/Makefile
++++ b/scheduler/Makefile
 @@ -17,6 +17,7 @@
  
  CUPSDOBJS =	\
@@ -1188,10 +1178,8 @@ Index: cups-1.5.0/scheduler/Makefile
  LIBOBJS =	\
  		filter.o \
  		mime.o \
-Index: cups-1.5.0/scheduler/avahi.c
-===================================================================
---- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ cups-1.5.0/scheduler/avahi.c	2011-10-19 14:55:45.164686885 +0200
+--- /dev/null
++++ b/scheduler/avahi.c
 @@ -0,0 +1,445 @@
 +/*
 + * "$Id$"
@@ -1638,10 +1626,8 @@ Index: cups-1.5.0/scheduler/avahi.c
 +/*
 + * End of "$Id$".
 + */
-Index: cups-1.5.0/scheduler/avahi.h
-===================================================================
---- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ cups-1.5.0/scheduler/avahi.h	2011-10-19 14:55:45.164686885 +0200
+--- /dev/null
++++ b/scheduler/avahi.h
 @@ -0,0 +1,49 @@
 +/*
 + * "$Id$"
@@ -1692,10 +1678,8 @@ Index: cups-1.5.0/scheduler/avahi.h
 +/*
 + * End of "$Id$".
 + */
-Index: cups-1.5.0/scheduler/cupsd.h
-===================================================================
---- cups-1.5.0.orig/scheduler/cupsd.h	2011-05-12 00:17:34.000000000 +0200
-+++ cups-1.5.0/scheduler/cupsd.h	2011-10-19 14:55:45.164686885 +0200
+--- a/scheduler/cupsd.h
++++ b/scheduler/cupsd.h
 @@ -140,6 +140,15 @@
  
  typedef void (*cupsd_selfunc_t)(void *data);
@@ -1745,10 +1729,8 @@ Index: cups-1.5.0/scheduler/cupsd.h
  
  /*
   * End of "$Id: cupsd.h 9766 2011-05-11 22:17:34Z mike $".
-Index: cups-1.5.0/scheduler/main.c
-===================================================================
---- cups-1.5.0.orig/scheduler/main.c	2011-10-19 14:55:45.052686880 +0200
-+++ cups-1.5.0/scheduler/main.c	2011-10-19 14:55:45.168686885 +0200
+--- a/scheduler/main.c
++++ b/scheduler/main.c
 @@ -122,6 +122,10 @@
    cupsd_listener_t	*lis;		/* Current listener */
    time_t		current_time,	/* Current time */
@@ -1854,10 +1836,8 @@ Index: cups-1.5.0/scheduler/main.c
   /*
    * Check whether we are accepting new connections...
    */
-Index: cups-1.5.0/scheduler/timeout.c
-===================================================================
---- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ cups-1.5.0/scheduler/timeout.c	2011-10-19 14:55:45.168686885 +0200
+--- /dev/null
++++ b/scheduler/timeout.c
 @@ -0,0 +1,215 @@
 +/*
 + * "$Id$"
@@ -2074,10 +2054,8 @@ Index: cups-1.5.0/scheduler/timeout.c
 +/*
 + * End of "$Id$".
 + */
-Index: cups-1.5.0/cgi-bin/admin.c
-===================================================================
---- cups-1.5.0.orig/cgi-bin/admin.c	2011-05-20 05:49:49.000000000 +0200
-+++ cups-1.5.0/cgi-bin/admin.c	2011-10-19 14:55:45.172686885 +0200
+--- a/cgi-bin/admin.c
++++ b/cgi-bin/admin.c
 @@ -1643,7 +1643,7 @@
        else
  	local_protocols[0] = '\0';
@@ -2108,11 +2086,9 @@ Index: cups-1.5.0/cgi-bin/admin.c
  
  #ifdef HAVE_LDAP
    cgiSetVariable("HAVE_LDAP", "1");
-Index: cups-1.5.0/scheduler/client.c
-===================================================================
---- cups-1.5.0.orig/scheduler/client.c	2011-06-10 23:16:18.000000000 +0200
-+++ cups-1.5.0/scheduler/client.c	2011-10-19 14:55:45.172686885 +0200
-@@ -4987,7 +4987,7 @@
+--- a/scheduler/client.c
++++ b/scheduler/client.c
+@@ -4989,7 +4989,7 @@
  	    !strncmp(host, "[::1]:", 6));
    }
  
@@ -2121,7 +2097,7 @@ Index: cups-1.5.0/scheduler/client.c
   /*
    * Check if the hostname is something.local (Bonjour); if so, allow it.
    */
-@@ -4996,7 +4996,7 @@
+@@ -4998,7 +4998,7 @@
        (!_cups_strcasecmp(end, ".local") || !_cups_strncasecmp(end, ".local:", 7) ||
         !_cups_strcasecmp(end, ".local.") || !_cups_strncasecmp(end, ".local.:", 8)))
      return (1);
@@ -2130,10 +2106,8 @@ Index: cups-1.5.0/scheduler/client.c
  
   /*
    * Check if the hostname is an IP address...
-Index: cups-1.5.0/scheduler/dirsvc.c
-===================================================================
---- cups-1.5.0.orig/scheduler/dirsvc.c	2011-05-20 05:49:49.000000000 +0200
-+++ cups-1.5.0/scheduler/dirsvc.c	2011-10-19 14:55:48.344687039 +0200
+--- a/scheduler/dirsvc.c
++++ b/scheduler/dirsvc.c
 @@ -27,6 +27,7 @@
   *   ldap_connect()             - Start new LDAP connection
   *   ldap_reconnect()           - Reconnect to LDAP Server
@@ -2286,7 +2260,7 @@ Index: cups-1.5.0/scheduler/dirsvc.c
 +}
 +#endif /* HAVE_AVAHI */
 +
-+  
++
  /*
   * 'cupsdStartBrowsing()' - Start sending and receiving broadcast information.
   */
@@ -3039,10 +3013,8 @@ Index: cups-1.5.0/scheduler/dirsvc.c
  /*
   * 'get_auth_info_required()' - Get the auth-info-required value to advertise.
   */
-Index: cups-1.5.0/scheduler/dirsvc.h
-===================================================================
---- cups-1.5.0.orig/scheduler/dirsvc.h	2011-03-21 03:12:14.000000000 +0100
-+++ cups-1.5.0/scheduler/dirsvc.h	2011-10-19 14:55:45.176686886 +0200
+--- a/scheduler/dirsvc.h
++++ b/scheduler/dirsvc.h
 @@ -31,6 +31,10 @@
  #  endif /* HAVE_LDAP_SSL_H */
  #endif /* HAVE_LDAP */
@@ -3115,11 +3087,9 @@ Index: cups-1.5.0/scheduler/dirsvc.h
  #ifdef HAVE_LDAP
  extern void	cupsdUpdateLDAPBrowse(void);
  #endif /* HAVE_LDAP */
-Index: cups-1.5.0/scheduler/ipp.c
-===================================================================
---- cups-1.5.0.orig/scheduler/ipp.c	2011-06-13 22:45:23.000000000 +0200
-+++ cups-1.5.0/scheduler/ipp.c	2011-10-19 14:55:45.180686886 +0200
-@@ -6087,7 +6087,7 @@
+--- a/scheduler/ipp.c
++++ b/scheduler/ipp.c
+@@ -6090,7 +6090,7 @@
      ippAddDate(con->response, IPP_TAG_PRINTER, "printer-current-time",
                 ippTimeToDate(curtime));
  
@@ -3128,7 +3098,7 @@ Index: cups-1.5.0/scheduler/ipp.c
    if (!ra || cupsArrayFind(ra, "printer-dns-sd-name"))
    {
      if (printer->reg_name)
-@@ -6097,7 +6097,7 @@
+@@ -6100,7 +6100,7 @@
        ippAddInteger(con->response, IPP_TAG_PRINTER, IPP_TAG_NOVALUE,
                     "printer-dns-sd-name", 0);
    }
@@ -3137,10 +3107,8 @@ Index: cups-1.5.0/scheduler/ipp.c
  
    if (!ra || cupsArrayFind(ra, "printer-error-policy"))
      ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_NAME,
-Index: cups-1.5.0/scheduler/printers.c
-===================================================================
---- cups-1.5.0.orig/scheduler/printers.c	2011-06-15 02:46:13.000000000 +0200
-+++ cups-1.5.0/scheduler/printers.c	2011-10-19 14:55:45.184686886 +0200
+--- a/scheduler/printers.c
++++ b/scheduler/printers.c
 @@ -883,9 +883,9 @@
    cupsdClearString(&p->alert);
    cupsdClearString(&p->alert_description);
@@ -3171,10 +3139,8 @@ Index: cups-1.5.0/scheduler/printers.c
  }
  
  
-Index: cups-1.5.0/scheduler/printers.h
-===================================================================
---- cups-1.5.0.orig/scheduler/printers.h	2011-03-18 19:42:46.000000000 +0100
-+++ cups-1.5.0/scheduler/printers.h	2011-10-19 14:55:45.184686886 +0200
+--- a/scheduler/printers.h
++++ b/scheduler/printers.h
 @@ -16,6 +16,9 @@
  #ifdef HAVE_DNSSD
  #  include <dns_sd.h>
@@ -3212,11 +3178,9 @@ Index: cups-1.5.0/scheduler/printers.h
  };
  
  
-Index: cups-1.5.0/scheduler/conf.c
-===================================================================
---- cups-1.5.0.orig/scheduler/conf.c	2011-10-19 14:55:45.048686879 +0200
-+++ cups-1.5.0/scheduler/conf.c	2011-10-19 14:55:45.184686886 +0200
-@@ -650,7 +650,7 @@
+--- a/scheduler/conf.c
++++ b/scheduler/conf.c
+@@ -651,7 +651,7 @@
    Browsing                 = CUPS_DEFAULT_BROWSING;
    DefaultShared            = CUPS_DEFAULT_DEFAULT_SHARED;
  

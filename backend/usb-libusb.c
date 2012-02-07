@@ -1,9 +1,9 @@
 /*
- * "$Id: usb-libusb.c 9831 2011-06-14 23:03:29Z mike $"
+ * "$Id: usb-libusb.c 10198 2012-01-27 16:48:43Z mike $"
  *
  *   Libusb interface code for CUPS.
  *
- *   Copyright 2007-2011 by Apple Inc.
+ *   Copyright 2007-2012 by Apple Inc.
  *
  *   These coded instructions, statements, and computer programs are the
  *   property of Apple Inc. and are protected by Federal copyright
@@ -468,22 +468,19 @@ get_device_id(usb_printer_t *printer,	/* I - Printer */
   * bytes.  The 1284 spec says the length is stored MSB first...
   */
 
-  length = (((unsigned)buffer[0] & 255) << 8) +
+  length = (((unsigned)buffer[0] & 255) << 8) |
 	   ((unsigned)buffer[1] & 255);
 
  /*
-  * Check to see if the length is larger than our buffer; first
-  * assume that the vendor incorrectly implemented the 1284 spec,
-  * and then limit the length to the size of our buffer...
-  * Consider a length < 14 as too short, as the minimum valid device
-  * ID ("MFG:x;MDL:y;") is 12 bytes long and so we have at least 14
-  * bytes with the two length bytes...
-  * Especially the length in the memmove() call cannot get negative then,
-  * causing the backend to segfault.
+  * Check to see if the length is larger than our buffer or less than 14 bytes
+  * (the minimum valid device ID is "MFG:x;MDL:y;" with 2 bytes for the length).
+  *
+  * If the length is out-of-range, assume that the vendor incorrectly
+  * implemented the 1284 spec and re-read the length as LSB first,..
   */
 
-  if ((length > bufsize) || (length < 14))
-    length = (((unsigned)buffer[1] & 255) << 8) +
+  if (length > bufsize || length < 14)
+    length = (((unsigned)buffer[1] & 255) << 8) |
 	     ((unsigned)buffer[0] & 255);
 
   if (length > bufsize)
@@ -491,6 +488,10 @@ get_device_id(usb_printer_t *printer,	/* I - Printer */
 
   if (length < 14)
   {
+   /*
+    * Invalid device ID, clear it!
+    */
+
     *buffer = '\0';
     return (-1);
   }
@@ -711,7 +712,7 @@ open_device(usb_printer_t *printer,	/* I - Printer */
   int	number1 = -1,			/* Configuration/interface/altset */
         number2 = -1,			/* numbers */
         errcode = 0;
-  char current_bConfiguration;
+  char	current;			/* Current configuration */
 
 
  /*
@@ -728,7 +729,6 @@ open_device(usb_printer_t *printer,	/* I - Printer */
   if (libusb_open(printer->device, &printer->handle) < 0)
     return (-1);
 
-
   if (verbose)
     fputs("STATE: +connecting-to-device\n", stderr);
 
@@ -741,19 +741,16 @@ open_device(usb_printer_t *printer,	/* I - Printer */
   if (libusb_control_transfer(printer->handle,
                 LIBUSB_REQUEST_TYPE_STANDARD | LIBUSB_ENDPOINT_IN |
 		LIBUSB_RECIPIENT_DEVICE,
-                8, /* GET_CONFIGURATION */
-		0, 0, (unsigned char *)&current_bConfiguration, 1, 5000) < 0)
-  {
-    current_bConfiguration = 0;   /* Failed. Assume not configured */
-  }
+		8, /* GET_CONFIGURATION */
+		0, 0, (unsigned char *)&current, 1, 5000) < 0)
+    current = 0;			/* Assume not configured */
 
   libusb_get_device_descriptor (printer->device, &devdesc);
   libusb_get_config_descriptor (printer->device, printer->conf, &confptr);
   number1 = confptr->bConfigurationValue;
 
-  if (number1 != current_bConfiguration)
+  if (number1 != current)
   {
-
     if ((errcode = libusb_set_configuration(printer->handle, number1)) < 0)
     {
      /*
@@ -764,7 +761,7 @@ open_device(usb_printer_t *printer,	/* I - Printer */
 
       if (errcode != LIBUSB_ERROR_BUSY)
         fprintf(stderr, "DEBUG: Failed to set configuration %d for %04x:%04x\n",
-                number1, devdesc.idVendor, devdesc.idProduct);
+		number1, devdesc.idVendor, devdesc.idProduct);
     }
   }
 
@@ -805,41 +802,33 @@ open_device(usb_printer_t *printer,	/* I - Printer */
   while ((errcode = libusb_claim_interface(printer->handle, number1)) < 0)
   {
     if (errcode != LIBUSB_ERROR_BUSY)
-      fprintf(stderr, "DEBUG: Failed to claim interface %d for %04x:%04x: %s\n",
+      fprintf(stderr,
+              "DEBUG: Failed to claim interface %d for %04x:%04x: %s\n",
               number1, devdesc.idVendor, devdesc.idProduct, strerror(errno));
 
     goto error;
   }
 
-#if 0 /* STR #3801: Claiming interface 0 causes problems with some printers */
-  if (number1 != 0)
-    while ((errcode = libusb_claim_interface(printer->handle, 0)) < 0)
-    {
-      if (errcode != LIBUSB_ERROR_BUSY)
-	fprintf(stderr, "DEBUG: Failed to claim interface 0 for %04x:%04x: %s\n",
-		devdesc.idVendor, devdesc.idProduct, strerror(errno));
-
-      goto error;
-    }
-#endif /* 0 */
-
  /*
-  * Set alternate setting, but only if there is more than one option.
-  * Some printers (e.g., Samsung) don't like usb_set_altinterface.
+  * Set alternate setting, but only if there is more than one option.  Some
+  * printers (e.g., Samsung) don't like usb_set_altinterface.
   */
+
   if (confptr->interface[printer->iface].num_altsetting > 1)
   {
     number1 = confptr->interface[printer->iface].
                  altsetting[printer->altset].bInterfaceNumber;
     number2 = confptr->interface[printer->iface].
                  altsetting[printer->altset].bAlternateSetting;
+
     while ((errcode =
 	    libusb_set_interface_alt_setting(printer->handle, number1, number2))
 	   < 0)
     {
       if (errcode != LIBUSB_ERROR_BUSY)
         fprintf(stderr,
-                "DEBUG: Failed to set alternate interface %d for %04x:%04x: %s\n",
+                "DEBUG: Failed to set alternate interface %d for %04x:%04x: "
+                "%s\n",
                 number2, devdesc.idVendor, devdesc.idProduct, strerror(errno));
 
       goto error;
@@ -1054,6 +1043,6 @@ side_cb(usb_printer_t *printer,		/* I - Printer */
 
 
 /*
- * End of "$Id: usb-libusb.c 9831 2011-06-14 23:03:29Z mike $".
+ * End of "$Id: usb-libusb.c 10198 2012-01-27 16:48:43Z mike $".
  */
 

@@ -1475,7 +1475,7 @@ cupsdStartAvahiClient(void)
 }
 #endif /* HAVE_AVAHI */
 
-  
+
 /*
  * 'cupsdStartBrowsing()' - Start sending and receiving broadcast information.
  */

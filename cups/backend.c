@@ -1,9 +1,9 @@
 /*
- * "$Id: backend.c 9731 2011-04-29 22:45:35Z mike $"
+ * "$Id: backend.c 10207 2012-01-30 21:50:42Z mike $"
  *
  *   Backend functions for CUPS.
  *
- *   Copyright 2007-2010 by Apple Inc.
+ *   Copyright 2007-2012 by Apple Inc.
  *   Copyright 2006 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -125,7 +125,10 @@ quote_string(const char *s)		/* I - String to write */
       if (*s == '\\' || *s == '\"')
 	putchar('\\');
 
-      putchar(*s);
+      if (*s == '\n')
+        putchar(' ');
+      else
+        putchar(*s);
 
       s ++;
     }
@@ -136,5 +139,5 @@ quote_string(const char *s)		/* I - String to write */
 
 
 /*
- * End of "$Id: backend.c 9731 2011-04-29 22:45:35Z mike $".
+ * End of "$Id: backend.c 10207 2012-01-30 21:50:42Z mike $".
  */

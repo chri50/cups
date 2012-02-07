@@ -1,5 +1,5 @@
 /*
- * "$Id: lpstat.c 9793 2011-05-20 03:49:49Z mike $"
+ * "$Id: lpstat.c 10064 2011-10-07 21:41:07Z mike $"
  *
  *   "lpstat" command for CUPS.
  *
@@ -579,6 +579,9 @@ match_list(const char *list,		/* I - List of names */
 
   if (!list || !*list)
     return (1);
+
+  if (!name)
+    return (0);
 
   while (*list)
   {
@@ -2047,5 +2050,5 @@ show_scheduler(void)
 
 
 /*
- * End of "$Id: lpstat.c 9793 2011-05-20 03:49:49Z mike $".
+ * End of "$Id: lpstat.c 10064 2011-10-07 21:41:07Z mike $".
  */

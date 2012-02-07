@@ -27,7 +27,7 @@ Bug-Debian: http://bugs.debian.org/549673
    * Write each local printer known to the system...
 --- a/scheduler/job.c
 +++ b/scheduler/job.c
-@@ -2006,7 +2006,7 @@
+@@ -2013,7 +2013,7 @@
    strftime(temp, sizeof(temp) - 1, "%Y-%m-%d %H:%M", curdate);
  
    cupsFilePuts(fp, "# Job cache file for " CUPS_SVERSION "\n");

@@ -1,5 +1,5 @@
 #
-# "$Id: Makefile 9771 2011-05-12 05:21:56Z mike $"
+# "$Id: Makefile 10209 2012-01-30 22:19:03Z mike $"
 #
 #   Locale file makefile for CUPS.
 #
@@ -140,9 +140,9 @@ pot:	checkpo po2strings
 	mv cups.pot.N cups.pot
 	echo Checking cups.pot...
 	./checkpo cups.pot
-	for loc in $(LANGUAGES) ; do \
+	for loc in *.po; do \
 		echo Merging changes into cups_$$loc.po... ; \
-		msgmerge -o cups_$$loc.po -s -N --no-location cups_$$loc.po cups.pot ; \
+		msgmerge -o $$loc -s -N --no-location $$loc cups.pot ; \
 	done
 	echo Updating cups.strings...
 	./po2strings cups.pot cups.strings
@@ -215,5 +215,5 @@ include Dependencies
 
 
 #
-# End of "$Id: Makefile 9771 2011-05-12 05:21:56Z mike $".
+# End of "$Id: Makefile 10209 2012-01-30 22:19:03Z mike $".
 #

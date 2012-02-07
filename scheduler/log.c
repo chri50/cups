@@ -1,5 +1,5 @@
 /*
- * "$Id: log.c 9777 2011-05-13 23:04:16Z mike $"
+ * "$Id: log.c 9949 2011-08-31 04:58:33Z mike $"
  *
  *   Log file routines for the CUPS scheduler.
  *
@@ -451,7 +451,7 @@ cupsdLogJob(cupsd_job_t *job,		/* I - Job */
     va_end(ap);
   }
   while (status == 0);
-  
+
   if (status > 0)
   {
     if ((level > LogLevel ||
@@ -523,15 +523,12 @@ cupsdLogMessage(int        level,	/* I - Log level */
   * See if we want to log this message...
   */
 
-  if (TestConfigFile)
+  if ((TestConfigFile || !ErrorLog) && level <= CUPSD_LOG_WARN)
   {
-    if (level <= CUPSD_LOG_WARN)
-    {
-      va_start(ap, message);
-      vfprintf(stderr, message, ap);
-      putc('\n', stderr);
-      va_end(ap);
-    }
+    va_start(ap, message);
+    vfprintf(stderr, message, ap);
+    putc('\n', stderr);
+    va_end(ap);
 
     return (1);
   }
@@ -574,8 +571,8 @@ cupsdLogPage(cupsd_job_t *job,		/* I - Job being printed */
   const char		*format,	/* Pointer into PageLogFormat */
 			*nameend;	/* End of attribute name */
   ipp_attribute_t	*attr;		/* Current attribute */
-  int			number;		/* Page number */
-  char			copies[256];	/* Number of copies */
+  char			number[256];	/* Page number */
+  int			copies;		/* Number of copies */
 
 
  /*
@@ -585,9 +582,9 @@ cupsdLogPage(cupsd_job_t *job,		/* I - Job being printed */
   if (!PageLogFormat)
     return (1);
 
-  number = 1;
-  strcpy(copies, "1");
-  sscanf(page, "%d%255s", &number, copies);
+  strcpy(number, "1");
+  copies = 1;
+  sscanf(page, "%255s%d", number, &copies);
 
   for (format = PageLogFormat, bufptr = buffer; *format; format ++)
   {
@@ -626,12 +623,12 @@ cupsdLogPage(cupsd_job_t *job,		/* I - Job being printed */
 	    break;
 
         case 'P' :			/* Page number */
-	    snprintf(bufptr, sizeof(buffer) - (bufptr - buffer), "%d", number);
+	    strlcpy(bufptr, number, sizeof(buffer) - (bufptr - buffer));
 	    bufptr += strlen(bufptr);
 	    break;
 
         case 'C' :			/* Number of copies */
-	    strlcpy(bufptr, copies, sizeof(buffer) - (bufptr - buffer));
+	    snprintf(bufptr, sizeof(buffer) - (bufptr - buffer), "%d", copies);
 	    bufptr += strlen(bufptr);
 	    break;
 
@@ -720,7 +717,7 @@ cupsdLogPage(cupsd_job_t *job,		/* I - Job being printed */
   }
 
   *bufptr = '\0';
-      
+
 #ifdef HAVE_VSYSLOG
  /*
   * See if we are logging pages via syslog...
@@ -882,7 +879,7 @@ cupsdLogRequest(cupsd_client_t *con,	/* I - Request to log */
         CUPSD_ACCESSLOG_ACTIONS,/* CUPS-Authenticate-Job */
         CUPSD_ACCESSLOG_ALL	/* CUPS-Get-PPD */
       };
-      
+
 
       if ((op <= IPP_SCHEDULE_JOB_AFTER && standard_ops[op] > AccessLogLevel) ||
           (op >= CUPS_GET_DEFAULT && op <= CUPS_GET_PPD &&
@@ -1080,5 +1077,5 @@ format_log_line(const char *message,	/* I - Printf-style format string */
 
 
 /*
- * End of "$Id: log.c 9777 2011-05-13 23:04:16Z mike $".
+ * End of "$Id: log.c 9949 2011-08-31 04:58:33Z mike $".
  */

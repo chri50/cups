@@ -1,3 +1,76 @@
+cups (1.5.2-1) precise; urgency=low
+
+  [ Till Kamppeter ]
+  * New upstream release
+  * debian/patches/00svn_gif_overflow.patch,
+    debian/patches/cups-driverd-recognize-cached-drv-generated-ppds.patch,
+    debian/patches/dont-send-malformed-dbus-messages.patch,
+    debian/patches/execute-commandtops-commands.patch,
+    debian/patches/usb-backend-gracefully-fail-on-more-cases-of-bad-device-id.patch,
+    debian/patches/usb-backend-skip-set-configuration-set-interface.patch:
+    Removed, included upstream.
+  * debian/patches/ipp-patch-r8950+.patch,
+    debian/patches/ipp-backend-fails-to-trigger-authentication-prompts.patch,
+    debian/patches/ipp-backend-missing-document-type.patch,
+    debian/patches/ipp-backend-http-1.0-fallback-fix.patch: Replaced patch
+    for downgrading to the IPP backend to the version of CUPS 1.4.x by patches
+    for the current backend (LP: #879625, LP: #881843, CUPS STR #3985,
+    CUPS STR #3986, CUPS STR #3988, thanks to Robert Bradley, robert dot
+    bradley1 at gmail dot com, for the patches).
+  * debian/patches/drop_unnecessary_dependencies.patch: Updated patch to
+    add "-lm" to the linker command line, libcups uses the "fmod()" function
+    now.
+  * debian/patches/cups-avahi.patch,
+    debian/patches/usb-backend-libusb-1.0.patch,
+    debian/patches/printer-filtering.patch:
+    Manually regenerated to adapt to upstream changes.
+  * debian/patches/pidfile.patch,
+    debian/patches/rootbackends-worldreadable.patch,
+    debian/patches/colord-support.patch,
+    debian/patches/airprint-support.patch,
+    debian/patches/no-conffile-timestamp.patch,
+    debian/patches/read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.patch,
+    debian/patches/do-not-broadcast-with-hostnames.patch,
+    debian/patches/do-not-suppress-inputslot-setting-with-empty-ap-d-inputslot.patch,
+    debian/patches/confdirperms.patch,
+    debian/patches/show-compile-command-lines.patch,
+    debian/patches/log-debug-history-nearly-unlimited.patch,
+    debian/patches/dnssd-reg-array-linear-search.patch:
+    Refreshed using quilt.
+  * debian/patches/fix-supply-level-computation-for-percent-supply-unit.patch,
+    debian/patches/fix-supply-levels-for-enumerated-prtmarkersupplieslevel.patch,
+    debian/patches/fix-status-reports-when-supply-levels-grow.patch:
+    The printer supply levels reported via SNMP, according to the printer MIB
+    were not correctly interpreted (LP: #925086, CUPS STR #4016, thanks to
+    Peter Hurley, peter at hurleysoftware dot com, for the patches).
+  * debian/patches/add-status-reports-for-full-waste-trays-and-cleaner-unit-eol.patch:
+    Added status reports for waste tray status and cleaner unit end-of-life
+    (LP: #925086, CUPS STR #4017, thanks to Peter Hurley, peter at
+    hurleysoftware dot com, for the patch).
+  * debian/patches/match-marker-colorants-which-use-non-standard-string.patch:
+    Try harder to match supply colorant values (LP: #925086, CUPS STR #4019,
+    thanks to Peter Hurley, peter at hurleysoftware dot com, for the patch).
+  * debian/patches/truncate-marker-supply-names-at-comma.patch: Commas in
+    marker supply names misinterpreted as additional markers (LP: #926457,
+    CUPS STR #4020, thanks to Peter Hurley, peter at hurleysoftware dot com,
+    for the patch).
+  * debian/cups.postinst, debian/cups.prerm: Updated symlinks for alias names
+    of debconf-selectable CUPS backends.
+
+  [ Martin-Éric Racine ]
+  * Removed myself from Uploaders.
+
+  [ Martin Pitt ]
+  * debian/control: Drop now obsolete poppler-dev build dependency, thanks
+    Pino Toscano. (Closes: #658237)
+  * Drop do-not-emit-ps-level-3-with-poppler.patch, filter is now built by
+    the cups-filters package.
+  * debian/control, debian/rules: libusb-1.0 is not available on hurd. Drop
+    build dependency on hurd and build with --disable-libusb there. Thanks
+    Pino Toscano for the patch. (Closes: #658236)
+
+ -- Martin Pitt <mpitt@debian.org>  Tue, 07 Feb 2012 09:29:59 +0100
+
 cups (1.5.0-16) unstable; urgency=low
 
   [ Till Kamppeter ]
