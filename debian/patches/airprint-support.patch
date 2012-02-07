@@ -4,7 +4,7 @@ Bug: https://bugs.launchpad.net/bugs/711779
 
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -651,7 +651,7 @@
+@@ -652,7 +652,7 @@
    DefaultShared            = CUPS_DEFAULT_DEFAULT_SHARED;
  
  #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
@@ -15,7 +15,7 @@ Bug: https://bugs.launchpad.net/bugs/711779
    cupsdSetString(&LPDConfigFile, CUPS_DEFAULT_LPD_CONFIG_FILE);
 --- a/scheduler/dirsvc.c
 +++ b/scheduler/dirsvc.c
-@@ -2508,6 +2508,9 @@
+@@ -2517,6 +2517,9 @@
    keyvalue[i  ][0] = "pdl";
    keyvalue[i++][1] = p->pdl ? p->pdl : "application/postscript";
  

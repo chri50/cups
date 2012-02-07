@@ -1,5 +1,5 @@
 /*
- * "$Id: cupsfilter.c 9806 2011-05-26 11:57:34Z mike $"
+ * "$Id: cupsfilter.c 9862 2011-08-03 02:44:09Z mike $"
  *
  *   Filtering program for CUPS.
  *
@@ -329,7 +329,7 @@ main(int  argc,				/* I - Number of command-line args */
 	      break;
 
 	  case 'u' : /* Delete PPD file after conversion */
-	      removeinfile = 1;
+	      removeppd = 1;
 	      break;
 
           case 'U' : /* Specify username... */
@@ -629,7 +629,7 @@ add_printer_filter(
         filterptr = mimeAddFilter(mime, temptype, desttype, cost, program);
 
         if (!mimeFilterLookup(mime, desttype, filtertype))
-          mimeAddFilter(mime, desttype, filtertype, cost, "-");
+          mimeAddFilter(mime, desttype, filtertype, 0, "-");
       }
       else
         filterptr = mimeAddFilter(mime, temptype, filtertype, cost, program);
@@ -1490,5 +1490,5 @@ usage(const char *command,		/* I - Command name */
 
 
 /*
- * End of "$Id: cupsfilter.c 9806 2011-05-26 11:57:34Z mike $".
+ * End of "$Id: cupsfilter.c 9862 2011-08-03 02:44:09Z mike $".
  */

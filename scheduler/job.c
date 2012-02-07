@@ -1,5 +1,5 @@
 /*
- * "$Id: job.c 9854 2011-07-14 15:41:15Z mike $"
+ * "$Id: job.c 9955 2011-09-02 18:14:34Z mike $"
  *
  *   Job management routines for the CUPS scheduler.
  *
@@ -480,6 +480,7 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
   int			filterfds[2][2] = { { -1, -1 }, { -1, -1 } };
 					/* Pipes used between filters */
   int			envc;		/* Number of environment variables */
+  struct stat		fileinfo;	/* Job file information */
   char			**argv = NULL,	/* Filter command-line arguments */
 			filename[1024],	/* Job filename */
 			command[1024],	/* Full path to command */
@@ -552,8 +553,14 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
     * Local jobs get filtered...
     */
 
-    filters = mimeFilter(MimeDatabase, job->filetypes[job->current_file],
-                         job->printer->filetype, &(job->cost));
+    snprintf(filename, sizeof(filename), "%s/d%05d-%03d", RequestRoot,
+             job->id, job->current_file + 1);
+    if (stat(filename, &fileinfo))
+      fileinfo.st_size = 0;
+
+    filters = mimeFilter2(MimeDatabase, job->filetypes[job->current_file],
+                          fileinfo.st_size, job->printer->filetype,
+                          &(job->cost));
 
     if (!filters)
     {
@@ -1809,8 +1816,8 @@ cupsdLoadJob(cupsd_job_t *job)		/* I - Job */
     if ((fp = cupsFileOpen(jobfile, "r")) != NULL)
     {
       int	bytes;			/* Size of auth data */
-      char	line[255],		/* Line from file */
-		data[255];		/* Decoded data */
+      char	line[65536],		/* Line from file */
+		data[65536];		/* Decoded data */
 
 
       for (i = 0;
@@ -2903,7 +2910,6 @@ finalize_job(cupsd_job_t *job,		/* I - Job */
 
     int exit_code;			/* Exit code from backend */
 
-
    /*
     * Convert the status to an exit code.  Due to the way the W* macros are
     * implemented on MacOS X (bug?), we have to store the exit status in a
@@ -3156,7 +3162,9 @@ finalize_job(cupsd_job_t *job,		/* I - Job */
 
   if (job->history)
   {
-    if (job->status)
+    if (job->status &&
+        (job->state_value == IPP_JOB_ABORTED ||
+         job->state_value == IPP_JOB_STOPPED))
       dump_job_history(job);
     else
       free_job_history(job);
@@ -3362,6 +3370,9 @@ get_options(cupsd_job_t *job,		/* I - Job */
  /*
   * Then allocate/reallocate the option buffer as needed...
   */
+
+  if (newlength == 0)			/* This can never happen, but Clang */
+    newlength = 1;			/* thinks it can... */
 
   if (newlength > optlength || !options)
   {
@@ -4732,5 +4743,5 @@ update_job_attrs(cupsd_job_t *job,	/* I - Job to update */
 
 
 /*
- * End of "$Id: job.c 9854 2011-07-14 15:41:15Z mike $".
+ * End of "$Id: job.c 9955 2011-09-02 18:14:34Z mike $".
  */

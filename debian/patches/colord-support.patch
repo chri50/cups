@@ -760,7 +760,7 @@ Author: Richard Hughes <hughsient@gmail.com>
    }
  
   /*
-@@ -7032,11 +7038,17 @@
+@@ -7035,11 +7041,17 @@
    snprintf(filename, sizeof(filename), "%s/%s.data", CacheDir, printer->name);
    unlink(filename);
  

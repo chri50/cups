@@ -1,5 +1,5 @@
 /*
- * "$Id: snmp-supplies.c 9793 2011-05-20 03:49:49Z mike $"
+ * "$Id: snmp-supplies.c 10064 2011-10-07 21:41:07Z mike $"
  *
  *   SNMP supplies functions for CUPS.
  *
@@ -229,12 +229,12 @@ backendSNMPSupplies(
 
     for (i = 0, ptr = value; i < num_supplies; i ++, ptr += strlen(ptr))
     {
-      if (supplies[i].max_capacity > 0)
+      if (supplies[i].max_capacity > 0 && supplies[i].level >= 0)
 	percent = 100 * supplies[i].level / supplies[i].max_capacity;
       else
         percent = 50;
 
-      if (percent <= 10)
+      if (percent <= 5)
       {
         switch (supplies[i].type)
         {
@@ -279,7 +279,7 @@ backendSNMPSupplies(
       if (i)
         *ptr++ = ',';
 
-      if (supplies[i].max_capacity > 0)
+      if (supplies[i].max_capacity > 0 && supplies[i].level >= 0)
         sprintf(ptr, "%d", percent);
       else
         strcpy(ptr, "-1");
@@ -801,6 +801,7 @@ backend_walk_cb(cups_snmp_t *packet,	/* I - SNMP packet */
           break;
 
       case CUPS_TC_csShiftJIS :
+      case CUPS_TC_csWindows31J : /* Close enough for our purposes */
 	  cupsCharsetToUTF8((cups_utf8_t *)supplies[i - 1].name,
 	                    (char *)packet->object_value.string.bytes,
 		            sizeof(supplies[0].name), CUPS_JIS_X0213);
@@ -981,5 +982,5 @@ utf16_to_utf8(
 
 
 /*
- * End of "$Id: snmp-supplies.c 9793 2011-05-20 03:49:49Z mike $".
+ * End of "$Id: snmp-supplies.c 10064 2011-10-07 21:41:07Z mike $".
  */

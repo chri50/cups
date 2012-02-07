@@ -1,0 +1,26 @@
+Description: IPP backend: Downgrade to HTTP/1.0 can truncate the start of print jobs
+Author: Robert Bradley <robert.bradley1@gmail.com>
+Bug: http://www.cups.org/str.php?L3988
+Ubuntu-Bug: https://bugs.launchpad.net/ubuntu/+source/cups/+bug/881843
+
+--- a/backend/ipp.c
++++ b/backend/ipp.c
+@@ -1192,8 +1192,17 @@
+ 
+     _cupsLangPrintFilter(stderr, "INFO", _("Copying print data."));
+ 
++    /*
++     * Need to write the existing buffer out to the file, otherwise we lose
++     * the PCL header for example.
++     */
++    if (write(fd, buffer, bytes)<0)
++    {
++      fprintf(stderr, "Error writing bytes to temporary file! errno=%d\n", errno);
++      return (-1);
++    }
+     compatsize = backendRunLoop(-1, fd, snmp_fd, &(addrlist->addr), 0, 0,
+-		                backendNetworkSideCB);
++		                backendNetworkSideCB) + bytes;
+ 
+     close(fd);
+ 
