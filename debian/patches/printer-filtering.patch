@@ -136,7 +136,7 @@ Author: Julien Desfossez at Revolution Linux
 @@ -1194,6 +1309,8 @@
  	    */
  
-             DEBUG_puts("2ippReadIO: IPP_TAG_END!");
+             DEBUG_puts("2ippReadIO: IPP_TAG_END.");
 +            if(getenv("PRINTER_LIST"))
 +	            ippFilterPrinters(ipp);
  

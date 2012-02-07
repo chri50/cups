@@ -1,5 +1,5 @@
 /*
- * "$Id: testmime.c 9793 2011-05-20 03:49:49Z mike $"
+ * "$Id: testmime.c 9862 2011-08-03 02:44:09Z mike $"
  *
  *   MIME test program for CUPS.
  *
@@ -302,7 +302,7 @@ add_ppd_filter(mime_t      *mime,	/* I - MIME database */
           DEBUG_printf(("add_printer_filter: Adding filter %s/%s %s/%s 0 -",
 	                desttype->super, desttype->type, filtertype->super,
 	                filtertype->type));
-          mimeAddFilter(mime, desttype, filtertype, cost, "-");
+          mimeAddFilter(mime, desttype, filtertype, 0, "-");
         }
       }
       else
@@ -527,5 +527,5 @@ type_dir(mime_t     *mime,		/* I - MIME database */
 
 
 /*
- * End of "$Id: testmime.c 9793 2011-05-20 03:49:49Z mike $".
+ * End of "$Id: testmime.c 9862 2011-08-03 02:44:09Z mike $".
  */

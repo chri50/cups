@@ -1,7 +1,6 @@
 # patches backported from upstream SVN trunk for 1.6:
 
 # patches accepted and committed upstream for next 1.5:
-00svn_gif_overflow.patch
 
 # patches sent upstream
 pidfile.patch
@@ -11,12 +10,7 @@ manpage-translations.patch
 rootbackends-worldreadable.patch
 cups-avahi.patch
 colord-support.patch
-cups-driverd-recognize-cached-drv-generated-ppds.patch
-usb-backend-skip-set-configuration-set-interface.patch
-dont-send-malformed-dbus-messages.patch
-usb-backend-gracefully-fail-on-more-cases-of-bad-device-id.patch
 usb-backend-libusb-1.0.patch
-execute-commandtops-commands.patch
 
 # patches which should go upstream
 airprint-support.patch
@@ -24,7 +18,6 @@ removecvstag.patch
 no-conffile-timestamp.patch
 drop_unnecessary_dependencies.patch
 reactivate_recommended_driver.patch
-do-not-emit-ps-level-3-with-poppler.patch
 read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.patch
 do-not-broadcast-with-hostnames.patch
 cups-deviced-allow-device-ids-with-newline.patch
@@ -42,4 +35,3 @@ ppdc-dynamic-linking.patch
 log-debug-history-nearly-unlimited.patch
 pstops-based-workflow-only-for-printing-ps-on-a-ps-printer.patch
 dnssd-reg-array-linear-search.patch
-ipp-patch-r8950+.patch

@@ -4,7 +4,7 @@ Bug-Debian: http://bugs.debian.org/438067
 
 --- a/Makedefs.in
 +++ b/Makedefs.in
-@@ -145,7 +145,7 @@
+@@ -147,7 +147,7 @@
  DBUS_NOTIFIERLIBS =	@DBUS_NOTIFIERLIBS@
  DNSSD_BACKEND	=	@DNSSD_BACKEND@
  DSOFLAGS	=	-L../cups @DSOFLAGS@
@@ -13,7 +13,7 @@ Bug-Debian: http://bugs.debian.org/438067
  DNSSDLIBS	=	@DNSSDLIBS@
  FONTS		=	@FONTS@
  IMGLIBS		=	@IMGLIBS@
-@@ -155,9 +155,9 @@
+@@ -157,9 +157,9 @@
  			-L../scheduler @LDARCHFLAGS@ \
  			@LDFLAGS@ @RELROFLAGS@ @PIEFLAGS@ $(OPTIM)
  LEGACY_BACKENDS	=	@LEGACY_BACKENDS@
@@ -32,7 +32,7 @@ Bug-Debian: http://bugs.debian.org/438067
  	echo Linking $@...
  	$(DSO) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(LIBOBJS) $(LIBGSSAPI) \
 -		$(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
-+		$(SSLLIBS) $(DNSSDLIBS) -lpthread $(LIBZ)
++		$(SSLLIBS) $(DNSSDLIBS) -lpthread $(LIBZ) -lm
  	$(RM) `basename $@ .2`
  	$(LN) $@ `basename $@ .2`
  
@@ -41,7 +41,7 @@ Bug-Debian: http://bugs.debian.org/438067
  	-mkdir 32bit
  	$(DSO) $(ARCH32FLAGS) $(DSO32FLAGS) -o $@ $(LIB32OBJS) $(LIBGSSAPI) \
 -		$(DNSSDLIBS) $(SSLLIBS) $(COMMONLIBS) $(LIBZ)
-+		$(DNSSDLIBS) $(SSLLIBS) -lpthread $(LIBZ)
++		$(DNSSDLIBS) $(SSLLIBS) -lpthread $(LIBZ) -lm
  	$(RM) 32bit/libcups.so
  	$(LN) libcups.so.2 32bit/libcups.so
  
@@ -50,7 +50,7 @@ Bug-Debian: http://bugs.debian.org/438067
  	-mkdir 64bit
  	$(DSO) $(ARCH64FLAGS) $(DSO64FLAGS) -o $@ $(LIB64OBJS) $(LIBGSSAPI) \
 -		$(DNSSDLIBS) $(SSLLIBS) $(COMMONLIBS) $(LIBZ)
-+		$(DNSSDLIBS) $(SSLLIBS) -lpthread $(LIBZ)
++		$(DNSSDLIBS) $(SSLLIBS) -lpthread $(LIBZ) -lm
  	$(RM) 64bit/libcups.so
  	$(LN) libcups.so.2 64bit/libcups.so
  
@@ -59,7 +59,7 @@ Bug-Debian: http://bugs.debian.org/438067
  		-exported_symbols_list t.exp \
  		$(LIBOBJS) $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
 -		$(COMMONLIBS) $(LIBZ)
-+		-lpthread $(LIBZ)
++		-lpthread $(LIBZ) -lm
  	$(RM) libcups.dylib t.exp
  	$(LN) $@ libcups.dylib
  
@@ -67,8 +67,8 @@ Bug-Debian: http://bugs.debian.org/438067
  	echo Creating $@...
  	$(DSO) $(DSOFLAGS) -Wl,-bexport:libcups_s.exp -o libcups_s.o \
  		$(LIBOBJS) $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
--		$(COMMONLIBS) $(LIBZ) -lm
-+		-lpthread $(LIBZ)
+-		$(COMMONLIBS) $(LIBZ)
++		-lpthread $(LIBZ) -lm
  	$(RM) $@
  	$(AR) $(ARFLAGS) $@ libcups_s.o
  
@@ -77,7 +77,7 @@ Bug-Debian: http://bugs.debian.org/438067
  	$(CC) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(LIBOBJS:.o=.lo) \
  		-rpath $(LIBDIR) -version-info 2:9 $(LIBGSSAPI) $(SSLLIBS) \
 -		$(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
-+		$(DNSSDLIBS) -lpthread $(LIBZ)
++		$(DNSSDLIBS) -lpthread $(LIBZ) -lm
  
  
  #

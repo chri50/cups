@@ -1,5 +1,5 @@
 /*
- * "$Id: printers.c 9834 2011-06-15 00:46:13Z mike $"
+ * "$Id: printers.c 10001 2011-09-14 22:38:58Z mike $"
  *
  *   Printer routines for the CUPS scheduler.
  *
@@ -496,8 +496,8 @@ cupsdCreateCommonData(void)
   ippAddBoolean(CommonData, IPP_TAG_PRINTER, "job-ids-supported", 1);
 
   /* job-k-octets-supported */
-  ippAddInteger(CommonData, IPP_TAG_PRINTER, IPP_TAG_INTEGER,
-                "job-k-octets-supported", k_supported);
+  ippAddRange(CommonData, IPP_TAG_PRINTER, "job-k-octets-supported", 0,
+              k_supported);
 
   /* job-priority-supported */
   ippAddInteger(CommonData, IPP_TAG_PRINTER, IPP_TAG_INTEGER,
@@ -3650,7 +3650,7 @@ add_printer_filter(
 	                  "add_printer_filter: %s: adding filter %s/%s %s/%s "
 	                  "0 -", p->name, desttype->super, desttype->type,
 		          filtertype->super, filtertype->type);
-          mimeAddFilter(MimeDatabase, desttype, filtertype, cost, "-");
+          mimeAddFilter(MimeDatabase, desttype, filtertype, 0, "-");
         }
       }
       else
@@ -5496,5 +5496,5 @@ write_xml_string(cups_file_t *fp,	/* I - File to write to */
 
 
 /*
- * End of "$Id: printers.c 9834 2011-06-15 00:46:13Z mike $".
+ * End of "$Id: printers.c 10001 2011-09-14 22:38:58Z mike $".
  */

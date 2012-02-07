@@ -9,8 +9,7 @@ Uploaders:
  Roger Leigh <rleigh@debian.org>, 
  Jeff Licquia <licquia@debian.org>,
  Kenshi Muto <kmuto@debian.org>, 
- Martin Pitt <mpitt@debian.org>, 
- Martin-Éric Racine <martin-eric.racine@iki.fi>
+ Martin Pitt <mpitt@debian.org>
 Build-Depends: 
  autoconf, automake, autotools-dev,
  cdbs (>= 0.4.93~), debhelper (>= 8.1.3~), 
@@ -19,8 +18,8 @@ Build-Depends:
  libdbus-1-dev, libfontconfig1-dev, libfreetype6-dev, libgnutls-dev, 
  libijs-dev, libjpeg-dev, libldap2-dev, 
  libkrb5-dev,
- libpam0g-dev, libpaper-dev, libpng12-dev, libpoppler-dev (>= 0.12.2-2), 
- libslp-dev, libtiff4-dev, libtool, libusb-1.0-0-dev, 
+ libpam0g-dev, libpaper-dev, libpng12-dev, 
+ libslp-dev, libtiff4-dev, libtool, libusb-1.0-0-dev [!hurd-any], 
  patch, pkg-config, po4a (>= 0.31~), po-debconf, poppler-utils, 
  sharutils, zlib1g-dev
 Homepage: http://www.cups.org

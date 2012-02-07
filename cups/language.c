@@ -1,5 +1,5 @@
 /*
- * "$Id: language.c 9793 2011-05-20 03:49:49Z mike $"
+ * "$Id: language.c 10095 2011-11-01 06:06:15Z mike $"
  *
  *   I18N/language support for CUPS.
  *
@@ -80,7 +80,7 @@ static const char * const lang_encodings[] =
 			  "cp1256",		"cp1257",
 			  "cp1258",		"koi8-r",
 			  "koi8-u",		"iso-8859-11",
-			  "iso-8859-16",	"mac-roman",
+			  "iso-8859-16",	"mac",
 			  "unknown",		"unknown",
 			  "unknown",		"unknown",
 			  "unknown",		"unknown",
@@ -1505,5 +1505,5 @@ cups_unquote(char       *d,		/* O - Unquoted string */
 
 
 /*
- * End of "$Id: language.c 9793 2011-05-20 03:49:49Z mike $".
+ * End of "$Id: language.c 10095 2011-11-01 06:06:15Z mike $".
  */

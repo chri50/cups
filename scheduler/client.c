@@ -1,5 +1,5 @@
 /*
- * "$Id: client.c 9818 2011-06-10 21:16:18Z mike $"
+ * "$Id: client.c 10178 2012-01-13 23:00:22Z mike $"
  *
  *   Client routines for the CUPS scheduler.
  *
@@ -17,33 +17,34 @@
  *
  * Contents:
  *
- *   cupsdAcceptClient()    - Accept a new client.
- *   cupsdCloseAllClients() - Close all remote clients immediately.
- *   cupsdCloseClient()     - Close a remote client.
- *   cupsdFlushHeader()     - Flush the header fields to the client.
- *   cupsdReadClient()      - Read data from a client.
- *   cupsdSendCommand()     - Send output from a command via HTTP.
- *   cupsdSendError()       - Send an error message via HTTP.
- *   cupsdSendHeader()      - Send an HTTP request.
- *   cupsdUpdateCGI()       - Read status messages from CGI scripts and
- *                            programs.
- *   cupsdWriteClient()     - Write data to a client as needed.
- *   check_if_modified()    - Decode an "If-Modified-Since" line.
- *   compare_clients()      - Compare two client connections.
- *   data_ready()           - Check whether data is available from a client.
- *   encrypt_client()       - Enable encryption for the client...
- *   get_cdsa_certificate() - Get a SSL/TLS certificate from the System
- *                            keychain.
- *   get_file()             - Get a filename and state info.
- *   install_conf_file()    - Install a configuration file.
- *   is_cgi()               - Is the resource a CGI script/program?
- *   is_path_absolute()     - Is a path absolute and free of relative elements
- *                            (i.e. "..").
- *   make_certificate()     - Make a self-signed SSL/TLS certificate.
- *   pipe_command()         - Pipe the output of a command to the remote client.
- *   valid_host()           - Is the Host: field valid?
- *   write_file()           - Send a file via HTTP.
- *   write_pipe()           - Flag that data is available on the CGI pipe.
+ *   cupsdAcceptClient()     - Accept a new client.
+ *   cupsdCloseAllClients()  - Close all remote clients immediately.
+ *   cupsdCloseClient()      - Close a remote client.
+ *   cupsdFlushHeader()      - Flush the header fields to the client.
+ *   cupsdReadClient()       - Read data from a client.
+ *   cupsdSendCommand()      - Send output from a command via HTTP.
+ *   cupsdSendError()        - Send an error message via HTTP.
+ *   cupsdSendHeader()       - Send an HTTP request.
+ *   cupsdUpdateCGI()        - Read status messages from CGI scripts and
+ *                             programs.
+ *   cupsdWriteClient()      - Write data to a client as needed.
+ *   check_if_modified()     - Decode an "If-Modified-Since" line.
+ *   compare_clients()       - Compare two client connections.
+ *   copy_cdsa_certificate() - Copy a SSL/TLS certificate from the System
+ *                             keychain.
+ *   data_ready()            - Check whether data is available from a client.
+ *   encrypt_client()        - Enable encryption for the client...
+ *   get_file()              - Get a filename and state info.
+ *   install_conf_file()     - Install a configuration file.
+ *   is_cgi()                - Is the resource a CGI script/program?
+ *   is_path_absolute()      - Is a path absolute and free of relative elements
+ *                             (i.e. "..").
+ *   make_certificate()      - Make a self-signed SSL/TLS certificate.
+ *   pipe_command()          - Pipe the output of a command to the remote
+ *                             client.
+ *   valid_host()            - Is the Host: field valid?
+ *   write_file()            - Send a file via HTTP.
+ *   write_pipe()            - Flag that data is available on the CGI pipe.
  */
 
 /*
@@ -65,13 +66,13 @@ static int		check_if_modified(cupsd_client_t *con,
 			                  struct stat *filestats);
 static int		compare_clients(cupsd_client_t *a, cupsd_client_t *b,
 			                void *data);
+#ifdef HAVE_CDSASSL
+static CFArrayRef	copy_cdsa_certificate(cupsd_client_t *con);
+#endif /* HAVE_CDSASSL */
 static int		data_ready(cupsd_client_t *con);
 #ifdef HAVE_SSL
 static int		encrypt_client(cupsd_client_t *con);
 #endif /* HAVE_SSL */
-#ifdef HAVE_CDSASSL
-static CFArrayRef	get_cdsa_certificate(cupsd_client_t *con);
-#endif /* HAVE_CDSASSL */
 static char		*get_file(cupsd_client_t *con, struct stat *filestats,
 			          char *filename, int len);
 static http_status_t	install_conf_file(cupsd_client_t *con);
@@ -156,9 +157,10 @@ cupsdAcceptClient(cupsd_listener_t *lis)/* I - Listener socket */
     return;
   }
 
-  con->http.activity = time(NULL);
-  con->file          = -1;
-  con->http.hostaddr = &(con->clientaddr);
+  con->http.activity   = time(NULL);
+  con->file            = -1;
+  con->http.hostaddr   = &(con->clientaddr);
+  con->http.wait_value = 10000;
 
  /*
   * Accept the client and get the remote address...
@@ -2779,7 +2781,7 @@ cupsdWriteClient(cupsd_client_t *con)	/* I - Client connection */
     bytes     = ipp_state != IPP_ERROR &&
                 (con->file >= 0 || ipp_state != IPP_DATA);
   }
-  else if ((bytes = read(con->file, con->header,
+  else if ((bytes = read(con->file, con->header + con->header_used,
 			 sizeof(con->header) - con->header_used)) > 0)
   {
     con->header_used += bytes;
@@ -3079,284 +3081,14 @@ compare_clients(cupsd_client_t *a,	/* I - First client */
 }
 
 
-/*
- * 'data_ready()' - Check whether data is available from a client.
- */
-
-static int				/* O - 1 if data is ready, 0 otherwise */
-data_ready(cupsd_client_t *con)		/* I - Client */
-{
-  if (con->http.used > 0)
-    return (1);
-#ifdef HAVE_SSL
-  else if (con->http.tls)
-  {
-#  ifdef HAVE_LIBSSL
-    if (SSL_pending((SSL *)(con->http.tls)))
-      return (1);
-#  elif defined(HAVE_GNUTLS)
-    if (gnutls_record_check_pending(con->http.tls))
-      return (1);
-#  elif defined(HAVE_CDSASSL)
-    size_t bytes;			/* Bytes that are available */
-
-    if (!SSLGetBufferedReadSize(con->http.tls, &bytes) && bytes > 0)
-      return (1);
-#  endif /* HAVE_LIBSSL */
-  }
-#endif /* HAVE_SSL */
-
-  return (0);
-}
-
-
-#ifdef HAVE_SSL
-/*
- * 'encrypt_client()' - Enable encryption for the client...
- */
-
-static int				/* O - 1 on success, 0 on error */
-encrypt_client(cupsd_client_t *con)	/* I - Client to encrypt */
-{
-#  ifdef HAVE_LIBSSL
-  SSL_CTX	*context;		/* Context for encryption */
-  BIO		*bio;			/* BIO data */
-  unsigned long	error;			/* Error code */
-
-
-  cupsdLogMessage(CUPSD_LOG_DEBUG2, "encrypt_client(con=%p(%d))", con,
-                  con->http.fd);
-
- /*
-  * Verify that we have a certificate...
-  */
-
-  if (access(ServerKey, 0) || access(ServerCertificate, 0))
-  {
-   /*
-    * Nope, make a self-signed certificate...
-    */
-
-    if (!make_certificate(con))
-      return (0);
-  }
-
- /*
-  * Create the SSL context and accept the connection...
-  */
-
-  context = SSL_CTX_new(SSLv23_server_method());
-
-  SSL_CTX_set_options(context, SSL_OP_NO_SSLv2); /* Only use SSLv3 or TLS */
-  if (SSLOptions & CUPSD_SSL_NOEMPTY)
-    SSL_CTX_set_options(context, SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS);
-  SSL_CTX_use_PrivateKey_file(context, ServerKey, SSL_FILETYPE_PEM);
-  SSL_CTX_use_certificate_chain_file(context, ServerCertificate);
-
-  bio = BIO_new(_httpBIOMethods());
-  BIO_ctrl(bio, BIO_C_SET_FILE_PTR, 0, (char *)HTTP(con));
-
-  con->http.tls = SSL_new(context);
-  SSL_set_bio(con->http.tls, bio, bio);
-
-  if (SSL_accept(con->http.tls) != 1)
-  {
-    cupsdLogMessage(CUPSD_LOG_ERROR, "Unable to encrypt connection from %s!",
-                    con->http.hostname);
-
-    while ((error = ERR_get_error()) != 0)
-      cupsdLogMessage(CUPSD_LOG_ERROR, "%s", ERR_error_string(error, NULL));
-
-    SSL_CTX_free(context);
-    SSL_free(con->http.tls);
-    con->http.tls = NULL;
-    return (0);
-  }
-
-  cupsdLogMessage(CUPSD_LOG_DEBUG, "Connection from %s now encrypted.",
-                  con->http.hostname);
-
-  return (1);
-
-#  elif defined(HAVE_GNUTLS)
-  int		error;			/* Error code */
-  gnutls_certificate_server_credentials *credentials;
-					/* TLS credentials */
-
-
-  cupsdLogMessage(CUPSD_LOG_DEBUG2, "encrypt_client(con=%p(%d))", con,
-                  con->http.fd);
-
- /*
-  * Verify that we have a certificate...
-  */
-
-  if (access(ServerKey, 0) || access(ServerCertificate, 0))
-  {
-   /*
-    * Nope, make a self-signed certificate...
-    */
-
-    if (!make_certificate(con))
-      return (0);
-  }
-
- /*
-  * Create the SSL object and perform the SSL handshake...
-  */
-
-  credentials = (gnutls_certificate_server_credentials *)
-                    malloc(sizeof(gnutls_certificate_server_credentials));
-  if (credentials == NULL)
-  {
-    cupsdLogMessage(CUPSD_LOG_ERROR,
-                    "Unable to encrypt connection from %s - %s",
-                    con->http.hostname, strerror(errno));
-
-    return (0);
-  }
-
-  gnutls_certificate_allocate_credentials(credentials);
-  gnutls_certificate_set_x509_key_file(*credentials, ServerCertificate,
-				       ServerKey, GNUTLS_X509_FMT_PEM);
-
-  gnutls_init(&con->http.tls, GNUTLS_SERVER);
-  gnutls_set_default_priority(con->http.tls);
-  gnutls_credentials_set(con->http.tls, GNUTLS_CRD_CERTIFICATE, *credentials);
-  gnutls_transport_set_ptr(con->http.tls, (gnutls_transport_ptr)HTTP(con));
-  gnutls_transport_set_pull_function(con->http.tls, _httpReadGNUTLS);
-  gnutls_transport_set_push_function(con->http.tls, _httpWriteGNUTLS);
-
-  error = gnutls_handshake(con->http.tls);
-
-  if (error != GNUTLS_E_SUCCESS)
-  {
-    cupsdLogMessage(CUPSD_LOG_ERROR,
-                    "Unable to encrypt connection from %s - %s",
-                    con->http.hostname, gnutls_strerror(error));
-
-    gnutls_deinit(con->http.tls);
-    gnutls_certificate_free_credentials(*credentials);
-    con->http.tls = NULL;
-    free(credentials);
-    return (0);
-  }
-
-  cupsdLogMessage(CUPSD_LOG_DEBUG, "Connection from %s now encrypted.",
-                  con->http.hostname);
-
-  con->http.tls_credentials = credentials;
-  return (1);
-
-#  elif defined(HAVE_CDSASSL)
-  OSStatus	error = 0;		/* Error code */
-  CFArrayRef	peerCerts;		/* Peer certificates */
-
-
-  cupsdLogMessage(CUPSD_LOG_DEBUG2, "encrypt_client(con=%p(%d))", con,
-                  con->http.fd);
-
-  con->http.tls_credentials = get_cdsa_certificate(con);
-
-  if (!con->http.tls_credentials)
-  {
-   /*
-    * No keychain (yet), make a self-signed certificate...
-    */
-
-    if (make_certificate(con))
-      con->http.tls_credentials = get_cdsa_certificate(con);
-  }
-
-  if (!con->http.tls_credentials)
-  {
-    cupsdLogMessage(CUPSD_LOG_ERROR,
-        	    "Could not find signing key in keychain \"%s\"",
-		    ServerCertificate);
-    error = errSSLBadCert; /* errSSLBadConfiguration is a better choice, but not available on 10.2.x */
-  }
-
-  if (!error)
-    error = SSLNewContext(true, &con->http.tls);
-
-  if (!error)
-    error = SSLSetIOFuncs(con->http.tls, _httpReadCDSA, _httpWriteCDSA);
-
-  if (!error)
-    error = SSLSetProtocolVersionEnabled(con->http.tls, kSSLProtocol2, false);
-
-  if (!error)
-    error = SSLSetConnection(con->http.tls, HTTP(con));
-
-  if (!error)
-    error = SSLSetAllowsExpiredCerts(con->http.tls, true);
-
-  if (!error)
-    error = SSLSetAllowsAnyRoot(con->http.tls, true);
-
-  if (!error)
-    error = SSLSetCertificate(con->http.tls, con->http.tls_credentials);
-
-  if (!error)
-  {
-   /*
-    * Perform SSL/TLS handshake
-    */
-
-    while ((error = SSLHandshake(con->http.tls)) == errSSLWouldBlock)
-      usleep(1000);
-  }
-
-  if (error)
-  {
-    cupsdLogMessage(CUPSD_LOG_ERROR,
-                    "Unable to encrypt connection from %s - %s (%d)",
-                    con->http.hostname, cssmErrorString(error), (int)error);
-
-    con->http.error  = error;
-    con->http.status = HTTP_ERROR;
-
-    if (con->http.tls)
-    {
-      SSLDisposeContext(con->http.tls);
-      con->http.tls = NULL;
-    }
-
-    if (con->http.tls_credentials)
-    {
-      CFRelease(con->http.tls_credentials);
-      con->http.tls_credentials = NULL;
-    }
-
-    return (0);
-  }
-
-  cupsdLogMessage(CUPSD_LOG_DEBUG, "Connection from %s now encrypted.",
-                  con->http.hostname);
-
-  if (!SSLCopyPeerCertificates(con->http.tls, &peerCerts) && peerCerts)
-  {
-    cupsdLogMessage(CUPSD_LOG_DEBUG, "Received %d peer certificates!",
-		    (int)CFArrayGetCount(peerCerts));
-    CFRelease(peerCerts);
-  }
-  else
-    cupsdLogMessage(CUPSD_LOG_DEBUG, "Received NO peer certificates!");
-
-  return (1);
-
-#  endif /* HAVE_LIBSSL */
-}
-#endif /* HAVE_SSL */
-
-
 #ifdef HAVE_CDSASSL
 /*
- * 'get_cdsa_certificate()' - Get a SSL/TLS certificate from the System keychain.
+ * 'copy_cdsa_certificate()' - Copy a SSL/TLS certificate from the System
+ *                             keychain.
  */
 
 static CFArrayRef				/* O - Array of certificates */
-get_cdsa_certificate(
+copy_cdsa_certificate(
     cupsd_client_t *con)			/* I - Client connection */
 {
   OSStatus		err;		/* Error info */
@@ -3383,7 +3115,7 @@ get_cdsa_certificate(
 
 
   cupsdLogMessage(CUPSD_LOG_DEBUG,
-                  "get_cdsa_certificate: Looking for certs for \"%s\"...",
+                  "copy_cdsa_certificate: Looking for certs for \"%s\"...",
 		  con->servername);
 
   if ((err = SecKeychainOpen(ServerCertificate, &keychain)))
@@ -3433,7 +3165,7 @@ get_cdsa_certificate(
     snprintf(localname, sizeof(localname), "%s.local", DNSSDHostName);
 
     cupsdLogMessage(CUPSD_LOG_DEBUG,
-		    "get_cdsa_certificate: Looking for certs for \"%s\"...",
+		    "copy_cdsa_certificate: Looking for certs for \"%s\"...",
 		    localname);
 
     servername = CFStringCreateWithCString(kCFAllocatorDefault, localname,
@@ -3524,7 +3256,7 @@ get_cdsa_certificate(
     ssl_options.ServerNameLen = strlen(localname);
 
     cupsdLogMessage(CUPSD_LOG_DEBUG,
-		    "get_cdsa_certificate: Looking for certs for \"%s\"...",
+		    "copy_cdsa_certificate: Looking for certs for \"%s\"...",
 		    localname);
 
     if (SecPolicySetValue(policy, &options))
@@ -3615,6 +3347,276 @@ get_cdsa_certificate(
   return (certificates);
 }
 #endif /* HAVE_CDSASSL */
+
+
+/*
+ * 'data_ready()' - Check whether data is available from a client.
+ */
+
+static int				/* O - 1 if data is ready, 0 otherwise */
+data_ready(cupsd_client_t *con)		/* I - Client */
+{
+  if (con->http.used > 0)
+    return (1);
+#ifdef HAVE_SSL
+  else if (con->http.tls)
+  {
+#  ifdef HAVE_LIBSSL
+    if (SSL_pending((SSL *)(con->http.tls)))
+      return (1);
+#  elif defined(HAVE_GNUTLS)
+    if (gnutls_record_check_pending(con->http.tls))
+      return (1);
+#  elif defined(HAVE_CDSASSL)
+    size_t bytes;			/* Bytes that are available */
+
+    if (!SSLGetBufferedReadSize(con->http.tls, &bytes) && bytes > 0)
+      return (1);
+#  endif /* HAVE_LIBSSL */
+  }
+#endif /* HAVE_SSL */
+
+  return (0);
+}
+
+
+#ifdef HAVE_SSL
+/*
+ * 'encrypt_client()' - Enable encryption for the client...
+ */
+
+static int				/* O - 1 on success, 0 on error */
+encrypt_client(cupsd_client_t *con)	/* I - Client to encrypt */
+{
+#  ifdef HAVE_LIBSSL
+  SSL_CTX	*context;		/* Context for encryption */
+  BIO		*bio;			/* BIO data */
+  unsigned long	error;			/* Error code */
+
+
+  cupsdLogMessage(CUPSD_LOG_DEBUG2, "encrypt_client(con=%p(%d))", con,
+                  con->http.fd);
+
+ /*
+  * Verify that we have a certificate...
+  */
+
+  if (access(ServerKey, 0) || access(ServerCertificate, 0))
+  {
+   /*
+    * Nope, make a self-signed certificate...
+    */
+
+    if (!make_certificate(con))
+      return (0);
+  }
+
+ /*
+  * Create the SSL context and accept the connection...
+  */
+
+  context = SSL_CTX_new(SSLv23_server_method());
+
+  SSL_CTX_set_options(context, SSL_OP_NO_SSLv2); /* Only use SSLv3 or TLS */
+  if (SSLOptions & CUPSD_SSL_NOEMPTY)
+    SSL_CTX_set_options(context, SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS);
+  SSL_CTX_use_PrivateKey_file(context, ServerKey, SSL_FILETYPE_PEM);
+  SSL_CTX_use_certificate_chain_file(context, ServerCertificate);
+
+  bio = BIO_new(_httpBIOMethods());
+  BIO_ctrl(bio, BIO_C_SET_FILE_PTR, 0, (char *)HTTP(con));
+
+  con->http.tls = SSL_new(context);
+  SSL_set_bio(con->http.tls, bio, bio);
+
+  if (SSL_accept(con->http.tls) != 1)
+  {
+    cupsdLogMessage(CUPSD_LOG_ERROR, "Unable to encrypt connection from %s.",
+                    con->http.hostname);
+
+    while ((error = ERR_get_error()) != 0)
+      cupsdLogMessage(CUPSD_LOG_ERROR, "%s", ERR_error_string(error, NULL));
+
+    SSL_CTX_free(context);
+    SSL_free(con->http.tls);
+    con->http.tls = NULL;
+    return (0);
+  }
+
+  cupsdLogMessage(CUPSD_LOG_DEBUG, "Connection from %s now encrypted.",
+                  con->http.hostname);
+
+  return (1);
+
+#  elif defined(HAVE_GNUTLS)
+  int		status;			/* Error code */
+  gnutls_certificate_server_credentials *credentials;
+					/* TLS credentials */
+
+
+  cupsdLogMessage(CUPSD_LOG_DEBUG2, "encrypt_client(con=%p(%d))", con,
+                  con->http.fd);
+
+ /*
+  * Verify that we have a certificate...
+  */
+
+  if (access(ServerKey, 0) || access(ServerCertificate, 0))
+  {
+   /*
+    * Nope, make a self-signed certificate...
+    */
+
+    if (!make_certificate(con))
+      return (0);
+  }
+
+ /*
+  * Create the SSL object and perform the SSL handshake...
+  */
+
+  credentials = (gnutls_certificate_server_credentials *)
+                    malloc(sizeof(gnutls_certificate_server_credentials));
+  if (credentials == NULL)
+  {
+    cupsdLogMessage(CUPSD_LOG_ERROR,
+                    "Unable to encrypt connection from %s - %s",
+                    con->http.hostname, strerror(errno));
+
+    return (0);
+  }
+
+  gnutls_certificate_allocate_credentials(credentials);
+  gnutls_certificate_set_x509_key_file(*credentials, ServerCertificate,
+				       ServerKey, GNUTLS_X509_FMT_PEM);
+
+  gnutls_init(&con->http.tls, GNUTLS_SERVER);
+  gnutls_set_default_priority(con->http.tls);
+
+  gnutls_credentials_set(con->http.tls, GNUTLS_CRD_CERTIFICATE, *credentials);
+  gnutls_transport_set_ptr(con->http.tls, (gnutls_transport_ptr)HTTP(con));
+  gnutls_transport_set_pull_function(con->http.tls, _httpReadGNUTLS);
+  gnutls_transport_set_push_function(con->http.tls, _httpWriteGNUTLS);
+
+  while ((status = gnutls_handshake(con->http.tls)) != GNUTLS_E_SUCCESS)
+  {
+    if (gnutls_error_is_fatal(status))
+    {
+      cupsdLogMessage(CUPSD_LOG_ERROR,
+                      "Unable to encrypt connection from %s - %s",
+                      con->http.hostname, gnutls_strerror(status));
+
+      gnutls_deinit(con->http.tls);
+      gnutls_certificate_free_credentials(*credentials);
+      con->http.tls = NULL;
+      free(credentials);
+      return (0);
+    }
+  }
+
+  cupsdLogMessage(CUPSD_LOG_DEBUG, "Connection from %s now encrypted.",
+                  con->http.hostname);
+
+  con->http.tls_credentials = credentials;
+  return (1);
+
+#  elif defined(HAVE_CDSASSL)
+  OSStatus	error = 0;		/* Error code */
+  CFArrayRef	peerCerts;		/* Peer certificates */
+
+
+  cupsdLogMessage(CUPSD_LOG_DEBUG2, "encrypt_client(con=%p(%d))", con,
+                  con->http.fd);
+
+  con->http.tls_credentials = copy_cdsa_certificate(con);
+
+  if (!con->http.tls_credentials)
+  {
+   /*
+    * No keychain (yet), make a self-signed certificate...
+    */
+
+    if (make_certificate(con))
+      con->http.tls_credentials = copy_cdsa_certificate(con);
+  }
+
+  if (!con->http.tls_credentials)
+  {
+    cupsdLogMessage(CUPSD_LOG_ERROR,
+        	    "Could not find signing key in keychain \"%s\"",
+		    ServerCertificate);
+    error = errSSLBadCert; /* errSSLBadConfiguration is a better choice, but not available on 10.2.x */
+  }
+
+  if (!error)
+    error = SSLNewContext(true, &con->http.tls);
+
+  if (!error)
+    error = SSLSetIOFuncs(con->http.tls, _httpReadCDSA, _httpWriteCDSA);
+
+  if (!error)
+    error = SSLSetConnection(con->http.tls, HTTP(con));
+
+  if (!error)
+    error = SSLSetAllowsExpiredCerts(con->http.tls, true);
+
+  if (!error)
+    error = SSLSetAllowsAnyRoot(con->http.tls, true);
+
+  if (!error)
+    error = SSLSetCertificate(con->http.tls, con->http.tls_credentials);
+
+  if (!error)
+  {
+   /*
+    * Perform SSL/TLS handshake
+    */
+
+    while ((error = SSLHandshake(con->http.tls)) == errSSLWouldBlock)
+      usleep(1000);
+  }
+
+  if (error)
+  {
+    cupsdLogMessage(CUPSD_LOG_ERROR,
+                    "Unable to encrypt connection from %s - %s (%d)",
+                    con->http.hostname, cssmErrorString(error), (int)error);
+
+    con->http.error  = error;
+    con->http.status = HTTP_ERROR;
+
+    if (con->http.tls)
+    {
+      SSLDisposeContext(con->http.tls);
+      con->http.tls = NULL;
+    }
+
+    if (con->http.tls_credentials)
+    {
+      CFRelease(con->http.tls_credentials);
+      con->http.tls_credentials = NULL;
+    }
+
+    return (0);
+  }
+
+  cupsdLogMessage(CUPSD_LOG_DEBUG, "Connection from %s now encrypted.",
+                  con->http.hostname);
+
+  if (!SSLCopyPeerCertificates(con->http.tls, &peerCerts) && peerCerts)
+  {
+    cupsdLogMessage(CUPSD_LOG_DEBUG, "Received %d peer certificates!",
+		    (int)CFArrayGetCount(peerCerts));
+    CFRelease(peerCerts);
+  }
+  else
+    cupsdLogMessage(CUPSD_LOG_DEBUG, "Received NO peer certificates!");
+
+  return (1);
+
+#  endif /* HAVE_LIBSSL */
+}
+#endif /* HAVE_SSL */
 
 
 /*
@@ -5184,5 +5186,5 @@ write_pipe(cupsd_client_t *con)		/* I - Client connection */
 
 
 /*
- * End of "$Id: client.c 9818 2011-06-10 21:16:18Z mike $".
+ * End of "$Id: client.c 10178 2012-01-13 23:00:22Z mike $".
  */

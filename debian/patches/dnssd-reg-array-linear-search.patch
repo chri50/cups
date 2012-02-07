@@ -1,6 +1,6 @@
 --- a/scheduler/dirsvc.c
 +++ b/scheduler/dirsvc.c
-@@ -1650,8 +1650,7 @@
+@@ -1659,8 +1659,7 @@
        */
  
        if (BrowseRemoteProtocols & BROWSE_DNSSD)
