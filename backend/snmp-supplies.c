@@ -56,6 +56,7 @@ typedef struct				/**** Printer supply data ****/
 	color[8];			/* Color: "#RRGGBB" or "none" */
   int	colorant,			/* Colorant index */
 	type,				/* Supply type */
+	class,				/* Supply class (consumed/filled) */
 	units,				/* Supply units (capacity & level)*/
 	max_capacity,			/* Maximum capacity */
 	level;				/* Current level value */
@@ -153,6 +154,13 @@ static const int	prtMarkerSuppliesSupplyUnit[] =
 			prtMarkerSuppliesSupplyUnitOffset =
 			(sizeof(prtMarkerSuppliesSupplyUnit) /
 			 sizeof(prtMarkerSuppliesSupplyUnit[0]));
+			 		/* Offset to supply index */
+static const int	prtMarkerSuppliesClass[] =
+			{ CUPS_OID_prtMarkerSuppliesClass, -1 },
+					/* Type OID */
+			prtMarkerSuppliesClassOffset =
+			(sizeof(prtMarkerSuppliesClass) /
+			 sizeof(prtMarkerSuppliesClass[0]));
 			 		/* Offset to supply index */
 
 static const backend_state_t const printer_states[] =
@@ -260,6 +268,15 @@ backendSNMPSupplies(
         *ptr++ = ',';
 
       sprintf(ptr, "%d", percent);
+
+      /* normalize percent (for status purposes) if supply is filled (rather
+       *  than consumed) and don't evaluate status for supply types that are
+       *  neither consumed nor filled
+       */
+      if (supplies[i].class == CUPS_TC_receptacleThatIsFilled && percent >= 0)
+        percent = (percent < 100) ? 100 - percent : 0;
+      else if (supplies[i].class == CUPS_TC_other)
+        continue;
 
       if (percent >= 0 && percent <= 5)
       {
@@ -954,6 +971,25 @@ backend_walk_cb(cups_snmp_t *packet,	/* I - SNMP packet */
       num_supplies = i;
 
     supplies[i - 1].units = packet->object_value.integer;
+  }
+  else if (_cupsSNMPIsOIDPrefixed(packet, prtMarkerSuppliesClass))
+  {
+   /*
+    * Get marker class...
+    */
+
+    i = packet->object_name[prtMarkerSuppliesClassOffset];
+    if (i < 1 || i > CUPS_MAX_SUPPLIES ||
+        packet->object_type != CUPS_ASN1_INTEGER)
+      return;
+
+    fprintf(stderr, "DEBUG2: prtMarkerSuppliesClass.1.%d = %d\n", i,
+            packet->object_value.integer);
+
+    if (i > num_supplies)
+      num_supplies = i;
+
+    supplies[i - 1].class = packet->object_value.integer;
   }
 }
 
