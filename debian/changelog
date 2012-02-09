@@ -1,3 +1,14 @@
+cups (1.5.2-3) unstable; urgency=low
+
+  * debian/patches/usb-backend-backchannel-support.patch: Added backchannel
+    (bi-directional access) support to the "usb" backend. This allows things
+    like status checks, auto-configuration (run command "echo -en
+    '#CUPS-COMMAND\nAutoConfigure\n' | lpr -P <printer>" on USB-connected
+    PostScript printer with manufacturer's PPD), and also use of proprietary
+    manufacturer drivers which require read-back from printer (CUPS STR #2890).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Thu, 09 Feb 2012 06:17:57 +0100
+
 cups (1.5.2-2) unstable; urgency=low
 
   * debian/patches/series: Actually add the new patches for the IPP backend and
