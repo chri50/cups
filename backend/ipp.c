@@ -896,6 +896,8 @@ main(int  argc,				/* I - Number of command-line args */
 	if (!strncmp(httpGetField(http, HTTP_FIELD_WWW_AUTHENTICATE),
 		     "Negotiate", 9))
 	  auth_info_required = "negotiate";
+	else
+	  auth_info_required = "username,password";
 
 	fprintf(stderr, "ATTR: auth-info-required=%s\n", auth_info_required);
 	return (CUPS_BACKEND_AUTH_REQUIRED);
@@ -1268,6 +1270,8 @@ main(int  argc,				/* I - Number of command-line args */
       if (!strncmp(httpGetField(http, HTTP_FIELD_WWW_AUTHENTICATE),
 		   "Negotiate", 9))
 	auth_info_required = "negotiate";
+	    else
+	      auth_info_required = "username,password";
 
       goto cleanup;
     }
@@ -1435,6 +1439,8 @@ main(int  argc,				/* I - Number of command-line args */
 	  if (!strncmp(httpGetField(http, HTTP_FIELD_WWW_AUTHENTICATE),
 		       "Negotiate", 9))
 	    auth_info_required = "negotiate";
+	  else
+	    auth_info_required = "username,password";
 	}
 	else
 	  sleep(10);
