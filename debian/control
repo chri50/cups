@@ -131,6 +131,7 @@ Package: cups
 Priority: optional
 Section: net
 Architecture: any
+Pre-Depends: dpkg (>= 1.15.7.2)
 Depends: ${shlibs:Depends}, ${misc:Depends}, debconf (>= 1.2.9) | debconf-2.0,
  poppler-utils (>= 0.12), procps, ghostscript (>= 9.02~), lsb-base (>= 3),
  cups-common (>= ${source:Upstream-Version}), 
