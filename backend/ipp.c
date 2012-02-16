@@ -1192,8 +1192,17 @@ main(int  argc,				/* I - Number of command-line args */
 
     _cupsLangPrintFilter(stderr, "INFO", _("Copying print data."));
 
+    /*
+     * Need to write the existing buffer out to the file, otherwise we lose
+     * the PCL header for example.
+     */
+    if (write(fd, buffer, bytes)<0)
+    {
+      fprintf(stderr, "Error writing bytes to temporary file! errno=%d\n", errno);
+      return (-1);
+    }
     compatsize = backendRunLoop(-1, fd, snmp_fd, &(addrlist->addr), 0, 0,
-		                backendNetworkSideCB);
+		                backendNetworkSideCB) + bytes;
 
     close(fd);
 
