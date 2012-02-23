@@ -1,3 +1,22 @@
+cups (1.5.2-5) unstable; urgency=low
+
+  * debian/patches/commandtops-make-robust-against-broken-postscript.patch:
+    CUPS' commandtops filter allows auto-configuration of the default option
+    settings of PostScript printers querying the printer using PostScript
+    commands defined in the PPD file ("*?..." entries). Problem is that if
+    one of the query commands has a PostScript error (rather common in
+    manufacturer-supplied PPD files) the printer errors out and ignores all
+    subsequent queries putting the auto-configuration job into a 90-second
+    timeout for each query. This patch protects the job against failures
+    on broken PostScript and shortens the timeout to 10 seconds, so that
+    as many options as possible get auto-configured in a reasonable time.
+    Thanks to Helge Blischke for applying the needed PostScript tricks
+    (CUPS STR #4028). No auto-configuration of PostScript printers actually
+    works by sending a job like 'echo -en '#CUPS-COMMAND\nAutoConfigure\n' |
+    lp -d <printer>' which could be done by a button in a printer setup tool.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Thu, 23 Feb 2012 14:52:01 +0100
+
 cups (1.5.2-4) unstable; urgency=low
 
   [ Till Kamppeter ]

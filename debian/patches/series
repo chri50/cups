@@ -21,6 +21,7 @@ ipp-backend-fails-to-trigger-authentication-prompts.patch
 ipp-backend-missing-document-type.patch
 ipp-backend-http-1.0-fallback-fix.patch
 usb-backend-backchannel-support.patch
+commandtops-make-robust-against-broken-postscript.patch
 
 # patches which should go upstream
 airprint-support.patch

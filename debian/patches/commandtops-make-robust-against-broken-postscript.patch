@@ -1,0 +1,171 @@
+Description: Make commandtops robust against broken PostScript in PPD file
+Bug: http://www.cups.org/str.php?L4028
+Author: Till Kamppeter
+
+--- a/filter/commandtops.c
++++ b/filter/commandtops.c
+@@ -141,6 +141,8 @@
+ 		*bufptr;		/* Pointer into buffer */
+   ssize_t	bytes;			/* Number of bytes read */
+   int		datalen;		/* Side-channel data length */
++  int		ch;			/* single character equivalent */
++  char		*tempptr;		/* Pointer into buffer */
+ 
+ 
+  /*
+@@ -175,7 +177,22 @@
+   }
+   while (cupsSideChannelDoRequest(CUPS_SC_CMD_GET_CONNECTED, buffer, &datalen,
+                                   5.0) == CUPS_SC_STATUS_OK && !buffer[0]);
+-
++ /*
++  * As a lot of printer vendor supplied PPDs have exhibited erroneous PostScript
++  * constructs in query code sequences, we make auto configuring (almost) bomb proof even 
++  * against syntax errors in PostScript code.
++  * As a first step, we establish our own PS error handler.
++  */
++  puts("/my_handleerror\n"
++	"{\n"
++	" $error/newerror false put\n"
++	" (:PostScript error in \")print query print (\": )print\n"
++	" $error/errorname get 128 string cvs print\n"
++	" (; offending command:)print $error/command get 128 string cvs print (\n)print flush\n"
++	"}bind def\n"
++	"errordict/timeout{}put\n"
++	"/query (?Unknown) def\n");
++  fflush(stdout);
+  /*
+   * Then loop through every option in the PPD file and ask for the current
+   * value...
+@@ -202,7 +219,21 @@
+     */
+ 
+     fprintf(stderr, "DEBUG: Querying %s...\n", option->keyword);
+-    fputs(attr->value, stdout);
++    fprintf(stdout, "/query (?%s)def\n", option->keyword); /* pass the keyword for error reporting */
++    puts("/this_query(");
++   /*
++    * To prevent our own construct from failing due to unpaired parantheses
++    * within the query code, we take pains to escape thr "(" and ")".
++    */
++    fprintf(stderr, "DEBUG: %s\n", attr->value);
++    bufptr = attr->value;
++    while (*bufptr)
++    {
++	ch = *bufptr++;
++	if (ch == '(' || ch == ')') putchar('\\');
++	putchar(ch);
++    }
++    puts(")def\n{this_query cvx exec}stopped{userdict/my_handleerror get exec}if clear\n");
+     fflush(stdout);
+ 
+     datalen = 0;
+@@ -212,21 +243,38 @@
+     * Read the response data...
+     */
+ 
+-    while ((bytes = cupsBackChannelRead(buffer, sizeof(buffer) - 1, 90.0)) > 0)
++    bufptr = buffer;
++    buffer[0] = '\0';
++    while ((bytes = cupsBackChannelRead(bufptr,
++					sizeof(buffer) - (bufptr - buffer) - 1,
++					10.0)) > 0)
+     {
++      *(bufptr + bytes) = '\0';
++
+      /*
+-      * Trim whitespace from both ends...
++      * No newline at the end? Go on reading ...
+       */
+ 
+-      buffer[bytes] = '\0';
++      bufptr += bytes;
++      if (bytes == 0 ||
++	  (bufptr - buffer < sizeof(buffer) - 1 && 
++	   *(bufptr - 1) != '\r' && *(bufptr - 1) != '\n'))
++	continue;
++
++      bytes = bufptr - buffer;
++
++     /*
++      * Trim whitespace and control characters from both ends...
++      */
+ 
+-      for (bufptr = buffer + bytes - 1; bufptr >= buffer; bufptr --)
+-        if (isspace(*bufptr & 255))
++      for (bufptr --; bufptr >= buffer; bufptr --)
++        if (isspace(*bufptr & 255) || iscntrl(*bufptr & 255))
+ 	  *bufptr = '\0';
+ 	else
+ 	  break;
+ 
+-      for (bufptr = buffer; isspace(*bufptr & 255); bufptr ++);
++      for (bufptr = buffer; isspace(*bufptr & 255) || iscntrl(*bufptr & 255);
++	   bufptr ++);
+ 
+       fprintf(stderr, "DEBUG: Got \"%s\" (%d bytes)\n", bufptr, (int)bytes);
+ 
+@@ -235,14 +283,40 @@
+       */
+ 
+       if (!*bufptr)
++      {
++	bufptr = buffer;
++	buffer[0] = '\0';
+         continue;
++      }
++
++     /*
++      * PostScript code for this option in the PPD is broken...
++      */
++      if ((tempptr = strchr(bufptr, ':')) != NULL)
++      {
++	fprintf(stderr, "DEBUG%s\n", tempptr); /* the interpreter's error message */
++	fprintf(stderr, "ERROR: PostScript error in query for option %s, default for this option not set.\n", option->keyword);
++	break;
++      }
+ 
+      /*
+       * Verify the result is a valid option choice...
+       */
+ 
+       if (!ppdFindChoice(option, bufptr))
++      {
++	/* Consider "Unknown" as not configured in the printer */
++	if (!strcasecmp(bufptr, "Unknown"))
++	{
++	  fprintf(stderr,
++		  "WARNING: Printer answered query for the setting of option %s with \"Unknown\", default for this option not set.\n",
++		  option->keyword);
++	  break;
++	}
++	bufptr = buffer;
++	buffer[0] = '\0';
+         continue;
++      }
+ 
+      /*
+       * Write out the result and move on to the next option...
+@@ -252,12 +326,22 @@
+       fprintf(stderr, "PPD: Default%s=%s\n", option->keyword, bufptr);
+       break;
+     }
++
++   /*
++    * Printer did not answer this option's query
++    */
++
++    if (bytes <= 0)
++      fprintf(stderr,
++	      "ERROR: Printer timed out on option %s, default for this option not set.\n",
++	      option->keyword);
+   }
+ 
+  /*
+   * Finish the job...
+   */
+ 
++  fflush(stdout);
+   end_ps(ppd);
+ }
+ 
