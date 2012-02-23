@@ -1157,6 +1157,7 @@ main(int  argc,				/* I - Number of command-line args */
     for (i = 0; i < format_sup->num_values; i ++)
       if (!_cups_strcasecmp(final_content_type, format_sup->values[i].string.text))
       {
+        fprintf(stderr, "DEBUG: Selected document_type %s\n", final_content_type);
         document_format = final_content_type;
 	break;
       }
@@ -1167,7 +1168,8 @@ main(int  argc,				/* I - Number of command-line args */
 	if (!_cups_strcasecmp("application/octet-stream",
 	                format_sup->values[i].string.text))
 	{
-	  document_format = "application/octet-stream";
+	  fprintf(stderr, "DEBUG: No document_type, forcing to NULL\n");
+	  document_format = NULL;
 	  break;
 	}
     }
