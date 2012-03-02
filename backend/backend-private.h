@@ -259,6 +259,25 @@ extern "C" {
 #define CUPS_TC_inserts				33
 #define CUPS_TC_covers				34
 
+/* Values defined in RFC 1759
+ *   http://tools.ietf.org/html/rfc1759#page-61
+ * Additional values from Apple technical note TN2144
+ *   http://developer.apple.com/library/mac/#technotes/tn2144/_index.html
+ */
+#define CUPS_TC_tenthousandthsofinches		3
+#define CUPS_TC_micrometers			4
+#define CUPS_TC_impressions			7
+#define CUPS_TC_sheets				8
+#define CUPS_TC_hours				11
+#define CUPS_TC_thousandthsofounces		12
+#define CUPS_TC_tenthsofgrams			13
+#define CUPS_TC_hundredsoffluidounces		14
+#define CUPS_TC_tenthsofmilliliters		15
+#define CUPS_TC_feet				16
+#define CUPS_TC_meters				17
+#define CUPS_TC_items				18
+#define CUPS_TC_percent				19
+
 /* These come from RFC 3808 to define character sets we support */
 /* Also see http://www.iana.org/assignments/character-sets */
 #define CUPS_TC_csASCII				3
