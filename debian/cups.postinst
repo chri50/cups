@@ -227,7 +227,8 @@ if which lpstat > /dev/null 2>&1 && \
 		# Update CUPS included drivers' queues
 		echo "Updating PPD files for cups ..."
 		ppd_updater 'lsb/usr/cups-included/|drv:///sample.drv/' 's/,\s*\d+\.\d+[\d\.]*$//i'
-	elif [ "$1" = triggered ] && [ "$2" = /usr/share/cups/ppd-updaters ] ; then
+	fi
+	if [ "$1" = triggered ] || [ "$1" = configure ] ; then
 		# Update external drivers' queues.
 		# 
 		# We log the modification dates of the file in 

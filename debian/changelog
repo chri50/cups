@@ -1,3 +1,29 @@
+cups (1.5.2-5bzr1) precise; urgency=low
+
+  Upload current Debian packaging bzr, as it's not appropriate to upload to
+  Debian sid at the moment.
+
+  [ Till Kamppeter ]
+  * debian/cups.postinst: Run "triggered" code porion of cups postinstall
+    script also when configuring cups ("configure") so that when cups
+    and a printer driver package (which triggers cups to update the PPD files
+    of existing print queues) get updated together the PPD update for sure
+    happens also if the driver's trigger action is not executed due to cups
+    also being updated (LP: #932882).
+
+  [ Martin Pitt ]
+  * debian/control: Wrap dependencies.
+  * debian/control, debian/rules: Move from hardening-wrapper to using
+    dpkg-buildflags. Bump dpkg-dev build dependency to (>= 1.16.1~) for this.
+  * Add tests-ignore-colord-warnings.patch: Ignore warnings from colord in the
+    tests, as they change the expected number of warnings.
+  * debian/rules: Have package fail to build on test failures again.
+  * debian/copyright: Convert to copyright format 1.0, and update to current
+    license/copyrights.
+  * debian/control: Bump Standards-Version to 3.9.3.
+
+ -- Martin Pitt <martin.pitt@ubuntu.com>  Fri, 02 Mar 2012 17:18:15 +0100
+
 cups (1.5.2-5) unstable; urgency=low
 
   * debian/patches/commandtops-make-robust-against-broken-postscript.patch:
@@ -11,9 +37,9 @@ cups (1.5.2-5) unstable; urgency=low
     on broken PostScript and shortens the timeout to 10 seconds, so that
     as many options as possible get auto-configured in a reasonable time.
     Thanks to Helge Blischke for applying the needed PostScript tricks
-    (CUPS STR #4028). No auto-configuration of PostScript printers actually
-    works by sending a job like 'echo -en '#CUPS-COMMAND\nAutoConfigure\n' |
-    lp -d <printer>' which could be done by a button in a printer setup tool.
+    (CUPS STR #4028). Now auto-configuration of PostScript printers actually
+    works by sending a job like "echo -en '#CUPS-COMMAND\nAutoConfigure\n' |
+    lp -d <printer>" which could be done by a button in a printer setup tool.
 
  -- Till Kamppeter <till.kamppeter@gmail.com>  Thu, 23 Feb 2012 14:52:01 +0100
 
