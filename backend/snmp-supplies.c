@@ -56,6 +56,7 @@ typedef struct				/**** Printer supply data ****/
 	color[8];			/* Color: "#RRGGBB" or "none" */
   int	colorant,			/* Colorant index */
 	type,				/* Supply type */
+	units,				/* Supply units (capacity & level)*/
 	max_capacity,			/* Maximum capacity */
 	level;				/* Current level value */
 } backend_supplies_t;
@@ -146,6 +147,13 @@ static const int	prtMarkerSuppliesType[] =
 			(sizeof(prtMarkerSuppliesType) /
 			 sizeof(prtMarkerSuppliesType[0]));
 			 		/* Offset to supply index */
+static const int	prtMarkerSuppliesSupplyUnit[] =
+			{ CUPS_OID_prtMarkerSuppliesSupplyUnit, -1 },
+					/* Type OID */
+			prtMarkerSuppliesSupplyUnitOffset =
+			(sizeof(prtMarkerSuppliesSupplyUnit) /
+			 sizeof(prtMarkerSuppliesSupplyUnit[0]));
+			 		/* Offset to supply index */
 
 static const backend_state_t const printer_states[] =
 			{
@@ -230,7 +238,12 @@ backendSNMPSupplies(
     for (i = 0, ptr = value; i < num_supplies; i ++, ptr += strlen(ptr))
     {
       if (supplies[i].max_capacity > 0 && supplies[i].level >= 0)
-	percent = 100 * supplies[i].level / supplies[i].max_capacity;
+      {
+        if (supplies[i].units == CUPS_TC_percent)
+	  percent = supplies[i].level;
+        else
+	  percent = 100 * supplies[i].level / supplies[i].max_capacity;
+      }
       else
         percent = 50;
 
@@ -916,6 +929,25 @@ backend_walk_cb(cups_snmp_t *packet,	/* I - SNMP packet */
       num_supplies = i;
 
     supplies[i - 1].type = packet->object_value.integer;
+  }
+  else if (_cupsSNMPIsOIDPrefixed(packet, prtMarkerSuppliesSupplyUnit))
+  {
+   /*
+    * Get marker supply units...
+    */
+
+    i = packet->object_name[prtMarkerSuppliesSupplyUnitOffset];
+    if (i < 1 || i > CUPS_MAX_SUPPLIES ||
+        packet->object_type != CUPS_ASN1_INTEGER)
+      return;
+
+    fprintf(stderr, "DEBUG2: prtMarkerSuppliesSupplyUnit.1.%d = %d\n", i,
+            packet->object_value.integer);
+
+    if (i > num_supplies)
+      num_supplies = i;
+
+    supplies[i - 1].units = packet->object_value.integer;
   }
 }
 
