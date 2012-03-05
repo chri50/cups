@@ -9,15 +9,18 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-export DEB_BUILD_HARDENING=1
-
 # work around libpng crash on our test PNGs with 8 bit colormaps (LP #710881)
 export NO_PNG_PKG_MANGLE=1
+
+#export DEB_BUILD_MAINT_OPTIONS=hardening
+DPKG_EXPORT_BUILDFLAGS=1
+include /usr/share/dpkg/buildflags.mk
+LDFLAGS+= -Wl,--as-needed
 
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/autotools.mk
 
-DEB_CONFIGURE_EXTRA_FLAGS := --with-optim=$(DEB_OPTFLAGS) --libdir=/usr/lib/$(DEB_HOST_MULTIARCH) --mandir=/usr/share/man --with-docdir=/usr/share/cups/doc-root --localedir=/usr/share/cups/locale --enable-slp --enable-libpaper --enable-ssl --enable-gnutls --disable-openssl --enable-threads --enable-static --enable-debug --enable-dbus --with-dbusdir=/etc/dbus-1 --enable-gssapi --enable-avahi --with-pdftops=/usr/bin/gs --disable-launchd --with-cups-group=lp --with-system-groups=lpadmin --with-printcap=/var/run/cups/printcap --with-log-file-perm=0640 CFLAGS="$(CFLAGS)" --with-local_protocols='CUPS dnssd' --with-remote_protocols='CUPS dnssd'
+DEB_CONFIGURE_EXTRA_FLAGS := --with-optim=$(DEB_OPTFLAGS) --libdir=/usr/lib/$(DEB_HOST_MULTIARCH) --mandir=/usr/share/man --with-docdir=/usr/share/cups/doc-root --localedir=/usr/share/cups/locale --enable-slp --enable-libpaper --enable-ssl --enable-gnutls --disable-openssl --enable-threads --enable-static --enable-debug --enable-dbus --with-dbusdir=/etc/dbus-1 --enable-gssapi --enable-avahi --with-pdftops=/usr/bin/gs --disable-launchd --with-cups-group=lp --with-system-groups=lpadmin --with-printcap=/var/run/cups/printcap --with-log-file-perm=0640 --with-local_protocols='CUPS dnssd' --with-remote_protocols='CUPS dnssd'
 ifeq ($(DEB_HOST_ARCH_OS),hurd)
 DEB_CONFIGURE_EXTRA_FLAGS += --disable-libusb
 else
@@ -40,10 +43,8 @@ DEB_DH_INSTALL_SOURCEDIR := debian/tmp
 ifneq ($(findstring $(DEB_BUILD_ARCH), arm m68k),)
 DEB_MAKE_CHECK_TARGET := check || true
 else
-# Test suite deactivated as colord changes number of warnings in error_log.
-DEB_MAKE_CHECK_TARGET := check || true
+DEB_MAKE_CHECK_TARGET := check
 endif
-LDFLAGS := -Wl,--as-needed
 DPKG_GENSYMBOLS_CHECK_LEVEL=4
 export DPKG_GENSYMBOLS_CHECK_LEVEL
 

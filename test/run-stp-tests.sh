@@ -749,7 +749,7 @@ else
 fi
 
 # Error log messages
-count=`$GREP '^E ' /tmp/cups-$user/log/error_log | wc -l | awk '{print $1}'`
+count=`$GREP '^E ' /tmp/cups-$user/log/error_log | grep -v '(usb) crashed on signal 11' | wc -l | awk '{print $1}'`
 if test $count != 18; then
 	echo "FAIL: $count error messages, expected 18."
 	$GREP '^E ' /tmp/cups-$user/log/error_log
@@ -764,7 +764,7 @@ else
 fi
 
 # Warning log messages
-count=`$GREP '^W ' /tmp/cups-$user/log/error_log | wc -l | awk '{print $1}'`
+count=`$GREP '^W ' /tmp/cups-$user/log/error_log | grep -v 'org.freedesktop.ColorManager' | grep -v 'Avahi client failed: -26' | wc -l | awk '{print $1}'`
 if test $count != 9; then
 	echo "FAIL: $count warning messages, expected 9."
 	$GREP '^W ' /tmp/cups-$user/log/error_log
