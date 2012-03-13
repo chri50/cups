@@ -1,3 +1,17 @@
+cups (1.5.2-7) unstable; urgency=low
+
+  * Add fix-empty-translations.patch: Do not translate msgids to empty
+    strings. Backported from upstream SVN. (LP: #953321)
+  * Add test-i18n-nonlinux.patch: Do not run the CUPS_EUC_JP test case on
+    BSD/Hurd either, as glibc's iconv behavior is different than what the test
+    expects. (Closes: #662996)
+  * debian/local/apparmor-profile: Allow gs to read /proc/*/auxv; it's
+    harmless information. (LP: #936629)
+  * debian/cups.dirs, debian/rules: Disable /usr/local/share/ppd/ directory
+    for now, until dh_usrlocal stops failing on those.
+
+ -- Martin Pitt <mpitt@debian.org>  Tue, 13 Mar 2012 11:46:09 +0100
+
 cups (1.5.2-6) unstable; urgency=low
 
   [ Till Kamppeter ]

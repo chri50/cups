@@ -117,7 +117,7 @@ binary-post-install/cups::
 	# PPD-updating triggers directory
 	mkdir -p "$(DEB_DESTDIR)/../cups/usr/share/cups/ppd-updaters/"
 
-	dh_usrlocal
+	#dh_usrlocal
 
 	# Install AppArmor, ufw profile, and Apport hook on Ubuntu
 	if dpkg-vendor --is ubuntu; then \

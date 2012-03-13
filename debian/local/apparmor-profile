@@ -64,6 +64,7 @@
   @{PROC}/sys/dev/parport/** r,
   @{PROC}/*/net/ r,
   @{PROC}/*/net/** r,
+  @{PROC}/*/auxv r,
   @{PROC}/sys/crypto/** r,
   /sys/** r,
   /usr/bin/* ixr,

@@ -1,6 +1,5 @@
-# patches backported from upstream SVN trunk for 1.6:
-
-# patches accepted and committed upstream for next 1.5:
+# patches accepted and committed upstream:
+fix-empty-translations.patch
 
 # patches sent upstream
 pidfile.patch
@@ -48,3 +47,4 @@ pstops-based-workflow-only-for-printing-ps-on-a-ps-printer.patch
 dnssd-reg-array-linear-search.patch
 tests-ignore-warnings.patch
 tests-ignore-usb-crash.patch
+test-i18n-nonlinux.patch
