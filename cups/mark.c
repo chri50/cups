@@ -790,6 +790,11 @@ ppd_mark_option(ppd_file_t *ppd,	/* I - PPD file */
 
   if (!_cups_strcasecmp(option, "AP_D_InputSlot"))
   {
+    /* CUPS adds AP_D_InputSlot to all jobs, if not explicitly set with
+       empty argument, making the InputSlot option useless. So ignore it
+       if the argument is empty. */
+    if (choice[0] == '\0') return;
+
     cupsArraySave(ppd->options);
 
     if ((o = ppdFindOption(ppd, "InputSlot")) != NULL)
