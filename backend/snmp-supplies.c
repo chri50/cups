@@ -237,6 +237,13 @@ backendSNMPSupplies(
 
     for (i = 0, ptr = value; i < num_supplies; i ++, ptr += strlen(ptr))
     {
+      /* RFC 3805 specifies the following special values for
+       *  prtMarkerSuppliesLevel:
+       *  -1   other; sub-unit places no restrictions on this parameter
+       *  -2   unknown
+       *  -3   some supply or remaining space (depending on if supply is
+       *         consumed or filled)
+       */
       if (supplies[i].max_capacity > 0 && supplies[i].level >= 0)
       {
         if (supplies[i].units == CUPS_TC_percent)
@@ -244,10 +251,17 @@ backendSNMPSupplies(
         else
 	  percent = 100 * supplies[i].level / supplies[i].max_capacity;
       }
+      else if (supplies[i].level == CUPS_TC_somesupply)
+         percent = 50;
       else
-        percent = 50;
+        percent = -1;
 
-      if (percent <= 5)
+      if (i)
+        *ptr++ = ',';
+
+      sprintf(ptr, "%d", percent);
+
+      if (percent >= 0 && percent <= 5)
       {
         switch (supplies[i].type)
         {
@@ -288,14 +302,6 @@ backendSNMPSupplies(
               break;
         }
       }
-
-      if (i)
-        *ptr++ = ',';
-
-      if (supplies[i].max_capacity > 0 && supplies[i].level >= 0)
-        sprintf(ptr, "%d", percent);
-      else
-        strcpy(ptr, "-1");
     }
 
     fprintf(stderr, "ATTR: marker-levels=%s\n", value);
