@@ -790,7 +790,7 @@ backend_walk_cb(cups_snmp_t *packet,	/* I - SNMP packet */
       if (supplies[j].colorant == i)
       {
 	for (k = 0; k < (int)(sizeof(colors) / sizeof(colors[0])); k ++)
-	  if (!strcmp(colors[k][0], (char *)packet->object_value.string.bytes))
+	  if (!strcasecmp(colors[k][0], (char *)packet->object_value.string.bytes))
 	  {
 	    strcpy(supplies[j].color, colors[k][1]);
 	    break;
