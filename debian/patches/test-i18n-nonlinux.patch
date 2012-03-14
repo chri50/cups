@@ -10,7 +10,7 @@ Index: cups-1.5.2/cups/testi18n.c
    }
  
 -#ifndef __linux
-+#ifndef __linux&& !defined(__GLIBC__)
++#if !defined(__linux__) && !defined(__GLIBC__)
    fputs("cupsCharsetToUTF8(CUPS_EUC_JP): ", stdout);
  
    strcpy(legsrc, legdest);
