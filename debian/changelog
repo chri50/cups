@@ -1,3 +1,20 @@
+cups (1.5.2-8) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/patches/ipp-fixes-1.5.3.patch: Updated IPP backend to the state of
+    the upcoming CUPS 1.5.3, fixing most of the known problems with printing
+    to IPP printers or servers.
+  * debian/patches/ipp-backend-fails-to-trigger-authentication-prompts.patch,
+    debian/patches/ipp-backend-http-1.0-fallback-fix.patch,
+    debian/patches/ipp-backend-missing-document-type.patch: Removed old
+    patches for the IPP backend.
+
+  [ Martin Pitt ]
+  * test-i18n-nonlinux.patch: Fix typo in #if which broke the patch. Hopefully
+    Closes: #662996 for good now.
+
+ -- Martin Pitt <mpitt@debian.org>  Wed, 14 Mar 2012 14:40:23 +0100
+
 cups (1.5.2-7) unstable; urgency=low
 
   * Add fix-empty-translations.patch: Do not translate msgids to empty
