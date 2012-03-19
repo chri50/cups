@@ -935,7 +935,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  
  /*
   * 'httpAssembleURI()' - Assemble a uniform resource identifier from its
-@@ -1431,6 +1458,9 @@
+@@ -1434,6 +1461,9 @@
  
    if (strstr(hostname, "._tcp"))
    {
@@ -945,7 +945,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  #ifdef HAVE_DNSSD
  #  ifdef WIN32
  #    pragma comment(lib, "dnssd.lib")
-@@ -1449,6 +1479,17 @@
+@@ -1452,6 +1482,17 @@
      fd_set		input_set;	/* Input set for select() */
      struct timeval	stimeout;	/* Timeout value for select() */
  #endif /* HAVE_POLL */
@@ -963,7 +963,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  
      if (options & _HTTP_RESOLVE_STDERR)
        fprintf(stderr, "DEBUG: Resolving \"%s\"...\n", hostname);
-@@ -1485,9 +1526,16 @@
+@@ -1488,9 +1529,16 @@
      if (domain)
        *domain++ = '\0';
  
@@ -980,7 +980,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
      resolved_uri[0] = '\0';
  
      DEBUG_printf(("6_httpResolveURI: Resolving hostname=\"%s\", regtype=\"%s\", "
-@@ -1501,6 +1549,7 @@
+@@ -1504,6 +1552,7 @@
  
      uri = NULL;
  
@@ -988,7 +988,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
      if (DNSServiceCreateConnection(&ref) == kDNSServiceErr_NoError)
      {
        localref = ref;
-@@ -1608,6 +1657,36 @@
+@@ -1611,6 +1660,36 @@
  
        DNSServiceRefDeallocate(ref);
      }
@@ -1025,7 +1025,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  
      if (options & _HTTP_RESOLVE_STDERR)
      {
-@@ -1619,13 +1698,13 @@
+@@ -1622,13 +1701,13 @@
        fputs("STATE: -connecting-to-device,offline-report\n", stderr);
      }
  
@@ -1041,7 +1041,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  
      if ((options & _HTTP_RESOLVE_STDERR) && !uri)
        _cupsLangPrintFilter(stderr, "ERROR", _("Unable to find printer."));
-@@ -1914,6 +1993,116 @@
+@@ -1917,6 +1996,116 @@
  #endif /* HAVE_DNSSD */
  
  

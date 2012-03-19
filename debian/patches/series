@@ -1,6 +1,7 @@
 # patches accepted and committed upstream:
 ipp-fixes-1.5.3.patch
 fix-empty-translations.patch
+ppd-cache-fix-crash.patch
 
 # patches sent upstream
 pidfile.patch

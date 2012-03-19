@@ -1,3 +1,13 @@
+cups (1.5.2-8bzr1) precise; urgency=low
+
+  * debian/patches/ppd-cache-fix-crash.patch: Added NULL check to fix crash
+    of cupsd on corrupted data in /var/cache/cups/ (LP: #957023, CUPS STR
+    #4049).
+
+  * debian/patches/cups-avahi.patch: Refreshed with quilt.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon, 19 Mar 2012 10:01:01 +0100
+
 cups (1.5.2-8) unstable; urgency=low
 
   [ Till Kamppeter ]
