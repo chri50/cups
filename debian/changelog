@@ -1,3 +1,10 @@
+cups (1.5.2-8bzr2) precise; urgency=low
+
+  * debian/patches/commandtops-make-robust-against-broken-postscript.patch:
+    Updated patch to the upstream state of commandtops.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Thu, 22 Mar 2012 15:19:01 +0100
+
 cups (1.5.2-8bzr1) precise; urgency=low
 
   * debian/patches/ppd-cache-fix-crash.patch: Added NULL check to fix crash
