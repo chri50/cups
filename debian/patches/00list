@@ -1,6 +1,7 @@
 # patches backported from upstream SVN trunk for 1.5:
 
 # patches accepted and committed upstream for next 1.4:
+cupsd-fix-crash-on-sighup.dpatch
 
 # patches sent upstream
 pidfile.dpatch

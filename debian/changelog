@@ -1,3 +1,11 @@
+cups (1.4.3-1ubuntu1.6) lucid-proposed; urgency=low
+
+  * debian/patches/cupsd-fix-crash-on-sighup.dpatch: Fixed crash of the
+    scheduler (CUPS daemon) on the SIGHUP signal (sent on log rotation,
+    restart, ..., LP: #857663).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 28 Mar 2012 14:36:54 +0200
+
 cups (1.4.3-1ubuntu1.5) lucid-security; urgency=low
 
   * SECURITY UPDATE: arbitrary code execution via missing code words
