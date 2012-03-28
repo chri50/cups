@@ -1,0 +1,36 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## cupsd-fix-crash-on-sighup.dpatch by  <till@till-lucid>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: No description.
+
+@DPATCH@
+diff -urNad cups-1.4.3~/scheduler/policy.c cups-1.4.3/scheduler/policy.c
+--- cups-1.4.3~/scheduler/policy.c	2008-06-19 00:31:26.000000000 +0200
++++ cups-1.4.3/scheduler/policy.c	2012-03-28 14:31:52.147916137 +0200
+@@ -213,11 +213,25 @@
+ {
+   cupsd_policy_t	*p;		/* Current policy */
+   cupsd_location_t	*po;		/* Current policy op */
++  cupsd_printer_t	*printer;	/* Current printer */
+ 
+ 
+   if (!Policies)
+     return;
+ 
++ /*
++  * First clear the policy pointers for all printers...
++  */
++
++  for (printer = (cupsd_printer_t *)cupsArrayFirst(Printers);
++       printer;
++       printer = (cupsd_printer_t *)cupsArrayNext(Printers))
++    printer->op_policy_ptr = NULL;
++
++ /*
++  * Then free all of the policies...
++  */
++
+   for (p = (cupsd_policy_t *)cupsArrayFirst(Policies);
+        p;
+        p = (cupsd_policy_t *)cupsArrayNext(Policies))
