@@ -268,7 +268,7 @@ socket:	socket.o ../cups/$(LIBCUPS) libbackend.a
 
 usb:	usb.o ../cups/$(LIBCUPS) libbackend.a
 	echo Linking $@...
-	$(CC) $(LDFLAGS) -o usb usb.o libbackend.a $(LIBUSB) \
+	$(CC) $(LDFLAGS) -o usb usb.o libbackend.a $(LIBUSB_LIBS) \
 		$(BACKLIBS) $(LIBS)
 usb.o:	usb.c usb-darwin.c usb-libusb.c usb-unix.c
 
