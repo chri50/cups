@@ -1,3 +1,25 @@
+cups (1.5.2-9) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/control: In the Recommends: section of the "cups" binary package
+    replaced "cups-driver-gutenprint" by "printer-driver-gutenprint" to
+    reflect the new name (LP: #966217).
+  * debian/patches/cups-polld-reconnect.patch: The CUPS polling daemon did not
+    reinitialize its connection to the remote server on errors in all cases
+    (LP: #965124, CUPS STR #4031, Red Hat bug #799595).
+  * debian/patches/commandtops-make-robust-against-broken-postscript.patch:
+    Updated patch to the upstream state of commandtops.
+  * debian/patches/ppd-cache-fix-crash.patch: Added NULL check to fix crash
+    of cupsd on corrupted data in /var/cache/cups/ (LP: #957023, CUPS STR
+    #4049).
+  * debian/patches/cups-avahi.patch: Refreshed with quilt.
+
+  [ Martin Pitt ]
+  * debian/cups.postinst: Don't fall over if /etc/apparmor.d/local exists and
+    is not a directory. (LP: #962226)
+
+ -- Martin Pitt <mpitt@debian.org>  Fri, 30 Mar 2012 08:44:35 +0200
+
 cups (1.5.2-8) unstable; urgency=low
 
   [ Till Kamppeter ]

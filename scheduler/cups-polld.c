@@ -291,6 +291,7 @@ poll_server(http_t      *http,		/* I - HTTP connection */
     fprintf(stderr, "ERROR: %s CUPS-Get-Printers failed: %s\n", prefix,
             cupsLastErrorString());
     ippDelete(response);
+    restart_polling = 1;
     return (-1);
   }
 

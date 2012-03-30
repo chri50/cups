@@ -1,9 +1,9 @@
 /*
- * "$Id: commandtops.c 9793 2011-05-20 03:49:49Z mike $"
+ * "$Id: commandtops.c 10373 2012-03-21 23:00:05Z mike $"
  *
  *   PostScript command filter for CUPS.
  *
- *   Copyright 2008-2011 by Apple Inc.
+ *   Copyright 2008-2012 by Apple Inc.
  *
  *   These coded instructions, statements, and computer programs are the
  *   property of Apple Inc. and are protected by Federal copyright
@@ -36,7 +36,7 @@
  * Local functions...
  */
 
-static void	auto_configure(ppd_file_t *ppd, const char *user);
+static int	auto_configure(ppd_file_t *ppd, const char *user);
 static void	begin_ps(ppd_file_t *ppd, const char *user);
 static void	end_ps(ppd_file_t *ppd);
 static void	print_self_test_page(ppd_file_t *ppd, const char *user);
@@ -51,6 +51,7 @@ int					/* O - Exit status */
 main(int  argc,				/* I - Number of command-line arguments */
      char *argv[])			/* I - Command-line arguments */
 {
+  int		status = 0;		/* Exit status */
   cups_file_t	*fp;			/* Command file */
   char		line[1024],		/* Line from file */
 		*value;			/* Value on line */
@@ -113,16 +114,20 @@ main(int  argc,				/* I - Number of command-line arguments */
     */
 
     if (!_cups_strcasecmp(line, "AutoConfigure"))
-      auto_configure(ppd, argv[2]);
+      status |= auto_configure(ppd, argv[2]);
     else if (!_cups_strcasecmp(line, "PrintSelfTestPage"))
       print_self_test_page(ppd, argv[2]);
     else if (!_cups_strcasecmp(line, "ReportLevels"))
       report_levels(ppd, argv[2]);
     else
-      fprintf(stderr, "ERROR: Invalid printer command \"%s\"!\n", line);
+    {
+      _cupsLangPrintFilter(stderr, "ERROR",
+                           _("Invalid printer command \"%s\"."), line);
+      status = 1;
+    }
   }
 
-  return (0);
+  return (status);
 }
 
 
@@ -131,18 +136,18 @@ main(int  argc,				/* I - Number of command-line arguments */
  *                      query commands and/or SNMP lookups.
  */
 
-static void
+static int				/* O - Exit status */
 auto_configure(ppd_file_t *ppd,		/* I - PPD file */
                const char *user)	/* I - Printing user */
 {
+  int		status = 0;		/* Exit status */
   ppd_option_t	*option;		/* Current option in PPD */
   ppd_attr_t	*attr;			/* Query command attribute */
+  const char	*valptr;		/* Pointer into attribute value */
   char		buffer[1024],		/* String buffer */
 		*bufptr;		/* Pointer into buffer */
   ssize_t	bytes;			/* Number of bytes read */
   int		datalen;		/* Side-channel data length */
-  int		ch;			/* single character equivalent */
-  char		*tempptr;		/* Pointer into buffer */
 
 
  /*
@@ -156,7 +161,7 @@ auto_configure(ppd_file_t *ppd,		/* I - PPD file */
   {
     fputs("DEBUG: Unable to auto-configure PostScript Printer - no "
           "bidirectional I/O available!\n", stderr);
-    return;
+    return (1);
   }
 
  /*
@@ -164,6 +169,25 @@ auto_configure(ppd_file_t *ppd,		/* I - PPD file */
   */
 
   begin_ps(ppd, user);
+
+ /*
+  * (STR #4028)
+  *
+  * As a lot of PPDs contain bad PostScript query code, we need to prevent one
+  * bad query sequence from affecting all auto-configuration.  The following
+  * error handler allows us to log PostScript errors to cupsd.
+  */
+
+  puts("/cups_handleerror {\n"
+       "  $error /newerror false put\n"
+       "  (:PostScript error in \") print cups_query_keyword print (\": ) "
+       "print\n"
+       "  $error /errorname get 128 string cvs print\n"
+       "  (; offending command:) print $error /command get 128 string cvs "
+       "print (\n) print flush\n"
+       "} bind def\n"
+       "errordict /timeout {} put\n"
+       "/cups_query_keyword (?Unknown) def\n");
   fflush(stdout);
 
  /*
@@ -177,22 +201,7 @@ auto_configure(ppd_file_t *ppd,		/* I - PPD file */
   }
   while (cupsSideChannelDoRequest(CUPS_SC_CMD_GET_CONNECTED, buffer, &datalen,
                                   5.0) == CUPS_SC_STATUS_OK && !buffer[0]);
- /*
-  * As a lot of printer vendor supplied PPDs have exhibited erroneous PostScript
-  * constructs in query code sequences, we make auto configuring (almost) bomb proof even 
-  * against syntax errors in PostScript code.
-  * As a first step, we establish our own PS error handler.
-  */
-  puts("/my_handleerror\n"
-	"{\n"
-	" $error/newerror false put\n"
-	" (:PostScript error in \")print query print (\": )print\n"
-	" $error/errorname get 128 string cvs print\n"
-	" (; offending command:)print $error/command get 128 string cvs print (\n)print flush\n"
-	"}bind def\n"
-	"errordict/timeout{}put\n"
-	"/query (?Unknown) def\n");
-  fflush(stdout);
+
  /*
   * Then loop through every option in the PPD file and ask for the current
   * value...
@@ -219,21 +228,76 @@ auto_configure(ppd_file_t *ppd,		/* I - PPD file */
     */
 
     fprintf(stderr, "DEBUG: Querying %s...\n", option->keyword);
-    fprintf(stdout, "/query (?%s)def\n", option->keyword); /* pass the keyword for error reporting */
-    puts("/this_query(");
-   /*
-    * To prevent our own construct from failing due to unpaired parantheses
-    * within the query code, we take pains to escape thr "(" and ")".
-    */
-    fprintf(stderr, "DEBUG: %s\n", attr->value);
-    bufptr = attr->value;
-    while (*bufptr)
+
+    for (bufptr = buffer, valptr = attr->value; *valptr; valptr ++)
     {
-	ch = *bufptr++;
-	if (ch == '(' || ch == ')') putchar('\\');
-	putchar(ch);
+     /*
+      * Log the query code, breaking at newlines...
+      */
+
+      if (*valptr == '\n')
+      {
+        *bufptr = '\0';
+        fprintf(stderr, "DEBUG: %s\\n\n", buffer);
+        bufptr = buffer;
+      }
+      else if (*valptr < ' ')
+      {
+        if (bufptr >= (buffer + sizeof(buffer) - 4))
+        {
+	  *bufptr = '\0';
+	  fprintf(stderr, "DEBUG: %s\n", buffer);
+	  bufptr = buffer;
+        }
+
+        if (*valptr == '\r')
+        {
+          *bufptr++ = '\\';
+          *bufptr++ = 'r';
+        }
+        else if (*valptr == '\t')
+        {
+          *bufptr++ = '\\';
+          *bufptr++ = 't';
+        }
+        else
+        {
+          *bufptr++ = '\\';
+          *bufptr++ = '0' + ((*valptr / 64) & 7);
+          *bufptr++ = '0' + ((*valptr / 8) & 7);
+          *bufptr++ = '0' + (*valptr & 7);
+        }
+      }
+      else
+      {
+        if (bufptr >= (buffer + sizeof(buffer) - 1))
+        {
+	  *bufptr = '\0';
+	  fprintf(stderr, "DEBUG: %s\n", buffer);
+	  bufptr = buffer;
+        }
+
+	*bufptr++ = *valptr;
+      }
     }
-    puts(")def\n{this_query cvx exec}stopped{userdict/my_handleerror get exec}if clear\n");
+
+    if (bufptr > buffer)
+    {
+      *bufptr = '\0';
+      fprintf(stderr, "DEBUG: %s\n", buffer);
+    }
+
+    printf("/cups_query_keyword (?%s) def\n", option->keyword);
+					/* Set keyword for error reporting */
+    fputs("{ (", stdout);
+    for (valptr = attr->value; *valptr; valptr ++)
+    {
+      if (*valptr == '(' || *valptr == ')' || *valptr == '\\')
+        putchar('\\');
+      putchar(*valptr);
+    }
+    fputs(") cvx exec } stopped { cups_handleerror } if clear\n", stdout);
+    					/* Send query code */
     fflush(stdout);
 
     datalen = 0;
@@ -243,29 +307,28 @@ auto_configure(ppd_file_t *ppd,		/* I - PPD file */
     * Read the response data...
     */
 
-    bufptr = buffer;
+    bufptr    = buffer;
     buffer[0] = '\0';
     while ((bytes = cupsBackChannelRead(bufptr,
 					sizeof(buffer) - (bufptr - buffer) - 1,
 					10.0)) > 0)
     {
-      *(bufptr + bytes) = '\0';
-
      /*
       * No newline at the end? Go on reading ...
       */
 
       bufptr += bytes;
-      if (bytes == 0 ||
-	  (bufptr - buffer < sizeof(buffer) - 1 && 
-	   *(bufptr - 1) != '\r' && *(bufptr - 1) != '\n'))
-	continue;
+      *bufptr = '\0';
 
-      bytes = bufptr - buffer;
+      if (bytes == 0 ||
+          (bufptr > buffer && bufptr[-1] != '\r' && bufptr[-1] != '\n'))
+	continue;
 
      /*
       * Trim whitespace and control characters from both ends...
       */
+
+      bytes = bufptr - buffer;
 
       for (bufptr --; bufptr >= buffer; bufptr --)
         if (isspace(*bufptr & 255) || iscntrl(*bufptr & 255))
@@ -276,26 +339,33 @@ auto_configure(ppd_file_t *ppd,		/* I - PPD file */
       for (bufptr = buffer; isspace(*bufptr & 255) || iscntrl(*bufptr & 255);
 	   bufptr ++);
 
-      fprintf(stderr, "DEBUG: Got \"%s\" (%d bytes)\n", bufptr, (int)bytes);
+      if (bufptr > buffer)
+      {
+        _cups_strcpy(buffer, bufptr);
+	bufptr = buffer;
+      }
+
+      fprintf(stderr, "DEBUG: Got %d bytes.\n", (int)bytes);
 
      /*
       * Skip blank lines...
       */
 
-      if (!*bufptr)
-      {
-	bufptr = buffer;
-	buffer[0] = '\0';
+      if (!buffer[0])
         continue;
-      }
 
      /*
-      * PostScript code for this option in the PPD is broken...
+      * Check the response...
       */
-      if ((tempptr = strchr(bufptr, ':')) != NULL)
+
+      if ((bufptr = strchr(buffer, ':')) != NULL)
       {
-	fprintf(stderr, "DEBUG%s\n", tempptr); /* the interpreter's error message */
-	fprintf(stderr, "ERROR: PostScript error in query for option %s, default for this option not set.\n", option->keyword);
+       /*
+        * PostScript code for this option in the PPD is broken; show the
+        * interpreter's error message that came back...
+        */
+
+	fprintf(stderr, "DEBUG%s\n", bufptr);
 	break;
       }
 
@@ -303,17 +373,12 @@ auto_configure(ppd_file_t *ppd,		/* I - PPD file */
       * Verify the result is a valid option choice...
       */
 
-      if (!ppdFindChoice(option, bufptr))
+      if (!ppdFindChoice(option, buffer))
       {
-	/* Consider "Unknown" as not configured in the printer */
-	if (!strcasecmp(bufptr, "Unknown"))
-	{
-	  fprintf(stderr,
-		  "WARNING: Printer answered query for the setting of option %s with \"Unknown\", default for this option not set.\n",
-		  option->keyword);
+	if (!strcasecmp(buffer, "Unknown"))
 	  break;
-	}
-	bufptr = buffer;
+
+	bufptr    = buffer;
 	buffer[0] = '\0';
         continue;
       }
@@ -322,8 +387,7 @@ auto_configure(ppd_file_t *ppd,		/* I - PPD file */
       * Write out the result and move on to the next option...
       */
 
-      fprintf(stderr, "DEBUG: Default%s=%s\n", option->keyword, bufptr);
-      fprintf(stderr, "PPD: Default%s=%s\n", option->keyword, bufptr);
+      fprintf(stderr, "PPD: Default%s=%s\n", option->keyword, buffer);
       break;
     }
 
@@ -332,9 +396,12 @@ auto_configure(ppd_file_t *ppd,		/* I - PPD file */
     */
 
     if (bytes <= 0)
+    {
       fprintf(stderr,
-	      "ERROR: Printer timed out on option %s, default for this option not set.\n",
+	      "DEBUG: No answer to query for option %s within 10 seconds.\n",
 	      option->keyword);
+      status = 1;
+    }
   }
 
  /*
@@ -343,6 +410,16 @@ auto_configure(ppd_file_t *ppd,		/* I - PPD file */
 
   fflush(stdout);
   end_ps(ppd);
+
+ /*
+  * Return...
+  */
+
+  if (status)
+    _cupsLangPrintFilter(stderr, "WARNING",
+                         _("Unable to configure printer options."));
+
+  return (0);
 }
 
 
@@ -364,6 +441,7 @@ begin_ps(ppd_file_t *ppd,		/* I - PPD file */
 
   puts("%!");
   puts("userdict dup(\\004)cvn{}put (\\004\\004)cvn{}put\n");
+
   fflush(stdout);
 }
 
@@ -403,7 +481,12 @@ print_self_test_page(ppd_file_t *ppd,	/* I - PPD file */
   * the product/interpreter information...
   */
 
-  puts("% You are using the wrong driver for your printer!\n"
+  puts("\r%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+       "%%%%%%%%%%%%%\n"
+       "\r%%%% If you can read this, you are using the wrong driver for your "
+       "printer. %%%%\n"
+       "\r%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+       "%%%%%%%%%%%%%\n"
        "0 setgray\n"
        "2 setlinewidth\n"
        "initclip newpath clippath gsave stroke grestore pathbbox\n"
@@ -451,5 +534,5 @@ report_levels(ppd_file_t *ppd,		/* I - PPD file */
 
 
 /*
- * End of "$Id: commandtops.c 9793 2011-05-20 03:49:49Z mike $".
+ * End of "$Id: commandtops.c 10373 2012-03-21 23:00:05Z mike $".
  */
