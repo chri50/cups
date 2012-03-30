@@ -186,6 +186,8 @@ extern "C" {
 #define CUPS_TC_printing			4
 #define CUPS_TC_warmup				5
 
+#define CUPS_TC_somesupply			-3
+
 /* These come from the hrPrinterDetectedErrorState OCTET-STRING */
 #define CUPS_TC_lowPaper			0x8000
 #define CUPS_TC_noPaper				0x4000
