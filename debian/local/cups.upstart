@@ -4,8 +4,7 @@ description     "CUPS printing spooler/server"
 author          "Michael Sweet <msweet@apple.com>"
 
 start on (filesystem
-          and (started dbus or runlevel [2345])
-          and stopped udevtrigger)
+          and (started dbus or runlevel [2345]))
 stop on runlevel [016]
 
 respawn
