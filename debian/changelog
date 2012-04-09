@@ -1,3 +1,13 @@
+cups (1.5.2-9ubuntu1) precise; urgency=low
+
+  * Don't wait on udevtrigger before starting cups; the only reason this
+    is here is to let '/lib/udev/udev-configure-printer enumerate' work, but
+    if cups does start before we've cold-plugged everything, the udev rule
+    will call '/lib/udev/udev-configure-printer add' for each device it
+    discovers anyway, so this is redundant.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Mon, 09 Apr 2012 08:24:48 -0700
+
 cups (1.5.2-9) unstable; urgency=low
 
   [ Till Kamppeter ]
