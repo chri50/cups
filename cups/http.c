@@ -3833,7 +3833,8 @@ http_setup_ssl(http_t *http)		/* I - Connection to server */
   _cups_globals_t	*cg = _cupsGlobals();
 					/* Pointer to library globals */
   int			any_root;	/* Allow any root */
-  char			*hostname;	/* Hostname */
+  char			hostname[256],	/* Hostname */
+			*hostptr;	/* Pointer into hostname */
 
 #  ifdef HAVE_LIBSSL
   SSL_CTX		*context;	/* Context for encryption */
@@ -3869,11 +3870,24 @@ http_setup_ssl(http_t *http)		/* I - Connection to server */
   */
 
   if (httpAddrLocalhost(http->hostaddr))
+  {
     any_root = 1;
+    strlcpy(hostname, "localhost", sizeof(hostname));
+  }
   else
+  {
+   /*
+    * Otherwise use the system-wide setting and make sure the hostname we have
+    * does not end in a trailing dot.
+    */
+
     any_root = cg->any_root;
 
-  hostname = httpAddrLocalhost(http->hostaddr) ? "localhost" : http->hostname;
+    strlcpy(hostname, http->hostname, sizeof(hostname));
+    if ((hostptr = hostname + strlen(hostname) - 1) >= hostname &&
+        *hostptr == '.')
+      *hostptr = '\0';
+  }
 
 #  ifdef HAVE_LIBSSL
   (void)any_root;
@@ -4008,15 +4022,6 @@ http_setup_ssl(http_t *http)		/* I - Connection to server */
     DEBUG_printf(("4http_setup_ssl: SSLSetAllowsExpiredRoots(%d), error=%d",
                   cg->expired_root, (int)error));
   }
-
-#    ifdef HAVE_SSLSETPROTOCOLVERSIONMAX
-  if (!error)
-  {
-    error = SSLSetProtocolVersionMax(http->tls, kTLSProtocol1);
-    DEBUG_printf(("4http_setup_ssl: SSLSetProtocolVersionMax(kTLSProtocol1), "
-                  "error=%d", (int)error));
-  }
-#    endif /* HAVE_SSLSETPROTOCOLVERSIONMAX */
 
  /*
   * In general, don't verify certificates since things like the common name
