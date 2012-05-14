@@ -44,6 +44,8 @@
 #define CUPS_OPC_LIFE_OVER		32
 #define CUPS_TONER_LOW			64
 #define CUPS_TONER_EMPTY		128
+#define CUPS_WASTE_FULL			256
+#define CUPS_CLEANER_LIFE_OVER		512
 
 
 /*
@@ -189,7 +191,9 @@ static const backend_state_t const supply_states[] =
 			  { CUPS_OPC_NEAR_EOL, "opc-near-eol-report" },
 			  { CUPS_OPC_LIFE_OVER, "opc-life-over-warning" },
 			  { CUPS_TONER_LOW, "toner-low-report" },
-			  { CUPS_TONER_EMPTY, "toner-empty-warning" }
+			  { CUPS_TONER_EMPTY, "toner-empty-warning" },
+			  { CUPS_WASTE_FULL, "waste-receptacle-full-warning" },
+			  { CUPS_CLEANER_LIFE_OVER, "cleaner-life-over-warning" }
 			};
 
 
@@ -291,6 +295,9 @@ backendSNMPSupplies(
               break;
           case CUPS_TC_wasteToner :
           case CUPS_TC_wasteInk :
+          case CUPS_TC_wasteWax :
+              if (percent <= 1)
+                new_supply_state |= CUPS_WASTE_FULL;
               break;
           case CUPS_TC_ink :
           case CUPS_TC_inkCartridge :
@@ -316,6 +323,10 @@ backendSNMPSupplies(
                 new_supply_state |= CUPS_OPC_LIFE_OVER;
               else
                 new_supply_state |= CUPS_OPC_NEAR_EOL;
+              break;
+          case CUPS_TC_cleanerUnit:
+              if (percent <= 1)
+                new_supply_state |= CUPS_CLEANER_LIFE_OVER;
               break;
         }
       }
