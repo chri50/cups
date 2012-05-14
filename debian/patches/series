@@ -48,3 +48,4 @@ dnssd-reg-array-linear-search.patch
 tests-ignore-warnings.patch
 tests-ignore-usb-crash.patch
 test-i18n-nonlinux.patch
+tests-slow-lpstat.patch
