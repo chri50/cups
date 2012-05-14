@@ -1077,11 +1077,13 @@ cupsGetPPD3(http_t     *http,		/* I  - HTTP connection or @code CUPS_HTTP_DEFAUL
     http2 = http;
   else if ((http2 = httpConnectEncrypt(hostname, port,
                                        cupsEncryption())) == NULL)
-  {
-    DEBUG_puts("1cupsGetPPD3: Unable to connect to server");
+    if ((http2 = httpConnectEncrypt(http_hostname, http_port,
+				    cupsEncryption())) == NULL)
+    {
+      DEBUG_puts("1cupsGetPPD3: Unable to connect to server");
 
-    return (HTTP_SERVICE_UNAVAILABLE);
-  }
+      return (HTTP_SERVICE_UNAVAILABLE);
+    }
 
  /*
   * Get a temp file...
