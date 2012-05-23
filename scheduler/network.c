@@ -1,9 +1,9 @@
 /*
- * "$Id: network.c 9691 2011-04-15 23:38:13Z mike $"
+ * "$Id: network.c 10379 2012-03-23 22:16:22Z mike $"
  *
  *   Network interface functions for the CUPS scheduler.
  *
- *   Copyright 2007-2010 by Apple Inc.
+ *   Copyright 2007-2012 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -166,7 +166,7 @@ cupsdNetIFUpdate(void)
       */
 
       if (httpAddrLocalhost((http_addr_t *)(addr->ifa_addr)))
-        strcpy(hostname, "localhost");
+        strlcpy(hostname, "localhost", sizeof(hostname));
       else
 	httpAddrString((http_addr_t *)(addr->ifa_addr), hostname,
 		       sizeof(hostname));
@@ -186,7 +186,7 @@ cupsdNetIFUpdate(void)
 
     strlcpy(temp->name, addr->ifa_name, sizeof(temp->name));
     temp->hostlen = hostlen;
-    strcpy(temp->hostname, hostname);	/* Safe because hostname is allocated */
+    memcpy(temp->hostname, hostname, hostlen + 1);
 
     if (addr->ifa_addr->sa_family == AF_INET)
     {
@@ -296,5 +296,5 @@ compare_netif(cupsd_netif_t *a,		/* I - First network interface */
 
 
 /*
- * End of "$Id: network.c 9691 2011-04-15 23:38:13Z mike $".
+ * End of "$Id: network.c 10379 2012-03-23 22:16:22Z mike $".
  */

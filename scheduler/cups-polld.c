@@ -1,9 +1,9 @@
 /*
- * "$Id: cups-polld.c 9753 2011-05-06 23:07:28Z mike $"
+ * "$Id: cups-polld.c 10321 2012-03-02 18:26:30Z mike $"
  *
  *   Polling daemon for CUPS.
  *
- *   Copyright 2007-2011 by Apple Inc.
+ *   Copyright 2007-2012 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -291,6 +291,7 @@ poll_server(http_t      *http,		/* I - HTTP connection */
     fprintf(stderr, "ERROR: %s CUPS-Get-Printers failed: %s\n", prefix,
             cupsLastErrorString());
     ippDelete(response);
+    restart_polling = 1;
     return (-1);
   }
 
@@ -465,5 +466,5 @@ sighup_handler(int sig)			/* I - Signal number */
 
 
 /*
- * End of "$Id: cups-polld.c 9753 2011-05-06 23:07:28Z mike $".
+ * End of "$Id: cups-polld.c 10321 2012-03-02 18:26:30Z mike $".
  */

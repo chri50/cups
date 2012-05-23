@@ -4,7 +4,7 @@ Bug-Debian: http://bugs.debian.org/438067
 
 --- a/Makedefs.in
 +++ b/Makedefs.in
-@@ -147,7 +147,7 @@
+@@ -146,7 +146,7 @@
  DBUS_NOTIFIERLIBS =	@DBUS_NOTIFIERLIBS@
  DNSSD_BACKEND	=	@DNSSD_BACKEND@
  DSOFLAGS	=	-L../cups @DSOFLAGS@
@@ -13,7 +13,7 @@ Bug-Debian: http://bugs.debian.org/438067
  DNSSDLIBS	=	@DNSSDLIBS@
  FONTS		=	@FONTS@
  IMGLIBS		=	@IMGLIBS@
-@@ -157,9 +157,9 @@
+@@ -156,9 +156,9 @@
  			-L../scheduler @LDARCHFLAGS@ \
  			@LDFLAGS@ @RELROFLAGS@ @PIEFLAGS@ $(OPTIM)
  LEGACY_BACKENDS	=	@LEGACY_BACKENDS@

@@ -182,6 +182,7 @@ Suggests: cups-bsd,
 Replaces: cupsddk-drivers (<< 1.4.0), ghostscript-cups (<< 9.02~)
 Provides: cupsddk-drivers
 Breaks: cupsddk-drivers (<< 1.4.0), foomatic-filters (<< 4.0), ghostscript-cups (<< 9.02~)
+Multi-Arch: foreign
 Description: Common UNIX Printing System(tm) - server
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
  general replacement for lpd and the like.  It supports the Internet 
@@ -200,6 +201,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
 Recommends: smbclient
 Suggests: cups, xpp, cups-bsd
 Conflicts: lprng
+Multi-Arch: foreign
 Description: Common UNIX Printing System(tm) - client programs (SysV)
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
  general replacement for lpd and the like.  It supports the Internet 
@@ -325,6 +327,7 @@ Suggests: cups
 Conflicts: lpr, lprng
 Replaces: lpr
 Provides: lpr
+Multi-Arch: foreign
 Description: Common UNIX Printing System(tm) - BSD commands
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
  general replacement for lpr, lpd and the like.  It supports the
@@ -340,6 +343,7 @@ Priority: optional
 Section: net
 Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}
+Multi-Arch: foreign
 Description: Common UNIX Printing System(tm) - common files
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
  general replacement for lpd and the like.  It supports the Internet 
@@ -356,6 +360,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, cups-common
 Breaks: cupsddk (<< 1.4.0)
 Replaces: cupsddk (<< 1.4.0)
 Provides: cupsddk
+Multi-Arch: foreign
 Description: Common UNIX Printing System(tm) - PPD manipulation utilities
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
  general replacement for lpd and the like.  It supports the Internet 

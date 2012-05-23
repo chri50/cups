@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# "$Id: run-stp-tests.sh 10090 2011-10-25 22:39:56Z mike $"
+# "$Id: run-stp-tests.sh 10464 2012-05-15 14:04:18Z mike $"
 #
 #   Perform the complete set of IPP compliance tests specified in the
 #   CUPS Software Test Plan.
@@ -485,7 +485,7 @@ echo "Starting scheduler:"
 echo "    $valgrind ../scheduler/cupsd -c /tmp/cups-$user/cupsd.conf -f >/tmp/cups-$user/log/debug_log 2>&1 &"
 echo ""
 
-if test `uname` = Darwin -a "x$valgrind" = x; then
+if test `uname` = Darwin -a "x$valgrind" = x -a -f /usr/lib/libgmalloc.dylib; then
 	DYLD_INSERT_LIBRARIES=/usr/lib/libgmalloc.dylib \
 	$valgrind ../scheduler/cupsd -c /tmp/cups-$user/cupsd.conf -f >/tmp/cups-$user/log/debug_log 2>&1 &
 else
@@ -870,5 +870,5 @@ if test $fail != 0; then
 fi
 
 #
-# End of "$Id: run-stp-tests.sh 10090 2011-10-25 22:39:56Z mike $"
+# End of "$Id: run-stp-tests.sh 10464 2012-05-15 14:04:18Z mike $"
 #

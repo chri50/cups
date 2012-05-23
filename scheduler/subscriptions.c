@@ -1,5 +1,5 @@
 /*
- * "$Id: subscriptions.c 9793 2011-05-20 03:49:49Z mike $"
+ * "$Id: subscriptions.c 10262 2012-02-12 05:48:09Z mike $"
  *
  *   Subscription routines for the CUPS scheduler.
  *
@@ -146,7 +146,11 @@ cupsdAddEvent(
       temp->time  = time(NULL);
       temp->attrs = ippNew();
       temp->job   = job;
-      temp->dest  = dest;
+
+      if (dest)
+        temp->dest = dest;
+      else if (job)
+        temp->dest = dest = cupsdFindPrinter(job->dest);
 
      /*
       * Add common event notification attributes...
@@ -1634,5 +1638,5 @@ cupsd_update_notifier(void)
 
 
 /*
- * End of "$Id: subscriptions.c 9793 2011-05-20 03:49:49Z mike $".
+ * End of "$Id: subscriptions.c 10262 2012-02-12 05:48:09Z mike $".
  */

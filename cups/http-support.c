@@ -1,5 +1,5 @@
 /*
- * "$Id: http-support.c 10017 2011-09-26 18:46:46Z mike $"
+ * "$Id: http-support.c 10284 2012-02-15 01:06:12Z mike $"
  *
  *   HTTP support routines for CUPS.
  *
@@ -757,10 +757,13 @@ httpGetDateString2(time_t t,		/* I - UNIX time */
 
 
   tdate = gmtime(&t);
-  snprintf(s, slen, "%s, %02d %s %d %02d:%02d:%02d GMT",
-           http_days[tdate->tm_wday], tdate->tm_mday,
-	   http_months[tdate->tm_mon], tdate->tm_year + 1900,
-	   tdate->tm_hour, tdate->tm_min, tdate->tm_sec);
+  if (tdate)
+    snprintf(s, slen, "%s, %02d %s %d %02d:%02d:%02d GMT",
+	     http_days[tdate->tm_wday], tdate->tm_mday,
+	     http_months[tdate->tm_mon], tdate->tm_year + 1900,
+	     tdate->tm_hour, tdate->tm_min, tdate->tm_sec);
+  else
+    s[0] = '\0';
 
   return (s);
 }
@@ -1915,5 +1918,5 @@ http_resolve_cb(
 
 
 /*
- * End of "$Id: http-support.c 10017 2011-09-26 18:46:46Z mike $".
+ * End of "$Id: http-support.c 10284 2012-02-15 01:06:12Z mike $".
  */

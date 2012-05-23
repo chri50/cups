@@ -760,7 +760,7 @@ Author: Richard Hughes <hughsient@gmail.com>
    }
  
   /*
-@@ -7035,11 +7041,17 @@
+@@ -7034,11 +7040,17 @@
    snprintf(filename, sizeof(filename), "%s/%s.data", CacheDir, printer->name);
    unlink(filename);
  
@@ -871,7 +871,7 @@ Author: Richard Hughes <hughsient@gmail.com>
    * Rename the printer...
    */
  
-@@ -2644,6 +2706,13 @@
+@@ -2676,6 +2738,13 @@
  #endif /* __sgi */
  
   /*

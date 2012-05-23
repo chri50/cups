@@ -1,5 +1,5 @@
 /*
- * "$Id: cups-lpd.c 9793 2011-05-20 03:49:49Z mike $"
+ * "$Id: cups-lpd.c 10379 2012-03-23 22:16:22Z mike $"
  *
  *   Line Printer Daemon interface for CUPS.
  *
@@ -237,7 +237,7 @@ main(int  argc,				/* I - Number of command-line arguments */
     list = NULL;
   else
   {
-    for (list = dest + 1; *list && !isspace(*list & 255); list ++);
+    for (list = dest; *list && !isspace(*list & 255); list ++);
 
     while (isspace(*list & 255))
       *list++ = '\0';
@@ -1623,5 +1623,5 @@ smart_gets(char *s,			/* I - Pointer to line buffer */
 
 
 /*
- * End of "$Id: cups-lpd.c 9793 2011-05-20 03:49:49Z mike $".
+ * End of "$Id: cups-lpd.c 10379 2012-03-23 22:16:22Z mike $".
  */

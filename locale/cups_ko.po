@@ -2,13 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CUPS 1.4\n"
 "Report-Msgid-Bugs-To: http://www.cups.org/str.php\n"
-"POT-Creation-Date: 2012-01-30 14:18-0800\n"
+"POT-Creation-Date: 2012-03-07 13:38-0800\n"
 "PO-Revision-Date: 2009-02-16 12:00-0800\n"
 "Last-Translator: Apple Inc.\n"
 "Language-Team: Apple Inc.\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 
 msgid "\t\t(all)"
 msgstr ""
@@ -2904,6 +2905,10 @@ msgstr "인터넷 우표 3부분 - 2 1/4 x 7\""
 msgid "Internet Printing Protocol"
 msgstr "인터넷 프린트 프로토콜"
 
+#, c-format
+msgid "Invalid printer command \"%s\"."
+msgstr ""
+
 msgid "JCL"
 msgstr "JCL"
 
@@ -3507,6 +3512,9 @@ msgstr ""
 msgid "Print file was not accepted."
 msgstr ""
 
+msgid "Print job too large."
+msgstr ""
+
 msgid "Printed For: "
 msgstr "다음이 프린트됨: "
 
@@ -3543,8 +3551,7 @@ msgstr ""
 msgid "Printer busy; will retry in 30 seconds."
 msgstr ""
 
-#, c-format
-msgid "Printer did not respond after %d seconds."
+msgid "Printer did not respond."
 msgstr ""
 
 #, c-format
@@ -3839,13 +3846,7 @@ msgstr ""
 msgid "The printer URI is incorrect or no longer exists."
 msgstr ""
 
-msgid "The printer is almost out of ink."
-msgstr ""
-
 msgid "The printer is busy."
-msgstr ""
-
-msgid "The printer is low on toner."
 msgstr ""
 
 msgid "The printer is not connected."
@@ -3857,10 +3858,16 @@ msgstr ""
 msgid "The printer is out of ink."
 msgstr ""
 
-msgid "The printer is out of toner."
+msgid "The printer is running low on ink."
+msgstr ""
+
+msgid "The printer is running low on toner."
 msgstr ""
 
 msgid "The printer is unreachable at this time."
+msgstr ""
+
+msgid "The printer may be out of toner."
 msgstr ""
 
 msgid "The printer may not exist or is unavailable at this time."
@@ -4043,6 +4050,9 @@ msgstr "프린터를 변경할 수 없음:"
 msgid "Unable to change server settings:"
 msgstr "서버 설정값을 변경할 수 없음:"
 
+msgid "Unable to configure printer options."
+msgstr ""
+
 msgid "Unable to connect to host."
 msgstr "호스트에 연결할 수 없음."
 
@@ -4163,9 +4173,6 @@ msgstr "클래스 상태를 알 수 없음:"
 
 msgid "Unable to get list of printer drivers:"
 msgstr "프린터 드라이버 목록을 얻을 수 없음:"
-
-msgid "Unable to get print job status."
-msgstr ""
 
 msgid "Unable to get printer attributes:"
 msgstr "프린터 속성을 얻을 수 없음:"

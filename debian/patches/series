@@ -1,11 +1,9 @@
 # patches accepted and committed upstream:
-ipp-fixes-1.5.3.patch
-fix-empty-translations.patch
-ppd-cache-fix-crash.patch
-commandtops-make-robust-against-broken-postscript.patch
-cups-polld-reconnect.patch
 
 # patches sent upstream
+usb-backend-busy-loop-fix.patch
+usb-backend-detach-usblp-earlier-crash-guards.patch
+usb-backend-initialize-usblp-attached-state.patch
 pidfile.patch
 ppd-poll-with-client-conf.patch
 # no answer yet, po4a might not be appropriate
@@ -13,16 +11,9 @@ manpage-translations.patch
 rootbackends-worldreadable.patch
 cups-avahi.patch
 colord-support.patch
-usb-backend-libusb-1.0.patch
-usb-backend-backchannel-support.patch
-fix-supply-level-computation-for-percent-supply-unit.patch
-fix-supply-levels-for-enumerated-prtmarkersupplieslevel.patch
-fix-status-reports-when-supply-levels-grow.patch
-add-status-reports-for-full-waste-trays-and-cleaner-unit-eol.patch
-match-marker-colorants-which-use-non-standard-string.patch
-truncate-marker-supply-names-at-comma.patch
 
 # patches which should go upstream
+install-sh-remove-bashism.patch
 airprint-support.patch
 removecvstag.patch
 no-conffile-timestamp.patch
@@ -33,7 +24,6 @@ do-not-broadcast-with-hostnames.patch
 cups-deviced-allow-device-ids-with-newline.patch
 cups-snmp-oids-device-id-hp-ricoh.patch
 configure-default-browse-protocols.patch
-do-not-suppress-inputslot-setting-with-empty-ap-d-inputslot.patch
 
 # Debian patches
 logfiles_adm_readable.patch

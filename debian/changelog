@@ -1,3 +1,75 @@
+cups (1.5.3-1) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * New upstream release
+     - Numerous fixes on IPP (LP: #945028, LP: #973270, LP: #990734,
+       LP: #992468, LP: #992982, LP: #1000172, LP: #1000758)
+     - USB backend based on the maintained libusb 1.0.x with support for
+       bi-directional communication
+     - Fixes on SNMP-based supply level reporting
+     - PostScript prtinter auto-configuration reliable now
+     - Several fixes on PostScript, SSL, authenticated printing, and
+       networking issues
+  * debian/patches/ipp-fixes-1.5.3.patch,
+    debian/patches/fix-empty-translations.patch,
+    debian/patches/ppd-cache-fix-crash.patch,
+    debian/patches/commandtops-make-robust-against-broken-postscript.patch,
+    debian/patches/cups-polld-reconnect.patch,
+    debian/patches/usb-backend-libusb-1.0.patch,
+    debian/patches/usb-backend-backchannel-support.patch: Removed patches which
+    got included upstream.
+  * debian/patches/fix-supply-level-computation-for-percent-supply-unit.patch,
+    debian/patches/fix-supply-levels-for-enumerated-prtmarkersupplieslevel.patch,
+    debian/patches/fix-status-reports-when-supply-levels-grow.patch,
+    debian/patches/add-status-reports-for-full-waste-trays-and-cleaner-unit-eol.patch,
+    debian/patches/match-marker-colorants-which-use-non-standard-string.patch,
+    debian/patches/truncate-marker-supply-names-at-comma.patch: Removed supply
+    level report fixes. This got solved differently upstream.
+  * debian/patches/do-not-suppress-inputslot-setting-with-empty-ap-d-inputslot.patch:
+    Removed, problem solved differently upstream.
+  * debian/patches/cups-avahi.patch: Manually regenerated to adapt to upstream
+    changes.
+  * debian/patches/ppd-poll-with-client-conf.patch,
+    debian/patches/colord-support.patch,
+    debian/patches/airprint-support.patch,
+    debian/patches/no-conffile-timestamp.patch,
+    debian/patches/drop_unnecessary_dependencies.patch,
+    debian/patches/read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.patch,
+    debian/patches/show-compile-command-lines.patch: Refreshed using quilt.
+  * debian/patches/usb-backend-busy-loop-fix.patch: Correct loops to repeat
+    claiming interfaces on USB devices when they are busy. Before, hitting busy
+    state made the device opening function error out without comment
+    (LP: #987485).
+  * debian/patches/usb-backend-detach-usblp-earlier-crash-guards.patch: Protect
+    against crashes by checking error codes of libusb functions (LP: #997040)
+    and detach usblp kernel module in an earlier stage when opening a device
+    (LP: #987485, LP: #997040).
+  * debian/patches/usb-backend-initialize-usblp-attached-state.patch: Initialize
+    usblp_attached field in printer data structure to assure that detaching
+    and re-attaching the usblp kernel module is always done correctly
+    (LP: #902535, LP: #959676, LP: #960666, LP: #987485,
+    LP: #995111, LP: #997040, LP: #1000253, LP: #1001028).
+  * debian/patches/install-sh-remove-bashism.patch: Removed bashism.
+  * debian/local/blacklist-cups-usblp.conf, debian/cups.postinst,
+    debian/cups.install: Blacklist the "usblp" kernel module again. We have
+    now a full-featured USB backend based on the maintained libusb 1.0.x
+    and so we can acess printers always through the raw USB devices making
+    the module deprecated. Detaching the kernel module for each access causes
+    a lot of problems: LP: #902535, LP: #959676, LP: #960666, LP: #987485,
+    LP: #995111, LP: #997040, LP: #1000253, LP: #1001028.
+  * debian/watch: Fixed URL.
+
+  [ Bastian Blank ]
+  * debian/control: Support multi-arch: Mark cups, cups-client, cups-bsd,
+    cups-common and cups-ppdc as foreign. (Closes: #672879)
+
+  [ Martin Pitt ]
+  * debian/cups.{preinst,postinst,postrm}: Drop the removal of obsolete
+    /etc/modprobe.d/blacklist-cups-usblp.conf conffile, as this file is
+    reintroduced now.
+
+ -- Martin Pitt <mpitt@debian.org>  Wed, 23 May 2012 14:31:36 +0200
+
 cups (1.5.2-11) unstable; urgency=low
 
   * Add tests-slow-lpstat.patch: Wait a bit for the scheduler to catch up in

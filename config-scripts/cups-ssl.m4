@@ -1,9 +1,9 @@
 dnl
-dnl "$Id: cups-ssl.m4 9837 2011-06-16 20:12:16Z mike $"
+dnl "$Id: cups-ssl.m4 10371 2012-03-21 04:45:48Z mike $"
 dnl
 dnl   OpenSSL/GNUTLS stuff for CUPS.
 dnl
-dnl   Copyright 2007-2011 by Apple Inc.
+dnl   Copyright 2007-2012 by Apple Inc.
 dnl   Copyright 1997-2007 by Easy Software Products, all rights reserved.
 dnl
 dnl   These coded instructions, statements, and computer programs are the
@@ -136,9 +136,9 @@ if test x$enable_ssl != xno; then
 	    dnl case the RSAREF libraries are needed.
 
 	    for libcrypto in \
-	        "-lcrypto" \
-	        "-lcrypto -lrsaref" \
-	        "-lcrypto -lRSAglue -lrsaref"
+		"-lcrypto" \
+		"-lcrypto -lrsaref" \
+		"-lcrypto -lRSAglue -lrsaref"
 	    do
 		AC_CHECK_LIB(ssl,SSL_new,
 		    [have_ssl=1
@@ -149,6 +149,9 @@ if test x$enable_ssl != xno; then
 		    $libcrypto)
 
 		if test "x${SSLLIBS}" != "x"; then
+		    LIBS="$SAVELIBS $SSLLIBS"
+		    AC_CHECK_FUNC(SSL_set_tlsext_host_name,
+			AC_DEFINE(HAVE_SSL_SET_TLSEXT_HOST_NAME))
 		    break
 		fi
 	    done
@@ -173,7 +176,6 @@ AC_SUBST(SSLLIBS)
 EXPORT_SSLLIBS="$SSLLIBS"
 AC_SUBST(EXPORT_SSLLIBS)
 
-
 dnl
-dnl End of "$Id: cups-ssl.m4 9837 2011-06-16 20:12:16Z mike $".
+dnl End of "$Id: cups-ssl.m4 10371 2012-03-21 04:45:48Z mike $".
 dnl
