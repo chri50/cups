@@ -1,5 +1,5 @@
 /*
- * "$Id: auth.c 10067 2011-10-13 05:44:32Z mike $"
+ * "$Id: auth.c 10288 2012-02-15 19:21:37Z mike $"
  *
  *   Authentication functions for CUPS.
  *
@@ -876,5 +876,5 @@ cups_local_auth(http_t *http)		/* I - HTTP connection to server */
 
 
 /*
- * End of "$Id: auth.c 10067 2011-10-13 05:44:32Z mike $".
+ * End of "$Id: auth.c 10288 2012-02-15 19:21:37Z mike $".
  */

@@ -1,9 +1,9 @@
 /*
- * "$Id: dnssd.c 10017 2011-09-26 18:46:46Z mike $"
+ * "$Id: dnssd.c 10379 2012-03-23 22:16:22Z mike $"
  *
  *   DNS-SD discovery backend for CUPS.
  *
- *   Copyright 2008-2011 by Apple Inc.
+ *   Copyright 2008-2012 by Apple Inc.
  *
  *   These coded instructions, statements, and computer programs are the
  *   property of Apple Inc. and are protected by Federal copyright
@@ -61,8 +61,8 @@
 typedef enum
 {
   CUPS_DEVICE_PRINTER = 0,		/* lpd://... */
-  CUPS_DEVICE_IPP,			/* ipp://... */
   CUPS_DEVICE_IPPS,			/* ipps://... */
+  CUPS_DEVICE_IPP,			/* ipp://... */
   CUPS_DEVICE_FAX_IPP,			/* ipp://... */
   CUPS_DEVICE_PDL_DATASTREAM,		/* socket://... */
   CUPS_DEVICE_RIOUSBPRINT		/* riousbprint://... */
@@ -122,7 +122,8 @@ static void		browse_callback(DNSServiceRef sdRef,
 				        DNSServiceErrorType errorCode,
 				        const char *serviceName,
 				        const char *regtype,
-				        const char *replyDomain, void *context);
+				        const char *replyDomain, void *context)
+					__attribute__((nonnull(1,5,6,7,8)));
 static void		browse_local_callback(DNSServiceRef sdRef,
 					      DNSServiceFlags flags,
 					      uint32_t interfaceIndex,
@@ -130,7 +131,8 @@ static void		browse_local_callback(DNSServiceRef sdRef,
 					      const char *serviceName,
 					      const char *regtype,
 					      const char *replyDomain,
-					      void *context);
+					      void *context)
+					      __attribute__((nonnull(1,5,6,7,8)));
 static void		query_callback(DNSServiceRef sdRef,
 			               DNSServiceFlags flags,
 				       uint32_t interfaceIndex,
@@ -138,7 +140,8 @@ static void		query_callback(DNSServiceRef sdRef,
 				       const char *fullName, uint16_t rrtype,
 				       uint16_t rrclass, uint16_t rdlen,
 				       const void *rdata, uint32_t ttl,
-				       void *context);
+				       void *context)
+				       __attribute__((nonnull(1,5,9,11)));
 #endif /* HAVE_DNSSD */
 #ifdef HAVE_AVAHI
 static void		avahi_client_callback (AvahiClient *client,
@@ -165,7 +168,8 @@ static cups_device_t	*get_device(cups_array_t *devices,
 			            const char *regtype,
 				    const char *replyDomain);
 static void		sigterm_handler(int sig);
-static void		unquote(char *dst, const char *src, size_t dstsize);
+static void		unquote(char *dst, const char *src, size_t dstsize)
+			    __attribute__((nonnull(1,2)));
 
 #ifdef HAVE_AVAHI
 static AvahiSimplePoll *simple_poll = NULL;
@@ -1370,5 +1374,5 @@ unquote(char       *dst,		/* I - Destination buffer */
 
 
 /*
- * End of "$Id: dnssd.c 10017 2011-09-26 18:46:46Z mike $".
+ * End of "$Id: dnssd.c 10379 2012-03-23 22:16:22Z mike $".
  */

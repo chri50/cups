@@ -1,5 +1,5 @@
 /*
- * "$Id: ppd-private.h 9662 2011-03-30 16:59:09Z mike $"
+ * "$Id: ppd-private.h 10244 2012-02-11 02:21:34Z mike $"
  *
  *   Private PPD definitions for CUPS.
  *
@@ -198,5 +198,5 @@ extern const char	*_pwgPageSizeForMedia(_pwg_media_t *media,
 #endif /* !_CUPS_PPD_PRIVATE_H_ */
 
 /*
- * End of "$Id: ppd-private.h 9662 2011-03-30 16:59:09Z mike $".
+ * End of "$Id: ppd-private.h 10244 2012-02-11 02:21:34Z mike $".
  */

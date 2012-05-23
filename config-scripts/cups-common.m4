@@ -1,9 +1,9 @@
 dnl
-dnl "$Id: cups-common.m4 10067 2011-10-13 05:44:32Z mike $"
+dnl "$Id: cups-common.m4 10317 2012-03-01 00:05:55Z mike $"
 dnl
 dnl   Common configuration stuff for CUPS.
 dnl
-dnl   Copyright 2007-2011 by Apple Inc.
+dnl   Copyright 2007-2012 by Apple Inc.
 dnl   Copyright 1997-2007 by Easy Software Products, all rights reserved.
 dnl
 dnl   These coded instructions, statements, and computer programs are the
@@ -20,7 +20,7 @@ dnl Set the name of the config header file...
 AC_CONFIG_HEADER(config.h)
 
 dnl Version number information...
-CUPS_VERSION=1.5.2
+CUPS_VERSION=1.5.3
 CUPS_REVISION=
 #if test -z "$CUPS_REVISION" -a -d .svn; then
 #	CUPS_REVISION="-r`svnversion . | awk -F: '{print $NF}' | sed -e '1,$s/[[a-zA-Z]]*//g'`"
@@ -50,6 +50,7 @@ AC_PROG_CXX
 AC_PROG_RANLIB
 AC_PATH_PROG(AR,ar)
 AC_PATH_PROG(CHMOD,chmod)
+AC_PATH_PROG(GZIP,gzip)
 AC_PATH_PROG(HTMLDOC,htmldoc)
 AC_PATH_PROG(LD,ld)
 AC_PATH_PROG(LN,ln)
@@ -211,26 +212,24 @@ AC_CHECK_FUNCS(removefile)
 dnl See if we have libusb...
 AC_ARG_ENABLE(libusb, [  --enable-libusb         use libusb for USB printing])
 
-LIBUSB_CFLAGS=""
-LIBUSB_LIBS=""
+LIBUSB=""
+AC_SUBST(LIBUSB)
 
-if test x$enable_libusb = xyes; then
-	check_libusb=yes
-elif test x$enable_libusb != xno -a $uname != Darwin; then
-	check_libusb=yes
-else
-	check_libusb=no
-fi
-
-if test $check_libusb = yes; then
-	PKG_CHECK_MODULES(LIBUSB, libusb-1.0 >= 1.0.0)
-	if test -n "$LIBUSB_LIBS"; then
-		AC_DEFINE(HAVE_USB_H)
+if test "x$PKGCONFIG" != x; then
+	if test x$enable_libusb = xyes -o $uname != Darwin; then
+		AC_MSG_CHECKING(for libusb-1.0)
+		if $PKGCONFIG --exists libusb-1.0; then
+			AC_MSG_RESULT(yes)
+			AC_DEFINE(HAVE_LIBUSB)
+			CFLAGS="$CFLAGS `$PKGCONFIG --cflags libusb-1.0`"
+			LIBUSB="`$PKGCONFIG --libs libusb-1.0`"
+		else
+			AC_MSG_RESULT(no)
+		fi
 	fi
+elif test x$enable_libusb = xyes; then
+	AC_MSG_ERROR(Need pkg-config to enable libusb support.)
 fi
-
-AC_SUBST(LIBUSB_CFLAGS)
-AC_SUBST(LIBUSB_LIBS)
 
 dnl See if we have libwrap for TCP wrappers support...
 AC_ARG_ENABLE(tcp_wrappers, [  --enable-tcp-wrappers   use libwrap for TCP wrappers support])
@@ -435,5 +434,5 @@ esac
 AC_SUBST(BUILDDIRS)
 
 dnl
-dnl End of "$Id: cups-common.m4 10067 2011-10-13 05:44:32Z mike $".
+dnl End of "$Id: cups-common.m4 10317 2012-03-01 00:05:55Z mike $".
 dnl

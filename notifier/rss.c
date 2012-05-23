@@ -1,5 +1,5 @@
 /*
- * "$Id: rss.c 9042 2010-03-24 00:45:34Z mike $"
+ * "$Id: rss.c 10379 2012-03-23 22:16:22Z mike $"
  *
  *   RSS notifier for CUPS.
  *
@@ -251,7 +251,7 @@ main(int  argc,				/* I - Number of command-line arguments */
     {
      /*
       * Save the messages to the file again, uploading as needed...
-      */ 
+      */
 
       if (save_rss(rss, newname, baseurl))
       {
@@ -553,6 +553,15 @@ load_rss(cups_array_t *rss,		/* I - RSS messages */
       sequence_number = atoi(start + 6);
   }
 
+  if (subject)
+    free(subject);
+
+  if (text)
+    free(text);
+
+  if (link_url)
+    free(link_url);
+
   fclose(fp);
 }
 
@@ -727,5 +736,5 @@ xml_escape(const char *s)		/* I - String to escape */
 
 
 /*
- * End of "$Id: rss.c 9042 2010-03-24 00:45:34Z mike $".
+ * End of "$Id: rss.c 10379 2012-03-23 22:16:22Z mike $".
  */

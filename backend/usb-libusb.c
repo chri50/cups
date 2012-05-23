@@ -1,7 +1,7 @@
 /*
- * "$Id: usb-libusb.c 10198 2012-01-27 16:48:43Z mike $"
+ * "$Id: usb-libusb.c 10267 2012-02-12 08:35:28Z mike $"
  *
- *   Libusb interface code for CUPS.
+ *   LIBUSB interface code for CUPS.
  *
  *   Copyright 2007-2012 by Apple Inc.
  *
@@ -13,20 +13,18 @@
  *
  * Contents:
  *
- *   list_devices()       - List the available printers.
- *   print_device()       - Print a file to a USB device.
- *   read_thread()        - Thread to read the backchannel data on.
+﻿ *   list_devices()	  - List the available printers.
+ *   print_device()	  - Print a file to a USB device.
+ *   close_device()	  - Close the connection to the USB printer.
+ *   find_device()	  - Find or enumerate USB printers.
+ *   get_device_id()	  - Get the IEEE-1284 device ID for the printer.
+ *   list_cb()		  - List USB printers for discovery.
+ *   make_device_uri()	  - Create a device URI for a USB printer.
+ *   open_device()	  - Open a connection to the USB printer.
+ *   print_cb() 	  - Find a USB printer for printing.
+ *   read_thread()	  - Thread to read the backchannel data on.
  *   sidechannel_thread() - Handle side-channel requests.
- *   close_device()       - Close the connection to the USB printer.
- *   find_device()        - Find or enumerate USB printers.
- *   get_device_id()      - Get the IEEE-1284 device ID for the printer.
- *   list_cb()            - List USB printers for discovery.
- *   make_device_uri()    - Create a device URI for a USB printer.
- *   open_device()        - Open a connection to the USB printer.
- *   print_cb()           - Find a USB printer for printing.
- *   soft_reset()         - Send a soft reset to the device.
- *   next_line()          - Find the next line in a buffer.
- *   parse_pserror()      - Scan the backchannel data for postscript errors.
+ *   soft_reset()	  - Send a soft reset to the device.
  */
 
 /*
@@ -42,24 +40,17 @@
 #include <sys/time.h>
 #include <unistd.h>
 
-#define PARSE_PS_ERRORS 1
-
-/*
- * DEBUG_WRITES, if defined, causes the backend to write data to the printer in
- * 512 byte increments, up to 8192 bytes, to make debugging with a USB bus
- * analyzer easier.
- */
-
-#define DEBUG_WRITES 0
 
 /*
  * WAIT_EOF_DELAY is number of seconds we'll wait for responses from
  * the printer after we've finished sending all the data
  */
+
 #define WAIT_EOF			0
 #define WAIT_EOF_DELAY			7
 #define WAIT_SIDE_DELAY			3
 #define DEFAULT_TIMEOUT			5000L
+
 
 /*
  * Local types...
@@ -82,9 +73,9 @@ typedef struct usb_printer_s		/**** USB Printer Data ****/
 typedef int (*usb_cb_t)(usb_printer_t *, const char *, const char *,
                         const void *);
 
-typedef struct globals_s
+typedef struct usb_globals_s
 {
-  usb_printer_t		*printer;		/* Printer */
+  usb_printer_t		*printer;	/* Printer */
 
   pthread_mutex_t	read_thread_mutex;
   pthread_cond_t	read_thread_cond;
@@ -97,9 +88,6 @@ typedef struct globals_s
 
   int			print_fd;	/* File descriptor to print */
   ssize_t		print_bytes;	/* Print bytes read */
-#if DEBUG_WRITES
-  ssize_t		debug_bytes;	/* Current bytes to read */
-#endif /* DEBUG_WRITES */
 
   int			wait_eof;
   int			drain_output;	/* Drain all pending output */
@@ -109,22 +97,21 @@ typedef struct globals_s
   pthread_cond_t	sidechannel_thread_cond;
   int			sidechannel_thread_stop;
   int			sidechannel_thread_done;
-} globals_t;
+} usb_globals_t;
 
 
 /*
  * Globals...
  */
 
-globals_t g = { 0 };			/* Globals */
+usb_globals_t		g = { 0 };	/* Globals */
 libusb_device           **list;         /* List of connected USB devices */
+
 
 /*
  * Local functions...
  */
 
-static void		*read_thread(void *reference);
-static void		*sidechannel_thread(void *reference);
 static int		close_device(usb_printer_t *printer);
 static usb_printer_t	*find_device(usb_cb_t cb, const void *data);
 static int		get_device_id(usb_printer_t *printer, char *buffer,
@@ -137,11 +124,9 @@ static char		*make_device_uri(usb_printer_t *printer,
 static int		open_device(usb_printer_t *printer, int verbose);
 static int		print_cb(usb_printer_t *printer, const char *device_uri,
 			         const char *device_id, const void *data);
+static void		*read_thread(void *reference);
+static void		*sidechannel_thread(void *reference);
 static void		soft_reset(void);
-#ifdef PARSE_PS_ERRORS
-static const char *next_line (const char *buffer);
-static void parse_pserror (char *sockBuffer, int len);
-#endif /* PARSE_PS_ERRORS */
 
 
 /*
@@ -173,7 +158,8 @@ print_device(const char *uri,		/* I - Device URI */
   int	        bytes;			/* Bytes written */
   ssize_t	total_bytes;		/* Total bytes written */
   struct sigaction action;		/* Actions for POSIX signals */
-  int		status = CUPS_BACKEND_OK, /* Function results */
+  int		status = CUPS_BACKEND_OK,
+					/* Function results */
 		iostatus;		/* Current IO status */
   pthread_t	read_thread_id,		/* Read thread */
 		sidechannel_thread_id;	/* Side-channel thread */
@@ -187,8 +173,6 @@ print_device(const char *uri,		/* I - Device URI */
 		tv;			/* Time value */
   struct timespec cond_timeout;		/* pthread condition timeout */
 
-
-  fputs("DEBUG: print_device\n", stderr);
 
  /*
   * See if the side-channel descriptor is valid...
@@ -219,7 +203,7 @@ print_device(const char *uri,		/* I - Device URI */
   * is no way to cancel a raw print job...
   */
 
-  if (print_fd)
+  if (!print_fd)
   {
     memset(&action, 0, sizeof(action));
 
@@ -249,7 +233,7 @@ print_device(const char *uri,		/* I - Device URI */
       fprintf(stderr, "DEBUG: Fatal USB error.\n");
       _cupsLangPrintFilter(stderr, "ERROR",
 			   _("There was an unrecoverable USB error."));
-      fputs("DEBUG: Couldn't create side-channel thread\n", stderr);
+      fputs("DEBUG: Couldn't create side-channel thread.\n", stderr);
       close_device(g.printer);
       return (CUPS_BACKEND_STOP);
     }
@@ -270,7 +254,7 @@ print_device(const char *uri,		/* I - Device URI */
     fprintf(stderr, "DEBUG: Fatal USB error.\n");
     _cupsLangPrintFilter(stderr, "ERROR",
                          _("There was an unrecoverable USB error."));
-    fputs("DEBUG: Couldn't create read thread\n", stderr);
+    fputs("DEBUG: Couldn't create read thread.\n", stderr);
     close_device(g.printer);
     return (CUPS_BACKEND_STOP);
   }
@@ -312,13 +296,13 @@ print_device(const char *uri,		/* I - Device URI */
       {
 	tv.tv_sec  = 0;
 	tv.tv_usec = 100000;		/* 100ms */
-	timeout = &tv;
+	timeout    = &tv;
       }
       else if (g.drain_output)
       {
 	tv.tv_sec  = 0;
 	tv.tv_usec = 0;
-	timeout = &tv;
+	timeout    = &tv;
       }
       else
 	timeout = NULL;
@@ -349,7 +333,7 @@ print_device(const char *uri,		/* I - Device URI */
 	if (errno == EINTR && total_bytes == 0)
 	{
 	  fputs("DEBUG: Received an interrupt before any bytes were "
-	        "written, aborting\n", stderr);
+	        "written, aborting.\n", stderr);
 	  close_device(g.printer);
           return (CUPS_BACKEND_OK);
 	}
@@ -380,16 +364,7 @@ print_device(const char *uri,		/* I - Device URI */
 
       if (FD_ISSET(print_fd, &input_set))
       {
-#if DEBUG_WRITES
-	g.debug_bytes += 512;
-        if (g.debug_bytes > sizeof(print_buffer))
-	  g.debug_bytes = 512;
-
-	g.print_bytes = read(print_fd, print_buffer, g.debug_bytes);
-
-#else
 	g.print_bytes = read(print_fd, print_buffer, sizeof(print_buffer));
-#endif /* DEBUG_WRITES */
 
 	if (g.print_bytes < 0)
 	{
@@ -431,12 +406,12 @@ print_device(const char *uri,		/* I - Device URI */
 					&bytes, 60000);
        /*
 	* Ignore timeout errors, but retain the number of bytes written to
-	* avoid sending duplicate data (<rdar://problem/6254911>)...
+	* avoid sending duplicate data...
 	*/
 
 	if (iostatus == LIBUSB_ERROR_TIMEOUT)
 	{
-	  fputs("DEBUG: Got USB transaction timeout during write\n", stderr);
+	  fputs("DEBUG: Got USB transaction timeout during write.\n", stderr);
 	  iostatus = 0;
 	}
 
@@ -446,7 +421,7 @@ print_device(const char *uri,		/* I - Device URI */
 
 	else if (iostatus == LIBUSB_ERROR_PIPE)
 	{
-	  fputs("DEBUG: Got USB pipe stalled during write\n", stderr);
+	  fputs("DEBUG: Got USB pipe stalled during write.\n", stderr);
 
 	  iostatus = libusb_bulk_transfer(g.printer->handle,
 					  g.printer->write_endp,
@@ -456,16 +431,12 @@ print_device(const char *uri,		/* I - Device URI */
 
        /*
 	* Retry a write after an aborted write since we probably just got
-	* SIGTERM ...
+	* SIGTERM...
 	*/
 
 	else if (iostatus == LIBUSB_ERROR_INTERRUPTED)
 	{
-	  fputs("DEBUG: Got USB return aborted during write\n", stderr);
-
-#if DEBUG_WRITES
-          sleep(5);
-#endif /* DEBUG_WRITES */
+	  fputs("DEBUG: Got USB return aborted during write.\n", stderr);
 
 	  iostatus = libusb_bulk_transfer(g.printer->handle,
 					  g.printer->write_endp,
@@ -481,7 +452,7 @@ print_device(const char *uri,		/* I - Device URI */
 
 	  _cupsLangPrintFilter(stderr, "ERROR",
 	                       _("Unable to send data to printer."));
-	  fprintf(stderr, "DEBUG: libusb write operation returned %x\n",
+	  fprintf(stderr, "DEBUG: libusb write operation returned %x.\n",
 	          iostatus);
 
 	  status = CUPS_BACKEND_FAILED;
@@ -489,7 +460,8 @@ print_device(const char *uri,		/* I - Device URI */
 	}
 	else if (bytes > 0)
 	{
-	  fprintf(stderr, "DEBUG: Wrote %d bytes of print data...\n", (int)bytes);
+	  fprintf(stderr, "DEBUG: Wrote %d bytes of print data...\n",
+	          (int)bytes);
 
 	  g.print_bytes -= bytes;
 	  print_ptr   += bytes;
@@ -498,12 +470,13 @@ print_device(const char *uri,		/* I - Device URI */
       }
 
       if (print_fd != 0 && status == CUPS_BACKEND_OK)
-	fprintf(stderr, "DEBUG: Sending print file, %lld bytes...\n",
-		(long long int)total_bytes);
+	fprintf(stderr, "DEBUG: Sending print file, " CUPS_LLFMT " bytes...\n",
+		CUPS_LLCAST total_bytes);
     }
   }
 
-  fprintf(stderr, "DEBUG: Sent %lld bytes...\n", (long long int)total_bytes);
+  fprintf(stderr, "DEBUG: Sent " CUPS_LLFMT " bytes...\n",
+          CUPS_LLCAST total_bytes);
 
  /*
   * Signal the side channel thread to exit...
@@ -587,7 +560,7 @@ print_device(const char *uri,		/* I - Device URI */
 
   pthread_mutex_unlock(&g.read_thread_mutex);
 
-  if (print_fd != STDIN_FILENO)
+  if (print_fd)
     close(print_fd);
 
  /*
@@ -603,234 +576,7 @@ print_device(const char *uri,		/* I - Device URI */
   libusb_free_device_list(list, 1);
   libusb_exit(NULL);
 
-  return status;
-}
-
-
-/*
- * 'read_thread()' - Thread to read the backchannel data on.
- */
-
-static void *read_thread(void *reference)
-{
-  unsigned char			readbuffer[512];
-  int				rbytes;
-  int				readstatus;
-  struct timeval		now,
-				delay,
-				end,
-				timeleft;
-
-
-  (void)reference;
-
- /*
-  * Read frequency: Once every 250 milliSeconds
-  */
-  delay.tv_sec = 0;
-  delay.tv_usec = 250000;
-
-  do
-  {
-   /*
-    * Remember when we started so we can throttle the loop after the read
-    * call...
-    */
-    gettimeofday(&now, NULL);
-
-   /*
-    * Calculate what 250 milliSeconds are in absolute time...
-    */
-    timeradd(&now, &delay, &end);
-
-    rbytes = sizeof(readbuffer);
-    readstatus = libusb_bulk_transfer(g.printer->handle,
-				      g.printer->read_endp,
-				      readbuffer, rbytes,
-				      &rbytes, 60000);
-    if (readstatus == LIBUSB_SUCCESS && rbytes > 0)
-    {
-      fprintf(stderr, "DEBUG: Read %d bytes of back-channel data...\n",
-              (int)rbytes);
-      cupsBackChannelWrite((const char *)readbuffer, rbytes, 1.0);
-
-#ifdef PARSE_PS_ERRORS
-      parse_pserror((char *)readbuffer, rbytes);
-#endif
-
-      /* cntrl-d is echoed by the printer.
-       * NOTES:
-       *   Xerox Phaser 6250D doesn't echo the cntrl-d.
-       *   Xerox Phaser 6250D doesn't always send the product query.
-       */
-      if (g.wait_eof && readbuffer[rbytes-1] == 0x4)
-	break;
-    }
-    else if (readstatus == LIBUSB_ERROR_TIMEOUT)
-      fputs("DEBUG: Got USB transaction timeout during read\n", stderr);
-    else if (readstatus == LIBUSB_ERROR_PIPE)
-      fputs("DEBUG: Got USB pipe stalled during read\n", stderr);
-    else if (readstatus == LIBUSB_ERROR_INTERRUPTED)
-      fputs("DEBUG: Got USB return aborted during read\n", stderr);
-
-   /*
-    * Make sure this loop executes no more than once every 250 miliseconds...
-    */
-
-    if ((readstatus != LIBUSB_SUCCESS || rbytes == 0) && (g.wait_eof || !g.read_thread_stop))
-    {
-      gettimeofday(&now, NULL);
-      if (timercmp(&now, &end, <))
-      {
-	timersub(&end, &now, &timeleft);
-	usleep(1000000 * timeleft.tv_sec + timeleft.tv_usec);
-      }
-    }
-  } while (g.wait_eof || !g.read_thread_stop);	/* Abort from main thread tests error here */
-
- /*
-  * Let the main thread know that we have completed the read thread...
-  */
-
-  pthread_mutex_lock(&g.read_thread_mutex);
-  g.read_thread_done = 1;
-  pthread_cond_signal(&g.read_thread_cond);
-  pthread_mutex_unlock(&g.read_thread_mutex);
-
-  return NULL;
-}
-
-
-/*
- * 'sidechannel_thread()' - Handle side-channel requests.
- */
-
-static void*
-sidechannel_thread(void *reference)
-{
-  cups_sc_command_t	command;	/* Request command */
-  cups_sc_status_t	status;		/* Request/response status */
-  char			data[2048];	/* Request/response data */
-  int			datalen;	/* Request/response data size */
-
-
-  (void)reference;
-
-  do
-  {
-    datalen = sizeof(data);
-
-    if (cupsSideChannelRead(&command, &status, data, &datalen, 1.0))
-    {
-      if (status == CUPS_SC_STATUS_TIMEOUT)
-	continue;
-      else
-	break;
-    }
-
-    switch (command)
-    {
-      case CUPS_SC_CMD_SOFT_RESET:	/* Do a soft reset */
-	  fputs("DEBUG: CUPS_SC_CMD_SOFT_RESET received from driver...\n",
-		stderr);
-
-	  soft_reset();
-	  cupsSideChannelWrite(command, CUPS_SC_STATUS_OK, NULL, 0, 1.0);
-	  fputs("DEBUG: Returning status CUPS_STATUS_OK with no bytes...\n",
-		stderr);
-	  break;
-
-      case CUPS_SC_CMD_DRAIN_OUTPUT:	/* Drain all pending output */
-	  fputs("DEBUG: CUPS_SC_CMD_DRAIN_OUTPUT received from driver...\n",
-		stderr);
-
-	  g.drain_output = 1;
-	  break;
-
-      case CUPS_SC_CMD_GET_BIDI:		/* Is the connection bidirectional? */
-	  fputs("DEBUG: CUPS_SC_CMD_GET_BIDI received from driver...\n",
-		stderr);
-
-	  data[0] = (g.printer->protocol >= 2 ? 1 : 0);
-	  cupsSideChannelWrite(command, CUPS_SC_STATUS_OK, data, 1, 1.0);
-
-	  fprintf(stderr,
-	          "DEBUG: Returned CUPS_SC_STATUS_OK with 1 byte (%02X)...\n",
-		  data[0]);
-	  break;
-
-      case CUPS_SC_CMD_GET_DEVICE_ID:	/* Return IEEE-1284 device ID */
-	  fputs("DEBUG: CUPS_SC_CMD_GET_DEVICE_ID received from driver...\n",
-		stderr);
-
-	  datalen = sizeof(data);
-	  if (get_device_id(g.printer, data, sizeof(data)))
-	  {
-	    status  = CUPS_SC_STATUS_IO_ERROR;
-	    datalen = 0;
-	  }
-	  else
-	  {
-	    status  = CUPS_SC_STATUS_OK;
-	    datalen = strlen(data);
-	  }
-	  cupsSideChannelWrite(command, CUPS_SC_STATUS_OK, data, datalen, 1.0);
-
-          if (datalen < sizeof(data))
-	    data[datalen] = '\0';
-	  else
-	    data[sizeof(data) - 1] = '\0';
-
-	  fprintf(stderr,
-	          "DEBUG: Returning CUPS_SC_STATUS_OK with %d bytes (%s)...\n",
-		  datalen, data);
-	  break;
-
-      case CUPS_SC_CMD_GET_STATE:		/* Return device state */
-	  fputs("DEBUG: CUPS_SC_CMD_GET_STATE received from driver...\n",
-		stderr);
-
-	  data[0] = CUPS_SC_STATE_ONLINE;
-	  cupsSideChannelWrite(command, CUPS_SC_STATUS_OK, data, 1, 1.0);
-
-	  fprintf(stderr,
-	          "DEBUG: Returned CUPS_SC_STATUS_OK with 1 byte (%02X)...\n",
-		  data[0]);
-	  break;
-
-      case CUPS_SC_CMD_GET_CONNECTED:		/* Return whether device is
-						   connected */
-	  fputs("DEBUG: CUPS_SC_CMD_GET_CONNECTED received from driver...\n",
-		stderr);
-
-	  data[0] = (g.printer->handle ? 1 : 0);
-	  cupsSideChannelWrite(command, CUPS_SC_STATUS_OK, data, 1, 1.0);
-
-	  fprintf(stderr,
-	          "DEBUG: Returned CUPS_SC_STATUS_OK with 1 byte (%02X)...\n",
-		  data[0]);
-	  break;
-
-      default:
-	  fprintf(stderr, "DEBUG: Unknown side-channel command (%d) received "
-			  "from driver...\n", command);
-
-	  cupsSideChannelWrite(command, CUPS_SC_STATUS_NOT_IMPLEMENTED,
-			       NULL, 0, 1.0);
-
-	  fputs("DEBUG: Returned CUPS_SC_STATUS_NOT_IMPLEMENTED with no bytes...\n",
-		stderr);
-	  break;
-    }
-  }
-  while (!g.sidechannel_thread_stop);
-
-  pthread_mutex_lock(&g.sidechannel_thread_mutex);
-  g.sidechannel_thread_done = 1;
-  pthread_cond_signal(&g.sidechannel_thread_cond);
-  pthread_mutex_unlock(&g.sidechannel_thread_mutex);
-
-  return NULL;
+  return (status);
 }
 
 
@@ -846,6 +592,7 @@ close_device(usb_printer_t *printer)	/* I - Printer */
   struct libusb_config_descriptor *confptr;
                                         /* Pointer to current configuration */
 
+
   if (printer->handle)
   {
    /*
@@ -853,24 +600,38 @@ close_device(usb_printer_t *printer)	/* I - Printer */
     * to the device...
     */
 
-    libusb_get_device_descriptor (printer->device, &devdesc);
-    libusb_get_config_descriptor (printer->device, printer->conf, &confptr);
-    int number = confptr->interface[printer->iface].
-      altsetting[printer->altset].bInterfaceNumber;
-    libusb_release_interface(printer->handle, number);
-    if (number != 0)
-      libusb_release_interface(printer->handle, 0);
+    int errcode;			/* Return value of libusb function */
+    int number;				/* Interface number */
 
-   /*
-    * Re-attach "usblp" kernel module if it was attached before using this
-    * device
-    */
-    if (printer->usblp_attached == 1)
-      if (libusb_attach_kernel_driver(printer->handle, printer->iface) < 0)
-	fprintf(stderr, "DEBUG: Failed to re-attach \"usblp\" kernel module to %04x:%04x\n",
-		devdesc.idVendor, devdesc.idProduct);
+    errcode = 
+      libusb_get_config_descriptor (printer->device, printer->conf, &confptr);
+    if (errcode >= 0)
+    {
+      number = confptr->interface[printer->iface].
+	altsetting[printer->altset].bInterfaceNumber;
+      libusb_release_interface(printer->handle, number);
+      if (number != 0)
+	libusb_release_interface(printer->handle, 0);
 
-    libusb_free_config_descriptor(confptr);
+     /*
+      * Re-attach "usblp" kernel module if it was attached before using this
+      * device
+      */
+      if (printer->usblp_attached == 1)
+	if (libusb_attach_kernel_driver(printer->handle, printer->iface) < 0)
+	{
+	  errcode = libusb_get_device_descriptor (printer->device, &devdesc);
+	  if (errcode < 0)
+	    fprintf(stderr,
+		    "DEBUG: Failed to re-attach \"usblp\" kernel module\n");
+	  else
+	    fprintf(stderr,
+		    "DEBUG: Failed to re-attach \"usblp\" kernel module to "
+		    "%04x:%04x\n", devdesc.idVendor, devdesc.idProduct);
+	}
+
+      libusb_free_config_descriptor(confptr);
+    }
 
    /*
     * Close the interface and return...
@@ -941,7 +702,8 @@ find_device(usb_cb_t   cb,		/* I - Callback function */
       * a printer...
       */
 
-      libusb_get_device_descriptor (device, &devdesc);
+      if (libusb_get_device_descriptor (device, &devdesc) < 0)
+	continue;
 
       if (!devdesc.bNumConfigurations || !devdesc.idVendor ||
           !devdesc.idProduct)
@@ -1222,15 +984,6 @@ make_device_uri(
   if ((mdl = cupsGetOption("MODEL", num_values, values)) == NULL)
     mdl = cupsGetOption("MDL", num_values, values);
 
-#ifdef __APPLE__
- /*
-  * To maintain compatibility with the original IOKit-based backend on Mac OS X,
-  * don't map manufacturer names...
-  */
-
-  if (!mfg)
-
-#else
  /*
   * To maintain compatibility with the original character device backend on
   * Linux and *BSD, map manufacturer names...
@@ -1244,7 +997,6 @@ make_device_uri(
       mfg = "Lexmark";
   }
   else
-#endif /* __APPLE__ */
   {
    /*
     * No manufacturer?  Use the model string or description...
@@ -1346,40 +1098,16 @@ open_device(usb_printer_t *printer,	/* I - Printer */
   if (libusb_open(printer->device, &printer->handle) < 0)
     return (-1);
 
+  printer->usblp_attached = 0;
+
   if (verbose)
     fputs("STATE: +connecting-to-device\n", stderr);
 
- /*
-  * Set the desired configuration, but only if it needs changing. Some
-  * printers (e.g., Samsung) don't like libusb_set_configuration. It will
-  * succeed, but the following print job is sometimes silently lost by the
-  * printer.
-  */
-  if (libusb_control_transfer(printer->handle,
-                LIBUSB_REQUEST_TYPE_STANDARD | LIBUSB_ENDPOINT_IN |
-		LIBUSB_RECIPIENT_DEVICE,
-		8, /* GET_CONFIGURATION */
-		0, 0, (unsigned char *)&current, 1, 5000) < 0)
-    current = 0;			/* Assume not configured */
-
-  libusb_get_device_descriptor (printer->device, &devdesc);
-  libusb_get_config_descriptor (printer->device, printer->conf, &confptr);
-  number1 = confptr->bConfigurationValue;
-
-  if (number1 != current)
+  if ((errcode = libusb_get_device_descriptor (printer->device, &devdesc)) < 0)
   {
-    if ((errcode = libusb_set_configuration(printer->handle, number1)) < 0)
-    {
-     /*
-      * If the set fails, chances are that the printer only supports a
-      * single configuration.  Technically these printers don't conform to
-      * the USB printer specification, but otherwise they'll work...
-      */
-
-      if (errcode != LIBUSB_ERROR_BUSY)
-        fprintf(stderr, "DEBUG: Failed to set configuration %d for %04x:%04x\n",
-		number1, devdesc.idVendor, devdesc.idProduct);
-    }
+    fprintf(stderr, "DEBUG: Failed to get device descriptor, code: %d\n",
+	    errcode);
+    goto error;
   }
 
  /*
@@ -1410,6 +1138,46 @@ open_device(usb_printer_t *printer,	/* I - Printer */
   }
 
  /*
+  * Set the desired configuration, but only if it needs changing. Some
+  * printers (e.g., Samsung) don't like libusb_set_configuration. It will
+  * succeed, but the following print job is sometimes silently lost by the
+  * printer.
+  */
+
+  if (libusb_control_transfer(printer->handle,
+                LIBUSB_REQUEST_TYPE_STANDARD | LIBUSB_ENDPOINT_IN |
+		LIBUSB_RECIPIENT_DEVICE,
+		8, /* GET_CONFIGURATION */
+		0, 0, (unsigned char *)&current, 1, 5000) < 0)
+    current = 0;			/* Assume not configured */
+
+  if ((errcode = 
+       libusb_get_config_descriptor (printer->device, printer->conf, &confptr))
+      < 0)
+  {
+    fprintf(stderr, "DEBUG: Failed to get config descriptor for %04x:%04x\n",
+	    devdesc.idVendor, devdesc.idProduct);
+    goto error;
+  }
+  number1 = confptr->bConfigurationValue;
+
+  if (number1 != current)
+  {
+    if ((errcode = libusb_set_configuration(printer->handle, number1)) < 0)
+    {
+     /*
+      * If the set fails, chances are that the printer only supports a
+      * single configuration.  Technically these printers don't conform to
+      * the USB printer specification, but otherwise they'll work...
+      */
+
+      if (errcode != LIBUSB_ERROR_BUSY)
+        fprintf(stderr, "DEBUG: Failed to set configuration %d for %04x:%04x\n",
+		number1, devdesc.idVendor, devdesc.idProduct);
+    }
+  }
+
+ /*
   * Claim interfaces as needed...
   */
 
@@ -1419,11 +1187,13 @@ open_device(usb_printer_t *printer,	/* I - Printer */
   while ((errcode = libusb_claim_interface(printer->handle, number1)) < 0)
   {
     if (errcode != LIBUSB_ERROR_BUSY)
+    {
       fprintf(stderr,
               "DEBUG: Failed to claim interface %d for %04x:%04x: %s\n",
               number1, devdesc.idVendor, devdesc.idProduct, strerror(errno));
 
-    goto error;
+      goto error;
+    }
   }
 
  /*
@@ -1443,12 +1213,14 @@ open_device(usb_printer_t *printer,	/* I - Printer */
 	   < 0)
     {
       if (errcode != LIBUSB_ERROR_BUSY)
+      {
         fprintf(stderr,
                 "DEBUG: Failed to set alternate interface %d for %04x:%04x: "
                 "%s\n",
                 number2, devdesc.idVendor, devdesc.idProduct, strerror(errno));
 
-      goto error;
+	goto error;
+      }
     }
   }
 
@@ -1570,6 +1342,225 @@ print_cb(usb_printer_t *printer,	/* I - Printer */
 
 
 /*
+ * 'read_thread()' - Thread to read the backchannel data on.
+ */
+
+static void *read_thread(void *reference)
+{
+  unsigned char		readbuffer[512];
+  int			rbytes;
+  int			readstatus;
+  struct timeval	now,
+			delay,
+			end,
+			timeleft;
+
+
+  (void)reference;
+
+ /*
+  * Read frequency: once every 250 milliseconds.
+  */
+
+  delay.tv_sec = 0;
+  delay.tv_usec = 250000;
+
+  do
+  {
+   /*
+    * Remember when we started so we can throttle the loop after the read
+    * call...
+    */
+
+    gettimeofday(&now, NULL);
+
+   /*
+    * Calculate what 250 milliSeconds are in absolute time...
+    */
+
+    timeradd(&now, &delay, &end);
+
+    rbytes     = sizeof(readbuffer);
+    readstatus = libusb_bulk_transfer(g.printer->handle,
+				      g.printer->read_endp,
+				      readbuffer, rbytes,
+				      &rbytes, 60000);
+    if (readstatus == LIBUSB_SUCCESS && rbytes > 0)
+    {
+      fprintf(stderr, "DEBUG: Read %d bytes of back-channel data...\n",
+              (int)rbytes);
+      cupsBackChannelWrite((const char *)readbuffer, rbytes, 1.0);
+    }
+    else if (readstatus == LIBUSB_ERROR_TIMEOUT)
+      fputs("DEBUG: Got USB transaction timeout during read.\n", stderr);
+    else if (readstatus == LIBUSB_ERROR_PIPE)
+      fputs("DEBUG: Got USB pipe stalled during read.\n", stderr);
+    else if (readstatus == LIBUSB_ERROR_INTERRUPTED)
+      fputs("DEBUG: Got USB return aborted during read.\n", stderr);
+
+   /*
+    * Make sure this loop executes no more than once every 250 miliseconds...
+    */
+
+    if ((readstatus != LIBUSB_SUCCESS || rbytes == 0) &&
+        (g.wait_eof || !g.read_thread_stop))
+    {
+      gettimeofday(&now, NULL);
+      if (timercmp(&now, &end, <))
+      {
+	timersub(&end, &now, &timeleft);
+	usleep(1000000 * timeleft.tv_sec + timeleft.tv_usec);
+      }
+    }
+  } while (g.wait_eof || !g.read_thread_stop);
+
+ /*
+  * Let the main thread know that we have completed the read thread...
+  */
+
+  pthread_mutex_lock(&g.read_thread_mutex);
+  g.read_thread_done = 1;
+  pthread_cond_signal(&g.read_thread_cond);
+  pthread_mutex_unlock(&g.read_thread_mutex);
+
+  return (NULL);
+}
+
+
+/*
+ * 'sidechannel_thread()' - Handle side-channel requests.
+ */
+
+static void*
+sidechannel_thread(void *reference)
+{
+  cups_sc_command_t	command;	/* Request command */
+  cups_sc_status_t	status;		/* Request/response status */
+  char			data[2048];	/* Request/response data */
+  int			datalen;	/* Request/response data size */
+
+
+  (void)reference;
+
+  do
+  {
+    datalen = sizeof(data);
+
+    if (cupsSideChannelRead(&command, &status, data, &datalen, 1.0))
+    {
+      if (status == CUPS_SC_STATUS_TIMEOUT)
+	continue;
+      else
+	break;
+    }
+
+    switch (command)
+    {
+      case CUPS_SC_CMD_SOFT_RESET:	/* Do a soft reset */
+	  fputs("DEBUG: CUPS_SC_CMD_SOFT_RESET received from driver...\n",
+		stderr);
+
+	  soft_reset();
+	  cupsSideChannelWrite(command, CUPS_SC_STATUS_OK, NULL, 0, 1.0);
+	  fputs("DEBUG: Returning status CUPS_STATUS_OK with no bytes...\n",
+		stderr);
+	  break;
+
+      case CUPS_SC_CMD_DRAIN_OUTPUT:	/* Drain all pending output */
+	  fputs("DEBUG: CUPS_SC_CMD_DRAIN_OUTPUT received from driver...\n",
+		stderr);
+
+	  g.drain_output = 1;
+	  break;
+
+      case CUPS_SC_CMD_GET_BIDI:	/* Is the connection bidirectional? */
+	  fputs("DEBUG: CUPS_SC_CMD_GET_BIDI received from driver...\n",
+		stderr);
+
+	  data[0] = (g.printer->protocol >= 2 ? 1 : 0);
+	  cupsSideChannelWrite(command, CUPS_SC_STATUS_OK, data, 1, 1.0);
+
+	  fprintf(stderr,
+	          "DEBUG: Returned CUPS_SC_STATUS_OK with 1 byte (%02X)...\n",
+		  data[0]);
+	  break;
+
+      case CUPS_SC_CMD_GET_DEVICE_ID:	/* Return IEEE-1284 device ID */
+	  fputs("DEBUG: CUPS_SC_CMD_GET_DEVICE_ID received from driver...\n",
+		stderr);
+
+	  datalen = sizeof(data);
+	  if (get_device_id(g.printer, data, sizeof(data)))
+	  {
+	    status  = CUPS_SC_STATUS_IO_ERROR;
+	    datalen = 0;
+	  }
+	  else
+	  {
+	    status  = CUPS_SC_STATUS_OK;
+	    datalen = strlen(data);
+	  }
+	  cupsSideChannelWrite(command, CUPS_SC_STATUS_OK, data, datalen, 1.0);
+
+          if (datalen < sizeof(data))
+	    data[datalen] = '\0';
+	  else
+	    data[sizeof(data) - 1] = '\0';
+
+	  fprintf(stderr,
+	          "DEBUG: Returning CUPS_SC_STATUS_OK with %d bytes (%s)...\n",
+		  datalen, data);
+	  break;
+
+      case CUPS_SC_CMD_GET_STATE:	/* Return device state */
+	  fputs("DEBUG: CUPS_SC_CMD_GET_STATE received from driver...\n",
+		stderr);
+
+	  data[0] = CUPS_SC_STATE_ONLINE;
+	  cupsSideChannelWrite(command, CUPS_SC_STATUS_OK, data, 1, 1.0);
+
+	  fprintf(stderr,
+	          "DEBUG: Returned CUPS_SC_STATUS_OK with 1 byte (%02X)...\n",
+		  data[0]);
+	  break;
+
+      case CUPS_SC_CMD_GET_CONNECTED:	/* Return whether device is
+					   connected */
+	  fputs("DEBUG: CUPS_SC_CMD_GET_CONNECTED received from driver...\n",
+		stderr);
+
+	  data[0] = (g.printer->handle ? 1 : 0);
+	  cupsSideChannelWrite(command, CUPS_SC_STATUS_OK, data, 1, 1.0);
+
+	  fprintf(stderr,
+	          "DEBUG: Returned CUPS_SC_STATUS_OK with 1 byte (%02X)...\n",
+		  data[0]);
+	  break;
+
+      default:
+	  fprintf(stderr, "DEBUG: Unknown side-channel command (%d) received "
+			  "from driver...\n", command);
+
+	  cupsSideChannelWrite(command, CUPS_SC_STATUS_NOT_IMPLEMENTED,
+			       NULL, 0, 1.0);
+
+	  fputs("DEBUG: Returned CUPS_SC_STATUS_NOT_IMPLEMENTED with no bytes...\n",
+		stderr);
+	  break;
+    }
+  }
+  while (!g.sidechannel_thread_stop);
+
+  pthread_mutex_lock(&g.sidechannel_thread_mutex);
+  g.sidechannel_thread_done = 1;
+  pthread_cond_signal(&g.sidechannel_thread_cond);
+  pthread_mutex_unlock(&g.sidechannel_thread_mutex);
+
+  return (NULL);
+}
+
+
+/*
  * 'soft_reset()' - Send a soft reset to the device.
  */
 
@@ -1581,7 +1572,8 @@ static void soft_reset(void)
   struct timespec cond_timeout;		/* pthread condition timeout */
 
  /*
-  * Send an abort once a second until the I/O lock is released by the main thread...
+  * Send an abort once a second until the I/O lock is released by the main
+  * thread...
   */
 
   pthread_mutex_lock(&g.readwrite_lock_mutex);
@@ -1636,86 +1628,7 @@ static void soft_reset(void)
 }
 
 
-#ifdef PARSE_PS_ERRORS
 /*
- * 'next_line()' - Find the next line in a buffer.
- */
-
-static const char *next_line (const char *buffer)
-{
-  const char *cptr, *lptr = NULL;
-
-  for (cptr = buffer; *cptr && lptr == NULL; cptr++)
-    if (*cptr == '\n' || *cptr == '\r')
-      lptr = cptr;
-  return lptr;
-}
-
-
-/*
- * 'parse_pserror()' - Scan the backchannel data for postscript errors.
- */
-
-static void parse_pserror(char *sockBuffer,
-			  int len)
-{
-  static char  gErrorBuffer[1024] = "";
-  static char *gErrorBufferPtr = gErrorBuffer;
-  static char *gErrorBufferEndPtr = gErrorBuffer + sizeof(gErrorBuffer);
-
-  char *pCommentBegin, *pCommentEnd, *pLineEnd;
-  char *logLevel;
-  char logstr[1024];
-  int  logstrlen;
-
-  if (gErrorBufferPtr + len > gErrorBufferEndPtr - 1)
-    gErrorBufferPtr = gErrorBuffer;
-  if (len > sizeof(gErrorBuffer) - 1)
-    len = sizeof(gErrorBuffer) - 1;
-
-  memcpy(gErrorBufferPtr, (const void *)sockBuffer, len);
-  gErrorBufferPtr += len;
-  *(gErrorBufferPtr + 1) = '\0';
-
-  pLineEnd = (char *)next_line((const char *)gErrorBuffer);
-  while (pLineEnd != NULL)
-  {
-    *pLineEnd++ = '\0';
-
-    pCommentBegin = strstr(gErrorBuffer,"%%[");
-    pCommentEnd = strstr(gErrorBuffer, "]%%");
-    if (pCommentBegin != gErrorBuffer && pCommentEnd != NULL)
-    {
-      pCommentEnd += 3;            /* Skip past "]%%" */
-      *pCommentEnd = '\0';         /* There's always room for the nul */
-
-      if (_cups_strncasecmp(pCommentBegin, "%%[ Error:", 10) == 0)
-	logLevel = "DEBUG";
-      else if (_cups_strncasecmp(pCommentBegin, "%%[ Flushing", 12) == 0)
-	logLevel = "DEBUG";
-      else
-	logLevel = "INFO";
-
-      if ((logstrlen = snprintf(logstr, sizeof(logstr), "%s: %s\n", logLevel, pCommentBegin)) >= sizeof(logstr))
-      {
-	/* If the string was truncated make sure it has a linefeed before the
-	   nul */
-	logstrlen = sizeof(logstr) - 1;
-	logstr[logstrlen - 1] = '\n';
-      }
-      write(STDERR_FILENO, logstr, logstrlen);
-    }
-
-    /* move everything over... */
-    strcpy(gErrorBuffer, pLineEnd);
-    gErrorBufferPtr = gErrorBuffer;
-    pLineEnd = (char *)next_line((const char *)gErrorBuffer);
-  }
-}
-#endif /* PARSE_PS_ERRORS */
-
-
-/*
- * End of "$Id: usb-libusb.c 10198 2012-01-27 16:48:43Z mike $".
+ * End of "$Id: usb-libusb.c 10267 2012-02-12 08:35:28Z mike $".
  */
 

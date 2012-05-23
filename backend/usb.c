@@ -1,9 +1,9 @@
 /*
- * "$Id: usb.c 9771 2011-05-12 05:21:56Z mike $"
+ * "$Id: usb.c 10265 2012-02-12 07:20:10Z mike $"
  *
  *   USB port backend for CUPS.
  *
- *   Copyright 2007-2011 by Apple Inc.
+ *   Copyright 2007-2012 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -55,7 +55,7 @@ int	print_device(const char *uri, const char *hostname,
  * Include the vendor-specific USB implementation...
  */
 
-#ifdef HAVE_USB_H
+#ifdef HAVE_LIBUSB
 #  include "usb-libusb.c"
 #elif defined(__APPLE__)
 #  include "usb-darwin.c"
@@ -118,7 +118,7 @@ print_device(const char *uri,		/* I - Device URI */
 
   return (CUPS_BACKEND_FAILED);
 }
-#endif /* __APPLE__ */
+#endif /* HAVE_LIBUSB */
 
 
 /*
@@ -260,5 +260,5 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
 
 
 /*
- * End of "$Id: usb.c 9771 2011-05-12 05:21:56Z mike $".
+ * End of "$Id: usb.c 10265 2012-02-12 07:20:10Z mike $".
  */
