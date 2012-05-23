@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: http://www.cups.org/str.php\n"
-"POT-Creation-Date: 2012-01-30 14:18-0800\n"
+"POT-Creation-Date: 2012-03-07 13:38-0800\n"
 "PO-Revision-Date: 2011-12-02 01:55+0100\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
@@ -3111,6 +3111,10 @@ msgstr "Háromrészes internetes postai - 2 1/4 x 7\""
 msgid "Internet Printing Protocol"
 msgstr "Internet nyomtatási protokoll"
 
+#, c-format
+msgid "Invalid printer command \"%s\"."
+msgstr ""
+
 msgid "JCL"
 msgstr "JCL"
 
@@ -3726,6 +3730,9 @@ msgstr "Nyomtatási fájl elküldve."
 msgid "Print file was not accepted."
 msgstr "A nyomtatási fájl nem lett elfogadva."
 
+msgid "Print job too large."
+msgstr ""
+
 msgid "Printed For: "
 msgstr "Nyomtatva ehhez: "
 
@@ -3762,9 +3769,8 @@ msgstr "Nyomtató elfoglalt, 10 másodperc múlva újrapróbálkozom."
 msgid "Printer busy; will retry in 30 seconds."
 msgstr "Nyomtató elfoglalt; 30 másodperc múlva újrapróbálkozom."
 
-#, c-format
-msgid "Printer did not respond after %d seconds."
-msgstr "A nyomtató nem válaszolt %d másodperc után."
+msgid "Printer did not respond."
+msgstr ""
 
 #, c-format
 msgid "Printer does not support IPP/%d.%d, trying IPP/%s."
@@ -4061,14 +4067,8 @@ msgstr "A nyomtatási fájl nem nyitható meg."
 msgid "The printer URI is incorrect or no longer exists."
 msgstr "A nyomtató URI-címe helytelen, vagy nem létezik."
 
-msgid "The printer is almost out of ink."
-msgstr "A nyomtatóból majdnem kifogyott a tinta."
-
 msgid "The printer is busy."
 msgstr "A nyomtató elfoglalt."
-
-msgid "The printer is low on toner."
-msgstr "A nyomtatóban kifogyóban van a festékkazetta."
 
 msgid "The printer is not connected."
 msgstr "A nyomtató nincs csatlakoztatva."
@@ -4079,11 +4079,17 @@ msgstr "A nyomtató nem válaszol."
 msgid "The printer is out of ink."
 msgstr "A nyomtatóból kifogyott a tinta."
 
-msgid "The printer is out of toner."
-msgstr "A nyomtató festékkazettája kifogyott."
+msgid "The printer is running low on ink."
+msgstr ""
+
+msgid "The printer is running low on toner."
+msgstr ""
 
 msgid "The printer is unreachable at this time."
 msgstr "A nyomtató jelenleg elérhetetlen."
+
+msgid "The printer may be out of toner."
+msgstr ""
 
 msgid "The printer may not exist or is unavailable at this time."
 msgstr "A nyomtató nem létezik, vagy jelenleg elérhetetlen."
@@ -4271,6 +4277,9 @@ msgstr "Nem módosítható a nyomtató:"
 msgid "Unable to change server settings:"
 msgstr "Nem módosíthatók a kiszolgáló beállításai:"
 
+msgid "Unable to configure printer options."
+msgstr ""
+
 msgid "Unable to connect to host."
 msgstr "A géphez nem lehet kapcsolódni."
 
@@ -4403,9 +4412,6 @@ msgstr "Nem kérhető le az osztály állapota:"
 
 msgid "Unable to get list of printer drivers:"
 msgstr "Nem kérhető le a nyomtató-illesztőprogramok listája:"
-
-msgid "Unable to get print job status."
-msgstr "Nem kérhető le a nyomtatási feladat állapota."
 
 msgid "Unable to get printer attributes:"
 msgstr "Nem kérhetők le a nyomtató attribútumai:"
@@ -5783,6 +5789,18 @@ msgstr "A variable-bindings végtelen hosszt használ"
 #~ msgid "Printer busy; will retry in 10 seconds."
 #~ msgstr "Nyomtató elfoglalt; 10 másodperc múlva újrapróbálkozom."
 
+#~ msgid "Printer did not respond after %d seconds."
+#~ msgstr "A nyomtató nem válaszolt %d másodperc után."
+
+#~ msgid "The printer is almost out of ink."
+#~ msgstr "A nyomtatóból majdnem kifogyott a tinta."
+
+#~ msgid "The printer is low on toner."
+#~ msgstr "A nyomtatóban kifogyóban van a festékkazetta."
+
+#~ msgid "The printer is out of toner."
+#~ msgstr "A nyomtató festékkazettája kifogyott."
+
 #~ msgid "This printer does not conform to the IPP standard and may not work."
 #~ msgstr ""
 #~ "Ez a nyomtató nem felel meg az IPP szabványnak, és lehet, hogy nem fog "
@@ -5803,6 +5821,9 @@ msgstr "A variable-bindings végtelen hosszt használ"
 
 #~ msgid "Unable to get job attributes: %s"
 #~ msgstr "Nem kérhetők le a feladat attribútumai: %s"
+
+#~ msgid "Unable to get print job status."
+#~ msgstr "Nem kérhető le a nyomtatási feladat állapota."
 
 #~ msgid "Unable to get printer status: %s"
 #~ msgstr "Nem kérhető le a nyomtató állapota: %s"

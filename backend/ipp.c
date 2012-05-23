@@ -1,5 +1,5 @@
 /*
- * "$Id: ipp.c 10112 2011-11-07 06:08:44Z mike $"
+ * "$Id: ipp.c 10452 2012-05-04 23:00:01Z mike $"
  *
  *   IPP backend for CUPS.
  *
@@ -1321,7 +1321,8 @@ main(int  argc,				/* I - Number of command-line args */
 			   "cups-ipp-missing-validate-job");
       break;
     }
-    else if (ipp_status < IPP_REDIRECTION_OTHER_SITE)
+    else if (ipp_status < IPP_REDIRECTION_OTHER_SITE ||
+             ipp_status == IPP_BAD_REQUEST)
       break;
   }
 
@@ -1583,10 +1584,11 @@ main(int  argc,				/* I - Number of command-line args */
 
 	if (fd >= 0)
 	{
-	  while (!job_canceled &&
+	  while (!job_canceled && http_status == HTTP_CONTINUE &&
 	         (bytes = read(fd, buffer, sizeof(buffer))) > 0)
 	  {
-	    if (cupsWriteRequestData(http, buffer, bytes) != HTTP_CONTINUE)
+	    if ((http_status = cupsWriteRequestData(http, buffer, bytes))
+	            != HTTP_CONTINUE)
 	      break;
 	    else
 	    {
@@ -3203,5 +3205,5 @@ update_reasons(ipp_attribute_t *attr,	/* I - printer-state-reasons or NULL */
 }
 
 /*
- * End of "$Id: ipp.c 10112 2011-11-07 06:08:44Z mike $".
+ * End of "$Id: ipp.c 10452 2012-05-04 23:00:01Z mike $".
  */

@@ -22,8 +22,6 @@ set -e
 #     installation fails and the `postinst' is called with `abort-upgrade',
 #     `abort-remove' or `abort-deconfigure'.
 
-dpkg-maintscript-helper rm_conffile /etc/modprobe.d/blacklist-cups-usblp.conf 1.5.2-3  -- "$@"
-
 # Debconf
 . /usr/share/debconf/confmodule
 
@@ -170,6 +168,10 @@ EOM
 	if [ ! -e /etc/printcap -a -e $printcap_file ]; then
 	    ln -s $printcap_file /etc/printcap
 	fi
+    fi
+
+    if dpkg --compare-versions "$2" lt "1.5.3"; then
+	rmmod usblp || :
     fi
 fi
 

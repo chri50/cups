@@ -1,9 +1,9 @@
 /*
- * "$Id: pwg-media.c 10070 2011-10-14 15:51:23Z mike $"
+ * "$Id: pwg-media.c 10340 2012-03-07 17:16:42Z mike $"
  *
  *   PWG media name API implementation for CUPS.
  *
- *   Copyright 2009-2011 by Apple Inc.
+ *   Copyright 2009-2012 by Apple Inc.
  *
  *   These coded instructions, statements, and computer programs are the
  *   property of Apple Inc. and are protected by Federal copyright
@@ -847,5 +847,5 @@ pwg_compare_pwg(_pwg_media_t *a,	/* I - First size */
 
 
 /*
- * End of "$Id: pwg-media.c 10070 2011-10-14 15:51:23Z mike $".
+ * End of "$Id: pwg-media.c 10340 2012-03-07 17:16:42Z mike $".
  */

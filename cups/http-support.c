@@ -1,5 +1,5 @@
 /*
- * "$Id: http-support.c 10017 2011-09-26 18:46:46Z mike $"
+ * "$Id: http-support.c 10284 2012-02-15 01:06:12Z mike $"
  *
  *   HTTP support routines for CUPS.
  *
@@ -2107,5 +2107,5 @@ avahi_resolve_uri_resolver_cb (AvahiServiceResolver *resolver,
 
 
 /*
- * End of "$Id: http-support.c 10017 2011-09-26 18:46:46Z mike $".
+ * End of "$Id: http-support.c 10284 2012-02-15 01:06:12Z mike $".
  */

@@ -839,6 +839,7 @@
 "Internet Postage 3-Part" = "Internet Postage 3-Part";
 "Internet Postage 3-Part - 2 1/4 x 7\"" = "Internet Postage 3-Part - 2 1/4 x 7\"";
 "Internet Printing Protocol" = "Internet Printing Protocol";
+"Invalid printer command \"%s\"." = "Invalid printer command \"%s\".";
 "JCL" = "JCL";
 "JIS B0" = "JIS B0";
 "JIS B1" = "JIS B1";
@@ -1030,6 +1031,7 @@
 "Print file accepted - job ID unknown." = "Print file accepted - job ID unknown.";
 "Print file sent." = "Print file sent.";
 "Print file was not accepted." = "Print file was not accepted.";
+"Print job too large." = "Print job too large.";
 "Printed For: " = "Printed For: ";
 "Printed From: " = "Printed From: ";
 "Printed On: " = "Printed On: ";
@@ -1042,7 +1044,7 @@
 "Printer Settings" = "Printer Settings";
 "Printer busy, will retry in 10 seconds." = "Printer busy, will retry in 10 seconds.";
 "Printer busy; will retry in 30 seconds." = "Printer busy; will retry in 30 seconds.";
-"Printer did not respond after %d seconds." = "Printer did not respond after %d seconds.";
+"Printer did not respond." = "Printer did not respond.";
 "Printer does not support IPP/%d.%d, trying IPP/%s." = "Printer does not support IPP/%d.%d, trying IPP/%s.";
 "Printer is busy, will retry in 5 seconds." = "Printer is busy, will retry in 5 seconds.";
 "Printer is not currently connected." = "Printer is not currently connected.";
@@ -1135,14 +1137,14 @@
 "The paper tray needs to be filled." = "The paper tray needs to be filled.";
 "The print file could not be opened." = "The print file could not be opened.";
 "The printer URI is incorrect or no longer exists." = "The printer URI is incorrect or no longer exists.";
-"The printer is almost out of ink." = "The printer is almost out of ink.";
 "The printer is busy." = "The printer is busy.";
-"The printer is low on toner." = "The printer is low on toner.";
 "The printer is not connected." = "The printer is not connected.";
 "The printer is not responding." = "The printer is not responding.";
 "The printer is out of ink." = "The printer is out of ink.";
-"The printer is out of toner." = "The printer is out of toner.";
+"The printer is running low on ink." = "The printer is running low on ink.";
+"The printer is running low on toner." = "The printer is running low on toner.";
 "The printer is unreachable at this time." = "The printer is unreachable at this time.";
+"The printer may be out of toner." = "The printer may be out of toner.";
 "The printer may not exist or is unavailable at this time." = "The printer may not exist or is unavailable at this time.";
 "The printer name may only contain up to 127 printable characters and may not contain spaces, slashes (/), or the pound sign (#)." = "The printer name may only contain up to 127 printable characters and may not contain spaces, slashes (/), or the pound sign (#).";
 "The printer or class does not exist." = "The printer or class does not exist.";
@@ -1197,6 +1199,7 @@
 "Unable to change printer-is-shared attribute:" = "Unable to change printer-is-shared attribute:";
 "Unable to change printer:" = "Unable to change printer:";
 "Unable to change server settings:" = "Unable to change server settings:";
+"Unable to configure printer options." = "Unable to configure printer options.";
 "Unable to connect to host." = "Unable to connect to host.";
 "Unable to contact printer, queuing on next printer in class." = "Unable to contact printer, queuing on next printer in class.";
 "Unable to copy 64-bit CUPS printer driver files (%d)." = "Unable to copy 64-bit CUPS printer driver files (%d).";
@@ -1233,7 +1236,6 @@
 "Unable to get class list:" = "Unable to get class list:";
 "Unable to get class status:" = "Unable to get class status:";
 "Unable to get list of printer drivers:" = "Unable to get list of printer drivers:";
-"Unable to get print job status." = "Unable to get print job status.";
 "Unable to get printer attributes:" = "Unable to get printer attributes:";
 "Unable to get printer list:" = "Unable to get printer list:";
 "Unable to get printer status." = "Unable to get printer status.";

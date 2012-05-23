@@ -89,23 +89,24 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  static void		browse_callback(DNSServiceRef sdRef,
  			                DNSServiceFlags flags,
  				        uint32_t interfaceIndex,
-@@ -93,12 +131,6 @@
- 					      const char *regtype,
+@@ -95,13 +133,6 @@
  					      const char *replyDomain,
- 					      void *context);
+ 					      void *context)
+ 					      __attribute__((nonnull(1,5,6,7,8)));
 -static int		compare_devices(cups_device_t *a, cups_device_t *b);
 -static void		exec_backend(char **argv);
 -static cups_device_t	*get_device(cups_array_t *devices,
 -			            const char *serviceName,
 -			            const char *regtype,
--				    const char *replyDomain);
+-				    const char *replyDomain)
+-				    __attribute__((nonnull(1,2,3,4)));
  static void		query_callback(DNSServiceRef sdRef,
  			               DNSServiceFlags flags,
  				       uint32_t interfaceIndex,
-@@ -107,9 +139,118 @@
- 				       uint16_t rrclass, uint16_t rdlen,
+@@ -111,10 +142,119 @@
  				       const void *rdata, uint32_t ttl,
- 				       void *context);
+ 				       void *context)
+ 				       __attribute__((nonnull(1,5,9,11)));
 +#endif /* HAVE_DNSSD */
 +#ifdef HAVE_AVAHI
 +static void		avahi_client_callback (AvahiClient *client,
@@ -132,7 +133,8 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
 +			            const char *regtype,
 +				    const char *replyDomain);
  static void		sigterm_handler(int sig);
- static void		unquote(char *dst, const char *src, size_t dstsize);
+ static void		unquote(char *dst, const char *src, size_t dstsize)
+ 			    __attribute__((nonnull(1,2)));
  
 +#ifdef HAVE_AVAHI
 +static AvahiSimplePoll *simple_poll = NULL;
@@ -221,7 +223,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  
  /*
   * 'main()' - Browse for printers.
-@@ -120,6 +261,13 @@
+@@ -125,6 +265,13 @@
       char *argv[])			/* I - Command-line arguments */
  {
    const char	*name;			/* Backend name */
@@ -235,7 +237,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
    DNSServiceRef	main_ref,		/* Main service reference */
  		fax_ipp_ref,		/* IPP fax service reference */
  		ipp_ref,		/* IPP service reference */
-@@ -133,12 +281,11 @@
+@@ -138,12 +285,11 @@
  		pdl_datastream_ref,	/* AppSocket service reference */
  		printer_ref,		/* LPD service reference */
  		riousbprint_ref;	/* Remote IO service reference */
@@ -253,7 +255,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  #if defined(HAVE_SIGACTION) && !defined(HAVE_SIGSET)
    struct sigaction action;		/* Actions for POSIX signals */
  #endif /* HAVE_SIGACTION && !HAVE_SIGSET */
-@@ -198,6 +345,49 @@
+@@ -203,6 +349,49 @@
    * Browse for different kinds of printers...
    */
  
@@ -303,7 +305,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
    if (DNSServiceCreateConnection(&main_ref) != kDNSServiceErr_NoError)
    {
      perror("ERROR: Unable to create service connection");
-@@ -258,6 +448,7 @@
+@@ -263,6 +452,7 @@
    riousbprint_ref = main_ref;
    DNSServiceBrowse(&riousbprint_ref, kDNSServiceFlagsShareConnection, 0,
                     "_riousbprint._tcp", NULL, browse_callback, devices);
@@ -311,7 +313,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  
   /*
    * Loop until we are killed...
-@@ -265,6 +456,9 @@
+@@ -270,6 +460,9 @@
  
    while (!job_canceled)
    {
@@ -321,7 +323,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
      FD_ZERO(&input);
      FD_SET(fd, &input);
  
-@@ -284,11 +478,35 @@
+@@ -289,11 +482,35 @@
      }
      else
      {
@@ -357,7 +359,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
        cups_device_t *best;		/* Best matching device */
        char	device_uri[1024];	/* Device URI */
        int	count;			/* Number of queries */
-@@ -302,6 +520,7 @@
+@@ -307,6 +524,7 @@
          if (device->sent)
  	  sent ++;
  
@@ -365,7 +367,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
          if (device->ref)
  	  count ++;
  
-@@ -333,14 +552,23 @@
+@@ -338,14 +556,23 @@
  	      count ++;
            }
  	}
@@ -390,7 +392,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  
            if (!best)
  	    best = device;
-@@ -401,6 +629,7 @@
+@@ -406,6 +633,7 @@
  }
  
  
@@ -398,7 +400,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  /*
   * 'browse_callback()' - Browse devices.
   */
-@@ -489,6 +718,7 @@
+@@ -494,6 +722,7 @@
  	  device->fullName);
    device->sent = 1;
  }
@@ -406,7 +408,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  
  
  /*
-@@ -569,6 +799,41 @@
+@@ -574,6 +803,41 @@
  
  
  /*
@@ -448,7 +450,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
   * 'get_device()' - Create or update a device.
   */
  
-@@ -589,20 +854,7 @@
+@@ -594,20 +858,7 @@
    */
  
    key.name = (char *)serviceName;
@@ -470,7 +472,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  
    for (device = cupsArrayFind(devices, &key);
         device;
-@@ -622,8 +874,14 @@
+@@ -627,8 +878,14 @@
          free(device->domain);
  	device->domain = strdup(replyDomain);
  
@@ -485,7 +487,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  	free(device->fullName);
  	device->fullName = strdup(fullName);
        }
-@@ -643,6 +901,9 @@
+@@ -648,6 +905,9 @@
    device->domain   = strdup(replyDomain);
    device->type     = key.type;
    device->priority = 50;
@@ -495,7 +497,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  
    cupsArrayAdd(devices, device);
  
-@@ -650,13 +911,20 @@
+@@ -655,13 +915,20 @@
    * Set the "full name" of this service, which is used for queries...
    */
  
@@ -516,7 +518,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  /*
   * 'query_callback()' - Process query data.
   */
-@@ -680,7 +948,7 @@
+@@ -685,7 +952,7 @@
  		*ptr;			/* Pointer into string */
    cups_device_t	dkey,			/* Search key */
  		*device;		/* Device */
@@ -525,7 +527,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  
    fprintf(stderr, "DEBUG2: query_callback(sdRef=%p, flags=%x, "
                    "interfaceIndex=%d, errorCode=%d, fullName=\"%s\", "
-@@ -714,94 +982,233 @@
+@@ -719,94 +986,233 @@
    if ((ptr = strstr(name, "._")) != NULL)
      *ptr = '\0';
  
@@ -645,7 +647,8 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
 +
 +  avahi_service_resolver_free (resolver);
 +}
-+
+ 
+-  for (device = cupsArrayFind(devices, &dkey);
 +
 +/*
 + * 'avahi_browse_callback()' - Avahi browse callback function.
@@ -717,8 +720,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
 +}
 +#endif /* HAVE_AVAHI */
 +
- 
--  for (device = cupsArrayFind(devices, &dkey);
++
 +/*
 + * 'find_device()' - Find a device from its name and domain.
 + */
@@ -780,9 +782,13 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
 -	* length is 8 bits and the size of the key/value buffers is 256, we
 -	* don't need to check for overflow...
 -	*/
--
++	char *key;
++	char *value;
+ 
 -        datalen = *data++;
--
++	if (parse_txt_record_pair (txt))
++	  goto next;
+ 
 -        if (!datalen || (data + datalen) > dataend)
 -	  break;
 -
@@ -791,9 +797,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
 -        for (ptr = key; data < datanext && *data != '='; data ++)
 -	  *ptr++ = *data;
 -	*ptr = '\0';
-+	char *key;
-+	char *value;
- 
+-
 -	if (data < datanext && *data == '=')
 -	{
 -	  data ++;
@@ -801,9 +805,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
 -	  if (data < datanext)
 -	    memcpy(value, data, datanext - data);
 -	  value[datanext - data] = '\0';
-+	if (parse_txt_record_pair (txt))
-+	  goto next;
- 
+-
 -	  fprintf(stderr, "DEBUG2: query_callback: \"%s=%s\".\n",
 -	          key, value);
 -	}
@@ -821,7 +823,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  	{
  	 /*
  	  * Add USB device ID information...
-@@ -856,6 +1263,10 @@
+@@ -861,6 +1267,10 @@
  	  if (device->type == CUPS_DEVICE_PRINTER)
  	    device->sent = 1;
  	}
@@ -832,7 +834,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
        }
  
        if (device->device_id)
-@@ -905,11 +1316,9 @@
+@@ -910,11 +1320,9 @@
      }
    }
  
@@ -871,7 +873,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  		case "$uname" in
 --- a/config.h.in
 +++ b/config.h.in
-@@ -390,6 +390,13 @@
+@@ -397,6 +397,13 @@
  
  
  /*
@@ -1156,7 +1158,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
 +
 +
  /*
-  * End of "$Id: http-support.c 10017 2011-09-26 18:46:46Z mike $".
+  * End of "$Id: http-support.c 10284 2012-02-15 01:06:12Z mike $".
   */
 --- a/scheduler/Makefile
 +++ b/scheduler/Makefile
@@ -2088,7 +2090,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
    cgiSetVariable("HAVE_LDAP", "1");
 --- a/scheduler/client.c
 +++ b/scheduler/client.c
-@@ -4989,7 +4989,7 @@
+@@ -5003,7 +5003,7 @@
  	    !strncmp(host, "[::1]:", 6));
    }
  
@@ -2097,7 +2099,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
   /*
    * Check if the hostname is something.local (Bonjour); if so, allow it.
    */
-@@ -4998,7 +4998,7 @@
+@@ -5012,7 +5012,7 @@
        (!_cups_strcasecmp(end, ".local") || !_cups_strncasecmp(end, ".local:", 7) ||
         !_cups_strcasecmp(end, ".local.") || !_cups_strncasecmp(end, ".local.:", 8)))
      return (1);
@@ -2401,7 +2403,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  
  
  #ifdef HAVE_LDAP
-@@ -2334,13 +2445,15 @@
+@@ -2339,13 +2450,15 @@
                      "Bad Back to My Mac domain in dynamic store!");
  }
  #  endif /* HAVE_COREFOUNDATION */
@@ -2418,7 +2420,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  dnssdBuildTxtRecord(
      int             *txt_len,		/* O - TXT record length */
      cupsd_printer_t *p,			/* I - Printer information */
-@@ -2379,7 +2492,12 @@
+@@ -2384,7 +2497,12 @@
    keyvalue[i  ][0] = "ty";
    keyvalue[i++][1] = p->make_model ? p->make_model : "Unknown";
  
@@ -2432,7 +2434,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
    httpAssembleURIf(HTTP_URI_CODING_ALL, adminurl_str, sizeof(adminurl_str),
                     "http", NULL, admin_hostname, DNSSDPort, "/%s/%s",
  		   (p->type & CUPS_PRINTER_CLASS) ? "classes" : "printers",
-@@ -2462,7 +2580,12 @@
+@@ -2467,7 +2585,12 @@
    * Then pack them into a proper txt record...
    */
  
@@ -2445,7 +2447,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  }
  
  
-@@ -2474,7 +2597,16 @@
+@@ -2479,7 +2602,16 @@
  dnssdComparePrinters(cupsd_printer_t *a,/* I - First printer */
                       cupsd_printer_t *b)/* I - Second printer */
  {
@@ -2463,7 +2465,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  }
  
  
-@@ -2489,6 +2621,10 @@
+@@ -2494,6 +2626,10 @@
  {
    cupsdLogMessage(CUPSD_LOG_DEBUG2, "dnssdDeregisterPrinter(%s)", p->name);
  
@@ -2474,7 +2476,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
   /*
    * Closing the socket deregisters the service
    */
-@@ -2524,6 +2660,24 @@
+@@ -2529,6 +2665,24 @@
      free(p->printer_txt);
      p->printer_txt = NULL;
    }
@@ -2499,7 +2501,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  
   /*
    * Remove the printer from the array of DNS-SD printers, then clear the
-@@ -2533,8 +2687,10 @@
+@@ -2538,8 +2692,10 @@
    cupsArrayRemove(DNSSDPrinters, p);
    cupsdClearString(&p->reg_name);
  }
@@ -2510,7 +2512,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  /*
   * 'dnssdPackTxtRecord()' - Pack an array of key/value pairs into the
   *                          TXT record format.
-@@ -2644,8 +2800,10 @@
+@@ -2649,8 +2805,10 @@
      LastEvent |= CUPSD_EVENT_PRINTER_MODIFIED;
    }
  }
@@ -2521,7 +2523,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  /*
   * 'dnssdRegisterPrinter()' - Start sending broadcast information for a printer
   *		              or update the broadcast contents.
-@@ -2654,20 +2812,40 @@
+@@ -2659,20 +2817,40 @@
  static void
  dnssdRegisterPrinter(cupsd_printer_t *p)/* I - Printer */
  {
@@ -2565,7 +2567,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
   /*
    * If per-printer sharing was just disabled make sure we're not
    * registered before returning.
-@@ -2686,12 +2864,36 @@
+@@ -2691,12 +2869,36 @@
    if (p->info && strlen(p->info) > 0)
    {
      if (DNSSDComputerName)
@@ -2604,7 +2606,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
    else
      strlcpy(name, p->name, sizeof(name));
  
-@@ -2712,6 +2914,7 @@
+@@ -2717,6 +2919,7 @@
    * Register IPP and (optionally) LPD...
    */
  
@@ -2612,7 +2614,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
    ipp_len = 0;				/* anti-compiler-warning-code */
    ipp_txt = dnssdBuildTxtRecord(&ipp_len, p, 0);
  
-@@ -2884,6 +3087,209 @@
+@@ -2889,6 +3092,209 @@
  
    if (printer_txt)
      free(printer_txt);
@@ -2822,7 +2824,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  }
  
  
-@@ -2896,6 +3302,10 @@
+@@ -2901,6 +3307,10 @@
  {
    cupsd_printer_t	*p;		/* Current printer */
  
@@ -2833,7 +2835,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  
   /*
    * De-register the individual printers
-@@ -2906,6 +3316,7 @@
+@@ -2911,6 +3321,7 @@
         p = (cupsd_printer_t *)cupsArrayNext(Printers))
      dnssdDeregisterPrinter(p);
  
@@ -2841,7 +2843,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
   /*
    * Shutdown the rest of the service refs...
    */
-@@ -2926,14 +3337,17 @@
+@@ -2931,14 +3342,17 @@
  
    DNSServiceRefDeallocate(DNSSDRef);
    DNSSDRef = NULL;
@@ -2859,7 +2861,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  /*
   * 'dnssdUpdate()' - Handle DNS-SD queries.
   */
-@@ -2955,6 +3369,153 @@
+@@ -2960,6 +3374,153 @@
  #endif /* HAVE_DNSSD */
  
  
@@ -3089,7 +3091,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  #endif /* HAVE_LDAP */
 --- a/scheduler/ipp.c
 +++ b/scheduler/ipp.c
-@@ -6090,7 +6090,7 @@
+@@ -6089,7 +6089,7 @@
      ippAddDate(con->response, IPP_TAG_PRINTER, "printer-current-time",
                 ippTimeToDate(curtime));
  
@@ -3098,7 +3100,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
    if (!ra || cupsArrayFind(ra, "printer-dns-sd-name"))
    {
      if (printer->reg_name)
-@@ -6100,7 +6100,7 @@
+@@ -6099,7 +6099,7 @@
        ippAddInteger(con->response, IPP_TAG_PRINTER, IPP_TAG_NOVALUE,
                     "printer-dns-sd-name", 0);
    }
@@ -3121,7 +3123,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  
    cupsArrayDelete(p->filetypes);
  
-@@ -3765,7 +3765,7 @@
+@@ -3797,7 +3797,7 @@
      attr->values[i].string.text = _cupsStrAlloc(mimetype);
    }
  
@@ -3130,7 +3132,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
    {
      char		pdl[1024];	/* Buffer to build pdl list */
      mime_filter_t	*filter;	/* MIME filter looping var */
-@@ -3821,7 +3821,7 @@
+@@ -3853,7 +3853,7 @@
  
      cupsdSetString(&p->pdl, pdl);
    }

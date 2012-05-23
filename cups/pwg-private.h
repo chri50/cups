@@ -1,5 +1,5 @@
 /*
- * "$Id: pwg-private.h 9230 2010-08-10 00:02:02Z mike $"
+ * "$Id: pwg-private.h 10245 2012-02-11 02:24:44Z mike $"
  *
  *   Private PWG media API definitions for CUPS.
  *
@@ -98,5 +98,5 @@ extern _pwg_media_t	*_pwgMediaForSize(int width, int length);
 #endif /* !_CUPS_PWG_PRIVATE_H_ */
 
 /*
- * End of "$Id: pwg-private.h 9230 2010-08-10 00:02:02Z mike $".
+ * End of "$Id: pwg-private.h 10245 2012-02-11 02:24:44Z mike $".
  */
