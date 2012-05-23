@@ -1,9 +1,9 @@
 /*
- * "$Id: cupstestppd.c 10042 2011-10-03 17:32:43Z mike $"
+ * "$Id: cupstestppd.c 10362 2012-03-19 15:31:53Z mike $"
  *
  *   PPD test program for CUPS.
  *
- *   Copyright 2007-2011 by Apple Inc.
+ *   Copyright 2007-2012 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -1067,7 +1067,7 @@ main(int  argc,				/* I - Number of command-line args */
 	  * Check for PaperDimension...
 	  */
 
-          if (size->width == 0.0 && size->length == 0.0)
+          if (size->width <= 0.0 && size->length <= 0.0)
 	  {
 	    if (verbose >= 0)
 	    {
@@ -3120,8 +3120,9 @@ check_sizes(ppd_file_t *ppd,		/* I - PPD file */
 
       continue;
     }
-    else if (warn != 2 && size->name[0] == 'w' &&
-             sscanf(size->name, "w%dh%d", &width, &length) == 2)
+
+    if (warn != 2 && size->name[0] == 'w' &&
+        sscanf(size->name, "w%dh%d", &width, &length) == 2)
     {
      /*
       * Validate device-specific size wNNNhNNN should have proper width and
@@ -3262,7 +3263,8 @@ check_sizes(ppd_file_t *ppd,		/* I - PPD file */
 	  * Check for EnvSizeName as well...
 	  */
 
-	  snprintf(buf, sizeof(buf), "Env%s", pwg_media->ppd);
+          if (strncmp(pwg_media->ppd, "Env", 3))
+            snprintf(buf, sizeof(buf), "Env%s", pwg_media->ppd);
 
 	  if (strcmp(size->name, buf))
 	    is_ok = 0;
@@ -3952,5 +3954,5 @@ valid_utf8(const char *s)		/* I - String to check */
 
 
 /*
- * End of "$Id: cupstestppd.c 10042 2011-10-03 17:32:43Z mike $".
+ * End of "$Id: cupstestppd.c 10362 2012-03-19 15:31:53Z mike $".
  */

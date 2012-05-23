@@ -1,9 +1,9 @@
 //
-// "$Id: ppdc-source.cxx 9985 2011-09-09 18:02:30Z mike $"
+// "$Id: ppdc-source.cxx 10379 2012-03-23 22:16:22Z mike $"
 //
 //   Source class for the CUPS PPD Compiler.
 //
-//   Copyright 2007-2011 by Apple Inc.
+//   Copyright 2007-2012 by Apple Inc.
 //   Copyright 2002-2007 by Easy Software Products.
 //
 //   These coded instructions, statements, and computer programs are the
@@ -1340,7 +1340,8 @@ ppdcSource::get_integer(const char *v)	// I - Value string
         // NAME logicop value
 	for (newv = (char *)v + 1;
 	     *newv && (isalnum(*newv & 255) || *newv == '_');
-	     newv ++);
+	     newv ++)
+	  /* do nothing */;
 
         ch    = *newv;
 	*newv = '\0';
@@ -3906,5 +3907,5 @@ ppdcSource::write_file(const char *f)	// I - File to write
 
 
 //
-// End of "$Id: ppdc-source.cxx 9985 2011-09-09 18:02:30Z mike $".
+// End of "$Id: ppdc-source.cxx 10379 2012-03-23 22:16:22Z mike $".
 //

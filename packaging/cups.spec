@@ -1,11 +1,11 @@
 #
-# "$Id: cups.spec.in 9819 2011-06-10 21:25:02Z mike $"
+# "$Id: cups.spec.in 10428 2012-04-23 17:46:53Z mike $"
 #
 #   RPM "spec" file for CUPS.
 #
 #   Original version by Jason McMullan <jmcc@ontv.com>.
 #
-#   Copyright 2007-2011 by Apple Inc.
+#   Copyright 2007-2012 by Apple Inc.
 #   Copyright 1999-2007 by Easy Software Products, all rights reserved.
 #
 #   These coded instructions, statements, and computer programs are the
@@ -18,11 +18,17 @@
 # Conditional build options (--with name/--without name):
 #
 #   dbus     - Enable/disable DBUS support (default = enable)
+#   dnssd    - Enable/disable DNS-SD support (default = disable)
 #   php      - Enable/disable PHP support (default = enable)
+#   static   - Enable/disable static libraries (default = enable)
 
 %{!?_with_dbus: %{!?_without_dbus: %define _with_dbus --with-dbus}}
 %{?_with_dbus: %define _dbus --enable-dbus}
 %{!?_with_dbus: %define _dbus --disable-dbus}
+
+%{!?_with_dnssd: %{!?_without_dnssd: %define _with_dnssd --with-dnssd}}
+%{?_with_dnssd: %define _dnssd --enable-dnssd}
+%{!?_with_dnssd: %define _dnssd --disable-dnssd}
 
 %{!?_with_php: %{!?_without_php: %define _with_php --with-php}}
 %{?_with_php: %define _php --with-php}
@@ -34,12 +40,12 @@
 
 Summary: CUPS
 Name: cups
-Version: 1.5.2
+Version: 1.5.3
 Release: 1
 Epoch: 1
 License: GPL
 Group: System Environment/Daemons
-Source: http://ftp.easysw.com/pub/cups/1.5.2/cups-1.5.2-source.tar.bz2
+Source: http://ftp.easysw.com/pub/cups/1.5.3/cups-1.5.3-source.tar.bz2
 Url: http://www.cups.org
 Packager: Anonymous <anonymous@foo.com>
 Vendor: Apple Inc.
@@ -79,7 +85,7 @@ Requires: %{name}-libs = %{epoch}:%{version}
 
 %description
 CUPS is the standards-based, open source printing system developed by
-Apple Inc. for Mac OS® X and other UNIX®-like operating systems.
+Apple Inc. for OS X and other UNIX®-like operating systems.
 
 %description devel
 This package provides the CUPS headers and development environment.
@@ -100,7 +106,7 @@ This package provides PHP support for CUPS.
 
 %build
 CFLAGS="$RPM_OPT_FLAGS" CXXFLAGS="$RPM_OPT_FLAGS" LDFLAGS="$RPM_OPT_FLAGS" \
-    ./configure %{_dbus} %{_php} %{_static}
+    ./configure %{_dbus} %{_dnssd} %{_php} %{_static}
 # If we got this far, all prerequisite libraries must be here.
 make
 
@@ -189,6 +195,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/bin/lp*
 %dir /usr/lib/cups
 %dir /usr/lib/cups/backend
+%if %{?_with_dnssd:1}%{!?_with_dnssd:0}
+/usr/lib/cups/backend/dnssd
+%endif
 /usr/lib/cups/backend/http
 /usr/lib/cups/backend/https
 %attr(0700,root,root) /usr/lib/cups/backend/ipp
@@ -243,6 +252,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/doc/cups/es/*
 %dir /usr/share/doc/cups/eu
 /usr/share/doc/cups/eu/*
+%dir /usr/share/doc/cups/fr
+/usr/share/doc/cups/fr/*
+%dir /usr/share/doc/cups/hu
+/usr/share/doc/cups/hu/*
 %dir /usr/share/doc/cups/id
 /usr/share/doc/cups/id/*
 %dir /usr/share/doc/cups/it
@@ -372,5 +385,5 @@ rm -rf $RPM_BUILD_ROOT
 
 
 #
-# End of "$Id: cups.spec.in 9819 2011-06-10 21:25:02Z mike $".
+# End of "$Id: cups.spec.in 10428 2012-04-23 17:46:53Z mike $".
 #

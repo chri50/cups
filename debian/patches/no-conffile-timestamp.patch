@@ -27,7 +27,7 @@ Bug-Debian: http://bugs.debian.org/549673
    * Write each local printer known to the system...
 --- a/scheduler/job.c
 +++ b/scheduler/job.c
-@@ -2013,7 +2013,7 @@
+@@ -2033,7 +2033,7 @@
    strftime(temp, sizeof(temp) - 1, "%Y-%m-%d %H:%M", curdate);
  
    cupsFilePuts(fp, "# Job cache file for " CUPS_SVERSION "\n");
@@ -49,7 +49,7 @@ Bug-Debian: http://bugs.debian.org/549673
   /*
 --- a/scheduler/subscriptions.c
 +++ b/scheduler/subscriptions.c
-@@ -1104,7 +1104,7 @@
+@@ -1108,7 +1108,7 @@
    strftime(temp, sizeof(temp) - 1, "%Y-%m-%d %H:%M", curdate);
  
    cupsFilePuts(fp, "# Subscription configuration file for " CUPS_SVERSION "\n");

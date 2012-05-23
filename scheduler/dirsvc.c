@@ -1,5 +1,5 @@
 /*
- * "$Id: dirsvc.c 9793 2011-05-20 03:49:49Z mike $"
+ * "$Id: dirsvc.c 10243 2012-02-11 02:05:21Z mike $"
  *
  *   Directory services routines for the CUPS scheduler.
  *
@@ -2311,7 +2311,8 @@ dnssdAddAlias(const void *key,		/* I - Key */
 	      void       *context)	/* I - Unused */
 {
   char	valueStr[1024],			/* Domain string */
-	hostname[1024];			/* Complete hostname */
+	hostname[1024],			/* Complete hostname */
+	*hostptr;			/* Pointer into hostname */
 
 
   (void)key;
@@ -2322,6 +2323,10 @@ dnssdAddAlias(const void *key,		/* I - Key */
                          kCFStringEncodingUTF8))
   {
     snprintf(hostname, sizeof(hostname), "%s.%s", DNSSDHostName, valueStr);
+    hostptr = hostname + strlen(hostname) - 1;
+    if (*hostptr == '.')
+      *hostptr = '\0';			/* Strip trailing dot */
+
     if (!DNSSDAlias)
       DNSSDAlias = cupsArrayNew(NULL, NULL);
 
@@ -5575,5 +5580,5 @@ update_smb(int onoff)			/* I - 1 = turn on, 0 = turn off */
 
 
 /*
- * End of "$Id: dirsvc.c 9793 2011-05-20 03:49:49Z mike $".
+ * End of "$Id: dirsvc.c 10243 2012-02-11 02:05:21Z mike $".
  */

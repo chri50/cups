@@ -1,5 +1,5 @@
 /*
- * "$Id: var.c 9949 2011-08-31 04:58:33Z mike $"
+ * "$Id: var.c 10367 2012-03-21 04:09:04Z mike $"
  *
  *   CGI form variable and array functions for CUPS.
  *
@@ -166,6 +166,8 @@ cgiClearVariables(void)
   int		i, j;			/* Looping vars */
   _cgi_var_t	*v;			/* Current variable */
 
+
+  fputs("DEBUG: cgiClearVariables called.\n", stderr);
 
   for (v = form_vars, i = form_count; i > 0; v ++, i --)
   {
@@ -401,6 +403,8 @@ cgiSetArray(const char *name,		/* I - Name of variable */
   if (name == NULL || value == NULL || element < 0 || element > 100000)
     return;
 
+  fprintf(stderr, "DEBUG: cgiSetArray: %s[%d]=\"%s\"\n", name, element, value);
+
   if ((var = cgi_find_variable(name)) == NULL)
   {
     cgi_add_variable(name, element, value);
@@ -531,6 +535,8 @@ cgiSetVariable(const char *name,	/* I - Name of variable */
 
   if (name == NULL || value == NULL)
     return;
+
+  fprintf(stderr, "cgiSetVariable: %s=\"%s\"\n", name, value);
 
   if ((var = cgi_find_variable(name)) == NULL)
   {
@@ -1301,5 +1307,5 @@ cgi_unlink_file(void)
 
 
 /*
- * End of "$Id: var.c 9949 2011-08-31 04:58:33Z mike $".
+ * End of "$Id: var.c 10367 2012-03-21 04:09:04Z mike $".
  */

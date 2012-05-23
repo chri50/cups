@@ -1,5 +1,5 @@
 //
-// "$Id: ppdc-file.cxx 9384 2010-11-22 07:06:39Z mike $"
+// "$Id: ppdc-file.cxx 10338 2012-03-07 06:05:39Z mike $"
 //
 //   File class for the CUPS PPD Compiler.
 //
@@ -42,8 +42,9 @@ ppdcFile::ppdcFile(const char  *f,		// I - File to open
   else
     fp = cupsFileOpen(f, "r");
 
-  filename = f;
-  line     = 1;
+  close_on_delete = !ffp;
+  filename        = f;
+  line            = 1;
 
   if (!fp)
     _cupsLangPrintf(stderr, _("ppdc: Unable to open %s: %s"), f,
@@ -57,7 +58,7 @@ ppdcFile::ppdcFile(const char  *f,		// I - File to open
 
 ppdcFile::~ppdcFile()
 {
-  if (fp)
+  if (close_on_delete && fp)
     cupsFileClose(fp);
 }
 
@@ -105,5 +106,5 @@ ppdcFile::peek()
 
 
 //
-// End of "$Id: ppdc-file.cxx 9384 2010-11-22 07:06:39Z mike $".
+// End of "$Id: ppdc-file.cxx 10338 2012-03-07 06:05:39Z mike $".
 //

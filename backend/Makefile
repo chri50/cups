@@ -1,9 +1,9 @@
 #
-# "$Id: Makefile 9737 2011-05-04 04:28:00Z mike $"
+# "$Id: Makefile 10425 2012-04-23 17:42:12Z mike $"
 #
 #   Backend makefile for CUPS.
 #
-#   Copyright 2007-2011 by Apple Inc.
+#   Copyright 2007-2012 by Apple Inc.
 #   Copyright 1997-2007 by Easy Software Products, all rights reserved.
 #
 #   These coded instructions, statements, and computer programs are the
@@ -98,7 +98,7 @@ install-exec:	$(INSTALLXPC)
 		$(RM) $(SERVERBIN)/backend/$$file; \
 		$(LN) ipp $(SERVERBIN)/backend/$$file; \
 	done
-	if test "x$(DNSSD_BACKEND)" != x; then \
+	if test "x$(DNSSD_BACKEND)" != x -a `uname` = Darwin; then \
 		$(RM) $(SERVERBIN)/backend/mdns; \
 		$(LN) $(DNSSD_BACKEND) $(SERVERBIN)/backend/mdns; \
 	fi
@@ -268,7 +268,7 @@ socket:	socket.o ../cups/$(LIBCUPS) libbackend.a
 
 usb:	usb.o ../cups/$(LIBCUPS) libbackend.a
 	echo Linking $@...
-	$(CC) $(LDFLAGS) -o usb usb.o libbackend.a $(LIBUSB) \
+	$(CC) $(ARCHFLAGS) $(LDFLAGS) -o usb usb.o libbackend.a $(LIBUSB) \
 		$(BACKLIBS) $(LIBS)
 usb.o:	usb.c usb-darwin.c usb-libusb.c usb-unix.c
 
@@ -281,5 +281,5 @@ include Dependencies
 
 
 #
-# End of "$Id: Makefile 9737 2011-05-04 04:28:00Z mike $".
+# End of "$Id: Makefile 10425 2012-04-23 17:42:12Z mike $".
 #

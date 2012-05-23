@@ -1,5 +1,5 @@
 /*
- * "$Id: config.h.in 9837 2011-06-16 20:12:16Z mike $"
+ * "$Id: config.h.in 10371 2012-03-21 04:45:48Z mike $"
  *
  *   Configuration file for CUPS.
  *
@@ -297,6 +297,13 @@
 #undef HAVE_GNUTLS
 #undef HAVE_LIBSSL
 #undef HAVE_SSL
+
+
+/*
+ * Do we have the SSL_set_tlsext_host_name function?
+ */
+
+#undef HAVE_SSL_SET_TLSEXT_HOST_NAME
 
 
 /*
@@ -691,7 +698,7 @@
  * Do we have libusb?
  */
 
-#undef HAVE_USB_H
+#undef HAVE_LIBUSB
 
 
 /*
@@ -744,5 +751,5 @@
 #endif /* !_CUPS_CONFIG_H_ */
 
 /*
- * End of "$Id: config.h.in 9837 2011-06-16 20:12:16Z mike $".
+ * End of "$Id: config.h.in 10371 2012-03-21 04:45:48Z mike $".
  */

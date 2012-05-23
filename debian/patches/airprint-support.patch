@@ -15,7 +15,7 @@ Bug: https://bugs.launchpad.net/bugs/711779
    cupsdSetString(&LPDConfigFile, CUPS_DEFAULT_LPD_CONFIG_FILE);
 --- a/scheduler/dirsvc.c
 +++ b/scheduler/dirsvc.c
-@@ -2517,6 +2517,9 @@
+@@ -2522,6 +2522,9 @@
    keyvalue[i  ][0] = "pdl";
    keyvalue[i++][1] = p->pdl ? p->pdl : "application/postscript";
  

@@ -1,9 +1,9 @@
 /*
- * "$Id: lpc.c 9384 2010-11-22 07:06:39Z mike $"
+ * "$Id: lpc.c 10379 2012-03-23 22:16:22Z mike $"
  *
  *   "lpc" command for CUPS.
  *
- *   Copyright 2007-2010 by Apple Inc.
+ *   Copyright 2007-2012 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -364,7 +364,8 @@ show_status(http_t     *http,		/* I - HTTP connection to server */
 
 	  for (ptr = printer;
 	       *ptr != '\0' && *dptr != '\0' && *ptr == *dptr;
-	       ptr ++, dptr ++);
+	       ptr ++, dptr ++)
+	    /* do nothing */;
 
           if (*ptr == '\0' && (*dptr == '\0' || *dptr == ',' ||
 	                       isspace(*dptr & 255)))
@@ -445,5 +446,5 @@ show_status(http_t     *http,		/* I - HTTP connection to server */
 
 
 /*
- * End of "$Id: lpc.c 9384 2010-11-22 07:06:39Z mike $".
+ * End of "$Id: lpc.c 10379 2012-03-23 22:16:22Z mike $".
  */
