@@ -21,6 +21,8 @@ set -e
 
 #DEBHELPER#
 
+dpkg-maintscript-helper rm_conffile /etc/modprobe.d/blacklist-cups-usblp.conf 1.5.3-2  -- "$@"
+
 case "$1" in
     purge)
 	rm -rf /var/lib/cups
