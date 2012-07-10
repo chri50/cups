@@ -2,7 +2,8 @@ Source: cups
 Standards-Version: 3.9.3
 Priority: optional
 Section: net
-Maintainer: Debian CUPS Maintainers <pkg-cups-devel@lists.alioth.debian.org>
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: Debian CUPS Maintainers <pkg-cups-devel@lists.alioth.debian.org>
 Uploaders: 
  Masayuki Hatta (mhatta) <mhatta@debian.org>,
  Till Kamppeter <till.kamppeter@gmail.com>,
@@ -36,7 +37,7 @@ Build-Depends:
  libpaper-dev,
  libpng-dev | libpng12-dev, 
  libslp-dev,
- libtiff-dev,
+ libtiff5-dev | libtiff-dev,
  libusb-1.0-0-dev [!hurd-any], 
  po4a (>= 0.31~),
  po-debconf,
