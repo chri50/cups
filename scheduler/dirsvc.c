@@ -2522,6 +2522,9 @@ dnssdBuildTxtRecord(
   keyvalue[i  ][0] = "pdl";
   keyvalue[i++][1] = p->pdl ? p->pdl : "application/postscript";
 
+  keyvalue[i  ][0] = "URF";
+  keyvalue[i++][1] = "none";
+
   if (get_auth_info_required(p, air_str, sizeof(air_str)))
   {
     keyvalue[i  ][0] = "air";
