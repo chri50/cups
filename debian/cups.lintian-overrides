@@ -1,4 +1,5 @@
 cups: non-standard-executable-perm usr/lib/cups/backend-available/ipp 0744 != 0755
+cups: non-standard-executable-perm usr/lib/cups/backend-available/ipp14 0744 != 0755
 cups: non-standard-executable-perm usr/lib/cups/backend-available/lpd 0744 != 0755
 cups: non-standard-executable-perm usr/lib/cups/backend-available/dnssd 0744 != 0755
 cups: non-standard-executable-perm usr/lib/cups/backend-available/snmp 0555 != 0755
