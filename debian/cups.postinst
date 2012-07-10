@@ -22,6 +22,8 @@ set -e
 #     installation fails and the `postinst' is called with `abort-upgrade',
 #     `abort-remove' or `abort-deconfigure'.
 
+dpkg-maintscript-helper rm_conffile /etc/modprobe.d/blacklist-cups-usblp.conf 1.5.3-0ubuntu1  -- "$@"
+
 # Debconf
 . /usr/share/debconf/confmodule
 
@@ -79,9 +81,14 @@ EOF
     db_get cupsys/backend && SELECTED=$RET
     # We remove the scsi backend from the output as it got removed in CUPS 1.5.0
     list=`echo $SELECTED | sed -e 's/, /,/g' | sed -e 's/scsi,*//g' | sed -e 's/parallel,*//g' | sed -e 's/serial,*//g'`
+    if dpkg --compare-versions "$2" lt-nl "1.5.3-3"; then
+	if ! echo $list | grep -q "\bipp14\b"; then
+	    list=`echo $list | sed -e 's/\bipp\b/ipp,ipp14/g'`
+	fi
+    fi
     save_IFS=$IFS
     IFS=,
-    (cd /usr/lib/cups/backend && rm -f http https ipp ipps lpd socket usb snmp dnssd mdns)
+    (cd /usr/lib/cups/backend && rm -f http https ipp ipp14 ipps lpd socket usb snmp dnssd mdns)
     for module in $list; do
       ln /usr/lib/cups/backend-available/$module /usr/lib/cups/backend/$module
       if [ "$module" = "ipp" ]; then
@@ -99,7 +106,7 @@ EOF
     db_fset cupsys/backend changed false
 
     # Resync Debconf database with real state
-    list=`( cd /usr/lib/cups/backend && for f in ipp lpd socket usb snmp dnssd; do [ -e $f ] && echo -n "$f, "; done ) | sed -e 's/, $//'`
+    list=`( cd /usr/lib/cups/backend && for f in ipp ipp14 lpd socket usb snmp dnssd; do [ -e $f ] && echo -n "$f, "; done ) | sed -e 's/, $//'`
     db_set cupsys/backend $list;
 
     if [ -f /etc/cups/classes.conf ]; then
@@ -170,8 +177,8 @@ EOM
 	fi
     fi
 
-    if dpkg --compare-versions "$2" lt "1.5.3"; then
-	rmmod usblp || :
+    if dpkg --compare-versions "$2" lt "1.5.3-3"; then
+	modprobe usblp >/dev/null 2>&1 || :
     fi
 fi
 
