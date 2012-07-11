@@ -1,3 +1,9 @@
+cups (1.5.3-4build1) quantal; urgency=low
+
+  * Rebuild for libtiff5
+
+ -- Michael Terry <mterry@ubuntu.com>  Wed, 11 Jul 2012 17:34:04 -0400
+
 cups (1.5.3-4) experimental; urgency=low
 
   [ Till Kamppeter ]
