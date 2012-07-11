@@ -4,6 +4,7 @@ install-sh-remove-bashism.patch
 usb-backend-busy-loop-fix.patch
 usb-backend-detach-usblp-earlier-crash-guards.patch
 usb-backend-initialize-usblp-attached-state.patch
+snmp-dont-stop-without-ipv6.patch
 
 # patches sent upstream
 usb-backend-further-enhancements.patch
