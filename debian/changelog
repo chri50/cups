@@ -1,3 +1,23 @@
+cups (1.5.3-4) experimental; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/patches/usb-backend-further-enhancements.patch: USB backend: Do
+    a printer reset after each job, this makes the Prolific USB -> Parallel
+    adapter finally work (LP: #987485) and makes it unnecessary to blacklist
+    the usblp kernel module for some printers (LP: #997040).
+
+  [ Martin Pitt ]
+  * debian/control: Have cups strictly depend on the same binary version of
+    libcups2, to avoid crashes when later libcups2 versions remove private
+    symbols. (Closes: #668662)
+  * Add snmp-dont-stop-without-ipv6.patch: snmp: do not die if there is no
+    IPv6 support available. Patch backported from upstream trunk, thanks to
+    Pino Toscano! (first half of #680604)
+  * tests-ignore-warnings.patch: Also ignore avahi failure -1, to fix FTBFS on
+    hurd due to D-BUS problems. Thanks Pino Toscano! (Closes: #680604)
+
+ -- Martin Pitt <mpitt@debian.org>  Wed, 11 Jul 2012 08:57:53 +0200
+
 cups (1.5.3-3) experimental; urgency=low
 
   * debian/patches/usb-backend-further-enhancements.patch: Added latest

@@ -69,7 +69,8 @@ typedef struct usb_printer_s		/**** USB Printer Data ****/
 			write_endp,	/* Write endpoint */
 			read_endp,	/* Read endpoint */
 			protocol,	/* Protocol: 1 = Uni-di, 2 = Bi-di. */
-			usblp_attached;	/* "usblp" kernel module attached? */
+			usblp_attached,	/* "usblp" kernel module attached? */
+			opened_for_job;	/* Set to 1 by print_device() */
   unsigned int		quirks;		/* Quirks flags */
   struct libusb_device_handle *handle;	/* Open handle to device */
 } usb_printer_t;
@@ -255,6 +256,7 @@ print_device(const char *uri,		/* I - Device URI */
   }
 
   g.print_fd = print_fd;
+  g.printer->opened_for_job = 1;
 
  /*
   * If we are printing data from a print driver on stdin, ignore SIGTERM
@@ -767,6 +769,21 @@ close_device(usb_printer_t *printer)	/* I - Printer */
 	      printer->conf);
 
    /*
+    * Reset the device to clean up after the job
+    */
+
+    if (printer->opened_for_job == 1)
+    {
+      if ((errcode = libusb_reset_device(printer->handle)) < 0)
+	fprintf(stderr,
+		"DEBUG: Device reset failed, error code: %d\n",
+		errcode);
+      else
+	fprintf(stderr,
+		"DEBUG: Resetting printer.\n");
+    }
+
+   /*
     * Close the interface and return...
     */
 
@@ -1271,6 +1288,7 @@ open_device(usb_printer_t *printer,	/* I - Printer */
   }
 
   printer->usblp_attached = 0;
+  printer->opened_for_job = 0;
 
   if (verbose)
     fputs("STATE: +connecting-to-device\n", stderr);
