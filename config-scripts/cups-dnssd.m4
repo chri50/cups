@@ -23,6 +23,21 @@ AC_ARG_WITH(dnssd-includes, [  --with-dnssd-includes   set directory for DNS Ser
 DNSSDLIBS=""
 DNSSD_BACKEND=""
 
+AC_ARG_ENABLE(avahi, [  --enable-avahi          turn on DNS Service Discovery support, default=no],
+	      [if test x$enable_avahi = xyes; then
+		       AC_MSG_CHECKING(for Avahi)
+		       if $PKGCONFIG --exists avahi-client; then
+			       AC_MSG_RESULT(yes)
+			       CFLAGS="$CFLAGS `$PKGCONFIG --cflags avahi-client`"
+			       DNSSDLIBS="`$PKGCONFIG --libs avahi-client`"
+			       DNSSD_BACKEND="dnssd"
+			       AC_DEFINE(HAVE_AVAHI)
+			       enable_dnssd=no
+		       else
+			       AC_MSG_RESULT(no)
+		       fi
+	       fi])
+
 if test x$enable_dnssd != xno; then
 	AC_CHECK_HEADER(dns_sd.h, [
 		case "$uname" in
