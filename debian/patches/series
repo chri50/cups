@@ -1,22 +1,16 @@
 # patches accepted and committed upstream:
-ipp-backend-cups-1.5.4-fixes.patch
-install-sh-remove-bashism.patch
-usb-backend-busy-loop-fix.patch
-usb-backend-detach-usblp-earlier-crash-guards.patch
-usb-backend-initialize-usblp-attached-state.patch
-snmp-dont-stop-without-ipv6.patch
 
 # patches sent upstream
-usb-backend-further-enhancements.patch
 pidfile.patch
 ppd-poll-with-client-conf.patch
 # no answer yet, po4a might not be appropriate
-manpage-translations.patch
+#manpage-translations.patch
 rootbackends-worldreadable.patch
-cups-avahi.patch
-colord-support.patch
 
 # patches which should go upstream
+printers-c-recognize-remote-cups-queue-via-dnssd-uri.patch
+avahi-not-considered-at-some-dnssd-conditionals.patch
+cupsd-conf-remove-obsolete-browse-directives.patch
 airprint-support.patch
 removecvstag.patch
 no-conffile-timestamp.patch
@@ -38,7 +32,6 @@ show-compile-command-lines.patch
 ppdc-dynamic-linking.patch
 log-debug-history-nearly-unlimited.patch
 pstops-based-workflow-only-for-printing-ps-on-a-ps-printer.patch
-dnssd-reg-array-linear-search.patch
 tests-ignore-warnings.patch
 tests-ignore-usb-crash.patch
 test-i18n-nonlinux.patch

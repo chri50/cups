@@ -1,9 +1,9 @@
 /*
- * "$Id: http-private.h 9960 2011-09-02 22:37:14Z mike $"
+ * "$Id: http-private.h 10437 2012-04-23 22:20:09Z mike $"
  *
  *   Private HTTP definitions for CUPS.
  *
- *   Copyright 2007-2011 by Apple Inc.
+ *   Copyright 2007-2012 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -154,6 +154,7 @@ extern "C" {
 #define _HTTP_RESOLVE_DEFAULT	0	/* Just resolve with default options */
 #define _HTTP_RESOLVE_STDERR	1	/* Log resolve progress to stderr */
 #define _HTTP_RESOLVE_FQDN	2	/* Resolve to a FQDN */
+#define _HTTP_RESOLVE_FAXOUT	4	/* Resolve FaxOut service? */
 
 
 /*
@@ -404,5 +405,5 @@ extern int		_httpWait(http_t *http, int msec, int usessl);
 #endif /* !_CUPS_HTTP_PRIVATE_H_ */
 
 /*
- * End of "$Id: http-private.h 9960 2011-09-02 22:37:14Z mike $".
+ * End of "$Id: http-private.h 10437 2012-04-23 22:20:09Z mike $".
  */

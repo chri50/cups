@@ -1,5 +1,5 @@
 /*
- * "$Id: env.c 9459 2011-01-11 03:48:42Z mike $"
+ * "$Id: env.c 10485 2012-05-18 20:17:41Z mike $"
  *
  *   Environment management routines for the CUPS scheduler.
  *
@@ -62,7 +62,7 @@ cupsdInitEnv(void)
 
 #if defined(__APPLE__)
  /*
-  * Add special voodoo magic for MacOS X - this allows MacOS X 
+  * Add special voodoo magic for MacOS X - this allows MacOS X
   * programs to access their bundle resources properly...
   *
   * This string is replaced in cupsdStartProcess()...
@@ -227,6 +227,8 @@ cupsdUpdateEnv(void)
   set_if_undefined("TZ", NULL);
   set_if_undefined("USER", "root");
   set_if_undefined("VG_ARGS", NULL);
+
+  cupsdSetEnvf("CUPS_MAX_MESSAGE", "%d", CUPSD_SB_BUFFER_SIZE - 1);
 }
 
 
@@ -267,5 +269,5 @@ find_env(const char *name)		/* I - Variable name */
 
 
 /*
- * End of "$Id: env.c 9459 2011-01-11 03:48:42Z mike $".
+ * End of "$Id: env.c 10485 2012-05-18 20:17:41Z mike $".
  */

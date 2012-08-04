@@ -1,11 +1,11 @@
 Description: Ignore warnings from colord and Avahi in the tests, as they change the expected number of warnings.
 Author: Martin Pitt <mpitt@debian.org>
 
-Index: cups-1.5.2/test/run-stp-tests.sh
+Index: cups-1.6.0/test/run-stp-tests.sh
 ===================================================================
---- cups-1.5.2.orig/test/run-stp-tests.sh	2012-03-01 07:16:41.180825081 +0100
-+++ cups-1.5.2/test/run-stp-tests.sh	2012-03-01 07:17:29.660827422 +0100
-@@ -764,7 +764,7 @@
+--- cups-1.6.0.orig/test/run-stp-tests.sh	2012-07-27 16:53:22.590203425 +0200
++++ cups-1.6.0/test/run-stp-tests.sh	2012-07-27 18:52:28.894107684 +0200
+@@ -830,7 +830,7 @@
  fi
  
  # Warning log messages

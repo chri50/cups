@@ -2,7 +2,7 @@
 <HTML>
 <HEAD>
 	<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
-	<TITLE>ホーム - CUPS @CUPS_VERSION@@CUPS_REVISION@</TITLE>
+	<TITLE>ホーム - CUPS 1.6</TITLE>
 	<LINK REL="STYLESHEET" TYPE="text/css" HREF="/cups.css">
 	<LINK REL="SHORTCUT ICON" HREF="/images/cups-icon.png" TYPE="image/png">
 </HEAD>
@@ -13,12 +13,12 @@
 <TR HEIGHT="36">
 <TD><A HREF="http://www.cups.org/" TARGET="_blank"><IMG
 SRC="/images/left.gif" WIDTH="64" HEIGHT="36" BORDER="0" ALT=""></A></TD>
-<TD CLASS="sel" NOWRAP><A HREF="/">&nbsp;&nbsp;ホーム&nbsp;&nbsp;</A></TD>
-<TD CLASS="unsel" NOWRAP><A HREF="/admin">&nbsp;&nbsp;管理&nbsp;&nbsp;</A></TD>
-<TD CLASS="unsel" NOWRAP><A HREF="/classes/">&nbsp;&nbsp;クラス&nbsp;&nbsp;</A></TD>
-<TD CLASS="unsel" NOWRAP><A HREF="/help/">&nbsp;&nbsp;ヘルプ&nbsp;&nbsp;</A></TD>
-<TD CLASS="unsel" NOWRAP><A HREF="/jobs/">&nbsp;&nbsp;ジョブ&nbsp;&nbsp;</A></TD>
-<TD CLASS="unsel" NOWRAP><A HREF="/printers/">&nbsp;プリンター&nbsp;</A></TD>
+<TD CLASS="sel"><A HREF="/">&nbsp;&nbsp;ホーム&nbsp;&nbsp;</A></TD>
+<TD CLASS="unsel"><A HREF="/admin">&nbsp;&nbsp;管理&nbsp;&nbsp;</A></TD>
+<TD CLASS="unsel"><A HREF="/classes/">&nbsp;&nbsp;クラス&nbsp;&nbsp;</A></TD>
+<TD CLASS="unsel"><A HREF="/help/">&nbsp;&nbsp;ヘルプ&nbsp;&nbsp;</A></TD>
+<TD CLASS="unsel"><A HREF="/jobs/">&nbsp;&nbsp;ジョブ&nbsp;&nbsp;</A></TD>
+<TD CLASS="unsel"><A HREF="/printers/">&nbsp;&nbsp;プリンター&nbsp;&nbsp;</A></TD>
 <TD CLASS="unsel" WIDTH="100%"><FORM ACTION="/help/" METHOD="GET"><INPUT
 TYPE="SEARCH" NAME="QUERY" SIZE="20" PLACEHOLDER="Search Help"
 AUTOSAVE="org.cups.help" RESULTS="20"></FORM></TD>
@@ -31,7 +31,7 @@ AUTOSAVE="org.cups.help" RESULTS="20"></FORM></TD>
 
 <H1>CUPS @CUPS_VERSION@</H1>
 
-<P>CUPS は、Mac OS<SUP>&reg;</SUP> X およびその他の UNIX 系 OS のために、
+<P>CUPS は、OS<SUP>&reg;</SUP> X およびその他の UNIX <SUP>&reg;</SUP> 系 OS のために、
 <A HREF="http://www.apple.com/">Apple Inc.</A>
 によって開発された標準ベースのオープンソース印刷システムです。</P>
 
@@ -50,7 +50,7 @@ HEIGHT="128" ALT="CUPS"></A></TD>
 
 <P><A HREF="help/options.html">コマンドラインからの印刷とオプション</A></P>
 
-<P><A HREF="help/whatsnew.html">CUPS 1.5 の新機能</A></P>
+<P><A HREF="help/whatsnew.html">CUPS 1.6 の新機能</A></P>
 
 <P><A HREF="http://www.cups.org/newsgroups.php?gcups.general">ユーザーフォーラム</A></P>
 
@@ -78,7 +78,7 @@ HEIGHT="128" ALT="CUPS"></A></TD>
 
 <H2>開発者向け</H2>
 
-<P><A HREF="help/api-overview.html">イントロダクション</A></P>
+<P><A HREF="help/api-overview.html">CUPS プログラミングのイントロダクション</A></P>
 
 <P><A HREF="help/api-cups.html">CUPS API</A></P>
 

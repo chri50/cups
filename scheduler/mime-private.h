@@ -1,5 +1,5 @@
 /*
- * "$Id: mime-private.h 9750 2011-05-06 22:53:53Z mike $"
+ * "$Id: mime-private.h 9950 2011-09-01 23:02:24Z mike $"
  *
  *   Private MIME type/conversion database definitions for CUPS.
  *
@@ -32,10 +32,7 @@ extern "C" {
  */
 
 extern void	_mimeError(mime_t *mime, const char *format, ...)
-#ifdef __GNUC__
-__attribute__ ((__format__ (__printf__, 2, 3)))
-#endif /* __GNUC__ */
-;
+		__attribute__ ((__format__ (__printf__, 2, 3)));
 
 
 #  ifdef __cplusplus
@@ -44,5 +41,5 @@ __attribute__ ((__format__ (__printf__, 2, 3)))
 #endif /* !_CUPS_MIME_PRIVATE_H_ */
 
 /*
- * End of "$Id: mime-private.h 9750 2011-05-06 22:53:53Z mike $".
+ * End of "$Id: mime-private.h 9950 2011-09-01 23:02:24Z mike $".
  */

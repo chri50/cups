@@ -1,9 +1,9 @@
 /*
- * "$Id: getdevices.c 9055 2010-03-25 23:06:26Z mike $"
+ * "$Id: getdevices.c 10424 2012-04-23 17:26:57Z mike $"
  *
  *   cupsGetDevices implementation for CUPS.
  *
- *   Copyright 2008-2010 by Apple Inc.
+ *   Copyright 2008-2012 by Apple Inc.
  *
  *   These coded instructions, statements, and computer programs are the
  *   property of Apple Inc. and are protected by Federal copyright
@@ -34,7 +34,7 @@
  * parameters provide comma-delimited lists of backends to include or omit from
  * the request respectively.
  *
- * @since CUPS 1.4/Mac OS X 10.6@
+ * @since CUPS 1.4/OS X 10.6@
  */
 
 ipp_status_t				/* O - Request status - @code IPP_OK@ on success. */
@@ -258,7 +258,7 @@ cupsGetDevices(
   httpFlush(http);
 
   if (status == HTTP_ERROR)
-    _cupsSetError(IPP_ERROR, NULL, 0);
+    _cupsSetError(IPP_INTERNAL_ERROR, strerror(http->error), 0);
   else
   {
     attr = ippFindAttribute(response, "status-message", IPP_TAG_TEXT);
@@ -279,5 +279,5 @@ cupsGetDevices(
 
 
 /*
- * End of "$Id: getdevices.c 9055 2010-03-25 23:06:26Z mike $".
+ * End of "$Id: getdevices.c 10424 2012-04-23 17:26:57Z mike $".
  */

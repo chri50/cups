@@ -1,5 +1,5 @@
 #
-# "$Id: Makefile 10425 2012-04-23 17:42:12Z mike $"
+# "$Id: Makefile 10402 2012-04-12 22:54:51Z mike $"
 #
 #   Backend makefile for CUPS.
 #
@@ -21,13 +21,43 @@ include ../Makedefs
 # Object files...
 #
 
-RBACKENDS =	ipp lpd $(DNSSD_BACKEND)
-UBACKENDS =	$(LEGACY_BACKENDS) serial snmp socket usb
-UNITTESTS =	test1284 testbackend testsupplies
-TARGETS =	libbackend.a $(RBACKENDS) $(UBACKENDS)
-LIBOBJS	=	ieee1284.o network.o runloop.o snmp-supplies.o
-OBJS	=	ipp.o lpd.o dnssd.o parallel.o serial.o snmp.o \
-		socket.o test1284.o testbackend.o testsupplies.o usb.o
+# RBACKENDS are installed mode 0700 so cupsd will run them as root...
+#
+# UBACKENDS are installed mode 0755 so cupsd will run them as an unprivileged
+# user...
+#
+# See http://www.cups.org/documentation.php/api-filter.html for more info...
+RBACKENDS =	\
+		ipp \
+		lpd \
+		$(DNSSD_BACKEND)
+UBACKENDS =	\
+		snmp \
+		socket \
+		usb
+UNITTESTS =	\
+		test1284 \
+		testbackend \
+		testsupplies
+TARGETS =	\
+		libbackend.a \
+		$(RBACKENDS) \
+		$(UBACKENDS)
+LIBOBJS	=	\
+		ieee1284.o \
+		network.o \
+		runloop.o \
+		snmp-supplies.o
+OBJS	=	\
+		ipp.o \
+		lpd.o \
+		dnssd.o \
+		snmp.o \
+		socket.o \
+		test1284.o \
+		testbackend.o \
+		testsupplies.o \
+		usb.o
 
 
 #
@@ -56,7 +86,7 @@ unittests:	$(UNITTESTS)
 #
 
 clean:
-	$(RM) $(OBJS) $(TARGETS) $(UNITTESTS) $(LIBOBJS) http mdns
+	$(RM) $(OBJS) $(TARGETS) $(UNITTESTS) $(LIBOBJS) http https ipps mdns
 
 
 #
@@ -64,7 +94,7 @@ clean:
 #
 
 depend:
-	makedepend -Y -I.. -fDependencies $(OBJS:.o=.c) >/dev/null 2>&1
+	$(CC) -MM $(ALL_CFLAGS) $(OBJS:.o=.c) >Dependencies
 
 
 #
@@ -98,7 +128,7 @@ install-exec:	$(INSTALLXPC)
 		$(RM) $(SERVERBIN)/backend/$$file; \
 		$(LN) ipp $(SERVERBIN)/backend/$$file; \
 	done
-	if test "x$(DNSSD_BACKEND)" != x -a `uname` = Darwin; then \
+	if test "x$(DNSSD_BACKEND)" != x; then \
 		$(RM) $(SERVERBIN)/backend/mdns; \
 		$(LN) $(DNSSD_BACKEND) $(SERVERBIN)/backend/mdns; \
 	fi
@@ -227,24 +257,6 @@ lpd:	lpd.o ../cups/$(LIBCUPS) libbackend.a
 
 
 #
-# parallel
-#
-
-parallel:	parallel.o ../cups/$(LIBCUPS) libbackend.a
-	echo Linking $@...
-	$(CC) $(LDFLAGS) -o parallel parallel.o libbackend.a $(LIBS)
-
-
-#
-# serial
-#
-
-serial:	serial.o ../cups/$(LIBCUPS) libbackend.a
-	echo Linking $@...
-	$(CC) $(LDFLAGS) -o serial serial.o libbackend.a $(BACKLIBS) $(LIBS)
-
-
-#
 # snmp
 #
 
@@ -281,5 +293,5 @@ include Dependencies
 
 
 #
-# End of "$Id: Makefile 10425 2012-04-23 17:42:12Z mike $".
+# End of "$Id: Makefile 10402 2012-04-12 22:54:51Z mike $".
 #

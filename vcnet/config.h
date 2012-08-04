@@ -1,9 +1,9 @@
 /*
- * "$Id: config.h 9793 2011-05-20 03:49:49Z mike $"
+ * "$Id: config.h 10424 2012-04-23 17:26:57Z mike $"
  *
  *   Configuration file for CUPS on Windows.
  *
- *   Copyright 2007-2011 by Apple Inc.
+ *   Copyright 2007-2012 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -86,8 +86,8 @@
  * Version of software...
  */
 
-#define CUPS_SVERSION "CUPS v1.5.0"
-#define CUPS_MINIMAL "CUPS/1.5.0"
+#define CUPS_SVERSION "CUPS v1.6.0"
+#define CUPS_MINIMAL "CUPS/1.6.0"
 
 
 /*
@@ -599,7 +599,7 @@
 
 
 /*
- * Do we have Mac OS X 10.4's mbr_XXX functions?
+ * Do we have OS X 10.4's mbr_XXX functions?
  */
 
 /* #undef HAVE_MEMBERSHIP_H */
@@ -761,7 +761,7 @@
 
 
 /*
- * Location of Mac OS X localization bundle, if any.
+ * Location of OS X localization bundle, if any.
  */
 
 /* #undef CUPS_BUNDLEDIR */
@@ -784,5 +784,5 @@
 #endif /* !_CUPS_CONFIG_H_ */
 
 /*
- * End of "$Id: config.h 9793 2011-05-20 03:49:49Z mike $".
+ * End of "$Id: config.h 10424 2012-04-23 17:26:57Z mike $".
  */

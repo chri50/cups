@@ -32,7 +32,7 @@ AUTOSAVE="org.cups.help" RESULTS="20"></FORM></TD>
 <H1>CUPS @CUPS_VERSION@</H1>
 
 <P>CUPS es el sistema de impresi&oacute;n de c&oacute;digo abierto basado en
-est&aacute;ndares desarrollado por <A HREF="http://www.apple.com/">Apple Inc.</A> para Mac
+est&aacute;ndares desarrollado por <A HREF="http://www.apple.com/">Apple Inc.</A> para
 OS<SUP>&reg;</SUP> X y otros sistemas operativos tipo UNIX<SUP>&reg;</SUP>.</P>
 
 </TD>
@@ -50,7 +50,7 @@ HEIGHT="128" ALT="CUPS"></A></TD>
 
 <P><A HREF="help/options.html">Impresi&oacute;n desde la l&iacute;nea de comandos y opciones</A></P>
 
-<P><A HREF="help/whatsnew.html">Qu&eacute; hay de nuevo en CUPS 1.5</A></P>
+<P><A HREF="help/whatsnew.html">Qu&eacute; hay de nuevo en CUPS 1.6</A></P>
 
 <P><A HREF="http://www.cups.org/newsgroups.php?gcups.general">Foro de usuarios</A></P>
 
@@ -78,7 +78,7 @@ HEIGHT="128" ALT="CUPS"></A></TD>
 
 <H2>CUPS para desarrolladores</H2>
 
-<P><A HREF="help/api-overview.html">Introducci&oacute;n a la programación de CUPS</A></P>
+<P><A HREF="help/api-overview.html">Introducci&oacute;n a la programaci&oacute;n de CUPS</A></P>
 
 <P><A HREF="help/api-cups.html">La API de CUPS</A></P>
 
