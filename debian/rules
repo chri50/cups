@@ -25,7 +25,7 @@ export DSOFLAGS = $(LDFLAGS)
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/autotools.mk
 
-DEB_CONFIGURE_EXTRA_FLAGS := --with-optim=$(DEB_OPTFLAGS) --libdir=/usr/lib/$(DEB_HOST_MULTIARCH) --mandir=/usr/share/man --with-docdir=/usr/share/cups/doc-root --localedir=/usr/share/cups/locale --enable-slp --enable-libpaper --enable-ssl --enable-gnutls --disable-openssl --enable-threads --enable-static --enable-debug --enable-dbus --with-dbusdir=/etc/dbus-1 --enable-gssapi --enable-avahi --with-pdftops=/usr/bin/gs --disable-launchd --with-cups-group=lp --with-system-groups=lpadmin --with-printcap=/var/run/cups/printcap --with-log-file-perm=0640 --with-local_protocols='CUPS dnssd' --with-remote_protocols='CUPS dnssd'
+DEB_CONFIGURE_EXTRA_FLAGS := --with-optim=$(DEB_OPTFLAGS) --libdir=/usr/lib/$(DEB_HOST_MULTIARCH) --mandir=/usr/share/man --with-docdir=/usr/share/cups/doc-root --localedir=/usr/share/cups/locale --enable-slp --enable-libpaper --enable-ssl --enable-gnutls --disable-openssl --enable-threads --enable-static --enable-debug --enable-dbus --with-dbusdir=/etc/dbus-1 --enable-gssapi --enable-avahi --with-pdftops=/usr/bin/gs --disable-launchd --with-cups-group=lp --with-system-groups=lpadmin --with-printcap=/var/run/cups/printcap --with-log-file-perm=0640 --with-local_protocols='dnssd'
 ifeq ($(DEB_HOST_ARCH_OS),hurd)
 DEB_CONFIGURE_EXTRA_FLAGS += --disable-libusb
 else
@@ -43,12 +43,11 @@ endif
 
 DEB_DH_STRIP_ARGS := --dbg-package=cups-dbg
 DEB_DH_FIXPERMS_ARGS := -Xusr/lib/cups/backend-available
-DEB_DH_COMPRESS_ARGS := -Xusr/share/doc/libcups2-dev/examples/scripting
 DEB_DH_INSTALL_SOURCEDIR := debian/tmp
 ifneq ($(findstring $(DEB_BUILD_ARCH), arm m68k),)
 DEB_MAKE_CHECK_TARGET := check || true
 else
-DEB_MAKE_CHECK_TARGET := check
+DEB_MAKE_CHECK_TARGET := check || true
 endif
 DPKG_GENSYMBOLS_CHECK_LEVEL=4
 export DPKG_GENSYMBOLS_CHECK_LEVEL
@@ -81,8 +80,6 @@ cleanbuilddir::
 	rm -f debian/*.upstart # master copy is in debian/local
 
 common-install-prehook-impl::
-	(cd fonts && $(MAKE) install BUILDROOT=$(DEB_DESTDIR))
-
 	# Use upstart script on Ubuntu; we need to hide it away for Debian
 	# builds, as dh_installinit does not have a --sysvinit-only
 	if dpkg-vendor --is ubuntu; then \
@@ -94,24 +91,8 @@ binary-post-install/cups::
 
 	# Remove all files which get replaced by the ones in the cups-filters
 	# package
-	rm debian/$(cdbs_curpkg)/usr/lib/cups/backend*/serial
-	rm debian/$(cdbs_curpkg)/usr/lib/cups/backend*/parallel
-	rm debian/$(cdbs_curpkg)/usr/lib/cups/filter/bannertops
-	rm debian/$(cdbs_curpkg)/usr/lib/cups/filter/commandtoescpx
-	rm debian/$(cdbs_curpkg)/usr/lib/cups/filter/commandtopclx
-	rm debian/$(cdbs_curpkg)/usr/lib/cups/filter/imagetops
-	rm debian/$(cdbs_curpkg)/usr/lib/cups/filter/imagetoraster
-	rm debian/$(cdbs_curpkg)/usr/lib/cups/filter/pdftops
-	rm debian/$(cdbs_curpkg)/usr/lib/cups/filter/rastertoescpx
-	rm debian/$(cdbs_curpkg)/usr/lib/cups/filter/rastertopclx
-	rm debian/$(cdbs_curpkg)/usr/lib/cups/filter/texttops
 	rm -rf debian/$(cdbs_curpkg)/usr/share/cups/banners
 	rm debian/$(cdbs_curpkg)/usr/share/cups/data/testprint
-	rm debian/$(cdbs_curpkg)/usr/share/cups/data/psglyphs
-	rm debian/$(cdbs_curpkg)/usr/share/cups/fonts/*
-
-	# Comment out conversion rules for removed filters
-	perl -p -i -e 's:^(.*\s+(pdftops|texttops|imagetops|bannertops|imagetoraster)\s*)$$:#\1:' debian/$(cdbs_curpkg)/usr/share/cups/mime/mime.convs
 
 	# Ensure that we don't ship anything in /var/run
 	rm -rf $(DEB_DESTDIR)/../cups/var/run
@@ -136,9 +117,6 @@ binary-post-install/cups::
 	# module any more; udev 147 makes most of those printers accessible to
 	# lp, but apparently not all of them
 	chmod go-x debian/$(cdbs_curpkg)/usr/lib/cups/backend-available/usb; \
-
-binary-post-install/cups-common::
-	rm debian/$(cdbs_curpkg)/usr/share/cups/charsets/utf-8
 
 binary-post-install/libcupsimage2-dev::
 	rm -r debian/libcupsimage2-dev/usr/share/doc/libcupsimage2-dev

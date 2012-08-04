@@ -4,24 +4,40 @@ Bug: https://bugs.launchpad.net/bugs/711779
 
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -652,7 +652,7 @@
+@@ -89,9 +89,9 @@
+ {
+   { "AccessLog",		&AccessLog,		CUPSD_VARTYPE_STRING },
+   { "AutoPurgeJobs", 		&JobAutoPurge,		CUPSD_VARTYPE_BOOLEAN },
+-#ifdef HAVE_DNSSD
++#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
+   { "BrowseDNSSDSubTypes",	&DNSSDSubTypes,		CUPSD_VARTYPE_STRING },
+-#endif /* HAVE_DNSSD */
++#endif /* HAVE_DNSSD || HAVE_AVAHI */
+   { "BrowseWebIF",		&BrowseWebIF,		CUPSD_VARTYPE_BOOLEAN },
+   { "Browsing",			&Browsing,		CUPSD_VARTYPE_BOOLEAN },
+   { "CacheDir",			&CacheDir,		CUPSD_VARTYPE_STRING },
+@@ -737,9 +737,9 @@
+   Browsing                 = CUPS_DEFAULT_BROWSING;
    DefaultShared            = CUPS_DEFAULT_DEFAULT_SHARED;
  
- #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
--  cupsdSetString(&DNSSDRegType, "_ipp._tcp,_cups");
-+  cupsdSetString(&DNSSDRegType, "_ipp._tcp,_cups,_universal");
- #endif /* HAVE_DNSSD */
+-#ifdef HAVE_DNSSD
+-  cupsdSetString(&DNSSDSubTypes, "_cups,_print");
+-#endif /* HAVE_DNSSD */
++#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
++  cupsdSetString(&DNSSDSubTypes, "_cups,_print,_universal");
++#endif /* HAVE_DNSSD || HAVE_AVAHI */
  
    cupsdSetString(&LPDConfigFile, CUPS_DEFAULT_LPD_CONFIG_FILE);
+   cupsdSetString(&SMBConfigFile, CUPS_DEFAULT_SMB_CONFIG_FILE);
 --- a/scheduler/dirsvc.c
 +++ b/scheduler/dirsvc.c
-@@ -2522,6 +2522,9 @@
-   keyvalue[i  ][0] = "pdl";
-   keyvalue[i++][1] = p->pdl ? p->pdl : "application/postscript";
+@@ -606,6 +606,9 @@
+     keyvalue[count  ][0] = "pdl";
+     keyvalue[count++][1] = p->pdl ? p->pdl : "application/postscript";
  
-+  keyvalue[i  ][0] = "URF";
-+  keyvalue[i++][1] = "none";
++    keyvalue[count  ][0] = "URF";
++    keyvalue[count++][1] = "none";
 +
-   if (get_auth_info_required(p, air_str, sizeof(air_str)))
-   {
-     keyvalue[i  ][0] = "air";
+     if (get_auth_info_required(p, air_str, sizeof(air_str)))
+     {
+       keyvalue[count  ][0] = "air";

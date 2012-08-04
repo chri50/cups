@@ -1,5 +1,5 @@
 /*
- * "$Id: testspeed.c 9042 2010-03-24 00:45:34Z mike $"
+ * "$Id: testspeed.c 9950 2011-09-01 23:02:24Z mike $"
  *
  *   Scheduler speed test for CUPS.
  *
@@ -40,7 +40,7 @@
 static int	do_test(const char *server, int port,
 		        http_encryption_t encryption, int requests,
 			int verbose);
-static void	usage(void);
+static void	usage(void) __attribute__((noreturn));
 
 
 /*
@@ -361,5 +361,5 @@ usage(void)
 
 
 /*
- * End of "$Id: testspeed.c 9042 2010-03-24 00:45:34Z mike $".
+ * End of "$Id: testspeed.c 9950 2011-09-01 23:02:24Z mike $".
  */

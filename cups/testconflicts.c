@@ -1,5 +1,5 @@
 /*
- * "$Id: testconflicts.c 10379 2012-03-23 22:16:22Z mike $"
+ * "$Id: testconflicts.c 10378 2012-03-23 21:38:25Z mike $"
  *
  *   PPD constraint test program for CUPS.
  *
@@ -134,5 +134,5 @@ main(int  argc,				/* I - Number of command-line arguments */
 
 
 /*
- * End of "$Id: testconflicts.c 10379 2012-03-23 22:16:22Z mike $".
+ * End of "$Id: testconflicts.c 10378 2012-03-23 21:38:25Z mike $".
  */

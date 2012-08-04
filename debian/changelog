@@ -1,3 +1,95 @@
+cups (1.6.0-0bzr1) quantal; urgency=low
+
+  [ Till Kamppeter ]
+  * New upstream release
+     - Avahi-based Bonjour/DNS-SD/mDNS support
+     - ICC-based color management with colord
+     - IPP-Everywhere support
+     - Moved filters not needed by Mac OS to cups-filters project at
+       OpenPrinting.
+     - Moved API of libcupsdrivers (driver.h) and of part of libcupsimage
+       (image.h) to cups-filters.
+     - cups-polld removed
+     - Fixes: LP: #904093, LP: #1027804
+  * debian/patches/ipp-backend-cups-1.5.4-fixes.patch,
+    debian/patches/install-sh-remove-bashism.patch,
+    debian/patches/usb-backend-busy-loop-fix.patch,
+    debian/patches/usb-backend-detach-usblp-earlier-crash-guards.patch,
+    debian/patches/usb-backend-initialize-usblp-attached-state.patch,
+    debian/patches/usb-backend-further-enhancements.patch,
+    debian/patches/snmp-dont-stop-without-ipv6.patch,
+    debian/patches/cups-avahi.patch,
+    debian/patches/colord-support.patch: Removed, included upstream.
+  * debian/patches/dnssd-reg-array-linear-search.patch: Removed, not applicable
+    any more.
+  * debian/patches/pidfile.patch,
+    debian/patches/airprint-support.patch,
+    debian/patches/no-conffile-timestamp.patch,
+    debian/patches/drop_unnecessary_dependencies.patch,
+    debian/patches/configure-default-browse-protocols.patch
+    debian/patches/add-ipp-backend-of-cups-1.4.patch
+    debian/patches/printer-filtering.patch,
+    debian/patches/show-compile-command-lines.patch,
+    debian/patches/pstops-based-workflow-only-for-printing-ps-on-a-ps-printer.patch,
+    debian/patches/tests-ignore-usb-crash.patch: Manually regenerated to adapt
+    to upstream changes.
+  * debian/patches/debian/patches/ppd-poll-with-client-conf.patch,
+    debian/patches/manpage-translations.patch,
+    debian/patches/rootbackends-worldreadable.patch,
+    debian/patches/reactivate_recommended_driver.patch,
+    debian/patches/read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.patch,
+    debian/patches/do-not-broadcast-with-hostnames.patch,
+    debian/patches/confdirperms.patch,
+    debian/patches/log-debug-history-nearly-unlimited.patch,
+    debian/patches/tests-ignore-warnings.patch,
+    debian/patches/tests-slow-lpstat.patch: Refreshed with quilt.
+  * debian/patches/airprint-support.patch: Fixes in the conditionals to make
+    AirPrint work with the new upstream Avahi support.
+  * debian/patches/cupsd-conf-remove-obsolete-browse-directives.patch:
+    Removed obsolete "BrowseOrder" and "BrowseAllow" lines from cupsd.conf.
+  * debian/patches/printers-c-recognize-remote-cups-queue-via-dnssd-uri.patch,
+    Treat raw queues pointing to a CUPS server as remote queues (using PPD on
+    server) also if they have a "dnssd://..." URI.
+  * debian/patches/avahi-not-considered-at-some-dnssd-conditionals.patch: At
+    some points Avahi was not considered in conditionals for DNS-SD. This
+    broke most of the printer sharing functionality.
+  * debian/patches/ubuntu/ubuntu-disable-browsing.patch: Updated.
+  * debian/cups.install: Removed all references to the discontinued cups-polld.
+  * debian/rules: Removed lines for deletion of filters, fonts and glyphs which
+    have moved to cups-filters and also the line for commenting out conversion
+    rules.
+  * debian/rules, debian/cups.install, debian/cups-common.install: Do not
+    install fonts and charsets, there are none any more in CUPS.
+  * debian/control, debian/libcupsdriver1-dev.install,
+    debian/libcupsdriver1.symbols, debian/libcupsdriver1.install:
+    libcupsdriver.so got moved to cups-filters as part of libcupsfilters.so.
+  * debian/libcupsimage2-dev.install: image.h removed, this API has moved to
+    cups-filters.
+  * debian/rules, debian/libcups2-dev.examples: Removed references to scripting/
+    this subdirectory does not exist any more in CUPS 1.6.x.
+  * debian/libcups2.symbols, debian/libcupsimage2.symbols: Refreshed using the
+    diff of the dpkg-gensymbols output during build.
+  * debian/rules: Removed "--with-remote_protocols='CUPS dnssd'" from the
+    ./configure command line and removed the "CUPS" from
+    "--with-local_protocols='CUPS dnssd'". These settings are not supported
+    any more in CUPS 1.6.x.
+  * debian/patches/series, debian/cups-bsd.install, debian/cups-client.install,
+    debian/cups.install, debian/libcups2-dev.install: Commented out man page
+    translation patch, it needs to be updated to CUPS 1.6.0 by the appropriate
+    contributors.
+  * debian/rules: Deactivated failure of the package build on test suite
+    failure, (temporarily, for development cycle).
+
+  [ Martin Pitt ]
+  * manpage-translations.patch: Update German manpage translations, thanks
+    Helge Kreutzmann! (Closes: #670042)
+  * manpage-translations.patch: Update French manpage translations, thanks
+    Julien Patriarca! (Closes: #670224)
+  * debian/README.Debian: Explain how to enable cups-lpd, thanks Vincent
+    McIntyre. (Closes: #508941)
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Sat,  4 Aug 2012 11:27:01 +0200
+
 cups (1.5.3-4) experimental; urgency=low
 
   [ Till Kamppeter ]

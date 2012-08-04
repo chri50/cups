@@ -1,5 +1,5 @@
 /*
- * "$Id: ipp.c 10452 2012-05-04 23:00:01Z mike $"
+ * "$Id: ipp.c 10548 2012-07-16 18:21:43Z mike $"
  *
  *   IPP backend for CUPS.
  *
@@ -45,8 +45,12 @@
 #  define kPMPrintUIToolAgent	"com.apple.printuitool.agent"
 #  define kPMStartJob		100
 #  define kPMWaitForJob		101
+#  ifdef HAVE_XPC_PRIVATE_H
+#    include <xpc/private.h>
+#  else
 extern void	xpc_connection_set_target_uid(xpc_connection_t connection,
 		                              uid_t uid);
+#  endif /* HAVE_XPC_PRIVATE_H */
 #endif /* HAVE_GSSAPI && HAVE_XPC */
 
 
@@ -165,7 +169,7 @@ static const char	*password_cb(const char *);
 static void		report_attr(ipp_attribute_t *attr);
 static void		report_printer_state(ipp_t *ipp);
 #if defined(HAVE_GSSAPI) && defined(HAVE_XPC)
-static int		run_as_user(int argc, char *argv[], uid_t uid,
+static int		run_as_user(char *argv[], uid_t uid,
 			            const char *device_uri, int fd);
 #endif /* HAVE_GSSAPI && HAVE_XPC */
 static void		sigterm_handler(int sig);
@@ -344,7 +348,7 @@ main(int  argc,				/* I - Number of command-line args */
     if (uid > 0)
     {
       if (argc == 6)
-        return (run_as_user(argc, argv, uid, device_uri, 0));
+        return (run_as_user(argv, uid, device_uri, 0));
       else
       {
         int status = 0;			/* Exit status */
@@ -353,7 +357,7 @@ main(int  argc,				/* I - Number of command-line args */
 	{
 	  if ((fd = open(argv[i], O_RDONLY)) >= 0)
 	  {
-	    status = run_as_user(argc, argv, uid, device_uri, fd);
+	    status = run_as_user(argv, uid, device_uri, fd);
 	    close(fd);
 	  }
 	  else
@@ -643,6 +647,9 @@ main(int  argc,				/* I - Number of command-line args */
       update_reasons(NULL, "-connecting-to-device");
       return (CUPS_BACKEND_STOP);
     }
+
+    if (job_canceled)
+      return (CUPS_BACKEND_OK);
   }
 
   http = _httpCreate(hostname, port, addrlist, cupsEncryption(), AF_UNSPEC);
@@ -747,7 +754,7 @@ main(int  argc,				/* I - Number of command-line args */
 	  case ECONNREFUSED :
 	  default :
 	      _cupsLangPrintFilter(stderr, "WARNING",
-	                           _("The printer is busy."));
+	                           _("The printer is in use."));
 	      break;
         }
 
@@ -770,7 +777,9 @@ main(int  argc,				/* I - Number of command-line args */
   }
   while (http->fd < 0);
 
-  if (job_canceled || !http)
+  if (job_canceled)
+    return (CUPS_BACKEND_OK);
+  else if (!http)
     return (CUPS_BACKEND_FAILED);
 
   update_reasons(NULL, "-connecting-to-device");
@@ -862,7 +871,7 @@ main(int  argc,				/* I - Number of command-line args */
 	  return (CUPS_BACKEND_FAILED);
 	}
 
-	_cupsLangPrintFilter(stderr, "INFO", _("The printer is busy."));
+	_cupsLangPrintFilter(stderr, "INFO", _("The printer is in use."));
 
         report_printer_state(supported);
 
@@ -880,14 +889,14 @@ main(int  argc,				/* I - Number of command-line args */
         if (version >= 20)
 	{
 	  _cupsLangPrintFilter(stderr, "INFO",
-			       _("Printer does not support IPP/%d.%d, trying "
+			       _("The printer does not support IPP/%d.%d, trying "
 			         "IPP/%s."), version / 10, version % 10, "1.1");
 	  version = 11;
 	}
 	else
 	{
 	  _cupsLangPrintFilter(stderr, "INFO",
-			       _("Printer does not support IPP/%d.%d, trying "
+			       _("The printer does not support IPP/%d.%d, trying "
 			         "IPP/%s."), version / 10, version % 10, "1.0");
 	  version = 10;
         }
@@ -968,7 +977,7 @@ main(int  argc,				/* I - Number of command-line args */
 
       if (busy)
       {
-	_cupsLangPrintFilter(stderr, "INFO", _("The printer is busy."));
+	_cupsLangPrintFilter(stderr, "INFO", _("The printer is in use."));
 
 	report_printer_state(supported);
 
@@ -1078,7 +1087,7 @@ main(int  argc,				/* I - Number of command-line args */
         create_job = 0;
 
 	update_reasons(NULL, "+cups-ipp-conformance-failure-report,"
-			     "cups-ipp-missing-send-document");
+                             "cups-ipp-missing-send-document");
       }
 
       if (!validate_job)
@@ -1095,7 +1104,10 @@ main(int  argc,				/* I - Number of command-line args */
 
     report_printer_state(supported);
   }
-  while (ipp_status > IPP_OK_CONFLICT);
+  while (!job_canceled && ipp_status > IPP_OK_CONFLICT);
+
+  if (job_canceled)
+    return (CUPS_BACKEND_OK);
 
  /*
   * See if the printer is accepting jobs and is not stopped; if either
@@ -1146,12 +1158,7 @@ main(int  argc,				/* I - Number of command-line args */
   copies = atoi(argv[4]);
 
   if (copies_sup || argc < 7)
-  {
     copies_remaining = 1;
-
-    if (argc < 7 && !_cups_strncasecmp(final_content_type, "image/", 6))
-      copies = 1;
-  }
   else
     copies_remaining = copies;
 
@@ -1303,7 +1310,7 @@ main(int  argc,				/* I - Number of command-line args */
 
     if (ipp_status == IPP_SERVICE_UNAVAILABLE || ipp_status == IPP_PRINTER_BUSY)
     {
-      _cupsLangPrintFilter(stderr, "INFO", _("The printer is busy."));
+      _cupsLangPrintFilter(stderr, "INFO", _("The printer is in use."));
       sleep(10);
     }
     else if (ipp_status == IPP_DOCUMENT_FORMAT)
@@ -1454,7 +1461,7 @@ main(int  argc,				/* I - Number of command-line args */
           ipp_status == IPP_NOT_POSSIBLE ||
 	  ipp_status == IPP_PRINTER_BUSY)
       {
-	_cupsLangPrintFilter(stderr, "INFO", _("The printer is busy."));
+	_cupsLangPrintFilter(stderr, "INFO", _("The printer is in use."));
 	sleep(10);
 
 	if (num_files == 0)
@@ -1805,7 +1812,7 @@ main(int  argc,				/* I - Number of command-line args */
   * Cancel the job as needed...
   */
 
-  if (job_canceled && job_id)
+  if (job_canceled > 0 && job_id > 0)
     cancel_job(http, uri, job_id, resource, argv[2], version);
 
  /*
@@ -1886,15 +1893,13 @@ main(int  argc,				/* I - Number of command-line args */
                            _("Printer cannot print supplied content."));
     else
       _cupsLangPrintFilter(stderr, "ERROR", _("Print job canceled at printer."));
+
     return (CUPS_BACKEND_CANCEL);
   }
   else if (ipp_status > IPP_OK_CONFLICT && ipp_status != IPP_ERROR_JOB_CANCELED)
     return (CUPS_BACKEND_RETRY_CURRENT);
   else
-  {
-    _cupsLangPrintFilter(stderr, "INFO", _("Ready to print."));
     return (CUPS_BACKEND_OK);
-  }
 }
 
 
@@ -2157,7 +2162,7 @@ monitor_printer(
 
       response = cupsDoRequest(http, request, monitor->resource);
 
-      fprintf(stderr, "DEBUG: %s: %s (%s)\n", ippOpString(job_op),
+      fprintf(stderr, "DEBUG: (monitor) %s: %s (%s)\n", ippOpString(job_op),
 	      ippErrorString(cupsLastError()), cupsLastErrorString());
 
       if (cupsLastError() <= IPP_OK_CONFLICT)
@@ -2221,6 +2226,14 @@ monitor_printer(
 
       ippDelete(response);
 
+      fprintf(stderr, "DEBUG: (monitor) job-state=%s\n",
+              ippEnumString("job-state", monitor->job_state));
+
+      if (!job_canceled &&
+          (monitor->job_state == IPP_JOB_CANCELED ||
+	   monitor->job_state == IPP_JOB_ABORTED))
+	job_canceled = -1;
+
      /*
       * Disconnect from the printer - we'll reconnect on the next poll...
       */
@@ -2241,7 +2254,7 @@ monitor_printer(
   * Cancel the job if necessary...
   */
 
-  if (job_canceled && monitor->job_id > 0)
+  if (job_canceled > 0 && monitor->job_id > 0)
     if (!httpReconnect(http))
       cancel_job(http, monitor->uri, monitor->job_id, monitor->resource,
                  monitor->user, monitor->version);
@@ -2469,9 +2482,46 @@ new_request(
 		       NULL, "two-sided-short-edge");
       }
 
-      if (doc_handling_sup &&
-          (!format || _cups_strncasecmp(format, "image/", 6)) &&
- 	  (keyword = cupsGetOption("collate", num_options, options)) != NULL)
+      if ((keyword = cupsGetOption("multiple-document-handling",
+				   num_options, options)) != NULL)
+      {
+        if (strstr(keyword, "uncollated"))
+          keyword = "false";
+        else
+          keyword = "true";
+      }
+      else if ((keyword = cupsGetOption("collate", num_options,
+                                        options)) == NULL)
+        keyword = "true";
+
+      if (format)
+      {
+        if (!_cups_strcasecmp(format, "image/gif") ||
+	    !_cups_strcasecmp(format, "image/jp2") ||
+	    !_cups_strcasecmp(format, "image/jpeg") ||
+	    !_cups_strcasecmp(format, "image/png") ||
+	    !_cups_strcasecmp(format, "image/tiff") ||
+	    !_cups_strncasecmp(format, "image/x-", 8))
+	{
+	 /*
+	  * Collation makes no sense for single page image formats...
+	  */
+
+	  keyword = "false";
+	}
+	else if (!_cups_strncasecmp(format, "image/", 6) ||
+	         !_cups_strcasecmp(format, "application/vnd.cups-raster"))
+	{
+	 /*
+	  * Multi-page image formats will have copies applied by the upstream
+	  * filters...
+	  */
+
+	  copies = 1;
+	}
+      }
+
+      if (doc_handling_sup)
       {
         if (!_cups_strcasecmp(keyword, "true"))
 	  collate_str = "separate-documents-collated-copies";
@@ -2485,6 +2535,9 @@ new_request(
 			 "multiple-document-handling", NULL, collate_str);
 	    break;
           }
+
+        if (i >= doc_handling_sup->num_values)
+          copies = 1;
       }
 
      /*
@@ -2530,10 +2583,10 @@ new_request(
       * When talking to another CUPS server, send all options...
       */
 
-      cupsEncodeOptions(request, num_options, options);
+      cupsEncodeOptions2(request, num_options, options, IPP_TAG_JOB);
     }
 
-    if (copies > 1)
+    if (copies > 1 && (!pc || copies <= pc->max_copies))
       ippAddInteger(request, IPP_TAG_JOB, IPP_TAG_INTEGER, "copies", copies);
   }
 
@@ -2786,8 +2839,7 @@ report_printer_state(ipp_t *ipp)	/* I - IPP response */
  */
 
 static int				/* O - Exit status */
-run_as_user(int        argc,		/* I - Number of command-line args */
-	    char       *argv[],		/* I - Command-line arguments */
+run_as_user(char       *argv[],		/* I - Command-line arguments */
 	    uid_t      uid,		/* I - User ID */
 	    const char *device_uri,	/* I - Device URI */
 	    int        fd)		/* I - File to print */
@@ -2978,6 +3030,8 @@ sigterm_handler(int sig)		/* I - Signal */
 {
   (void)sig;	/* remove compiler warnings... */
 
+  write(2, "DEBUG: Got SIGTERM.\n", 20);
+
 #if defined(HAVE_GSSAPI) && defined(HAVE_XPC)
   if (child_pid)
   {
@@ -2991,6 +3045,8 @@ sigterm_handler(int sig)		/* I - Signal */
    /*
     * Flag that the job should be canceled...
     */
+
+    write(2, "DEBUG: job_canceled = 1.\n", 25);
 
     job_canceled = 1;
     return;
@@ -3221,5 +3277,5 @@ update_reasons(ipp_attribute_t *attr,	/* I - printer-state-reasons or NULL */
 }
 
 /*
- * End of "$Id: ipp.c 10452 2012-05-04 23:00:01Z mike $".
+ * End of "$Id: ipp.c 10548 2012-07-16 18:21:43Z mike $".
  */

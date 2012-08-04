@@ -1,9 +1,9 @@
 /*
- * "$Id: cups-exec.c 9931 2011-08-29 20:12:39Z mike $"
+ * "$Id: cups-exec.c 10523 2012-06-20 15:01:07Z mike $"
  *
  *   Sandbox helper for CUPS.
  *
- *   Copyright 2007-2011 by Apple Inc.
+ *   Copyright 2007-2012 by Apple Inc.
  *
  *   These coded instructions, statements, and computer programs are the
  *   property of Apple Inc. and are protected by Federal copyright
@@ -60,6 +60,7 @@ main(int  argc,				/* I - Number of command-line args */
   }
 
 #ifdef HAVE_SANDBOX_H
+#  pragma GCC diagnostic ignored "-Wdeprecated-declarations"
  /*
   * Run in a separate security profile...
   */
@@ -104,5 +105,5 @@ main(int  argc,				/* I - Number of command-line args */
 
 
 /*
- * End of "$Id: cups-exec.c 9931 2011-08-29 20:12:39Z mike $".
+ * End of "$Id: cups-exec.c 10523 2012-06-20 15:01:07Z mike $".
  */

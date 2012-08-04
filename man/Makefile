@@ -1,9 +1,9 @@
 #
-# "$Id: Makefile 9177 2010-06-22 21:21:37Z mike $"
+# "$Id: Makefile 10515 2012-05-25 03:11:46Z mike $"
 #
 #   Man page makefile for CUPS.
 #
-#   Copyright 2007-2010 by Apple Inc.
+#   Copyright 2007-2012 by Apple Inc.
 #   Copyright 1993-2006 by Easy Software Products.
 #
 #   These coded instructions, statements, and computer programs are the
@@ -58,7 +58,7 @@ MAN8	=	cupsaccept.$(MAN8EXT) \
 		cups-deviced.$(MAN8EXT) \
 		cups-driverd.$(MAN8EXT) \
 		cups-lpd.$(MAN8EXT) \
-		cups-polld.$(MAN8EXT) \
+		cups-snmp.$(MAN8EXT) \
 		cupsd.$(MAN8EXT) \
 		cupsenable.$(MAN8EXT) \
 		lpadmin.$(MAN8EXT) \
@@ -66,18 +66,12 @@ MAN8	=	cupsaccept.$(MAN8EXT) \
 		lpmove.$(MAN8EXT) \
 		lpc.$(MAN8EXT)
 
-LANGUAGES=de fr
 
 #
 # Make everything...
 #
 
-all:	$(MAN1) $(MAN5) $(MAN7) $(MAN8) html translations
-
-translations:
-	# Update the translations and build the translated material
-	po4a --previous po4a/cups.cfg
-	for lang in $(LANGUAGES); do $(MAKE) -C $$lang; done
+all:	$(MAN1) $(MAN5) $(MAN7) $(MAN8) html
 
 
 #
@@ -102,10 +96,14 @@ clean:
 	$(RM) mantohtml mantohtml.o
 	$(RM) $(MAN1) $(MAN5) $(MAN7) $(MAN8)
 	for file in $(MAN1); do \
-		$(RM) ../doc/help/man-`basename $$file .$(MAN1EXT)`.html; \
+		if test $$file != ipptool.$(MAN1EXT); then \
+			$(RM) ../doc/help/man-`basename $$file .$(MAN1EXT)`.html; \
+		fi \
 	done
 	for file in $(MAN5); do \
-		$(RM) ../doc/help/man-`basename $$file .$(MAN5EXT)`.html; \
+		if test $$file != ipptoolfile.$(MAN5EXT); then \
+			$(RM) ../doc/help/man-`basename $$file .$(MAN5EXT)`.html; \
+		fi \
 	done
 	for file in $(MAN7); do \
 		$(RM) ../doc/help/man-`basename $$file .$(MAN7EXT)`.html; \
@@ -113,11 +111,6 @@ clean:
 	for file in $(MAN8); do \
 		$(RM) ../doc/help/man-`basename $$file .$(MAN8EXT)`.html; \
 	done
-	for lang in $(LANGUAGES); do $(MAKE) -C $$lang clean; done
-	# Make sure the PO files are updated and remove generated
-	# translations.
-	po4a --previous --rm-translations po4a/cups.cfg
-	$(RM) po4a/po/cups.pot
 
 
 #
@@ -165,7 +158,6 @@ install-data: all
 	done
 	$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
 	$(LN) cupsenable.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
-	for lang in $(LANGUAGES); do $(MAKE) -C $$lang install; done
 
 
 #
@@ -214,7 +206,6 @@ uninstall:
 	$(RM) $(AMANDIR)/man$(MAN8DIR)/reject.$(MAN8EXT)
 	$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
 	-$(RMDIR) $(AMANDIR)/man$(MAN8DIR)
-	for lang in $(LANGUAGES); do $(MAKE) -C $$lang uninstall; done
 
 
 #
@@ -245,5 +236,5 @@ mantohtml:	mantohtml.o
 
 
 #
-# End of "$Id: Makefile 9177 2010-06-22 21:21:37Z mike $".
+# End of "$Id: Makefile 10515 2012-05-25 03:11:46Z mike $".
 #

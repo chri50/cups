@@ -1,10 +1,10 @@
 #!/bin/sh
 #
-# "$Id: 5.7-lprm.sh 7409 2008-03-29 00:26:03Z mike $"
+# "$Id: 5.7-lprm.sh 10097 2011-11-02 05:35:38Z mike $"
 #
 #   Test the lprm command.
 #
-#   Copyright 2007 by Apple Inc.
+#   Copyright 2007-2011 by Apple Inc.
 #   Copyright 1997-2005 by Easy Software Products, all rights reserved.
 #
 #   These coded instructions, statements, and computer programs are the
@@ -17,9 +17,9 @@
 echo "LPRM Current Test"
 echo ""
 echo "    lpr -o job-hold-until=indefinite testfile.jpg"
-../berkeley/lpr -o job-hold-until=indefinite testfile.jpg 2>&1
+$VALGRIND ../berkeley/lpr -o job-hold-until=indefinite testfile.jpg 2>&1
 echo "    lprm"
-../berkeley/lprm 2>&1
+$VALGRIND ../berkeley/lprm 2>&1
 if test $? != 0; then
 	echo "    FAILED"
 	exit 1
@@ -31,9 +31,9 @@ echo ""
 echo "LPRM Destination Test"
 echo ""
 echo "    lpr -P Test1 -o job-hold-until=indefinite testfile.jpg"
-../berkeley/lpr -P Test1 -o job-hold-until=indefinite testfile.jpg 2>&1
+$VALGRIND ../berkeley/lpr -P Test1 -o job-hold-until=indefinite testfile.jpg 2>&1
 echo "    lprm Test1"
-../berkeley/lprm Test1 2>&1
+$VALGRIND ../berkeley/lprm Test1 2>&1
 if test $? != 0; then
 	echo "    FAILED"
 	exit 1
@@ -43,5 +43,5 @@ fi
 echo ""
 
 #
-# End of "$Id: 5.7-lprm.sh 7409 2008-03-29 00:26:03Z mike $".
+# End of "$Id: 5.7-lprm.sh 10097 2011-11-02 05:35:38Z mike $".
 #

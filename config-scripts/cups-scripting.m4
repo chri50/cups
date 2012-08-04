@@ -1,5 +1,5 @@
 dnl
-dnl "$Id: cups-scripting.m4 9099 2010-04-11 07:16:05Z mike $"
+dnl "$Id: cups-scripting.m4 9927 2011-08-27 09:28:30Z mike $"
 dnl
 dnl   Scripting configuration stuff for CUPS.
 dnl
@@ -68,17 +68,6 @@ else
 	AC_DEFINE(HAVE_PHP)
 fi
 
-PHPDIR=""
-if test "x$CUPS_PHP" != xno; then
-	AC_PATH_PROG(PHPCONFIG, php-config)
-
-	if test "x$PHPCONFIG" != x; then
-		PHPDIR="scripting/php"
-	fi
-fi
-
-AC_SUBST(PHPDIR)
-
 dnl Do we have Python?
 AC_ARG_WITH(python, [  --with-python           set Python interpreter for web interfaces ],
 	CUPS_PYTHON="$withval",
@@ -96,5 +85,5 @@ if test "x$CUPS_PYTHON" != x; then
 fi
 
 dnl
-dnl End of "$Id: cups-scripting.m4 9099 2010-04-11 07:16:05Z mike $".
+dnl End of "$Id: cups-scripting.m4 9927 2011-08-27 09:28:30Z mike $".
 dnl
