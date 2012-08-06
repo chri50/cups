@@ -6,11 +6,12 @@ ppd-poll-with-client-conf.patch
 # no answer yet, po4a might not be appropriate
 #manpage-translations.patch
 rootbackends-worldreadable.patch
-
-# patches which should go upstream
+usb-backend-reset-after-job-only-for-specific-devices.patch
 printers-c-recognize-remote-cups-queue-via-dnssd-uri.patch
 avahi-not-considered-at-some-dnssd-conditionals.patch
 cupsd-conf-remove-obsolete-browse-directives.patch
+
+# patches which should go upstream
 airprint-support.patch
 removecvstag.patch
 no-conffile-timestamp.patch

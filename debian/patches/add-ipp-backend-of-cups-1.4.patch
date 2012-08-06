@@ -1,7 +1,5 @@
-Index: cups-1.6.0/backend/Makefile
-===================================================================
---- cups-1.6.0.orig/backend/Makefile	2012-07-27 17:05:05.000000000 +0200
-+++ cups-1.6.0/backend/Makefile	2012-07-27 18:15:57.250137048 +0200
+--- a/backend/Makefile
++++ b/backend/Makefile
 @@ -29,6 +29,7 @@
  # See http://www.cups.org/documentation.php/api-filter.html for more info...
  RBACKENDS =	\
@@ -18,7 +16,7 @@ Index: cups-1.6.0/backend/Makefile
  		lpd.o \
  		dnssd.o \
  		snmp.o \
-@@ -248,6 +250,17 @@
+@@ -250,6 +252,17 @@
  
  
  #
@@ -36,10 +34,8 @@ Index: cups-1.6.0/backend/Makefile
  # lpd
  #
  
-Index: cups-1.6.0/backend/ipp14.c
-===================================================================
---- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ cups-1.6.0/backend/ipp14.c	2012-07-27 18:13:01.594139398 +0200
+--- /dev/null
++++ b/backend/ipp14.c
 @@ -0,0 +1,1953 @@
 +/*
 + * "$Id: ipp.c 8950 2010-01-14 22:40:19Z mike $"

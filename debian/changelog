@@ -1,3 +1,16 @@
+cups (1.6.1-0ubuntu1) quantal; urgency=low
+
+  * New upstream release
+     - The Japanese and English web interface headers were swapped (CUPS STR
+       #4148)
+     - Documentation fix (CUPS STR #4149)
+  * debian/patches/add-ipp-backend-of-cups-1.4.patch: Refreshed with quilt.
+  * debian/patches/usb-backend-reset-after-job-only-for-specific-devices.patch:
+    Let the USB backend only send a clean-up reset after the job if it is
+    really needed (LP: #1032456).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon, 06 Aug 2012 12:52:30 +0200
+
 cups (1.6.0-0bzr1) quantal; urgency=low
 
   [ Till Kamppeter ]
