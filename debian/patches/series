@@ -1,10 +1,11 @@
 # patches accepted and committed upstream:
-
-# patches sent upstream
 usb-backend-busy-loop-fix.patch
 usb-backend-detach-usblp-earlier-crash-guards.patch
 usb-backend-initialize-usblp-attached-state.patch
 usb-backend-further-enhancements.patch
+
+# patches sent upstream
+usb-backend-reset-after-job-only-for-specific-devices.patch
 pidfile.patch
 ppd-poll-with-client-conf.patch
 # no answer yet, po4a might not be appropriate

@@ -1,3 +1,11 @@
+cups (1.5.3-0ubuntu3) precise-proposed; urgency=low
+
+  * debian/patches/usb-backend-reset-after-job-only-for-specific-devices.patch:
+    Let the USB backend only send a clean-up reset after the job if it is
+    really needed (LP: #1032456).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon,  6 Aug 2012 18:49:01 +0200
+
 cups (1.5.3-0ubuntu2) precise-proposed; urgency=low
 
   * debian/patches/usb-backend-further-enhancements.patch: Added latest
