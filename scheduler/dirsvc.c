@@ -606,6 +606,9 @@ dnssdBuildTxtRecord(
     keyvalue[count  ][0] = "pdl";
     keyvalue[count++][1] = p->pdl ? p->pdl : "application/postscript";
 
+    keyvalue[count  ][0] = "URF";
+    keyvalue[count++][1] = "none";
+
     if (get_auth_info_required(p, air_str, sizeof(air_str)))
     {
       keyvalue[count  ][0] = "air";
