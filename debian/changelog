@@ -1,3 +1,11 @@
+cups (1.6.1-0ubuntu2) quantal; urgency=low
+
+  * debian/patches/usb-backend-reset-after-job-only-for-specific-devices.patch:
+    Force-uni-directional access for Canon Pixma iP4200 (CUPS STR #4155) and
+    iP4300 (LP: #1032385).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 10 Aug 2012 19:43:30 +0200
+
 cups (1.6.1-0ubuntu1) quantal; urgency=low
 
   * New upstream release
