@@ -143,6 +143,10 @@ static const struct quirk_printer_struct quirk_printers[] = {
 	{ 0x0409, 0xf1be, USBLP_QUIRK_BIDIR }, /* NEC Picty800 (HP OEM) */
 	{ 0x0482, 0x0010, USBLP_QUIRK_BIDIR }, /* Kyocera Mita FS 820,
 						  by zut <kernel@zut.de> */
+	{ 0x04a9, 0x10a2, USBLP_QUIRK_BIDIR }, /* Canon, Inc. PIXMA iP4200
+			    Printer, http://www.cups.org/str.php?L4155 */
+	{ 0x04a9, 0x10b6, USBLP_QUIRK_BIDIR }, /* Canon, Inc. PIXMA iP4300
+			    Printer, https://bugs.launchpad.net/bugs/1032385 */
 	{ 0x04f9, 0x000d, USBLP_QUIRK_BIDIR |
 			  USBLP_QUIRK_NO_REATTACH }, /* Brother Industries, Ltd
 						  HL-1440 Laser Printer */
