@@ -1,3 +1,11 @@
+cups (1.6.1-0ubuntu3) quantal; urgency=low
+
+  * debian/local/apparmor-profile: deny capability block_suspend. It is noisy
+    and doesn't seem to actually be needed. This can be revisited if it turns
+    out it is needed. (LP: #1031583)
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Tue, 14 Aug 2012 14:03:27 -0500
+
 cups (1.6.1-0ubuntu2) quantal; urgency=low
 
   * debian/patches/usb-backend-reset-after-job-only-for-specific-devices.patch:
