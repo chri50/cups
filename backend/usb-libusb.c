@@ -1595,7 +1595,8 @@ static unsigned int quirks(int vendor, int product)
   for (i = 0; quirk_printers[i].vendorId; i++)
   {
     if (vendor == quirk_printers[i].vendorId &&
-	(product == 0x0000 || product == quirk_printers[i].productId))
+	(quirk_printers[i].productId == 0x0000 ||
+	 product == quirk_printers[i].productId))
       return quirk_printers[i].quirks;
   }
   return 0;

@@ -63,12 +63,13 @@
  
    if (verbose)
      fputs("STATE: +connecting-to-device\n", stderr);
-@@ -1586,7 +1595,7 @@
+@@ -1586,7 +1595,8 @@
    for (i = 0; quirk_printers[i].vendorId; i++)
    {
      if (vendor == quirk_printers[i].vendorId &&
 -	product == quirk_printers[i].productId)
-+	(product == 0x0000 || product == quirk_printers[i].productId))
++	(quirk_printers[i].productId == 0x0000 ||
++	 product == quirk_printers[i].productId))
        return quirk_printers[i].quirks;
    }
    return 0;

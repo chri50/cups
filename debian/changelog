@@ -1,3 +1,11 @@
+cups (1.5.3-0ubuntu4) precise-proposed; urgency=low
+
+  * debian/patches/usb-backend-reset-after-job-only-for-specific-devices.patch:
+    The clean-up reset after the job was not actually sent for Samsung printers
+    (LP: #1032456).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon, 20 Aug 2012 10:17:01 +0200
+
 cups (1.5.3-0ubuntu3) precise-proposed; urgency=low
 
   * debian/patches/usb-backend-reset-after-job-only-for-specific-devices.patch:
