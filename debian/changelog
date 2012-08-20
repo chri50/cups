@@ -1,3 +1,9 @@
+cups (1.6.1-0ubuntu4) quantal; urgency=low
+
+  * debian/local/apport-hook.py: Also attach AppArmor information and logs.
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Mon, 20 Aug 2012 08:38:30 -0400
+
 cups (1.6.1-0ubuntu3) quantal; urgency=low
 
   * debian/local/apparmor-profile: deny capability block_suspend. It is noisy
