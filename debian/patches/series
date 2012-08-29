@@ -1,4 +1,9 @@
 # patches accepted and committed upstream:
+get-ppd-file-for-statically-configured-bonjour-shared-queues.patch
+usb-backend-reset-after-job-only-for-specific-devices.patch
+printers-c-recognize-remote-cups-queue-via-dnssd-uri.patch
+avahi-not-considered-at-some-dnssd-conditionals.patch
+cupsd-conf-remove-obsolete-browse-directives.patch
 
 # patches sent upstream
 pidfile.patch
@@ -6,10 +11,6 @@ ppd-poll-with-client-conf.patch
 # no answer yet, po4a might not be appropriate
 #manpage-translations.patch
 rootbackends-worldreadable.patch
-usb-backend-reset-after-job-only-for-specific-devices.patch
-printers-c-recognize-remote-cups-queue-via-dnssd-uri.patch
-avahi-not-considered-at-some-dnssd-conditionals.patch
-cupsd-conf-remove-obsolete-browse-directives.patch
 
 # patches which should go upstream
 airprint-support.patch

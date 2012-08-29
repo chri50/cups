@@ -1,3 +1,16 @@
+cups (1.6.1-0ubuntu5) quantal; urgency=low
+
+  * debian/patches/get-ppd-file-for-statically-configured-bonjour-shared-queues.patch:
+    Applications could not get the PPD file for statically-configured Bonjour-
+    shared print queues (CUPS STR #4159)
+  * debian/patches/printers-c-recognize-remote-cups-queue-via-dnssd-uri.patch:
+    Replaced by the actually used upstream patch, which takes also "ipps://..."
+    URIs into account (CUPS STR #4158).
+  * debian/patches/avahi-not-considered-at-some-dnssd-conditionals.patch:
+    Refreshed with quilt.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 29 Aug 2012 10:33:30 +0200
+
 cups (1.6.1-0ubuntu4) quantal; urgency=low
 
   * debian/local/apport-hook.py: Also attach AppArmor information and logs.
