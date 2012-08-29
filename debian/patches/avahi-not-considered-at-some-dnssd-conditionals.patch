@@ -58,7 +58,7 @@
      ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_NAME,
 --- a/scheduler/main.c
 +++ b/scheduler/main.c
-@@ -788,9 +788,9 @@
+@@ -781,9 +781,9 @@
        * Got an error from select!
        */
  
@@ -70,7 +70,7 @@
  
  
        if (errno == EINTR)		/* Just interrupted by a signal */
-@@ -831,13 +831,13 @@
+@@ -824,13 +824,13 @@
  			job->print_pipes[0], job->print_pipes[1],
  			job->back_pipes[0], job->back_pipes[1]);
  
