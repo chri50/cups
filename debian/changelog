@@ -1,3 +1,19 @@
+cups (1.6.1-0ubuntu6) quantal; urgency=low
+
+  * debian/patches/network-backends-snmp-queries-optional.patch: SNMP queries
+    by network backends can get suppressed now by adding "?snmp=false" to the
+    end of the URI. SBNP queries to Bonjour-shared CUPS queue will get
+    suppressed by default.
+  * debian/patches/usb-backend-more-quirk-rules.patch: Added more quirk rules
+    which are not yet committed upstream: Canon MP510 (LP: #1050009),
+    MP550 (CUPS STR #4155), Brother HL-1430 (LP: #1038695), Oki Okipage 14ex
+    (LP: #872483), Oki B410d (LP: #872483), all Zebra printers (LP: #1001028).
+  * debian/patches/get-ppd-file-for-statically-configured-ipp-shared-queues.patch:
+    Applications could not get the PPD file for statically-configured IPP-
+    shared print queues (CUPS STR #4178)
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Thu, 20 Sep 2012 00:06:30 +0200
+
 cups (1.6.1-0ubuntu5) quantal; urgency=low
 
   * debian/patches/get-ppd-file-for-statically-configured-bonjour-shared-queues.patch:
