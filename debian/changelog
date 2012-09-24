@@ -1,3 +1,21 @@
+cups (1.6.1-0ubuntu7) quantal; urgency=low
+
+  * debian/patches/airprint-support.patch: Added support for iOS 6 clients
+    (LP: #1054495).
+  * debian/patches/usb-backend-more-quirk-rules.patch: Added more quirk rules:
+    Canon MP500 (LP: #1032456), MP560 (CUPS STR #4155).
+  * debian/patches/filter-out-all-control-characters-from-the-1284-device-id.patch:
+    Do not only filter newline characters out of device IDs but any
+    non-printable character (CUPS STR #4124).
+  * debian/patches/ipp-backend-did-not-specify-the-compression-used.patch:
+    The IPP backend did not specify the compression used (CUPS STR #4181).
+  * debian/patches/work-around-some-broken-ipp-printers.patch: Work around
+    some broken IPP printers (CUPS STR #4190). Also catch late authentication
+    issues so the backend doesn't just spin on a print request that will never
+    succeed.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon, 24 Sep 2012 11:48:30 +0200
+
 cups (1.6.1-0ubuntu6) quantal; urgency=low
 
   * debian/patches/network-backends-snmp-queries-optional.patch: SNMP queries
