@@ -1,3 +1,13 @@
+cups (1.6.1-0ubuntu8) quantal; urgency=low
+
+  * debian/cups.postinst: Clean /etc/cups/cupsd.conf from all keywords and
+    settings which got obsolete with the dropping CUPS Broadcasting/Browsing
+    in CUPS 1.6.x: BrowsePoll, BrowseAllow, BrowseDeny, BrowseOrder, and
+    BrowseRemoteProtocols lines get removed and the "cups" argument gets
+    removed from the BrowseLocalProtocols line (LP: #1052897).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Thu, 27 Sep 2012 14:48:30 +0200
+
 cups (1.6.1-0ubuntu7) quantal; urgency=low
 
   * debian/patches/airprint-support.patch: Added support for iOS 6 clients
