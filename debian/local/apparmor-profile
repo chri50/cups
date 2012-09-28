@@ -154,8 +154,6 @@
   capability dac_override,
   capability dac_read_search,
 
-  @{PROC}/*/auxv r,
-
   /bin/dash ixr,
   /bin/bash ixr,
   /bin/cp ixr,

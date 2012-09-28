@@ -50,4 +50,3 @@ usr/share/man/*/man8/cups-driverd.8.gz
 usr/share/man/man8/cupsfilter.8.gz
 #usr/share/man/*/man8/cupsfilter.8.gz
 ../presubj usr/share/bug/cups/
-../local/blacklist-cups-usblp.conf etc/modprobe.d

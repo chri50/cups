@@ -1,3 +1,70 @@
+cups (1.5.3-2.1) unstable; urgency=low
+
+  [ Didier Raboud ]
+  * Non-maintainer upload on behalf of the Printing Team.
+  * Revert all 1.5.3-2 changes.
+  * Cherry-pick changes targeted at Wheezy.
+  * Make sure unowned obsolete backends are removed on configure.
+    (Closes: #683754)
+  * Update all debconf translations to cope with the ipp14 addition and
+    parallel and serial removals.
+  * Add patch to force C locale when testing the (non-)localized PPD
+    content fetch.
+
+  [ Till Kamppeter ]
+  * debian/patches/add-ipp-backend-of-cups-1.4.patch, debian/cups.config,
+    debian/cups.lintian-overrides, debian/cups.postinst, debian/cups.prerm,
+    debian/cups.templates: Add the IPP backend of CUPS 1.4.x to the current
+    CUPS package as independent backend "ipp14". Some devices (like the
+    LiveBox 2) do not work with the current IPP backend (LP: #945028,
+    LP: #973270, LP: #990734, LP: #992468, LP: #992982).
+  * debian/patches/usb-backend-further-enhancements.patch: Added latest
+    development work on the libusb-based USB backend:
+     - Support for uni-directional devices, both protocol-1 devices and
+       devices where no read endpoint is found.
+     - Soft reset specific to the "PRINTER" device class. This allows one to
+       reset without reconnecting.
+     - When closing the device, it will also get reset to its original
+       configuration, before re-attaching the usblp kernel module. Do not
+       restore the configuration setting when the old configuration was zero,
+       as zero means "unconfigured".
+     - Added option "usb-unidir" to force the backend into uni-directional
+       mode. This allows one to work around problems with bi-di
+       communications, especially also a delay at the end of the job caused by
+       closing the read channel (happens only for some devices, LP:#1001028).
+       Also useful for debugging.
+     - Added the quirk management of the usblp kernel module. So the problems
+       of all printers which were worked around in the kernel module are
+       also worked around in the libusb-based CUPS backend now (LP: #1000253).
+     - Added new quirk type to quirk manager: Printers for which the usblp
+       kernel module should not get reattached after printing a job
+       (LP: #1000253, perhaps also LP: #995111).
+     - Added additional quirks for the Prolific Technology USB -> Parallel
+       adapter, as the adapter needs uni-directional mode to be forced and
+       also does not like re-attaching the usblp kernel module after the
+       job (last third of last page gets cut off, re-attaching probably
+       sends a reset to the printer while there is still data to be printed
+       in the printer's internal buffer (LP: #987485).
+     - Added the command line option "usb-no-reattach". With the option set
+       the usblp kernel module does not get reattached after a job has been
+       printed. Some printers cut off the end of the job or even crash by
+       re-attaching the module. This is a development/debug mode to test
+       whether re-attaching was the culprit of a problem. Users should
+       report such issues so that their printers can get added to the quirk
+       list.
+     - debian/patches/usb-backend-further-enhancements.patch: USB backend: Do
+       a printer reset after each job, this makes the Prolific USB -> Parallel
+       adapter finally work (LP: #987485) and makes it unnecessary to
+       blacklist the usblp kernel module for some printers (LP: #997040).
+     - Some extra debug messages.
+     - Added a missing libusb_free_config_descriptor().
+    This patch is submitted upstream as CUPS STR #4128.
+  * debian/local/blacklist-cups-usblp.conf, debian/cups.maintscript,
+    debian/cups.install, debian/control: Lift the usblp blacklist, not
+    needed anymore with the above fixes (Closes: #630556, #635041).
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 28 Sep 2012 12:28:55 +0200
+
 cups (1.5.3-2) unstable; urgency=low
 
   [ Till Kamppeter ]
