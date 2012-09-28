@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups_1.3.2-1_templates\n"
 "Report-Msgid-Bugs-To: cups@packages.debian.org\n"
-"POT-Creation-Date: 2011-09-15 12:02+0200\n"
+"POT-Creation-Date: 2012-09-18 12:37+0200\n"
 "PO-Revision-Date: 2007-10-15 13:13+0200\n"
 "Last-Translator: Esko Arajärvi <edu@iki.fi>\n"
 "Language-Team: Finnish <debian-l10n-finnish@lists.debian.org>\n"
@@ -89,20 +89,14 @@ msgstr "ipp"
 #. Type: multiselect
 #. Choices
 #: ../cups.templates:3001
+msgid "ipp14"
+msgstr "ipp14"
+
+#. Type: multiselect
+#. Choices
+#: ../cups.templates:3001
 msgid "lpd"
 msgstr "lpd"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
-msgid "parallel"
-msgstr "rinnakkainen"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
-msgid "serial"
-msgstr "sarjallinen"
 
 #. Type: multiselect
 #. Choices
@@ -164,5 +158,3 @@ msgstr ""
 "Valitse taustaliitäntäohjelma, jota CUPSin tulisi käyttää. Oletusvalinnan "
 "pitäisi toimia yleisimmissä ympäristöissä."
 
-#~ msgid "scsi"
-#~ msgstr "scsi"

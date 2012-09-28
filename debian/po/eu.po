@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups-eu\n"
 "Report-Msgid-Bugs-To: cups@packages.debian.org\n"
-"POT-Creation-Date: 2011-09-15 12:02+0200\n"
+"POT-Creation-Date: 2012-09-18 12:37+0200\n"
 "PO-Revision-Date: 2007-03-27 15:56+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: librezale <librezale@librezale.org>\n"
@@ -86,20 +86,14 @@ msgstr "ipp"
 #. Type: multiselect
 #. Choices
 #: ../cups.templates:3001
+msgid "ipp14"
+msgstr "ipp14"
+
+#. Type: multiselect
+#. Choices
+#: ../cups.templates:3001
 msgid "lpd"
 msgstr "lds"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
-msgid "parallel"
-msgstr "paraleloa"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
-msgid "serial"
-msgstr "seriea"
 
 #. Type: multiselect
 #. Choices
@@ -160,5 +154,3 @@ msgstr ""
 "Mesedez hautatu CUPS-ek erabiliko duen komunikazio motorea. Aukera "
 "lehenetsiak ingurune arruntenetan funtzionatu beharko luke."
 
-#~ msgid "scsi"
-#~ msgstr "scsi"

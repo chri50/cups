@@ -1,10 +1,10 @@
 # patches accepted and committed upstream:
-install-sh-remove-bashism.patch
 
 # patches sent upstream
 usb-backend-busy-loop-fix.patch
 usb-backend-detach-usblp-earlier-crash-guards.patch
 usb-backend-initialize-usblp-attached-state.patch
+usb-backend-further-enhancements.patch
 pidfile.patch
 ppd-poll-with-client-conf.patch
 # no answer yet, po4a might not be appropriate
@@ -14,6 +14,7 @@ cups-avahi.patch
 colord-support.patch
 
 # patches which should go upstream
+install-sh-remove-bashism.patch
 airprint-support.patch
 removecvstag.patch
 no-conffile-timestamp.patch
@@ -26,6 +27,7 @@ cups-snmp-oids-device-id-hp-ricoh.patch
 configure-default-browse-protocols.patch
 
 # Debian patches
+add-ipp-backend-of-cups-1.4.patch
 logfiles_adm_readable.patch
 default_log_settings.patch
 confdirperms.patch
@@ -39,3 +41,4 @@ tests-ignore-warnings.patch
 tests-ignore-usb-crash.patch
 test-i18n-nonlinux.patch
 tests-slow-lpstat.patch
+tests-fix-ppdLocalize-on-unclean-env.patch
