@@ -1,3 +1,24 @@
+cups (1.6.1-0ubuntu9) quantal; urgency=low
+
+  [ Till Kamppeter ]
+  * debian/patches/prevent-crash-due-to-null-host-name-or-fqdn-from-avahi.patch:
+    Prevent crash due to NULL host name or FQDN from Avahi (CUPS STR #4183,
+    CUPS STR #4180, LP: #1046982, LP: #1034045).
+  * debian/patches/fix-crash-on-shutdown-caused-by-broken-avahi-config.patch:
+    Fix crash on shutdown caused by broken Avahi config (CUPS STR #4192,
+    LP: #1036974).
+  * debian/patches/ipp-backend-abort-the-outer-loop-if-we-get-a-failure-from-send-document.patch,
+    debian/patches/ipp-backend-could-get-stuck-in-an-endless-loop-on-certain-network-errors.patch:
+    Prevent IPP backend from falling into an infinite loop in certain
+    situations (CUPS STR #4194).
+  * debian/patches/airprint-support.patch: Refreshed with quilt.
+
+  [ Didier Raboud ]
+  * Make sure unowned obsolete backends are removed on configure.
+    (Closes: #683754)
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon,  1 Oct 2012 12:27:30 +0200
+
 cups (1.6.1-0ubuntu8) quantal; urgency=low
 
   * debian/cups.postinst: Clean /etc/cups/cupsd.conf from all keywords and
