@@ -2,16 +2,20 @@
 network-backends-snmp-queries-optional.patch
 get-ppd-file-for-statically-configured-bonjour-shared-queues.patch
 usb-backend-reset-after-job-only-for-specific-devices.patch
+usb-backend-more-quirk-rules.patch
 printers-c-recognize-remote-cups-queue-via-dnssd-uri.patch
 avahi-not-considered-at-some-dnssd-conditionals.patch
 cupsd-conf-remove-obsolete-browse-directives.patch
 filter-out-all-control-characters-from-the-1284-device-id.patch
 ipp-backend-did-not-specify-the-compression-used.patch
 work-around-some-broken-ipp-printers.patch
+prevent-crash-due-to-null-host-name-or-fqdn-from-avahi.patch
+fix-crash-on-shutdown-caused-by-broken-avahi-config.patch
+ipp-backend-abort-the-outer-loop-if-we-get-a-failure-from-send-document.patch
+ipp-backend-could-get-stuck-in-an-endless-loop-on-certain-network-errors.patch
 
 # patches sent upstream
 get-ppd-file-for-statically-configured-ipp-shared-queues.patch
-usb-backend-more-quirk-rules.patch
 pidfile.patch
 ppd-poll-with-client-conf.patch
 # no answer yet, po4a might not be appropriate

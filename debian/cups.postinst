@@ -81,6 +81,13 @@ EOF
     db_get cupsys/backend && SELECTED=$RET
     # We remove the scsi backend from the output as it got removed in CUPS 1.5.0
     list=`echo $SELECTED | sed -e 's/, /,/g' | sed -e 's/scsi,*//g' | sed -e 's/parallel,*//g' | sed -e 's/serial,*//g'`
+    # Make sure the above dropped backends are effectively away
+    if dpkg --compare-versions "$2" lt-nl "1.6.1-1"; then
+ 	for i in scsi parallel serial; do
+		# Drop the file if it doesn't belong to any package.
+		dpkg -S /usr/lib/cups/backend/$i 2>/dev/null 1>&2 || rm -f /usr/lib/cups/backend/$i 
+	done
+    fi
     if dpkg --compare-versions "$2" lt-nl "1.5.3-3"; then
 	if ! echo $list | grep -q "\bipp14\b"; then
 	    list=`echo $list | sed -e 's/\bipp\b/ipp,ipp14/g'`
