@@ -387,7 +387,8 @@ cupsdCheckJobs(void)
       printer = cupsdFindDest(job->dest);
       pclass  = NULL;
 
-      while (printer && (printer->type & CUPS_PRINTER_CLASS))
+      while (printer &&
+             (printer->type & (CUPS_PRINTER_IMPLICIT | CUPS_PRINTER_CLASS)))
       {
        /*
         * If the class is remote, just pass it to the remote server...
@@ -439,7 +440,10 @@ cupsdCheckJobs(void)
           cupsdMarkDirty(CUPSD_DIRTY_JOBS);
 	}
 
-        if (!printer->job && printer->state == IPP_PRINTER_IDLE)
+        if ((!(printer->type & CUPS_PRINTER_DISCOVERED) && /* Printer is local */
+	     printer->state == IPP_PRINTER_IDLE) ||	/* and idle, OR */
+	    ((printer->type & CUPS_PRINTER_DISCOVERED) && /* Printer is remote */
+	     !printer->job))				/* and not printing */
         {
 	 /*
 	  * Start the job...
@@ -812,7 +816,7 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
                 job->job_sheets->values[0].string.text,
                 job->job_sheets->values[1].string.text);
 
-  if (job->printer->type & CUPS_PRINTER_REMOTE)
+  if (job->printer->type & (CUPS_PRINTER_REMOTE | CUPS_PRINTER_IMPLICIT))
     banner_page = 0;
   else if (job->job_sheets == NULL)
     banner_page = 0;
@@ -1070,7 +1074,7 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
     envp[envc ++] = classification;
   }
 
-  if (job->dtype & CUPS_PRINTER_CLASS)
+  if (job->dtype & (CUPS_PRINTER_CLASS | CUPS_PRINTER_IMPLICIT))
   {
     snprintf(class_name, sizeof(class_name), "CLASS=%s", job->dest);
     envp[envc ++] = class_name;
@@ -2046,7 +2050,8 @@ cupsdMoveJob(cupsd_job_t     *job,	/* I - Job */
 		p->name);
 
   cupsdSetString(&job->dest, p->name);
-  job->dtype = p->type & (CUPS_PRINTER_CLASS | CUPS_PRINTER_REMOTE);
+  job->dtype = p->type & (CUPS_PRINTER_CLASS | CUPS_PRINTER_REMOTE |
+                          CUPS_PRINTER_IMPLICIT);
 
   if ((attr = ippFindAttribute(job->attrs, "job-printer-uri",
                                IPP_TAG_URI)) != NULL)
@@ -3098,7 +3103,7 @@ finalize_job(cupsd_job_t *job,		/* I - Job */
 	  * act...
 	  */
 
-          if (job->dtype & CUPS_PRINTER_CLASS)
+          if (job->dtype & (CUPS_PRINTER_CLASS | CUPS_PRINTER_IMPLICIT))
 	  {
 	   /*
 	    * Queued on a class - mark the job as pending and we'll retry on
@@ -4745,7 +4750,10 @@ update_job(cupsd_job_t *job)		/* I - Job to check */
         cupsdSetAuthInfoRequired(job->printer, attr, NULL);
 	cupsdSetPrinterAttrs(job->printer);
 
-	cupsdMarkDirty(CUPSD_DIRTY_PRINTERS);
+	if (job->printer->type & CUPS_PRINTER_DISCOVERED)
+	  cupsdMarkDirty(CUPSD_DIRTY_REMOTE);
+	else
+	  cupsdMarkDirty(CUPSD_DIRTY_PRINTERS);
       }
 
       if ((attr = cupsGetOption("job-media-progress", num_attrs,

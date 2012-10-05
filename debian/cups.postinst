@@ -187,27 +187,6 @@ EOM
     if dpkg --compare-versions "$2" lt "1.5.3-3"; then
 	modprobe usblp >/dev/null 2>&1 || :
     fi
-
-    # Remove lines from cupsd.conf which got obsolete in CUPS 1.6.x and would
-    # prevent the CUPS daemon from starting due to being invalid now.
-    cat /etc/cups/cupsd.conf | grep -Eiv '^\s*Browse(Order|Allow|Deny|Poll|RemoteProtocols)' > /etc/cups/cupsd.conf.new
-    if [ -r /etc/cups/cupsd.conf.new ]; then
-	if ! diff -q /etc/cups/cupsd.conf /etc/cups/cupsd.conf.new > /dev/null 2>&1; then
-	    mv -f /etc/cups/cupsd.conf.new /etc/cups/cupsd.conf
-	else
-	    rm /etc/cups/cupsd.conf.new
-	fi
-    fi
-    # Also the argument "cups" for BrowseLocalProtocols is obsolete. Remove the
-    # argument and put "dnssd" if there are no arguments left.
-    cat /etc/cups/cupsd.conf | perl -p -e 's/^(\s*BrowseLocalProtocols.*?)\s+cups/$1/i; s/^(\s*BrowseLocalProtocols)(\s*)$/$1 dnssd$2/i' > /etc/cups/cupsd.conf.new
-    if [ -r /etc/cups/cupsd.conf.new ]; then
-	if ! diff -q /etc/cups/cupsd.conf /etc/cups/cupsd.conf.new > /dev/null 2>&1; then
-	    mv -f /etc/cups/cupsd.conf.new /etc/cups/cupsd.conf
-	else
-	    rm /etc/cups/cupsd.conf.new
-	fi
-    fi    
 fi
 
 #DEBHELPER#
