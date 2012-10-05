@@ -28,6 +28,7 @@ extern cupsd_printer_t	*cupsdFindAvailablePrinter(const char *name);
 extern cupsd_printer_t	*cupsdFindClass(const char *name);
 extern void		cupsdLoadAllClasses(void);
 extern void		cupsdSaveAllClasses(void);
+extern void		cupsdUpdateImplicitClasses(void);
 
 
 /*

@@ -1090,7 +1090,8 @@ delete_printer_option(http_t *http,	/* I - Server connection */
   *    option with deleteAttr tag
   */
 
-  if (get_printer_type(http, printer, uri, sizeof(uri)) & CUPS_PRINTER_CLASS)
+  if (get_printer_type(http, printer, uri, sizeof(uri)) &
+          (CUPS_PRINTER_CLASS | CUPS_PRINTER_IMPLICIT))
     request = ippNewRequest(CUPS_ADD_MODIFY_CLASS);
   else
     request = ippNewRequest(CUPS_ADD_MODIFY_PRINTER);
@@ -1144,7 +1145,8 @@ enable_printer(http_t *http,		/* I - Server connection */
   *    printer-is-accepting-jobs
   */
 
-  if (get_printer_type(http, printer, uri, sizeof(uri)) & CUPS_PRINTER_CLASS)
+  if (get_printer_type(http, printer, uri, sizeof(uri)) &
+          (CUPS_PRINTER_CLASS | CUPS_PRINTER_IMPLICIT))
     request = ippNewRequest(CUPS_ADD_MODIFY_CLASS);
   else
     request = ippNewRequest(CUPS_ADD_MODIFY_PRINTER);
@@ -1222,7 +1224,7 @@ get_printer_type(http_t *http,		/* I - Server connection */
   {
     type = (cups_ptype_t)attr->values[0].integer;
 
-    if (type & CUPS_PRINTER_CLASS)
+    if (type & (CUPS_PRINTER_CLASS | CUPS_PRINTER_IMPLICIT))
       httpAssembleURIf(HTTP_URI_CODING_ALL, uri, urisize, "ipp", NULL,
 		       "localhost", ippPort(), "/classes/%s", printer);
   }
@@ -1281,7 +1283,8 @@ set_printer_options(
   *    other options
   */
 
-  if (get_printer_type(http, printer, uri, sizeof(uri)) & CUPS_PRINTER_CLASS)
+  if (get_printer_type(http, printer, uri, sizeof(uri)) &
+          (CUPS_PRINTER_CLASS | CUPS_PRINTER_IMPLICIT))
     request = ippNewRequest(CUPS_ADD_MODIFY_CLASS);
   else
     request = ippNewRequest(CUPS_ADD_MODIFY_PRINTER);
