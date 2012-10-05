@@ -1,3 +1,31 @@
+cups (1.6.1-0ubuntu10) quantal-proposed; urgency=low
+
+  * debian/patches/forward-port-cups-1-5-x-cups-browsing.patch: Re-introduced
+    CUPS Browsing/Broadcasting for automatic discovery of shared CUPS printers
+    on the local network. We will keep this for the Quantal cycle until we
+    get automatic discovery of Bonjour-broadcasted printers, which most
+    probably needs to be implemented in the application's print dialogs. This
+    will only be possible to be done in Quantal+1 (13.04). The patch is large
+    but all code added worked very well in many generations of CUPS and the
+    code added back in smoothly without need of alterations of the existing
+    code (LP: #1061063, LP: #1061069).
+  * debian/rules: Set "./configure" arguments
+    "--with-local_protocols='CUPS dnssd' --with-remote_protocols='CUPS dnssd'"
+    to make the re-introduction of CUPS Browsing/Broadcasting work correctly.
+  * debian/cups.postinst: Do not remove the "Browse..." keywords from cupsd.conf
+    any more as we have re-introduced the Browsing/Broadcasting functionality.
+  * debian/patches/fix-another-spot-where-avahi-crashes-cupsd-because-it-does-not-handle-null-values-from-its-own-apis.patch:
+    Fix another spot where Avahi crashes cupsd because it does not handle NULL
+    values returned by its own APIs (CUPS STR #4200, LP: #1041013).
+  * debian/patches/ipp-backend-did-not-send-cancel-request-to-printers-when-a-job-was-canceled-and-printer-did-not-support-create-job.patch:
+    The IPP backend did not send a cancel request to printers when a job was
+    canceled and the printer did not support Create-Job. This is to improve the
+    "ipp" backend as much as possible to reduce the ned of the "ipp14" backend
+    ("ipp" backend of CUPS 1.4.x added to the Debian/Ubuntu package as fallback
+    in case of regressions of the current "ipp" backend).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri,  5 Oct 2012 20:56:30 +0200
+
 cups (1.6.1-0ubuntu9) quantal; urgency=low
 
   [ Till Kamppeter ]

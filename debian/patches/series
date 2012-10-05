@@ -11,8 +11,10 @@ ipp-backend-did-not-specify-the-compression-used.patch
 work-around-some-broken-ipp-printers.patch
 prevent-crash-due-to-null-host-name-or-fqdn-from-avahi.patch
 fix-crash-on-shutdown-caused-by-broken-avahi-config.patch
+fix-another-spot-where-avahi-crashes-cupsd-because-it-does-not-handle-null-values-from-its-own-apis.patch
 ipp-backend-abort-the-outer-loop-if-we-get-a-failure-from-send-document.patch
 ipp-backend-could-get-stuck-in-an-endless-loop-on-certain-network-errors.patch
+ipp-backend-did-not-send-cancel-request-to-printers-when-a-job-was-canceled-and-printer-did-not-support-create-job.patch
 
 # patches sent upstream
 get-ppd-file-for-statically-configured-ipp-shared-queues.patch
@@ -48,3 +50,4 @@ tests-ignore-warnings.patch
 tests-ignore-usb-crash.patch
 test-i18n-nonlinux.patch
 tests-slow-lpstat.patch
+forward-port-cups-1-5-x-cups-browsing.patch
