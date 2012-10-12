@@ -181,7 +181,7 @@ EOM
     fi
 
     if dpkg --compare-versions "$2" lt "1.5.3-2.1"; then
-        modprobe usblp >/dev/null 2>&1 || :
+        modprobe -b usblp >/dev/null 2>&1 || :
     fi
 fi
 
