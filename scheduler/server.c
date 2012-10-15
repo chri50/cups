@@ -62,6 +62,7 @@ cupsdStartServer(void)
 
   cupsdStartListening();
   cupsdStartBrowsing();
+  cupsdStartPolling();
 
  /*
   * Create a pipe for CGI processes...
@@ -111,6 +112,7 @@ cupsdStopServer(void)
 
   cupsdCloseAllClients();
   cupsdStopListening();
+  cupsdStopPolling();
   cupsdStopBrowsing();
   cupsdStopAllNotifiers();
   cupsdDeleteAllCerts();
