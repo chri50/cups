@@ -51,3 +51,4 @@ tests-ignore-usb-crash.patch
 test-i18n-nonlinux.patch
 tests-slow-lpstat.patch
 forward-port-cups-1-5-x-cups-browsing.patch
+cupsd-no-crash-on-avahi-threaded-poll-shutdown.patch

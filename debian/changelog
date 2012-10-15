@@ -1,3 +1,12 @@
+cups (1.6.1-0ubuntu11) quantal-proposed; urgency=low
+
+  * debian/patches/cupsd-no-crash-on-avahi-threaded-poll-shutdown.patch:
+    Fixed crash which sometimes happens on shutdown of the CUPS daemom,
+    caused by a wrong shutdown sequence for shutting down the Avahi threaded
+    poll (LP: #1034045).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon, 15 Oct 2012 19:43:30 +0200
+
 cups (1.6.1-0ubuntu10) quantal-proposed; urgency=low
 
   * debian/patches/forward-port-cups-1-5-x-cups-browsing.patch: Re-introduced
