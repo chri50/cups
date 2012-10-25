@@ -149,6 +149,8 @@ binary-post-install/cups-bsd::
 binary-post-install/libcups2-dev::
 	rm -f debian/$(cdbs_curpkg)/usr/share/doc/$(cdbs_curpkg)/examples/scripting/php/*.o
 	rm -f debian/$(cdbs_curpkg)/usr/share/doc/$(cdbs_curpkg)/examples/scripting/php/*.so
+	# debian/libcups2-dev.install entry cannot rename files on-the-fly
+	cp cups/language-private.h debian/$(cdbs_curpkg)/usr/include/cups/i18n.h
 binary-post-install/cups-client::
 	rm -r debian/cups-client/usr/share/doc/cups-client
 	ln -s libcups2 debian/cups-client/usr/share/doc/cups-client
