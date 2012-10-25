@@ -44,8 +44,8 @@ Build-Depends:
  sharutils,
  zlib1g-dev
 Homepage: http://www.cups.org
-Vcs-Bzr: http://bzr.debian.org/pkg-cups/cups/debian-trunk/
-Vcs-Browser: http://bzr.debian.org/loggerhead/pkg-cups/cups/debian-trunk/
+Vcs-Git: git://anonscm.debian.org/pkg-cups/cups.git -b master-wheezy
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-cups/cups.git;a=summary
 
 Package: libcups2
 Priority: optional
@@ -162,6 +162,7 @@ Depends: ${shlibs:Depends},
  lsb-base (>= 3),
  cups-common (>= ${source:Upstream-Version}), 
  cups-client (>= ${binary:Version}),
+ libcups2 (>= ${binary:Version}),
  ssl-cert (>= 1.0.11),
  adduser,
  bc,
@@ -197,6 +198,7 @@ Section: net
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, 
  cups-common (>= ${source:Upstream-Version}),
+ libcups2 (= ${binary:Version}), 
  adduser
 Recommends: smbclient
 Suggests: cups, xpp, cups-bsd
