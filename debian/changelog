@@ -1,3 +1,9 @@
+cups (1.5.3-2.5) unstable; urgency=low
+
+  * Furhter tighten cups dependency on libcups2. (Closes: #668662)
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 02 Nov 2012 22:30:39 +0100
+
 cups (1.5.3-2.4) unstable; urgency=low
 
   * Non-maintainer upload on behalf of the Printing Team.
