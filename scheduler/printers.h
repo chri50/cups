@@ -16,6 +16,9 @@
 #ifdef HAVE_DNSSD
 #  include <dns_sd.h>
 #endif /* HAVE_DNSSD */
+#ifdef HAVE_AVAHI
+#  include "avahi.h"
+#endif /* HAVE_AVAHI */
 #include <cups/pwg-private.h>
 
 
@@ -95,16 +98,23 @@ struct cupsd_printer_s
   time_t	marker_time;		/* Last time marker attributes were updated */
   _ppd_cache_t	*pc;			/* PPD cache and mapping data */
 
-#ifdef HAVE_DNSSD
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
   char		*reg_name,		/* Name used for service registration */
-		*pdl,			/* pdl value for TXT record */
-		*ipp_txt,		/* IPP TXT record contents */
+		*pdl;			/* pdl value for TXT record */
+#endif /* defined(HAVE_DNSSD) || defined(HAVE_AVAHI) */
+#ifdef HAVE_DNSSD
+  char		*ipp_txt,		/* IPP TXT record contents */
 		*printer_txt;		/* LPD TXT record contents */
   int		ipp_len,		/* IPP TXT record length */
 		printer_len;		/* LPD TXT record length */
   DNSServiceRef	ipp_ref,		/* Reference for _ipp._tcp,_cups */
 		printer_ref;		/* Reference for _printer._tcp */
 #endif /* HAVE_DNSSD */
+#ifdef HAVE_AVAHI
+  AvahiStringList *ipp_txt,		/* IPP TXT record */
+		*printer_txt;		/* LPD TXT record */
+  AvahiEntryGroup *avahi_group;		/* Avahi entry group */
+#endif /* HAVE_AVAHI */
 };
 
 
