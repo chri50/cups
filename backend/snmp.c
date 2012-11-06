@@ -1033,6 +1033,11 @@ read_snmp_response(int fd)		/* I - SNMP socket file descriptor */
 	    * Description is the IEEE-1284 device ID...
 	    */
 
+            char *ptr;			/* Pointer into device ID */
+
+            for (ptr = (char *)packet.object_value.string.bytes; *ptr; ptr ++)
+              if (*ptr == '\n')
+                *ptr = ';';		/* A lot of bad printers put a newline */
 	    if (!device->id)
 	      device->id = strdup((char *)packet.object_value.string.bytes);
 
@@ -1074,8 +1079,11 @@ read_snmp_response(int fd)		/* I - SNMP socket file descriptor */
 	  */
 
 	  char	make_model[256];	/* Make and model */
+          char *ptr;			/* Pointer into device ID */
 
-
+          for (ptr = (char *)packet.object_value.string.bytes; *ptr; ptr ++)
+            if (*ptr == '\n')
+              *ptr = ';';		/* A lot of bad printers put a newline */
 	  if (device->id)
 	    free(device->id);
 

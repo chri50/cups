@@ -1,3 +1,23 @@
+cups (1.5.3-2.6) unstable; urgency=low
+
+  * Import more fixes:
+    - From RedHat:
+      * USB backend quirk rule for Xerox Phaser 3124 (and maybe others).
+        (STR #4217)
+      * Ensure attributes are valid UTF-8 in dbus notifier.
+        (RedHat #863387, STR #4219)
+    - From upstream:
+      * Fix to properly send cancel requests to printers not supporting
+        Create-Job.
+      * Fix to work around broken 1284 device IDs that use a newline
+        instead of a semicolon.
+      * Fix to avoid letting the IPP backend stuck in an endless loop on
+        certain network errors. (STR #4194)
+   * Tighten all internal dependencies on libcups2 to avoid any version
+     disparity. (Closes: #668662)
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 06 Nov 2012 16:26:25 +0100
+
 cups (1.5.3-2.5) unstable; urgency=low
 
   * Furhter tighten cups dependency on libcups2. (Closes: #668662)
