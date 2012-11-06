@@ -12,6 +12,10 @@ manpage-translations.patch
 rootbackends-worldreadable.patch
 cups-avahi.patch
 colord-support.patch
+cups-dbus-utf8.patch
+cups-ipp-send-cancel-request.patch
+cups-workaround-broken-1284-DeviceID-newline-instead-of-semicolon.patch
+cups-ipp-backend-endless-loop.patch
 
 # patches which should go upstream
 install-sh-remove-bashism.patch
@@ -38,6 +42,7 @@ log-debug-history-nearly-unlimited.patch
 pstops-based-workflow-only-for-printing-ps-on-a-ps-printer.patch
 dnssd-reg-array-linear-search.patch
 upstream-backport-of-libusb-quirks.patch
+usb-backend-xerox-3124.patch
 tests-ignore-warnings.patch
 tests-ignore-usb-crash.patch
 test-i18n-nonlinux.patch

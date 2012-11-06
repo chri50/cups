@@ -71,7 +71,8 @@ Package: libcupsimage2
 Priority: optional
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends},
+ libcups2 (= ${binary:Version}),
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
 Description: Common UNIX Printing System(tm) - Raster image library
@@ -87,7 +88,8 @@ Package: libcupscgi1
 Priority: optional
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends},
+ libcups2 (= ${binary:Version}),
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
 Description: Common UNIX Printing System(tm) - CGI library
@@ -103,7 +105,8 @@ Package: libcupsdriver1
 Priority: optional
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends},
+ libcups2 (= ${binary:Version}),
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
 Description: Common UNIX Printing System(tm) - Driver library
@@ -119,7 +122,8 @@ Package: libcupsmime1
 Priority: optional
 Section: libs
 Architecture: any
-Depends: libcups2 (>= 1.5~), ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends},
+ libcups2 (= ${binary:Version}),
 Breaks: cups (<< 1.5.0)
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
@@ -136,7 +140,8 @@ Package: libcupsppdc1
 Priority: optional
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends},
+ libcups2 (= ${binary:Version}),
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
 Description: Common UNIX Printing System(tm) - PPD manipulation library
@@ -198,7 +203,7 @@ Section: net
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, 
  cups-common (>= ${source:Upstream-Version}),
- libcups2 (= ${binary:Version}), 
+ libcups2 (= ${binary:Version}),
  adduser
 Recommends: smbclient
 Suggests: cups, xpp, cups-bsd
