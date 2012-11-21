@@ -1,3 +1,10 @@
+cups (1.5.3-0ubuntu5) precise-proposed; urgency=low
+
+  * debian/patches/airprint-support.patch: Made AirPrint support also working
+    for iOS 6 (LP: #1054495).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 21 Nov 2012 14:46:01 +0100
+
 cups (1.5.3-0ubuntu4) precise-proposed; urgency=low
 
   * debian/patches/usb-backend-reset-after-job-only-for-specific-devices.patch:
