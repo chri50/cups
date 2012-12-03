@@ -12,7 +12,7 @@ diff -urNad cups-1.4.0~svn8773~/conf/Makefile cups-1.4.0~svn8773/conf/Makefile
  			$(INSTALL_CONFIG) -g $(CUPS_GROUP) $$file $(SERVERROOT)/$$file.N ; \
  		else \
  			$(INSTALL_CONFIG) -g $(CUPS_GROUP) $$file $(SERVERROOT) ; \
-+			grep -v "\$$Id:" $(SERVERROOT)/$$file > $(SERVERROOT)/$$file.n ; \
++			grep -v "\$$Id[:\$$]" $(SERVERROOT)/$$file > $(SERVERROOT)/$$file.n ; \
 +			mv $(SERVERROOT)/$$file.n $(SERVERROOT)/$$file ; \
  		fi ; \
  	done
