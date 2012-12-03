@@ -35,7 +35,7 @@
  *   get_cdsa_certificate() - Get a SSL/TLS certificate from the System
  *                            keychain.
  *   get_file()             - Get a filename and state info.
- *   install_conf_file()    - Install a configuration file.
+ *   install_cupsd_conf()    - Install a configuration file.
  *   is_cgi()               - Is the resource a CGI script/program?
  *   is_path_absolute()     - Is a path absolute and free of relative elements
  *                            (i.e. "..").
@@ -74,7 +74,7 @@ static CFArrayRef	get_cdsa_certificate(cupsd_client_t *con);
 #endif /* HAVE_CDSASSL */
 static char		*get_file(cupsd_client_t *con, struct stat *filestats,
 			          char *filename, int len);
-static http_status_t	install_conf_file(cupsd_client_t *con);
+static http_status_t	install_cupsd_conf(cupsd_client_t *con);
 static int		is_cgi(cupsd_client_t *con, const char *filename,
 		               struct stat *filestats, mime_type_t *type);
 static int		is_path_absolute(const char *path);
@@ -1683,17 +1683,14 @@ cupsdReadClient(cupsd_client_t *con)	/* I - Client to read from */
 	    * Validate the resource name...
 	    */
 
-            if (strncmp(con->uri, "/admin/conf/", 12) ||
-	        strchr(con->uri + 12, '/') ||
-		strlen(con->uri) == 12)
+            if (strcmp(con->uri, "/admin/conf/cupsd.conf"))
 	    {
 	     /*
-	      * PUT can only be done to configuration files under
-	      * /admin/conf...
+	      * PUT can only be done to the cupsd.conf file...
 	      */
 
 	      cupsdLogMessage(CUPSD_LOG_ERROR,
-			      "Request for subdirectory \"%s\"!", con->uri);
+			      "Disallowed PUT request for \"%s\"!", con->uri);
 
 	      if (!cupsdSendError(con, HTTP_FORBIDDEN, CUPSD_AUTH_NONE))
 	      {
@@ -2057,7 +2054,7 @@ cupsdReadClient(cupsd_client_t *con)	/* I - Client to read from */
 	  * Install the configuration file...
 	  */
 
-          status = install_conf_file(con);
+          status = install_cupsd_conf(con);
 
          /*
 	  * Return the status to the client...
@@ -3812,14 +3809,13 @@ get_file(cupsd_client_t *con,		/* I  - Client connection */
 
 
 /*
- * 'install_conf_file()' - Install a configuration file.
+ * 'install_cupsd_conf()' - Install a configuration file.
  */
 
 static http_status_t			/* O - Status */
-install_conf_file(cupsd_client_t *con)	/* I - Connection */
+install_cupsd_conf(cupsd_client_t *con)	/* I - Connection */
 {
   char		filename[1024];		/* Configuration filename */
-  mode_t	mode;			/* Permissions */
   cups_file_t	*in,			/* Input file */
 		*out;			/* Output file */
   char		buffer[16384];		/* Copy buffer */
@@ -3841,13 +3837,8 @@ install_conf_file(cupsd_client_t *con)	/* I - Connection */
   * Open the new config file...
   */
 
-  snprintf(filename, sizeof(filename), "%s%s", ServerRoot, con->uri + 11);
-  if (!strcmp(con->uri, "/admin/conf/printers.conf"))
-    mode = ConfigFilePerm & 0600;
-  else
-    mode = ConfigFilePerm;
-
-  if ((out = cupsdCreateConfFile(filename, mode)) == NULL)
+  snprintf(filename, sizeof(filename), "%s/cupsd.conf", ServerRoot);
+  if ((out = cupsdCreateConfFile(filename, ConfigFilePerm)) == NULL)
   {
     cupsFileClose(in);
     return (HTTP_SERVER_ERROR);
@@ -3892,14 +3883,10 @@ install_conf_file(cupsd_client_t *con)	/* I - Connection */
   cupsdClearString(&con->filename);
 
  /*
-  * If the cupsd.conf file was updated, set the NeedReload flag...
+  * Set the NeedReload flag...
   */
 
-  if (!strcmp(con->uri, "/admin/conf/cupsd.conf"))
-    NeedReload = RELOAD_CUPSD;
-  else
-    NeedReload = RELOAD_ALL;
-
+  NeedReload = RELOAD_CUPSD;
   ReloadTime = time(NULL);
 
  /*
