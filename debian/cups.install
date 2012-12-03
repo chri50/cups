@@ -1,4 +1,5 @@
 var/
+etc/cups/cups-files.conf
 etc/cups/cupsd.conf
 etc/cups/cupsd.conf.default
 etc/cups/snmp.conf
