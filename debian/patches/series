@@ -41,3 +41,4 @@ log-debug-history-nearly-unlimited.patch
 pstops-based-workflow-only-for-printing-ps-on-a-ps-printer.patch
 dnssd-reg-array-linear-search.patch
 ipp-patch-r8950+.patch
+CVE-2012-5519.patch

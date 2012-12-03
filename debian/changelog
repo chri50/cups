@@ -1,3 +1,17 @@
+cups (1.5.0-8ubuntu7.3) oneiric-security; urgency=low
+
+  * SECURITY UPDATE: privilege escalation via config file editing
+    - debian/patches/CVE-2012-5519.patch: split configuration file into
+      two, to isolate options that have a security impact.
+    - debian/cups.install: also install cups-files.conf
+    - debian/patches/removecvstag.patch: updated to remove tag from
+      cups-files.conf.
+    - CVE-2012-5519
+  * NOTE: this package does _not_ include the changes from 1.5.0-8ubuntu7
+    in oneiric-proposed.
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Mon, 03 Dec 2012 09:14:13 -0500
+
 cups (1.5.0-8ubuntu6) oneiric-proposed; urgency=low
 
   * debian/patches/ipp-patch-r8950+.patch: Revert the IPP backend to the state
