@@ -15,6 +15,7 @@
 #
 
 echo "LPSTAT Test"
+sleep 10
 echo ""
 echo "    lpstat -t"
 $VALGRIND ../systemv/lpstat -t 2>&1
