@@ -37,7 +37,7 @@ Build-Depends:
  libpaper-dev,
  libpng-dev | libpng12-dev, 
  libslp-dev,
- libtiff5-dev | libtiff-dev,
+ libtiff-dev,
  libusb-1.0-0-dev [!hurd-any], 
  po4a (>= 0.31~),
  po-debconf,

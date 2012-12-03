@@ -41,3 +41,4 @@ dnssd-reg-array-linear-search.patch
 tests-ignore-warnings.patch
 tests-ignore-usb-crash.patch
 test-i18n-nonlinux.patch
+CVE-2012-5519.patch
