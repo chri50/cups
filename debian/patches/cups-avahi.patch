@@ -3182,7 +3182,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -671,7 +671,7 @@
+@@ -658,7 +658,7 @@
    Browsing                 = CUPS_DEFAULT_BROWSING;
    DefaultShared            = CUPS_DEFAULT_DEFAULT_SHARED;
  
