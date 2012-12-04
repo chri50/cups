@@ -1,4 +1,5 @@
 # patches accepted and committed upstream:
+split-configuration-files-STR4223.patch
 
 # patches sent upstream
 usb-backend-busy-loop-fix.patch

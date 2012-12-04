@@ -1,8 +1,8 @@
 Description: CUPS removes the "(recommended)" comments of the NickNames of Foomatic PPDs when listing available PPDs. This patch removes this remocval action.
 Author: till.kamppeter@gmail.com
 
---- cups-1.4.0~svn8773~/scheduler/cups-driverd.cxx	2009-08-23 12:16:58.000000000 +0200
-+++ cups-1.4.0~svn8773/scheduler/cups-driverd.cxx	2009-08-23 18:33:34.000000000 +0200
+--- a/scheduler/cups-driverd.cxx
++++ b/scheduler/cups-driverd.cxx
 @@ -211,7 +211,6 @@
  	const char *scheme)		/* I - PPD scheme */
  {

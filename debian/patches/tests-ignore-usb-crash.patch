@@ -3,9 +3,9 @@ Author: Martin Pitt <mpitt@debian.org>
 
 Index: cups-1.5.2/test/run-stp-tests.sh
 ===================================================================
---- cups-1.5.2.orig/test/run-stp-tests.sh	2012-03-05 07:44:00.785158922 +0100
-+++ cups-1.5.2/test/run-stp-tests.sh	2012-03-05 07:44:38.637160753 +0100
-@@ -749,7 +749,7 @@
+--- cups-1.5.2.orig/test/run-stp-tests.sh      2012-03-05 07:44:00.785158922 +0100
++++ cups-1.5.2/test/run-stp-tests.sh   2012-03-05 07:44:38.637160753 +0100
+@@ -752,7 +752,7 @@
  fi
  
  # Error log messages

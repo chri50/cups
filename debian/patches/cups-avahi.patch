@@ -1755,7 +1755,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  
  
  #ifdef HAVE_GETEUID
-@@ -527,6 +535,14 @@
+@@ -611,6 +619,14 @@
  
    httpInitialize();
  
@@ -1770,7 +1770,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
    cupsdStartServer();
  
   /*
-@@ -657,6 +673,9 @@
+@@ -741,6 +757,9 @@
    */
  
    current_time  = time(NULL);
@@ -1780,7 +1780,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
    browse_time   = current_time;
    event_time    = current_time;
    expire_time   = current_time;
-@@ -871,6 +890,26 @@
+@@ -955,6 +974,26 @@
      }
  #endif /* __APPLE__ */
  
@@ -1807,7 +1807,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  #ifndef __APPLE__
     /*
      * Update the network interfaces once a minute...
-@@ -1815,6 +1854,10 @@
+@@ -1899,6 +1938,10 @@
    cupsd_job_t		*job;		/* Job information */
    cupsd_subscription_t	*sub;		/* Subscription information */
    const char		*why;		/* Debugging aid */
@@ -1818,7 +1818,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  
  
   /*
-@@ -1857,6 +1900,19 @@
+@@ -1941,6 +1984,19 @@
    }
  #endif /* __APPLE__ */
  
@@ -2090,7 +2090,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
    cgiSetVariable("HAVE_LDAP", "1");
 --- a/scheduler/client.c
 +++ b/scheduler/client.c
-@@ -5003,7 +5003,7 @@
+@@ -4990,7 +4990,7 @@
  	    !strncmp(host, "[::1]:", 6));
    }
  
@@ -2099,7 +2099,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
   /*
    * Check if the hostname is something.local (Bonjour); if so, allow it.
    */
-@@ -5012,7 +5012,7 @@
+@@ -4999,7 +4999,7 @@
        (!_cups_strcasecmp(end, ".local") || !_cups_strncasecmp(end, ".local:", 7) ||
         !_cups_strcasecmp(end, ".local.") || !_cups_strncasecmp(end, ".local.:", 8)))
      return (1);
@@ -3182,7 +3182,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -651,7 +651,7 @@
+@@ -671,7 +671,7 @@
    Browsing                 = CUPS_DEFAULT_BROWSING;
    DefaultShared            = CUPS_DEFAULT_DEFAULT_SHARED;
  
