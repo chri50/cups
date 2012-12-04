@@ -672,7 +672,7 @@ cupsdReadConfiguration(void)
   DefaultShared            = CUPS_DEFAULT_DEFAULT_SHARED;
 
 #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
-  cupsdSetString(&DNSSDRegType, "_ipp._tcp,_cups");
+  cupsdSetString(&DNSSDRegType, "_ipp._tcp,_cups,_universal");
 #endif /* HAVE_DNSSD */
 
   cupsdSetString(&LPDConfigFile, CUPS_DEFAULT_LPD_CONFIG_FILE);
