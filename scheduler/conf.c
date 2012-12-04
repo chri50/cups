@@ -170,7 +170,7 @@ static const cupsd_var_t	cupsd_vars[] =
 #endif /* HAVE_AUTHORIZATION_H */
   { "Timeout",			&Timeout,		CUPSD_VARTYPE_INTEGER },
   { "UseNetworkDefault",	&UseNetworkDefault,	CUPSD_VARTYPE_BOOLEAN },
-  { "WebInterface",		&WebInterface,		CUPSD_VARTYPE_BOOLEAN }
+  { "WebInterface",		&WebInterface,		CUPSD_VARTYPE_BOOLEAN },
 };
 static const cupsd_var_t	cupsfiles_vars[] =
 {
@@ -202,6 +202,7 @@ static const cupsd_var_t	cupsfiles_vars[] =
   { "SystemGroupAuthKey",	&SystemGroupAuthKey,	CUPSD_VARTYPE_STRING },
 #endif /* HAVE_AUTHORIZATION_H */
   { "TempDir",			&TempDir,		CUPSD_VARTYPE_PATHNAME },
+  { "PidFile",			&PidFile,		CUPSD_VARTYPE_STRING }
 };
 
 static const unsigned	ones[4] =
@@ -528,6 +529,7 @@ cupsdReadConfiguration(void)
   cupsdSetStringf(&ServerHeader, "CUPS/%d.%d", CUPS_VERSION_MAJOR,
                   CUPS_VERSION_MINOR);
   cupsdSetString(&StateDir, CUPS_STATEDIR);
+  cupsdSetString(&PidFile, "/var/run/cups/cupsd.pid");
 
   if (!strcmp(CUPS_DEFAULT_PRINTCAP, "/etc/printers.conf"))
     PrintcapFormat = PRINTCAP_SOLARIS;
