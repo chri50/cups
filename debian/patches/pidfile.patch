@@ -4,8 +4,8 @@ Bug: http://www.cups.org/str.php?L2465
 
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -170,7 +170,7 @@
- #endif /* HAVE_AUTHORIZATION_H */
+@@ -157,7 +157,7 @@
+   { "ServerName",		&ServerName,		CUPSD_VARTYPE_STRING },
    { "Timeout",			&Timeout,		CUPSD_VARTYPE_INTEGER },
    { "UseNetworkDefault",	&UseNetworkDefault,	CUPSD_VARTYPE_BOOLEAN },
 -  { "WebInterface",		&WebInterface,		CUPSD_VARTYPE_BOOLEAN }
@@ -13,7 +13,7 @@ Bug: http://www.cups.org/str.php?L2465
  };
  static const cupsd_var_t	cupsfiles_vars[] =
  {
-@@ -202,6 +202,7 @@
+@@ -189,6 +189,7 @@
    { "SystemGroupAuthKey",	&SystemGroupAuthKey,	CUPSD_VARTYPE_STRING },
  #endif /* HAVE_AUTHORIZATION_H */
    { "TempDir",			&TempDir,		CUPSD_VARTYPE_PATHNAME },
@@ -21,7 +21,7 @@ Bug: http://www.cups.org/str.php?L2465
  };
  
  static const unsigned	ones[4] =
-@@ -528,6 +529,7 @@
+@@ -515,6 +516,7 @@
    cupsdSetStringf(&ServerHeader, "CUPS/%d.%d", CUPS_VERSION_MAJOR,
                    CUPS_VERSION_MINOR);
    cupsdSetString(&StateDir, CUPS_STATEDIR);

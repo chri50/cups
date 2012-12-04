@@ -1750,7 +1750,7 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
    { "MaxActiveJobs",		&MaxActiveJobs,		CUPSD_VARTYPE_INTEGER },
    { "MaxClients",		&MaxClients,		CUPSD_VARTYPE_INTEGER },
    { "MaxClientsPerHost",	&MaxClientsPerHost,	CUPSD_VARTYPE_INTEGER },
-@@ -155,15 +147,10 @@
+@@ -155,18 +147,34 @@
    { "MaxSubscriptionsPerPrinter",&MaxSubscriptionsPerPrinter,	CUPSD_VARTYPE_INTEGER },
    { "MaxSubscriptionsPerUser",	&MaxSubscriptionsPerUser,	CUPSD_VARTYPE_INTEGER },
    { "MultipleOperationTimeout",	&MultipleOperationTimeout,	CUPSD_VARTYPE_INTEGER },
@@ -1766,17 +1766,11 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
    { "RIPCache",			&RIPCache,		CUPSD_VARTYPE_STRING },
    { "RootCertDuration",		&RootCertDuration,	CUPSD_VARTYPE_INTEGER },
    { "ServerAdmin",		&ServerAdmin,		CUPSD_VARTYPE_STRING },
-@@ -181,13 +168,41 @@
- #ifdef HAVE_AUTHORIZATION_H
-   { "SystemGroupAuthKey",	&SystemGroupAuthKey,	CUPSD_VARTYPE_STRING },
- #endif /* HAVE_AUTHORIZATION_H */
--  { "TempDir",			&TempDir,		CUPSD_VARTYPE_PATHNAME },
-   { "Timeout",			&Timeout,		CUPSD_VARTYPE_INTEGER },
-   { "UseNetworkDefault",	&UseNetworkDefault,	CUPSD_VARTYPE_BOOLEAN },
-   { "WebInterface",		&WebInterface,		CUPSD_VARTYPE_BOOLEAN }
- };
--#define NUM_VARS	(sizeof(variables) / sizeof(variables[0]))
--
++  { "ServerName",		&ServerName,		CUPSD_VARTYPE_STRING },
++  { "Timeout",			&Timeout,		CUPSD_VARTYPE_INTEGER },
++  { "UseNetworkDefault",	&UseNetworkDefault,	CUPSD_VARTYPE_BOOLEAN },
++  { "WebInterface",		&WebInterface,		CUPSD_VARTYPE_BOOLEAN }
++};
 +static const cupsd_var_t	cupsfiles_vars[] =
 +{
 +  { "AccessLog",		&AccessLog,		CUPSD_VARTYPE_STRING },
@@ -1793,25 +1787,31 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
 +  { "Printcap",			&Printcap,		CUPSD_VARTYPE_STRING },
 +  { "RemoteRoot",		&RemoteRoot,		CUPSD_VARTYPE_STRING },
 +  { "RequestRoot",		&RequestRoot,		CUPSD_VARTYPE_STRING },
-+  { "ServerBin",		&ServerBin,		CUPSD_VARTYPE_PATHNAME },
-+#ifdef HAVE_SSL
-+  { "ServerCertificate",	&ServerCertificate,	CUPSD_VARTYPE_PATHNAME },
-+#  if defined(HAVE_LIBSSL) || defined(HAVE_GNUTLS)
-+  { "ServerKey",		&ServerKey,		CUPSD_VARTYPE_PATHNAME },
-+#  endif /* HAVE_LIBSSL || HAVE_GNUTLS */
-+#endif /* HAVE_SSL */
-+  { "ServerRoot",		&ServerRoot,		CUPSD_VARTYPE_PATHNAME },
-+  { "SMBConfigFile",		&SMBConfigFile,		CUPSD_VARTYPE_STRING },
-+  { "StateDir",			&StateDir,		CUPSD_VARTYPE_STRING },
-+#ifdef HAVE_AUTHORIZATION_H
-+  { "SystemGroupAuthKey",	&SystemGroupAuthKey,	CUPSD_VARTYPE_STRING },
-+#endif /* HAVE_AUTHORIZATION_H */
-+  { "TempDir",			&TempDir,		CUPSD_VARTYPE_PATHNAME },
-+};
+   { "ServerBin",		&ServerBin,		CUPSD_VARTYPE_PATHNAME },
+ #ifdef HAVE_SSL
+   { "ServerCertificate",	&ServerCertificate,	CUPSD_VARTYPE_PATHNAME },
+@@ -174,7 +182,6 @@
+   { "ServerKey",		&ServerKey,		CUPSD_VARTYPE_PATHNAME },
+ #  endif /* HAVE_LIBSSL || HAVE_GNUTLS */
+ #endif /* HAVE_SSL */
+-  { "ServerName",		&ServerName,		CUPSD_VARTYPE_STRING },
+   { "ServerRoot",		&ServerRoot,		CUPSD_VARTYPE_PATHNAME },
+   { "SMBConfigFile",		&SMBConfigFile,		CUPSD_VARTYPE_STRING },
+   { "StateDir",			&StateDir,		CUPSD_VARTYPE_STRING },
+@@ -182,12 +189,7 @@
+   { "SystemGroupAuthKey",	&SystemGroupAuthKey,	CUPSD_VARTYPE_STRING },
+ #endif /* HAVE_AUTHORIZATION_H */
+   { "TempDir",			&TempDir,		CUPSD_VARTYPE_PATHNAME },
+-  { "Timeout",			&Timeout,		CUPSD_VARTYPE_INTEGER },
+-  { "UseNetworkDefault",	&UseNetworkDefault,	CUPSD_VARTYPE_BOOLEAN },
+-  { "WebInterface",		&WebInterface,		CUPSD_VARTYPE_BOOLEAN }
+ };
+-#define NUM_VARS	(sizeof(variables) / sizeof(variables[0]))
+-
  
  static const unsigned	ones[4] =
  			{
-@@ -212,7 +227,12 @@
+@@ -212,7 +214,12 @@
  static int		parse_fatal_errors(const char *s);
  static int		parse_groups(const char *s);
  static int		parse_protocols(const char *s);
@@ -1825,7 +1825,7 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
  static int		read_location(cups_file_t *fp, char *name, int linenum);
  static int		read_policy(cups_file_t *fp, char *name, int linenum);
  static void		set_policy_defaults(cupsd_policy_t *pol);
-@@ -705,22 +725,48 @@
+@@ -705,22 +712,48 @@
    cupsdInitEnv();
  
   /*
@@ -1879,7 +1879,7 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
    RunUser = getuid();
  
    cupsdLogMessage(CUPSD_LOG_INFO, "Remote access is %s.",
-@@ -839,6 +885,13 @@
+@@ -839,6 +872,13 @@
    BrowseACL = cupsdFindLocation("CUPS_INTERNAL_BROWSE_ACL");
  
   /*
@@ -1893,16 +1893,15 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
    * Open the system log for cupsd if necessary...
    */
  
-@@ -2504,13 +2557,174 @@
+@@ -2504,13 +2544,174 @@
  
  
  /*
 - * 'read_configuration()' - Read a configuration file.
 + * 'parse_variable()' - Parse a variable line.
-  */
- 
- static int				/* O - 1 on success, 0 on failure */
--read_configuration(cups_file_t *fp)	/* I - File to read from */
++ */
++
++static int				/* O - 1 on success, 0 on failure */
 +parse_variable(
 +    const char        *filename,	/* I - Name of configuration file */
 +    int               linenum,		/* I - Line in configuration file */
@@ -2062,16 +2061,17 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
 +
 +/*
 + * 'read_cupsd_conf()' - Read the cupsd.conf configuration file.
-+ */
-+
-+static int				/* O - 1 on success, 0 on failure */
+  */
+ 
+ static int				/* O - 1 on success, 0 on failure */
+-read_configuration(cups_file_t *fp)	/* I - File to read from */
 +read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
  {
 -  int			i;		/* Looping var */
    int			linenum;	/* Current line number */
    char			line[HTTP_MAX_BUFFER],
  					/* Line from file */
-@@ -2520,7 +2734,6 @@
+@@ -2520,7 +2721,6 @@
  			*value,		/* Pointer to value */
  			*valueptr;	/* Pointer into value */
    int			valuelen;	/* Length of value */
@@ -2079,7 +2079,7 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
    http_addrlist_t	*addrlist,	/* Address list */
  			*addr;		/* Current address */
    unsigned		ip[4],		/* Address value */
-@@ -2530,7 +2743,6 @@
+@@ -2530,7 +2730,6 @@
    cupsd_location_t	*location;	/* Browse location */
    cups_file_t		*incfile;	/* Include file */
    char			incname[1024];	/* Include filename */
@@ -2087,7 +2087,7 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
  
  
   /*
-@@ -2562,7 +2774,7 @@
+@@ -2562,7 +2761,7 @@
  	                incname, strerror(errno));
        else
        {
@@ -2096,7 +2096,7 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
  	cupsFileClose(incfile);
        }
      }
-@@ -2586,8 +2798,6 @@
+@@ -2586,8 +2785,6 @@
        if (linenum == 0)
  	return (0);
      }
@@ -2105,7 +2105,7 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
      else if (!_cups_strcasecmp(line, "FaxRetryInterval") && value)
      {
        JobRetryInterval = atoi(value);
-@@ -3246,81 +3456,6 @@
+@@ -3246,81 +3443,6 @@
        }
      }
  #endif /* HAVE_SSL */
@@ -2187,7 +2187,7 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
      else if (!_cups_strcasecmp(line, "HostNameLookups") && value)
      {
       /*
-@@ -3399,22 +3534,6 @@
+@@ -3399,22 +3521,6 @@
          cupsdLogMessage(CUPSD_LOG_WARN, "Unknown LogTimeFormat %s on line %d.",
  	                value, linenum);
      }
@@ -2210,7 +2210,7 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
      else if (!_cups_strcasecmp(line, "ServerTokens") && value)
      {
       /*
-@@ -3540,117 +3659,192 @@
+@@ -3540,117 +3646,192 @@
  			"line %d.", value, linenum);
      }
  #endif /* HAVE_SSL */
