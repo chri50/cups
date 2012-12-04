@@ -4,7 +4,7 @@ Bug: https://bugs.launchpad.net/bugs/711779
 
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -652,7 +652,7 @@
+@@ -672,7 +672,7 @@
    DefaultShared            = CUPS_DEFAULT_DEFAULT_SHARED;
  
  #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)

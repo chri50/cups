@@ -5,7 +5,7 @@ Bug-Debian: http://bugs.debian.org/670878
 
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -604,6 +604,11 @@
+@@ -607,6 +607,11 @@
  echo "<PRE>" >>$strfile
  
  for file in 5*.sh; do

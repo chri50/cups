@@ -43,7 +43,13 @@ case "$1" in
 	rm -f /etc/apparmor.d/local/usr.sbin.cupsd || true
 	rmdir /etc/apparmor.d/local 2>/dev/null || true
 	;;
-    remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+    abort-upgrade)
+        if [ -e /etc/cups/cupsd.conf.conffile-bak ]; then
+            # Move cupsd.conf back
+            mv /etc/cups/cupsd.conf.conffile-bak /etc/cups/cupsd.conf
+        fi
+        ;;
+    remove|upgrade|failed-upgrade|abort-install|disappear)
         ;;
 
     *)
