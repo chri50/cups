@@ -1,3 +1,15 @@
+cups (1.6.1-0ubuntu12) raring; urgency=low
+
+  * SECURITY UPDATE: privilege escalation via config file editing
+    - debian/patches/CVE-2012-5519.patch: split configuration file into
+      two, to isolate options that have a security impact.
+    - debian/cups.install: also install cups-files.conf
+    - debian/patches/removecvstag.patch: updated to remove tag from
+      cups-files.conf.
+    - CVE-2012-5519
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Wed, 05 Dec 2012 13:50:08 -0500
+
 cups (1.6.1-0ubuntu11) quantal-proposed; urgency=low
 
   * debian/patches/cupsd-no-crash-on-avahi-threaded-poll-shutdown.patch:
