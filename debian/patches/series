@@ -52,3 +52,4 @@ test-i18n-nonlinux.patch
 tests-slow-lpstat.patch
 forward-port-cups-1-5-x-cups-browsing.patch
 cupsd-no-crash-on-avahi-threaded-poll-shutdown.patch
+CVE-2012-5519.patch

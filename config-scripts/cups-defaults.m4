@@ -372,6 +372,7 @@ else
 fi
 
 AC_DEFINE_UNQUOTED(CUPS_DEFAULT_LPD_CONFIG_FILE, "$CUPS_DEFAULT_LPD_CONFIG_FILE")
+AC_SUBST(CUPS_DEFAULT_LPD_CONFIG_FILE)
 
 dnl Default SMB config file...
 AC_ARG_WITH(smbconfigfile, [  --with-smbconfigfile    set default SMBConfigFile URI],
@@ -393,6 +394,7 @@ else
 fi
 
 AC_DEFINE_UNQUOTED(CUPS_DEFAULT_SMB_CONFIG_FILE, "$CUPS_DEFAULT_SMB_CONFIG_FILE")
+AC_SUBST(CUPS_DEFAULT_SMB_CONFIG_FILE)
 
 dnl Default MaxCopies value...
 AC_ARG_WITH(max-copies, [  --with-max-copies       set default max copies value, default=9999 ],
