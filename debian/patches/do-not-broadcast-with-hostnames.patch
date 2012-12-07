@@ -13,7 +13,7 @@ Author: till.kamppeter@gmail.com
        httpAddrString(&temp, con->servername, sizeof(con->servername));
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -792,7 +792,7 @@
+@@ -804,7 +804,7 @@
      cupsdAddAlias(ServerAlias, temp);
      cupsdLogMessage(CUPSD_LOG_DEBUG, "Added auto ServerAlias %s", temp);
  
