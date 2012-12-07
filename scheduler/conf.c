@@ -154,20 +154,7 @@ static const cupsd_var_t	cupsd_vars[] =
   { "RIPCache",			&RIPCache,		CUPSD_VARTYPE_STRING },
   { "RootCertDuration",		&RootCertDuration,	CUPSD_VARTYPE_INTEGER },
   { "ServerAdmin",		&ServerAdmin,		CUPSD_VARTYPE_STRING },
-  { "ServerBin",		&ServerBin,		CUPSD_VARTYPE_PATHNAME },
-#ifdef HAVE_SSL
-  { "ServerCertificate",	&ServerCertificate,	CUPSD_VARTYPE_PATHNAME },
-#  if defined(HAVE_LIBSSL) || defined(HAVE_GNUTLS)
-  { "ServerKey",		&ServerKey,		CUPSD_VARTYPE_PATHNAME },
-#  endif /* HAVE_LIBSSL || HAVE_GNUTLS */
-#endif /* HAVE_SSL */
   { "ServerName",		&ServerName,		CUPSD_VARTYPE_STRING },
-  { "ServerRoot",		&ServerRoot,		CUPSD_VARTYPE_PATHNAME },
-  { "SMBConfigFile",		&SMBConfigFile,		CUPSD_VARTYPE_STRING },
-  { "StateDir",			&StateDir,		CUPSD_VARTYPE_STRING },
-#ifdef HAVE_AUTHORIZATION_H
-  { "SystemGroupAuthKey",	&SystemGroupAuthKey,	CUPSD_VARTYPE_STRING },
-#endif /* HAVE_AUTHORIZATION_H */
   { "Timeout",			&Timeout,		CUPSD_VARTYPE_INTEGER },
   { "UseNetworkDefault",	&UseNetworkDefault,	CUPSD_VARTYPE_BOOLEAN },
   { "WebInterface",		&WebInterface,		CUPSD_VARTYPE_BOOLEAN },
@@ -737,7 +724,13 @@ cupsdReadConfiguration(void)
     cupsFileClose(fp);
 
     if (!status)
+    {
+      if (TestConfigFile)
+        printf("%s contains errors\n", CupsFilesFile);
+      else
+        cupsdLogMessage(CUPSD_LOG_CRIT, "Unable to read %s", CupsFilesFile);
       return (0);
+    }
   }
   else if (errno == ENOENT)
     cupsdLogMessage(CUPSD_LOG_INFO, "No %s, using defaults.", CupsFilesFile);
@@ -767,7 +760,13 @@ cupsdReadConfiguration(void)
   cupsFileClose(fp);
 
   if (!status)
+  {
+    if (TestConfigFile)
+      printf("%s contains errors\n", ConfigurationFile);
+    else
+      cupsdLogMessage(CUPSD_LOG_CRIT, "Unable to read %s", ConfigurationFile);
     return (0);
+  }
 
   RunUser = getuid();
 

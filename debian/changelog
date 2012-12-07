@@ -1,3 +1,17 @@
+cups (1.5.3-2.9) unstable; urgency=low
+
+  [ Didier Raboud ]
+  * In the configuration file split patch:
+    - Include 'FileDevice warning fix in ipp.c:add_printer()' from Tim
+      Waugh (RedHat).
+    - Drop pure-comment part.
+  * Remove cupsd.conf during purge too. (Closes: #695337)
+
+  [ Bernard Massot ]
+  * Fix lpa{t,d}min typo in cups.NEWS.
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 07 Dec 2012 11:41:51 +0100
+
 cups (1.5.3-2.8) unstable; urgency=low
 
   * Bugfix the configuration stanzas split: it left some possibilities

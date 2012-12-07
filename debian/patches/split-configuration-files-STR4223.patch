@@ -7,9 +7,9 @@ Origin: http://svn.cups.org/public/cups/branches/branch-1.6@10710
 Origin: http://svn.cups.org/public/cups/branches/branch-1.6@10713
 
 Author: Marc Deslauriers <marc.deslauriers@canonical.com>
-Origin: https://www.cups.org/strfiles/4223/small-fixes.patch
+Author: Tim Waugh <twaugh@redhat.com>
 
-Bug-Upstream: https://www.cups.org/strfiles/4223/small-fixes.patch
+Bug-Upstream: https://www.cups.org/str.php?L4223
 Bug-Debian: http://bugs.debian.org/692791
 Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
 
@@ -222,17 +222,6 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
  	  man/cups-lpd.man
  	  man/cupsaddsmb.man
  	  man/cupsd.conf.man
---- a/doc/Makefile
-+++ b/doc/Makefile
-@@ -3,7 +3,7 @@
- #
- #   Documentation makefile for CUPS.
- #
--#   Copyright 2007-2011 by Apple Inc.
-+#   Copyright 2007-2012 by Apple Inc.
- #   Copyright 1997-2007 by Easy Software Products.
- #
- #   These coded instructions, statements, and computer programs are the
 --- /dev/null
 +++ b/doc/help/ref-cups-files-conf.html.in
 @@ -0,0 +1,531 @@
@@ -1825,7 +1814,7 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
  static int		read_location(cups_file_t *fp, char *name, int linenum);
  static int		read_policy(cups_file_t *fp, char *name, int linenum);
  static void		set_policy_defaults(cupsd_policy_t *pol);
-@@ -705,22 +712,48 @@
+@@ -705,21 +712,59 @@
    cupsdInitEnv();
  
   /*
@@ -1840,7 +1829,13 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
 +    cupsFileClose(fp);
 +
 +    if (!status)
++    {
++      if (TestConfigFile)
++        printf("%s contains errors\n", CupsFilesFile);
++      else
++        cupsdLogMessage(CUPSD_LOG_CRIT, "Unable to read %s", CupsFilesFile);
 +      return (0);
++    }
 +  }
 +  else if (errno == ENOENT)
 +    cupsdLogMessage(CUPSD_LOG_INFO, "No %s, using defaults.", CupsFilesFile);
@@ -1871,15 +1866,20 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
    cupsFileClose(fp);
  
    if (!status)
++  {
++    if (TestConfigFile)
++      printf("%s contains errors\n", ConfigurationFile);
++    else
++      cupsdLogMessage(CUPSD_LOG_CRIT, "Unable to read %s", ConfigurationFile);
      return (0);
- 
+-
 -  if (!ErrorLog)
 -    cupsdSetString(&ErrorLog, CUPS_LOGDIR "/error_log");
--
++  }
+ 
    RunUser = getuid();
  
-   cupsdLogMessage(CUPSD_LOG_INFO, "Remote access is %s.",
-@@ -839,6 +872,13 @@
+@@ -839,6 +884,13 @@
    BrowseACL = cupsdFindLocation("CUPS_INTERNAL_BROWSE_ACL");
  
   /*
@@ -1893,15 +1893,16 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
    * Open the system log for cupsd if necessary...
    */
  
-@@ -2504,13 +2544,174 @@
+@@ -2504,13 +2556,174 @@
  
  
  /*
 - * 'read_configuration()' - Read a configuration file.
 + * 'parse_variable()' - Parse a variable line.
-+ */
-+
-+static int				/* O - 1 on success, 0 on failure */
+  */
+ 
+ static int				/* O - 1 on success, 0 on failure */
+-read_configuration(cups_file_t *fp)	/* I - File to read from */
 +parse_variable(
 +    const char        *filename,	/* I - Name of configuration file */
 +    int               linenum,		/* I - Line in configuration file */
@@ -2061,17 +2062,16 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
 +
 +/*
 + * 'read_cupsd_conf()' - Read the cupsd.conf configuration file.
-  */
- 
- static int				/* O - 1 on success, 0 on failure */
--read_configuration(cups_file_t *fp)	/* I - File to read from */
++ */
++
++static int				/* O - 1 on success, 0 on failure */
 +read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
  {
 -  int			i;		/* Looping var */
    int			linenum;	/* Current line number */
    char			line[HTTP_MAX_BUFFER],
  					/* Line from file */
-@@ -2520,7 +2721,6 @@
+@@ -2520,7 +2733,6 @@
  			*value,		/* Pointer to value */
  			*valueptr;	/* Pointer into value */
    int			valuelen;	/* Length of value */
@@ -2079,7 +2079,7 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
    http_addrlist_t	*addrlist,	/* Address list */
  			*addr;		/* Current address */
    unsigned		ip[4],		/* Address value */
-@@ -2530,7 +2730,6 @@
+@@ -2530,7 +2742,6 @@
    cupsd_location_t	*location;	/* Browse location */
    cups_file_t		*incfile;	/* Include file */
    char			incname[1024];	/* Include filename */
@@ -2087,7 +2087,7 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
  
  
   /*
-@@ -2562,7 +2761,7 @@
+@@ -2562,7 +2773,7 @@
  	                incname, strerror(errno));
        else
        {
@@ -2096,7 +2096,7 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
  	cupsFileClose(incfile);
        }
      }
-@@ -2586,8 +2785,6 @@
+@@ -2586,8 +2797,6 @@
        if (linenum == 0)
  	return (0);
      }
@@ -2105,7 +2105,7 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
      else if (!_cups_strcasecmp(line, "FaxRetryInterval") && value)
      {
        JobRetryInterval = atoi(value);
-@@ -3246,81 +3443,6 @@
+@@ -3246,81 +3455,6 @@
        }
      }
  #endif /* HAVE_SSL */
@@ -2187,7 +2187,7 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
      else if (!_cups_strcasecmp(line, "HostNameLookups") && value)
      {
       /*
-@@ -3399,22 +3521,6 @@
+@@ -3399,22 +3533,6 @@
          cupsdLogMessage(CUPSD_LOG_WARN, "Unknown LogTimeFormat %s on line %d.",
  	                value, linenum);
      }
@@ -2210,7 +2210,7 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
      else if (!_cups_strcasecmp(line, "ServerTokens") && value)
      {
       /*
-@@ -3540,117 +3646,192 @@
+@@ -3540,117 +3658,192 @@
  			"line %d.", value, linenum);
      }
  #endif /* HAVE_SSL */
@@ -2622,6 +2622,20 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
   /*
    * If the user hasn't specified "-f", run in the background...
    */
+@@ -485,11 +569,8 @@
+ 
+   if (!cupsdReadConfiguration())
+   {
+-    if (TestConfigFile)
+-      printf("%s contains errors\n", ConfigurationFile);
+-    else
+-      syslog(LOG_LPR, "Unable to read configuration file \'%s\' - exiting!",
+-	     ConfigurationFile);
++    if (!TestConfigFile)
++      syslog(LOG_LPR, "Unable to read configuration file - exiting!");
+     return (1);
+   }
+   else if (TestConfigFile)
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
 @@ -337,25 +337,10 @@
@@ -2675,3 +2689,29 @@ Bug-CVE: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5519
  #
  # Setup lots of test queues - half with PPD files, half without...
  #
+--- a/scheduler/ipp.c
++++ b/scheduler/ipp.c
+@@ -2568,7 +2568,7 @@
+ 	send_ipp_status(con, IPP_NOT_POSSIBLE,
+ 	                _("File device URIs have been disabled. "
+ 	                  "To enable, see the FileDevice directive in "
+-			  "\"%s/cupsd.conf\"."),
++			  "\"%s/cups-files.conf\"."),
+ 			ServerRoot);
+ 	return;
+       }
+--- a/locale/cups_es.po
++++ b/locale/cups_es.po
+@@ -2991,10 +2991,10 @@
+ #, c-format
+ msgid ""
+ "File device URIs have been disabled. To enable, see the FileDevice directive "
+-"in \"%s/cupsd.conf\"."
++"in \"%s/cups-files.conf\"."
+ msgstr ""
+ "Los URIs del dispositivo de archivo han sido deshabilitados. Para "
+-"habilitarlos, vea la directiva FileDevice en \"%s/cupsd.conf\"."
++"habilitarlos, vea la directiva FileDevice en \"%s/cups-files.conf\"."
+ 
+ #, c-format
+ msgid "Finished page %d."

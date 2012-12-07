@@ -4,7 +4,7 @@ cups (1.5.3-2.7) unstable; urgency=low
   (CVE-2012-5519), the /etc/cups/cupsd.conf configuration file is split
   in two configuration files:
 
-  * /etc/cups/cupsd.conf can be edited by members of the lpatmin group
+  * /etc/cups/cupsd.conf can be edited by members of the lpadmin group
     through the cups web interface;
   * /etc/cups/cups-files.conf can only be edited by root;
 

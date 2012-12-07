@@ -579,11 +579,8 @@ main(int  argc,				/* I - Number of command-line args */
 
   if (!cupsdReadConfiguration())
   {
-    if (TestConfigFile)
-      printf("%s contains errors\n", ConfigurationFile);
-    else
-      syslog(LOG_LPR, "Unable to read configuration file \'%s\' - exiting!",
-	     ConfigurationFile);
+    if (!TestConfigFile)
+      syslog(LOG_LPR, "Unable to read configuration file - exiting!");
     return (1);
   }
   else if (TestConfigFile)
