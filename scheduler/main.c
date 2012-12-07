@@ -122,6 +122,10 @@ main(int  argc,				/* I - Number of command-line args */
   cupsd_listener_t	*lis;		/* Current listener */
   time_t		current_time,	/* Current time */
 			activity,	/* Client activity timer */
+#ifdef HAVE_AVAHI
+			avahi_client_time, /* Time for next Avahi client
+					      check */
+#endif /* HAVE_AVAHI */
 			browse_time,	/* Next browse send time */
 			senddoc_time,	/* Send-Document time */
 			expire_time,	/* Subscription expire time */
@@ -148,6 +152,10 @@ main(int  argc,				/* I - Number of command-line args */
   int			launchd_idle_exit;
 					/* Idle exit on select timeout? */
 #endif	/* HAVE_LAUNCHD */
+#ifdef HAVE_AVAHI
+  cupsd_timeout_t	*tmo;		/* Next scheduled timed callback */
+  long			tmo_delay;	/* Time before it must be called */
+#endif /* HAVE_AVAHI */
 
 
 #ifdef HAVE_GETEUID
@@ -608,6 +616,14 @@ main(int  argc,				/* I - Number of command-line args */
 
   httpInitialize();
 
+#ifdef HAVE_AVAHI
+ /*
+  * Initialize timed callback structures.
+  */
+
+  cupsdInitTimeouts();
+#endif /* HAVE_AVAHI */
+
   cupsdStartServer();
 
  /*
@@ -738,6 +754,9 @@ main(int  argc,				/* I - Number of command-line args */
   */
 
   current_time  = time(NULL);
+#ifdef HAVE_AVAHI
+  avahi_client_time = current_time;
+#endif /* HAVE_AVAHI */
   browse_time   = current_time;
   event_time    = current_time;
   expire_time   = current_time;
@@ -951,6 +970,26 @@ main(int  argc,				/* I - Number of command-line args */
       cupsdStopAllJobs(CUPSD_JOB_DEFAULT, 5);
     }
 #endif /* __APPLE__ */
+
+#ifdef HAVE_AVAHI
+   /*
+    * If a timed callback is due, run it.
+    */
+
+    tmo = cupsdNextTimeout (&tmo_delay);
+    if (tmo && tmo_delay == 0)
+      cupsdRunTimeout (tmo);
+
+   /*
+    * Try to restart the Avahi client every 10 seconds if needed...
+    */
+
+    if ((current_time - avahi_client_time) >= 10)
+    {
+      avahi_client_time = current_time;
+      cupsdStartAvahiClient();
+    }
+#endif /* HAVE_AVAHI */
 
 #ifndef __APPLE__
    /*
@@ -1896,6 +1935,10 @@ select_timeout(int fds)			/* I - Number of descriptors returned */
   cupsd_job_t		*job;		/* Job information */
   cupsd_subscription_t	*sub;		/* Subscription information */
   const char		*why;		/* Debugging aid */
+#ifdef HAVE_AVAHI
+  cupsd_timeout_t	*tmo;		/* Timed callback */
+  long			tmo_delay;	/* Seconds before calling it */
+#endif /* HAVE_AVAHI */
 
 
  /*
@@ -1937,6 +1980,19 @@ select_timeout(int fds)			/* I - Number of descriptors returned */
     why     = "cancel jobs before sleeping";
   }
 #endif /* __APPLE__ */
+
+#ifdef HAVE_AVAHI
+ /*
+  * See if there are any scheduled timed callbacks to run.
+  */
+
+  tmo = cupsdNextTimeout (&tmo_delay);
+  if (tmo)
+  {
+    timeout = tmo_delay;
+    why = "run a timed callback";
+  }
+#endif /* HAVE_AVAHI */
 
  /*
   * Check whether we are accepting new connections...
