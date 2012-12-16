@@ -728,7 +728,8 @@ cupsdReadConfiguration(void)
       if (TestConfigFile)
         printf("%s contains errors\n", CupsFilesFile);
       else
-        cupsdLogMessage(CUPSD_LOG_CRIT, "Unable to read %s", CupsFilesFile);
+        syslog(LOG_LPR, "Unable to read \"%s\" due to errors.",
+            CupsFilesFile);
       return (0);
     }
   }
@@ -736,8 +737,8 @@ cupsdReadConfiguration(void)
     cupsdLogMessage(CUPSD_LOG_INFO, "No %s, using defaults.", CupsFilesFile);
   else
   {
-    cupsdLogMessage(CUPSD_LOG_CRIT, "Unable to open %s: %s", CupsFilesFile,
-                    strerror(errno));
+    syslog(LOG_LPR, "Unable to open \"%s\": %s", CupsFilesFile,
+        strerror(errno));
     return (0);
   }
 
@@ -750,8 +751,8 @@ cupsdReadConfiguration(void)
 
   if ((fp = cupsFileOpen(ConfigurationFile, "r")) == NULL)
   {
-    cupsdLogMessage(CUPSD_LOG_CRIT, "Unable to open %s: %s", ConfigurationFile,
-                    strerror(errno));
+    syslog(LOG_LPR, "Unable to open \"%s\": %s", ConfigurationFile,
+        strerror(errno));
     return (0);
   }
 
@@ -764,7 +765,9 @@ cupsdReadConfiguration(void)
     if (TestConfigFile)
       printf("%s contains errors\n", ConfigurationFile);
     else
-      cupsdLogMessage(CUPSD_LOG_CRIT, "Unable to read %s", ConfigurationFile);
+      syslog(LOG_LPR, "Unable to read \"%s\" due to errors.",
+          ConfigurationFile);
+
     return (0);
   }
 
@@ -1053,8 +1056,10 @@ cupsdReadConfiguration(void)
 			     Group, 1, 1) < 0 ||
        cupsdCheckPermissions(ServerRoot, "ssl", 0700, RunUser,
 			     Group, 1, 0) < 0 ||
-       /* Never alter permissions of central conffile
-       cupsdCheckPermissions(ServerRoot, "cupsd.conf", ConfigFilePerm, RunUser,
+       /* Never alter permissions of central conffiles
+       cupsdCheckPermissions(ConfigurationFile, NULL, ConfigFilePerm, RunUser,
+			     Group, 0, 0) < 0 ||
+       cupsdCheckPermissions(CupsFilesFile, NULL, ConfigFilePerm, RunUser
 			     Group, 0, 0) < 0 ||
        */
        cupsdCheckPermissions(ServerRoot, "classes.conf", 0600, RunUser,
