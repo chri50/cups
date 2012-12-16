@@ -1,3 +1,17 @@
+cups (1.5.3-2.10) unstable; urgency=low
+
+  * Backport more upstream configuration split fixes:
+    - Fix cupsctl man page
+    - Generate and install cups-files.conf online help.
+    - Fix "-t" operation that shows correct filename.
+    - Use syslog for startup errors.
+    - Fix installation of cupsd.conf: need to use ConfigurationFile and not
+      ServerRoot/cupsd.conf.
+    - Check permissions of ConfigurationFile and CupsFilesFile: should be
+      ConfigFilePerm.
+
+ -- Didier Raboud <odyx@debian.org>  Sun, 16 Dec 2012 15:33:27 +0100
+
 cups (1.5.3-2.9) unstable; urgency=low
 
   [ Didier Raboud ]

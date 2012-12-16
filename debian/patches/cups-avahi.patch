@@ -1755,7 +1755,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  
  
  #ifdef HAVE_GETEUID
-@@ -608,6 +616,14 @@
+@@ -605,6 +613,14 @@
  
    httpInitialize();
  
@@ -1770,7 +1770,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
    cupsdStartServer();
  
   /*
-@@ -738,6 +754,9 @@
+@@ -735,6 +751,9 @@
    */
  
    current_time  = time(NULL);
@@ -1780,7 +1780,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
    browse_time   = current_time;
    event_time    = current_time;
    expire_time   = current_time;
-@@ -952,6 +971,26 @@
+@@ -949,6 +968,26 @@
      }
  #endif /* __APPLE__ */
  
@@ -1807,7 +1807,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  #ifndef __APPLE__
     /*
      * Update the network interfaces once a minute...
-@@ -1896,6 +1935,10 @@
+@@ -1893,6 +1932,10 @@
    cupsd_job_t		*job;		/* Job information */
    cupsd_subscription_t	*sub;		/* Subscription information */
    const char		*why;		/* Debugging aid */
@@ -1818,7 +1818,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  
  
   /*
-@@ -1938,6 +1981,19 @@
+@@ -1935,6 +1978,19 @@
    }
  #endif /* __APPLE__ */
  
