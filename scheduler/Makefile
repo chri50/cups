@@ -53,8 +53,6 @@ COBJS	=	\
 		cups-deviced.o \
 		cups-exec.o \
 		cups-lpd.o \
-		cups-polld.o \
-		testdirsvc.o \
 		testlpd.o \
 		testmime.o \
 		testspeed.o \
@@ -70,7 +68,6 @@ LIBTARGETS =	\
 		libcupsmime.a
 
 UNITTARGETS =	\
-		testdirsvc \
 		testlpd \
 		testmime \
 		testspeed \
@@ -82,8 +79,7 @@ PROGRAMS =	\
 		cups-deviced \
 		cups-driverd \
 		cups-exec \
-		cups-lpd \
-		cups-polld
+		cups-lpd
 
 TARGETS	=	\
 		$(LIBTARGETS) \
@@ -224,7 +220,6 @@ install-exec:
 	$(INSTALL_BIN) cups-driverd $(SERVERBIN)/daemon
 	$(INSTALL_BIN) cups-exec $(SERVERBIN)/daemon
 	$(INSTALL_BIN) cups-lpd $(SERVERBIN)/daemon
-	$(INSTALL_BIN) cups-polld $(SERVERBIN)/daemon
 	if test "x$(SYMROOT)" != "x"; then \
 		$(INSTALL_DIR) $(SYMROOT); \
 		for file in $(PROGRAMS); do \
@@ -282,7 +277,6 @@ uninstall:
 	$(RM) $(SERVERBIN)/daemon/cups-driverd
 	$(RM) $(SERVERBIN)/daemon/cups-exec
 	$(RM) $(SERVERBIN)/daemon/cups-lpd
-	$(RM) $(SERVERBIN)/daemon/cups-polld
 	$(RM) $(BUILDROOT)/System/Library/Printers/Libraries/convert
 	-$(RMDIR) $(STATEDIR)/certs
 	-$(RMDIR) $(STATEDIR)
@@ -439,15 +433,6 @@ cups-lpd:	cups-lpd.o ../cups/$(LIBCUPS)
 
 
 #
-# Make the polling daemon, "cups-polld".
-#
-
-cups-polld:	cups-polld.o ../cups/$(LIBCUPS)
-	echo Linking $@...
-	$(CC) $(LDFLAGS) -o cups-polld cups-polld.o $(LIBS)
-
-
-#
 # libcupsmime.so.1, libcupsmime.sl.1
 #
 
@@ -507,15 +492,6 @@ libcupsmime.a:	$(LIBOBJS)
 
 
 #
-# Make the test program, "testdirsvc".
-#
-
-testdirsvc:	testdirsvc.o
-	echo Linking $@...
-	$(CC) $(LDFLAGS) -o testdirsvc testdirsvc.o $(COMMONLIBS) $(NETLIBS)
-
-
-#
 # Make the test program, "testlpd".
 #
 
@@ -564,7 +540,7 @@ testsub:	testsub.o ../cups/$(LIBCUPSSTATIC)
 
 sloc:
 	echo "cupsd: \c"
-	sloccount $(CUPSDOBJS:.o=.c) $(LIBOBJS:.o=.c) cups-driverd.cxx cups-polld.c cups-lpd.c 2>/dev/null | grep "Total Physical" | awk '{print $$9}'
+	sloccount $(CUPSDOBJS:.o=.c) $(LIBOBJS:.o=.c) cups-driverd.cxx cups-lpd.c 2>/dev/null | grep "Total Physical" | awk '{print $$9}'
 
 
 #

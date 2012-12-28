@@ -31,7 +31,7 @@ Bug: https://bugs.launchpad.net/bugs/711779
    cupsdSetString(&SMBConfigFile, CUPS_DEFAULT_SMB_CONFIG_FILE);
 --- a/scheduler/dirsvc.c
 +++ b/scheduler/dirsvc.c
-@@ -621,6 +621,12 @@
+@@ -622,6 +622,12 @@
      keyvalue[count  ][0] = "pdl";
      keyvalue[count++][1] = p->pdl ? p->pdl : "application/postscript";
  

@@ -122,7 +122,6 @@ main(int  argc,				/* I - Number of command-line args */
   cupsd_listener_t	*lis;		/* Current listener */
   time_t		current_time,	/* Current time */
 			activity,	/* Client activity timer */
-			browse_time,	/* Next browse send time */
 			senddoc_time,	/* Send-Document time */
 			expire_time,	/* Subscription expire time */
 			report_time,	/* Malloc/client/job report time */
@@ -711,7 +710,6 @@ main(int  argc,				/* I - Number of command-line args */
   */
 
   current_time  = time(NULL);
-  browse_time   = current_time;
   event_time    = current_time;
   expire_time   = current_time;
   fds           = 1;
@@ -827,11 +825,9 @@ main(int  argc,				/* I - Number of command-line args */
     * inactivity...
     */
 
-    if (timeout == 86400 && Launchd && LaunchdTimeout && !NumPolled &&
+    if (timeout == 86400 && Launchd && LaunchdTimeout &&
         !cupsArrayCount(ActiveJobs) &&
-	(!Browsing ||
-	 (!BrowseRemoteProtocols &&
-	  (!BrowseLocalProtocols || !cupsArrayCount(Printers)))))
+	(!Browsing || !BrowseLocalProtocols || !cupsArrayCount(Printers)))
     {
       timeout		= LaunchdTimeout;
       launchd_idle_exit = 1;
@@ -872,8 +868,6 @@ main(int  argc,				/* I - Number of command-line args */
            lis;
 	   i ++, lis = (cupsd_listener_t *)cupsArrayNext(Listeners))
         cupsdLogMessage(CUPSD_LOG_EMERG, "Listeners[%d] = %d", i, lis->fd);
-
-      cupsdLogMessage(CUPSD_LOG_EMERG, "BrowseSocket = %d", BrowseSocket);
 
       cupsdLogMessage(CUPSD_LOG_EMERG, "CGIPipes[0] = %d", CGIPipes[0]);
 
@@ -975,16 +969,6 @@ main(int  argc,				/* I - Number of command-line args */
       expire_time = current_time;
     }
 
-   /*
-    * Update the browse list as needed...
-    */
-
-    if (Browsing && current_time > browse_time)
-    {
-      cupsdSendBrowseList();
-      browse_time = current_time;
-    }
-
 #ifndef HAVE_AUTHORIZATION_H
    /*
     * Update the root certificate once every 5 minutes if we have client
@@ -1083,8 +1067,6 @@ main(int  argc,				/* I - Number of command-line args */
                       cupsArrayCount(ActiveJobs));
       cupsdLogMessage(CUPSD_LOG_DEBUG, "Report: printers=%d",
                       cupsArrayCount(Printers));
-      cupsdLogMessage(CUPSD_LOG_DEBUG, "Report: printers-implicit=%d",
-                      cupsArrayCount(ImplicitPrinters));
 
       string_count = _cupsStrStatistics(&alloc_bytes, &total_bytes);
       cupsdLogMessage(CUPSD_LOG_DEBUG,
@@ -1595,10 +1577,8 @@ launchd_checkout(void)
   * shared printers to advertise...
   */
 
-  if (cupsArrayCount(ActiveJobs) || NumPolled ||
-      (Browsing &&
-       (BrowseRemoteProtocols ||
-        (BrowseLocalProtocols && cupsArrayCount(Printers)))))
+  if (cupsArrayCount(ActiveJobs) ||
+      (Browsing && BrowseLocalProtocols && cupsArrayCount(Printers)))
   {
     cupsdLogMessage(CUPSD_LOG_DEBUG,
                     "Creating launchd keepalive file \"" CUPS_KEEPALIVE
@@ -1880,7 +1860,6 @@ select_timeout(int fds)			/* I - Number of descriptors returned */
   long			timeout;	/* Timeout for select */
   time_t		now;		/* Current time */
   cupsd_client_t	*con;		/* Client information */
-  cupsd_printer_t	*p;		/* Printer information */
   cupsd_job_t		*job;		/* Job information */
   cupsd_subscription_t	*sub;		/* Subscription information */
   const char		*why;		/* Debugging aid */
@@ -1956,38 +1935,6 @@ select_timeout(int fds)			/* I - Number of descriptors returned */
       timeout = con->http.activity + Timeout;
       why     = "timeout a client connection";
     }
-
- /*
-  * Update the browse list as needed...
-  */
-
-  if (Browsing && BrowseLocalProtocols)
-  {
-    if ((BrowseLocalProtocols & BROWSE_CUPS) && NumBrowsers)
-    {
-      for (p = (cupsd_printer_t *)cupsArrayFirst(Printers);
-           p;
-	   p = (cupsd_printer_t *)cupsArrayNext(Printers))
-      {
-	if (p->type & CUPS_PRINTER_REMOTE)
-	{
-	  if ((p->browse_time + BrowseTimeout) < timeout)
-	  {
-	    timeout = p->browse_time + BrowseTimeout;
-	    why     = "browse timeout a printer";
-	  }
-	}
-	else if (p->shared && !(p->type & CUPS_PRINTER_IMPLICIT))
-	{
-	  if (BrowseInterval && (p->browse_time + BrowseInterval) < timeout)
-	  {
-	    timeout = p->browse_time + BrowseInterval;
-	    why     = "send browse update";
-	  }
-	}
-      }
-    }
-  }
 
  /*
   * Write out changes to configuration and state files...

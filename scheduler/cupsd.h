@@ -86,7 +86,6 @@ extern const char *cups_hstrerror(int);
 #define DEFAULT_FILES		86400	/* Preserve job files? */
 #define DEFAULT_TIMEOUT		300	/* Timeout during requests/updates */
 #define DEFAULT_KEEPALIVE	30	/* Timeout between requests */
-#define DEFAULT_INTERVAL	30	/* Interval between browse updates */
 
 
 /*

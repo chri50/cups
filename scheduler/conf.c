@@ -91,12 +91,6 @@ static const cupsd_var_t	cupsd_vars[] =
 #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
   { "BrowseDNSSDSubTypes",	&DNSSDSubTypes,		CUPSD_VARTYPE_STRING },
 #endif /* HAVE_DNSSD || HAVE_AVAHI */
-  { "BrowseInterval",		&BrowseInterval,	CUPSD_VARTYPE_INTEGER },
-  { "BrowseLocalOptions",	&BrowseLocalOptions,	CUPSD_VARTYPE_STRING },
-  { "BrowsePort",		&BrowsePort,		CUPSD_VARTYPE_INTEGER },
-  { "BrowseRemoteOptions",	&BrowseRemoteOptions,	CUPSD_VARTYPE_STRING },
-  { "BrowseShortNames",		&BrowseShortNames,	CUPSD_VARTYPE_BOOLEAN },
-  { "BrowseTimeout",		&BrowseTimeout,		CUPSD_VARTYPE_INTEGER },
   { "BrowseWebIF",		&BrowseWebIF,		CUPSD_VARTYPE_BOOLEAN },
   { "Browsing",			&Browsing,		CUPSD_VARTYPE_BOOLEAN },
   { "Classification",		&Classification,	CUPSD_VARTYPE_STRING },
@@ -113,9 +107,6 @@ static const cupsd_var_t	cupsd_vars[] =
 #ifdef HAVE_GSSAPI
   { "GSSServiceName",		&GSSServiceName,	CUPSD_VARTYPE_STRING },
 #endif /* HAVE_GSSAPI */
-  { "HideImplicitMembers",	&HideImplicitMembers,	CUPSD_VARTYPE_BOOLEAN },
-  { "ImplicitClasses",		&ImplicitClasses,	CUPSD_VARTYPE_BOOLEAN },
-  { "ImplicitAnyClasses",	&ImplicitAnyClasses,	CUPSD_VARTYPE_BOOLEAN },
   { "JobKillDelay",		&JobKillDelay,		CUPSD_VARTYPE_TIME },
   { "JobRetryLimit",		&JobRetryLimit,		CUPSD_VARTYPE_INTEGER },
   { "JobRetryInterval",		&JobRetryInterval,	CUPSD_VARTYPE_TIME },
@@ -155,7 +146,6 @@ static const cupsd_var_t	cupsd_vars[] =
   { "ServerName",		&ServerName,		CUPSD_VARTYPE_STRING },
   { "StrictConformance",	&StrictConformance,	CUPSD_VARTYPE_BOOLEAN },
   { "Timeout",			&Timeout,		CUPSD_VARTYPE_TIME },
-  { "UseNetworkDefault",	&UseNetworkDefault,	CUPSD_VARTYPE_BOOLEAN },
   { "WebInterface",		&WebInterface,		CUPSD_VARTYPE_BOOLEAN }
 };
 static const cupsd_var_t	cupsfiles_vars[] =
@@ -573,31 +563,6 @@ cupsdReadConfiguration(void)
 
   cupsdDeleteAllLocations();
 
-  if (NumBrowsers > 0)
-  {
-    free(Browsers);
-    Browsers = NULL;
-
-    NumBrowsers = 0;
-  }
-
-  if (NumPolled > 0)
-  {
-    free(Polled);
-
-    NumPolled = 0;
-  }
-
-  if (NumRelays > 0)
-  {
-    for (i = 0; i < NumRelays; i ++)
-      cupsArrayDelete(Relays[i].from);
-
-    free(Relays);
-
-    NumRelays = 0;
-  }
-
   cupsdDeleteAllListeners();
 
   old_remote_port = RemotePort;
@@ -756,9 +721,6 @@ cupsdReadConfiguration(void)
   FilterLimit              = 0;
   FilterNice               = 0;
   HostNameLookups          = FALSE;
-  ImplicitClasses          = CUPS_DEFAULT_IMPLICIT_CLASSES;
-  ImplicitAnyClasses       = FALSE;
-  HideImplicitMembers      = TRUE;
   KeepAlive                = TRUE;
   KeepAliveTimeout         = DEFAULT_KEEPALIVE;
   ListenBackLog            = SOMAXCONN;
@@ -778,12 +740,7 @@ cupsdReadConfiguration(void)
   Timeout                  = DEFAULT_TIMEOUT;
   WebInterface             = CUPS_DEFAULT_WEBIF;
 
-  BrowseInterval           = DEFAULT_INTERVAL;
-  BrowsePort               = ippPort();
   BrowseLocalProtocols     = parse_protocols(CUPS_DEFAULT_BROWSE_LOCAL_PROTOCOLS);
-  BrowseRemoteProtocols    = parse_protocols(CUPS_DEFAULT_BROWSE_REMOTE_PROTOCOLS);
-  BrowseShortNames         = CUPS_DEFAULT_BROWSE_SHORT_NAMES;
-  BrowseTimeout            = DEFAULT_TIMEOUT;
   BrowseWebIF              = FALSE;
   Browsing                 = CUPS_DEFAULT_BROWSING;
   DefaultShared            = CUPS_DEFAULT_DEFAULT_SHARED;
@@ -794,9 +751,6 @@ cupsdReadConfiguration(void)
 
   cupsdSetString(&LPDConfigFile, CUPS_DEFAULT_LPD_CONFIG_FILE);
   cupsdSetString(&SMBConfigFile, CUPS_DEFAULT_SMB_CONFIG_FILE);
-
-  cupsdClearString(&BrowseLocalOptions);
-  cupsdClearString(&BrowseRemoteOptions);
 
   cupsdSetString(&ErrorPolicy, "stop-printer");
 
@@ -988,12 +942,6 @@ cupsdReadConfiguration(void)
       NumSystemGroups   = 1;
     }
   }
-
- /*
-  * Get the access control list for browsing...
-  */
-
-  BrowseACL = cupsdFindLocation("CUPS_INTERNAL_BROWSE_ACL");
 
  /*
   * Make sure ConfigFilePerm and LogFilePerm have sane values...
@@ -1322,24 +1270,6 @@ cupsdReadConfiguration(void)
                   MaxClientsPerHost);
 
  /*
-  * Make sure that BrowseTimeout is at least twice the interval...
-  */
-
-  if (BrowseTimeout < (2 * BrowseInterval) || BrowseTimeout <= 0)
-  {
-    cupsdLogMessage(CUPSD_LOG_ALERT, "Invalid BrowseTimeout value %d.",
-                    BrowseTimeout);
-
-    if (BrowseInterval)
-      BrowseTimeout = BrowseInterval * 2;
-    else
-      BrowseTimeout = DEFAULT_TIMEOUT;
-
-    cupsdLogMessage(CUPSD_LOG_ALERT, "Reset BrowseTimeout to %d.",
-                    BrowseTimeout);
-  }
-
- /*
   * Update the default policy, as needed...
   */
 
@@ -1643,7 +1573,6 @@ cupsdReadConfiguration(void)
 
     cupsdLoadAllPrinters();
     cupsdLoadAllClasses();
-    cupsdLoadRemoteCache();
 
     cupsdCreateCommonData();
 
@@ -2646,11 +2575,9 @@ parse_protocols(const char *s)		/* I - Space-delimited protocols */
     * Add the protocol to the bitmask...
     */
 
-    if (!_cups_strcasecmp(valstart, "cups"))
-      protocols |= BROWSE_CUPS;
-    else if (!_cups_strcasecmp(valstart, "dnssd") ||
-             !_cups_strcasecmp(valstart, "dns-sd") ||
-             !_cups_strcasecmp(valstart, "bonjour"))
+    if (!_cups_strcasecmp(valstart, "dnssd") ||
+	!_cups_strcasecmp(valstart, "dns-sd") ||
+	!_cups_strcasecmp(valstart, "bonjour"))
       protocols |= BROWSE_DNSSD;
     else if (!_cups_strcasecmp(valstart, "all"))
       protocols |= BROWSE_ALL;
@@ -2911,17 +2838,11 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
 					/* Line from file */
 			temp[HTTP_MAX_BUFFER],
 					/* Temporary buffer for value */
-			*ptr,		/* Pointer into line/temp */
 			*value,		/* Pointer to value */
 			*valueptr;	/* Pointer into value */
   int			valuelen;	/* Length of value */
   http_addrlist_t	*addrlist,	/* Address list */
 			*addr;		/* Current address */
-  unsigned		ip[4],		/* Address value */
-			mask[4];	/* Netmask value */
-  cupsd_dirsvc_relay_t	*relay;		/* Relay data */
-  cupsd_dirsvc_poll_t	*pollp;		/* Polling data */
-  cupsd_location_t	*location;	/* Browse location */
   cups_file_t		*incfile;	/* Include file */
   char			incname[1024];	/* Include filename */
 
@@ -3102,117 +3023,12 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
 
       httpAddrFreeList(addrlist);
     }
-    else if (!_cups_strcasecmp(line, "BrowseAddress") && value)
-    {
-     /*
-      * Add a browse address to the list...
-      */
-
-      cupsd_dirsvc_addr_t	*dira;	/* New browse address array */
-
-
-      if (NumBrowsers == 0)
-        dira = malloc(sizeof(cupsd_dirsvc_addr_t));
-      else
-        dira = realloc(Browsers, (NumBrowsers + 1) * sizeof(cupsd_dirsvc_addr_t));
-
-      if (!dira)
-      {
-        cupsdLogMessage(CUPSD_LOG_ERROR,
-	                "Unable to allocate BrowseAddress at line %d - %s.",
-	                linenum, strerror(errno));
-        continue;
-      }
-
-      Browsers = dira;
-      dira     += NumBrowsers;
-
-      memset(dira, 0, sizeof(cupsd_dirsvc_addr_t));
-
-      if (!_cups_strcasecmp(value, "@LOCAL"))
-      {
-       /*
-	* Send browse data to all local interfaces...
-	*/
-
-	strcpy(dira->iface, "*");
-	NumBrowsers ++;
-      }
-      else if (!_cups_strncasecmp(value, "@IF(", 4))
-      {
-       /*
-	* Send browse data to the named interface...
-	*/
-
-	strlcpy(dira->iface, value + 4, sizeof(Browsers[0].iface));
-
-        ptr = dira->iface + strlen(dira->iface) - 1;
-        if (*ptr == ')')
-	  *ptr = '\0';
-
-	NumBrowsers ++;
-      }
-      else if ((addrlist = get_address(value, BrowsePort)) != NULL)
-      {
-       /*
-        * Only IPv4 addresses are supported...
-        */
-
-	for (addr = addrlist; addr; addr = addr->next)
-	  if (_httpAddrFamily(&(addr->addr)) == AF_INET)
-	    break;
-
-	if (addr)
-	{
-	  memcpy(&(dira->to), &(addrlist->addr), sizeof(dira->to));
-	  httpAddrString(&(dira->to), temp, sizeof(temp));
-
-	  cupsdLogMessage(CUPSD_LOG_INFO,
-	                  "Sending browsing info to %s:%d (IPv4)",
-			  temp, _httpAddrPort(&(dira->to)));
-
-	  NumBrowsers ++;
-	}
-	else
-	  cupsdLogMessage(CUPSD_LOG_ERROR, "Bad BrowseAddress %s at line %d.",
-			  value, linenum);
-
-	httpAddrFreeList(addrlist);
-      }
-      else
-        cupsdLogMessage(CUPSD_LOG_ERROR, "Bad BrowseAddress %s at line %d.",
-	                value, linenum);
-    }
-    else if (!_cups_strcasecmp(line, "BrowseOrder") && value)
-    {
-     /*
-      * "BrowseOrder Deny,Allow" or "BrowseOrder Allow,Deny"...
-      */
-
-      if ((location = cupsdFindLocation("CUPS_INTERNAL_BROWSE_ACL")) == NULL)
-        if ((location = cupsdNewLocation("CUPS_INTERNAL_BROWSE_ACL")) != NULL)
-	  cupsdAddLocation(location);
-
-      if (location == NULL)
-        cupsdLogMessage(CUPSD_LOG_ERROR,
-	                "Unable to initialize browse access control list.");
-      else if (!_cups_strncasecmp(value, "deny", 4))
-        location->order_type = CUPSD_AUTH_ALLOW;
-      else if (!_cups_strncasecmp(value, "allow", 5))
-        location->order_type = CUPSD_AUTH_DENY;
-      else
-        cupsdLogMessage(CUPSD_LOG_ERROR,
-	                "Unknown BrowseOrder value %s on line %d.",
-	                value, linenum);
-    }
     else if (!_cups_strcasecmp(line, "BrowseProtocols") ||
-             !_cups_strcasecmp(line, "BrowseLocalProtocols") ||
-             !_cups_strcasecmp(line, "BrowseRemoteProtocols"))
+             !_cups_strcasecmp(line, "BrowseLocalProtocols"))
     {
      /*
       * "BrowseProtocols name [... name]"
       * "BrowseLocalProtocols name [... name]"
-      * "BrowseRemoteProtocols name [... name]"
       */
 
       int protocols = parse_protocols(value);
@@ -3225,367 +3041,7 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
         break;
       }
 
-      if (_cups_strcasecmp(line, "BrowseLocalProtocols"))
-        BrowseRemoteProtocols = protocols;
-      if (_cups_strcasecmp(line, "BrowseRemoteProtocols"))
-        BrowseLocalProtocols = protocols;
-    }
-    else if ((!_cups_strcasecmp(line, "BrowseAllow") ||
-              !_cups_strcasecmp(line, "BrowseDeny")) && value)
-    {
-     /*
-      * BrowseAllow [From] host/ip...
-      * BrowseDeny [From] host/ip...
-      */
-
-      if ((location = cupsdFindLocation("CUPS_INTERNAL_BROWSE_ACL")) == NULL)
-        if ((location = cupsdNewLocation("CUPS_INTERNAL_BROWSE_ACL")) != NULL)
-	  cupsdAddLocation(location);
-
-
-      if (location == NULL)
-        cupsdLogMessage(CUPSD_LOG_ERROR,
-	                "Unable to initialize browse access control list.");
-      else
-      {
-	if (!_cups_strncasecmp(value, "from", 4))
-	{
-	 /*
-	  * Skip leading "from"...
-	  */
-
-	  value += 4;
-	}
-
-	while (*value)
-	{
-	 /*
-	  * Skip leading whitespace...
-	  */
-
-	  while (_cups_isspace(*value))
-	    value ++;
-
-	  if (!*value)
-	    break;
-
-	 /*
-	  * Find the end of the value...
-	  */
-
-	  for (valueptr = value;
-	       *valueptr && !_cups_isspace(*valueptr);
-	       valueptr ++);
-
-	  while (_cups_isspace(*valueptr))
-	    *valueptr++ = '\0';
-
-	 /*
-	  * Figure out what form the allow/deny address takes:
-	  *
-	  *    All
-	  *    None
-	  *    *.domain.com
-	  *    .domain.com
-	  *    host.domain.com
-	  *    nnn.*
-	  *    nnn.nnn.*
-	  *    nnn.nnn.nnn.*
-	  *    nnn.nnn.nnn.nnn
-	  *    nnn.nnn.nnn.nnn/mm
-	  *    nnn.nnn.nnn.nnn/mmm.mmm.mmm.mmm
-	  */
-
-	  if (!_cups_strcasecmp(value, "all"))
-	  {
-	   /*
-	    * All hosts...
-	    */
-
-	    if (!_cups_strcasecmp(line, "BrowseAllow"))
-	      cupsdAddIPMask(&(location->allow), zeros, zeros);
-	    else
-	      cupsdAddIPMask(&(location->deny), zeros, zeros);
-	  }
-	  else if (!_cups_strcasecmp(value, "none"))
-	  {
-	   /*
-	    * No hosts...
-	    */
-
-	    if (!_cups_strcasecmp(line, "BrowseAllow"))
-	      cupsdAddIPMask(&(location->allow), ones, zeros);
-	    else
-	      cupsdAddIPMask(&(location->deny), ones, zeros);
-	  }
-#ifdef AF_INET6
-	  else if (value[0] == '*' || value[0] == '.' ||
-		   (!isdigit(value[0] & 255) && value[0] != '['))
-#else
-	  else if (value[0] == '*' || value[0] == '.' ||
-	           !isdigit(value[0] & 255))
-#endif /* AF_INET6 */
-	  {
-	   /*
-	    * Host or domain name...
-	    */
-
-	    if (!_cups_strcasecmp(line, "BrowseAllow"))
-	      cupsdAddNameMask(&(location->allow), value);
-	    else
-	      cupsdAddNameMask(&(location->deny), value);
-	  }
-	  else
-	  {
-	   /*
-	    * One of many IP address forms...
-	    */
-
-	    if (!get_addr_and_mask(value, ip, mask))
-	    {
-	      cupsdLogMessage(CUPSD_LOG_ERROR, "Bad netmask value %s on line %d.",
-			      value, linenum);
-	      break;
-	    }
-
-	    if (!_cups_strcasecmp(line, "BrowseAllow"))
-	      cupsdAddIPMask(&(location->allow), ip, mask);
-	    else
-	      cupsdAddIPMask(&(location->deny), ip, mask);
-	  }
-
-	 /*
-	  * Advance to next value...
-	  */
-
-	  value = valueptr;
-	}
-      }
-    }
-    else if (!_cups_strcasecmp(line, "BrowseRelay") && value)
-    {
-     /*
-      * BrowseRelay [from] source [to] destination
-      */
-
-      if (NumRelays == 0)
-        relay = malloc(sizeof(cupsd_dirsvc_relay_t));
-      else
-        relay = realloc(Relays, (NumRelays + 1) * sizeof(cupsd_dirsvc_relay_t));
-
-      if (!relay)
-      {
-        cupsdLogMessage(CUPSD_LOG_ERROR,
-	                "Unable to allocate BrowseRelay at line %d - %s.",
-	                linenum, strerror(errno));
-        continue;
-      }
-
-      Relays = relay;
-      relay  += NumRelays;
-
-      memset(relay, 0, sizeof(cupsd_dirsvc_relay_t));
-
-      if (!_cups_strncasecmp(value, "from ", 5))
-      {
-       /*
-	* Skip leading "from"...
-	*/
-
-	value += 5;
-
-       /*
-        * Skip leading whitespace...
-	*/
-
-	while (_cups_isspace(*value))
-	  value ++;
-      }
-
-     /*
-      * Find the end of the from value...
-      */
-
-      for (valueptr = value;
-	   *valueptr && !_cups_isspace(*valueptr);
-	   valueptr ++);
-
-      while (_cups_isspace(*valueptr))
-	*valueptr++ = '\0';
-
-     /*
-      * Figure out what form the from address takes:
-      *
-      *    *.domain.com
-      *    .domain.com
-      *    host.domain.com
-      *    nnn.*
-      *    nnn.nnn.*
-      *    nnn.nnn.nnn.*
-      *    nnn.nnn.nnn.nnn
-      *    nnn.nnn.nnn.nnn/mm
-      *    nnn.nnn.nnn.nnn/mmm.mmm.mmm.mmm
-      */
-
-#ifdef AF_INET6
-      if (value[0] == '*' || value[0] == '.' ||
-          (!isdigit(value[0] & 255) && value[0] != '['))
-#else
-      if (value[0] == '*' || value[0] == '.' || !isdigit(value[0] & 255))
-#endif /* AF_INET6 */
-      {
-       /*
-        * Host or domain name...
-	*/
-
-        if (!cupsdAddNameMask(&(relay->from), value))
-	{
-	  cupsdLogMessage(CUPSD_LOG_ERROR,
-			  "Unable to allocate BrowseRelay name at line %d - %s.",
-			  linenum, strerror(errno));
-	  continue;
-	}
-      }
-      else
-      {
-       /*
-        * One of many IP address forms...
-	*/
-
-        if (!get_addr_and_mask(value, ip, mask))
-	{
-          cupsdLogMessage(CUPSD_LOG_ERROR, "Bad netmask value %s on line %d.",
-	                  value, linenum);
-	  break;
-	}
-
-        if (!cupsdAddIPMask(&(relay->from), ip, mask))
-	{
-	  cupsdLogMessage(CUPSD_LOG_ERROR,
-			  "Unable to allocate BrowseRelay IP at line %d - %s.",
-			  linenum, strerror(errno));
-	  continue;
-	}
-      }
-
-     /*
-      * Get "to" address and port...
-      */
-
-      if (!_cups_strncasecmp(valueptr, "to ", 3))
-      {
-       /*
-        * Strip leading "to"...
-	*/
-
-	valueptr += 3;
-
-	while (_cups_isspace(*valueptr))
-	  valueptr ++;
-      }
-
-      if ((addrlist = get_address(valueptr, BrowsePort)) != NULL)
-      {
-       /*
-        * Only IPv4 addresses are supported...
-        */
-
-	for (addr = addrlist; addr; addr = addr->next)
-	  if (addr->addr.addr.sa_family == AF_INET)
-	    break;
-
-	if (addr)
-	{
-	  memcpy(&(relay->to), &(addrlist->addr), sizeof(relay->to));
-
-	  httpAddrString(&(relay->to), temp, sizeof(temp));
-
-	  cupsdLogMessage(CUPSD_LOG_INFO, "Relaying from %s to %s:%d (IPv4)",
-			  value, temp, _httpAddrPort(&(relay->to)));
-
-	  NumRelays ++;
-	}
-	else
-	{
-	  cupsArrayDelete(relay->from);
-	  relay->from = NULL;
-
-	  cupsdLogMessage(CUPSD_LOG_ERROR, "Bad relay address %s at line %d.",
-	                  valueptr, linenum);
-	}
-
-	httpAddrFreeList(addrlist);
-      }
-      else
-      {
-	cupsArrayDelete(relay->from);
-	relay->from = NULL;
-
-        cupsdLogMessage(CUPSD_LOG_ERROR, "Bad relay address %s at line %d.",
-	                valueptr, linenum);
-      }
-    }
-    else if (!_cups_strcasecmp(line, "BrowsePoll") && value)
-    {
-     /*
-      * BrowsePoll address[:port]
-      */
-
-      char		*portname;	/* Port name */
-      int		portnum;	/* Port number */
-      struct servent	*service;	/* Service */
-
-
-     /*
-      * Extract the port name from the address...
-      */
-
-      if ((portname = strrchr(value, ':')) != NULL && !strchr(portname, ']'))
-      {
-        *portname++ = '\0';
-
-        if (isdigit(*portname & 255))
-	  portnum = atoi(portname);
-	else if ((service = getservbyname(portname, NULL)) != NULL)
-	  portnum = ntohs(service->s_port);
-	else
-	{
-	  cupsdLogMessage(CUPSD_LOG_ERROR, "Lookup of service \"%s\" failed.",
-	                  portname);
-          continue;
-	}
-      }
-      else
-        portnum = ippPort();
-
-     /*
-      * Add the poll entry...
-      */
-
-      if (NumPolled == 0)
-        pollp = malloc(sizeof(cupsd_dirsvc_poll_t));
-      else
-        pollp = realloc(Polled, (NumPolled + 1) * sizeof(cupsd_dirsvc_poll_t));
-
-      if (!pollp)
-      {
-        cupsdLogMessage(CUPSD_LOG_ERROR,
-	                "Unable to allocate BrowsePoll at line %d - %s.",
-	                linenum, strerror(errno));
-        continue;
-      }
-
-      Polled = pollp;
-      pollp   += NumPolled;
-
-      NumPolled ++;
-      memset(pollp, 0, sizeof(cupsd_dirsvc_poll_t));
-
-      strlcpy(pollp->hostname, value, sizeof(pollp->hostname));
-      pollp->port = portnum;
-
-      cupsdLogMessage(CUPSD_LOG_INFO, "Polling %s:%d", pollp->hostname,
-	              pollp->port);
+      BrowseLocalProtocols = protocols;
     }
     else if (!_cups_strcasecmp(line, "DefaultAuthType") && value)
     {

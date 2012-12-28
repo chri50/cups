@@ -17,47 +17,10 @@
  * Browse protocols...
  */
 
-#define BROWSE_CUPS	1		/* CUPS */
-#define	BROWSE_SLP	2		/* SLPv2 */
-#define BROWSE_LDAP	4		/* LDAP */
-#define BROWSE_DNSSD	8		/* DNS Service Discovery (aka Bonjour) */
-#define BROWSE_SMB	16		/* SMB/Samba */
-#define BROWSE_LPD	32		/* LPD via xinetd or launchd */
-#define BROWSE_ALL	63		/* All protocols */
-
-
-/*
- * Browse address...
- */
-
-typedef struct
-{
-  char			iface[32];	/* Destination interface */
-  http_addr_t		to;		/* Destination address */
-} cupsd_dirsvc_addr_t;
-
-
-/*
- * Relay structure...
- */
-
-typedef struct
-{
-  cups_array_t		*from;		/* Source address/name mask(s) */
-  http_addr_t		to;		/* Destination address */
-} cupsd_dirsvc_relay_t;
-
-
-/*
- * Polling structure...
- */
-
-typedef struct
-{
-  char			hostname[64];	/* Hostname (actually, IP address) */
-  int			port;		/* Port number */
-  int			pid;		/* Current poll server PID */
-} cupsd_dirsvc_poll_t;
+#define BROWSE_DNSSD	1		/* DNS Service Discovery (aka Bonjour) */
+#define BROWSE_SMB	2		/* SMB/Samba */
+#define BROWSE_LPD	4		/* LPD via xinetd or launchd */
+#define BROWSE_ALL	7		/* All protocols */
 
 
 /*
@@ -69,50 +32,8 @@ VAR int			Browsing	VALUE(TRUE),
 			BrowseWebIF	VALUE(FALSE),
 					/* Whether the web interface is advertised */
 			BrowseLocalProtocols
-					VALUE(BROWSE_ALL),
+					VALUE(BROWSE_ALL);
 					/* Protocols to support for local printers */
-			BrowseRemoteProtocols
-					VALUE(BROWSE_ALL),
-					/* Protocols to support for remote printers */
-			BrowseShortNames VALUE(TRUE),
-					/* Short names for remote printers? */
-			BrowseSocket	VALUE(-1),
-					/* Socket for browsing */
-			BrowsePort	VALUE(IPP_PORT),
-					/* Port number for broadcasts */
-			BrowseInterval	VALUE(DEFAULT_INTERVAL),
-					/* Broadcast interval in seconds */
-			BrowseTimeout	VALUE(DEFAULT_TIMEOUT),
-					/* Time out for printers in seconds */
-			UseNetworkDefault VALUE(CUPS_DEFAULT_USE_NETWORK_DEFAULT),
-					/* Use the network default printer? */
-			NumBrowsers	VALUE(0);
-					/* Number of broadcast addresses */
-VAR char		*BrowseLocalOptions
-					VALUE(NULL),
-					/* Options to add to local printer URIs */
-			*BrowseRemoteOptions
-					VALUE(NULL);
-					/* Options to add to remote printer URIs */
-VAR cupsd_dirsvc_addr_t	*Browsers	VALUE(NULL);
-					/* Broadcast addresses */
-VAR cupsd_location_t	*BrowseACL	VALUE(NULL);
-					/* Browser access control list */
-VAR cupsd_printer_t	*BrowseNext	VALUE(NULL);
-					/* Next class/printer to broadcast */
-VAR int			NumRelays	VALUE(0);
-					/* Number of broadcast relays */
-VAR cupsd_dirsvc_relay_t *Relays	VALUE(NULL);
-					/* Broadcast relays */
-VAR int			NumPolled	VALUE(0);
-					/* Number of polled servers */
-VAR cupsd_dirsvc_poll_t	*Polled		VALUE(NULL);
-					/* Polled servers */
-VAR int			PollPipe	VALUE(0);
-					/* Status pipe for pollers */
-VAR cupsd_statbuf_t	*PollStatusBuffer VALUE(NULL);
-					/* Status buffer for pollers */
-
 #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
 VAR char		*DNSSDComputerName VALUE(NULL),
 					/* Computer/server name */
@@ -150,15 +71,9 @@ VAR char		*LPDConfigFile	VALUE(NULL),
  */
 
 extern void	cupsdDeregisterPrinter(cupsd_printer_t *p, int removeit);
-extern void	cupsdLoadRemoteCache(void);
 extern void	cupsdRegisterPrinter(cupsd_printer_t *p);
-extern void	cupsdRestartPolling(void);
-extern void	cupsdSaveRemoteCache(void);
-extern void	cupsdSendBrowseList(void);
 extern void	cupsdStartBrowsing(void);
-extern void	cupsdStartPolling(void);
 extern void	cupsdStopBrowsing(void);
-extern void	cupsdStopPolling(void);
 #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
 extern void	cupsdUpdateDNSSDName(void);
 #endif /* HAVE_DNSSD || HAVE_AVAHI */

@@ -1,6 +1,6 @@
 --- a/scheduler/dirsvc.c
 +++ b/scheduler/dirsvc.c
-@@ -2367,6 +2367,7 @@
+@@ -1339,6 +1339,7 @@
    DNSSDMaster = NULL;
  
  #  else /* HAVE_AVAHI */

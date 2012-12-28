@@ -87,9 +87,6 @@ cupsdCleanDirty(void)
   if (DirtyFiles & CUPSD_DIRTY_CLASSES)
     cupsdSaveAllClasses();
 
-  if (DirtyFiles & CUPSD_DIRTY_REMOTE)
-    cupsdSaveRemoteCache();
-
   if (DirtyFiles & CUPSD_DIRTY_PRINTCAP)
     cupsdWritePrintcap();
 
@@ -123,10 +120,9 @@ cupsdCleanDirty(void)
 void
 cupsdMarkDirty(int what)		/* I - What file(s) are dirty? */
 {
-  cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdMarkDirty(%c%c%c%c%c%c)",
+  cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdMarkDirty(%c%c%c%c%c)",
 		  (what & CUPSD_DIRTY_PRINTERS) ? 'P' : '-',
 		  (what & CUPSD_DIRTY_CLASSES) ? 'C' : '-',
--		  (what & CUPSD_DIRTY_REMOTE) ? 'R' : '-',
 		  (what & CUPSD_DIRTY_PRINTCAP) ? 'p' : '-',
 		  (what & CUPSD_DIRTY_JOBS) ? 'J' : '-',
 		  (what & CUPSD_DIRTY_SUBSCRIPTIONS) ? 'S' : '-');
@@ -865,20 +861,9 @@ sysUpdate(void)
            p;
 	   p = (cupsd_printer_t *)cupsArrayNext(Printers))
       {
-	if (p->type & CUPS_PRINTER_DISCOVERED)
-	{
-	  cupsdLogMessage(CUPSD_LOG_DEBUG,
-	                  "Deleting remote destination \"%s\"", p->name);
-	  cupsArraySave(Printers);
-	  cupsdDeletePrinter(p, 0);
-	  cupsArrayRestore(Printers);
-	}
-	else
-	{
-	  cupsdLogMessage(CUPSD_LOG_DEBUG,
-	                  "Deregistering local printer \"%s\"", p->name);
-	  cupsdDeregisterPrinter(p, 0);
-	}
+	cupsdLogMessage(CUPSD_LOG_DEBUG,
+			"Deregistering local printer \"%s\"", p->name);
+	cupsdDeregisterPrinter(p, 0);
       }
 
       cupsdCleanDirty();
@@ -965,23 +950,8 @@ sysUpdate(void)
     if (sysevent.event & SYSEVENT_NETCHANGED)
     {
       if (!Sleeping)
-      {
         cupsdLogMessage(CUPSD_LOG_DEBUG,
 	                "System network configuration changed");
-
-       /*
-        * Resetting browse_time before calling cupsdSendBrowseList causes
-	* browse packets to be sent for local shared printers.
-        */
-
-	for (p = (cupsd_printer_t *)cupsArrayFirst(Printers);
-	     p;
-	     p = (cupsd_printer_t *)cupsArrayNext(Printers))
-	  p->browse_time = 0;
-
-        cupsdSendBrowseList();
-	cupsdRestartPolling();
-      }
       else
         cupsdLogMessage(CUPSD_LOG_DEBUG,
 	                "System network configuration changed; "
@@ -1019,10 +989,7 @@ sysUpdate(void)
 	for (p = (cupsd_printer_t *)cupsArrayFirst(Printers);
 	     p;
 	     p = (cupsd_printer_t *)cupsArrayNext(Printers))
-	{
-	  p->browse_time = 0;
 	  cupsdRegisterPrinter(p);
-	}
       }
       else
         cupsdLogMessage(CUPSD_LOG_DEBUG,
