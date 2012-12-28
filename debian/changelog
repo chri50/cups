@@ -1,3 +1,13 @@
+cups (1.5.3-2.11) unstable; urgency=low
+
+  [ Julien Cristau ]
+  * In the dbus UTF8 checker:
+    - Use C.UTF-8 instead of not-certainly-available en_US.UTF-8; make
+      cups depend on libc-bin (>= 2.13).
+    - Make sure the buffer is really big enough.
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 28 Dec 2012 13:41:27 +0100
+
 cups (1.5.3-2.10) unstable; urgency=low
 
   * Backport more upstream configuration split fixes:
