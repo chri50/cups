@@ -1,3 +1,27 @@
+cups (1.6.1-0ubuntu13) raring; urgency=low
+
+  * debian/patches/forward-port-cups-1-5-x-cups-browsing.patch: Removed the
+    forward-port of CUPS broadcasting/browsing as from cups-filters 1.0.27
+    on we have cups-browsed which does Bonjour browsing for us making the
+    patch unneeded. This eliminates also a crash bug in cupsd (LP: #1086019,
+    LP: #1061063, LP: #1061069).
+  * debian/rules: Removed "--with-remote_protocols='CUPS dnssd'" from the
+    ./configure command line and removed the "CUPS" from
+    "--with-local_protocols='CUPS dnssd'". These settings are not supported
+    any more in stock CUPS 1.6.x (without forward-port of CUPS broadcasting/
+    browsing).
+  * debian/cups.postinst: Again clean /etc/cups/cupsd.conf from all keywords
+    and settings which got obsolete with the dropping CUPS Broadcasting/
+    Browsing in CUPS 1.6.x: BrowsePoll, BrowseAllow, BrowseDeny, BrowseOrder,
+    and BrowseRemoteProtocols lines get removed and the "cups" argument gets
+    removed from the BrowseLocalProtocols line.
+  * debian/patches/airprint-support.patch,
+    debian/patches/cupsd-no-crash-on-avahi-threaded-poll-shutdown.patch:
+    Refreshed with quilt.
+  * debian/patches/CVE-2012-5519.patch: Manually updated.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 28 Dec 2012 22:27:30 +0100
+
 cups (1.6.1-0ubuntu12) raring; urgency=low
 
   * SECURITY UPDATE: privilege escalation via config file editing
