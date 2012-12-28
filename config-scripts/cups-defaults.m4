@@ -100,7 +100,7 @@ AC_ARG_WITH(local_protocols, [  --with-local-protocols  set default BrowseLocalP
 	default_local_protocols="$withval",
 	default_local_protocols="default")
 
-if test x$with_local_protocols != xno; then
+if test "x$with_local_protocols" != "xno"; then
 	if test "x$default_local_protocols" = "xdefault"; then
 		if test "x$DNSSD_BACKEND" != "x"; then
 			CUPS_BROWSE_LOCAL_PROTOCOLS="dnssd"
