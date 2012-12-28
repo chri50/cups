@@ -160,6 +160,7 @@ Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends},
  ${misc:Depends},
+ libc-bin (>= 2.13),
  debconf (>= 1.2.9) | debconf-2.0,
  poppler-utils (>= 0.12),
  procps,
