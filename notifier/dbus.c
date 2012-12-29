@@ -189,11 +189,11 @@ validate_utf8 (const char *str)
 
   /* Make sure our buffer is at least as large as the input string */
   str_len = strlen (str);
-  if (str_len > buflen)
+  if (str_len >= buflen)
   {
     if (buffer == NULL)
       /* Set encoding type to UTF-8 the first time we need to */
-      setlocale (LC_CTYPE, "en_US.UTF-8");
+      setlocale (LC_CTYPE, "C.UTF-8");
 
     buflen = str_len + 1;
     buffer = realloc (buffer, buflen);
