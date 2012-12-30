@@ -179,7 +179,9 @@ validate_utf8 (const char *str)
 
   if (str == NULL)
   {
+    buflen = 0;
     free (buffer);
+    buffer = NULL;
     return (NULL);
   }
 
