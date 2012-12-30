@@ -17,7 +17,7 @@ Last-Update: 2012-12-28
  
  #include <dbus/dbus.h>
  #ifdef HAVE_DBUS_MESSAGE_ITER_INIT_APPEND
-@@ -156,10 +159,82 @@
+@@ -156,10 +159,84 @@
   * Local functions...
   */
  
@@ -42,7 +42,9 @@ Last-Update: 2012-12-28
 +
 +  if (str == NULL)
 +  {
++    buflen = 0;
 +    free (buffer);
++    buffer = NULL;
 +    return (NULL);
 +  }
 +
@@ -101,7 +103,7 @@ Last-Update: 2012-12-28
   * 'main()' - Read events and send DBUS notifications.
   */
  
-@@ -226,6 +301,7 @@
+@@ -226,6 +303,7 @@
      int			no = 0;		/* Boolean "no" value */
      int			params = PARAMS_NONE;
  					/* What parameters to include? */
@@ -109,7 +111,7 @@ Last-Update: 2012-12-28
  
  
     /*
-@@ -365,7 +441,8 @@
+@@ -365,7 +443,8 @@
      attr = ippFindAttribute(msg, "notify-text", IPP_TAG_TEXT);
      if (!attr)
        goto bail;
@@ -119,7 +121,7 @@ Last-Update: 2012-12-28
        goto bail;
  
      if (params >= PARAMS_PRINTER)
-@@ -509,8 +586,8 @@
+@@ -509,8 +588,8 @@
        attr = ippFindAttribute(msg, "job-name", IPP_TAG_NAME);
        if (attr)
        {
