@@ -140,6 +140,7 @@ Architecture: any
 Pre-Depends: dpkg (>= 1.15.7.2)
 Depends: ${shlibs:Depends},
  ${misc:Depends},
+ cups-daemon (>= ${binary:Version}),
  debconf (>= 1.2.9) | debconf-2.0,
  poppler-utils (>= 0.12),
  procps,
@@ -148,9 +149,6 @@ Depends: ${shlibs:Depends},
  cups-common (>= ${source:Upstream-Version}), 
  cups-client (>= ${binary:Version}),
  libcups2 (= ${binary:Version}),
- ssl-cert (>= 1.0.11),
- adduser,
- bc,
  cups-ppdc,
  cups-filters
 Recommends: avahi-daemon,
@@ -175,7 +173,50 @@ Description: Common UNIX Printing System(tm) - server
  Printing Protocol (IPP), and has its own filtering driver model for 
  handling various document types.
  .
- This package provides the CUPS scheduler/daemon and related files.
+ This package provides the parts of CUPS which are needed for using printer
+ drivers.
+
+Package: cups-daemon
+Priority: optional
+Section: net
+Architecture: any
+Pre-Depends: dpkg (>= 1.15.7.2)
+Depends: ${shlibs:Depends},
+ ${misc:Depends},
+ procps,
+ lsb-base (>= 3),
+ libcups2 (= ${binary:Version}),
+ ssl-cert (>= 1.0.11),
+ adduser,
+ bc
+Recommends: avahi-daemon,
+ colord,
+ cups-browsed
+Suggests: cups, cups-bsd,
+ cups-common (>= ${source:Upstream-Version}), 
+ cups-client (>= ${binary:Version}),
+ cups-ppdc,
+ cups-filters,
+ lsb-base (>= 3),
+ poppler-utils (>= 0.12),
+ ghostscript (>= 9.02~),
+ ghostscript-cups (>= 9.02~),
+ foomatic-filters (>= 4.0), 
+ foomatic-db-compressed-ppds | foomatic-db,
+ printer-driver-gutenprint,
+ printer-driver-hpcups,
+ hplip,
+ cups-pdf,
+ udev,
+ smbclient
+Multi-Arch: foreign
+Description: Common UNIX Printing System(tm) - server
+ The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
+ general replacement for lpd and the like.  It supports the Internet 
+ Printing Protocol (IPP), and has its own filtering driver model for 
+ handling various document types.
+ .
+ This package provides the CUPS scheduler/daemon.
 
 Package: cups-client
 Priority: optional
@@ -343,7 +384,7 @@ Package: cups-dbg
 Priority: extra
 Section: debug
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, cups (= ${binary:Version})
+Depends: ${shlibs:Depends}, ${misc:Depends}, cups-daemon (= ${binary:Version})
 Description: Common UNIX Printing System(tm) - debugging symbols
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
  general replacement for lpd and the like.  It supports the Internet 

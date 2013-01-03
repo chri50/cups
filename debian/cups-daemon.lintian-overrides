@@ -1,0 +1,3 @@
+cups-daemon: non-standard-executable-perm usr/lib/cups/backend-available/ipp 0744 != 0755
+cups-daemon: non-standard-executable-perm usr/lib/cups/backend-available/ipp14 0744 != 0755
+cups-daemon: init.d-script-possible-missing-stop etc/init.d/cups 0 6
