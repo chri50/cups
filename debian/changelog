@@ -1,3 +1,21 @@
+cups (1.6.1-0ubuntu14) raring; urgency=low
+
+  * debian/control, debian/rules, debian/cups.config, debian/cups.dirs,
+    debian/cups.install, debian/cups.lintian-overrides, debian/cups.postinst,
+    debian/cups.postrm, debian/cups.prerm, debian/cups.init.d,
+    debian/cups.logrotate, debian/cups.pam, debian/cups-daemon.dirs,
+    debian/cups-daemon.init.d, debian/cups-daemon.install,
+    debian/cups-daemon.lintian-overrides, debian/cups-daemon.logrotate,
+    debian/cups-daemon.pam, debian/cups-daemon.postinst,
+    debian/cups-daemon.postrm: Split the "cups" binary package into "cups"
+    and "cups-daemon". Installation of "cups-daemon" without "cups" gives a
+    CUPS environment for raw queues only, especially as a client-only mode
+    with queues pointing to remote printers set up automatically with
+    cups-browsed from cups-filters. This environment gives basic printing
+    support on low-footprint mobile systems, like Ubuntu for Android.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Thu,  3 Jan 2013 22:04:30 +0100
+
 cups (1.6.1-0ubuntu13) raring; urgency=low
 
   * debian/patches/forward-port-cups-1-5-x-cups-browsing.patch: Removed the

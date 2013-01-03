@@ -36,9 +36,9 @@ DEB_MAKE_INSTALL_TARGET := install BUILDROOT=$(DEB_DESTDIR)
 DEB_INSTALL_CHANGELOGS_ALL := CHANGES.txt
 
 ifeq ($(shell dpkg-vendor --query vendor), Ubuntu)
-DEB_DH_INSTALLINIT_ARGS := --upstart-only
+DEB_DH_INSTALLINIT_ARGS := --name=cups --upstart-only
 else
-DEB_DH_INSTALLINIT_ARGS := -u'start 50 2 3 4 5 . stop 80 1 .'
+DEB_DH_INSTALLINIT_ARGS := --name=cups -u'start 50 2 3 4 5 . stop 80 1 .'
 endif
 
 DEB_DH_STRIP_ARGS := --dbg-package=cups-dbg
@@ -94,9 +94,6 @@ binary-post-install/cups::
 	rm -rf debian/$(cdbs_curpkg)/usr/share/cups/banners
 	rm debian/$(cdbs_curpkg)/usr/share/cups/data/testprint
 
-	# Ensure that we don't ship anything in /var/run
-	rm -rf $(DEB_DESTDIR)/../cups/var/run
-
 	# PPD directories
 	#mkdir -p "$(DEB_DESTDIR)/../cups/usr/share/ppd/cups-included/"
 
@@ -105,18 +102,22 @@ binary-post-install/cups::
 
 	#dh_usrlocal
 
+	# Make the usb backend run as root, since /dev/bus/usb/* are
+	# root:root in udev < 147, and cups does not use the usblp kernel
+	# module any more; udev 147 makes most of those printers accessible to
+	# lp, but apparently not all of them
+	chmod go-x debian/$(cdbs_curpkg)/usr/lib/cups/backend-available/usb; \
+
+binary-post-install/cups-daemon::
+	# Ensure that we don't ship anything in /var/run
+	rm -rf $(DEB_DESTDIR)/../cups/var/run
+
 	# Install AppArmor, ufw profile, and Apport hook on Ubuntu
 	if dpkg-vendor --is ubuntu; then \
 	   install -D -m 644 debian/local/apparmor-profile debian/$(cdbs_curpkg)/etc/apparmor.d/usr.sbin.cupsd; \
 	   install -D -m 644 debian/local/cups.ufw.profile debian/$(cdbs_curpkg)/etc/ufw/applications.d/cups; \
 	   install -D -m 644 debian/local/apport-hook.py debian/$(cdbs_curpkg)/usr/share/apport/package-hooks/source_cups.py; \
 	fi
-
-	# Make the usb backend run as root, since /dev/bus/usb/* are
-	# root:root in udev < 147, and cups does not use the usblp kernel
-	# module any more; udev 147 makes most of those printers accessible to
-	# lp, but apparently not all of them
-	chmod go-x debian/$(cdbs_curpkg)/usr/lib/cups/backend-available/usb; \
 
 binary-post-install/libcupsimage2-dev::
 	rm -r debian/libcupsimage2-dev/usr/share/doc/libcupsimage2-dev
