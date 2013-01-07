@@ -1,3 +1,16 @@
+cups (1.6.1-0ubuntu15) raring; urgency=low
+
+  * debian/control: Added Breaks/Replaces for the transition to the new CUPS
+    with split-off cups-daemon binary package.
+  * debian/cups.maintscript: Remove obsolete conffile
+    /etc/apport/blacklist.d/cups from Quantal SRU, rename conffiles which
+    moved to cups-daemon.
+  * debian/cups.default, debian/cups-daemon.cups.default: Renamed file for
+    /etc/default/cups so that it gets included in the cups-daemon binary
+    package.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon,  7 Jan 2013 19:43:30 +0100
+
 cups (1.6.1-0ubuntu14) raring; urgency=low
 
   * debian/control, debian/rules, debian/cups.config, debian/cups.dirs,
