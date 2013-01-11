@@ -9,10 +9,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups\n"
-"POT-Creation-Date: 2012-11-30 15:03+0100\n"
+"POT-Creation-Date: 2013-01-10 18:10+0100\n"
 "PO-Revision-Date: 2012-11-30 15:40+0100\n"
 "Last-Translator: Didier Raboud <odyx@debian.org>\n"
-"Language-Team: French <>\n"
+"Language-Team: French <debian-l10n-french@lists.debian.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -279,7 +279,7 @@ msgstr ""
 #. type: SH
 #: cupsaccept.man:70 backend.man:187 cancel.man:67 classes.conf.man:101
 #: client.conf.man.in:49 cupsaddsmb.man.in:204 cups-config.man:111
-#: cupsctl.man:99 cupsd.conf.man.in:625 cups-files.conf.man.in:136
+#: cupsctl.man:94 cupsd.conf.man.in:625 cups-files.conf.man.in:136
 #: cups-deviced.man.in:36 cupsd.man.in:61 cups-driverd.man.in:114
 #: cupsenable.man:83 cupsfilter.man:83 cups-lpd.man.in:115 cups-polld.man:30
 #: cups-snmp.conf.man:67 cupstestdsc.man:41 cupstestppd.man:155 filter.man:248
@@ -300,7 +300,7 @@ msgstr "B<cancel>(1), B<cupsenable>(8), B<lp>(1), B<lpadmin>(8), B<lpstat>(1),"
 # type: Plain text
 #. type: Plain text
 #: cupsaccept.man:75 backend.man:191 cancel.man:71 classes.conf.man:106
-#: client.conf.man.in:51 cups-config.man:113 cupsctl.man:103
+#: client.conf.man.in:51 cups-config.man:113 cupsctl.man:98
 #: cupsd.conf.man.in:631 cups-files.conf.man.in:142 cups-deviced.man.in:40
 #: cupsd.man.in:68 cups-driverd.man.in:118 cupsenable.man:88 cupsfilter.man:87
 #: cups-lpd.man.in:120 cups-polld.man:34 cups-snmp.conf.man:69
@@ -316,7 +316,7 @@ msgstr "E<lt>URL:I<http://localhost:631/help>E<gt>"
 #. type: SH
 #: cupsaccept.man:75 backend.man:192 cancel.man:71 classes.conf.man:106
 #: client.conf.man.in:51 cupsaddsmb.man.in:210 cups-config.man:113
-#: cupsctl.man:103 cupsd.conf.man.in:631 cups-files.conf.man.in:142
+#: cupsctl.man:98 cupsd.conf.man.in:631 cups-files.conf.man.in:142
 #: cups-deviced.man.in:40 cupsd.man.in:68 cups-driverd.man.in:118
 #: cupsenable.man:88 cupsfilter.man:87 cups-lpd.man.in:120 cups-polld.man:34
 #: cups-snmp.conf.man:69 cupstestdsc.man:46 cupstestppd.man:161 filter.man:252
@@ -332,11 +332,11 @@ msgstr "COPYRIGHT"
 #. type: Plain text
 #: cupsaccept.man:76 backend.man:193 cancel.man:72 classes.conf.man:107
 #: client.conf.man.in:52 cupsaddsmb.man.in:211 cups-config.man:114
-#: cupsctl.man:104 cupsd.conf.man.in:632 cups-deviced.man.in:41
-#: cupsd.man.in:69 cups-driverd.man.in:119 cupsenable.man:90
-#: cups-lpd.man.in:121 cups-polld.man:35 cups-snmp.conf.man:70
-#: cupstestdsc.man:47 cupstestppd.man:162 filter.man:253 lpadmin.man:225
-#: lpc.man:68 lpinfo.man:112 lp.man:255 lpmove.man:63 lpoptions.man.in:132
+#: cupsctl.man:99 cupsd.conf.man.in:632 cups-deviced.man.in:41 cupsd.man.in:69
+#: cups-driverd.man.in:119 cupsenable.man:90 cups-lpd.man.in:121
+#: cups-polld.man:35 cups-snmp.conf.man:70 cupstestdsc.man:47
+#: cupstestppd.man:162 filter.man:253 lpadmin.man:225 lpc.man:68
+#: lpinfo.man:112 lp.man:255 lpmove.man:63 lpoptions.man.in:132
 #: lppasswd.man:65 lpq.man:69 lpr.man:119 lprm.man:62 lpstat.man:140
 #: mailto.conf.man:57 mime.convs.man:43 mime.types.man:112
 #: printers.conf.man:121 subscriptions.conf.man:86
@@ -460,18 +460,13 @@ msgstr ""
 msgid ""
 "    device-class scheme \"Unknown\" \"device-info\"\n"
 "    device-class device-uri \"device-make-and-model\" \"device-info\"\n"
-"    device-class device-uri \"device-make-and-model\" \"device-info\" "
-"\"device-id\"\n"
-"    device-class device-uri \"device-make-and-model\" \"device-info\" "
-"\"device-id\" \"device-location\"\n"
+"    device-class device-uri \"device-make-and-model\" \"device-info\" \"device-id\"\n"
+"    device-class device-uri \"device-make-and-model\" \"device-info\" \"device-id\" \"device-location\"\n"
 msgstr ""
 "    classe_périphérique schéma \"Unknown\" \"info_périphérique\"\n"
-"    classe_périphérique URI_périphérique \"marque_et_modèle_périphérique\" "
-"\"info_périphérique\"\n"
-"    classe_périphérique URI_périphérique \"marque_et_modèle_périphérique\" "
-"\"info_périphérique\" \"id_périphérique\"\n"
-"    classe_périphérique URI_périphérique \"marque_et_modèle_périphérique\" "
-"\"info_périphérique\" \"emplacement_périphérique\"\n"
+"    classe_périphérique URI_périphérique \"marque_et_modèle_périphérique\" \"info_périphérique\"\n"
+"    classe_périphérique URI_périphérique \"marque_et_modèle_périphérique\" \"info_périphérique\" \"id_périphérique\"\n"
+"    classe_périphérique URI_périphérique \"marque_et_modèle_périphérique\" \"info_périphérique\" \"emplacement_périphérique\"\n"
 
 # type: Plain text
 #. type: Plain text
@@ -1778,7 +1773,7 @@ msgstr ""
 
 # type: SH
 #. type: SH
-#: cupsaddsmb.man.in:201 cupsctl.man:97 cupsfilter.man:80
+#: cupsaddsmb.man.in:201 cupsctl.man:92 cupsfilter.man:80
 #, no-wrap
 msgid "KNOWN ISSUES"
 msgstr "PROBLÈMES CONNUS"
@@ -2079,8 +2074,8 @@ msgstr "cupsctl"
 #. type: TH
 #: cupsctl.man:15
 #, no-wrap
-msgid "10 January 2011"
-msgstr "10 janvier 2011"
+msgid "12 December 2012"
+msgstr "12 décembre 2012"
 
 # type: Plain text
 #. type: Plain text
@@ -2306,21 +2301,8 @@ msgstr "Désactiver le partage d'imprimantes :"
 msgid "    cupsctl --no-shared-printers\n"
 msgstr "    cupsctl --no-shared-printers\n"
 
-# type: Plain text
 #. type: Plain text
 #: cupsctl.man:94
-msgid "Enable printing using the file: pseudo-device:"
-msgstr "Activer l'impression dans le fichier « pseudo-périphérique » :"
-
-# type: TP
-#. type: Plain text
-#: cupsctl.man:96
-#, no-wrap
-msgid "    cupsctl FileDevice=Yes\n"
-msgstr "    cupsctl FileDevice=Yes\n"
-
-#. type: Plain text
-#: cupsctl.man:99
 msgid "You cannot set the Listen or Port directives using I<cupsctl>."
 msgstr ""
 "Vous ne pouvez pas régler les paramètres Listen ou Port en utilisant "
@@ -2328,7 +2310,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: cupsctl.man:101
+#: cupsctl.man:96
 msgid "I<cupsd.conf(5)>, I<cupsd(8)>,"
 msgstr "B<cupsd.conf>(5), B<cupsd>(8),"
 
@@ -2343,7 +2325,6 @@ msgstr "cupsd.conf"
 #. type: TH
 #: cupsd.conf.man.in:15 cups-files.conf.man.in:15
 #, no-wrap
-#| msgid "19 November 2009"
 msgid "19 November 2012"
 msgstr "19 novembre 2012"
 
@@ -2367,16 +2348,15 @@ msgid ""
 "server software and are described below."
 msgstr ""
 "Le fichier I<cupsd.conf> configure l'ordonnanceur CUPS et est normalement "
-"situé "
-"dans le répertoire I<@CUPS_SERVERROOT@>. B<Note:> Les configurations "
+"situé dans le répertoire I<@CUPS_SERVERROOT@>. B<Note:> Les configurations "
 "d'emplacements de fichiers et de dossier, et les directives de configuration "
-"utilisateurs, qui étaient jusqu'alors stockées dans le fichier I<cupsd.conf>, "
-"sont maintenant stockées dans le fichier I<cups-files.conf(5)>, afin de "
-"prévenir certains types d'attaques visant l'escalade de privilèges. LP Chaque "
-"ligne du fichier est une directive de configuration, une ligne vide ou un "
-"commentaire. Les commentaires commencent par le symbole #. Les directives de "
-"configuration sont intentionnellement similaires à celles utilisées par le "
-"populaire serveur Apache, et sont décrites ci-dessous. "
+"utilisateurs, qui étaient jusqu'alors stockées dans le fichier I<cupsd."
+"conf>, sont maintenant stockées dans le fichier I<cups-files.conf(5)>, afin "
+"de prévenir certains types d'attaques visant l'escalade de privilèges. LP "
+"Chaque ligne du fichier est une directive de configuration, une ligne vide "
+"ou un commentaire. Les commentaires commencent par le symbole #. Les "
+"directives de configuration sont intentionnellement similaires à celles "
+"utilisées par le populaire serveur Apache, et sont décrites ci-dessous. "
 
 # type: Plain text
 #. type: Plain text
@@ -4377,9 +4357,6 @@ msgstr "Indique si l'interface web est activée."
 # type: Plain text
 #. type: Plain text
 #: cupsd.conf.man.in:629
-#| msgid ""
-#| "I<classes.conf(5)>, I<cupsd(8)>, I<mime.convs(5)>, I<mime.types(5)>, "
-#| "I<printers.conf(5)>, I<subscriptions.conf(5)>,"
 msgid ""
 "I<classes.conf(5)>, I<cups-files.conf(5)>, I<cupsd(8)>, I<mime.convs(5)>, "
 "I<mime.types(5)>, I<printers.conf(5)>, I<subscriptions.conf(5)>,"
@@ -4405,9 +4382,6 @@ msgstr ""
 # type: Plain text
 #. type: Plain text
 #: cups-files.conf.man.in:22
-#| msgid ""
-#| "The I<cupsd.conf> file configures the CUPS scheduler, I<cupsd(8)>.  It is "
-#| "normally located in the I<@CUPS_SERVERROOT@> directory."
 msgid ""
 "The I<cups-file.conf> file configures the files and directories used by the "
 "CUPS scheduler, I<cupsd(8)>.  It is normally located in the "
@@ -5176,24 +5150,16 @@ msgstr ""
 #, no-wrap
 msgid ""
 "    \"drivername:ppdname\" language \"make\" \"make and model\"\n"
-"    \"drivername:ppdname\" language \"make\" \"make and model\" \"1284 device "
-"id\"\n"
-"    \"drivername:ppdname\" language \"make\" \"make and model\" \"1284 device "
-"id\" \"(PPD product)\"\n"
-"    \"drivername:ppdname\" language \"make\" \"make and model\" \"1284 device "
-"id\" \"(PPD product)\" \"PostScript version\"\n"
-"    \"drivername:ppdname\" language \"make\" \"make and model\" \"1284 device "
-"id\" \"(PPD product)\" \"PostScript version\" \"type\"\n"
+"    \"drivername:ppdname\" language \"make\" \"make and model\" \"1284 device id\"\n"
+"    \"drivername:ppdname\" language \"make\" \"make and model\" \"1284 device id\" \"(PPD product)\"\n"
+"    \"drivername:ppdname\" language \"make\" \"make and model\" \"1284 device id\" \"(PPD product)\" \"PostScript version\"\n"
+"    \"drivername:ppdname\" language \"make\" \"make and model\" \"1284 device id\" \"(PPD product)\" \"PostScript version\" \"type\"\n"
 msgstr ""
 "« nom du pilote : nom ppd » langue « marque » « marque et modèle »\n"
-"« nom du pilote : nom ppd » langue « marque » « marque et modèle » « id "
-"périphérique 1284 »\n"
-"« nom du pilote : nom ppd » langue « marque » « marque et modèle » « id "
-"périphérique 1284 » « (Produit PPD) »\n"
-"« nom du pilote : nom ppd » langue « marque » « marque et modèle » « id "
-"périphérique 1284 » « (Produit PPD) » « version PostScript »\n"
-"« nom du pilote : nom ppd » langue « marque » « marque et modèle » « id "
-"périphérique 1284 » « (Produit PPD) » « version PostScript » « type »\n"
+"« nom du pilote : nom ppd » langue « marque » « marque et modèle » « id périphérique 1284 »\n"
+"« nom du pilote : nom ppd » langue « marque » « marque et modèle » « id périphérique 1284 » « (Produit PPD) »\n"
+"« nom du pilote : nom ppd » langue « marque » « marque et modèle » « id périphérique 1284 » « (Produit PPD) » « version PostScript »\n"
+"« nom du pilote : nom ppd » langue « marque » « marque et modèle » « id périphérique 1284 » « (Produit PPD) » « version PostScript » « type »\n"
 
 # type: Plain text
 #. type: Plain text
@@ -5727,12 +5693,10 @@ msgstr ""
 #: cups-lpd.man.in:38
 #, no-wrap
 msgid ""
-"    printer stream tcp nowait lp @CUPS_SERVERBIN@/daemon/cups-lpd cups-lpd "
-"\\e\n"
+"    printer stream tcp nowait lp @CUPS_SERVERBIN@/daemon/cups-lpd cups-lpd \\e\n"
 "        -o document-format=application/octet-stream\n"
 msgstr ""
-"    printer stream tcp nowait lp @CUPS_SERVERBIN@/daemon/cups-lpd cups-lpd "
-"\\e\n"
+"    printer stream tcp nowait lp @CUPS_SERVERBIN@/daemon/cups-lpd cups-lpd \\e\n"
 "        -o document-format=application/octet-stream\n"
 
 # type: Plain text
@@ -10765,6 +10729,18 @@ msgid ""
 msgstr ""
 "B<classes.conf>(5), B<cupsd>(8), B<cupsd.conf>(5), B<mime.convs>(5), B<mime."
 "types>(5), B<printers.conf>(5)"
+
+# type: TH
+#~ msgid "10 January 2011"
+#~ msgstr "10 janvier 2011"
+
+# type: Plain text
+#~ msgid "Enable printing using the file: pseudo-device:"
+#~ msgstr "Activer l'impression dans le fichier « pseudo-périphérique » :"
+
+# type: TP
+#~ msgid "    cupsctl FileDevice=Yes\n"
+#~ msgstr "    cupsctl FileDevice=Yes\n"
 
 # type: TH
 #~ msgid "18 May 2011"
