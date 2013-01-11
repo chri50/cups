@@ -1,3 +1,13 @@
+cups (1.5.3-2.13) unstable; urgency=low
+
+  [ Helge Kreutzmann ]
+  * Update German manpage translation (Closes: #697860).
+
+  [ Didier Raboud ]
+  * Also refresh the po4a translations infrastructure.
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 11 Jan 2013 10:30:13 +0100
+
 cups (1.5.3-2.12) unstable; urgency=low
 
   [ Julien Cristau ]
