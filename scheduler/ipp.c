@@ -2925,17 +2925,23 @@ add_printer(cupsd_client_t  *con,	/* I - Client connection */
 
     cupsdSetPrinterReasons(printer, "none");
 
-#ifdef __APPLE__
    /*
     * (Re)register color profiles...
     */
 
     if (!RunUser)
     {
+      cupsdCmsRegisterPrinter(printer);
+#ifdef __APPLE__
+     /*
+      * FIXME: ideally the ColorSync stuff would be moved to colorsync.c
+      * and the colorsyncRegisterProfiles() would be called from
+      * cupsdCmsRegisterPrinter() in printers.c
+      */
       apple_unregister_profiles(printer);
       apple_register_profiles(printer);
-    }
 #endif /* __APPLE__ */
+    }
   }
 
  /*
@@ -7034,11 +7040,17 @@ delete_printer(cupsd_client_t  *con,	/* I - Client connection */
   snprintf(filename, sizeof(filename), "%s/%s.data", CacheDir, printer->name);
   unlink(filename);
 
-#ifdef __APPLE__
  /*
   * Unregister color profiles...
   */
 
+  cupsdCmsUnregisterPrinter(printer);
+#ifdef __APPLE__
+ /*
+  * FIXME: ideally the ColorSync stuff would be moved to colorsync.c
+  * and the colorsyncUnregisterPrinter() would be called from
+  * cupsdCmsUnregisterPrinter() in printers.c
+  */
   apple_unregister_profiles(printer);
 #endif /* __APPLE__ */
 
