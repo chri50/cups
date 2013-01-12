@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: cups@packages.debian.org\n"
-"POT-Creation-Date: 2011-09-15 12:02+0200\n"
+"POT-Creation-Date: 2012-09-18 12:37+0200\n"
 "PO-Revision-Date: 2012-01-27 21:29+0100\n"
 "Last-Translator: Michał Kułach <michal.kulach@gmail.com>\n"
 "Language-Team: Polish <debian-l10n-polish@lists.debian.org>\n"
@@ -77,8 +77,8 @@ msgid ""
 "It is recommended to choose this option if the server will be accepting "
 "print jobs from Windows computers or Samba servers."
 msgstr ""
-"Zaleca się wybranie tej opcji, jeśli serwer będzie akceptował zadania druku z "
-"komputerów z Windowsem lub z serwerów Samba."
+"Zaleca się wybranie tej opcji, jeśli serwer będzie akceptował zadania druku "
+"z komputerów z Windowsem lub z serwerów Samba."
 
 #. Type: multiselect
 #. Choices
@@ -89,20 +89,14 @@ msgstr "ipp"
 #. Type: multiselect
 #. Choices
 #: ../cups.templates:3001
+msgid "ipp14"
+msgstr "ipp14"
+
+#. Type: multiselect
+#. Choices
+#: ../cups.templates:3001
 msgid "lpd"
 msgstr "lpd"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
-msgid "parallel"
-msgstr "równoległy"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
-msgid "serial"
-msgstr "szeregowy"
 
 #. Type: multiselect
 #. Choices
@@ -140,8 +134,8 @@ msgstr "Backend komunikacji drukarki:"
 msgid ""
 "CUPS uses backend programs to communicate with the printer device or port."
 msgstr ""
-"CUPS używa programów typu \"backend\" do komunikacji z urządzeniem lub portem "
-"drukarki."
+"CUPS używa programów typu \"backend\" do komunikacji z urządzeniem lub "
+"portem drukarki."
 
 #. Type: multiselect
 #. Description

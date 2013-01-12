@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups\n"
 "Report-Msgid-Bugs-To: cups@packages.debian.org\n"
-"POT-Creation-Date: 2011-09-15 12:02+0200\n"
+"POT-Creation-Date: 2012-09-18 12:37+0200\n"
 "PO-Revision-Date: 2007-12-16 15:36+0900\n"
 "Last-Translator: Felipe Augusto van de Wiel (faw) <faw@debian.org>\n"
 "Language-Team: l10n portuguese <debian-l10n-portuguese@lists.debian.org>\n"
@@ -90,20 +90,14 @@ msgstr "ipp"
 #. Type: multiselect
 #. Choices
 #: ../cups.templates:3001
+msgid "ipp14"
+msgstr "ipp14"
+
+#. Type: multiselect
+#. Choices
+#: ../cups.templates:3001
 msgid "lpd"
 msgstr "lpd"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
-msgid "parallel"
-msgstr "paralelo"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
-msgid "serial"
-msgstr "serial"
 
 #. Type: multiselect
 #. Choices
@@ -164,9 +158,6 @@ msgid ""
 msgstr ""
 "Por favor, selecione o programa \"backend\" a ser usado pelo CUPS. A escolha "
 "padrão deve se encaixar na maiorias dos ambientes."
-
-#~ msgid "scsi"
-#~ msgstr "scsi"
 
 #~ msgid ""
 #~ "If you will be accepting print jobs from Windows computers, you probably "

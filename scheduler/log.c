@@ -1,5 +1,5 @@
 /*
- * "$Id: log.c 9949 2011-08-31 04:58:33Z mike $"
+ * "$Id: log.c 10158 2012-01-05 05:50:57Z mike $"
  *
  *   Log file routines for the CUPS scheduler.
  *
@@ -42,6 +42,21 @@
 static int	log_linesize = 0;	/* Size of line for output file */
 static char	*log_line = NULL;	/* Line for output file */
 
+#ifdef HAVE_VSYSLOG
+  static const int	syslevels[] =	/* SYSLOG levels... */
+		{
+		  0,
+		  LOG_EMERG,
+		  LOG_ALERT,
+		  LOG_CRIT,
+		  LOG_ERR,
+		  LOG_WARNING,
+		  LOG_NOTICE,
+		  LOG_INFO,
+		  LOG_DEBUG,
+		  LOG_DEBUG
+		};
+#endif /* HAVE_VSYSLOG */
 
 /*
  * Local functions...
@@ -386,7 +401,23 @@ cupsdLogGSSMessage(
 		minor_status_string = GSS_C_EMPTY_BUFFER;
 					/* Minor status message */
   int		ret;			/* Return value */
+  char		buffer[8192];		/* Buffer for vsnprintf */
 
+
+  if (strchr(message, '%'))
+  {
+   /*
+    * Format the message string...
+    */
+
+    va_list	ap;			/* Pointer to arguments */
+
+    va_start(ap, message);
+    vsnprintf(buffer, sizeof(buffer), message, ap);
+    va_end(ap);
+
+    message = buffer;
+  }
 
   msg_ctx             = 0;
   err_major_status    = gss_display_status(&err_minor_status,
@@ -421,7 +452,7 @@ cupsdLogJob(cupsd_job_t *job,		/* I - Job */
 	    const char  *message,	/* I - Printf-style message string */
 	    ...)			/* I - Additional arguments as needed */
 {
-  va_list		ap;		/* Argument pointer */
+  va_list		ap, ap2;	/* Argument pointers */
   char			jobmsg[1024];	/* Format string for job message */
   int			status;		/* Formatting status */
 
@@ -442,19 +473,27 @@ cupsdLogJob(cupsd_job_t *job,		/* I - Job */
   * Format and write the log message...
   */
 
-  snprintf(jobmsg, sizeof(jobmsg), "[Job %d] %s", job->id, message);
+  if (job)
+    snprintf(jobmsg, sizeof(jobmsg), "[Job %d] %s", job->id, message);
+  else
+    strlcpy(jobmsg, message, sizeof(jobmsg));
+
+  va_start(ap, message);
 
   do
   {
-    va_start(ap, message);
-    status = format_log_line(jobmsg, ap);
-    va_end(ap);
+    va_copy(ap2, ap);
+    status = format_log_line(jobmsg, ap2);
+    va_end(ap2);
   }
   while (status == 0);
 
+  va_end(ap);
+
   if (status > 0)
   {
-    if ((level > LogLevel ||
+    if (job &&
+        (level > LogLevel ||
          (level == CUPSD_LOG_INFO && LogLevel < CUPSD_LOG_DEBUG)) &&
 	LogDebugHistory > 0)
     {
@@ -515,7 +554,7 @@ cupsdLogMessage(int        level,	/* I - Log level */
                 const char *message,	/* I - printf-style message string */
 	        ...)			/* I - Additional args as needed */
 {
-  va_list		ap;		/* Argument pointer */
+  va_list		ap, ap2;	/* Argument pointers */
   int			status;		/* Formatting status */
 
 
@@ -526,8 +565,13 @@ cupsdLogMessage(int        level,	/* I - Log level */
   if ((TestConfigFile || !ErrorLog) && level <= CUPSD_LOG_WARN)
   {
     va_start(ap, message);
+#ifdef HAVE_VSYSLOG
+    vsyslog(LOG_LPR | syslevels[level], message, ap);
+#else
     vfprintf(stderr, message, ap);
+
     putc('\n', stderr);
+#endif /* HAVE_VSYSLOG */
     va_end(ap);
 
     return (1);
@@ -540,13 +584,17 @@ cupsdLogMessage(int        level,	/* I - Log level */
   * Format and write the log message...
   */
 
+  va_start(ap, message);
+
   do
   {
-    va_start(ap, message);
-    status = format_log_line(message, ap);
-    va_end(ap);
+    va_copy(ap2, ap);
+    status = format_log_line(message, ap2);
+    va_end(ap2);
   }
   while (status == 0);
+
+  va_end(ap);
 
   if (status > 0)
     return (cupsdWriteErrorLog(level, log_line));
@@ -963,22 +1011,6 @@ cupsdWriteErrorLog(int        level,	/* I - Log level */
 		  'D',
 		  'd'
 		};
-#ifdef HAVE_VSYSLOG
-  static const int	syslevels[] =	/* SYSLOG levels... */
-		{
-		  0,
-		  LOG_EMERG,
-		  LOG_ALERT,
-		  LOG_CRIT,
-		  LOG_ERR,
-		  LOG_WARNING,
-		  LOG_NOTICE,
-		  LOG_INFO,
-		  LOG_DEBUG,
-		  LOG_DEBUG
-		};
-#endif /* HAVE_VSYSLOG */
-
 
 #ifdef HAVE_VSYSLOG
  /*
@@ -1077,5 +1109,5 @@ format_log_line(const char *message,	/* I - Printf-style format string */
 
 
 /*
- * End of "$Id: log.c 9949 2011-08-31 04:58:33Z mike $".
+ * End of "$Id: log.c 10158 2012-01-05 05:50:57Z mike $".
  */

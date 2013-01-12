@@ -1,5 +1,5 @@
 /*
- * "$Id: cupstestdsc.c 9384 2010-11-22 07:06:39Z mike $"
+ * "$Id: cupstestdsc.c 9950 2011-09-01 23:02:24Z mike $"
  *
  *   DSC test program for CUPS.
  *
@@ -35,7 +35,7 @@
  */
 
 static int	check_file(const char *filename);
-static void	usage(void);
+static void	usage(void) __attribute__((noreturn));
 
 
 /*
@@ -438,5 +438,5 @@ usage(void)
 
 
 /*
- * End of "$Id: cupstestdsc.c 9384 2010-11-22 07:06:39Z mike $".
+ * End of "$Id: cupstestdsc.c 9950 2011-09-01 23:02:24Z mike $".
  */

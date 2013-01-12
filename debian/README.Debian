@@ -141,7 +141,9 @@ some other BSD-style printing system (such as lpr) side-by-side for
 testing purposes.  If you encounter any trouble doing this, file a
 bug.  It's known that CUPS conflicts with LPRng, since LPRng provides
 some System V printing commands as well; this problem will (hopefully)
-be dealt with in time.
+be dealt with in time. The cups-lpd daemon is disabled by default.
+To enable it, run 'dpkg-reconfigure cups-bsd' and follow the prompts.
+You will need a compatible inetd daemon installed (not xinetd).
 
 Add-ons for CUPS (such as drivers, backends, clients, etc.) should
 depend on the proper packages.  If your package is CUPS-specific, you

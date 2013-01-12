@@ -1,5 +1,5 @@
 /*
- * "$Id: testhttp.c 9993 2011-09-09 21:55:11Z mike $"
+ * "$Id: testhttp.c 9992 2011-09-09 21:51:39Z mike $"
  *
  *   HTTP test program for CUPS.
  *
@@ -596,5 +596,5 @@ main(int  argc,				/* I - Number of command-line arguments */
 
 
 /*
- * End of "$Id: testhttp.c 9993 2011-09-09 21:55:11Z mike $".
+ * End of "$Id: testhttp.c 9992 2011-09-09 21:51:39Z mike $".
  */

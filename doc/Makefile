@@ -1,9 +1,9 @@
 #
-# "$Id: Makefile 9483 2011-01-17 05:40:28Z mike $"
+# "$Id: Makefile 10429 2012-04-23 18:04:24Z mike $"
 #
 #   Documentation makefile for CUPS.
 #
-#   Copyright 2007-2011 by Apple Inc.
+#   Copyright 2007-2012 by Apple Inc.
 #   Copyright 1997-2007 by Easy Software Products.
 #
 #   These coded instructions, statements, and computer programs are the
@@ -66,7 +66,7 @@ HELPFILES	=	\
 			help/man-cancel.html \
 			help/man-cups-config.html \
 			help/man-cups-lpd.html \
-			help/man-cups-polld.html \
+			help/man-cups-snmp.html \
 			help/man-cupsaddsmb.html \
 			help/man-cupsd.html \
 			help/man-cupsenable.html \
@@ -105,6 +105,7 @@ HELPFILES	=	\
 			help/ref-classes-conf.html \
 			help/ref-client-conf.html \
 			help/ref-cupsd-conf.html \
+			help/ref-cups-files-conf.html \
 			help/ref-error_log.html \
 			help/ref-mailto-conf.html \
 			help/ref-page_log.html \

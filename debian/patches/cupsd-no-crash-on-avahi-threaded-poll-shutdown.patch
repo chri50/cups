@@ -1,0 +1,10 @@
+--- a/scheduler/dirsvc.c
++++ b/scheduler/dirsvc.c
+@@ -1333,6 +1333,7 @@
+   DNSSDMaster = NULL;
+ 
+ #  else /* HAVE_AVAHI */
++  avahi_threaded_poll_stop(DNSSDMaster);
+   avahi_client_free(DNSSDClient);
+   DNSSDClient = NULL;
+ 

@@ -1,9 +1,9 @@
 /*
- * "$Id: conf.c 10121 2011-11-16 15:28:11Z mike $"
+ * "$Id: conf.c 10482 2012-05-18 19:51:02Z mike $"
  *
  *   Configuration routines for the CUPS scheduler.
  *
- *   Copyright 2007-2011 by Apple Inc.
+ *   Copyright 2007-2012 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -14,22 +14,25 @@
  *
  * Contents:
  *
- *   cupsdAddAlias()          - Add a host alias.
+ *   cupsdAddAlias()	      - Add a host alias.
  *   cupsdCheckPermissions()  - Fix the mode and ownership of a file or
- *                              directory.
+ *				directory.
+ *   cupsdDefaultAuthType()   - Get the default AuthType.
  *   cupsdFreeAliases()       - Free all of the alias entries.
  *   cupsdReadConfiguration() - Read the cupsd.conf file.
- *   get_address()            - Get an address + port number from a line.
+ *   get_address()	      - Get an address + port number from a line.
  *   get_addr_and_mask()      - Get an IP address and netmask.
- *   mime_error_cb()          - Log a MIME error.
- *   parse_aaa()              - Parse authentication, authorization, and access
- *                              control lines.
+ *   mime_error_cb()	      - Log a MIME error.
+ *   parse_aaa()	      - Parse authentication, authorization, and access
+ *				control lines.
  *   parse_fatal_errors()     - Parse FatalErrors values in a string.
- *   parse_groups()           - Parse system group names in a string.
- *   parse_protocols()        - Parse browse protocols in a string.
- *   read_configuration()     - Read a configuration file.
- *   read_location()          - Read a <Location path> definition.
- *   read_policy()            - Read a <Policy name> definition.
+ *   parse_groups()	      - Parse system group names in a string.
+ *   parse_protocols()	      - Parse browse protocols in a string.
+ *   parse_variable()	      - Parse a variable line.
+ *   read_cupsd_conf()	      - Read the cupsd.conf configuration file.
+ *   read_cups_files_conf()   - Read the cups-files.conf configuration file.
+ *   read_location()	      - Read a <Location path> definition.
+ *   read_policy()	      - Read a <Policy name> definition.
  *   set_policy_defaults()    - Set default policy values as needed.
  */
 
@@ -64,6 +67,7 @@
 typedef enum
 {
   CUPSD_VARTYPE_INTEGER,		/* Integer option */
+  CUPSD_VARTYPE_TIME,			/* Time interval option */
   CUPSD_VARTYPE_STRING,			/* String option */
   CUPSD_VARTYPE_BOOLEAN,		/* Boolean option */
   CUPSD_VARTYPE_PATHNAME		/* File/directory name option */
@@ -71,7 +75,7 @@ typedef enum
 
 typedef struct
 {
-  char			*name;		/* Name of variable */
+  const char		*name;		/* Name of variable */
   void			*ptr;		/* Pointer to variable */
   cupsd_vartype_t	type;		/* Type (int, string, address) */
 } cupsd_var_t;
@@ -81,92 +85,85 @@ typedef struct
  * Local globals...
  */
 
-static const cupsd_var_t	variables[] =
+static const cupsd_var_t	cupsd_vars[] =
 {
-  { "AccessLog",		&AccessLog,		CUPSD_VARTYPE_STRING },
   { "AutoPurgeJobs", 		&JobAutoPurge,		CUPSD_VARTYPE_BOOLEAN },
-#ifdef HAVE_DNSSD
-  { "BrowseDNSSDRegType",	&DNSSDRegType,		CUPSD_VARTYPE_STRING },
-#endif /* HAVE_DNSSD */
-  { "BrowseInterval",		&BrowseInterval,	CUPSD_VARTYPE_INTEGER },
-#ifdef HAVE_LDAP
-  { "BrowseLDAPBindDN",		&BrowseLDAPBindDN,	CUPSD_VARTYPE_STRING },
-#  ifdef HAVE_LDAP_SSL
-  { "BrowseLDAPCACertFile",	&BrowseLDAPCACertFile,	CUPSD_VARTYPE_PATHNAME },
-#  endif /* HAVE_LDAP_SSL */
-  { "BrowseLDAPDN",		&BrowseLDAPDN,		CUPSD_VARTYPE_STRING },
-  { "BrowseLDAPPassword",	&BrowseLDAPPassword,	CUPSD_VARTYPE_STRING },
-  { "BrowseLDAPServer",		&BrowseLDAPServer,	CUPSD_VARTYPE_STRING },
-#endif /* HAVE_LDAP */
-  { "BrowseLocalOptions",	&BrowseLocalOptions,	CUPSD_VARTYPE_STRING },
-  { "BrowsePort",		&BrowsePort,		CUPSD_VARTYPE_INTEGER },
-  { "BrowseRemoteOptions",	&BrowseRemoteOptions,	CUPSD_VARTYPE_STRING },
-  { "BrowseShortNames",		&BrowseShortNames,	CUPSD_VARTYPE_BOOLEAN },
-  { "BrowseTimeout",		&BrowseTimeout,		CUPSD_VARTYPE_INTEGER },
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
+  { "BrowseDNSSDSubTypes",	&DNSSDSubTypes,		CUPSD_VARTYPE_STRING },
+#endif /* HAVE_DNSSD || HAVE_AVAHI */
   { "BrowseWebIF",		&BrowseWebIF,		CUPSD_VARTYPE_BOOLEAN },
   { "Browsing",			&Browsing,		CUPSD_VARTYPE_BOOLEAN },
-  { "CacheDir",			&CacheDir,		CUPSD_VARTYPE_STRING },
   { "Classification",		&Classification,	CUPSD_VARTYPE_STRING },
   { "ClassifyOverride",		&ClassifyOverride,	CUPSD_VARTYPE_BOOLEAN },
-  { "ConfigFilePerm",		&ConfigFilePerm,	CUPSD_VARTYPE_INTEGER },
-  { "DataDir",			&DataDir,		CUPSD_VARTYPE_STRING },
   { "DefaultLanguage",		&DefaultLanguage,	CUPSD_VARTYPE_STRING },
-  { "DefaultLeaseDuration",	&DefaultLeaseDuration,	CUPSD_VARTYPE_INTEGER },
+  { "DefaultLeaseDuration",	&DefaultLeaseDuration,	CUPSD_VARTYPE_TIME },
   { "DefaultPaperSize",		&DefaultPaperSize,	CUPSD_VARTYPE_STRING },
   { "DefaultPolicy",		&DefaultPolicy,		CUPSD_VARTYPE_STRING },
   { "DefaultShared",		&DefaultShared,		CUPSD_VARTYPE_BOOLEAN },
-  { "DirtyCleanInterval",	&DirtyCleanInterval,	CUPSD_VARTYPE_INTEGER },
-  { "DocumentRoot",		&DocumentRoot,		CUPSD_VARTYPE_STRING },
-  { "ErrorLog",			&ErrorLog,		CUPSD_VARTYPE_STRING },
+  { "DirtyCleanInterval",	&DirtyCleanInterval,	CUPSD_VARTYPE_TIME },
   { "ErrorPolicy",		&ErrorPolicy,		CUPSD_VARTYPE_STRING },
-  { "FileDevice",		&FileDevice,		CUPSD_VARTYPE_BOOLEAN },
   { "FilterLimit",		&FilterLimit,		CUPSD_VARTYPE_INTEGER },
   { "FilterNice",		&FilterNice,		CUPSD_VARTYPE_INTEGER },
-  { "FontPath",			&FontPath,		CUPSD_VARTYPE_STRING },
-  { "HideImplicitMembers",	&HideImplicitMembers,	CUPSD_VARTYPE_BOOLEAN },
-  { "ImplicitClasses",		&ImplicitClasses,	CUPSD_VARTYPE_BOOLEAN },
-  { "ImplicitAnyClasses",	&ImplicitAnyClasses,	CUPSD_VARTYPE_BOOLEAN },
-  { "JobKillDelay",		&JobKillDelay,		CUPSD_VARTYPE_INTEGER },
+#ifdef HAVE_GSSAPI
+  { "GSSServiceName",		&GSSServiceName,	CUPSD_VARTYPE_STRING },
+#endif /* HAVE_GSSAPI */
+  { "JobKillDelay",		&JobKillDelay,		CUPSD_VARTYPE_TIME },
   { "JobRetryLimit",		&JobRetryLimit,		CUPSD_VARTYPE_INTEGER },
-  { "JobRetryInterval",		&JobRetryInterval,	CUPSD_VARTYPE_INTEGER },
-  { "KeepAliveTimeout",		&KeepAliveTimeout,	CUPSD_VARTYPE_INTEGER },
+  { "JobRetryInterval",		&JobRetryInterval,	CUPSD_VARTYPE_TIME },
+  { "KeepAliveTimeout",		&KeepAliveTimeout,	CUPSD_VARTYPE_TIME },
   { "KeepAlive",		&KeepAlive,		CUPSD_VARTYPE_BOOLEAN },
 #ifdef HAVE_LAUNCHD
-  { "LaunchdTimeout",		&LaunchdTimeout,	CUPSD_VARTYPE_INTEGER },
+  { "LaunchdTimeout",		&LaunchdTimeout,	CUPSD_VARTYPE_TIME },
 #endif /* HAVE_LAUNCHD */
   { "LimitRequestBody",		&MaxRequestSize,	CUPSD_VARTYPE_INTEGER },
   { "ListenBackLog",		&ListenBackLog,		CUPSD_VARTYPE_INTEGER },
   { "LogDebugHistory",		&LogDebugHistory,	CUPSD_VARTYPE_INTEGER },
-  { "LogFilePerm",		&LogFilePerm,		CUPSD_VARTYPE_INTEGER },
-  { "LPDConfigFile",		&LPDConfigFile,		CUPSD_VARTYPE_STRING },
   { "MaxActiveJobs",		&MaxActiveJobs,		CUPSD_VARTYPE_INTEGER },
   { "MaxClients",		&MaxClients,		CUPSD_VARTYPE_INTEGER },
   { "MaxClientsPerHost",	&MaxClientsPerHost,	CUPSD_VARTYPE_INTEGER },
   { "MaxCopies",		&MaxCopies,		CUPSD_VARTYPE_INTEGER },
   { "MaxEvents",		&MaxEvents,		CUPSD_VARTYPE_INTEGER },
+  { "MaxHoldTime",		&MaxHoldTime,		CUPSD_VARTYPE_TIME },
   { "MaxJobs",			&MaxJobs,		CUPSD_VARTYPE_INTEGER },
   { "MaxJobsPerPrinter",	&MaxJobsPerPrinter,	CUPSD_VARTYPE_INTEGER },
   { "MaxJobsPerUser",		&MaxJobsPerUser,	CUPSD_VARTYPE_INTEGER },
-  { "MaxLeaseDuration",		&MaxLeaseDuration,	CUPSD_VARTYPE_INTEGER },
+  { "MaxJobTime",		&MaxJobTime,		CUPSD_VARTYPE_INTEGER },
+  { "MaxLeaseDuration",		&MaxLeaseDuration,	CUPSD_VARTYPE_TIME },
   { "MaxLogSize",		&MaxLogSize,		CUPSD_VARTYPE_INTEGER },
   { "MaxRequestSize",		&MaxRequestSize,	CUPSD_VARTYPE_INTEGER },
   { "MaxSubscriptions",		&MaxSubscriptions,	CUPSD_VARTYPE_INTEGER },
   { "MaxSubscriptionsPerJob",	&MaxSubscriptionsPerJob,	CUPSD_VARTYPE_INTEGER },
   { "MaxSubscriptionsPerPrinter",&MaxSubscriptionsPerPrinter,	CUPSD_VARTYPE_INTEGER },
   { "MaxSubscriptionsPerUser",	&MaxSubscriptionsPerUser,	CUPSD_VARTYPE_INTEGER },
-  { "MultipleOperationTimeout",	&MultipleOperationTimeout,	CUPSD_VARTYPE_INTEGER },
-  { "PageLog",			&PageLog,		CUPSD_VARTYPE_STRING },
+  { "MultipleOperationTimeout",	&MultipleOperationTimeout,	CUPSD_VARTYPE_TIME },
   { "PageLogFormat",		&PageLogFormat,		CUPSD_VARTYPE_STRING },
-  { "PreserveJobFiles",		&JobFiles,		CUPSD_VARTYPE_BOOLEAN },
-  { "PreserveJobHistory",	&JobHistory,		CUPSD_VARTYPE_BOOLEAN },
+  { "PreserveJobFiles",		&JobFiles,		CUPSD_VARTYPE_TIME },
+  { "PreserveJobHistory",	&JobHistory,		CUPSD_VARTYPE_TIME },
+  { "ReloadTimeout",		&ReloadTimeout,		CUPSD_VARTYPE_TIME },
+  { "RIPCache",			&RIPCache,		CUPSD_VARTYPE_STRING },
+  { "RootCertDuration",		&RootCertDuration,	CUPSD_VARTYPE_TIME },
+  { "ServerAdmin",		&ServerAdmin,		CUPSD_VARTYPE_STRING },
+  { "ServerName",		&ServerName,		CUPSD_VARTYPE_STRING },
+  { "StrictConformance",	&StrictConformance,	CUPSD_VARTYPE_BOOLEAN },
+  { "Timeout",			&Timeout,		CUPSD_VARTYPE_TIME },
+  { "WebInterface",		&WebInterface,		CUPSD_VARTYPE_BOOLEAN }
+};
+static const cupsd_var_t	cupsfiles_vars[] =
+{
+  { "AccessLog",		&AccessLog,		CUPSD_VARTYPE_STRING },
+  { "CacheDir",			&CacheDir,		CUPSD_VARTYPE_STRING },
+  { "ConfigFilePerm",		&ConfigFilePerm,	CUPSD_VARTYPE_INTEGER },
+  { "DataDir",			&DataDir,		CUPSD_VARTYPE_STRING },
+  { "DocumentRoot",		&DocumentRoot,		CUPSD_VARTYPE_STRING },
+  { "ErrorLog",			&ErrorLog,		CUPSD_VARTYPE_STRING },
+  { "FileDevice",		&FileDevice,		CUPSD_VARTYPE_BOOLEAN },
+  { "FontPath",			&FontPath,		CUPSD_VARTYPE_STRING },
+  { "LogFilePerm",		&LogFilePerm,		CUPSD_VARTYPE_INTEGER },
+  { "LPDConfigFile",		&LPDConfigFile,		CUPSD_VARTYPE_STRING },
+  { "PageLog",			&PageLog,		CUPSD_VARTYPE_STRING },
   { "Printcap",			&Printcap,		CUPSD_VARTYPE_STRING },
-  { "PrintcapGUI",		&PrintcapGUI,		CUPSD_VARTYPE_STRING },
-  { "ReloadTimeout",		&ReloadTimeout,		CUPSD_VARTYPE_INTEGER },
   { "RemoteRoot",		&RemoteRoot,		CUPSD_VARTYPE_STRING },
   { "RequestRoot",		&RequestRoot,		CUPSD_VARTYPE_STRING },
-  { "RIPCache",			&RIPCache,		CUPSD_VARTYPE_STRING },
-  { "RootCertDuration",		&RootCertDuration,	CUPSD_VARTYPE_INTEGER },
-  { "ServerAdmin",		&ServerAdmin,		CUPSD_VARTYPE_STRING },
   { "ServerBin",		&ServerBin,		CUPSD_VARTYPE_PATHNAME },
 #ifdef HAVE_SSL
   { "ServerCertificate",	&ServerCertificate,	CUPSD_VARTYPE_PATHNAME },
@@ -174,7 +171,6 @@ static const cupsd_var_t	variables[] =
   { "ServerKey",		&ServerKey,		CUPSD_VARTYPE_PATHNAME },
 #  endif /* HAVE_LIBSSL || HAVE_GNUTLS */
 #endif /* HAVE_SSL */
-  { "ServerName",		&ServerName,		CUPSD_VARTYPE_STRING },
   { "ServerRoot",		&ServerRoot,		CUPSD_VARTYPE_PATHNAME },
   { "SMBConfigFile",		&SMBConfigFile,		CUPSD_VARTYPE_STRING },
   { "StateDir",			&StateDir,		CUPSD_VARTYPE_STRING },
@@ -182,13 +178,11 @@ static const cupsd_var_t	variables[] =
   { "SystemGroupAuthKey",	&SystemGroupAuthKey,	CUPSD_VARTYPE_STRING },
 #endif /* HAVE_AUTHORIZATION_H */
   { "TempDir",			&TempDir,		CUPSD_VARTYPE_PATHNAME },
-  { "Timeout",			&Timeout,		CUPSD_VARTYPE_INTEGER },
-  { "UseNetworkDefault",	&UseNetworkDefault,	CUPSD_VARTYPE_BOOLEAN },
-  { "WebInterface",		&WebInterface,		CUPSD_VARTYPE_BOOLEAN },
   { "PidFile",			&PidFile,		CUPSD_VARTYPE_STRING }
 };
-#define NUM_VARS	(sizeof(variables) / sizeof(variables[0]))
 
+static int		default_auth_type = CUPSD_AUTH_AUTO;
+					/* Default AuthType, if not specified */
 
 static const unsigned	ones[4] =
 			{
@@ -213,7 +207,12 @@ static int		parse_aaa(cupsd_location_t *loc, char *line,
 static int		parse_fatal_errors(const char *s);
 static int		parse_groups(const char *s);
 static int		parse_protocols(const char *s);
-static int		read_configuration(cups_file_t *fp);
+static int		parse_variable(const char *filename, int linenum,
+			               const char *line, const char *value,
+			               size_t num_vars,
+			               const cupsd_var_t *vars);
+static int		read_cupsd_conf(cups_file_t *fp);
+static int		read_cups_files_conf(cups_file_t *fp);
 static int		read_location(cups_file_t *fp, char *name, int linenum);
 static int		read_policy(cups_file_t *fp, char *name, int linenum);
 static void		set_policy_defaults(cupsd_policy_t *pol);
@@ -395,6 +394,118 @@ cupsdCheckPermissions(
 
 
 /*
+ * 'cupsdDefaultAuthType()' - Get the default AuthType.
+ *
+ * When the default_auth_type is "auto", this function tries to get the GSS
+ * credentials for the server.  If that succeeds we use Kerberos authentication,
+ * otherwise we do a fallback to Basic authentication against the local user
+ * accounts.
+ */
+
+int					/* O - Default AuthType value */
+cupsdDefaultAuthType(void)
+{
+#ifdef HAVE_GSSAPI
+  OM_uint32	major_status,		/* Major status code */
+		minor_status;		/* Minor status code */
+  gss_name_t	server_name;		/* Server name */
+  gss_buffer_desc token = GSS_C_EMPTY_BUFFER;
+					/* Service name token */
+  char		buf[1024];		/* Service name buffer */
+#endif /* HAVE_GSSAPI */
+
+
+ /*
+  * If we have already determined the correct default AuthType, use it...
+  */
+
+  if (default_auth_type != CUPSD_AUTH_AUTO)
+    return (default_auth_type);
+
+#ifdef HAVE_GSSAPI
+#  ifdef __APPLE__
+ /*
+  * If the weak-linked GSSAPI/Kerberos library is not present, don't try
+  * to use it...
+  */
+
+  if (gss_init_sec_context == NULL)
+    return (default_auth_type = CUPSD_AUTH_BASIC);
+#  endif /* __APPLE__ */
+
+ /*
+  * Try to obtain the server's GSS credentials (GSSServiceName@servername).  If
+  * that fails we must use Basic...
+  */
+
+  snprintf(buf, sizeof(buf), "%s@%s", GSSServiceName, ServerName);
+
+  token.value  = buf;
+  token.length = strlen(buf);
+  server_name  = GSS_C_NO_NAME;
+  major_status = gss_import_name(&minor_status, &token,
+	 			 GSS_C_NT_HOSTBASED_SERVICE,
+				 &server_name);
+
+  memset(&token, 0, sizeof(token));
+
+  if (GSS_ERROR(major_status))
+  {
+    cupsdLogGSSMessage(CUPSD_LOG_DEBUG, major_status, minor_status,
+		       "cupsdDefaultAuthType: gss_import_name(%s) failed", buf);
+    return (default_auth_type = CUPSD_AUTH_BASIC);
+  }
+
+  major_status = gss_display_name(&minor_status, server_name, &token, NULL);
+
+  if (GSS_ERROR(major_status))
+  {
+    cupsdLogGSSMessage(CUPSD_LOG_DEBUG, major_status, minor_status,
+                       "cupsdDefaultAuthType: gss_display_name(%s) failed",
+                       buf);
+    return (default_auth_type = CUPSD_AUTH_BASIC);
+  }
+
+  cupsdLogMessage(CUPSD_LOG_DEBUG,
+                  "cupsdDefaultAuthType: Attempting to acquire Kerberos "
+                  "credentials for %s...", (char *)token.value);
+
+  ServerCreds  = GSS_C_NO_CREDENTIAL;
+  major_status = gss_acquire_cred(&minor_status, server_name, GSS_C_INDEFINITE,
+				  GSS_C_NO_OID_SET, GSS_C_ACCEPT,
+				  &ServerCreds, NULL, NULL);
+  if (GSS_ERROR(major_status))
+  {
+    cupsdLogGSSMessage(CUPSD_LOG_DEBUG, major_status, minor_status,
+                       "cupsdDefaultAuthType: gss_acquire_cred(%s) failed",
+                       (char *)token.value);
+    gss_release_name(&minor_status, &server_name);
+    gss_release_buffer(&minor_status, &token);
+    return (default_auth_type = CUPSD_AUTH_BASIC);
+  }
+
+  cupsdLogMessage(CUPSD_LOG_DEBUG,
+                  "cupsdDefaultAuthType: Kerberos credentials acquired "
+                  "successfully for %s.", (char *)token.value);
+
+  gss_release_name(&minor_status, &server_name);
+  gss_release_buffer(&minor_status, &token);
+
+  HaveServerCreds = 1;
+
+  return (default_auth_type = CUPSD_AUTH_NEGOTIATE);
+
+#else
+ /*
+  * No Kerberos support compiled in so just use Basic all the time...
+  */
+
+  return (default_auth_type = CUPSD_AUTH_BASIC);
+#endif /* HAVE_GSSAPI */
+}
+
+
+/*
  * 'cupsdFreeAliases()' - Free all of the alias entries.
  */
 
@@ -451,31 +562,6 @@ cupsdReadConfiguration(void)
   */
 
   cupsdDeleteAllLocations();
-
-  if (NumBrowsers > 0)
-  {
-    free(Browsers);
-    Browsers = NULL;
-
-    NumBrowsers = 0;
-  }
-
-  if (NumPolled > 0)
-  {
-    free(Polled);
-
-    NumPolled = 0;
-  }
-
-  if (NumRelays > 0)
-  {
-    for (i = 0; i < NumRelays; i ++)
-      cupsArrayDelete(Relays[i].from);
-
-    free(Relays);
-
-    NumRelays = 0;
-  }
 
   cupsdDeleteAllListeners();
 
@@ -550,6 +636,21 @@ cupsdReadConfiguration(void)
 
   cupsdSetString(&TempDir, NULL);
 
+#ifdef HAVE_GSSAPI
+  cupsdSetString(&GSSServiceName, CUPS_DEFAULT_GSSSERVICENAME);
+
+  if (HaveServerCreds)
+  {
+    OM_uint32	minor_status;		/* Minor status code */
+
+    gss_release_cred(&minor_status, &ServerCreds);
+
+    HaveServerCreds = 0;
+  }
+
+  ServerCreds = GSS_C_NO_CREDENTIAL;
+#endif /* HAVE_GSSAPI */
+
  /*
   * Find the default user...
   */
@@ -606,7 +707,7 @@ cupsdReadConfiguration(void)
   AccessLogLevel           = CUPSD_ACCESSLOG_ACTIONS;
   ConfigFilePerm           = CUPS_DEFAULT_CONFIG_FILE_PERM;
   FatalErrors              = parse_fatal_errors(CUPS_DEFAULT_FATAL_ERRORS);
-  DefaultAuthType          = CUPSD_AUTH_BASIC;
+  default_auth_type          = CUPSD_AUTH_BASIC;
 #ifdef HAVE_SSL
   DefaultEncryption        = HTTP_ENCRYPT_REQUIRED;
   SSLOptions               = CUPSD_SSL_NONE;
@@ -620,9 +721,6 @@ cupsdReadConfiguration(void)
   FilterLimit              = 0;
   FilterNice               = 0;
   HostNameLookups          = FALSE;
-  ImplicitClasses          = CUPS_DEFAULT_IMPLICIT_CLASSES;
-  ImplicitAnyClasses       = FALSE;
-  HideImplicitMembers      = TRUE;
   KeepAlive                = TRUE;
   KeepAliveTimeout         = DEFAULT_KEEPALIVE;
   ListenBackLog            = SOMAXCONN;
@@ -635,51 +733,36 @@ cupsdReadConfiguration(void)
   MaxLogSize               = 1024 * 1024;
   MaxRequestSize           = 0;
   MultipleOperationTimeout = DEFAULT_TIMEOUT;
+  NumSystemGroups          = 0;
   ReloadTimeout	           = DEFAULT_KEEPALIVE;
   RootCertDuration         = 300;
+  StrictConformance        = FALSE;
   Timeout                  = DEFAULT_TIMEOUT;
-  NumSystemGroups          = 0;
   WebInterface             = CUPS_DEFAULT_WEBIF;
 
-  BrowseInterval           = DEFAULT_INTERVAL;
-  BrowsePort               = ippPort();
   BrowseLocalProtocols     = parse_protocols(CUPS_DEFAULT_BROWSE_LOCAL_PROTOCOLS);
-  BrowseRemoteProtocols    = parse_protocols(CUPS_DEFAULT_BROWSE_REMOTE_PROTOCOLS);
-  BrowseShortNames         = CUPS_DEFAULT_BROWSE_SHORT_NAMES;
-  BrowseTimeout            = DEFAULT_TIMEOUT;
   BrowseWebIF              = FALSE;
   Browsing                 = CUPS_DEFAULT_BROWSING;
   DefaultShared            = CUPS_DEFAULT_DEFAULT_SHARED;
 
 #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
-  cupsdSetString(&DNSSDRegType, "_ipp._tcp,_cups,_universal");
-#endif /* HAVE_DNSSD */
+  cupsdSetString(&DNSSDSubTypes, "_cups,_print,_universal");
+#endif /* HAVE_DNSSD || HAVE_AVAHI */
 
   cupsdSetString(&LPDConfigFile, CUPS_DEFAULT_LPD_CONFIG_FILE);
   cupsdSetString(&SMBConfigFile, CUPS_DEFAULT_SMB_CONFIG_FILE);
 
-  cupsdClearString(&BrowseLocalOptions);
-  cupsdClearString(&BrowseRemoteOptions);
-
   cupsdSetString(&ErrorPolicy, "stop-printer");
-
-#ifdef HAVE_LDAP
-  cupsdClearString(&BrowseLDAPBindDN);
-  cupsdClearString(&BrowseLDAPDN);
-  cupsdClearString(&BrowseLDAPPassword);
-  cupsdClearString(&BrowseLDAPServer);
-#  ifdef HAVE_LDAP_SSL
-  cupsdClearString(&BrowseLDAPCACertFile);
-#  endif /* HAVE_LDAP_SSL */
-#endif /* HAVE_LDAP */
 
   JobHistory          = DEFAULT_HISTORY;
   JobFiles            = DEFAULT_FILES;
   JobAutoPurge        = 0;
+  MaxHoldTime         = 0;
   MaxJobs             = 500;
   MaxActiveJobs       = 0;
   MaxJobsPerUser      = 0;
   MaxJobsPerPrinter   = 0;
+  MaxJobTime          = 3 * 60 * 60;	/* 3 hours */
   MaxCopies           = CUPS_DEFAULT_MAX_COPIES;
 
   cupsdDeleteAllPolicies();
@@ -697,7 +780,7 @@ cupsdReadConfiguration(void)
   MaxLeaseDuration           = 0;
 
 #ifdef HAVE_LAUNCHD
-  LaunchdTimeout = DEFAULT_TIMEOUT + 10;
+  LaunchdTimeout = 10;
 #endif /* HAVE_LAUNCHD */
 
  /*
@@ -707,21 +790,60 @@ cupsdReadConfiguration(void)
   cupsdInitEnv();
 
  /*
-  * Read the configuration file...
+  * Read the cups-files.conf file...
+  */
+
+  if ((fp = cupsFileOpen(CupsFilesFile, "r")) != NULL)
+  {
+    status = read_cups_files_conf(fp);
+
+    cupsFileClose(fp);
+
+    if (!status)
+    {
+      if (TestConfigFile)
+        printf("%s contains errors\n", CupsFilesFile);
+      else
+        cupsdLogMessage(CUPSD_LOG_CRIT, "Unable to read %s", CupsFilesFile);
+      return (0);
+    }
+  }
+  else if (errno == ENOENT)
+    cupsdLogMessage(CUPSD_LOG_INFO, "No %s, using defaults.", CupsFilesFile);
+  else
+  {
+    syslog(LOG_LPR, "Unable to open \"%s\": %s", CupsFilesFile,
+                    strerror(errno));
+    return (0);
+  }
+
+  if (!ErrorLog)
+    cupsdSetString(&ErrorLog, CUPS_LOGDIR "/error_log");
+
+ /*
+  * Read the cupsd.conf file...
   */
 
   if ((fp = cupsFileOpen(ConfigurationFile, "r")) == NULL)
+  {
+    syslog(LOG_LPR, "Unable to open \"%s\": %s", ConfigurationFile,
+	   strerror(errno));
     return (0);
+  }
 
-  status = read_configuration(fp);
+  status = read_cupsd_conf(fp);
 
   cupsFileClose(fp);
 
   if (!status)
+  {
+    if (TestConfigFile)
+      printf("%s contains errors\n", ConfigurationFile);
+    else
+      syslog(LOG_LPR, "Unable to read \"%s\" due to errors.",
+	     ConfigurationFile);
     return (0);
-
-  if (!ErrorLog)
-    cupsdSetString(&ErrorLog, CUPS_LOGDIR "/error_log");
+  }
 
   RunUser = getuid();
 
@@ -833,12 +955,6 @@ cupsdReadConfiguration(void)
       NumSystemGroups   = 1;
     }
   }
-
- /*
-  * Get the access control list for browsing...
-  */
-
-  BrowseACL = cupsdFindLocation("CUPS_INTERNAL_BROWSE_ACL");
 
  /*
   * Open the system log for cupsd if necessary...
@@ -1002,7 +1118,9 @@ cupsdReadConfiguration(void)
        cupsdCheckPermissions(ServerRoot, "ssl", 0700, RunUser,
 			     Group, 1, 0) < 0 ||
        /* Never alter permissions of central conffile
-       cupsdCheckPermissions(ServerRoot, "cupsd.conf", ConfigFilePerm, RunUser,
+       cupsdCheckPermissions(ConfigurationFile, NULL, ConfigFilePerm, RunUser,
+			     Group, 0, 0) < 0 ||
+       cupsdCheckPermissions(CupsFilesFile, NULL, ConfigFilePerm, RunUser,
 			     Group, 0, 0) < 0 ||
        */
        cupsdCheckPermissions(ServerRoot, "classes.conf", 0600, RunUser,
@@ -1158,24 +1276,6 @@ cupsdReadConfiguration(void)
   cupsdLogMessage(CUPSD_LOG_INFO,
                   "Allowing up to %d client connections per host.",
                   MaxClientsPerHost);
-
- /*
-  * Make sure that BrowseTimeout is at least twice the interval...
-  */
-
-  if (BrowseTimeout < (2 * BrowseInterval) || BrowseTimeout <= 0)
-  {
-    cupsdLogMessage(CUPSD_LOG_ALERT, "Invalid BrowseTimeout value %d.",
-                    BrowseTimeout);
-
-    if (BrowseInterval)
-      BrowseTimeout = BrowseInterval * 2;
-    else
-      BrowseTimeout = DEFAULT_TIMEOUT;
-
-    cupsdLogMessage(CUPSD_LOG_ALERT, "Reset BrowseTimeout to %d.",
-                    BrowseTimeout);
-  }
 
  /*
   * Update the default policy, as needed...
@@ -1481,7 +1581,6 @@ cupsdReadConfiguration(void)
 
     cupsdLoadAllPrinters();
     cupsdLoadAllClasses();
-    cupsdLoadRemoteCache();
 
     cupsdCreateCommonData();
 
@@ -1513,6 +1612,12 @@ cupsdReadConfiguration(void)
     */
 
     cupsdCreateCommonData();
+
+   /*
+    * Update all jobs as needed...
+    */
+
+    cupsdUpdateJobs();
 
    /*
     * Update all printers as needed...
@@ -2478,20 +2583,10 @@ parse_protocols(const char *s)		/* I - Space-delimited protocols */
     * Add the protocol to the bitmask...
     */
 
-    if (!_cups_strcasecmp(valstart, "cups"))
-      protocols |= BROWSE_CUPS;
-    else if (!_cups_strcasecmp(valstart, "slp"))
-      protocols |= BROWSE_SLP;
-    else if (!_cups_strcasecmp(valstart, "ldap"))
-      protocols |= BROWSE_LDAP;
-    else if (!_cups_strcasecmp(valstart, "dnssd") ||
-             !_cups_strcasecmp(valstart, "dns-sd") ||
-             !_cups_strcasecmp(valstart, "bonjour"))
+    if (!_cups_strcasecmp(valstart, "dnssd") ||
+	!_cups_strcasecmp(valstart, "dns-sd") ||
+	!_cups_strcasecmp(valstart, "bonjour"))
       protocols |= BROWSE_DNSSD;
-    else if (!_cups_strcasecmp(valstart, "lpd"))
-      protocols |= BROWSE_LPD;
-    else if (!_cups_strcasecmp(valstart, "smb"))
-      protocols |= BROWSE_SMB;
     else if (!_cups_strcasecmp(valstart, "all"))
       protocols |= BROWSE_ALL;
     else if (_cups_strcasecmp(valstart, "none"))
@@ -2508,33 +2603,256 @@ parse_protocols(const char *s)		/* I - Space-delimited protocols */
 
 
 /*
- * 'read_configuration()' - Read a configuration file.
+ * 'parse_variable()' - Parse a variable line.
  */
 
 static int				/* O - 1 on success, 0 on failure */
-read_configuration(cups_file_t *fp)	/* I - File to read from */
+parse_variable(
+    const char        *filename,	/* I - Name of configuration file */
+    int               linenum,		/* I - Line in configuration file */
+    const char        *line,		/* I - Line from configuration file */
+    const char        *value,		/* I - Value from configuration file */
+    size_t            num_vars,		/* I - Number of variables */
+    const cupsd_var_t *vars)		/* I - Variables */
 {
-  int			i;		/* Looping var */
+  size_t		i;		/* Looping var */
+  const cupsd_var_t	*var;		/* Variables */
+  char			temp[1024];	/* Temporary string */
+
+
+  for (i = num_vars, var = vars; i > 0; i --, var ++)
+    if (!_cups_strcasecmp(line, var->name))
+      break;
+
+  if (i == 0)
+  {
+   /*
+    * Unknown directive!  Output an error message and continue...
+    */
+
+    if (!value)
+      cupsdLogMessage(CUPSD_LOG_ERROR, "Missing value for %s on line %d of %s.",
+		      line, linenum, filename);
+    else
+      cupsdLogMessage(CUPSD_LOG_ERROR, "Unknown directive %s on line %d of %s.",
+		      line, linenum, filename);
+
+    return (0);
+  }
+
+  switch (var->type)
+  {
+    case CUPSD_VARTYPE_INTEGER :
+	if (!value)
+	{
+	  cupsdLogMessage(CUPSD_LOG_ERROR,
+			  "Missing integer value for %s on line %d of %s.",
+			  line, linenum, filename);
+          return (0);
+	}
+	else if (!isdigit(*value & 255))
+	{
+	  cupsdLogMessage(CUPSD_LOG_ERROR,
+			  "Bad integer value for %s on line %d of %s.",
+			  line, linenum, filename);
+          return (0);
+	}
+	else
+	{
+	  int	n;		/* Number */
+	  char	*units;		/* Units */
+
+	  n = strtol(value, &units, 0);
+
+	  if (units && *units)
+	  {
+	    if (tolower(units[0] & 255) == 'g')
+	      n *= 1024 * 1024 * 1024;
+	    else if (tolower(units[0] & 255) == 'm')
+	      n *= 1024 * 1024;
+	    else if (tolower(units[0] & 255) == 'k')
+	      n *= 1024;
+	    else if (tolower(units[0] & 255) == 't')
+	      n *= 262144;
+	    else
+	    {
+	      cupsdLogMessage(CUPSD_LOG_ERROR,
+			      "Unknown integer value for %s on line %d of %s.",
+			      line, linenum, filename);
+	      return (0);
+	    }
+	  }
+
+	  if (n < 0)
+	  {
+	    cupsdLogMessage(CUPSD_LOG_ERROR,
+			    "Bad negative integer value for %s on line %d of "
+			    "%s.", line, linenum, filename);
+	    return (0);
+	  }
+	  else
+	  {
+	    *((int *)var->ptr) = n;
+	  }
+	}
+	break;
+
+    case CUPSD_VARTYPE_TIME :
+	if (!value)
+	{
+	  cupsdLogMessage(CUPSD_LOG_ERROR,
+			  "Missing time interval value for %s on line %d of "
+			  "%s.", line, linenum, filename);
+	  return (0);
+	}
+	else if (!_cups_strncasecmp(line, "PreserveJob", 11) &&
+		 (!_cups_strcasecmp(value, "true") ||
+		  !_cups_strcasecmp(value, "on") ||
+		  !_cups_strcasecmp(value, "enabled") ||
+		  !_cups_strcasecmp(value, "yes")))
+	{
+	  *((int *)var->ptr) = INT_MAX;
+	}
+	else if (!_cups_strcasecmp(value, "false") ||
+		 !_cups_strcasecmp(value, "off") ||
+		 !_cups_strcasecmp(value, "disabled") ||
+		 !_cups_strcasecmp(value, "no"))
+	{
+	  *((int *)var->ptr) = 0;
+	}
+	else if (!isdigit(*value & 255))
+	{
+	  cupsdLogMessage(CUPSD_LOG_ERROR,
+			  "Unknown time interval value for %s on line %d of "
+			  "%s.", line, linenum, filename);
+          return (0);
+	}
+	else
+	{
+	  double	n;		/* Number */
+	  char		*units;		/* Units */
+
+	  n = strtod(value, &units);
+
+	  if (units && *units)
+	  {
+	    if (tolower(units[0] & 255) == 'w')
+	      n *= 7 * 24 * 60 * 60;
+	    else if (tolower(units[0] & 255) == 'd')
+	      n *= 24 * 60 * 60;
+	    else if (tolower(units[0] & 255) == 'h')
+	      n *= 60 * 60;
+	    else if (tolower(units[0] & 255) == 'm')
+	      n *= 60;
+	    else
+	    {
+	      cupsdLogMessage(CUPSD_LOG_ERROR,
+			      "Unknown time interval value for %s on line "
+			      "%d of %s.", line, linenum, filename);
+	      return (0);
+	    }
+	  }
+
+	  if (n < 0.0 || n > INT_MAX)
+	  {
+	    cupsdLogMessage(CUPSD_LOG_ERROR,
+			    "Bad time value for %s on line %d of %s.",
+			    line, linenum, filename);
+	    return (0);
+	  }
+	  else
+	  {
+	    *((int *)var->ptr) = (int)n;
+	  }
+	}
+	break;
+
+    case CUPSD_VARTYPE_BOOLEAN :
+	if (!value)
+	{
+	  cupsdLogMessage(CUPSD_LOG_ERROR,
+			  "Missing boolean value for %s on line %d of %s.",
+			  line, linenum, filename);
+	  return (0);
+	}
+	else if (!_cups_strcasecmp(value, "true") ||
+		 !_cups_strcasecmp(value, "on") ||
+		 !_cups_strcasecmp(value, "enabled") ||
+		 !_cups_strcasecmp(value, "yes") ||
+		 atoi(value) != 0)
+	{
+	  *((int *)var->ptr) = TRUE;
+	}
+	else if (!_cups_strcasecmp(value, "false") ||
+		 !_cups_strcasecmp(value, "off") ||
+		 !_cups_strcasecmp(value, "disabled") ||
+		 !_cups_strcasecmp(value, "no") ||
+		 !_cups_strcasecmp(value, "0"))
+	{
+	  *((int *)var->ptr) = FALSE;
+	}
+	else
+	{
+	  cupsdLogMessage(CUPSD_LOG_ERROR,
+			  "Unknown boolean value %s on line %d of %s.",
+			  value, linenum, filename);
+	  return (0);
+	}
+	break;
+
+    case CUPSD_VARTYPE_PATHNAME :
+	if (!value)
+	{
+	  cupsdLogMessage(CUPSD_LOG_ERROR,
+			  "Missing pathname value for %s on line %d of %s.",
+			  line, linenum, filename);
+	  return (0);
+	}
+
+	if (value[0] == '/')
+	  strlcpy(temp, value, sizeof(temp));
+	else
+	  snprintf(temp, sizeof(temp), "%s/%s", ServerRoot, value);
+
+	if (access(temp, 0))
+	{
+	  cupsdLogMessage(CUPSD_LOG_ERROR,
+			  "File or directory for \"%s %s\" on line %d of %s "
+			  "does not exist.", line, value, linenum, filename);
+	  return (0);
+	}
+
+	cupsdSetString((char **)var->ptr, temp);
+	break;
+
+    case CUPSD_VARTYPE_STRING :
+	cupsdSetString((char **)var->ptr, value);
+	break;
+  }
+
+  return (1);
+}
+
+
+/*
+ * 'read_cupsd_conf()' - Read the cupsd.conf configuration file.
+ */
+
+static int				/* O - 1 on success, 0 on failure */
+read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
+{
   int			linenum;	/* Current line number */
   char			line[HTTP_MAX_BUFFER],
 					/* Line from file */
 			temp[HTTP_MAX_BUFFER],
 					/* Temporary buffer for value */
-			*ptr,		/* Pointer into line/temp */
 			*value,		/* Pointer to value */
 			*valueptr;	/* Pointer into value */
   int			valuelen;	/* Length of value */
-  cupsd_var_t const	*var;		/* Current variable */
   http_addrlist_t	*addrlist,	/* Address list */
 			*addr;		/* Current address */
-  unsigned		ip[4],		/* Address value */
-			mask[4];	/* Netmask value */
-  cupsd_dirsvc_relay_t	*relay;		/* Relay data */
-  cupsd_dirsvc_poll_t	*pollp;		/* Polling data */
-  cupsd_location_t	*location;	/* Browse location */
   cups_file_t		*incfile;	/* Include file */
   char			incname[1024];	/* Include filename */
-  struct group		*group;		/* Group */
 
 
  /*
@@ -2566,7 +2884,7 @@ read_configuration(cups_file_t *fp)	/* I - File to read from */
 	                incname, strerror(errno));
       else
       {
-        read_configuration(incfile);
+        read_cupsd_conf(incfile);
 	cupsFileClose(incfile);
       }
     }
@@ -2590,8 +2908,6 @@ read_configuration(cups_file_t *fp)	/* I - File to read from */
       if (linenum == 0)
 	return (0);
     }
-    else if (!_cups_strcasecmp(line, "FatalErrors"))
-      FatalErrors = parse_fatal_errors(value);
     else if (!_cups_strcasecmp(line, "FaxRetryInterval") && value)
     {
       JobRetryInterval = atoi(value);
@@ -2715,117 +3031,12 @@ read_configuration(cups_file_t *fp)	/* I - File to read from */
 
       httpAddrFreeList(addrlist);
     }
-    else if (!_cups_strcasecmp(line, "BrowseAddress") && value)
-    {
-     /*
-      * Add a browse address to the list...
-      */
-
-      cupsd_dirsvc_addr_t	*dira;	/* New browse address array */
-
-
-      if (NumBrowsers == 0)
-        dira = malloc(sizeof(cupsd_dirsvc_addr_t));
-      else
-        dira = realloc(Browsers, (NumBrowsers + 1) * sizeof(cupsd_dirsvc_addr_t));
-
-      if (!dira)
-      {
-        cupsdLogMessage(CUPSD_LOG_ERROR,
-	                "Unable to allocate BrowseAddress at line %d - %s.",
-	                linenum, strerror(errno));
-        continue;
-      }
-
-      Browsers = dira;
-      dira     += NumBrowsers;
-
-      memset(dira, 0, sizeof(cupsd_dirsvc_addr_t));
-
-      if (!_cups_strcasecmp(value, "@LOCAL"))
-      {
-       /*
-	* Send browse data to all local interfaces...
-	*/
-
-	strcpy(dira->iface, "*");
-	NumBrowsers ++;
-      }
-      else if (!_cups_strncasecmp(value, "@IF(", 4))
-      {
-       /*
-	* Send browse data to the named interface...
-	*/
-
-	strlcpy(dira->iface, value + 4, sizeof(Browsers[0].iface));
-
-        ptr = dira->iface + strlen(dira->iface) - 1;
-        if (*ptr == ')')
-	  *ptr = '\0';
-
-	NumBrowsers ++;
-      }
-      else if ((addrlist = get_address(value, BrowsePort)) != NULL)
-      {
-       /*
-        * Only IPv4 addresses are supported...
-        */
-
-	for (addr = addrlist; addr; addr = addr->next)
-	  if (_httpAddrFamily(&(addr->addr)) == AF_INET)
-	    break;
-
-	if (addr)
-	{
-	  memcpy(&(dira->to), &(addrlist->addr), sizeof(dira->to));
-	  httpAddrString(&(dira->to), temp, sizeof(temp));
-
-	  cupsdLogMessage(CUPSD_LOG_INFO,
-	                  "Sending browsing info to %s:%d (IPv4)",
-			  temp, _httpAddrPort(&(dira->to)));
-
-	  NumBrowsers ++;
-	}
-	else
-	  cupsdLogMessage(CUPSD_LOG_ERROR, "Bad BrowseAddress %s at line %d.",
-			  value, linenum);
-
-	httpAddrFreeList(addrlist);
-      }
-      else
-        cupsdLogMessage(CUPSD_LOG_ERROR, "Bad BrowseAddress %s at line %d.",
-	                value, linenum);
-    }
-    else if (!_cups_strcasecmp(line, "BrowseOrder") && value)
-    {
-     /*
-      * "BrowseOrder Deny,Allow" or "BrowseOrder Allow,Deny"...
-      */
-
-      if ((location = cupsdFindLocation("CUPS_INTERNAL_BROWSE_ACL")) == NULL)
-        if ((location = cupsdNewLocation("CUPS_INTERNAL_BROWSE_ACL")) != NULL)
-	  cupsdAddLocation(location);
-
-      if (location == NULL)
-        cupsdLogMessage(CUPSD_LOG_ERROR,
-	                "Unable to initialize browse access control list.");
-      else if (!_cups_strncasecmp(value, "deny", 4))
-        location->order_type = CUPSD_AUTH_ALLOW;
-      else if (!_cups_strncasecmp(value, "allow", 5))
-        location->order_type = CUPSD_AUTH_DENY;
-      else
-        cupsdLogMessage(CUPSD_LOG_ERROR,
-	                "Unknown BrowseOrder value %s on line %d.",
-	                value, linenum);
-    }
     else if (!_cups_strcasecmp(line, "BrowseProtocols") ||
-             !_cups_strcasecmp(line, "BrowseLocalProtocols") ||
-             !_cups_strcasecmp(line, "BrowseRemoteProtocols"))
+             !_cups_strcasecmp(line, "BrowseLocalProtocols"))
     {
      /*
       * "BrowseProtocols name [... name]"
       * "BrowseLocalProtocols name [... name]"
-      * "BrowseRemoteProtocols name [... name]"
       */
 
       int protocols = parse_protocols(value);
@@ -2838,367 +3049,7 @@ read_configuration(cups_file_t *fp)	/* I - File to read from */
         break;
       }
 
-      if (_cups_strcasecmp(line, "BrowseLocalProtocols"))
-        BrowseRemoteProtocols = protocols;
-      if (_cups_strcasecmp(line, "BrowseRemoteProtocols"))
-        BrowseLocalProtocols = protocols;
-    }
-    else if ((!_cups_strcasecmp(line, "BrowseAllow") ||
-              !_cups_strcasecmp(line, "BrowseDeny")) && value)
-    {
-     /*
-      * BrowseAllow [From] host/ip...
-      * BrowseDeny [From] host/ip...
-      */
-
-      if ((location = cupsdFindLocation("CUPS_INTERNAL_BROWSE_ACL")) == NULL)
-        if ((location = cupsdNewLocation("CUPS_INTERNAL_BROWSE_ACL")) != NULL)
-	  cupsdAddLocation(location);
-
-
-      if (location == NULL)
-        cupsdLogMessage(CUPSD_LOG_ERROR,
-	                "Unable to initialize browse access control list.");
-      else
-      {
-	if (!_cups_strncasecmp(value, "from", 4))
-	{
-	 /*
-	  * Skip leading "from"...
-	  */
-
-	  value += 4;
-	}
-
-	while (*value)
-	{
-	 /*
-	  * Skip leading whitespace...
-	  */
-
-	  while (_cups_isspace(*value))
-	    value ++;
-
-	  if (!*value)
-	    break;
-
-	 /*
-	  * Find the end of the value...
-	  */
-
-	  for (valueptr = value;
-	       *valueptr && !_cups_isspace(*valueptr);
-	       valueptr ++);
-
-	  while (_cups_isspace(*valueptr))
-	    *valueptr++ = '\0';
-
-	 /*
-	  * Figure out what form the allow/deny address takes:
-	  *
-	  *    All
-	  *    None
-	  *    *.domain.com
-	  *    .domain.com
-	  *    host.domain.com
-	  *    nnn.*
-	  *    nnn.nnn.*
-	  *    nnn.nnn.nnn.*
-	  *    nnn.nnn.nnn.nnn
-	  *    nnn.nnn.nnn.nnn/mm
-	  *    nnn.nnn.nnn.nnn/mmm.mmm.mmm.mmm
-	  */
-
-	  if (!_cups_strcasecmp(value, "all"))
-	  {
-	   /*
-	    * All hosts...
-	    */
-
-	    if (!_cups_strcasecmp(line, "BrowseAllow"))
-	      cupsdAddIPMask(&(location->allow), zeros, zeros);
-	    else
-	      cupsdAddIPMask(&(location->deny), zeros, zeros);
-	  }
-	  else if (!_cups_strcasecmp(value, "none"))
-	  {
-	   /*
-	    * No hosts...
-	    */
-
-	    if (!_cups_strcasecmp(line, "BrowseAllow"))
-	      cupsdAddIPMask(&(location->allow), ones, zeros);
-	    else
-	      cupsdAddIPMask(&(location->deny), ones, zeros);
-	  }
-#ifdef AF_INET6
-	  else if (value[0] == '*' || value[0] == '.' ||
-		   (!isdigit(value[0] & 255) && value[0] != '['))
-#else
-	  else if (value[0] == '*' || value[0] == '.' ||
-	           !isdigit(value[0] & 255))
-#endif /* AF_INET6 */
-	  {
-	   /*
-	    * Host or domain name...
-	    */
-
-	    if (!_cups_strcasecmp(line, "BrowseAllow"))
-	      cupsdAddNameMask(&(location->allow), value);
-	    else
-	      cupsdAddNameMask(&(location->deny), value);
-	  }
-	  else
-	  {
-	   /*
-	    * One of many IP address forms...
-	    */
-
-	    if (!get_addr_and_mask(value, ip, mask))
-	    {
-	      cupsdLogMessage(CUPSD_LOG_ERROR, "Bad netmask value %s on line %d.",
-			      value, linenum);
-	      break;
-	    }
-
-	    if (!_cups_strcasecmp(line, "BrowseAllow"))
-	      cupsdAddIPMask(&(location->allow), ip, mask);
-	    else
-	      cupsdAddIPMask(&(location->deny), ip, mask);
-	  }
-
-	 /*
-	  * Advance to next value...
-	  */
-
-	  value = valueptr;
-	}
-      }
-    }
-    else if (!_cups_strcasecmp(line, "BrowseRelay") && value)
-    {
-     /*
-      * BrowseRelay [from] source [to] destination
-      */
-
-      if (NumRelays == 0)
-        relay = malloc(sizeof(cupsd_dirsvc_relay_t));
-      else
-        relay = realloc(Relays, (NumRelays + 1) * sizeof(cupsd_dirsvc_relay_t));
-
-      if (!relay)
-      {
-        cupsdLogMessage(CUPSD_LOG_ERROR,
-	                "Unable to allocate BrowseRelay at line %d - %s.",
-	                linenum, strerror(errno));
-        continue;
-      }
-
-      Relays = relay;
-      relay  += NumRelays;
-
-      memset(relay, 0, sizeof(cupsd_dirsvc_relay_t));
-
-      if (!_cups_strncasecmp(value, "from ", 5))
-      {
-       /*
-	* Skip leading "from"...
-	*/
-
-	value += 5;
-
-       /*
-        * Skip leading whitespace...
-	*/
-
-	while (_cups_isspace(*value))
-	  value ++;
-      }
-
-     /*
-      * Find the end of the from value...
-      */
-
-      for (valueptr = value;
-	   *valueptr && !_cups_isspace(*valueptr);
-	   valueptr ++);
-
-      while (_cups_isspace(*valueptr))
-	*valueptr++ = '\0';
-
-     /*
-      * Figure out what form the from address takes:
-      *
-      *    *.domain.com
-      *    .domain.com
-      *    host.domain.com
-      *    nnn.*
-      *    nnn.nnn.*
-      *    nnn.nnn.nnn.*
-      *    nnn.nnn.nnn.nnn
-      *    nnn.nnn.nnn.nnn/mm
-      *    nnn.nnn.nnn.nnn/mmm.mmm.mmm.mmm
-      */
-
-#ifdef AF_INET6
-      if (value[0] == '*' || value[0] == '.' ||
-          (!isdigit(value[0] & 255) && value[0] != '['))
-#else
-      if (value[0] == '*' || value[0] == '.' || !isdigit(value[0] & 255))
-#endif /* AF_INET6 */
-      {
-       /*
-        * Host or domain name...
-	*/
-
-        if (!cupsdAddNameMask(&(relay->from), value))
-	{
-	  cupsdLogMessage(CUPSD_LOG_ERROR,
-			  "Unable to allocate BrowseRelay name at line %d - %s.",
-			  linenum, strerror(errno));
-	  continue;
-	}
-      }
-      else
-      {
-       /*
-        * One of many IP address forms...
-	*/
-
-        if (!get_addr_and_mask(value, ip, mask))
-	{
-          cupsdLogMessage(CUPSD_LOG_ERROR, "Bad netmask value %s on line %d.",
-	                  value, linenum);
-	  break;
-	}
-
-        if (!cupsdAddIPMask(&(relay->from), ip, mask))
-	{
-	  cupsdLogMessage(CUPSD_LOG_ERROR,
-			  "Unable to allocate BrowseRelay IP at line %d - %s.",
-			  linenum, strerror(errno));
-	  continue;
-	}
-      }
-
-     /*
-      * Get "to" address and port...
-      */
-
-      if (!_cups_strncasecmp(valueptr, "to ", 3))
-      {
-       /*
-        * Strip leading "to"...
-	*/
-
-	valueptr += 3;
-
-	while (_cups_isspace(*valueptr))
-	  valueptr ++;
-      }
-
-      if ((addrlist = get_address(valueptr, BrowsePort)) != NULL)
-      {
-       /*
-        * Only IPv4 addresses are supported...
-        */
-
-	for (addr = addrlist; addr; addr = addr->next)
-	  if (addr->addr.addr.sa_family == AF_INET)
-	    break;
-
-	if (addr)
-	{
-	  memcpy(&(relay->to), &(addrlist->addr), sizeof(relay->to));
-
-	  httpAddrString(&(relay->to), temp, sizeof(temp));
-
-	  cupsdLogMessage(CUPSD_LOG_INFO, "Relaying from %s to %s:%d (IPv4)",
-			  value, temp, _httpAddrPort(&(relay->to)));
-
-	  NumRelays ++;
-	}
-	else
-	{
-	  cupsArrayDelete(relay->from);
-	  relay->from = NULL;
-
-	  cupsdLogMessage(CUPSD_LOG_ERROR, "Bad relay address %s at line %d.",
-	                  valueptr, linenum);
-	}
-
-	httpAddrFreeList(addrlist);
-      }
-      else
-      {
-	cupsArrayDelete(relay->from);
-	relay->from = NULL;
-
-        cupsdLogMessage(CUPSD_LOG_ERROR, "Bad relay address %s at line %d.",
-	                valueptr, linenum);
-      }
-    }
-    else if (!_cups_strcasecmp(line, "BrowsePoll") && value)
-    {
-     /*
-      * BrowsePoll address[:port]
-      */
-
-      char		*portname;	/* Port name */
-      int		portnum;	/* Port number */
-      struct servent	*service;	/* Service */
-
-
-     /*
-      * Extract the port name from the address...
-      */
-
-      if ((portname = strrchr(value, ':')) != NULL && !strchr(portname, ']'))
-      {
-        *portname++ = '\0';
-
-        if (isdigit(*portname & 255))
-	  portnum = atoi(portname);
-	else if ((service = getservbyname(portname, NULL)) != NULL)
-	  portnum = ntohs(service->s_port);
-	else
-	{
-	  cupsdLogMessage(CUPSD_LOG_ERROR, "Lookup of service \"%s\" failed.",
-	                  portname);
-          continue;
-	}
-      }
-      else
-        portnum = ippPort();
-
-     /*
-      * Add the poll entry...
-      */
-
-      if (NumPolled == 0)
-        pollp = malloc(sizeof(cupsd_dirsvc_poll_t));
-      else
-        pollp = realloc(Polled, (NumPolled + 1) * sizeof(cupsd_dirsvc_poll_t));
-
-      if (!pollp)
-      {
-        cupsdLogMessage(CUPSD_LOG_ERROR,
-	                "Unable to allocate BrowsePoll at line %d - %s.",
-	                linenum, strerror(errno));
-        continue;
-      }
-
-      Polled = pollp;
-      pollp   += NumPolled;
-
-      NumPolled ++;
-      memset(pollp, 0, sizeof(cupsd_dirsvc_poll_t));
-
-      strlcpy(pollp->hostname, value, sizeof(pollp->hostname));
-      pollp->port = portnum;
-
-      cupsdLogMessage(CUPSD_LOG_INFO, "Polling %s:%d", pollp->hostname,
-	              pollp->port);
+      BrowseLocalProtocols = protocols;
     }
     else if (!_cups_strcasecmp(line, "DefaultAuthType") && value)
     {
@@ -3207,17 +3058,19 @@ read_configuration(cups_file_t *fp)	/* I - File to read from */
       */
 
       if (!_cups_strcasecmp(value, "none"))
-	DefaultAuthType = CUPSD_AUTH_NONE;
+	default_auth_type = CUPSD_AUTH_NONE;
       else if (!_cups_strcasecmp(value, "basic"))
-	DefaultAuthType = CUPSD_AUTH_BASIC;
+	default_auth_type = CUPSD_AUTH_BASIC;
       else if (!_cups_strcasecmp(value, "digest"))
-	DefaultAuthType = CUPSD_AUTH_DIGEST;
+	default_auth_type = CUPSD_AUTH_DIGEST;
       else if (!_cups_strcasecmp(value, "basicdigest"))
-	DefaultAuthType = CUPSD_AUTH_BASICDIGEST;
+	default_auth_type = CUPSD_AUTH_BASICDIGEST;
 #ifdef HAVE_GSSAPI
       else if (!_cups_strcasecmp(value, "negotiate"))
-        DefaultAuthType = CUPSD_AUTH_NEGOTIATE;
+        default_auth_type = CUPSD_AUTH_NEGOTIATE;
 #endif /* HAVE_GSSAPI */
+      else if (!_cups_strcasecmp(value, "auto"))
+        default_auth_type = CUPSD_AUTH_AUTO;
       else
       {
 	cupsdLogMessage(CUPSD_LOG_WARN,
@@ -3250,81 +3103,6 @@ read_configuration(cups_file_t *fp)	/* I - File to read from */
       }
     }
 #endif /* HAVE_SSL */
-    else if (!_cups_strcasecmp(line, "User") && value)
-    {
-     /*
-      * User ID to run as...
-      */
-
-      if (isdigit(value[0] & 255))
-      {
-        int uid = atoi(value);
-
-	if (!uid)
-	  cupsdLogMessage(CUPSD_LOG_ERROR,
-	                  "Will not use User 0 as specified on line %d "
-			  "for security reasons.  You must use a non-"
-			  "privileged account instead.",
-	                  linenum);
-        else
-	  User = atoi(value);
-      }
-      else
-      {
-        struct passwd *p;	/* Password information */
-
-        endpwent();
-	p = getpwnam(value);
-
-	if (p)
-	{
-	  if (!p->pw_uid)
-	    cupsdLogMessage(CUPSD_LOG_ERROR,
-	                    "Will not use User %s (UID=0) as specified on line "
-			    "%d for security reasons.  You must use a non-"
-			    "privileged account instead.",
-	                    value, linenum);
-	  else
-	    User = p->pw_uid;
-	}
-	else
-	  cupsdLogMessage(CUPSD_LOG_ERROR,
-	                  "Unknown User \"%s\" on line %d, ignoring.",
-	                  value, linenum);
-      }
-    }
-    else if (!_cups_strcasecmp(line, "Group") && value)
-    {
-     /*
-      * Group ID to run as...
-      */
-
-      if (isdigit(value[0]))
-        Group = atoi(value);
-      else
-      {
-        endgrent();
-	group = getgrnam(value);
-
-	if (group != NULL)
-	  Group = group->gr_gid;
-	else
-	  cupsdLogMessage(CUPSD_LOG_ERROR,
-	                  "Unknown Group \"%s\" on line %d, ignoring.",
-	                  value, linenum);
-      }
-    }
-    else if (!_cups_strcasecmp(line, "SystemGroup") && value)
-    {
-     /*
-      * SystemGroup (admin) group(s)...
-      */
-
-      if (!parse_groups(value))
-	cupsdLogMessage(CUPSD_LOG_ERROR,
-	                "Unknown SystemGroup \"%s\" on line %d, ignoring.",
-	                value, linenum);
-    }
     else if (!_cups_strcasecmp(line, "HostNameLookups") && value)
     {
      /*
@@ -3401,22 +3179,6 @@ read_configuration(cups_file_t *fp)	/* I - File to read from */
         LogTimeFormat = CUPSD_TIME_USECS;
       else
         cupsdLogMessage(CUPSD_LOG_WARN, "Unknown LogTimeFormat %s on line %d.",
-	                value, linenum);
-    }
-    else if (!_cups_strcasecmp(line, "PrintcapFormat") && value)
-    {
-     /*
-      * Format of printcap file?
-      */
-
-      if (!_cups_strcasecmp(value, "bsd"))
-        PrintcapFormat = PRINTCAP_BSD;
-      else if (!_cups_strcasecmp(value, "plist"))
-        PrintcapFormat = PRINTCAP_PLIST;
-      else if (!_cups_strcasecmp(value, "solaris"))
-        PrintcapFormat = PRINTCAP_SOLARIS;
-      else
-	cupsdLogMessage(CUPSD_LOG_WARN, "Unknown PrintcapFormat %s on line %d.",
 	                value, linenum);
     }
     else if (!_cups_strcasecmp(line, "ServerTokens") && value)
@@ -3544,117 +3306,194 @@ read_configuration(cups_file_t *fp)	/* I - File to read from */
 			"line %d.", value, linenum);
     }
 #endif /* HAVE_SSL */
+    else if (!_cups_strcasecmp(line, "AccessLog") ||
+             !_cups_strcasecmp(line, "CacheDir") ||
+             !_cups_strcasecmp(line, "ConfigFilePerm") ||
+             !_cups_strcasecmp(line, "DataDir") ||
+             !_cups_strcasecmp(line, "DocumentRoot") ||
+             !_cups_strcasecmp(line, "ErrorLog") ||
+             !_cups_strcasecmp(line, "FatalErrors") ||
+             !_cups_strcasecmp(line, "FileDevice") ||
+             !_cups_strcasecmp(line, "FontPath") ||
+             !_cups_strcasecmp(line, "Group") ||
+             !_cups_strcasecmp(line, "LogFilePerm") ||
+             !_cups_strcasecmp(line, "LPDConfigFile") ||
+             !_cups_strcasecmp(line, "PageLog") ||
+             !_cups_strcasecmp(line, "Printcap") ||
+             !_cups_strcasecmp(line, "PrintcapFormat") ||
+             !_cups_strcasecmp(line, "RemoteRoot") ||
+             !_cups_strcasecmp(line, "RequestRoot") ||
+             !_cups_strcasecmp(line, "ServerBin") ||
+             !_cups_strcasecmp(line, "ServerCertificate") ||
+             !_cups_strcasecmp(line, "ServerKey") ||
+             !_cups_strcasecmp(line, "ServerRoot") ||
+             !_cups_strcasecmp(line, "SMBConfigFile") ||
+             !_cups_strcasecmp(line, "StateDir") ||
+             !_cups_strcasecmp(line, "SystemGroup") ||
+             !_cups_strcasecmp(line, "SystemGroupAuthKey") ||
+             !_cups_strcasecmp(line, "TempDir") ||
+             !_cups_strcasecmp(line, "PidFile") ||
+	     !_cups_strcasecmp(line, "User"))
+    {
+      cupsdLogMessage(CUPSD_LOG_WARN,
+		      "Please move \"%s%s%s\" on line %d of %s to the %s file; "
+		      "this will become an error in a future release.",
+		      line, value ? " " : "", value ? value : "", linenum,
+		      ConfigurationFile, CupsFilesFile);
+    }
     else
+      parse_variable(ConfigurationFile, linenum, line, value,
+                     sizeof(cupsd_vars) / sizeof(cupsd_vars[0]), cupsd_vars);
+  }
+
+  return (1);
+}
+
+
+/*
+ * 'read_cups_files_conf()' - Read the cups-files.conf configuration file.
+ */
+
+static int				/* O - 1 on success, 0 on failure */
+read_cups_files_conf(cups_file_t *fp)	/* I - File to read from */
+{
+  int		linenum;		/* Current line number */
+  char		line[HTTP_MAX_BUFFER],	/* Line from file */
+		*value;			/* Value from line */
+  struct group	*group;			/* Group */
+
+
+ /*
+  * Loop through each line in the file...
+  */
+
+  linenum = 0;
+
+  while (cupsFileGetConf(fp, line, sizeof(line), &value, &linenum))
+  {
+    if (!_cups_strcasecmp(line, "FatalErrors"))
+      FatalErrors = parse_fatal_errors(value);
+    else if (!_cups_strcasecmp(line, "Group") && value)
     {
      /*
-      * Find a simple variable in the list...
+      * Group ID to run as...
       */
 
-      for (i = NUM_VARS, var = variables; i > 0; i --, var ++)
-        if (!_cups_strcasecmp(line, var->name))
-	  break;
-
-      if (i == 0)
+      if (isdigit(value[0]))
+        Group = atoi(value);
+      else
       {
-       /*
-        * Unknown directive!  Output an error message and continue...
-	*/
+        endgrent();
+	group = getgrnam(value);
 
-        if (!value)
-	  cupsdLogMessage(CUPSD_LOG_ERROR, "Missing value for %s on line %d.",
-	                  line, linenum);
+	if (group != NULL)
+	  Group = group->gr_gid;
 	else
-	  cupsdLogMessage(CUPSD_LOG_ERROR, "Unknown directive %s on line %d.",
-	                  line, linenum);
-        continue;
-      }
-
-      switch (var->type)
-      {
-        case CUPSD_VARTYPE_INTEGER :
-	    if (!value)
-	      cupsdLogMessage(CUPSD_LOG_ERROR,
-	                      "Missing integer value for %s on line %d.",
-			      line, linenum);
-	    else
-	    {
-	      int	n;		/* Number */
-	      char	*units;		/* Units */
-
-
-              n = strtol(value, &units, 0);
-
-	      if (units && *units)
-	      {
-        	if (tolower(units[0] & 255) == 'g')
-		  n *= 1024 * 1024 * 1024;
-        	else if (tolower(units[0] & 255) == 'm')
-		  n *= 1024 * 1024;
-		else if (tolower(units[0] & 255) == 'k')
-		  n *= 1024;
-		else if (tolower(units[0] & 255) == 't')
-		  n *= 262144;
-	      }
-
-              if (n < 0)
-		cupsdLogMessage(CUPSD_LOG_ERROR,
-	                	"Bad negative integer value for %s on line %d.",
-				line, linenum);
-	      else
-		*((int *)var->ptr) = n;
-	    }
-	    break;
-
-	case CUPSD_VARTYPE_BOOLEAN :
-	    if (!value)
-	      cupsdLogMessage(CUPSD_LOG_ERROR,
-	                      "Missing boolean value for %s on line %d.",
-			      line, linenum);
-            else if (!_cups_strcasecmp(value, "true") ||
-	             !_cups_strcasecmp(value, "on") ||
-		     !_cups_strcasecmp(value, "enabled") ||
-		     !_cups_strcasecmp(value, "yes") ||
-		     atoi(value) != 0)
-              *((int *)var->ptr) = TRUE;
-	    else if (!_cups_strcasecmp(value, "false") ||
-	             !_cups_strcasecmp(value, "off") ||
-		     !_cups_strcasecmp(value, "disabled") ||
-		     !_cups_strcasecmp(value, "no") ||
-		     !_cups_strcasecmp(value, "0"))
-              *((int *)var->ptr) = FALSE;
-	    else
-              cupsdLogMessage(CUPSD_LOG_ERROR,
-	                      "Unknown boolean value %s on line %d.",
-	                      value, linenum);
-	    break;
-
-	case CUPSD_VARTYPE_PATHNAME :
-            if (!value)
-	    {
-	      cupsdLogMessage(CUPSD_LOG_ERROR,
-	                      "Missing pathname value for %s on line %d.",
-			      line, linenum);
-              break;
-	    }
-
-	    if (value[0] == '/')
-	      strlcpy(temp, value, sizeof(temp));
-	    else
-	      snprintf(temp, sizeof(temp), "%s/%s", ServerRoot, value);
-
-            if (access(temp, 0))
-	    {
-	      cupsdLogMessage(CUPSD_LOG_ERROR,
-	                      "File or directory for \"%s %s\" on line %d "
-			      "does not exist.", line, value, linenum);
-              break;
-	    }
-
-	case CUPSD_VARTYPE_STRING :
-	    cupsdSetString((char **)var->ptr, value);
-	    break;
+	{
+	  cupsdLogMessage(CUPSD_LOG_ERROR,
+	                  "Unknown Group \"%s\" on line %d of %s.", value,
+	                  linenum, CupsFilesFile);
+	  if (FatalErrors & CUPSD_FATAL_CONFIG)
+	    return (0);
+	}
       }
     }
+    else if (!_cups_strcasecmp(line, "PrintcapFormat") && value)
+    {
+     /*
+      * Format of printcap file?
+      */
+
+      if (!_cups_strcasecmp(value, "bsd"))
+        PrintcapFormat = PRINTCAP_BSD;
+      else if (!_cups_strcasecmp(value, "plist"))
+        PrintcapFormat = PRINTCAP_PLIST;
+      else if (!_cups_strcasecmp(value, "solaris"))
+        PrintcapFormat = PRINTCAP_SOLARIS;
+      else
+      {
+	cupsdLogMessage(CUPSD_LOG_ERROR,
+	                "Unknown PrintcapFormat \"%s\" on line %d of %s.",
+	                value, linenum, CupsFilesFile);
+        if (FatalErrors & CUPSD_FATAL_CONFIG)
+          return (0);
+      }
+    }
+    else if (!_cups_strcasecmp(line, "SystemGroup") && value)
+    {
+     /*
+      * SystemGroup (admin) group(s)...
+      */
+
+      if (!parse_groups(value))
+      {
+	cupsdLogMessage(CUPSD_LOG_ERROR,
+	                "Unknown SystemGroup \"%s\" on line %d of %s.", value,
+	                linenum, CupsFilesFile);
+        if (FatalErrors & CUPSD_FATAL_CONFIG)
+          return (0);
+      }
+    }
+    else if (!_cups_strcasecmp(line, "User") && value)
+    {
+     /*
+      * User ID to run as...
+      */
+
+      if (isdigit(value[0] & 255))
+      {
+        int uid = atoi(value);
+
+	if (!uid)
+	{
+	  cupsdLogMessage(CUPSD_LOG_ERROR,
+	                  "Will not use User 0 as specified on line %d of %s "
+			  "for security reasons.  You must use a non-"
+			  "privileged account instead.",
+	                  linenum, CupsFilesFile);
+          if (FatalErrors & CUPSD_FATAL_CONFIG)
+            return (0);
+        }
+        else
+	  User = atoi(value);
+      }
+      else
+      {
+        struct passwd *p;	/* Password information */
+
+        endpwent();
+	p = getpwnam(value);
+
+	if (p)
+	{
+	  if (!p->pw_uid)
+	  {
+	    cupsdLogMessage(CUPSD_LOG_ERROR,
+	                    "Will not use User %s (UID=0) as specified on line "
+			    "%d of %s for security reasons.  You must use a "
+			    "non-privileged account instead.",
+	                    value, linenum, CupsFilesFile);
+	    if (FatalErrors & CUPSD_FATAL_CONFIG)
+	      return (0);
+	  }
+	  else
+	    User = p->pw_uid;
+	}
+	else
+	{
+	  cupsdLogMessage(CUPSD_LOG_ERROR,
+	                  "Unknown User \"%s\" on line %d of %s.",
+	                  value, linenum, CupsFilesFile);
+          if (FatalErrors & CUPSD_FATAL_CONFIG)
+            return (0);
+        }
+      }
+    }
+    else if (!parse_variable(CupsFilesFile, linenum, line, value,
+			     sizeof(cupsfiles_vars) / sizeof(cupsfiles_vars[0]),
+			     cupsfiles_vars) &&
+	     (FatalErrors & CUPSD_FATAL_CONFIG))
+      return (0);
   }
 
   return (1);
@@ -3974,6 +3813,7 @@ read_policy(cups_file_t *fp,		/* I - Configuration file */
 	      cupsdAddString(&(pol->job_attrs), "job-name");
 	      cupsdAddString(&(pol->job_attrs), "job-originating-host-name");
 	      cupsdAddString(&(pol->job_attrs), "job-originating-user-name");
+	      cupsdAddString(&(pol->job_attrs), "phone");
 	    }
 	    else
 	      cupsdAddString(&(pol->job_attrs), value);
@@ -4198,6 +4038,7 @@ set_policy_defaults(cupsd_policy_t *pol)/* I - Policy */
     cupsdAddString(&(pol->job_attrs), "job-name");
     cupsdAddString(&(pol->job_attrs), "job-originating-host-name");
     cupsdAddString(&(pol->job_attrs), "job-originating-user-name");
+    cupsdAddString(&(pol->job_attrs), "phone");
   }
 
   if (!pol->sub_access)
@@ -4224,5 +4065,5 @@ set_policy_defaults(cupsd_policy_t *pol)/* I - Policy */
 
 
 /*
- * End of "$Id: conf.c 10121 2011-11-16 15:28:11Z mike $".
+ * End of "$Id: conf.c 10482 2012-05-18 19:51:02Z mike $".
  */

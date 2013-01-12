@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# "$Id: install-sh 10317 2012-03-01 00:05:55Z mike $"
+# "$Id: install-sh 10487 2012-05-21 15:33:01Z mike $"
 #
 # Install a program, script, or datafile.
 #
@@ -61,10 +61,10 @@ src=""
 dst=""
 dir_arg=""
 
-gzipcp () (
+gzipcp() {
 	# gzipcp from to
 	$gzipprog -9 <"$1" >"$2"
-)
+}
 
 while [ x"$1" != x ]; do
 	case $1 in

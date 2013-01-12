@@ -1,5 +1,5 @@
 #
-# "$Id: cups.spec.in 10428 2012-04-23 17:46:53Z mike $"
+# "$Id: cups.spec.in 10558 2012-07-27 20:33:27Z mike $"
 #
 #   RPM "spec" file for CUPS.
 #
@@ -18,8 +18,7 @@
 # Conditional build options (--with name/--without name):
 #
 #   dbus     - Enable/disable DBUS support (default = enable)
-#   dnssd    - Enable/disable DNS-SD support (default = disable)
-#   php      - Enable/disable PHP support (default = enable)
+#   dnssd    - Enable/disable DNS-SD support (default = enable)
 #   static   - Enable/disable static libraries (default = enable)
 
 %{!?_with_dbus: %{!?_without_dbus: %define _with_dbus --with-dbus}}
@@ -30,22 +29,18 @@
 %{?_with_dnssd: %define _dnssd --enable-dnssd}
 %{!?_with_dnssd: %define _dnssd --disable-dnssd}
 
-%{!?_with_php: %{!?_without_php: %define _with_php --with-php}}
-%{?_with_php: %define _php --with-php}
-%{!?_with_php: %define _php --without-php}
-
 %{!?_with_static: %{!?_without_static: %define _without_static --without-static}}
 %{?_with_static: %define _static --enable-static}
 %{!?_with_static: %define _static --disable-static}
 
 Summary: CUPS
 Name: cups
-Version: 1.5.3
+Version: 1.6.1
 Release: 1
 Epoch: 1
 License: GPL
 Group: System Environment/Daemons
-Source: http://ftp.easysw.com/pub/cups/1.5.3/cups-1.5.3-source.tar.bz2
+Source: http://ftp.easysw.com/pub/cups/1.6.1/cups-1.6.1-source.tar.bz2
 Url: http://www.cups.org
 Packager: Anonymous <anonymous@foo.com>
 Vendor: Apple Inc.
@@ -76,13 +71,6 @@ Summary: CUPS - LPD support
 Group: System Environment/Daemons
 Requires: %{name} = %{epoch}:%{version} xinetd
 
-%if %{?_with_php:1}%{!?_with_php:0}
-%package php
-Summary: CUPS - PHP support
-Group: Development/Languages
-Requires: %{name}-libs = %{epoch}:%{version}
-%endif
-
 %description
 CUPS is the standards-based, open source printing system developed by
 Apple Inc. for OS X and other UNIX®-like operating systems.
@@ -96,17 +84,12 @@ This package provides the CUPS shared libraries.
 %description lpd
 This package provides LPD client support.
 
-%if %{?_with_php:1}%{!?_with_php:0}
-%description php
-This package provides PHP support for CUPS.
-%endif
-
 %prep
 %setup
 
 %build
 CFLAGS="$RPM_OPT_FLAGS" CXXFLAGS="$RPM_OPT_FLAGS" LDFLAGS="$RPM_OPT_FLAGS" \
-    ./configure %{_dbus} %{_dnssd} %{_php} %{_static}
+    ./configure %{_dbus} %{_dnssd} %{_static}
 # If we got this far, all prerequisite libraries must be here.
 make
 
@@ -196,6 +179,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir /usr/lib/cups
 %dir /usr/lib/cups/backend
 %if %{?_with_dnssd:1}%{!?_with_dnssd:0}
+# DNS-SD
 /usr/lib/cups/backend/dnssd
 %endif
 /usr/lib/cups/backend/http
@@ -203,8 +187,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0700,root,root) /usr/lib/cups/backend/ipp
 /usr/lib/cups/backend/ipps
 %attr(0700,root,root) /usr/lib/cups/backend/lpd
-/usr/lib/cups/backend/parallel
-/usr/lib/cups/backend/serial
 /usr/lib/cups/backend/snmp
 /usr/lib/cups/backend/socket
 /usr/lib/cups/backend/usb
@@ -214,7 +196,6 @@ rm -rf $RPM_BUILD_ROOT
 /usr/lib/cups/daemon/cups-deviced
 /usr/lib/cups/daemon/cups-driverd
 /usr/lib/cups/daemon/cups-exec
-/usr/lib/cups/daemon/cups-polld
 %dir /usr/lib/cups/driver
 %dir /usr/lib/cups/filter
 /usr/lib/cups/filter/*
@@ -227,14 +208,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir /usr/share/cups
 %dir /usr/share/cups/banners
 /usr/share/cups/banners/*
-%dir /usr/share/cups/charsets
-/usr/share/cups/charsets/*
 %dir /usr/share/cups/data
 /usr/share/cups/data/*
 %dir /usr/share/cups/drv
 /usr/share/cups/drv/*
-%dir /usr/share/cups/fonts
-/usr/share/cups/fonts/*
 %dir /usr/share/cups/ipptool
 /usr/share/cups/ipptool/*
 %dir /usr/share/cups/mime
@@ -246,26 +223,6 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/cups/templates/*
 %dir /usr/share/doc/cups
 /usr/share/doc/cups/*.*
-%dir /usr/share/doc/cups/de
-/usr/share/doc/cups/de/*
-%dir /usr/share/doc/cups/es
-/usr/share/doc/cups/es/*
-%dir /usr/share/doc/cups/eu
-/usr/share/doc/cups/eu/*
-%dir /usr/share/doc/cups/fr
-/usr/share/doc/cups/fr/*
-%dir /usr/share/doc/cups/hu
-/usr/share/doc/cups/hu/*
-%dir /usr/share/doc/cups/id
-/usr/share/doc/cups/id/*
-%dir /usr/share/doc/cups/it
-/usr/share/doc/cups/it/*
-%dir /usr/share/doc/cups/ja
-/usr/share/doc/cups/ja/*
-%dir /usr/share/doc/cups/pl
-/usr/share/doc/cups/pl/*
-%dir /usr/share/doc/cups/ru
-/usr/share/doc/cups/ru/*
 %dir /usr/share/doc/cups/help
 /usr/share/doc/cups/help/accounting.html
 /usr/share/doc/cups/help/cgi.html
@@ -285,7 +242,20 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/doc/cups/help/whatsnew.html
 %dir /usr/share/doc/cups/images
 /usr/share/doc/cups/images/*
-/usr/share/locale/*
+
+%dir /usr/share/doc/cups/ca
+/usr/share/doc/cups/ca/*
+%dir /usr/share/doc/cups/es
+/usr/share/doc/cups/es/*
+%dir /usr/share/doc/cups/ja
+/usr/share/doc/cups/ja/*
+
+%dir /usr/share/locale/ca
+/usr/share/locale/ca/cups_ca.po
+%dir /usr/share/locale/es
+/usr/share/locale/es/cups_es.po
+%dir /usr/share/locale/ja
+/usr/share/locale/ja/cups_ja.po
 
 %dir /usr/share/man/man1
 /usr/share/man/man1/cancel.1.gz
@@ -315,7 +285,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/man/man8/cupsreject.8.gz
 /usr/share/man/man8/cups-deviced.8.gz
 /usr/share/man/man8/cups-driverd.8.gz
-/usr/share/man/man8/cups-polld.8.gz
+/usr/share/man/man8/cups-snmp.8.gz
 /usr/share/man/man8/lpadmin.8.gz
 /usr/share/man/man8/lpc.8.gz
 /usr/share/man/man8/lpinfo.8.gz
@@ -377,13 +347,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir /usr/share/man/man8
 /usr/share/man/man8/cups-lpd.8.gz
 
-%if %{?_with_php:1}%{!?_with_php:0}
-%files php
-# PHP
-/usr/lib*/php*
-%endif
-
 
 #
-# End of "$Id: cups.spec.in 10428 2012-04-23 17:46:53Z mike $".
+# End of "$Id: cups.spec.in 10558 2012-07-27 20:33:27Z mike $".
 #

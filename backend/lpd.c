@@ -1,5 +1,5 @@
 /*
- * "$Id: lpd.c 10265 2012-02-12 07:20:10Z mike $"
+ * "$Id: lpd.c 10520 2012-05-31 02:53:59Z mike $"
  *
  *   Line Printer Daemon backend for CUPS.
  *
@@ -92,7 +92,7 @@ static int	lpd_queue(const char *hostname, http_addrlist_t *addrlist,
 			  int mode, const char *user, const char *title,
 			  int copies, int banner, int format, int order,
 			  int reserve, int manual_copies, int timeout,
-			  int contimeout);
+			  int contimeout, const char *orighost);
 static int	lpd_write(int lpd_fd, char *buffer, int length);
 #ifndef HAVE_RRESVPORT_AF
 static int	rresvport_af(int *port, int family);
@@ -126,6 +126,7 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
   int		port;			/* Port number */
   char		portname[256];		/* Port name (string) */
   http_addrlist_t *addrlist;		/* List of addresses for printer */
+  int		snmp_enabled = 1;	/* Is SNMP enabled? */
   int		snmp_fd;		/* SNMP socket */
   int		fd;			/* Print file */
   int		status;			/* Status of LPD job */
@@ -144,6 +145,8 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
 #if defined(HAVE_SIGACTION) && !defined(HAVE_SIGSET)
   struct sigaction action;		/* Actions for POSIX signals */
 #endif /* HAVE_SIGACTION && !HAVE_SIGSET */
+  int		num_jobopts;		/* Number of job options */
+  cups_option_t	*jobopts = NULL;	/* Job options */
 
 
  /*
@@ -190,6 +193,8 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
                     argv[0]);
     return (CUPS_BACKEND_FAILED);
   }
+
+  num_jobopts = cupsParseOptions(argv[5], 0, &jobopts);
 
  /*
   * Extract the hostname and printer name from the URI...
@@ -352,7 +357,8 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
 	*/
 
         if (!value[0] || !_cups_strcasecmp(value, "on") ||
-	    !_cups_strcasecmp(value, "yes") || !_cups_strcasecmp(value, "true") ||
+	    !_cups_strcasecmp(value, "yes") ||
+	    !_cups_strcasecmp(value, "true") ||
 	    !_cups_strcasecmp(value, "rfc1179"))
 	  reserve = RESERVE_RFC1179;
 	else if (!_cups_strcasecmp(value, "any"))
@@ -367,7 +373,8 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
 	*/
 
         manual_copies = !value[0] || !_cups_strcasecmp(value, "on") ||
-	 		!_cups_strcasecmp(value, "yes") || !_cups_strcasecmp(value, "true");
+	 		!_cups_strcasecmp(value, "yes") ||
+	 		!_cups_strcasecmp(value, "true");
       }
       else if (!_cups_strcasecmp(name, "sanitize_title"))
       {
@@ -376,7 +383,18 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
 	*/
 
         sanitize_title = !value[0] || !_cups_strcasecmp(value, "on") ||
-	 		 !_cups_strcasecmp(value, "yes") || !_cups_strcasecmp(value, "true");
+	 		 !_cups_strcasecmp(value, "yes") ||
+	 		 !_cups_strcasecmp(value, "true");
+      }
+      else if (!_cups_strcasecmp(name, "snmp"))
+      {
+        /*
+         * Enable/disable SNMP stuff...
+         */
+
+         snmp_enabled = !value[0] || !_cups_strcasecmp(value, "on") ||
+                        _cups_strcasecmp(value, "yes") ||
+                        _cups_strcasecmp(value, "true");
       }
       else if (!_cups_strcasecmp(name, "timeout"))
       {
@@ -424,7 +442,10 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
     }
   }
 
-  snmp_fd = _cupsSNMPOpen(addrlist->addr.addr.sa_family);
+  if (snmp_enabled)
+    snmp_fd = _cupsSNMPOpen(addrlist->addr.addr.sa_family);
+  else
+    snmp_fd = -1;
 
  /*
   * Wait for data from the filter...
@@ -525,7 +546,9 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
 
     status = lpd_queue(hostname, addrlist, resource + 1, fd, snmp_fd, mode,
                        username, title, copies, banner, format, order, reserve,
-		       manual_copies, timeout, contimeout);
+		       manual_copies, timeout, contimeout,
+		       cupsGetOption("job-originating-host-name", num_jobopts,
+		                     jobopts));
 
     if (!status)
       fprintf(stderr, "PAGE: 1 %d\n", atoi(argv[4]));
@@ -533,7 +556,9 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
   else
     status = lpd_queue(hostname, addrlist, resource + 1, fd, snmp_fd, mode,
                        username, title, 1, banner, format, order, reserve, 1,
-		       timeout, contimeout);
+		       timeout, contimeout,
+		       cupsGetOption("job-originating-host-name", num_jobopts,
+		                     jobopts));
 
  /*
   * Remove the temporary file if necessary...
@@ -608,7 +633,7 @@ lpd_command(int  fd,		/* I - Socket connection to LPD host */
 
   if (recv(fd, &status, 1, 0) < 1)
   {
-    _cupsLangPrintFilter(stderr, "WARNING", _("Printer did not respond."));
+    _cupsLangPrintFilter(stderr, "WARNING", _("The printer did not respond."));
     status = errno;
   }
 
@@ -638,7 +663,8 @@ lpd_queue(const char      *hostname,	/* I - Host to connect to */
 	  int             reserve,	/* I - Reserve ports? */
 	  int             manual_copies,/* I - Do copies by hand... */
 	  int             timeout,	/* I - Timeout... */
-	  int             contimeout)	/* I - Connection timeout */
+	  int             contimeout,	/* I - Connection timeout */
+	  const char      *orighost)	/* I - job-originating-host-name */
 {
   char			localhost[255];	/* Local host name */
   int			error;		/* Error number */
@@ -816,7 +842,7 @@ lpd_queue(const char      *hostname,	/* I - Host to connect to */
 	  case ECONNREFUSED :
 	  default :
 	      _cupsLangPrintFilter(stderr, "WARNING",
-	                           _("The printer is busy."));
+	                           _("The printer is in use."));
 	      break;
         }
 
@@ -927,7 +953,10 @@ lpd_queue(const char      *hostname,	/* I - Host to connect to */
       return (CUPS_BACKEND_FAILED);
     }
 
-    httpGetHostname(NULL, localhost, sizeof(localhost));
+    if (orighost && _cups_strcasecmp(orighost, "localhost"))
+      strlcpy(localhost, orighost, sizeof(localhost));
+    else
+      httpGetHostname(NULL, localhost, sizeof(localhost));
 
     snprintf(control, sizeof(control),
              "H%.31s\n"		/* RFC 1179, Section 7.2 - host name <= 31 chars */
@@ -994,7 +1023,7 @@ lpd_queue(const char      *hostname,	/* I - Host to connect to */
         if (read(fd, &status, 1) < 1)
 	{
 	  _cupsLangPrintFilter(stderr, "WARNING",
-	                       _("Printer did not respond."));
+	                       _("The printer did not respond."));
 	  status = errno;
 	}
       }
@@ -1076,7 +1105,7 @@ lpd_queue(const char      *hostname,	/* I - Host to connect to */
           if (recv(fd, &status, 1, 0) < 1)
 	  {
 	    _cupsLangPrintFilter(stderr, "WARNING",
-			         _("Printer did not respond."));
+			         _("The printer did not respond."));
 	    status = 0;
           }
 	}
@@ -1126,7 +1155,7 @@ lpd_queue(const char      *hostname,	/* I - Host to connect to */
         if (read(fd, &status, 1) < 1)
 	{
 	  _cupsLangPrintFilter(stderr, "WARNING",
-			       _("Printer did not respond."));
+			       _("The printer did not respond."));
 	  status = errno;
 	}
       }
@@ -1302,5 +1331,5 @@ sigterm_handler(int sig)		/* I - Signal */
 
 
 /*
- * End of "$Id: lpd.c 10265 2012-02-12 07:20:10Z mike $".
+ * End of "$Id: lpd.c 10520 2012-05-31 02:53:59Z mike $".
  */

@@ -1,9 +1,9 @@
 /*
- * "$Id: socket.c 9793 2011-05-20 03:49:49Z mike $"
+ * "$Id: socket.c 10431 2012-04-23 19:19:19Z mike $"
  *
  *   AppSocket backend for CUPS.
  *
- *   Copyright 2007-2011 by Apple Inc.
+ *   Copyright 2007-2012 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -87,6 +87,7 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
   http_addrlist_t *addrlist,		/* Address list */
 		*addr;			/* Connected address */
   char		addrname[256];		/* Address name */
+  int		snmp_enabled = 1;	/* Is SNMP enabled? */
   int		snmp_fd,		/* SNMP socket */
 		start_count,		/* Page count via SNMP at start */
 		page_count,		/* Page count via SNMP */
@@ -246,6 +247,16 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
         waiteof = !value[0] || !_cups_strcasecmp(value, "on") ||
 		  !_cups_strcasecmp(value, "yes") || !_cups_strcasecmp(value, "true");
       }
+      else if (!_cups_strcasecmp(name, "snmp"))
+      {
+        /*
+         * Enable/disable SNMP stuff...
+         */
+
+         snmp_enabled = !value[0] || !_cups_strcasecmp(value, "on") ||
+                        _cups_strcasecmp(value, "yes") ||
+                        _cups_strcasecmp(value, "true");
+      }
       else if (!_cups_strcasecmp(name, "contimeout"))
       {
        /*
@@ -286,11 +297,14 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
   * See if the printer supports SNMP...
   */
 
-  if ((snmp_fd = _cupsSNMPOpen(addrlist->addr.addr.sa_family)) >= 0)
-  {
+  if (snmp_enabled)
+    snmp_fd = _cupsSNMPOpen(addrlist->addr.addr.sa_family);
+  else
+    snmp_fd = -1;
+
+  if (snmp_fd >= 0)
     have_supplies = !backendSNMPSupplies(snmp_fd, &(addrlist->addr),
                                          &start_count, NULL);
-  }
   else
     have_supplies = start_count = 0;
 
@@ -371,7 +385,7 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
 	  case ECONNREFUSED :
 	  default :
 	      _cupsLangPrintFilter(stderr, "WARNING",
-	                           _("The printer is busy."));
+	                           _("The printer is in use."));
 	      break;
         }
 
@@ -472,8 +486,6 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
   if (print_fd != 0)
     close(print_fd);
 
-  _cupsLangPrintFilter(stderr, "INFO", _("Ready to print."));
-
   return (CUPS_BACKEND_OK);
 }
 
@@ -523,5 +535,5 @@ wait_bc(int device_fd,			/* I - Socket */
 
 
 /*
- * End of "$Id: socket.c 9793 2011-05-20 03:49:49Z mike $".
+ * End of "$Id: socket.c 10431 2012-04-23 19:19:19Z mike $".
  */

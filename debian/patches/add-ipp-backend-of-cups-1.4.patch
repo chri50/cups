@@ -1,21 +1,33 @@
+Description: Add the IPP backend of CUPS 1.4.x to the current CUPS
+ package as independent backend "ipp14". Some devices (like the
+ LiveBox2) do not work with the current IPP backend.
+Author: Till Kampetter <till.kampetter@gmail.com>
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/945028
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/973270
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/990734
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/992468
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/992982
+Last-Update: 2012-07-27
+
 --- a/backend/Makefile
 +++ b/backend/Makefile
-@@ -21,12 +21,12 @@
- # Object files...
- #
- 
--RBACKENDS =	ipp lpd $(DNSSD_BACKEND)
-+RBACKENDS =	ipp ipp14 lpd $(DNSSD_BACKEND)
- UBACKENDS =	$(LEGACY_BACKENDS) serial snmp socket usb
- UNITTESTS =	test1284 testbackend testsupplies
- TARGETS =	libbackend.a $(RBACKENDS) $(UBACKENDS)
- LIBOBJS	=	ieee1284.o network.o runloop.o snmp-supplies.o
--OBJS	=	ipp.o lpd.o dnssd.o parallel.o serial.o snmp.o \
-+OBJS	=	ipp.o ipp14.o lpd.o dnssd.o parallel.o serial.o snmp.o \
- 		socket.o test1284.o testbackend.o testsupplies.o usb.o
- 
- 
-@@ -218,6 +218,17 @@
+@@ -29,6 +29,7 @@
+ # See http://www.cups.org/documentation.php/api-filter.html for more info...
+ RBACKENDS =	\
+ 		ipp \
++		ipp14 \
+ 		lpd \
+ 		$(DNSSD_BACKEND)
+ UBACKENDS =	\
+@@ -50,6 +51,7 @@
+ 		snmp-supplies.o
+ OBJS	=	\
+ 		ipp.o \
++		ipp14.o \
+ 		lpd.o \
+ 		dnssd.o \
+ 		snmp.o \
+@@ -250,6 +252,17 @@
  
  
  #

@@ -1,5 +1,5 @@
 /*
- * "$Id: dnssd.c 10379 2012-03-23 22:16:22Z mike $"
+ * "$Id: dnssd.c 10489 2012-05-21 16:05:58Z mike $"
  *
  *   DNS-SD discovery backend for CUPS.
  *
@@ -15,23 +15,19 @@
  *
  * Contents:
  *
- *   next_txt_record()       - Get next TXT record from a cups_txt_records_t.
- *   parse_txt_record_pair() - Read key/value pair in cups_txt_records_t.
- *   main()                  - Browse for printers.
- *   browse_callback()       - Browse devices.
+ *   main()		     - Browse for printers.
+ *   browse_callback()	     - Browse devices.
  *   browse_local_callback() - Browse local devices.
- *   compare_devices()       - Compare two devices.
- *   exec_backend()          - Execute the backend that corresponds to the
- *                             resolved service name.
- *   device_type()           - Get DNS-SD type enumeration from string.
- *   get_device()            - Create or update a device.
- *   query_callback()        - Process query data.
- *   avahi_client_callback() - Avahi client callback function.
- *   avahi_query_callback()  - Avahi query callback function.
- *   avahi_browse_callback() - Avahi browse callback function.
- *   find_device()           - Find a device from its name and domain.
- *   sigterm_handler()       - Handle termination signals...
- *   unquote()               - Unquote a name string.
+ *   client_callback()       - Avahi client callback function.
+ *   compare_devices()	     - Compare two devices.
+ *   exec_backend()	     - Execute the backend that corresponds to the
+ *			       resolved service name.
+ *   device_type()	     - Get DNS-SD type enumeration from string.
+ *   get_device()	     - Create or update a device.
+ *   query_callback()	     - Process query data.
+ *   find_device()	     - Find a device from its name and domain.
+ *   sigterm_handler()	     - Handle termination signals.
+ *   unquote()		     - Unquote a name string.
  */
 
 /*
@@ -72,10 +68,10 @@ typedef enum
 typedef struct
 {
 #ifdef HAVE_DNSSD
-  DNSServiceRef	ref;			/* Service reference for resolve */
+  DNSServiceRef	ref;			/* Service reference for query */
 #endif /* HAVE_DNSSD */
 #ifdef HAVE_AVAHI
-  int		resolved;		/* Did we resolve the device? */
+  AvahiRecordBrowser *ref;		/* Browser for query */
 #endif /* HAVE_AVAHI */
   char		*name,			/* Service name */
 		*domain,		/* Domain name */
@@ -88,20 +84,6 @@ typedef struct
 		sent;			/* Did we list the device? */
 } cups_device_t;
 
-typedef struct
-{
-  char key[256];
-  char value[256];
-
-#ifdef HAVE_DNSSD
-  const uint8_t *data;
-  const uint8_t *datanext;
-  const uint8_t *dataend;
-#else /* HAVE_AVAHI */
-  AvahiStringList *txt;
-#endif /* HAVE_DNSSD */
-} cups_txt_records_t;
-
 
 /*
  * Local globals...
@@ -109,6 +91,11 @@ typedef struct
 
 static int		job_canceled = 0;
 					/* Set to 1 on SIGTERM */
+#ifdef HAVE_AVAHI
+static AvahiSimplePoll	*simple_poll = NULL;
+					/* Poll information */
+static int		got_data = 0;	/* Got data from poll? */
+#endif /* HAVE_AVAHI */
 
 
 /*
@@ -133,6 +120,30 @@ static void		browse_local_callback(DNSServiceRef sdRef,
 					      const char *replyDomain,
 					      void *context)
 					      __attribute__((nonnull(1,5,6,7,8)));
+#endif /* HAVE_DNSSD */
+#ifdef HAVE_AVAHI
+static void		browse_callback(AvahiServiceBrowser *browser,
+					AvahiIfIndex interface,
+					AvahiProtocol protocol,
+					AvahiBrowserEvent event,
+					const char *serviceName,
+					const char *regtype,
+					const char *replyDomain,
+					AvahiLookupResultFlags flags,
+					void *context);
+static void		client_callback(AvahiClient *client,
+					AvahiClientState state,
+					void *context);
+#endif /* HAVE_AVAHI */
+
+static int		compare_devices(cups_device_t *a, cups_device_t *b);
+static void		exec_backend(char **argv);
+static cups_device_t	*get_device(cups_array_t *devices,
+			            const char *serviceName,
+			            const char *regtype,
+				    const char *replyDomain)
+				    __attribute__((nonnull(1,2,3,4)));
+#ifdef HAVE_DNSSD
 static void		query_callback(DNSServiceRef sdRef,
 			               DNSServiceFlags flags,
 				       uint32_t interfaceIndex,
@@ -142,118 +153,23 @@ static void		query_callback(DNSServiceRef sdRef,
 				       const void *rdata, uint32_t ttl,
 				       void *context)
 				       __attribute__((nonnull(1,5,9,11)));
+#elif defined(HAVE_AVAHI)
+static int		poll_callback(struct pollfd *pollfds,
+			              unsigned int num_pollfds, int timeout,
+			              void *context);
+static void		query_callback(AvahiRecordBrowser *browser,
+				       AvahiIfIndex interface,
+				       AvahiProtocol protocol,
+				       AvahiBrowserEvent event,
+				       const char *name, uint16_t rrclass,
+				       uint16_t rrtype, const void *rdata,
+				       size_t rdlen,
+				       AvahiLookupResultFlags flags,
+				       void *context);
 #endif /* HAVE_DNSSD */
-#ifdef HAVE_AVAHI
-static void		avahi_client_callback (AvahiClient *client,
-					       AvahiClientState state,
-					       void *context);
-static void		avahi_browse_callback (AvahiServiceBrowser *browser,
-					       AvahiIfIndex interface,
-					       AvahiProtocol protocol,
-					       AvahiBrowserEvent event,
-					       const char *serviceName,
-					       const char *regtype,
-					       const char *replyDomain,
-					       AvahiLookupResultFlags flags,
-					       void *context);
-#endif /* HAVE_AVAHI */
-
-static cups_device_t *	find_device (cups_array_t *devices,
-				     cups_txt_records_t *txt,
-				     cups_device_t *dkey);
-static int		compare_devices(cups_device_t *a, cups_device_t *b);
-static void		exec_backend(char **argv);
-static cups_device_t	*get_device(cups_array_t *devices,
-			            const char *serviceName,
-			            const char *regtype,
-				    const char *replyDomain);
 static void		sigterm_handler(int sig);
 static void		unquote(char *dst, const char *src, size_t dstsize)
 			    __attribute__((nonnull(1,2)));
-
-#ifdef HAVE_AVAHI
-static AvahiSimplePoll *simple_poll = NULL;
-static int avahi_got_callback;
-#endif /* HAVE_AVAHI */
-
-
-/*
- * 'next_txt_record()' - Get next TXT record from a cups_txt_records_t.
- */
-
-static cups_txt_records_t *
-next_txt_record (cups_txt_records_t *txt)
-{
-#ifdef HAVE_DNSSD
-  txt->data = txt->datanext;
-#else /* HAVE_AVAHI */
-  txt->txt = avahi_string_list_get_next (txt->txt);
-  if (txt->txt == NULL)
-    return NULL;
-#endif /* HAVE_DNSSD */
-
-  return txt;
-}
-
-
-/*
- * 'parse_txt_record_pair()' - Read key/value pair in cups_txt_records_t.
- */
-
-static int
-parse_txt_record_pair (cups_txt_records_t *txt)
-{
-#ifdef HAVE_DNSSD
-  uint8_t	datalen;
-  uint8_t	*data = txt->data;
-  char		*ptr;
-
- /*
-  * Read a key/value pair starting with an 8-bit length.  Since the
-  * length is 8 bits and the size of the key/value buffers is 256, we
-  * don't need to check for overflow...
-  */
-
-  datalen = *data++;
-  if (!datalen || (data + datalen) > txt->dataend)
-    return NULL;
-  txt->datanext = data + datalen;
-
-  for (ptr = txt->key; data < txt->datanext && *data != '='; data ++)
-    *ptr++ = *data;
-  *ptr = '\0';
-
-  if (data < txt->datanext && *data == '=')
-  {
-    data++;
-
-    if (data < datanext)
-      memcpy (txt->value, data, txt->datanext - data);
-    value[txt->datanext - data] = '\0';
-  }
-  else
-    return 1;
-#else /* HAVE_AVAHI */
-  char *key, *value;
-  size_t len;
-  avahi_string_list_get_pair (txt->txt, &key, &value, &len);
-  if (len > sizeof (txt->value) - 1)
-    len = sizeof (txt->value) - 1;
-
-  memcpy (txt->value, value, len);
-  txt->value[len] = '\0';
-  len = strlen (key);
-  if (len > sizeof (txt->key) - 1)
-    len = sizeof (txt->key) - 1;
-
-  memcpy (txt->key, key, len);
-  txt->key[len] = '\0';
-  avahi_free (key);
-  avahi_free (value);
-#endif /* HAVE_AVAHI */
-
-  return 0;
-}
 
 
 /*
@@ -287,8 +203,8 @@ main(int  argc,				/* I - Number of command-line args */
 		riousbprint_ref;	/* Remote IO service reference */
 #endif /* HAVE_DNSSD */
 #ifdef HAVE_AVAHI
-  AvahiClient	*client;
-  int		error;
+  AvahiClient	*client;		/* Client information */
+  int		error;			/* Error code, if any */
 #endif /* HAVE_AVAHI */
 #if defined(HAVE_SIGACTION) && !defined(HAVE_SIGSET)
   struct sigaction action;		/* Actions for POSIX signals */
@@ -349,48 +265,6 @@ main(int  argc,				/* I - Number of command-line args */
   * Browse for different kinds of printers...
   */
 
-#ifdef HAVE_AVAHI
-  if ((simple_poll = avahi_simple_poll_new ()) == NULL)
-  {
-    perror ("ERROR: Unable to create avahi simple poll object");
-    return (1);
-  }
-
-  client = avahi_client_new (avahi_simple_poll_get (simple_poll),
-			     0, avahi_client_callback, NULL, &error);
-  if (!client)
-  {
-    perror ("DEBUG: Unable to create avahi client");
-    return (0);
-  }
-
-  avahi_service_browser_new (client, AVAHI_IF_UNSPEC,
-			     AVAHI_PROTO_UNSPEC,
-			     "_fax-ipp._tcp", NULL, 0,
-			     avahi_browse_callback, devices);
-  avahi_service_browser_new (client, AVAHI_IF_UNSPEC,
-			     AVAHI_PROTO_UNSPEC,
-			     "_ipp._tcp", NULL, 0,
-			     avahi_browse_callback, devices);
-  avahi_service_browser_new (client, AVAHI_IF_UNSPEC,
-			     AVAHI_PROTO_UNSPEC,
-			     "_ipp-tls._tcp", NULL, 0,
-			     avahi_browse_callback, devices);
-  avahi_service_browser_new (client, AVAHI_IF_UNSPEC,
-			     AVAHI_PROTO_UNSPEC,
-			     "_pdl-datastream._tcp",
-			     NULL, 0,
-			     avahi_browse_callback,
-			     devices);
-  avahi_service_browser_new (client, AVAHI_IF_UNSPEC,
-			     AVAHI_PROTO_UNSPEC,
-			     "_printer._tcp", NULL, 0,
-			     avahi_browse_callback, devices);
-  avahi_service_browser_new (client, AVAHI_IF_UNSPEC,
-			     AVAHI_PROTO_UNSPEC,
-			     "_riousbprint._tcp", NULL, 0,
-			     avahi_browse_callback, devices);
-#endif /* HAVE_AVAHI */
 #ifdef HAVE_DNSSD
   if (DNSServiceCreateConnection(&main_ref) != kDNSServiceErr_NoError)
   {
@@ -454,20 +328,65 @@ main(int  argc,				/* I - Number of command-line args */
                    "_riousbprint._tcp", NULL, browse_callback, devices);
 #endif /* HAVE_DNSSD */
 
+#ifdef HAVE_AVAHI
+  if ((simple_poll = avahi_simple_poll_new()) == NULL)
+  {
+    fputs("DEBUG: Unable to create Avahi simple poll object.\n", stderr);
+    return (1);
+  }
+
+  avahi_simple_poll_set_func(simple_poll, poll_callback, NULL);
+
+  client = avahi_client_new(avahi_simple_poll_get(simple_poll),
+			    0, client_callback, simple_poll, &error);
+  if (!client)
+  {
+    fputs("DEBUG: Unable to create Avahi client.\n", stderr);
+    return (1);
+  }
+
+  avahi_service_browser_new(client, AVAHI_IF_UNSPEC,
+			    AVAHI_PROTO_UNSPEC,
+			    "_fax-ipp._tcp", NULL, 0,
+			    browse_callback, devices);
+  avahi_service_browser_new(client, AVAHI_IF_UNSPEC,
+			    AVAHI_PROTO_UNSPEC,
+			    "_ipp._tcp", NULL, 0,
+			    browse_callback, devices);
+  avahi_service_browser_new(client, AVAHI_IF_UNSPEC,
+			    AVAHI_PROTO_UNSPEC,
+			    "_ipp-tls._tcp", NULL, 0,
+			    browse_callback, devices);
+  avahi_service_browser_new(client, AVAHI_IF_UNSPEC,
+			    AVAHI_PROTO_UNSPEC,
+			    "_ipps._tcp", NULL, 0,
+			    browse_callback, devices);
+  avahi_service_browser_new(client, AVAHI_IF_UNSPEC,
+			    AVAHI_PROTO_UNSPEC,
+			    "_pdl-datastream._tcp",
+			    NULL, 0,
+			    browse_callback,
+			    devices);
+  avahi_service_browser_new(client, AVAHI_IF_UNSPEC,
+			    AVAHI_PROTO_UNSPEC,
+			    "_printer._tcp", NULL, 0,
+			    browse_callback, devices);
+#endif /* HAVE_AVAHI */
+
  /*
   * Loop until we are killed...
   */
 
   while (!job_canceled)
   {
-    int announce = 0;
+    int announce = 0;			/* Announce printers? */
 
 #ifdef HAVE_DNSSD
     FD_ZERO(&input);
     FD_SET(fd, &input);
 
     timeout.tv_sec  = 0;
-    timeout.tv_usec = 250000;
+    timeout.tv_usec = 500000;
 
     if (select(fd + 1, &input, NULL, NULL, &timeout) < 0)
       continue;
@@ -481,26 +400,26 @@ main(int  argc,				/* I - Number of command-line args */
       DNSServiceProcessResult(main_ref);
     }
     else
-    {
       announce = 1;
-    }
-#else /* HAVE_AVAHI */
-    int r;
-    avahi_got_callback = 0;
-    r = avahi_simple_poll_iterate (simple_poll, 1);
-    if (r != 0 && r != EINTR)
+
+#elif defined(HAVE_AVAHI)
+    got_data = 0;
+
+    if ((error = avahi_simple_poll_iterate(simple_poll, 500)) > 0)
     {
      /*
       * We've been told to exit the loop.  Perhaps the connection to
-      * avahi failed.
+      * Avahi failed.
       */
 
       break;
     }
 
-    if (avahi_got_callback)
+    if (!got_data)
       announce = 1;
 #endif /* HAVE_DNSSD */
+
+/*    fprintf(stderr, "DEBUG: announce=%d\n", announce);*/
 
     if (announce)
     {
@@ -524,7 +443,6 @@ main(int  argc,				/* I - Number of command-line args */
         if (device->sent)
 	  sent ++;
 
-#ifdef HAVE_DNSSD
         if (device->ref)
 	  count ++;
 
@@ -534,36 +452,47 @@ main(int  argc,				/* I - Number of command-line args */
 	  * Found the device, now get the TXT record(s) for it...
 	  */
 
-          if (count < 20)
+          if (count < 50)
 	  {
-	    device->ref = main_ref;
-
 	    fprintf(stderr, "DEBUG: Querying \"%s\"...\n", device->fullName);
+
+#ifdef HAVE_DNSSD
+	    device->ref = main_ref;
 
 	    status = DNSServiceQueryRecord(&(device->ref),
 				           kDNSServiceFlagsShareConnection,
 				           0, device->fullName,
 					   kDNSServiceType_TXT,
 				           kDNSServiceClass_IN, query_callback,
-				           devices);
+				           device);
             if (status != kDNSServiceErr_NoError)
-	    {
-	      fputs("ERROR: Unable to query for TXT records!\n", stderr);
-	      fprintf(stderr, "DEBUG: DNSServiceQueryRecord returned %d\n",
-	              status);
-            }
+	      fprintf(stderr,
+	              "ERROR: Unable to query \"%s\" for TXT records: %d\n",
+	              device->fullName, status);
+	              			/* Users never see this */
 	    else
 	      count ++;
+
+#else
+	    if ((device->ref = avahi_record_browser_new(client, AVAHI_IF_UNSPEC,
+	                                                AVAHI_PROTO_UNSPEC,
+	                                                device->fullName,
+	                                                AVAHI_DNS_CLASS_IN,
+	                                                AVAHI_DNS_TYPE_TXT,
+	                                                0,
+				                        query_callback,
+				                        device)) == NULL)
+	      fprintf(stderr,
+	              "ERROR: Unable to query \"%s\" for TXT records: %s\n",
+	              device->fullName,
+	              avahi_strerror(avahi_client_errno(client)));
+	              			/* Users never see this */
+	    else
+	      count ++;
+#endif /* HAVE_AVAHI */
           }
 	}
-	else
-#endif /* HAVE_DNSSD */
-#ifdef HAVE_AVAHI
-	if (!device->resolved)
-	  continue;
-        else
-#endif /* HAVE_AVAHI */
-	if (!device->sent)
+	else if (!device->sent)
 	{
 #ifdef HAVE_DNSSD
 	 /*
@@ -571,8 +500,11 @@ main(int  argc,				/* I - Number of command-line args */
 	  */
 
 	  DNSServiceRefDeallocate(device->ref);
-	  device->ref = 0;
+#else
+          avahi_record_browser_free(device->ref);
 #endif /* HAVE_DNSSD */
+
+	  device->ref = NULL;
 
           if (!best)
 	    best = device;
@@ -624,6 +556,8 @@ main(int  argc,				/* I - Number of command-line args */
 	sent ++;
       }
 
+      fprintf(stderr, "DEBUG: sent=%d, count=%d\n", sent, count);
+
       if (sent == cupsArrayCount(devices))
 	break;
     }
@@ -653,10 +587,7 @@ browse_callback(
                   "interfaceIndex=%d, errorCode=%d, serviceName=\"%s\", "
 		  "regtype=\"%s\", replyDomain=\"%s\", context=%p)\n",
           sdRef, flags, interfaceIndex, errorCode,
-	  serviceName ? serviceName : "(null)",
-	  regtype ? regtype : "(null)",
-	  replyDomain ? replyDomain : "(null)",
-	  context);
+	  serviceName, regtype, replyDomain, context);
 
  /*
   * Only process "add" data...
@@ -695,10 +626,7 @@ browse_local_callback(
                   "interfaceIndex=%d, errorCode=%d, serviceName=\"%s\", "
 		  "regtype=\"%s\", replyDomain=\"%s\", context=%p)\n",
           sdRef, flags, interfaceIndex, errorCode,
-	  serviceName ? serviceName : "(null)",
-	  regtype ? regtype : "(null)",
-	  replyDomain ? replyDomain : "(null)",
-	  context);
+	  serviceName, regtype, replyDomain, context);
 
  /*
   * Only process "add" data...
@@ -723,6 +651,96 @@ browse_local_callback(
   device->sent = 1;
 }
 #endif /* HAVE_DNSSD */
+
+
+#ifdef HAVE_AVAHI
+/*
+ * 'browse_callback()' - Browse devices.
+ */
+
+static void
+browse_callback(
+    AvahiServiceBrowser    *browser,	/* I - Browser */
+    AvahiIfIndex           interface,	/* I - Interface index (unused) */
+    AvahiProtocol          protocol,	/* I - Network protocol (unused) */
+    AvahiBrowserEvent      event,	/* I - What happened */
+    const char             *name,	/* I - Service name */
+    const char             *type,	/* I - Registration type */
+    const char             *domain,	/* I - Domain */
+    AvahiLookupResultFlags flags,	/* I - Flags */
+    void                   *context)	/* I - Devices array */
+{
+  AvahiClient *client = avahi_service_browser_get_client(browser);
+					/* Client information */
+
+
+  (void)interface;
+  (void)protocol;
+  (void)context;
+
+  switch (event)
+  {
+    case AVAHI_BROWSER_FAILURE:
+	fprintf(stderr, "DEBUG: browse_callback: %s\n",
+		avahi_strerror(avahi_client_errno(client)));
+	avahi_simple_poll_quit(simple_poll);
+	break;
+
+    case AVAHI_BROWSER_NEW:
+       /*
+	* This object is new on the network.
+	*/
+
+	if (flags & AVAHI_LOOKUP_RESULT_LOCAL)
+	{
+	 /*
+	  * This comes from the local machine so ignore it.
+	  */
+
+	  fprintf(stderr, "DEBUG: Ignoring local service %s.\n", name);
+	}
+	else
+	{
+	 /*
+	  * Create a device entry for it if it doesn't yet exist.
+	  */
+
+	  get_device((cups_array_t *)context, name, type, domain);
+	}
+	break;
+
+    case AVAHI_BROWSER_REMOVE:
+    case AVAHI_BROWSER_ALL_FOR_NOW:
+    case AVAHI_BROWSER_CACHE_EXHAUSTED:
+        break;
+  }
+}
+
+
+/*
+ * 'client_callback()' - Avahi client callback function.
+ */
+
+static void
+client_callback(
+    AvahiClient      *client,		/* I - Client information (unused) */
+    AvahiClientState state,		/* I - Current state */
+    void             *context)		/* I - User data (unused) */
+{
+  (void)client;
+  (void)context;
+
+ /*
+  * If the connection drops, quit.
+  */
+
+  if (state == AVAHI_CLIENT_FAILURE)
+  {
+    fputs("DEBUG: Avahi connection failed.\n", stderr);
+    avahi_simple_poll_quit(simple_poll);
+  }
+}
+#endif /* HAVE_AVAHI */
 
 
 /*
@@ -807,7 +825,7 @@ exec_backend(char **argv)		/* I - Command-line arguments */
  */
 
 static int
-device_type (const char *regtype)
+device_type(const char *regtype)
 {
 #ifdef HAVE_AVAHI
   if (!strcmp(regtype, "_ipp._tcp"))
@@ -858,7 +876,7 @@ get_device(cups_array_t *devices,	/* I - Device array */
   */
 
   key.name = (char *)serviceName;
-  key.type = device_type (regtype);
+  key.type = device_type(regtype);
 
   for (device = cupsArrayFind(devices, &key);
        device;
@@ -882,8 +900,8 @@ get_device(cups_array_t *devices,	/* I - Device array */
 	DNSServiceConstructFullName(fullName, device->name, regtype,
 	                            replyDomain);
 #else /* HAVE_AVAHI */
-	avahi_service_name_join (fullName, kDNSServiceMaxDomainName,
-				 serviceName, regtype, replyDomain);
+	avahi_service_name_join(fullName, kDNSServiceMaxDomainName,
+				serviceName, regtype, replyDomain);
 #endif /* HAVE_DNSSD */
 
 	free(device->fullName);
@@ -905,9 +923,6 @@ get_device(cups_array_t *devices,	/* I - Device array */
   device->domain   = strdup(replyDomain);
   device->type     = key.type;
   device->priority = 50;
-#ifdef HAVE_AVAHI
-  device->resolved = 0;
-#endif /* HAVE_AVAHI */
 
   cupsArrayAdd(devices, device);
 
@@ -918,7 +933,7 @@ get_device(cups_array_t *devices,	/* I - Device array */
 #ifdef HAVE_DNSSD
   DNSServiceConstructFullName(fullName, serviceName, regtype, replyDomain);
 #else /* HAVE_AVAHI */
-  avahi_service_name_join (fullName, kDNSServiceMaxDomainName,
+  avahi_service_name_join(fullName, kDNSServiceMaxDomainName,
 			   serviceName, regtype, replyDomain);
 #endif /* HAVE_DNSSD */
 
@@ -928,7 +943,42 @@ get_device(cups_array_t *devices,	/* I - Device array */
 }
 
 
-#ifdef HAVE_DNSSD
+#ifdef HAVE_AVAHI
+/*
+ * 'poll_callback()' - Wait for input on the specified file descriptors.
+ *
+ * Note: This function is needed because avahi_simple_poll_iterate is broken
+ *       and always uses a timeout of 0 (!) milliseconds.
+ *       (Avahi Ticket #364)
+ */
+
+static int				/* O - Number of file descriptors matching */
+poll_callback(
+    struct pollfd *pollfds,		/* I - File descriptors */
+    unsigned int  num_pollfds,		/* I - Number of file descriptors */
+    int           timeout,		/* I - Timeout in milliseconds (unused) */
+    void          *context)		/* I - User data (unused) */
+{
+  int	val;				/* Return value */
+
+
+  (void)timeout;
+  (void)context;
+
+  val = poll(pollfds, num_pollfds, 500);
+
+  if (val < 0)
+    fprintf(stderr, "DEBUG: poll_callback: %s\n", strerror(errno));
+  else if (val > 0)
+    got_data = 1;
+
+  return (val);
+}
+#endif /* HAVE_AVAHI */
+
+
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
+#  ifdef HAVE_DNSSD
 /*
  * 'query_callback()' - Process query data.
  */
@@ -945,15 +995,46 @@ query_callback(
     uint16_t            rdlen,		/* I - Length of record data */
     const void          *rdata,		/* I - Record data */
     uint32_t            ttl,		/* I - Time-to-live */
-    void                *context)	/* I - Devices array */
+    void                *context)	/* I - Device */
 {
-  cups_array_t	*devices;		/* Device array */
-  char		name[1024],		/* Service name */
-		*ptr;			/* Pointer into string */
-  cups_device_t	dkey,			/* Search key */
-		*device;		/* Device */
-  cups_txt_records_t txt;
+#  else
+/*
+ * 'query_callback()' - Process query data.
+ */
 
+static void
+query_callback(
+    AvahiRecordBrowser     *browser,	/* I - Record browser */
+    AvahiIfIndex           interfaceIndex,
+					/* I - Interface index (unused) */
+    AvahiProtocol          protocol,	/* I - Network protocol (unused) */
+    AvahiBrowserEvent      event,	/* I - What happened? */
+    const char             *fullName,	/* I - Service name */
+    uint16_t               rrclass,	/* I - Record class */
+    uint16_t               rrtype,	/* I - Record type */
+    const void             *rdata,	/* I - TXT record */
+    size_t                 rdlen,	/* I - Length of TXT record */
+    AvahiLookupResultFlags flags,	/* I - Flags */
+    void                   *context)	/* I - Device */
+{
+  AvahiClient		*client = avahi_record_browser_get_client(browser);
+					/* Client information */
+#  endif /* HAVE_DNSSD */
+  char		*ptr;			/* Pointer into string */
+  cups_device_t	*device = (cups_device_t *)context;
+					/* Device */
+  const uint8_t	*data,			/* Pointer into data */
+		*datanext,		/* Next key/value pair */
+		*dataend;		/* End of entire TXT record */
+  uint8_t	datalen;		/* Length of current key/value pair */
+  char		key[256],		/* Key string */
+		value[256],		/* Value string */
+		make_and_model[512],	/* Manufacturer and model */
+		model[256],		/* Model */
+		device_id[2048];	/* 1284 device ID */
+
+
+#  ifdef HAVE_DNSSD
   fprintf(stderr, "DEBUG2: query_callback(sdRef=%p, flags=%x, "
                   "interfaceIndex=%d, errorCode=%d, fullName=\"%s\", "
 		  "rrtype=%u, rrclass=%u, rdlen=%u, rdata=%p, ttl=%u, "
@@ -969,362 +1050,183 @@ query_callback(
   if (errorCode != kDNSServiceErr_NoError || !(flags & kDNSServiceFlagsAdd))
     return;
 
+#  else
+  fprintf(stderr, "DEBUG2: query_callback(browser=%p, interfaceIndex=%d, "
+                  "protocol=%d, event=%d, fullName=\"%s\", rrclass=%u, "
+		  "rrtype=%u, rdata=%p, rdlen=%u, flags=%x, context=%p)\n",
+          browser, interfaceIndex, protocol, event,
+	  fullName ? fullName : "(null)", rrclass, rrtype, rdata,
+	  (unsigned)rdlen, flags, context);
+
  /*
-  * Lookup the service in the devices array.
+  * Only process "add" data...
   */
 
-  devices   = (cups_array_t *)context;
-  dkey.name = name;
-
-  unquote(name, fullName, sizeof(name));
-
-  if ((dkey.domain = strstr(name, "._tcp.")) != NULL)
-    dkey.domain += 6;
-  else
-    dkey.domain = (char *)"local.";
-
-  if ((ptr = strstr(name, "._")) != NULL)
-    *ptr = '\0';
-
-  dkey.type = device_type (fullName);
-
-  txt.data = rdata;
-  txt.dataend = rdata + rdlen;
-  device = find_device ((cups_array_t *) context, &txt, &dkey);
-  if (!device)
-    fprintf(stderr, "DEBUG: Ignoring TXT record for \"%s\"...\n", fullName);
-}
-#endif /* HAVE_DNSSD */
-
-
-#ifdef HAVE_AVAHI
-/*
- * 'avahi_client_callback()' - Avahi client callback function.
- */
-
-static void
-avahi_client_callback(AvahiClient *client,
-		      AvahiClientState state,
-		      void *context)
-{
- /*
-  * If the connection drops, quit.
-  */
-
-  if (state == AVAHI_CLIENT_FAILURE)
+  if (event != AVAHI_BROWSER_NEW)
   {
-    fprintf (stderr, "ERROR: Avahi connection failed\n");
-    avahi_simple_poll_quit (simple_poll);
-  }
-}
+    if (event == AVAHI_BROWSER_FAILURE)
+      fprintf(stderr, "ERROR: %s\n",
+	      avahi_strerror(avahi_client_errno(client)));
 
-
-/*
- * 'avahi_query_callback()' - Avahi query callback function.
- */
-
-static void
-avahi_query_callback(AvahiServiceResolver *resolver,
-		     AvahiIfIndex interface,
-		     AvahiProtocol protocol,
-		     AvahiResolverEvent event,
-		     const char *name,
-		     const char *type,
-		     const char *domain,
-		     const char *host_name,
-		     const AvahiAddress *address,
-		     uint16_t port,
-		     AvahiStringList *txt,
-		     AvahiLookupResultFlags flags,
-		     void *context)
-{
-  AvahiClient		*client;
-  cups_device_t		key,
-			*device;
-  char			uqname[1024],
-			*ptr;
-  cups_txt_records_t	txtr;
-
-  client = avahi_service_resolver_get_client (resolver);
-  if (event != AVAHI_RESOLVER_FOUND)
-  {
-    if (event == AVAHI_RESOLVER_FAILURE)
-    {
-      fprintf (stderr, "ERROR: %s\n",
-	       avahi_strerror (avahi_client_errno (client)));
-    }
-
-    avahi_service_resolver_free (resolver);
     return;
   }
+#  endif /* HAVE_DNSSD */
 
  /*
-  * Set search key for device.
+  * Pull out the priority and make and model from the TXT
+  * record and save it...
   */
 
-  key.name = uqname;
-  unquote (uqname, name, sizeof (uqname));
-  if ((ptr = strstr(name, "._")) != NULL)
+  device_id[0]      = '\0';
+  make_and_model[0] = '\0';
+
+  strcpy(model, "Unknown");
+
+  for (data = rdata, dataend = data + rdlen;
+       data < dataend;
+       data = datanext)
+  {
+   /*
+    * Read a key/value pair starting with an 8-bit length.  Since the
+    * length is 8 bits and the size of the key/value buffers is 256, we
+    * don't need to check for overflow...
+    */
+
+    datalen = *data++;
+
+    if (!datalen || (data + datalen) > dataend)
+      break;
+
+    datanext = data + datalen;
+
+    for (ptr = key; data < datanext && *data != '='; data ++)
+      *ptr++ = *data;
     *ptr = '\0';
 
-  key.domain = (char *) domain;
-  key.type = device_type (type);
-
- /*
-  * Find the device and the the TXT information.
-  */
-
-  txtr.txt = txt;
-  device = find_device ((cups_array_t *) context, &txtr, &key);
-  if (device)
-  {
-   /*
-    * Let the main loop know to announce the device.
-    */
-
-    device->resolved = 1;
-    avahi_got_callback = 1;
-  }
-  else
-    fprintf (stderr, "DEBUG: Ignoring TXT record for \"%s\"...\n", name);
-
-  avahi_service_resolver_free (resolver);
-}
-
-
-/*
- * 'avahi_browse_callback()' - Avahi browse callback function.
- */
-
-static void
-avahi_browse_callback(AvahiServiceBrowser *browser,
-		      AvahiIfIndex interface,
-		      AvahiProtocol protocol,
-		      AvahiBrowserEvent event,
-		      const char *name,
-		      const char *type,
-		      const char *domain,
-		      AvahiLookupResultFlags flags,
-		      void *context)
-{
-  AvahiClient *client = avahi_service_browser_get_client (browser);
-
-  switch (event)
-  {
-  case AVAHI_BROWSER_FAILURE:
-    fprintf (stderr, "ERROR: %s\n",
-	     avahi_strerror (avahi_client_errno (client)));
-    avahi_simple_poll_quit (simple_poll);
-    return;
-
-  case AVAHI_BROWSER_NEW:
-   /*
-    * This object is new on the network.
-    */
-
-    if (flags & AVAHI_LOOKUP_RESULT_LOCAL)
+    if (data < datanext && *data == '=')
     {
-     /*
-      * This comes from the local machine so ignore it.
-      */
+      data ++;
 
-      fprintf (stderr, "DEBUG: ignoring local service %s\n", name);
+      if (data < datanext)
+	memcpy(value, data, datanext - data);
+      value[datanext - data] = '\0';
+
+      fprintf(stderr, "DEBUG2: query_callback: \"%s=%s\".\n",
+	      key, value);
     }
     else
     {
-     /*
-      * Create a device entry for it if it doesn't yet exist.
-      */
-
-      get_device ((cups_array_t *)context, name, type, domain);
-
-     /*
-      * Now look for a TXT entry.
-      */
-
-      if (avahi_service_resolver_new (client, interface, protocol,
-				      name, type, domain,
-				      AVAHI_PROTO_UNSPEC, 0,
-				      avahi_query_callback, context) == NULL)
-      {
-	fprintf (stderr, "ERROR: failed to resolve service %s: %s\n",
-		 name, avahi_strerror (avahi_client_errno (client)));
-      }
+      fprintf(stderr, "DEBUG2: query_callback: \"%s\" with no value.\n",
+	      key);
+      continue;
     }
 
-    break;
+    if (!_cups_strncasecmp(key, "usb_", 4))
+    {
+     /*
+      * Add USB device ID information...
+      */
 
-  case AVAHI_BROWSER_REMOVE:
-  case AVAHI_BROWSER_ALL_FOR_NOW:
-  case AVAHI_BROWSER_CACHE_EXHAUSTED:
-    break;
+      ptr = device_id + strlen(device_id);
+      snprintf(ptr, sizeof(device_id) - (ptr - device_id), "%s:%s;",
+	       key + 4, value);
+    }
+
+    if (!_cups_strcasecmp(key, "usb_MFG") || !_cups_strcasecmp(key, "usb_MANU") ||
+	!_cups_strcasecmp(key, "usb_MANUFACTURER"))
+      strcpy(make_and_model, value);
+    else if (!_cups_strcasecmp(key, "usb_MDL") || !_cups_strcasecmp(key, "usb_MODEL"))
+      strcpy(model, value);
+    else if (!_cups_strcasecmp(key, "product") && !strstr(value, "Ghostscript"))
+    {
+      if (value[0] == '(')
+      {
+       /*
+	* Strip parenthesis...
+	*/
+
+	if ((ptr = value + strlen(value) - 1) > value && *ptr == ')')
+	  *ptr = '\0';
+
+	strcpy(model, value + 1);
+      }
+      else
+	strcpy(model, value);
+    }
+    else if (!_cups_strcasecmp(key, "ty"))
+    {
+      strcpy(model, value);
+
+      if ((ptr = strchr(model, ',')) != NULL)
+	*ptr = '\0';
+    }
+    else if (!_cups_strcasecmp(key, "priority"))
+      device->priority = atoi(value);
+    else if ((device->type == CUPS_DEVICE_IPP ||
+	      device->type == CUPS_DEVICE_IPPS ||
+	      device->type == CUPS_DEVICE_PRINTER) &&
+	     !_cups_strcasecmp(key, "printer-type"))
+    {
+     /*
+      * This is a CUPS printer!
+      */
+
+      device->cups_shared = 1;
+
+      if (device->type == CUPS_DEVICE_PRINTER)
+	device->sent = 1;
+    }
   }
-}
-#endif /* HAVE_AVAHI */
 
+  if (device->device_id)
+    free(device->device_id);
 
-/*
- * 'find_device()' - Find a device from its name and domain.
- */
-
-static cups_device_t *
-find_device (cups_array_t *devices,
-	     cups_txt_records_t *txt,
-	     cups_device_t *dkey)
-{
-  cups_device_t	*device;
-  char		*ptr;
-
-  for (device = cupsArrayFind(devices, dkey);
-       device;
-       device = cupsArrayNext(devices))
+  if (!device_id[0] && strcmp(model, "Unknown"))
   {
-    if (_cups_strcasecmp(device->name, dkey->name) ||
-        _cups_strcasecmp(device->domain, dkey->domain))
-    {
-      device = NULL;
-      break;
-    }
-    else if (device->type == dkey->type)
+    if (make_and_model[0])
+      snprintf(device_id, sizeof(device_id), "MFG:%s;MDL:%s;",
+	       make_and_model, model);
+    else if (!_cups_strncasecmp(model, "designjet ", 10))
+      snprintf(device_id, sizeof(device_id), "MFG:HP;MDL:%s", model + 10);
+    else if (!_cups_strncasecmp(model, "stylus ", 7))
+      snprintf(device_id, sizeof(device_id), "MFG:EPSON;MDL:%s", model + 7);
+    else if ((ptr = strchr(model, ' ')) != NULL)
     {
      /*
-      * Found it, pull out the priority and make and model from the TXT
-      * record and save it...
+      * Assume the first word is the make...
       */
 
-      char		make_and_model[512],
-				      	/* Manufacturer and model */
-			model[256],	/* Model */
-			device_id[2048]; /* 1284 device ID */
+      memcpy(make_and_model, model, ptr - model);
+      make_and_model[ptr - model] = '\0';
 
-      device_id[0]      = '\0';
-      make_and_model[0] = '\0';
-
-      strcpy(model, "Unknown");
-
-      for (;;)
-      {
-	char *key;
-	char *value;
-
-	if (parse_txt_record_pair (txt))
-	  goto next;
-
-	key = txt->key;
-	value = txt->value;
-        if (!strncasecmp(key, "usb_", 4))
-	{
-	 /*
-	  * Add USB device ID information...
-	  */
-
-	  ptr = device_id + strlen(device_id);
-	  snprintf(ptr, sizeof(device_id) - (ptr - device_id), "%s:%s;",
-	           key + 4, value);
-        }
-
-        if (!_cups_strcasecmp(key, "usb_MFG") || !_cups_strcasecmp(key, "usb_MANU") ||
-	    !_cups_strcasecmp(key, "usb_MANUFACTURER"))
-	  strcpy(make_and_model, value);
-        else if (!_cups_strcasecmp(key, "usb_MDL") || !_cups_strcasecmp(key, "usb_MODEL"))
-	  strcpy(model, value);
-	else if (!_cups_strcasecmp(key, "product") && !strstr(value, "Ghostscript"))
-	{
-	  if (value[0] == '(')
-	  {
-	   /*
-	    * Strip parenthesis...
-	    */
-
-            if ((ptr = value + strlen(value) - 1) > value && *ptr == ')')
-	      *ptr = '\0';
-
-	    strcpy(model, value + 1);
-	  }
-	  else
-	    strcpy(model, value);
-        }
-	else if (!_cups_strcasecmp(key, "ty"))
-	{
-          strcpy(model, value);
-
-	  if ((ptr = strchr(model, ',')) != NULL)
-	    *ptr = '\0';
-	}
-	else if (!_cups_strcasecmp(key, "priority"))
-	  device->priority = atoi(value);
-	else if ((device->type == CUPS_DEVICE_IPP ||
-	          device->type == CUPS_DEVICE_IPPS ||
-	          device->type == CUPS_DEVICE_PRINTER) &&
-		 !_cups_strcasecmp(key, "printer-type"))
-	{
-	 /*
-	  * This is a CUPS printer!
-	  */
-
-	  device->cups_shared = 1;
-
-	  if (device->type == CUPS_DEVICE_PRINTER)
-	    device->sent = 1;
-	}
-
-      next:
-	if (next_txt_record (txt) == NULL)
-	  break;
-      }
-
-      if (device->device_id)
-        free(device->device_id);
-
-      if (!device_id[0] && strcmp(model, "Unknown"))
-      {
-        if (make_and_model[0])
-	  snprintf(device_id, sizeof(device_id), "MFG:%s;MDL:%s;",
-	           make_and_model, model);
-        else if (!_cups_strncasecmp(model, "designjet ", 10))
-	  snprintf(device_id, sizeof(device_id), "MFG:HP;MDL:%s", model + 10);
-        else if (!_cups_strncasecmp(model, "stylus ", 7))
-	  snprintf(device_id, sizeof(device_id), "MFG:EPSON;MDL:%s", model + 7);
-        else if ((ptr = strchr(model, ' ')) != NULL)
-	{
-	 /*
-	  * Assume the first word is the make...
-	  */
-
-          memcpy(make_and_model, model, ptr - model);
-	  make_and_model[ptr - model] = '\0';
-
-	  snprintf(device_id, sizeof(device_id), "MFG:%s;MDL:%s",
-		   make_and_model, ptr + 1);
-        }
-      }
-
-      if (device_id[0])
-        device->device_id = strdup(device_id);
-      else
-        device->device_id = NULL;
-
-      if (device->make_and_model)
-	free(device->make_and_model);
-
-      if (make_and_model[0])
-      {
-	strlcat(make_and_model, " ", sizeof(make_and_model));
-	strlcat(make_and_model, model, sizeof(make_and_model));
-
-	device->make_and_model = strdup(make_and_model);
-      }
-      else
-	device->make_and_model = strdup(model);
-      break;
+      snprintf(device_id, sizeof(device_id), "MFG:%s;MDL:%s",
+	       make_and_model, ptr + 1);
     }
   }
 
-  return device;
+  if (device_id[0])
+    device->device_id = strdup(device_id);
+  else
+    device->device_id = NULL;
+
+  if (device->make_and_model)
+    free(device->make_and_model);
+
+  if (make_and_model[0])
+  {
+    strlcat(make_and_model, " ", sizeof(make_and_model));
+    strlcat(make_and_model, model, sizeof(make_and_model));
+
+    device->make_and_model = strdup(make_and_model);
+  }
+  else
+    device->make_and_model = strdup(model);
 }
+#endif /* HAVE_DNSSD || HAVE_AVAHI */
+
 
 /*
- * 'sigterm_handler()' - Handle termination signals...
+ * 'sigterm_handler()' - Handle termination signals.
  */
 
 static void
@@ -1374,5 +1276,5 @@ unquote(char       *dst,		/* I - Destination buffer */
 
 
 /*
- * End of "$Id: dnssd.c 10379 2012-03-23 22:16:22Z mike $".
+ * End of "$Id: dnssd.c 10489 2012-05-21 16:05:58Z mike $".
  */

@@ -4,15 +4,16 @@ Author: Julien Desfossez at Revolution Linux
 === modified file 'cups-1.3.9/cups/ipp.c'
 --- a/cups/ipp.c
 +++ b/cups/ipp.c
-@@ -40,6 +40,7 @@
-  *   ippNewRequest()        - Allocate a new IPP message.
-  *   ippRead()              - Read data for an IPP message from a HTTP
-  *                            connection.
-+ *   ippFilterPrinters()    - Filter printer list based on an environment variable
-  *   ippReadFile()          - Read data for an IPP message from a file.
-  *   ippReadIO()            - Read data for an IPP message.
-  *   ippTimeToDate()        - Convert from UNIX time to RFC 1903 format.
-@@ -987,6 +988,120 @@
+@@ -68,6 +68,8 @@
+  *   ippNewRequest()	    - Allocate a new IPP request message.
+  *   ippRead()		    - Read data for an IPP message from a HTTP
+  *			      connection.
++ *   ippFilterPrinters()    - Filter printer list based on an environment
++ *			      variable
+  *   ippReadFile()	    - Read data for an IPP message from a file.
+  *   ippReadIO()	    - Read data for an IPP message.
+  *   ippSetBoolean()	    - Set a boolean value in an attribute.
+@@ -2348,6 +2350,120 @@
    return (temp);
  }
  
@@ -133,7 +134,7 @@ Author: Julien Desfossez at Revolution Linux
  
  /*
   *  'ippNewRequest()' - Allocate a new IPP request message.
-@@ -1194,6 +1309,8 @@
+@@ -2590,6 +2706,8 @@
  	    */
  
              DEBUG_puts("2ippReadIO: IPP_TAG_END.");

@@ -1,9 +1,9 @@
 #
-# "$Id: Makefile 9766 2011-05-11 22:17:34Z mike $"
+# "$Id: Makefile 10490 2012-05-21 17:40:22Z mike $"
 #
 #   Scheduler Makefile for CUPS.
 #
-#   Copyright 2007-2011 by Apple Inc.
+#   Copyright 2007-2012 by Apple Inc.
 #   Copyright 1997-2007 by Easy Software Products, all rights reserved.
 #
 #   These coded instructions, statements, and computer programs are the
@@ -17,18 +17,17 @@ include ../Makedefs
 
 CUPSDOBJS =	\
 		auth.o \
-		avahi.o \
 		banners.o \
 		cert.o \
 		classes.o \
 		client.o \
+		colorman.o \
 		conf.o \
 		dirsvc.o \
 		env.o \
 		file.o \
 		main.o \
 		ipp.o \
-		colord.o \
 		listen.o \
 		job.o \
 		log.o \
@@ -42,7 +41,7 @@ CUPSDOBJS =	\
 		statbuf.o \
 		subscriptions.o \
 		sysman.o \
-		timeout.o
+		tls.o
 LIBOBJS =	\
 		filter.o \
 		mime.o \
@@ -54,8 +53,6 @@ COBJS	=	\
 		cups-deviced.o \
 		cups-exec.o \
 		cups-lpd.o \
-		cups-polld.o \
-		testdirsvc.o \
 		testlpd.o \
 		testmime.o \
 		testspeed.o \
@@ -71,7 +68,6 @@ LIBTARGETS =	\
 		libcupsmime.a
 
 UNITTARGETS =	\
-		testdirsvc \
 		testlpd \
 		testmime \
 		testspeed \
@@ -83,8 +79,7 @@ PROGRAMS =	\
 		cups-deviced \
 		cups-driverd \
 		cups-exec \
-		cups-lpd \
-		cups-polld
+		cups-lpd
 
 TARGETS	=	\
 		$(LIBTARGETS) \
@@ -127,8 +122,8 @@ clean:
 #
 
 depend:
-	makedepend -Y -I.. -fDependencies $(COBJS:.o=.c) \
-		$(CXXOBJS:.o=.cxx) >/dev/null 2>&1
+	$(CC) -MM $(ALL_CFLAGS) $(COBJS:.o=.c) >Dependencies
+	$(CXX) -MM $(ALL_CXXFLAGS) $(CXXOBJS:.o=.cxx) >>Dependencies
 
 
 #
@@ -216,12 +211,8 @@ install-data:
 install-exec:
 	echo Installing programs in $(SBINDIR)...
 	$(INSTALL_DIR) -m 755 $(SBINDIR)
-	$(INSTALL_BIN) -m 500 cupsd $(SBINDIR)
+	$(INSTALL_BIN) -m $(CUPS_CUPSD_FILE_PERM) cupsd $(SBINDIR)
 	$(INSTALL_BIN) cupsfilter $(SBINDIR)
-	-if test "x`uname`" = xDarwin; then \
-		$(INSTALL_DIR) $(BUILDROOT)/System/Library/Printers/Libraries; \
-		$(LN) $(sbindir)/cupsfilter $(BUILDROOT)/System/Library/Printers/Libraries/convert; \
-	fi
 	echo Installing programs in $(SERVERBIN)/daemon...
 	$(INSTALL_DIR) -m 755 $(SERVERBIN)
 	$(INSTALL_DIR) -m 755 $(SERVERBIN)/daemon
@@ -229,7 +220,6 @@ install-exec:
 	$(INSTALL_BIN) cups-driverd $(SERVERBIN)/daemon
 	$(INSTALL_BIN) cups-exec $(SERVERBIN)/daemon
 	$(INSTALL_BIN) cups-lpd $(SERVERBIN)/daemon
-	$(INSTALL_BIN) cups-polld $(SERVERBIN)/daemon
 	if test "x$(SYMROOT)" != "x"; then \
 		$(INSTALL_DIR) $(SYMROOT); \
 		for file in $(PROGRAMS); do \
@@ -287,7 +277,6 @@ uninstall:
 	$(RM) $(SERVERBIN)/daemon/cups-driverd
 	$(RM) $(SERVERBIN)/daemon/cups-exec
 	$(RM) $(SERVERBIN)/daemon/cups-lpd
-	$(RM) $(SERVERBIN)/daemon/cups-polld
 	$(RM) $(BUILDROOT)/System/Library/Printers/Libraries/convert
 	-$(RMDIR) $(STATEDIR)/certs
 	-$(RMDIR) $(STATEDIR)
@@ -392,6 +381,8 @@ cupsd-static:	$(CUPSDOBJS) libcupsmime.a ../cups/$(LIBCUPSSTATIC)
 		$(LIBMALLOC) $(SERVERLIBS) $(DNSSDLIBS) $(LIBGSSAPI) \
 		$(LIBWRAP)
 
+tls.o:	tls-darwin.c tls-gnutls.c tls-openssl.c
+
 
 #
 # Make the cupsfilter utility.
@@ -439,15 +430,6 @@ cups-exec:	cups-exec.o
 cups-lpd:	cups-lpd.o ../cups/$(LIBCUPS)
 	echo Linking $@...
 	$(CC) $(LDFLAGS) -o cups-lpd cups-lpd.o $(LIBS)
-
-
-#
-# Make the polling daemon, "cups-polld".
-#
-
-cups-polld:	cups-polld.o ../cups/$(LIBCUPS)
-	echo Linking $@...
-	$(CC) $(LDFLAGS) -o cups-polld cups-polld.o $(LIBS)
 
 
 #
@@ -510,15 +492,6 @@ libcupsmime.a:	$(LIBOBJS)
 
 
 #
-# Make the test program, "testdirsvc".
-#
-
-testdirsvc:	testdirsvc.o
-	echo Linking $@...
-	$(CC) $(LDFLAGS) -o testdirsvc testdirsvc.o $(COMMONLIBS) $(NETLIBS)
-
-
-#
 # Make the test program, "testlpd".
 #
 
@@ -567,7 +540,7 @@ testsub:	testsub.o ../cups/$(LIBCUPSSTATIC)
 
 sloc:
 	echo "cupsd: \c"
-	sloccount $(CUPSDOBJS:.o=.c) $(LIBOBJS:.o=.c) cups-driverd.cxx cups-polld.c cups-lpd.c 2>/dev/null | grep "Total Physical" | awk '{print $$9}'
+	sloccount $(CUPSDOBJS:.o=.c) $(LIBOBJS:.o=.c) cups-driverd.cxx cups-lpd.c 2>/dev/null | grep "Total Physical" | awk '{print $$9}'
 
 
 #
@@ -578,5 +551,5 @@ include Dependencies
 
 
 #
-# End of "$Id: Makefile 9766 2011-05-11 22:17:34Z mike $".
+# End of "$Id: Makefile 10490 2012-05-21 17:40:22Z mike $".
 #

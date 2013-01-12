@@ -1,9 +1,9 @@
 #
-# "$Id: Makefile 9422 2011-01-06 22:20:15Z mike $"
+# "$Id: Makefile 10191 2012-01-20 19:00:32Z mike $"
 #
 #   Makefile for the CUPS PPD Compiler.
 #
-#   Copyright 2007-2011 by Apple Inc.
+#   Copyright 2007-2012 by Apple Inc.
 #   Copyright 2002-2006 by Easy Software Products.
 #
 #   These coded instructions, statements, and computer programs are the
@@ -112,7 +112,7 @@ clean:
 #
 
 depend:
-	makedepend -Y -I.. -fDependencies $(OBJS:.o=.cxx) >/dev/null 2>&1
+	$(CXX) -MM $(ALL_CXXFLAGS) $(OBJS:.o=.cxx) >Dependencies
 
 
 #
@@ -400,5 +400,5 @@ include Dependencies
 
 
 #
-# End of "$Id: Makefile 9422 2011-01-06 22:20:15Z mike $".
+# End of "$Id: Makefile 10191 2012-01-20 19:00:32Z mike $".
 #
