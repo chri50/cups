@@ -1,5 +1,5 @@
 var/
-etc/cups/cupsd.conf
+etc/cups/cups-files.conf
 etc/cups/cupsd.conf.default
 etc/cups/snmp.conf
 etc/cups/ppd
@@ -28,6 +28,8 @@ usr/share/man/man5/classes.conf.5.gz
 usr/share/man/*/man5/classes.conf.5.gz
 usr/share/man/man5/cupsd.conf.5.gz
 usr/share/man/*/man5/cupsd.conf.5.gz
+usr/share/man/man5/cups-files.conf.5.gz
+usr/share/man/*/man5/cups-files.conf.5.gz
 usr/share/man/man5/cups-snmp.conf.5.gz
 usr/share/man/*/man5/cups-snmp.conf.5.gz
 usr/share/man/man5/mailto.conf.5.gz

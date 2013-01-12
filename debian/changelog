@@ -1,3 +1,34 @@
+cups (1.4.4-7+squeeze3) stable; urgency=low
+
+  [ Didier Raboud ]
+  * Ship cups-files.conf's manpage in cups (Closes: #697543)
+    - Update the configuration files split patch to also build the
+      manpage;
+    - Install the english manpage.
+  * Generate translated cups-files.conf's manpage in the po4a
+    infrastructure.
+  * Minimally update French manpage translation
+
+  [ Helge Kreutzmann ]
+  * Update German manpage translation. (Closes: #697860)
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 12 Jan 2013 17:46:27 +0100
+
+cups (1.4.4-7+squeeze2) stable-security; urgency=high
+
+  * Backport upstream configuration files split:
+    - Add split-configuration-files-STR4223.dpatch
+    - Install the new cups-files.conf
+    Fixes: CVE-2012-5519 (Closes: #692791)
+  * Make cupsd.conf a non-conffile, as it is managed by cups itself.
+    - On new installs, set it up from cupsd.conf.default.
+    - On upgrades, move it away in preinst and move it back in postinst.
+    - On aborted upgrades, move the file back in place.
+    - On purge, delete it too.
+  * Document changes in cups.NEWS.
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 29 Dec 2012 12:33:27 +0100
+
 cups (1.4.4-7+squeeze1) stable-security; urgency=high
 
   * Non-maintainer upload by the Security Team.

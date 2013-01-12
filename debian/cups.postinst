@@ -180,6 +180,16 @@ EOM
     if dpkg --compare-versions "$2" lt-nl "1.4.4-1"; then
 	chmod 755 /usr/lib/cups/backend /usr/lib/cups/backend-available
     fi
+
+    # Create default cupsd.conf if it doesn't exist
+    if [ ! -r /etc/cups/cupsd.conf ]; then
+        if dpkg --compare-versions "$2" le "1.4.4-7+squeeze2~" && [ -e /etc/cups/cupsd.conf.conffile-bak ]; then
+            # Move cupsd.conf back as it is now a non-conffile
+            mv /etc/cups/cupsd.conf.conffile-bak /etc/cups/cupsd.conf
+        else
+            cp /etc/cups/cupsd.conf.default /etc/cups/cupsd.conf
+        fi
+    fi
 fi
 
 #DEBHELPER#

@@ -65,6 +65,11 @@ case "$1" in
 	    rm_conffile cups /etc/init.d/cups
 	    update-rc.d cups remove
 	fi
+
+        if dpkg --compare-versions "$2" le "1.4.4-7+squeeze2~" && [ -e /etc/cups/cupsd.conf ]; then
+            # Move cupsd.conf away as it becomes a non-conffile
+            mv /etc/cups/cupsd.conf /etc/cups/cupsd.conf.conffile-bak
+        fi
     ;;
 
     abort-upgrade)
