@@ -22,8 +22,6 @@ set -e
 #     installation fails and the `postinst' is called with `abort-upgrade',
 #     `abort-remove' or `abort-deconfigure'.
 
-dpkg-maintscript-helper rm_conffile /etc/modprobe.d/blacklist-cups-usblp.conf 1.5.3-2  -- "$@"
-
 # Debconf
 . /usr/share/debconf/confmodule
 
@@ -33,11 +31,6 @@ if [ -e /etc/default/cups ]; then
 fi
 
 if [ "$1" = configure ]; then
-    # Set up lpadmin group.
-    if [ -z "`getent group lpadmin`" ]; then 
-	addgroup --system lpadmin
-    fi
-
     # set up custom PPD directory
     chown root:lpadmin /usr/share/ppd/custom 2>/dev/null || true
     chmod 3775 /usr/share/ppd/custom 2>/dev/null || true
@@ -80,22 +73,23 @@ EOF
     # Set up backends
     db_get cupsys/backend && SELECTED=$RET
     # We remove the scsi backend from the output as it got removed in CUPS 1.5.0
-    list=`echo $SELECTED | sed -e 's/, /,/g' | sed -e 's/scsi,*//g' | sed -e 's/parallel,*//g' | sed -e 's/serial,*//g'`
-    if dpkg --compare-versions "$2" lt-nl "1.5.3-3"; then
+    # We also remove the IPP backends as they are statically in cups-daemon now
+    list=`echo $SELECTED | sed -e 's/, /,/g' | sed -e 's/scsi,*\b//g' | sed -e 's/ipp,*\b//g' | sed -e 's/ipps,*\b//g' | sed -e 's/ipp14,*\b//g' | sed -e 's/parallel,*\b//g' | sed -e 's/serial,*\b//g'`
+     if dpkg --compare-versions "$2" lt-nl "1.5.3-2.1"; then
+        # Make sure the above dropped backends are effectively away
+ 	for i in scsi parallel serial; do
+		# Drop the file if it doesn't belong to any package.
+		dpkg -S /usr/lib/cups/backend/$i 2>/dev/null 1>&2 || rm -f /usr/lib/cups/backend/$i 
+	done
 	if ! echo $list | grep -q "\bipp14\b"; then
 	    list=`echo $list | sed -e 's/\bipp\b/ipp,ipp14/g'`
 	fi
     fi
     save_IFS=$IFS
     IFS=,
-    (cd /usr/lib/cups/backend && rm -f http https ipp ipp14 ipps lpd socket usb snmp dnssd mdns)
+    (cd /usr/lib/cups/backend && rm -f lpd socket usb snmp dnssd mdns)
     for module in $list; do
       ln /usr/lib/cups/backend-available/$module /usr/lib/cups/backend/$module
-      if [ "$module" = "ipp" ]; then
-	ln /usr/lib/cups/backend/ipp /usr/lib/cups/backend/http
-	ln /usr/lib/cups/backend/ipp /usr/lib/cups/backend/https
-	ln /usr/lib/cups/backend/ipp /usr/lib/cups/backend/ipps
-      fi
       if [ "$module" = "dnssd" ]; then
 	ln /usr/lib/cups/backend/dnssd /usr/lib/cups/backend/mdns
       fi
@@ -106,79 +100,11 @@ EOF
     db_fset cupsys/backend changed false
 
     # Resync Debconf database with real state
-    list=`( cd /usr/lib/cups/backend && for f in ipp ipp14 lpd socket usb snmp dnssd; do [ -e $f ] && echo -n "$f, "; done ) | sed -e 's/, $//'`
+    list=`( cd /usr/lib/cups/backend && for f in lpd socket usb snmp dnssd; do [ -e $f ] && echo -n "$f, "; done ) | sed -e 's/, $//'`
     db_set cupsys/backend $list;
 
-    if [ -f /etc/cups/classes.conf ]; then
-      chown root:lp /etc/cups/classes.conf ; chmod 600 /etc/cups/classes.conf
-    fi
-    if [ -f /etc/cups/printers.conf ]; then
-      chown root:lp /etc/cups/printers.conf ; chmod 600 /etc/cups/printers.conf
-    fi
-
-    # symlink snakeoil SSL certificate if present
-    if [ -e /etc/ssl/certs/ssl-cert-snakeoil.pem -a \
-	  -e /etc/ssl/private/ssl-cert-snakeoil.key -a \
-	  -n "`getent group ssl-cert`" -a ! -e /etc/cups/ssl/server.crt \
-	  -a ! -e /etc/cups/ssl/server.key -a ! -h /etc/cups/ssl/server.crt \
-	  -a ! -h /etc/cups/ssl/server.key ]; then
-	 ln -s /etc/ssl/certs/ssl-cert-snakeoil.pem /etc/cups/ssl/server.crt
-	 ln -s /etc/ssl/private/ssl-cert-snakeoil.key /etc/cups/ssl/server.key
-    fi
-
-    APP_PROFILE=/etc/apparmor.d/usr.sbin.cupsd
-    if [ -f "$APP_PROFILE" ]; then
-        # Add the local/ include
-        LOCAL_APP_PROFILE=/etc/apparmor.d/local/usr.sbin.cupsd
-
-        [ -e "$LOCAL_APP_PROFILE" ] || \
-        [ -e /etc/apparmor.d/local -a ! -d /etc/apparmor.d/local ] || {
-            tmp=`mktemp`
-        cat <<EOM > "$tmp"
-# Site-specific additions and overrides for usr.sbin.cupsd.
-# For more details, please see /etc/apparmor.d/local/README.
-EOM
-            mkdir `dirname $LOCAL_APP_PROFILE` 2>/dev/null || true
-            mv -f "$tmp" "$LOCAL_APP_PROFILE"
-            chmod 644 "$LOCAL_APP_PROFILE"
-        }
-
-        # Reload the profile, including any abstraction updates
-        if aa-status --enabled 2>/dev/null; then
-            apparmor_parser -r -T -W "$APP_PROFILE" || true
-        fi
-    fi
-
-    # Clear cache if we upgrade to 1.4.x
-    if dpkg --compare-versions "$2" lt-nl "1.4.1-5"; then
-	rm /var/cache/cups/* 2> /dev/null || :
-    fi
-
-    # Clear PPD cache if we upgrade to 1.5.x
-    if dpkg --compare-versions "$2" lt-nl "1.5.0-3"; then
-	rm /var/cache/cups/ppds.dat 2> /dev/null || :
-    fi
-
-    # Manage printcap file and associated symlinks
-    if [ -e /etc/cups/cupsd.conf ]; then
-	if [ -e /etc/printcap.cups ]; then
-	    rm -f /etc/printcap.cups
-	fi
-	if [ -L /etc/printcap -a ! -e /etc/printcap ]; then
-	    rm -f /etc/printcap
-	fi
-
-	printcap_file=`egrep '^Printcap ' /etc/cups/cupsd.conf | awk '{print $2}' | tail -n 1`
-	if [ -z "$printcap_file" ]; then
-	    printcap_file=/var/run/cups/printcap
-	fi
-	if [ ! -e /etc/printcap -a -e $printcap_file ]; then
-	    ln -s $printcap_file /etc/printcap
-	fi
-    fi
-
-    if dpkg --compare-versions "$2" lt "1.5.3-3"; then
-	modprobe usblp >/dev/null 2>&1 || :
+    if dpkg --compare-versions "$2" lt "1.5.3-2.1"; then
+        modprobe -b usblp >/dev/null 2>&1 || :
     fi
 fi
 

@@ -21,6 +21,7 @@
   capability net_bind_service,
   capability setgid,
   capability setuid,
+  deny capability block_suspend,
 
   # nasty, but we limit file access pretty tightly, and cups chowns a
   # lot of files to 'lp' which it cannot read/write afterwards any

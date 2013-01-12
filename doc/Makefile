@@ -1,5 +1,5 @@
 #
-# "$Id: Makefile 9483 2011-01-17 05:40:28Z mike $"
+# "$Id: Makefile 10429 2012-04-23 18:04:24Z mike $"
 #
 #   Documentation makefile for CUPS.
 #
@@ -66,7 +66,7 @@ HELPFILES	=	\
 			help/man-cancel.html \
 			help/man-cups-config.html \
 			help/man-cups-lpd.html \
-			help/man-cups-polld.html \
+			help/man-cups-snmp.html \
 			help/man-cupsaddsmb.html \
 			help/man-cupsd.html \
 			help/man-cupsenable.html \

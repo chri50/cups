@@ -1,3 +1,227 @@
+cups (1.6.1-1) experimental; urgency=low
+
+  * New upstream release
+     - Avahi-based Bonjour/DNS-SD/mDNS support
+     - ICC-based color management with colord
+     - IPP-Everywhere support
+     - Moved filters not needed by Mac OS to cups-filters project at
+       OpenPrinting.
+     - Moved API of libcupsdrivers (driver.h) and of part of libcupsimage
+       (image.h) to cups-filters.
+     - cups-polld removed
+     - Fixes: LP: #904093, LP: #1027804, Closes: #690522
+
+  [ Marc Deslauriers ]
+  * debian/local/apport-hook.py: Also attach AppArmor information and logs.
+
+  [ Jamie Strandboge ]
+  * debian/local/apparmor-profile: deny capability block_suspend. It is noisy
+    and doesn't seem to actually be needed. This can be revisited if it turns
+    out it is needed. (LP: #1031583)
+
+  [ Till Kamppeter ]
+  * debian/patches/ipp-backend-cups-1.5.4-fixes.patch,
+    debian/patches/install-sh-remove-bashism.patch,
+    debian/patches/usb-backend-busy-loop-fix.patch,
+    debian/patches/usb-backend-detach-usblp-earlier-crash-guards.patch,
+    debian/patches/usb-backend-initialize-usblp-attached-state.patch,
+    debian/patches/usb-backend-further-enhancements.patch,
+    debian/patches/snmp-dont-stop-without-ipv6.patch,
+    debian/patches/cups-avahi.patch,
+    debian/patches/colord-support.patch: Removed, included upstream.
+  * debian/patches/dnssd-reg-array-linear-search.patch: Removed, not applicable
+    any more.
+  * debian/patches/pidfile.patch,
+    debian/patches/airprint-support.patch,
+    debian/patches/no-conffile-timestamp.patch,
+    debian/patches/drop_unnecessary_dependencies.patch,
+    debian/patches/configure-default-browse-protocols.patch
+    debian/patches/add-ipp-backend-of-cups-1.4.patch
+    debian/patches/printer-filtering.patch,
+    debian/patches/show-compile-command-lines.patch,
+    debian/patches/pstops-based-workflow-only-for-printing-ps-on-a-ps
+    -printer.patch,
+    debian/patches/tests-ignore-usb-crash.patch: Manually regenerated to adapt
+    to upstream changes.
+  * debian/patches/debian/patches/ppd-poll-with-client-conf.patch,
+    debian/patches/manpage-translations.patch,
+    debian/patches/rootbackends-worldreadable.patch,
+    debian/patches/reactivate_recommended_driver.patch,
+    debian/patches/read-embedded-options-from-incoming-postscript-and-add-to-ipp
+    -attrs.patch,
+    debian/patches/do-not-broadcast-with-hostnames.patch,
+    debian/patches/confdirperms.patch,
+    debian/patches/log-debug-history-nearly-unlimited.patch,
+    debian/patches/tests-ignore-warnings.patch,
+    debian/patches/tests-ignore-usb-crash.patch,
+    debian/patches/tests-slow-lpstat.patch,
+    debian/patches/tests-fix-ppdLocalize-on-unclean-env.patch,
+    debian/patches/pidfile.patch: Refreshed with quilt.
+  * debian/patches/airprint-support.patch: Fixes in the conditionals to make
+    AirPrint work with the new upstream Avahi support, support for iOS 6
+    clients (LP: #1054495).
+  * debian/patches/network-backends-snmp-queries-optional.patch: SNMP queries
+    by network backends can get suppressed now by adding "?snmp=false" to the
+    end of the URI. SNMP queries to Bonjour-shared CUPS queue will get
+    suppressed by default.
+  * debian/patches/usb-backend-reset-after-job-only-for-specific-devices.patch:
+    Let the USB backend only send a clean-up reset after the job if it is
+    really needed (LP: #1032456), force-uni-directional access for Canon
+    Pixma iP4200 (CUPS STR #4155) and iP4300 (LP: #1032385).
+  * debian/patches/usb-backend-more-quirk-rules.patch: Added more quirk rules
+    which are not yet committed upstream: Canon MP500 (LP: #1032456), MP510
+    (LP: #1050009), MP550 (CUPS STR #4155), MP560 (CUPS STR #4155), Brother
+    HL-1430 (LP: #1038695), Oki Okipage 14ex (LP: #872483), Oki B410d
+    (LP: #872483), all Zebra printers (LP: #1001028).
+  * debian/patches/cupsd-conf-remove-obsolete-browse-directives.patch:
+    Removed obsolete "BrowseOrder" and "BrowseAllow" lines from cupsd.conf.
+  * debian/patches/get-ppd-file-for-statically-configured-bonjour-shared
+    -queues.patch:
+    Applications could not get the PPD file for statically-configured Bonjour-
+    shared print queues (CUPS STR #4159)
+  * debian/patches/get-ppd-file-for-statically-configured-ipp-shared
+    -queues.patch:
+    Applications could not get the PPD file for statically-configured IPP-
+    shared print queues (CUPS STR #4178)
+  * debian/patches/printers-c-recognize-remote-cups-queue-via-dnssd-uri.patch,
+    Treat raw queues pointing to a CUPS server as remote queues (using PPD on
+    server) also if they have a "dnssd://..." URI.
+  * debian/patches/avahi-not-considered-at-some-dnssd-conditionals.patch: At
+    some points Avahi was not considered in conditionals for DNS-SD. This
+    broke most of the printer sharing functionality.
+  * debian/patches/prevent-crash-due-to-null-host-name-or-fqdn-from-avahi.patch:
+    Prevent crash due to NULL host name or FQDN from Avahi (CUPS STR #4183,
+    LP: #1046982, LP: #1034045).
+  * debian/patches/fix-crash-on-shutdown-caused-by-broken-avahi-config.patch:
+    Fix crash on shutdown caused by broken Avahi config (CUPS STR #4192,
+    LP: #1036974).
+  * debian/patches/fix-another-spot-where-avahi-crashes-cupsd-because-it-does
+    -not-handle-null-values-from-its-own-apis.patch:
+    Fix another spot where Avahi crashes cupsd because it does not handle NULL
+    values returned by its own APIs (CUPS STR #4200, LP: #1041013).
+  * debian/patches/cupsd-no-crash-on-avahi-threaded-poll-shutdown.patch:
+    Fixed crash which sometimes happens on shutdown of the CUPS daemom,
+    caused by a wrong shutdown sequence for shutting down the Avahi threaded
+    poll (CUPS STR #4213, CUPS STR #4180, LP: #1034045).
+  * debian/patches/filter-out-all-control-characters-from-the-1284-device
+    -id.patch:
+    Do not only filter newline characters out of device IDs but any
+    non-printable character (CUPS STR #4124).
+  * debian/patches/ipp-backend-did-not-specify-the-compression-used.patch:
+    The IPP backend did not specify the compression used (CUPS STR #4181).
+  * debian/patches/ipp-backend-did-not-send-cancel-request-to-printers-when-a
+    -job-was-canceled-and-printer-did-not-support-create-job.patch:
+    The IPP backend did not send a cancel request to printers when a job was
+    canceled and the printer did not support Create-Job. This is to improve the
+    "ipp" backend as much as possible to reduce the ned of the "ipp14" backend
+    ("ipp" backend of CUPS 1.4.x added to the Debian/Ubuntu package as fallback
+    in case of regressions of the current "ipp" backend).
+  * debian/patches/work-around-some-broken-ipp-printers.patch: Work around
+    some broken IPP printers (CUPS STR #4190). Also catch late authentication
+    issues so the backend doesn't just spin on a print request that will never
+    succeed.
+  * debian/patches/ipp-backend-abort-the-outer-loop-if-we-get-a-failure-from
+    -send-document.patch,
+    debian/patches/ipp-backend-could-get-stuck-in-an-endless-loop-on-certain
+    -network-errors.patch:
+    Prevent IPP backend from falling into an infinite loop in certain
+    situations (CUPS STR #4194).
+  * debian/patches/fix-make-check.patch: Fix "make check".
+  * debian/patches/ubuntu/ubuntu-disable-browsing.patch: Updated.
+  * debian/cups.install: Removed all references to the discontinued cups-polld.
+  * debian/rules: Removed lines for deletion of filters, fonts and glyphs which
+    have moved to cups-filters and also the line for commenting out conversion
+    rules.
+  * debian/rules, debian/cups.install, debian/cups-common.install: Do not
+    install fonts and charsets, there are none any more in CUPS.
+  * debian/control, debian/libcupsdriver1-dev.install,
+    debian/libcupsdriver1.symbols, debian/libcupsdriver1.install:
+    libcupsdriver.so got moved to cups-filters as part of libcupsfilters.so.
+  * debian/libcupsimage2-dev.install: image.h removed, this API has moved to
+    cups-filters.
+  * debian/rules: Removed "--with-remote_protocols='CUPS dnssd'" from the
+    ./configure command line and removed the "CUPS" from
+    "--with-local_protocols='CUPS dnssd'". These settings are not supported
+    any more in CUPS 1.6.x.
+  * debian/rules, debian/libcups2-dev.examples: Removed references to scripting/
+    this subdirectory does not exist any more in CUPS 1.6.x.
+  * debian/libcups2.symbols, debian/libcupsimage2.symbols: Refreshed using the
+    diff of the dpkg-gensymbols output during build.
+  * debian/cups.postinst: Clean /etc/cups/cupsd.conf from all keywords and
+    settings which got obsolete with the dropping CUPS Broadcasting/Browsing
+    in CUPS 1.6.x: BrowsePoll, BrowseAllow, BrowseDeny, BrowseOrder, and
+    BrowseRemoteProtocols lines get removed and the "cups" argument gets
+    removed from the BrowseLocalProtocols line (LP: #1052897).
+  * Split the "cups" binary package into "cups" and "cups-daemon".
+    Installation of "cups-daemon" without "cups" gives a CUPS
+    environment for raw queues only, especially as a client-only mode
+    with queues pointing to remote printers set up automatically with
+    cups-browsed from cups-filters. This environment gives basic
+    printing support on low-footprint mobile systems, like Ubuntu for
+    Android.
+
+  [ Martin Pitt ]
+  * manpage-translations.patch: Update German manpage translations, thanks
+    Helge Kreutzmann! (Closes: #670042)
+  * manpage-translations.patch: Update French manpage translations, thanks
+    Julien Patriarca! (Closes: #670224)
+  * debian/README.Debian: Explain how to enable cups-lpd, thanks Vincent
+    McIntyre. (Closes: #508941)
+
+  [ Didier Raboud ]
+  * Make sure unowned obsolete backends are removed on configure.
+    (Closes: #683754)
+  * Update all debconf translations to cope with the ipp14 addition and
+    parallel and serial removals.
+  * Add patch to force C locale when testing the (non-)localized PPD
+    content fetch.
+  * Re-order patches to put the tests-fixing ones earlier.
+  * Rename tests-slow-lpstat.patch to
+    tests-wait-on-unfinished-jobs-everytime.patch : wait on remaining
+    jobs before each test. This fix the too slow architectures' FTBFS.
+  * When modprobe'ing usblp, respect the blacklist. Thanks to Julien
+    Cristau for noticing!
+  * Use cups-filters' filters, type declarations, conversions, libraries
+    and banners in the tests. Add cups-filters' and libcupsfilters1-dev
+    Build-Depends, with a version bigger than 1.0.24-3~ (to pull bc in).
+  * Convert packaging repository to Git, change VCS-* fields accordingly,
+    update debian/README.source.
+  * Merge releases targeted at wheezy.
+  * Refresh all patches using "quilt -p ab".
+  * Uploaders:
+    - Add myself.
+    - Remove Kenshi Muto <kmuto@debian.org> with his agreement and with
+      great thanks for his past work!
+  * Put under Debian Printing Team umbrella.
+  * Drop cupsddk transitional package, was transitional in Squeeze.
+  * Make libcupsimage2 depend on libcupsfilters1 as functions (and
+    exported symbols) moved there.
+  * Enable manpage translations by installing them from debian/rules
+    when they exist. This allows the build to be more robust against
+    non-complete translations.
+  * Disable pstops-based-workflow-only-for-printing-ps-on-a-ps-printer.patch,
+    as it breaks the build tests in 1.6.1. Re-opens #593338.
+  * Remove the obsolete etc/cups/pdftops.conf and etc/cups/acroread.conf
+    using cups.maintscript. (Closes: #645442)
+  * Drop redundant dpkg-maintscript-helper snippets in cups maintainer
+    scripts.
+  * Drop redundant Priority and Section values in debian/control.
+  * Convert packaging to debhelper 9; drop cdbs Build-Depends.
+  * Drop all relationships to libcupsys2{,-dev} and cupsddk-drivers as
+    they got removed before Lenny.
+  * In tests-ignore-usb-crash.patch, also ignore "[cups-deviced] PID *
+    (dnssd) stopped with status 1" errors.
+  * Make sure internal libraries relationships are tight enough.
+  * Fix STR#4223 "lpadmin to root privilege escalation" by including the
+  * upstream heavy fix.
+    Fixes CVE-2012-5519, Closes: #692791.
+  * Update most patches to cope with the above change.
+  * Make sure to drop CVS tags from all config files.
+  * Import "The scheduler did not delete job control backup files
+    (STR #4244)" from upstream to fix the testsuite.
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 12 Jan 2013 09:41:00 +0100
+
 cups (1.5.3-4) experimental; urgency=low
 
   [ Till Kamppeter ]
@@ -72,6 +296,224 @@ cups (1.5.3-3) experimental; urgency=low
     development cycle of Ubuntu Quantal.
 
  -- Till Kamppeter <till.kamppeter@gmail.com>  Fri,  6 Jul 2012 17:28:01 +0200
+
+cups (1.5.3-2.12) unstable; urgency=low
+
+  [ Julien Cristau ]
+  * In the dbus UTF8 checker:
+    - Make sure to reset the buffer correctly.
+
+ -- Didier Raboud <odyx@debian.org>  Sun, 30 Dec 2012 14:12:20 +0100
+
+cups (1.5.3-2.11.1) unstable; urgency=low
+
+  * Re-upload without spurious debian-changes-* patch.
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 29 Dec 2012 12:38:55 +0100
+
+cups (1.5.3-2.11) unstable; urgency=low
+
+  [ Julien Cristau ]
+  * In the dbus UTF8 checker:
+    - Use C.UTF-8 instead of not-certainly-available en_US.UTF-8; make
+      cups depend on libc-bin (>= 2.13).
+    - Make sure the buffer is really big enough.
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 28 Dec 2012 13:41:27 +0100
+
+cups (1.5.3-2.10) unstable; urgency=low
+
+  * Backport more upstream configuration split fixes:
+    - Fix cupsctl man page
+    - Generate and install cups-files.conf online help.
+    - Fix "-t" operation that shows correct filename.
+    - Use syslog for startup errors.
+    - Fix installation of cupsd.conf: need to use ConfigurationFile and not
+      ServerRoot/cupsd.conf.
+    - Check permissions of ConfigurationFile and CupsFilesFile: should be
+      ConfigFilePerm.
+
+ -- Didier Raboud <odyx@debian.org>  Sun, 16 Dec 2012 15:33:27 +0100
+
+cups (1.5.3-2.9) unstable; urgency=low
+
+  [ Didier Raboud ]
+  * In the configuration file split patch:
+    - Include 'FileDevice warning fix in ipp.c:add_printer()' from Tim
+      Waugh (RedHat).
+    - Drop pure-comment part.
+  * Remove cupsd.conf during purge too. (Closes: #695337)
+
+  [ Bernard Massot ]
+  * Fix lpa{t,d}min typo in cups.NEWS.
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 07 Dec 2012 11:41:51 +0100
+
+cups (1.5.3-2.8) unstable; urgency=low
+
+  * Bugfix the configuration stanzas split: it left some possibilities
+    to have configuration stanzas taken from the wrong file.
+    - Refresh affected patches too.
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 04 Dec 2012 17:10:04 +0100
+
+cups (1.5.3-2.7) unstable; urgency=low
+
+  * Backport upstream configuration files split to address CVE-2012-5519.
+    - Add split-configuration-files-STR4223.patch
+    - Refresh affected patches:
+     - cups-deviced-allow-device-ids-with-newline.patch
+     - default_log_settings.patch
+     - pidfile.patch
+     - reactivate_recommended_driver.patch
+     - removecvstag.patch
+     - tests-ignore-usb-crash.patch
+    - Install the new cups-files.conf
+    Fixes: CVE-2012-5519 (Closes: #692791)
+  * Make cupsd.conf a non-conffile, as it is managed by cups itself.
+    - On new installs, set it up from cupsd.conf.default.
+    - On upgrades, move it away in preinst and move it back in postinst.
+    - On aborted upgrades, move the file back in place.
+  * Document the split in cups.NEWS.
+  * Update translations for new manpage, install it.
+  * Put under Debian Printing Team umbrella.
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 04 Dec 2012 12:13:14 +0100
+
+cups (1.5.3-2.6) unstable; urgency=low
+
+  * Import more fixes:
+    - From RedHat:
+      * USB backend quirk rule for Xerox Phaser 3124 (and maybe others).
+        (STR #4217)
+      * Ensure attributes are valid UTF-8 in dbus notifier.
+        (RedHat #863387, STR #4219)
+    - From upstream:
+      * Fix to properly send cancel requests to printers not supporting
+        Create-Job.
+      * Fix to work around broken 1284 device IDs that use a newline
+        instead of a semicolon.
+      * Fix to avoid letting the IPP backend stuck in an endless loop on
+        certain network errors. (STR #4194)
+   * Tighten all internal dependencies on libcups2 to avoid any version
+     disparity. (Closes: #668662)
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 06 Nov 2012 16:26:25 +0100
+
+cups (1.5.3-2.5) unstable; urgency=low
+
+  * Furhter tighten cups dependency on libcups2. (Closes: #668662)
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 02 Nov 2012 22:30:39 +0100
+
+cups (1.5.3-2.4) unstable; urgency=low
+
+  * Non-maintainer upload on behalf of the Printing Team.
+
+  [ Till Kamppeter ]
+  * Correctly install language-private.h as /usr/include/cups/i18n.h,
+    .install file entries cannot rename files (LP: #1013470).
+
+  [ Martin Pitt ]
+  * Tighten cups' and cups-client's dependency to libcups2 to current binary
+    version. They use private symbols from the libraries which the automatic
+    dependencies from the .symbols files don't cover.
+    (Closes: #668662, #677180)
+  * manpage-translations.patch: Update German manpage translations, thanks
+    Helge Kreutzmann! (Closes: #670042)
+  * manpage-translations.patch: Update French manpage translations, thanks
+    Julien Patriarca! (Closes: #670224)
+  * debian/README.Debian: Explain how to enable cups-lpd, thanks Vincent
+    McIntyre. (Closes: #508941)
+
+  [ Didier Raboud ]
+  * Backport upstream quirks for the libusb backend (Closes: #690982).
+  * Packaging repository moved to Git, change VCS-* fields accordingly.
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 25 Oct 2012 08:56:29 +0200
+
+cups (1.5.3-2.3) unstable; urgency=low
+
+  * Non-maintainer upload on behalf of the Printing Team.
+  * When modprobe'ing usblp, respect the blacklist. Thanks to Julien
+    Cristau for noticing!
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 12 Oct 2012 20:13:28 +0200
+
+cups (1.5.3-2.2) unstable; urgency=low
+
+  * Non-maintainer upload on behalf of the Printing Team.
+  * Update tests-slow-lpstat.patch to wait on remaining jobs before each
+    test. This should fix the slow architectures' FTBFS.
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 11 Oct 2012 17:34:30 +0200
+
+cups (1.5.3-2.1) unstable; urgency=low
+
+  [ Didier Raboud ]
+  * Non-maintainer upload on behalf of the Printing Team.
+  * Revert all 1.5.3-2 changes.
+  * Cherry-pick changes targeted at Wheezy.
+  * Make sure unowned obsolete backends are removed on configure.
+    (Closes: #683754)
+  * Update all debconf translations to cope with the ipp14 addition and
+    parallel and serial removals.
+  * Add patch to force C locale when testing the (non-)localized PPD
+    content fetch.
+
+  [ Till Kamppeter ]
+  * debian/patches/add-ipp-backend-of-cups-1.4.patch, debian/cups.config,
+    debian/cups.lintian-overrides, debian/cups.postinst, debian/cups.prerm,
+    debian/cups.templates: Add the IPP backend of CUPS 1.4.x to the current
+    CUPS package as independent backend "ipp14". Some devices (like the
+    LiveBox 2) do not work with the current IPP backend (LP: #945028,
+    LP: #973270, LP: #990734, LP: #992468, LP: #992982).
+  * debian/patches/usb-backend-further-enhancements.patch: Added latest
+    development work on the libusb-based USB backend:
+     - Support for uni-directional devices, both protocol-1 devices and
+       devices where no read endpoint is found.
+     - Soft reset specific to the "PRINTER" device class. This allows one to
+       reset without reconnecting.
+     - When closing the device, it will also get reset to its original
+       configuration, before re-attaching the usblp kernel module. Do not
+       restore the configuration setting when the old configuration was zero,
+       as zero means "unconfigured".
+     - Added option "usb-unidir" to force the backend into uni-directional
+       mode. This allows one to work around problems with bi-di
+       communications, especially also a delay at the end of the job caused by
+       closing the read channel (happens only for some devices, LP:#1001028).
+       Also useful for debugging.
+     - Added the quirk management of the usblp kernel module. So the problems
+       of all printers which were worked around in the kernel module are
+       also worked around in the libusb-based CUPS backend now (LP: #1000253).
+     - Added new quirk type to quirk manager: Printers for which the usblp
+       kernel module should not get reattached after printing a job
+       (LP: #1000253, perhaps also LP: #995111).
+     - Added additional quirks for the Prolific Technology USB -> Parallel
+       adapter, as the adapter needs uni-directional mode to be forced and
+       also does not like re-attaching the usblp kernel module after the
+       job (last third of last page gets cut off, re-attaching probably
+       sends a reset to the printer while there is still data to be printed
+       in the printer's internal buffer (LP: #987485).
+     - Added the command line option "usb-no-reattach". With the option set
+       the usblp kernel module does not get reattached after a job has been
+       printed. Some printers cut off the end of the job or even crash by
+       re-attaching the module. This is a development/debug mode to test
+       whether re-attaching was the culprit of a problem. Users should
+       report such issues so that their printers can get added to the quirk
+       list.
+     - debian/patches/usb-backend-further-enhancements.patch: USB backend: Do
+       a printer reset after each job, this makes the Prolific USB -> Parallel
+       adapter finally work (LP: #987485) and makes it unnecessary to
+       blacklist the usblp kernel module for some printers (LP: #997040).
+     - Some extra debug messages.
+     - Added a missing libusb_free_config_descriptor().
+    This patch is submitted upstream as CUPS STR #4128.
+  * debian/local/blacklist-cups-usblp.conf, debian/cups.maintscript,
+    debian/cups.install, debian/control: Lift the usblp blacklist, not
+    needed anymore with the above fixes (Closes: #630556, #635041).
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 28 Sep 2012 12:28:55 +0200
 
 cups (1.5.3-2) unstable; urgency=low
 

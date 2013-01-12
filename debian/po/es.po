@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups 1.2.2-1\n"
 "Report-Msgid-Bugs-To: cups@packages.debian.org\n"
-"POT-Creation-Date: 2011-09-15 12:02+0200\n"
+"POT-Creation-Date: 2012-09-18 12:37+0200\n"
 "PO-Revision-Date: 2007-06-21 18:51+0200\n"
 "Last-Translator: Carlos Valdivia Yagüe <valyag@dat.etsit.upm.es>\n"
 "Language-Team: Debian L10n Spanish Team <debian-l10n-spanish@lists.debian."
@@ -104,20 +104,14 @@ msgstr "ipp"
 #. Type: multiselect
 #. Choices
 #: ../cups.templates:3001
+msgid "ipp14"
+msgstr "ipp14"
+
+#. Type: multiselect
+#. Choices
+#: ../cups.templates:3001
 msgid "lpd"
 msgstr "lpd"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
-msgid "parallel"
-msgstr "paralelo"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
-msgid "serial"
-msgstr "serie"
 
 #. Type: multiselect
 #. Choices
@@ -178,9 +172,6 @@ msgid ""
 msgstr ""
 "Por favor, elija el motor que utilizará CUPS. La opción predeterminada "
 "debería ser apta para los entornos más comunes."
-
-#~ msgid "scsi"
-#~ msgstr "scsi"
 
 #~ msgid ""
 #~ "If you will be accepting print jobs from Windows computers, you probably "

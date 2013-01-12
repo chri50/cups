@@ -1,20 +1,14 @@
 cups packaging for Debian
 -------------------------
 
-cups is maintained with bzr-builddeb on bzr.debian.org (see Vcs-Bzr: control
-field). bzr-builddeb is documented at /usr/share/doc/bzr-builddeb/ (README.gz or
-README.html, or the comprehensive user_manual/). 
+cups is maintained with git-buildpackage on git.debian.org (see Vcs-Git: control
+field). git-buildpackage is documented at /usr/share/doc/git-buildpackage/ (in
+particular the comprehensive manual-html/).
 
-It uses the common dpatch patch system, see
-/usr/share/doc/dpatch/README.source.gz for details.
+It uses a standard 3.0 (quilt) patch system.
 
 The really short path to get a buildable source tree is:
 
   debcheckout cups
   cd cups
-  bzr bd-do
-
-Then you can do dpatch-edit-patch, change debian/*, etc. When you "exit 0", the
-changes to debian/ will be written back to the bzr checkout, where you can
-debcommit them.
-
+  quilt push -af

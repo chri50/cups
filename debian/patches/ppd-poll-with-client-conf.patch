@@ -3,7 +3,7 @@ Bug: http://www.cups.org/str.php?L2763
 
 --- a/cups/util.c
 +++ b/cups/util.c
-@@ -1078,11 +1078,13 @@
+@@ -1079,11 +1079,13 @@
      http2 = http;
    else if ((http2 = httpConnectEncrypt(hostname, port,
                                         cupsEncryption())) == NULL)

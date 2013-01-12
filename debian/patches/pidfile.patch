@@ -1,20 +1,22 @@
 Description: Add support for creating pid files.
-Author: Maritn Pitt <mpitt@debian.org>
+Author: Martin Pitt <mpitt@debian.org>
 Bug: http://www.cups.org/str.php?L2465
+
+Last-Update: 2012-11-29
 
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -184,7 +184,8 @@
-   { "TempDir",			&TempDir,		CUPSD_VARTYPE_PATHNAME },
-   { "Timeout",			&Timeout,		CUPSD_VARTYPE_INTEGER },
-   { "UseNetworkDefault",	&UseNetworkDefault,	CUPSD_VARTYPE_BOOLEAN },
--  { "WebInterface",		&WebInterface,		CUPSD_VARTYPE_BOOLEAN }
-+  { "WebInterface",		&WebInterface,		CUPSD_VARTYPE_BOOLEAN },
+@@ -177,7 +177,8 @@
+ #ifdef HAVE_AUTHORIZATION_H
+   { "SystemGroupAuthKey",	&SystemGroupAuthKey,	CUPSD_VARTYPE_STRING },
+ #endif /* HAVE_AUTHORIZATION_H */
+-  { "TempDir",			&TempDir,		CUPSD_VARTYPE_PATHNAME }
++  { "TempDir",			&TempDir,		CUPSD_VARTYPE_PATHNAME },
 +  { "PidFile",			&PidFile,		CUPSD_VARTYPE_STRING }
  };
- #define NUM_VARS	(sizeof(variables) / sizeof(variables[0]))
  
-@@ -508,6 +509,7 @@
+ static int		default_auth_type = CUPSD_AUTH_AUTO;
+@@ -594,6 +595,7 @@
    cupsdSetStringf(&ServerHeader, "CUPS/%d.%d", CUPS_VERSION_MAJOR,
                    CUPS_VERSION_MINOR);
    cupsdSetString(&StateDir, CUPS_STATEDIR);
@@ -22,9 +24,17 @@ Bug: http://www.cups.org/str.php?L2465
  
    if (!strcmp(CUPS_DEFAULT_PRINTCAP, "/etc/printers.conf"))
      PrintcapFormat = PRINTCAP_SOLARIS;
+@@ -3328,6 +3330,7 @@
+              !_cups_strcasecmp(line, "SystemGroup") ||
+              !_cups_strcasecmp(line, "SystemGroupAuthKey") ||
+              !_cups_strcasecmp(line, "TempDir") ||
++             !_cups_strcasecmp(line, "PidFile") ||
+ 	     !_cups_strcasecmp(line, "User"))
+     {
+       cupsdLogMessage(CUPSD_LOG_WARN,
 --- a/scheduler/conf.h
 +++ b/scheduler/conf.h
-@@ -246,6 +246,8 @@
+@@ -244,6 +244,8 @@
  VAR int			SSLOptions		VALUE(CUPSD_SSL_NONE);
  					/* SSL/TLS options */
  #endif /* HAVE_SSL */
@@ -32,19 +42,19 @@ Bug: http://www.cups.org/str.php?L2465
 +					/* Debian CUPS pid file */
  
  #ifdef HAVE_LAUNCHD
- VAR int			LaunchdTimeout		VALUE(DEFAULT_KEEPALIVE);
+ VAR int			LaunchdTimeout		VALUE(10);
 --- a/scheduler/main.c
 +++ b/scheduler/main.c
 @@ -85,6 +85,8 @@
  static void		sigterm_handler(int sig);
  static long		select_timeout(int fds);
- static void		usage(int status);
+ static void		usage(int status) __attribute__((noreturn));
 +int			write_pid(void);
 +int			remove_pid(void);
  
  
  /*
-@@ -588,6 +590,11 @@
+@@ -635,6 +637,11 @@
    }
  #endif /* __sgi */
  
@@ -56,7 +66,7 @@ Bug: http://www.cups.org/str.php?L2465
   /*
    * Initialize authentication certificates...
    */
-@@ -1172,10 +1179,41 @@
+@@ -1193,10 +1200,41 @@
  
    cupsdStopSelect();
  
@@ -100,11 +110,11 @@ Bug: http://www.cups.org/str.php?L2465
   */
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -351,6 +351,7 @@
+@@ -420,6 +420,7 @@
  DocumentRoot $root/doc
  RequestRoot /tmp/cups-$user/spool
  TempDir /tmp/cups-$user/spool/temp
 +PidFile /tmp/cups-$user/cupsd.pid
- MaxSubscriptions 3
- MaxLogSize 0
  AccessLog /tmp/cups-$user/log/access_log
+ ErrorLog /tmp/cups-$user/log/error_log
+ PageLog /tmp/cups-$user/log/page_log

@@ -1,9 +1,9 @@
 /*
- * "$Id: auth.c 10288 2012-02-15 19:21:37Z mike $"
+ * "$Id: auth.c 10424 2012-04-23 17:26:57Z mike $"
  *
  *   Authentication functions for CUPS.
  *
- *   Copyright 2007-2011 by Apple Inc.
+ *   Copyright 2007-2012 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products.
  *
  *   This file contains Kerberos support code, copyright 2006 by
@@ -115,7 +115,7 @@ static int	cups_local_auth(http_t *http);
  * This function should be called in response to a @code HTTP_UNAUTHORIZED@
  * status, prior to resubmitting your request.
  *
- * @since CUPS 1.1.20/Mac OS X 10.4@
+ * @since CUPS 1.1.20/OS X 10.4@
  */
 
 int					/* O - 0 on success, -1 on error */
@@ -876,5 +876,5 @@ cups_local_auth(http_t *http)		/* I - HTTP connection to server */
 
 
 /*
- * End of "$Id: auth.c 10288 2012-02-15 19:21:37Z mike $".
+ * End of "$Id: auth.c 10424 2012-04-23 17:26:57Z mike $".
  */

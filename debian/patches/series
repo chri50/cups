@@ -1,20 +1,34 @@
 # patches accepted and committed upstream:
-ipp-backend-cups-1.5.4-fixes.patch
-install-sh-remove-bashism.patch
-usb-backend-busy-loop-fix.patch
-usb-backend-detach-usblp-earlier-crash-guards.patch
-usb-backend-initialize-usblp-attached-state.patch
-snmp-dont-stop-without-ipv6.patch
+network-backends-snmp-queries-optional.patch
+get-ppd-file-for-statically-configured-bonjour-shared-queues.patch
+usb-backend-reset-after-job-only-for-specific-devices.patch
+usb-backend-more-quirk-rules.patch
+printers-c-recognize-remote-cups-queue-via-dnssd-uri.patch
+avahi-not-considered-at-some-dnssd-conditionals.patch
+cupsd-conf-remove-obsolete-browse-directives.patch
+filter-out-all-control-characters-from-the-1284-device-id.patch
+ipp-backend-did-not-specify-the-compression-used.patch
+work-around-some-broken-ipp-printers.patch
+prevent-crash-due-to-null-host-name-or-fqdn-from-avahi.patch
+fix-crash-on-shutdown-caused-by-broken-avahi-config.patch
+fix-another-spot-where-avahi-crashes-cupsd-because-it-does-not-handle-null-values-from-its-own-apis.patch
+ipp-backend-abort-the-outer-loop-if-we-get-a-failure-from-send-document.patch
+ipp-backend-could-get-stuck-in-an-endless-loop-on-certain-network-errors.patch
+ipp-backend-did-not-send-cancel-request-to-printers-when-a-job-was-canceled-and-printer-did-not-support-create-job.patch
+fix-make-check.patch
+Split-configuration-files-STR-4223.patch
+in-scheduler-delete-job-control-backup-files.patch
 
 # patches sent upstream
-usb-backend-further-enhancements.patch
+cupsd-no-crash-on-avahi-threaded-poll-shutdown.patch
+get-ppd-file-for-statically-configured-ipp-shared-queues.patch
 pidfile.patch
 ppd-poll-with-client-conf.patch
 # no answer yet, po4a might not be appropriate
 manpage-translations.patch
 rootbackends-worldreadable.patch
-cups-avahi.patch
-colord-support.patch
+cups-dbus-utf8.patch
+cups-workaround-broken-1284-DeviceID-newline-instead-of-semicolon.patch
 
 # patches which should go upstream
 airprint-support.patch
@@ -27,6 +41,13 @@ do-not-broadcast-with-hostnames.patch
 cups-deviced-allow-device-ids-with-newline.patch
 cups-snmp-oids-device-id-hp-ricoh.patch
 configure-default-browse-protocols.patch
+# Fix tests, should probably go upstream
+tests-ignore-warnings.patch
+tests-ignore-usb-crash.patch
+test-i18n-nonlinux.patch
+tests-wait-on-unfinished-jobs-everytime.patch
+tests-fix-ppdLocalize-on-unclean-env.patch
+tests-use-cupsfilters.patch
 
 # Debian patches
 add-ipp-backend-of-cups-1.4.patch
@@ -37,9 +58,6 @@ printer-filtering.patch
 show-compile-command-lines.patch
 ppdc-dynamic-linking.patch
 log-debug-history-nearly-unlimited.patch
-pstops-based-workflow-only-for-printing-ps-on-a-ps-printer.patch
-dnssd-reg-array-linear-search.patch
-tests-ignore-warnings.patch
-tests-ignore-usb-crash.patch
-test-i18n-nonlinux.patch
-tests-slow-lpstat.patch
+# Disabled in 1.6.1-1 as it breaks the tests. It addresses #593338
+# pstops-based-workflow-only-for-printing-ps-on-a-ps-printer.patch
+usb-backend-xerox-3124.patch

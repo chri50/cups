@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# "$Id: 5.2-lpc.sh 6649 2007-07-11 21:46:42Z mike $"
+# "$Id: 5.2-lpc.sh 10097 2011-11-02 05:35:38Z mike $"
 #
 #   Test the lpc command.
 #
@@ -17,7 +17,7 @@
 echo "LPC Test"
 echo ""
 echo "    lpc status"
-../berkeley/lpc status 2>&1
+$VALGRIND ../berkeley/lpc status 2>&1
 if test $? != 0; then
 	echo "    FAILED"
 	exit 1
@@ -27,5 +27,5 @@ fi
 echo ""
 
 #
-# End of "$Id: 5.2-lpc.sh 6649 2007-07-11 21:46:42Z mike $".
+# End of "$Id: 5.2-lpc.sh 10097 2011-11-02 05:35:38Z mike $".
 #

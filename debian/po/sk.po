@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: cups@packages.debian.org\n"
-"POT-Creation-Date: 2011-09-15 12:02+0200\n"
+"POT-Creation-Date: 2012-09-18 12:37+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ivan Masár <helix84@centrum.sk>\n"
 "Language-Team: \n"
@@ -86,20 +86,14 @@ msgstr "ipp"
 #. Type: multiselect
 #. Choices
 #: ../cups.templates:3001
+msgid "ipp14"
+msgstr "ipp14"
+
+#. Type: multiselect
+#. Choices
+#: ../cups.templates:3001
 msgid "lpd"
 msgstr "lpd"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
-msgid "parallel"
-msgstr "paralelný"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
-msgid "serial"
-msgstr "sériový"
 
 #. Type: multiselect
 #. Choices
@@ -161,5 +155,3 @@ msgstr ""
 "Prosím, vyberte, ktorý pomocný program má CUPS používať. Štandardná voľba by "
 "mala vyhovovať väčšine bežných prostredí."
 
-#~ msgid "scsi"
-#~ msgstr "scsi"
