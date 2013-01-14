@@ -18,6 +18,7 @@ ipp-backend-did-not-send-cancel-request-to-printers-when-a-job-was-canceled-and-
 fix-make-check.patch
 Split-configuration-files-STR-4223.patch
 in-scheduler-delete-job-control-backup-files.patch
+i18n-add-french-localization.patch
 
 # patches sent upstream
 cupsd-no-crash-on-avahi-threaded-poll-shutdown.patch

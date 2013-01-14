@@ -2,7 +2,8 @@ Source: cups
 Standards-Version: 3.9.3
 Priority: optional
 Section: net
-Maintainer: Debian Printing Team <debian-printing@lists.debian.org>
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: Debian Printing Team <debian-printing@lists.debian.org>
 Uploaders: 
  Masayuki Hatta (mhatta) <mhatta@debian.org>,
  Till Kamppeter <till.kamppeter@gmail.com>,
@@ -205,8 +206,8 @@ Suggests: cups, cups-bsd,
  cups-pdf,
  udev,
  smbclient
-Replaces: cups (<< 1.6.1)
-Breaks: cups (<< 1.6.1)
+Replaces: cups (<< 1.6.1-1~)
+Breaks: cups (<< 1.6.1-1~)
 Multi-Arch: foreign
 Description: Common UNIX Printing System(tm) - server
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
