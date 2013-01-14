@@ -1,3 +1,13 @@
+cups (1.6.1-1ubuntu1) raring; urgency=low
+
+  * Cherry-pick more upstream enhancements:
+    - Add french translation (CUPS STR: #4247)
+  * Merge cups 1.5.3-2.13 Debian release.
+  * Correct Replaces/Breaks versions of cups-daemon against cups to cope
+    with recent Ubuntu releases (LP: #1099242)
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 14 Jan 2013 11:27:18 +0100
+
 cups (1.6.1-1) experimental; urgency=low
 
   * New upstream release
@@ -296,6 +306,16 @@ cups (1.5.3-3) experimental; urgency=low
     development cycle of Ubuntu Quantal.
 
  -- Till Kamppeter <till.kamppeter@gmail.com>  Fri,  6 Jul 2012 17:28:01 +0200
+
+cups (1.5.3-2.13) unstable; urgency=low
+
+  [ Helge Kreutzmann ]
+  * Update German manpage translation (Closes: #697860).
+
+  [ Didier Raboud ]
+  * Also refresh the po4a translations infrastructure.
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 11 Jan 2013 10:30:13 +0100
 
 cups (1.5.3-2.12) unstable; urgency=low
 

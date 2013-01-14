@@ -1,5 +1,5 @@
 # Translation of cups man pages to German
-# Copyright (C) Helge Kreutzmann <debian@helgefjell.de>, 2008-2012
+# Copyright (C) Helge Kreutzmann <debian@helgefjell.de>, 2008-2013
 # Chris Leick <c.leick@vollbio.de>, 2009.
 # This file is distributed under the same license as the cups package.
 #
@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 1.5.2-10\n"
 "POT-Creation-Date: 2013-01-04 18:30+0100\n"
-"PO-Revision-Date: 2012-04-22 15:33+0200\n"
+"PO-Revision-Date: 2013-01-10 16:42+0100\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
 "Language: \n"
@@ -338,7 +338,7 @@ msgstr "Backend"
 
 #. type: TH
 #: backend.man:15 client.conf.man.in:15 cups-snmp.conf.man:15
-#, , no-wrap
+#, no-wrap
 msgid "23 April 2012"
 msgstr "23. April 2012"
 
@@ -2104,10 +2104,9 @@ msgstr "cupsctl"
 # type: TH
 #. type: TH
 #: cupsctl.man:15
-#, fuzzy, no-wrap
-#| msgid "5 December 2008"
+#, no-wrap
 msgid "12 December 2012"
-msgstr "5. Dezember 2008"
+msgstr "12. Dezember 2012"
 
 #. type: Plain text
 #: cupsctl.man:18
@@ -2346,8 +2345,20 @@ msgstr "19. November 2012"
 msgid "cupsd.conf - server configuration file for cups"
 msgstr "cupsd.conf - Server-Konfigurationsdatei für CUPS"
 
+# FIXME »LP« unclear
 #. type: Plain text
 #: cupsd.conf.man.in:24
+#, fuzzy
+#| msgid ""
+#| "The I<cupsd.conf> file configures the CUPS scheduler, I<cupsd(8)>.  It is "
+#| "normally located in the I<@CUPS_SERVERROOT@> directory. B<Note:> File, "
+#| "directory, and user configuration directives that used to be allowed in "
+#| "the I<cupsd.conf> file are now stored in the I<cups-files.conf(5)> "
+#| "instead in order to prevent certain types of privilege escalation "
+#| "attacks.  LP Each line in the file can be a configuration directive, a "
+#| "blank line, or a comment. Comment lines start with the # character. The "
+#| "configuration directives are intentionally similar to those used by the "
+#| "popular Apache web server software and are described below."
 msgid ""
 "The I<cupsd.conf> file configures the CUPS scheduler, I<cupsd(8)>.  It is "
 "normally located in the I<@CUPS_SERVERROOT@> directory. B<Note:> File, "
@@ -2355,6 +2366,17 @@ msgid ""
 "I<cupsd.conf> file are now stored in the I<cups-files.conf(5)> instead in "
 "order to prevent certain types of privilege escalation attacks."
 msgstr ""
+"Die Datei I<cupsd.conf> konfiguriert den CUPS-Auftragsplaner (Scheduler), "
+"I<cupsd(8)>. Sie befindet sich normalerweise in dem Verzeichnis "
+"I<@CUPS_SERVERROOT@>. B<Hinweis:> Datei, Verzeichnis und "
+"Benutzerkonfigurationsdirektiven, die früher in der Datei I<cupsd.conf> "
+"erlaubt wurden, werden jetzt stattdessen in I<cups-files.conf(5)> "
+"gespeichert, um bestimmte Arten von Privilegien-Eskalationsangriffen zu "
+"vermeiden. LP Jede Zeilen in der der Datei kann eine "
+"Konfigurationsdirektive, eine Leerzeile oder ein Kommentar sein. "
+"Kommentarzeilen beginnen mit dem Zeichen »#«. Die Konfigurationsdirektiven "
+"sind absichtlich ähnlich denen, die von der beliebten Web-Server-Software "
+"Apache verwandt werden. Sie werden weiter unten beschrieben."
 
 #. type: Plain text
 #: cupsd.conf.man.in:29
@@ -2546,10 +2568,9 @@ msgstr ""
 # type: TP
 #. type: TP
 #: cupsd.conf.man.in:79
-#, fuzzy, no-wrap
-#| msgid "BrowseLocalProtocols [All] [CUPS] [DNSSD] [LDAP] [SLP]"
+#, no-wrap
 msgid "BrowseLocalProtocols [All] [DNSSD]"
-msgstr "BrowseLocalProtocols [All] [CUPS] [DNSSD] [LDAP] [SLP]"
+msgstr "BrowseLocalProtocols [All] [DNSSD]"
 
 # type: Plain text
 #. type: Plain text
@@ -2598,12 +2619,10 @@ msgstr "Browsing No"
 # type: Plain text
 #. type: Plain text
 #: cupsd.conf.man.in:95
-#, fuzzy
-#| msgid "Specifies whether or not remote printer browsing should be enabled."
 msgid "Specifies whether or not shared printers should be advertised."
 msgstr ""
-"Spezifiziert, ob das Durchsuchen von Druckern in der Ferne aktiviert werden "
-"soll oder nicht."
+"Spezifiziert, ob gemeinsam genutzte Drucker beworben werden sollen oder "
+"nicht."
 
 # type: TP
 #. type: TP
@@ -3949,25 +3968,19 @@ msgstr "cups-files.conf"
 
 #. type: Plain text
 #: cups-files.conf.man.in:18
-#, fuzzy
-#| msgid "cupsd.conf - server configuration file for cups"
 msgid "cups-files.conf - file and directory configuration file for cups"
-msgstr "cupsd.conf - Server-Konfigurationsdatei für CUPS"
+msgstr "cups-files.conf - Datei- und Verzeichnis-Konfigurationsdatei für CUPS"
 
 #. type: Plain text
 #: cups-files.conf.man.in:22
-#, fuzzy
-#| msgid ""
-#| "The I<cupsd.conf> file configures the CUPS scheduler, I<cupsd(8)>.  It is "
-#| "normally located in the I<@CUPS_SERVERROOT@> directory."
 msgid ""
 "The I<cups-file.conf> file configures the files and directories used by the "
 "CUPS scheduler, I<cupsd(8)>.  It is normally located in the "
 "I<@CUPS_SERVERROOT@> directory."
 msgstr ""
-"Die Datei I<cupsd.conf> konfiguriert den CUPS-Auftragsplaner (Scheduler), "
-"I<cupsd(8)>. Sie befindet sich normalerweise im Verzeichnis "
-"I<@CUPS_SERVERROOT@>."
+"Die Datei I<cups-file.conf> konfiguriert die von dem CUPS-Auftragsplaner "
+"(Scheduler), I<cupsd(8)> verwandten Dateien und Verzeichnisse. Sie befindet "
+"sich normalerweise im Verzeichnis I<@CUPS_SERVERROOT@>."
 
 #. type: TP
 #: cups-files.conf.man.in:28
@@ -4313,8 +4326,8 @@ msgid ""
 "I<classes.conf(5)>, I<cupsd(8)>, I<cupsd.conf(5)>, I<mime.convs(5)>, I<mime."
 "types(5)>, I<printers.conf(5)>, I<subscriptions.conf(5)>,"
 msgstr ""
-"I<classes.conf(5)>, I<cupsd(8)>, I<cupsd.conf(5)>, I<mime.convs(5)>, I<mime."
-"types(5)>, I<printers.conf(5)>, I<subscriptions.conf(5)>,"
+"I<classes.conf(5)>, I<cupsd(8)>, I<mime.convs(5)>, I<mime.types(5)>, "
+"I<printers.conf(5)>, I<subscriptions.conf(5)>,"
 
 #. type: TH
 #: cups-deviced.man.in:15
@@ -6131,10 +6144,9 @@ msgstr "filter"
 
 #. type: TH
 #: filter.man:15
-#, fuzzy, no-wrap
-#| msgid "18 May 2011"
+#, no-wrap
 msgid "18 May 2012"
-msgstr "18. Mai 2011"
+msgstr "18. Mai 2012"
 
 # type: Plain text
 #. type: Plain text
@@ -6797,10 +6809,8 @@ msgstr ""
 
 #. type: Plain text
 #: filter.man:232
-#, fuzzy
-#| msgid "I<backend(7)>, I<cupsd(8)>,"
 msgid "I<backend(7)>, I<cupsd(8)>, I<cupsfilter(8)>,"
-msgstr "I<backend(7)>, I<cupsd(8)>,"
+msgstr "I<backend(7)>, I<cupsd(8)>, I<cupsfilter(8)>,"
 
 #. type: TH
 #: lpadmin.man:15
@@ -6811,10 +6821,9 @@ msgstr "lpadmin"
 # type: TH
 #. type: TH
 #: lpadmin.man:15 lp.man:15
-#, fuzzy, no-wrap
-#| msgid "31 July 2006"
+#, no-wrap
 msgid "16 July 2012"
-msgstr "31. Juli 2006"
+msgstr "16. Juli 2012"
 
 #. type: Plain text
 #: lpadmin.man:18
@@ -10662,3 +10671,7 @@ msgstr ""
 # type: TH
 #~ msgid "2 March 2009"
 #~ msgstr "2. März 2009"
+
+# type: Plain text
+#~ msgid "Copyright 2007-2011 by Apple Inc."
+#~ msgstr "Copyright 2007-2011 by Apple Inc."
