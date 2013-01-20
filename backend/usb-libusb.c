@@ -1098,6 +1098,8 @@ open_device(usb_printer_t *printer,	/* I - Printer */
   if (libusb_open(printer->device, &printer->handle) < 0)
     return (-1);
 
+  printer->usblp_attached = 0;
+
   if (verbose)
     fputs("STATE: +connecting-to-device\n", stderr);
 
