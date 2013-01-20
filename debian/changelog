@@ -1,3 +1,12 @@
+cups (1.5.3-2.14) unstable; urgency=low
+
+  * Add upstream patch to avoid using Kerberos over the local socket.
+    Avoids having the hplip-cups upgrade asking for a root password
+    during upgrade (Closes: #640939).
+  * Fix Japanese and Russian templates translations typos (Closes: #698521)
+
+ -- Didier Raboud <odyx@debian.org>  Sun, 20 Jan 2013 17:20:16 +0100
+
 cups (1.5.3-2.13) unstable; urgency=low
 
   [ Helge Kreutzmann ]

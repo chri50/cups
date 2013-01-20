@@ -30,6 +30,7 @@ do-not-broadcast-with-hostnames.patch
 cups-deviced-allow-device-ids-with-newline.patch
 cups-snmp-oids-device-id-hp-ricoh.patch
 configure-default-browse-protocols.patch
+fix_russian_japanese_templates.patch
 
 # Debian patches
 add-ipp-backend-of-cups-1.4.patch
@@ -49,3 +50,4 @@ tests-ignore-usb-crash.patch
 test-i18n-nonlinux.patch
 tests-slow-lpstat.patch
 tests-fix-ppdLocalize-on-unclean-env.patch
+fix_kerberos_auth_local.patch
