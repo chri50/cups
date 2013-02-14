@@ -1,3 +1,37 @@
+cups (1.6.1-2) experimental; urgency=low
+
+  [ Till Kamppeter ]
+  * In upstart, let the CUPS daemon start after avahi-daemon, to assure
+    that the Bonjour broadcasting of shared printers works.
+  * Import upstream patch to add support for specifying the IPP version
+    of a remote CUPS server in /etc/cups/client.conf (LP: #1069671),
+    refresh the other ones affected.
+
+  [ Didier Raboud ]
+  * Cherry-pick more upstream enhancements:
+    - Add french translation (CUPS STR: #4247)
+  * Refresh po4a translations
+  * Merge the 1.5.3-2.14 Debian release.
+  * Correct Replaces/Breaks versions of cups-daemon against cups to cope
+    with recent Ubuntu releases (LP: #1099242).
+  * Make sure /e/cups/raw.{convs,types} are deleted during purge.
+    (Closes: #698213)
+  * Take manpage translations out of the manpage-translations patch to
+    ease external contributions to the .po files.
+  * Add usb-backend quirk for Epson Stylus Photo 750 (Closes: #697970)
+
+  [ Helge Kreutzmann ]
+  * Update German manpages translation. (Closes: #698965)
+
+  [ Julien Patriarca ]
+  * Update French manpages translation. (Closes: #700295)
+
+  [ Vincent McIntyre ]
+  * Document the way to make sure LPD support, as provided by cups-bsd,
+    is kept enabled across upgrades. (Closes: #671347)
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 14 Feb 2013 21:35:20 +0100
+
 cups (1.6.1-1) experimental; urgency=low
 
   * New upstream release
@@ -296,6 +330,25 @@ cups (1.5.3-3) experimental; urgency=low
     development cycle of Ubuntu Quantal.
 
  -- Till Kamppeter <till.kamppeter@gmail.com>  Fri,  6 Jul 2012 17:28:01 +0200
+
+cups (1.5.3-2.14) unstable; urgency=low
+
+  * Add upstream patch to avoid using Kerberos over the local socket.
+    Avoids having the hplip-cups upgrade asking for a root password
+    during upgrade (Closes: #640939).
+  * Fix Japanese and Russian templates translations typos (Closes: #698521)
+
+ -- Didier Raboud <odyx@debian.org>  Sun, 20 Jan 2013 17:20:16 +0100
+
+cups (1.5.3-2.13) unstable; urgency=low
+
+  [ Helge Kreutzmann ]
+  * Update German manpage translation (Closes: #697860).
+
+  [ Didier Raboud ]
+  * Also refresh the po4a translations infrastructure.
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 11 Jan 2013 10:30:13 +0100
 
 cups (1.5.3-2.12) unstable; urgency=low
 

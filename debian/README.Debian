@@ -241,6 +241,13 @@ Miscellaneous Tips
    If you'd like to change this, you can modify by using
    "PidFile <filepath>" directive at your /etc/cups/cupsd.conf.
 
+ - When using the LPD support provided by cups-bsd, you need to ensure
+   debconf knows that you want LPD support enabled. Otherwise LPD support
+   will be disabled when you upgrade cups-bsd. To check, run this command:
+      $ debconf-get-settings |grep setuplpd
+   which should return:
+      cups-bsd        cups-bsd/setuplpd       boolean true
+
 Enjoy!
 
  -- Jeff Licquia <licquia@debian.org> and Kenshi Muto <kmuto@debian.org>

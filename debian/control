@@ -205,8 +205,8 @@ Suggests: cups, cups-bsd,
  cups-pdf,
  udev,
  smbclient
-Replaces: cups (<< 1.6.1)
-Breaks: cups (<< 1.6.1)
+Replaces: cups (<< 1.6.1-1~)
+Breaks: cups (<< 1.6.1-1~)
 Multi-Arch: foreign
 Description: Common UNIX Printing System(tm) - server
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
