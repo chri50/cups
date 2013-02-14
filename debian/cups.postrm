@@ -25,6 +25,7 @@ case "$1" in
     purge)
 	rm -rf /etc/cups/interfaces
 	rm -rf /etc/cups/ppd
+	rm -f /var/lib/cups/ppds.dat /etc/cups/raw.convs /etc/cups/raw.types
 	;;
     remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
         ;;

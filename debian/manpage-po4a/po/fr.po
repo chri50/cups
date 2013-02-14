@@ -4,18 +4,21 @@
 #  Gilles QUERRET <gilles.querret@nerim.net>, 2003, 2005.
 # Vérifier cupsd.8
 # Nicolas François <nicolas.francois@centraliens.net>, 2007.
-# Julien Patriarca <patriarcaj@gmail.com>, 2012.
+# Julien Patriarca <patriarcaj@gmail.com>, 2012, 2013.
+# Didier Raboud <odyx@debian.org>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: cups\n"
 "POT-Creation-Date: 2013-01-04 18:30+0100\n"
-"PO-Revision-Date: 2012-03-22 16:59+0100\n"
-"Last-Translator: Julien Patriarca <patriarcaj@gmail.com>\n"
+"PO-Revision-Date: 2013-01-27 19:07+0100\n"
+"Last-Translator: Julien Patriarca <leatherface@debian.org>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 1.5.4\n"
 
 # type: TH
 #. type: TH
@@ -84,7 +87,7 @@ msgstr "NOM"
 msgid "cupsaccept/cupsreject - accept/reject jobs sent to a destination"
 msgstr ""
 "cupsaccept/cupsreject - Accepter ou refuser les travaux d'impression envoyés "
-"à une destination"
+"vers une destination"
 
 # type: SH
 #. type: SH
@@ -106,7 +109,7 @@ msgid ""
 "B<cupsaccept> [ -E ] [ -U I<username> ] [ -h I<hostname[:port]> ] destination"
 "(s)"
 msgstr ""
-"B<cupsaccept> [ B<-E> ] [ B<-U> I<utilisateur> ] [ B<-h> I<nom>[B<:"
+"B<cupsaccept> [ B<-E> ] [ B<-U> I<utilisateur> ] [ B<-h> I<serveur>[B<:"
 ">I<port>] ] I<destination(s)>"
 
 # type: Plain text
@@ -270,7 +273,8 @@ msgid ""
 msgstr ""
 "Les versions CUPS d'B<accept> et B<reject> peuvent demander à l'utilisateur "
 "de s'identifier suivant la configuration du système d'impression, à la "
-"différence des versions System V, qui demandent le mot de passe root."
+"différence des versions System V, qui demandent le mot de passe du "
+"superutilisateur."
 
 # type: SH
 #. type: SH
@@ -433,10 +437,9 @@ msgstr ""
 # type: TP
 #. type: SH
 #: backend.man:43 filter.man:36
-#, fuzzy, no-wrap
-#| msgid "WARNING: message"
+#, no-wrap
 msgid "WARNING"
-msgstr "WARNING: message"
+msgstr "WARNING"
 
 #. type: Plain text
 #: backend.man:52
@@ -450,6 +453,17 @@ msgid ""
 "scheduler to run them as the \"root\" user instead of an unprivileged user "
 "(typically \"lp\") on the system."
 msgstr ""
+"Les programmes de transmission de CUPS ne sont généralement pas conçus pour "
+"être lancés directement par l'utilisateur. À côté du problème lié à "
+"l'adresse URI du périphérique (argv[0] et la variable d'environnement "
+"DEVICE_URI contiennent l'adresse URI du périphérique), les programmes de "
+"transmission de CUPS attendent également des variables d'environnement et "
+"descripteurs de fichiers spécifiques, et sont généralement lancés dans une "
+"session utilisateur qui (sous OS X) possède des restrictions supplémentaires "
+"qui affectent la façon dont ils fonctionnent. Les programmes de transmission "
+"peuvent également être installés avec des droits limités (0500 ou 0700) qui "
+"informent l'ordonnanceur de les lancer avec les droits du superutilisateur "
+"au lieu d'un utilisateur système non privilégié (comme « lpr »)."
 
 #. type: Plain text
 #: backend.man:58
@@ -460,6 +474,13 @@ msgid ""
 "backend. The one exception is the SNMP backend - see I<snmpbackend(8)> for "
 "more information."
 msgstr ""
+"À moins que vous ne soyez développeur, ou que vous sachiez ce que vous "
+"faites, veuillez ne pas lancer les programmes de transmission directement. À "
+"la place vous pouvez utiliser les programmes I<lp(1)> ou I<lpr(1)> pour "
+"envoyer un travail d'impression ou le programme I<lpinfo(8)> pour demander "
+"quelles imprimantes disponibles utilisent le programme de transmission. La "
+"seule exception est le programme de transmission SNMP - voir I<snmpbackend(8)"
+"> pour plus d'information."
 
 # type: SH
 #. type: SH
@@ -494,7 +515,7 @@ msgstr ""
 "    classe_périphérique schéma \"Unknown\" \"info_périphérique\"\n"
 "    classe_périphérique URI_périphérique \"marque_et_modèle_périphérique\" \"info_périphérique\"\n"
 "    classe_périphérique URI_périphérique \"marque_et_modèle_périphérique\" \"info_périphérique\" \"id_périphérique\"\n"
-"    classe_périphérique URI_périphérique \"marque_et_modèle_périphérique\" \"info_périphérique\" \"emplacement_périphérique\"\n"
+"    classe_périphérique URI_périphérique \"marque_et_modèle_périphérique\" \"info_périphérique\" \"id_périphérique\" \"emplacement_périphérique\"\n"
 
 # type: Plain text
 #. type: Plain text
@@ -571,12 +592,6 @@ msgstr ""
 # type: Plain text
 #. type: Plain text
 #: backend.man:96
-#, fuzzy
-#| msgid ""
-#| "The I<scheme> field provides the URI scheme that is supported by the "
-#| "backend. Backends should use this form only when the backend supports any "
-#| "URI using that scheme. The I<device-uri> field specifies the full URI to "
-#| "use when communicating with the device."
 msgid ""
 "The I<scheme> field provides the URI scheme that is supported by the "
 "backend.  Backends should use this form only when the backend supports any "
@@ -591,28 +606,18 @@ msgstr ""
 # type: Plain text
 #. type: Plain text
 #: backend.man:100
-#, fuzzy
-#| msgid ""
-#| "The I<device-make-and-model> field specifies the make and model of the "
-#| "device, e.g. \"Acme Foojet 2000\". If the make and model is not known, "
-#| "you must report \"Unknown\"."
 msgid ""
 "The I<device-make-and-model> field specifies the make and model of the "
 "device, e.g. \"Example Foojet 2000\". If the make and model is not known, "
 "you must report \"Unknown\"."
 msgstr ""
 "Le champ I<marque_et_modèle_périphérique> précise la marque et le modèle du "
-"périphérique, par exemple « Acme Foojet 2000 ». Si la marque et le modèle ne "
-"sont pas connus, vous devez indiquer « Unknown »."
+"périphérique, par exemple « Exemple Foojet 2000 ». Si la marque et le modèle "
+"ne sont pas connus, vous devez indiquer « Unknown »."
 
 # type: Plain text
 #. type: Plain text
 #: backend.man:104
-#, fuzzy
-#| msgid ""
-#| "The I<device-info> field specifies additional information about the "
-#| "device. Typically this includes the make and model along with the port "
-#| "number or network address, e.g. \"Acme Foojet 2000 USB #1\"."
 msgid ""
 "The I<device-info> field specifies additional information about the device.  "
 "Typically this includes the make and model along with the port number or "
@@ -620,7 +625,8 @@ msgid ""
 msgstr ""
 "Le champ I<info_périphérique> ajoute des informations à propos du "
 "périphérique. Typiquement cela comprend la marque et le modèle avec le "
-"numéro de port ou l'adresse réseau, par exemple « Acme Foojet 2000 USB #1 »."
+"numéro de port ou l'adresse réseau, par exemple « Exemple Foojet 2000 USB "
+"#1 »."
 
 # type: Plain text
 #. type: Plain text
@@ -642,7 +648,7 @@ msgid ""
 msgstr ""
 "Le champ optionnel I<emplacement_périphérique> indique l'emplacement "
 "physique du périphérique, qui est utilisé la plupart du temps pour pré-"
-"remplir l'emplacement-périphérique lors de l'ajout d'une imprimante."
+"remplir l'emplacement périphérique lors de l'ajout d'une imprimante."
 
 # type: SH
 #. type: SH
@@ -654,26 +660,22 @@ msgstr "PERMISSIONS"
 # type: Plain text
 #. type: Plain text
 #: backend.man:114
-#, fuzzy
-#| msgid ""
-#| "Backends without world execute permissions are run as the root user. "
-#| "Otherwise, the backend is run using the unprivileged user account, "
-#| "typically \"lp\"."
 msgid ""
 "Backends without world execute permissions are run as the root user. "
 "Otherwise, the backend is run using an unprivileged user account, typically "
 "\"lp\"."
 msgstr ""
 "Les programmes de transmission sans droit d'exécution pour tout le monde "
-"sont exécutés en tant que root. Sinon, le programme de transmission est "
-"exécuté en utilisant le compte non privilégié, généralement « lp »."
+"sont exécutés en tant que superutilisateur. Sinon, le programme de "
+"transmission est exécuté en utilisant un compte non privilégié, généralement "
+"« lp »."
 
 # type: SH
 #. type: SH
 #: backend.man:114
 #, no-wrap
 msgid "EXIT CODES"
-msgstr "CODES DE SORTIE"
+msgstr "CODES DE RETOUR"
 
 # type: Plain text
 #. type: Plain text
@@ -682,9 +684,9 @@ msgid ""
 "The following exit codes are defined for backends; C API constants defined "
 "in the E<lt>cups/backend.hE<gt> header file are defined in parenthesis:"
 msgstr ""
-"Les programmes de transmission renvoient les codes de retour suivants ; les "
+"Les programmes de transmission renvoient les codes de retour suivants (les "
 "constantes définies par l'API C dans E<lt>cups/backend.hE<gt> sont indiquées "
-"entre parenthèses :"
+"entre parenthèses) :"
 
 # type: TP
 #. type: TP
@@ -712,12 +714,6 @@ msgstr "1 (CUPS_BACKEND_FAILED)"
 # type: Plain text
 #. type: Plain text
 #: backend.man:127
-#, fuzzy
-#| msgid ""
-#| "The print file was not successfully transmitted to the device or remote "
-#| "server. The scheduler will respond to this by canceling the job, retrying "
-#| "the job, or stopping the queue depending on the state of the error-policy "
-#| "attribute."
 msgid ""
 "The print file was not successfully transmitted to the device or remote "
 "server.  The scheduler will respond to this by canceling the job, retrying "
@@ -725,9 +721,9 @@ msgid ""
 "attribute."
 msgstr ""
 "Le fichier à imprimer n'a pas été transmis correctement au périphérique ou "
-"au serveur distant. L'ordonnanceur annulera le travail, réessayera "
-"l'impression ou stoppera la queue en fonction de l'état de l'attribut error-"
-"policy."
+"au serveur distant. L'ordonnanceur réagira en annulant le travail, "
+"réessayant l'impression ou en stoppant la file d'impression en fonction de "
+"l'état de l'attribut error-policy."
 
 # type: TP
 #. type: TP
@@ -739,12 +735,6 @@ msgstr "2 (CUPS_BACKEND_AUTH_REQUIRED)"
 # type: Plain text
 #. type: Plain text
 #: backend.man:134
-#, fuzzy
-#| msgid ""
-#| "The print file was not successfully transmitted because valid "
-#| "authentication information is required. The scheduler will respond to "
-#| "this by holding the job and adding the authentication-required job-"
-#| "reasons keyword."
 msgid ""
 "The print file was not successfully transmitted because valid authentication "
 "information is required. The scheduler will respond to this by holding the "
@@ -752,9 +742,9 @@ msgid ""
 "reasons\" attribute."
 msgstr ""
 "Le fichier à imprimer n'a pas été transmis correctement parce que des "
-"données d'identifications valables sont nécessaires. L'ordonnanceur "
-"suspendra le travail et ajoutera le mot clé authentication-required à "
-"l'attribut job-reasons."
+"données d'identification valables sont nécessaires. L'ordonnanceur réagira "
+"en suspendant le travail, et en ajoutant le mot clé « cups-held-for-"
+"authentication » à l'attribut « job-reasons »."
 
 # type: TP
 #. type: TP
@@ -771,7 +761,7 @@ msgid ""
 "at this time. The scheduler will respond to this by holding the job."
 msgstr ""
 "Le fichier à imprimer n'a pas pu être transmis parce qu'il ne pouvait pas "
-"être imprimé à ce moment. L'ordonnaceur conservera le travail d'impression."
+"être imprimé à ce moment. L'ordonnanceur conservera le travail d'impression."
 
 # type: TP
 #. type: TP
@@ -788,7 +778,7 @@ msgid ""
 "at this time. The scheduler will respond to this by stopping the queue."
 msgstr ""
 "Le fichier à imprimer n'a pas été transmis car il ne peut pas être imprimé "
-"en ce moment. L'ordonnanceur stoppera la queue."
+"en ce moment. L'ordonnanceur stoppera la file d'impression."
 
 # type: TP
 #. type: TP
@@ -800,18 +790,14 @@ msgstr "5 (CUPS_BACKEND_CANCEL)"
 # type: Plain text
 #. type: Plain text
 #: backend.man:150
-#, fuzzy
-#| msgid ""
-#| "The print file was not successfully transmitted because one or more "
-#| "attributes are not supported. The scheduler will respond to this by "
-#| "canceling the job."
 msgid ""
 "The print file was not successfully transmitted because one or more "
 "attributes are not supported or the job was canceled at the printer. The "
 "scheduler will respond to this by canceling the job."
 msgstr ""
 "Le fichier à imprimer n'a pas été transmis parce qu'un attribut n'est pas "
-"géré. L'ordonnanceur répond à cela en annulant le travail d'impression."
+"géré ou le travail a été annulé à l'imprimante. L'ordonnanceur répond à cela "
+"en annulant le travail d'impression."
 
 # type: TP
 #. type: TP
@@ -829,8 +815,8 @@ msgid ""
 "print before this one."
 msgstr ""
 "Le fichier à imprimer n'a pas pu être transmis à cause d'un incident "
-"temporaire. L'ordonnanceur retentera de lancer la tâche plus tard - les "
-"autres tâches pourraient imprimer avant celui-ci."
+"temporaire. L'ordonnanceur retentera de lancer la tâche plus tard — les "
+"autres tâches pourraient imprimer avant celle-là."
 
 # type: TP
 #. type: TP
@@ -855,20 +841,15 @@ msgstr ""
 #. type: Plain text
 #: backend.man:163
 msgid "All other exit code values are reserved."
-msgstr "Tous les autres codes de sortie sont réservés."
+msgstr "Tous les autres codes de retour sont réservés."
 
 # type: Plain text
 #. type: Plain text
 #: backend.man:166
-#, fuzzy
-#| msgid ""
-#| "I<classes.conf(5)>, I<cupsd(8)>, I<cupsd.conf(5)>, I<mime.types(5)>, "
-#| "I<printers.conf(5)>,"
 msgid ""
 "I<cups-snmp(8)>, I<cupsd(8)>, I<cupsd.conf(5)>, I<filter(7)>, I<lpinfo(8)>,"
 msgstr ""
-"B<classes.conf>(5), B<cupsd>(8), B<cupsd.conf>(5), B<mime.types>(5), "
-"B<printers.conf>(5),"
+"I<cups-snmp(8)>, I<cupsd(8)>, I<cupsd.conf(5)>, I<filter(7)>, I<lpinfo(8)>,"
 
 # type: TH
 #. type: TH
@@ -1007,9 +988,9 @@ msgid ""
 "generated automatically by the I<cupsd(8)> program when printer classes are "
 "added or deleted."
 msgstr ""
-"Le fichier I<classes.conf> définit les classes d'imprimantes disponibles. Il "
-"est habituellement situé dans le répertoire I</etc/cups> et est créé "
-"automatiquement par le programme B<cupsd>(8) lorsque des classes "
+"Le fichier I<classes.conf> définit les classes d'imprimantes locales "
+"disponibles. Il est habituellement situé dans le répertoire I</etc/cups> et "
+"est créé automatiquement par le programme B<cupsd>(8) lorsque des classes "
 "d'imprimantes sont créées ou supprimées."
 
 # type: Plain text
@@ -1116,16 +1097,14 @@ msgstr "Info texte"
 #. type: Plain text
 #: classes.conf.man:53 printers.conf.man:67
 msgid "Specifies human-readable text describing the printer."
-msgstr ""
-"Définir des informations à destination des utilisateurs pour décrire "
-"l'imprimante."
+msgstr "Décrire l'imprimante de manière compréhensible aux utilisateurs. "
 
 # type: TP
 #. type: TP
 #: classes.conf.man:53 printers.conf.man:67
 #, no-wrap
 msgid "JobSheets banner banner"
-msgstr "JobSheets banner banner"
+msgstr "JobSheets bannière bannière"
 
 # type: Plain text
 #. type: Plain text
@@ -1158,8 +1137,8 @@ msgstr "Location texte"
 #: classes.conf.man:65 printers.conf.man:79
 msgid "Specifies human-readable text describing the location of the printer."
 msgstr ""
-"Définir des informations à destination des utilisateurs concernant la "
-"localisation physique de l'imprimante."
+"Définir de manière compréhensible aux utilisateurs la localisation physique "
+"de l'imprimante."
 
 # type: TP
 #. type: TP
@@ -1172,7 +1151,7 @@ msgstr "OpPolicy nom"
 #. type: Plain text
 #: classes.conf.man:69 printers.conf.man:83
 msgid "Specifies the operation policy for the printer."
-msgstr "Indiquer la politiques des opérations pour l'imprimante."
+msgstr "Indiquer la politique des opérations pour l'imprimante."
 
 # type: TP
 #. type: TP
@@ -1368,7 +1347,7 @@ msgid ""
 "(\"name@server.example.com\") for you. The default name is "
 "\"@CUPS_DEFAULT_GSSSERVICENAME@\"."
 msgstr ""
-"Indique le nom du service Kerberos à utiliser pour l'authentification, "
+"Indiquer le nom du service Kerberos à utiliser pour l'authentification, "
 "généralement il s'agit de « hôte », « http » ou « ipp ». CUPS ajoute le nom "
 "de l'hôte distant (« nom@serveur.exemple.com ») pour vous. Le nom par défaut "
 "est « @CUPS_DEFAULT_GSSSERVICENAME@ »."
@@ -1390,32 +1369,25 @@ msgstr "ServerName /domaine/socket"
 # type: Plain text
 #. type: Plain text
 #: client.conf.man.in:49
-#, fuzzy
-#| msgid ""
-#| "Specifies the address and optionally the port to use when connecting to "
-#| "the server. B<Note: Not supported on Mac OS X 10.7 or later.>"
 msgid ""
 "Specifies the address and optionally the port to use when connecting to the "
 "server. B<Note: Not supported on OS X 10.7 or later.>"
 msgstr ""
-"Définir l'adresse et éventuellement le port à utiliser pour se connecter au "
-"serveur. B<Note : Non pris en charge sur Mac OS X 10.7 ou plus récent.>"
+"Indiquer l'adresse et éventuellement le port à utiliser pour se connecter au "
+"serveur. B<Note : non pris en charge sur OS X 10.7 ou plus récent.>"
 
 # type: TP
 #. type: TP
 #: client.conf.man.in:49
-#, fuzzy, no-wrap
-#| msgid "-U username"
+#, no-wrap
 msgid "User name"
-msgstr "B<-U> I<utilisateur>"
+msgstr "Nom d'utilisateur"
 
 # type: Plain text
 #. type: Plain text
 #: client.conf.man.in:53
-#, fuzzy
-#| msgid "Specifies the default character set to use for text."
 msgid "Specifies the default user name to use for requests."
-msgstr "Définir le jeu de caractères par défaut à utiliser pour le texte."
+msgstr "Indiquer le nom d'utilisateur à utiliser pour les requêtes."
 
 # type: TH
 #. type: TH
@@ -1468,10 +1440,10 @@ msgid ""
 "you may need to provide a password to export the printers. This program "
 "requires the Windows printer driver files described below."
 msgstr ""
-"B<cupsaddsmb> permet l'export d'imprimantes vers SAMBA (version 2.2.0 ou "
-"supérieure) pour l'utilisation par des clients Windows. Suivant la "
+"B<cupsaddsmb> permet l'export d'imprimantes vers SAMBA (version 2.2.0 ou "
+"supérieure) pour utilisation par des clients Windows. Suivant la "
 "configuration de SAMBA, il est possible qu'un mot de passe soit demandé pour "
-"l'export. Ce programme requiert les fichiers du driver Windows, comme "
+"l'export. Ce programme requiert les fichiers du pilote Windows, comme "
 "indiqué plus bas."
 
 # type: Plain text
@@ -1510,7 +1482,7 @@ msgid ""
 msgstr ""
 "Indiquer le nom d'utilisateur de l'administrateur d'impression SAMBA, qui "
 "est par défaut l'utilisateur courant. Si l'utilisateur contient un caractère "
-"« % », ce qui suit le pourcent est considéré comme le mot de passe SAMBA à "
+"« % », ce qui suit le pour cent est considéré comme le mot de passe SAMBA à "
 "utiliser."
 
 # type: Plain text
@@ -1569,11 +1541,11 @@ msgid ""
 "file to support printing through CUPS and provide a printer driver download "
 "share, as follows:"
 msgstr ""
-"B<cupsaddsmb> utilise le nouveau mode d'impression RPC de SAMBA 2.2.x pour "
-"fournir aux clients Windows les drivers d'impression et les fichiers PPD. "
-"Pour utiliser cette fonctionnalité, vous devez configurer SAMBA (via le "
-"fichier I<smb.conf>(5)) pour qu'il utilise l'impression via CUPS, et fournir "
-"un driver à télécharger. Ceci est fait de la manière suivante :"
+"B<cupsaddsmb> utilise le nouveau mode d'impression RPC de SAMBA 2.2.x pour "
+"fournir aux clients Windows les pilotes d'impression et les fichiers PPD. "
+"Pour utiliser cette fonctionnalité, vous devez configurer SAMBA (à l'aide du "
+"fichier I<smb.conf>(5)) pour qu'il utilise l'impression à travers CUPS, et "
+"fournir un pilote à télécharger. Cela est fait de la manière suivante :"
 
 # type: Plain text
 #. type: Plain text
@@ -1695,8 +1667,8 @@ msgid ""
 "I<@CUPS_DATADIR@/drivers> directory and the 64-bit drivers to the "
 "I<@CUPS_DATADIR@/drivers/x64> directory exactly as named below:"
 msgstr ""
-"Après avoir extrait les fichiers du pilote, copier les pilotes 32 bits dans "
-"le répertoire I<@CUPS_DATADIR@/drivers> et les pilotes 64 bits dans le "
+"Après avoir extrait les fichiers des pilotes, copier les pilotes 32 bits "
+"dans le répertoire I<@CUPS_DATADIR@/drivers> et les pilotes 64 bits dans le "
 "répertoire I<@CUPS_DATADIR@/drivers/x64>, en les nommant exactement comme "
 "ceci :"
 
@@ -1743,7 +1715,7 @@ msgid ""
 "I<cupsaddsmb> can use the CUPS v6 PostScript printer driver for Windows, "
 "which is available for download from the CUPS web site."
 msgstr ""
-"B<cupsaddsmb> peut utiliser les pilotes PostScript CUPS V6 pour Windows, "
+"B<cupsaddsmb> peut utiliser les pilotes PostScript CUPS v6 pour Windows, "
 "disponibles en téléchargement sur le site web de CUPS."
 
 # type: Plain text
@@ -1803,7 +1775,7 @@ msgid ""
 "98, and ME, which are available for download from the Adobe web site (http://"
 "www.adobe.com)."
 msgstr ""
-"B<cupsaddsmb> peut utiliser le pilote des imprimantes PostScript d'Adobe "
+"B<cupsaddsmb> peut utiliser les pilotes des imprimantes PostScript d'Adobe "
 "pour Windows 95, 98 et ME, qui sont disponibles en téléchargement sur le "
 "site d'Adobe (http://www.adobe.com)."
 
@@ -1824,8 +1796,8 @@ msgid ""
 "Once you have installed the driver on a Windows system, copy the following "
 "files to the I<@CUPS_DATADIR@/drivers> directory exactly as named below:"
 msgstr ""
-"Une fois que vous avec les pilotes sur un système Windows, copiez les "
-"fichiers suivants dans le répertoire I<@CUPS_DATADIR@/drivers>, en "
+"Une fois que vous avez installé les pilotes sur un système Windows, copiez "
+"les fichiers suivants dans le répertoire I<@CUPS_DATADIR@/drivers>, en "
 "respectant les noms indiqués :"
 
 # type: Plain text
@@ -1978,8 +1950,8 @@ msgid ""
 msgstr ""
 "B<cups-config> est l'utilitaire de configuration pour les programmes CUPS. "
 "Il devrait être utilisé par les développeurs d'application pour déterminer "
-"les options en ligne de commande pour le compilateur ou l'éditeur de liens, "
-"comme pour déterminer les répertoires des filtres, fichiers de "
+"les options en ligne de commande pour le compilateur et l'éditeur de liens, "
+"ainsi que pour déterminer les répertoires des filtres, fichiers de "
 "configurations et pilotes."
 
 # type: TP
@@ -2060,7 +2032,7 @@ msgid ""
 "displayed libraries."
 msgstr ""
 "Lorsqu'elle est utilisée avec B<--libs>, cette option ajoute la bibliothèque "
-"de gestion des images CUPS des bibliothèques affichées."
+"de gestion des images CUPS aux bibliothèques affichées."
 
 # type: TP
 #. type: TP
@@ -2102,7 +2074,7 @@ msgid ""
 "Displays the default CUPS binary directory, where filters and backends are "
 "stored."
 msgstr ""
-"Afficher le répertoires par défaut des binaires, où se trouvent les filtres "
+"Afficher le répertoire par défaut des binaires, où se trouvent les filtres "
 "et programmes de transmission."
 
 # type: TP
@@ -2116,7 +2088,7 @@ msgstr "B<--serverroot>"
 #. type: Plain text
 #: cups-config.man:101
 msgid "Displays the default CUPS configuration file directory."
-msgstr "Afficher le répertoire de configuration par défaut d eCUPS."
+msgstr "Afficher le répertoire de configuration par défaut de CUPS."
 
 # type: TP
 #. type: TP
@@ -2174,21 +2146,14 @@ msgstr "cupsctl - Configurer les options de cupsd.conf"
 # type: Plain text
 #. type: Plain text
 #: cupsctl.man:29
-#, fuzzy
-#| msgid ""
-#| "B<cupsctl> [ -E ] [-U I<username> ] [ -h I<server[:port]> ] [ --[no-]"
-#| "debug-logging ] [ --[no-]remote-admin ] [ --[no-]remote-any ] [ --[no-]"
-#| "remote-printers ] [ --[no-]share-printers ] [ --[no-]user-cancel-any ] "
-#| "[ I<name=value> ]"
 msgid ""
 "B<cupsctl> [ -E ] [-U I<username> ] [ -h I<server[:port]> ] [ --[no-]debug-"
 "logging ] [ --[no-]remote-admin ] [ --[no-]remote-any ] [ --[no-]share-"
 "printers ] [ --[no-]user-cancel-any ] [ I<name=value> ]"
 msgstr ""
 "B<cupsctl> [ -E ] [-U I<utilisateur> ] [ -h I<serveur[:port]> ] [ --[no-]"
-"debug-logging ] [ --[no-]remote-admin ] [ --[no-]remote-any ] [ --[no-]"
-"remote-printers ] [ --[no-]share-printers ] [ --[no-]user-cancel-any ] "
-"[ I<nom=valeur> ]"
+"debug-logging ] [ --[no-]remote-admin ] [ --[no-]remote-any ] [ --[no-share-"
+"printers] ] [ --[no-]user-cancel-any] ] [ I<nom=valeur> ] "
 
 # type: Plain text
 #. type: Plain text
@@ -2419,6 +2384,12 @@ msgid ""
 "I<cupsd.conf> file are now stored in the I<cups-files.conf(5)> instead in "
 "order to prevent certain types of privilege escalation attacks."
 msgstr ""
+"Le fichier I<cupsd.conf> configure l'ordonnanceur CUPS, I<cupsd(8)>. Il est "
+"normalement situé dans le répertoire I<@CUPS_SERVERROOT@>. B<Note:> le "
+"fichier, le répertoire et les directives de configuration utilisateurs, qui "
+"étaient jusqu'alors stockés dans le fichier I<cupsd.conf>, sont maintenant "
+"stockés dans le fichier I<cups-files.conf(5)>, afin de prévenir certains "
+"types d'attaques visant l'augmentation des privilèges."
 
 # type: Plain text
 #. type: Plain text
@@ -2612,20 +2583,16 @@ msgstr ""
 # type: TP
 #. type: TP
 #: cupsd.conf.man.in:79
-#, fuzzy, no-wrap
-#| msgid "BrowseLocalProtocols [All] [CUPS] [DNSSD] [LDAP] [SLP]"
+#, no-wrap
 msgid "BrowseLocalProtocols [All] [DNSSD]"
-msgstr "BrowseLocalProtocols [All] [CUPS] [DNSSD] [LDAP] [SLP]"
+msgstr "BrowseLocalProtocols [All] [DNSSD]"
 
 # type: Plain text
 #. type: Plain text
 #: cupsd.conf.man.in:83
-#, fuzzy
-#| msgid "Specifies the protocols to use for local printer browsing."
 msgid "Specifies the protocols to use for local printer sharing."
 msgstr ""
-"Définir les protocoles réseaux à utiliser pour la recherche d'imprimantes "
-"locales."
+"Définir les protocoles à utiliser pour le partage de l'imprimante locale."
 
 # type: TP
 #. type: TP
@@ -2645,7 +2612,7 @@ msgstr "BrowseWebIF No"
 #. type: Plain text
 #: cupsd.conf.man.in:89
 msgid "Specifies whether the CUPS web interface is advertised via DNS-SD."
-msgstr "Indique si l'interface WEB de CUPS est avertie via DNS-SD."
+msgstr "Indiquer si l'interface WEB de CUPS est avertie à travers DNS-SD."
 
 # type: TP
 #. type: TP
@@ -2664,10 +2631,8 @@ msgstr "Browsing No"
 # type: Plain text
 #. type: Plain text
 #: cupsd.conf.man.in:95
-#, fuzzy
-#| msgid "Specifies whether or not remote printer browsing should be enabled."
 msgid "Specifies whether or not shared printers should be advertised."
-msgstr "Définir si la recherche des imprimantes distantes doit être activée."
+msgstr "Définir si la liste des imprimantes partagées doit être publiée."
 
 # NOTE: bannière à traduire ?
 # type: TP
@@ -2681,7 +2646,7 @@ msgstr "Classification bannière"
 #. type: Plain text
 #: cupsd.conf.man.in:99
 msgid "Specifies the security classification of the server."
-msgstr "Définir le niveau de classification du serveur."
+msgstr "Définir la classification de sécurité du serveur."
 
 # type: TP
 #. type: TP
@@ -2767,7 +2732,7 @@ msgstr "DefaultEncryption Required"
 #: cupsd.conf.man.in:124
 msgid "Specifies the type of encryption to use for authenticated requests."
 msgstr ""
-"Indique le type de chiffrement à utiliser pour les requêtes authentifiées."
+"Indiquer le type de chiffrement à utiliser pour les requêtes authentifiées."
 
 # type: TP
 #. type: TP
@@ -2802,7 +2767,7 @@ msgstr "DefaultPaperSize None"
 #: cupsd.conf.man.in:132
 #, no-wrap
 msgid "DefaultPaperSize sizename"
-msgstr "DefaultPaperSize sizename"
+msgstr "DefaultPaperSize nom_format"
 
 #. type: Plain text
 #: cupsd.conf.man.in:137
@@ -2812,8 +2777,8 @@ msgid ""
 "size."
 msgstr ""
 "Indique la taille de papier par défaut pour les nouvelles files "
-"d'impression. « Auto » utilise une valeur par défaut en local, alors que "
-"« Aucun » indique qu'il n'y a pas de taille de papier par défaut."
+"d'impression. « Auto » utilise une valeur spécifique locale par défaut, "
+"alors que « None » indique qu'il n'y a pas de taille de papier par défaut."
 
 # type: TP
 #. type: TP
@@ -2971,6 +2936,8 @@ msgid ""
 "Specifies the service name when using Kerberos authentication. The default "
 "service name is \"@CUPS_DEFAULT_GSSSERVICENAME@\"."
 msgstr ""
+"Indique le nom de service lors de l'utilisation de l'authentification "
+"Kerberos. Le nom du service par défaut est « @CUPS_DEFAULT_GSSSERVICENAME@ »."
 
 # type: TP
 #. type: TP
@@ -3018,7 +2985,7 @@ msgstr "Inclure le fichier donné."
 #: cupsd.conf.man.in:208
 #, no-wrap
 msgid "JobKillDelay seconds"
-msgstr "JobKillDelay seconds"
+msgstr "JobKillDelay secondes"
 
 #. type: Plain text
 #: cupsd.conf.man.in:213
@@ -3026,7 +2993,7 @@ msgid ""
 "Specifies the number of seconds to wait before killing the filters and "
 "backend associated with a canceled or held job."
 msgstr ""
-"Indique le nombre de secondes à attendre avant de tuer les filtres et les "
+"Indiquer le nombre de secondes à attendre avant de tuer les filtres et les "
 "processus d'arrière-plan associés à une tâche suspendue ou annulée."
 
 #. type: TP
@@ -3039,7 +3006,7 @@ msgstr "JobPrivateAccess tout"
 #: cupsd.conf.man.in:215
 #, no-wrap
 msgid "JobPrivateAccess default"
-msgstr "JobPrivateAccess defaut"
+msgstr "JobPrivateAccess défaut"
 
 #. type: TP
 #: cupsd.conf.man.in:217
@@ -3054,7 +3021,7 @@ msgid ""
 "list is \"@OWNER @SYSTEM\". \"@ACL\" maps to the printer's requesting-user-"
 "name-allowed or requesting-user-name-denied values."
 msgstr ""
-"Indique une liste d'accès pour les valeurs privées d'une tâche. La liste "
+"Indiquer une liste d'accès pour les valeurs privées d'une tâche. La liste "
 "d'accès par défaut est « @OWNER @SYSTEM ». « @ACL » est défini selon les "
 "valeurs requesting-user-name-allowed ou requesting-user-name-denied de "
 "l'imprimante."
@@ -3069,7 +3036,7 @@ msgstr "JobPrivateValues tous"
 #: cupsd.conf.man.in:225
 #, no-wrap
 msgid "JobPrivateValues default"
-msgstr "JobPrivateValues defaut"
+msgstr "JobPrivateValues défaut"
 
 #. type: TP
 #: cupsd.conf.man.in:227
@@ -3090,8 +3057,8 @@ msgid ""
 "\"job-name\", \"job-originating-host-name\", and \"job-originating-user-name"
 "\"."
 msgstr ""
-"Indique la liste des valeurs des tâches à rendre privées. Les valeurs « par "
-"défaut » sont « nom de la tâche », « nom d'hôte de la machine ayant créé la "
+"Indiquer la liste des valeurs des tâches à rendre privées. Les valeurs par "
+"défaut sont « nom de la tâche », « nom d'hôte de la machine ayant créé la "
 "tâche », et « nom d'utilisateur ayant créé la tâche »."
 
 # type: TP
@@ -3166,7 +3133,8 @@ msgstr "E<lt>Limit operationsE<gt> ... E<lt>/LimitE<gt>"
 #. type: Plain text
 #: cupsd.conf.man.in:255
 msgid "Specifies the IPP operations that are being limited inside a policy."
-msgstr "Indiquer les opérations IPP non autorisés dans une certaine politique."
+msgstr ""
+"Indiquer les opérations IPP non autorisées dans une certaine politique."
 
 # type: TP
 #. type: TP
@@ -3257,7 +3225,7 @@ msgid ""
 "Specifies the number of debugging messages that are logged when an error "
 "occurs in a print job."
 msgstr ""
-"Indique le nombre de messages de debogage journalisés lorsqu'une erreur "
+"Indiquer le nombre de messages de debogage journalisés lorsqu'une erreur "
 "apparaît lors d'une tâche d'impression."
 
 # type: TP
@@ -3353,7 +3321,7 @@ msgstr "LogTimeFormat usecs"
 #. type: Plain text
 #: cupsd.conf.man.in:310
 msgid "Specifies the format of the date and time in the log files."
-msgstr "Indique le format de la date et du temps dans les fichiers journaux."
+msgstr "Indiquer le format de la date et du temps dans les fichiers journaux."
 
 # type: TP
 #. type: TP
@@ -3403,10 +3371,9 @@ msgstr ""
 # type: TP
 #. type: TP
 #: cupsd.conf.man.in:323
-#, fuzzy, no-wrap
-#| msgid "MaxRunTime I<seconds>"
+#, no-wrap
 msgid "MaxHoldTime seconds"
-msgstr "MaxRunTime I<secondes>"
+msgstr "MaxHoldTime secondes"
 
 #. type: Plain text
 #: cupsd.conf.man.in:328
@@ -3414,6 +3381,9 @@ msgid ""
 "Specifies the maximum time a job may remain in the \"indefinite\" hold state "
 "before it is canceled. Set to 0 to disable cancellation of held jobs."
 msgstr ""
+"Indiquer la durée maximum pendant laquelle une tâche peut rester en état "
+"« indéfini » avant d'être annulée. Indiquer 0 pour désactiver l'annulation "
+"des tâches suspendues."
 
 # type: TP
 #. type: TP
@@ -3458,10 +3428,9 @@ msgstr "Définir le nombre maximum de travaux simultanés par utilisateur."
 # type: TP
 #. type: TP
 #: cupsd.conf.man.in:340
-#, fuzzy, no-wrap
-#| msgid "MaxRunTime I<seconds>"
+#, no-wrap
 msgid "MaxJobTime seconds"
-msgstr "MaxRunTime I<secondes>"
+msgstr "MaxJobTime secondes"
 
 #. type: Plain text
 #: cupsd.conf.man.in:346
@@ -3470,6 +3439,9 @@ msgid ""
 "The default is 10800 seconds (3 hours). Set to 0 to disable cancellation of "
 "\"stuck\" jobs."
 msgstr ""
+"Indiquer le temps maximum qu'une tâche peut prendre pour imprimer avant "
+"d'être annulée. La valeur par défaut est de 10 800 secondes (3 heures). "
+"Indiquer 0 pour désactiver l'annulation de tâches bloquées."
 
 # type: TP
 #. type: TP
@@ -3508,7 +3480,7 @@ msgstr ""
 #: cupsd.conf.man.in:355
 #, no-wrap
 msgid "MultipleOperationTimeout seconds"
-msgstr "MultipleOperationTimeout seconds"
+msgstr "MultipleOperationTimeout secondes"
 
 # type: Plain text
 #. type: Plain text
@@ -3517,7 +3489,7 @@ msgid ""
 "Specifies the maximum amount of time to allow between files in a multiple "
 "file print job."
 msgstr ""
-"Indique le temps maximum à allouer aux différents fichiers dans une tâche "
+"Indiquer le temps maximum à allouer aux différents fichiers dans une tâche "
 "d'impression de fichiers multiples."
 
 # type: TP
@@ -3753,7 +3725,6 @@ msgstr ""
 # type: TP
 #. type: TP
 #: cupsd.conf.man.in:428
-#, no-wrap
 msgid "ServerAdmin user@domain.com"
 msgstr "ServerAdmin utilisateur@domaine.com"
 
@@ -3774,7 +3745,7 @@ msgstr "ServerAlias nom [... nom]"
 #: cupsd.conf.man.in:434
 #, no-wrap
 msgid "ServerAlias *"
-msgstr "ServerAlias*"
+msgstr "ServerAlias *"
 
 #. type: Plain text
 #: cupsd.conf.man.in:439
@@ -3782,7 +3753,7 @@ msgid ""
 "Specifies an alternate name that the server is known by. The special name \"*"
 "\" allows any name to be used."
 msgstr ""
-"Indique un nom alternatif par lequel le serveur est connu. Le nom spécial "
+"Indiquer un nom alternatif par lequel le serveur est connu. Le nom spécial "
 "« * » autorise l'emploi de n'importe quel nom."
 
 # type: TP
@@ -3868,7 +3839,7 @@ msgstr "SetEnv variable valeur"
 #. type: Plain text
 #: cupsd.conf.man.in:464
 msgid "Set the specified environment variable to be passed to child processes."
-msgstr "Fixer les varaibles d'environnement à passer aux processus fils."
+msgstr "Fixer les variables d'environnement à passer aux processus fils."
 
 # type: TP
 #. type: TP
@@ -3888,7 +3859,7 @@ msgstr ""
 #: cupsd.conf.man.in:468
 #, no-wrap
 msgid "SSLOptions None"
-msgstr "SSLOptions Aucune"
+msgstr "SSLOptions None"
 
 #. type: TP
 #: cupsd.conf.man.in:470
@@ -3920,13 +3891,13 @@ msgstr "Écouter sur le port indiqué pour les connexions sécurisées."
 #: cupsd.conf.man.in:478
 #, no-wrap
 msgid "StrictConformance Yes"
-msgstr ""
+msgstr "StrictConformance Yes"
 
 #. type: TP
 #: cupsd.conf.man.in:480
 #, no-wrap
 msgid "StrictConformance No"
-msgstr ""
+msgstr "StrictConformance No"
 
 #. type: Plain text
 #: cupsd.conf.man.in:485
@@ -3934,18 +3905,20 @@ msgid ""
 "Specifies whether the scheduler requires clients to strictly adhere to the "
 "IPP specifications. The default is No."
 msgstr ""
+"Indiquer si l'ordonnanceur requiert que les clients adhèrent strictement aux "
+"spécifications IPP. La valeur par défaut est Non."
 
 #. type: TP
 #: cupsd.conf.man.in:485
 #, no-wrap
 msgid "SubscriptionPrivateAccess all"
-msgstr "SubscriptionPrivateAccess tout"
+msgstr "SubscriptionPrivateAccess all"
 
 #. type: TP
 #: cupsd.conf.man.in:487
 #, no-wrap
 msgid "SubscriptionPrivateAccess default"
-msgstr "SubscriptionPrivateAccess defaut"
+msgstr "SubscriptionPrivateAccess default"
 
 #. type: TP
 #: cupsd.conf.man.in:489
@@ -3960,7 +3933,7 @@ msgid ""
 "\" access list is \"@OWNER @SYSTEM\". \"@ACL\" maps to the printer's "
 "requesting-user-name-allowed or requesting-user-name-denied values."
 msgstr ""
-"Indique une liste d'accès pour les valeurs privées d'une souscription. La "
+"Indiquer une liste d'accès pour les valeurs privées d'une souscription. La "
 "liste d'accès « par défaut » est « @OWNER @SYSTEM ». « @ACL » est défini "
 "selon les valeurs requesting-user-name-allowed ou requesting-user-name-"
 "denied de l'imprimante."
@@ -3969,19 +3942,19 @@ msgstr ""
 #: cupsd.conf.man.in:495
 #, no-wrap
 msgid "SubscriptionPrivateValues all"
-msgstr "SubscriptionPrivateValues tout"
+msgstr "SubscriptionPrivateValues all"
 
 #. type: TP
 #: cupsd.conf.man.in:497
 #, no-wrap
 msgid "SubscriptionPrivateValues default"
-msgstr "SubscriptionPrivateValues defaut"
+msgstr "SubscriptionPrivateValues default"
 
 #. type: TP
 #: cupsd.conf.man.in:499
 #, no-wrap
 msgid "SubscriptionPrivateValues none"
-msgstr "SubscriptionPrivateValues aucune"
+msgstr "SubscriptionPrivateValues none"
 
 #. type: TP
 #: cupsd.conf.man.in:501
@@ -3996,7 +3969,7 @@ msgid ""
 "\"notify-events\", \"notify-pull-method\", \"notify-recipient-uri\", "
 "\"notify-subscriber-user-name\", and \"notify-user-data\"."
 msgstr ""
-"Indique la liste des valeurs des tâches à rendre privées. Les valeurs par "
+"Indiquer la liste des valeurs des tâches à rendre privées. Les valeurs par "
 "défaut sont « default », « notify-events », « notify-pull-method », « notify-"
 "recipient-uri », « notify-subscriber-user-name » et « notify-user-data »."
 
@@ -4011,25 +3984,25 @@ msgstr "Timeout secondes"
 #. type: Plain text
 #: cupsd.conf.man.in:510
 msgid "Specifies the HTTP request timeout in seconds."
-msgstr "Définir le timeout des requêtes HTTP (en secondes)."
+msgstr "Définir le délai d'attente des requêtes HTTP (en secondes)."
 
 #. type: TP
 #: cupsd.conf.man.in:510
 #, no-wrap
 msgid "WebInterface yes"
-msgstr "WebInterface oui"
+msgstr "WebInterface yes"
 
 #. type: TP
 #: cupsd.conf.man.in:512
 #, no-wrap
 msgid "WebInterface no"
-msgstr "WebInterface non"
+msgstr "WebInterface no"
 
 # type: Plain text
 #. type: Plain text
 #: cupsd.conf.man.in:515
 msgid "Specifies whether the web interface is enabled."
-msgstr "Indique si l'interface web est activée."
+msgstr "Indiquer si l'interface web est activée."
 
 # type: Plain text
 #. type: Plain text
@@ -4175,22 +4148,23 @@ msgid ""
 "Specifies which errors are fatal, causing the scheduler to exit. \"Kind\" is "
 "\"browse\", \"config\", \"listen\", \"log\", or \"permissions\"."
 msgstr ""
-"Indique quelles erreurs sont fatales, entraînant l'arrêt de l'ordonnanceur. "
-"le « type » est « browse », « config » « listen » ou « permissions »."
+"Indiquer quelles erreurs sont fatales, entraînant l'arrêt de l'ordonnanceur. "
+"le « type » est « browse », « config », « listen », « log » ou "
+"« permissions »."
 
 # type: TP
 #. type: TP
 #: cups-files.conf.man.in:62
 #, no-wrap
 msgid "FileDevice Yes"
-msgstr "FileDevice Oui"
+msgstr "FileDevice Yes"
 
 # type: TP
 #. type: TP
 #: cups-files.conf.man.in:64
 #, no-wrap
 msgid "FileDevice No"
-msgstr "FileDevice Non"
+msgstr "FileDevice No"
 
 # type: Plain text
 #. type: Plain text
@@ -4304,7 +4278,8 @@ msgstr "RemoteRoot utilisateur"
 #: cups-files.conf.man.in:102
 msgid ""
 "Specifies the username that is associated with unauthenticated root accesses."
-msgstr "Définir l'utilisateur associé aux accès root non identifié."
+msgstr ""
+"Définir l'utilisateur associé aux accès superutilisateur non identifié."
 
 # type: TP
 #. type: TP
@@ -4483,7 +4458,7 @@ msgstr ""
 "initiale, 0 signifiant qu'il n'y a pas de limite. Le paramètre I<user-id> "
 "est la valeur requesting-user-name (utilisateur demandeur) de la requête "
 "initiale. Enfin, le paramètre I<options> est une liste d'attributs séparés "
-"par des espaces (« nom=valeur nom=valeur ») qui étaient passés à la requête. "
+"par des espaces (« nom=valeur nom=valeur ») qui sont passés à la requête. "
 "Actuellement, B<cups-deviced> utilise les attributs I<requested-attributes> "
 "pour construire la sortie en conséquence."
 
@@ -4539,7 +4514,7 @@ msgstr ""
 #: cupsd.man.in:29 cupsfilter.man:54
 #, no-wrap
 msgid "-c config-file"
-msgstr "B<-c> I<fichier_configuration>"
+msgstr "-c I<fichier_configuration>"
 
 # type: Plain text
 #. type: Plain text
@@ -4609,7 +4584,7 @@ msgstr "B<-l>"
 #: cupsd.man.in:53
 msgid "This option is passed to I<cupsd> when it is run from I<launchd(8)>."
 msgstr ""
-"Cette option est passée à B<cupsd> losqu'il est lancé par B<launchd>(8)."
+"Cette option est passée à B<cupsd> lorsqu'il est lancé par B<launchd>(8)."
 
 # type: TP
 #. type: TP
@@ -4631,7 +4606,7 @@ msgid ""
 "I<cupsd> implements all of the required IPP/2.1 attributes and operations. "
 "It also implements several CUPS-specific administration operations."
 msgstr ""
-"I<cupsd> fournit tous les attributs et opération de IPP/2.1. Il implémente "
+"I<cupsd> fournit tous les attributs et opérations de IPP/2.1. Il implémente "
 "aussi plusieurs opérations d'administration spécifiques à CUPS."
 
 # type: Plain text
@@ -4765,20 +4740,20 @@ msgstr ""
 #: cups-driverd.man.in:54
 #, no-wrap
 msgid "drivername list"
-msgstr "drivername list"
+msgstr "nom_pilote list"
 
 # type: Plain text
 #. type: Plain text
 #: cups-driverd.man.in:58
 msgid "Lists the supported PPD files to stdout."
-msgstr "Liste, sur la sortie standard, les fichiers PPD gérés."
+msgstr "Lister, sur la sortie standard, les fichiers PPD gérés."
 
 # type: TP
 #. type: TP
 #: cups-driverd.man.in:58
 #, no-wrap
 msgid "drivername cat ppdname"
-msgstr "drivername cat nom_ppd"
+msgstr "nom_pilote cat nom_ppd"
 
 # type: Plain text
 #. type: Plain text
@@ -4793,17 +4768,17 @@ msgid ""
 "that would delay the return of a driver list. See the NOTES section below "
 "for specific recommendations."
 msgstr ""
-"Les pilotes ne DOIVENT PAS effectuer de requêtes sur le matériel ou "
-"effectuer des opérations longues qui pourraient retarder l'affichage d'une "
-"liste de pilotes. Veuillez lire la section NOTES ci-dessous pour les "
-"recommandations spécifiques."
+"Les programmes de pilotes ne DOIVENT PAS effectuer de requêtes sur le "
+"matériel ou effectuer des opérations longues qui pourraient retarder "
+"l'affichage d'une liste de pilotes. Veuillez lire la section NOTES ci-"
+"dessous pour les recommandations spécifiques."
 
 # type: SS
 #. type: SS
 #: cups-driverd.man.in:66
 #, no-wrap
 msgid "LISTING FILES (drivername list)"
-msgstr "LISTER LES FICHIER (nom_pilote list)"
+msgstr "LISTER LES FICHIERS (nom_pilote list)"
 
 # type: Plain text
 #. type: Plain text
@@ -4826,11 +4801,11 @@ msgid ""
 "    \"drivername:ppdname\" language \"make\" \"make and model\" \"1284 device id\" \"(PPD product)\" \"PostScript version\"\n"
 "    \"drivername:ppdname\" language \"make\" \"make and model\" \"1284 device id\" \"(PPD product)\" \"PostScript version\" \"type\"\n"
 msgstr ""
-"« nom du pilote : nom ppd » langue « marque » « marque et modèle »\n"
-"« nom du pilote : nom ppd » langue « marque » « marque et modèle » « id périphérique 1284 »\n"
-"« nom du pilote : nom ppd » langue « marque » « marque et modèle » « id périphérique 1284 » « (Produit PPD) »\n"
-"« nom du pilote : nom ppd » langue « marque » « marque et modèle » « id périphérique 1284 » « (Produit PPD) » « version PostScript »\n"
-"« nom du pilote : nom ppd » langue « marque » « marque et modèle » « id périphérique 1284 » « (Produit PPD) » « version PostScript » « type »\n"
+"« nom_pilote : nom_ppd » langue « marque » « marque et modèle »\n"
+"« nom_pilote : nom_ppd » langue « marque » « marque et modèle » « id périphérique 1284 »\n"
+"« nom_pilote : nom_ppd » langue « marque » « marque et modèle » « id périphérique 1284 » « (Produit PPD) »\n"
+"« nom_pilote : nom_ppd » langue « marque » « marque et modèle » « id périphérique 1284 » « (Produit PPD) » « version PostScript »\n"
+"« nom_pilote : nom_ppd » langue « marque » « marque et modèle » « id périphérique 1284 » « (Produit PPD) » « version PostScript » « type »\n"
 
 # type: Plain text
 #. type: Plain text
@@ -4847,25 +4822,26 @@ msgid ""
 "I<Type> is \"postscript\" for PostScript printers, \"pdf\" for PDF printers, "
 "\"raster\" for raster printers, or \"fax\" for facsimile devices."
 msgstr ""
-"I<nom_pilote> est le nom du programme pilote. I<nom_ppd> est le nom utilisé "
-"pour sélectionner le pilote donné. I<langue> est la locale associée avec la "
-"langue par défaut du fichier PPD, généralement « en ». I<marque> est le nom "
-"du fabriquant dans le fichier PPD. I<marque et modèle> est le nom du fichier "
-"PPD. I<id_1284_périphérique> est l'identifiant 1284DeviceID du fichier PPD, "
-"s'il y en a un. I<produit_PPD> est la chaîne de caractères Produit telle "
-"qu'elle apparaîtrait dans le fichier PPD, ou dans une requête PostScript. "
-"I<version PostScript> est la chaîne de caractères version PS telle qu'elle "
-"apparaîtrait dans le fichier PPD, ou dans une requête PostScript. I<Type> "
-"est défini à : « postscript » pour les imprimantes PostScript, « pdf » pour "
-"les imprimantes PDF, « raster » pour les imprimantes à processeur d'images "
-"vectorielles, ou « fax » pour les périphériques facsimile."
+"I<nom_pilote> est le nom du programme de pilote. I<nom_ppd> est le nom "
+"utilisé pour sélectionner le pilote donné. I<langue> est la locale associée "
+"avec la langue par défaut du fichier PPD, généralement « en ». I<marque> est "
+"le nom du fabriquant dans le fichier PPD. I<marque et modèle> est le nom du "
+"fichier PPD. I<id périphérique 1284> est l'identifiant 1284DeviceID du "
+"fichier PPD, s'il y en a un. I<produit PPD> est la chaîne de caractères "
+"Produit telle qu'elle apparaîtrait dans le fichier PPD, ou dans une requête "
+"PostScript. I<version PostScript> est la chaîne de caractères version PS "
+"telle qu'elle apparaîtrait dans le fichier PPD, ou dans une requête "
+"PostScript. I<Type> est défini à : « postscript » pour les imprimantes "
+"PostScript, « pdf » pour les imprimantes PDF, « raster » pour les "
+"imprimantes à processeur d'images vectorielles, ou « fax » pour les "
+"périphériques de fac-similé."
 
 # type: SS
 #. type: SS
 #: cups-driverd.man.in:89
 #, no-wrap
 msgid "WRITING FILES (drivername cat ppdname)"
-msgstr "ÉCRIRE LES FICHIER (nom_pilote cat nom_ppd)"
+msgstr "ÉCRIRE LES FICHIERS (nom_pilote cat nom_ppd)"
 
 # type: Plain text
 #. type: Plain text
@@ -4876,10 +4852,11 @@ msgid ""
 "not exist, the driver program must not write any output to stdout and report "
 "the error to stderr instead."
 msgstr ""
-"Quand le programme pilote est lancé avec les paramètres « cat nom_ppd », il "
-"écrit le fichier PPD demandé, non compressé, sur la sortie standard. Si le "
-"fichier PPD demandé n'existe pas, le programme pilote ne doit rien écrire "
-"sur la sortie standard, mais doit utiliser la sortie d'erreur à la place."
+"Quand le programme de pilote est lancé avec les paramètres « cat nom_ppd », "
+"il écrit le fichier PPD demandé, non compressé, sur la sortie standard. Si "
+"le fichier PPD demandé n'existe pas, le programme de pilote ne doit rien "
+"écrire sur la sortie standard, mais doit utiliser la sortie d'erreur à la "
+"place."
 
 # type: SS
 #. type: SS
@@ -4896,14 +4873,14 @@ msgid ""
 "The following prefixes are recognized:"
 msgstr ""
 "Les messages d'erreur peuvent être renvoyés à I<cupsd> en les écrivant sur "
-"la sortie standard d'erreur. Les préfixes suivants sont reconnus :"
+"la sortie d'erreur. Les préfixes suivants sont reconnus :"
 
 # type: TP
 #. type: TP
 #: cups-driverd.man.in:97
 #, no-wrap
 msgid "DEBUG: [drivername]"
-msgstr "DEBUG: [drivername]"
+msgstr "DEBUG: [nom_pilote]"
 
 # type: Plain text
 #. type: Plain text
@@ -4945,10 +4922,11 @@ msgid ""
 "CUPS web interface and I<lpinfo(8)> command will request lists from all "
 "driver programs."
 msgstr ""
-"Pour des raisons de performance, les pilotes ont été officiellement rendus "
-"obsolètes et ne devraient plus être utilisés pour le nouveau développement. "
-"Actuellement, seule l'interface web de CUPS et la commande I<lpinfo(8)> "
-"peuvent demander les listes de tous les pilotes."
+"Pour des raisons de performance, les programmes de pilotes ont été "
+"officiellement rendus obsolètes et ne devraient plus être utilisés pour de "
+"nouveau développement. Actuellement, seule l'interface web de CUPS et la "
+"commande I<lpinfo(8)> peuvent demander les listes de tous les programmes de "
+"pilotes."
 
 # type: Plain text
 #. type: Plain text
@@ -5002,7 +4980,8 @@ msgstr ""
 #. type: Plain text
 #: cupsenable.man:36
 msgid "I<cupsenable> starts the named printers or classes."
-msgstr "B<cupsenable> démarre l'imprimante ou la classe d'imprimante indiquée."
+msgstr ""
+"B<cupsenable> démarre les imprimantes ou les classes d'imprimante indiquées."
 
 # type: Plain text
 #. type: Plain text
@@ -5011,8 +4990,8 @@ msgid ""
 "I<cupsdisable> stops the named printers or classes.  The following options "
 "may be used:"
 msgstr ""
-"B<cupsdisable> arrête l'imprimante ou la classe d'imprimante indiquée. Les "
-"options suivantes peuvent être utilisées :"
+"B<cupsdisable> arrête les imprimantes ou les classes d'imprimante indiquées. "
+"Les options suivantes peuvent être utilisées :"
 
 # type: Plain text
 #. type: Plain text
@@ -5066,7 +5045,7 @@ msgid ""
 "Holds remaining jobs on the named printer.  Useful for allowing the current "
 "job to complete before performing maintenance."
 msgstr ""
-"Suspend les travaux restants sur l'imprimante donnée. Utile pour autoriser "
+"Suspendre les travaux restants sur l'imprimante donnée. Utile pour autoriser "
 "le travail en cours à finir avant d'exécuter une maintenance."
 
 # type: Plain text
@@ -5091,8 +5070,8 @@ msgid ""
 "Releases pending jobs for printing. Use after running I<cupsdisable> with "
 "the I<--hold> option to resume printing."
 msgstr ""
-"Libère les travaux en attente et les imprime. À utiliser après avoir exécuté "
-"B<cupsdisable> avec l'option B<--hold> pour reprendre l'impression."
+"Libérer les travaux en attente et les imprimer. À utiliser après avoir "
+"exécuté B<cupsdisable> avec l'option B<--hold> pour reprendre l'impression."
 
 # type: Plain text
 #. type: Plain text
@@ -5104,7 +5083,7 @@ msgid ""
 msgstr ""
 "Les versions System V de ces commandes sont B<disable> et B<enable>. Elles "
 "ont été renommées pour éviter les conflits avec les commandes internes de "
-"B<bash>(1) du même nom."
+"B<bash>(1) de mêmes noms."
 
 # type: Plain text
 #. type: Plain text
@@ -5116,8 +5095,8 @@ msgid ""
 msgstr ""
 "Les versions CUPS de B<disable> et B<enable> peuvent demander à "
 "l'utilisateur de s'identifier suivant la configuration du système "
-"d'impression, à la différence des versions System V, qui demandent le mot de "
-"passe root pour exécuter ces commandes."
+"d'impression, à la différence des versions System V, qui demandent le mot de "
+"passe superutilisateur pour exécuter ces commandes."
 
 # type: Plain text
 #. type: Plain text
@@ -5154,21 +5133,16 @@ msgstr ""
 # type: Plain text
 #. type: Plain text
 #: cupsfilter.man:41
-#, fuzzy
-#| msgid ""
-#| "B<cupsfilter> [ -c I<config-file> ] [ -d I<printer> ] [ -e ] -j I<job-id[,"
-#| "N]> [ -m I<mime/type> ] [ -n I<copies> ] [ -o I<name=value> ] [ -p "
-#| "I<filename.ppd> ] [ -t I<title> ] I<filename>"
 msgid ""
 "B<cupsfilter> [ -D ] [ -U I<user> ] [ -c I<config-file> ] [ -d I<printer> ] "
 "[ -e ] [ -i I<mime/type> ] [ -j I<job-id[,N]> ] [ -m I<mime/type> ] [ -n "
 "I<copies> ] [ -o I<name=value> ] [ -p I<filename.ppd> ] [ -t I<title> ] [ -"
 "u ] I<filename>"
 msgstr ""
-"B<cupsfilter> [ B<-c> I<fichier_configuration> ] [ B<-d> I<imprimante>] [ B<-"
-"e> ] B<-j> I<id_tâche>[B<,>I<N>]> [ B<-m> I<type/mime> ] [ B<-n> I<copies> ] "
-"[ B<-o> I<nom>B<=>I<valeur> ] [ B<-p> I<fichier.ppd> ] [ B<-t> I<titre> ] "
-"I<fichier>"
+"B<cupsfilter> [ -D ] [ -U I<utilisateur> ] [ -c I<fichier-configuration> ] "
+"[ -d I<imprimante> ] [ -e ] [ -i I<type/mime> ] [ -j I<id-tâche[,N]> ] [ -m "
+"I<type/mime> ] [ -n I<copies> ] [ -o I<nom=valeur> ] [ -p I<filename.ppd> ] "
+"[ -t I<titre> ] [ -u ] I<filename>"
 
 # type: Plain text
 #. type: Plain text
@@ -5187,30 +5161,29 @@ msgstr ""
 #: cupsfilter.man:46
 #, no-wrap
 msgid "-D"
-msgstr ""
+msgstr "-D"
 
 #. type: Plain text
 #: cupsfilter.man:50
 msgid "Delete the input file after conversion."
-msgstr ""
+msgstr "Effacer le fichier d'entrée après la conversion."
 
 # type: TP
 #. type: TP
 #: cupsfilter.man:50
-#, fuzzy, no-wrap
-#| msgid "-U username"
+#, no-wrap
 msgid "-U user"
-msgstr "B<-U> I<utilisateur>"
+msgstr "-U utilisateur"
 
 # type: Plain text
 #. type: Plain text
 #: cupsfilter.man:54
-#, fuzzy
-#| msgid "Specifies the username to use when connecting to the server."
 msgid ""
 "Specifies the username passed to the filters. The default is the name of the "
 "current user."
-msgstr "Indiquer l'utilisateur à utiliser pour les connexions au serveur."
+msgstr ""
+"Indiquer l'utilisateur à passer aux filtres. Par défaut c'est le nom de "
+"l'utilisateur courant."
 
 # type: Plain text
 #. type: Plain text
@@ -5229,7 +5202,7 @@ msgstr "-d imprimante"
 #. type: Plain text
 #: cupsfilter.man:61
 msgid "Uses information from the named printer."
-msgstr "Utilise des informations de l'imprimante nommée."
+msgstr "Utiliser des informations de l'imprimante nommée."
 
 #. type: TP
 #: cupsfilter.man:61
@@ -5245,26 +5218,19 @@ msgstr "Utiliser tous les filtres du fichier PPD."
 # type: TH
 #. type: TP
 #: cupsfilter.man:65
-#, fuzzy, no-wrap
-#| msgid "-m mime/type"
+#, no-wrap
 msgid "-i mime/type"
-msgstr "B<-m> I<type/mime>"
+msgstr "-i type/mime"
 
 # type: Plain text
 #. type: Plain text
 #: cupsfilter.man:70
-#, fuzzy
-#| msgid ""
-#| "Specifies the destination file type. The default file type is application/"
-#| "pdf.  Use printer/foo to convert to the printer format defined by the "
-#| "filters in the PPD file."
 msgid ""
 "Specifies the source file type. The default file type is guessed using the "
 "filename and contents of the file."
 msgstr ""
-"Indique le type du fichier de destination. La valeur par défaut est "
-"application/pdf. Utiliser l'imprimante/foo pour convertir pour le format de "
-"l'imprimante défini dans les filtres du fichier PPD."
+"Indiquer le type du fichier source. La valeur par défaut est déduite en "
+"utilisant le nom de fichier et son contenu."
 
 # type: TP
 #. type: TP
@@ -5279,7 +5245,7 @@ msgid ""
 "Converts document N from the specified job. If N is omitted, document 1 is "
 "converted."
 msgstr ""
-"Convertit le document N depuis le travail indiqué. Si N est omis, le "
+"Convertir le document N depuis le travail indiqué. Si N est omis, le "
 "document 1 sera converti."
 
 # type: TH
@@ -5297,9 +5263,9 @@ msgid ""
 "pdf.  Use printer/foo to convert to the printer format defined by the "
 "filters in the PPD file."
 msgstr ""
-"Indique le type du fichier de destination. La valeur par défaut est "
-"application/pdf. Utiliser l'imprimante/foo pour convertir pour le format de "
-"l'imprimante défini dans les filtres du fichier PPD."
+"Indiquer le type du fichier de destination. La valeur par défaut est "
+"application/pdf. Utiliser imprimante/foo pour convertir dans le format "
+"précis de l'imprimante avec les filtres du fichier PPD."
 
 # type: TP
 #. type: TP
@@ -5312,7 +5278,7 @@ msgstr "B<-n> I<copies>"
 #. type: Plain text
 #: cupsfilter.man:85
 msgid "Specifies the number of copies to generate."
-msgstr "Indiquer le nombre de copies à créer."
+msgstr "Indiquer le nombre de copies à faire."
 
 # type: TP
 #. type: TP
@@ -5357,12 +5323,12 @@ msgstr "Définir le titre du document."
 #: cupsfilter.man:97
 #, no-wrap
 msgid "-u"
-msgstr ""
+msgstr "-u"
 
 #. type: Plain text
 #: cupsfilter.man:101
 msgid "Delete the PPD file after conversion."
-msgstr ""
+msgstr "Effacer le fichier PPD après la conversion."
 
 # type: TH
 #. type: Plain text
@@ -5395,7 +5361,7 @@ msgstr ""
 #. type: Plain text
 #: cups-lpd.man.in:25
 msgid "B<cups-lpd> [ -h I<hostname[:port]> ] [ -n ] [ -o I<option=value> ]"
-msgstr "B<cups-lpd> [-h I<nom[:port]> [ -n ] [ -o I<option=valeur> ]"
+msgstr "B<cups-lpd> [-h I<serveur:port]> [ -n ] [ -o I<option=valeur> ]"
 
 # type: Plain text
 #. type: Plain text
@@ -5408,11 +5374,11 @@ msgid ""
 "I<inetd>, add the following line to the I<inetd.conf> file to enable the "
 "I<cups-lpd> mini-server:"
 msgstr ""
-"B<cups-lpd> est le mini serveur Line Printer Daemon (« LPD ») de CUPS, qui "
-"gère les client classiques utilisant le protocole LPD. B<cups-lpd> ne "
+"B<cups-lpd> est le mini-serveur Line Printer Daemon (« LPD ») de CUPS, qui "
+"gère les clients classiques utilisant le protocole LPD. B<cups-lpd> ne "
 "fonctionne pas lui-même comme un démon réseau, mais utilise le super-serveur "
-"B<inetd>(8). Si vous utilisez B<inetd>, ajoutez la ligne suivante au fichier "
-"I<inetd.conf> pour activer le démon B<cups-lpd> :"
+"B<inetd>(8) ou B<xinetd(8)>. Si vous utilisez B<inetd>, ajoutez la ligne "
+"suivante au fichier I<inetd.conf> pour activer le démon B<cups-lpd> :"
 
 # type: Plain text
 #. type: Plain text
@@ -5508,7 +5474,7 @@ msgid ""
 "\"application/octet-stream\" which forces autodetection of the print file "
 "format."
 msgstr ""
-"Insérer des options pour toutes les queues d'impression. Le plus souvent, "
+"Insérer des options pour toutes les files d'impression. Le plus souvent, "
 "c'est utilisé pour désactiver le filtre « l » pour que les travaux distants "
 "soient également filtrés correctement ; les exemples des sections "
 "précédentes fixent l'option « document-format » à « application/octet-"
@@ -5534,10 +5500,10 @@ msgstr ""
 "Les performances de B<cups-lpd> sont correctes avec un petit nombre de "
 "clients et d'imprimantes. Cependant, comme un nouveau processus est créé "
 "pour chaque connexion et comme chaque processus doit interroger le système "
-"d'impression avant chaque soumission d'un travail d'impression, ça ne "
-"s'étend pas facilement à des configurations plus importantes. Nous "
-"recommandons d'utiliser la gestion du protocole IPP native dans CUPS pour "
-"les configurations importantes."
+"d'impression avant chaque soumission d'un travail d'impression, l'extension "
+"n'est pas aisée pour des configurations plus importantes. Il est recommandé "
+"d'utiliser la gestion du protocole IPP native dans CUPS pour les "
+"configurations importantes."
 
 # type: SH
 #. type: SH
@@ -5558,7 +5524,7 @@ msgid ""
 msgstr ""
 "B<cups-lpd> n'applique pour le moment aucun des contrôles d'accès définis "
 "dans les fichiers B<cupsd.conf>(5), B<hosts.allow>(5) ou B<hosts.deny>(5) "
-"utilisés par les wrappers TCP. L'exécution de B<cups-lpd> sur un serveur "
+"utilisés par les wrappers TCP. L'exécution de B<cups-lpd> sur votre serveur "
 "permet donc le lancement d'impressions depuis n'importe quel ordinateur de "
 "votre réseau, voire même de n'importe quel ordinateur sur Internet."
 
@@ -5636,12 +5602,6 @@ msgstr "snmp.conf - Fichier de configuration SNMP pour CUPS"
 # type: Plain text
 #. type: Plain text
 #: cups-snmp.conf.man:25
-#, fuzzy
-#| msgid ""
-#| "The I<snmp.conf> file configures the CUPS SNMP printer discovery backend "
-#| "and is normally located in the I</etc/cups> directory. Each line in the "
-#| "file can be a configuration directive, a blank line, or a comment. "
-#| "Comment lines start with the # character."
 msgid ""
 "The I<snmp.conf> file configures how the standard CUPS network backends "
 "(http, https, ipp, ipps, lpd, snmp, and socket) access printer information "
@@ -5649,10 +5609,12 @@ msgid ""
 "line in the file can be a configuration directive, a blank line, or a "
 "comment. Comment lines start with the # character."
 msgstr ""
-"Le fichier I<snmp.conf> configure le service SNMP de découverte des "
-"imprimantes de CUPS et se trouve normalement dans le répertoire I</etc/"
-"cups>. Chaque ligne du fichier est une directive de configuration, une ligne "
-"vide ou un commentaire. Les commentaires commencent par le symbole #."
+"Le fichier I<snmp.conf> configure la façon dont les programmes de "
+"transmission réseaux de CUPS (http, https, ipp, ipps, lpd, snmp, et socket) "
+"accèdent aux informations de l'imprimante en utilisant SNMPv1 et se trouve "
+"normalement dans le répertoire I</etc/cups>. Chaque ligne du fichier est une "
+"directive de configuration, une ligne vide ou un commentaire. Les "
+"commentaires commencent par le symbole #."
 
 #. type: Plain text
 #: cups-snmp.conf.man:28
@@ -5660,20 +5622,20 @@ msgid ""
 "The Community and DebugLevel directives are used by all backends. The "
 "remainder apply only to the SNMP backend (I<cups-snmp(8)>)."
 msgstr ""
+"Les directives Community et DebugLevel sont utilisées par tous les "
+"programmes de transmission. Le reste ne s'applique qu'au programme de "
+"transmission SNMP (I<cups-snmp(8)>)."
 
 # type: Plain text
 #. type: Plain text
 #: cups-snmp.conf.man:31
-#, fuzzy
-#| msgid ""
-#| "The following directives are understood by the SNMP backend.  Consult the "
-#| "on-line help for detailed descriptions:"
 msgid ""
 "The following directives are understood by the CUPS network backends. "
 "Consult the on-line help for detailed descriptions:"
 msgstr ""
-"Les directives suivantes sont comprises par le service SNMP. Veuillez vous "
-"reporter à l'aide en ligne pour une description plus détaillée."
+"Les directives suivantes sont comprises par les programmes de transmission "
+"de CUPS. Veuillez vous reporter à l'aide en ligne pour une description plus "
+"détaillée."
 
 # type: TP
 #. type: TP
@@ -5699,17 +5661,12 @@ msgstr "Address I<adresse>"
 # type: Plain text
 #. type: Plain text
 #: cups-snmp.conf.man:40
-#, fuzzy
-#| msgid ""
-#| "Sends SNMP broadcast queries to the specified address(es). The default "
-#| "address is \"@LOCAL\" which broadcasts to all LAN interfaces."
 msgid ""
 "Sends SNMP broadcast queries to the specified address(es). There is no "
 "default for the broadcast address."
 msgstr ""
-"Envoyer les requêtes SNMP de broadcast à (aux) adresse(s) indiquée(s). Par "
-"défaut, l'adresse est « @LOCAL », ce qui signifie que les requêtes sont "
-"envoyées sur les interfaces LAN."
+"Émettre les requêtes SNMP vers la ou les adresses indiquées. Il n'y a pas de "
+"valeur par défaut pour l'adresse d'émission."
 
 # type: TP
 #. type: TP
@@ -5721,23 +5678,19 @@ msgstr "Community I<nom>"
 # type: Plain text
 #. type: Plain text
 #: cups-snmp.conf.man:45
-#, fuzzy
-#| msgid ""
-#| "Specifies a SNMP community to query. The default community is \"public\"."
 msgid ""
 "Specifies the community name to use. Only a single community name may be "
 "specified. The default community name is \"public\"."
 msgstr ""
-"Indiquer la communauté SNMP à interroger. La communauté par défaut est "
-"« public »."
+"Indiquer le nom de communauté à utiliser. Il ne peut être indiqué qu'un seul "
+"nom de communauté. La communauté par défaut est « public »."
 
 # type: TP
 #. type: TP
 #: cups-snmp.conf.man:45
-#, fuzzy, no-wrap
-#| msgid "DebugLevel I<N>"
+#, no-wrap
 msgid "DebugLevel number"
-msgstr "DebugLevel I<N>"
+msgstr "DebugLevel nombre"
 
 #. type: Plain text
 #: cups-snmp.conf.man:50
@@ -5745,12 +5698,15 @@ msgid ""
 "Specifies the logging level from 0 (none) to 3 (everything). Typically only "
 "used for debugging (thus the name). The default debug level is 0."
 msgstr ""
+"Indiquer le niveau de journalisation de 0 (aucun) à 3 (tout). Généralement "
+"ceci n'est utilisé qu'à des fins de débogage (d'où le nom). La valeur par "
+"défaut de la journalisation est 0."
 
 #. type: TP
 #: cups-snmp.conf.man:50
 #, no-wrap
 msgid "DeviceURI \"regular expression\" device-uri [... device-uri]"
-msgstr ""
+msgstr "DeviceURI  « expression rationnelle » device-uri [... device-uri]"
 
 #. type: Plain text
 #: cups-snmp.conf.man:58
@@ -5761,6 +5717,12 @@ msgid ""
 "[path]\", where \"%s\" represents the detected address or hostname. There "
 "are no default device URI matching rules."
 msgstr ""
+"Indiquer une ou plusieurs URIs de périphériques qui doivent être utilisées "
+"pour une marque et un modèle. L'expression rationnelle est utilisée pour "
+"harmoniser la marque et le modèle, et l'adresse URI du périphérique doit "
+"être de la forme « scheme://%s[:port]/[path] », où « %s » représente "
+"l'adresse détectée ou le nom d'hôte. Il n'y a pas de règles d'harmonisation "
+"pour les adresses URI de périphériques."
 
 # type: TP
 #. type: TP
@@ -5797,21 +5759,18 @@ msgstr "MaxRunTime I<secondes>"
 # type: Plain text
 #. type: Plain text
 #: cups-snmp.conf.man:70
-#, fuzzy
-#| msgid ""
-#| "Specifies the maximum number of seconds that the SNMP backend will scan "
-#| "the network for printers."
 msgid ""
 "Specifies the maximum number of seconds that the SNMP backend will scan the "
 "network for printers. The default is 120 seconds (2 minutes)."
 msgstr ""
 "Indiquer le nombre maximal de secondes entre les requêtes du programme de "
-"transmission SNMP pour la découverte des imprimantes réseau."
+"transmission SNMP pour la découverte des imprimantes réseau. La valeur par "
+"défaut est de 120 secondes (2 minutes)."
 
 #. type: Plain text
 #: cups-snmp.conf.man:72
 msgid "cups-snmp(8),"
-msgstr ""
+msgstr "cups-snmp(8),"
 
 # type: TH
 #. type: TH
@@ -5824,7 +5783,7 @@ msgstr "cupstestdsc"
 #. type: Plain text
 #: cupstestdsc.man:18
 msgid "cupstestdsc - test conformance of postscript files"
-msgstr "cupstestppd - Tester la conformité des fichiers postscript."
+msgstr "cupstestdsc - Tester la conformité des fichiers postscript."
 
 # type: Plain text
 #. type: Plain text
@@ -5848,12 +5807,12 @@ msgid ""
 "output. The second form of the command reads PostScript from the standard "
 "input."
 msgstr ""
-"B<cupstestdsc> teste la conformité de fichiers PostScript envers la "
+"B<cupstestdsc> teste la conformité de fichiers PostScript avec la "
 "spécification de format de fichier édictée par Adobe, « Adobe PostScript "
-"Language Document Structuring Conventions Specification » dans sa version "
-"3.0. Les résultats des tests et autres sorties sont envoyés sur la sortie "
-"standard. La seconde forme de la commande lit l'entrée PostScript depuis "
-"l'entrée standard."
+"Language Document Structuring Conventions Specification » dans sa "
+"version 3.0. Les résultats des tests et autres sorties sont envoyés sur la "
+"sortie standard. La seconde forme de la commande lit l'entrée PostScript "
+"depuis l'entrée standard."
 
 # type: SH
 #. type: SH
@@ -5878,10 +5837,10 @@ msgstr ""
 "ne cherche pas à valider le code PostScript lui-même. Les développeurs "
 "doivent s'assurer que le PostScript qu'ils génèrent est conforme aux règles "
 "définies par Adobe. En particulier, toutes les pages doivent être "
-"indépendantes les unes des autres, le code en dehors des descriptions des "
-"pages ne doit pas affecter l'état des graphiques (police, couleur, matrices "
-"de transformations en cours, etc.) et les commandes spécifiques à certains "
-"périphériques ne doivent pas être utilisées."
+"indépendantes les unes des autres, le code, en dehors des descriptions de "
+"pages, ne doit pas affecter l'état graphique (police, couleur, matrices de "
+"transformations, etc.) et les commandes spécifiques à certains périphériques "
+"(comme « setpagedevice » par exemple)ne doivent pas être utilisées."
 
 # type: Plain text
 #. type: Plain text
@@ -5891,7 +5850,7 @@ msgid ""
 "Version 3.0."
 msgstr ""
 "Adobe PostScript Language Document Structuring Conventions Specification, "
-"Version 3.0."
+"Version 3.0."
 
 # type: TH
 #. type: TH
@@ -5941,8 +5900,8 @@ msgid ""
 "used to list the supported options and available fonts in a PPD file. The "
 "results of testing and any other output are sent to the standard output."
 msgstr ""
-"B<cupstestppd> teste la conformité des fichiers PPD envers la spécification "
-"de format de fichier édictée par Adobe, « Adobe PostScript Printer "
+"B<cupstestppd> teste la conformité des fichiers PPD à la spécification de "
+"format de fichier édictée par Adobe, « Adobe PostScript Printer "
 "Description » dans sa version 4.3. Cette commande peut également être "
 "utilisée pour voir la liste des options reconnues et des polices disponibles "
 "d'un fichier PPD. Toutes les sorties sont effectuées sur la sortie standard."
@@ -6031,7 +5990,7 @@ msgstr "B<-W> I<constraints>"
 #. type: Plain text
 #: cupstestppd.man:67
 msgid "Report all UIConstraint errors as warnings."
-msgstr "Remonter toutes les erreurs UIConstraint comme des avertissements."
+msgstr "Signaler toutes les erreurs UIConstraint comme des avertissements."
 
 # type: TP
 #. type: TP
@@ -6047,7 +6006,7 @@ msgid ""
 "Except for size-related options, report all default option errors as "
 "warnings."
 msgstr ""
-"À l'exception des options liées à la taille, remonter toutes les erreurs sur "
+"À l'exception des options liées à la taille, signaler toutes les erreurs sur "
 "les valeurs par défaut comme des avertissements."
 
 # type: TP
@@ -6061,7 +6020,7 @@ msgstr "B<-W> I<filters>"
 #. type: Plain text
 #: cupstestppd.man:75
 msgid "Report all filter errors as warnings."
-msgstr "Remonter toutes les erreurs sur les filtres comme des avertissements."
+msgstr "Rapporter toutes les erreurs sur les filtres comme des avertissements."
 
 # type: Plain text
 #. type: TP
@@ -6074,7 +6033,7 @@ msgstr "-W profiles"
 #. type: Plain text
 #: cupstestppd.man:79
 msgid "Report all profile errors as warnings."
-msgstr "Remonter toutes les erreurs sur les profils comme des avertissements."
+msgstr "Rapporter toutes les erreurs sur les profils comme des avertissements."
 
 #. type: TP
 #: cupstestppd.man:79
@@ -6087,7 +6046,8 @@ msgstr "-W sizes"
 #: cupstestppd.man:83
 msgid "Report all media size errors as warnings."
 msgstr ""
-"Remonter toutes les erreurs sur la taille des média comme des avertissements."
+"Rapporter toutes les erreurs sur la taille des médias comme des "
+"avertissements."
 
 # type: TP
 #. type: TP
@@ -6100,7 +6060,7 @@ msgstr "B<-W> I<translations>"
 #. type: Plain text
 #: cupstestppd.man:87
 msgid "Report all translation errors as warnings."
-msgstr "Remonter toutes les erreurs de conversion comme des avertissements."
+msgstr "Rapporter toutes les erreurs de conversion comme des avertissements."
 
 # type: TP
 #. type: TP
@@ -6113,7 +6073,7 @@ msgstr "B<-W> I<all>"
 #. type: Plain text
 #: cupstestppd.man:91
 msgid "Report all of the previous errors as warnings."
-msgstr "Remonter toutes les erreurs précédentes comme des avertissements."
+msgstr "Rapporter toutes les erreurs précédentes comme des avertissements."
 
 # type: TP
 #. type: TP
@@ -6126,7 +6086,7 @@ msgstr "B<-W> I<none>"
 #. type: Plain text
 #: cupstestppd.man:95
 msgid "Report all of the previous errors as errors."
-msgstr "Remonter toutes les erreurs précédentes comme des erreurs."
+msgstr "Rapporter toutes les erreurs précédentes comme des erreurs."
 
 # type: TP
 #. type: TP
@@ -6156,8 +6116,8 @@ msgid ""
 "character, and formatting problems are not treated as hard errors."
 msgstr ""
 "Réduire les exigences de conformité des PPD de telle sorte que les espaces "
-"communes, les caractères de contrôle et les problèmes de format ne soient "
-"pas traités comme des erreurs fatales."
+"simples, les caractères de contrôle et les problèmes de format ne soient pas "
+"traités comme des erreurs fatales."
 
 # type: Plain text
 #. type: Plain text
@@ -6314,7 +6274,7 @@ msgstr "B<lpadmin>(8),"
 msgid ""
 "Adobe PostScript Printer Description File Format Specification, Version 4.3."
 msgstr ""
-"Adobe PostScript Printer Description File Format Specification, Version 4.3."
+"Adobe PostScript Printer Description File Format Specification, Version 4.3."
 
 # type: TP
 #. type: TH
@@ -6354,8 +6314,8 @@ msgid ""
 msgstr ""
 "Les filtres CUPS offrent la possibilité de gérer avec CUPS des nouveaux "
 "types de documents. Chaque filtre est capable de convertir des fichiers de "
-"différents formats dans un format qui est soit géré directement par CUPS ou "
-"qui peut être envoyé à un autre filtre afin d'être imprimable."
+"différents formats dans un format qui est soit géré directement par CUPS soi "
+"envoyé à un autre filtre afin d'être imprimable."
 
 # type: Plain text
 #. type: Plain text
@@ -6392,6 +6352,17 @@ msgid ""
 "doing, please do not run filters directly. Instead, use the I<cupsfilter(8)> "
 "program to use the appropriate filters to do the conversions you need."
 msgstr ""
+"Les filtres CUPS ne sont pas faits pour être lancés directement par "
+"l'utilisateur. À côté des problèmes liés à l'ancienne interface System V "
+"(argv[0] est le nom de l'imprimante), les filtres de CUPS attendent "
+"également des variables d'environnement et descripteurs de fichiers "
+"spécifiques, et sont généralement lancés dans une session utilisateur qui "
+"(sous OS X) possèdent des restrictions supplémentaires qui affectent la "
+"façon dont ils fonctionnent. À moins que vous ne soyez un développeur ou que "
+"vous sachiez ce que vous faites, veuillez ne pas lancer les filtres "
+"directement. À la place veuillez utiliser le programme I<cupsfilter(8)> pour "
+"utiliser les filtres adéquats pour effectuer la conversion dont vous avez "
+"besoin."
 
 #. type: Plain text
 #: filter.man:53
@@ -6408,14 +6379,15 @@ msgid ""
 msgstr ""
 "Les options passées sur la ligne de commande n'incluent généralement pas le "
 "fichier PPD par défaut de l'imprimante. De plus, certaines options doivent "
-"être indiquées de plusieurs façons différentes - « landscape » est synonyme "
+"être indiquées de plusieurs façons différentes — « landscape » est synonyme "
 "de « orientation-requested=4 », « media » est synonyme de « PageSize » "
-"« PageRegion » « InputSlot » et «MediaType», et « sides » est synonyme pour "
-"les nombreuses options de « Duplex ». Les filtres non-vectoriels B<doivent> "
-"supporter les deux spécifications explicites et implicites des options PPD - "
-"utilisez les fonctions ppdMappdMarkDefaults et cupsMarkOptions de la "
-"librairie CUPS pour employer la bonne correspondance, et ppdFindMarkedChoice "
-"pour obtenir le choix de l'utilisateur sélectionné."
+"« PageRegion » « InputSlot » et « MediaType », et « sides » est synonyme "
+"pour les nombreuses options de « Duplex ». Les filtres non-vectoriels "
+"B<doivent> accepter à la fois la spécification explicite et la spécification "
+"implicite des options PPD — utilisez les fonctions ppdMarkDefaults et "
+"cupsMarkOptions de la bibliothèque de CUPS pour employer la bonne "
+"correspondance, et ppdFindMarkedChoice pour obtenir le choix fait par "
+"l'utilisateur."
 
 #. type: Plain text
 #: filter.man:58
@@ -6425,9 +6397,9 @@ msgid ""
 "on the command-line determine the default values for the entire job, which "
 "can be overridden on a per-page basis."
 msgstr ""
-"Les filtres vectoriels devraient utiliser des choix optionnels passés par "
+"Les filtres vectoriels devraient utiliser les choix optionnels passés par "
 "les entêtes de la page vectorielle, étant donné qu'ils sont à l'identique "
-"des options actives pour une page donnée. Les options passées sur la ligne "
+"des options activées pour une page donnée. Les options passées sur la ligne "
 "de commande déterminent les valeurs par défaut pour le travail en entier, et "
 "peuvent être outrepassées en les définissant par page."
 
@@ -6484,6 +6456,13 @@ msgid ""
 "levels\", \"marker-low-levels\", \"marker-message\", \"marker-names\", "
 "\"marker-types\", \"printer-alert\", and \"printer-alert-description\"."
 msgstr ""
+"Définir le nom de la tâche ou la(es) propriété(s) de l'imprimante. Les "
+"propriétés de travaux suivantes peuvent être paramétrées : « job-media-"
+"progress ». Les propriétés d'imprimantes suivantes peuvent être "
+"paramétrées : « auth-info-required », « marker-colors », « marker-high-"
+"levels », « marker-levels », « marker-low-levels », « marker-message », "
+"« marker-names », « marker-types », « printer-alert » et « printer-alert-"
+"description »."
 
 # type: TP
 #. type: TP
@@ -6782,7 +6761,7 @@ msgstr "CUPS_CACHEDIR"
 #. type: Plain text
 #: filter.man:162
 msgid "The directory for semi-persistent cache files can be found."
-msgstr "Le répertoire où se trouvent les fichiers cache semi-persistant"
+msgstr "Le répertoire où se trouvent les fichiers cache semi-persistant."
 
 # type: TP
 #. type: TP
@@ -6816,7 +6795,7 @@ msgstr ""
 #: filter.man:171
 #, no-wrap
 msgid "CUPS_MAX_MESSAGE"
-msgstr ""
+msgstr "CUPS_MAX_MESSAGE"
 
 #. type: Plain text
 #: filter.man:176
@@ -6824,6 +6803,8 @@ msgid ""
 "The maximum size of a message sent to stderr, including any leading prefix "
 "and the trailing newline."
 msgstr ""
+"La taille maximale d'un message envoyé à la sortie d'erreur, incluant "
+"n'importe quel préfixe et le caractère de nouvelle ligne."
 
 # type: TP
 #. type: TP
@@ -6985,7 +6966,7 @@ msgid ""
 "I<cupsd.conf(5)> file for the current setting."
 msgstr ""
 "L'utilisateur qui exécute le filtre, typiquement « lp » ou « root » ; "
-"consultez le fichier B<cupsd.conf>(5) pour le paramétrage courant."
+"consultez le fichier B<cupsd.conf>(5) pour le paramétrage actuel."
 
 # type: Plain text
 #. type: Plain text
@@ -6996,8 +6977,8 @@ msgid ""
 "Typically the interface script will be provided via the I<lpadmin(8)> "
 "command using the I<-i> option."
 msgstr ""
-"Alors que l'interface des filtres est compatible avec l'interface des "
-"scripts Système V, elle ne fonctionnera avec le script d'interface  "
+"Alors que l'interface des filtres est compatible avec les scripts "
+"d'interface Système V, elle ne fonctionnera avec le script d'interface  "
 "Système V que comme unique filtre. Typiquement le script d'interface sera "
 "fourni par la commande B<lpadmin>(8) en utilisant l'option B<-i>."
 
@@ -7125,8 +7106,8 @@ msgstr "OPTIONS DE CONFIGURATION"
 #: lpadmin.man:71
 msgid "The following options are recognized when configuring a printer queue:"
 msgstr ""
-"Les options suivantes sont reconnues pour la configuration d'une liste "
-"d'attente :"
+"Les options suivantes sont reconnues pour la configuration d'une file "
+"d'impression :"
 
 # type: TP
 #. type: TP
@@ -7162,7 +7143,7 @@ msgid ""
 msgstr ""
 "Créer un script d'interface System V pour l'imprimante. Cette option ne peut "
 "être utilisée en même temps que l'option B<-P> (fichier PPD) et est destinée "
-"au support des imprimantes de base."
+"à la prise en charge des anciennes imprimantes."
 
 # type: TP
 #. type: TP
@@ -7199,7 +7180,7 @@ msgstr "-o cupsIPPSupplies=false"
 #. type: Plain text
 #: lpadmin.man:94
 msgid "Specifies whether IPP supply level values should be reported."
-msgstr "Indique si le niveau de fournitures IPP doit être remonté."
+msgstr "Indiquer si le niveau de fournitures IPP doit être rapporté."
 
 #. type: TP
 #: lpadmin.man:94
@@ -7218,8 +7199,8 @@ msgstr "-o cupsSNMPSupplies=false"
 msgid ""
 "Specifies whether SNMP supply level (RFC 3805) values should be reported."
 msgstr ""
-"Indique si les valeurs SNMP du niveau des fournitures (RFC 3805) doivent "
-"être remontées."
+"Indiquer si les valeurs SNMP du niveau des fournitures (RFC 3805) doivent "
+"être rapportées."
 
 # type: TP
 #. type: TP
@@ -7270,9 +7251,8 @@ msgid ""
 "Sets the accounting period for per-user quotas. The value is an integer "
 "number of seconds; 86,400 seconds are in one day."
 msgstr ""
-"Définir les quotas par utilisateur en impressions par intervalle de temps. "
-"La valeur est un nombre entier définissant le nombre de secondes entre "
-"chaque impression. Une journée contient 86 400 secondes."
+"Définir l'intervalle de temps pour les quotas par utilisateur. La valeur est "
+"un nombre entier de secondes. Une journée contient 86 400 secondes."
 
 # type: TP
 #. type: TP
@@ -7320,10 +7300,10 @@ msgid ""
 "can be defaulted, e.g. \"-o cpi-default=17\" to set the default \"cpi\" "
 "option value to 17."
 msgstr ""
-"Définit au niveau du serveur une option par défaut pour la destination. "
+"Définir au niveau du serveur une option par défaut pour la destination. "
 "Toute option pouvant être définie au moment de l'impression peut avoir une "
-"valeur par défaut, par exemple « -o cpi-default=17 » pour définir l'option "
-"« cpi » par défaut à la valeur 17."
+"valeur par défaut, par exemple « -o cpi-default=17 » pour définir l'option "
+"« cpi » par défaut à la valeur 17."
 
 # type: TP
 #. type: TP
@@ -7361,12 +7341,13 @@ msgid ""
 "\", \"retry-current-job\", or \"stop-printer\". The default error policy is "
 "\"stop-printer\" for printers and \"retry-current-job\" for classes."
 msgstr ""
-"Fixe la politique à utiliser en cas d'erreur quand le programme de "
+"Fixer la politique à utiliser en cas d'erreur quand le programme de "
 "transmission responsable de l'impression n'arrive pas à envoyer le travail à "
 "l'imprimante. Le nom doit être soit « abort-job » (annuler l'impression), "
-"« retry-job » (réessayer) ou « stop-printer » (arrêter l'imprimante). La "
-"politique par défaut en cas d'erreur est « stop-printer » pour les "
-"imprimantes, et « retry-current-job » pour les classes."
+"« retry-job » (réessayer), « retry-current-job » (réessayer l'impression en "
+"cours) ou « stop-printer » (arrêter l'imprimante). La politique par défaut "
+"en cas d'erreur est « stop-printer » pour les imprimantes, et « retry-"
+"current-job » pour les classes."
 
 # type: TP
 #. type: TP
@@ -7405,8 +7386,8 @@ msgid ""
 "be defined in the B<cupsd.conf> in a Policy section.  The default operation "
 "policy is \"default\"."
 msgstr ""
-"Fixe la politique des opérations IPP associée à l'imprimante. Le nom doit "
-"être défini dans B<cupsd.conf>, dans une section de type « Policy ». La "
+"Fixer la politique des opérations IPP associée à l'imprimante. Le nom doit "
+"être défini dans B<cupsd.conf>, dans une section de type « Policy ». La "
 "politique des opérations est par défaut « default »."
 
 # type: TP
@@ -7420,7 +7401,7 @@ msgstr "-R nom-defaut"
 #. type: Plain text
 #: lpadmin.man:165
 msgid "Deletes the named option from I<printer>."
-msgstr "Supprime les options données pour l'I<imprimante>."
+msgstr "Supprimer les options données pour l'I<imprimante>."
 
 # type: TP
 #. type: TP
@@ -7475,7 +7456,7 @@ msgid ""
 "are interpreted as UNIX groups. The latter two forms turn user-level access "
 "control off."
 msgstr ""
-"Définit les accès au niveau utilisateur sur une imprimante. Les noms "
+"Définir les accès au niveau utilisateur sur une imprimante. Les noms "
 "commençant par un « @ » sont interprétés comme des groupes UNIX. Les deux "
 "dernières expressions désactivent les contrôles d'accès au niveau "
 "utilisateur."
@@ -7490,22 +7471,14 @@ msgstr "B<-v> I<uri_périphérique>"
 # type: Plain text
 #. type: Plain text
 #: lpadmin.man:188
-#, fuzzy
-#| msgid ""
-#| "Sets the I<device-uri> attribute of the printer queue.  If I<device-uri> "
-#| "is a filename it is automatically converted to the form I<file:///file/"
-#| "name>. Use the I<-v> option with the I<lpinfo(8)> command to get a list "
-#| "of supported device URIs and schemes."
 msgid ""
 "Sets the I<device-uri> attribute of the printer queue. Use the I<-v> option "
 "with the I<lpinfo(8)> command to get a list of supported device URIs and "
 "schemes."
 msgstr ""
-"Définit l'attribut I<uri_périphérique> de la file d'attente de l'imprimante. "
-"Si I<uri_périphérique> est un nom de fichier, il est converti "
-"automatiquement en la forme I<file:///fichier/nom>. Utilisez l'option I<-v> "
-"de la commande I<lpinfo(8)> pour avoir la liste des URI de périphériques "
-"gérés et leurs schémas."
+"Définir l'attribut I<uri_périphérique> de la file d'impression. Utiliser "
+"l'option I<-v> avec la commande I<lpinfo(8)> pour obtenir une liste des URIs "
+"de périphériques gérés ainsi que leurs schémas."
 
 # type: TP
 #. type: TP
@@ -7518,7 +7491,7 @@ msgstr "B<-D> I<info>"
 #. type: Plain text
 #: lpadmin.man:192
 msgid "Provides a textual description of the destination."
-msgstr "Définit une description textuelle de l'imprimante."
+msgstr "Définir une description textuelle de l'imprimante."
 
 # type: Plain text
 #. type: Plain text
@@ -7527,8 +7500,8 @@ msgid ""
 "Enables the destination and accepts jobs; this is the same as running the "
 "I<cupsaccept(8)> and I<cupsenable(8)> programs on the destination."
 msgstr ""
-"Active l'imprimante et lui fait accepter les travaux d'impression. Ceci peut "
-"également être effectué en lançant les commandes I<cupsaccept(8)> et "
+"Activer l'imprimante et lui faire accepter les travaux d'impression. Ceci "
+"peut également être effectué en lançant les commandes I<cupsaccept(8)> et "
 "I<cupsenable(8)> avec cette imprimante."
 
 # type: TP
@@ -7542,7 +7515,7 @@ msgstr "B<-L> I<emplacement>"
 #. type: Plain text
 #: lpadmin.man:201
 msgid "Provides a textual location of the destination."
-msgstr "Définit un emplacement textuel de l'imprimante."
+msgstr "Définir un emplacement textuel de l'imprimante."
 
 # type: TP
 #. type: TP
@@ -7578,8 +7551,8 @@ msgstr ""
 "« / » ou « # ». De plus, les noms d'imprimante et de classe ne sont I<pas> "
 "sensibles à la casse. Enfin, la version CUPS de B<lpadmin> peut demander un "
 "mot de passe, suivant la configuration du système, à la différence de la "
-"version System V qui demande le mot de passe root lors de l'exécution de "
-"cette commande."
+"version System V qui demande le mot de passe du superutilisateur lors de "
+"l'exécution de cette commande."
 
 # type: Plain text
 #. type: Plain text
@@ -7615,7 +7588,7 @@ msgstr "3 novembre 2008"
 #. type: Plain text
 #: lpc.man:18
 msgid "lpc - line printer control program"
-msgstr "lpc - Programme de contrôle d'imprimantes par ligne."
+msgstr "lpc - Programme de contrôle d'imprimantes en ligne de commande."
 
 # type: Plain text
 #. type: Plain text
@@ -7632,7 +7605,7 @@ msgid ""
 msgstr ""
 "B<lpc> permet de contrôler partiellement des imprimantes et classes "
 "d'imprimantes de CUPS. Il est également utilisé pour récupérer l'état des "
-"files d'attente."
+"files d'impression."
 
 # type: Plain text
 #. type: Plain text
@@ -7658,7 +7631,7 @@ msgid ""
 "The I<lpc> program accepts a subset of commands accepted by the Berkeley "
 "I<lpc> program of the same name:"
 msgstr ""
-"B<lpc> reconnaît un sous-ensemble des commandes reconnues le programme "
+"B<lpc> reconnaît un sous-ensemble des commandes reconnues par le programme "
 "B<lpc> de Berkeley :"
 
 # type: TP
@@ -7672,7 +7645,7 @@ msgstr "B<exit>"
 #. type: Plain text
 #: lpc.man:39 lpc.man:49
 msgid "Exits the command interpreter."
-msgstr "Quitte l'interpréteur de commandes."
+msgstr "Quitter l'interpréteur de commandes."
 
 # type: TP
 #. type: TP
@@ -7706,14 +7679,14 @@ msgstr "B<quit>"
 #: lpc.man:49
 #, no-wrap
 msgid "status [queue]"
-msgstr "B<status> [I<file-attente>]"
+msgstr "B<status> [I<file-impression>]"
 
 # type: Plain text
 #. type: Plain text
 #: lpc.man:53
 msgid "Displays the status of one or more printer or class queues."
 msgstr ""
-"Afficher l'état des files d'attente d'une ou plusieurs imprimantes ou "
+"Afficher l'état des files d'impression d'une ou plusieurs imprimantes ou "
 "classes d'imprimantes."
 
 # type: Plain text
@@ -7843,7 +7816,7 @@ msgid ""
 "Specifies the IEEE-1284 device ID to match when listing drivers with the I<-"
 "m> option."
 msgstr ""
-"Indique l'ID des périphériques IEEE-1284 à faire correspondre lors du "
+"Indiquer l'ID des périphériques IEEE-1284 à faire correspondre lors du "
 "parcours de la liste des pilotes avec l'option I<-m>."
 
 #. type: TP
@@ -7858,7 +7831,7 @@ msgid ""
 "Specifies a comma-separated list of device or PPD schemes that should be "
 "excluded from the results. Static PPD files use the \"file\" scheme."
 msgstr ""
-"Indique une liste séparée par des virgules de périphériques ou de schémas "
+"Indiquer une liste séparée par des virgules de périphériques ou de schémas "
 "PPD qui devraient être exclus des résultats. Les fichiers statiques PPD "
 "utilisent le schéma « file »."
 
@@ -7874,9 +7847,9 @@ msgid ""
 "Specifies a comma-separated list of device or PPD schemes that should be "
 "included in the results. Static PPD files use the \"file\" scheme."
 msgstr ""
-"indique une liste séparée par des virgules de périphériques ou de schémas "
+"Indiquer une liste séparée par des virgules de périphériques ou de schémas "
 "PPD qui devraient être inclus dans les résultats. Les fichiers statiques PPD "
-"utilisent le shéma « file »."
+"utilisent le schéma « file »."
 
 # type: TP
 #. type: TP
@@ -7890,7 +7863,7 @@ msgstr "--language locale"
 msgid ""
 "Specifies the language to match when listing drivers with the I<-m> option."
 msgstr ""
-"Indique la langue à faire correspondre lors du parcours de la liste des "
+"Indiquer la langue à faire correspondre lors du parcours de la liste des "
 "pilotes avec l'option I<-m>."
 
 #. type: TP
@@ -7905,7 +7878,7 @@ msgid ""
 "Specifies the make and model to match when listing drivers with the I<-m> "
 "option."
 msgstr ""
-"Indique la marque et le modèle à faire correspondre lors du parcours de la "
+"Indiquer la marque et le modèle à faire correspondre lors du parcours de la "
 "liste des pilotes avec l'option I<-m>."
 
 # type: TP
@@ -7921,7 +7894,7 @@ msgstr "--product nom"
 msgid ""
 "Specifies the product to match when listing drivers with the I<-m> option."
 msgstr ""
-"Indique le produit à sélectionner lors du parcours de la liste des pilotes "
+"Indiquer le produit à sélectionner lors du parcours de la liste des pilotes "
 "avec l'option I<-m>."
 
 # type: TP
@@ -7936,8 +7909,8 @@ msgstr "--timeout secondes"
 #: lpinfo.man:105
 msgid "Specifies the timeout when listing devices with the I<-v> option."
 msgstr ""
-"Indique le timeout lors du parcours de la liste des périphériques avec "
-"l'option I<-v>."
+"Indiquer le délai d'attente lors du parcours de la liste des périphériques "
+"avec l'option I<-v>."
 
 # type: Plain text
 #. type: Plain text
@@ -7968,8 +7941,8 @@ msgid ""
 "list> ] [ -- ] [ I<file(s)> ]"
 msgstr ""
 "B<lp> [ -E ] [ -U I<utilisateur> ] [ -c ] [ -d I<destination[/instance]> ] "
-"[ -h I<hostname[:port]> ] [ -m ] [ -n I<copies> ] [ -o I<option[=valeur]> ] "
-"[ -q I<priorité> ] [ -s ] [ -t I<titre> ] [ -H I<méthode> ] [ -P "
+"[ -h I<serveur:port]> ] [ -m ] [ -n I<copies> ] [ -o I<option[=valeur]> ] [ -"
+"q I<priorité> ] [ -s ] [ -t I<titre> ] [ -H I<méthode> ] [ -P "
 "I<liste_de_pages> ] [ -- ] [ I<fichier(s)> ]"
 
 # type: Plain text
@@ -8010,9 +7983,9 @@ msgid ""
 "by the default set using the I<lpadmin(8)> command."
 msgstr ""
 "CUPS fournit plusieurs façons de spécifier la destination par défaut. Les "
-"variables d'environnement « LDPREST » et « PRINTER » sont lues en premier. "
-"Si aucune n'est paramétrée, la valeur par défaut spécifiée en utilisant la "
-"commande B<lptoptions>(1), est utilisée, suivie par la valeur par défaut "
+"variables d'environnement « LPDEST » et « PRINTER » sont lues en premier. Si "
+"aucune n'est paramétrée, la valeur par défaut spécifiée en utilisant la "
+"commande B<lpoptions>(1) est utilisée, suivie par la valeur par défaut "
 "spécifiée en utilisant la commande B<lpadmin>(8)."
 
 # type: Plain text
@@ -8035,8 +8008,8 @@ msgid ""
 "Marks the end of options; use this to print a file whose name begins with a "
 "dash (-)."
 msgstr ""
-"Marquer la fin des options ; utilisez ceci pour imprimer un fichier dont le "
-"nom commence par un tiret (« - »)."
+"Marquer la fin des options ; à utiliser pour imprimer un fichier dont le nom "
+"commence par un tiret (« - »)."
 
 # type: Plain text
 #. type: Plain text
@@ -8050,8 +8023,8 @@ msgstr ""
 "Cette option n'est fournie que pour des raisons de compatibilité avec les "
 "précédentes versions. Sur les systèmes le permettant, elle force la copie du "
 "fichier d'impression dans le répertoire spool avant impression. Avec CUPS, "
-"les fichiers d'impression sont envoyés à l'ordonnanceur via IPP. Le résultat "
-"est le même dans les deux cas."
+"les fichiers d'impression sont envoyés à l'ordonnanceur à travers IPP. Le "
+"résultat est le même dans les deux cas."
 
 # type: TP
 #. type: TP
@@ -8200,7 +8173,7 @@ msgid ""
 "held job.  Use a value of I<restart> with the I<-i> option to restart a "
 "completed job."
 msgstr ""
-"Définit quand l'impression doit être effectuée. La valeur I<immediate> "
+"Définir quand l'impression doit être effectuée. La valeur I<immediate> "
 "effectue l'impression immédiatement, la valeur I<hold> suspend l'impression "
 "pour un temps indéterminé, une heure UTC (HH:MM) suspend l'impression "
 "jusqu'à l'heure donnée. Utilisez la valeur I<resume> avec l'option I<-i> "
@@ -8223,11 +8196,11 @@ msgid ""
 "numbers refer to the output pages and not the document's original pages - "
 "options like \"number-up\" can affect the numbering of the pages."
 msgstr ""
-"Définit quelles sont les pages du document à imprimer. Cette liste peut "
-"contenir des numéros ou des portions (#-#), séparés par des virgules (par "
+"Définir quelles sont les pages du document à imprimer. Cette liste peut "
+"contenir des numéros ou des intervalles (#-#), séparés par des virgules (par "
 "exemple : 1,3-5,16). Les numéros de page font référence à la sortie des "
-"pages et non aux pages originales du document - des options telles que « "
-"number-up» peuvent affecter la numérotation des pages."
+"pages et non aux pages originales du document — des options telles que "
+"« number-up » peuvent affecter la numérotation des pages."
 
 # type: SH
 #. type: SH
@@ -8313,15 +8286,15 @@ msgid ""
 "short-edge\" is used for landscape pages."
 msgstr ""
 "Imprimer sur une face ou en recto-verso. La valeur « B<two-sided-long-"
-"edge> » (double faces, côté long) est normalement utilisée pour l'impression "
+"edge> » (double face, grand côté) est normalement utilisée pour l'impression "
 "en mode portrait (pas de rotation), et « B<two-sided-short-edge> » (double "
-"faces, petit côté) pour l'impression de pages en mode paysage."
+"face, petit côté) pour l'impression de pages en mode paysage."
 
 #. type: TP
 #: lp.man:181
 #, no-wrap
 msgid "-o fit-to-page"
-msgstr ""
+msgstr "-o fit-to-page"
 
 # type: Plain text
 #. type: Plain text
@@ -8367,7 +8340,7 @@ msgstr "-o number-up=16"
 #. type: Plain text
 #: lp.man:197
 msgid "Prints multiple document pages on each output page."
-msgstr "Imprime plusieurs pages du document sur chaque page sortie."
+msgstr "Imprimer plusieurs pages du document sur chaque page sortie."
 
 # type: TP
 #. type: TP
@@ -8439,7 +8412,7 @@ msgid ""
 "there are 72 points to the inch."
 msgstr ""
 "Fixer les marges des pages pour l'impression de fichiers texte. Les valeurs "
-"sont exprimées en points ; il y a 72 points par pouces."
+"sont exprimées en points ; il y a 72 points par pouce."
 
 # type: Plain text
 #. type: Plain text
@@ -8474,7 +8447,7 @@ msgid ""
 "Print a text file with 12 characters per inch, 8 lines per inch, and a 1 "
 "inch left margin:"
 msgstr ""
-"Imprimer un fichier texte avec 12 caractères par pouces, 8 lignes par pouces "
+"Imprimer un fichier texte avec 12 caractères par pouce, 8 lignes par pouce "
 "et une marge de gauche de 1 pouce :"
 
 # type: Plain text
@@ -8663,7 +8636,7 @@ msgid ""
 msgstr ""
 "B<lpoptions> affiche et définit les options et valeurs par défaut d'une "
 "imprimante. Lorsqu'il est lancé sans arguments, B<lpoptions> affiche les "
-"options. Les otpions pouvant être fournies sont :"
+"options. Les options pouvant être fournies sont :"
 
 # type: Plain text
 #. type: Plain text
@@ -8675,7 +8648,7 @@ msgstr "Activer le chiffrement pour la communication avec le serveur CUPS."
 #. type: Plain text
 #: lpoptions.man.in:74
 msgid "Uses an alternate username."
-msgstr "Utilise un autre utilisateur."
+msgstr "Utiliser un autre utilisateur."
 
 # type: TP
 #. type: TP
@@ -8692,9 +8665,9 @@ msgid ""
 "then that particular instance is used. This option overrides the system "
 "default printer for the current user."
 msgstr ""
-"Définit I<destination> comme imprimante par défaut. Si I<instance> est "
-"indiqué alors c'est cette instance qui sera utilisée. Cette option redéfinit "
-"l'imprimante par défaut de l'utilisateur en cours."
+"Définir I<destination> comme imprimante par défaut. Si I<instance> est "
+"indiquée alors c'est cette instance qui sera utilisée. Cette option "
+"redéfinit l'imprimante par défaut de l'utilisateur en cours."
 
 # type: Plain text
 #. type: Plain text
@@ -8706,7 +8679,7 @@ msgstr "Utiliser un autre serveur."
 #. type: Plain text
 #: lpoptions.man.in:88
 msgid "Lists the printer specific options and their current settings."
-msgstr "Affiche les options spécifiques d'une imprimante et leur valeur."
+msgstr "Afficher les options spécifiques d'une imprimante et leur valeur."
 
 # type: TP
 #. type: TP
@@ -8765,9 +8738,8 @@ msgid ""
 "Removes the options for the named destination and instance, if specified. If "
 "the named instance does not exist then this does nothing."
 msgstr ""
-"Supprimer toutes les options de la destination, et de l'instance si elle est "
-"indiquée, fournie en paramètre. Si l'instance n'existe pas, la commande n'a "
-"pas d'effet."
+"Supprimer toutes les options de la destination et de l'instance si "
+"indiquées. Si l'instance n'existe pas, la commande n'a pas d'effet."
 
 # type: Plain text
 #. type: Plain text
@@ -8794,7 +8766,7 @@ msgstr ""
 #: lpoptions.man.in:115
 #, no-wrap
 msgid "ROOT ACCOUNT OPTIONS"
-msgstr "OPTION DU COMPTE ROOT"
+msgstr "OPTION DU COMPTE SUPERUTILISATEUR"
 
 # type: Plain text
 #. type: Plain text
@@ -8803,7 +8775,7 @@ msgid ""
 "When run by the root user, I<lpoptions> gets and sets default options and "
 "instances for I<all users> in the @CUPS_SERVERROOT@/lpoptions file."
 msgstr ""
-"Lorsque la commande B<lpoptions> est lancée par l'utilisateur root, les "
+"Lorsque la commande B<lpoptions> est lancée par le superutilisateur, les "
 "options sont lues et sauvegardées pour I<tous les utilisateurs> dans le "
 "fichier @CUPS_SERVERROOT@/lpoptions."
 
@@ -8826,8 +8798,8 @@ msgstr "FICHIERS"
 msgid ""
 "~/.cups/lpoptions - user defaults and instances created by non-root users."
 msgstr ""
-"~/.cups/lpoptions - Fichier des valeurs par défaut et instance de "
-"l'utilisateur."
+"~/.cups/lpoptions - Fichier des valeurs par défaut et instances des "
+"utilisateurs."
 
 # type: Plain text
 #. type: Plain text
@@ -8837,7 +8809,7 @@ msgid ""
 "the root user."
 msgstr ""
 "@CUPS_SERVERROOT@/lpoptions - Fichier global des instances et valeurs par "
-"défaut, créé par l'utilisateur root."
+"défaut, créées par le superutilisateur."
 
 # type: Plain text
 #. type: Plain text
@@ -8895,11 +8867,11 @@ msgid ""
 "usernames do not have to match local UNIX usernames."
 msgstr ""
 "B<lppasswd> ajoute, modifie ou supprime des mots de passe du fichier CUPS de "
-"hachés de mots de passe, I<passwd.md5>. Lorsque ce programme est lancé par "
-"un utlisateur non privilégié, B<lppasswd> demande l'ancien et le nouveau mot "
-"de passe. Lorsque ce programme est lancé par un superutilisateur, il peut "
-"créer de nouveaux comptes utilisateurs (B<-a> I<utilisateur>), modifier des "
-"comptes existants (I<utilisateur>) ou supprimer des comptes (B<-x> "
+"cryptage de mots de passe, I<passwd.md5>. Lorsque ce programme est lancé par "
+"un utilisateur non privilégié, B<lppasswd> demande l'ancien et le nouveau "
+"mot de passe. Lorsque ce programme est lancé par le superutilisateur, il "
+"peut créer de nouveaux comptes utilisateurs (B<-a> I<utilisateur>), modifier "
+"des comptes existants (I<utilisateur>) ou supprimer des comptes (B<-x> "
 "I<utilisateur>). Les noms d'utilisateurs ne doivent pas forcément "
 "correspondre à des noms d'utilisateurs UNIX."
 
@@ -8938,8 +8910,8 @@ msgid ""
 msgstr ""
 "Par défaut, le programme I<lppasswd> n'est pas configuré pour autoriser les "
 "utilisateurs ordinaires à modifier leur mot de passe. Pour activer cette "
-"possibilité, la commande I<lppasswd> doit être utilisée avec le setuid de "
-"root avec la commande :"
+"possibilité, la commande I<lppasswd> doit être utilisée avec le setuid du "
+"superutilisateur avec la commande :"
 
 #. type: Plain text
 #: lppasswd.man:54
@@ -8957,10 +8929,9 @@ msgid ""
 "accounts managed by PAM instead."
 msgstr ""
 "Bien que toutes les précautions aient été prises pour empêcher les failles "
-"permettant l'accès aux privilèges du super-utilisateur par un utilisateur "
-"non privilégié, certains administrateurs systèmes paranoïaques peuvent "
-"vouloir utiliser l'authentification Basic pour les comptes gérés par PAM à "
-"la place."
+"permettant l'accès aux privilèges du superutilisateur par un utilisateur non "
+"privilégié, certains administrateurs systèmes paranoïaques peuvent vouloir "
+"utiliser l'authentification avec des comptes gérés par PAM à la place."
 
 # type: Plain text
 #. type: Plain text
@@ -8979,7 +8950,7 @@ msgstr "lpq"
 #. type: Plain text
 #: lpq.man:18
 msgid "lpq - show printer queue status"
-msgstr "lpq - Afficher l'état d'une file d'attente d'impression."
+msgstr "lpq - Afficher l'état d'une file d'impression."
 
 # type: Plain text
 #. type: Plain text
@@ -9012,7 +8983,7 @@ msgid ""
 "queue until the queue is empty; the list of jobs is shown once every "
 "I<interval> seconds."
 msgstr ""
-"L'option I<+intervalle> permet d'afficher les travaux en attente en continu "
+"L'option I<+intervalle> permet d'afficher en continu les travaux en attente "
 "jusqu'à ce qu'il n'y en ait plus. La liste est réaffichée toutes les "
 "I<intervalle> secondes."
 
@@ -9183,7 +9154,7 @@ msgid ""
 msgstr ""
 "Indiquer que chaque page du fichier à imprimer doit avoir un en-tête ombré "
 "contenant la date, l'heure, le nom du travail d'impression et le numéro de "
-"page. Cette option est équivalente à « -oprettyprint » et n'est utile que "
+"page. Cette option est équivalente à « -o prettyprint » et n'est utile que "
 "dans le cas de fichiers texte."
 
 # type: Plain text
@@ -9285,7 +9256,8 @@ msgid ""
 "The CUPS version of I<lprm> is compatible with the standard Berkeley I<lprm> "
 "command."
 msgstr ""
-"La version CUPS de B<lprm> est compatible avec la version standard Berkeley."
+"La version CUPS de B<lprm> est compatible avec la version standard de "
+"Berkeley."
 
 # type: Plain text
 #. type: Plain text
@@ -9322,10 +9294,10 @@ msgid ""
 "d ] [ -o [ I<destination(s)> ] ] [ -p [ I<printer(s)> ] ] [ -r ] [ -R ] [ -"
 "s ] [ -t ] [ -u [ I<user(s)> ] ] [ -v [ I<printer(s)> ] ]"
 msgstr ""
-"B<lpstat> [ -E ] [-H] [ -U I<utilisateur> ] [ -h I<nom[:port]> ] [ -l ] [ -W "
-"I<quels_travaux> ] [ -a [ I<destination(s)> ] ] [ -c [ I<class(es)> ] ] [ -"
-"d ] [ -o [ I<destination(s)> ] ] [ -p [ I<imprimante(s)> ] ] [ -r ] [ -R ] "
-"[ -s ] [ -t ] [ -u [ I<utilisateur(s)> ] ] [ -v [ I<imprimante(s)> ] ]"
+"B<lpstat> [ -E ] [-H] [ -U I<utilisateur> ] [ -h I<serveur[:port]> ] [ -l ] "
+"[ -W I<quels_travaux> ] [ -a [ I<destination(s)> ] ] [ -c [ I<class(es)> ] ] "
+"[ -d ] [ -o [ I<destination(s)> ] ] [ -p [ I<imprimante(s)> ] ] [ -r ] [ -"
+"R ] [ -s ] [ -t ] [ -u [ I<utilisateur(s)> ] ] [ -v [ I<imprimante(s)> ] ]"
 
 # type: Plain text
 #. type: Plain text
@@ -9355,7 +9327,7 @@ msgstr "-H"
 #. type: Plain text
 #: lpstat.man:53
 msgid "Shows the server hostname and port."
-msgstr "Affiche le nom du serveur et son port."
+msgstr "Afficher le nom du serveur et son port."
 
 # type: TP
 #. type: TP
@@ -9424,7 +9396,7 @@ msgid ""
 "Shows the printer classes and the printers that belong to them.  If no "
 "classes are specified then all classes are listed."
 msgstr ""
-"Afficher la classe d'imprimantes et ses imprimantes associées. Si aucune "
+"Afficher les classes d'imprimantes et les imprimantes associées. Si aucune "
 "classe n'est fournie dans la ligne de commande, toutes les classes sont "
 "affichées."
 
@@ -9439,7 +9411,7 @@ msgstr "B<-d>"
 #. type: Plain text
 #: lpstat.man:83
 msgid "Shows the current default destination."
-msgstr "Affiche la destination par défaut."
+msgstr "Afficher la destination par défaut."
 
 # type: Plain text
 #. type: Plain text
@@ -9500,9 +9472,9 @@ msgid ""
 "devices. This is equivalent to using the \"-d\", \"-c\", and \"-v\" options."
 msgstr ""
 "Afficher un résumé de l'état, comprenant la destination par défaut, la liste "
-"des classes et leurs imprimantes associées, la liste des imprimantes et leur "
-"périphérique. Ceci est équivalent à utiliser les options « B<-d> », « B<-"
-"c> » et « B<-p> »."
+"des classes et leurs imprimantes associées, la liste des imprimantes et "
+"leurs périphériques associés. Ceci est équivalent à utiliser les options "
+"« B<-d> », « B<-c> » et « B<-p> »."
 
 # type: Plain text
 #. type: Plain text
@@ -9511,7 +9483,7 @@ msgid ""
 "Shows all status information. This is equivalent to using the \"-r\", \"-d"
 "\", \"-c\", \"-v\", \"-a\", \"-p\", and \"-o\" options."
 msgstr ""
-"Affiche toutes les informations. Ceci peut être effectué en utilisant les "
+"Afficher toutes les informations. Ceci peut être effectué en utilisant les "
 "options « B<-r> », « B<-d> », « B<-c> », « B<-d> », « B<-v> », « B<-a> », "
 "« B<-p> » et « B<-o> »."
 
@@ -9752,7 +9724,7 @@ msgstr ""
 "Chaque ligne du fichier I<mime.convs> est un commentaire, une ligne vide ou "
 "une définition de filtre. Les commentaires commencent par le caractère #. "
 "Les lignes contenant un filtre indiquent les types MIME source et cible, le "
-"coût du filtre, puis le filtre lui-même :"
+"coût virtuel du filtre, puis le filtre lui-même :"
 
 # type: Plain text
 #. type: Plain text
@@ -9811,7 +9783,7 @@ msgid ""
 "types\"."
 msgstr ""
 "D'autres types de fichiers peuvent être ajoutés au fichier I<mime.types> ou "
-"(de préférence) à d'autres fichier dans le répertoire de configuration de "
+"(de préférence) à d'autres fichiers dans le répertoire de configuration de "
 "CUPS, avec l'extension « .types »."
 
 # type: Plain text
@@ -9842,9 +9814,9 @@ msgid ""
 "alphanumeric order for the purposes of matching. See the \"TYPE MATCHING AND "
 "PRIORITY\" section for more information."
 msgstr ""
-"Les noms de type MIME sont sensibles à la casse et sont triés par odre "
-"alphanumérique croissant à des fins de correspondance. Veuillez lire la "
-"section « CORRESPONDANCE DE TYPE ET PRIORITÉ » pour plus d'information."
+"Les noms de type MIME ne sont pas sensibles à la casse et sont triés par "
+"ordre alphanumérique croissant à des fins de correspondance. Veuillez lire "
+"la section « CORRESPONDANCE DE TYPE ET PRIORITÉ » pour plus d'information."
 
 # type: Plain text
 #. type: Plain text
@@ -9933,7 +9905,7 @@ msgid ""
 "100.  Larger values have higher priority while smaller values have lower "
 "priority."
 msgstr ""
-"Indique la priorité relative de ce type MIME. La priorité par défaut est "
+"Indiquer la priorité relative de ce type MIME. La priorité par défaut est "
 "100. Les valeurs plus importantes ont une priorité plus haute tandis que les "
 "valeurs moins importantes ont une priorité plus basse. "
 
@@ -10066,8 +10038,8 @@ msgstr ""
 "Lorsque CUPS a besoin de déterminer le type MIME d'un fichier, il vérifie "
 "tous les types MIME définis dans les fichiers avec extension .types. Lorsque "
 "deux types ont les mêmes règles de correspondance, le type choisi dépendra "
-"du nom du type et de sa priorité, selon : les types à plus haute priorité "
-"sont préférés à ceux à priorité plus basse. Si les types ont une priorité "
+"du nom du type et de sa priorité : les types à plus haute priorité sont "
+"préférés à ceux à priorité plus basse. Si les types ont une priorité "
 "identique, les noms des types sont triés par ordre alphanumérique ascendant, "
 "et le premier type est sélectionné."
 
@@ -10080,7 +10052,7 @@ msgid ""
 "However, if \"text/foo\" also defines a higher priority than \"text/bar\", "
 "\"text/foo\" will be chosen instead."
 msgstr ""
-"Par example, si deux types « text/bar » et « text/foo » sont définis comme "
+"Par exemple, si deux types « text/bar » et « text/foo » sont définis comme "
 "correspondants à l'extension « doc », normalement le type « text/bar » sera "
 "choisi car son nom est alphanumériquement moindre que « text/foo ». "
 "Cependant si « text/foo » est également défini avec une priorité plus haute "
@@ -10133,7 +10105,7 @@ msgstr "E<lt>Printer nomE<gt> ... E<lt>/PrinterE<gt>"
 #. type: Plain text
 #: printers.conf.man:31
 msgid "Defines a specific printer."
-msgstr "Définir une certaine imprimante."
+msgstr "Définir une imprimante particulière."
 
 # type: TP
 #. type: TP
@@ -10247,7 +10219,7 @@ msgid ""
 "generated automatically by the I<cupsd(8)> program when subscriptions are "
 "created, renewed, or cancelled."
 msgstr ""
-"Le fichier I<subscriptions.conf> définit les abonnements locaux actifs. Il "
+"Le fichier I<subscriptions.conf> définit les abonnements locaux en cours. Il "
 "est habituellement situé dans le répertoire I</etc/cups> et est créé "
 "automatiquement par le programme B<cupsd>(8) lors de l'ajout, le "
 "renouvellement ou l'annulation d'abonnements."
@@ -10276,7 +10248,7 @@ msgstr "Events nom [ ... nom ]"
 #. type: Plain text
 #: subscriptions.conf.man:35
 msgid "Specifies the events that are subscribed."
-msgstr "Définir les événements auquels on s'abonne."
+msgstr "Définir les abonnements aux événements."
 
 # type: TP
 #. type: TP
@@ -10293,7 +10265,7 @@ msgid ""
 "seconds since January 1st, 1970."
 msgstr ""
 "Définir la date d'expiration d'un abonnement. La date est indiquée en "
-"utilisant le temps UNIX, c'est-à-dire en exprimée en secondes depuis le "
+"utilisant le temps UNIX, c'est-à-dire exprimée en secondes depuis le "
 "1er janvier 1970."
 
 # type: TP
@@ -10337,8 +10309,8 @@ msgid ""
 "Specifies the number of seconds that the subscription is valid for. If 0, "
 "the subscription does not expire."
 msgstr ""
-"Indiquer le nombre de secondes pendants lesquelles l'abonnement sera "
-"valable. 0 permet aux abonnement de ne pas expirer."
+"Indiquer le nombre de secondes pendant lesquelles l'abonnement sera valable. "
+"0 permet à l'abonnement de ne pas expirer."
 
 # type: TP
 #. type: TP
@@ -10492,7 +10464,6 @@ msgstr ""
 #~ "a pas de fichier de définition d'options."
 
 # type: Plain text
-#~| msgid "I<cupsd(8)>, I<cupsd.conf(5)>, I<filter(7)>"
 #~ msgid "I<cupsd(8)>, I<cupsd.conf(5)>, I<filter(7)>,"
 #~ msgstr "I<cupsd>(8), I<cupsd.conf>(5), I<filter>(7)"
 
@@ -10500,7 +10471,6 @@ msgstr ""
 #~ msgstr "2 septembre 2011"
 
 # type: TH
-#~| msgid "2 January 2008"
 #~ msgid "10 January 2011"
 #~ msgstr "10 janvier 2011"
 
@@ -10636,7 +10606,6 @@ msgstr ""
 #~ msgstr "BrowseLDAPBindDN"
 
 # type: Plain text
-#~| msgid "Specifies the banner pages to use for the printer."
 #~ msgid "Specifies the LDAP domain name to use when registering printers."
 #~ msgstr ""
 #~ "Indique le nom de domaine LDAP à utiliser lors de l'ajout d'imprimantes."
@@ -10645,7 +10614,6 @@ msgstr ""
 #~ msgstr "BrowseLDAPCACertFile"
 
 # type: Plain text
-#~| msgid "Specifies the encryption certificate to use."
 #~ msgid "Specifies the SSL certificate authority file to use."
 #~ msgstr "Indique le certificat SSL de l'autorité à utiliser."
 
@@ -10653,7 +10621,6 @@ msgstr ""
 #~ msgstr "BrowseLDAPDN"
 
 # type: Plain text
-#~| msgid "Specifies the username to use when connecting to the server."
 #~ msgid "Specifies the LDAP domain name to use when discovering printers."
 #~ msgstr ""
 #~ "Indique le nom de domaine LDAP à utiliser lors de la découverte "
@@ -10663,7 +10630,6 @@ msgstr ""
 #~ msgstr "BrowseLDAPPassword"
 
 # type: Plain text
-#~| msgid "Specifies the username to use when connecting to the server."
 #~ msgid "Specifies the password to use when accessing the LDAP server."
 #~ msgstr "Indique le mot de passe à utiliser pour accéder au serveur LDAP."
 
@@ -10671,7 +10637,6 @@ msgstr ""
 #~ msgstr "BrowseLDAPServer"
 
 # type: Plain text
-#~| msgid "Specifies the PPD file to use."
 #~ msgid "Specifies the LDAP server to use."
 #~ msgstr "Indique le serveur LDAP à utiliser."
 
@@ -10819,7 +10784,6 @@ msgstr ""
 #~ "distantes identiques."
 
 # type: TH
-#~| msgid "20 March 2006"
 #~ msgid "4 March 2010"
 #~ msgstr "4 mars 2010"
 
@@ -10832,7 +10796,6 @@ msgstr ""
 #~ "fichier PPD. Ces filtres seronts gérés dans une version future de CUPS."
 
 # type: Plain text
-#~| msgid "Copyright 2007-2008 by Apple Inc."
 #~ msgid "Copyright 2007-2010 by Apple Inc."
 #~ msgstr "Copyright 2007-2010 par Apple Inc."
 
@@ -10903,7 +10866,6 @@ msgstr ""
 #~ "données brutes hexadécimales."
 
 # type: TH
-#~| msgid "3 May 2007"
 #~ msgid "13 May 2009"
 #~ msgstr "13 mai 2009"
 
@@ -10916,12 +10878,10 @@ msgstr ""
 #~ "Typiquement, c'est utilisé pour fixer l'attribut job-remote-id."
 
 # type: TH
-#~| msgid "3 May 2007"
 #~ msgid "10 May 2011"
 #~ msgstr "10 mai 2011"
 
 # type: TH
-#~| msgid "19 October 2007"
 #~ msgid "3 October 2011"
 #~ msgstr "3 octobre 2011"
 
