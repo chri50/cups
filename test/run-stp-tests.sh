@@ -337,25 +337,10 @@ fi
 
 cat >/tmp/cups-$user/cupsd.conf <<EOF
 Browsing Off
-FileDevice yes
-Printcap
 Listen 127.0.0.1:$port
-User $user
-ServerRoot /tmp/cups-$user
-StateDir /tmp/cups-$user
-ServerBin /tmp/cups-$user/bin
-CacheDir /tmp/cups-$user/share
-DataDir /tmp/cups-$user/share
-FontPath /tmp/cups-$user/share/fonts
 PassEnv LOCALEDIR
-DocumentRoot $root/doc
-RequestRoot /tmp/cups-$user/spool
-TempDir /tmp/cups-$user/spool/temp
 MaxSubscriptions 3
 MaxLogSize 0
-AccessLog /tmp/cups-$user/log/access_log
-ErrorLog /tmp/cups-$user/log/error_log
-PageLog /tmp/cups-$user/log/page_log
 AccessLogLevel actions
 LogLevel debug2
 LogTimeFormat usecs
@@ -368,6 +353,24 @@ Allow from 127.0.0.1
 $encryption
 </Limit>
 </Policy>
+EOF
+
+cat >/tmp/cups-$user/cups-files.conf <<EOF
+FileDevice yes
+Printcap
+User $user
+ServerRoot /tmp/cups-$user
+StateDir /tmp/cups-$user
+ServerBin /tmp/cups-$user/bin
+CacheDir /tmp/cups-$user/share
+DataDir /tmp/cups-$user/share
+FontPath /tmp/cups-$user/share/fonts
+DocumentRoot $root/doc
+RequestRoot /tmp/cups-$user/spool
+TempDir /tmp/cups-$user/spool/temp
+AccessLog /tmp/cups-$user/log/access_log
+ErrorLog /tmp/cups-$user/log/error_log
+PageLog /tmp/cups-$user/log/page_log
 EOF
 
 #
