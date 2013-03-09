@@ -3,7 +3,7 @@
 # Provides:          cups
 # Required-Start:    $syslog $remote_fs
 # Required-Stop:     $syslog $remote_fs
-# Should-Start:      $network avahi
+# Should-Start:      $network avahi slapd nslcd
 # Should-Stop:       $network
 # X-Start-Before:    samba
 # X-Stop-After:      samba
