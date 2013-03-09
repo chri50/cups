@@ -692,7 +692,7 @@ for file in 5*.sh; do
 	#
 	# Make sure the past jobs are done before going on.
 	#
-	./waitjobs.sh
+	./waitjobs.sh 1800
 
 	echo $ac_n "Performing $file: $ac_c"
 	echo "" >>$strfile

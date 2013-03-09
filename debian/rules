@@ -136,8 +136,10 @@ override_dh_fixperms:
 override_dh_auto_test:
 	make check
 
+ifeq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 override_dh_makeshlibs:
 	dh_makeshlibs -- -c4
+endif
 
 override_dh_clean:
 	dh_clean
