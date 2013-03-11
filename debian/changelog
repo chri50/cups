@@ -1,3 +1,12 @@
+cups (1.5.3-2.16) unstable; urgency=low
+
+  * Backport upstream documentation fix for STR#4223 "lpadmin to root
+    privilege escalation"
+  * Correct usb-backend quirk for Epson Stylus Photo 750, thanks to
+    Denis Prost (Closes: #697970)
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 11 Mar 2013 10:18:37 +0100
+
 cups (1.5.3-2.15) unstable; urgency=low
 
   [ Till Kamppeter ]
