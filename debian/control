@@ -8,8 +8,8 @@ Uploaders:
  Till Kamppeter <till.kamppeter@gmail.com>,
  Roger Leigh <rleigh@debian.org>, 
  Jeff Licquia <licquia@debian.org>,
- Kenshi Muto <kmuto@debian.org>, 
- Martin Pitt <mpitt@debian.org>
+ Martin Pitt <mpitt@debian.org>,
+ Didier Raboud <odyx@debian.org>
 Build-Depends: 
  cdbs (>= 0.4.93~),
  debhelper (>= 8.1.3~),

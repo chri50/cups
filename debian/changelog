@@ -1,3 +1,16 @@
+cups (1.5.3-5) unstable; urgency=low
+
+  * Team upload
+    - Rebuild against a fixed libmagic1 (see #703274).
+    - Non-NMU version, above all past 1.5.x experimental versions.
+
+  * Uploaders:
+    - Remove Kenshi Muto <kmuto@debian.org> with his agreement and with
+      great thanks for his past work!
+    - Add myself.
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 18 Mar 2013 15:23:04 +0100
+
 cups (1.5.3-2.16) unstable; urgency=low
 
   * Backport upstream documentation fix for STR#4223 "lpadmin to root
