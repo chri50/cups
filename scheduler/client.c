@@ -1,5 +1,5 @@
 /*
- * "$Id: client.c 10455 2012-05-07 22:41:30Z mike $"
+ * "$Id: client.c 10834 2013-01-21 15:29:47Z mike $"
  *
  *   Client routines for the CUPS scheduler.
  *
@@ -1271,7 +1271,8 @@ cupsdReadClient(cupsd_client_t *con)	/* I - Client to read from */
       switch (con->http.state)
       {
 	case HTTP_GET_SEND :
-            if (!strncmp(con->uri, "/printers/", 10) &&
+            if ((!strncmp(con->uri, "/ppd/", 5) ||
+		 !strncmp(con->uri, "/printers/", 10)) &&
 		!strcmp(con->uri + strlen(con->uri) - 4, ".ppd"))
 	    {
 	     /*
@@ -1281,8 +1282,15 @@ cupsdReadClient(cupsd_client_t *con)	/* I - Client to read from */
 
               con->uri[strlen(con->uri) - 4] = '\0';	/* Drop ".ppd" */
 
-              if ((p = cupsdFindPrinter(con->uri + 10)) != NULL)
+	      if (!strncmp(con->uri, "/ppd/", 5))
+		p = cupsdFindPrinter(con->uri + 5);
+	      else
+		p = cupsdFindPrinter(con->uri + 10);
+
+	      if (p)
+	      {
 		snprintf(con->uri, sizeof(con->uri), "/ppd/%s.ppd", p->name);
+	      }
 	      else
 	      {
 		if (!cupsdSendError(con, HTTP_NOT_FOUND, CUPSD_AUTH_NONE))
@@ -1294,7 +1302,8 @@ cupsdReadClient(cupsd_client_t *con)	/* I - Client to read from */
 		break;
 	      }
 	    }
-            else if ((!strncmp(con->uri, "/printers/", 10) ||
+            else if ((!strncmp(con->uri, "/icons/", 7) ||
+		      !strncmp(con->uri, "/printers/", 10) ||
 		      !strncmp(con->uri, "/classes/", 9)) &&
 		     !strcmp(con->uri + strlen(con->uri) - 4, ".png"))
 	    {
@@ -1305,7 +1314,9 @@ cupsdReadClient(cupsd_client_t *con)	/* I - Client to read from */
 
 	      con->uri[strlen(con->uri) - 4] = '\0';	/* Drop ".png" */
 
-              if (!strncmp(con->uri, "/printers/", 10))
+              if (!strncmp(con->uri, "/icons/", 7))
+                p = cupsdFindPrinter(con->uri + 7);
+              else if (!strncmp(con->uri, "/printers/", 10))
                 p = cupsdFindPrinter(con->uri + 10);
               else
                 p = cupsdFindClass(con->uri + 9);
@@ -2570,14 +2581,7 @@ cupsdSendHeader(
 	       con->http.hostname);
 #ifdef HAVE_GSSAPI
     else if (auth_type == CUPSD_AUTH_NEGOTIATE)
-    {
-#  ifdef AF_LOCAL
-      if (_httpAddrFamily(con->http.hostaddr) == AF_LOCAL)
-        strlcpy(auth_str, "Basic realm=\"CUPS\"", sizeof(auth_str));
-      else
-#  endif /* AF_LOCAL */
       strlcpy(auth_str, "Negotiate", sizeof(auth_str));
-    }
 #endif /* HAVE_GSSAPI */
 
     if (con->best && auth_type != CUPSD_AUTH_NEGOTIATE &&
@@ -3333,7 +3337,7 @@ install_cupsd_conf(cupsd_client_t *con)	/* I - Connection */
   }
 
   cupsdLogMessage(CUPSD_LOG_INFO, "Installing config file \"%s\"...",
-		  ConfigurationFile);
+                  ConfigurationFile);
 
  /*
   * Copy from the request to the new config file...
@@ -3608,7 +3612,6 @@ pipe_command(cupsd_client_t *con,	/* I - Client connection */
 		server_name[1024],	/* SERVER_NAME environment variable */
 		server_port[1024];	/* SERVER_PORT environment variable */
   ipp_attribute_t *attr;		/* attributes-natural-language attribute */
-  void		*ccache = NULL;		/* Kerberos credentials */
 
 
  /*
@@ -3960,7 +3963,7 @@ pipe_command(cupsd_client_t *con,	/* I - Client connection */
     */
 
     if (con->username[0])
-      cupsdAddCert(pid, con->username, ccache);
+      cupsdAddCert(pid, con->username, con->type);
 
     cupsdLogMessage(CUPSD_LOG_DEBUG, "[CGI] Started %s (PID %d)", command, pid);
 
@@ -4215,5 +4218,5 @@ write_pipe(cupsd_client_t *con)		/* I - Client connection */
 
 
 /*
- * End of "$Id: client.c 10455 2012-05-07 22:41:30Z mike $".
+ * End of "$Id: client.c 10834 2013-01-21 15:29:47Z mike $".
  */

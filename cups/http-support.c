@@ -1,5 +1,5 @@
 /*
- * "$Id: http-support.c 10437 2012-04-23 22:20:09Z mike $"
+ * "$Id: http-support.c 10899 2013-03-11 18:44:36Z mike $"
  *
  *   HTTP support routines for CUPS.
  *
@@ -327,8 +327,7 @@ httpAssembleURI(
      /*
       * Otherwise, just copy the host string...
       */
-
-      ptr = http_copy_encode(ptr, host, end, ":/?#[]@\\\"", NULL,
+      ptr = http_copy_encode(ptr, host, end, "<>{}|^:/?#[]@\\\"", NULL,
                              encoding & HTTP_URI_CODING_HOSTNAME);
 
       if (!ptr)
@@ -1852,6 +1851,11 @@ http_copy_decode(char       *dst,	/* O - Destination buffer */
 	  return (NULL);
 	}
       }
+      else if ((*src & 255) <= 0x20 || (*src & 255) >= 0x7f)
+      {
+        *ptr = '\0';
+        return (NULL);
+      }
       else
 	*ptr++ = *src;
     }
@@ -2059,6 +2063,8 @@ http_resolve_cb(
 			error));
 #endif /* DEBUG */
       }
+
+      httpAddrFreeList(addrlist);
     }
   }
 
@@ -2274,6 +2280,8 @@ http_resolve_cb(
 			error));
 #endif /* DEBUG */
       }
+
+      httpAddrFreeList(addrlist);
     }
   }
 
@@ -2291,5 +2299,5 @@ http_resolve_cb(
 
 
 /*
- * End of "$Id: http-support.c 10437 2012-04-23 22:20:09Z mike $".
+ * End of "$Id: http-support.c 10899 2013-03-11 18:44:36Z mike $".
  */

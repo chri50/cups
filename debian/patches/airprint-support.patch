@@ -1,34 +1,10 @@
 Description: Patch to support Apple AirPrint (printing from iPhone, iPad, iPod Touch to a CUPS server)
 Author: Till Kamppeter <till.kamppeter@gmail.com>
 Bug: https://bugs.launchpad.net/bugs/711779
+Bug: https://bugs.launchpad.net/bugs/1054495
+Bug-Debian: http://bugs.debian.org/700961
+Last-Update: 2013-02-20
 
---- a/scheduler/conf.c
-+++ b/scheduler/conf.c
-@@ -88,9 +88,9 @@
- static const cupsd_var_t	cupsd_vars[] =
- {
-   { "AutoPurgeJobs", 		&JobAutoPurge,		CUPSD_VARTYPE_BOOLEAN },
--#ifdef HAVE_DNSSD
-+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
-   { "BrowseDNSSDSubTypes",	&DNSSDSubTypes,		CUPSD_VARTYPE_STRING },
--#endif /* HAVE_DNSSD */
-+#endif /* HAVE_DNSSD || HAVE_AVAHI */
-   { "BrowseWebIF",		&BrowseWebIF,		CUPSD_VARTYPE_BOOLEAN },
-   { "Browsing",			&Browsing,		CUPSD_VARTYPE_BOOLEAN },
-   { "Classification",		&Classification,	CUPSD_VARTYPE_STRING },
-@@ -745,9 +745,9 @@
-   Browsing                 = CUPS_DEFAULT_BROWSING;
-   DefaultShared            = CUPS_DEFAULT_DEFAULT_SHARED;
- 
--#ifdef HAVE_DNSSD
--  cupsdSetString(&DNSSDSubTypes, "_cups,_print");
--#endif /* HAVE_DNSSD */
-+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
-+  cupsdSetString(&DNSSDSubTypes, "_cups,_print,_universal");
-+#endif /* HAVE_DNSSD || HAVE_AVAHI */
- 
-   cupsdSetString(&LPDConfigFile, CUPS_DEFAULT_LPD_CONFIG_FILE);
-   cupsdSetString(&SMBConfigFile, CUPS_DEFAULT_SMB_CONFIG_FILE);
 --- a/scheduler/dirsvc.c
 +++ b/scheduler/dirsvc.c
 @@ -622,6 +622,12 @@
@@ -70,7 +46,7 @@ Bug: https://bugs.launchpad.net/bugs/711779
  # Text files...
 --- a/scheduler/printers.c
 +++ b/scheduler/printers.c
-@@ -3614,7 +3614,9 @@
+@@ -3592,7 +3592,9 @@
        }
        else if (!_cups_strcasecmp(type->super, "image"))
        {

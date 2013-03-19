@@ -1,5 +1,5 @@
 #
-# "$Id: Makefile 10515 2012-05-25 03:11:46Z mike $"
+# "$Id: Makefile 10710 2012-11-26 18:26:01Z mike $"
 #
 #   Man page makefile for CUPS.
 #
@@ -42,7 +42,6 @@ MAN5	=	classes.conf.$(MAN5EXT) \
 		cups-files.conf.$(MAN5EXT) \
 		cups-snmp.conf.$(MAN5EXT) \
 		cupsd.conf.$(MAN5EXT) \
-		cups-files.conf.$(MAN5EXT) \
 		ipptoolfile.$(MAN5EXT) \
 		mailto.conf.$(MAN5EXT) \
 		mime.convs.$(MAN5EXT) \
@@ -251,5 +250,5 @@ mantohtml:	mantohtml.o
 
 
 #
-# End of "$Id: Makefile 10515 2012-05-25 03:11:46Z mike $".
+# End of "$Id: Makefile 10710 2012-11-26 18:26:01Z mike $".
 #

@@ -1,5 +1,5 @@
 /*
- * "$Id: cupstestppd.c 10431 2012-04-23 19:19:19Z mike $"
+ * "$Id: cupstestppd.c 10661 2012-10-24 11:57:40Z mike $"
  *
  *   PPD test program for CUPS.
  *
@@ -3279,8 +3279,8 @@ check_sizes(ppd_file_t *ppd,		/* I - PPD file */
 	  * Check for EnvSizeName as well...
 	  */
 
-      if (strncmp(pwg_media->ppd, "Env", 3) &&
-          !strncmp(size->name, "Env", 3))
+	  if (strncmp(pwg_media->ppd, "Env", 3) &&
+	      !strncmp(size->name, "Env", 3))
             snprintf(buf, sizeof(buf), "Env%s", pwg_media->ppd);
 
 	  if (strcmp(size->name, buf))
@@ -3972,5 +3972,5 @@ valid_utf8(const char *s)		/* I - String to check */
 
 
 /*
- * End of "$Id: cupstestppd.c 10431 2012-04-23 19:19:19Z mike $".
+ * End of "$Id: cupstestppd.c 10661 2012-10-24 11:57:40Z mike $".
  */

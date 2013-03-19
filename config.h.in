@@ -1,5 +1,5 @@
 /*
- * "$Id: config.h.in 10548 2012-07-16 18:21:43Z mike $"
+ * "$Id: config.h.in 10776 2012-12-17 22:17:08Z mike $"
  *
  *   Configuration file for CUPS.
  *
@@ -172,6 +172,13 @@
  */
 
 #undef HAVE_SCSI_SG_H
+
+
+/*
+ * Use <stdint.h>?
+ */
+
+#undef HAVE_STDINT_H
 
 
 /*
@@ -575,11 +582,8 @@
 #undef HAVE_GSS_GSSAPI_H
 #undef HAVE_GSS_GSSAPI_SPI_H
 #undef HAVE_GSSAPI
-#undef HAVE_GSSAPI_GENERIC_H
 #undef HAVE_GSSAPI_GSSAPI_H
 #undef HAVE_GSSAPI_H
-#undef HAVE_GSSAPI_KRB5_H
-#undef HAVE_KRB5_H
 
 
 /*
@@ -738,5 +742,5 @@ static __inline int _cups_abs(int i) { return (i < 0 ? -i : i); }
 #endif /* !_CUPS_CONFIG_H_ */
 
 /*
- * End of "$Id: config.h.in 10548 2012-07-16 18:21:43Z mike $".
+ * End of "$Id: config.h.in 10776 2012-12-17 22:17:08Z mike $".
  */

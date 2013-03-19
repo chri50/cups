@@ -1,5 +1,5 @@
 /*
- * "$Id: conf.c 10482 2012-05-18 19:51:02Z mike $"
+ * "$Id: conf.c 10824 2013-01-18 19:58:41Z mike $"
  *
  *   Configuration routines for the CUPS scheduler.
  *
@@ -592,7 +592,7 @@ cupsdReadConfiguration(void)
   cupsdSetString(&PrintcapGUI, "/usr/bin/glpoptions");
   cupsdSetString(&FontPath, CUPS_FONTPATH);
   cupsdSetString(&RemoteRoot, "remroot");
-  cupsdSetStringf(&ServerHeader, "CUPS/%d.%d", CUPS_VERSION_MAJOR,
+  cupsdSetStringf(&ServerHeader, "CUPS/%d.%d IPP/2.1", CUPS_VERSION_MAJOR,
                   CUPS_VERSION_MINOR);
   cupsdSetString(&StateDir, CUPS_STATEDIR);
   cupsdSetString(&PidFile, "/var/run/cups/cupsd.pid");
@@ -746,7 +746,7 @@ cupsdReadConfiguration(void)
   DefaultShared            = CUPS_DEFAULT_DEFAULT_SHARED;
 
 #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
-  cupsdSetString(&DNSSDSubTypes, "_cups,_print,_universal");
+  cupsdSetString(&DNSSDSubTypes, "_cups,_print");
 #endif /* HAVE_DNSSD || HAVE_AVAHI */
 
   cupsdSetString(&LPDConfigFile, CUPS_DEFAULT_LPD_CONFIG_FILE);
@@ -802,9 +802,11 @@ cupsdReadConfiguration(void)
     if (!status)
     {
       if (TestConfigFile)
-        printf("%s contains errors\n", CupsFilesFile);
+        printf("\"%s\" contains errors.\n", CupsFilesFile);
       else
-        cupsdLogMessage(CUPSD_LOG_CRIT, "Unable to read %s", CupsFilesFile);
+        syslog(LOG_LPR, "Unable to read \"%s\" due to errors.",
+               CupsFilesFile);
+
       return (0);
     }
   }
@@ -813,7 +815,7 @@ cupsdReadConfiguration(void)
   else
   {
     syslog(LOG_LPR, "Unable to open \"%s\": %s", CupsFilesFile,
-                    strerror(errno));
+	   strerror(errno));
     return (0);
   }
 
@@ -838,10 +840,11 @@ cupsdReadConfiguration(void)
   if (!status)
   {
     if (TestConfigFile)
-      printf("%s contains errors\n", ConfigurationFile);
+      printf("\"%s\" contains errors.\n", ConfigurationFile);
     else
       syslog(LOG_LPR, "Unable to read \"%s\" due to errors.",
 	     ConfigurationFile);
+
     return (0);
   }
 
@@ -955,6 +958,13 @@ cupsdReadConfiguration(void)
       NumSystemGroups   = 1;
     }
   }
+
+ /*
+  * Make sure ConfigFilePerm and LogFilePerm have sane values...
+  */
+
+  ConfigFilePerm &= 0664;
+  LogFilePerm    &= 0664;
 
  /*
   * Open the system log for cupsd if necessary...
@@ -1136,11 +1146,20 @@ cupsdReadConfiguration(void)
   * Update TempDir to the default if it hasn't been set already...
   */
 
+#ifdef __APPLE__
+  if (TempDir && !RunUser &&
+      (!strncmp(TempDir, "/private/tmp", 12) || !strncmp(TempDir, "/tmp", 4)))
+  {
+    cupsdLogMessage(CUPSD_LOG_ERROR, "Cannot use %s for TempDir.", TempDir);
+    cupsdClearString(&TempDir);
+  }
+#endif /* __APPLE__ */
+
   if (!TempDir)
   {
 #ifdef __APPLE__
     if ((tmpdir = getenv("TMPDIR")) != NULL &&
-        strncmp(tmpdir, "/private/tmp", 12))
+        strncmp(tmpdir, "/private/tmp", 12) && strncmp(tmpdir, "/tmp", 4))
 #else
     if ((tmpdir = getenv("TMPDIR")) != NULL)
 #endif /* __APPLE__ */
@@ -1163,13 +1182,13 @@ cupsdReadConfiguration(void)
       else
         cupsdSetString(&TempDir, tmpdir);
     }
+  }
 
-    if (!TempDir)
-    {
-      cupsdLogMessage(CUPSD_LOG_INFO, "Using default TempDir of %s/tmp...",
-	              RequestRoot);
-      cupsdSetStringf(&TempDir, "%s/tmp", RequestRoot);
-    }
+  if (!TempDir)
+  {
+    cupsdLogMessage(CUPSD_LOG_INFO, "Using default TempDir of %s/tmp...",
+		    RequestRoot);
+    cupsdSetStringf(&TempDir, "%s/tmp", RequestRoot);
   }
 
  /*
@@ -3193,19 +3212,20 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
       uname(&plat);
 
       if (!_cups_strcasecmp(value, "ProductOnly"))
-	cupsdSetString(&ServerHeader, "CUPS");
+	cupsdSetString(&ServerHeader, "CUPS IPP");
       else if (!_cups_strcasecmp(value, "Major"))
-	cupsdSetStringf(&ServerHeader, "CUPS/%d", CUPS_VERSION_MAJOR);
+	cupsdSetStringf(&ServerHeader, "CUPS/%d IPP/2", CUPS_VERSION_MAJOR);
       else if (!_cups_strcasecmp(value, "Minor"))
-	cupsdSetStringf(&ServerHeader, "CUPS/%d.%d", CUPS_VERSION_MAJOR,
+	cupsdSetStringf(&ServerHeader, "CUPS/%d.%d IPP/2.1", CUPS_VERSION_MAJOR,
 	                CUPS_VERSION_MINOR);
       else if (!_cups_strcasecmp(value, "Minimal"))
-	cupsdSetString(&ServerHeader, CUPS_MINIMAL);
+	cupsdSetString(&ServerHeader, CUPS_MINIMAL " IPP/2.1");
       else if (!_cups_strcasecmp(value, "OS"))
-	cupsdSetStringf(&ServerHeader, CUPS_MINIMAL " (%s)", plat.sysname);
+	cupsdSetStringf(&ServerHeader, CUPS_MINIMAL " (%s %s) IPP/2.1",
+	                plat.sysname, plat.release);
       else if (!_cups_strcasecmp(value, "Full"))
-	cupsdSetStringf(&ServerHeader, CUPS_MINIMAL " (%s) IPP/2.1",
-	                plat.sysname);
+	cupsdSetStringf(&ServerHeader, CUPS_MINIMAL " (%s %s; %s) IPP/2.1",
+	                plat.sysname, plat.release, plat.machine);
       else if (!_cups_strcasecmp(value, "None"))
 	cupsdClearString(&ServerHeader);
       else
@@ -4065,5 +4085,5 @@ set_policy_defaults(cupsd_policy_t *pol)/* I - Policy */
 
 
 /*
- * End of "$Id: conf.c 10482 2012-05-18 19:51:02Z mike $".
+ * End of "$Id: conf.c 10824 2013-01-18 19:58:41Z mike $".
  */

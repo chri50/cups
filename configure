@@ -615,6 +615,8 @@ CUPS_SNMP_COMMUNITY
 CUPS_SNMP_ADDRESS
 DEFAULT_RAW_PRINTING
 CUPS_MAX_COPIES
+CUPS_DEFAULT_SMB_CONFIG_FILE
+CUPS_DEFAULT_LPD_CONFIG_FILE
 CUPS_DEFAULT_PRINTCAP
 CUPS_PRIMARY_SYSTEM_GROUP
 CUPS_SYSTEM_GROUPS
@@ -645,6 +647,8 @@ EXPORT_SSLLIBS
 SSLLIBS
 SSLFLAGS
 IPPALIASES
+CUPS_SERVERKEY
+CUPS_SERVERCERT
 LIBGCRYPTCONFIG
 LIBGNUTLSCONFIG
 PTHREAD_FLAGS
@@ -2504,7 +2508,7 @@ esac
 ac_config_headers="$ac_config_headers config.h"
 
 
-CUPS_VERSION=1.6.1
+CUPS_VERSION=1.6.2
 CUPS_REVISION=
 #if test -z "$CUPS_REVISION" -a -d .svn; then
 #	CUPS_REVISION="-r`svnversion . | awk -F: '{print $NF}' | sed -e '1,$s/[[a-zA-Z]]*//g'`"
@@ -4980,6 +4984,13 @@ if test "x$ac_cv_header_shadow_h" = xyes; then :
 fi
 
 
+ac_fn_c_check_header_mongrel "$LINENO" "stdint.h" "ac_cv_header_stdint_h" "$ac_includes_default"
+if test "x$ac_cv_header_stdint_h" = xyes; then :
+  $as_echo "#define HAVE_STDINT_H 1" >>confdefs.h
+
+fi
+
+
 ac_fn_c_check_header_mongrel "$LINENO" "string.h" "ac_cv_header_string_h" "$ac_includes_default"
 if test "x$ac_cv_header_string_h" = xyes; then :
   $as_echo "#define HAVE_STRING_H 1" >>confdefs.h
@@ -5861,8 +5872,8 @@ fi
 
 
 		fi
-		if test $uversion -ge 110; then
-			# Broken public headers in 10.7...
+		if test $uversion -ge 110 -a $uversion -lt 120; then
+			# Broken public headers in 10.7.x...
 			{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for sandbox/private.h presence" >&5
 $as_echo_n "checking for sandbox/private.h presence... " >&6; }
 			if test -f /usr/local/include/sandbox/private.h; then
@@ -6016,7 +6027,7 @@ if test "$libdir" = "\${exec_prefix}/lib"; then
 			libdir="$exec_prefix/lib32"
 			;;
 		Linux*)
-			if test -d /usr/lib64; then
+			if test -d /usr/lib64 -a ! -d /usr/lib64/fakeroot; then
 				libdir="$exec_prefix/lib64"
 			fi
 			;;
@@ -8106,17 +8117,6 @@ $as_echo "yes" >&6; }
 				{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
 			fi
-			{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for GSS/gssapi_krb5.h presence" >&5
-$as_echo_n "checking for GSS/gssapi_krb5.h presence... " >&6; }
-			if test -f $gssdir/Headers/gssapi_krb5.h; then
-				$as_echo "#define HAVE_GSSAPI_KRB5_H 1" >>confdefs.h
-
-				{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-			else
-				{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-			fi
 			{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for GSS/gssapi_spi.h presence" >&5
 $as_echo_n "checking for GSS/gssapi_spi.h presence... " >&6; }
 			if test -f $gssdir/PrivateHeaders/gssapi_spi.h; then
@@ -8136,8 +8136,8 @@ $as_echo "no" >&6; }
 			else
 				{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
-				if test $uversion -ge 110; then
-					# Broken public headers in 10.7...
+				if test $uversion -ge 110 -a $uversion -lt 120; then
+					# Broken public headers in 10.7.x...
 					as_fn_error $? "Run 'sudo mkdir -p $gssdir/PrivateHeaders' and 'sudo touch $gssdir/PrivateHeaders/gssapi_spi.h' to build CUPS." "$LINENO" 5
 				fi
 			fi
@@ -8152,20 +8152,6 @@ fi
 			ac_fn_c_check_header_mongrel "$LINENO" "gssapi/gssapi.h" "ac_cv_header_gssapi_gssapi_h" "$ac_includes_default"
 if test "x$ac_cv_header_gssapi_gssapi_h" = xyes; then :
   $as_echo "#define HAVE_GSSAPI_GSSAPI_H 1" >>confdefs.h
-
-fi
-
-
-			ac_fn_c_check_header_mongrel "$LINENO" "gssapi/gssapi_generic.h" "ac_cv_header_gssapi_gssapi_generic_h" "$ac_includes_default"
-if test "x$ac_cv_header_gssapi_gssapi_generic_h" = xyes; then :
-  $as_echo "#define HAVE_GSSAPI_GENERIC_H 1" >>confdefs.h
-
-fi
-
-
-			ac_fn_c_check_header_mongrel "$LINENO" "gssapi/gssapi_krb5.h" "ac_cv_header_gssapi_gssapi_krb5_h" "$ac_includes_default"
-if test "x$ac_cv_header_gssapi_gssapi_krb5_h" = xyes; then :
-  $as_echo "#define HAVE_GSSAPI_KRB5_H 1" >>confdefs.h
 
 fi
 
@@ -8384,6 +8370,8 @@ fi
 SSLFLAGS=""
 SSLLIBS=""
 have_ssl=0
+CUPS_SERVERCERT=""
+CUPS_SERVERKEY=""
 
 if test x$enable_ssl != xno; then
         if test $have_ssl = 0 -a "x$enable_cdsassl" != "xno"; then
@@ -8396,6 +8384,7 @@ if test "x$ac_cv_header_Security_SecureTransport_h" = xyes; then :
 
 		$as_echo "#define HAVE_CDSASSL 1" >>confdefs.h
 
+		CUPS_SERVERCERT="/Library/Keychains/System.keychain"
 
 				ac_fn_c_check_header_mongrel "$LINENO" "Security/SecureTransportPriv.h" "ac_cv_header_Security_SecureTransportPriv_h" "$ac_includes_default"
 if test "x$ac_cv_header_Security_SecureTransportPriv_h" = xyes; then :
@@ -8599,6 +8588,9 @@ fi
 	fi
 
 	if test $have_ssl = 1; then
+	    CUPS_SERVERCERT="ssl/server.crt"
+	    CUPS_SERVERKEY="ssl/server.key"
+
             if $PKGCONFIG --exists gcrypt; then
 	        SSLLIBS="$SSLLIBS `$PKGCONFIG --libs gcrypt`"
 	        SSLFLAGS="$SSLFLAGS `$PKGCONFIG --cflags gcrypt`"
@@ -8674,6 +8666,9 @@ fi
 	    done
 
 	    if test "x${SSLLIBS}" != "x"; then
+		CUPS_SERVERCERT="ssl/server.crt"
+		CUPS_SERVERKEY="ssl/server.key"
+
 		LIBS="$SAVELIBS $SSLLIBS"
 		for ac_func in SSL_set_tlsext_host_name
 do :
@@ -8705,6 +8700,8 @@ $as_echo "    Using SSLFLAGS=\"$SSLFLAGS\"" >&6; }
 elif test x$enable_cdsa = xyes -o x$enable_gnutls = xyes -o x$enable_openssl = xyes; then
     as_fn_error $? "Unable to enable SSL support." "$LINENO" 5
 fi
+
+
 
 
 
@@ -9808,6 +9805,7 @@ _ACEOF
 
 
 
+
 # Check whether --with-smbconfigfile was given.
 if test "${with_smbconfigfile+set}" = set; then :
   withval=$with_smbconfigfile; default_smbconfigfile="$withval"
@@ -9833,6 +9831,7 @@ fi
 cat >>confdefs.h <<_ACEOF
 #define CUPS_DEFAULT_SMB_CONFIG_FILE "$CUPS_DEFAULT_SMB_CONFIG_FILE"
 _ACEOF
+
 
 
 
@@ -10262,7 +10261,7 @@ fi
 
 
 
-ac_config_files="$ac_config_files Makedefs conf/cupsd.conf conf/mime.convs conf/pam.std conf/snmp.conf cups-config data/testprint desktop/cups.desktop doc/help/ref-cupsd-conf.html doc/help/standard.html doc/index.html man/client.conf.man man/cups-deviced.man man/cups-driverd.man man/cups-lpd.man man/cups-snmp.man man/cupsaddsmb.man man/cupsd.conf.man man/cupsd.man man/lpoptions.man scheduler/cups-lpd.xinetd scheduler/cups.sh scheduler/cups.xml scheduler/org.cups.cups-lpd.plist templates/header.tmpl packaging/cups.list $LANGFILES"
+ac_config_files="$ac_config_files Makedefs conf/cups-files.conf conf/cupsd.conf conf/mime.convs conf/pam.std conf/snmp.conf cups-config data/testprint desktop/cups.desktop doc/help/ref-cups-files-conf.html doc/help/ref-cupsd-conf.html doc/help/standard.html doc/index.html man/client.conf.man man/cups-deviced.man man/cups-driverd.man man/cups-files.conf.man man/cups-lpd.man man/cups-snmp.man man/cupsaddsmb.man man/cupsd.conf.man man/cupsd.man man/lpoptions.man scheduler/cups-lpd.xinetd scheduler/cups.sh scheduler/cups.xml scheduler/org.cups.cups-lpd.plist templates/header.tmpl packaging/cups.list $LANGFILES"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -10968,6 +10967,7 @@ do
   case $ac_config_target in
     "config.h") CONFIG_HEADERS="$CONFIG_HEADERS config.h" ;;
     "Makedefs") CONFIG_FILES="$CONFIG_FILES Makedefs" ;;
+    "conf/cups-files.conf") CONFIG_FILES="$CONFIG_FILES conf/cups-files.conf" ;;
     "conf/cupsd.conf") CONFIG_FILES="$CONFIG_FILES conf/cupsd.conf" ;;
     "conf/mime.convs") CONFIG_FILES="$CONFIG_FILES conf/mime.convs" ;;
     "conf/pam.std") CONFIG_FILES="$CONFIG_FILES conf/pam.std" ;;
@@ -10975,12 +10975,14 @@ do
     "cups-config") CONFIG_FILES="$CONFIG_FILES cups-config" ;;
     "data/testprint") CONFIG_FILES="$CONFIG_FILES data/testprint" ;;
     "desktop/cups.desktop") CONFIG_FILES="$CONFIG_FILES desktop/cups.desktop" ;;
+    "doc/help/ref-cups-files-conf.html") CONFIG_FILES="$CONFIG_FILES doc/help/ref-cups-files-conf.html" ;;
     "doc/help/ref-cupsd-conf.html") CONFIG_FILES="$CONFIG_FILES doc/help/ref-cupsd-conf.html" ;;
     "doc/help/standard.html") CONFIG_FILES="$CONFIG_FILES doc/help/standard.html" ;;
     "doc/index.html") CONFIG_FILES="$CONFIG_FILES doc/index.html" ;;
     "man/client.conf.man") CONFIG_FILES="$CONFIG_FILES man/client.conf.man" ;;
     "man/cups-deviced.man") CONFIG_FILES="$CONFIG_FILES man/cups-deviced.man" ;;
     "man/cups-driverd.man") CONFIG_FILES="$CONFIG_FILES man/cups-driverd.man" ;;
+    "man/cups-files.conf.man") CONFIG_FILES="$CONFIG_FILES man/cups-files.conf.man" ;;
     "man/cups-lpd.man") CONFIG_FILES="$CONFIG_FILES man/cups-lpd.man" ;;
     "man/cups-snmp.man") CONFIG_FILES="$CONFIG_FILES man/cups-snmp.man" ;;
     "man/cupsaddsmb.man") CONFIG_FILES="$CONFIG_FILES man/cupsaddsmb.man" ;;

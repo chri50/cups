@@ -1,5 +1,5 @@
 /*
- * "$Id: dest.c 10555 2012-07-27 18:01:06Z mike $"
+ * "$Id: dest.c 10814 2013-01-14 22:06:21Z mike $"
  *
  *   User-defined destination (and option) support for CUPS.
  *
@@ -1788,7 +1788,7 @@ cupsGetDests2(http_t      *http,	/* I - Connection to server or @code CUPS_HTTP_
     * need to set a default if one exists...
     */
 
-    if (dest == NULL && defprinter != NULL)
+    if (!dest && *dests && defprinter)
     {
       for (i = 0; i < num_dests; i ++)
         (*dests)[i].is_default = 0;
@@ -2449,7 +2449,7 @@ appleCopyNetwork(void)
  * 'appleGetPaperSize()' - Get the default paper size.
  */
 
-char *					/* O - Default paper size */
+static char *				/* O - Default paper size */
 appleGetPaperSize(char *name,		/* I - Paper size name buffer */
                   int  namesize)	/* I - Size of buffer */
 {
@@ -3904,5 +3904,5 @@ cups_make_string(
 
 
 /*
- * End of "$Id: dest.c 10555 2012-07-27 18:01:06Z mike $".
+ * End of "$Id: dest.c 10814 2013-01-14 22:06:21Z mike $".
  */

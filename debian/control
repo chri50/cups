@@ -173,8 +173,6 @@ Description: Common UNIX Printing System(tm) - server
  drivers.
 
 Package: cups-daemon
-Priority: optional
-Section: net
 Architecture: any
 Pre-Depends: dpkg (>= 1.15.7.2)
 Depends: ${shlibs:Depends},
@@ -208,7 +206,7 @@ Suggests: cups, cups-bsd,
 Replaces: cups (<< 1.6.1-1~)
 Breaks: cups (<< 1.6.1-1~)
 Multi-Arch: foreign
-Description: Common UNIX Printing System(tm) - server
+Description: Common UNIX Printing System(tm) - daemon
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
  general replacement for lpd and the like.  It supports the Internet 
  Printing Protocol (IPP), and has its own filtering driver model for 

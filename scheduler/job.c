@@ -1,5 +1,5 @@
 /*
- * "$Id: job.c 10502 2012-05-23 01:36:50Z mike $"
+ * "$Id: job.c 10776 2012-12-17 22:17:08Z mike $"
  *
  *   Job management routines for the CUPS scheduler.
  *
@@ -2477,8 +2477,10 @@ cupsdSetJobState(
   * Set the new job state...
   */
 
-  job->state->values[0].integer = newstate;
-  job->state_value              = newstate;
+  job->state_value = newstate;
+
+  if (job->state)
+    job->state->values[0].integer = newstate;
 
   switch (newstate)
   {
@@ -2986,7 +2988,8 @@ finalize_job(cupsd_job_t *job,		/* I - Job */
   * rarely have current information for network devices...
   */
 
-  if (strncmp(job->printer->device_uri, "usb:", 4))
+  if (strncmp(job->printer->device_uri, "usb:", 4) &&
+      strncmp(job->printer->device_uri, "ippusb:", 7))
     cupsdSetPrinterReasons(job->printer, "-offline-report");
 
  /*
@@ -2997,10 +3000,11 @@ finalize_job(cupsd_job_t *job,		/* I - Job */
   job->profile = NULL;
 
  /*
-  * Clear the unresponsive job watchdog timer...
+  * Clear the unresponsive job watchdog timers...
   */
 
-  job->kill_time = 0;
+  job->cancel_time = 0;
+  job->kill_time   = 0;
 
  /*
   * Close pipes and status buffer...
@@ -3092,6 +3096,8 @@ finalize_job(cupsd_job_t *job,		/* I - Job */
 		    exit_code == CUPS_BACKEND_HOLD ? "hold job" :
 		    exit_code == CUPS_BACKEND_STOP ? "stop printer" :
 		    exit_code == CUPS_BACKEND_CANCEL ? "cancel job" :
+		    exit_code == CUPS_BACKEND_RETRY ? "retry job later" :
+		    exit_code == CUPS_BACKEND_RETRY_CURRENT ? "retry job immediately" :
 		    exit_code < 0 ? "crashed" : "unknown");
 
    /*
@@ -3654,7 +3660,13 @@ get_options(cupsd_job_t *job,		/* I - Job */
 	  attr->value_tag == IPP_TAG_BEGIN_COLLECTION) /* Not yet supported */
 	continue;
 
-      if (!strcmp(attr->name, "job-hold-until"))
+      if (!strcmp(attr->name, "job-hold-until") ||
+          !strcmp(attr->name, "job-id") ||
+          !strcmp(attr->name, "job-k-octets") ||
+          !strcmp(attr->name, "job-media-sheets") ||
+          !strcmp(attr->name, "job-media-sheets-completed") ||
+          !strcmp(attr->name, "job-state") ||
+          !strcmp(attr->name, "job-state-reasons"))
 	continue;
 
       if (!strncmp(attr->name, "job-", 4) &&
@@ -4281,6 +4293,8 @@ load_request_root(void)
 	else
 	  unload_job(job);
       }
+      else
+        free(job);
     }
 
   cupsDirClose(dir);
@@ -4372,7 +4386,7 @@ set_time(cupsd_job_t *job,		/* I - Job to update */
 
   if (!strcmp(name, "time-at-completed"))
   {
-    if (JobHistory < INT_MAX)
+    if (JobHistory < INT_MAX && attr)
       job->history_time = attr->values[0].integer + JobHistory;
     else
       job->history_time = INT_MAX;
@@ -4380,7 +4394,7 @@ set_time(cupsd_job_t *job,		/* I - Job to update */
     if (job->history_time < JobHistoryUpdate || !JobHistoryUpdate)
       JobHistoryUpdate = job->history_time;
 
-    if (JobFiles < INT_MAX)
+    if (JobFiles < INT_MAX && attr)
       job->file_time = attr->values[0].integer + JobFiles;
     else
       job->file_time = INT_MAX;
@@ -4712,7 +4726,7 @@ update_job(cupsd_job_t *job)		/* I - Job to check */
         cupsdStopPrinter(job->printer, 1);
 	return;
       }
-      else if (cupsdSetPrinterReasons(job->printer, message))
+      else if (message[0] && cupsdSetPrinterReasons(job->printer, message))
       {
 	event |= CUPSD_EVENT_PRINTER_STATE;
 
@@ -5083,5 +5097,5 @@ update_job_attrs(cupsd_job_t *job,	/* I - Job to update */
 
 
 /*
- * End of "$Id: job.c 10502 2012-05-23 01:36:50Z mike $".
+ * End of "$Id: job.c 10776 2012-12-17 22:17:08Z mike $".
  */

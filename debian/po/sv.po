@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups 1.1.23-13\n"
 "Report-Msgid-Bugs-To: cups@packages.debian.org\n"
-"POT-Creation-Date: 2012-09-18 12:37+0200\n"
+"POT-Creation-Date: 2013-03-19 14:39+0100\n"
 "PO-Revision-Date: 2007-03-27 08:57+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -88,18 +88,6 @@ msgstr ""
 #. Type: multiselect
 #. Choices
 #: ../cups.templates:3001
-msgid "ipp"
-msgstr "ipp"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
-msgid "ipp14"
-msgstr "ipp14"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
 msgid "lpd"
 msgstr "lpd"
 
@@ -161,6 +149,12 @@ msgid ""
 msgstr ""
 "Välj det bakändesprogram som ska användas av CUPS. Standardvalet bör passa "
 "de flesta vanliga miljöer."
+
+#~ msgid "ipp"
+#~ msgstr "ipp"
+
+#~ msgid "ipp14"
+#~ msgstr "ipp14"
 
 #~ msgid ""
 #~ "If you will be accepting print jobs from Windows computers, you probably "

@@ -1,9 +1,9 @@
 /*
- * "$Id: usersys.c 10424 2012-04-23 17:26:57Z mike $"
+ * "$Id: usersys.c 10903 2013-03-12 14:26:28Z mike $"
  *
  *   User, system, and password routines for CUPS.
  *
- *   Copyright 2007-2012 by Apple Inc.
+ *   Copyright 2007-2013 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -951,36 +951,7 @@ cups_read_client_conf(
   }
 
   if ((!cg->server[0] || !cg->ipp_port) && cups_server)
-  {
-    if (!cg->server[0])
-    {
-     /*
-      * Copy server name...
-      */
-
-      strlcpy(cg->server, cups_server, sizeof(cg->server));
-
-      if (cg->server[0] != '/' && (value = strrchr(cg->server, ':')) != NULL &&
-	  !strchr(value, ']') && isdigit(value[1] & 255))
-        *value++ = '\0';
-      else
-        value = NULL;
-
-      if (cg->server[0] == '/')
-	strcpy(cg->servername, "localhost");
-      else
-	strlcpy(cg->servername, cg->server, sizeof(cg->servername));
-    }
-    else if (cups_server[0] != '/' &&
-             (value = strrchr(cups_server, ':')) != NULL &&
-	     !strchr(value, ']') && isdigit(value[1] & 255))
-      value ++;
-    else
-      value = NULL;
-
-    if (!cg->ipp_port && value)
-      cg->ipp_port = atoi(value);
-  }
+    cupsSetServer(cups_server);
 
   if (!cg->server[0])
   {
@@ -1084,5 +1055,5 @@ cups_read_client_conf(
 
 
 /*
- * End of "$Id: usersys.c 10424 2012-04-23 17:26:57Z mike $".
+ * End of "$Id: usersys.c 10903 2013-03-12 14:26:28Z mike $".
  */

@@ -1,5 +1,5 @@
 /*
- * "$Id: snmp.c 10535 2012-06-22 03:45:53Z mike $"
+ * "$Id: snmp.c 10643 2012-10-09 03:02:49Z mike $"
  *
  *   SNMP discovery backend for CUPS.
  *
@@ -1399,5 +1399,5 @@ update_cache(snmp_cache_t *device,	/* I - Device */
 
 
 /*
- * End of "$Id: snmp.c 10535 2012-06-22 03:45:53Z mike $".
+ * End of "$Id: snmp.c 10643 2012-10-09 03:02:49Z mike $".
  */

@@ -1,9 +1,9 @@
 /*
- * "$Id: http.c 10449 2012-05-04 22:51:10Z mike $"
+ * "$Id: http.c 10905 2013-03-13 16:26:25Z mike $"
  *
  *   HTTP routines for CUPS.
  *
- *   Copyright 2007-2012 by Apple Inc.
+ *   Copyright 2007-2013 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   This file contains Kerberos support code, copyright 2006 by
@@ -133,6 +133,7 @@
 #  include <signal.h>
 #  include <sys/time.h>
 #  include <sys/resource.h>
+#  include <sys/utsname.h>
 #endif /* WIN32 */
 #ifdef HAVE_POLL
 #  include <poll.h>
@@ -3643,7 +3644,39 @@ http_send(http_t       *http,	/* I - Connection to server */
   */
 
   if (!http->fields[HTTP_FIELD_USER_AGENT][0])
-    httpSetField(http, HTTP_FIELD_USER_AGENT, CUPS_MINIMAL);
+  {
+#ifdef WIN32
+    SYSTEM_INFO	sysinfo;		/* System information */
+    OSVERSIONEX	version;		/* OS version info */
+
+    version.dwOSVersionInfoSize = sizeof(OSVERSIONEX);
+    GetVersionInfoEx(&version);
+    GetNativeSystemInfo(&sysinfo);
+
+    snprintf(buf, sizeof(buf), CUPS_MINIMAL " (Windows %d.%d; %s) IPP/2.0",
+	     version.major, version.minor,
+	     sysinfo.wProcessorArchitecture
+		 == PROCESSOR_ARCHITECTURE_AMD64 ? "amd64" :
+		 sysinfo.wProcessorArchitecture
+		     == PROCESSOR_ARCHITECTURE_ARM ? "arm" :
+		 sysinfo.wProcessorArchitecture
+		     == PROCESSOR_ARCHITECTURE_IA64 ? "ia64" :
+		 sysinfo.wProcessorArchitecture
+		     == PROCESSOR_ARCHITECTURE_INTEL ? "intel" :
+		 "unknown");
+
+#else
+    struct utsname	name;		/* uname info */
+
+    uname(&name);
+
+    snprintf(buf, sizeof(buf), CUPS_MINIMAL " (%s %s; %s) IPP/2.0",
+	     name.sysname, name.release, name.machine);
+#endif /* WIN32 */
+
+    DEBUG_printf(("8http_send: Default User-Agent: %s", buf));
+    httpSetField(http, HTTP_FIELD_USER_AGENT, buf);
+  }
 
  /*
   * Encode the URI as needed...
@@ -3702,8 +3735,17 @@ http_send(http_t       *http,	/* I - Connection to server */
       DEBUG_printf(("9http_send: %s: %s", http_fields[i],
                     httpGetField(http, i)));
 
-      if (httpPrintf(http, "%s: %s\r\n", http_fields[i],
-		     httpGetField(http, i)) < 1)
+      if (i == HTTP_FIELD_HOST)
+      {
+	if (httpPrintf(http, "Host: %s:%d\r\n", httpGetField(http, i),
+	               _httpAddrPort(http->hostaddr)) < 1)
+	{
+	  http->status = HTTP_ERROR;
+	  return (-1);
+	}
+      }
+      else if (httpPrintf(http, "%s: %s\r\n", http_fields[i],
+		          httpGetField(http, i)) < 1)
       {
 	http->status = HTTP_ERROR;
 	return (-1);
@@ -3781,63 +3823,6 @@ http_set_credentials(http_t *http)	/* I - Connection to server */
   if ((credentials = http->tls_credentials) == NULL)
     credentials = cg->tls_credentials;
 
-#    if HAVE_SECPOLICYCREATESSL
- /*
-  * Otherwise root around in the user's keychain to see if one can be found...
-  */
-
-  if (!credentials)
-  {
-    CFDictionaryRef	query;		/* Query dictionary */
-    CFTypeRef		matches = NULL;	/* Matching credentials */
-    CFArrayRef		dn_array = NULL;/* Distinguished names array */
-    CFTypeRef		keys[]   = { kSecClass,
-				     kSecMatchLimit,
-				     kSecReturnRef };
-					/* Keys for dictionary */
-    CFTypeRef		values[] = { kSecClassCertificate,
-				     kSecMatchLimitOne,
-				     kCFBooleanTrue };
-					/* Values for dictionary */
-
-   /*
-    * Get the names associated with the server.
-    */
-
-    if ((error = SSLCopyDistinguishedNames(http->tls, &dn_array)) != noErr)
-    {
-      DEBUG_printf(("4http_set_credentials: SSLCopyDistinguishedNames, error=%d",
-                    (int)error));
-      return (error);
-    }
-
-   /*
-    * Create a query which will return all identities that can sign and match
-    * the passed in policy.
-    */
-
-    query = CFDictionaryCreate(NULL,
-			       (const void**)(&keys[0]),
-			       (const void**)(&values[0]),
-			       sizeof(keys) / sizeof(keys[0]),
-			       &kCFTypeDictionaryKeyCallBacks,
-			       &kCFTypeDictionaryValueCallBacks);
-    if (query)
-    {
-      error = SecItemCopyMatching(query, &matches);
-      DEBUG_printf(("4http_set_credentials: SecItemCopyMatching, error=%d",
-		    (int)error));
-      CFRelease(query);
-    }
-
-    if (matches)
-      CFRelease(matches);
-
-    if (dn_array)
-      CFRelease(dn_array);
-  }
-#    endif /* HAVE_SECPOLICYCREATESSL */
-
   if (credentials)
   {
     error = SSLSetCertificate(http->tls, credentials);
@@ -3907,12 +3892,11 @@ http_set_wait(http_t *http)		/* I - Connection to server */
 static int				/* O - 0 on success, -1 on failure */
 http_setup_ssl(http_t *http)		/* I - Connection to server */
 {
-  _cups_globals_t	*cg = _cupsGlobals();
-					/* Pointer to library globals */
   int			any_root;	/* Allow any root */
   char			hostname[256],	/* Hostname */
 			*hostptr;	/* Pointer into hostname */
-
+  _cups_globals_t	*cg = _cupsGlobals();
+					/* Pointer to library globals */
 #  ifdef HAVE_LIBSSL
   SSL_CTX		*context;	/* Context for encryption */
   BIO			*bio;		/* BIO data */
@@ -4222,6 +4206,8 @@ http_setup_ssl(http_t *http)		/* I - Connection to server */
 			       credential->datalen);
 			cupsArrayAdd(names, credential);
 		      }
+		      else
+		        free(credential);
 		    }
 		  }
 		}
@@ -4777,5 +4763,5 @@ http_write_ssl(http_t     *http,	/* I - Connection to server */
 
 
 /*
- * End of "$Id: http.c 10449 2012-05-04 22:51:10Z mike $".
+ * End of "$Id: http.c 10905 2013-03-13 16:26:25Z mike $".
  */

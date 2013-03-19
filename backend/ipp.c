@@ -1,5 +1,5 @@
 /*
- * "$Id: ipp.c 10548 2012-07-16 18:21:43Z mike $"
+ * "$Id: ipp.c 10890 2013-03-08 18:42:09Z mike $"
  *
  *   IPP backend for CUPS.
  *
@@ -976,9 +976,15 @@ main(int  argc,				/* I - Number of command-line args */
 
       if ((printer_state = ippFindAttribute(supported,
 					    "printer-state-reasons",
-					    IPP_TAG_KEYWORD)) != NULL && !busy)
+					    IPP_TAG_KEYWORD)) == NULL)
+      {
+        update_reasons(NULL, "+cups-ipp-conformance-failure-report,"
+			     "cups-ipp-missing-printer-state-reasons");
+      }
+      else if (!busy)
       {
 	for (i = 0; i < printer_state->num_values; i ++)
+	{
 	  if (!strcmp(printer_state->values[0].string.text,
 	              "spool-area-full") ||
 	      !strncmp(printer_state->values[0].string.text, "spool-area-full-",
@@ -987,10 +993,8 @@ main(int  argc,				/* I - Number of command-line args */
 	    busy = 1;
 	    break;
 	  }
+	}
       }
-      else
-        update_reasons(NULL, "+cups-ipp-conformance-failure-report,"
-			     "cups-ipp-missing-printer-state-reasons");
 
       if (busy)
       {
@@ -1053,6 +1057,12 @@ main(int  argc,				/* I - Number of command-line args */
     if ((operations_sup = ippFindAttribute(supported, "operations-supported",
 					   IPP_TAG_ENUM)) != NULL)
     {
+      fprintf(stderr, "DEBUG: operations-supported (%d values)\n",
+              operations_sup->num_values);
+      for (i = 0; i < operations_sup->num_values; i ++)
+        fprintf(stderr, "DEBUG: [%d] = %s\n", i,
+                ippOpString(operations_sup->values[i].integer));
+
       for (i = 0; i < operations_sup->num_values; i ++)
         if (operations_sup->values[i].integer == IPP_PRINT_JOB)
 	  break;
@@ -1278,8 +1288,9 @@ main(int  argc,				/* I - Number of command-line args */
  /*
   * If the printer only claims to support IPP/1.0, or if the user specifically
   * included version=1.0 in the URI, then do not try to use Create-Job or
-  * Send-Document.  This is another dreaded compatibility hack, but unfortunately
-  * there are enough broken printers out there that we need this for now...
+  * Send-Document.  This is another dreaded compatibility hack, but
+  * unfortunately there are enough broken printers out there that we need
+  * this for now...
   */
 
   if (version == 10)
@@ -1683,7 +1694,21 @@ main(int  argc,				/* I - Number of command-line args */
     else if (ipp_status == IPP_SERVICE_UNAVAILABLE ||
              ipp_status == IPP_NOT_POSSIBLE ||
 	     ipp_status == IPP_PRINTER_BUSY)
+    {
+      if (argc == 6)
+      {
+       /*
+        * Need to reprocess the entire job; if we have a job ID, cancel the
+        * job first...
+        */
+
+	if (job_id > 0)
+	  cancel_job(http, uri, job_id, resource, argv[2], version);
+
+        goto cleanup;
+      }
       continue;
+    }
     else if (ipp_status == IPP_REQUEST_VALUE ||
              ipp_status == IPP_ERROR_JOB_CANCELED ||
              ipp_status == IPP_NOT_AUTHORIZED ||
@@ -1693,6 +1718,27 @@ main(int  argc,				/* I - Number of command-line args */
       * Print file is too large, job was canceled, we need new
       * authentication data, or we had some sort of error...
       */
+
+      goto cleanup;
+    }
+    else if (ipp_status == IPP_UPGRADE_REQUIRED)
+    {
+     /*
+      * Server is configured incorrectly; the policy for Create-Job and
+      * Send-Document has to be the same (auth or no auth, encryption or
+      * no encryption).  Force the queue to stop since printing will never
+      * work.
+      */
+
+      fputs("DEBUG: The server or printer is configured incorrectly.\n",
+            stderr);
+      fputs("DEBUG: The policy for Create-Job and Send-Document must have the "
+            "same authentication and encryption requirements.\n", stderr);
+
+      ipp_status = IPP_INTERNAL_ERROR;
+
+      if (job_id > 0)
+	cancel_job(http, uri, job_id, resource, argv[2], version);
 
       goto cleanup;
     }
@@ -1878,7 +1924,8 @@ main(int  argc,				/* I - Number of command-line args */
   */
 
   if (have_supplies &&
-      !backendSNMPSupplies(snmp_fd, http->hostaddr, &page_count, NULL) &&
+      !backendSNMPSupplies(snmp_fd, &(http->addrlist->addr), &page_count,
+                           NULL) &&
       page_count > start_count)
     fprintf(stderr, "PAGE: total %d\n", page_count - start_count);
 
@@ -3329,5 +3376,5 @@ update_reasons(ipp_attribute_t *attr,	/* I - printer-state-reasons or NULL */
 }
 
 /*
- * End of "$Id: ipp.c 10548 2012-07-16 18:21:43Z mike $".
+ * End of "$Id: ipp.c 10890 2013-03-08 18:42:09Z mike $".
  */

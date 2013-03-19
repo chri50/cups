@@ -1,5 +1,5 @@
 /*
- * "$Id: main.c 10431 2012-04-23 19:19:19Z mike $"
+ * "$Id: main.c 10777 2012-12-17 22:18:10Z mike $"
  *
  *   Main loop for the CUPS scheduler.
  *
@@ -65,9 +65,14 @@
 #if defined(HAVE_MALLOC_H) && defined(HAVE_MALLINFO)
 #  include <malloc.h>
 #endif /* HAVE_MALLOC_H && HAVE_MALLINFO */
+
 #ifdef HAVE_NOTIFY_H
 #  include <notify.h>
 #endif /* HAVE_NOTIFY_H */
+
+#ifdef HAVE_SYS_PARAM_H
+#  include <sys/param.h>
+#endif /* HAVE_SYS_PARAM_H */
 
 
 /*
@@ -234,35 +239,6 @@ main(int  argc,				/* I - Number of command-line args */
 		cupsdSetStringf(&ConfigurationFile, "%s/%s", current, argv[i]);
 		free(current);
               }
-
-	      if (!CupsFilesFile)
-	      {
-	        char	*filename,	/* Copy of cupsd.conf filename */
-			*slash;		/* Final slash in cupsd.conf filename */
-		size_t	len;		/* Size of buffer */
-
-		len = strlen(ConfigurationFile) + 15;
-		if ((filename = malloc(len)) == NULL)
-		{
-		  _cupsLangPrintf(stderr,
-		                  _("cupsd: Unable to get path to "
-		                    "cups-files.conf file."));
-                  return (1);
-		}
-
-		strlcpy(filename, ConfigurationFile, len);
-		if ((slash = strrchr(filename, '/')) == NULL)
-		{
-		  _cupsLangPrintf(stderr,
-		                  _("cupsd: Unable to get path to "
-		                    "cups-files.conf file."));
-                  return (1);
-		}
-
-		strlcpy(slash, "/cups-files.conf", len - (slash - filename));
-		cupsdSetString(&CupsFilesFile, filename);
-		free(filename);
-	      }
 	      break;
 
           case 'f' : /* Run in foreground... */
@@ -356,6 +332,35 @@ main(int  argc,				/* I - Number of command-line args */
     cupsdSetString(&CupsFilesFile, CUPS_SERVERROOT "/cups-files.conf");
   }
 
+  if (!CupsFilesFile)
+  {
+    char	*filename,		/* Copy of cupsd.conf filename */
+		*slash;			/* Final slash in cupsd.conf filename */
+    size_t	len;			/* Size of buffer */
+
+    len = strlen(ConfigurationFile) + 15;
+    if ((filename = malloc(len)) == NULL)
+    {
+      _cupsLangPrintf(stderr,
+		      _("cupsd: Unable to get path to "
+			"cups-files.conf file."));
+      return (1);
+    }
+
+    strlcpy(filename, ConfigurationFile, len);
+    if ((slash = strrchr(filename, '/')) == NULL)
+    {
+      _cupsLangPrintf(stderr,
+		      _("cupsd: Unable to get path to "
+			"cups-files.conf file."));
+      return (1);
+    }
+
+    strlcpy(slash, "/cups-files.conf", len - (slash - filename));
+    cupsdSetString(&CupsFilesFile, filename);
+    free(filename);
+  }
+
  /*
   * If the user hasn't specified "-f", run in the background...
   */
@@ -421,15 +426,15 @@ main(int  argc,				/* I - Number of command-line args */
       }
     }
 
-#ifdef __OpenBSD__
+#if defined(__OpenBSD__) && OpenBSD < 201211
    /*
     * Call _thread_sys_closefrom() so the child process doesn't reset the
     * parent's file descriptors to be blocking.  This is a workaround for a
-    * limitation of userland libpthread on OpenBSD.
+    * limitation of userland libpthread on older versions of OpenBSD.
     */
 
     _thread_sys_closefrom(0);
-#endif /* __OpenBSD__ */
+#endif /* __OpenBSD__ && OpenBSD < 201211 */
 
    /*
     * Since CoreFoundation and DBUS both create fork-unsafe data on execution of
@@ -977,7 +982,7 @@ main(int  argc,				/* I - Number of command-line args */
       */
 
       cupsdDeleteCert(0);
-      cupsdAddCert(0, "root", NULL);
+      cupsdAddCert(0, "root", cupsdDefaultAuthType());
     }
 #endif /* !HAVE_AUTHORIZATION_H */
 
@@ -1168,23 +1173,6 @@ main(int  argc,				/* I - Number of command-line args */
   if (use_sysman)
     cupsdStopSystemMonitor();
 #endif /* __APPLE__ */
-
-#ifdef HAVE_GSSAPI
- /*
-  * Free the scheduler's Kerberos context...
-  */
-
-#  ifdef __APPLE__
- /*
-  * If the weak-linked GSSAPI/Kerberos library is not present, don't try
-  * to use it...
-  */
-
-  if (krb5_init_context != NULL)
-#  endif /* __APPLE__ */
-  if (KerberosContext)
-    krb5_free_context(KerberosContext);
-#endif /* HAVE_GSSAPI */
 
 #ifdef __sgi
  /*
@@ -2116,5 +2104,5 @@ usage(int status)			/* O - Exit status */
 
 
 /*
- * End of "$Id: main.c 10431 2012-04-23 19:19:19Z mike $".
+ * End of "$Id: main.c 10777 2012-12-17 22:18:10Z mike $".
  */

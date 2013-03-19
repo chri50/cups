@@ -1,5 +1,5 @@
 /*
- * "$Id: auth.c 10376 2012-03-22 20:53:47Z mike $"
+ * "$Id: auth.c 10776 2012-12-17 22:17:08Z mike $"
  *
  *   Authorization routines for the CUPS scheduler.
  *
@@ -89,14 +89,13 @@ extern const char *cssmErrorString(int error);
 typedef struct xucred cupsd_ucred_t;
 #  define CUPSD_UCRED_UID(c) (c).cr_uid
 #else
+#  ifndef __OpenBSD__
 typedef struct ucred cupsd_ucred_t;
+#  else
+typedef struct sockpeercred cupsd_ucred_t;
+#  endif
 #  define CUPSD_UCRED_UID(c) (c).uid
 #endif /* HAVE_SYS_UCRED_H */
-#ifdef HAVE_KRB5_IPC_CLIENT_SET_TARGET_UID
-/* Not in public headers... */
-extern void	krb5_ipc_client_set_target_uid(uid_t);
-extern void	krb5_ipc_client_clear_target(void);
-#endif /* HAVE_KRB5_IPC_CLIENT_SET_TARGET_UID */
 
 
 /*
@@ -593,15 +592,7 @@ cupsdAuthorize(cupsd_client_t *con)	/* I - Client connection */
     while (isspace(*authorization & 255))
       authorization ++;
 
-    if ((localuser = cupsdFindCert(authorization)) != NULL)
-    {
-      strlcpy(username, localuser->username, sizeof(username));
-
-      cupsdLogMessage(CUPSD_LOG_DEBUG,
-		      "[Client %d] Authorized as %s using Local", con->http.fd,
-		      username);
-    }
-    else
+    if ((localuser = cupsdFindCert(authorization)) == NULL)
     {
       cupsdLogMessage(CUPSD_LOG_ERROR,
                       "[Client %d] Local authentication certificate not found.",
@@ -609,12 +600,12 @@ cupsdAuthorize(cupsd_client_t *con)	/* I - Client connection */
       return;
     }
 
-#ifdef HAVE_GSSAPI
-    if (localuser->ccache)
-      con->type = CUPSD_AUTH_NEGOTIATE;
-    else
-#endif /* HAVE_GSSAPI */
-      con->type = CUPSD_AUTH_BASIC;
+    strlcpy(username, localuser->username, sizeof(username));
+    con->type = localuser->type;
+
+    cupsdLogMessage(CUPSD_LOG_DEBUG,
+		    "[Client %d] Authorized as %s using Local", con->http.fd,
+		    username);
   }
   else if (!strncmp(authorization, "Basic", 5))
   {
@@ -2597,5 +2588,5 @@ to64(char          *s,			/* O - Output string */
 
 
 /*
- * End of "$Id: auth.c 10376 2012-03-22 20:53:47Z mike $".
+ * End of "$Id: auth.c 10776 2012-12-17 22:17:08Z mike $".
  */

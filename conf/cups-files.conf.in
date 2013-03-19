@@ -1,5 +1,5 @@
 #
-# "$Id$"
+# "$Id: cups-files.conf.in 10765 2012-12-13 20:36:17Z mike $"
 #
 # Sample file/directory/user/group configuration file for the CUPS scheduler.
 # See "man cups-files.conf" for a complete description of this file.
@@ -39,7 +39,7 @@ AccessLog @CUPS_LOGDIR@/access_log
 #DataDir @CUPS_DATADIR@
 
 # Location of the static web content served by the scheduler...
-#DocRoot @CUPS_DOCROOT@
+#DocumentRoot @CUPS_DOCROOT@
 
 # Location of the file logging all messages produced by the scheduler and any
 # helper programs; may be the name "syslog". If not an absolute path, the value
@@ -94,5 +94,5 @@ PageLog @CUPS_LOGDIR@/page_log
 #TempDir @CUPS_REQUESTS@/tmp
 
 #
-# End of "$Id$".
+# End of "$Id: cups-files.conf.in 10765 2012-12-13 20:36:17Z mike $".
 #

@@ -1,9 +1,9 @@
 .\"
-.\" "$Id: ipptool.man 10424 2012-04-23 17:26:57Z mike $"
+.\" "$Id: ipptool.man 10791 2013-01-10 16:58:21Z mike $"
 .\"
 .\"   ipptool man page for CUPS.
 .\"
-.\"   Copyright 2010-2012 by Apple Inc.
+.\"   Copyright 2010-2013 by Apple Inc.
 .\"
 .\"   These coded instructions, statements, and computer programs are the
 .\"   property of Apple Inc. and are protected by Federal copyright
@@ -137,7 +137,7 @@ The following standard files are available:
 .br
 http://localhost:631/help
 .SH COPYRIGHT
-Copyright 2007-2012 by Apple Inc.
+Copyright 2007-2013 by Apple Inc.
 .\"
-.\" End of "$Id: ipptool.man 10424 2012-04-23 17:26:57Z mike $".
+.\" End of "$Id: ipptool.man 10791 2013-01-10 16:58:21Z mike $".
 .\"

@@ -1,5 +1,5 @@
 /*
- * "$Id: util.c 10482 2012-05-18 19:51:02Z mike $"
+ * "$Id: util.c 10873 2013-02-20 02:16:13Z mike $"
  *
  *   Printing utilities for CUPS.
  *
@@ -935,10 +935,16 @@ cupsGetPPD3(http_t     *http,		/* I  - HTTP connection or @code CUPS_HTTP_DEFAUL
   * See if the PPD file is available locally...
   */
 
-  if (!cg->servername[0])
-    cupsServer();
+  if (http)
+    httpGetHostname(http, hostname, sizeof(hostname));
+  else
+  {
+    strlcpy(hostname, cupsServer(), sizeof(hostname));
+    if (hostname[0] == '/')
+      strlcpy(hostname, "localhost", sizeof(hostname));
+  }
 
-  if (!_cups_strcasecmp(cg->servername, "localhost"))
+  if (!_cups_strcasecmp(hostname, "localhost"))
   {
     char	ppdname[1024];		/* PPD filename */
     struct stat	ppdinfo;		/* PPD file information */
@@ -1697,7 +1703,9 @@ cups_get_printer_uri(
   * Do the request and get back a response...
   */
 
-  if ((response = cupsDoRequest(http, request, "/")) != NULL)
+  snprintf(resource, resourcesize, "/printers/%s", name);
+
+  if ((response = cupsDoRequest(http, request, resource)) != NULL)
   {
     const char *device_uri = NULL;	/* device-uri value */
 
@@ -1706,12 +1714,14 @@ cups_get_printer_uri(
       device_uri = attr->values[0].string.text;
 
     if (device_uri &&
-        ((strstr(device_uri, "._ipp.") != NULL ||
-          strstr(device_uri, "._ipps.") != NULL) &&
-         !strcmp(device_uri + strlen(device_uri) - 5, "/cups")))
+        (!strncmp(device_uri, "ipp://", 6) ||
+         !strncmp(device_uri, "ipps://", 7) ||
+         ((strstr(device_uri, "._ipp.") != NULL ||
+           strstr(device_uri, "._ipps.") != NULL) &&
+          !strcmp(device_uri + strlen(device_uri) - 5, "/cups"))))
     {
      /*
-      * Statically-configured Bonjour shared printer.
+      * Statically-configured shared printer.
       */
 
       httpSeparateURI(HTTP_URI_CODING_ALL,
@@ -1852,5 +1862,5 @@ cups_get_printer_uri(
 
 
 /*
- * End of "$Id: util.c 10482 2012-05-18 19:51:02Z mike $".
+ * End of "$Id: util.c 10873 2013-02-20 02:16:13Z mike $".
  */

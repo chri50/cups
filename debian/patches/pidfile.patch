@@ -17,14 +17,14 @@ Last-Update: 2012-11-29
  
  static int		default_auth_type = CUPSD_AUTH_AUTO;
 @@ -594,6 +595,7 @@
-   cupsdSetStringf(&ServerHeader, "CUPS/%d.%d", CUPS_VERSION_MAJOR,
+   cupsdSetStringf(&ServerHeader, "CUPS/%d.%d IPP/2.1", CUPS_VERSION_MAJOR,
                    CUPS_VERSION_MINOR);
    cupsdSetString(&StateDir, CUPS_STATEDIR);
 +  cupsdSetString(&PidFile, "/var/run/cups/cupsd.pid");
  
    if (!strcmp(CUPS_DEFAULT_PRINTCAP, "/etc/printers.conf"))
      PrintcapFormat = PRINTCAP_SOLARIS;
-@@ -3328,6 +3330,7 @@
+@@ -3348,6 +3350,7 @@
               !_cups_strcasecmp(line, "SystemGroup") ||
               !_cups_strcasecmp(line, "SystemGroupAuthKey") ||
               !_cups_strcasecmp(line, "TempDir") ||
@@ -45,7 +45,7 @@ Last-Update: 2012-11-29
  VAR int			LaunchdTimeout		VALUE(10);
 --- a/scheduler/main.c
 +++ b/scheduler/main.c
-@@ -85,6 +85,8 @@
+@@ -90,6 +90,8 @@
  static void		sigterm_handler(int sig);
  static long		select_timeout(int fds);
  static void		usage(int status) __attribute__((noreturn));
@@ -54,7 +54,7 @@ Last-Update: 2012-11-29
  
  
  /*
-@@ -635,6 +637,11 @@
+@@ -640,6 +642,11 @@
    }
  #endif /* __sgi */
  
@@ -66,7 +66,7 @@ Last-Update: 2012-11-29
   /*
    * Initialize authentication certificates...
    */
-@@ -1193,10 +1200,41 @@
+@@ -1181,10 +1188,41 @@
  
    cupsdStopSelect();
  

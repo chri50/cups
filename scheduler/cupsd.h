@@ -1,5 +1,5 @@
 /*
- * "$Id: cupsd.h 10490 2012-05-21 17:40:22Z mike $"
+ * "$Id: cupsd.h 10776 2012-12-17 22:17:08Z mike $"
  *
  *   Main header file for the CUPS scheduler.
  *
@@ -160,13 +160,6 @@ VAR int			NeedReload	VALUE(RELOAD_ALL),
 VAR void		*DefaultProfile	VALUE(0);
 					/* Default security profile */
 
-#ifdef HAVE_GSSAPI
-VAR int			KerberosInitialized	VALUE(0);
-					/* Has Kerberos been initialized? */
-VAR krb5_context	KerberosContext VALUE(NULL);
-					/* Kerberos context for credentials */
-#endif /* HAVE_GSSAPI */
-
 #ifdef HAVE_LAUNCH_H
 VAR int			Launchd		VALUE(0);
 					/* Running from launchd */
@@ -237,5 +230,5 @@ extern void		cupsdStopServer(void);
 
 
 /*
- * End of "$Id: cupsd.h 10490 2012-05-21 17:40:22Z mike $".
+ * End of "$Id: cupsd.h 10776 2012-12-17 22:17:08Z mike $".
  */

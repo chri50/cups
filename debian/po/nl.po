@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups 1.1.20candidate6\n"
 "Report-Msgid-Bugs-To: cups@packages.debian.org\n"
-"POT-Creation-Date: 2012-09-18 12:37+0200\n"
+"POT-Creation-Date: 2013-03-19 14:39+0100\n"
 "PO-Revision-Date: 2007-03-30 17:47+0100\n"
 "Last-Translator: Bart Cornelis <cobaco@skolelinux.no>\n"
 "Language-Team: Debian Dutch <debian-l10n-dutch@lists.debian.org>\n"
@@ -93,18 +93,6 @@ msgstr ""
 #. Type: multiselect
 #. Choices
 #: ../cups.templates:3001
-msgid "ipp"
-msgstr "ipp"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
-msgid "ipp14"
-msgstr "ipp14"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
 msgid "lpd"
 msgstr "lpd"
 
@@ -166,6 +154,12 @@ msgid ""
 msgstr ""
 "Welk backend-programma wilt u CUPS laten gebruiken?. De standaardwaarde zou "
 "voor de meeste omgevingen moeten voldoen."
+
+#~ msgid "ipp"
+#~ msgstr "ipp"
+
+#~ msgid "ipp14"
+#~ msgstr "ipp14"
 
 #~ msgid ""
 #~ "If you will be accepting print jobs from Windows computers, you probably "

@@ -1,5 +1,5 @@
 /*
- * "$Id: cups-private.h 10504 2012-05-23 18:20:42Z mike $"
+ * "$Id: cups-private.h 10814 2013-01-14 22:06:21Z mike $"
  *
  *   Private definitions for CUPS.
  *
@@ -268,5 +268,5 @@ extern char		*_cupsUserDefault(char *name, size_t namesize);
 #endif /* !_CUPS_CUPS_PRIVATE_H_ */
 
 /*
- * End of "$Id: cups-private.h 10504 2012-05-23 18:20:42Z mike $".
+ * End of "$Id: cups-private.h 10814 2013-01-14 22:06:21Z mike $".
  */

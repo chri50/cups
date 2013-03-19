@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups 1.2\n"
 "Report-Msgid-Bugs-To: cups@packages.debian.org\n"
-"POT-Creation-Date: 2012-09-18 12:37+0200\n"
+"POT-Creation-Date: 2013-03-19 14:39+0100\n"
 "PO-Revision-Date: 2007-12-16 15:35+0900\n"
 "Last-Translator: Kenshi Muto <kmuto@debian.org>\n"
 "Language-Team: Japanese <debian-japanese@lists.debian.org>\n"
@@ -88,18 +88,6 @@ msgstr ""
 #. Type: multiselect
 #. Choices
 #: ../cups.templates:3001
-msgid "ipp"
-msgstr "IPP"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
-msgid "ipp14"
-msgstr "IPP14"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
 msgid "lpd"
 msgstr "LPD"
 
@@ -162,3 +150,8 @@ msgstr ""
 "CUPS で利用したいバックエンドプログラムを選択してください。デフォルトの選択は"
 "たいていの一般的な環境に合っています。"
 
+#~ msgid "ipp"
+#~ msgstr "IPP"
+
+#~ msgid "ipp14"
+#~ msgstr "IPP14"

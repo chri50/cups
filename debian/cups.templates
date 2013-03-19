@@ -19,8 +19,8 @@ _Description: Do you want CUPS to print unknown jobs as raw jobs?
 
 Template: cupsys/backend
 Type: multiselect
-__Choices: ipp, ipp14, lpd, socket, usb, snmp, dnssd
-Default: ipp, ipp14, lpd, socket, usb, snmp, dnssd
+__Choices: lpd, socket, usb, snmp, dnssd
+Default: lpd, socket, usb, snmp, dnssd
 _Description: Printer communication backends:
  CUPS uses backend programs to communicate with the printer device or port.
  .
