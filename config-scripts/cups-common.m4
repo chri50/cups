@@ -1,5 +1,5 @@
 dnl
-dnl "$Id: cups-common.m4 10553 2012-07-27 17:57:34Z mike $"
+dnl "$Id: cups-common.m4 10785 2013-01-08 16:29:26Z mike $"
 dnl
 dnl   Common configuration stuff for CUPS.
 dnl
@@ -20,7 +20,7 @@ dnl Set the name of the config header file...
 AC_CONFIG_HEADER(config.h)
 
 dnl Version number information...
-CUPS_VERSION=1.6.1
+CUPS_VERSION=1.6.2
 CUPS_REVISION=
 #if test -z "$CUPS_REVISION" -a -d .svn; then
 #	CUPS_REVISION="-r`svnversion . | awk -F: '{print $NF}' | sed -e '1,$s/[[a-zA-Z]]*//g'`"
@@ -130,6 +130,7 @@ AC_CHECK_HEADER(crypt.h,AC_DEFINE(HAVE_CRYPT_H))
 AC_CHECK_HEADER(langinfo.h,AC_DEFINE(HAVE_LANGINFO_H))
 AC_CHECK_HEADER(malloc.h,AC_DEFINE(HAVE_MALLOC_H))
 AC_CHECK_HEADER(shadow.h,AC_DEFINE(HAVE_SHADOW_H))
+AC_CHECK_HEADER(stdint.h,AC_DEFINE(HAVE_STDINT_H))
 AC_CHECK_HEADER(string.h,AC_DEFINE(HAVE_STRING_H))
 AC_CHECK_HEADER(strings.h,AC_DEFINE(HAVE_STRINGS_H))
 AC_CHECK_HEADER(bstring.h,AC_DEFINE(HAVE_BSTRING_H))
@@ -402,8 +403,8 @@ case $uname in
 		if test $uversion -ge 100; then
 			AC_CHECK_HEADER(sandbox.h,AC_DEFINE(HAVE_SANDBOX_H))
 		fi
-		if test $uversion -ge 110; then
-			# Broken public headers in 10.7...
+		if test $uversion -ge 110 -a $uversion -lt 120; then
+			# Broken public headers in 10.7.x...
 			AC_MSG_CHECKING(for sandbox/private.h presence)
 			if test -f /usr/local/include/sandbox/private.h; then
 				AC_MSG_RESULT(yes)
@@ -452,5 +453,5 @@ esac
 AC_SUBST(BUILDDIRS)
 
 dnl
-dnl End of "$Id: cups-common.m4 10553 2012-07-27 17:57:34Z mike $".
+dnl End of "$Id: cups-common.m4 10785 2013-01-08 16:29:26Z mike $".
 dnl

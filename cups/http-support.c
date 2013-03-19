@@ -1,5 +1,5 @@
 /*
- * "$Id: http-support.c 10437 2012-04-23 22:20:09Z mike $"
+ * "$Id: http-support.c 10899 2013-03-11 18:44:36Z mike $"
  *
  *   HTTP support routines for CUPS.
  *
@@ -82,6 +82,7 @@ typedef struct _http_uribuf_s		/* URI buffer */
   char			*buffer;	/* Pointer to buffer */
   size_t		bufsize;	/* Size of buffer */
   int			options;	/* Options passed to _httpResolveURI */
+  const char		*resource;	/* Resource from URI */
 } _http_uribuf_t;
 
 
@@ -326,8 +327,7 @@ httpAssembleURI(
      /*
       * Otherwise, just copy the host string...
       */
-
-      ptr = http_copy_encode(ptr, host, end, ":/?#[]@\\\"", NULL,
+      ptr = http_copy_encode(ptr, host, end, "<>{}|^:/?#[]@\\\"", NULL,
                              encoding & HTTP_URI_CODING_HOSTNAME);
 
       if (!ptr)
@@ -1523,6 +1523,7 @@ _httpResolveURI(
     uribuf.buffer   = resolved_uri;
     uribuf.bufsize  = resolved_size;
     uribuf.options  = options;
+    uribuf.resource = resource;
 
     resolved_uri[0] = '\0';
 
@@ -1850,6 +1851,11 @@ http_copy_decode(char       *dst,	/* O - Destination buffer */
 	  return (NULL);
 	}
       }
+      else if ((*src & 255) <= 0x20 || (*src & 255) >= 0x7f)
+      {
+        *ptr = '\0';
+        return (NULL);
+      }
       else
 	*ptr++ = *src;
     }
@@ -2057,6 +2063,8 @@ http_resolve_cb(
 			error));
 #endif /* DEBUG */
       }
+
+      httpAddrFreeList(addrlist);
     }
   }
 
@@ -2064,8 +2072,14 @@ http_resolve_cb(
   * Assemble the final device URI...
   */
 
-  httpAssembleURI(HTTP_URI_CODING_ALL, uribuf->buffer, uribuf->bufsize, scheme,
-                  NULL, hostTarget, ntohs(port), resource);
+  if ((!strcmp(scheme, "ipp") || !strcmp(scheme, "ipps")) &&
+      !strcmp(uribuf->resource, "/cups"))
+    httpAssembleURIf(HTTP_URI_CODING_ALL, uribuf->buffer, uribuf->bufsize,
+                     scheme, NULL, hostTarget, ntohs(port), "%s?snmp=false",
+                     resource);
+  else
+    httpAssembleURI(HTTP_URI_CODING_ALL, uribuf->buffer, uribuf->bufsize,
+                    scheme, NULL, hostTarget, ntohs(port), resource);
 
   DEBUG_printf(("8http_resolve_cb: Resolved URI is \"%s\"...", uribuf->buffer));
 }
@@ -2266,6 +2280,8 @@ http_resolve_cb(
 			error));
 #endif /* DEBUG */
       }
+
+      httpAddrFreeList(addrlist);
     }
   }
 
@@ -2283,5 +2299,5 @@ http_resolve_cb(
 
 
 /*
- * End of "$Id: http-support.c 10437 2012-04-23 22:20:09Z mike $".
+ * End of "$Id: http-support.c 10899 2013-03-11 18:44:36Z mike $".
  */

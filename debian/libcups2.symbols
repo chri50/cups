@@ -1,10 +1,10 @@
 libcups.so.2 libcups2 #MINVER#
 # Keep these at the latest upstream release
- (optional|regex)"^_pwg.*@Base$" 1.6.1
- (optional|regex)"^_cups.*@Base$" 1.6.1
- (optional|regex)"^_http.*@Base$" 1.6.1
- (optional|regex)"^_ipp.*@Base$" 1.6.1
- (optional|regex)"^_ppd.*@Base$" 1.6.1
+ (optional|regex)"^_pwg.*@Base$" 1.6.2
+ (optional|regex)"^_cups.*@Base$" 1.6.2
+ (optional|regex)"^_http.*@Base$" 1.6.2
+ (optional|regex)"^_ipp.*@Base$" 1.6.2
+ (optional|regex)"^_ppd.*@Base$" 1.6.2
  _httpReadGNUTLS@Base 1.4.4-3~
  _httpWriteGNUTLS@Base 1.4.4-3~
  cupsAddDest@Base 1.4.0

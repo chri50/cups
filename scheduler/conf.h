@@ -1,5 +1,5 @@
 /*
- * "$Id: conf.h 10482 2012-05-18 19:51:02Z mike $"
+ * "$Id: conf.h 10710 2012-11-26 18:26:01Z mike $"
  *
  *   Configuration file definitions for the CUPS scheduler.
  *
@@ -96,7 +96,9 @@ typedef struct
  */
 
 VAR char		*ConfigurationFile	VALUE(NULL),
-					/* Configuration file to use */
+					/* cupsd.conf file to use */
+			*CupsFilesFile		VALUE(NULL),
+					/* cups-files.conf file to use */
 			*ServerName		VALUE(NULL),
 					/* FQDN for server */
 			*ServerAdmin		VALUE(NULL),
@@ -294,5 +296,5 @@ extern int	cupsdWriteErrorLog(int level, const char *message);
 
 
 /*
- * End of "$Id: conf.h 10482 2012-05-18 19:51:02Z mike $".
+ * End of "$Id: conf.h 10710 2012-11-26 18:26:01Z mike $".
  */

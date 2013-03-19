@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# "$Id: run-stp-tests.sh 10488 2012-05-21 15:35:25Z mike $"
+# "$Id: run-stp-tests.sh 10710 2012-11-26 18:26:01Z mike $"
 #
 #   Perform the complete set of IPP compliance tests specified in the
 #   CUPS Software Test Plan.
@@ -368,6 +368,11 @@ else
 	ln -s /usr/lib/cups/filter/texttops /tmp/cups-$user/bin/filter
 
 	ln -s /usr/share/cups/mime/legacy.convs /tmp/cups-$user/share/mime
+	ln -s /usr/share/cups/charsets /tmp/cups-$user/share
+	if test -f $root/data/psglyphs; then
+		ln -s /usr/share/cups/data/psglyphs $root/data
+	fi
+	ln -s /usr/share/cups/fonts /tmp/cups-$user/share
 fi
 
 #
@@ -385,26 +390,11 @@ fi
 cat >/tmp/cups-$user/cupsd.conf <<EOF
 StrictConformance Yes
 Browsing Off
-FileDevice yes
-Printcap
 Listen localhost:$port
-User $user
-ServerRoot /tmp/cups-$user
-StateDir /tmp/cups-$user
-ServerBin /tmp/cups-$user/bin
-CacheDir /tmp/cups-$user/share
-DataDir /tmp/cups-$user/share
-FontPath /tmp/cups-$user/share/fonts
 PassEnv LOCALEDIR
 PassEnv DYLD_INSERT_LIBRARIES
-DocumentRoot $root/doc
-RequestRoot /tmp/cups-$user/spool
-TempDir /tmp/cups-$user/spool/temp
 MaxSubscriptions 3
 MaxLogSize 0
-AccessLog /tmp/cups-$user/log/access_log
-ErrorLog /tmp/cups-$user/log/error_log
-PageLog /tmp/cups-$user/log/page_log
 AccessLogLevel actions
 LogLevel debug2
 LogTimeFormat usecs
@@ -415,6 +405,24 @@ Order Allow,Deny
 $encryption
 </Limit>
 </Policy>
+EOF
+
+cat >/tmp/cups-$user/cups-files.conf <<EOF
+FileDevice yes
+Printcap
+User $user
+ServerRoot /tmp/cups-$user
+StateDir /tmp/cups-$user
+ServerBin /tmp/cups-$user/bin
+CacheDir /tmp/cups-$user/share
+DataDir /tmp/cups-$user/share
+FontPath /tmp/cups-$user/share/fonts
+DocumentRoot $root/doc
+RequestRoot /tmp/cups-$user/spool
+TempDir /tmp/cups-$user/spool/temp
+AccessLog /tmp/cups-$user/log/access_log
+ErrorLog /tmp/cups-$user/log/error_log
+PageLog /tmp/cups-$user/log/page_log
 EOF
 
 #
@@ -936,5 +944,5 @@ if test $fail != 0; then
 fi
 
 #
-# End of "$Id: run-stp-tests.sh 10488 2012-05-21 15:35:25Z mike $"
+# End of "$Id: run-stp-tests.sh 10710 2012-11-26 18:26:01Z mike $"
 #

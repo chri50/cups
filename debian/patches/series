@@ -1,27 +1,6 @@
 # patches accepted and committed upstream:
-network-backends-snmp-queries-optional.patch
-get-ppd-file-for-statically-configured-bonjour-shared-queues.patch
-usb-backend-reset-after-job-only-for-specific-devices.patch
-usb-backend-more-quirk-rules.patch
-printers-c-recognize-remote-cups-queue-via-dnssd-uri.patch
-avahi-not-considered-at-some-dnssd-conditionals.patch
-cupsd-conf-remove-obsolete-browse-directives.patch
-filter-out-all-control-characters-from-the-1284-device-id.patch
-ipp-backend-did-not-specify-the-compression-used.patch
-work-around-some-broken-ipp-printers.patch
-prevent-crash-due-to-null-host-name-or-fqdn-from-avahi.patch
-fix-crash-on-shutdown-caused-by-broken-avahi-config.patch
-fix-another-spot-where-avahi-crashes-cupsd-because-it-does-not-handle-null-values-from-its-own-apis.patch
-ipp-backend-abort-the-outer-loop-if-we-get-a-failure-from-send-document.patch
-ipp-backend-could-get-stuck-in-an-endless-loop-on-certain-network-errors.patch
-ipp-backend-did-not-send-cancel-request-to-printers-when-a-job-was-canceled-and-printer-did-not-support-create-job.patch
-fix-make-check.patch
-Split-configuration-files-STR-4223.patch
-in-scheduler-delete-job-control-backup-files.patch
-i18n-add-french-localization.patch
 
 # patches sent upstream
-client-conf-specify-ipp-version-support.patch
 cupsd-no-crash-on-avahi-threaded-poll-shutdown.patch
 get-ppd-file-for-statically-configured-ipp-shared-queues.patch
 pidfile.patch
@@ -30,7 +9,6 @@ ppd-poll-with-client-conf.patch
 manpage-translations.patch
 rootbackends-worldreadable.patch
 cups-dbus-utf8.patch
-cups-workaround-broken-1284-DeviceID-newline-instead-of-semicolon.patch
 
 # patches which should go upstream
 airprint-support.patch
@@ -62,5 +40,4 @@ ppdc-dynamic-linking.patch
 log-debug-history-nearly-unlimited.patch
 # Disabled in 1.6.1-1 as it breaks the tests. It addresses #593338
 # pstops-based-workflow-only-for-printing-ps-on-a-ps-printer.patch
-usb-backend-xerox-3124.patch
 usb-backend-epson-stylus-photo-750.patch

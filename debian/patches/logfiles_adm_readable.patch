@@ -12,7 +12,7 @@ Bug-Ubuntu: https://launchpad.net/bugs/345953
  
  
  /*
-@@ -76,6 +77,7 @@
+@@ -77,6 +78,7 @@
  		filename[1024],		/* Formatted log filename */
  		*ptr;			/* Pointer into filename */
    const char	*logptr;		/* Pointer into log filename */
@@ -20,7 +20,7 @@ Bug-Ubuntu: https://launchpad.net/bugs/345953
  
  
   /*
-@@ -86,6 +88,11 @@
+@@ -87,6 +89,11 @@
      return (1);
  
   /*
@@ -32,7 +32,7 @@ Bug-Ubuntu: https://launchpad.net/bugs/345953
    * Format the filename as needed...
    */
  
-@@ -195,7 +202,7 @@
+@@ -196,7 +203,7 @@
        * Change ownership and permissions of non-device logs...
        */
  
@@ -41,7 +41,7 @@ Bug-Ubuntu: https://launchpad.net/bugs/345953
        fchmod(cupsFileNumber(*lf), LogFilePerm);
      }
    }
-@@ -234,7 +241,7 @@
+@@ -235,7 +242,7 @@
      * Change ownership and permissions of non-device logs...
      */
  

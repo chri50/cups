@@ -1,5 +1,5 @@
 /*
- * "$Id: dirsvc.c 10472 2012-05-18 02:25:18Z mike $"
+ * "$Id: dirsvc.c 10641 2012-10-03 14:17:41Z mike $"
  *
  *   Directory services routines for the CUPS scheduler.
  *
@@ -234,9 +234,12 @@ cupsdStartBrowsing(void)
 
         if (FatalErrors & CUPSD_FATAL_BROWSE)
 	  cupsdEndProcess(getpid(), 0);
-      }
 
-      avahi_threaded_poll_start(DNSSDMaster);
+        avahi_threaded_poll_free(DNSSDMaster);
+        DNSSDMaster = NULL;
+      }
+      else
+	avahi_threaded_poll_start(DNSSDMaster);
     }
 #  endif /* HAVE_DNSSD */
 
@@ -456,17 +459,30 @@ cupsdUpdateDNSSDName(void)
   else
 #  endif /* __APPLE__ */
 #  ifdef HAVE_AVAHI
+  if (DNSSDClient)
   {
-    cupsdSetString(&DNSSDComputerName, avahi_client_get_host_name(DNSSDClient));
-    cupsdSetString(&DNSSDHostName,
-                   avahi_client_get_host_name_fqdn(DNSSDClient));
+    const char	*host_name = avahi_client_get_host_name(DNSSDClient);
+    const char	*host_fqdn = avahi_client_get_host_name_fqdn(DNSSDClient);
+
+    cupsdSetString(&DNSSDComputerName, host_name ? host_name : ServerName);
+
+    if (host_fqdn)
+      cupsdSetString(&DNSSDHostName, host_fqdn);
+    else if (strchr(ServerName, '.'))
+      cupsdSetString(&DNSSDHostName, ServerName);
+    else
+      cupsdSetStringf(&DNSSDHostName, "%s.local", ServerName);
   }
-#  else /* HAVE_DNSSD */
+  else
+#  endif /* HAVE_AVAHI */
   {
     cupsdSetString(&DNSSDComputerName, ServerName);
-    cupsdSetString(&DNSSDHostName, ServerName);
+
+    if (strchr(ServerName, '.'))
+      cupsdSetString(&DNSSDHostName, ServerName);
+    else
+      cupsdSetStringf(&DNSSDHostName, "%s.local", ServerName);
   }
-#  endif /* HAVE_AVAHI */
 
  /*
   * Then (re)register the web interface if enabled...
@@ -1650,5 +1666,5 @@ update_smb(int onoff)			/* I - 1 = turn on, 0 = turn off */
 
 
 /*
- * End of "$Id: dirsvc.c 10472 2012-05-18 02:25:18Z mike $".
+ * End of "$Id: dirsvc.c 10641 2012-10-03 14:17:41Z mike $".
  */

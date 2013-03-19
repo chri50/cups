@@ -1,9 +1,9 @@
 /*
- * "$Id: ipp.c 10490 2012-05-21 17:40:22Z mike $"
+ * "$Id: ipp.c 10899 2013-03-11 18:44:36Z mike $"
  *
  *   IPP routines for the CUPS scheduler.
  *
- *   Copyright 2007-2012 by Apple Inc.
+ *   Copyright 2007-2013 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   This file contains Kerberos support code, copyright 2006 by
@@ -1285,6 +1285,21 @@ add_job(cupsd_client_t  *con,		/* I - Client connection */
   ipp_attribute_t *media_col,		/* media-col attribute */
 		*media_margin;		/* media-*-margin attribute */
   ipp_t		*unsup_col;		/* media-col in unsupported response */
+  static const char * const readonly[] =/* List of read-only attributes */
+  {
+    "job-id",
+    "job-k-octets",
+    /*"job-impressions",*/		/* For now we allow this since cupsd can't count */
+    "job-impressions-completed",
+    "job-media-sheets",
+    "job-media-sheets-completed",
+    "job-state",
+    "job-state-message",
+    "job-state-reasons",
+    "time-at-completed",
+    "time-at-creation",
+    "time-at-processing"
+  };
 
 
   cupsdLogMessage(CUPSD_LOG_DEBUG2, "add_job(%p[%d], %p(%s), %p(%s/%s))",
@@ -1352,6 +1367,27 @@ add_job(cupsd_client_t  *con,		/* I - Client connection */
   * Validate job template attributes; for now just document-format,
   * copies, number-up, and page-ranges...
   */
+
+  for (i = 0; i < (int)(sizeof(readonly) / sizeof(readonly[0])); i ++)
+  {
+    if ((attr = ippFindAttribute(con->request, readonly[i],
+                                 IPP_TAG_ZERO)) != NULL)
+    {
+      ippDeleteAttribute(con->request, attr);
+
+      if (StrictConformance)
+      {
+	send_ipp_status(con, IPP_BAD_REQUEST,
+			_("The '%s' Job Description attribute cannot be "
+			  "supplied in a job creation request."), readonly[i]);
+	return (NULL);
+      }
+
+      cupsdLogMessage(CUPSD_LOG_WARN,
+                      "Unexpected '%s' Job Description attribute in a job "
+                      "creation request.", readonly[i]);
+    }
+  }
 
   if (filetype && printer->filetypes &&
       !cupsArrayFind(printer->filetypes, filetype))
@@ -1538,9 +1574,71 @@ add_job(cupsd_client_t  *con,		/* I - Client connection */
                   priority);
   }
 
-  if (!ippFindAttribute(con->request, "job-name", IPP_TAG_NAME))
+  if ((attr = ippFindAttribute(con->request, "job-name", IPP_TAG_ZERO)) == NULL)
     ippAddString(con->request, IPP_TAG_JOB, IPP_TAG_NAME, "job-name", NULL,
                  "Untitled");
+  else if ((attr->value_tag != IPP_TAG_NAME &&
+            attr->value_tag != IPP_TAG_NAMELANG) ||
+           attr->num_values != 1)
+  {
+    send_ipp_status(con, IPP_ATTRIBUTES,
+                    _("Bad job-name value: Wrong type or count."));
+    if ((attr = ippCopyAttribute(con->response, attr, 0)) != NULL)
+      attr->group_tag = IPP_TAG_UNSUPPORTED_GROUP;
+    return (NULL);
+  }
+  else
+  {
+    const char	*ptr;			/* Pointer into string */
+
+    for (ptr = attr->values[0].string.text; *ptr; ptr ++)
+    {
+      if ((*ptr & 0xe0) == 0xc0)
+      {
+	ptr ++;
+	if ((*ptr & 0xc0) != 0x80)
+	  break;
+      }
+      else if ((*ptr & 0xf0) == 0xe0)
+      {
+	ptr ++;
+	if ((*ptr & 0xc0) != 0x80)
+	  break;
+	ptr ++;
+	if ((*ptr & 0xc0) != 0x80)
+	  break;
+      }
+      else if ((*ptr & 0xf8) == 0xf0)
+      {
+	ptr ++;
+	if ((*ptr & 0xc0) != 0x80)
+	  break;
+	ptr ++;
+	if ((*ptr & 0xc0) != 0x80)
+	  break;
+	ptr ++;
+	if ((*ptr & 0xc0) != 0x80)
+	  break;
+      }
+      else if (*ptr & 0x80)
+	break;
+    }
+
+    if (*ptr || (ptr - attr->values[0].string.text) > (IPP_MAX_NAME - 1))
+    {
+      if (*ptr)
+	send_ipp_status(con, IPP_ATTRIBUTES,
+	                _("Bad job-name value: Bad UTF-8 sequence."));
+      else
+	send_ipp_status(con, IPP_ATTRIBUTES,
+	                _("Bad job-name value: Name too long."));
+
+      if ((attr = ippCopyAttribute(con->response, attr, 0)) != NULL)
+	attr->group_tag = IPP_TAG_UNSUPPORTED_GROUP;
+
+      return (NULL);
+    }
+  }
 
   if ((job = cupsdAddJob(priority, printer->name)) == NULL)
   {
@@ -2334,6 +2432,21 @@ add_printer(cupsd_client_t  *con,	/* I - Client connection */
     http_uri_status_t	uri_status;	/* URI separation status */
     char		old_device_uri[1024];
 					/* Old device URI */
+    static const char * const uri_status_strings[] =
+    {
+      "URI too large.",
+      "Bad arguments to function.",
+      "Bad resource path.",
+      "Bad port number.",
+      "Bad hostname/address.",
+      "Bad username/password.",
+      "Bad URI scheme.",
+      "Bad URI.",
+      "OK",
+      "Missing URI scheme.",
+      "Unknown URI scheme",
+      "Missing resource path."
+    };
 
 
     need_restart_job = 1;
@@ -2345,12 +2458,14 @@ add_printer(cupsd_client_t  *con,	/* I - Client connection */
 				 host, sizeof(host), &port,
 				 resource, sizeof(resource));
 
+    cupsdLogMessage(CUPSD_LOG_DEBUG,
+		    "%s device-uri: %s", printer->name,
+		    uri_status_strings[uri_status - HTTP_URI_OVERFLOW]);
+
     if (uri_status < HTTP_URI_OK)
     {
       send_ipp_status(con, IPP_NOT_POSSIBLE, _("Bad device-uri \"%s\"."),
 		      attr->values[0].string.text);
-      cupsdLogMessage(CUPSD_LOG_DEBUG,
-                      "add_printer: httpSeparateURI returned %d", uri_status);
       return;
     }
 
@@ -2369,7 +2484,7 @@ add_printer(cupsd_client_t  *con,	/* I - Client connection */
 	send_ipp_status(con, IPP_NOT_POSSIBLE,
 	                _("File device URIs have been disabled. "
 	                  "To enable, see the FileDevice directive in "
-			  "\"%s/cupsd.conf\"."),
+			  "\"%s/cups-files.conf\"."),
 			ServerRoot);
 	return;
       }
@@ -4813,7 +4928,7 @@ copy_printer_attrs(
     ippAddDate(con->response, IPP_TAG_PRINTER, "printer-current-time",
                ippTimeToDate(curtime));
 
-#ifdef HAVE_DNSSD
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
   if (!ra || cupsArrayFind(ra, "printer-dns-sd-name"))
   {
     if (printer->reg_name)
@@ -4823,7 +4938,7 @@ copy_printer_attrs(
       ippAddInteger(con->response, IPP_TAG_PRINTER, IPP_TAG_NOVALUE,
                    "printer-dns-sd-name", 0);
   }
-#endif /* HAVE_DNSSD */
+#endif /* HAVE_DNSSD || HAVE_AVAHI */
 
   if (!ra || cupsArrayFind(ra, "printer-error-policy"))
     ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_NAME,
@@ -8217,7 +8332,7 @@ print_job(cupsd_client_t  *con,		/* I - Client connection */
     * Grab format from client...
     */
 
-    if (sscanf(format->values[0].string.text, "%15[^/]/%31[^;]", super,
+    if (sscanf(format->values[0].string.text, "%15[^/]/%255[^;]", super,
                type) != 2)
     {
       send_ipp_status(con, IPP_BAD_REQUEST,
@@ -8234,7 +8349,7 @@ print_job(cupsd_client_t  *con,		/* I - Client connection */
     * Use default document format...
     */
 
-    if (sscanf(default_format, "%15[^/]/%31[^;]", super, type) != 2)
+    if (sscanf(default_format, "%15[^/]/%255[^;]", super, type) != 2)
     {
       send_ipp_status(con, IPP_BAD_REQUEST,
                       _("Bad document-format \"%s\"."),
@@ -9448,7 +9563,7 @@ send_document(cupsd_client_t  *con,	/* I - Client connection */
     * Grab format from client...
     */
 
-    if (sscanf(format->values[0].string.text, "%15[^/]/%31[^;]",
+    if (sscanf(format->values[0].string.text, "%15[^/]/%255[^;]",
                super, type) != 2)
     {
       send_ipp_status(con, IPP_BAD_REQUEST, _("Bad document-format \"%s\"."),
@@ -9464,7 +9579,7 @@ send_document(cupsd_client_t  *con,	/* I - Client connection */
     * Use default document format...
     */
 
-    if (sscanf(default_format, "%15[^/]/%31[^;]", super, type) != 2)
+    if (sscanf(default_format, "%15[^/]/%255[^;]", super, type) != 2)
     {
       send_ipp_status(con, IPP_BAD_REQUEST,
                       _("Bad document-format-default \"%s\"."), default_format);
@@ -10920,7 +11035,8 @@ validate_job(cupsd_client_t  *con,	/* I - Client connection */
   http_status_t		status;		/* Policy status */
   ipp_attribute_t	*attr,		/* Current attribute */
 			*auth_info;	/* auth-info attribute */
-  ipp_attribute_t	*format;	/* Document-format attribute */
+  ipp_attribute_t	*format,	/* Document-format attribute */
+			*name;		/* Job-name attribute */
   cups_ptype_t		dtype;		/* Destination type (printer/class) */
   char			super[MIME_MAX_SUPER],
 					/* Supertype of file */
@@ -10947,7 +11063,7 @@ validate_job(cupsd_client_t  *con,	/* I - Client connection */
       )
     {
       send_ipp_status(con, IPP_ATTRIBUTES,
-                      _("Unsupported compression \"%s\"."),
+                      _("Unsupported 'compression' value \"%s\"."),
         	      attr->values[0].string.text);
       ippAddString(con->response, IPP_TAG_UNSUPPORTED_GROUP, IPP_TAG_KEYWORD,
 	           "compression", NULL, attr->values[0].string.text);
@@ -10962,10 +11078,11 @@ validate_job(cupsd_client_t  *con,	/* I - Client connection */
   if ((format = ippFindAttribute(con->request, "document-format",
                                  IPP_TAG_MIMETYPE)) != NULL)
   {
-    if (sscanf(format->values[0].string.text, "%15[^/]/%31[^;]",
+    if (sscanf(format->values[0].string.text, "%15[^/]/%255[^;]",
                super, type) != 2)
     {
-      send_ipp_status(con, IPP_BAD_REQUEST, _("Bad document-format \"%s\"."),
+      send_ipp_status(con, IPP_BAD_REQUEST,
+                      _("Bad 'document-format' value \"%s\"."),
 		      format->values[0].string.text);
       return;
     }
@@ -10976,11 +11093,91 @@ validate_job(cupsd_client_t  *con,	/* I - Client connection */
       cupsdLogMessage(CUPSD_LOG_INFO,
                       "Hint: Do you have the raw file printing rules enabled?");
       send_ipp_status(con, IPP_DOCUMENT_FORMAT,
-                      _("Unsupported document-format \"%s\"."),
+                      _("Unsupported 'document-format' value \"%s\"."),
 		      format->values[0].string.text);
       ippAddString(con->response, IPP_TAG_UNSUPPORTED_GROUP, IPP_TAG_MIMETYPE,
                    "document-format", NULL, format->values[0].string.text);
       return;
+    }
+  }
+
+ /*
+  * Is the job-name valid?
+  */
+
+  if ((name = ippFindAttribute(con->request, "job-name", IPP_TAG_ZERO)) != NULL)
+  {
+    int bad_name = 0;			/* Is the job-name value bad? */
+
+    if ((name->value_tag != IPP_TAG_NAME && name->value_tag != IPP_TAG_NAMELANG) ||
+        name->num_values != 1)
+    {
+      bad_name = 1;
+    }
+    else
+    {
+     /*
+      * Validate that job-name conforms to RFC 5198 (Network Unicode) and
+      * IPP Everywhere requirements for "name" values...
+      */
+
+      const unsigned char *nameptr;	/* Pointer into "job-name" attribute */
+
+      for (nameptr = (unsigned char *)name->values[0].string.text;
+           *nameptr;
+           nameptr ++)
+      {
+        if (*nameptr < ' ' && *nameptr != '\t')
+          break;
+        else if (*nameptr == 0x7f)
+          break;
+        else if ((*nameptr & 0xe0) == 0xc0)
+        {
+          if ((nameptr[1] & 0xc0) != 0x80)
+            break;
+
+          nameptr ++;
+        }
+        else if ((*nameptr & 0xf0) == 0xe0)
+        {
+          if ((nameptr[1] & 0xc0) != 0x80 ||
+              (nameptr[2] & 0xc0) != 0x80)
+	    break;
+
+	  nameptr += 2;
+	}
+        else if ((*nameptr & 0xf8) == 0xf0)
+        {
+          if ((nameptr[1] & 0xc0) != 0x80 ||
+	      (nameptr[2] & 0xc0) != 0x80 ||
+	      (nameptr[3] & 0xc0) != 0x80)
+	    break;
+
+	  nameptr += 3;
+	}
+        else if (*nameptr & 0x80)
+          break;
+      }
+
+      if (*nameptr)
+        bad_name = 1;
+    }
+
+    if (bad_name)
+    {
+      if (StrictConformance)
+      {
+	send_ipp_status(con, IPP_ATTRIBUTES,
+	                _("Unsupported 'job-name' value."));
+	ippCopyAttribute(con->response, name, 0);
+	return;
+      }
+      else
+      {
+        cupsdLogMessage(CUPSD_LOG_WARN,
+                        "Unsupported 'job-name' value, deleting from request.");
+        ippDeleteAttribute(con->request, name);
+      }
     }
   }
 
@@ -11109,5 +11306,5 @@ validate_user(cupsd_job_t    *job,	/* I - Job */
 
 
 /*
- * End of "$Id: ipp.c 10490 2012-05-21 17:40:22Z mike $".
+ * End of "$Id: ipp.c 10899 2013-03-11 18:44:36Z mike $".
  */

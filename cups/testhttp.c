@@ -1,5 +1,5 @@
 /*
- * "$Id: testhttp.c 9992 2011-09-09 21:51:39Z mike $"
+ * "$Id: testhttp.c 10899 2013-03-11 18:44:36Z mike $"
  *
  *   HTTP test program for CUPS.
  *
@@ -131,6 +131,8 @@ static uri_test_t	uri_tests[] =	/* URI test data */
 			    "http", "", "", "", 80, 0 },
 			  { HTTP_URI_BAD_HOSTNAME, "http://serve%7/index.html",
 			    "http", "", "", "", 80, 0 },
+			  { HTTP_URI_BAD_HOSTNAME, "http://server with spaces/index.html",
+			    "http", "", "", "", 80, 0 },
 
 			  /* Bad port number */
 			  { HTTP_URI_BAD_PORT, "http://127.0.0.1:9999a/index.html",
@@ -138,7 +140,9 @@ static uri_test_t	uri_tests[] =	/* URI test data */
 
 			  /* Bad resource */
 			  { HTTP_URI_BAD_RESOURCE, "http://server/index.html%",
-			    "http", "", "server", "", 80, 0 }
+			    "http", "", "server", "", 80, 0 },
+ 			  { HTTP_URI_BAD_RESOURCE, "http://server/index with spaces.html",
+  			    "http", "", "server", "", 80, 0 }
 			};
 static const char * const base64_tests[][2] =
 			{
@@ -596,5 +600,5 @@ main(int  argc,				/* I - Number of command-line arguments */
 
 
 /*
- * End of "$Id: testhttp.c 9992 2011-09-09 21:51:39Z mike $".
+ * End of "$Id: testhttp.c 10899 2013-03-11 18:44:36Z mike $".
  */

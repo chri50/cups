@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups_1.2.7-4_ru.po\n"
 "Report-Msgid-Bugs-To: cups@packages.debian.org\n"
-"POT-Creation-Date: 2012-09-18 12:37+0200\n"
+"POT-Creation-Date: 2013-03-19 14:39+0100\n"
 "PO-Revision-Date: 2007-04-05 11:27+0300\n"
 "Last-Translator: Sergey Alyoshin <alyoshin.s@gmail.com>\n"
 "Language-Team: Russian <debian-l10n-russian@lists.debian.org>\n"
@@ -94,18 +94,6 @@ msgstr ""
 #. Type: multiselect
 #. Choices
 #: ../cups.templates:3001
-msgid "ipp"
-msgstr "ipp"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
-msgid "ipp14"
-msgstr "ipp14"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
 msgid "lpd"
 msgstr "lpd"
 
@@ -167,6 +155,12 @@ msgid ""
 msgstr ""
 "Выберите интерфейсную программу, которая будет использоваться CUPS. Выбор по "
 "умолчанию должен работать с большинством оборудования."
+
+#~ msgid "ipp"
+#~ msgstr "ipp"
+
+#~ msgid "ipp14"
+#~ msgstr "ipp14"
 
 #~ msgid ""
 #~ "If you will be accepting print jobs from Windows computers, you probably "

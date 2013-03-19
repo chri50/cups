@@ -1,9 +1,9 @@
 /*
- * "$Id: usb-libusb.c 10543 2012-07-16 17:10:55Z mike $"
+ * "$Id: usb-libusb.c 10908 2013-03-14 14:31:07Z mike $"
  *
  *   LIBUSB interface code for CUPS.
  *
- *   Copyright 2007-2012 by Apple Inc.
+ *   Copyright 2007-2013 by Apple Inc.
  *
  *   These coded instructions, statements, and computer programs are the
  *   property of Apple Inc. and are protected by Federal copyright
@@ -70,7 +70,7 @@ typedef struct usb_printer_s		/**** USB Printer Data ****/
 			read_endp,	/* Read endpoint */
 			protocol,	/* Protocol: 1 = Uni-di, 2 = Bi-di. */
 			usblp_attached,	/* "usblp" kernel module attached? */
-			opened_for_job;	/* Set to 1 by print_device() */
+			reset_after_job; /* Set to 1 by print_device() */
   unsigned int		quirks;		/* Quirks flags */
   struct libusb_device_handle *handle;	/* Open handle to device */
 } usb_printer_t;
@@ -122,6 +122,9 @@ struct quirk_printer_struct {
 #define USBLP_QUIRK_USB_INIT	0x2	/* needs vendor USB init string */
 #define USBLP_QUIRK_BAD_CLASS	0x4	/* descriptor uses vendor-specific
 					   Class or SubClass */
+#define USBLP_QUIRK_BLACKLIST	0x8	/* these printers do not conform to the USB print spec */
+#define USBLP_QUIRK_RESET	0x4000	/* After printing do a reset
+					   for clean-up */
 #define USBLP_QUIRK_NO_REATTACH	0x8000	/* After printing we cannot re-attach
 					   the usblp kernel module */
 
@@ -141,15 +144,78 @@ static const struct quirk_printer_struct quirk_printers[] = {
 	{ 0x0409, 0xf1be, USBLP_QUIRK_BIDIR }, /* NEC Picty800 (HP OEM) */
 	{ 0x0482, 0x0010, USBLP_QUIRK_BIDIR }, /* Kyocera Mita FS 820,
 						  by zut <kernel@zut.de> */
+	{ 0x04a9, 0x10a2, USBLP_QUIRK_BIDIR }, /* Canon, Inc. PIXMA iP4200
+			    Printer, http://www.cups.org/str.php?L4155 */
+	{ 0x04a9, 0x10b6, USBLP_QUIRK_BIDIR }, /* Canon, Inc. PIXMA iP4300
+			    Printer, https://bugs.launchpad.net/bugs/1032385 */
+	{ 0x04a9, 0x1721, USBLP_QUIRK_BIDIR }, /* Canon, Inc. MP210
+		      https://bugzilla.redhat.com/show_bug.cgi?id=847923#c53 */
+	{ 0x04a9, 0x170c, USBLP_QUIRK_BIDIR }, /* Canon, Inc. MP500
+			    Printer, https://bugs.launchpad.net/bugs/1032456 */
+	{ 0x04a9, 0x1717, USBLP_QUIRK_BIDIR }, /* Canon, Inc. MP510
+			    Printer, https://bugs.launchpad.net/bugs/1050009 */
+	{ 0x04a9, 0x173d, USBLP_QUIRK_BIDIR }, /* Canon, Inc. MP550
+			    Printer, http://www.cups.org/str.php?L4155 */
+	{ 0x04a9, 0x173e, USBLP_QUIRK_BIDIR }, /* Canon, Inc. MP560
+			    Printer, http://www.cups.org/str.php?L4155 */
+	{ 0x04f9, 0x001a, USBLP_QUIRK_NO_REATTACH }, /* Brother Industries, Ltd
+						  HL-1430 Laser Printer,
+				     https://bugs.launchpad.net/bugs/1038695 */
 	{ 0x04f9, 0x000d, USBLP_QUIRK_BIDIR |
 			  USBLP_QUIRK_NO_REATTACH }, /* Brother Industries, Ltd
-						  HL-1440 Laser Printer */
+						  HL-1440 Laser Printer,
+				     https://bugs.launchpad.net/bugs/1000253 */
+	{ 0x06bc, 0x000b, USBLP_QUIRK_NO_REATTACH }, /* Oki Data Corp.
+						  Okipage 14ex Printer,
+				     https://bugs.launchpad.net/bugs/872483 */
+	{ 0x06bc, 0x01c7, USBLP_QUIRK_NO_REATTACH }, /* Oki Data Corp. B410d,
+				     https://bugs.launchpad.net/bugs/872483 */
+	{ 0x04b8, 0x0001, USBLP_QUIRK_BIDIR }, /* Seiko Epson Corp. Stylus Color 740 / Photo 750,
+				     http://bugs.debian.org/697970 */
 	{ 0x04b8, 0x0202, USBLP_QUIRK_BAD_CLASS }, /* Seiko Epson Receipt
 						      Printer M129C */
 	{ 0x067b, 0x2305, USBLP_QUIRK_BIDIR |
-			  USBLP_QUIRK_NO_REATTACH },
+			  USBLP_QUIRK_NO_REATTACH |
+	                  USBLP_QUIRK_RESET },
+	{ 0x0924, 0x3ce9, USBLP_QUIRK_NO_REATTACH }, /* Xerox Phaser 3124
+			  https://bugzilla.redhat.com/show_bug.cgi?id=867392 */
+	{ 0x0924, 0x4293, USBLP_QUIRK_NO_REATTACH }, /* Xerox WorkCentre 3210
+				     https://bugs.launchpad.net/bugs/1102470 */
 	/* Prolific Technology, Inc. PL2305 Parallel Port
-	   (USB -> Parallel adapter) */
+	   (USB -> Parallel adapter), https://bugs.launchpad.net/bugs/987485 */
+	{ 0x04e8, 0x0000, USBLP_QUIRK_RESET }, /* All Samsung devices,
+				     https://bugs.launchpad.net/bugs/1032456 */
+	{ 0x0a5f, 0x0000, USBLP_QUIRK_BIDIR }, /* All Zebra devices,
+				     https://bugs.launchpad.net/bugs/1001028 */
+	/* Canon */
+	{ 0x04a9, 0x304a, USBLP_QUIRK_BLACKLIST }, /* Canon CP-10 */
+	{ 0x04a9, 0x3063, USBLP_QUIRK_BLACKLIST }, /* Canon CP-100 */
+	{ 0x04a9, 0x307c, USBLP_QUIRK_BLACKLIST }, /* Canon CP-200 */
+	{ 0x04a9, 0x307d, USBLP_QUIRK_BLACKLIST }, /* Canon CP-300 */
+	{ 0x04a9, 0x30bd, USBLP_QUIRK_BLACKLIST }, /* Canon CP-220 */
+	{ 0x04a9, 0x30be, USBLP_QUIRK_BLACKLIST }, /* Canon CP-330 */
+	{ 0x04a9, 0x30f6, USBLP_QUIRK_BLACKLIST }, /* Canon SELPHY CP400 */
+	{ 0x04a9, 0x310b, USBLP_QUIRK_BLACKLIST }, /* Canon SELPHY CP600 */
+	{ 0x04a9, 0x3127, USBLP_QUIRK_BLACKLIST }, /* Canon SELPHY CP710 */
+	{ 0x04a9, 0x3128, USBLP_QUIRK_BLACKLIST }, /* Canon SELPHY CP510 */
+	{ 0x04a9, 0x3141, USBLP_QUIRK_BLACKLIST }, /* Canon SELPHY ES1 */
+	{ 0x04a9, 0x3142, USBLP_QUIRK_BLACKLIST }, /* Canon SELPHY CP730 */
+	{ 0x04a9, 0x3143, USBLP_QUIRK_BLACKLIST }, /* Canon SELPHY CP720 */
+	{ 0x04a9, 0x3170, USBLP_QUIRK_BLACKLIST }, /* Canon SELPHY CP750 */
+	{ 0x04a9, 0x3171, USBLP_QUIRK_BLACKLIST }, /* Canon SELPHY CP740 */
+	{ 0x04a9, 0x3185, USBLP_QUIRK_BLACKLIST }, /* Canon SELPHY ES2 */
+	{ 0x04a9, 0x3186, USBLP_QUIRK_BLACKLIST }, /* Canon SELPHY ES20 */
+	{ 0x04a9, 0x31aa, USBLP_QUIRK_BLACKLIST }, /* Canon SELPHY CP770 */
+	{ 0x04a9, 0x31ab, USBLP_QUIRK_BLACKLIST }, /* Canon SELPHY CP760 */
+	{ 0x04a9, 0x31b0, USBLP_QUIRK_BLACKLIST }, /* Canon SELPHY ES30 */
+	{ 0x04a9, 0x31dd, USBLP_QUIRK_BLACKLIST }, /* Canon SELPHY CP780 */
+	{ 0x04a9, 0x31ee, USBLP_QUIRK_BLACKLIST }, /* Canon SELPHY ES40 */
+	{ 0x04a9, 0x3214, USBLP_QUIRK_BLACKLIST }, /* Canon SELPHY CP800 */
+	{ 0x04a9, 0x3255, USBLP_QUIRK_BLACKLIST }, /* Canon SELPHY CP900 */
+	{ 0x04a9, 0x3256, USBLP_QUIRK_BLACKLIST }, /* Canon SELPHY CP810 */
+	{ 0x04a9, 0x30F5, USBLP_QUIRK_BLACKLIST }, /* Canon SELPHY CP500 */
+	{ 0x04a9, 0x31AF, USBLP_QUIRK_BLACKLIST }, /* Canon SELPHY ES3 */
+	 /* MISSING PIDs: CP520, CP530, CP790 */
 	{ 0, 0 }
 };
 
@@ -256,7 +322,12 @@ print_device(const char *uri,		/* I - Device URI */
   }
 
   g.print_fd = print_fd;
-  g.printer->opened_for_job = 1;
+
+ /*
+  * Some devices need a reset after finishing a job, these devices are
+  * marked with the USBLP_QUIRK_RESET quirk.
+  */
+  g.printer->reset_after_job = (g.printer->quirks & USBLP_QUIRK_RESET ? 1 : 0);
 
  /*
   * If we are printing data from a print driver on stdin, ignore SIGTERM
@@ -639,10 +710,10 @@ print_device(const char *uri,		/* I - Device URI */
        * If it didn't exit abort the pending read and wait an additional
        * second...
        */
-  
+
       if (!g.read_thread_done)
       {
-	fputs("DEBUG: Read thread still active, aborting the pending read...\n", 
+	fputs("DEBUG: Read thread still active, aborting the pending read...\n",
 	      stderr);
 
 	g.wait_eof = 0;
@@ -650,7 +721,7 @@ print_device(const char *uri,		/* I - Device URI */
 	gettimeofday(&tv, NULL);
 	cond_timeout.tv_sec  = tv.tv_sec + 1;
 	cond_timeout.tv_nsec = tv.tv_usec * 1000;
-  
+
 	while (!g.read_thread_done)
 	{
 	  if (pthread_cond_timedwait(&g.read_thread_cond, &g.read_thread_mutex,
@@ -662,9 +733,6 @@ print_device(const char *uri,		/* I - Device URI */
 
     pthread_mutex_unlock(&g.read_thread_mutex);
   }
-
-  if (print_fd)
-    close(print_fd);
 
  /*
   * Close the connection and input file and general clean up...
@@ -725,7 +793,7 @@ close_device(usb_printer_t *printer)	/* I - Printer */
       */
       if (printer->origconf > 0 && printer->origconf != number2)
       {
-	fprintf(stderr, "DEBUG: Restoring USB device configuration: %d -> %d\n", 
+	fprintf(stderr, "DEBUG: Restoring USB device configuration: %d -> %d\n",
 		number2, printer->origconf);
 	if ((errcode = libusb_set_configuration(printer->handle,
 						printer->origconf)) < 0)
@@ -772,7 +840,7 @@ close_device(usb_printer_t *printer)	/* I - Printer */
     * Reset the device to clean up after the job
     */
 
-    if (printer->opened_for_job == 1)
+    if (printer->reset_after_job == 1)
     {
       if ((errcode = libusb_reset_device(printer->handle)) < 0)
 	fprintf(stderr,
@@ -859,7 +927,14 @@ find_device(usb_cb_t   cb,		/* I - Callback function */
           !devdesc.idProduct)
 	continue;
 
-      printer.quirks   = quirks(devdesc.idVendor, devdesc.idProduct);
+      printer.quirks = quirks(devdesc.idVendor, devdesc.idProduct);
+
+     /*
+      * Ignore blacklisted printers...
+      */
+
+      if (printer.quirks & USBLP_QUIRK_BLACKLIST)
+        continue;
 
       for (conf = 0; conf < devdesc.bNumConfigurations; conf ++)
       {
@@ -886,7 +961,7 @@ find_device(usb_cb_t   cb,		/* I - Callback function */
 	    */
 
 	    if (((altptr->bInterfaceClass != LIBUSB_CLASS_PRINTER ||
-		  altptr->bInterfaceSubClass != 1) && 
+		  altptr->bInterfaceSubClass != 1) &&
 		 ((printer.quirks & USBLP_QUIRK_BAD_CLASS) == 0)) ||
 		(altptr->bInterfaceProtocol != 1 &&	/* Unidirectional */
 		 altptr->bInterfaceProtocol != 2) ||	/* Bidirectional */
@@ -964,7 +1039,7 @@ find_device(usb_cb_t   cb,		/* I - Callback function */
 					    bEndpointAddress;
 		}
 		else
-		  fprintf(stderr, "DEBUG: Uni-directional USB communication " 
+		  fprintf(stderr, "DEBUG: Uni-directional USB communication "
 			  "only!\n");
 		printer.write_endp = confptr->interface[printer.iface].
 					   altsetting[printer.altset].
@@ -1288,7 +1363,7 @@ open_device(usb_printer_t *printer,	/* I - Printer */
   }
 
   printer->usblp_attached = 0;
-  printer->opened_for_job = 0;
+  printer->reset_after_job = 0;
 
   if (verbose)
     fputs("STATE: +connecting-to-device\n", stderr);
@@ -1343,7 +1418,7 @@ open_device(usb_printer_t *printer,	/* I - Printer */
 
   printer->origconf = current;
 
-  if ((errcode = 
+  if ((errcode =
        libusb_get_config_descriptor (printer->device, printer->conf, &confptr))
       < 0)
   {
@@ -1355,7 +1430,7 @@ open_device(usb_printer_t *printer,	/* I - Printer */
 
   if (number1 != current)
   {
-    fprintf(stderr, "DEBUG: Switching USB device configuration: %d -> %d\n", 
+    fprintf(stderr, "DEBUG: Switching USB device configuration: %d -> %d\n",
 	    current, number1);
     if ((errcode = libusb_set_configuration(printer->handle, number1)) < 0)
     {
@@ -1586,7 +1661,8 @@ static unsigned int quirks(int vendor, int product)
   for (i = 0; quirk_printers[i].vendorId; i++)
   {
     if (vendor == quirk_printers[i].vendorId &&
-	product == quirk_printers[i].productId)
+	(quirk_printers[i].productId == 0x0000 ||
+	 product == quirk_printers[i].productId))
       return quirk_printers[i].quirks;
   }
   return 0;
@@ -1881,6 +1957,6 @@ static void soft_reset(void)
 
 
 /*
- * End of "$Id: usb-libusb.c 10543 2012-07-16 17:10:55Z mike $".
+ * End of "$Id: usb-libusb.c 10908 2013-03-14 14:31:07Z mike $".
  */
 

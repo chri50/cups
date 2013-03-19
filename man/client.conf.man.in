@@ -1,9 +1,9 @@
 .\"
-.\" "$Id: client.conf.man.in 10424 2012-04-23 17:26:57Z mike $"
+.\" "$Id: client.conf.man.in 10791 2013-01-10 16:58:21Z mike $"
 .\"
 .\"   client.conf man page for CUPS.
 .\"
-.\"   Copyright 2007-2012 by Apple Inc.
+.\"   Copyright 2007-2013 by Apple Inc.
 .\"   Copyright 2006 by Easy Software Products.
 .\"
 .\"   These coded instructions, statements, and computer programs are the
@@ -53,7 +53,7 @@ Specifies the default user name to use for requests.
 .SH SEE ALSO
 http://localhost:631/help
 .SH COPYRIGHT
-Copyright 2007-2012 by Apple Inc.
+Copyright 2007-2013 by Apple Inc.
 .\"
-.\" End of "$Id: client.conf.man.in 10424 2012-04-23 17:26:57Z mike $".
+.\" End of "$Id: client.conf.man.in 10791 2013-01-10 16:58:21Z mike $".
 .\"

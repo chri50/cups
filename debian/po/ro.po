@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ro\n"
 "Report-Msgid-Bugs-To: cups@packages.debian.org\n"
-"POT-Creation-Date: 2012-09-18 12:37+0200\n"
+"POT-Creation-Date: 2013-03-19 14:39+0100\n"
 "PO-Revision-Date: 2008-06-30 03:23+0300\n"
 "Last-Translator: Eddy Petrișor <eddy.petrisor@gmail.com>\n"
 "Language-Team: Romanian <debian-l10n-romanian@lists.debian.org>\n"
@@ -88,18 +88,6 @@ msgstr ""
 #. Type: multiselect
 #. Choices
 #: ../cups.templates:3001
-msgid "ipp"
-msgstr "ipp"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
-msgid "ipp14"
-msgstr "ipp14"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
 msgid "lpd"
 msgstr "lpd"
 
@@ -161,6 +149,12 @@ msgid ""
 msgstr ""
 "Alegeți modulul pe care să-l folosească CUPS. Valoarea implicit selectată ar "
 "trebui să fie potrivită pentru majoritatea mediilor obișnuite."
+
+#~ msgid "ipp"
+#~ msgstr "ipp"
+
+#~ msgid "ipp14"
+#~ msgstr "ipp14"
 
 #~ msgid ""
 #~ "If you will be accepting print jobs from Windows computers, you probably "

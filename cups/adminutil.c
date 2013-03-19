@@ -1,5 +1,5 @@
 /*
- * "$Id: adminutil.c 10424 2012-04-23 17:26:57Z mike $"
+ * "$Id: adminutil.c 10586 2012-08-29 21:03:10Z mike $"
  *
  *   Administration utility API definitions for CUPS.
  *
@@ -65,7 +65,7 @@ static void		write_option(cups_file_t *dstfp, int order,
 /*
  * 'cupsAdminCreateWindowsPPD()' - Create the Windows PPD file for a printer.
  *
- * @since CUPS 1.2/OS X 10.5@
+ * @deprecated@
  */
 
 char *					/* O - PPD file or NULL */
@@ -393,7 +393,7 @@ cupsAdminCreateWindowsPPD(
 /*
  * 'cupsAdminExportSamba()' - Export a printer to Samba.
  *
- * @since CUPS 1.2/OS X 10.5@
+ * @deprecated@
  */
 
 int					/* O - 1 on success, 0 on failure */
@@ -2337,5 +2337,5 @@ write_option(cups_file_t     *dstfp,	/* I - PPD file */
 
 
 /*
- * End of "$Id: adminutil.c 10424 2012-04-23 17:26:57Z mike $".
+ * End of "$Id: adminutil.c 10586 2012-08-29 21:03:10Z mike $".
  */

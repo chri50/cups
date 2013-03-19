@@ -1,5 +1,5 @@
 /*
- * "$Id: ipp.c 10548 2012-07-16 18:21:43Z mike $"
+ * "$Id: ipp.c 10890 2013-03-08 18:42:09Z mike $"
  *
  *   IPP backend for CUPS.
  *
@@ -86,6 +86,7 @@ static int		child_pid = 0;	/* Child process ID */
 #endif /* HAVE_GSSAPI && HAVE_XPC */
 static const char * const jattrs[] =	/* Job attributes we want */
 {
+  "job-id",
   "job-impressions-completed",
   "job-media-sheets-completed",
   "job-name",
@@ -203,6 +204,7 @@ main(int  argc,				/* I - Number of command-line args */
 		*value,			/* Value of option */
 		sep;			/* Separator character */
   http_addrlist_t *addrlist;		/* Address of printer */
+  int		snmp_enabled = 1;	/* Is SNMP enabled? */
   int		snmp_fd,		/* SNMP socket */
 		start_count,		/* Page count via SNMP at start */
 		page_count,		/* Page count via SNMP */
@@ -508,6 +510,16 @@ main(int  argc,				/* I - Number of command-line args */
 			       value);
         }
       }
+      else if (!_cups_strcasecmp(name, "snmp"))
+      {
+        /*
+         * Enable/disable SNMP stuff...
+         */
+
+         snmp_enabled = !value[0] || !_cups_strcasecmp(value, "on") ||
+                        _cups_strcasecmp(value, "yes") ||
+                        _cups_strcasecmp(value, "true");
+      }
       else if (!_cups_strcasecmp(name, "version"))
       {
         if (!strcmp(value, "1.0"))
@@ -659,11 +671,14 @@ main(int  argc,				/* I - Number of command-line args */
   * See if the printer supports SNMP...
   */
 
-  if ((snmp_fd = _cupsSNMPOpen(addrlist->addr.addr.sa_family)) >= 0)
-  {
+  if (snmp_enabled)
+    snmp_fd = _cupsSNMPOpen(addrlist->addr.addr.sa_family);
+  else
+    snmp_fd = -1;
+
+  if (snmp_fd >= 0)
     have_supplies = !backendSNMPSupplies(snmp_fd, &(addrlist->addr),
                                          &start_count, NULL);
-  }
   else
     have_supplies = start_count = 0;
 
@@ -932,6 +947,8 @@ main(int  argc,				/* I - Number of command-line args */
 	_cupsLangPrintFilter(stderr, "ERROR",
 	                     _("Unable to get printer status."));
         sleep(10);
+
+	httpReconnect(http);
       }
 
       ippDelete(supported);
@@ -959,9 +976,15 @@ main(int  argc,				/* I - Number of command-line args */
 
       if ((printer_state = ippFindAttribute(supported,
 					    "printer-state-reasons",
-					    IPP_TAG_KEYWORD)) != NULL && !busy)
+					    IPP_TAG_KEYWORD)) == NULL)
+      {
+        update_reasons(NULL, "+cups-ipp-conformance-failure-report,"
+			     "cups-ipp-missing-printer-state-reasons");
+      }
+      else if (!busy)
       {
 	for (i = 0; i < printer_state->num_values; i ++)
+	{
 	  if (!strcmp(printer_state->values[0].string.text,
 	              "spool-area-full") ||
 	      !strncmp(printer_state->values[0].string.text, "spool-area-full-",
@@ -970,10 +993,8 @@ main(int  argc,				/* I - Number of command-line args */
 	    busy = 1;
 	    break;
 	  }
+	}
       }
-      else
-        update_reasons(NULL, "+cups-ipp-conformance-failure-report,"
-			     "cups-ipp-missing-printer-state-reasons");
 
       if (busy)
       {
@@ -1036,6 +1057,12 @@ main(int  argc,				/* I - Number of command-line args */
     if ((operations_sup = ippFindAttribute(supported, "operations-supported",
 					   IPP_TAG_ENUM)) != NULL)
     {
+      fprintf(stderr, "DEBUG: operations-supported (%d values)\n",
+              operations_sup->num_values);
+      for (i = 0; i < operations_sup->num_values; i ++)
+        fprintf(stderr, "DEBUG: [%d] = %s\n", i,
+                ippOpString(operations_sup->values[i].integer));
+
       for (i = 0; i < operations_sup->num_values; i ++)
         if (operations_sup->values[i].integer == IPP_PRINT_JOB)
 	  break;
@@ -1259,6 +1286,17 @@ main(int  argc,				/* I - Number of command-line args */
   }
 
  /*
+  * If the printer only claims to support IPP/1.0, or if the user specifically
+  * included version=1.0 in the URI, then do not try to use Create-Job or
+  * Send-Document.  This is another dreaded compatibility hack, but
+  * unfortunately there are enough broken printers out there that we need
+  * this for now...
+  */
+
+  if (version == 10)
+    create_job = send_document = 0;
+
+ /*
   * Start monitoring the printer in the background...
   */
 
@@ -1474,10 +1512,9 @@ main(int  argc,				/* I - Number of command-line args */
 	  goto cleanup;
 	}
       }
-      else if (ipp_status == IPP_ERROR_JOB_CANCELED)
+      else if (ipp_status == IPP_ERROR_JOB_CANCELED ||
+               ipp_status == IPP_NOT_AUTHORIZED)
         goto cleanup;
-      else if (ipp_status == IPP_NOT_AUTHORIZED)
-        continue;
       else
       {
        /*
@@ -1578,6 +1615,10 @@ main(int  argc,				/* I - Number of command-line args */
 	  ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_MIMETYPE,
 		       "document-format", NULL, document_format);
 
+        if (compression)
+	  ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_KEYWORD,
+		       "compression", NULL, compression);
+
 	fprintf(stderr, "DEBUG: Sending file %d using chunking...\n", i + 1);
 	http_status = cupsSendRequest(http, request, resource, 0);
 	if (http_status == HTTP_CONTINUE && request->state == IPP_DATA)
@@ -1653,12 +1694,69 @@ main(int  argc,				/* I - Number of command-line args */
     else if (ipp_status == IPP_SERVICE_UNAVAILABLE ||
              ipp_status == IPP_NOT_POSSIBLE ||
 	     ipp_status == IPP_PRINTER_BUSY)
+    {
+      if (argc == 6)
+      {
+       /*
+        * Need to reprocess the entire job; if we have a job ID, cancel the
+        * job first...
+        */
+
+	if (job_id > 0)
+	  cancel_job(http, uri, job_id, resource, argv[2], version);
+
+        goto cleanup;
+      }
       continue;
-    else if (ipp_status == IPP_REQUEST_VALUE)
+    }
+    else if (ipp_status == IPP_REQUEST_VALUE ||
+             ipp_status == IPP_ERROR_JOB_CANCELED ||
+             ipp_status == IPP_NOT_AUTHORIZED ||
+             ipp_status == IPP_INTERNAL_ERROR)
     {
      /*
-      * Print file is too large, abort this job...
+      * Print file is too large, job was canceled, we need new
+      * authentication data, or we had some sort of error...
       */
+
+      goto cleanup;
+    }
+    else if (ipp_status == IPP_UPGRADE_REQUIRED)
+    {
+     /*
+      * Server is configured incorrectly; the policy for Create-Job and
+      * Send-Document has to be the same (auth or no auth, encryption or
+      * no encryption).  Force the queue to stop since printing will never
+      * work.
+      */
+
+      fputs("DEBUG: The server or printer is configured incorrectly.\n",
+            stderr);
+      fputs("DEBUG: The policy for Create-Job and Send-Document must have the "
+            "same authentication and encryption requirements.\n", stderr);
+
+      ipp_status = IPP_INTERNAL_ERROR;
+
+      if (job_id > 0)
+	cancel_job(http, uri, job_id, resource, argv[2], version);
+
+      goto cleanup;
+    }
+    else if (ipp_status == IPP_NOT_FOUND)
+    {
+     /*
+      * Printer does not actually implement support for Create-Job/
+      * Send-Document, so log the conformance issue and stop the printer.
+      */
+
+      fputs("DEBUG: This printer claims to support Create-Job and "
+            "Send-Document, but those operations failed.\n", stderr);
+      fputs("DEBUG: Add '?version=1.0' to the device URI to use legacy "
+            "compatibility mode.\n", stderr);
+      update_reasons(NULL, "+cups-ipp-conformance-failure-report,"
+			   "cups-ipp-missing-send-document");
+
+      ipp_status = IPP_INTERNAL_ERROR;	/* Force queue to stop */
 
       goto cleanup;
     }
@@ -1826,7 +1924,8 @@ main(int  argc,				/* I - Number of command-line args */
   */
 
   if (have_supplies &&
-      !backendSNMPSupplies(snmp_fd, http->hostaddr, &page_count, NULL) &&
+      !backendSNMPSupplies(snmp_fd, &(http->addrlist->addr), &page_count,
+                           NULL) &&
       page_count > start_count)
     fprintf(stderr, "PAGE: total %d\n", page_count - start_count);
 
@@ -3277,5 +3376,5 @@ update_reasons(ipp_attribute_t *attr,	/* I - printer-state-reasons or NULL */
 }
 
 /*
- * End of "$Id: ipp.c 10548 2012-07-16 18:21:43Z mike $".
+ * End of "$Id: ipp.c 10890 2013-03-08 18:42:09Z mike $".
  */

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: cups@packages.debian.org\n"
-"POT-Creation-Date: 2012-09-18 12:37+0200\n"
+"POT-Creation-Date: 2013-03-19 14:39+0100\n"
 "PO-Revision-Date: 2012-01-27 21:29+0100\n"
 "Last-Translator: Michał Kułach <michal.kulach@gmail.com>\n"
 "Language-Team: Polish <debian-l10n-polish@lists.debian.org>\n"
@@ -83,18 +83,6 @@ msgstr ""
 #. Type: multiselect
 #. Choices
 #: ../cups.templates:3001
-msgid "ipp"
-msgstr "ipp"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
-msgid "ipp14"
-msgstr "ipp14"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
 msgid "lpd"
 msgstr "lpd"
 
@@ -157,3 +145,8 @@ msgstr ""
 "Proszę wybrać backend, który ma być używany przez CUPS. Domyślny wybór jest "
 "odpowiedni w większości przypadków."
 
+#~ msgid "ipp"
+#~ msgstr "ipp"
+
+#~ msgid "ipp14"
+#~ msgstr "ipp14"

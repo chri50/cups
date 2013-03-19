@@ -1,5 +1,5 @@
 /*
- * "$Id: dest-options.c 10505 2012-05-23 18:22:11Z mike $"
+ * "$Id: dest-options.c 10767 2012-12-13 21:10:03Z mike $"
  *
  *   Destination option/media support for CUPS.
  *
@@ -269,13 +269,13 @@ cupsCheckDestSupported(
  * Returns 1 if there is a conflict, 0 if there are no conflicts, and -1 if
  * there was an unrecoverable error such as a resolver loop.
  *
- * If "num_conflicts" and "conflicts" are not NULL, they are set to contain the
- * list of conflicting option/value pairs.  Similarly, if "num_resolved" and
- * "resolved" are not NULL they will be set to the list of changes needed to
- * resolve the conflict.
+ * If "num_conflicts" and "conflicts" are not @code NULL@, they are set to
+ * contain the list of conflicting option/value pairs.  Similarly, if
+ * "num_resolved" and "resolved" are not @code NULL@ they will be set to the
+ * list of changes needed to resolve the conflict.
  *
  * If cupsCopyDestConflicts returns 1 but "num_resolved" and "resolved" are set
- * to 0 and NULL, respectively, then the conflict cannot be resolved.
+ * to 0 and @code NULL@, respectively, then the conflict cannot be resolved.
  *
  * @since CUPS 1.6/OS X 10.8@
  */
@@ -485,7 +485,7 @@ cupsCopyDestConflicts(
     active = NULL;
   }
 
-  if (tries >= 0)
+  if (tries >= 100)
   {
     DEBUG_puts("1cupsCopyDestConflicts: Unable to resolve after 100 tries.");
     have_conflicts = -1;
@@ -716,14 +716,13 @@ cupsFreeDestInfo(cups_dinfo_t *dinfo)	/* I - Destination information */
 /*
  * 'cupsGetDestMediaByName()' - Get media names, dimensions, and margins.
  *
- * The "media" string is a PWG media name, while "width" and "length" are the
- * dimensions in hundredths of millimeters.  "flags" provides some matching
+ * The "media" string is a PWG media name.  "Flags" provides some matching
  * guidance (multiple flags can be combined):
  *
- * CUPS_MEDIA_FLAGS_DEFAULT    = find the closest size supported by the printer
- * CUPS_MEDIA_FLAGS_BORDERLESS = find a borderless size
- * CUPS_MEDIA_FLAGS_DUPLEX     = find a size compatible with 2-sided printing
- * CUPS_MEDIA_FLAGS_EXACT      = find an exact match for the size
+ * CUPS_MEDIA_FLAGS_DEFAULT    = find the closest size supported by the printer,
+ * CUPS_MEDIA_FLAGS_BORDERLESS = find a borderless size,
+ * CUPS_MEDIA_FLAGS_DUPLEX     = find a size compatible with 2-sided printing,
+ * CUPS_MEDIA_FLAGS_EXACT      = find an exact match for the size, and
  * CUPS_MEDIA_FLAGS_READY      = if the printer supports media sensing, find the
  *                               size amongst the "ready" media.
  *
@@ -782,14 +781,13 @@ cupsGetDestMediaByName(
 /*
  * 'cupsGetDestMediaBySize()' - Get media names, dimensions, and margins.
  *
- * The "media" string is a PWG media name, while "width" and "length" are the
- * dimensions in hundredths of millimeters.  "flags" provides some matching
- * guidance (multiple flags can be combined):
+ * "Width" and "length" are the dimensions in hundredths of millimeters.
+ * "Flags" provides some matching guidance (multiple flags can be combined):
  *
- * CUPS_MEDIA_FLAGS_DEFAULT    = find the closest size supported by the printer
- * CUPS_MEDIA_FLAGS_BORDERLESS = find a borderless size
- * CUPS_MEDIA_FLAGS_DUPLEX     = find a size compatible with 2-sided printing
- * CUPS_MEDIA_FLAGS_EXACT      = find an exact match for the size
+ * CUPS_MEDIA_FLAGS_DEFAULT    = find the closest size supported by the printer,
+ * CUPS_MEDIA_FLAGS_BORDERLESS = find a borderless size,
+ * CUPS_MEDIA_FLAGS_DUPLEX     = find a size compatible with 2-sided printing,
+ * CUPS_MEDIA_FLAGS_EXACT      = find an exact match for the size, and
  * CUPS_MEDIA_FLAGS_READY      = if the printer supports media sensing, find the
  *                               size amongst the "ready" media.
  *
@@ -1761,5 +1759,5 @@ cups_test_constraints(
 
 
 /*
- * End of "$Id: dest-options.c 10505 2012-05-23 18:22:11Z mike $".
+ * End of "$Id: dest-options.c 10767 2012-12-13 21:10:03Z mike $".
  */

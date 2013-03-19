@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: cups@packages.debian.org\n"
-"POT-Creation-Date: 2012-09-18 12:37+0200\n"
+"POT-Creation-Date: 2013-03-19 14:39+0100\n"
 "PO-Revision-Date: 2007-12-14 11:57+0530\n"
 "Last-Translator: Christian Perrier <bubulle@debian.org>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
@@ -85,18 +85,6 @@ msgstr ""
 #. Type: multiselect
 #. Choices
 #: ../cups.templates:3001
-msgid "ipp"
-msgstr "IPP"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
-msgid "ipp14"
-msgstr "IPP14"
-
-#. Type: multiselect
-#. Choices
-#: ../cups.templates:3001
 msgid "lpd"
 msgstr "lpd"
 
@@ -158,3 +146,8 @@ msgid ""
 "should fit the most common environments."
 msgstr "Le choix par défaut est adapté à la majorité des environnements."
 
+#~ msgid "ipp"
+#~ msgstr "IPP"
+
+#~ msgid "ipp14"
+#~ msgstr "IPP14"

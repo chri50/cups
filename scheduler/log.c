@@ -1,5 +1,5 @@
 /*
- * "$Id: log.c 10158 2012-01-05 05:50:57Z mike $"
+ * "$Id: log.c 10752 2012-12-12 18:03:02Z mike $"
  *
  *   Log file routines for the CUPS scheduler.
  *
@@ -40,6 +40,22 @@
 
 static int	log_linesize = 0;	/* Size of line for output file */
 static char	*log_line = NULL;	/* Line for output file */
+
+#ifdef HAVE_VSYSLOG
+static const int syslevels[] =		/* SYSLOG levels... */
+		{
+		  0,
+		  LOG_EMERG,
+		  LOG_ALERT,
+		  LOG_CRIT,
+		  LOG_ERR,
+		  LOG_WARNING,
+		  LOG_NOTICE,
+		  LOG_INFO,
+		  LOG_DEBUG,
+		  LOG_DEBUG
+		};
+#endif /* HAVE_VSYSLOG */
 
 
 /*
@@ -543,8 +559,12 @@ cupsdLogMessage(int        level,	/* I - Log level */
   if ((TestConfigFile || !ErrorLog) && level <= CUPSD_LOG_WARN)
   {
     va_start(ap, message);
+#ifdef HAVE_VSYSLOG
+    vsyslog(LOG_LPR | syslevels[level], message, ap);
+#else
     vfprintf(stderr, message, ap);
     putc('\n', stderr);
+#endif /* HAVE_VSYSLOG */
     va_end(ap);
 
     return (1);
@@ -984,21 +1004,6 @@ cupsdWriteErrorLog(int        level,	/* I - Log level */
 		  'D',
 		  'd'
 		};
-#ifdef HAVE_VSYSLOG
-  static const int	syslevels[] =	/* SYSLOG levels... */
-		{
-		  0,
-		  LOG_EMERG,
-		  LOG_ALERT,
-		  LOG_CRIT,
-		  LOG_ERR,
-		  LOG_WARNING,
-		  LOG_NOTICE,
-		  LOG_INFO,
-		  LOG_DEBUG,
-		  LOG_DEBUG
-		};
-#endif /* HAVE_VSYSLOG */
 
 
 #ifdef HAVE_VSYSLOG
@@ -1098,5 +1103,5 @@ format_log_line(const char *message,	/* I - Printf-style format string */
 
 
 /*
- * End of "$Id: log.c 10158 2012-01-05 05:50:57Z mike $".
+ * End of "$Id: log.c 10752 2012-12-12 18:03:02Z mike $".
  */

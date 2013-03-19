@@ -1,5 +1,5 @@
 dnl
-dnl "$Id: cups-directories.m4 10424 2012-04-23 17:26:57Z mike $"
+dnl "$Id: cups-directories.m4 10622 2012-10-01 01:55:23Z mike $"
 dnl
 dnl   Directory stuff for CUPS.
 dnl
@@ -106,7 +106,7 @@ if test "$libdir" = "\${exec_prefix}/lib"; then
 			libdir="$exec_prefix/lib32"
 			;;
 		Linux*)
-			if test -d /usr/lib64; then
+			if test -d /usr/lib64 -a ! -d /usr/lib64/fakeroot; then
 				libdir="$exec_prefix/lib64"
 			fi
 			;;
@@ -436,5 +436,5 @@ AC_DEFINE_UNQUOTED(CUPS_STATEDIR, "$CUPS_STATEDIR")
 AC_SUBST(CUPS_STATEDIR)
 
 dnl
-dnl End of "$Id: cups-directories.m4 10424 2012-04-23 17:26:57Z mike $".
+dnl End of "$Id: cups-directories.m4 10622 2012-10-01 01:55:23Z mike $".
 dnl

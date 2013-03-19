@@ -1,9 +1,9 @@
 /*
- * "$Id: usersys.c 10424 2012-04-23 17:26:57Z mike $"
+ * "$Id: usersys.c 10903 2013-03-12 14:26:28Z mike $"
  *
  *   User, system, and password routines for CUPS.
  *
- *   Copyright 2007-2012 by Apple Inc.
+ *   Copyright 2007-2013 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -341,13 +341,30 @@ cupsSetPasswordCB2(
 void
 cupsSetServer(const char *server)	/* I - Server name */
 {
-  char		*port;			/* Pointer to port */
+  char		*options,		/* Options */
+		*port;			/* Pointer to port */
   _cups_globals_t *cg = _cupsGlobals();	/* Pointer to library globals */
 
 
   if (server)
   {
     strlcpy(cg->server, server, sizeof(cg->server));
+
+    if (cg->server[0] != '/' && (options = strrchr(cg->server, '/')) != NULL)
+    {
+      *options++ = '\0';
+
+      if (!strcmp(options, "version=1.0"))
+        cg->server_version = 10;
+      else if (!strcmp(options, "version=1.1"))
+        cg->server_version = 11;
+      else if (!strcmp(options, "version=2.0"))
+        cg->server_version = 20;
+      else if (!strcmp(options, "version=2.1"))
+        cg->server_version = 21;
+      else if (!strcmp(options, "version=2.2"))
+        cg->server_version = 22;
+    }
 
     if (cg->server[0] != '/' && (port = strrchr(cg->server, ':')) != NULL &&
         !strchr(port, ']') && isdigit(port[1] & 255))
@@ -364,8 +381,9 @@ cupsSetServer(const char *server)	/* I - Server name */
   }
   else
   {
-    cg->server[0]     = '\0';
-    cg->servername[0] = '\0';
+    cg->server[0]      = '\0';
+    cg->servername[0]  = '\0';
+    cg->server_version = 20;
   }
 
   if (cg->http)
@@ -933,36 +951,7 @@ cups_read_client_conf(
   }
 
   if ((!cg->server[0] || !cg->ipp_port) && cups_server)
-  {
-    if (!cg->server[0])
-    {
-     /*
-      * Copy server name...
-      */
-
-      strlcpy(cg->server, cups_server, sizeof(cg->server));
-
-      if (cg->server[0] != '/' && (value = strrchr(cg->server, ':')) != NULL &&
-	  !strchr(value, ']') && isdigit(value[1] & 255))
-        *value++ = '\0';
-      else
-        value = NULL;
-
-      if (cg->server[0] == '/')
-	strcpy(cg->servername, "localhost");
-      else
-	strlcpy(cg->servername, cg->server, sizeof(cg->servername));
-    }
-    else if (cups_server[0] != '/' &&
-             (value = strrchr(cups_server, ':')) != NULL &&
-	     !strchr(value, ']') && isdigit(value[1] & 255))
-      value ++;
-    else
-      value = NULL;
-
-    if (!cg->ipp_port && value)
-      cg->ipp_port = atoi(value);
-  }
+    cupsSetServer(cups_server);
 
   if (!cg->server[0])
   {
@@ -1066,5 +1055,5 @@ cups_read_client_conf(
 
 
 /*
- * End of "$Id: usersys.c 10424 2012-04-23 17:26:57Z mike $".
+ * End of "$Id: usersys.c 10903 2013-03-12 14:26:28Z mike $".
  */

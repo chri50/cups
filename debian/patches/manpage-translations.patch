@@ -4,15 +4,7 @@ Bug-Debian: http://bugs.debian.org/478597
 
 --- a/man/Makefile
 +++ b/man/Makefile
-@@ -42,6 +42,7 @@
- 		cups-files.conf.$(MAN5EXT) \
- 		cups-snmp.conf.$(MAN5EXT) \
- 		cupsd.conf.$(MAN5EXT) \
-+		cups-files.conf.$(MAN5EXT) \
- 		ipptoolfile.$(MAN5EXT) \
- 		mailto.conf.$(MAN5EXT) \
- 		mime.convs.$(MAN5EXT) \
-@@ -67,12 +68,18 @@
+@@ -67,12 +67,18 @@
  		lpmove.$(MAN8EXT) \
  		lpc.$(MAN8EXT)
  
@@ -32,7 +24,7 @@ Bug-Debian: http://bugs.debian.org/478597
  
  
  #
-@@ -112,6 +119,11 @@
+@@ -112,6 +118,11 @@
  	for file in $(MAN8); do \
  		$(RM) ../doc/help/man-`basename $$file .$(MAN8EXT)`.html; \
  	done
@@ -44,7 +36,7 @@ Bug-Debian: http://bugs.debian.org/478597
  
  
  #
-@@ -159,6 +171,7 @@
+@@ -159,6 +170,7 @@
  	done
  	$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
  	$(LN) cupsenable.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
@@ -52,7 +44,7 @@ Bug-Debian: http://bugs.debian.org/478597
  
  
  #
-@@ -207,6 +220,7 @@
+@@ -207,6 +219,7 @@
  	$(RM) $(AMANDIR)/man$(MAN8DIR)/reject.$(MAN8EXT)
  	$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
  	-$(RMDIR) $(AMANDIR)/man$(MAN8DIR)

@@ -1,5 +1,5 @@
 #
-# "$Id: Makefile 9771 2011-05-12 05:21:56Z mike $"
+# "$Id: Makefile 10710 2012-11-26 18:26:01Z mike $"
 #
 #   Configuration file makefile for CUPS.
 #
@@ -19,7 +19,7 @@ include ../Makedefs
 # Config files...
 #
 
-KEEP	=	cupsd.conf snmp.conf
+KEEP	=	cups-files.conf cupsd.conf snmp.conf
 REPLACE	=	mime.convs mime.types
 
 
@@ -139,5 +139,5 @@ uninstall:
 
 
 #
-# End of "$Id: Makefile 9771 2011-05-12 05:21:56Z mike $".
+# End of "$Id: Makefile 10710 2012-11-26 18:26:01Z mike $".
 #
