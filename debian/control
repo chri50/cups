@@ -44,7 +44,8 @@ Build-Depends:
  zlib1g-dev,
 # Needed for running the tests, not for the build
  cups-filters (>= 1.0.25~),
- libcupsfilters-dev (>= 1.0.25~)
+ libcupsfilters-dev (>= 1.0.25~),
+ libp11-kit-gnome-keyring
 Homepage: http://www.cups.org
 Vcs-Git: git://anonscm.debian.org/pkg-cups/cups.git
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-cups/cups.git;a=summary

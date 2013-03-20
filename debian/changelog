@@ -1,3 +1,13 @@
+cups (1.6.2-1ubuntu1) raring; urgency=low
+
+  * debian/cups.maintscript: Added line "rm_conffile /etc/logrotate.d/cups
+    1.6.2-1ubuntu1~" to clean up /etc/logrotate.d/cups conffile if it did not
+    get moved by the mv_conffile line (LP: #1157758).
+  * debian/control: Added libp11-kit-gnome-keyring to the build dependencies,
+    it is needed for the tests.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 20 Mar 2013 18:13:01 +0100
+
 cups (1.6.2-1) experimental; urgency=low
 
   * New upstream release
