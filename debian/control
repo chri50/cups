@@ -148,7 +148,8 @@ Depends: ${shlibs:Depends},
  cups-client (>= ${binary:Version}),
  libcups2 (= ${binary:Version}),
  cups-ppdc,
- cups-filters (>= 1.0.24-3~)
+ cups-filters (>= 1.0.24-3~),
+ libp11-kit-gnome-keyring
 Recommends: avahi-daemon,
  colord,
  foomatic-filters (>= 4.0), 
