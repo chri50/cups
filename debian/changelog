@@ -1,3 +1,10 @@
+cups (1.6.2-1ubuntu2) raring; urgency=low
+
+  * debian/control: Added libp11-kit-gnome-keyring to the dependencies of
+    the cups-binary package (LP: #1157904).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 20 Mar 2013 19:58:01 +0100
+
 cups (1.6.2-1ubuntu1) raring; urgency=low
 
   * debian/cups.maintscript: Added line "rm_conffile /etc/logrotate.d/cups
