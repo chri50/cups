@@ -14,49 +14,49 @@
 .\"
 .TH lp 1 "CUPS" "16 July 2012" "Apple Inc."
 .SH NAME
-lp - print files
+lp \- print files
 .SH SYNOPSIS
 .B lp
-[ -E ] [ -U
+[ \-E ] [ \-U
 .I username
-] [ -c ] [ -d
+] [ \-c ] [ \-d
 .I destination[/instance]
-] [ -h
+] [ \-h
 .I hostname[:port]
-] [ -m ] [ -n
+] [ \-m ] [ \-n
 .I num-copies
-] [ -o
+] [ \-o
 .I option[=value]
-] [ -q
+] [ \-q
 .I priority
-] [ -s ] [ -t
+] [ \-s ] [ \-t
 .I title
-] [ -H
+] [ \-H
 .I handling
-] [ -P
+] [ \-P
 .I page-list
-] [ -- ] [
+] [ \-- ] [
 .I file(s)
 ]
 .br
 .B lp
-[ -E ] [ -U
+[ \-E ] [ \-U
 .I username
-] [ -c ] [ -h
+] [ \-c ] [ \-h
 .I hostname[:port]
-] [ -i
+] [ \-i
 .I job-id
-] [ -n
+] [ \-n
 .I num-copies
-] [ -o
+] [ \-o
 .I option[=value]
-] [ -q
+] [ \-q
 .I priority
-] [ -t
+] [ \-t
 .I title
-] [ -H
+] [ \-H
 .I handling
-] [ -P
+] [ \-P
 .I page-list
 ]
 .SH DESCRIPTION
@@ -70,20 +70,20 @@ followed by the default set using the \fIlpadmin(8)\fR command.
 .SH OPTIONS
 The following options are recognized by \fIlp\fR:
 .TP 5
---
+\--
 .br
 Marks the end of options; use this to print a file whose name
 begins with a dash (-).
 .TP 5
--E
+\-E
 .br
 Forces encryption when connecting to the server.
 .TP 5
--U username
+\-U username
 .br
 Specifies the username to use when connecting to the server.
 .TP 5
--c
+\-c
 .br
 This option is provided for backwards-compatibility only. On
 systems that support it, this option forces the print file to be
@@ -91,52 +91,52 @@ copied to the spool directory before printing. In CUPS, print
 files are always sent to the scheduler via IPP which has the
 same effect.
 .TP 5
--d destination
+\-d destination
 .br
 Prints files to the named printer.
 .TP 5
--h hostname[:port]
+\-h hostname[:port]
 .br
 Chooses an alternate server.
 .TP 5
--i job-id
+\-i job-id
 .br
 Specifies an existing job to modify.
 .TP 5
--m
+\-m
 .br
 Sends an email when the job is completed.
 .TP 5
--n copies
+\-n copies
 .br
 Sets the number of copies to print from 1 to 100.
 .TP 5
--o "name=value [name=value ...]"
+\-o "name=value [name=value ...]"
 .br
 Sets one or more job options.
 .TP 5
--q priority
+\-q priority
 .br
 Sets the job priority from 1 (lowest) to 100 (highest). The
 default priority is 50.
 .TP 5
--s
+\-s
 .br
 Do not report the resulting job IDs (silent mode.)
 .TP 5
--t "name"
+\-t "name"
 .br
 Sets the job name.
 .TP 5
--H hh:mm
+\-H hh:mm
 .TP 5
--H hold
+\-H hold
 .TP 5
--H immediate
+\-H immediate
 .TP 5
--H restart
+\-H restart
 .TP 5
--H resume
+\-H resume
 .br
 Specifies when the job should be printed. A value of \fIimmediate\fR will print
 the file immediately, a value of \fIhold\fR will hold the job indefinitely, and
@@ -145,91 +145,91 @@ time. Use a value of \fIresume\fR with the \fI-i\fR option to resume a held job.
 Use a value of \fIrestart\fR with the \fI-i\fR option to restart
 a completed job.
 .TP 5
--P page-list
+\-P page-list
 .br
 Specifies which pages to print in the document. The list can
 contain a list of numbers and ranges (#-#) separated by commas
 (e.g. 1,3-5,16). The page numbers refer to the output pages and
-not the document's original pages - options like "number-up" can
+not the document's original pages \- options like "number-up" can
 affect the numbering of the pages.
 .SH COMMON JOB OPTIONS
 Aside from the printer-specific options reported by the
 \fIlpoptions(1)\fR command, the following generic options are
 available:
 .TP 5
--o media=size
+\-o media=size
 .br
 Sets the page size to \fIsize\fR. Most printers support at least
 the size names "a4", "letter", and "legal".
 .TP 5
--o landscape
+\-o landscape
 .TP 5
--o orientation-requested=4
+\-o orientation-requested=4
 .br
 Prints the job in landscape (rotated 90 degrees).
 .TP 5
--o sides=one-sided
+\-o sides=one-sided
 .TP 5
--o sides=two-sided-long-edge
+\-o sides=two-sided-long-edge
 .TP 5
--o sides=two-sided-short-edge
+\-o sides=two-sided-short-edge
 .br
 Prints on one or two sides of the paper. The value
 "two-sided-long-edge" is normally used when printing portrait
 (unrotated) pages, while "two-sided-short-edge" is used for
 landscape pages.
 .TP 5
--o fit-to-page
+\-o fit-to-page
 .br
 Scales the print file to fit on the page.
 .TP 5
--o number-up=2
+\-o number-up=2
 .TP 5
--o number-up=4
+\-o number-up=4
 .TP 5
--o number-up=6
+\-o number-up=6
 .TP 5
--o number-up=9
+\-o number-up=9
 .TP 5
--o number-up=16
+\-o number-up=16
 .br
 Prints multiple document pages on each output page.
 .TP 5
--o cpi=N
+\-o cpi=N
 .br
 Sets the number of characters per inch to use when printing a
 text file. The default is 10.
 .TP 5
--o lpi=N
+\-o lpi=N
 .br
 Sets the number of lines per inch to use when printing a text
 file. The default is 6.
 .TP 5
--o page-bottom=N
+\-o page-bottom=N
 .TP 5
--o page-left=N
+\-o page-left=N
 .TP 5
--o page-right=N
+\-o page-right=N
 .TP 5
--o page-top=N
+\-o page-top=N
 .br
 Sets the page margins when printing text files. The values are in
-points - there are 72 points to the inch.
+points \- there are 72 points to the inch.
 .SH EXAMPLES
 Print a double-sided legal document to a printer called "foo":
 .nf
-    lp -d foo -o media=legal -o sides=two-sided-long-edge filename
+    lp \-d foo \-o media=legal \-o sides=two-sided-long-edge filename
 .fi
 .LP
 Print an image across 4 pages:
 .nf
-    lp -d bar -o scaling=200 filename
+    lp \-d bar \-o scaling=200 filename
 .fi
 .LP
 Print a text file with 12 characters per inch, 8 lines per inch, and
 a 1 inch left margin:
 .nf
-    lp -d bar -o cpi=12 -o lpi=8 -o page-left=72 filename
+    lp \-d bar \-o cpi=12 \-o lpi=8 \-o page-left=72 filename
 .fi
 .SH COMPATIBILITY
 Unlike the System V printing system, CUPS allows printer names to
