@@ -1,3 +1,16 @@
+cups (1.6.2-2) experimental; urgency=low
+
+  * Split architecture independent documentation and files out of cups,
+    to cups-server-common:
+    - Patch the documentation generation to make it fully arch-independant
+  * Packages cleanup:
+   - In cups-daemon, drop superfluous Suggests against lsb-base.
+   - Add missing DEP3 headers.
+   - Add missing 'empty-directory' lintian overrides.
+   - Add patch to correct all hyphen-used-as-minus-sign lintian errors.
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 20 Mar 2013 15:00:08 +0100
+
 cups (1.6.2-1) experimental; urgency=low
 
   * New upstream release

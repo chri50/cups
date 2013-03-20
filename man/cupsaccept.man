@@ -17,18 +17,18 @@
 cupsaccept/cupsreject \- accept/reject jobs sent to a destination
 .SH SYNOPSIS
 .B cupsaccept
-[ -E ] [ -U
+[ \-E ] [ \-U
 .I username
-] [ -h
+] [ \-h
 .I hostname[:port]
 ] destination(s)
 .br
 .B cupsreject
-[ -E ] [ -U
+[ \-E ] [ \-U
 .I username
-] [ -h
+] [ \-h
 .I hostname[:port]
-] [ -r
+] [ \-r
 .I reason
 ] destination(s)
 .SH DESCRIPTION
@@ -42,19 +42,19 @@ print jobs. If not specified the reason defaults to "Reason Unknown".
 The following options are supported by both \fIcupsaccept\fR and
 \fIcupsreject\fR:
 .TP 5
--E
+\-E
 .br
 Forces encryption when connecting to the server.
 .TP 5
--U username
+\-U username
 .br
 Sets the username that is sent when connecting to the server.
 .TP 5
--h hostname[:port]
+\-h hostname[:port]
 .br
 Chooses an alternate server.
 .TP 5
--r "reason"
+\-r "reason"
 .br
 Sets the reason string that is shown for a printer that is
 rejecting jobs.

@@ -79,8 +79,8 @@ endif
 
 	# Remove all files which get replaced by the ones in the cups-filters
 	# package
-	rm -rf debian/cups/usr/share/cups/banners
-	rm debian/cups/usr/share/cups/data/testprint
+	rm -rf debian/cups-server-common/usr/share/cups/banners
+	rm debian/cups-server-common/usr/share/cups/data/testprint
 
 	# Ensure that we don't ship anything in /var/run
 	rm -rf debian/cups*/var/run

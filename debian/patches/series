@@ -6,11 +6,13 @@ get-ppd-file-for-statically-configured-ipp-shared-queues.patch
 pidfile.patch
 ppd-poll-with-client-conf.patch
 # no answer yet, po4a might not be appropriate
+manpage-hyphen-minus.patch
 manpage-translations.patch
 rootbackends-worldreadable.patch
 cups-dbus-utf8.patch
 
 # patches which should go upstream
+drop-arch-specifics-from-doc.patch
 airprint-support.patch
 removecvstag.patch
 no-conffile-timestamp.patch
