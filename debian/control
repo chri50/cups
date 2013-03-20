@@ -143,7 +143,8 @@ Depends: ${shlibs:Depends},
  procps,
  ghostscript (>= 9.02~),
  lsb-base (>= 3),
- cups-common (>= ${source:Upstream-Version}), 
+ cups-common (>= ${source:Version}),
+ cups-server-common (>= ${source:Version}),
  cups-client (>= ${binary:Version}),
  libcups2 (= ${binary:Version}),
  cups-ppdc,
@@ -187,11 +188,11 @@ Recommends: avahi-daemon,
  colord,
  cups-browsed
 Suggests: cups, cups-bsd,
- cups-common (>= ${source:Upstream-Version}), 
+ cups-common (>= ${source:Version}),
+ cups-server-common (>= ${source:Version}),
  cups-client (>= ${binary:Version}),
  cups-ppdc,
  cups-filters,
- lsb-base (>= 3),
  poppler-utils (>= 0.12),
  ghostscript (>= 9.02~),
  ghostscript-cups (>= 9.02~),
@@ -217,7 +218,7 @@ Description: Common UNIX Printing System(tm) - daemon
 Package: cups-client
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, 
- cups-common (>= ${source:Upstream-Version}),
+ cups-common (>= ${source:Version}),
  libcups2 (= ${binary:Version}),
  adduser
 Recommends: smbclient
@@ -321,7 +322,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
  cups-client (= ${binary:Version}),
  debconf | debconf-2.0,
  update-inetd,
- cups-common
+ cups-common (>= ${source:Version})
 Suggests: cups
 Conflicts: lpr, lprng
 Replaces: lpr
@@ -349,10 +350,24 @@ Description: Common UNIX Printing System(tm) - common files
  .
  This package provides common files for CUPS server and client packages.
 
+Package: cups-server-common
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Replaces: cups (<< 1.6.2-2~)
+Breaks: cups (<< 1.6.2-2~)
+Multi-Arch: foreign
+Description: Common UNIX Printing System(tm) - server common files
+ The Common UNIX Printing System (or CUPS(tm)) is a printing system and
+ general replacement for lpd and the like.  It supports the Internet
+ Printing Protocol (IPP), and has its own filtering driver model for
+ handling various document types.
+ .
+ This package provides common files for CUPS server.
+
 Package: cups-ppdc
 Section: utils
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, cups-common
+Depends: ${shlibs:Depends}, ${misc:Depends}, cups-common (>= ${source:Version})
 Multi-Arch: foreign
 Description: Common UNIX Printing System(tm) - PPD manipulation utilities
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
