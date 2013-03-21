@@ -77,10 +77,11 @@ ifeq ($(derives_from_ubuntu),yes)
 endif
 	dh_install
 
+ifneq (,$(filter cups-server-common,$(shell dh_listpackages)))
 	# Remove all files which get replaced by the ones in the cups-filters
 	# package
-	rm -rf debian/cups-server-common/usr/share/cups/banners
-	rm debian/cups-server-common/usr/share/cups/data/testprint
+	rm -f debian/cups-server-common/usr/share/cups/data/testprint
+endif
 
 	# Ensure that we don't ship anything in /var/run
 	rm -rf debian/cups*/var/run

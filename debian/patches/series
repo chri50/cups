@@ -5,8 +5,8 @@ cupsd-no-crash-on-avahi-threaded-poll-shutdown.patch
 get-ppd-file-for-statically-configured-ipp-shared-queues.patch
 pidfile.patch
 ppd-poll-with-client-conf.patch
-# no answer yet, po4a might not be appropriate
 manpage-hyphen-minus.patch
+# no answer yet, po4a might not be appropriate
 manpage-translations.patch
 rootbackends-worldreadable.patch
 cups-dbus-utf8.patch

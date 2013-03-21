@@ -1,3 +1,16 @@
+cups (1.6.2-3) experimental; urgency=low
+
+  [ Didier Raboud ]
+  * Update the upstream status of the manpage-hyphen-minus patch.
+  * Cleanup cups-server-common cleanup. Fixes FTBFS for arch-only build.
+
+  [ Till Kamppeter ]
+  * Added rm_conffile /etc/logrotate.d/cups 1.6.2-3~ to clean up
+    logrotate conffile if it did not get moved by the mv_conffile line
+    (LP: #1157758)
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 21 Mar 2013 13:23:45 +0100
+
 cups (1.6.2-2) experimental; urgency=low
 
   * Split architecture independent documentation and files out of cups,
