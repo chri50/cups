@@ -1,6 +1,8 @@
 Description: Fix all spotted hyphen-used-as-minus-sign manpage errors
  Automatically generated using sed -i -s 's/^-/\\-/g;s/ -/ \\-/g' man/*.man*
 Author: Didier Raboud <odyx@debian.org>
+Origin: vendor
+Bug-Upstream: https://cups.org/str.php?L4299
 Last-Update: 2013-03-20
 
 --- a/man/cups-files.conf.man.in
