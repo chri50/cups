@@ -1,3 +1,11 @@
+cups (1.6.2-1ubuntu3) raring; urgency=low
+
+  * debian/patches/airprint-support.patch: Let the DNS-SD subtype "_universal"
+    get added to the printer's DNS-SD registration. It is needed for iOS to
+    find the printers.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon, 25 Mar 2013 10:13:01 +0100
+
 cups (1.6.2-1ubuntu2) raring; urgency=low
 
   * debian/control: Added libp11-kit-gnome-keyring to the dependencies of

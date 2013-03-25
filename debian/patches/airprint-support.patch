@@ -57,3 +57,14 @@ Last-Update: 2013-02-20
  	  strlcat(pdl, "image/jpeg,", sizeof(pdl));
  	else if (!_cups_strcasecmp(type->type, "png"))
  	  strlcat(pdl, "image/png,", sizeof(pdl));
+--- a/scheduler/conf.c
++++ b/scheduler/conf.c
+@@ -746,7 +746,7 @@
+   DefaultShared            = CUPS_DEFAULT_DEFAULT_SHARED;
+ 
+ #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
+-  cupsdSetString(&DNSSDSubTypes, "_cups,_print");
++  cupsdSetString(&DNSSDSubTypes, "_cups,_print,_universal");
+ #endif /* HAVE_DNSSD || HAVE_AVAHI */
+ 
+   cupsdSetString(&LPDConfigFile, CUPS_DEFAULT_LPD_CONFIG_FILE);
