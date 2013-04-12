@@ -1,3 +1,16 @@
+cups (1.6.2-1ubuntu4) raring; urgency=low
+
+  * debian/local/apparmor-profile: Allow "audit_write" capability.
+    (LP: #1157318).
+  * debian/patches/usb-backend-epson-stylus-photo-750.patch,
+    debian/patches/usb-backend-more-quirk-rules.patch: Added quirk rules for
+    five additional printers: Lexmark e250d (LP: #1084164), Canon PIXMA iP6000D
+    (LP: #1160638), Canon MF4150 (LP: #1160638), Brother HL-1450
+    (LP: #1000253), Epson Stylus Color 670 (LP: #872483), joined the quirk rule
+    patches.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 12 Apr 2013 08:31:01 +0200
+
 cups (1.6.2-1ubuntu3) raring; urgency=low
 
   * debian/patches/airprint-support.patch: Let the DNS-SD subtype "_universal"
