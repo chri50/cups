@@ -1,3 +1,21 @@
+cups (1.6.2-4) experimental; urgency=low
+
+  [ Till Kamppeter ]
+  * Let the DNS-SD subtype "_universal" get added to the printer's
+    DNS-SD registration; it is needed for iOS to find the printers.
+  * Merged the quirk rule patches, added quirk rules for five
+    additional printers:
+    - Lexmark e250d (LP: #1084164)
+    - Canon PIXMA iP6000D (LP: #1160638)
+    - Canon MF4150 (LP: #1160638)
+    - Brother HL-1450 (LP: #1000253)
+    - Epson Stylus Color 670 (LP: #872483)
+
+  [ Martin Pitt ]
+  * Allow "audit_write" capability in AppArmor profile. (LP: #1157318)
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 12 Apr 2013 11:24:27 +0200
+
 cups (1.6.2-3) experimental; urgency=low
 
   [ Didier Raboud ]
