@@ -9,6 +9,7 @@ ppd-poll-with-client-conf.patch
 manpage-translations.patch
 rootbackends-worldreadable.patch
 cups-dbus-utf8.patch
+usb-backend-more-quirk-rules.patch
 
 # patches which should go upstream
 airprint-support.patch
@@ -40,4 +41,3 @@ ppdc-dynamic-linking.patch
 log-debug-history-nearly-unlimited.patch
 # Disabled in 1.6.1-1 as it breaks the tests. It addresses #593338
 # pstops-based-workflow-only-for-printing-ps-on-a-ps-printer.patch
-usb-backend-epson-stylus-photo-750.patch
