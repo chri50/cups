@@ -27,7 +27,7 @@ Last-Update: 2013-03-11
  	{ 0x04f9, 0x001a, USBLP_QUIRK_NO_REATTACH }, /* Brother Industries, Ltd
  						  HL-1430 Laser Printer,
  				     https://bugs.launchpad.net/bugs/1038695 */
-@@ -165,24 +171,31 @@
+@@ -165,24 +171,33 @@
  			  USBLP_QUIRK_NO_REATTACH }, /* Brother Industries, Ltd
  						  HL-1440 Laser Printer,
  				     https://bugs.launchpad.net/bugs/1000253 */
@@ -59,6 +59,8 @@ Last-Update: 2013-03-11
  				     https://bugs.launchpad.net/bugs/1102470 */
 -	/* Prolific Technology, Inc. PL2305 Parallel Port
 -	   (USB -> Parallel adapter), https://bugs.launchpad.net/bugs/987485 */
++	{ 0x1a86, 0x7584, USBLP_QUIRK_NO_REATTACH }, /* QinHeng Electronics
++   CH340S (USB -> Parallel adapter), https://bugs.launchpad.net/bugs/1000253 */
  	{ 0x04e8, 0x0000, USBLP_QUIRK_RESET }, /* All Samsung devices,
  				     https://bugs.launchpad.net/bugs/1032456 */
  	{ 0x0a5f, 0x0000, USBLP_QUIRK_BIDIR }, /* All Zebra devices,
