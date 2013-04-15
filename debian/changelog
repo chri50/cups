@@ -1,3 +1,10 @@
+cups (1.6.2-1ubuntu5) raring; urgency=low
+
+  * debian/patches/usb-backend-more-quirk-rules.patch: Added quirk rule for the
+    QinHeng CH340S USB->Parallel adapter (LP: #1000253).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon, 15 Apr 2013 15:13:01 +0200
+
 cups (1.6.2-1ubuntu4) raring; urgency=low
 
   * debian/local/apparmor-profile: Allow "audit_write" capability.
