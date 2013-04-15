@@ -196,6 +196,8 @@ static const struct quirk_printer_struct quirk_printers[] = {
 			  https://bugzilla.redhat.com/show_bug.cgi?id=867392 */
 	{ 0x0924, 0x4293, USBLP_QUIRK_NO_REATTACH }, /* Xerox WorkCentre 3210
 				     https://bugs.launchpad.net/bugs/1102470 */
+	{ 0x1a86, 0x7584, USBLP_QUIRK_NO_REATTACH }, /* QinHeng Electronics
+   CH340S (USB -> Parallel adapter), https://bugs.launchpad.net/bugs/1000253 */
 	{ 0x04e8, 0x0000, USBLP_QUIRK_RESET }, /* All Samsung devices,
 				     https://bugs.launchpad.net/bugs/1032456 */
 	{ 0x0a5f, 0x0000, USBLP_QUIRK_BIDIR }, /* All Zebra devices,
