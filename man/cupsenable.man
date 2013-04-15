@@ -17,53 +17,53 @@
 cupsdisable, cupsenable \- stop/start printers and classes
 .SH SYNOPSIS
 .B cupsdisable
-[ -E ] [-U
+[ \-E ] [\-U
 .I username
-] [ -c ] [ -h
+] [ \-c ] [ \-h
 .I server[:port]
-] [ -r
+] [ \-r
 .I reason
-] [ --hold ] destination(s)
+] [ \-\-hold ] destination(s)
 .br
 .B cupsenable
-[ -E ] [-U
+[ \-E ] [\-U
 .I username
-] [ -c ] [ -h
+] [ \-c ] [ \-h
 .I server[:port]
-] [ --release ] destination(s)
+] [ \--release ] destination(s)
 .SH DESCRIPTION
 \fIcupsenable\fR starts the named printers or classes.
 .LP
 \fIcupsdisable\fR stops the named printers or classes.  The
 following options may be used:
 .TP 5
--E
+\-E
 .br
 Forces encryption of the connection to the server.
 .TP 5
--U username
+\-U username
 .br
 Uses the specified username when connecting to the server.
 .TP 5
--c
+\-c
 .br
 Cancels all jobs on the named destination.
 .TP 5
--h server[:port]
+\-h server[:port]
 .br
 Uses the specified server and port.
 .TP 5
---hold
+\--hold
 .br
 Holds remaining jobs on the named printer.  Useful for allowing the current
 job to complete before performing maintenance.
 .TP 5
--r "reason"
+\-r "reason"
 .br
 Sets the message associated with the stopped state. If no reason is specified
 then the message is set to "Reason Unknown".
 .TP 5
---release
+\--release
 .br
 Releases pending jobs for printing. Use after running \fIcupsdisable\fR with
 the \fI--hold\fR option to resume printing.

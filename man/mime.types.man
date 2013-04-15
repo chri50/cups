@@ -40,7 +40,7 @@ The rules may be grouped using parenthesis, joined using "+" for a
 logical AND and "," or whitespace for a logical OR, and negated using
 "!".
 .SH RULES
-Rules take two forms - a filename extension by itself and functions with test
+Rules take two forms \- a filename extension by itself and functions with test
 values inside parenthesis. The following functions are available:
 .TP 5
 match("pattern")

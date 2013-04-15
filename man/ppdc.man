@@ -17,17 +17,17 @@
 ppdc \- cups ppd compiler
 .SH SYNOPSIS
 .B ppdc
-[ -D
+[ \-D
 .I name[=value]
-] [ -I
+] [ \-I
 .I include-directory
-] [ -c
+] [ \-c
 .I message-catalog
-] [ -d
+] [ \-d
 .I output-directory
-] [ -l
+] [ \-l
 .I language(s)
-] [-m] [-t] [ -v ] [ -z ] [ --cr ] [ --crlf ] [ --lf ]
+] [\-m] [\-t] [ \-v ] [ \-z ] [ \-\-cr ] [ \-\-crlf ] [ \-\-lf ]
 .I source-file
 .SH DESCRIPTION
 \fIppdc\fR compiles PPDC source files into one or more PPD
@@ -68,7 +68,7 @@ The \fI-z\fR option generates compressed PPD files (filename.ppd.gz).
 The default is to generate uncompressed PPD files.
 .PP
 The \fI--cr\fR, \fI--crlf\fR, and \fI--lf\fR options specify the
-line ending to use - carriage return, carriage return and line feed,
+line ending to use \- carriage return, carriage return and line feed,
 or line feed. The default is to use the line feed character alone.
 .SH SEE ALSO
 ppdhtml(1), ppdi(1), ppdmerge(1), ppdpo(1), ppdcfile(5)

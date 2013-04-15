@@ -18,22 +18,22 @@ cupsaddsmb \- export printers to samba for windows clients
 
 .SH SYNOPSIS
 .B cupsaddsmb
-[ -H
+[ \-H
 .I samba-server
-] [ -U
+] [ \-U
 .I samba-user[%samba-password]
-] [ -h
+] [ \-h
 .I cups-server[:port]
-] [ -v ] -a
+] [ \-v ] \-a
 .br
 .B cupsaddsmb
-[ -H
+[ \-H
 .I samba-server
-] [ -U
+] [ \-U
 .I samba-user[%samba-password]
-] [ -h
+] [ \-h
 .I cups-server[:port]
-] [ -v ] printer [ ... printer ]
+] [ \-v ] printer [ ... printer ]
 
 .SH DESCRIPTION
 \fIcupsaddsmb\fR exports printers to the SAMBA software (version
@@ -45,27 +45,27 @@ driver files described below.
 .SH OPTIONS
 \fIcupsaddsmb\fR supports the following options:
 .TP 5
--H samba-server
+\-H samba-server
 .br
 Specifies the SAMBA server which defaults to the CUPS server.
 .TP 5
--U samba-user[%samba-password]
+\-U samba-user[%samba-password]
 .br
 Specifies the SAMBA print admin username which defaults to your
 current username. If the username contains a percent (%)
 character, then the text following the percent is treated as the
 SAMBA password to use.
 .TP 5
--a
+\-a
 .br
 Exports all known printers. Otherwise only the named printers are
 exported.
 .TP 5
--h cups-server[:port]
+\-h cups-server[:port]
 .br
 Specifies a different CUPS server to use.
 .TP 5
--v
+\-v
 .br
 Specifies that verbose information should be shown. This is
 useful for debugging SAMBA configuration problems.
@@ -136,7 +136,7 @@ as named below:
     pscript5.dll
 .fi
 .LP
-\fBNote:\fR Unlike Windows, case is significant - make sure that
+\fBNote:\fR Unlike Windows, case is significant \- make sure that
 you use the lowercase filenames shown above, otherwise
 \fIcupsaddsmb\fR will fail to export the drivers.
 
@@ -169,7 +169,7 @@ as named below:
     pscript5.dll (from your Windows system)
 .fi
 .LP
-\fBNote:\fR Unlike Windows, case is significant - make sure that
+\fBNote:\fR Unlike Windows, case is significant \- make sure that
 you use the lowercase filenames shown above, otherwise
 \fIcupsaddsmb\fR will fail to export the drivers.
 
@@ -194,7 +194,7 @@ exactly as named below:
     PSMON.DLL
 .fi
 .LP
-\fBNote:\fR Unlike Windows, case is significant - make sure that
+\fBNote:\fR Unlike Windows, case is significant \- make sure that
 you use the UPPERCASE filenames shown above, otherwise
 \fIcupsaddsmb\fR will fail to export the drivers.
 
