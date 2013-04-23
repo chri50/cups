@@ -1,3 +1,11 @@
+cups (1.6.1-0ubuntu11.4) quantal-proposed; urgency=low
+
+  * debian/cups.logrotate: Do not remove CUPS' log files while the CUPS
+    daemon is running. Stop CUPS, move the files, and then start it again.
+    This avoids crashes during the log rotation process (LP: #1086019).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Tue, 23 Apr 2013 12:12:12 +0200
+
 cups (1.6.1-0ubuntu11.3) quantal-security; urgency=low
 
   * SECURITY UPDATE: privilege escalation via config file editing

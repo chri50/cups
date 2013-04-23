@@ -3,9 +3,16 @@
 	missingok
 	rotate 7
 	sharedscripts
-	postrotate
+	prerotate
 		if [ -e /var/run/cups/cupsd.pid ]; then
-			invoke-rc.d --quiet cups force-reload > /dev/null
+			invoke-rc.d --quiet cups stop > /dev/null
+			touch /var/run/cups/cupsd.stopped
+		fi
+	endscript
+	postrotate
+		if [ -e /var/run/cups/cupsd.stopped ]; then
+			rm /var/run/cups/cupsd.stopped
+			invoke-rc.d --quiet cups start > /dev/null
 			sleep 10
 		fi
 	endscript
