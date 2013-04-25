@@ -6,6 +6,7 @@ usb-backend-further-enhancements.patch
 
 # patches sent upstream
 usb-backend-reset-after-job-only-for-specific-devices.patch
+usb-backend-do-not-crash-if-usb-disabled-in-bios.patch
 pidfile.patch
 ppd-poll-with-client-conf.patch
 # no answer yet, po4a might not be appropriate
