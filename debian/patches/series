@@ -1,4 +1,5 @@
 # patches accepted and committed upstream:
+usb-backend-more-quirk-rules.patch
 
 # patches sent upstream
 cupsd-no-crash-on-avahi-threaded-poll-shutdown.patch
@@ -10,7 +11,7 @@ manpage-hyphen-minus.patch
 manpage-translations.patch
 rootbackends-worldreadable.patch
 cups-dbus-utf8.patch
-usb-backend-more-quirk-rules.patch
+usb-backend-do-not-crash-if-usb-disabled-in-bios.patch
 
 # patches which should go upstream
 drop-arch-specifics-from-doc.patch
