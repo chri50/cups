@@ -14,14 +14,14 @@
 .\"
 .TH cancel 1 "CUPS" "20 March 2006" "Apple Inc."
 .SH NAME
-cancel - cancel jobs
+cancel \- cancel jobs
 .SH SYNOPSIS
 .B cancel
-[ -E ] [ -U
+[ \-E ] [ \-U
 .I username
-] [ -a ] [ -h
+] [ \-a ] [ \-h
 .I hostname[:port]
-] [ -u
+] [ \-u
 .I username
 ] [
 .I id
@@ -36,24 +36,24 @@ all jobs from the specified destination.
 .SH OPTIONS
 The following options are recognized by \fIcancel\fR:
 .TP 5
--E
+\-E
 .br
 Forces encryption when connecting to the server.
 .TP 5
--U username
+\-U username
 .br
 Specifies the username to use when connecting to the server.
 .TP 5
--a
+\-a
 .br
 Cancel all jobs on the named destination, or all jobs on all
 destinations if none is provided.
 .TP 5
--h hostname[:port]
+\-h hostname[:port]
 .br
 Chooses an alternate server.
 .TP 5
--u username
+\-u username
 .br
 Cancels jobs owned by \fIusername\fR.
 .SH COMPATIBILITY

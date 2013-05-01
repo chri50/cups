@@ -18,7 +18,7 @@ snmp \- cups snmp backend
 .B @CUPS_SERVERBIN@/backend/snmp
 .I ip-address-or-hostname
 .br
-.B lpinfo -v --include-schemes snmp
+.B lpinfo \-v \--include-schemes snmp
 .SH DESCRIPTION
 The CUPS SNMP backend provides legacy discovery and identification of network
 printers using SNMPv1. When used for discovery through the scheduler, the
