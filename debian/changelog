@@ -1,3 +1,19 @@
+cups (1.6.2-6) experimental; urgency=low
+
+  [ Till Kamppeter ]
+  * In Ubuntu, let the cups-daemon binary package depend on
+    avahi-daemon, not only recommend it, as the Upstart script for CUPS
+    starts CUPS only after starting avahi-daemon (LP: #1133794).
+  * In the logrotate config file: Do not remove CUPS' log files while
+    the CUPS daemon is running. Stop CUPS, move the files, and then
+    start it again.  This avoids crashes during the log rotation process
+    (LP: #1086019).
+  * Add patch to add more error handling to the libusb-based USB
+    backend, especially to avoid a crash when USB is disabled in the
+    BIOS (LP: #1108719).
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 01 May 2013 16:25:53 +0200
+
 cups (1.6.2-5) experimental; urgency=low
 
   * Added quirk rule for the QinHeng CH340S USB->Parallel adapter.

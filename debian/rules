@@ -170,3 +170,13 @@ override_dh_installdocs:
 
 override_dh_strip:
 	dh_strip --dbg-package=cups-dbg
+
+override_dh_gencontrol:
+ifeq ($(derives_from_ubuntu),yes)
+	# Ubuntu considers avahi-daemon to be a Depends of cups-daemon because the upstart job waits on avahi
+	echo "ubuntu:avahi-daemon=avahi-daemon" >> debian/cups-daemon.substvars
+else
+	# Debian considers avahi-daemon to be a Recommends of cups-daemon
+	echo "debian:avahi-daemon=avahi-daemon" >> debian/cups-daemon.substvars
+endif
+	dh_gencontrol
