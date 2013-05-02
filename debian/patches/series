@@ -1,4 +1,5 @@
 # patches accepted and committed upstream:
+usb-backend-more-quirk-rules.patch
 
 # patches sent upstream
 cupsd-no-crash-on-avahi-threaded-poll-shutdown.patch
@@ -9,9 +10,9 @@ ppd-poll-with-client-conf.patch
 manpage-translations.patch
 rootbackends-worldreadable.patch
 cups-dbus-utf8.patch
-usb-backend-more-quirk-rules.patch
 
 # patches which should go upstream
+usb-backend-do-not-crash-if-usb-disabled-in-bios.patch
 airprint-support.patch
 removecvstag.patch
 no-conffile-timestamp.patch

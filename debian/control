@@ -184,9 +184,9 @@ Depends: ${shlibs:Depends},
  libcups2 (= ${binary:Version}),
  ssl-cert (>= 1.0.11),
  adduser,
- bc
-Recommends: avahi-daemon,
- colord,
+ bc,
+ avahi-daemon
+Recommends: colord,
  cups-browsed
 Suggests: cups, cups-bsd,
  cups-common (>= ${source:Upstream-Version}), 

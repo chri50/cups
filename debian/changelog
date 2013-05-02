@@ -1,3 +1,14 @@
+cups (1.6.2-1ubuntu6) raring-proposed; urgency=low
+
+  * debian/control: Let the cups-daemon binary package depend on avahi-daemon,
+    not only recommend it, as the Upstart script for CUPS starts CUPS only
+    after starting avahi-daemon (LP: #1133794).
+  * debian/patches/usb-backend-do-not-crash-if-usb-disabled-in-bios.patch:
+    Added more error handling to the libusb-based USB backend, especially to
+    avoid a crash when USB is disabled in the BIOS (LP: #1108719).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Thu,  2 May 2013 12:34:56 +0200
+
 cups (1.6.2-1ubuntu5) raring; urgency=low
 
   * debian/patches/usb-backend-more-quirk-rules.patch: Added quirk rule for the
