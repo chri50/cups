@@ -1,3 +1,9 @@
+Description: Add more error handling to the libusb-based USB backend,
+ especially to avoid a crash when USB is disabled in the BIOS. Also
+ discard that error when counting warning messages.
+Author: Till Kamppeter <till.kamppeter@gmail.com>
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/1108719
+Last-Update: 2013-05-03
 --- a/backend/usb-libusb.c
 +++ b/backend/usb-libusb.c
 @@ -898,7 +898,8 @@
@@ -35,3 +41,14 @@
    libusb_exit(NULL);
  
    return (NULL);
+--- a/test/run-stp-tests.sh
++++ b/test/run-stp-tests.sh
+@@ -838,7 +838,7 @@
+ fi
+ 
+ # Warning log messages
+-count=`$GREP '^W ' /tmp/cups-$user/log/error_log | wc -l | awk '{print $1}'`
++count=`$GREP '^W ' /tmp/cups-$user/log/error_log | grep -v 'Unable to initialize USB access via libusb, libusb error' | wc -l | awk '{print $1}'`
+ if test $count != 9; then
+ 	echo "FAIL: $count warning messages, expected 9."
+ 	$GREP '^W ' /tmp/cups-$user/log/error_log

@@ -1,3 +1,11 @@
+cups (1.6.2-7) experimental; urgency=low
+
+  * Update the patch adding libusb error handling to also discard its
+    errors in the counting of warning messages; this should make the
+    error-suite succeed in more cases.
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 03 May 2013 11:30:59 +0200
+
 cups (1.6.2-6) experimental; urgency=low
 
   [ Till Kamppeter ]
