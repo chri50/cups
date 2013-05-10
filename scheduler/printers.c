@@ -80,6 +80,9 @@
 #  include <asl.h>
 #endif /* __APPLE__ */
 
+#ifdef HAVE_DBUS
+# include "colord.h"
+#endif /* HAVE_DBUS */
 
 /*
  * Local functions...
@@ -712,6 +715,53 @@ cupsdDeleteAllPrinters(void)
   }
 }
 
+/*
+ * 'cupsdCmsRegisterPrinter()' - Registers a printer and profiles with the CMS
+ */
+
+void
+cupsdCmsRegisterPrinter(cupsd_printer_t *p)
+{
+#if defined(HAVE_DBUS)
+  colordRegisterPrinter(p);
+#endif /* defined(HAVE_DBUS) */
+}
+
+/*
+ * 'cupsdCmsUnregisterPrinter()' - Unregisters a printer and profiles with the CMS
+ */
+
+void
+cupsdCmsUnregisterPrinter(cupsd_printer_t *p)
+{
+#if defined(HAVE_DBUS)
+  colordUnregisterPrinter(p);
+#endif /* defined(HAVE_DBUS) */
+}
+
+/*
+ * 'cupsdCmsStart()' - Starts the CMS
+ */
+
+void
+cupsdCmsStart(void)
+{
+#if defined(HAVE_DBUS)
+  colordStart();
+#endif /* defined(HAVE_DBUS) */
+}
+
+/*
+ * 'cupsdCmsStop()' - Stops the CMS
+ */
+
+void
+cupsdCmsStop(void)
+{
+#if defined(HAVE_DBUS)
+  colordStop();
+#endif /* defined(HAVE_DBUS) */
+}
 
 /*
  * 'cupsdDeletePrinter()' - Delete a printer from the system.
@@ -750,6 +800,12 @@ cupsdDeletePrinter(
     cupsdSetJobState(p->job, IPP_JOB_PENDING, CUPSD_JOB_FORCE,
                      update ? "Job stopped due to printer being deleted." :
 		              "Job stopped.");
+
+ /*
+  * Unregister profiles...
+  */
+
+  cupsdCmsUnregisterPrinter(p);
 
  /*
   * If this printer is the next for browsing, point to the next one...
@@ -1416,6 +1472,12 @@ cupsdRenamePrinter(
     mimeDeleteType(MimeDatabase, p->prefiltertype);
     p->prefiltertype = mimeAddType(MimeDatabase, "prefilter", name);
   }
+
+ /*
+  * Unregister profiles...
+  */
+
+  cupsdCmsUnregisterPrinter(p);
 
  /*
   * Rename the printer...
@@ -2674,6 +2736,13 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */
   write_irix_config(p);
   write_irix_state(p);
 #endif /* __sgi */
+
+ /*
+  * Re-register profiles...
+  */
+
+  cupsdCmsUnregisterPrinter(p);
+  cupsdCmsRegisterPrinter(p);
 
  /*
   * Let the browse protocols reflect the change
