@@ -1,3 +1,14 @@
+cups (1.6.2-1ubuntu7) raring-proposed; urgency=low
+
+  * debian/patches/usb-backend-do-not-crash-if-usb-disabled-in-bios.patch:
+    Add patch to test suite to ignore the newly introduced warning message.
+    This message gets regularly issued on build servers which use virtual
+    machines without access to the host's USB and so the test suite fails due
+    to an extra warning. Due to this there was a FTBFS in the previous release
+    (LP: #1108719).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 10 May 2013 15:06:56 +0200
+
 cups (1.6.2-1ubuntu6) raring-proposed; urgency=low
 
   * debian/control: Let the cups-daemon binary package depend on avahi-daemon,
