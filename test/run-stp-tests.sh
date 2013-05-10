@@ -420,6 +420,7 @@ FontPath /tmp/cups-$user/share/fonts
 DocumentRoot $root/doc
 RequestRoot /tmp/cups-$user/spool
 TempDir /tmp/cups-$user/spool/temp
+PidFile /tmp/cups-$user/cupsd.pid
 AccessLog /tmp/cups-$user/log/access_log
 ErrorLog /tmp/cups-$user/log/error_log
 PageLog /tmp/cups-$user/log/page_log

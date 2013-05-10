@@ -177,7 +177,8 @@ static const cupsd_var_t	cupsfiles_vars[] =
 #ifdef HAVE_AUTHORIZATION_H
   { "SystemGroupAuthKey",	&SystemGroupAuthKey,	CUPSD_VARTYPE_STRING },
 #endif /* HAVE_AUTHORIZATION_H */
-  { "TempDir",			&TempDir,		CUPSD_VARTYPE_PATHNAME }
+  { "TempDir",			&TempDir,		CUPSD_VARTYPE_PATHNAME },
+  { "PidFile",			&PidFile,		CUPSD_VARTYPE_STRING }
 };
 
 static int		default_auth_type = CUPSD_AUTH_AUTO;
@@ -594,6 +595,7 @@ cupsdReadConfiguration(void)
   cupsdSetStringf(&ServerHeader, "CUPS/%d.%d IPP/2.1", CUPS_VERSION_MAJOR,
                   CUPS_VERSION_MINOR);
   cupsdSetString(&StateDir, CUPS_STATEDIR);
+  cupsdSetString(&PidFile, "/var/run/cups/cupsd.pid");
 
   if (!strcmp(CUPS_DEFAULT_PRINTCAP, "/etc/printers.conf"))
     PrintcapFormat = PRINTCAP_SOLARIS;
@@ -3348,6 +3350,7 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
              !_cups_strcasecmp(line, "SystemGroup") ||
              !_cups_strcasecmp(line, "SystemGroupAuthKey") ||
              !_cups_strcasecmp(line, "TempDir") ||
+             !_cups_strcasecmp(line, "PidFile") ||
 	     !_cups_strcasecmp(line, "User"))
     {
       cupsdLogMessage(CUPSD_LOG_WARN,
