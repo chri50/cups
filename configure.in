@@ -65,6 +65,7 @@ AC_SUBST(INSTALL_LANGUAGES)
 AC_SUBST(UNINSTALL_LANGUAGES)
 
 AC_OUTPUT(Makedefs
+	  conf/cups-files.conf
 	  conf/cupsd.conf
 	  conf/mime.convs
 	  conf/pam.std
@@ -78,6 +79,7 @@ AC_OUTPUT(Makedefs
 	  man/client.conf.man
 	  man/cups-deviced.man
 	  man/cups-driverd.man
+	  man/cups-files.conf.man
 	  man/cups-lpd.man
 	  man/cupsaddsmb.man
 	  man/cupsd.conf.man
