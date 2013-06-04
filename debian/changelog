@@ -1,3 +1,12 @@
+cups (1.6.2-8) unstable; urgency=low
+
+  * Upload to unstable.
+
+  [ Helge Kreutzmann ]
+  * Update German manpages translation.
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 04 Jun 2013 14:17:42 +0200
+
 cups (1.6.2-7) experimental; urgency=low
 
   * Update the patch adding libusb error handling to also discard its
