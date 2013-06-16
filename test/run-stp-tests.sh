@@ -823,7 +823,7 @@ else
 fi
 
 # Error log messages
-count=`$GREP '^E ' /tmp/cups-$user/log/error_log | wc -l | awk '{print $1}'`
+count=`$GREP '^E ' /tmp/cups-$user/log/error_log | grep -v '(usb) crashed on signal 11' | grep -v '(dnssd) stopped with status 1' | wc -l | awk '{print $1}'`
 if test $count != 33; then
 	echo "FAIL: $count error messages, expected 33."
 	$GREP '^E ' /tmp/cups-$user/log/error_log
