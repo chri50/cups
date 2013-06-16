@@ -56,6 +56,7 @@ GSSServiceName ipp
 ServerName foo.bar.com
 ServerName 11.22.33.44
 ServerName foo.bar.com:8631
+ServerName foo.bar.com/version=1.1
 </PRE>
 
 <H3>Description</H3>
@@ -63,6 +64,8 @@ ServerName foo.bar.com:8631
 <P>The <CODE>ServerName</CODE> directive specifies sets the remote server that is to be used for all client operations. That is, it redirects all client requests to the remote server.</P>
 
 <P>The default port number is 631 but can be overridden by adding a colon followed by the desired port number to the value.</P>
+
+<P>The default IPP version is 2.0 but can be overriden by adding a slash followed by <CODE>version=</CODE> and the desired IPP version (can be 1.0 or 1.1).</P>
 
 <P>The default is to use the local server ("<VAR>localhost</VAR>") or domain socket, if so configured.</P>
 
