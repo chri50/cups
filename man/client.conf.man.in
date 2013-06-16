@@ -40,12 +40,12 @@ Specifies the Kerberos service name that is used for authentication, typically
 ("name@server.example.com") for you. The default name is
 "@CUPS_DEFAULT_GSSSERVICENAME@".
 .TP 5
-ServerName hostname-or-ip-address[:port]
+ServerName hostname-or-ip-address[:port][/version=1.1]
 .TP 5
 ServerName /domain/socket
 .br
 Specifies the address and optionally the port to use when connecting to the
-server. \fBNote: Not supported on OS X 10.7 or later.\fR
+server. The IPP version (2.0 by default, can be 1.1 or 1.0) can be specified to access older servers. \fBNote: Not supported on OS X 10.7 or later.\fR
 .TP 5
 User name
 .br
