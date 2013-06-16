@@ -1,3 +1,27 @@
+cups (1.6.2-9) unstable; urgency=low
+
+  [ Helge Kreutzmann ]
+  * Update German manpages translation.
+  * In ipptoolfile manpage, mention that possible attribute-name are
+    defined in RFC2911, for clarity. (Closes: #711709)
+
+  [ Didier Raboud ]
+  * Add a cups-client.NEWS notice, a cups-client manpage patch and amend
+    the client.conf example file to inform about IPP default version
+    change to 2.0 and circumvention measures. (Closes: #704238, #711192)
+    - thanks to Brian Potkin
+  * Reorder patches to have the manpages translation patch higher on the
+    patch queue
+  * Fix hyphen-correction typo
+  * Update manpage translations with the recent changes
+  * Drop outdated and not-applied colord-support patch.
+
+  [ Alexey Galakhov ]
+  * Add patch to fix printer icc profiles registration in colord
+    (Closes: #711868)
+
+ -- Didier Raboud <odyx@debian.org>  Sun, 16 Jun 2013 15:32:29 +0200
+
 cups (1.6.2-8) unstable; urgency=low
 
   * Upload to unstable.

@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 1.5.2-10\n"
-"POT-Creation-Date: 2013-03-19 12:55+0100\n"
-"PO-Revision-Date: 2013-05-21 20:44+0200\n"
+"POT-Creation-Date: 2013-06-09 19:51+0300\n"
+"PO-Revision-Date: 2013-06-08 21:49+0200\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
 "Language: de\n"
@@ -308,7 +308,7 @@ msgstr "http://localhost:631/help"
 #: cups-deviced.man.in:40 cupsd.man.in:68 cups-driverd.man.in:118
 #: cupsenable.man:88 cupsfilter.man:105 cups-lpd.man.in:120
 #: cups-snmp.conf.man:74 cupstestdsc.man:46 cupstestppd.man:161 filter.man:234
-#: ipptool.man:139 ipptoolfile.man:570 lpadmin.man:223 lpc.man:67
+#: ipptool.man:139 ipptoolfile.man:572 lpadmin.man:223 lpc.man:67
 #: lpinfo.man:111 lp.man:248 lpmove.man:62 lpoptions.man.in:131
 #: lppasswd.man:64 lpq.man:68 lpr.man:118 lprm.man:61 lpstat.man:139
 #: mailto.conf.man:56 mime.convs.man:42 mime.types.man:111
@@ -325,7 +325,7 @@ msgstr "COPYRIGHT"
 #: cups-deviced.man.in:41 cupsd.man.in:69 cups-driverd.man.in:119
 #: cupsenable.man:90 cupsfilter.man:106 cups-lpd.man.in:121
 #: cups-snmp.conf.man:75 cupstestdsc.man:47 cupstestppd.man:162 filter.man:235
-#: ipptool.man:140 ipptoolfile.man:571 lpadmin.man:224 lpc.man:68
+#: ipptool.man:140 ipptoolfile.man:573 lpadmin.man:224 lpc.man:68
 #: lpinfo.man:112 lp.man:249 lpmove.man:63 lpoptions.man.in:132
 #: lppasswd.man:65 lpq.man:69 lpr.man:119 lprm.man:62 lpstat.man:140
 #: mailto.conf.man:57 mime.convs.man:43 mime.types.man:112
@@ -1273,8 +1273,8 @@ msgstr ""
 #. type: TP
 #: client.conf.man.in:42
 #, no-wrap
-msgid "ServerName hostname-or-ip-address[:port]"
-msgstr "ServerName Hostname-oder-IP-Adresse[:Port]"
+msgid "ServerName hostname-or-ip-address[:port][/version=1.1]"
+msgstr "ServerName Hostname-oder-IP-Adresse[:Port][/version=1.1]"
 
 #. type: TP
 #: client.conf.man.in:44
@@ -1286,11 +1286,13 @@ msgstr "ServerName /Domäne/Socket"
 #: client.conf.man.in:49
 msgid ""
 "Specifies the address and optionally the port to use when connecting to the "
-"server. B<Note: Not supported on OS X 10.7 or later.>"
+"server. The IPP version (2.0 by default, can be 1.1 or 1.0) can be specified "
+"to access older servers. B<Note: Not supported on OS X 10.7 or later.>"
 msgstr ""
 "Spezifiziert die Adresse und optional den Port, die bei der Verbindung zum "
-"Server verwandt werden sollen. B<Hinweis: Auf OS X 10.7 oder neuer nicht "
-"unterstützt.>"
+"Server verwandt werden sollen. Die IPP-Version (Standardmäßig 2.0, kann 1.1 "
+"oder 1.0 sein) kann angegeben werden, um auf ältere Server zuzugreifen. "
+"B<Hinweis: Auf OS X 10.7 oder neuer nicht unterstützt.>"
 
 #. type: TP
 #: client.conf.man.in:49
@@ -5768,7 +5770,6 @@ msgstr "Berichtet alle bisherigen Fehler als Fehler"
 msgid "-q"
 msgstr "-q"
 
-# type: Plain text
 #. type: Plain text
 #: cupstestppd.man:99
 msgid "Specifies that no information should be displayed."
@@ -5780,7 +5781,6 @@ msgstr "Spezifiziert, dass keine Information angezeigt werden soll."
 msgid "-r"
 msgstr "-r"
 
-# type: Plain text
 #. type: Plain text
 #: cupstestppd.man:105
 msgid ""
@@ -7038,7 +7038,6 @@ msgstr ""
 "      # Der Name des Tests\n"
 "      NAME \"Drucke PostScript-Auftrag\"\n"
 
-# FIXME: Should "language" and "name" be in value list below?
 #. type: Plain text
 #: ipptoolfile.man:35
 #, no-wrap
@@ -7055,13 +7054,12 @@ msgstr ""
 "      # Die zu sendende Anfrage\n"
 "      OPERATION Print-Job\n"
 "      GROUP operation-attributes-tag\n"
-"      ATTR charset Attributzeichensatz utf-8\n"
-"      ATTR language Attribut-natuerliche-Sprache en\n"
-"      ATTR uri Drucker-URI $uri\n"
-"      ATTR name Benutzernamen-Anfrage $user\n"
+"      ATTR charset attributes-charset utf-8\n"
+"      ATTR language attributes-natural-language en\n"
+"      ATTR uri printer-uri $uri\n"
+"      ATTR name requesting-user-name $user\n"
 "      FILE Testdatei.ps\n"
 
-# FIXME: Attribut "job-id" and "job-uri" im ersten Teil nicht gesetzt?
 #. type: Plain text
 #: ipptoolfile.man:46
 #, no-wrap
@@ -7079,10 +7077,10 @@ msgid ""
 msgstr ""
 "      # Die zu erwartende Antwort\n"
 "      STATUS successful-ok\n"
-"      EXPECT Attributzeichensatz OF-TYPE charset\n"
-"      EXPECT Attribut-natuerliche-Sprache OF-TYPE naturalLanguage\n"
-"      EXPECT Auftrags-ID OF-TYPE integer\n"
-"      EXPECT Auftrags-URI OF-TYPE uri\n"
+"      EXPECT attributes-charset OF-TYPE charset\n"
+"      EXPECT attributes-natural-language OF-TYPE naturalLanguage\n"
+"      EXPECT job-id OF-TYPE integer\n"
+"      EXPECT job-uri OF-TYPE uri\n"
 "    }\n"
 "    {\n"
 "      # Der Name des Tests\n"
@@ -7104,13 +7102,12 @@ msgstr ""
 "      # Die zu sendende Anfrage\n"
 "      OPERATION Get-Job-Attributes\n"
 "      GROUP operation-attributes-tag\n"
-"      ATTR charset Attributzeichensatz utf-8\n"
-"      ATTR language Attribut-natuerliche-Sprache en\n"
-"      ATTR uri Drucker-URI $uri\n"
-"      ATTR integer Auftrags-ID $job-id\n"
-"      ATTR name Benutzernamen-Anfrage $user\n"
+"      ATTR charset attributes-charset utf-8\n"
+"      ATTR language attributes-natural-language en\n"
+"      ATTR uri printer-uri $uri\n"
+"      ATTR integer job-id $job-id\n"
+"      ATTR name requesting-user-name $user\n"
 
-# FIXME: Attribut "job-state" und "job-originating-user-name" im ersten Teil nicht gesetzt?
 #. type: Plain text
 #: ipptoolfile.man:65
 #, no-wrap
@@ -7127,12 +7124,12 @@ msgid ""
 msgstr ""
 "      # Die zu erwartende Antwort\n"
 "      STATUS successful-ok\n"
-"      EXPECT Attributzeichensatz OF-TYPE charset\n"
-"      EXPECT Attribut-natuerliche-Sprache OF-TYPE naturalLanguage\n"
-"      EXPECT Auftrags-ID OF-TYPE integer\n"
-"      EXPECT Auftrags-URI OF-TYPE uri\n"
-"      EXPECT Auftrags-Status OF-TYPE enum\n"
-"      EXPECT Auftrags-Sendender-Benutzer-Name OF-TYPE name WITH-VALUE \"$user\"\n"
+"      EXPECT attributes-charset OF-TYPE charset\n"
+"      EXPECT attributes-natural-language OF-TYPE naturalLanguage\n"
+"      EXPECT job-id OF-TYPE integer\n"
+"      EXPECT job-uri OF-TYPE uri\n"
+"      EXPECT job-state OF-TYPE enum\n"
+"      EXPECT job-originating-user-name OF-TYPE name WITH-VALUE \"$user\"\n"
 "    }\n"
 
 #. type: SH
@@ -7412,12 +7409,16 @@ msgstr "Die nachfolgenden Direktiven werden in einem Test verstanden:"
 msgid "ATTR tag attribute-name value(s)"
 msgstr "ATTR Markierung Attributname Wert(e)"
 
-#.  character.
 #. type: Plain text
 #: ipptoolfile.man:148
+#, fuzzy
+#| msgid ""
+#| "Adds an attribute to the test request. Values are separated by the comma "
+#| "(\",\")  character - escape commas using the \""
 msgid ""
 "Adds an attribute to the test request. Values are separated by the comma (\","
-"\")  character - escape commas using the \""
+"\")  character - escape commas using the \"\\e\" character. Possible "
+"attribute-name are defined in RFC2911."
 msgstr ""
 "Fügt der Testanfrage ein Attribut hinzu. Werte werden durch Kommata (»,«) "
 "getrennt, maskieren Sie Kommata mit \"."
@@ -7744,9 +7745,9 @@ msgid ""
 "matches. A side-effect of this predicate is that this EXPECT will never fail "
 "a test."
 msgstr ""
-"Setzt die Variable auf den Wert des Attributes, wenn die EXPECT-"
-"Bedingung passt. Ein Seiteneffekt dieser Eigenschaft ist, dass dieser EXPECT "
-"niemals bei einem Test fehlschlägt."
+"Setzt die Variable auf den Wert des Attributes, wenn die EXPECT-Bedingung "
+"passt. Ein Seiteneffekt dieser Eigenschaft ist, dass dieser EXPECT niemals "
+"bei einem Test fehlschlägt."
 
 #. type: TP
 #: ipptoolfile.man:255 ipptoolfile.man:331
@@ -8641,6 +8642,11 @@ msgstr ""
 #: ipptoolfile.man:567
 msgid "I<ipptool(1)>,"
 msgstr "I<ipptool(1)>,"
+
+#. type: Plain text
+#: ipptoolfile.man:571
+msgid "RFC2911 http://tools.ietf.org/html/rfc2911"
+msgstr ""
 
 #. type: TH
 #: lpadmin.man:15
@@ -10667,7 +10673,6 @@ msgstr ""
 "Deaktiviert das Drucken von Deckblättern. Diese Option ist äquivalent zu »-o "
 "job-sheets=none«."
 
-# type: Plain text
 #. type: Plain text
 #: lpr.man:86
 msgid ""
@@ -10706,23 +10711,7 @@ msgstr ""
 "nützlich."
 
 #. type: Plain text
-#: lpr.man:100
-msgid ""
-"Specifies that the print file should be formatted with a shaded header with "
-"the date, time, job name, and page number. This option is equivalent to \"-o "
-"prettyprint\" and is only useful when"
-msgstr ""
-"Spezifiziert, dass die Druckdatei mit einem schattierten Kopf mit Datum, "
-"Uhrzeit, Auftragsname und Seitennummer formatiert werden soll. Diese Option "
-"Ist äquivalent zu »-o prettyprint« und ist nur nützlich, wenn "
-
-#. type: Plain text
-#: lpr.man:102
-msgid "printing text files."
-msgstr "Textdateien gedruckt werden."
-
-#. type: Plain text
-#: lpr.man:106
+#: lpr.man:105
 msgid "Hold job for printing."
 msgstr "Druckauftrag zum Drucken anhalten."
 
@@ -11912,6 +11901,29 @@ msgid ""
 msgstr ""
 "I<classes.conf(5)>, I<cupsd(8)>, I<cupsd.conf(5)>, I<mime.convs(5)>, I<mime."
 "types(5)>, printers.conf(5)"
+
+#~ msgid "ServerName hostname-or-ip-address[:port]"
+#~ msgstr "ServerName Hostname-oder-IP-Adresse[:Port]"
+
+#~ msgid ""
+#~ "Specifies the address and optionally the port to use when connecting to "
+#~ "the server. B<Note: Not supported on OS X 10.7 or later.>"
+#~ msgstr ""
+#~ "Spezifiziert die Adresse und optional den Port, die bei der Verbindung "
+#~ "zum Server verwandt werden sollen. B<Hinweis: Auf OS X 10.7 oder neuer "
+#~ "nicht unterstützt.>"
+
+#~ msgid ""
+#~ "Specifies that the print file should be formatted with a shaded header "
+#~ "with the date, time, job name, and page number. This option is equivalent "
+#~ "to \"-o prettyprint\" and is only useful when"
+#~ msgstr ""
+#~ "Spezifiziert, dass die Druckdatei mit einem schattierten Kopf mit Datum, "
+#~ "Uhrzeit, Auftragsname und Seitennummer formatiert werden soll. Diese "
+#~ "Option Ist äquivalent zu »-o prettyprint« und ist nur nützlich, wenn "
+
+#~ msgid "printing text files."
+#~ msgstr "Textdateien gedruckt werden."
 
 #~ msgid "Enable printing using the file: pseudo-device:"
 #~ msgstr "Aktiviere Druckerfreigabe unter Verwendung des file:-Pseudogeräts:"
