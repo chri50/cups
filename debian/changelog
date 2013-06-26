@@ -1,3 +1,25 @@
+cups (1.6.2-10) unstable; urgency=low
+
+  [ Didier Raboud ]
+  * Mark the cups-client NEWS as released and make sure it can be
+    installed by dropping the /usr/share/doc/cups-client symlink.
+    Thanks to Evgeni Golov (Closes: #704238)
+  * Backport upstream patch to remove unreal printers from the potential
+    printers' list to avoid jobs to go to unexpected printers
+    (Closes: #711848)
+  * Backport upstream patch to enhance the HTTP_ERROR handling
+    (Closes: #645436)
+  * Bump Standards-Version to 3.9.4 without changes needed
+  * Source package cleanup:
+    - Drop outdated and not-applied cups-avahi.patch
+    - Drop unused bzr-builddep configuration files
+    - Add gitignore file to ignore .pc/ directory
+
+  [ Helge Kreutzmann ]
+  * Update German manpages translation.
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 26 Jun 2013 13:51:10 +0200
+
 cups (1.6.2-9) unstable; urgency=low
 
   [ Helge Kreutzmann ]

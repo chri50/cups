@@ -1,4 +1,4 @@
-cups (1.6.2-9) UNRELEASED; urgency=low
+cups (1.6.2-10) unstable; urgency=low
 
   From cups 1.6 the default IPP version for requests is 2.0. For remote
   connections configured with ServerName in /etc/cups/cups-client.conf,
@@ -7,4 +7,4 @@ cups (1.6.2-9) UNRELEASED; urgency=low
 
     ServerName remote-print-server.example.com/version=1.1
 
- -- Didier Raboud <odyx@debian.org>  Thu, 06 Jun 2013 08:05:57 +0200
+ -- Didier Raboud <odyx@debian.org>  Mon, 17 Jun 2013 08:51:44 +0200
