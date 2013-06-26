@@ -162,7 +162,6 @@ override_dh_auto_clean:
 override_dh_installdocs:
 	dh_installdocs -plibcupsimage2-dev --link-doc=libcupsimage2
 	dh_installdocs -pcups-bsd --link-doc=libcups2
-	dh_installdocs -pcups-client --link-doc=libcups2
 	dh_installdocs --remaining-packages
 
 	rm -f debian/libcups2-dev/usr/share/doc/libcups2-dev/examples/scripting/php/*.o

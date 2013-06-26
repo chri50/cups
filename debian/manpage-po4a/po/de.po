@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 1.5.2-10\n"
 "POT-Creation-Date: 2013-06-09 19:51+0300\n"
-"PO-Revision-Date: 2013-06-08 21:49+0200\n"
+"PO-Revision-Date: 2013-06-16 16:06+0200\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
 "Language: de\n"
@@ -7411,17 +7411,14 @@ msgstr "ATTR Markierung Attributname Wert(e)"
 
 #. type: Plain text
 #: ipptoolfile.man:148
-#, fuzzy
-#| msgid ""
-#| "Adds an attribute to the test request. Values are separated by the comma "
-#| "(\",\")  character - escape commas using the \""
 msgid ""
 "Adds an attribute to the test request. Values are separated by the comma (\","
 "\")  character - escape commas using the \"\\e\" character. Possible "
 "attribute-name are defined in RFC2911."
 msgstr ""
 "Fügt der Testanfrage ein Attribut hinzu. Werte werden durch Kommata (»,«) "
-"getrennt, maskieren Sie Kommata mit \"."
+"getrennt, maskieren Sie Kommata mit dem Zeichen \"\\e\". Mögliche "
+"Attributnamen sind in RFC2911 definiert."
 
 #. type: TP
 #: ipptoolfile.man:148
@@ -8646,7 +8643,7 @@ msgstr "I<ipptool(1)>,"
 #. type: Plain text
 #: ipptoolfile.man:571
 msgid "RFC2911 http://tools.ietf.org/html/rfc2911"
-msgstr ""
+msgstr "RFC2911 http://tools.ietf.org/html/rfc2911"
 
 #. type: TH
 #: lpadmin.man:15
