@@ -142,6 +142,8 @@ static const struct quirk_printer_struct quirk_printers[] = {
 	{ 0x0409, 0xbef4, USBLP_QUIRK_BIDIR }, /* NEC Picty760 (HP OEM) */
 	{ 0x0409, 0xf0be, USBLP_QUIRK_BIDIR }, /* NEC Picty920 (HP OEM) */
 	{ 0x0409, 0xf1be, USBLP_QUIRK_BIDIR }, /* NEC Picty800 (HP OEM) */
+	{ 0x043d, 0x00d7, USBLP_QUIRK_NO_REATTACH }, /* Lexmark International,
+		       Inc. (E238), http://bugs.debian.org/716843 */
 	{ 0x043d, 0x00f3, USBLP_QUIRK_NO_REATTACH }, /* Lexmark International,
 		       Inc. (e250d), https://bugs.launchpad.net/bugs/1084164 */
 	{ 0x0482, 0x0010, USBLP_QUIRK_BIDIR }, /* Kyocera Mita FS 820,
