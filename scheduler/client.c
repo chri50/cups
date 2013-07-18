@@ -1,5 +1,5 @@
 /*
- * "$Id: client.c 10834 2013-01-21 15:29:47Z mike $"
+ * "$Id: client.c 7950 2008-09-17 00:21:59Z mike $"
  *
  *   Client routines for the CUPS scheduler.
  *
@@ -2581,7 +2581,14 @@ cupsdSendHeader(
 	       con->http.hostname);
 #ifdef HAVE_GSSAPI
     else if (auth_type == CUPSD_AUTH_NEGOTIATE)
+    {
+#  ifdef AF_LOCAL
+      if (_httpAddrFamily(con->http.hostaddr) == AF_LOCAL)
+        strlcpy(auth_str, "Basic realm=\"CUPS\"", sizeof(auth_str));
+      else
+#  endif /* AF_LOCAL */
       strlcpy(auth_str, "Negotiate", sizeof(auth_str));
+    }
 #endif /* HAVE_GSSAPI */
 
     if (con->best && auth_type != CUPSD_AUTH_NEGOTIATE &&
@@ -4218,5 +4225,5 @@ write_pipe(cupsd_client_t *con)		/* I - Client connection */
 
 
 /*
- * End of "$Id: client.c 10834 2013-01-21 15:29:47Z mike $".
+ * End of "$Id: client.c 7950 2008-09-17 00:21:59Z mike $".
  */

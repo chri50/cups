@@ -1,5 +1,5 @@
 /*
- * "$Id: usb-libusb.c 10908 2013-03-14 14:31:07Z mike $"
+ * "$Id: usb-libusb.c 10979 2013-05-13 17:39:19Z msweet $"
  *
  *   LIBUSB interface code for CUPS.
  *
@@ -142,6 +142,8 @@ static const struct quirk_printer_struct quirk_printers[] = {
 	{ 0x0409, 0xbef4, USBLP_QUIRK_BIDIR }, /* NEC Picty760 (HP OEM) */
 	{ 0x0409, 0xf0be, USBLP_QUIRK_BIDIR }, /* NEC Picty920 (HP OEM) */
 	{ 0x0409, 0xf1be, USBLP_QUIRK_BIDIR }, /* NEC Picty800 (HP OEM) */
+	{ 0x043d, 0x00d7, USBLP_QUIRK_NO_REATTACH }, /* Lexmark International,
+		       Inc. (E238), http://bugs.debian.org/716843 */
 	{ 0x043d, 0x00f3, USBLP_QUIRK_NO_REATTACH }, /* Lexmark International,
 		       Inc. (e250d), https://bugs.launchpad.net/bugs/1084164 */
 	{ 0x0482, 0x0010, USBLP_QUIRK_BIDIR }, /* Kyocera Mita FS 820,
@@ -230,6 +232,7 @@ static const struct quirk_printer_struct quirk_printers[] = {
 	{ 0x04a9, 0x3256, USBLP_QUIRK_BLACKLIST }, /* Canon SELPHY CP810 */
 	{ 0x04a9, 0x30F5, USBLP_QUIRK_BLACKLIST }, /* Canon SELPHY CP500 */
 	{ 0x04a9, 0x31AF, USBLP_QUIRK_BLACKLIST }, /* Canon SELPHY ES3 */
+	{ 0x04a9, 0x31DD, USBLP_QUIRK_BLACKLIST }, /* Canon SELPHY CP780 */
 	 /* MISSING PIDs: CP520, CP530, CP790 */
 	{ 0, 0 }
 };
@@ -898,7 +901,7 @@ find_device(usb_cb_t   cb,		/* I - Callback function */
 					/* Pointer to current alternate setting */
   const struct libusb_endpoint_descriptor *endpptr = NULL;
 					/* Pointer to current endpoint */
-  ssize_t               err = 0,
+  ssize_t               err = 0,	/* Error code */
                         numdevs,        /* number of connected devices */
                         i = 0;
   uint8_t		conf,		/* Current configuration */
@@ -921,7 +924,8 @@ find_device(usb_cb_t   cb,		/* I - Callback function */
   err = libusb_init(NULL);
   if (err)
   {
-    fprintf(stderr, "WARNING: Unable to initialize USB access via libusb, libusb error %i\n", err);
+    fprintf(stderr, "DEBUG: Unable to initialize USB access via libusb, "
+                    "libusb error %i\n", err);
     return (NULL);
   }
 
@@ -1980,6 +1984,6 @@ static void soft_reset(void)
 
 
 /*
- * End of "$Id: usb-libusb.c 10908 2013-03-14 14:31:07Z mike $".
+ * End of "$Id: usb-libusb.c 10979 2013-05-13 17:39:19Z msweet $".
  */
 

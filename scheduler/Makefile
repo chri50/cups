@@ -1,5 +1,5 @@
 #
-# "$Id: Makefile 10490 2012-05-21 17:40:22Z mike $"
+# "$Id: Makefile 7875 2008-08-27 22:53:31Z mike $"
 #
 #   Scheduler Makefile for CUPS.
 #
@@ -124,6 +124,14 @@ clean:
 depend:
 	$(CC) -MM $(ALL_CFLAGS) $(COBJS:.o=.c) >Dependencies
 	$(CXX) -MM $(ALL_CXXFLAGS) $(CXXOBJS:.o=.cxx) >>Dependencies
+
+
+#
+# Run oclint to check code coverage...
+#
+
+oclint:
+	oclint -o=oclint.html -html $(CUPSDOBJS:.o=.c) $(LIBOBJS:.o=.c) -- $(ALL_CFLAGS)
 
 
 #
@@ -551,5 +559,5 @@ include Dependencies
 
 
 #
-# End of "$Id: Makefile 10490 2012-05-21 17:40:22Z mike $".
+# End of "$Id: Makefile 7875 2008-08-27 22:53:31Z mike $".
 #

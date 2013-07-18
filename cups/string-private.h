@@ -1,5 +1,5 @@
 /*
- * "$Id: string-private.h 9950 2011-09-01 23:02:24Z mike $"
+ * "$Id$"
  *
  *   Private string definitions for CUPS.
  *
@@ -196,5 +196,5 @@ extern double	_cupsStrScand(const char *buf, char **bufptr,
 #endif /* !_CUPS_STRING_H_ */
 
 /*
- * End of "$Id: string-private.h 9950 2011-09-01 23:02:24Z mike $".
+ * End of "$Id$".
  */

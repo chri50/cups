@@ -1,5 +1,5 @@
 /*
- * "$Id: testcups.c 10470 2012-05-16 22:33:31Z mike $"
+ * "$Id$"
  *
  *   CUPS API test program for CUPS.
  *
@@ -566,5 +566,5 @@ show_diffs(cups_dest_t *a,		/* I - First destination */
 
 
 /*
- * End of "$Id: testcups.c 10470 2012-05-16 22:33:31Z mike $".
+ * End of "$Id$".
  */

@@ -1,5 +1,5 @@
 /*
- * "$Id: ipp.c 10814 2013-01-14 22:06:21Z mike $"
+ * "$Id: ipp.c 10102 2011-11-02 23:52:39Z mike $"
  *
  *   Internet Printing Protocol functions for CUPS.
  *
@@ -2341,6 +2341,9 @@ ippNew(void)
    /*
     * Set default version - usually 2.0...
     */
+
+    if (cg->server_version == 0)
+      _cupsSetDefaults();
 
     temp->request.any.version[0] = cg->server_version / 10;
     temp->request.any.version[1] = cg->server_version % 10;
@@ -5685,5 +5688,5 @@ ipp_write_file(int         *fd,		/* I - File descriptor */
 
 
 /*
- * End of "$Id: ipp.c 10814 2013-01-14 22:06:21Z mike $".
+ * End of "$Id: ipp.c 10102 2011-11-02 23:52:39Z mike $".
  */

@@ -1,5 +1,5 @@
 /*
- * "$Id: cups-driverd.cxx 10489 2012-05-21 16:05:58Z mike $"
+ * "$Id: cups-driverd.cxx 3833 2012-05-23 22:51:18Z msweet $"
  *
  *   PPD/driver support for CUPS.
  *
@@ -2937,5 +2937,5 @@ regex_string(const char *s)		/* I - String to compare */
 
 
 /*
- * End of "$Id: cups-driverd.cxx 10489 2012-05-21 16:05:58Z mike $".
+ * End of "$Id: cups-driverd.cxx 3833 2012-05-23 22:51:18Z msweet $".
  */

@@ -1,5 +1,5 @@
 dnl
-dnl   "$Id: cups-gssapi.m4 10785 2013-01-08 16:29:26Z mike $"
+dnl   "$Id$"
 dnl
 dnl   GSSAPI/Kerberos library detection for CUPS.
 dnl
@@ -158,5 +158,5 @@ AC_SUBST(CUPS_DEFAULT_GSSSERVICENAME)
 AC_DEFINE_UNQUOTED(CUPS_DEFAULT_GSSSERVICENAME, "$CUPS_DEFAULT_GSSSERVICENAME")
 
 dnl
-dnl End of "$Id: cups-gssapi.m4 10785 2013-01-08 16:29:26Z mike $".
+dnl End of "$Id$".
 dnl

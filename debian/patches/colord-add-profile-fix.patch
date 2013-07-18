@@ -3,9 +3,9 @@ Author: Alexey Galakhov <agalakhov@gmail.com>
 Bug-Debian: http://bugs.debian.org/711868
 Last-Update: 2013-06-10
 
---- cups-1.6.2.orig/scheduler/colorman.c	2013-02-20 05:53:01.000000000 +0600
-+++ cups-1.6.2/scheduler/colorman.c	2013-06-10 18:50:49.000000000 +0600
-@@ -84,10 +84,13 @@
+--- a/scheduler/colorman.c
++++ b/scheduler/colorman.c
+@@ -103,10 +103,13 @@
  #  define COLORD_KIND_PRINTER	"printer"
  					/* printing output device */
  
@@ -21,7 +21,7 @@ Last-Update: 2013-06-10
  #  define COLORD_DBUS_PATH	"/org/freedesktop/ColorManager"
  					/* Path for color management system */
  #  define COLORD_DBUS_TIMEOUT	5000	/* Timeout for connecting to colord in ms */
-@@ -1177,7 +1180,7 @@
+@@ -1196,7 +1199,7 @@
    DBusError	error;			/* D-Bus error */
  
  

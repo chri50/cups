@@ -1,5 +1,5 @@
 /*
- * "$Id: file-private.h 9777 2011-05-13 23:04:16Z mike $"
+ * "$Id: file-private.h 3275 2011-05-20 07:26:13Z msweet $"
  *
  *   Private file definitions for CUPS.
  *
@@ -133,5 +133,5 @@ extern void			_cupsFileCheckFilter(void *context,
 #endif /* !_CUPS_FILE_PRIVATE_H_ */
 
 /*
- * End of "$Id: file-private.h 9777 2011-05-13 23:04:16Z mike $".
+ * End of "$Id: file-private.h 3275 2011-05-20 07:26:13Z msweet $".
  */

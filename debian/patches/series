@@ -1,9 +1,7 @@
 # patches accepted and committed upstream:
-usb-backend-more-quirk-rules.patch
-remove-unreal-printers.patch
-more-verbose-http-error-message.patch
 
 # patches sent upstream
+usb-backend-more-quirk-rules.patch
 cupsd-no-crash-on-avahi-threaded-poll-shutdown.patch
 get-ppd-file-for-statically-configured-ipp-shared-queues.patch
 pidfile.patch
@@ -25,7 +23,6 @@ do-not-broadcast-with-hostnames.patch
 cups-deviced-allow-device-ids-with-newline.patch
 cups-snmp-oids-device-id-hp-ricoh.patch
 configure-default-browse-protocols.patch
-mention-ipp-version-specifier-in-man-and-ref.patch
 mention-rfc2911-in-ipptoolfile-for-clarity.patch
 colord-add-profile-fix.patch
 # Fix tests, should probably go upstream

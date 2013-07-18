@@ -1,5 +1,5 @@
 /*
- * "$Id: language-private.h 10506 2012-05-23 20:17:12Z mike $"
+ * "$Id$"
  *
  *   Private localization support for CUPS.
  *
@@ -82,5 +82,5 @@ extern void		_cupsSetLocale(char *argv[]);
 #endif /* !_CUPS_LANGUAGE_PRIVATE_H_ */
 
 /*
- * End of "$Id: language-private.h 10506 2012-05-23 20:17:12Z mike $".
+ * End of "$Id$".
  */

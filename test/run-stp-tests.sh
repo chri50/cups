@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# "$Id: run-stp-tests.sh 10710 2012-11-26 18:26:01Z mike $"
+# "$Id: run-stp-tests.sh 9034 2010-03-09 07:03:06Z mike $"
 #
 #   Perform the complete set of IPP compliance tests specified in the
 #   CUPS Software Test Plan.
@@ -973,5 +973,5 @@ if test $fail != 0; then
 fi
 
 #
-# End of "$Id: run-stp-tests.sh 10710 2012-11-26 18:26:01Z mike $"
+# End of "$Id: run-stp-tests.sh 9034 2010-03-09 07:03:06Z mike $"
 #

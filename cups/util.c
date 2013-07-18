@@ -1,5 +1,5 @@
 /*
- * "$Id: util.c 10873 2013-02-20 02:16:13Z mike $"
+ * "$Id: util.c 7850 2008-08-20 00:07:25Z mike $"
  *
  *   Printing utilities for CUPS.
  *
@@ -1862,5 +1862,5 @@ cups_get_printer_uri(
 
 
 /*
- * End of "$Id: util.c 10873 2013-02-20 02:16:13Z mike $".
+ * End of "$Id: util.c 7850 2008-08-20 00:07:25Z mike $".
  */

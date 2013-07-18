@@ -1,5 +1,5 @@
 .\"
-.\" "$Id: cupsaccept.man 10791 2013-01-10 16:58:21Z mike $"
+.\" "$Id: cupsaccept.man 7930 2008-09-10 22:25:54Z mike $"
 .\"
 .\"   accept/reject man page for CUPS.
 .\"
@@ -75,5 +75,5 @@ http://localhost:631/help
 .SH COPYRIGHT
 Copyright 2007-2013 by Apple Inc.
 .\"
-.\" End of "$Id: cupsaccept.man 10791 2013-01-10 16:58:21Z mike $".
+.\" End of "$Id: cupsaccept.man 7930 2008-09-10 22:25:54Z mike $".
 .\"

@@ -1,5 +1,5 @@
 #
-# "$Id: cups.spec.in 10913 2013-03-18 17:00:03Z mike $"
+# "$Id: cups.spec.in 7718 2008-07-10 23:04:22Z mike $"
 #
 #   RPM "spec" file for CUPS.
 #
@@ -35,12 +35,12 @@
 
 Summary: CUPS
 Name: cups
-Version: 1.6.2
+Version: 1.6.3
 Release: 1
 Epoch: 1
 License: GPL
 Group: System Environment/Daemons
-Source: http://ftp.easysw.com/pub/cups/1.6.2/cups-1.6.2-source.tar.bz2
+Source: http://www.cups.org/software/1.6.3/cups-1.6.3-source.tar.bz2
 Url: http://www.cups.org
 Packager: Anonymous <anonymous@foo.com>
 Vendor: Apple Inc.
@@ -361,5 +361,5 @@ rm -rf $RPM_BUILD_ROOT
 
 
 #
-# End of "$Id: cups.spec.in 10913 2013-03-18 17:00:03Z mike $".
+# End of "$Id: cups.spec.in 7718 2008-07-10 23:04:22Z mike $".
 #

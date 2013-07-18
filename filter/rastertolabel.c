@@ -1,5 +1,5 @@
 /*
- * "$Id: rastertolabel.c 10430 2012-04-23 18:07:59Z mike $"
+ * "$Id: rastertolabel.c 7720 2008-07-11 22:46:21Z mike $"
  *
  *   Label printer filter for CUPS.
  *
@@ -1308,5 +1308,5 @@ main(int  argc,				/* I - Number of command-line arguments */
 
 
 /*
- * End of "$Id: rastertolabel.c 10430 2012-04-23 18:07:59Z mike $".
+ * End of "$Id: rastertolabel.c 7720 2008-07-11 22:46:21Z mike $".
  */

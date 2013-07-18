@@ -1,5 +1,5 @@
 /*
- * "$Id: usb.c 10264 2012-02-12 07:18:31Z mike $"
+ * "$Id: usb.c 7687 2008-06-24 01:28:36Z mike $"
  *
  *   USB port backend for CUPS.
  *
@@ -260,5 +260,5 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
 
 
 /*
- * End of "$Id: usb.c 10264 2012-02-12 07:18:31Z mike $".
+ * End of "$Id: usb.c 7687 2008-06-24 01:28:36Z mike $".
  */

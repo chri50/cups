@@ -1,5 +1,5 @@
 #
-# "$Id: Makefile 10580 2012-08-29 19:02:00Z mike $"
+# "$Id: Makefile 7871 2008-08-27 21:12:43Z mike $"
 #
 #   API library Makefile for CUPS.
 #
@@ -190,6 +190,14 @@ clean:
 
 depend:
 	$(CC) -MM $(ALL_CFLAGS) $(OBJS:.o=.c) >Dependencies
+
+
+#
+# Run oclint to check code coverage...
+#
+
+oclint:
+	oclint -o=oclint.html -html $(LIBOBJS:.o=.c) -- $(ALL_CFLAGS)
 
 
 #
@@ -621,5 +629,5 @@ include Dependencies
 
 
 #
-# End of "$Id: Makefile 10580 2012-08-29 19:02:00Z mike $".
+# End of "$Id: Makefile 7871 2008-08-27 21:12:43Z mike $".
 #

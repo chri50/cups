@@ -1,5 +1,5 @@
 /*
- * "$Id: dest.c 10814 2013-01-14 22:06:21Z mike $"
+ * "$Id: dest.c 9568 2011-02-25 06:13:56Z mike $"
  *
  *   User-defined destination (and option) support for CUPS.
  *
@@ -1903,18 +1903,7 @@ cupsGetNamedDest(http_t     *http,	/* I - Connection to server or @code CUPS_HTT
   */
 
   if (!_cupsGetDests(http, op, name, &dest, 0, 0))
-  {
-    if (op == CUPS_GET_DEFAULT || (name && !set_as_default))
-      return (NULL);
-
-   /*
-    * The default printer from environment variables or from a
-    * configuration file does not exist.  Find out the real default.
-    */
-
-    if (!_cupsGetDests(http, CUPS_GET_DEFAULT, NULL, &dest, 0, 0))
-      return (NULL);
-  }
+    return (NULL);
 
   if (instance)
     dest->instance = _cupsStrAlloc(instance);
@@ -3898,5 +3887,5 @@ cups_make_string(
 
 
 /*
- * End of "$Id: dest.c 10814 2013-01-14 22:06:21Z mike $".
+ * End of "$Id: dest.c 9568 2011-02-25 06:13:56Z mike $".
  */

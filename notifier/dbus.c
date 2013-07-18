@@ -1,5 +1,5 @@
 /*
- * "$Id: dbus.c 10191 2012-01-20 19:00:32Z mike $"
+ * "$Id: dbus.c 3643 2012-02-13 16:35:48Z msweet $"
  *
  *   D-Bus notifier for CUPS.
  *
@@ -701,5 +701,5 @@ main(void)
 
 
 /*
- * End of "$Id: dbus.c 10191 2012-01-20 19:00:32Z mike $".
+ * End of "$Id: dbus.c 3643 2012-02-13 16:35:48Z msweet $".
  */

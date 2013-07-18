@@ -1,5 +1,5 @@
 #
-# "$Id: Makefile 10191 2012-01-20 19:00:32Z mike $"
+# "$Id: Makefile 7871 2008-08-27 21:12:43Z mike $"
 #
 #   Berkeley commands makefile for CUPS.
 #
@@ -163,5 +163,5 @@ include Dependencies
 
 
 #
-# End of "$Id: Makefile 10191 2012-01-20 19:00:32Z mike $".
+# End of "$Id: Makefile 7871 2008-08-27 21:12:43Z mike $".
 #

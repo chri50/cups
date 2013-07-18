@@ -1,5 +1,5 @@
 /*
- * "$Id: sspi.c 9771 2011-05-12 05:21:56Z mike $"
+ * "$Id: sspi.c 3247 2011-05-12 06:22:31Z msweet $"
  *
  *   Windows SSPI SSL implementation for CUPS.
  *
@@ -1481,5 +1481,5 @@ cleanup:
 
 
 /*
- * End of "$Id: sspi.c 9771 2011-05-12 05:21:56Z mike $".
+ * End of "$Id: sspi.c 3247 2011-05-12 06:22:31Z msweet $".
  */

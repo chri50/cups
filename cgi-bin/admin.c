@@ -1,5 +1,5 @@
 /*
- * "$Id: admin.c 10431 2012-04-23 19:19:19Z mike $"
+ * "$Id: admin.c 8029 2008-10-08 21:07:45Z mike $"
  *
  *   Administration CGI for CUPS.
  *
@@ -4218,5 +4218,5 @@ get_points(double     number,		/* I - Original number */
 
 
 /*
- * End of "$Id: admin.c 10431 2012-04-23 19:19:19Z mike $".
+ * End of "$Id: admin.c 8029 2008-10-08 21:07:45Z mike $".
  */

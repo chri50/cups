@@ -1,5 +1,5 @@
 /*
- * "$Id: dest-options.c 10767 2012-12-13 21:10:03Z mike $"
+ * "$Id: dest-options.c 4185 2013-02-20 02:19:13Z msweet $"
  *
  *   Destination option/media support for CUPS.
  *
@@ -1759,5 +1759,5 @@ cups_test_constraints(
 
 
 /*
- * End of "$Id: dest-options.c 10767 2012-12-13 21:10:03Z mike $".
+ * End of "$Id: dest-options.c 4185 2013-02-20 02:19:13Z msweet $".
  */

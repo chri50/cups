@@ -1,5 +1,5 @@
 .\"
-.\" "$Id: ipptoolfile.man 10789 2013-01-10 16:51:10Z mike $"
+.\" "$Id$"
 .\"
 .\"   ipptoolfile man page for CUPS.
 .\"
@@ -572,5 +572,5 @@ RFC2911 http://tools.ietf.org/html/rfc2911
 .SH COPYRIGHT
 Copyright 2007-2013 by Apple Inc.
 .\"
-.\" End of "$Id: ipptoolfile.man 10789 2013-01-10 16:51:10Z mike $".
+.\" End of "$Id$".
 .\"

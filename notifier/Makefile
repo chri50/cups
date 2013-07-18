@@ -1,5 +1,5 @@
 #
-# "$Id: Makefile 10191 2012-01-20 19:00:32Z mike $"
+# "$Id: Makefile 7920 2008-09-10 01:04:10Z mike $"
 #
 #   Notifier makefile for CUPS.
 #
@@ -158,5 +158,5 @@ include Dependencies
 
 
 #
-# End of "$Id: Makefile 10191 2012-01-20 19:00:32Z mike $".
+# End of "$Id: Makefile 7920 2008-09-10 01:04:10Z mike $".
 #

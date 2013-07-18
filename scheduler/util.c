@@ -1,5 +1,5 @@
 /*
- * "$Id: util.c 10424 2012-04-23 17:26:57Z mike $"
+ * "$Id: util.c 7621 2008-06-06 18:55:35Z mike $"
  *
  *   Mini-daemon utility functions for CUPS.
  *
@@ -467,5 +467,5 @@ cupsdSendIPPTrailer(void)
 
 
 /*
- * End of "$Id: util.c 10424 2012-04-23 17:26:57Z mike $".
+ * End of "$Id: util.c 7621 2008-06-06 18:55:35Z mike $".
  */

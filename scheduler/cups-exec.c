@@ -1,5 +1,5 @@
 /*
- * "$Id: cups-exec.c 10523 2012-06-20 15:01:07Z mike $"
+ * "$Id: cups-exec.c 4298 2013-05-10 16:52:10Z msweet $"
  *
  *   Sandbox helper for CUPS.
  *
@@ -31,6 +31,7 @@
 #  ifndef SANDBOX_NAMED_EXTERNAL
 #    define SANDBOX_NAMED_EXTERNAL  0x0003
 #  endif /* !SANDBOX_NAMED_EXTERNAL */
+#  pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #endif /* HAVE_SANDBOX_H */
 
 
@@ -60,7 +61,6 @@ main(int  argc,				/* I - Number of command-line args */
   }
 
 #ifdef HAVE_SANDBOX_H
-#  pragma GCC diagnostic ignored "-Wdeprecated-declarations"
  /*
   * Run in a separate security profile...
   */
@@ -105,5 +105,5 @@ main(int  argc,				/* I - Number of command-line args */
 
 
 /*
- * End of "$Id: cups-exec.c 10523 2012-06-20 15:01:07Z mike $".
+ * End of "$Id: cups-exec.c 4298 2013-05-10 16:52:10Z msweet $".
  */

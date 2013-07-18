@@ -1,5 +1,5 @@
 /*
- * "$Id: raster.h 10424 2012-04-23 17:26:57Z mike $"
+ * "$Id: raster.h 3794 2012-04-23 22:44:16Z msweet $"
  *
  *   Raster file definitions for CUPS.
  *
@@ -401,5 +401,5 @@ extern cups_raster_t	*cupsRasterOpenIO(cups_raster_iocb_t iocb, void *ctx,
 #endif /* !_CUPS_RASTER_H_ */
 
 /*
- * End of "$Id: raster.h 10424 2012-04-23 17:26:57Z mike $".
+ * End of "$Id: raster.h 3794 2012-04-23 22:44:16Z msweet $".
  */
