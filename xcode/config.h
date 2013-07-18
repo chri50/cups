@@ -1,10 +1,10 @@
 /* config.h.  Generated from config.h.in by configure.  */
 /*
- * "$Id: config.h 10548 2012-07-16 18:21:43Z mike $"
+ * "$Id: config.h 4298 2013-05-10 16:52:10Z msweet $"
  *
  *   Configuration file for CUPS.
  *
- *   Copyright 2007-2012 by Apple Inc.
+ *   Copyright 2007-2013 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -21,8 +21,8 @@
  * Version of software...
  */
 
-#define CUPS_SVERSION "CUPS v1.6.0"
-#define CUPS_MINIMAL "CUPS/1.6.0"
+#define CUPS_SVERSION "CUPS v1.6.3"
+#define CUPS_MINIMAL "CUPS/1.6.3"
 
 
 /*
@@ -739,5 +739,5 @@ static __inline int _cups_abs(int i) { return (i < 0 ? -i : i); }
 #endif /* !_CUPS_CONFIG_H_ */
 
 /*
- * End of "$Id: config.h 10548 2012-07-16 18:21:43Z mike $".
+ * End of "$Id: config.h 4298 2013-05-10 16:52:10Z msweet $".
  */

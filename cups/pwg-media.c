@@ -1,5 +1,5 @@
 /*
- * "$Id: pwg-media.c 10453 2012-05-04 23:38:53Z mike $"
+ * "$Id: pwg-media.c 10979 2013-05-13 17:39:19Z msweet $"
  *
  *   PWG media name API implementation for CUPS.
  *
@@ -794,13 +794,13 @@ _pwgMediaForPWG(const char *pwg)	/* I - PWG size name */
 
 	if (!strcmp(ptr, "mm"))
 	{
-	  size->width  = (int)(w * 100);
-	  size->length = (int)(l * 100);
+	  size->width  = (int)(w * 100 + 0.5);
+	  size->length = (int)(l * 100 + 0.5);
 	}
 	else
 	{
-	  size->width  = (int)(w * 2540);
-	  size->length = (int)(l * 2540);
+	  size->width  = (int)(w * 2540 + 0.5);
+	  size->length = (int)(l * 2540 + 0.5);
 	}
 
         strlcpy(cg->pwg_name, pwg, sizeof(cg->pwg_name));
@@ -924,5 +924,5 @@ pwg_compare_pwg(_pwg_media_t *a,	/* I - First size */
 
 
 /*
- * End of "$Id: pwg-media.c 10453 2012-05-04 23:38:53Z mike $".
+ * End of "$Id: pwg-media.c 10979 2013-05-13 17:39:19Z msweet $".
  */

@@ -1,5 +1,5 @@
 /*
- * "$Id: lpoptions.c 9950 2011-09-01 23:02:24Z mike $"
+ * "$Id: lpoptions.c 7720 2008-07-11 22:46:21Z mike $"
  *
  *   Printer option program for CUPS.
  *
@@ -561,5 +561,5 @@ usage(void)
 
 
 /*
- * End of "$Id: lpoptions.c 9950 2011-09-01 23:02:24Z mike $".
+ * End of "$Id: lpoptions.c 7720 2008-07-11 22:46:21Z mike $".
  */

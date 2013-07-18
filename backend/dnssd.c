@@ -1,5 +1,5 @@
 /*
- * "$Id: dnssd.c 10489 2012-05-21 16:05:58Z mike $"
+ * "$Id: dnssd.c 3833 2012-05-23 22:51:18Z msweet $"
  *
  *   DNS-SD discovery backend for CUPS.
  *
@@ -1276,5 +1276,5 @@ unquote(char       *dst,		/* I - Destination buffer */
 
 
 /*
- * End of "$Id: dnssd.c 10489 2012-05-21 16:05:58Z mike $".
+ * End of "$Id: dnssd.c 3833 2012-05-23 22:51:18Z msweet $".
  */

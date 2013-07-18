@@ -1,5 +1,5 @@
 /*
- * "$Id: dirsvc.h 10415 2012-04-16 23:26:18Z mike $"
+ * "$Id: dirsvc.h 7933 2008-09-11 00:44:58Z mike $"
  *
  *   Directory services definitions for the CUPS scheduler.
  *
@@ -80,5 +80,5 @@ extern void	cupsdUpdateDNSSDName(void);
 
 
 /*
- * End of "$Id: dirsvc.h 10415 2012-04-16 23:26:18Z mike $".
+ * End of "$Id: dirsvc.h 7933 2008-09-11 00:44:58Z mike $".
  */

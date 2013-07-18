@@ -1,5 +1,5 @@
 /*
- * "$Id: config.h.in 10776 2012-12-17 22:17:08Z mike $"
+ * "$Id: config.h.in 7918 2008-09-08 22:03:01Z mike $"
  *
  *   Configuration file for CUPS.
  *
@@ -32,6 +32,7 @@
 #define CUPS_DEFAULT_GROUP	"sys"
 #define CUPS_DEFAULT_SYSTEM_GROUPS	"sys root system"
 #define CUPS_DEFAULT_PRINTOPERATOR_AUTH	"@SYSTEM"
+#define CUPS_DEFAULT_SYSTEM_AUTHKEY	"system.print.admin"
 
 
 /*
@@ -742,5 +743,5 @@ static __inline int _cups_abs(int i) { return (i < 0 ? -i : i); }
 #endif /* !_CUPS_CONFIG_H_ */
 
 /*
- * End of "$Id: config.h.in 10776 2012-12-17 22:17:08Z mike $".
+ * End of "$Id: config.h.in 7918 2008-09-08 22:03:01Z mike $".
  */

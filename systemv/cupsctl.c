@@ -1,5 +1,5 @@
 /*
- * "$Id: cupsctl.c 10431 2012-04-23 19:19:19Z mike $"
+ * "$Id$"
  *
  *   Scheduler control program for CUPS.
  *
@@ -223,5 +223,5 @@ usage(const char *opt)			/* I - Option character/string */
 
 
 /*
- * End of "$Id: cupsctl.c 10431 2012-04-23 19:19:19Z mike $".
+ * End of "$Id$".
  */

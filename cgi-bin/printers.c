@@ -1,5 +1,5 @@
 /*
- * "$Id: printers.c 10608 2012-09-15 19:42:21Z mike $"
+ * "$Id: printers.c 7940 2008-09-16 00:45:16Z mike $"
  *
  *   Printer status CGI for CUPS.
  *
@@ -574,5 +574,5 @@ show_printer(http_t     *http,		/* I - Connection to server */
 
 
 /*
- * End of "$Id: printers.c 10608 2012-09-15 19:42:21Z mike $".
+ * End of "$Id: printers.c 7940 2008-09-16 00:45:16Z mike $".
  */

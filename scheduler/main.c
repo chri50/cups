@@ -1,5 +1,5 @@
 /*
- * "$Id: main.c 10777 2012-12-17 22:18:10Z mike $"
+ * "$Id: main.c 7925 2008-09-10 17:47:26Z mike $"
  *
  *   Main loop for the CUPS scheduler.
  *
@@ -1326,7 +1326,7 @@ cupsdSetStringf(char       **s,		/* O - New string */
                 const char *f,		/* I - Printf-style format string */
 	        ...)			/* I - Additional args as needed */
 {
-  char		v[4096];		/* Formatting string value */
+  char		v[65536 + 64];		/* Formatting string value */
   va_list	ap;			/* Argument pointer */
   char		*olds;			/* Old string */
 
@@ -2066,5 +2066,5 @@ usage(int status)			/* O - Exit status */
 
 
 /*
- * End of "$Id: main.c 10777 2012-12-17 22:18:10Z mike $".
+ * End of "$Id: main.c 7925 2008-09-10 17:47:26Z mike $".
  */

@@ -1,5 +1,5 @@
 /*
- * "$Id: cupsfilter.c 10869 2013-02-19 23:53:01Z mike $"
+ * "$Id: cupsfilter.c 7952 2008-09-17 00:56:20Z mike $"
  *
  *   Filtering program for CUPS.
  *
@@ -1459,5 +1459,5 @@ usage(const char *opt)			/* I - Incorrect option, if any */
 
 
 /*
- * End of "$Id: cupsfilter.c 10869 2013-02-19 23:53:01Z mike $".
+ * End of "$Id: cupsfilter.c 7952 2008-09-17 00:56:20Z mike $".
  */

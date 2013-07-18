@@ -1,5 +1,5 @@
 /*
- * "$Id: interpret.c 10424 2012-04-23 17:26:57Z mike $"
+ * "$Id: interpret.c 7852 2008-08-21 04:19:45Z mike $"
  *
  *   PPD command interpreter for CUPS.
  *
@@ -1684,5 +1684,5 @@ DEBUG_stack(_cups_ps_stack_t *st)	/* I - Stack */
 
 
 /*
- * End of "$Id: interpret.c 10424 2012-04-23 17:26:57Z mike $".
+ * End of "$Id: interpret.c 7852 2008-08-21 04:19:45Z mike $".
  */

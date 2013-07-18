@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# "$Id: 5.6-lpr.sh 10448 2012-05-04 18:34:39Z mike $"
+# "$Id: 5.6-lpr.sh 7409 2008-03-29 00:26:03Z mike $"
 #
 #   Test the lpr command.
 #
@@ -80,5 +80,5 @@ echo ""
 ./waitjobs.sh
 
 #
-# End of "$Id: 5.6-lpr.sh 10448 2012-05-04 18:34:39Z mike $".
+# End of "$Id: 5.6-lpr.sh 7409 2008-03-29 00:26:03Z mike $".
 #

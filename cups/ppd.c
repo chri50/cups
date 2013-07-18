@@ -1,5 +1,5 @@
 /*
- * "$Id: ppd.c 10424 2012-04-23 17:26:57Z mike $"
+ * "$Id: ppd.c 9900 2011-08-17 20:59:46Z mike $"
  *
  *   PPD file routines for CUPS.
  *
@@ -3394,5 +3394,5 @@ ppd_update_filters(ppd_file_t      *ppd,/* I - PPD file */
 
 
 /*
- * End of "$Id: ppd.c 10424 2012-04-23 17:26:57Z mike $".
+ * End of "$Id: ppd.c 9900 2011-08-17 20:59:46Z mike $".
  */

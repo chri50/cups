@@ -1,5 +1,5 @@
 .\"
-.\" "$Id: cupstestdsc.man 10791 2013-01-10 16:58:21Z mike $"
+.\" "$Id: cupstestdsc.man 7600 2008-05-20 21:06:23Z mike $"
 .\"
 .\"   cupstestdsc man page for CUPS.
 .\"
@@ -46,5 +46,5 @@ Specification, Version 3.0.
 .SH COPYRIGHT
 Copyright 2007-2013 by Apple Inc.
 .\"
-.\" End of "$Id: cupstestdsc.man 10791 2013-01-10 16:58:21Z mike $".
+.\" End of "$Id: cupstestdsc.man 7600 2008-05-20 21:06:23Z mike $".
 .\"

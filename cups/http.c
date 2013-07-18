@@ -1,5 +1,5 @@
 /*
- * "$Id: http.c 10905 2013-03-13 16:26:25Z mike $"
+ * "$Id: http.c 7850 2008-08-20 00:07:25Z mike $"
  *
  *   HTTP routines for CUPS.
  *
@@ -2992,8 +2992,11 @@ _httpWait(http_t *http,			/* I - Connection to server */
   pfd.fd     = http->fd;
   pfd.events = POLLIN;
 
-  while ((nfds = poll(&pfd, 1, msec)) < 0 &&
-         (errno == EINTR || errno == EAGAIN));
+  do
+  {
+    nfds = poll(&pfd, 1, msec);
+  }
+  while (nfds < 0 && (errno == EINTR || errno == EAGAIN));
 
 #else
   do
@@ -4763,5 +4766,5 @@ http_write_ssl(http_t     *http,	/* I - Connection to server */
 
 
 /*
- * End of "$Id: http.c 10905 2013-03-13 16:26:25Z mike $".
+ * End of "$Id: http.c 7850 2008-08-20 00:07:25Z mike $".
  */

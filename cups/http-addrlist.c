@@ -1,5 +1,5 @@
 /*
- * "$Id: http-addrlist.c 10424 2012-04-23 17:26:57Z mike $"
+ * "$Id: http-addrlist.c 7910 2008-09-06 00:25:17Z mike $"
  *
  *   HTTP address list routines for CUPS.
  *
@@ -33,7 +33,7 @@
 #  include <poll.h>
 #endif /* HAVE_POLL */
 #ifndef WIN32
-#  include <sys/fcntl.h>
+#  include <fcntl.h>
 #endif /* WIN32 */
 
 
@@ -841,5 +841,5 @@ httpAddrGetList(const char *hostname,	/* I - Hostname, IP address, or NULL for p
 
 
 /*
- * End of "$Id: http-addrlist.c 10424 2012-04-23 17:26:57Z mike $".
+ * End of "$Id: http-addrlist.c 7910 2008-09-06 00:25:17Z mike $".
  */

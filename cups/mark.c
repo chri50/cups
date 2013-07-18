@@ -1,5 +1,5 @@
 /*
- * "$Id: mark.c 10424 2012-04-23 17:26:57Z mike $"
+ * "$Id: mark.c 9042 2010-03-24 00:45:34Z mike $"
  *
  *   Option marking routines for CUPS.
  *
@@ -1097,5 +1097,5 @@ ppd_mark_option(ppd_file_t *ppd,	/* I - PPD file */
 
 
 /*
- * End of "$Id: mark.c 10424 2012-04-23 17:26:57Z mike $".
+ * End of "$Id: mark.c 9042 2010-03-24 00:45:34Z mike $".
  */

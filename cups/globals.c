@@ -1,5 +1,5 @@
 /*
- * "$Id: globals.c 10814 2013-01-14 22:06:21Z mike $"
+ * "$Id: globals.c 7870 2008-08-27 18:14:10Z mike $"
  *
  *   Global variable access routines for CUPS.
  *
@@ -215,7 +215,6 @@ cups_globals_alloc(void)
   cg->any_root       = 1;
   cg->expired_certs  = 1;
   cg->expired_root   = 1;
-  cg->server_version = 20;
 
  /*
   * Then set directories as appropriate...
@@ -381,5 +380,5 @@ cups_globals_init(void)
 
 
 /*
- * End of "$Id: globals.c 10814 2013-01-14 22:06:21Z mike $".
+ * End of "$Id: globals.c 7870 2008-08-27 18:14:10Z mike $".
  */

@@ -1,5 +1,5 @@
 #
-# "$Id: Makefile 10554 2012-07-27 17:57:49Z mike $"
+# "$Id: Makefile 7924 2008-09-10 17:36:13Z mike $"
 #
 #   Backend makefile for CUPS.
 #
@@ -295,5 +295,5 @@ include Dependencies
 
 
 #
-# End of "$Id: Makefile 10554 2012-07-27 17:57:49Z mike $".
+# End of "$Id: Makefile 7924 2008-09-10 17:36:13Z mike $".
 #

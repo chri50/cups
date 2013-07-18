@@ -1,3 +1,43 @@
+cups (1.6.3-1) unstable; urgency=low
+
+  * New 1.6.3 upstream release:
+    - The lp, lpq, lpr, and lpstat now display an error message advising the
+      use of the /version=1.1 ServerName option (<rdar://problem/14290628>)
+    - Added documentation about the /version=1.1 option to ServerName in
+      client.conf (<rdar://problem/14216262>)
+    - httpStatus(HTTP_ERROR) did not return a useful error message
+      (Closes: #645436)
+    - The lp, lpq, lpr, and lpstat commands incorrectly ignored the default
+      printer set in the lpoptions file (Closes: #711848)
+    - The USB backend could crash on libusb-based systems if USB was
+      disabled in the BIOS (LP: #1108719).
+    - Added more USB quirks for the libusb-based backend
+    - The scheduler no longer tries to do Kerberos authentication over the
+      loopback interface. (Closes: #640939).
+
+  [ Didier Raboud ]
+  * Refresh patches for 1.6.3:
+    - usb-backend-more-quirk-rules: Shrink to only Lexmark E238 that
+      missed 1.6.3 merge window
+    - usb-backend-do-not-crash-if-usb-disabled-in-bios: Shrink to only
+      keep the error counting exception.
+    - remove-unreal-printers: Drop, was from upstream.
+    - more-verbose-http-error-message: Drop, was from upstream.
+    - mention-ipp-version-specifier-in-man-and-ref: Drop, differently
+      included upstream. (Closes: #711848)
+  * Invert symlink handling in cups-client's preinst to cope with the
+    symlink-to-directory migration for /usr/share/doc. (Closes: #716867)
+  * Update usb backend quirks to fix Lexmark E238 printer (Closes: #716843)
+  * Get dpkg-maintscript-helper to delete /e/c/acroread.conf and
+    /e/c/pdftops.conf again in 1.6.2-9~ to cleanup upgrades from cups
+    1.5. (Closes: #711136)
+  * Update debian/watch to cope with the new cups.org layout
+
+  [ Brian Potkin ]
+  * Rewrite README.Debian for Jessie (>= 1.6) (Closes: #714852)
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 18 Jul 2013 21:45:15 +0200
+
 cups (1.6.2-10) unstable; urgency=low
 
   [ Didier Raboud ]

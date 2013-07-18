@@ -1,5 +1,5 @@
 /*
- * "$Id: ipp.c 10899 2013-03-11 18:44:36Z mike $"
+ * "$Id: ipp.c 7944 2008-09-16 22:32:42Z mike $"
  *
  *   IPP routines for the CUPS scheduler.
  *
@@ -9279,7 +9279,7 @@ save_auth_info(
   fchown(cupsFileNumber(fp), 0, 0);
   fchmod(cupsFileNumber(fp), 0400);
 
-  cupsFilePuts(fp, "CUPSD-AUTH-V2\n");
+  cupsFilePuts(fp, "CUPSD-AUTH-V3\n");
 
   for (i = 0;
        i < (int)(sizeof(job->auth_env) / sizeof(job->auth_env[0]));
@@ -9297,9 +9297,15 @@ save_auth_info(
 	     i < (int)(sizeof(job->auth_env) / sizeof(job->auth_env[0]));
 	 i ++)
     {
-      httpEncode64_2(line, sizeof(line), auth_info->values[i].string.text,
-                     strlen(auth_info->values[i].string.text));
-      cupsFilePutConf(fp, dest->auth_info_required[i], line);
+      if (strcmp(dest->auth_info_required[i], "negotiate"))
+      {
+	httpEncode64_2(line, sizeof(line), auth_info->values[i].string.text,
+		       strlen(auth_info->values[i].string.text));
+	cupsFilePutConf(fp, dest->auth_info_required[i], line);
+      }
+      else
+	cupsFilePutConf(fp, dest->auth_info_required[i],
+	                auth_info->values[i].string.text);
 
       if (!strcmp(dest->auth_info_required[i], "username"))
         cupsdSetStringf(job->auth_env + i, "AUTH_USERNAME=%s",
@@ -11306,5 +11312,5 @@ validate_user(cupsd_job_t    *job,	/* I - Job */
 
 
 /*
- * End of "$Id: ipp.c 10899 2013-03-11 18:44:36Z mike $".
+ * End of "$Id: ipp.c 7944 2008-09-16 22:32:42Z mike $".
  */

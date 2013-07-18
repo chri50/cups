@@ -1,5 +1,5 @@
 /*
- * "$Id: ipp.h 10424 2012-04-23 17:26:57Z mike $"
+ * "$Id: ipp.h 7847 2008-08-19 04:22:14Z mike $"
  *
  *   Internet Printing Protocol definitions for CUPS.
  *
@@ -667,5 +667,5 @@ extern int		ippSetVersion(ipp_t *ipp, int major, int minor)
 #endif /* !_CUPS_IPP_H_ */
 
 /*
- * End of "$Id: ipp.h 10424 2012-04-23 17:26:57Z mike $".
+ * End of "$Id: ipp.h 7847 2008-08-19 04:22:14Z mike $".
  */

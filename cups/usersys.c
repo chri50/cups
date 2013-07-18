@@ -1,5 +1,5 @@
 /*
- * "$Id: usersys.c 10903 2013-03-12 14:26:28Z mike $"
+ * "$Id: usersys.c 8498 2009-04-13 17:03:15Z mike $"
  *
  *   User, system, and password routines for CUPS.
  *
@@ -365,6 +365,8 @@ cupsSetServer(const char *server)	/* I - Server name */
       else if (!strcmp(options, "version=2.2"))
         cg->server_version = 22;
     }
+    else
+      cg->server_version = 20;
 
     if (cg->server[0] != '/' && (port = strrchr(cg->server, ':')) != NULL &&
         !strchr(port, ']') && isdigit(port[1] & 255))
@@ -1055,5 +1057,5 @@ cups_read_client_conf(
 
 
 /*
- * End of "$Id: usersys.c 10903 2013-03-12 14:26:28Z mike $".
+ * End of "$Id: usersys.c 8498 2009-04-13 17:03:15Z mike $".
  */

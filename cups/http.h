@@ -1,5 +1,5 @@
 /*
- * "$Id: http.h 10424 2012-04-23 17:26:57Z mike $"
+ * "$Id: http.h 7026 2007-10-19 00:57:45Z mike $"
  *
  *   Hyper-Text Transport Protocol definitions for CUPS.
  *
@@ -279,7 +279,8 @@ typedef enum http_uri_coding_e		/**** URI en/decode flags ****/
   HTTP_URI_CODING_RESOURCE = 4,		/* En/decode the resource portion */
   HTTP_URI_CODING_MOST = 7,		/* En/decode all but the query */
   HTTP_URI_CODING_QUERY = 8,		/* En/decode the query portion */
-  HTTP_URI_CODING_ALL = 15		/* En/decode everything */
+  HTTP_URI_CODING_ALL = 15,		/* En/decode everything */
+  HTTP_URI_CODING_RFC6874 = 16		/* Use RFC 6874 address format */
 } http_uri_coding_t;
 
 typedef enum http_version_e		/**** HTTP version numbers ****/
@@ -482,5 +483,5 @@ extern int		httpReconnect2(http_t *http, int msec, int *cancel)
 #endif /* !_CUPS_HTTP_H_ */
 
 /*
- * End of "$Id: http.h 10424 2012-04-23 17:26:57Z mike $".
+ * End of "$Id: http.h 7026 2007-10-19 00:57:45Z mike $".
  */
