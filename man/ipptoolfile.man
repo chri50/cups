@@ -72,7 +72,7 @@ Defines a test.
 .TP 5
 DEFINE variable-name value
 Defines the named variable to the given value. This is equivalent to specifying
-"-d variable-name=value" on the \fIipptool\fR command-line.
+"\-d variable-name=value" on the \fIipptool\fR command-line.
 .TP 5
 DEFINE-DEFAULT variable-name value
 Defines the named variable to the given value if it does not already have a
@@ -118,13 +118,13 @@ files.
 .TP 5
 TRANSFER chunked
 Specifies that tests will, by default, use the HTTP/1.1 "Transfer-Encoding:
-chunked" header. This is the default and is equivalent to specifying "-c" on the
+chunked" header. This is the default and is equivalent to specifying "\-c" on the
 \fIipptool\fR command-line. Support for chunked requests is required for
 conformance with all versions of IPP.
 .TP 5
 TRANSFER length
 Specifies that tests will, by default, use the HTTP/1.0 "Content-Length:"
-header. This is equivalent to specifying "-l" on the \fIipptool\fR command-line.
+header. This is equivalent to specifying "\-l" on the \fIipptool\fR command-line.
 Support for content length requests is required for conformance with all
 versions of IPP.
 .TP 5
@@ -144,7 +144,7 @@ The following directives are understood in a test:
 .TP 5
 ATTR tag attribute-name value(s)
 Adds an attribute to the test request. Values are separated by the comma (",")
-character - escape commas using the "\" character.
+character \- escape commas using the "\" character.
 .TP 5
 ATTR collection attribute-name { MEMBER tag member-name value(s) ... } [ ... { ... } ]
 Adds a collection attribute to the test request. Member attributes follow the
@@ -164,7 +164,7 @@ EXPECT ?attribute-name predicate(s)
 .TP 5
 EXPECT !attribute-name
 Specifies that the response must/may/must not include the named attribute.
-Additional requirements can be added as predicates - see the "EXPECT PREDICATES"
+Additional requirements can be added as predicates \- see the "EXPECT PREDICATES"
 section for more information on predicates.
 .TP 5
 FILE filename
@@ -210,7 +210,7 @@ resulted in an error/failure.
 .TP 5
 STATUS status-code [ predicate ]
 Specifies an expected response status-code value. Additional requirements can be
-added as predicates - see the "STATUS PREDICATES" section for more information
+added as predicates \- see the "STATUS PREDICATES" section for more information
 on predicates.
 .TP 5
 TRANSFER auto
@@ -516,7 +516,7 @@ Here are the value tags:
 .SH VARIABLES
 The \fIipptool\fR program maintains a list of variables that can be used in any
 literal string or attribute value by specifying "$variable-name". Aside from
-variables defined using the "-d" option or "DEFINE" directive, the following
+variables defined using the "\-d" option or "DEFINE" directive, the following
 pre-defined variables are available:
 .TP 5
 $$
@@ -527,7 +527,7 @@ Inserts the value of the named environment variable, or an empty string if the
 environment variable is not defined.
 .TP 5
 $filename
-Inserts the filename provided to \fIipptool\fR with the "-f" option.
+Inserts the filename provided to \fIipptool\fR with the "\-f" option.
 .TP 5
 $hostname
 Inserts the hostname from the URI provided to \fIipptool\fR.
