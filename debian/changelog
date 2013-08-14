@@ -1,3 +1,9 @@
+cups (1.6.3-1ubuntu1) saucy; urgency=low
+
+  * Remove versioned Suggests/Recommends on ghostscript-cups (LP: #1212239)
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Wed, 14 Aug 2013 13:20:23 -0600
+
 cups (1.6.3-1) unstable; urgency=low
 
   * New 1.6.3 upstream release:
