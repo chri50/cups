@@ -17,11 +17,11 @@
 ppdpo \- ppd message catalog generator
 .SH SYNOPSIS
 .B ppdpo
-[ -D
+[ \-D
 .I name[=value]
-] [ -I
+] [ \-I
 .I include-directory
-] [ -o
+] [ \-o
 .I output-file
 ]
 .I source-file
