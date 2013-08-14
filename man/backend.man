@@ -53,7 +53,7 @@ system.
 Unless you are a developer and know what you are doing, please do not run
 backends directly. Instead, use the \fIlp(1)\fR or \fIlpr(1)\fR programs to send
 a print job or \fIlpinfo(8)\fR program to query for available printers using the
-backend. The one exception is the SNMP backend - see \fIsnmpbackend(8)\fR for
+backend. The one exception is the SNMP backend \- see \fIsnmpbackend(8)\fR for
 more information.
 .SH DEVICE DISCOVERY
 When run with no arguments, the backend should list the devices and schemes it
@@ -151,7 +151,7 @@ respond to this by canceling the job.
 6 (CUPS_BACKEND_RETRY)
 .br
 The print file was not successfully transmitted because of a temporary issue.
-The scheduler will retry the job at a future time - other jobs may print before
+The scheduler will retry the job at a future time \- other jobs may print before
 this one.
 .TP 5
 7 (CUPS_BACKEND_RETRY_CURRENT)
