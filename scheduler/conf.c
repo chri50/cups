@@ -1,5 +1,5 @@
 /*
- * "$Id: conf.c 9352 2010-11-06 04:55:26Z mike $"
+ * "$Id: conf.c 10996 2013-05-29 11:51:34Z msweet $"
  *
  *   Configuration routines for the CUPS scheduler.
  *
@@ -236,7 +236,7 @@ cupsdAddAlias(cups_array_t *aliases,	/* I - Array of aliases */
     return;
 
   a->namelen = namelen;
-  strcpy(a->name, name);		/* OK since a->name is allocated */
+  memcpy(a->name, name, namelen + 1);	/* OK since a->name is allocated */
 
   cupsArrayAdd(aliases, a);
 }
@@ -589,7 +589,6 @@ cupsdReadConfiguration(void)
                  "%p %u %j %T %P %C %{job-billing} "
 		 "%{job-originating-host-name} %{job-name} %{media} %{sides}");
   cupsdSetString(&Printcap, CUPS_DEFAULT_PRINTCAP);
-  cupsdSetString(&PrintcapGUI, "/usr/bin/glpoptions");
   cupsdSetString(&FontPath, CUPS_FONTPATH);
   cupsdSetString(&RemoteRoot, "remroot");
   cupsdSetStringf(&ServerHeader, "CUPS/%d.%d IPP/2.1", CUPS_VERSION_MAJOR,
@@ -2981,7 +2980,7 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
 	     lis;
 	     lis = (cupsd_listener_t *)cupsArrayNext(Listeners))
           if (httpAddrEqual(&(addr->addr), &(lis->address)) &&
-	      _httpAddrPort(&(addr->addr)) == _httpAddrPort(&(lis->address)))
+	      httpAddrPort(&(addr->addr)) == httpAddrPort(&(lis->address)))
 	    break;
 
         if (lis)
@@ -3037,11 +3036,11 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
 	else
 #endif /* AF_LOCAL */
 	cupsdLogMessage(CUPSD_LOG_INFO, "Listening to %s:%d (IPv%d)", temp,
-                        _httpAddrPort(&(lis->address)),
+                        httpAddrPort(&(lis->address)),
 			_httpAddrFamily(&(lis->address)) == AF_INET ? 4 : 6);
 
         if (!httpAddrLocalhost(&(lis->address)))
-	  RemotePort = _httpAddrPort(&(lis->address));
+	  RemotePort = httpAddrPort(&(lis->address));
       }
 
      /*
@@ -4085,5 +4084,5 @@ set_policy_defaults(cupsd_policy_t *pol)/* I - Policy */
 
 
 /*
- * End of "$Id: conf.c 9352 2010-11-06 04:55:26Z mike $".
+ * End of "$Id: conf.c 10996 2013-05-29 11:51:34Z msweet $".
  */

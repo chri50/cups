@@ -4,7 +4,7 @@ Bug-Debian: http://bugs.debian.org/478597
 
 --- a/man/Makefile
 +++ b/man/Makefile
-@@ -67,12 +67,18 @@
+@@ -68,12 +68,18 @@
  		lpmove.$(MAN8EXT) \
  		lpc.$(MAN8EXT)
  
@@ -24,19 +24,7 @@ Bug-Debian: http://bugs.debian.org/478597
  
  
  #
-@@ -112,6 +118,11 @@
- 	for file in $(MAN8); do \
- 		$(RM) ../doc/help/man-`basename $$file .$(MAN8EXT)`.html; \
- 	done
-+	for lang in $(LANGUAGES); do $(MAKE) -C $$lang clean; done
-+	# Make sure the PO files are updated and remove generated
-+	# translations.
-+	po4a --previous --rm-translations ../debian/manpage-po4a/cups.cfg
-+	$(RM) ../debian/manpage-po4a/po/cups.pot
- 
- 
- #
-@@ -159,6 +170,7 @@
+@@ -144,6 +150,7 @@
  	done
  	$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
  	$(LN) cupsenable.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
@@ -44,7 +32,7 @@ Bug-Debian: http://bugs.debian.org/478597
  
  
  #
-@@ -207,6 +219,7 @@
+@@ -192,6 +199,7 @@
  	$(RM) $(AMANDIR)/man$(MAN8DIR)/reject.$(MAN8EXT)
  	$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
  	-$(RMDIR) $(AMANDIR)/man$(MAN8DIR)
@@ -52,6 +40,18 @@ Bug-Debian: http://bugs.debian.org/478597
  
  
  #
+@@ -216,6 +224,11 @@
+ 		echo "    $$file..."; \
+ 		./mantohtml `basename $$file .$(MAN8EXT)`.man >../doc/help/man-`basename $$file .$(MAN8EXT)`.html; \
+ 	done
++	for lang in $(LANGUAGES); do $(MAKE) -C $$lang clean; done
++	# Make sure the PO files are updated and remove generated
++	# translations.
++	po4a --previous --rm-translations ../debian/manpage-po4a/cups.cfg
++	$(RM) ../debian/manpage-po4a/po/cups.pot
+ 
+ mantohtml:	mantohtml.o
+ 	$(CC) $(ARCHFLAGS) $(LDFLAGS) -o $@ mantohtml.o
 --- /dev/null
 +++ b/man/Makefile.l10n
 @@ -0,0 +1,210 @@

@@ -1,5 +1,5 @@
 #
-# "$Id: Makedefs.in 7900 2008-09-03 13:47:57Z mike $"
+# "$Id: Makedefs.in 11010 2013-06-05 16:05:45Z msweet $"
 #
 #   Common makefile definitions for CUPS.
 #
@@ -138,6 +138,8 @@ DNSSD_BACKEND	=	@DNSSD_BACKEND@
 DSOFLAGS	=	-L../cups @DSOFLAGS@
 DSOLIBS		=	@DSOLIBS@
 DNSSDLIBS	=	@DNSSDLIBS@
+IPPFIND_BIN	=	@IPPFIND_BIN@
+IPPFIND_MAN	=	@IPPFIND_MAN@
 LAUNCHDLIBS	=	@LAUNCHDLIBS@
 LDFLAGS		=	-L../cgi-bin -L../cups -L../filter -L../ppdc \
 			-L../scheduler @LDARCHFLAGS@ \
@@ -257,5 +259,5 @@ DBUSDIR		=	@DBUSDIR@
 
 
 #
-# End of "$Id: Makedefs.in 7900 2008-09-03 13:47:57Z mike $"
+# End of "$Id: Makedefs.in 11010 2013-06-05 16:05:45Z msweet $"
 #

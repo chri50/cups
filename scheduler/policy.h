@@ -1,5 +1,5 @@
 /*
- * "$Id: policy.h 6895 2007-08-30 00:09:27Z mike $"
+ * "$Id: policy.h 10996 2013-05-29 11:51:34Z msweet $"
  *
  *   Policy definitions for the CUPS scheduler.
  *
@@ -59,5 +59,5 @@ extern cups_array_t	*cupsdGetPrivateAttrs(cupsd_policy_t *p,
 
 
 /*
- * End of "$Id: policy.h 6895 2007-08-30 00:09:27Z mike $".
+ * End of "$Id: policy.h 10996 2013-05-29 11:51:34Z msweet $".
  */

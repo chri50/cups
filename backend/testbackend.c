@@ -1,5 +1,5 @@
 /*
- * "$Id: testbackend.c 3755 2012-03-30 05:59:14Z msweet $"
+ * "$Id: testbackend.c 4297 2013-05-10 16:04:59Z msweet $"
  *
  *   Backend test program for CUPS.
  *
@@ -667,10 +667,22 @@ walk_cb(const char *oid,		/* I - OID */
 	int        datalen,		/* I - Length of data */
 	void       *context)		/* I - Context (unused) */
 {
-  printf("CUPS_SC_CMD_SNMP_WALK %s, %d bytes (%s)\n", oid, datalen, data);
+  char temp[80];
+  if (datalen > (sizeof(temp) - 1))
+  {
+    memcpy(temp, data, sizeof(temp) - 1);
+    temp[sizeof(temp) - 1] = '\0';
+  }
+  else
+  {
+    memcpy(temp, data, datalen);
+    temp[datalen] = '\0';
+  }
+
+  printf("CUPS_SC_CMD_SNMP_WALK %s, %d bytes (%s)\n", oid, datalen, temp);
 }
 
 
 /*
- * End of "$Id: testbackend.c 3755 2012-03-30 05:59:14Z msweet $".
+ * End of "$Id: testbackend.c 4297 2013-05-10 16:04:59Z msweet $".
  */

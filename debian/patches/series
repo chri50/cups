@@ -1,18 +1,16 @@
 # patches accepted and committed upstream:
+ippfind-fix-port-output.patch
 
 # patches sent upstream
 usb-backend-more-quirk-rules.patch
-cupsd-no-crash-on-avahi-threaded-poll-shutdown.patch
 get-ppd-file-for-statically-configured-ipp-shared-queues.patch
 pidfile.patch
 ppd-poll-with-client-conf.patch
 manpage-hyphen-minus.patch
 rootbackends-worldreadable.patch
 cups-dbus-utf8.patch
-usb-backend-do-not-crash-if-usb-disabled-in-bios.patch
 
 # patches which should go upstream
-drop-arch-specifics-from-doc.patch
 airprint-support.patch
 removecvstag.patch
 no-conffile-timestamp.patch
@@ -36,7 +34,7 @@ tests-use-cupsfilters.patch
 # This one has been submitted upstream but no answer has been given yet,
 # po4a might not be appropriate. It also needs to be high on the patch
 # queue to catch all Debian-specific changes
-manpage-translations.patch
+#manpage-translations.patch
 
 # Debian patches
 add-ipp-backend-of-cups-1.4.patch
@@ -49,4 +47,3 @@ ppdc-dynamic-linking.patch
 log-debug-history-nearly-unlimited.patch
 # Disabled in 1.6.1-1 as it breaks the tests. It addresses #593338
 # pstops-based-workflow-only-for-printing-ps-on-a-ps-printer.patch
-tests-skip-ipp.patch

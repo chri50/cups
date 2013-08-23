@@ -31,7 +31,7 @@ Last-Update: 2013-03-20
  \fIcupsd\fR is the scheduler for CUPS. It implements a printing system based
  upon the Internet Printing Protocol, version 2.1.  If no options are specified
 @@ -27,31 +27,31 @@
- \fI@CUPS_SERVERROOT@/cupsd.conf\fR will be used.
+ \fI/etc/cups/cupsd.conf\fR will be used.
  .SH OPTIONS
  .TP 5
 --c config-file
@@ -259,7 +259,7 @@ Last-Update: 2013-03-20
 +++ b/man/cancel.man
 @@ -14,14 +14,14 @@
  .\"
- .TH cancel 1 "CUPS" "20 March 2006" "Apple Inc."
+ .TH cancel 1 "CUPS" "21 January 2013" "Apple Inc."
  .SH NAME
 -cancel - cancel jobs
 +cancel \- cancel jobs
@@ -274,7 +274,7 @@ Last-Update: 2013-03-20
 -] [ -u
 +] [ \-u
  .I username
- ] [
+ ] [ -x ] [
  .I id
 @@ -36,24 +36,24 @@
  .SH OPTIONS
@@ -305,7 +305,7 @@ Last-Update: 2013-03-20
 +\-u username
  .br
  Cancels jobs owned by \fIusername\fR.
- .SH COMPATIBILITY
+ .TP 5
 --- a/man/cups-config.man
 +++ b/man/cups-config.man
 @@ -17,38 +17,38 @@
@@ -465,7 +465,7 @@ Last-Update: 2013-03-20
 @@ -34,7 +34,7 @@
  .nf
  
-     printer stream tcp nowait lp @CUPS_SERVERBIN@/daemon/cups-lpd cups-lpd \\
+     printer stream tcp nowait lp /usr/lib/cups/daemon/cups-lpd cups-lpd \\
 -        -o document-format=application/octet-stream
 +        \-o document-format=application/octet-stream
  .fi
@@ -474,7 +474,7 @@ Last-Update: 2013-03-20
 @@ -56,22 +56,22 @@
  	group = sys
  	passenv =
-         server = @CUPS_SERVERBIN@/daemon/cups-lpd
+         server = /usr/lib/cups/daemon/cups-lpd
 -	server_args = -o document-format=application/octet-stream
 +	server_args = \-o document-format=application/octet-stream
      }
@@ -500,8 +500,8 @@ Last-Update: 2013-03-20
  disable the "l" filter so that remote print jobs are filtered as
 --- a/man/cups-snmp.man.in
 +++ b/man/cups-snmp.man.in
-@@ -18,7 +18,7 @@
- .B @CUPS_SERVERBIN@/backend/snmp
+@@ -21,7 +21,7 @@
+ .B /usr/libexec/cups/backend/snmp
  .I ip-address-or-hostname
  .br
 -.B lpinfo -v --include-schemes snmp
@@ -625,7 +625,7 @@ Last-Update: 2013-03-20
  .br
  Specifies that verbose information should be shown. This is
  useful for debugging SAMBA configuration problems.
-@@ -136,7 +136,7 @@
+@@ -133,7 +133,7 @@
      pscript5.dll
  .fi
  .LP
@@ -634,16 +634,7 @@ Last-Update: 2013-03-20
  you use the lowercase filenames shown above, otherwise
  \fIcupsaddsmb\fR will fail to export the drivers.
  
-@@ -169,7 +169,7 @@
-     pscript5.dll (from your Windows system)
- .fi
- .LP
--\fBNote:\fR Unlike Windows, case is significant - make sure that
-+\fBNote:\fR Unlike Windows, case is significant \- make sure that
- you use the lowercase filenames shown above, otherwise
- \fIcupsaddsmb\fR will fail to export the drivers.
- 
-@@ -194,7 +194,7 @@
+@@ -158,7 +158,7 @@
      PSMON.DLL
  .fi
  .LP
@@ -987,14 +978,15 @@ Last-Update: 2013-03-20
  current queue. Typically this is used to indicate media, ink, and
 --- a/man/ipptool.man
 +++ b/man/ipptool.man
-@@ -13,22 +13,22 @@
+@@ -13,23 +13,23 @@
  .\"
- .TH ipptool 1 "CUPS" "9 November 2010" "Apple Inc."
+ .TH ipptool 1 "CUPS" "13 May 2013" "Apple Inc."
  .SH NAME
 -ipptool - perform internet printing protocol requests
 +ipptool \- perform internet printing protocol requests
  .SH SYNOPSIS
  .B ipptool
+ [ --help ] [ --stop-after-include-error ] [ --version ]
 -[ -4 ] [ -6 ] [ -C ] [ -E ] [ -I ] [ -L ] [ -S ] [ -T
 +[ \-4 ] [ \-6 ] [ \-C ] [ \-E ] [ \-I ] [ \-L ] [ \-S ] [ \-T
  .I seconds
@@ -1018,9 +1010,9 @@ Last-Update: 2013-03-20
  .I URI
  .I filename
  [
-@@ -39,58 +39,58 @@
- .SH OPTIONS
- The following options are recognized by \fIipptool\fR:
+@@ -47,58 +47,58 @@
+ --version
+ Shows the version of \fIipptool\fR being used.
  .TP 5
 --4
 +\-4
@@ -1093,9 +1085,9 @@ Last-Update: 2013-03-20
 --v
 +\-v
  Specifies that all request and response attributes should be output in CUPS test mode (\fI-t\fR). This is the default for XML output.
- .SH COMPATIBILITY
- The \fIipptool\fR program is unique to CUPS.
-@@ -102,7 +102,7 @@
+ .SH EXIT CODE
+ The \fIipptool\fR program returns 0 if all tests were sucessful and 1 otherwise.
+@@ -112,7 +112,7 @@
  .LP
  Send email notifications to "user@example.com" when "myprinter" changes:
  .nf
@@ -1115,7 +1107,7 @@ Last-Update: 2013-03-20
  .TP 5
  DEFINE-DEFAULT variable-name value
  Defines the named variable to the given value if it does not already have a
-@@ -118,13 +118,13 @@
+@@ -126,13 +126,13 @@
  .TP 5
  TRANSFER chunked
  Specifies that tests will, by default, use the HTTP/1.1 "Transfer-Encoding:
@@ -1131,7 +1123,7 @@ Last-Update: 2013-03-20
  Support for content length requests is required for conformance with all
  versions of IPP.
  .TP 5
-@@ -144,7 +144,7 @@
+@@ -152,7 +152,7 @@
  .TP 5
  ATTR tag attribute-name value(s)
  Adds an attribute to the test request. Values are separated by the comma (",")
@@ -1140,7 +1132,7 @@ Last-Update: 2013-03-20
  .TP 5
  ATTR collection attribute-name { MEMBER tag member-name value(s) ... } [ ... { ... } ]
  Adds a collection attribute to the test request. Member attributes follow the
-@@ -164,7 +164,7 @@
+@@ -181,7 +181,7 @@
  .TP 5
  EXPECT !attribute-name
  Specifies that the response must/may/must not include the named attribute.
@@ -1149,7 +1141,7 @@ Last-Update: 2013-03-20
  section for more information on predicates.
  .TP 5
  FILE filename
-@@ -210,7 +210,7 @@
+@@ -227,7 +227,7 @@
  .TP 5
  STATUS status-code [ predicate ]
  Specifies an expected response status-code value. Additional requirements can be
@@ -1157,8 +1149,8 @@ Last-Update: 2013-03-20
 +added as predicates \- see the "STATUS PREDICATES" section for more information
  on predicates.
  .TP 5
- TRANSFER auto
-@@ -516,7 +516,7 @@
+ TEST-ID "identifier"
+@@ -567,7 +567,7 @@
  .SH VARIABLES
  The \fIipptool\fR program maintains a list of variables that can be used in any
  literal string or attribute value by specifying "$variable-name". Aside from
@@ -1167,7 +1159,7 @@ Last-Update: 2013-03-20
  pre-defined variables are available:
  .TP 5
  $$
-@@ -527,7 +527,7 @@
+@@ -578,7 +578,7 @@
  environment variable is not defined.
  .TP 5
  $filename
@@ -1956,8 +1948,8 @@ Last-Update: 2013-03-20
 +~/.cups/lpoptions \- user defaults and instances created by non-root
  users.
  .br
--@CUPS_SERVERROOT@/lpoptions - system-wide defaults and instances
-+@CUPS_SERVERROOT@/lpoptions \- system-wide defaults and instances
+-/etc/cups/lpoptions - system-wide defaults and instances
++/etc/cups/lpoptions \- system-wide defaults and instances
  created by the root user.
  .SH SEE ALSO
  \fIcancel(1)\fR, \fIlp(1)\fR, \fIlpadmin(8)\fR, \fIlpr(1)\fR,

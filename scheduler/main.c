@@ -1,5 +1,5 @@
 /*
- * "$Id: main.c 7925 2008-09-10 17:47:26Z mike $"
+ * "$Id: main.c 10996 2013-05-29 11:51:34Z msweet $"
  *
  *   Main loop for the CUPS scheduler.
  *
@@ -136,10 +136,6 @@ main(int  argc,				/* I - Number of command-line args */
 #if defined(HAVE_SIGACTION) && !defined(HAVE_SIGSET)
   struct sigaction	action;		/* Actions for POSIX signals */
 #endif /* HAVE_SIGACTION && !HAVE_SIGSET */
-#ifdef __sgi
-  cups_file_t		*fp;		/* Fake lpsched lock file */
-  struct stat		statbuf;	/* Needed for checking lpsched FIFO */
-#endif /* __sgi */
   int			run_as_child = 0;
 					/* Needed for background fork/exec */
 #ifdef __APPLE__
@@ -327,10 +323,7 @@ main(int  argc,				/* I - Number of command-line args */
     }
 
   if (!ConfigurationFile)
-  {
     cupsdSetString(&ConfigurationFile, CUPS_SERVERROOT "/cupsd.conf");
-    cupsdSetString(&CupsFilesFile, CUPS_SERVERROOT "/cups-files.conf");
-  }
 
   if (!CupsFilesFile)
   {
@@ -620,33 +613,6 @@ main(int  argc,				/* I - Number of command-line args */
   signal(SIGTERM, sigterm_handler);
 #endif /* HAVE_SIGSET */
 
-#ifdef __sgi
- /*
-  * Try to create a fake lpsched lock file if one is not already there.
-  * Some Adobe applications need it under IRIX in order to enable
-  * printing...
-  */
-
-  if ((fp = cupsFileOpen("/var/spool/lp/SCHEDLOCK", "w")) == NULL)
-  {
-    syslog(LOG_LPR, "Unable to create fake lpsched lock file "
-                    "\"/var/spool/lp/SCHEDLOCK\"\' - %s!",
-           strerror(errno));
-  }
-  else
-  {
-    fchmod(cupsFileNumber(fp), 0644);
-    fchown(cupsFileNumber(fp), User, Group);
-
-    cupsFileClose(fp);
-  }
-#endif /* __sgi */
-
-  if (write_pid() == 0) {
-    cupsdLogMessage(CUPSD_LOG_ERROR, "Unable to write pid file");
-    return (1);
-  }
-
  /*
   * Initialize authentication certificates...
   */
@@ -680,6 +646,11 @@ main(int  argc,				/* I - Number of command-line args */
   if (use_sysman)
     cupsdStartSystemMonitor();
 #endif /* __APPLE__ */
+
+  if (write_pid() == 0) {
+    cupsdLogMessage(CUPSD_LOG_ERROR, "Unable to write pid file");
+    return (1);
+  }
 
  /*
   * Send server-started event...
@@ -1174,18 +1145,6 @@ main(int  argc,				/* I - Number of command-line args */
     cupsdStopSystemMonitor();
 #endif /* __APPLE__ */
 
-#ifdef __sgi
- /*
-  * Remove the fake IRIX lpsched lock file, but only if the existing
-  * file is not a FIFO which indicates that the real IRIX lpsched is
-  * running...
-  */
-
-  if (!stat("/var/spool/lp/FIFO", &statbuf))
-    if (!S_ISFIFO(statbuf.st_mode))
-      unlink("/var/spool/lp/SCHEDLOCK");
-#endif /* __sgi */
-
   cupsdStopSelect();
 
   remove_pid();
@@ -1531,7 +1490,7 @@ launchd_checkin(void)
 	lis->fd = fd;
 
 #  ifdef HAVE_SSL
-	if (_httpAddrPort(&(lis->address)) == 443)
+	if (httpAddrPort(&(lis->address)) == 443)
 	  lis->encryption = HTTP_ENCRYPT_ALWAYS;
 #  endif /* HAVE_SSL */
       }
@@ -2104,5 +2063,5 @@ usage(int status)			/* O - Exit status */
 
 
 /*
- * End of "$Id: main.c 7925 2008-09-10 17:47:26Z mike $".
+ * End of "$Id: main.c 10996 2013-05-29 11:51:34Z msweet $".
  */

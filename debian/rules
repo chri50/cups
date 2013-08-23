@@ -67,7 +67,7 @@ override_dh_auto_install:
 
 MANPAGES_L10N_CUPS=man5/subscriptions.conf.5 man5/mime.convs.5 man7/filter.7 man8/cupsfilter.8 man8/cups-deviced.8 man8/cups-driverd.8
 MANPAGES_L10N_CUPS_DAEMON=man5/classes.conf.5 man5/cupsd.conf.5 man5/cups-files.conf.5 man5/cups-snmp.conf.5 man5/mailto.conf.5 man5/mime.types.5 man5/printers.conf.5 man7/backend.7 man8/cupsd.8
-MANPAGES_L10N_CUPS_CLIENT=man1/cupstestppd.1 man1/cupstestdsc.1 man1/ipptool.1 man1/lp.1 man1/lpoptions.1 man1/lppasswd.1 man1/lpstat.1 man1/cancel.1 man5/client.conf.5 man5/ipptoolfile.5 man8/cupsaddsmb.8 man8/cupsenable.8 man8/lpadmin.8 man8/lpinfo.8 man8/lpmove.8 man8/cupsreject.8 man8/cupsdisable.8 man8/cupsaccept.8 man8/cupsctl.8
+MANPAGES_L10N_CUPS_CLIENT=man1/cupstestppd.1 man1/cupstestdsc.1 man1/ippfind.1 man1/ipptool.1 man1/lp.1 man1/lpoptions.1 man1/lppasswd.1 man1/lpstat.1 man1/cancel.1 man5/client.conf.5 man5/ipptoolfile.5 man8/cupsaddsmb.8 man8/cupsenable.8 man8/lpadmin.8 man8/lpinfo.8 man8/lpmove.8 man8/cupsreject.8 man8/cupsdisable.8 man8/cupsaccept.8 man8/cupsctl.8
 
 override_dh_install:
 ifeq ($(derives_from_ubuntu),yes)
@@ -162,6 +162,7 @@ override_dh_auto_clean:
 override_dh_installdocs:
 	dh_installdocs -plibcupsimage2-dev --link-doc=libcupsimage2
 	dh_installdocs -pcups-bsd --link-doc=libcups2
+	dh_installdocs -pcups-client --link-doc=libcups2
 	dh_installdocs --remaining-packages
 
 	rm -f debian/libcups2-dev/usr/share/doc/libcups2-dev/examples/scripting/php/*.o

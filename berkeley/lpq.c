@@ -1,5 +1,5 @@
 /*
- * "$Id: lpq.c 7460 2008-04-16 02:19:54Z mike $"
+ * "$Id: lpq.c 11101 2013-07-08 11:20:33Z msweet $"
  *
  *   "lpq" command for CUPS.
  *
@@ -138,8 +138,8 @@ main(int  argc,				/* I - Number of command-line arguments */
 
             if ((named_dest = cupsGetNamedDest(http, dest, instance)) == NULL)
 	    {
-	      if (cupsLastError() == IPP_BAD_REQUEST ||
-		  cupsLastError() == IPP_VERSION_NOT_SUPPORTED)
+	      if (cupsLastError() == IPP_STATUS_ERROR_BAD_REQUEST ||
+		  cupsLastError() == IPP_STATUS_ERROR_VERSION_NOT_SUPPORTED)
 		_cupsLangPrintf(stderr,
 				_("%s: Error - add '/version=1.1' to server "
 				  "name."), argv[0]);
@@ -208,8 +208,8 @@ main(int  argc,				/* I - Number of command-line arguments */
   {
     if ((named_dest = cupsGetNamedDest(http, NULL, NULL)) == NULL)
     {
-      if (cupsLastError() == IPP_BAD_REQUEST ||
-          cupsLastError() == IPP_VERSION_NOT_SUPPORTED)
+      if (cupsLastError() == IPP_STATUS_ERROR_BAD_REQUEST ||
+          cupsLastError() == IPP_STATUS_ERROR_VERSION_NOT_SUPPORTED)
       {
 	_cupsLangPrintf(stderr,
 	                _("%s: Error - add '/version=1.1' to server name."),
@@ -528,7 +528,7 @@ show_jobs(const char *command,		/* I - Command name */
       */
 
       if (jobstate == IPP_JOB_PROCESSING)
-	strcpy(rankstr, "active");
+	strlcpy(rankstr, "active", sizeof(rankstr));
       else
       {
        /*
@@ -679,5 +679,5 @@ usage(void)
 
 
 /*
- * End of "$Id: lpq.c 7460 2008-04-16 02:19:54Z mike $".
+ * End of "$Id: lpq.c 11101 2013-07-08 11:20:33Z msweet $".
  */

@@ -1,3 +1,62 @@
+cups (1.7.0~rc1-0ubuntu1) saucy; urgency=low
+
+  * New upstream release
+     - Improved support for paid, PIN, and release printing
+     - Expanded support for IPP Everywhere
+     - Automatic support for data compression
+     - Improved CUPS APIs
+  * debian/patches/usb-backend-do-not-crash-if-usb-disabled-in-bios.patch,
+    debian/patches/cupsd-no-crash-on-avahi-threaded-poll-shutdown.patch:
+    Removed, applied upstream.
+  * debian/patches/drop-arch-specifics-from-doc.patch: Removed, not needed
+    any more.
+  * debian/patches/get-ppd-file-for-statically-configured-ipp-shared-queues.patch,
+    debian/patches/pidfile.patch,
+    debian/patches/rootbackends-worldreadable.patch,
+    debian/patches/cups-dbus-utf8.patch,
+    debian/patches/airprint-support.patch,
+    debian/patches/no-conffile-timestamp.patch,
+    debian/patches/read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.patch,
+    debian/patches/tests-ignore-warnings.patch,
+    debian/patches/tests-ignore-usb-crash.patch,
+    debian/patches/test-i18n-nonlinux.patch,
+    debian/patches/tests-wait-on-unfinished-jobs-everytime.patch,
+    debian/patches/tests-fix-ppdLocalize-on-unclean-env.patch,
+    debian/patches/tests-use-cupsfilters.patch,
+    debian/patches/add-ipp-backend-of-cups-1.4.patch,
+    debian/patches/confdirperms.patch,
+    debian/patches/show-compile-command-lines.patch,
+    debian/patches/ppdc-dynamic-linking.patch,
+    debian/patches/log-debug-history-nearly-unlimited.patch:
+    Refreshed with quilt.
+  * debian/patches/ppd-poll-with-client-conf.patch,
+    debian/patches/manpage-hyphen-minus.patch,
+    debian/patches/drop_unnecessary_dependencies.patch,
+    debian/patches/do-not-broadcast-with-hostnames.patch,
+    debian/patches/manpage-translations.patch,
+    debian/patches/printer-filtering.patch: Updated manually to apply
+    to the new CUPS version.
+  * debian/patches/ippfind-fix-port-output.patch: Fixed output of the port
+    number when listing available IPP printer URIs with ippfind.
+  * debian/patches/tests-ignore-warnings.patch: Added error counting exception
+    from usb-backend-do-not-crash-if-usb-disabled-in-bios.patch to this patch.
+  * debian/patches/ubuntu/ubuntu-tests-skip-number-of-errors.patch:
+    Override error_log error message count test.
+  * debian/patches/tests-skip-ipp.patch,
+    debian/patches/ubuntu/ubuntu-tests-skip-ipp.patch: Make the temporary
+    test override a Ubuntu-only patch.
+  * debian/patches/manpage-translations.patch: Temporarily deactivated, po4a
+    problem.
+  * debian/cups-client.install, debian/rules: Install the newly added ippfind
+    utility and its man page.
+  * debian/libcups2-dev.install: Added pwg.h to libcups2-dev package.
+  * debian/control: Instead of removing the "Recommends: ghostscript-cups"
+    use "cups-filters (>= 1.0.36) | ghostscript-cups (>= 9.02~)".
+  * debian/libcups2.symbols, debian/libcupsppdc1.symbols: Refreshed using the
+    diff of the dpkg-gensymbols output during build.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 23 Aug 2013 14:27:01 +0200
+
 cups (1.6.3-1ubuntu2) saucy; urgency=low
 
   * debian/patches/tests-use-cupsfilters.patch: Update to reflect
