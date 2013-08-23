@@ -75,9 +75,13 @@ install-data:
 			$(INSTALL_CONFIG) -g $(CUPS_GROUP) $$file $(SERVERROOT)/$$file.N ; \
 		else \
 			$(INSTALL_CONFIG) -g $(CUPS_GROUP) $$file $(SERVERROOT) ; \
+			grep -v "\$$Id[:\$$]" $(SERVERROOT)/$$file > $(SERVERROOT)/$$file.n ; \
+			mv $(SERVERROOT)/$$file.n $(SERVERROOT)/$$file ; \
 		fi ; \
 	done
 	$(INSTALL_CONFIG) -g $(CUPS_GROUP) cupsd.conf $(SERVERROOT)/cupsd.conf.default
+	grep -v "\$$Id[:\$$]" $(SERVERROOT)/cupsd.conf.default > $(SERVERROOT)/cupsd.conf.default.n ; \
+	mv $(SERVERROOT)/cupsd.conf.default.n $(SERVERROOT)/cupsd.conf.default ; \
 	$(INSTALL_DIR) -m 755 $(DATADIR)/mime
 	for file in $(REPLACE); do \
 		if test -r $(DATADIR)/mime/$$file ; then \
