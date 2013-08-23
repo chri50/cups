@@ -120,7 +120,7 @@ Last-Update: 2012-06-11
        if (!dbus_message_iter_append_string(&iter, &val))
          goto bail;
      }
-@@ -530,7 +608,7 @@
+@@ -532,7 +610,7 @@
        attr = ippFindAttribute(msg, "job-name", IPP_TAG_NAME);
        if (attr)
        {

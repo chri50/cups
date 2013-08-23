@@ -1,5 +1,5 @@
 /*
- * "$Id: attr.c 7584 2008-05-16 22:55:53Z mike $"
+ * "$Id: attr.c 10996 2013-05-29 11:51:34Z msweet $"
  *
  *   PPD model-specific attribute routines for CUPS.
  *
@@ -331,5 +331,5 @@ _ppdNormalizeMakeAndModel(
 
 
 /*
- * End of "$Id: attr.c 7584 2008-05-16 22:55:53Z mike $".
+ * End of "$Id: attr.c 10996 2013-05-29 11:51:34Z msweet $".
  */

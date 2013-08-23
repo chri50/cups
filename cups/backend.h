@@ -1,5 +1,5 @@
 /*
- * "$Id: backend.h 7810 2008-07-29 01:11:15Z mike $"
+ * "$Id: backend.h 10996 2013-05-29 11:51:34Z msweet $"
  *
  *   Backend definitions for CUPS.
  *
@@ -74,5 +74,5 @@ extern void		cupsBackendReport(const char *device_scheme,
 #endif /* !_CUPS_BACKEND_H_ */
 
 /*
- * End of "$Id: backend.h 7810 2008-07-29 01:11:15Z mike $".
+ * End of "$Id: backend.h 10996 2013-05-29 11:51:34Z msweet $".
  */

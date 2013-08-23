@@ -1,11 +1,11 @@
 #
-# "$Id: cups.spec.in 7718 2008-07-10 23:04:22Z mike $"
+# "$Id: cups.spec.in 11128 2013-07-11 20:31:43Z msweet $"
 #
 #   RPM "spec" file for CUPS.
 #
 #   Original version by Jason McMullan <jmcc@ontv.com>.
 #
-#   Copyright 2007-2013 by Apple Inc.
+#   Copyright 2007-2012 by Apple Inc.
 #   Copyright 1999-2007 by Easy Software Products, all rights reserved.
 #
 #   These coded instructions, statements, and computer programs are the
@@ -35,12 +35,12 @@
 
 Summary: CUPS
 Name: cups
-Version: 1.6.3
+Version: 1.7rc1
 Release: 1
 Epoch: 1
 License: GPL
 Group: System Environment/Daemons
-Source: http://www.cups.org/software/1.6.3/cups-1.6.3-source.tar.bz2
+Source: http://www.cups.org/software/1.7rc1/cups-1.7rc1-source.tar.bz2
 Url: http://www.cups.org
 Packager: Anonymous <anonymous@foo.com>
 Vendor: Apple Inc.
@@ -174,6 +174,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/bin/cancel
 /usr/bin/cupstestdsc
 /usr/bin/cupstestppd
+/usr/bin/ippfind
 /usr/bin/ipptool
 /usr/bin/lp*
 %dir /usr/lib/cups
@@ -237,7 +238,6 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/doc/cups/help/ref-*.html
 /usr/share/doc/cups/help/security.html
 /usr/share/doc/cups/help/sharing.html
-/usr/share/doc/cups/help/standard.html
 /usr/share/doc/cups/help/translation.html
 /usr/share/doc/cups/help/whatsnew.html
 %dir /usr/share/doc/cups/images
@@ -273,6 +273,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/man/man1/cancel.1.gz
 /usr/share/man/man1/cupstestdsc.1.gz
 /usr/share/man/man1/cupstestppd.1.gz
+/usr/share/man/man1/ippfind.1.gz
 /usr/share/man/man1/ipptool.1.gz
 /usr/share/man/man1/lp.1.gz
 /usr/share/man/man1/lpoptions.1.gz
@@ -361,5 +362,5 @@ rm -rf $RPM_BUILD_ROOT
 
 
 #
-# End of "$Id: cups.spec.in 7718 2008-07-10 23:04:22Z mike $".
+# End of "$Id: cups.spec.in 11128 2013-07-11 20:31:43Z msweet $".
 #

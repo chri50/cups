@@ -1,5 +1,5 @@
 #
-# "$Id: Makefile 9391 2010-11-30 21:53:04Z mike $"
+# "$Id: Makefile 11107 2013-07-08 13:47:51Z msweet $"
 #
 #   Top-level Makefile for CUPS.
 #
@@ -99,10 +99,8 @@ clean:
 distclean:	clean
 	$(RM) Makedefs config.h config.log config.status
 	$(RM) cups-config
-	$(RM) conf/cups-files.conf conf/cupsd.conf
-	$(RM) conf/mime.convs conf/pam.std conf/snmp.conf
-	$(RM) doc/help/ref-cups-files-conf.html doc/help/ref-cupsd-conf.html
-	$(RM) doc/help/standard.html doc/index.html
+	$(RM) conf/cupsd.conf conf/mime.convs conf/pam.std conf/snmp.conf
+	$(RM) doc/help/ref-cupsd-conf.html doc/help/standard.html doc/index.html
 	$(RM) man/client.conf.man
 	$(RM) man/cups-deviced.man man/cups-driverd.man
 	$(RM) man/cups-lpd.man man/cupsaddsmb.man man/cupsd.man
@@ -244,7 +242,7 @@ debugcheck:	all unittests
 
 
 #
-# Create HTML documentation...
+# Create HTML documentation using Mini-XML's mxmldoc (http://www.msweet.org/)...
 #
 
 apihelp:
@@ -261,7 +259,7 @@ framedhelp:
 
 
 #
-# Create an Xcode docset...
+# Create an Xcode docset using Mini-XML's mxmldoc (http://www.msweet.org/)...
 #
 
 docset:	apihelp
@@ -297,7 +295,7 @@ sloc:
 
 
 #
-# Make software distributions using EPM (http://www.epmhome.org/)...
+# Make software distributions using EPM (http://www.msweet.org/)...
 #
 
 EPMFLAGS	=	-v --output-dir dist $(EPMARCH)
@@ -318,7 +316,6 @@ dist:	all
 	case `uname` in \
 		*BSD*) $(MAKE) $(MFLAGS) bsd;; \
 		Darwin*) $(MAKE) $(MFLAGS) osx;; \
-		IRIX*) $(MAKE) $(MFLAGS) tardist;; \
 		Linux*) test ! -x /usr/bin/rpm || $(MAKE) $(MFLAGS) rpm;; \
 		SunOS*) $(MAKE) $(MFLAGS) pkg;; \
 	esac
@@ -332,5 +329,5 @@ dist:	all
 
 
 #
-# End of "$Id: Makefile 9391 2010-11-30 21:53:04Z mike $".
+# End of "$Id: Makefile 11107 2013-07-08 13:47:51Z msweet $".
 #

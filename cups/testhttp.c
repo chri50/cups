@@ -1,9 +1,9 @@
 /*
- * "$Id: testhttp.c 7742 2008-07-15 20:23:09Z mike $"
+ * "$Id: testhttp.c 11052 2013-06-25 01:42:48Z msweet $"
  *
  *   HTTP test program for CUPS.
  *
- *   Copyright 2007-2011 by Apple Inc.
+ *   Copyright 2007-2013 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -40,7 +40,8 @@ typedef struct uri_test_s		/**** URI test cases ****/
 			*hostname,	/* Hostname string */
 			*resource;	/* Resource string */
   int			port,		/* Port number */
-			assemble_port;	/* Port number for httpAssembleURI() */
+			assemble_port,	/* Port number for httpAssembleURI() */
+			assemble_coding;/* Coding for httpAssembleURI() */
 } uri_test_t;
 
 
@@ -51,98 +52,144 @@ typedef struct uri_test_s		/**** URI test cases ****/
 static uri_test_t	uri_tests[] =	/* URI test data */
 			{
 			  /* Start with valid URIs */
-			  { HTTP_URI_OK, "file:/filename",
-			    "file", "", "", "/filename", 0, 0 },
-			  { HTTP_URI_OK, "file:/filename%20with%20spaces",
-			    "file", "", "", "/filename with spaces", 0, 0 },
-			  { HTTP_URI_OK, "file:///filename",
-			    "file", "", "", "/filename", 0, 0 },
-			  { HTTP_URI_OK, "file:///filename%20with%20spaces",
-			    "file", "", "", "/filename with spaces", 0, 0 },
-			  { HTTP_URI_OK, "file://localhost/filename",
-			    "file", "", "localhost", "/filename", 0, 0 },
-			  { HTTP_URI_OK, "file://localhost/filename%20with%20spaces",
-			    "file", "", "localhost", "/filename with spaces", 0, 0 },
-			  { HTTP_URI_OK, "http://server/",
-			    "http", "", "server", "/", 80, 0 },
-			  { HTTP_URI_OK, "http://username@server/",
-			    "http", "username", "server", "/", 80, 0 },
-			  { HTTP_URI_OK, "http://username:passwor%64@server/",
-			    "http", "username:password", "server", "/", 80, 0 },
-			  { HTTP_URI_OK, "http://username:passwor%64@server:8080/",
-			    "http", "username:password", "server", "/", 8080, 8080 },
-			  { HTTP_URI_OK, "http://username:passwor%64@server:8080/directory/filename",
-			    "http", "username:password", "server", "/directory/filename", 8080, 8080 },
-			  { HTTP_URI_OK, "http://[2000::10:100]:631/ipp",
-			    "http", "", "2000::10:100", "/ipp", 631, 631 },
-			  { HTTP_URI_OK, "https://username:passwor%64@server/directory/filename",
-			    "https", "username:password", "server", "/directory/filename", 443, 0 },
-			  { HTTP_URI_OK, "ipp://username:passwor%64@[::1]/ipp",
-			    "ipp", "username:password", "::1", "/ipp", 631, 0 },
-			  { HTTP_URI_OK, "lpd://server/queue?reserve=yes",
-			    "lpd", "", "server", "/queue?reserve=yes", 515, 0 },
-			  { HTTP_URI_OK, "mailto:user@domain.com",
-			    "mailto", "", "", "user@domain.com", 0, 0 },
-			  { HTTP_URI_OK, "socket://server/",
-			    "socket", "", "server", "/", 9100, 0 },
-			  { HTTP_URI_OK, "socket://192.168.1.1:9101/",
-			    "socket", "", "192.168.1.1", "/", 9101, 9101 },
-			  { HTTP_URI_OK, "ipp://username:password@[v1.fe80::200:1234:5678:9abc+eth0]:999/ipp",
-			    "ipp", "username:password", "fe80::200:1234:5678:9abc%eth0", "/ipp", 999, 999 },
-			  { HTTP_URI_OK, "http://server/admin?DEVICE_URI=usb://HP/Photosmart%25202600%2520series?serial=MY53OK70V10400",
-			    "http", "", "server", "/admin?DEVICE_URI=usb://HP/Photosmart%25202600%2520series?serial=MY53OK70V10400", 80, 0 },
-			  { HTTP_URI_OK, "lpd://Acme%20Laser%20(01%3A23%3A45).local._tcp._printer/",
-			    "lpd", "", "Acme Laser (01:23:45).local._tcp._printer", "/", 515, 0 },
-			  { HTTP_URI_OK, "ipp://HP%20Officejet%204500%20G510n-z%20%40%20Will's%20MacBook%20Pro%2015%22._ipp._tcp.local./",
-			    "ipp", "", "HP Officejet 4500 G510n-z @ Will's MacBook Pro 15\"._ipp._tcp.local.", "/", 631, 0 },
+			  { HTTP_URI_STATUS_OK, "file:/filename",
+			    "file", "", "", "/filename", 0, 0,
+			    HTTP_URI_CODING_MOST },
+			  { HTTP_URI_STATUS_OK, "file:/filename%20with%20spaces",
+			    "file", "", "", "/filename with spaces", 0, 0,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_OK, "file:///filename",
+			    "file", "", "", "/filename", 0, 0,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_OK, "file:///filename%20with%20spaces",
+			    "file", "", "", "/filename with spaces", 0, 0,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_OK, "file://localhost/filename",
+			    "file", "", "localhost", "/filename", 0, 0,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_OK, "file://localhost/filename%20with%20spaces",
+			    "file", "", "localhost", "/filename with spaces", 0, 0,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_OK, "http://server/",
+			    "http", "", "server", "/", 80, 0,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_OK, "http://username@server/",
+			    "http", "username", "server", "/", 80, 0,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_OK, "http://username:passwor%64@server/",
+			    "http", "username:password", "server", "/", 80, 0,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_OK, "http://username:passwor%64@server:8080/",
+			    "http", "username:password", "server", "/", 8080, 8080,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_OK, "http://username:passwor%64@server:8080/directory/filename",
+			    "http", "username:password", "server", "/directory/filename", 8080, 8080,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_OK, "http://[2000::10:100]:631/ipp",
+			    "http", "", "2000::10:100", "/ipp", 631, 631,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_OK, "https://username:passwor%64@server/directory/filename",
+			    "https", "username:password", "server", "/directory/filename", 443, 0,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_OK, "ipp://username:passwor%64@[::1]/ipp",
+			    "ipp", "username:password", "::1", "/ipp", 631, 0,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_OK, "lpd://server/queue?reserve=yes",
+			    "lpd", "", "server", "/queue?reserve=yes", 515, 0,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_OK, "mailto:user@domain.com",
+			    "mailto", "", "", "user@domain.com", 0, 0,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_OK, "socket://server/",
+			    "socket", "", "server", "/", 9100, 0,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_OK, "socket://192.168.1.1:9101/",
+			    "socket", "", "192.168.1.1", "/", 9101, 9101,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_OK, "ipp://username:password@[v1.fe80::200:1234:5678:9abc+eth0]:999/ipp",
+			    "ipp", "username:password", "fe80::200:1234:5678:9abc%eth0", "/ipp", 999, 999,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_OK, "ipp://username:password@[fe80::200:1234:5678:9abc%25eth0]:999/ipp",
+			    "ipp", "username:password", "fe80::200:1234:5678:9abc%eth0", "/ipp", 999, 999,
+			    HTTP_URI_CODING_MOST | HTTP_URI_CODING_RFC6874 },
+			  { HTTP_URI_STATUS_OK, "http://server/admin?DEVICE_URI=usb://HP/Photosmart%25202600%2520series?serial=MY53OK70V10400",
+			    "http", "", "server", "/admin?DEVICE_URI=usb://HP/Photosmart%25202600%2520series?serial=MY53OK70V10400", 80, 0,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_OK, "lpd://Acme%20Laser%20(01%3A23%3A45).local._tcp._printer/",
+			    "lpd", "", "Acme Laser (01:23:45).local._tcp._printer", "/", 515, 0,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_OK, "ipp://HP%20Officejet%204500%20G510n-z%20%40%20Will's%20MacBook%20Pro%2015%22._ipp._tcp.local./",
+			    "ipp", "", "HP Officejet 4500 G510n-z @ Will's MacBook Pro 15\"._ipp._tcp.local.", "/", 631, 0,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_OK, "ipp://%22%23%2F%3A%3C%3E%3F%40%5B%5C%5D%5E%60%7B%7C%7D/",
+			    "ipp", "", "\"#/:<>?@[\\]^`{|}", "/", 631, 0,
+			    HTTP_URI_CODING_MOST  },
 
 			  /* Missing scheme */
-			  { HTTP_URI_MISSING_SCHEME, "/path/to/file/index.html",
-			    "file", "", "", "/path/to/file/index.html", 0, 0 },
-			  { HTTP_URI_MISSING_SCHEME, "//server/ipp",
-			    "ipp", "", "server", "/ipp", 631, 0 },
+			  { HTTP_URI_STATUS_MISSING_SCHEME, "/path/to/file/index.html",
+			    "file", "", "", "/path/to/file/index.html", 0, 0,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_MISSING_SCHEME, "//server/ipp",
+			    "ipp", "", "server", "/ipp", 631, 0,
+			    HTTP_URI_CODING_MOST  },
 
 			  /* Unknown scheme */
-			  { HTTP_URI_UNKNOWN_SCHEME, "vendor://server/resource",
-			    "vendor", "", "server", "/resource", 0, 0 },
+			  { HTTP_URI_STATUS_UNKNOWN_SCHEME, "vendor://server/resource",
+			    "vendor", "", "server", "/resource", 0, 0,
+			    HTTP_URI_CODING_MOST  },
 
 			  /* Missing resource */
-			  { HTTP_URI_MISSING_RESOURCE, "socket://[::192.168.2.1]",
-			    "socket", "", "::192.168.2.1", "/", 9100, 0 },
-			  { HTTP_URI_MISSING_RESOURCE, "socket://192.168.1.1:9101",
-			    "socket", "", "192.168.1.1", "/", 9101 },
+			  { HTTP_URI_STATUS_MISSING_RESOURCE, "socket://[::192.168.2.1]",
+			    "socket", "", "::192.168.2.1", "/", 9100, 0,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_MISSING_RESOURCE, "socket://192.168.1.1:9101",
+			    "socket", "", "192.168.1.1", "/", 9101, 0,
+			    HTTP_URI_CODING_MOST  },
 
 			  /* Bad URI */
-			  { HTTP_URI_BAD_URI, "",
-			    "", "", "", "", 0, 0 },
+			  { HTTP_URI_STATUS_BAD_URI, "",
+			    "", "", "", "", 0, 0,
+			    HTTP_URI_CODING_MOST  },
 
 			  /* Bad scheme */
-			  { HTTP_URI_BAD_SCHEME, "bad_scheme://server/resource",
-			    "", "", "", "", 0, 0 },
+			  { HTTP_URI_STATUS_BAD_SCHEME, "bad_scheme://server/resource",
+			    "", "", "", "", 0, 0,
+			    HTTP_URI_CODING_MOST  },
 
 			  /* Bad username */
-			  { HTTP_URI_BAD_USERNAME, "http://username:passwor%6@server/resource",
-			    "http", "", "", "", 80, 0 },
+			  { HTTP_URI_STATUS_BAD_USERNAME, "http://username:passwor%6@server/resource",
+			    "http", "", "", "", 80, 0,
+			    HTTP_URI_CODING_MOST  },
 
 			  /* Bad hostname */
-			  { HTTP_URI_BAD_HOSTNAME, "http://[/::1]/index.html",
-			    "http", "", "", "", 80, 0 },
-			  { HTTP_URI_BAD_HOSTNAME, "http://[",
-			    "http", "", "", "", 80, 0 },
-			  { HTTP_URI_BAD_HOSTNAME, "http://serve%7/index.html",
-			    "http", "", "", "", 80, 0 },
-			  { HTTP_URI_BAD_HOSTNAME, "http://server with spaces/index.html",
-			    "http", "", "", "", 80, 0 },
+			  { HTTP_URI_STATUS_BAD_HOSTNAME, "http://[/::1]/index.html",
+			    "http", "", "", "", 80, 0,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_BAD_HOSTNAME, "http://[",
+			    "http", "", "", "", 80, 0,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_BAD_HOSTNAME, "http://serve%7/index.html",
+			    "http", "", "", "", 80, 0,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_BAD_HOSTNAME, "http://server with spaces/index.html",
+			    "http", "", "", "", 80, 0,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_BAD_HOSTNAME, "ipp://\"#/:<>?@[\\]^`{|}/",
+			    "ipp", "", "", "", 631, 0,
+			    HTTP_URI_CODING_MOST  },
 
 			  /* Bad port number */
-			  { HTTP_URI_BAD_PORT, "http://127.0.0.1:9999a/index.html",
-			    "http", "", "127.0.0.1", "", 0, 0 },
+			  { HTTP_URI_STATUS_BAD_PORT, "http://127.0.0.1:9999a/index.html",
+			    "http", "", "127.0.0.1", "", 0, 0,
+			    HTTP_URI_CODING_MOST  },
 
 			  /* Bad resource */
-			  { HTTP_URI_BAD_RESOURCE, "http://server/index.html%",
-			    "http", "", "server", "", 80, 0 },
- 			  { HTTP_URI_BAD_RESOURCE, "http://server/index with spaces.html",
-  			    "http", "", "server", "", 80, 0 }
+			  { HTTP_URI_STATUS_BAD_RESOURCE, "http://server/index.html%",
+			    "http", "", "server", "", 80, 0,
+			    HTTP_URI_CODING_MOST  },
+			  { HTTP_URI_STATUS_BAD_RESOURCE, "http://server/index with spaces.html",
+			    "http", "", "server", "", 80, 0,
+			    HTTP_URI_CODING_MOST  }
 			};
 static const char * const base64_tests[][2] =
 			{
@@ -190,20 +237,21 @@ main(int  argc,				/* I - Number of command-line arguments */
 		*addr;			/* Current address */
   off_t		length, total;		/* Length and total bytes */
   time_t	start, current;		/* Start and end time */
+  const char	*encoding;		/* Negotiated Content-Encoding */
   static const char * const uri_status_strings[] =
 		{
-		  "HTTP_URI_OVERFLOW",
-		  "HTTP_URI_BAD_ARGUMENTS",
-		  "HTTP_URI_BAD_RESOURCE",
-		  "HTTP_URI_BAD_PORT",
-		  "HTTP_URI_BAD_HOSTNAME",
-		  "HTTP_URI_BAD_USERNAME",
-		  "HTTP_URI_BAD_SCHEME",
-		  "HTTP_URI_BAD_URI",
-		  "HTTP_URI_OK",
-		  "HTTP_URI_MISSING_SCHEME",
-		  "HTTP_URI_UNKNOWN_SCHEME",
-		  "HTTP_URI_MISSING_RESOURCE"
+		  "HTTP_URI_STATUS_OVERFLOW",
+		  "HTTP_URI_STATUS_BAD_ARGUMENTS",
+		  "HTTP_URI_STATUS_BAD_RESOURCE",
+		  "HTTP_URI_STATUS_BAD_PORT",
+		  "HTTP_URI_STATUS_BAD_HOSTNAME",
+		  "HTTP_URI_STATUS_BAD_USERNAME",
+		  "HTTP_URI_STATUS_BAD_SCHEME",
+		  "HTTP_URI_STATUS_BAD_URI",
+		  "HTTP_URI_STATUS_OK",
+		  "HTTP_URI_STATUS_MISSING_SCHEME",
+		  "HTTP_URI_STATUS_UNKNOWN_SCHEME",
+		  "HTTP_URI_STATUS_MISSING_RESOURCE"
 		};
 
 
@@ -222,7 +270,7 @@ main(int  argc,				/* I - Number of command-line arguments */
     fputs("httpGetDateString()/httpGetDateTime(): ", stdout);
 
     start = time(NULL);
-    strcpy(buffer, httpGetDateString(start));
+    strlcpy(buffer, httpGetDateString(start), sizeof(buffer));
     current = httpGetDateTime(buffer);
 
     i = (int)(current - start);
@@ -406,12 +454,12 @@ main(int  argc,				/* I - Number of command-line arguments */
     for (i = 0, j = 0, k = 0;
          i < (int)(sizeof(uri_tests) / sizeof(uri_tests[0]));
 	 i ++)
-      if (uri_tests[i].result == HTTP_URI_OK &&
+      if (uri_tests[i].result == HTTP_URI_STATUS_OK &&
           !strstr(uri_tests[i].uri, "%64") &&
           strstr(uri_tests[i].uri, "//"))
       {
         k ++;
-	uri_status = httpAssembleURI(HTTP_URI_CODING_MOST,
+	uri_status = httpAssembleURI(uri_tests[i].assemble_coding,
 				     buffer, sizeof(buffer),
 	                             uri_tests[i].scheme,
 				     uri_tests[i].username,
@@ -419,7 +467,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 				     uri_tests[i].assemble_port,
 				     uri_tests[i].resource);
 
-        if (uri_status != HTTP_URI_OK)
+        if (uri_status != HTTP_URI_STATUS_OK)
 	{
           failures ++;
 
@@ -449,6 +497,21 @@ main(int  argc,				/* I - Number of command-line arguments */
 
     if (!j)
       printf("PASS (%d URIs tested)\n", k);
+
+   /*
+    * httpAssembleUUID
+    */
+
+    fputs("httpAssembleUUID: ", stdout);
+    httpAssembleUUID("hostname.example.com", 631, "printer", 12345, buffer,
+                     sizeof(buffer));
+    if (strncmp(buffer, "urn:uuid:", 9))
+    {
+      printf("FAIL (%s)\n", buffer);
+      failures ++;
+    }
+    else
+      printf("PASS (%s)\n", buffer);
 
    /*
     * Show a summary and return...
@@ -548,23 +611,39 @@ main(int  argc,				/* I - Number of command-line arguments */
 
     if (!_cups_strcasecmp(scheme, "https") || !_cups_strcasecmp(scheme, "ipps") ||
         port == 443)
-      encryption = HTTP_ENCRYPT_ALWAYS;
+      encryption = HTTP_ENCRYPTION_ALWAYS;
     else
-      encryption = HTTP_ENCRYPT_IF_REQUESTED;
+      encryption = HTTP_ENCRYPTION_IF_REQUESTED;
 
-    http = httpConnectEncrypt(hostname, port, encryption);
+    http = httpConnect2(hostname, port, NULL, AF_UNSPEC, encryption, 1, 30000,
+                        NULL);
     if (http == NULL)
     {
       perror(hostname);
       continue;
     }
-    printf("Requesting file \"%s\"...\n", resource);
+    printf("Checking file \"%s\"...\n", resource);
     httpClearFields(http);
     httpSetField(http, HTTP_FIELD_ACCEPT_LANGUAGE, "en");
-    httpGet(http, resource);
-    while ((status = httpUpdate(http)) == HTTP_CONTINUE);
+    httpHead(http, resource);
+    while ((status = httpUpdate(http)) == HTTP_STATUS_CONTINUE);
 
-    if (status == HTTP_OK)
+    if (status == HTTP_STATUS_OK)
+      puts("HEAD OK:");
+    else
+      printf("HEAD failed with status %d...\n", status);
+
+    encoding = httpGetContentEncoding(http);
+
+    printf("Requesting file \"%s\" (Accept-Encoding: %s)...\n", resource,
+           encoding ? encoding : "identity");
+    httpClearFields(http);
+    httpSetField(http, HTTP_FIELD_ACCEPT_LANGUAGE, "en");
+    httpSetField(http, HTTP_FIELD_ACCEPT_ENCODING, encoding);
+    httpGet(http, resource);
+    while ((status = httpUpdate(http)) == HTTP_STATUS_CONTINUE);
+
+    if (status == HTTP_STATUS_OK)
       puts("GET OK:");
     else
       printf("GET failed with status %d...\n", status);
@@ -600,5 +679,5 @@ main(int  argc,				/* I - Number of command-line arguments */
 
 
 /*
- * End of "$Id: testhttp.c 7742 2008-07-15 20:23:09Z mike $".
+ * End of "$Id: testhttp.c 11052 2013-06-25 01:42:48Z msweet $".
  */
