@@ -1,3 +1,11 @@
+cups (1.7.0~rc1-0ubuntu2) saucy; urgency=low
+
+  * debian/patches/handle-server-terminating-connection.patch: Fix the handling
+    of a connection terminated by the server (LP: #1020048, comment #37 and
+    #44).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Thu,  5 Sep 2013 22:46:01 +0200
+
 cups (1.7.0~rc1-0ubuntu1) saucy; urgency=low
 
   * New upstream release
