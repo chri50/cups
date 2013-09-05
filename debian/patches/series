@@ -9,6 +9,7 @@ ppd-poll-with-client-conf.patch
 manpage-hyphen-minus.patch
 rootbackends-worldreadable.patch
 cups-dbus-utf8.patch
+handle-server-terminating-connection.patch
 
 # patches which should go upstream
 airprint-support.patch
