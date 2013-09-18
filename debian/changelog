@@ -1,3 +1,15 @@
+cups (1.7.0~rc1-0ubuntu3) saucy; urgency=low
+
+  * debian/local/cups-daemon.cups.upstart: Increased timeout for waiting for
+    the CUPS daemon to get ready before automatically configuring printers
+    from 3 sec to 30 sec, on slower systems CUPS often needs more than 3
+    seconds and so the automatic printer configuration does not get done
+    (LP: #933308).
+  * debian/cups.dirs: Create empty /etc/cups/interfaces directory
+    (LP: #499585).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 18 Sep 2013 18:51:01 +0200
+
 cups (1.7.0~rc1-0ubuntu2) saucy; urgency=low
 
   * debian/patches/handle-server-terminating-connection.patch: Fix the handling
