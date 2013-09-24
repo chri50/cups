@@ -2,7 +2,7 @@ Author: till.kamppeter@gmail.com
 
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -723,7 +723,7 @@
+@@ -724,7 +724,7 @@
    KeepAlive                = TRUE;
    KeepAliveTimeout         = DEFAULT_KEEPALIVE;
    ListenBackLog            = SOMAXCONN;
