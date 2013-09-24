@@ -1,3 +1,45 @@
+cups (1.7.0~rc1-0ubuntu4) saucy; urgency=low
+
+  * debian/patches/cups-1.6.4-changes.patch: Merged latest fixes from upstream,
+    taken from CUPS 1.6.4, as there is no public repository of CUPS any more
+    and due to Apple policies the next 1.7.x release, 1.7.0 final, happens
+    only with the next release of Mac OS X. Fixes:
+     - Removed some duplicate page size definitions for some ISO sizes that were
+       causing problems
+     - The IPP backend did not add the "last-document" attribute
+     - Added a SyncOnClose directive to cups-files.conf to force cupsd to
+       call fsync before closing any configuration/state files it writes
+       (LP: #1157972, Red Hat bug #984883).
+     - Added USB quirk rule for Lexmark E238
+     - Closed server connections were still not always detected
+     - The libusb-based USB backend now loads its list of quirks from files
+       in /usr/share/cups/usb instead of using a hardcoded table, this
+       makes spotting and fixing USB problems much easier.
+     - The scheduler did not properly register ICC color profiles with
+       colord
+  * debian/patches/usb-backend-more-quirk-rules.patch,
+    debian/patches/handle-server-terminating-connection.patch,
+    debian/patches/colord-add-profile-fix.patch: Removed, included upstream.
+  * debian/patches/pidfile.patch,
+    debian/patches/rootbackends-worldreadable.patch,
+    debian/patches/airprint-support.patch,
+    debian/patches/do-not-broadcast-with-hostnames.patch,
+    debian/patches/mention-rfc2911-in-ipptoolfile-for-clarity.patch,
+    debian/patches/add-ipp-backend-of-cups-1.4.patch,
+    debian/patches/confdirperms.patch,
+    debian/patches/show-compile-command-lines.patch,
+    debian/patches/log-debug-history-nearly-unlimited.patch: Refreshed with
+    quilt.
+  * debian/local/apparmor-profile: Silenced AppArmor noise in syslog
+    (LP: #1229766).
+  * debian/local/cupsd-sync-files-on-close.patch: Activate CUPS daemon
+    syncing files when closing, so that config files (like printers.conf)
+    do not mysteriously disappear (LP: #1157972, Red Hat bug #984883).
+  * debian/cups-server-common.install: Install /usr/share/cups/usb/ with the
+    USB backend quirk rules file.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Tue, 24 Sep 2013 22:15:01 +0200
+
 cups (1.7.0~rc1-0ubuntu3) saucy; urgency=low
 
   * debian/local/cups-daemon.cups.upstart: Increased timeout for waiting for

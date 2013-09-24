@@ -1018,14 +1018,14 @@ _cupsConnect(void)
       */
 
       char ch;				/* Connection check byte */
-      int n;
+      ssize_t	n;			/* Number of bytes */
 
 #ifdef WIN32
-      if ((n = recv(cg->http->fd, &ch, 1, MSG_PEEK) == 0) ||
+      if ((n = recv(cg->http->fd, &ch, 1, MSG_PEEK)) == 0 ||
           (n < 0 && WSAGetLastError() != WSAEWOULDBLOCK))
 #else
-      if ((n = recv(cg->http->fd, &ch, 1, MSG_PEEK | MSG_DONTWAIT) == 0) ||
-	  (n < 0 && errno != EWOULDBLOCK))
+      if ((n = recv(cg->http->fd, &ch, 1, MSG_PEEK | MSG_DONTWAIT)) == 0 ||
+          (n < 0 && errno != EWOULDBLOCK))
 #endif /* WIN32 */
       {
        /*

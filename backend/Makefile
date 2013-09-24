@@ -111,6 +111,11 @@ install:	all install-data install-headers install-libs install-exec
 #
 
 install-data:
+	if test "x$(USBQUIRKS)" != x; then \
+		echo Installing USB quirks in $(USBQUIRKS); \
+		$(INSTALL_DIR) -m 755 $(USBQUIRKS); \
+		$(INSTALL_DATA) org.cups.usb-quirks $(USBQUIRKS); \
+	fi
 
 
 #

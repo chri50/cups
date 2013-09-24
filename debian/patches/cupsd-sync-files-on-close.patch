@@ -1,0 +1,12 @@
+--- a/conf/cupsd.conf.in
++++ b/conf/cupsd.conf.in
+@@ -27,6 +27,9 @@
+ # Web interface setting...
+ WebInterface @CUPS_WEBIF@
+ 
++# Sync files when closing them
++SyncOnClose On
++
+ # Restrict access to the server...
+ <Location />
+   Order allow,deny

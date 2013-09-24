@@ -1,15 +1,14 @@
 # patches accepted and committed upstream:
+cups-1.6.4-changes.patch
 ippfind-fix-port-output.patch
 
 # patches sent upstream
-usb-backend-more-quirk-rules.patch
 get-ppd-file-for-statically-configured-ipp-shared-queues.patch
 pidfile.patch
 ppd-poll-with-client-conf.patch
 manpage-hyphen-minus.patch
 rootbackends-worldreadable.patch
 cups-dbus-utf8.patch
-handle-server-terminating-connection.patch
 
 # patches which should go upstream
 airprint-support.patch
@@ -23,7 +22,6 @@ cups-deviced-allow-device-ids-with-newline.patch
 cups-snmp-oids-device-id-hp-ricoh.patch
 configure-default-browse-protocols.patch
 mention-rfc2911-in-ipptoolfile-for-clarity.patch
-colord-add-profile-fix.patch
 # Fix tests, should probably go upstream
 tests-ignore-warnings.patch
 tests-ignore-usb-crash.patch
@@ -48,3 +46,4 @@ ppdc-dynamic-linking.patch
 log-debug-history-nearly-unlimited.patch
 # Disabled in 1.6.1-1 as it breaks the tests. It addresses #593338
 # pstops-based-workflow-only-for-printing-ps-on-a-ps-printer.patch
+cupsd-sync-files-on-close.patch
