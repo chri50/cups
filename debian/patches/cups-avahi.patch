@@ -527,7 +527,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  
    fprintf(stderr, "DEBUG2: query_callback(sdRef=%p, flags=%x, "
                    "interfaceIndex=%d, errorCode=%d, fullName=\"%s\", "
-@@ -719,94 +986,233 @@
+@@ -719,94 +986,235 @@
    if ((ptr = strstr(name, "._")) != NULL)
      *ptr = '\0';
  
@@ -596,7 +596,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
 +{
 +  AvahiClient		*client;
 +  cups_device_t		key,
-+			*device;
++			*device = NULL;
 +  char			uqname[1024],
 +			*ptr;
 +  cups_txt_records_t	txtr;
@@ -627,11 +627,13 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
 +  key.type = device_type (type);
 +
 + /*
-+  * Find the device and the the TXT information.
++  * Find the device and the TXT information.
 +  */
 +
 +  txtr.txt = txt;
-+  device = find_device ((cups_array_t *) context, &txtr, &key);
++  if (txt != NULL)
++    device = find_device ((cups_array_t *) context, &txtr, &key);
++
 +  if (device)
 +  {
 +   /*
@@ -823,7 +825,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
  	{
  	 /*
  	  * Add USB device ID information...
-@@ -861,6 +1267,10 @@
+@@ -861,6 +1269,10 @@
  	  if (device->type == CUPS_DEVICE_PRINTER)
  	    device->sent = 1;
  	}
@@ -834,7 +836,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
        }
  
        if (device->device_id)
-@@ -910,11 +1320,9 @@
+@@ -910,11 +1322,9 @@
      }
    }
  
