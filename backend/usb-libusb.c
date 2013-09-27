@@ -600,30 +600,38 @@ close_device(usb_printer_t *printer)	/* I - Printer */
     * to the device...
     */
 
+    int errcode;			/* Return value of libusb function */
     int number;				/* Interface number */
 
-    libusb_get_device_descriptor (printer->device, &devdesc);
-    libusb_get_config_descriptor (printer->device, printer->conf, &confptr);
-    number = confptr->interface[printer->iface].
-                 altsetting[printer->altset].bInterfaceNumber;
-    libusb_release_interface(printer->handle, number);
-    if (number != 0)
-      libusb_release_interface(printer->handle, 0);
-
-   /*
-    * Re-attach "usblp" kernel module if it was attached before using this
-    * device
-    */
-
-    if (printer->usblp_attached == 1)
+    errcode = 
+      libusb_get_config_descriptor (printer->device, printer->conf, &confptr);
+    if (errcode >= 0)
     {
-      if (libusb_attach_kernel_driver(printer->handle, printer->iface) < 0)
-	fprintf(stderr,
-	        "DEBUG: Failed to re-attach \"usblp\" kernel module to "
-	        "%04x:%04x\n", devdesc.idVendor, devdesc.idProduct);
-    }
+      number = confptr->interface[printer->iface].
+	altsetting[printer->altset].bInterfaceNumber;
+      libusb_release_interface(printer->handle, number);
+      if (number != 0)
+	libusb_release_interface(printer->handle, 0);
 
-    libusb_free_config_descriptor(confptr);
+     /*
+      * Re-attach "usblp" kernel module if it was attached before using this
+      * device
+      */
+      if (printer->usblp_attached == 1)
+	if (libusb_attach_kernel_driver(printer->handle, printer->iface) < 0)
+	{
+	  errcode = libusb_get_device_descriptor (printer->device, &devdesc);
+	  if (errcode < 0)
+	    fprintf(stderr,
+		    "DEBUG: Failed to re-attach \"usblp\" kernel module\n");
+	  else
+	    fprintf(stderr,
+		    "DEBUG: Failed to re-attach \"usblp\" kernel module to "
+		    "%04x:%04x\n", devdesc.idVendor, devdesc.idProduct);
+	}
+
+      libusb_free_config_descriptor(confptr);
+    }
 
    /*
     * Close the interface and return...
@@ -694,7 +702,8 @@ find_device(usb_cb_t   cb,		/* I - Callback function */
       * a printer...
       */
 
-      libusb_get_device_descriptor (device, &devdesc);
+      if (libusb_get_device_descriptor (device, &devdesc) < 0)
+	continue;
 
       if (!devdesc.bNumConfigurations || !devdesc.idVendor ||
           !devdesc.idProduct)
@@ -1092,38 +1101,11 @@ open_device(usb_printer_t *printer,	/* I - Printer */
   if (verbose)
     fputs("STATE: +connecting-to-device\n", stderr);
 
- /*
-  * Set the desired configuration, but only if it needs changing. Some
-  * printers (e.g., Samsung) don't like libusb_set_configuration. It will
-  * succeed, but the following print job is sometimes silently lost by the
-  * printer.
-  */
-
-  if (libusb_control_transfer(printer->handle,
-                LIBUSB_REQUEST_TYPE_STANDARD | LIBUSB_ENDPOINT_IN |
-		LIBUSB_RECIPIENT_DEVICE,
-		8, /* GET_CONFIGURATION */
-		0, 0, (unsigned char *)&current, 1, 5000) < 0)
-    current = 0;			/* Assume not configured */
-
-  libusb_get_device_descriptor (printer->device, &devdesc);
-  libusb_get_config_descriptor (printer->device, printer->conf, &confptr);
-  number1 = confptr->bConfigurationValue;
-
-  if (number1 != current)
+  if ((errcode = libusb_get_device_descriptor (printer->device, &devdesc)) < 0)
   {
-    if ((errcode = libusb_set_configuration(printer->handle, number1)) < 0)
-    {
-     /*
-      * If the set fails, chances are that the printer only supports a
-      * single configuration.  Technically these printers don't conform to
-      * the USB printer specification, but otherwise they'll work...
-      */
-
-      if (errcode != LIBUSB_ERROR_BUSY)
-        fprintf(stderr, "DEBUG: Failed to set configuration %d for %04x:%04x\n",
-		number1, devdesc.idVendor, devdesc.idProduct);
-    }
+    fprintf(stderr, "DEBUG: Failed to get device descriptor, code: %d\n",
+	    errcode);
+    goto error;
   }
 
  /*
@@ -1151,6 +1133,46 @@ open_device(usb_printer_t *printer,	/* I - Printer */
     fprintf(stderr, "DEBUG: Failed to check whether %04x:%04x has the \"usblp\" kernel module attached\n",
 	      devdesc.idVendor, devdesc.idProduct);
     goto error;
+  }
+
+ /*
+  * Set the desired configuration, but only if it needs changing. Some
+  * printers (e.g., Samsung) don't like libusb_set_configuration. It will
+  * succeed, but the following print job is sometimes silently lost by the
+  * printer.
+  */
+
+  if (libusb_control_transfer(printer->handle,
+                LIBUSB_REQUEST_TYPE_STANDARD | LIBUSB_ENDPOINT_IN |
+		LIBUSB_RECIPIENT_DEVICE,
+		8, /* GET_CONFIGURATION */
+		0, 0, (unsigned char *)&current, 1, 5000) < 0)
+    current = 0;			/* Assume not configured */
+
+  if ((errcode = 
+       libusb_get_config_descriptor (printer->device, printer->conf, &confptr))
+      < 0)
+  {
+    fprintf(stderr, "DEBUG: Failed to get config descriptor for %04x:%04x\n",
+	    devdesc.idVendor, devdesc.idProduct);
+    goto error;
+  }
+  number1 = confptr->bConfigurationValue;
+
+  if (number1 != current)
+  {
+    if ((errcode = libusb_set_configuration(printer->handle, number1)) < 0)
+    {
+     /*
+      * If the set fails, chances are that the printer only supports a
+      * single configuration.  Technically these printers don't conform to
+      * the USB printer specification, but otherwise they'll work...
+      */
+
+      if (errcode != LIBUSB_ERROR_BUSY)
+        fprintf(stderr, "DEBUG: Failed to set configuration %d for %04x:%04x\n",
+		number1, devdesc.idVendor, devdesc.idProduct);
+    }
   }
 
  /*
