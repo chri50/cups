@@ -1,12 +1,11 @@
---- a/conf/cupsd.conf.in
-+++ b/conf/cupsd.conf.in
-@@ -27,6 +27,9 @@
- # Web interface setting...
- WebInterface @CUPS_WEBIF@
+--- a/conf/cups-files.conf.in
++++ b/conf/cups-files.conf.in
+@@ -9,7 +9,7 @@
+ #FatalErrors @CUPS_FATAL_ERRORS@
  
-+# Sync files when closing them
-+SyncOnClose On
-+
- # Restrict access to the server...
- <Location />
-   Order allow,deny
+ # Do we call fsync() after writing configuration or status files?
+-#SyncOnClose No
++SyncOnClose Yes
+ 
+ # Default user and group for filters/backends/helper programs; this cannot be
+ # any user or group that resolves to ID 0 for security reasons...
