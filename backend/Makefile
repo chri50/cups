@@ -21,12 +21,12 @@ include ../Makedefs
 # Object files...
 #
 
-RBACKENDS =	ipp lpd $(DNSSD_BACKEND)
+RBACKENDS =	ipp ipp14 lpd $(DNSSD_BACKEND)
 UBACKENDS =	$(LEGACY_BACKENDS) serial snmp socket usb
 UNITTESTS =	test1284 testbackend testsupplies
 TARGETS =	libbackend.a $(RBACKENDS) $(UBACKENDS)
 LIBOBJS	=	ieee1284.o network.o runloop.o snmp-supplies.o
-OBJS	=	ipp.o lpd.o dnssd.o parallel.o serial.o snmp.o \
+OBJS	=	ipp.o ipp14.o lpd.o dnssd.o parallel.o serial.o snmp.o \
 		socket.o test1284.o testbackend.o testsupplies.o usb.o
 
 
@@ -215,6 +215,17 @@ ipp:	ipp.o ../cups/$(LIBCUPS) libbackend.a
 	$(CC) $(LDFLAGS) -o ipp ipp.o libbackend.a $(LIBS)
 	$(RM) http
 	$(LN) ipp http
+
+
+#
+# ipp14
+#
+
+ipp14:	ipp14.o ../cups/$(LIBCUPS) libbackend.a
+	echo Linking $@...
+	$(CC) $(LDFLAGS) -o ipp14 ipp14.o libbackend.a $(LIBS)
+	#$(RM) http
+	#$(LN) ipp14 http
 
 
 #
