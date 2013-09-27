@@ -727,6 +727,7 @@ ARFLAGS
 LIBZ
 INSTALL_GZIP
 LIBWRAP
+USBQUIRKS
 LIBUSB
 LIBMXML
 EGREP
@@ -5232,6 +5233,8 @@ fi
 
 
 LIBUSB=""
+USBQUIRKS=""
+
 
 
 if test "x$PKGCONFIG" != x; then
@@ -5245,6 +5248,7 @@ $as_echo "yes" >&6; }
 
 			CFLAGS="$CFLAGS `$PKGCONFIG --cflags libusb-1.0`"
 			LIBUSB="`$PKGCONFIG --libs libusb-1.0`"
+			USBQUIRKS="\$(DATADIR)/usb"
 		else
 			{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
