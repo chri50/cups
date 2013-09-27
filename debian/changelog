@@ -1,3 +1,11 @@
+cups (1.7.0~rc1-0ubuntu5) saucy; urgency=low
+
+  * debian/local/cupsd-sync-files-on-close.patch: Corrected patch, the new
+    SyncOnClose directive needs to be in cups-files.conf (LP: #1157972,
+    Red Hat bug #984883).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 27 Sep 2013 12:30:01 +0200
+
 cups (1.7.0~rc1-0ubuntu4) saucy; urgency=low
 
   * debian/patches/cups-1.6.4-changes.patch: Merged latest fixes from upstream,
