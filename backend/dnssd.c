@@ -1040,7 +1040,7 @@ avahi_query_callback(AvahiServiceResolver *resolver,
 {
   AvahiClient		*client;
   cups_device_t		key,
-			*device;
+			*device = NULL;
   char			uqname[1024],
 			*ptr;
   cups_txt_records_t	txtr;
@@ -1071,11 +1071,13 @@ avahi_query_callback(AvahiServiceResolver *resolver,
   key.type = device_type (type);
 
  /*
-  * Find the device and the the TXT information.
+  * Find the device and the TXT information.
   */
 
   txtr.txt = txt;
-  device = find_device ((cups_array_t *) context, &txtr, &key);
+  if (txt != NULL)
+    device = find_device ((cups_array_t *) context, &txtr, &key);
+
   if (device)
   {
    /*

@@ -1,3 +1,11 @@
+cups (1.5.3-5+deb7u1) stable; urgency=low
+
+  [ Tim Waugh ]
+  * dnssd backend: don't crash if avahi gives a callback with no TXT
+    record (Closes: #722886)
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 27 Sep 2013 19:53:20 +0200
+
 cups (1.5.3-5) unstable; urgency=low
 
   * Team upload
