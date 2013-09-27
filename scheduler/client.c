@@ -4990,7 +4990,7 @@ valid_host(cupsd_client_t *con)		/* I - Client connection */
 	    !strncmp(host, "[::1]:", 6));
   }
 
-#ifdef HAVE_DNSSD
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
  /*
   * Check if the hostname is something.local (Bonjour); if so, allow it.
   */
@@ -4999,7 +4999,7 @@ valid_host(cupsd_client_t *con)		/* I - Client connection */
       (!_cups_strcasecmp(end, ".local") || !_cups_strncasecmp(end, ".local:", 7) ||
        !_cups_strcasecmp(end, ".local.") || !_cups_strncasecmp(end, ".local.:", 8)))
     return (1);
-#endif /* HAVE_DNSSD */
+#endif /* defined(HAVE_DNSSD) || defined(HAVE_AVAHI) */
 
  /*
   * Check if the hostname is an IP address...
