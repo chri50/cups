@@ -1,5 +1,5 @@
 /*
- * "$Id: ippfind.c 11100 2013-07-05 15:11:29Z msweet $"
+ * "$Id: ippfind.c 11177 2013-07-24 12:16:37Z msweet $"
  *
  *   Utility to find IPP printers via Bonjour/DNS-SD and optionally run
  *   commands such as IPP and Bonjour conformance tests.  This tool is
@@ -2082,6 +2082,9 @@ exec_program(ippfind_srv_t *service,	/* I - Service */
   for (i = 0; i < num_args; i ++)
     free(myargv[i]);
 
+  free(myargv);
+  free(myenvp);
+
  /*
   * Return whether the program succeeded or crashed...
   */
@@ -2618,7 +2621,7 @@ resolve_callback(
 
   service->is_resolved = 1;
   service->host        = strdup(hostTarget);
-  service->port        = ntohs(port);
+  service->port        = port;
 
  /*
   * Loop through the TXT key/value pairs and add them to an array...
@@ -2820,5 +2823,5 @@ show_version(void)
 
 
 /*
- * End of "$Id: ippfind.c 11100 2013-07-05 15:11:29Z msweet $".
+ * End of "$Id: ippfind.c 11177 2013-07-24 12:16:37Z msweet $".
  */

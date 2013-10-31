@@ -46,7 +46,7 @@ Last-Update: 2013-02-20
  # Text files...
 --- a/scheduler/printers.c
 +++ b/scheduler/printers.c
-@@ -3528,7 +3528,9 @@
+@@ -3566,7 +3566,9 @@
        }
        else if (!_cups_strcasecmp(type->super, "image"))
        {

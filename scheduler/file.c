@@ -1,5 +1,5 @@
 /*
- * "$Id: file.c 4216 2013-03-11 13:57:36Z msweet $"
+ * "$Id: file.c 11201 2013-07-26 21:27:27Z msweet $"
  *
  *   File functions for the CUPS scheduler.
  *
@@ -107,6 +107,29 @@ cupsdCloseCreatedConfFile(
   char	newfile[1024],			/* filename.N */
 	oldfile[1024];			/* filename.O */
 
+
+ /*
+  * Synchronize changes to disk if SyncOnClose is enabled.
+  */
+
+  if (SyncOnClose)
+  {
+    if (cupsFileFlush(fp))
+    {
+      cupsdLogMessage(CUPSD_LOG_ERROR, "Unable to write changes to \"%s\": %s",
+		      filename, strerror(errno));
+      cupsFileClose(fp);
+      return (-1);
+    }
+
+    if (fsync(cupsFileNumber(fp)))
+    {
+      cupsdLogMessage(CUPSD_LOG_ERROR, "Unable to sync changes to \"%s\": %s",
+		      filename, strerror(errno));
+      cupsFileClose(fp);
+      return (-1);
+    }
+  }
 
  /*
   * First close the file...
@@ -438,5 +461,5 @@ overwrite_data(int        fd,		/* I - File descriptor */
 
 
 /*
- * End of "$Id: file.c 4216 2013-03-11 13:57:36Z msweet $".
+ * End of "$Id: file.c 11201 2013-07-26 21:27:27Z msweet $".
  */

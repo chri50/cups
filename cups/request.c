@@ -1,5 +1,5 @@
 /*
- * "$Id: request.c 10996 2013-05-29 11:51:34Z msweet $"
+ * "$Id: request.c 11174 2013-07-23 12:33:52Z msweet $"
  *
  *   IPP utilities for CUPS.
  *
@@ -1017,14 +1017,15 @@ _cupsConnect(void)
       * Same server, see if the connection is still established...
       */
 
-      char ch;				/* Connection check byte */
+      char	ch;			/* Connection check byte */
+      ssize_t	n;			/* Number of bytes */
 
 #ifdef WIN32
-      if (recv(cg->http->fd, &ch, 1, MSG_PEEK) < 0 &&
-          WSAGetLastError() != WSAEWOULDBLOCK)
+      if ((n = recv(cg->http->fd, &ch, 1, MSG_PEEK)) == 0 ||
+          (n < 0 && WSAGetLastError() != WSAEWOULDBLOCK))
 #else
-      if (recv(cg->http->fd, &ch, 1, MSG_PEEK | MSG_DONTWAIT) < 0 &&
-          errno != EWOULDBLOCK)
+      if ((n = recv(cg->http->fd, &ch, 1, MSG_PEEK | MSG_DONTWAIT)) == 0 ||
+          (n < 0 && errno != EWOULDBLOCK))
 #endif /* WIN32 */
       {
        /*
@@ -1176,5 +1177,5 @@ _cupsSetHTTPError(http_status_t status)	/* I - HTTP status code */
 
 
 /*
- * End of "$Id: request.c 10996 2013-05-29 11:51:34Z msweet $".
+ * End of "$Id: request.c 11174 2013-07-23 12:33:52Z msweet $".
  */

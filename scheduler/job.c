@@ -1,5 +1,5 @@
 /*
- * "$Id: job.c 10996 2013-05-29 11:51:34Z msweet $"
+ * "$Id: job.c 11147 2013-07-17 02:54:31Z msweet $"
  *
  *   Job management routines for the CUPS scheduler.
  *
@@ -671,6 +671,9 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
 		   "FINAL_CONTENT_TYPE=%s/%s", filter->dst->super,
 		   filter->dst->type);
       }
+      else
+        snprintf(final_content_type, sizeof(final_content_type),
+                 "FINAL_CONTENT_TYPE=printer/%s", job->printer->name);
     }
 
    /*
@@ -5200,5 +5203,5 @@ update_job_attrs(cupsd_job_t *job,	/* I - Job to update */
 
 
 /*
- * End of "$Id: job.c 10996 2013-05-29 11:51:34Z msweet $".
+ * End of "$Id: job.c 11147 2013-07-17 02:54:31Z msweet $".
  */

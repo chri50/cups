@@ -2,7 +2,7 @@ Author: till.kamppeter@gmail.com
 
 --- a/scheduler/ipp.c
 +++ b/scheduler/ipp.c
-@@ -8309,6 +8309,11 @@
+@@ -8356,6 +8356,11 @@
    ipp_attribute_t	*attr,		/* Current attribute */
  			*attr2,		/* Job attribute */
  			*prev2;		/* Previous job attribute */
@@ -14,7 +14,7 @@ Author: till.kamppeter@gmail.com
  
  
   /*
-@@ -8370,6 +8375,85 @@
+@@ -8417,6 +8422,85 @@
    }
  
   /*

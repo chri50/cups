@@ -1,5 +1,5 @@
 /*
- * "$Id: admin.c 10996 2013-05-29 11:51:34Z msweet $"
+ * "$Id: admin.c 11345 2013-10-18 21:14:52Z msweet $"
  *
  *   Administration CGI for CUPS.
  *
@@ -1348,19 +1348,19 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
     ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri",
                  NULL, uri);
 
+    if (!file)
+    {
+      var = cgiGetVariable("PPD_NAME");
+      if (strcmp(var, "__no_change__"))
+	ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_NAME, "ppd-name",
+		     NULL, var);
+    }
+
     ippAddString(request, IPP_TAG_PRINTER, IPP_TAG_TEXT, "printer-location",
                  NULL, cgiGetVariable("PRINTER_LOCATION"));
 
     ippAddString(request, IPP_TAG_PRINTER, IPP_TAG_TEXT, "printer-info",
                  NULL, cgiGetVariable("PRINTER_INFO"));
-
-    if (!file)
-    {
-      var = cgiGetVariable("PPD_NAME");
-      if (strcmp(var, "__no_change__"))
-	ippAddString(request, IPP_TAG_PRINTER, IPP_TAG_NAME, "ppd-name",
-		     NULL, var);
-    }
 
     strlcpy(uri, cgiGetVariable("DEVICE_URI"), sizeof(uri));
 
@@ -4218,5 +4218,5 @@ get_points(double     number,		/* I - Original number */
 
 
 /*
- * End of "$Id: admin.c 10996 2013-05-29 11:51:34Z msweet $".
+ * End of "$Id: admin.c 11345 2013-10-18 21:14:52Z msweet $".
  */

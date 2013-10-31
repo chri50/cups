@@ -1,9 +1,9 @@
 /*
- * "$Id: conf.c 10996 2013-05-29 11:51:34Z msweet $"
+ * "$Id: conf.c 11201 2013-07-26 21:27:27Z msweet $"
  *
  *   Configuration routines for the CUPS scheduler.
  *
- *   Copyright 2007-2012 by Apple Inc.
+ *   Copyright 2007-2013 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -174,6 +174,7 @@ static const cupsd_var_t	cupsfiles_vars[] =
   { "ServerRoot",		&ServerRoot,		CUPSD_VARTYPE_PATHNAME },
   { "SMBConfigFile",		&SMBConfigFile,		CUPSD_VARTYPE_STRING },
   { "StateDir",			&StateDir,		CUPSD_VARTYPE_STRING },
+  { "SyncOnClose",		&SyncOnClose,		CUPSD_VARTYPE_BOOLEAN },
 #ifdef HAVE_AUTHORIZATION_H
   { "SystemGroupAuthKey",	&SystemGroupAuthKey,	CUPSD_VARTYPE_STRING },
 #endif /* HAVE_AUTHORIZATION_H */
@@ -734,6 +735,7 @@ cupsdReadConfiguration(void)
   ReloadTimeout	           = DEFAULT_KEEPALIVE;
   RootCertDuration         = 300;
   StrictConformance        = FALSE;
+  SyncOnClose              = FALSE;
   Timeout                  = DEFAULT_TIMEOUT;
   WebInterface             = CUPS_DEFAULT_WEBIF;
 
@@ -4079,5 +4081,5 @@ set_policy_defaults(cupsd_policy_t *pol)/* I - Policy */
 
 
 /*
- * End of "$Id: conf.c 10996 2013-05-29 11:51:34Z msweet $".
+ * End of "$Id: conf.c 11201 2013-07-26 21:27:27Z msweet $".
  */

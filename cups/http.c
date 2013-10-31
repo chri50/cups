@@ -1,5 +1,5 @@
 /*
- * "$Id: http.c 11085 2013-07-03 13:53:05Z msweet $"
+ * "$Id: http.c 11356 2013-10-23 20:33:21Z msweet $"
  *
  *   HTTP routines for CUPS.
  *
@@ -4169,12 +4169,16 @@ http_content_coding_finish(
     http_t *http)			/* I - HTTP connection */
 {
   int	zerr;				/* Compression status */
+  Byte	dummy[1];			/* Dummy read buffer */
 
 
   switch (http->coding)
   {
     case _HTTP_CODING_DEFLATE :
     case _HTTP_CODING_GZIP :
+        http->stream.next_in  = dummy;
+        http->stream.avail_in = 0;
+
         do
         {
           http->stream.next_out  = (Bytef *)http->wbuffer + http->wused;
@@ -5247,7 +5251,7 @@ http_setup_ssl(http_t *http)		/* I - Connection to server */
     if (!message)
       message = _("Unable to establish a secure connection to host.");
 
-    _cupsSetError(IPP_PKI_ERROR, message, 1);
+    _cupsSetError(IPP_STATUS_ERROR_CUPS_PKI, message, 1);
 
     return (-1);
   }
@@ -5533,7 +5537,7 @@ http_setup_ssl(http_t *http)		/* I - Connection to server */
     http->error  = EIO;
     http->status = HTTP_STATUS_ERROR;
 
-    _cupsSetError(IPP_PKI_ERROR,
+    _cupsSetError(IPP_STATUS_ERROR_CUPS_PKI,
                   _("Unable to establish a secure connection to host."), 1);
 
     return (-1);
@@ -5550,7 +5554,7 @@ http_setup_ssl(http_t *http)		/* I - Connection to server */
     http->error  = EIO;
     http->status = HTTP_STATUS_ERROR;
 
-    _cupsSetError(IPP_PKI_ERROR,
+    _cupsSetError(IPP_STATUS_ERROR_CUPS_PKI,
                   _("Unable to establish a secure connection to host."), 1);
 
     return (-1);
@@ -6018,5 +6022,5 @@ http_write_ssl(http_t     *http,	/* I - Connection to server */
 
 
 /*
- * End of "$Id: http.c 11085 2013-07-03 13:53:05Z msweet $".
+ * End of "$Id: http.c 11356 2013-10-23 20:33:21Z msweet $".
  */

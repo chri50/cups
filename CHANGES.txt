@@ -1,5 +1,43 @@
-CHANGES.txt - 1.7rc1 - 2013-07-10
----------------------------------
+CHANGES.txt - 1.7.0 - 2013-10-18
+--------------------------------
+
+CHANGES IN CUPS V1.7.0
+
+	- Updated Japanese localization.
+	- The lpadmin command did not send the PPD name from the "-m" option
+	  (<rdar://problem/15264697>)
+	- Network backends now use the prtMarkerSuppliesClass property to
+	  determine the direction of supply level values
+	  (<rdar://problem/14302628>)
+	- The scheduler did not remove backup PPD files when a printer was
+	  deleted (<rdar://problem/15065555>)
+	- The scheduler incorrectly responded to HEAD requests when the web
+	  interface was disabled (<rdar://problem/15090332>)
+	- The scheduler did not respond using the hostname specified by the
+	  client (<rdar://problem/14583574>)
+	- Fax queues did not work when shared via Bonjour
+	  (<rdar://problem/14498310>)
+	- Error messages from the scheduler were not localized using the
+	  language specified in the client's IPP request
+	  (<rdar://problem/14128011>)
+	- Added an Italian localization (<rdar://problem/14481578>)
+	- Fixed a couple memory leaks in ippfind that were reported by Clang.
+	- Fixed a compile issue on 64-bit Linux with Clang - need to use the
+	  -pie option instead of -Wl,-pie now (<rdar://problem/14480938>)
+	- The ippfind utility reported the wrong port numbers when compiled
+	  against Avahi (<rdar://problem/14508324>)
+	- httpGetFd, httpGetFile, httpPutFd, and httpPutFile did not
+	  automatically reconnect if the server closed the connecion after the
+	  previous response.
+	- Fixed a compile error in libcups (<rdar://problem/14467141>)
+	- The scheduler incorrectly did not pass a FINAL_CONTENT_TYPE
+	  environment variable to the filters or backend
+	  (<rdar://problem/14355011>)
+	- The cups-exec helper program could fail randomly on OS X due to
+	  sandbox violations when closing excess file descriptors
+	  (<rdar://problem/14421943>)
+	- The scheduler incorrectly did not use the kqueue interface on OS X.
+
 
 CHANGES IN CUPS V1.7rc1
 

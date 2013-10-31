@@ -1,5 +1,5 @@
 /*
- * "$Id: http-support.c 11085 2013-07-03 13:53:05Z msweet $"
+ * "$Id: http-support.c 11269 2013-09-04 20:05:00Z msweet $"
  *
  *   HTTP support routines for CUPS.
  *
@@ -2056,7 +2056,8 @@ http_resolve_cb(
   */
 
   if ((uribuf->options & _HTTP_RESOLVE_FAXOUT) &&
-      (!strcmp(scheme, "ipp") || !strcmp(scheme, "ipps")))
+      (!strcmp(scheme, "ipp") || !strcmp(scheme, "ipps")) &&
+      !TXTRecordGetValuePtr(txtLen, txtRecord, "printer-type", &valueLen))
   {
     reskey     = "rfo";
     resdefault = "/ipp/faxout";
@@ -2272,7 +2273,8 @@ http_resolve_cb(
   */
 
   if ((uribuf->options & _HTTP_RESOLVE_FAXOUT) &&
-      (!strcmp(scheme, "ipp") || !strcmp(scheme, "ipps")))
+      (!strcmp(scheme, "ipp") || !strcmp(scheme, "ipps")) &&
+      !avahi_string_list_find(txt, "printer-type"))
   {
     reskey     = "rfo";
     resdefault = "/ipp/faxout";
@@ -2380,5 +2382,5 @@ http_resolve_cb(
 
 
 /*
- * End of "$Id: http-support.c 11085 2013-07-03 13:53:05Z msweet $".
+ * End of "$Id: http-support.c 11269 2013-09-04 20:05:00Z msweet $".
  */

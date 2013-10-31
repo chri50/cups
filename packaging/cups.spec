@@ -1,11 +1,11 @@
 #
-# "$Id: cups.spec.in 11128 2013-07-11 20:31:43Z msweet $"
+# "$Id: cups.spec.in 11359 2013-10-24 03:04:17Z msweet $"
 #
 #   RPM "spec" file for CUPS.
 #
 #   Original version by Jason McMullan <jmcc@ontv.com>.
 #
-#   Copyright 2007-2012 by Apple Inc.
+#   Copyright 2007-2013 by Apple Inc.
 #   Copyright 1999-2007 by Easy Software Products, all rights reserved.
 #
 #   These coded instructions, statements, and computer programs are the
@@ -35,12 +35,12 @@
 
 Summary: CUPS
 Name: cups
-Version: 1.7rc1
+Version: 1.7.0
 Release: 1
 Epoch: 1
 License: GPL
 Group: System Environment/Daemons
-Source: http://www.cups.org/software/1.7rc1/cups-1.7rc1-source.tar.bz2
+Source: http://www.cups.org/software/1.7.0/cups-1.7.0-source.tar.bz2
 Url: http://www.cups.org
 Packager: Anonymous <anonymous@foo.com>
 Vendor: Apple Inc.
@@ -222,6 +222,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/cups/ppdc/*
 %dir /usr/share/cups/templates
 /usr/share/cups/templates/*
+%dir /usr/share/cups/usb
+/usr/share/cups/usb/*
+
 %dir /usr/share/doc/cups
 /usr/share/doc/cups/*.*
 %dir /usr/share/doc/cups/help
@@ -251,6 +254,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/doc/cups/es/*
 %dir /usr/share/doc/cups/fr
 /usr/share/doc/cups/fr/*
+%dir /usr/share/doc/cups/it
+/usr/share/doc/cups/it/*
 %dir /usr/share/doc/cups/ja
 /usr/share/doc/cups/ja/*
 %dir /usr/share/doc/cups/ru
@@ -264,6 +269,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/locale/es/cups_es.po
 %dir /usr/share/locale/fr
 /usr/share/locale/fr/cups_fr.po
+%dir /usr/share/locale/it
+/usr/share/locale/it/cups_it.po
 %dir /usr/share/locale/ja
 /usr/share/locale/ja/cups_ja.po
 %dir /usr/share/locale/ru
@@ -362,5 +369,5 @@ rm -rf $RPM_BUILD_ROOT
 
 
 #
-# End of "$Id: cups.spec.in 11128 2013-07-11 20:31:43Z msweet $".
+# End of "$Id: cups.spec.in 11359 2013-10-24 03:04:17Z msweet $".
 #
