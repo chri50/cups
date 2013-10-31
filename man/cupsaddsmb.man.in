@@ -1,5 +1,5 @@
 .\"
-.\" "$Id: cupsaddsmb.man.in 11109 2013-07-08 21:15:13Z msweet $"
+.\" "$Id: cupsaddsmb.man.in 11206 2013-07-31 18:16:09Z msweet $"
 .\"
 .\"   cupsaddsmb man page for CUPS.
 .\"
@@ -146,7 +146,7 @@ The Adobe driver does not support the page-label, job-billing, or
 job-hold-until options.
 .LP
 Once you have installed the driver on a Windows system, copy the
-following files to the \fI@CUPS_DATADIR@/drivers\fR directory
+following files to the \fI/usr/share/cups/drivers\fR directory
 exactly as named below:
 .nf
 
@@ -168,11 +168,9 @@ Getting the full set of Windows driver files should be easier.
 .SH SEE ALSO
 \fIsmbd(8)\fR, \fIsmb.conf(5)\fR,
 http://localhost:631/help
-.br
-http://www.cups.org/windows/
 
 .SH COPYRIGHT
 Copyright 2007-2013 by Apple Inc.
 .\"
-.\" End of "$Id: cupsaddsmb.man.in 11109 2013-07-08 21:15:13Z msweet $".
+.\" End of "$Id: cupsaddsmb.man.in 11206 2013-07-31 18:16:09Z msweet $".
 .\"

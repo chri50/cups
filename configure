@@ -2517,7 +2517,7 @@ esac
 ac_config_headers="$ac_config_headers config.h"
 
 
-CUPS_VERSION=1.7rc1
+CUPS_VERSION=1.7.0
 CUPS_REVISION=
 #if test -z "$CUPS_REVISION" -a -d .svn; then
 #	CUPS_REVISION="-r`svnversion . | awk -F: '{print $NF}' | sed -e '1,$s/[[a-zA-Z]]*//g'`"
@@ -6845,8 +6845,10 @@ rm -f core conftest.err conftest.$ac_objext \
 		{ $as_echo "$as_me:${as_lineno-$LINENO}: checking if GCC supports -fPIE" >&5
 $as_echo_n "checking if GCC supports -fPIE... " >&6; }
 		OLDCFLAGS="$CFLAGS"
-		CFLAGS="$CFLAGS -fPIE"
-		cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+		case "$uname" in
+			Darwin*)
+				CFLAGS="$CFLAGS -fPIE -Wl,-pie"
+				cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
 int
@@ -6858,21 +6860,42 @@ main ()
 }
 _ACEOF
 if ac_fn_c_try_compile "$LINENO"; then :
-  case "$CC" in
-				*clang)
+
 					PIEFLAGS="-fPIE -Wl,-pie"
-					;;
-				*)
-					PIEFLAGS="-fPIE -pie"
-					;;
-			esac
-			{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+					{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
 else
   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
 fi
 rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+				;;
+
+			*)
+				CFLAGS="$CFLAGS -fPIE -pie"
+				cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"; then :
+
+					PIEFLAGS="-fPIE -pie"
+					{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+				;;
+		esac
 		CFLAGS="$OLDCFLAGS"
 	fi
 

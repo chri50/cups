@@ -1,9 +1,9 @@
 /*
- * "$Id: colorman.c 4297 2013-05-10 16:04:59Z msweet $"
+ * "$Id: colorman.c 11150 2013-07-17 13:03:56Z msweet $"
  *
  *   Color management routines for the CUPS scheduler.
  *
- *   Copyright 2007-2012 by Apple Inc.
+ *   Copyright 2007-2013 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -1538,5 +1538,5 @@ colord_unregister_printer(
 
 
 /*
- * End of "$Id: colorman.c 4297 2013-05-10 16:04:59Z msweet $".
+ * End of "$Id: colorman.c 11150 2013-07-17 13:03:56Z msweet $".
  */

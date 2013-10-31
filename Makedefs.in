@@ -1,9 +1,9 @@
 #
-# "$Id: Makedefs.in 11010 2013-06-05 16:05:45Z msweet $"
+# "$Id: Makedefs.in 11154 2013-07-17 15:21:18Z msweet $"
 #
 #   Common makefile definitions for CUPS.
 #
-#   Copyright 2007-2012 by Apple Inc.
+#   Copyright 2007-2013 by Apple Inc.
 #   Copyright 1997-2007 by Easy Software Products, all rights reserved.
 #
 #   These coded instructions, statements, and computer programs are the
@@ -260,5 +260,5 @@ DBUSDIR		=	@DBUSDIR@
 
 
 #
-# End of "$Id: Makedefs.in 11010 2013-06-05 16:05:45Z msweet $"
+# End of "$Id: Makedefs.in 11154 2013-07-17 15:21:18Z msweet $"
 #

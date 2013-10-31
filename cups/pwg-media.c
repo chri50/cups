@@ -1,5 +1,5 @@
 /*
- * "$Id: pwg-media.c 11085 2013-07-03 13:53:05Z msweet $"
+ * "$Id: pwg-media.c 11240 2013-08-14 20:33:55Z msweet $"
  *
  *   PWG media name API implementation for CUPS.
  *
@@ -24,6 +24,7 @@
  *				name.
  *   pwgMediaForSize()	      - Get the PWG media size for the given
  *				dimensions.
+ *   _pwgMediaTable()         - Return the internal media size table.
  *   pwg_compare_legacy()     - Compare two sizes using the legacy names.
  *   pwg_compare_ppd()	      - Compare two sizes using the PPD names.
  *   pwg_compare_pwg()	      - Compare two sizes using the PWG names.
@@ -1001,6 +1002,19 @@ pwg_media_t *_pwgMediaForSize(int width, int length)
 
 
 /*
+ * '_pwgMediaTable()' - Return the internal media size table.
+ */
+
+const pwg_media_t *			/* O - Pointer to first entry */
+_pwgMediaTable(size_t *num_media)	/* O - Number of entries */
+{
+  *num_media = sizeof(cups_pwg_media) / sizeof(cups_pwg_media[0]);
+
+  return (cups_pwg_media);
+}
+
+
+/*
  * 'pwg_compare_legacy()' - Compare two sizes using the legacy names.
  */
 
@@ -1171,5 +1185,5 @@ pwg_scan_measurement(
 
 
 /*
- * End of "$Id: pwg-media.c 11085 2013-07-03 13:53:05Z msweet $".
+ * End of "$Id: pwg-media.c 11240 2013-08-14 20:33:55Z msweet $".
  */

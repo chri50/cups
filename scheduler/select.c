@@ -1,9 +1,9 @@
 /*
- * "$Id: select.c 10999 2013-05-30 00:48:16Z msweet $"
+ * "$Id: select.c 11142 2013-07-17 01:07:00Z msweet $"
  *
  *   Select abstraction functions for the CUPS scheduler.
  *
- *   Copyright 2007-2012 by Apple Inc.
+ *   Copyright 2007-2013 by Apple Inc.
  *   Copyright 2006-2007 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -30,7 +30,6 @@
  */
 
 #include "cupsd.h"
-#undef HAVE_KQUEUE
 
 #ifdef HAVE_EPOLL
 #  include <sys/epoll.h>
@@ -947,5 +946,5 @@ find_fd(int fd)				/* I - File descriptor */
 
 
 /*
- * End of "$Id: select.c 10999 2013-05-30 00:48:16Z msweet $".
+ * End of "$Id: select.c 11142 2013-07-17 01:07:00Z msweet $".
  */

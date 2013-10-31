@@ -1,6 +1,4 @@
 # patches accepted and committed upstream:
-cups-1.6.4-changes.patch
-ippfind-fix-port-output.patch
 
 # patches sent upstream
 get-ppd-file-for-statically-configured-ipp-shared-queues.patch
@@ -11,6 +9,7 @@ rootbackends-worldreadable.patch
 cups-dbus-utf8.patch
 
 # patches which should go upstream
+color-management-extension.patch
 airprint-support.patch
 removecvstag.patch
 no-conffile-timestamp.patch
@@ -46,5 +45,4 @@ ppdc-dynamic-linking.patch
 log-debug-history-nearly-unlimited.patch
 # Disabled in 1.6.1-1 as it breaks the tests. It addresses #593338
 # pstops-based-workflow-only-for-printing-ps-on-a-ps-printer.patch
-
 cupsd-sync-files-on-close.patch

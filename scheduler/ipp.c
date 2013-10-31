@@ -1,5 +1,5 @@
 /*
- * "$Id: ipp.c 10998 2013-05-30 00:41:43Z msweet $"
+ * "$Id: ipp.c 11311 2013-09-27 14:23:42Z msweet $"
  *
  *   IPP routines for the CUPS scheduler.
  *
@@ -353,7 +353,20 @@ cupsdProcessIPPRequest(
       if (attr && attr->name &&
           !strcmp(attr->name, "attributes-natural-language") &&
 	  (attr->value_tag & IPP_TAG_MASK) == IPP_TAG_LANGUAGE)
+      {
 	language = attr;
+
+       /*
+        * Reset language for this request if different from Accept-Language.
+        */
+
+	if (!con->language ||
+	    strcmp(attr->values[0].string.text, con->language->language))
+	{
+	  cupsLangFree(con->language);
+	  con->language = cupsLangGet(attr->values[0].string.text);
+	}
+      }
       else
 	language = NULL;
 
@@ -1044,6 +1057,10 @@ add_class(cupsd_client_t  *con,		/* I - Client connection */
                                IPP_TAG_TEXT)) != NULL)
     cupsdSetString(&pclass->info, attr->values[0].string.text);
 
+  if ((attr = ippFindAttribute(con->request, "ppd-timestamp",
+                               IPP_TAG_TEXT)) != NULL)
+    cupsdSetString(&pclass->ppd_timestamp, attr->values[0].string.text);
+
   if ((attr = ippFindAttribute(con->request, "printer-is-accepting-jobs",
                                IPP_TAG_BOOLEAN)) != NULL &&
       attr->values[0].boolean != pclass->accepting)
@@ -1069,6 +1086,13 @@ add_class(cupsd_client_t  *con,		/* I - Client connection */
                     pclass->name, attr->values[0].boolean, pclass->shared);
 
     pclass->shared = attr->values[0].boolean;
+  }
+
+  if ((attr = ippFindAttribute(con->request, "printer-is-colormanaged",
+                               IPP_TAG_BOOLEAN)) != NULL)
+  {
+    if (pclass->color_managed && !attr->values[0].boolean)
+        pclass->color_managed = attr->values[0].boolean;
   }
 
   if ((attr = ippFindAttribute(con->request, "printer-state",
@@ -1979,7 +2003,7 @@ add_job(cupsd_client_t  *con,		/* I - Client connection */
   */
 
   httpAssembleURIf(HTTP_URI_CODING_ALL, job_uri, sizeof(job_uri), "ipp", NULL,
-                   con->servername, con->serverport, "/jobs/%d", job->id);
+                   con->clientname, con->clientport, "/jobs/%d", job->id);
   ippAddString(con->response, IPP_TAG_JOB, IPP_TAG_URI, "job-uri", NULL,
                job_uri);
 
@@ -2402,6 +2426,10 @@ add_printer(cupsd_client_t  *con,	/* I - Client connection */
                                IPP_TAG_TEXT)) != NULL)
     cupsdSetString(&printer->info, attr->values[0].string.text);
 
+  if ((attr = ippFindAttribute(con->request, "ppd-timestamp",
+                               IPP_TAG_TEXT)) != NULL)
+    cupsdSetString(&printer->ppd_timestamp, attr->values[0].string.text);
+
   set_device_uri = 0;
 
   if ((attr = ippFindAttribute(con->request, "device-uri",
@@ -2559,6 +2587,12 @@ add_printer(cupsd_client_t  *con,	/* I - Client connection */
     cupsdAddEvent(CUPSD_EVENT_PRINTER_STATE, printer, NULL,
                   "%s accepting jobs.",
 		  printer->accepting ? "Now" : "No longer");
+  }
+
+if ((attr = ippFindAttribute(con->request, "printer-is-colormanaged",
+                               IPP_TAG_BOOLEAN)) != NULL)
+  {
+    printer->color_managed = attr->values[0].boolean;
   }
 
   if ((attr = ippFindAttribute(con->request, "printer-is-shared",
@@ -4051,7 +4085,7 @@ close_job(cupsd_client_t  *con,		/* I - Client connection */
   */
 
   httpAssembleURIf(HTTP_URI_CODING_ALL, job_uri, sizeof(job_uri), "ipp", NULL,
-                   con->servername, con->serverport, "/jobs/%d", job->id);
+                   con->clientname, con->clientport, "/jobs/%d", job->id);
   ippAddString(con->response, IPP_TAG_JOB, IPP_TAG_URI, "job-uri", NULL,
                job_uri);
 
@@ -4803,7 +4837,7 @@ copy_job_attrs(cupsd_client_t *con,	/* I - Client connection */
         (!ra || cupsArrayFind(ra, "job-more-info")))
     {
       httpAssembleURIf(HTTP_URI_CODING_ALL, job_uri, sizeof(job_uri), "http",
-                       NULL, con->servername, con->serverport, "/jobs/%d",
+                       NULL, con->clientname, con->clientport, "/jobs/%d",
 		       job->id);
       ippAddString(con->response, IPP_TAG_JOB, IPP_TAG_URI,
 		   "job-more-info", NULL, job_uri);
@@ -4824,7 +4858,7 @@ copy_job_attrs(cupsd_client_t *con,	/* I - Client connection */
   if (!ra || cupsArrayFind(ra, "job-printer-uri"))
   {
     httpAssembleURIf(HTTP_URI_CODING_ALL, job_uri, sizeof(job_uri), "ipp", NULL,
-		     con->servername, con->serverport,
+		     con->clientname, con->clientport,
 		     (job->dtype & CUPS_PRINTER_CLASS) ? "/classes/%s" :
 		                                         "/printers/%s",
 		     job->dest);
@@ -4835,7 +4869,7 @@ copy_job_attrs(cupsd_client_t *con,	/* I - Client connection */
   if (!ra || cupsArrayFind(ra, "job-uri"))
   {
     httpAssembleURIf(HTTP_URI_CODING_ALL, job_uri, sizeof(job_uri), "ipp", NULL,
-		     con->servername, con->serverport, "/jobs/%d",
+		     con->clientname, con->clientport, "/jobs/%d",
 		     job->id);
     ippAddString(con->response, IPP_TAG_JOB, IPP_TAG_URI,
         	 "job-uri", NULL, job_uri);
@@ -4898,8 +4932,8 @@ copy_printer_attrs(
         else
 	{
 	  httpAssembleURIf(HTTP_URI_CODING_ALL, printer_uri,
-	                   sizeof(printer_uri), "ipp", NULL, con->servername,
-			   con->serverport,
+	                   sizeof(printer_uri), "ipp", NULL, con->clientname,
+			   con->clientport,
 			   (p2->type & CUPS_PRINTER_CLASS) ?
 			       "/classes/%s" : "/printers/%s", p2->name);
 	  member_uris->values[i].string.text = _cupsStrAlloc(printer_uri);
@@ -4960,7 +4994,7 @@ copy_printer_attrs(
   if (!ra || cupsArrayFind(ra, "printer-icons"))
   {
     httpAssembleURIf(HTTP_URI_CODING_ALL, printer_icons, sizeof(printer_icons),
-                     "http", NULL, con->servername, con->serverport,
+                     "http", NULL, con->clientname, con->clientport,
 		     "/icons/%s.png", printer->name);
     ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_URI, "printer-icons",
                  NULL, printer_icons);
@@ -4975,10 +5009,14 @@ copy_printer_attrs(
     ippAddBoolean(con->response, IPP_TAG_PRINTER, "printer-is-shared",
                   printer->shared);
 
+  if (!ra || cupsArrayFind(ra, "printer-is-colormanaged"))
+    ippAddBoolean(con->response, IPP_TAG_PRINTER, "printer-is-colormanaged",
+                  printer->color_managed);
+
   if (!ra || cupsArrayFind(ra, "printer-more-info"))
   {
     httpAssembleURIf(HTTP_URI_CODING_ALL, printer_uri, sizeof(printer_uri),
-                     "http", NULL, con->servername, con->serverport,
+                     "http", NULL, con->clientname, con->clientport,
 		     (printer->type & CUPS_PRINTER_CLASS) ?
 		         "/classes/%s" : "/printers/%s", printer->name);
     ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_URI,
@@ -5023,6 +5061,9 @@ copy_printer_attrs(
     if (!printer->shared)
       type |= CUPS_PRINTER_NOT_SHARED;
 
+    if (!printer->color_managed)
+      type |= CUPS_CM_OFF;
+
     ippAddInteger(con->response, IPP_TAG_PRINTER, IPP_TAG_ENUM, "printer-type",
 		  type);
   }
@@ -5034,7 +5075,7 @@ copy_printer_attrs(
   if (!ra || cupsArrayFind(ra, "printer-uri-supported"))
   {
     httpAssembleURIf(HTTP_URI_CODING_ALL, printer_uri, sizeof(printer_uri),
-                     "ipp", NULL, con->servername, con->serverport,
+                     "ipp", NULL, con->clientname, con->clientport,
 		     (printer->type & CUPS_PRINTER_CLASS) ?
 		         "/classes/%s" : "/printers/%s", printer->name);
     ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_URI,
@@ -5161,7 +5202,7 @@ copy_subscription_attrs(
   if (sub->dest && (!ra || cupsArrayFind(ra, "notify-printer-uri")))
   {
     httpAssembleURIf(HTTP_URI_CODING_ALL, printer_uri, sizeof(printer_uri),
-                     "ipp", NULL, con->servername, con->serverport,
+                     "ipp", NULL, con->clientname, con->clientport,
 		     "/printers/%s", sub->dest->name);
     ippAddString(con->response, IPP_TAG_SUBSCRIPTION, IPP_TAG_URI,
         	 "notify-printer-uri", NULL, printer_uri);
@@ -5728,8 +5769,14 @@ delete_printer(cupsd_client_t  *con,	/* I - Client connection */
   snprintf(filename, sizeof(filename), "%s/interfaces/%s", ServerRoot,
            printer->name);
   unlink(filename);
+  snprintf(filename, sizeof(filename), "%s/interfaces/%s.O", ServerRoot,
+           printer->name);
+  unlink(filename);
 
   snprintf(filename, sizeof(filename), "%s/ppd/%s.ppd", ServerRoot,
+           printer->name);
+  unlink(filename);
+  snprintf(filename, sizeof(filename), "%s/ppd/%s.ppd.O", ServerRoot,
            printer->name);
   unlink(filename);
 
@@ -9629,7 +9676,7 @@ send_document(cupsd_client_t  *con,	/* I - Client connection */
   */
 
   httpAssembleURIf(HTTP_URI_CODING_ALL, job_uri, sizeof(job_uri), "ipp", NULL,
-                   con->servername, con->serverport, "/jobs/%d", jobid);
+                   con->clientname, con->clientport, "/jobs/%d", jobid);
   ippAddString(con->response, IPP_TAG_JOB, IPP_TAG_URI, "job-uri", NULL,
                job_uri);
 
@@ -11164,5 +11211,5 @@ validate_user(cupsd_job_t    *job,	/* I - Job */
 
 
 /*
- * End of "$Id: ipp.c 10998 2013-05-30 00:41:43Z msweet $".
+ * End of "$Id: ipp.c 11311 2013-09-27 14:23:42Z msweet $".
  */

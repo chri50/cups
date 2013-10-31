@@ -1,9 +1,9 @@
 /*
- * "$Id: conf.h 10996 2013-05-29 11:51:34Z msweet $"
+ * "$Id: conf.h 11202 2013-07-26 21:31:54Z msweet $"
  *
  *   Configuration file definitions for the CUPS scheduler.
  *
- *   Copyright 2007-2012 by Apple Inc.
+ *   Copyright 2007-2013 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -299,5 +299,5 @@ extern int	cupsdWriteErrorLog(int level, const char *message);
 
 
 /*
- * End of "$Id: conf.h 10996 2013-05-29 11:51:34Z msweet $".
+ * End of "$Id: conf.h 11202 2013-07-26 21:31:54Z msweet $".
  */

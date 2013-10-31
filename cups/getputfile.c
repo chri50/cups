@@ -1,5 +1,5 @@
 /*
- * "$Id: getputfile.c 10996 2013-05-29 11:51:34Z msweet $"
+ * "$Id: getputfile.c 11153 2013-07-17 14:10:21Z msweet $"
  *
  *   Get/put file functions for CUPS.
  *
@@ -84,6 +84,16 @@ cupsGetFd(http_t     *http,		/* I - Connection to server or @code CUPS_HTTP_DEFA
 
   do
   {
+    if (!_cups_strcasecmp(httpGetField(http, HTTP_FIELD_CONNECTION), "close"))
+    {
+      httpClearFields(http);
+      if (httpReconnect2(http, 30000, NULL))
+      {
+	status = HTTP_STATUS_ERROR;
+	break;
+      }
+    }
+
     httpClearFields(http);
     httpSetField(http, HTTP_FIELD_AUTHORIZATION, http->authstring);
     httpSetField(http, HTTP_FIELD_IF_MODIFIED_SINCE, if_modified_since);
@@ -296,6 +306,16 @@ cupsPutFd(http_t     *http,		/* I - Connection to server or @code CUPS_HTTP_DEFA
 
   do
   {
+    if (!_cups_strcasecmp(httpGetField(http, HTTP_FIELD_CONNECTION), "close"))
+    {
+      httpClearFields(http);
+      if (httpReconnect2(http, 30000, NULL))
+      {
+	status = HTTP_STATUS_ERROR;
+	break;
+      }
+    }
+
     DEBUG_printf(("2cupsPutFd: starting attempt, authstring=\"%s\"...",
                   http->authstring));
 
@@ -498,5 +518,5 @@ cupsPutFile(http_t     *http,		/* I - Connection to server or @code CUPS_HTTP_DE
 
 
 /*
- * End of "$Id: getputfile.c 10996 2013-05-29 11:51:34Z msweet $".
+ * End of "$Id: getputfile.c 11153 2013-07-17 14:10:21Z msweet $".
  */
