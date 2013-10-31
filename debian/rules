@@ -153,7 +153,7 @@ override_dh_clean:
 	fi
 
 override_dh_auto_clean:
-	dh_auto_clean
+	[ ! -f Makedefs ] || dh_auto_clean
 	rm -f man/client.conf.man packaging/cups.list
 	rm -f conf/mime.convs conf/snmp.conf init/org.cups.cups-lpd.plist
 	[ ! -f Makedefs ] || make distclean
