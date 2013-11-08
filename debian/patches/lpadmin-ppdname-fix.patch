@@ -1,0 +1,40 @@
+--- a/cgi-bin/admin.c
++++ b/cgi-bin/admin.c
+@@ -1348,20 +1348,20 @@
+     ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri",
+                  NULL, uri);
+ 
+-    ippAddString(request, IPP_TAG_PRINTER, IPP_TAG_TEXT, "printer-location",
+-                 NULL, cgiGetVariable("PRINTER_LOCATION"));
+-
+-    ippAddString(request, IPP_TAG_PRINTER, IPP_TAG_TEXT, "printer-info",
+-                 NULL, cgiGetVariable("PRINTER_INFO"));
+-
+     if (!file)
+     {
+       var = cgiGetVariable("PPD_NAME");
+       if (strcmp(var, "__no_change__"))
+-	ippAddString(request, IPP_TAG_PRINTER, IPP_TAG_NAME, "ppd-name",
++	ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_NAME, "ppd-name",
+ 		     NULL, var);
+     }
+ 
++    ippAddString(request, IPP_TAG_PRINTER, IPP_TAG_TEXT, "printer-location",
++                 NULL, cgiGetVariable("PRINTER_LOCATION"));
++
++    ippAddString(request, IPP_TAG_PRINTER, IPP_TAG_TEXT, "printer-info",
++                 NULL, cgiGetVariable("PRINTER_INFO"));
++
+     strlcpy(uri, cgiGetVariable("DEVICE_URI"), sizeof(uri));
+ 
+    /*
+--- a/systemv/lpadmin.c
++++ b/systemv/lpadmin.c
+@@ -1295,6 +1295,7 @@
+   * Add the options...
+   */
+ 
++  cupsEncodeOptions2(request, num_options, options, IPP_TAG_OPERATION);
+   cupsEncodeOptions2(request, num_options, options, IPP_TAG_PRINTER);
+ 
+   if ((protocol = cupsGetOption("protocol", num_options, options)) != NULL)

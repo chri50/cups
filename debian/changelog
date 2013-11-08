@@ -1,3 +1,11 @@
+cups (1.7.0~rc1-0ubuntu5.1) saucy-proposed; urgency=low
+
+  * debian/patches/lpadmin-ppdname-fix.patch: The lpadmin command did not send
+    the PPD name from the "-m" option and also the web interface did not use
+    the selected PPD file (LP: #1248578).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri,  8 Nov 2013 18:49:01 +0100
+
 cups (1.7.0~rc1-0ubuntu5) saucy; urgency=low
 
   * debian/local/cupsd-sync-files-on-close.patch: Corrected patch, the new

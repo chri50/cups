@@ -1,6 +1,7 @@
 # patches accepted and committed upstream:
 cups-1.6.4-changes.patch
 ippfind-fix-port-output.patch
+lpadmin-ppdname-fix.patch
 
 # patches sent upstream
 get-ppd-file-for-statically-configured-ipp-shared-queues.patch
