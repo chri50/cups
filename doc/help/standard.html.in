@@ -109,10 +109,6 @@ Basic authentication with membership in the group
 	<TD>The location of CUPS include files.</TD>
 </TR>
 <TR>
-	<TD><VAR>@libdir@</VAR></TD>
-	<TD>The location of CUPS library files.</TD>
-</TR>
-<TR>
 	<TD><VAR>@CUPS_SERVERBIN@</VAR></TD>
 	<TD>The location of server programs such as backends and
 	filters. Overridden by the <A
