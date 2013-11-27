@@ -1,5 +1,5 @@
 /*
- * "$Id: banners.h 6649 2007-07-11 21:46:42Z mike $"
+ * "$Id: banners.h 11173 2013-07-23 12:31:34Z msweet $"
  *
  *   Banner definitions for the CUPS scheduler.
  *
@@ -41,5 +41,5 @@ extern void		cupsdLoadBanners(const char *d);
 
 
 /*
- * End of "$Id: banners.h 6649 2007-07-11 21:46:42Z mike $".
+ * End of "$Id: banners.h 11173 2013-07-23 12:31:34Z msweet $".
  */

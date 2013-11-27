@@ -1,5 +1,5 @@
 /*
- * "$Id: search.c 7720 2008-07-11 22:46:21Z mike $"
+ * "$Id: search.c 11173 2013-07-23 12:31:34Z msweet $"
  *
  *   Search routines for CUPS.
  *
@@ -377,5 +377,5 @@ cgiFreeSearch(void *search)		/* I - Search context */
 
 
 /*
- * End of "$Id: search.c 7720 2008-07-11 22:46:21Z mike $".
+ * End of "$Id: search.c 11173 2013-07-23 12:31:34Z msweet $".
  */

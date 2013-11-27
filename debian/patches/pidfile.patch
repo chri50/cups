@@ -6,7 +6,7 @@ Last-Update: 2012-11-29
 
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -177,7 +177,8 @@
+@@ -178,7 +178,8 @@
  #ifdef HAVE_AUTHORIZATION_H
    { "SystemGroupAuthKey",	&SystemGroupAuthKey,	CUPSD_VARTYPE_STRING },
  #endif /* HAVE_AUTHORIZATION_H */
@@ -16,7 +16,7 @@ Last-Update: 2012-11-29
  };
  
  static int		default_auth_type = CUPSD_AUTH_AUTO;
-@@ -594,6 +595,7 @@
+@@ -595,6 +596,7 @@
    cupsdSetStringf(&ServerHeader, "CUPS/%d.%d IPP/2.1", CUPS_VERSION_MAJOR,
                    CUPS_VERSION_MINOR);
    cupsdSetString(&StateDir, CUPS_STATEDIR);
@@ -24,7 +24,7 @@ Last-Update: 2012-11-29
  
    if (!strcmp(CUPS_DEFAULT_PRINTCAP, "/etc/printers.conf"))
      PrintcapFormat = PRINTCAP_SOLARIS;
-@@ -3348,6 +3350,7 @@
+@@ -3350,6 +3352,7 @@
               !_cups_strcasecmp(line, "SystemGroup") ||
               !_cups_strcasecmp(line, "SystemGroupAuthKey") ||
               !_cups_strcasecmp(line, "TempDir") ||
@@ -34,7 +34,7 @@ Last-Update: 2012-11-29
        cupsdLogMessage(CUPSD_LOG_INFO,
 --- a/scheduler/conf.h
 +++ b/scheduler/conf.h
-@@ -244,6 +244,8 @@
+@@ -246,6 +246,8 @@
  VAR int			SSLOptions		VALUE(CUPSD_SSL_NONE);
  					/* SSL/TLS options */
  #endif /* HAVE_SSL */

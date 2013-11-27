@@ -1,5 +1,5 @@
 //
-// "$Id: ppdc-choice.cxx 1378 2009-04-08 03:17:45Z msweet $"
+// "$Id: ppdc-choice.cxx 11173 2013-07-23 12:31:34Z msweet $"
 //
 //   Option choice class for the CUPS PPD Compiler.
 //
@@ -57,5 +57,5 @@ ppdcChoice::~ppdcChoice()
 
 
 //
-// End of "$Id: ppdc-choice.cxx 1378 2009-04-08 03:17:45Z msweet $".
+// End of "$Id: ppdc-choice.cxx 11173 2013-07-23 12:31:34Z msweet $".
 //

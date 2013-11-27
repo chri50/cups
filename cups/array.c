@@ -1,5 +1,5 @@
 /*
- * "$Id: array.c 7616 2008-05-28 00:34:13Z mike $"
+ * "$Id: array.c 11173 2013-07-23 12:31:34Z msweet $"
  *
  *   Sorted array routines for CUPS.
  *
@@ -1322,5 +1322,5 @@ cups_array_find(cups_array_t *a,	/* I - Array */
 
 
 /*
- * End of "$Id: array.c 7616 2008-05-28 00:34:13Z mike $".
+ * End of "$Id: array.c 11173 2013-07-23 12:31:34Z msweet $".
  */

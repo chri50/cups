@@ -1,5 +1,5 @@
 /*
- * "$Id: cups.h 8781 2009-08-28 17:34:54Z mike $"
+ * "$Id: cups.h 11173 2013-07-23 12:31:34Z msweet $"
  *
  *   API definitions for CUPS.
  *
@@ -52,10 +52,10 @@ extern "C" {
  * Constants...
  */
 
-#  define CUPS_VERSION			1.0603
+#  define CUPS_VERSION			1.0604
 #  define CUPS_VERSION_MAJOR		1
 #  define CUPS_VERSION_MINOR		6
-#  define CUPS_VERSION_PATCH		3
+#  define CUPS_VERSION_PATCH		4
 
 #  define CUPS_BC_FD			3
 					/* Back-channel file descriptor for
@@ -597,5 +597,5 @@ extern http_status_t	cupsStartDestDocument(http_t *http, cups_dest_t *dest,
 #endif /* !_CUPS_CUPS_H_ */
 
 /*
- * End of "$Id: cups.h 8781 2009-08-28 17:34:54Z mike $".
+ * End of "$Id: cups.h 11173 2013-07-23 12:31:34Z msweet $".
  */

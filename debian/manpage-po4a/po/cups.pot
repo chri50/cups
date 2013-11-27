@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-06-09 19:51+0300\n"
+"POT-Creation-Date: 2013-09-27 11:17+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -170,7 +170,7 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: cupsaccept.man:70 backend.man:163 cancel.man:67 classes.conf.man:101 client.conf.man.in:53 cupsaddsmb.man.in:204 cups-config.man:111 cupsctl.man:89 cupsd.conf.man.in:515 cups-files.conf.man.in:136 cups-deviced.man.in:36 cupsd.man.in:61 cups-driverd.man.in:114 cupsenable.man:83 cupsfilter.man:101 cups-lpd.man.in:115 cups-snmp.conf.man:70 cupstestdsc.man:41 cupstestppd.man:155 filter.man:230 ipptool.man:135 ipptoolfile.man:565 lpadmin.man:218 lpc.man:62 lpinfo.man:107 lp.man:243 lpmove.man:58 lpoptions.man.in:127 lppasswd.man:60 lpq.man:63 lpr.man:113 lprm.man:56 lpstat.man:135 mailto.conf.man:51 mime.convs.man:37 mime.types.man:106 printers.conf.man:115 subscriptions.conf.man:80
+#: cupsaccept.man:70 backend.man:163 cancel.man:67 classes.conf.man:101 client.conf.man.in:59 cupsaddsmb.man.in:168 cups-config.man:111 cupsctl.man:89 cupsd.conf.man.in:515 cups-files.conf.man.in:142 cups-deviced.man.in:36 cupsd.man.in:61 cups-driverd.man.in:114 cupsenable.man:83 cupsfilter.man:101 cups-lpd.man.in:115 cups-snmp.conf.man:70 cupstestdsc.man:41 cupstestppd.man:155 filter.man:230 ipptool.man:135 ipptoolfile.man:565 lpadmin.man:218 lpc.man:62 lpinfo.man:107 lp.man:243 lpmove.man:58 lpoptions.man.in:127 lppasswd.man:60 lpq.man:63 lpr.man:113 lprm.man:56 lpstat.man:135 mailto.conf.man:51 mime.convs.man:37 mime.types.man:106 printers.conf.man:115 subscriptions.conf.man:80
 #, no-wrap
 msgid "SEE ALSO"
 msgstr ""
@@ -181,18 +181,18 @@ msgid "I<cancel(1)>, I<cupsenable(8)>, I<lp(1)>, I<lpadmin(8)>, I<lpstat(1)>,"
 msgstr ""
 
 #. type: Plain text
-#: cupsaccept.man:75 backend.man:168 cancel.man:71 classes.conf.man:106 client.conf.man.in:55 cups-config.man:113 cupsctl.man:93 cupsd.conf.man.in:521 cups-files.conf.man.in:142 cups-deviced.man.in:40 cupsd.man.in:68 cups-driverd.man.in:118 cupsenable.man:88 cupsfilter.man:105 cups-lpd.man.in:120 cups-snmp.conf.man:74 cupstestdsc.man:43 cupstestppd.man:159 filter.man:234 ipptool.man:139 ipptoolfile.man:569 lpadmin.man:223 lpc.man:67 lpinfo.man:111 lp.man:248 lpmove.man:62 lpoptions.man.in:131 lppasswd.man:64 lpq.man:68 lpr.man:118 lprm.man:61 lpstat.man:139 mailto.conf.man:56 mime.convs.man:42 mime.types.man:111 printers.conf.man:120 subscriptions.conf.man:85
+#: cupsaccept.man:75 backend.man:168 cancel.man:71 classes.conf.man:106 client.conf.man.in:61 cups-config.man:113 cupsctl.man:93 cupsd.conf.man.in:521 cups-files.conf.man.in:148 cups-deviced.man.in:40 cupsd.man.in:68 cups-driverd.man.in:118 cupsenable.man:88 cupsfilter.man:105 cups-lpd.man.in:120 cups-snmp.conf.man:74 cupstestdsc.man:43 cupstestppd.man:159 filter.man:234 ipptool.man:139 ipptoolfile.man:569 lpadmin.man:223 lpc.man:67 lpinfo.man:111 lp.man:248 lpmove.man:62 lpoptions.man.in:131 lppasswd.man:64 lpq.man:68 lpr.man:118 lprm.man:61 lpstat.man:139 mailto.conf.man:56 mime.convs.man:42 mime.types.man:111 printers.conf.man:120 subscriptions.conf.man:85
 msgid "http://localhost:631/help"
 msgstr ""
 
 #. type: SH
-#: cupsaccept.man:75 backend.man:168 cancel.man:71 classes.conf.man:106 client.conf.man.in:55 cupsaddsmb.man.in:210 cups-config.man:113 cupsctl.man:93 cupsd.conf.man.in:521 cups-files.conf.man.in:142 cups-deviced.man.in:40 cupsd.man.in:68 cups-driverd.man.in:118 cupsenable.man:88 cupsfilter.man:105 cups-lpd.man.in:120 cups-snmp.conf.man:74 cupstestdsc.man:46 cupstestppd.man:161 filter.man:234 ipptool.man:139 ipptoolfile.man:572 lpadmin.man:223 lpc.man:67 lpinfo.man:111 lp.man:248 lpmove.man:62 lpoptions.man.in:131 lppasswd.man:64 lpq.man:68 lpr.man:118 lprm.man:61 lpstat.man:139 mailto.conf.man:56 mime.convs.man:42 mime.types.man:111 printers.conf.man:120 subscriptions.conf.man:85
+#: cupsaccept.man:75 backend.man:168 cancel.man:71 classes.conf.man:106 client.conf.man.in:61 cupsaddsmb.man.in:172 cups-config.man:113 cupsctl.man:93 cupsd.conf.man.in:521 cups-files.conf.man.in:148 cups-deviced.man.in:40 cupsd.man.in:68 cups-driverd.man.in:118 cupsenable.man:88 cupsfilter.man:105 cups-lpd.man.in:120 cups-snmp.conf.man:74 cupstestdsc.man:46 cupstestppd.man:161 filter.man:234 ipptool.man:139 ipptoolfile.man:572 lpadmin.man:223 lpc.man:67 lpinfo.man:111 lp.man:248 lpmove.man:62 lpoptions.man.in:131 lppasswd.man:64 lpq.man:68 lpr.man:118 lprm.man:61 lpstat.man:139 mailto.conf.man:56 mime.convs.man:42 mime.types.man:111 printers.conf.man:120 subscriptions.conf.man:85
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr ""
 
 #. type: Plain text
-#: cupsaccept.man:76 backend.man:169 cancel.man:72 classes.conf.man:107 client.conf.man.in:56 cupsaddsmb.man.in:211 cups-config.man:114 cupsctl.man:94 cupsd.conf.man.in:522 cups-files.conf.man.in:143 cups-deviced.man.in:41 cupsd.man.in:69 cups-driverd.man.in:119 cupsenable.man:90 cupsfilter.man:106 cups-lpd.man.in:121 cups-snmp.conf.man:75 cupstestdsc.man:47 cupstestppd.man:162 filter.man:235 ipptool.man:140 ipptoolfile.man:573 lpadmin.man:224 lpc.man:68 lpinfo.man:112 lp.man:249 lpmove.man:63 lpoptions.man.in:132 lppasswd.man:65 lpq.man:69 lpr.man:119 lprm.man:62 lpstat.man:140 mailto.conf.man:57 mime.convs.man:43 mime.types.man:112 printers.conf.man:121 subscriptions.conf.man:86
+#: cupsaccept.man:76 backend.man:169 cancel.man:72 classes.conf.man:107 client.conf.man.in:62 cupsaddsmb.man.in:173 cups-config.man:114 cupsctl.man:94 cupsd.conf.man.in:522 cups-files.conf.man.in:149 cups-deviced.man.in:41 cupsd.man.in:69 cups-driverd.man.in:119 cupsenable.man:90 cupsfilter.man:106 cups-lpd.man.in:121 cups-snmp.conf.man:75 cupstestdsc.man:47 cupstestppd.man:162 filter.man:235 ipptool.man:140 ipptoolfile.man:573 lpadmin.man:224 lpc.man:68 lpinfo.man:112 lp.man:249 lpmove.man:63 lpoptions.man.in:132 lppasswd.man:65 lpq.man:69 lpr.man:119 lprm.man:62 lpstat.man:140 mailto.conf.man:57 mime.convs.man:43 mime.types.man:112 printers.conf.man:121 subscriptions.conf.man:86
 msgid "Copyright 2007-2013 by Apple Inc."
 msgstr ""
 
@@ -203,7 +203,7 @@ msgid "backend"
 msgstr ""
 
 #. type: TH
-#: backend.man:15 client.conf.man.in:15 cups-snmp.conf.man:15
+#: backend.man:15 cups-snmp.conf.man:15
 #, no-wrap
 msgid "23 April 2012"
 msgstr ""
@@ -895,6 +895,12 @@ msgstr ""
 msgid "client.conf"
 msgstr ""
 
+#. type: TH
+#: client.conf.man.in:15
+#, no-wrap
+msgid "25 June 2013"
+msgstr ""
+
 #. type: Plain text
 #: client.conf.man.in:18
 msgid "client.conf - client configuration file for cups"
@@ -959,7 +965,7 @@ msgstr ""
 #. type: TP
 #: client.conf.man.in:42
 #, no-wrap
-msgid "ServerName hostname-or-ip-address[:port][/version=1.1]"
+msgid "ServerName hostname-or-ip-address[:port]"
 msgstr ""
 
 #. type: TP
@@ -972,18 +978,31 @@ msgstr ""
 #: client.conf.man.in:49
 msgid ""
 "Specifies the address and optionally the port to use when connecting to the "
-"server. The IPP version (2.0 by default, can be 1.1 or 1.0) can be specified "
-"to access older servers. B<Note: Not supported on OS X 10.7 or later.>"
+"server. B<Note: Not supported on OS X 10.7 or later.>"
 msgstr ""
 
 #. type: TP
 #: client.conf.man.in:49
 #, no-wrap
+msgid "ServerName hostname-or-ip-address[:port]/version=1.1"
+msgstr ""
+
+#. type: Plain text
+#: client.conf.man.in:55
+msgid ""
+"Specifies the address and optionally the port to use when connecting to a "
+"server running CUPS 1.3.12 and earlier. B<Note: Not supported on OS X 10.7 "
+"or later.>"
+msgstr ""
+
+#. type: TP
+#: client.conf.man.in:55
+#, no-wrap
 msgid "User name"
 msgstr ""
 
 #. type: Plain text
-#: client.conf.man.in:53
+#: client.conf.man.in:59
 msgid "Specifies the default user name to use for requests."
 msgstr ""
 
@@ -996,7 +1015,7 @@ msgstr ""
 #. type: TH
 #: cupsaddsmb.man.in:15
 #, no-wrap
-msgid "25 July 2007"
+msgid "8 July 2013"
 msgstr ""
 
 #. type: Plain text
@@ -1163,26 +1182,24 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: cupsaddsmb.man.in:125
+#: cupsaddsmb.man.in:122
 msgid ""
-"The CUPS printer driver is preferred over the Microsoft driver since it "
-"supports the page-label, job-billing, and job-hold-until options fully on "
-"all printers. However, currently only Windows 2000 and higher is supported "
-"by the Microsoft driver, so you will also need to get the Adobe driver to "
-"support Windows 95, 98, and Me clients. The Adobe and Microsoft drivers for "
-"Windows 2000 are identical."
+"However, currently only Windows 2000 and higher is supported by the "
+"Microsoft driver, so you will also need to get the Adobe driver to support "
+"Windows 95, 98, and Me clients. The Adobe and Microsoft drivers for Windows "
+"2000 are identical."
 msgstr ""
 
 #. type: Plain text
-#: cupsaddsmb.man.in:130 cupsaddsmb.man.in:159
+#: cupsaddsmb.man.in:127
 msgid ""
 "Once you have extracted the driver files, copy the 32-bit drivers to the "
-"I<@CUPS_DATADIR@/drivers> directory and the 64-bit drivers to the "
-"I<@CUPS_DATADIR@/drivers/x64> directory exactly as named below:"
+"I</usr/share/cups/drivers> directory and the 64-bit drivers to the "
+"I</usr/share/cups/drivers/x64> directory exactly as named below:"
 msgstr ""
 
 #. type: Plain text
-#: cupsaddsmb.man.in:137
+#: cupsaddsmb.man.in:134
 #, no-wrap
 msgid ""
 "    [Windows 2000 and higher]\n"
@@ -1193,7 +1210,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: cupsaddsmb.man.in:142 cupsaddsmb.man.in:175
+#: cupsaddsmb.man.in:139
 msgid ""
 "B<Note:> Unlike Windows, case is significant - make sure that you use the "
 "lowercase filenames shown above, otherwise I<cupsaddsmb> will fail to export "
@@ -1201,51 +1218,13 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: cupsaddsmb.man.in:143
-#, no-wrap
-msgid "CUPS POSTSCRIPT DRIVERS FOR WINDOWS"
-msgstr ""
-
-#. type: Plain text
-#: cupsaddsmb.man.in:147
-msgid ""
-"I<cupsaddsmb> can use the CUPS v6 PostScript printer driver for Windows, "
-"which is available for download from the CUPS web site."
-msgstr ""
-
-#. type: Plain text
-#: cupsaddsmb.man.in:154
-msgid ""
-"The CUPS printer driver is preferred over the Adobe and Microsoft drivers "
-"since it supports the page-label, job-billing, and job-hold-until options "
-"fully on all printers. However, currently only Windows 2000 and higher is "
-"supported by the CUPS driver, so you will also need to get the Adobe driver "
-"to support Windows 95, 98, and Me clients."
-msgstr ""
-
-#. type: Plain text
-#: cupsaddsmb.man.in:170
-#, no-wrap
-msgid ""
-"    [Windows 2000 and higher]\n"
-"    cups6.inf (from www.cups.org)\n"
-"    cups6.ini (from www.cups.org)\n"
-"    cupsps6.dll (from www.cups.org)\n"
-"    cupsui6.dll (from www.cups.org)\n"
-"    ps5ui.dll (from your Windows system)\n"
-"    pscript.hlp (from your Windows system)\n"
-"    pscript.ntf (from your Windows system)\n"
-"    pscript5.dll (from your Windows system)\n"
-msgstr ""
-
-#. type: SH
-#: cupsaddsmb.man.in:176
+#: cupsaddsmb.man.in:140
 #, no-wrap
 msgid "ADOBE POSTSCRIPT DRIVERS FOR WINDOWS 95, 98, AND ME"
 msgstr ""
 
 #. type: Plain text
-#: cupsaddsmb.man.in:180
+#: cupsaddsmb.man.in:144
 msgid ""
 "I<cupsaddsmb> can use the Adobe PostScript printer driver for Windows 95, "
 "98, and ME, which are available for download from the Adobe web site "
@@ -1253,21 +1232,21 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: cupsaddsmb.man.in:183
+#: cupsaddsmb.man.in:147
 msgid ""
 "The Adobe driver does not support the page-label, job-billing, or "
 "job-hold-until options."
 msgstr ""
 
 #. type: Plain text
-#: cupsaddsmb.man.in:187
+#: cupsaddsmb.man.in:151
 msgid ""
 "Once you have installed the driver on a Windows system, copy the following "
 "files to the I<@CUPS_DATADIR@/drivers> directory exactly as named below:"
 msgstr ""
 
 #. type: Plain text
-#: cupsaddsmb.man.in:195
+#: cupsaddsmb.man.in:159
 #, no-wrap
 msgid ""
 "    [Windows 95, 98, and Me]\n"
@@ -1279,7 +1258,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: cupsaddsmb.man.in:200
+#: cupsaddsmb.man.in:164
 msgid ""
 "B<Note:> Unlike Windows, case is significant - make sure that you use the "
 "UPPERCASE filenames shown above, otherwise I<cupsaddsmb> will fail to export "
@@ -1287,24 +1266,19 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: cupsaddsmb.man.in:201 cupsctl.man:87
+#: cupsaddsmb.man.in:165 cupsctl.man:87
 #, no-wrap
 msgid "KNOWN ISSUES"
 msgstr ""
 
 #. type: Plain text
-#: cupsaddsmb.man.in:203
+#: cupsaddsmb.man.in:167
 msgid "Getting the full set of Windows driver files should be easier."
 msgstr ""
 
 #. type: Plain text
-#: cupsaddsmb.man.in:207
+#: cupsaddsmb.man.in:171
 msgid "I<smbd(8)>, I<smb.conf(5)>, http://localhost:631/help"
-msgstr ""
-
-#. type: Plain text
-#: cupsaddsmb.man.in:209
-msgid "http://www.cups.org/windows/"
 msgstr ""
 
 #. type: TH
@@ -1712,7 +1686,7 @@ msgid "cupsd.conf"
 msgstr ""
 
 #. type: TH
-#: cupsd.conf.man.in:15 cups-files.conf.man.in:15
+#: cupsd.conf.man.in:15
 #, no-wrap
 msgid "19 November 2012"
 msgstr ""
@@ -3082,6 +3056,12 @@ msgstr ""
 msgid "cups-files.conf"
 msgstr ""
 
+#. type: TH
+#: cups-files.conf.man.in:15
+#, no-wrap
+msgid "26 July 2013"
+msgstr ""
+
 #. type: Plain text
 #: cups-files.conf.man.in:18
 msgid "cups-files.conf - file and directory configuration file for cups"
@@ -3351,38 +3331,57 @@ msgstr ""
 #. type: TP
 #: cups-files.conf.man.in:124
 #, no-wrap
+msgid "SyncOnClose Yes"
+msgstr ""
+
+#. type: TP
+#: cups-files.conf.man.in:126
+#, no-wrap
+msgid "SyncOnClose No"
+msgstr ""
+
+#. type: Plain text
+#: cups-files.conf.man.in:130
+msgid ""
+"Specifies whether the scheduler calls I<fsync(2)> after writing "
+"configuration or state files. The default is No."
+msgstr ""
+
+#. type: TP
+#: cups-files.conf.man.in:130
+#, no-wrap
 msgid "SystemGroup group-name [group-name ...]"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:128
+#: cups-files.conf.man.in:134
 msgid "Specifies the group(s) to use for System class authentication."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:128
+#: cups-files.conf.man.in:134
 #, no-wrap
 msgid "TempDir directory"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:132
+#: cups-files.conf.man.in:138
 msgid "Specifies the directory where temporary files are stored."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:132
+#: cups-files.conf.man.in:138
 #, no-wrap
 msgid "User user-name"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:136
+#: cups-files.conf.man.in:142
 msgid "Specifies the user name or ID that is used when running external programs."
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:140
+#: cups-files.conf.man.in:146
 msgid ""
 "I<classes.conf(5)>, I<cupsd(8)>, I<cupsd.conf(5)>, I<mime.convs(5)>, "
 "I<mime.types(5)>, I<printers.conf(5)>, I<subscriptions.conf(5)>,"

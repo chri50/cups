@@ -59,7 +59,7 @@ Last-Update: 2013-02-20
  	  strlcat(pdl, "image/png,", sizeof(pdl));
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -746,7 +746,7 @@
+@@ -748,7 +748,7 @@
    DefaultShared            = CUPS_DEFAULT_DEFAULT_SHARED;
  
  #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)

@@ -1,5 +1,5 @@
 /*
- * "$Id: usersys.c 8498 2009-04-13 17:03:15Z mike $"
+ * "$Id: usersys.c 11173 2013-07-23 12:31:34Z msweet $"
  *
  *   User, system, and password routines for CUPS.
  *
@@ -1057,5 +1057,5 @@ cups_read_client_conf(
 
 
 /*
- * End of "$Id: usersys.c 8498 2009-04-13 17:03:15Z mike $".
+ * End of "$Id: usersys.c 11173 2013-07-23 12:31:34Z msweet $".
  */

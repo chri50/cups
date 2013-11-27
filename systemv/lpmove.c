@@ -1,5 +1,5 @@
 /*
- * "$Id: lpmove.c 7219 2008-01-14 22:00:02Z mike $"
+ * "$Id: lpmove.c 11173 2013-07-23 12:31:34Z msweet $"
  *
  *   "lpmove" command for CUPS.
  *
@@ -209,5 +209,5 @@ move_job(http_t     *http,		/* I - HTTP connection to server */
 
 
 /*
- * End of "$Id: lpmove.c 7219 2008-01-14 22:00:02Z mike $".
+ * End of "$Id: lpmove.c 11173 2013-07-23 12:31:34Z msweet $".
  */

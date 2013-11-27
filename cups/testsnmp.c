@@ -1,5 +1,5 @@
 /*
- * "$Id: testsnmp.c 3411 2011-09-07 22:31:27Z msweet $"
+ * "$Id: testsnmp.c 11173 2013-07-23 12:31:34Z msweet $"
  *
  *   SNMP test program for CUPS.
  *
@@ -300,5 +300,5 @@ usage(void)
 
 
 /*
- * End of "$Id: testsnmp.c 3411 2011-09-07 22:31:27Z msweet $".
+ * End of "$Id: testsnmp.c 11173 2013-07-23 12:31:34Z msweet $".
  */

@@ -1,5 +1,5 @@
 //
-// "$Id: genstrings.cxx 3275 2011-05-20 07:26:13Z msweet $"
+// "$Id: genstrings.cxx 11173 2013-07-23 12:31:34Z msweet $"
 //
 //   GNU gettext message generator for the CUPS PPD Compiler.
 //
@@ -211,5 +211,5 @@ write_cstring(const char *s)		/* I - String to write */
 
 
 //
-// End of "$Id: genstrings.cxx 3275 2011-05-20 07:26:13Z msweet $".
+// End of "$Id: genstrings.cxx 11173 2013-07-23 12:31:34Z msweet $".
 //

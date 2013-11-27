@@ -1,5 +1,5 @@
 /*
- * "$Id: websearch.c 1531 2009-05-22 21:50:50Z msweet $"
+ * "$Id: websearch.c 11173 2013-07-23 12:31:34Z msweet $"
  *
  *   Web search program for www.cups.org.
  *
@@ -112,5 +112,5 @@ list_nodes(help_index_t *hi,		/* I - Help index */
 
 
 /*
- * End of "$Id: websearch.c 1531 2009-05-22 21:50:50Z msweet $".
+ * End of "$Id: websearch.c 11173 2013-07-23 12:31:34Z msweet $".
  */

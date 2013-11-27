@@ -1,5 +1,5 @@
 /*
- * "$Id: testarray.c 6649 2007-07-11 21:46:42Z mike $"
+ * "$Id: testarray.c 11173 2013-07-23 12:31:34Z msweet $"
  *
  *   Array test program for CUPS.
  *
@@ -476,5 +476,5 @@ load_words(const char   *filename,	/* I - File to load */
 
 
 /*
- * End of "$Id: testarray.c 6649 2007-07-11 21:46:42Z mike $".
+ * End of "$Id: testarray.c 11173 2013-07-23 12:31:34Z msweet $".
  */

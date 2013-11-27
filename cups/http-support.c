@@ -1,5 +1,5 @@
 /*
- * "$Id: http-support.c 7952 2008-09-17 00:56:20Z mike $"
+ * "$Id: http-support.c 11173 2013-07-23 12:31:34Z msweet $"
  *
  *   HTTP support routines for CUPS.
  *
@@ -2360,5 +2360,5 @@ http_resolve_cb(
 
 
 /*
- * End of "$Id: http-support.c 7952 2008-09-17 00:56:20Z mike $".
+ * End of "$Id: http-support.c 11173 2013-07-23 12:31:34Z msweet $".
  */
