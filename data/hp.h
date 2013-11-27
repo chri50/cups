@@ -1,5 +1,5 @@
 /*
- * "$Id: hp.h 624 2008-02-16 00:27:39Z msweet $"
+ * "$Id: hp.h 11173 2013-07-23 12:31:34Z msweet $"
  *
  *   This file contains model number definitions for the CUPS sample
  *   HP driver.
@@ -20,5 +20,5 @@
 
 
 /*
- * End of "$Id: hp.h 624 2008-02-16 00:27:39Z msweet $".
+ * End of "$Id: hp.h 11173 2013-07-23 12:31:34Z msweet $".
  */

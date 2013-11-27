@@ -1,5 +1,5 @@
 /*
- * "$Id: po2strings.c 6921 2007-09-06 13:38:37Z mike $"
+ * "$Id: po2strings.c 11173 2013-07-23 12:31:34Z msweet $"
  *
  *   Convert a GNU gettext .po file to an Apple .strings file.
  *
@@ -290,5 +290,5 @@ main(int  argc,				/* I - Number of command-line args */
 
 
 /*
- * End of "$Id: po2strings.c 6921 2007-09-06 13:38:37Z mike $".
+ * End of "$Id: po2strings.c 11173 2013-07-23 12:31:34Z msweet $".
  */

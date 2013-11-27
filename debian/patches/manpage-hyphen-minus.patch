@@ -625,7 +625,7 @@ Last-Update: 2013-03-20
  .br
  Specifies that verbose information should be shown. This is
  useful for debugging SAMBA configuration problems.
-@@ -136,7 +136,7 @@
+@@ -133,7 +133,7 @@
      pscript5.dll
  .fi
  .LP
@@ -634,16 +634,7 @@ Last-Update: 2013-03-20
  you use the lowercase filenames shown above, otherwise
  \fIcupsaddsmb\fR will fail to export the drivers.
  
-@@ -169,7 +169,7 @@
-     pscript5.dll (from your Windows system)
- .fi
- .LP
--\fBNote:\fR Unlike Windows, case is significant - make sure that
-+\fBNote:\fR Unlike Windows, case is significant \- make sure that
- you use the lowercase filenames shown above, otherwise
- \fIcupsaddsmb\fR will fail to export the drivers.
- 
-@@ -194,7 +194,7 @@
+@@ -158,7 +158,7 @@
      PSMON.DLL
  .fi
  .LP

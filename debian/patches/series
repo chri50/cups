@@ -1,7 +1,6 @@
 # patches accepted and committed upstream:
 
 # patches sent upstream
-usb-backend-more-quirk-rules.patch
 cupsd-no-crash-on-avahi-threaded-poll-shutdown.patch
 get-ppd-file-for-statically-configured-ipp-shared-queues.patch
 pidfile.patch
@@ -24,7 +23,6 @@ cups-deviced-allow-device-ids-with-newline.patch
 cups-snmp-oids-device-id-hp-ricoh.patch
 configure-default-browse-protocols.patch
 mention-rfc2911-in-ipptoolfile-for-clarity.patch
-colord-add-profile-fix.patch
 # Fix tests, should probably go upstream
 tests-ignore-warnings.patch
 tests-ignore-usb-crash.patch

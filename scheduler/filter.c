@@ -1,5 +1,5 @@
 /*
- * "$Id: filter.c 7694 2008-06-26 00:23:20Z mike $"
+ * "$Id: filter.c 11173 2013-07-23 12:31:34Z msweet $"
  *
  *   File type conversion routines for CUPS.
  *
@@ -500,5 +500,5 @@ mime_find_filters(
 
 
 /*
- * End of "$Id: filter.c 7694 2008-06-26 00:23:20Z mike $".
+ * End of "$Id: filter.c 11173 2013-07-23 12:31:34Z msweet $".
  */

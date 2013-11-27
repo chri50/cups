@@ -1,3 +1,59 @@
+cups (1.6.4-1) unstable; urgency=low
+
+  * New 1.6.4 upstream release:
+    - Removed some duplicate size definitions for some ISO sizes that
+      were causing problems
+    - The IPP backend did not add the "last-document" attribute
+    - Added a SyncOnClose directive to cups-files.conf to force cupsd to
+      call fsync before closing any configuration/state files it writes
+    - Added USB quirk rule for Lexmark E238
+    - Closed server connections were still not always detected
+    - The libusb-based USB backend now loads its list of quirks from
+      files in /usr/share/cups/usb instead of using a hardcoded table
+    - The scheduler did not properly register ICC color profiles with
+      colord
+
+  [ Adam Conrad ]
+  * Update the cupsfilters tests patch to reflect the filter list in
+    cups-filters 1.0.36 and fix the testsuite
+  * Remove versioned Suggests/Recommends on ghostscript-cups (LP: #1212239)
+
+  [ Till Kamppeter ]
+  * debian/local/cups-daemon.cups.upstart: Increased timeout for waiting for
+    the CUPS daemon to get ready before automatically configuring printers
+    from 3 sec to 30 sec, on slower systems CUPS often needs more than 3
+    seconds and so the automatic printer configuration does not get done
+    (LP: #933308).
+  * debian/cups.dirs: Create empty /etc/cups/interfaces directory
+    (LP: #499585).
+  * debian/control: Use "Recommends: cups-filters (>= 1.0.36) |
+    ghostscript-cups (>= 9.02~)" as the CUPS filters in ghostscript-cups moved
+    to cups-filters.
+
+  [ Didier Raboud ]
+  * Don't run the dh_auto_clean command if the Makedefs doesn't exist
+    (Closes: #724134)
+  * Refresh patches for 1.6.4:
+    - Drop colord-add-profile-fix.patch, fixed differently upstream
+    - Drop usb-backend-more-quirk-rules.patch, fixed differently upstream
+    - Refresh 9 other patches
+  * Refresh the manpages translation files
+  * Install the usb-quirks in cups-common
+  * Update the tests-use-cupsfilters patch to use a patched copy of
+    cups-filters 1.0.38's cupsfilters.convs to circumvent #712337 and
+    allow cups-filters 1.0.38 to ship with the optimized pstops filters
+    path
+  * Bump cups-filters B-D to 1.0.38 to make sure the tests run as
+    expected
+  * Fix typo in README.Debian
+  * On upgrade to 1.6.4, keep a copy of obsolete stanzas to let
+    cups-browsed's postinst read them. This eases the 1.5->1.6 upgrade.
+
+  [ Helge Kreutzmann ]
+  * Update German manpages translation.
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 27 Nov 2013 17:19:20 +0100
+
 cups (1.6.3-1) unstable; urgency=low
 
   * New 1.6.3 upstream release:

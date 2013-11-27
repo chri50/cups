@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 1.5.2-10\n"
-"POT-Creation-Date: 2013-06-09 19:51+0300\n"
-"PO-Revision-Date: 2013-06-16 16:06+0200\n"
+"POT-Creation-Date: 2013-09-27 11:17+0300\n"
+"PO-Revision-Date: 2013-10-12 13:42+0200\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
 "Language: de\n"
@@ -265,8 +265,8 @@ msgstr ""
 # type: SH
 #. type: SH
 #: cupsaccept.man:70 backend.man:163 cancel.man:67 classes.conf.man:101
-#: client.conf.man.in:53 cupsaddsmb.man.in:204 cups-config.man:111
-#: cupsctl.man:89 cupsd.conf.man.in:515 cups-files.conf.man.in:136
+#: client.conf.man.in:59 cupsaddsmb.man.in:168 cups-config.man:111
+#: cupsctl.man:89 cupsd.conf.man.in:515 cups-files.conf.man.in:142
 #: cups-deviced.man.in:36 cupsd.man.in:61 cups-driverd.man.in:114
 #: cupsenable.man:83 cupsfilter.man:101 cups-lpd.man.in:115
 #: cups-snmp.conf.man:70 cupstestdsc.man:41 cupstestppd.man:155 filter.man:230
@@ -288,8 +288,8 @@ msgstr "I<cancel(1)>, I<cupsenable(8)>, I<lp(1)>, I<lpadmin(8)>, I<lpstat(1)>,"
 # type: Plain text
 #. type: Plain text
 #: cupsaccept.man:75 backend.man:168 cancel.man:71 classes.conf.man:106
-#: client.conf.man.in:55 cups-config.man:113 cupsctl.man:93
-#: cupsd.conf.man.in:521 cups-files.conf.man.in:142 cups-deviced.man.in:40
+#: client.conf.man.in:61 cups-config.man:113 cupsctl.man:93
+#: cupsd.conf.man.in:521 cups-files.conf.man.in:148 cups-deviced.man.in:40
 #: cupsd.man.in:68 cups-driverd.man.in:118 cupsenable.man:88
 #: cupsfilter.man:105 cups-lpd.man.in:120 cups-snmp.conf.man:74
 #: cupstestdsc.man:43 cupstestppd.man:159 filter.man:234 ipptool.man:139
@@ -303,8 +303,8 @@ msgstr "http://localhost:631/help"
 # type: SH
 #. type: SH
 #: cupsaccept.man:75 backend.man:168 cancel.man:71 classes.conf.man:106
-#: client.conf.man.in:55 cupsaddsmb.man.in:210 cups-config.man:113
-#: cupsctl.man:93 cupsd.conf.man.in:521 cups-files.conf.man.in:142
+#: client.conf.man.in:61 cupsaddsmb.man.in:172 cups-config.man:113
+#: cupsctl.man:93 cupsd.conf.man.in:521 cups-files.conf.man.in:148
 #: cups-deviced.man.in:40 cupsd.man.in:68 cups-driverd.man.in:118
 #: cupsenable.man:88 cupsfilter.man:105 cups-lpd.man.in:120
 #: cups-snmp.conf.man:74 cupstestdsc.man:46 cupstestppd.man:161 filter.man:234
@@ -320,8 +320,8 @@ msgstr "COPYRIGHT"
 # type: Plain text
 #. type: Plain text
 #: cupsaccept.man:76 backend.man:169 cancel.man:72 classes.conf.man:107
-#: client.conf.man.in:56 cupsaddsmb.man.in:211 cups-config.man:114
-#: cupsctl.man:94 cupsd.conf.man.in:522 cups-files.conf.man.in:143
+#: client.conf.man.in:62 cupsaddsmb.man.in:173 cups-config.man:114
+#: cupsctl.man:94 cupsd.conf.man.in:522 cups-files.conf.man.in:149
 #: cups-deviced.man.in:41 cupsd.man.in:69 cups-driverd.man.in:119
 #: cupsenable.man:90 cupsfilter.man:106 cups-lpd.man.in:121
 #: cups-snmp.conf.man:75 cupstestdsc.man:47 cupstestppd.man:162 filter.man:235
@@ -340,7 +340,7 @@ msgid "backend"
 msgstr "Backend"
 
 #. type: TH
-#: backend.man:15 client.conf.man.in:15 cups-snmp.conf.man:15
+#: backend.man:15 cups-snmp.conf.man:15
 #, no-wrap
 msgid "23 April 2012"
 msgstr "23. April 2012"
@@ -1166,20 +1166,17 @@ msgstr "StateMessage Text"
 msgid "Specifies the message associated with the state."
 msgstr "Spezifiziert die einem Status zugeordnete Nachricht."
 
-# type: TP
 #. type: TP
 #: classes.conf.man:97 printers.conf.man:111
 #, no-wrap
 msgid "StateTime seconds"
 msgstr "StateTime Sekunden"
 
-# type: Plain text
 #. type: Plain text
 #: classes.conf.man:101 printers.conf.man:115
 msgid "Specifies the date/time associated with the state."
 msgstr "Spezifiziert das mit einem Status assoziierte Datum/Uhrzeit."
 
-# type: Plain text
 #. type: Plain text
 #: classes.conf.man:104
 msgid ""
@@ -1189,19 +1186,23 @@ msgstr ""
 "I<cupsd(8)>, I<cupsd.conf(5)>, I<mime.convs(5)>, I<mime.types(5)>, "
 "I<printers.conf(5)>,"
 
-# type: TH
 #. type: TH
 #: client.conf.man.in:15
 #, no-wrap
 msgid "client.conf"
 msgstr "client.conf"
 
+#. type: TH
+#: client.conf.man.in:15
+#, no-wrap
+msgid "25 June 2013"
+msgstr "25. Juni 2013"
+
 #. type: Plain text
 #: client.conf.man.in:18
 msgid "client.conf - client configuration file for cups"
 msgstr "client.conf - Clientkonfigurationsdatei für CUPS"
 
-# type: Plain text
 #. type: Plain text
 #: client.conf.man.in:24
 msgid ""
@@ -1215,7 +1216,6 @@ msgstr ""
 "Zeile in der Datei kann eine Konfigurationsdirektive, eine leere Zeile oder "
 "ein Kommentar sein. Kommentarzeilen beginnen mit dem Zeichen »#«."
 
-# type: Plain text
 #. type: Plain text
 #: client.conf.man.in:27
 msgid ""
@@ -1273,8 +1273,8 @@ msgstr ""
 #. type: TP
 #: client.conf.man.in:42
 #, no-wrap
-msgid "ServerName hostname-or-ip-address[:port][/version=1.1]"
-msgstr "ServerName Hostname-oder-IP-Adresse[:Port][/version=1.1]"
+msgid "ServerName hostname-or-ip-address[:port]"
+msgstr "ServerName Hostname-oder-IP-Adresse[:Port]"
 
 #. type: TP
 #: client.conf.man.in:44
@@ -1286,22 +1286,37 @@ msgstr "ServerName /Domäne/Socket"
 #: client.conf.man.in:49
 msgid ""
 "Specifies the address and optionally the port to use when connecting to the "
-"server. The IPP version (2.0 by default, can be 1.1 or 1.0) can be specified "
-"to access older servers. B<Note: Not supported on OS X 10.7 or later.>"
+"server. B<Note: Not supported on OS X 10.7 or later.>"
 msgstr ""
 "Spezifiziert die Adresse und optional den Port, die bei der Verbindung zum "
-"Server verwandt werden sollen. Die IPP-Version (Standardmäßig 2.0, kann 1.1 "
-"oder 1.0 sein) kann angegeben werden, um auf ältere Server zuzugreifen. "
-"B<Hinweis: Auf OS X 10.7 oder neuer nicht unterstützt.>"
+"Server verwandt werden sollen. B<Hinweis: Auf OS X 10.7 oder neuer nicht "
+"unterstützt.>"
 
 #. type: TP
 #: client.conf.man.in:49
+#, no-wrap
+msgid "ServerName hostname-or-ip-address[:port]/version=1.1"
+msgstr "ServerName Hostname-oder-IP-Adresse[:Port]/version=1.1"
+
+#. type: Plain text
+#: client.conf.man.in:55
+msgid ""
+"Specifies the address and optionally the port to use when connecting to a "
+"server running CUPS 1.3.12 and earlier. B<Note: Not supported on OS X 10.7 "
+"or later.>"
+msgstr ""
+"Spezifiziert die Adresse und optional den Port, die bei der Verbindung zum "
+"Server verwandt werden sollen, auf dem CUPS 1.3.12 oder älter läuft. B<Hinweis: Auf OS X 10.7 oder neuer nicht "
+"unterstützt.>"
+
+#. type: TP
+#: client.conf.man.in:55
 #, no-wrap
 msgid "User name"
 msgstr "Benutzername"
 
 #. type: Plain text
-#: client.conf.man.in:53
+#: client.conf.man.in:59
 msgid "Specifies the default user name to use for requests."
 msgstr ""
 "Spezifiziert den für Anfragen standardmäßigen zu verwendenden Benutzer."
@@ -1315,8 +1330,8 @@ msgstr "cupsaddsmb"
 #. type: TH
 #: cupsaddsmb.man.in:15
 #, no-wrap
-msgid "25 July 2007"
-msgstr "25. Juli 2007"
+msgid "8 July 2013"
+msgstr "8. Juli 2013"
 
 #. type: Plain text
 #: cupsaddsmb.man.in:18
@@ -1533,7 +1548,6 @@ msgstr ""
 msgid "MICROSOFT POSTSCRIPT DRIVERS FOR WINDOWS"
 msgstr "MICROSOFT-POSTSCRIPT-TREIBER FÜR WINDOWS"
 
-# type: Plain text
 #. type: Plain text
 #: cupsaddsmb.man.in:117
 msgid ""
@@ -1549,39 +1563,32 @@ msgstr ""
 "und im Ordner %WINDIR%\\eSYSTEM32\\eSPOOL\\eDRIVERS\\eX64\\e3 für 64-bit-"
 "Treiber verfügbar ist."
 
-# type: Plain text
 #. type: Plain text
-#: cupsaddsmb.man.in:125
+#: cupsaddsmb.man.in:122
 msgid ""
-"The CUPS printer driver is preferred over the Microsoft driver since it "
-"supports the page-label, job-billing, and job-hold-until options fully on "
-"all printers. However, currently only Windows 2000 and higher is supported "
-"by the Microsoft driver, so you will also need to get the Adobe driver to "
-"support Windows 95, 98, and Me clients. The Adobe and Microsoft drivers for "
-"Windows 2000 are identical."
+"However, currently only Windows 2000 and higher is supported by the "
+"Microsoft driver, so you will also need to get the Adobe driver to support "
+"Windows 95, 98, and Me clients. The Adobe and Microsoft drivers for Windows "
+"2000 are identical."
 msgstr ""
-"Es wird empfohlen, den CUPS-Druckertreiber dem Microsoft-Treiber "
-"vorzuziehen, da er auf allen Druckern die Optionen page-label, job-billing "
-"und job-hold-until komplett unterstützt. Von den Microsoft-Treibern wird "
+"Von den Microsoft-Treibern wird "
 "allerdings nur Windows 2000 und höher unterstützt, daher müssen Sie sich die "
 "Adobe-Treiber besorgen, um Windows 95-, 98- und Me-Clients zu unterstützen. "
 "Die Adobe- und Microsoft-Treiber für Windows 2000 sind identisch."
 
-# type: Plain text
 #. type: Plain text
-#: cupsaddsmb.man.in:130 cupsaddsmb.man.in:159
+#: cupsaddsmb.man.in:127
 msgid ""
-"Once you have extracted the driver files, copy the 32-bit drivers to the "
-"I<@CUPS_DATADIR@/drivers> directory and the 64-bit drivers to the "
-"I<@CUPS_DATADIR@/drivers/x64> directory exactly as named below:"
+"Once you have extracted the driver files, copy the 32-bit drivers to the I</"
+"usr/share/cups/drivers> directory and the 64-bit drivers to the I</usr/share/"
+"cups/drivers/x64> directory exactly as named below:"
 msgstr ""
 "Nachdem Sie die Treiberdatei extrahiert haben, kopieren Sie die 32-Bit-"
-"Treiber in das Verzeichnis I<@CUPS_DATADIR@/drivers> und die 64-Bit-Treiber "
-"in das Verzeichnis I<@CUPS_DATADIR@/drivers/x64>, genau wie unten benannt:"
+"Treiber in das Verzeichnis I</usr/share/cups/drivers> und die 64-Bit-Treiber "
+"in das Verzeichnis I</usr/share/cups/drivers/x64>, genau wie unten benannt:"
 
-# type: Plain text
 #. type: Plain text
-#: cupsaddsmb.man.in:137
+#: cupsaddsmb.man.in:134
 #, no-wrap
 msgid ""
 "    [Windows 2000 and higher]\n"
@@ -1596,9 +1603,8 @@ msgstr ""
 "    pscript.ntf\n"
 "    pscript5.dll\n"
 
-# type: Plain text
 #. type: Plain text
-#: cupsaddsmb.man.in:142 cupsaddsmb.man.in:175
+#: cupsaddsmb.man.in:139
 msgid ""
 "B<Note:> Unlike Windows, case is significant - make sure that you use the "
 "lowercase filenames shown above, otherwise I<cupsaddsmb> will fail to export "
@@ -1608,75 +1614,15 @@ msgstr ""
 "Stellen Sie sicher, dass Sie die Dateinamen wie oben klein schreiben, "
 "andernfalls kann I<cupsaddsmb> die Treiber nicht exportieren."
 
-# type: SH
 #. type: SH
-#: cupsaddsmb.man.in:143
-#, no-wrap
-msgid "CUPS POSTSCRIPT DRIVERS FOR WINDOWS"
-msgstr "CUPS POSTSCRIPT-TREIBER FÜR WINDOWS"
-
-# type: Plain text
-#. type: Plain text
-#: cupsaddsmb.man.in:147
-msgid ""
-"I<cupsaddsmb> can use the CUPS v6 PostScript printer driver for Windows, "
-"which is available for download from the CUPS web site."
-msgstr ""
-"I<cupsaddsmb> kann den CUPS-v6-PostScript-Druckertreiber für Windows "
-"verwenden. Dieser ist von der Website von CUPS zum Download erhältlich."
-
-# type: Plain text
-#. type: Plain text
-#: cupsaddsmb.man.in:154
-msgid ""
-"The CUPS printer driver is preferred over the Adobe and Microsoft drivers "
-"since it supports the page-label, job-billing, and job-hold-until options "
-"fully on all printers. However, currently only Windows 2000 and higher is "
-"supported by the CUPS driver, so you will also need to get the Adobe driver "
-"to support Windows 95, 98, and Me clients."
-msgstr ""
-"Es wird empfohlen, den CUPS-Druckertreiber den Adobe- und Microsoft-Treibern "
-"vorzuziehen, da er auf allen Druckern die Optionen page-label, job-billing "
-"und job-hold-until komplett unterstützt. Von den CUPS-Treibern wird "
-"allerdings nur Windows 2000 und höher unterstützt, daher müssen Sie sich "
-"auch die Adobe-Treiber besorgen, um Windows 95-, 98- und Me-Clients zu "
-"unterstützen."
-
-# type: Plain text
-#. type: Plain text
-#: cupsaddsmb.man.in:170
-#, no-wrap
-msgid ""
-"    [Windows 2000 and higher]\n"
-"    cups6.inf (from www.cups.org)\n"
-"    cups6.ini (from www.cups.org)\n"
-"    cupsps6.dll (from www.cups.org)\n"
-"    cupsui6.dll (from www.cups.org)\n"
-"    ps5ui.dll (from your Windows system)\n"
-"    pscript.hlp (from your Windows system)\n"
-"    pscript.ntf (from your Windows system)\n"
-"    pscript5.dll (from your Windows system)\n"
-msgstr ""
-"    [Windows 2000 und höher]\n"
-"    cups6.inf (von www.cups.org)\n"
-"    cups6.ini (von www.cups.org)\n"
-"    cupsps6.dll (von www.cups.org)\n"
-"    cupsui6.dll (von www.cups.org)\n"
-"    ps5ui.dll (aus Ihrem Windows-System)\n"
-"    pscript.hlp (aus Ihrem Windows-System)\n"
-"    pscript.ntf (aus Ihrem Windows-System)\n"
-"    pscript5.dll (aus Ihrem Windows-System)\n"
-
-# type: SH
-#. type: SH
-#: cupsaddsmb.man.in:176
+#: cupsaddsmb.man.in:140
 #, no-wrap
 msgid "ADOBE POSTSCRIPT DRIVERS FOR WINDOWS 95, 98, AND ME"
 msgstr "ADOBE POSTSCRIPT-TREIBER FÜR WINDOWS 95, 98 UND ME"
 
 # type: Plain text
 #. type: Plain text
-#: cupsaddsmb.man.in:180
+#: cupsaddsmb.man.in:144
 msgid ""
 "I<cupsaddsmb> can use the Adobe PostScript printer driver for Windows 95, "
 "98, and ME, which are available for download from the Adobe web site (http://"
@@ -1688,7 +1634,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: cupsaddsmb.man.in:183
+#: cupsaddsmb.man.in:147
 msgid ""
 "The Adobe driver does not support the page-label, job-billing, or job-hold-"
 "until options."
@@ -1698,7 +1644,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: cupsaddsmb.man.in:187
+#: cupsaddsmb.man.in:151
 msgid ""
 "Once you have installed the driver on a Windows system, copy the following "
 "files to the I<@CUPS_DATADIR@/drivers> directory exactly as named below:"
@@ -1709,7 +1655,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: cupsaddsmb.man.in:195
+#: cupsaddsmb.man.in:159
 #, no-wrap
 msgid ""
 "    [Windows 95, 98, and Me]\n"
@@ -1728,7 +1674,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: cupsaddsmb.man.in:200
+#: cupsaddsmb.man.in:164
 msgid ""
 "B<Note:> Unlike Windows, case is significant - make sure that you use the "
 "UPPERCASE filenames shown above, otherwise I<cupsaddsmb> will fail to export "
@@ -1740,29 +1686,23 @@ msgstr ""
 
 # type: SH
 #. type: SH
-#: cupsaddsmb.man.in:201 cupsctl.man:87
+#: cupsaddsmb.man.in:165 cupsctl.man:87
 #, no-wrap
 msgid "KNOWN ISSUES"
 msgstr "BEKANNTE PROBLEME"
 
 # type: Plain text
 #. type: Plain text
-#: cupsaddsmb.man.in:203
+#: cupsaddsmb.man.in:167
 msgid "Getting the full set of Windows driver files should be easier."
 msgstr ""
 "Es sollte leichter sein, den kompletten Windows-Treibersatz zu bekommen."
 
 # type: Plain text
 #. type: Plain text
-#: cupsaddsmb.man.in:207
+#: cupsaddsmb.man.in:171
 msgid "I<smbd(8)>, I<smb.conf(5)>, http://localhost:631/help"
 msgstr "I<smbd(8)>, I<smb.conf(5)>, http://localhost:631/help"
-
-# type: Plain text
-#. type: Plain text
-#: cupsaddsmb.man.in:209
-msgid "http://www.cups.org/windows/"
-msgstr "http://www.cups.org/windows/"
 
 # type: TH
 #. type: TH
@@ -2259,7 +2199,7 @@ msgid "cupsd.conf"
 msgstr "cupsd.conf"
 
 #. type: TH
-#: cupsd.conf.man.in:15 cups-files.conf.man.in:15
+#: cupsd.conf.man.in:15
 #, no-wrap
 msgid "19 November 2012"
 msgstr "19. November 2012"
@@ -3836,6 +3776,12 @@ msgstr ""
 msgid "cups-files.conf"
 msgstr "cups-files.conf"
 
+#. type: TH
+#: cups-files.conf.man.in:15
+#, no-wrap
+msgid "26 July 2013"
+msgstr "26. Juli 2013"
+
 #. type: Plain text
 #: cups-files.conf.man.in:18
 msgid "cups-files.conf - file and directory configuration file for cups"
@@ -3858,20 +3804,17 @@ msgstr ""
 msgid "AccessLog filename"
 msgstr "AccessLog Dateiname"
 
-# type: TP
 #. type: TP
 #: cups-files.conf.man.in:30
 #, no-wrap
 msgid "AccessLog syslog"
 msgstr "AccessLog syslog"
 
-# type: Plain text
 #. type: Plain text
 #: cups-files.conf.man.in:34
 msgid "Defines the access log filename."
 msgstr "Definiert den Namen der Zugriffsprotokolldatei."
 
-# type: TP
 #. type: TP
 #: cups-files.conf.man.in:34
 #, no-wrap
@@ -4142,7 +4085,6 @@ msgstr "Spezifiziert den zu verwendenden Schlüssel für die Verschlüsselung."
 msgid "ServerRoot directory"
 msgstr "ServerRoot Verzeichnis"
 
-# type: Plain text
 #. type: Plain text
 #: cups-files.conf.man.in:124
 msgid ""
@@ -4154,36 +4096,57 @@ msgstr ""
 #. type: TP
 #: cups-files.conf.man.in:124
 #, no-wrap
+msgid "SyncOnClose Yes"
+msgstr "SyncOnClose Yes"
+
+#. type: TP
+#: cups-files.conf.man.in:126
+#, no-wrap
+msgid "SyncOnClose No"
+msgstr "SyncOnClose No"
+
+#. type: Plain text
+#: cups-files.conf.man.in:130
+msgid ""
+"Specifies whether the scheduler calls I<fsync(2)> after writing "
+"configuration or state files. The default is No."
+msgstr ""
+"Spezifiziert, ob der Auftragsplaner nach dem Schreiben der Konfigurations- "
+"oder Zustandsdateien I<fsync(2)> aufruft. Standardmäßig »No«."
+
+#. type: TP
+#: cups-files.conf.man.in:130
+#, no-wrap
 msgid "SystemGroup group-name [group-name ...]"
 msgstr "SystemGroup Gruppenname [Gruppenname …]"
 
 #. type: Plain text
-#: cups-files.conf.man.in:128
+#: cups-files.conf.man.in:134
 msgid "Specifies the group(s) to use for System class authentication."
 msgstr ""
 "Spezifiziert den/die Gruppe(n), die für Systemklassen-Authentifizierung "
 "verwandt werden."
 
 #. type: TP
-#: cups-files.conf.man.in:128
+#: cups-files.conf.man.in:134
 #, no-wrap
 msgid "TempDir directory"
 msgstr "TempDir Verzeichnis"
 
 #. type: Plain text
-#: cups-files.conf.man.in:132
+#: cups-files.conf.man.in:138
 msgid "Specifies the directory where temporary files are stored."
 msgstr ""
 "Spezifiziert das Verzeichnis, in dem temporäre Dateien gespeichert werden."
 
 #. type: TP
-#: cups-files.conf.man.in:132
+#: cups-files.conf.man.in:138
 #, no-wrap
 msgid "User user-name"
 msgstr "User Benutzername"
 
 #. type: Plain text
-#: cups-files.conf.man.in:136
+#: cups-files.conf.man.in:142
 msgid ""
 "Specifies the user name or ID that is used when running external programs."
 msgstr ""
@@ -4191,7 +4154,7 @@ msgstr ""
 "Programme verwandt wird."
 
 #. type: Plain text
-#: cups-files.conf.man.in:140
+#: cups-files.conf.man.in:146
 msgid ""
 "I<classes.conf(5)>, I<cupsd(8)>, I<cupsd.conf(5)>, I<mime.convs(5)>, I<mime."
 "types(5)>, I<printers.conf(5)>, I<subscriptions.conf(5)>,"
@@ -11899,16 +11862,72 @@ msgstr ""
 "I<classes.conf(5)>, I<cupsd(8)>, I<cupsd.conf(5)>, I<mime.convs(5)>, I<mime."
 "types(5)>, printers.conf(5)"
 
-#~ msgid "ServerName hostname-or-ip-address[:port]"
-#~ msgstr "ServerName Hostname-oder-IP-Adresse[:Port]"
-
 #~ msgid ""
 #~ "Specifies the address and optionally the port to use when connecting to "
-#~ "the server. B<Note: Not supported on OS X 10.7 or later.>"
+#~ "the server. The IPP version (2.0 by default, can be 1.1 or 1.0) can be "
+#~ "specified to access older servers. B<Note: Not supported on OS X 10.7 or "
+#~ "later.>"
 #~ msgstr ""
 #~ "Spezifiziert die Adresse und optional den Port, die bei der Verbindung "
-#~ "zum Server verwandt werden sollen. B<Hinweis: Auf OS X 10.7 oder neuer "
-#~ "nicht unterstützt.>"
+#~ "zum Server verwandt werden sollen. Die IPP-Version (Standardmäßig 2.0, "
+#~ "kann 1.1 oder 1.0 sein) kann angegeben werden, um auf ältere Server "
+#~ "zuzugreifen. B<Hinweis: Auf OS X 10.7 oder neuer nicht unterstützt.>"
+
+#~ msgid "25 July 2007"
+#~ msgstr "25. Juli 2007"
+
+# type: SH
+#~ msgid "CUPS POSTSCRIPT DRIVERS FOR WINDOWS"
+#~ msgstr "CUPS POSTSCRIPT-TREIBER FÜR WINDOWS"
+
+# type: Plain text
+#~ msgid ""
+#~ "I<cupsaddsmb> can use the CUPS v6 PostScript printer driver for Windows, "
+#~ "which is available for download from the CUPS web site."
+#~ msgstr ""
+#~ "I<cupsaddsmb> kann den CUPS-v6-PostScript-Druckertreiber für Windows "
+#~ "verwenden. Dieser ist von der Website von CUPS zum Download erhältlich."
+
+# type: Plain text
+#~ msgid ""
+#~ "The CUPS printer driver is preferred over the Adobe and Microsoft drivers "
+#~ "since it supports the page-label, job-billing, and job-hold-until options "
+#~ "fully on all printers. However, currently only Windows 2000 and higher is "
+#~ "supported by the CUPS driver, so you will also need to get the Adobe "
+#~ "driver to support Windows 95, 98, and Me clients."
+#~ msgstr ""
+#~ "Es wird empfohlen, den CUPS-Druckertreiber den Adobe- und Microsoft-"
+#~ "Treibern vorzuziehen, da er auf allen Druckern die Optionen page-label, "
+#~ "job-billing und job-hold-until komplett unterstützt. Von den CUPS-"
+#~ "Treibern wird allerdings nur Windows 2000 und höher unterstützt, daher "
+#~ "müssen Sie sich auch die Adobe-Treiber besorgen, um Windows 95-, 98- und "
+#~ "Me-Clients zu unterstützen."
+
+# type: Plain text
+#~ msgid ""
+#~ "    [Windows 2000 and higher]\n"
+#~ "    cups6.inf (from www.cups.org)\n"
+#~ "    cups6.ini (from www.cups.org)\n"
+#~ "    cupsps6.dll (from www.cups.org)\n"
+#~ "    cupsui6.dll (from www.cups.org)\n"
+#~ "    ps5ui.dll (from your Windows system)\n"
+#~ "    pscript.hlp (from your Windows system)\n"
+#~ "    pscript.ntf (from your Windows system)\n"
+#~ "    pscript5.dll (from your Windows system)\n"
+#~ msgstr ""
+#~ "    [Windows 2000 und höher]\n"
+#~ "    cups6.inf (von www.cups.org)\n"
+#~ "    cups6.ini (von www.cups.org)\n"
+#~ "    cupsps6.dll (von www.cups.org)\n"
+#~ "    cupsui6.dll (von www.cups.org)\n"
+#~ "    ps5ui.dll (aus Ihrem Windows-System)\n"
+#~ "    pscript.hlp (aus Ihrem Windows-System)\n"
+#~ "    pscript.ntf (aus Ihrem Windows-System)\n"
+#~ "    pscript5.dll (aus Ihrem Windows-System)\n"
+
+# type: Plain text
+#~ msgid "http://www.cups.org/windows/"
+#~ msgstr "http://www.cups.org/windows/"
 
 #~ msgid ""
 #~ "Specifies that the print file should be formatted with a shaded header "

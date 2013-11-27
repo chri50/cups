@@ -43,8 +43,8 @@ Build-Depends:
  sharutils,
  zlib1g-dev,
 # Needed for running the tests, not for the build
- cups-filters (>= 1.0.25~),
- libcupsfilters-dev (>= 1.0.25~)
+ cups-filters (>= 1.0.38~),
+ libcupsfilters-dev (>= 1.0.38~)
 Homepage: http://www.cups.org
 Vcs-Git: git://anonscm.debian.org/pkg-cups/cups.git
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-cups/cups.git;a=summary
@@ -153,7 +153,7 @@ Recommends: avahi-daemon,
  colord,
  foomatic-filters (>= 4.0), 
  printer-driver-gutenprint,
- ghostscript-cups (>= 9.02~)
+ cups-filters (>= 1.0.36) | ghostscript-cups (>= 9.02~)
 Suggests: cups-bsd,
  foomatic-db-compressed-ppds | foomatic-db,
  printer-driver-hpcups,
@@ -196,7 +196,6 @@ Suggests: cups, cups-bsd,
  cups-filters,
  poppler-utils (>= 0.12),
  ghostscript (>= 9.02~),
- ghostscript-cups (>= 9.02~),
  foomatic-filters (>= 4.0), 
  foomatic-db-compressed-ppds | foomatic-db,
  printer-driver-gutenprint,

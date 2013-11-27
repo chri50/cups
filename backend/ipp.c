@@ -1,5 +1,5 @@
 /*
- * "$Id: ipp.c 9759 2011-05-11 03:24:33Z mike $"
+ * "$Id: ipp.c 11221 2013-08-06 16:16:01Z msweet $"
  *
  *   IPP backend for CUPS.
  *
@@ -1609,8 +1609,8 @@ main(int  argc,				/* I - Number of command-line args */
 	  ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_NAME,
                        "requesting-user-name", NULL, argv[2]);
 
-        if ((i + 1) >= num_files)
-	  ippAddBoolean(request, IPP_TAG_OPERATION, "last-document", 1);
+	ippAddBoolean(request, IPP_TAG_OPERATION, "last-document",
+        	      (i + 1) >= num_files);
 
 	if (document_format)
 	  ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_MIMETYPE,
@@ -3391,5 +3391,5 @@ update_reasons(ipp_attribute_t *attr,	/* I - printer-state-reasons or NULL */
 }
 
 /*
- * End of "$Id: ipp.c 9759 2011-05-11 03:24:33Z mike $".
+ * End of "$Id: ipp.c 11221 2013-08-06 16:16:01Z msweet $".
  */

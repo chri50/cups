@@ -1,5 +1,5 @@
 /*
- * "$Id: cupsaccept.c 2873 2010-11-30 03:16:24Z msweet $"
+ * "$Id: cupsaccept.c 11173 2013-07-23 12:31:34Z msweet $"
  *
  *   "cupsaccept", "cupsdisable", "cupsenable", and "cupsreject" commands for
  *   CUPS.
@@ -235,5 +235,5 @@ main(int  argc,				/* I - Number of command-line arguments */
 
 
 /*
- * End of "$Id: cupsaccept.c 2873 2010-11-30 03:16:24Z msweet $".
+ * End of "$Id: cupsaccept.c 11173 2013-07-23 12:31:34Z msweet $".
  */

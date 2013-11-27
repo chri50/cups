@@ -1,5 +1,5 @@
 /*
- * "$Id: getdevices.c 3794 2012-04-23 22:44:16Z msweet $"
+ * "$Id: getdevices.c 11173 2013-07-23 12:31:34Z msweet $"
  *
  *   cupsGetDevices implementation for CUPS.
  *
@@ -279,5 +279,5 @@ cupsGetDevices(
 
 
 /*
- * End of "$Id: getdevices.c 3794 2012-04-23 22:44:16Z msweet $".
+ * End of "$Id: getdevices.c 11173 2013-07-23 12:31:34Z msweet $".
  */

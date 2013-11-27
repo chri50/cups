@@ -725,6 +725,7 @@ ARFLAGS
 LIBZ
 INSTALL_GZIP
 LIBWRAP
+USBQUIRKS
 LIBUSB
 LIBMXML
 EGREP
@@ -2508,7 +2509,7 @@ esac
 ac_config_headers="$ac_config_headers config.h"
 
 
-CUPS_VERSION=1.6.3
+CUPS_VERSION=1.6.4
 CUPS_REVISION=
 #if test -z "$CUPS_REVISION" -a -d .svn; then
 #	CUPS_REVISION="-r`svnversion . | awk -F: '{print $NF}' | sed -e '1,$s/[[a-zA-Z]]*//g'`"
@@ -5224,6 +5225,8 @@ fi
 
 
 LIBUSB=""
+USBQUIRKS=""
+
 
 
 if test "x$PKGCONFIG" != x; then
@@ -5237,6 +5240,7 @@ $as_echo "yes" >&6; }
 
 			CFLAGS="$CFLAGS `$PKGCONFIG --cflags libusb-1.0`"
 			LIBUSB="`$PKGCONFIG --libs libusb-1.0`"
+			USBQUIRKS="\$(DATADIR)/usb"
 		else
 			{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }

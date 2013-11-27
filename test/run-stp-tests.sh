@@ -368,14 +368,17 @@ else
 	ln -s /usr/share/cups/fonts /tmp/cups-$user/share
 
 	#
-	# cups-filters 1.0.25
+	# cups-filters 1.0.38
 	#
 	ln -s /usr/share/cups/mime/cupsfilters.types /tmp/cups-$user/share/mime
-	ln -s /usr/share/cups/mime/cupsfilters.convs /tmp/cups-$user/share/mime
+	# Use cups-filter's patched 1.0.38 that doesn't make the test-suite fail
+	ln -s $root/conf/cupsfilters.convs /tmp/cups-$user/share/mime
 
 	ln -s /usr/lib/cups/filter/bannertopdf /tmp/cups-$user/bin/filter
 	ln -s /usr/lib/cups/filter/commandtoescpx /tmp/cups-$user/bin/filter
 	ln -s /usr/lib/cups/filter/commandtopclx /tmp/cups-$user/bin/filter
+	ln -s /usr/lib/cups/filter/gstopxl /tmp/cups-$user/bin/filter
+	ln -s /usr/lib/cups/filter/gstoraster /tmp/cups-$user/bin/filter
 	ln -s /usr/lib/cups/filter/imagetopdf /tmp/cups-$user/bin/filter
 	ln -s /usr/lib/cups/filter/pdftoijs /tmp/cups-$user/bin/filter
 	ln -s /usr/lib/cups/filter/pdftoopvp /tmp/cups-$user/bin/filter
