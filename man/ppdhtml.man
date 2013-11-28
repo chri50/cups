@@ -17,9 +17,9 @@
 ppdhtml \- cups html summary generator
 .SH SYNOPSIS
 .B ppdhtml
-[ -D
+[ \-D
 .I name[=value]
-] [ -I
+] [ \-I
 .I include-directory
 ]
 .I source-file
