@@ -1,3 +1,16 @@
+cups (1.6.4-2) unstable; urgency=low
+
+  * Import several patches from Fedora, thanks to Tim Waugh:
+    - Avoid stale lockfile in dbus notifier
+    - Stop accessing avahi through D-Bus using two threads
+    - Fix jobs with multiple files and  multiple formats
+    - Revert upstream change to FINAL_CONTENT_TYPE in order to fix
+      printing to remote CUPS servers
+  * On purge, also delete the cupsd.conf.pre16-bak file to leave no
+    traces
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 28 Nov 2013 12:22:09 +0100
+
 cups (1.6.4-1) unstable; urgency=low
 
   * New 1.6.4 upstream release:

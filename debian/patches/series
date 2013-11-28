@@ -23,6 +23,10 @@ cups-deviced-allow-device-ids-with-newline.patch
 cups-snmp-oids-device-id-hp-ricoh.patch
 configure-default-browse-protocols.patch
 mention-rfc2911-in-ipptoolfile-for-clarity.patch
+avoid_stale_lockfile_in_dbus_notifier.patch
+dont-use-dbus-from-two-threads.patch
+fixes-for-jobs-with-multiple-files-and-multiple-formats.patch
+revert-upstream-change-to-FINAL_CONTENT_TYPE-to-fix-printing-to-remote-CUPS-servers.patch
 # Fix tests, should probably go upstream
 tests-ignore-warnings.patch
 tests-ignore-usb-crash.patch
