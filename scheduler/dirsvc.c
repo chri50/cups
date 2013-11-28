@@ -212,7 +212,7 @@ cupsdStartBrowsing(void)
     }
 
 #  else /* HAVE_AVAHI */
-    if ((DNSSDMaster = avahi_threaded_poll_new()) == NULL)
+    if ((DNSSDMaster = avahi_cups_poll_new()) == NULL)
     {
       cupsdLogMessage(CUPSD_LOG_ERROR, "Unable to create DNS-SD thread.");
 
@@ -223,7 +223,7 @@ cupsdStartBrowsing(void)
     {
       int error;			/* Error code, if any */
 
-      DNSSDClient = avahi_client_new(avahi_threaded_poll_get(DNSSDMaster), 0,
+      DNSSDClient = avahi_client_new(avahi_cups_poll_get(DNSSDMaster), 0,
                                      NULL, NULL, &error);
 
       if (DNSSDClient == NULL)
@@ -235,11 +235,9 @@ cupsdStartBrowsing(void)
         if (FatalErrors & CUPSD_FATAL_BROWSE)
 	  cupsdEndProcess(getpid(), 0);
 
-        avahi_threaded_poll_free(DNSSDMaster);
+        avahi_cups_poll_free(DNSSDMaster);
         DNSSDMaster = NULL;
       }
-      else
-	avahi_threaded_poll_start(DNSSDMaster);
     }
 #  endif /* HAVE_DNSSD */
 
@@ -752,9 +750,7 @@ dnssdDeregisterInstance(
   DNSServiceRefDeallocate(*srv);
 
 #  else /* HAVE_AVAHI */
-  avahi_threaded_poll_lock(DNSSDMaster);
   avahi_entry_group_free(*srv);
-  avahi_threaded_poll_unlock(DNSSDMaster);
 #  endif /* HAVE_DNSSD */
 
   *srv = NULL;
@@ -1049,14 +1045,10 @@ dnssdRegisterInstance(
   (void)commit;
 
 #  else /* HAVE_AVAHI */
-  avahi_threaded_poll_lock(DNSSDMaster);
-
   if (!*srv)
     *srv = avahi_entry_group_new(DNSSDClient, dnssdRegisterCallback, NULL);
   if (!*srv)
   {
-    avahi_threaded_poll_unlock(DNSSDMaster);
-
     cupsdLogMessage(CUPSD_LOG_WARN, "DNS-SD registration of \"%s\" failed: %s",
                     name, dnssdErrorString(avahi_client_errno(DNSSDClient)));
     return (0);
@@ -1171,8 +1163,6 @@ dnssdRegisterInstance(
       cupsdLogMessage(CUPSD_LOG_DEBUG, "DNS-SD commit of \"%s\" failed.",
                       name);
   }
-
-  avahi_threaded_poll_unlock(DNSSDMaster);
 #  endif /* HAVE_DNSSD */
 
   if (error)
@@ -1343,7 +1333,7 @@ dnssdStop(void)
   avahi_client_free(DNSSDClient);
   DNSSDClient = NULL;
 
-  avahi_threaded_poll_free(DNSSDMaster);
+  avahi_cups_poll_free(DNSSDMaster);
   DNSSDMaster = NULL;
 #  endif /* HAVE_DNSSD */
 
