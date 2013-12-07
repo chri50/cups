@@ -2,7 +2,8 @@ Source: cups
 Standards-Version: 3.9.4
 Priority: optional
 Section: net
-Maintainer: Debian Printing Team <debian-printing@lists.debian.org>
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: Debian Printing Team <debian-printing@lists.debian.org>
 Uploaders: 
  Masayuki Hatta (mhatta) <mhatta@debian.org>,
  Till Kamppeter <till.kamppeter@gmail.com>,
@@ -151,7 +152,7 @@ Depends: ${shlibs:Depends},
  cups-filters (>= 1.0.24-3~)
 Recommends: avahi-daemon,
  colord,
- foomatic-filters (>= 4.0), 
+ cups-filters (>= 1.0.42) | foomatic-filters (>= 4.0),
  printer-driver-gutenprint,
  cups-filters (>= 1.0.36) | ghostscript-cups (>= 9.02~)
 Suggests: cups-bsd,
@@ -196,7 +197,7 @@ Suggests: cups, cups-bsd,
  cups-filters,
  poppler-utils (>= 0.12),
  ghostscript (>= 9.02~),
- foomatic-filters (>= 4.0), 
+ cups-filters (>= 1.0.42) | foomatic-filters (>= 4.0), 
  foomatic-db-compressed-ppds | foomatic-db,
  printer-driver-gutenprint,
  printer-driver-hpcups,

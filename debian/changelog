@@ -1,3 +1,10 @@
+cups (1.7.0-0ubuntu3) trusty; urgency=low
+
+  * Drop Recommends: on foomatic-filters, which is now obsoleted by
+    cups-filters.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Sat, 07 Dec 2013 15:44:31 -0800
+
 cups (1.7.0-0ubuntu2) trusty; urgency=low
 
   * debian/rules: Call dh_auto_clean only if the file Makedefs is present, to
