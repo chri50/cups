@@ -4,7 +4,7 @@ Bug-Redhat: https://bugzilla.redhat.com/show_bug.cgi?id=972242
 Last-Updated: 2013-11-28
 --- a/backend/ipp.c
 +++ b/backend/ipp.c
-@@ -1612,7 +1612,10 @@
+@@ -1685,7 +1685,10 @@
  	ippAddBoolean(request, IPP_TAG_OPERATION, "last-document",
          	      (i + 1) >= num_files);
  

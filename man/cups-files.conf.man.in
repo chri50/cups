@@ -1,5 +1,5 @@
 .\"
-.\" "$Id: cups-files.conf.man.in 11221 2013-08-06 16:16:01Z msweet $"
+.\" "$Id: cups-files.conf.man.in 11201 2013-07-26 21:27:27Z msweet $"
 .\"
 .\"   cupsd.conf man page for CUPS.
 .\"
@@ -18,7 +18,7 @@ cups-files.conf \- file and directory configuration file for cups
 .SH DESCRIPTION
 The \fIcups-files.conf\fR file configures the files and directories used by the
 CUPS scheduler, \fIcupsd(8)\fR.  It is normally located in the
-\fI@CUPS_SERVERROOT@\fR directory.
+\fI/etc/cups\fR directory.
 .LP
 Each line in the file can be a configuration directive, a blank line,
 or a comment. Comment lines start with the # character.
@@ -148,5 +148,5 @@ http://localhost:631/help
 .SH COPYRIGHT
 Copyright 2007-2013 by Apple Inc.
 .\"
-.\" End of "$Id: cups-files.conf.man.in 11221 2013-08-06 16:16:01Z msweet $".
+.\" End of "$Id: cups-files.conf.man.in 11201 2013-07-26 21:27:27Z msweet $".
 .\"

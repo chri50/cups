@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 1.5.2-10\n"
-"POT-Creation-Date: 2013-09-27 11:17+0300\n"
+"POT-Creation-Date: 2014-01-03 18:24+0100\n"
 "PO-Revision-Date: 2013-10-12 13:42+0200\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
@@ -96,8 +96,8 @@ msgstr "SYNOPSIS"
 #. type: Plain text
 #: cupsaccept.man:25
 msgid ""
-"B<cupsaccept> [ -E ] [ -U I<username> ] [ -h I<hostname[:port]> ] destination"
-"(s)"
+"B<cupsaccept> [ -E ] [ -U I<username> ] [ -h I<hostname[:port]> ] "
+"destination(s)"
 msgstr ""
 "B<cupsaccept> [ -E ] [ -U I<Benutzername> ] [ -h I<Hostname[:Port]> ] Ziel(e)"
 
@@ -119,7 +119,7 @@ msgstr ""
 #: cups-deviced.man.in:21 cupsd.man.in:23 cups-driverd.man.in:26
 #: cupsenable.man:34 cupsfilter.man:41 cups-lpd.man.in:25
 #: cups-snmp.conf.man:19 cupstestdsc.man:26 cupstestppd.man:34 filter.man:23
-#: ipptool.man:37 ipptoolfile.man:18 lpadmin.man:46 lpc.man:25 lpinfo.man:50
+#: ipptool.man:38 ipptoolfile.man:18 lpadmin.man:46 lpc.man:25 lpinfo.man:50
 #: lp.man:62 lpmove.man:34 lpoptions.man.in:62 lppasswd.man:33 lpq.man:29
 #: lpr.man:35 lprm.man:29 lpstat.man:39 mailto.conf.man:18 mime.convs.man:18
 #: mime.types.man:18 printers.conf.man:18 subscriptions.conf.man:18
@@ -153,7 +153,7 @@ msgstr ""
 #. type: SH
 #: cupsaccept.man:41 cancel.man:36 cupsaddsmb.man.in:45 cups-config.man:58
 #: cupsctl.man:33 cupsd.man.in:28 cupsfilter.man:45 cups-lpd.man.in:62
-#: cupstestppd.man:44 filter.man:44 ipptool.man:39 lpinfo.man:55 lp.man:70
+#: cupstestppd.man:44 filter.man:44 ipptool.man:40 lpinfo.man:55 lp.man:70
 #: lpmove.man:44 lppasswd.man:41 lpq.man:37 lpr.man:45 lprm.man:35
 #: lpstat.man:43
 #, no-wrap
@@ -171,7 +171,7 @@ msgstr ""
 # type: TP
 #. type: TP
 #: cupsaccept.man:44 cancel.man:38 cupsctl.man:35 cupsenable.man:39
-#: ipptool.man:50 lpadmin.man:192 lpinfo.man:57 lp.man:77 lpmove.man:46
+#: ipptool.man:58 lpadmin.man:192 lpinfo.man:57 lp.man:77 lpmove.man:46
 #: lpoptions.man.in:66 lpq.man:39 lpr.man:47 lprm.man:37 lpstat.man:45
 #, no-wrap
 msgid "-E"
@@ -229,8 +229,8 @@ msgstr ""
 "Druckaufträge abweist."
 
 #. type: SH
-#: cupsaccept.man:61 cancel.man:59 cupsd.man.in:57 cupsenable.man:70
-#: cups-lpd.man.in:104 filter.man:225 ipptool.man:95 lpadmin.man:207
+#: cupsaccept.man:61 cancel.man:63 cupsd.man.in:57 cupsenable.man:70
+#: cups-lpd.man.in:104 filter.man:225 ipptool.man:105 lpadmin.man:207
 #: lpc.man:59 lpinfo.man:105 lp.man:234 lpoptions.man.in:119 lpr.man:110
 #: lprm.man:53 lpstat.man:127
 #, no-wrap
@@ -239,7 +239,7 @@ msgstr "KOMPATIBILITÄT"
 
 # type: Plain text
 #. type: Plain text
-#: cupsaccept.man:65 cancel.man:63 cupsenable.man:74 lp.man:238
+#: cupsaccept.man:65 cancel.man:67 cupsenable.man:74 lp.man:238
 msgid ""
 "Unlike the System V printing system, CUPS allows printer names to contain "
 "any printable character except SPACE, TAB, \"/\", or \"#\".  Also, printer "
@@ -264,13 +264,13 @@ msgstr ""
 
 # type: SH
 #. type: SH
-#: cupsaccept.man:70 backend.man:163 cancel.man:67 classes.conf.man:101
+#: cupsaccept.man:70 backend.man:163 cancel.man:71 classes.conf.man:101
 #: client.conf.man.in:59 cupsaddsmb.man.in:168 cups-config.man:111
 #: cupsctl.man:89 cupsd.conf.man.in:515 cups-files.conf.man.in:142
 #: cups-deviced.man.in:36 cupsd.man.in:61 cups-driverd.man.in:114
 #: cupsenable.man:83 cupsfilter.man:101 cups-lpd.man.in:115
 #: cups-snmp.conf.man:70 cupstestdsc.man:41 cupstestppd.man:155 filter.man:230
-#: ipptool.man:135 ipptoolfile.man:565 lpadmin.man:218 lpc.man:62
+#: ipptool.man:152 ipptoolfile.man:616 lpadmin.man:218 lpc.man:62
 #: lpinfo.man:107 lp.man:243 lpmove.man:58 lpoptions.man.in:127
 #: lppasswd.man:60 lpq.man:63 lpr.man:113 lprm.man:56 lpstat.man:135
 #: mailto.conf.man:51 mime.convs.man:37 mime.types.man:106
@@ -287,13 +287,13 @@ msgstr "I<cancel(1)>, I<cupsenable(8)>, I<lp(1)>, I<lpadmin(8)>, I<lpstat(1)>,"
 
 # type: Plain text
 #. type: Plain text
-#: cupsaccept.man:75 backend.man:168 cancel.man:71 classes.conf.man:106
+#: cupsaccept.man:75 backend.man:168 cancel.man:75 classes.conf.man:106
 #: client.conf.man.in:61 cups-config.man:113 cupsctl.man:93
 #: cupsd.conf.man.in:521 cups-files.conf.man.in:148 cups-deviced.man.in:40
 #: cupsd.man.in:68 cups-driverd.man.in:118 cupsenable.man:88
 #: cupsfilter.man:105 cups-lpd.man.in:120 cups-snmp.conf.man:74
-#: cupstestdsc.man:43 cupstestppd.man:159 filter.man:234 ipptool.man:139
-#: ipptoolfile.man:569 lpadmin.man:223 lpc.man:67 lpinfo.man:111 lp.man:248
+#: cupstestdsc.man:43 cupstestppd.man:159 filter.man:234 ipptool.man:156
+#: ipptoolfile.man:620 lpadmin.man:223 lpc.man:67 lpinfo.man:111 lp.man:248
 #: lpmove.man:62 lpoptions.man.in:131 lppasswd.man:64 lpq.man:68 lpr.man:118
 #: lprm.man:61 lpstat.man:139 mailto.conf.man:56 mime.convs.man:42
 #: mime.types.man:111 printers.conf.man:120 subscriptions.conf.man:85
@@ -302,13 +302,13 @@ msgstr "http://localhost:631/help"
 
 # type: SH
 #. type: SH
-#: cupsaccept.man:75 backend.man:168 cancel.man:71 classes.conf.man:106
+#: cupsaccept.man:75 backend.man:168 cancel.man:75 classes.conf.man:106
 #: client.conf.man.in:61 cupsaddsmb.man.in:172 cups-config.man:113
 #: cupsctl.man:93 cupsd.conf.man.in:521 cups-files.conf.man.in:148
 #: cups-deviced.man.in:40 cupsd.man.in:68 cups-driverd.man.in:118
 #: cupsenable.man:88 cupsfilter.man:105 cups-lpd.man.in:120
 #: cups-snmp.conf.man:74 cupstestdsc.man:46 cupstestppd.man:161 filter.man:234
-#: ipptool.man:139 ipptoolfile.man:572 lpadmin.man:223 lpc.man:67
+#: ipptool.man:156 ipptoolfile.man:623 lpadmin.man:223 lpc.man:67
 #: lpinfo.man:111 lp.man:248 lpmove.man:62 lpoptions.man.in:131
 #: lppasswd.man:64 lpq.man:68 lpr.man:118 lprm.man:61 lpstat.man:139
 #: mailto.conf.man:56 mime.convs.man:42 mime.types.man:111
@@ -319,13 +319,13 @@ msgstr "COPYRIGHT"
 
 # type: Plain text
 #. type: Plain text
-#: cupsaccept.man:76 backend.man:169 cancel.man:72 classes.conf.man:107
+#: cupsaccept.man:76 backend.man:169 cancel.man:76 classes.conf.man:107
 #: client.conf.man.in:62 cupsaddsmb.man.in:173 cups-config.man:114
 #: cupsctl.man:94 cupsd.conf.man.in:522 cups-files.conf.man.in:149
 #: cups-deviced.man.in:41 cupsd.man.in:69 cups-driverd.man.in:119
 #: cupsenable.man:90 cupsfilter.man:106 cups-lpd.man.in:121
 #: cups-snmp.conf.man:75 cupstestdsc.man:47 cupstestppd.man:162 filter.man:235
-#: ipptool.man:140 ipptoolfile.man:573 lpadmin.man:224 lpc.man:68
+#: ipptool.man:157 ipptoolfile.man:624 lpadmin.man:224 lpc.man:68
 #: lpinfo.man:112 lp.man:249 lpmove.man:63 lpoptions.man.in:132
 #: lppasswd.man:65 lpq.man:69 lpr.man:119 lprm.man:62 lpstat.man:140
 #: mailto.conf.man:57 mime.convs.man:43 mime.types.man:112
@@ -391,15 +391,15 @@ msgstr ""
 #: backend.man:39
 msgid ""
 "The command name (argv[0]) is set to the device URI of the destination "
-"printer.  Starting with CUPS 1.1.22, any authentication information in argv"
-"[0] is removed, so backend developers are urged to use the DEVICE_URI "
+"printer.  Starting with CUPS 1.1.22, any authentication information in "
+"argv[0] is removed, so backend developers are urged to use the DEVICE_URI "
 "environment variable whenever authentication information is required. The "
 "CUPS API includes a I<cupsBackendDeviceURI> function for retrieving the "
 "correct device URI."
 msgstr ""
 "Der Befehlsname (argv[0]) wird auf die Geräte-URI des Zieldruckers gesetzt. "
-"Beginnend mit CUPS 1.1.22 wird jede Authentifizierungsinformation aus argv"
-"[0] entfernt, daher wird Backend-Entwicklern empfohlen, die "
+"Beginnend mit CUPS 1.1.22 wird jede Authentifizierungsinformation aus "
+"argv[0] entfernt, daher wird Backend-Entwicklern empfohlen, die "
 "Umgebungsvariable DEVICE_URI zu verwenden, wennimmer "
 "Authentifizierungsinformationen benötigt werden. Das CUPS-API enthält eine "
 "Funktion I<cupsBackendDeviceURI> zum Ermitteln der korrekten Geräte-URI."
@@ -805,10 +805,11 @@ msgid "cancel"
 msgstr "cancel"
 
 #. type: TH
-#: cancel.man:15 cupstestdsc.man:15 mime.convs.man:15
-#, no-wrap
-msgid "20 March 2006"
-msgstr "20. März 2006"
+#: cancel.man:15
+#, fuzzy, no-wrap
+#| msgid "11 January 2013"
+msgid "21 January 2013"
+msgstr "11. Januar 2013"
 
 # type: Plain text
 #. type: Plain text
@@ -819,9 +820,13 @@ msgstr "cancel - Aufträge abbrechen"
 # type: Plain text
 #. type: Plain text
 #: cancel.man:33
+#, fuzzy
+#| msgid ""
+#| "B<cancel> [ -E ] [ -U I<username> ] [ -a ] [ -h I<hostname[:port]> ] [ -u "
+#| "I<username> ] [ I<id> ] [ I<destination> ] [ I<destination-id> ]"
 msgid ""
 "B<cancel> [ -E ] [ -U I<username> ] [ -a ] [ -h I<hostname[:port]> ] [ -u "
-"I<username> ] [ I<id> ] [ I<destination> ] [ I<destination-id> ]"
+"I<username> ] [ -x ] [ I<id> ] [ I<destination> ] [ I<destination-id> ]"
 msgstr ""
 "B<cancel> [ -E ] [ -U I<Benutzername> ] [ -a ] [ -h I<Hostname[:Port]> ] [ -"
 "u I<Benutzername> ] [ I<Id> ] [ I<Ziel> ] [ I<Ziel-Id> ]"
@@ -880,16 +885,27 @@ msgstr "-u Benutzername"
 msgid "Cancels jobs owned by I<username>."
 msgstr "Bricht den Auftrag von I<Benutzername> ab."
 
+#. type: TP
+#: cancel.man:59
+#, no-wrap
+msgid "-x"
+msgstr ""
+
+#. type: Plain text
+#: cancel.man:63
+msgid "Deletes job data files in addition to canceling."
+msgstr ""
+
 # type: SH
 #. type: SH
-#: cancel.man:63 cups-driverd.man.in:109
+#: cancel.man:67 cups-driverd.man.in:109
 #, no-wrap
 msgid "NOTES"
 msgstr "HINWEISE"
 
 # type: Plain text
 #. type: Plain text
-#: cancel.man:67
+#: cancel.man:71
 msgid ""
 "Administrators wishing to prevent unauthorized cancellation of jobs via the "
 "I<-u> option should require authentication for Cancel-Jobs operations in "
@@ -901,7 +917,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: cancel.man:69
+#: cancel.man:73
 msgid "I<lp(1)>, I<lpmove(8)>, I<lpstat(1)>,"
 msgstr "I<lp(1)>, I<lpmove(8)>, I<lpstat(1)>,"
 
@@ -1193,10 +1209,12 @@ msgid "client.conf"
 msgstr "client.conf"
 
 #. type: TH
-#: client.conf.man.in:15
+#: client.conf.man.in:15 cupsaddsmb.man.in:15 cupsd.conf.man.in:15
+#: cups-deviced.man.in:15 cupsd.man.in:15 cups-driverd.man.in:15
+#: cups-lpd.man.in:15 lpoptions.man.in:15
 #, no-wrap
-msgid "25 June 2013"
-msgstr "25. Juni 2013"
+msgid "8 July 2013"
+msgstr "8. Juli 2013"
 
 #. type: Plain text
 #: client.conf.man.in:18
@@ -1205,11 +1223,17 @@ msgstr "client.conf - Clientkonfigurationsdatei für CUPS"
 
 #. type: Plain text
 #: client.conf.man.in:24
+#, fuzzy
+#| msgid ""
+#| "The I<client.conf> file configures the CUPS client and is normally "
+#| "located in the I<@CUPS_SERVERROOT@> or I<~/.cups> directory. Each line in "
+#| "the file can be a configuration directive, a blank line, or a comment. "
+#| "Comment lines start with the # character."
 msgid ""
 "The I<client.conf> file configures the CUPS client and is normally located "
-"in the I<@CUPS_SERVERROOT@> or I<~/.cups> directory. Each line in the file "
-"can be a configuration directive, a blank line, or a comment. Comment lines "
-"start with the # character."
+"in the I</etc/cups> or I<~/.cups> directory. Each line in the file can be a "
+"configuration directive, a blank line, or a comment. Comment lines start "
+"with the # character."
 msgstr ""
 "Die Datei I<client.conf> konfiguriert den CUPS-Client und befindet sich "
 "normalerweise im Verzeichnis I<@CUPS_SERVERROOT@> oder I<~/.cups>. Jede "
@@ -1259,11 +1283,16 @@ msgstr "GSSServiceName Name"
 
 #. type: Plain text
 #: client.conf.man.in:42
+#, fuzzy
+#| msgid ""
+#| "Specifies the Kerberos service name that is used for authentication, "
+#| "typically \"host\", \"http\", or \"ipp\". CUPS adds the remote hostname "
+#| "(\"name@server.example.com\") for you. The default name is "
+#| "\"@CUPS_DEFAULT_GSSSERVICENAME@\"."
 msgid ""
 "Specifies the Kerberos service name that is used for authentication, "
 "typically \"host\", \"http\", or \"ipp\". CUPS adds the remote hostname "
-"(\"name@server.example.com\") for you. The default name is "
-"\"@CUPS_DEFAULT_GSSSERVICENAME@\"."
+"(\"name@server.example.com\") for you. The default name is \"http\"."
 msgstr ""
 "Spezifiziert den Kerberos-Dienstenamen, der für die Authentifizierung "
 "benutzt wird, typischerweise »host«, »http« oder »ipp«. CUPS fügt den "
@@ -1306,8 +1335,8 @@ msgid ""
 "or later.>"
 msgstr ""
 "Spezifiziert die Adresse und optional den Port, die bei der Verbindung zum "
-"Server verwandt werden sollen, auf dem CUPS 1.3.12 oder älter läuft. B<Hinweis: Auf OS X 10.7 oder neuer nicht "
-"unterstützt.>"
+"Server verwandt werden sollen, auf dem CUPS 1.3.12 oder älter läuft. "
+"B<Hinweis: Auf OS X 10.7 oder neuer nicht unterstützt.>"
 
 #. type: TP
 #: client.conf.man.in:55
@@ -1327,12 +1356,6 @@ msgstr ""
 msgid "cupsaddsmb"
 msgstr "cupsaddsmb"
 
-#. type: TH
-#: cupsaddsmb.man.in:15
-#, no-wrap
-msgid "8 July 2013"
-msgstr "8. Juli 2013"
-
 #. type: Plain text
 #: cupsaddsmb.man.in:18
 msgid "cupsaddsmb - export printers to samba for windows clients"
@@ -1344,8 +1367,8 @@ msgid ""
 "B<cupsaddsmb> [ -H I<samba-server> ] [ -U I<samba-user[%samba-password]> ] "
 "[ -h I<cups-server[:port]> ] [ -v ] -a"
 msgstr ""
-"B<cupsaddsmb> [ -H I<Samba-Server> ] [ -U I<Samba-Benutzer[%Samba-Passwort]"
-"> ] [ -h I<CUPS-Server[:Port]> ] [ -v ] -a"
+"B<cupsaddsmb> [ -H I<Samba-Server> ] [ -U I<Samba-Benutzer[%Samba-"
+"Passwort]> ] [ -h I<CUPS-Server[:Port]> ] [ -v ] -a"
 
 #. type: Plain text
 #: cupsaddsmb.man.in:37
@@ -1353,8 +1376,8 @@ msgid ""
 "B<cupsaddsmb> [ -H I<samba-server> ] [ -U I<samba-user[%samba-password]> ] "
 "[ -h I<cups-server[:port]> ] [ -v ] printer [ ... printer ]"
 msgstr ""
-"B<cupsaddsmb> [ -H I<Samba-Server> ] [ -U I<Samba-Benutzer[%Samba-Passwort]"
-"> ] [ -h I<CUPS-Server[:Port]> ] [ -v ] Drucker [ … Drucker ]"
+"B<cupsaddsmb> [ -H I<Samba-Server> ] [ -U I<Samba-Benutzer[%Samba-"
+"Passwort]> ] [ -h I<CUPS-Server[:Port]> ] [ -v ] Drucker [ … Drucker ]"
 
 #. type: Plain text
 #: cupsaddsmb.man.in:44
@@ -1432,7 +1455,7 @@ msgstr "Spezifiziert einen anderen zu verwendenden CUPS-Server."
 
 # type: TP
 #. type: TP
-#: cupsaddsmb.man.in:67 cupstestppd.man:105 ipptool.man:92
+#: cupsaddsmb.man.in:67 cupstestppd.man:105 ipptool.man:100
 #, no-wrap
 msgid "-v"
 msgstr "-v"
@@ -1571,10 +1594,10 @@ msgid ""
 "Windows 95, 98, and Me clients. The Adobe and Microsoft drivers for Windows "
 "2000 are identical."
 msgstr ""
-"Von den Microsoft-Treibern wird "
-"allerdings nur Windows 2000 und höher unterstützt, daher müssen Sie sich die "
-"Adobe-Treiber besorgen, um Windows 95-, 98- und Me-Clients zu unterstützen. "
-"Die Adobe- und Microsoft-Treiber für Windows 2000 sind identisch."
+"Von den Microsoft-Treibern wird allerdings nur Windows 2000 und höher "
+"unterstützt, daher müssen Sie sich die Adobe-Treiber besorgen, um Windows "
+"95-, 98- und Me-Clients zu unterstützen. Die Adobe- und Microsoft-Treiber "
+"für Windows 2000 sind identisch."
 
 #. type: Plain text
 #: cupsaddsmb.man.in:127
@@ -1645,9 +1668,14 @@ msgstr ""
 # type: Plain text
 #. type: Plain text
 #: cupsaddsmb.man.in:151
+#, fuzzy
+#| msgid ""
+#| "Once you have installed the driver on a Windows system, copy the "
+#| "following files to the I<@CUPS_DATADIR@/drivers> directory exactly as "
+#| "named below:"
 msgid ""
 "Once you have installed the driver on a Windows system, copy the following "
-"files to the I<@CUPS_DATADIR@/drivers> directory exactly as named below:"
+"files to the I</usr/share/cups/drivers> directory exactly as named below:"
 msgstr ""
 "Sobald Sie die Treiber auf einem Windows-System installiert haben, kopieren "
 "Sie die folgenden Dateien in das Verzeichnis I<@CUPS_DATADIR@/drivers> exakt "
@@ -1853,7 +1881,7 @@ msgstr "Zeigt das Standard-CUPS-Datenverzeichnis an."
 
 # type: TP
 #. type: TP
-#: cups-config.man:75
+#: cups-config.man:75 ipptool.man:42
 #, no-wrap
 msgid "--help"
 msgstr "--help"
@@ -1951,8 +1979,8 @@ msgid ""
 "When used with I<--libs>, shows the static libraries instead of the default "
 "(shared) libraries."
 msgstr ""
-"Zeigt die statischen Bibliotheken an, statt der Standard (Laufzeit-)"
-"Bibliotheken, wenn mit I<--libs> verwandt."
+"Zeigt die statischen Bibliotheken an, statt der Standard "
+"(Laufzeit-)Bibliotheken, wenn mit I<--libs> verwandt."
 
 #. type: TP
 #: cups-config.man:106
@@ -2124,7 +2152,7 @@ msgstr ""
 
 # type: SH
 #. type: SH
-#: cupsctl.man:67 cupstestppd.man:137 ipptool.man:97 lp.man:218
+#: cupsctl.man:67 cupstestppd.man:137 ipptool.man:107 lp.man:218
 #, no-wrap
 msgid "EXAMPLES"
 msgstr "BEISPIELE"
@@ -2198,12 +2226,6 @@ msgstr "I<cupsd.conf(5)>, I<cupsd(8)>,"
 msgid "cupsd.conf"
 msgstr "cupsd.conf"
 
-#. type: TH
-#: cupsd.conf.man.in:15
-#, no-wrap
-msgid "19 November 2012"
-msgstr "19. November 2012"
-
 #. type: Plain text
 #: cupsd.conf.man.in:18
 msgid "cupsd.conf - server configuration file for cups"
@@ -2211,12 +2233,19 @@ msgstr "cupsd.conf - Server-Konfigurationsdatei für CUPS"
 
 #. type: Plain text
 #: cupsd.conf.man.in:24
+#, fuzzy
+#| msgid ""
+#| "The I<cupsd.conf> file configures the CUPS scheduler, I<cupsd(8)>.  It is "
+#| "normally located in the I<@CUPS_SERVERROOT@> directory. B<Note:> File, "
+#| "directory, and user configuration directives that used to be allowed in "
+#| "the I<cupsd.conf> file are now stored in the I<cups-files.conf(5)> "
+#| "instead in order to prevent certain types of privilege escalation attacks."
 msgid ""
 "The I<cupsd.conf> file configures the CUPS scheduler, I<cupsd(8)>.  It is "
-"normally located in the I<@CUPS_SERVERROOT@> directory. B<Note:> File, "
-"directory, and user configuration directives that used to be allowed in the "
-"I<cupsd.conf> file are now stored in the I<cups-files.conf(5)> instead in "
-"order to prevent certain types of privilege escalation attacks."
+"normally located in the I</etc/cups> directory. B<Note:> File, directory, "
+"and user configuration directives that used to be allowed in the I<cupsd."
+"conf> file are now stored in the I<cups-files.conf(5)> instead in order to "
+"prevent certain types of privilege escalation attacks."
 msgstr ""
 "Die Datei I<cupsd.conf> konfiguriert den CUPS-Auftragsplaner (Scheduler), "
 "I<cupsd(8)>. Sie befindet sich normalerweise in dem Verzeichnis "
@@ -2753,9 +2782,13 @@ msgstr ""
 
 #. type: Plain text
 #: cupsd.conf.man.in:196
+#, fuzzy
+#| msgid ""
+#| "Specifies the service name when using Kerberos authentication. The "
+#| "default service name is \"@CUPS_DEFAULT_GSSSERVICENAME@\"."
 msgid ""
 "Specifies the service name when using Kerberos authentication. The default "
-"service name is \"@CUPS_DEFAULT_GSSSERVICENAME@\"."
+"service name is \"http\"."
 msgstr ""
 "Spezifiziert den Dienstenamen, wenn Kerberos-Authentifizierung eingesetzt "
 "wird. Die Vorgabedienstname ist »@CUPS_DEFAULT_GSSSERVICENAME@«."
@@ -3789,10 +3822,15 @@ msgstr "cups-files.conf - Datei- und Verzeichnis-Konfigurationsdatei für CUPS"
 
 #. type: Plain text
 #: cups-files.conf.man.in:22
+#, fuzzy
+#| msgid ""
+#| "The I<cups-files.conf> file configures the files and directories used by "
+#| "the CUPS scheduler, I<cupsd(8)>.  It is normally located in the "
+#| "I<@CUPS_SERVERROOT@> directory."
 msgid ""
 "The I<cups-files.conf> file configures the files and directories used by the "
-"CUPS scheduler, I<cupsd(8)>.  It is normally located in the "
-"I<@CUPS_SERVERROOT@> directory."
+"CUPS scheduler, I<cupsd(8)>.  It is normally located in the I</etc/cups> "
+"directory."
 msgstr ""
 "Die Datei I<cups-files.conf> konfiguriert die von dem CUPS-Auftragsplaner "
 "(Scheduler), I<cupsd(8)> verwandten Dateien und Verzeichnisse. Sie befindet "
@@ -4107,9 +4145,13 @@ msgstr "SyncOnClose No"
 
 #. type: Plain text
 #: cups-files.conf.man.in:130
+#, fuzzy
+#| msgid ""
+#| "Specifies whether the scheduler calls I<fsync(2)> after writing "
+#| "configuration or state files. The default is No."
 msgid ""
 "Specifies whether the scheduler calls I<fsync(2)> after writing "
-"configuration or state files. The default is No."
+"configuration or state files. The default is Yes."
 msgstr ""
 "Spezifiziert, ob der Auftragsplaner nach dem Schreiben der Konfigurations- "
 "oder Zustandsdateien I<fsync(2)> aufruft. Standardmäßig »No«."
@@ -4168,12 +4210,6 @@ msgstr ""
 msgid "cups-deviced"
 msgstr "cups-deviced"
 
-#. type: TH
-#: cups-deviced.man.in:15 lpq.man:15
-#, no-wrap
-msgid "16 June 2008"
-msgstr "16. Juni 2008"
-
 #. type: Plain text
 #: cups-deviced.man.in:18
 msgid "cups-deviced - cups device daemon"
@@ -4186,17 +4222,31 @@ msgstr "B<cups-deviced> I<Anfrage-ID Grenze Benutzer-ID Optionen>"
 
 #. type: Plain text
 #: cups-deviced.man.in:36
+#, fuzzy
+#| msgid ""
+#| "I<cups-deviced> polls the backends in I<@CUPS_SERVERBIN@/backend> for a "
+#| "list of available devices.  It is run by I<cupsd(8)> in response to a "
+#| "I<CUPS-Get-Devices> request. The output format is an IPP response "
+#| "message. The I<request-id> argument is the request ID from the original "
+#| "IPP request, typically 1. The I<limit> argument is the limit value from "
+#| "the original IPP request - 0 means no limit. The I<user-id> argument is "
+#| "the requesting-user-name value from the original IPP request.  Finally, "
+#| "the I<options> argument is a space-delimited list of attributes "
+#| "(\"name=value name=value ...\") that were passed in with the request. "
+#| "Currently I<cups-deviced> looks for the I<requested-attributes> attribute "
+#| "and tailors the output accordingly."
 msgid ""
-"I<cups-deviced> polls the backends in I<@CUPS_SERVERBIN@/backend> for a list "
-"of available devices.  It is run by I<cupsd(8)> in response to a I<CUPS-Get-"
-"Devices> request. The output format is an IPP response message. The "
-"I<request-id> argument is the request ID from the original IPP request, "
-"typically 1. The I<limit> argument is the limit value from the original IPP "
-"request - 0 means no limit. The I<user-id> argument is the requesting-user-"
-"name value from the original IPP request.  Finally, the I<options> argument "
-"is a space-delimited list of attributes (\"name=value name=value ...\") that "
-"were passed in with the request. Currently I<cups-deviced> looks for the "
-"I<requested-attributes> attribute and tailors the output accordingly."
+"I<cups-deviced> polls the backends in I</usr/lib/cups/backend> or I</usr/"
+"libexec/cups/backend> (OS X) for a list of available devices. It is run by "
+"I<cupsd(8)> in response to a I<CUPS-Get-Devices> request. The output format "
+"is an IPP response message. The I<request-id> argument is the request ID "
+"from the original IPP request, typically 1. The I<limit> argument is the "
+"limit value from the original IPP request - 0 means no limit. The I<user-id> "
+"argument is the requesting-user-name value from the original IPP request.  "
+"Finally, the I<options> argument is a space-delimited list of attributes "
+"(\"name=value name=value ...\") that were passed in with the request. "
+"Currently I<cups-deviced> looks for the I<requested-attributes> attribute "
+"and tailors the output accordingly."
 msgstr ""
 "I<cups-deviced> befragt die Backends in I<@CUPS_SERVERBIN@/backend> nach "
 "einer Liste verfügbarer Geräte. Es wird von I<cupsd(8)> als Reaktion auf "
@@ -4221,12 +4271,6 @@ msgstr "backend(7), cupsd(8), cupsd.conf(5),"
 msgid "cupsd"
 msgstr "cupsd"
 
-#. type: TH
-#: cupsd.man.in:15
-#, no-wrap
-msgid "9 March 2009"
-msgstr "9. März 2009"
-
 #. type: Plain text
 #: cupsd.man.in:18
 msgid "cupsd - cups scheduler"
@@ -4240,11 +4284,17 @@ msgstr "B<cupsd> [ -c I<Konfig-Datei> ] [ -f ] [ -F ] [ -h ] [ -l ] [ -t ]"
 # type: Plain text
 #. type: Plain text
 #: cupsd.man.in:28
+#, fuzzy
+#| msgid ""
+#| "I<cupsd> is the scheduler for CUPS. It implements a printing system based "
+#| "upon the Internet Printing Protocol, version 2.1.  If no options are "
+#| "specified on the command-line then the default configuration file "
+#| "I<@CUPS_SERVERROOT@/cupsd.conf> will be used."
 msgid ""
 "I<cupsd> is the scheduler for CUPS. It implements a printing system based "
 "upon the Internet Printing Protocol, version 2.1.  If no options are "
-"specified on the command-line then the default configuration file "
-"I<@CUPS_SERVERROOT@/cupsd.conf> will be used."
+"specified on the command-line then the default configuration file I</etc/"
+"cups/cupsd.conf> will be used."
 msgstr ""
 "I<cupsd> ist der Auftragsplaner (Scheduler) für das Common UNIX Printing "
 "System. Es implementiert ein Drucksystem, das auf dem Internet Printing "
@@ -4316,7 +4366,7 @@ msgstr "Zeigt die Programm-Verwendung."
 
 # type: TP
 #. type: TP
-#: cupsd.man.in:48 ipptool.man:83 lpinfo.man:69 lpoptions.man.in:84 lpq.man:59
+#: cupsd.man.in:48 ipptool.man:91 lpinfo.man:69 lpoptions.man.in:84 lpq.man:59
 #: lpr.man:80 lpstat.man:87
 #, no-wrap
 msgid "-l"
@@ -4332,7 +4382,7 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cupsd.man.in:53 ipptool.man:89 lpstat.man:112
+#: cupsd.man.in:53 ipptool.man:97 lpstat.man:112
 #, no-wrap
 msgid "-t"
 msgstr "-t"
@@ -4355,24 +4405,18 @@ msgstr ""
 #: cupsd.man.in:66
 msgid ""
 "I<backend(7)>, I<classes.conf(5)>, I<cups-deviced(8)>, I<cups-driverd(8)>, "
-"I<cups-lpd(8)>, I<cups-polld(8)>, I<cupsd.conf(5)>, I<filter(7)>, I<launchd"
-"(8)>, I<mime.convs(5)>, I<mime.types(5)>, I<printers.conf(5)>,"
+"I<cups-lpd(8)>, I<cups-polld(8)>, I<cupsd.conf(5)>, I<filter(7)>, "
+"I<launchd(8)>, I<mime.convs(5)>, I<mime.types(5)>, I<printers.conf(5)>,"
 msgstr ""
 "I<backend(7)>, I<classes.conf(5)>, I<cups-deviced(8)>, I<cups-driverd(8)>, "
-"I<cups-lpd(8)>, I<cups-polld(8)>, I<cupsd.conf(5)>, I<filter(7)>, I<launchd"
-"(8)>, I<mime.convs(5)>, I<mime.types(5)>, I<printers.conf(5)>,"
+"I<cups-lpd(8)>, I<cups-polld(8)>, I<cupsd.conf(5)>, I<filter(7)>, "
+"I<launchd(8)>, I<mime.convs(5)>, I<mime.types(5)>, I<printers.conf(5)>,"
 
 #. type: TH
 #: cups-driverd.man.in:15
 #, no-wrap
 msgid "cups-driverd"
 msgstr "cups-driverd"
-
-#. type: TH
-#: cups-driverd.man.in:15
-#, no-wrap
-msgid "6 January 2011"
-msgstr "6. Januar 2011"
 
 #. type: Plain text
 #: cups-driverd.man.in:18
@@ -4435,12 +4479,21 @@ msgstr "TREIBER"
 
 #. type: Plain text
 #: cups-driverd.man.in:51
+#, fuzzy
+#| msgid ""
+#| "Drivers can be static PPD files under the I<@CUPS_DATADIR@/model> "
+#| "directory or programs under the I<@CUPS_SERVERBIN@/driver> directory. "
+#| "Static PPD files must conform to the Adobe PPD File Format Specification "
+#| "version 4.3 and may be compressed using the I<gzip(1)> program. Driver "
+#| "programs must implement the command-line interface shown in the next "
+#| "section."
 msgid ""
-"Drivers can be static PPD files under the I<@CUPS_DATADIR@/model> directory "
-"or programs under the I<@CUPS_SERVERBIN@/driver> directory. Static PPD files "
-"must conform to the Adobe PPD File Format Specification version 4.3 and may "
-"be compressed using the I<gzip(1)> program. Driver programs must implement "
-"the command-line interface shown in the next section."
+"Drivers can be static PPD files under the I</usr/share/cups/model> directory "
+"or programs under the I</usr/lib/cups/driver> or I</usr/libexec/cups/driver> "
+"(OS X) directories.  Static PPD files must conform to the Adobe PPD File "
+"Format Specification version 4.3 and may be compressed using the I<gzip(1)> "
+"program. Driver programs must implement the command-line interface shown in "
+"the next section."
 msgstr ""
 "Treiber können statische PPD-Dateien unterhalb des Verzeichnisses "
 "I<@CUPS_DATADIR@/model> oder Programme unterhalb des Verzeichnisses "
@@ -4711,7 +4764,7 @@ msgstr "Verwendet den angegebenen Benutzernamen bei Verbindungen zum Server."
 
 # type: TP
 #. type: TP
-#: cupsenable.man:47 ipptool.man:71 lp.man:85
+#: cupsenable.man:47 ipptool.man:79 lp.man:85
 #, no-wrap
 msgid "-c"
 msgstr "-c"
@@ -5022,12 +5075,6 @@ msgstr "I<cupsd.conf(5)>"
 msgid "cups-lpd"
 msgstr "cups-lpd"
 
-#. type: TH
-#: cups-lpd.man.in:15
-#, no-wrap
-msgid "4 August 2008"
-msgstr "4. August 2008"
-
 #. type: Plain text
 #: cups-lpd.man.in:18
 msgid "cups-lpd - receive print jobs and report printer status to lpd clients"
@@ -5059,9 +5106,12 @@ msgstr ""
 # type: Plain text
 #. type: Plain text
 #: cups-lpd.man.in:38
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "    printer stream tcp nowait lp @CUPS_SERVERBIN@/daemon/cups-lpd cups-lpd \\e\n"
+#| "        -o document-format=application/octet-stream\n"
 msgid ""
-"    printer stream tcp nowait lp @CUPS_SERVERBIN@/daemon/cups-lpd cups-lpd \\e\n"
+"    printer stream tcp nowait lp /usr/lib/cups/daemon/cups-lpd cups-lpd \\e\n"
 "        -o document-format=application/octet-stream\n"
 msgstr ""
 "    printer stream tcp nowait lp @CUPS_SERVERBIN@/daemon/cups-lpd cups-lpd \\e\n"
@@ -5071,8 +5121,8 @@ msgstr ""
 #. type: Plain text
 #: cups-lpd.man.in:44
 msgid ""
-"B<Note:> If you are using Solaris 10 or higher, you must run the I<inetdconv"
-"(1m)> program to register the changes to the inetd.conf file."
+"B<Note:> If you are using Solaris 10 or higher, you must run the "
+"I<inetdconv(1m)> program to register the changes to the inetd.conf file."
 msgstr ""
 "B<Hinweis:> Falls Sie Solaris 10 oder höher betreiben, müssen Sie das "
 "Programm I<inetdconv(1m)> ausführen, um die Änderungen an der Datei inetd."
@@ -5091,7 +5141,19 @@ msgstr ""
 # type: Plain text
 #. type: Plain text
 #: cups-lpd.man.in:61
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "    service printer\n"
+#| "    {\n"
+#| "        socket_type = stream\n"
+#| "        protocol = tcp\n"
+#| "        wait = no\n"
+#| "        user = lp\n"
+#| "\tgroup = sys\n"
+#| "\tpassenv =\n"
+#| "        server = @CUPS_SERVERBIN@/daemon/cups-lpd\n"
+#| "\tserver_args = -o document-format=application/octet-stream\n"
+#| "    }\n"
 msgid ""
 "    service printer\n"
 "    {\n"
@@ -5101,7 +5163,7 @@ msgid ""
 "        user = lp\n"
 "\tgroup = sys\n"
 "\tpassenv =\n"
-"        server = @CUPS_SERVERBIN@/daemon/cups-lpd\n"
+"        server = /usr/lib/cups/daemon/cups-lpd\n"
 "\tserver_args = -o document-format=application/octet-stream\n"
 "    }\n"
 msgstr ""
@@ -5436,6 +5498,12 @@ msgstr "cups-snmp(8),"
 msgid "cupstestdsc"
 msgstr "cupstestdsc"
 
+#. type: TH
+#: cupstestdsc.man:15 mime.convs.man:15
+#, no-wrap
+msgid "20 March 2006"
+msgstr "20. März 2006"
+
 #. type: Plain text
 #: cupstestdsc.man:18
 msgid "cupstestdsc - test conformance of postscript files"
@@ -5532,8 +5600,8 @@ msgstr ""
 msgid ""
 "B<cupstestppd> [ -R I<rootdir> ] [ -W I<category> ] [ -q ] [-r] [ -v[v] ] -"
 msgstr ""
-"B<cupstestppd> [ -R I<Wurzelverz> ] [ -W I<Kategorie> ] [ -q ] [-r] [ -v"
-"[v] ] -"
+"B<cupstestppd> [ -R I<Wurzelverz> ] [ -W I<Kategorie> ] [ -q ] [-r] [ -"
+"v[v] ] -"
 
 #. type: Plain text
 #: cupstestppd.man:40
@@ -6583,11 +6651,13 @@ msgstr "I<backend(7)>, I<cupsd(8)>, I<cupsfilter(8)>,"
 msgid "ipptool"
 msgstr "ipptool"
 
+# type: TH
 #. type: TH
-#: ipptool.man:14
-#, no-wrap
-msgid "9 November 2010"
-msgstr "9. November 2010"
+#: ipptool.man:14 ipptoolfile.man:14
+#, fuzzy, no-wrap
+#| msgid "13 May 2009"
+msgid "13 May 2013"
+msgstr "13. Mai 2009"
 
 #. type: Plain text
 #: ipptool.man:17
@@ -6595,12 +6665,19 @@ msgid "ipptool - perform internet printing protocol requests"
 msgstr "ipptool - Internet-Printing-Protocol-Abfragen durchführen"
 
 #. type: Plain text
-#: ipptool.man:37
+#: ipptool.man:38
+#, fuzzy
+#| msgid ""
+#| "B<ipptool> [ -4 ] [ -6 ] [ -C ] [ -E ] [ -I ] [ -L ] [ -S ] [ -T "
+#| "I<seconds> ] [ -V I<version> ] [ -X ] [ -c ] [ -d I<name=value> ] [ -f "
+#| "I<filename> ] [ -i I<seconds> ] [ -n I<repeat-count> ] [ -q ] [ -t ] [ -"
+#| "v ] I<URI> I<filename> [ I<... filenameN> ]"
 msgid ""
-"B<ipptool> [ -4 ] [ -6 ] [ -C ] [ -E ] [ -I ] [ -L ] [ -S ] [ -T "
-"I<seconds> ] [ -V I<version> ] [ -X ] [ -c ] [ -d I<name=value> ] [ -f "
-"I<filename> ] [ -i I<seconds> ] [ -n I<repeat-count> ] [ -q ] [ -t ] [ -v ] "
-"I<URI> I<filename> [ I<... filenameN> ]"
+"B<ipptool> [ --help ] [ --stop-after-include-error ] [ --version ] [ -4 ] "
+"[ -6 ] [ -C ] [ -E ] [ -I ] [ -L ] [ -S ] [ -T I<seconds> ] [ -V "
+"I<version> ] [ -X ] [ -c ] [ -d I<name=value> ] [ -f I<filename> ] [ -i "
+"I<seconds> ] [ -n I<repeat-count> ] [ -q ] [ -t ] [ -v ] I<URI> I<filename> "
+"[ I<... filenameN> ]"
 msgstr ""
 "B<ipptool> [ -4 ] [ -6 ] [ -C ] [ -E ] [ -I ] [ -L ] [ -S ] [ -T "
 "I<Sekunden> ] [ -V I<Version> ] [ -X ] [ -c ] [ -d I<Name=Wert> ] [ -f "
@@ -6608,7 +6685,7 @@ msgstr ""
 "t ] [ -v ] I<URI> I<Dateiname> [ I<… DateinameN> ]"
 
 #. type: Plain text
-#: ipptool.man:39
+#: ipptool.man:40
 msgid ""
 "I<ipptool> sends IPP requests to the specified URI and tests and/or displays "
 "the results. Each named file defines one or more requests, including the "
@@ -6626,18 +6703,27 @@ msgstr ""
 "in I<ipptoolfile(5)> beschrieben."
 
 #. type: Plain text
-#: ipptool.man:41
+#: ipptool.man:42
 msgid "The following options are recognized by I<ipptool>:"
 msgstr "Die folgenden Optionen werden von I<ipptool> erkannt:"
 
+#. type: Plain text
+#: ipptool.man:49
+msgid ""
+"Shows program help.  --stop-after-include-error Tells I<ipptool> to stop if "
+"an error occurs in an included file. Normally I<ipptool> will continue with "
+"subsequent tests after the INCLUDE directive.  --version Shows the version "
+"of I<ipptool> being used."
+msgstr ""
+
 #. type: TP
-#: ipptool.man:41
+#: ipptool.man:49
 #, no-wrap
 msgid "-4"
 msgstr "-4"
 
 #. type: Plain text
-#: ipptool.man:44
+#: ipptool.man:52
 msgid ""
 "Specifies that I<ipptool> must connect to the printer or server using IPv4."
 msgstr ""
@@ -6645,13 +6731,13 @@ msgstr ""
 "verbinden muss."
 
 #. type: TP
-#: ipptool.man:44
+#: ipptool.man:52
 #, no-wrap
 msgid "-6"
 msgstr "-6"
 
 #. type: Plain text
-#: ipptool.man:47
+#: ipptool.man:55
 msgid ""
 "Specifies that I<ipptool> must connect to the printer or server using IPv6."
 msgstr ""
@@ -6659,13 +6745,13 @@ msgstr ""
 "verbinden muss."
 
 #. type: TP
-#: ipptool.man:47
+#: ipptool.man:55
 #, no-wrap
 msgid "-C"
 msgstr "-C"
 
 #. type: Plain text
-#: ipptool.man:50
+#: ipptool.man:58
 msgid ""
 "Specifies that requests should be sent using the HTTP/1.1 \"Transfer-"
 "Encoding: chunked\" header, which is required for conformance by all "
@@ -6680,7 +6766,7 @@ msgstr ""
 "Dateien verwandt."
 
 #. type: Plain text
-#: ipptool.man:53
+#: ipptool.man:61
 msgid ""
 "Forces TLS encryption when connecting to the server using the HTTP \"Upgrade"
 "\" header."
@@ -6689,24 +6775,24 @@ msgstr ""
 "»Upgrade«."
 
 #. type: TP
-#: ipptool.man:53
+#: ipptool.man:61
 #, no-wrap
 msgid "-I"
 msgstr "-I"
 
 #. type: Plain text
-#: ipptool.man:56
+#: ipptool.man:64
 msgid "Specifies that I<ipptool> will continue past errors."
 msgstr "Spezifiziert, dass I<ipptool> bei Fehlern fortfahren soll."
 
 #. type: TP
-#: ipptool.man:56
+#: ipptool.man:64
 #, no-wrap
 msgid "-L"
 msgstr "-L"
 
 #. type: Plain text
-#: ipptool.man:59
+#: ipptool.man:67
 msgid ""
 "Specifies that requests should be sent using the HTTP/1.0 \"Content-Length:"
 "\" header, which is required for conformance by all versions of IPP. The "
@@ -6720,35 +6806,35 @@ msgstr ""
 "Dateien verwandt."
 
 #. type: TP
-#: ipptool.man:59
+#: ipptool.man:67
 #, no-wrap
 msgid "-S"
 msgstr "-S"
 
 #. type: Plain text
-#: ipptool.man:62
+#: ipptool.man:70
 msgid "Forces (dedicated) SSL encryption when connecting to the server."
 msgstr "Erzwingt (dedizierte) SSL-Verschlüsselung bei Verbindungen zum Server."
 
 #. type: TP
-#: ipptool.man:62
+#: ipptool.man:70
 #, no-wrap
 msgid "-T seconds"
 msgstr "-T Sekunden"
 
 #. type: Plain text
-#: ipptool.man:65
+#: ipptool.man:73
 msgid "Specifies a timeout for IPP requests in seconds."
 msgstr "Spezifiziert eine Zeitüberschreitung in Sekunden für IPP-Anfragen."
 
 #. type: TP
-#: ipptool.man:65
+#: ipptool.man:73
 #, no-wrap
 msgid "-V version"
 msgstr "-V --version"
 
 #. type: Plain text
-#: ipptool.man:68
+#: ipptool.man:76
 msgid ""
 "Specifies the default IPP version to use: 1.0, 1.1, 2.0, 2.1, or 2.2. If not "
 "specified, version 1.1 is used."
@@ -6757,13 +6843,13 @@ msgstr ""
 "oder 2.2. Falls nicht angegeben, wird Version 1.1 verwandt."
 
 #. type: TP
-#: ipptool.man:68
+#: ipptool.man:76
 #, no-wrap
 msgid "-X"
 msgstr "-X"
 
 #. type: Plain text
-#: ipptool.man:71
+#: ipptool.man:79
 msgid ""
 "Specifies that XML (Apple plist) output is desired instead of the plain text "
 "report. This option is incompatible with the I<-i> (interval) and I<-n> "
@@ -6774,7 +6860,7 @@ msgstr ""
 "i> (Interval) und I<-n> (Anzahl-Wiederholungen)."
 
 #. type: Plain text
-#: ipptool.man:74
+#: ipptool.man:82
 msgid ""
 "Specifies that CSV (comma-separated values) output is desired instead of the "
 "plain text output."
@@ -6783,35 +6869,35 @@ msgstr ""
 "Textberichts erwünscht ist."
 
 #. type: TP
-#: ipptool.man:74
+#: ipptool.man:82
 #, no-wrap
 msgid "-d name=value"
 msgstr "-d Name=Wert"
 
 #. type: Plain text
-#: ipptool.man:77
+#: ipptool.man:85
 msgid "Defines the named variable."
 msgstr "Definiert die genannte Variable."
 
 #. type: TP
-#: ipptool.man:77
+#: ipptool.man:85
 #, no-wrap
 msgid "-f filename"
 msgstr "-f Dateiname"
 
 #. type: Plain text
-#: ipptool.man:80
+#: ipptool.man:88
 msgid "Defines the default request filename for tests."
 msgstr "Definiert den Standardanfragedateinamen für Tests."
 
 #. type: TP
-#: ipptool.man:80
+#: ipptool.man:88
 #, no-wrap
 msgid "-i seconds"
 msgstr "-i Sekunden"
 
 #. type: Plain text
-#: ipptool.man:83
+#: ipptool.man:91
 msgid ""
 "Specifies that the (last) file should be repeated at the specified interval. "
 "This option is incompatible with the I<-X> (XML plist output) option."
@@ -6821,18 +6907,18 @@ msgstr ""
 "(XML-Plist-Ausgabe)."
 
 #. type: Plain text
-#: ipptool.man:86
+#: ipptool.man:94
 msgid "Specifies that plain text output is desired."
 msgstr "Spezifiziert, dass die Ausgabe als einfacher Text erwünscht ist."
 
 #. type: TP
-#: ipptool.man:86
+#: ipptool.man:94
 #, no-wrap
 msgid "-n repeat-count"
 msgstr "-n Anzahl-Wiederholungen"
 
 #. type: Plain text
-#: ipptool.man:89
+#: ipptool.man:97
 msgid ""
 "Specifies that the (last) file should be repeated the specified number of "
 "times. This option is incompatible with the I<-X> (XML plist output) option."
@@ -6842,7 +6928,7 @@ msgstr ""
 "(XML-Plist-Ausgabe)."
 
 #. type: Plain text
-#: ipptool.man:92
+#: ipptool.man:100
 msgid ""
 "Specifies that CUPS test report output is desired instead of the plain text "
 "output."
@@ -6851,7 +6937,7 @@ msgstr ""
 "erwünscht ist."
 
 #. type: Plain text
-#: ipptool.man:95
+#: ipptool.man:103
 msgid ""
 "Specifies that all request and response attributes should be output in CUPS "
 "test mode (I<-t>). This is the default for XML output."
@@ -6859,24 +6945,37 @@ msgstr ""
 "Spezifiziert, dass alle Anfrag- und Antwort-Attribute im CUPS-Testmodus (I<-"
 "t>) ausgegeben werden sollen. Dies ist die Vorgabe für XML-Ausgabe."
 
+#. type: SH
+#: ipptool.man:103
+#, fuzzy, no-wrap
+#| msgid "EXIT CODES"
+msgid "EXIT CODE"
+msgstr "EXIT-CODES"
+
 #. type: Plain text
-#: ipptool.man:97
+#: ipptool.man:105
+msgid ""
+"The I<ipptool> program returns 0 if all tests were sucessful and 1 otherwise."
+msgstr ""
+
+#. type: Plain text
+#: ipptool.man:107
 msgid "The I<ipptool> program is unique to CUPS."
 msgstr "Der Befehl I<ipptool> ist eine Besonderheit von CUPS."
 
 #. type: Plain text
-#: ipptool.man:99
+#: ipptool.man:109
 msgid "Get a list of completed jobs for \"myprinter\":"
 msgstr "Eine Liste von abgeschlossenen Aufträgen für »MeinDrucker« ermitteln:"
 
 #. type: Plain text
-#: ipptool.man:101
+#: ipptool.man:111
 #, no-wrap
 msgid "    ipptool ipp://localhost/printers/myprinter get-completed-jobs.test\n"
 msgstr "    ipptool ipp://localhost/printers/MeinDrucker get-completed-jobs.test\n"
 
 #. type: Plain text
-#: ipptool.man:104
+#: ipptool.man:114
 msgid ""
 "Send email notifications to \"user@example.com\" when \"myprinter\" changes:"
 msgstr ""
@@ -6884,25 +6983,49 @@ msgstr ""
 "»MeinDrucker« ändert:"
 
 #. type: Plain text
-#: ipptool.man:107
+#: ipptool.man:117
 #, no-wrap
 msgid "    ipptool -d recipient=mailto:user@example.com         ipp://localhost/printers/myprinter create-printer-subscription.test\n"
 msgstr "    ipptool -d recipient=mailto:user@example.com         ipp://localhost/printers/MeinDrucker create-printer-subscription.test\n"
 
 #. type: SH
-#: ipptool.man:108
+#: ipptool.man:118
 #, no-wrap
 msgid "STANDARD FILES"
 msgstr "STANDARD-DATEIEN"
 
 #. type: Plain text
-#: ipptool.man:110
+#: ipptool.man:120
 msgid "The following standard files are available:"
 msgstr "Die folgenden Standarddateien sind verfügbar:"
 
 #. type: Plain text
-#: ipptool.man:134
-#, no-wrap
+#: ipptool.man:151
+#, fuzzy, no-wrap
+#| msgid ""
+#| "    color.jpg\n"
+#| "    create-printer-subscription.test\n"
+#| "    document-a4.pdf\n"
+#| "    document-a4.ps\n"
+#| "    document-letter.pdf\n"
+#| "    document-letter.ps\n"
+#| "    get-completed-jobs.test\n"
+#| "    get-jobs.test\n"
+#| "    get-printer-attributes.test\n"
+#| "    gray.jpg\n"
+#| "    ipp-1.1.test\n"
+#| "    ipp-2.0.test\n"
+#| "    ipp-2.1.test\n"
+#| "    ipp-2.2.test\n"
+#| "    onepage-a4.pdf\n"
+#| "    onepage-a4.ps\n"
+#| "    onepage-letter.pdf\n"
+#| "    onepage-letter.ps\n"
+#| "    print-job.test\n"
+#| "    testfile.jpg\n"
+#| "    testfile.pdf\n"
+#| "    testfile.ps\n"
+#| "    testfile.txt\n"
 msgid ""
 "    color.jpg\n"
 "    create-printer-subscription.test\n"
@@ -6912,21 +7035,28 @@ msgid ""
 "    document-letter.ps\n"
 "    get-completed-jobs.test\n"
 "    get-jobs.test\n"
+"    get-notifications.test\n"
 "    get-printer-attributes.test\n"
+"    get-subscriptions.test\n"
 "    gray.jpg\n"
 "    ipp-1.1.test\n"
 "    ipp-2.0.test\n"
 "    ipp-2.1.test\n"
 "    ipp-2.2.test\n"
+"    ipp-everywhere.test\n"
 "    onepage-a4.pdf\n"
 "    onepage-a4.ps\n"
 "    onepage-letter.pdf\n"
 "    onepage-letter.ps\n"
 "    print-job.test\n"
+"    print-job-deflate.test\n"
+"    print-job-gzip.test\n"
 "    testfile.jpg\n"
+"    testfile.pcl\n"
 "    testfile.pdf\n"
 "    testfile.ps\n"
 "    testfile.txt\n"
+"    validate-job.test\n"
 msgstr ""
 "    color.jpg\n"
 "    create-printer-subscription.test\n"
@@ -6953,7 +7083,7 @@ msgstr ""
 "    testfile.txt\n"
 
 #. type: Plain text
-#: ipptool.man:137
+#: ipptool.man:154
 msgid "I<ipptoolfile(5)>,"
 msgstr "I<ipptoolfile(5)>,"
 
@@ -6962,12 +7092,6 @@ msgstr "I<ipptoolfile(5)>,"
 #, no-wrap
 msgid "ipptoolfile"
 msgstr "ipptoolfile"
-
-#. type: TH
-#: ipptoolfile.man:14
-#, no-wrap
-msgid "10 January 2013"
-msgstr "10. Januar 2013"
 
 #. type: Plain text
 #: ipptoolfile.man:17
@@ -7149,19 +7273,33 @@ msgstr ""
 "bereits einen Wert hat."
 
 #. type: TP
-#: ipptoolfile.man:80 ipptoolfile.man:176
+#: ipptoolfile.man:80
+#, no-wrap
+msgid "FILE-ID \"identifier\""
+msgstr ""
+
+# type: Plain text
+#. type: Plain text
+#: ipptoolfile.man:83
+#, fuzzy
+#| msgid "Specifies the logging level for the ErrorLog file."
+msgid "Specifies an identifier string for the current file."
+msgstr "Spezifiziert die Protokollierungsstufe für die ErrorLog-Datei."
+
+#. type: TP
+#: ipptoolfile.man:83 ipptoolfile.man:193
 #, no-wrap
 msgid "IGNORE-ERRORS yes"
 msgstr "IGNORE-ERRORS yes"
 
 #. type: TP
-#: ipptoolfile.man:82 ipptoolfile.man:178
+#: ipptoolfile.man:85 ipptoolfile.man:195
 #, no-wrap
 msgid "IGNORE-ERRORS no"
 msgstr "IGNORE-ERRORS no"
 
 #. type: Plain text
-#: ipptoolfile.man:86
+#: ipptoolfile.man:89
 msgid ""
 "Specifies whether, by default, I<ipptool> will ignore errors and continue "
 "with subsequent tests."
@@ -7170,19 +7308,19 @@ msgstr ""
 "folgenden Tests fortfahren wird."
 
 #. type: TP
-#: ipptoolfile.man:86
+#: ipptoolfile.man:89
 #, no-wrap
 msgid "INCLUDE \"filename\""
 msgstr "INCLUDE \"Dateiname\""
 
 #. type: TP
-#: ipptoolfile.man:88
+#: ipptoolfile.man:91
 #, no-wrap
 msgid "INCLUDE E<lt>filenameE<gt>"
 msgstr "INCLUDE E<lt>DateinameE<gt>"
 
 #. type: Plain text
-#: ipptoolfile.man:93
+#: ipptoolfile.man:96
 msgid ""
 "Includes another test file. The first form includes a file relative to the "
 "current test file, while the second form includes a file from the I<ipptool> "
@@ -7193,19 +7331,19 @@ msgstr ""
 "I<ipptool>-Einbindeverzeichnis einbindet."
 
 #. type: TP
-#: ipptoolfile.man:93
+#: ipptoolfile.man:96
 #, no-wrap
 msgid "INCLUDE-IF-DEFINED name \"filename\""
 msgstr "INCLUDE-IF-DEFINED Name \"Dateiname\""
 
 #. type: TP
-#: ipptoolfile.man:95
+#: ipptoolfile.man:98
 #, no-wrap
 msgid "INCLUDE-IF-DEFINED name E<lt>filenameE<gt>"
 msgstr "INCLUDE-IF-DEFINED Name E<lt>DateinameE<gt>"
 
 #. type: Plain text
-#: ipptoolfile.man:100
+#: ipptoolfile.man:103
 msgid ""
 "Includes another test file if the named variable is defined. The first form "
 "includes a file relative to the current test file, while the second form "
@@ -7217,19 +7355,19 @@ msgstr ""
 "einbindet."
 
 #. type: TP
-#: ipptoolfile.man:100
+#: ipptoolfile.man:103
 #, no-wrap
 msgid "INCLUDE-IF-NOT-DEFINED name \"filename\""
 msgstr "INCLUDE-IF-NOT-DEFINED Name \"Dateiname\""
 
 #. type: TP
-#: ipptoolfile.man:102
+#: ipptoolfile.man:105
 #, no-wrap
 msgid "INCLUDE-IF-NOT-DEFINED name E<lt>filenameE<gt>"
 msgstr "INCLUDE-IF-NOT-DEFINED Name E<lt>DateinameE<gt>"
 
 #. type: Plain text
-#: ipptoolfile.man:107
+#: ipptoolfile.man:110
 msgid ""
 "Includes another test file if the named variable is not defined. The first "
 "form includes a file relative to the current test file, while the second "
@@ -7241,19 +7379,19 @@ msgstr ""
 "Einbindeverzeichnis einbindet."
 
 #. type: TP
-#: ipptoolfile.man:107 ipptoolfile.man:198
+#: ipptoolfile.man:110 ipptoolfile.man:215
 #, no-wrap
 msgid "SKIP-IF-DEFINED variable-name"
 msgstr "SKIP-IF-DEFINED Variablenname"
 
 #. type: TP
-#: ipptoolfile.man:109 ipptoolfile.man:200
+#: ipptoolfile.man:112 ipptoolfile.man:217
 #, no-wrap
 msgid "SKIP-IF-NOT-DEFINED variable-name"
 msgstr "SKIP-IF-NOT-DEFINED Variablenname"
 
 #. type: Plain text
-#: ipptoolfile.man:113
+#: ipptoolfile.man:116
 msgid ""
 "Specifies that the remainder of the test file should be skipped when the "
 "variable is or is not defined."
@@ -7262,13 +7400,39 @@ msgstr ""
 "Variable (nicht) definiert ist."
 
 #. type: TP
-#: ipptoolfile.man:113 ipptoolfile.man:215
+#: ipptoolfile.man:116
+#, fuzzy, no-wrap
+#| msgid "SKIP-PREVIOUS-ERROR no"
+msgid "STOP-AFTER-INCLUDE-ERROR no"
+msgstr "SKIP-PREVIOUS-ERROR no"
+
+#. type: TP
+#: ipptoolfile.man:118
+#, fuzzy, no-wrap
+#| msgid "SKIP-PREVIOUS-ERROR yes"
+msgid "STOP-AFTER-INCLUDE-ERROR yes"
+msgstr "SKIP-PREVIOUS-ERROR yes"
+
+#. type: Plain text
+#: ipptoolfile.man:121
+#, fuzzy
+#| msgid ""
+#| "Specifies that the current test should be skipped when the variable is or "
+#| "is not defined."
+msgid ""
+"Specifies whether tests will be stopped after an error in an included file."
+msgstr ""
+"Spezifiziert, dass der aktuelle Test übersprungen werden soll, wenn die "
+"Variable (nicht) definiert ist."
+
+#. type: TP
+#: ipptoolfile.man:121 ipptoolfile.man:235
 #, no-wrap
 msgid "TRANSFER auto"
 msgstr "TRANSFER auto"
 
 #. type: Plain text
-#: ipptoolfile.man:118
+#: ipptoolfile.man:126
 msgid ""
 "Specifies that tests will, by default, use \"Transfer-Encoding: chunked\" "
 "for requests with attached files and \"Content-Length:\" for requests "
@@ -7279,13 +7443,13 @@ msgstr ""
 "angehängte Dateien verwenden wird."
 
 #. type: TP
-#: ipptoolfile.man:118 ipptoolfile.man:219
+#: ipptoolfile.man:126 ipptoolfile.man:239
 #, no-wrap
 msgid "TRANSFER chunked"
 msgstr "TRANSFER chunked"
 
 #. type: Plain text
-#: ipptoolfile.man:124
+#: ipptoolfile.man:132
 msgid ""
 "Specifies that tests will, by default, use the HTTP/1.1 \"Transfer-Encoding: "
 "chunked\" header. This is the default and is equivalent to specifying \"-c\" "
@@ -7299,13 +7463,13 @@ msgstr ""
 "benötigt."
 
 #. type: TP
-#: ipptoolfile.man:124 ipptoolfile.man:223
+#: ipptoolfile.man:132 ipptoolfile.man:243
 #, no-wrap
 msgid "TRANSFER length"
 msgstr "TRANSFER length"
 
 #. type: Plain text
-#: ipptoolfile.man:130
+#: ipptoolfile.man:138
 msgid ""
 "Specifies that tests will, by default, use the HTTP/1.0 \"Content-Length:\" "
 "header. This is equivalent to specifying \"-l\" on the I<ipptool> command-"
@@ -7318,37 +7482,37 @@ msgstr ""
 "Abfragen wird für die Konformität mit allen Versionen von IPP benötigt."
 
 #. type: TP
-#: ipptoolfile.man:130 ipptoolfile.man:226
+#: ipptoolfile.man:138 ipptoolfile.man:246
 #, no-wrap
 msgid "VERSION 1.0"
 msgstr "VERSION 1.0"
 
 #. type: TP
-#: ipptoolfile.man:132 ipptoolfile.man:228
+#: ipptoolfile.man:140 ipptoolfile.man:248
 #, no-wrap
 msgid "VERSION 1.1"
 msgstr "VERSION 1.1"
 
 #. type: TP
-#: ipptoolfile.man:134 ipptoolfile.man:230
+#: ipptoolfile.man:142 ipptoolfile.man:250
 #, no-wrap
 msgid "VERSION 2.0"
 msgstr "VERSION 2.0"
 
 #. type: TP
-#: ipptoolfile.man:136 ipptoolfile.man:232
+#: ipptoolfile.man:144 ipptoolfile.man:252
 #, no-wrap
 msgid "VERSION 2.1"
 msgstr "VERSION 2.1"
 
 #. type: TP
-#: ipptoolfile.man:138 ipptoolfile.man:234
+#: ipptoolfile.man:146 ipptoolfile.man:254
 #, no-wrap
 msgid "VERSION 2.2"
 msgstr "VERSION 2.2"
 
 #. type: Plain text
-#: ipptoolfile.man:141
+#: ipptoolfile.man:149
 msgid ""
 "Specifies the default IPP version number to use for the tests that follow."
 msgstr ""
@@ -7356,24 +7520,24 @@ msgstr ""
 "Tests verwandt werden soll."
 
 #. type: SH
-#: ipptoolfile.man:142
+#: ipptoolfile.man:150
 #, no-wrap
 msgid "TEST DIRECTIVES"
 msgstr "TESTDIREKTIVEN"
 
 #. type: Plain text
-#: ipptoolfile.man:144
+#: ipptoolfile.man:152
 msgid "The following directives are understood in a test:"
 msgstr "Die nachfolgenden Direktiven werden in einem Test verstanden:"
 
 #. type: TP
-#: ipptoolfile.man:144
+#: ipptoolfile.man:152
 #, no-wrap
 msgid "ATTR tag attribute-name value(s)"
 msgstr "ATTR Markierung Attributname Wert(e)"
 
 #. type: Plain text
-#: ipptoolfile.man:148
+#: ipptoolfile.man:156
 msgid ""
 "Adds an attribute to the test request. Values are separated by the comma (\","
 "\")  character - escape commas using the \"\\e\" character. Possible "
@@ -7384,13 +7548,13 @@ msgstr ""
 "Attributnamen sind in RFC2911 definiert."
 
 #. type: TP
-#: ipptoolfile.man:148
+#: ipptoolfile.man:156
 #, no-wrap
 msgid "ATTR collection attribute-name { MEMBER tag member-name value(s) ... } [ ... { ... } ]"
 msgstr "ATTR Sammlung Attributname { MEMBER Markierung Mitgliedsname Wert(e) … } [ … { … } ]"
 
 #. type: Plain text
-#: ipptoolfile.man:153
+#: ipptoolfile.man:161
 msgid ""
 "Adds a collection attribute to the test request. Member attributes follow "
 "the same syntax as regular attributes and can themselves be nested "
@@ -7402,24 +7566,49 @@ msgstr ""
 "angegeben werden."
 
 #. type: TP
-#: ipptoolfile.man:153
+#: ipptoolfile.man:161
+#, no-wrap
+msgid "COMPRESSION deflate"
+msgstr ""
+
+#. type: TP
+#: ipptoolfile.man:163
+#, no-wrap
+msgid "COMPRESSION gzip"
+msgstr ""
+
+#. type: TP
+#: ipptoolfile.man:165
+#, no-wrap
+msgid "COMPRESSION none"
+msgstr ""
+
+#. type: Plain text
+#: ipptoolfile.man:170
+msgid ""
+"Uses the specified compression on the document data following the attributes "
+"in a Print-Job or Send-Document request."
+msgstr ""
+
+#. type: TP
+#: ipptoolfile.man:170
 #, no-wrap
 msgid "DELAY seconds"
 msgstr "DELAY Sekunden"
 
 #. type: Plain text
-#: ipptoolfile.man:156
+#: ipptoolfile.man:173
 msgid "Specifies a delay before this test will be run."
 msgstr "Spezifiziert eine Verzögerung, bevor der Test ausgeführt wird."
 
 #. type: TP
-#: ipptoolfile.man:156
+#: ipptoolfile.man:173
 #, no-wrap
 msgid "DISPLAY attribute-name"
 msgstr "DISPLAY Attributname"
 
 #. type: Plain text
-#: ipptoolfile.man:160
+#: ipptoolfile.man:177
 msgid ""
 "Specifies that value of the named attribute should be output as part of the "
 "test report."
@@ -7428,25 +7617,25 @@ msgstr ""
 "Testberichts ausgegeben werden soll."
 
 #. type: TP
-#: ipptoolfile.man:160
+#: ipptoolfile.man:177
 #, no-wrap
 msgid "EXPECT attribute-name [ predicate(s) ]"
 msgstr "EXPECT Attributname [ Eigenschaft(en) ]"
 
 #. type: TP
-#: ipptoolfile.man:162
+#: ipptoolfile.man:179
 #, no-wrap
 msgid "EXPECT ?attribute-name predicate(s)"
 msgstr "EXPECT ?Attributname Eigenschaft(en)"
 
 #. type: TP
-#: ipptoolfile.man:164
+#: ipptoolfile.man:181
 #, no-wrap
 msgid "EXPECT !attribute-name"
 msgstr "EXPECT !Attributname"
 
 #. type: Plain text
-#: ipptoolfile.man:169
+#: ipptoolfile.man:186
 msgid ""
 "Specifies that the response must/may/must not include the named attribute.  "
 "Additional requirements can be added as predicates - see the \"EXPECT "
@@ -7458,13 +7647,13 @@ msgstr ""
 "Informationen über Eigenschaften."
 
 #. type: TP
-#: ipptoolfile.man:169
+#: ipptoolfile.man:186
 #, no-wrap
 msgid "FILE filename"
 msgstr "FILE Dateiname"
 
 #. type: Plain text
-#: ipptoolfile.man:173
+#: ipptoolfile.man:190
 msgid ""
 "Specifies a file to include at the end of the request. This is typically "
 "used when sending a test print file."
@@ -7473,19 +7662,19 @@ msgstr ""
 "wird typischerweise verwandt, wenn eine Testausdrucksdatei gesandt wird."
 
 #. type: TP
-#: ipptoolfile.man:173
+#: ipptoolfile.man:190
 #, no-wrap
 msgid "GROUP tag"
 msgstr "GROUP Markierung"
 
 #. type: Plain text
-#: ipptoolfile.man:176
+#: ipptoolfile.man:193
 msgid "Specifies the group tag for subsequent attributes in the request."
 msgstr ""
 "Spezifiziert die Gruppenmarkierung für nachfolgende Attribute in der Anfrage."
 
 #. type: Plain text
-#: ipptoolfile.man:182
+#: ipptoolfile.man:199
 msgid ""
 "Specifies whether I<ipptool> will ignore errors and continue with subsequent "
 "tests."
@@ -7494,41 +7683,41 @@ msgstr ""
 "fortfahren soll."
 
 #. type: TP
-#: ipptoolfile.man:182
+#: ipptoolfile.man:199
 #, no-wrap
 msgid "NAME \"literal string\""
 msgstr "NAME \"Zeichenkette\""
 
 #. type: Plain text
-#: ipptoolfile.man:185
+#: ipptoolfile.man:202
 msgid "Specifies the human-readable name of the test."
 msgstr "Spezifiziert den menschenlesbaren Namen des Tests."
 
 #. type: TP
-#: ipptoolfile.man:185
+#: ipptoolfile.man:202
 #, no-wrap
 msgid "OPERATION operation-code"
 msgstr "OPERATION Operationscode"
 
 #. type: Plain text
-#: ipptoolfile.man:188
+#: ipptoolfile.man:205
 msgid "Specifies the operation to be performed."
 msgstr "Spezifziert die auszuführende Operation."
 
 #. type: TP
-#: ipptoolfile.man:188
+#: ipptoolfile.man:205
 #, no-wrap
 msgid "REQUEST-ID number"
 msgstr "REQUEST-ID Nummer"
 
 #. type: TP
-#: ipptoolfile.man:190
+#: ipptoolfile.man:207
 #, no-wrap
 msgid "REQUEST-ID random"
 msgstr "REQUEST-ID random"
 
 #. type: Plain text
-#: ipptoolfile.man:194
+#: ipptoolfile.man:211
 msgid ""
 "Specifies the request-id value to use in the request, either an integer or "
 "the word \"random\" to use a randomly generated value (the default)."
@@ -7538,13 +7727,13 @@ msgstr ""
 "verwenden (Vorgabe)."
 
 #. type: TP
-#: ipptoolfile.man:194
+#: ipptoolfile.man:211
 #, no-wrap
 msgid "RESOURCE path"
 msgstr "RESOURCE Pfad"
 
 #. type: Plain text
-#: ipptoolfile.man:198
+#: ipptoolfile.man:215
 msgid ""
 "Specifies an alternate resource path that is used for the HTTP POST "
 "request.  The default is the resource from the URI provided to the "
@@ -7555,7 +7744,7 @@ msgstr ""
 "I<ipptool> übergebenen URI entstammt."
 
 #. type: Plain text
-#: ipptoolfile.man:204
+#: ipptoolfile.man:221
 msgid ""
 "Specifies that the current test should be skipped when the variable is or is "
 "not defined."
@@ -7564,19 +7753,19 @@ msgstr ""
 "Variable (nicht) definiert ist."
 
 #. type: TP
-#: ipptoolfile.man:204
+#: ipptoolfile.man:221
 #, no-wrap
 msgid "SKIP-PREVIOUS-ERROR yes"
 msgstr "SKIP-PREVIOUS-ERROR yes"
 
 #. type: TP
-#: ipptoolfile.man:206
+#: ipptoolfile.man:223
 #, no-wrap
 msgid "SKIP-PREVIOUS-ERROR no"
 msgstr "SKIP-PREVIOUS-ERROR no"
 
 #. type: Plain text
-#: ipptoolfile.man:210
+#: ipptoolfile.man:227
 msgid ""
 "Specifies whether I<ipptool> will skip the current test if the previous test "
 "resulted in an error/failure."
@@ -7585,13 +7774,13 @@ msgstr ""
 "vorhergehende Test zu einem Fehler/Fehlschlag führte."
 
 #. type: TP
-#: ipptoolfile.man:210
+#: ipptoolfile.man:227
 #, no-wrap
 msgid "STATUS status-code [ predicate ]"
 msgstr "STATUS Status-Code [ Eigenschaft ]"
 
 #. type: Plain text
-#: ipptoolfile.man:215
+#: ipptoolfile.man:232
 msgid ""
 "Specifies an expected response status-code value. Additional requirements "
 "can be added as predicates - see the \"STATUS PREDICATES\" section for more "
@@ -7602,8 +7791,22 @@ msgstr ""
 "Abschnitt »EXPECT-EIGENSCHAFTEN« für weitere Informationen über "
 "Eigenschaften."
 
+#. type: TP
+#: ipptoolfile.man:232
+#, no-wrap
+msgid "TEST-ID \"identifier\""
+msgstr ""
+
+# type: Plain text
 #. type: Plain text
-#: ipptoolfile.man:219
+#: ipptoolfile.man:235
+#, fuzzy
+#| msgid "Specifies a new option for the named destination."
+msgid "Specifies an identifier string for the current test."
+msgstr "Spezifiziert eine neue Option für das benannte Ziel."
+
+#. type: Plain text
+#: ipptoolfile.man:239
 msgid ""
 "Specifies that this test will use \"Transfer-Encoding: chunked\" if it has "
 "an attached file or \"Content-Length:\" otherwise."
@@ -7612,7 +7815,7 @@ msgstr ""
 "er eine angehängt Datei hat und »Content-Length:« andernfalls."
 
 #. type: Plain text
-#: ipptoolfile.man:223
+#: ipptoolfile.man:243
 msgid ""
 "Specifies that this test will use the HTTP/1.1 \"Transfer-Encoding: chunked"
 "\" header."
@@ -7621,7 +7824,7 @@ msgstr ""
 "chunked« verwenden wird."
 
 #. type: Plain text
-#: ipptoolfile.man:226
+#: ipptoolfile.man:246
 msgid ""
 "Specifies that this test will use the HTTP/1.0 \"Content-Length:\" header."
 msgstr ""
@@ -7629,18 +7832,18 @@ msgstr ""
 "verwenden wird."
 
 #. type: Plain text
-#: ipptoolfile.man:237
+#: ipptoolfile.man:257
 msgid "Specifies the IPP version number to use for this test."
 msgstr "Spezifiziert die für diesen Test zu verwendende IPP-Versionsnummer."
 
 #. type: SH
-#: ipptoolfile.man:238
+#: ipptoolfile.man:258
 #, no-wrap
 msgid "EXPECT PREDICATES"
 msgstr "EXPECT-EIGENSCHAFTEN"
 
 #. type: Plain text
-#: ipptoolfile.man:240
+#: ipptoolfile.man:260
 msgid ""
 "The following predicates are understood following the EXPECT test directive:"
 msgstr ""
@@ -7648,25 +7851,25 @@ msgstr ""
 "Direktiven verstanden:"
 
 #. type: TP
-#: ipptoolfile.man:240
+#: ipptoolfile.man:260
 #, no-wrap
 msgid "COUNT number"
 msgstr "COUNT Anzahl"
 
 #. type: Plain text
-#: ipptoolfile.man:243
+#: ipptoolfile.man:263
 msgid "Requires the EXPECT attribute to have the specified number of values."
 msgstr ""
 "Verlangt, dass das Attribut EXPECT die angegebene Anzahl an Werten hat."
 
 #. type: TP
-#: ipptoolfile.man:243 ipptoolfile.man:325
+#: ipptoolfile.man:263 ipptoolfile.man:375
 #, no-wrap
 msgid "DEFINE-MATCH variable-name"
 msgstr "DEFINE-MATCH Variablenname"
 
 #. type: Plain text
-#: ipptoolfile.man:247
+#: ipptoolfile.man:267
 msgid ""
 "Defines the variable to \"1\" when the EXPECT condition matches. A side-"
 "effect of this predicate is that this EXPECT will never fail a test."
@@ -7676,14 +7879,14 @@ msgstr ""
 "Test fehlschlägt."
 
 #. type: TP
-#: ipptoolfile.man:247 ipptoolfile.man:328
+#: ipptoolfile.man:267 ipptoolfile.man:378
 #, no-wrap
 msgid "DEFINE-NO-MATCH variable-name"
 msgstr "DEFINE-NO-MATCH Variablenname"
 
 # FIXME: s/side- effect/side-effect/
 #. type: Plain text
-#: ipptoolfile.man:251
+#: ipptoolfile.man:271
 msgid ""
 "Defines the variable to \"1\" when the EXPECT condition does not match. A "
 "side- effect of this predicate is that this EXPECT will never fail a test."
@@ -7693,13 +7896,13 @@ msgstr ""
 "Test fehlschlägt."
 
 #. type: TP
-#: ipptoolfile.man:251
+#: ipptoolfile.man:271
 #, no-wrap
 msgid "DEFINE-VALUE variable-name"
 msgstr "DEFINE-VALUE Variablenname"
 
 #. type: Plain text
-#: ipptoolfile.man:255
+#: ipptoolfile.man:275
 msgid ""
 "Defines the variable to the value of the attribute when the EXPECT condition "
 "matches. A side-effect of this predicate is that this EXPECT will never fail "
@@ -7710,13 +7913,13 @@ msgstr ""
 "bei einem Test fehlschlägt."
 
 #. type: TP
-#: ipptoolfile.man:255 ipptoolfile.man:331
+#: ipptoolfile.man:275 ipptoolfile.man:381
 #, no-wrap
 msgid "IF-DEFINED variable-name"
 msgstr "IF-DEFINED Variablenname"
 
 #. type: Plain text
-#: ipptoolfile.man:258
+#: ipptoolfile.man:278
 msgid ""
 "Makes the EXPECT conditions apply only if the specified variable is defined."
 msgstr ""
@@ -7724,13 +7927,13 @@ msgstr ""
 "definiert ist."
 
 #. type: TP
-#: ipptoolfile.man:258 ipptoolfile.man:334
+#: ipptoolfile.man:278 ipptoolfile.man:384
 #, no-wrap
 msgid "IF-NOT-DEFINED variable-name"
 msgstr "IF-NOT-DEFINED Variablenname"
 
 #. type: Plain text
-#: ipptoolfile.man:262
+#: ipptoolfile.man:282
 msgid ""
 "Makes the EXPECT conditions apply only if the specified variable is not "
 "defined."
@@ -7739,38 +7942,38 @@ msgstr ""
 "definiert ist."
 
 #. type: TP
-#: ipptoolfile.man:262
+#: ipptoolfile.man:282
 #, no-wrap
 msgid "IN-GROUP tag"
 msgstr "IN-GROUP Markierung"
 
 #. type: Plain text
-#: ipptoolfile.man:265
+#: ipptoolfile.man:285
 msgid "Requires the EXPECT attribute to be in the specified group tag."
 msgstr ""
 "Verlangt, dass das EXPECT-Attribut in der angegebenen Gruppenmarkierung ist."
 
 #. type: TP
-#: ipptoolfile.man:265
+#: ipptoolfile.man:285
 #, no-wrap
 msgid "OF-TYPE tag[,tag,...]"
 msgstr "OF-TYPE Markierung[,Markierung,…]"
 
 #. type: Plain text
-#: ipptoolfile.man:268
+#: ipptoolfile.man:288
 msgid "Requires the EXPECT attribute to use the specified value tag(s)."
 msgstr ""
 "Verlangt, dass das EXPECT-Attribut die angegebenen Wertemarkierung(en) "
 "verwendet."
 
 #. type: TP
-#: ipptoolfile.man:268 ipptoolfile.man:337
+#: ipptoolfile.man:288 ipptoolfile.man:387
 #, no-wrap
 msgid "REPEAT-LIMIT number"
 msgstr "REPEAT-LIMIT Anzahl"
 
 #. type: Plain text
-#: ipptoolfile.man:272 ipptoolfile.man:341
+#: ipptoolfile.man:292 ipptoolfile.man:391
 msgid ""
 "Specifies the maximum number of times to repeat. The default value is 1000."
 msgstr ""
@@ -7778,19 +7981,19 @@ msgstr ""
 "1000."
 
 #. type: TP
-#: ipptoolfile.man:272 ipptoolfile.man:341
+#: ipptoolfile.man:292 ipptoolfile.man:391
 #, no-wrap
 msgid "REPEAT-MATCH"
 msgstr "REPEAT-MATCH"
 
 #. type: TP
-#: ipptoolfile.man:274 ipptoolfile.man:343
+#: ipptoolfile.man:294 ipptoolfile.man:393
 #, no-wrap
 msgid "REPEAT-NO-MATCH"
 msgstr "REPEAT-NO-MATCH"
 
 #. type: Plain text
-#: ipptoolfile.man:278
+#: ipptoolfile.man:298
 msgid ""
 "Specifies that the current test should be repeated when the EXPECT condition "
 "matches or does not match."
@@ -7799,13 +8002,13 @@ msgstr ""
 "Bedingung (nicht) passt."
 
 #. type: TP
-#: ipptoolfile.man:278
+#: ipptoolfile.man:298
 #, no-wrap
 msgid "SAME-COUNT-AS attribute-name"
 msgstr "SAME-COUNT-AS Attributname"
 
 #. type: Plain text
-#: ipptoolfile.man:282
+#: ipptoolfile.man:302
 msgid ""
 "Requires the EXPECT attribute to have the same number of values as the "
 "specified parallel attribute."
@@ -7814,13 +8017,78 @@ msgstr ""
 "spezifizierte parallele Attribut hat."
 
 #. type: TP
-#: ipptoolfile.man:282
+#: ipptoolfile.man:302
+#, fuzzy, no-wrap
+#| msgid "WITH-ALL-VALUES \"literal string\""
+msgid "WITH-ALL-HOSTNAMES \"literal string\""
+msgstr "WITH-ALL-VALUES »Zeichenkette«"
+
+#. type: TP
+#: ipptoolfile.man:304
+#, fuzzy, no-wrap
+#| msgid "WITH-ALL-VALUES \"/regular expression/\""
+msgid "WITH-ALL-HOSTNAMES \"/regular expression/\""
+msgstr "WITH-ALL-VALUES \"/regulärer Ausdruck/\""
+
+#. type: Plain text
+#: ipptoolfile.man:307
+#, fuzzy
+#| msgid ""
+#| "Requires that all values of the EXPECT attribute match the boolean value "
+#| "given."
+msgid "Requires that all URI values contain a matching hostname."
+msgstr ""
+"Verlangt, dass alle Werte des EXPECT-Attributs auf den übergebenen logischen "
+"Wert passen."
+
+#. type: TP
+#: ipptoolfile.man:307
+#, fuzzy, no-wrap
+#| msgid "WITH-ALL-VALUES \"literal string\""
+msgid "WITH-ALL-RESOURCES \"literal string\""
+msgstr "WITH-ALL-VALUES »Zeichenkette«"
+
+#. type: TP
+#: ipptoolfile.man:309
+#, fuzzy, no-wrap
+#| msgid "WITH-ALL-VALUES \"/regular expression/\""
+msgid "WITH-ALL-RESOURCES \"/regular expression/\""
+msgstr "WITH-ALL-VALUES \"/regulärer Ausdruck/\""
+
+#. type: Plain text
+#: ipptoolfile.man:312
+msgid ""
+"Requires that all URI values contain a matching resource (including "
+"leading /)."
+msgstr ""
+
+#. type: TP
+#: ipptoolfile.man:312
+#, fuzzy, no-wrap
+#| msgid "WITH-ALL-VALUES \"literal string\""
+msgid "WITH-ALL-SCHEMES \"literal string\""
+msgstr "WITH-ALL-VALUES »Zeichenkette«"
+
+#. type: TP
+#: ipptoolfile.man:314
+#, fuzzy, no-wrap
+#| msgid "WITH-ALL-VALUES \"/regular expression/\""
+msgid "WITH-ALL-SCHEMES \"/regular expression/\""
+msgstr "WITH-ALL-VALUES \"/regulärer Ausdruck/\""
+
+#. type: Plain text
+#: ipptoolfile.man:317
+msgid "Requires that all URI values contain a matching scheme."
+msgstr ""
+
+#. type: TP
+#: ipptoolfile.man:317
 #, no-wrap
 msgid "WITH-ALL-VALUES \"literal string\""
 msgstr "WITH-ALL-VALUES »Zeichenkette«"
 
 #. type: Plain text
-#: ipptoolfile.man:285
+#: ipptoolfile.man:320
 msgid ""
 "Requires that all values of the EXPECT attribute match the literal string. "
 "Comparisons are case-sensitive."
@@ -7829,31 +8097,31 @@ msgstr ""
 "Vergleiche berücksichtigen die Groß- und Kleinschreibung."
 
 #. type: TP
-#: ipptoolfile.man:285
+#: ipptoolfile.man:320
 #, no-wrap
 msgid "WITH-ALL-VALUES E<lt>number"
 msgstr "WITH-ALL-VALUES E<lt>Zahl"
 
 #. type: TP
-#: ipptoolfile.man:287
+#: ipptoolfile.man:322
 #, no-wrap
 msgid "WITH-ALL-VALUES =number"
 msgstr "WITH-ALL-VALUES =Zahl"
 
 #. type: TP
-#: ipptoolfile.man:289
+#: ipptoolfile.man:324
 #, no-wrap
 msgid "WITH-ALL-VALUES E<gt>number"
 msgstr "WITH-ALL-VALUES E<gt>Zahl"
 
 #. type: TP
-#: ipptoolfile.man:291
+#: ipptoolfile.man:326
 #, no-wrap
 msgid "WITH-ALL-VALUES number[,number,...]"
 msgstr "WITH-ALL-VALUES Zahl[,Zahl,…]"
 
 #. type: Plain text
-#: ipptoolfile.man:294
+#: ipptoolfile.man:329
 msgid ""
 "Requires that all values of the EXPECT attribute match the number(s) or "
 "numeric comparison. When comparing rangeOfInteger values, the \"E<lt>\" and "
@@ -7864,19 +8132,19 @@ msgstr ""
 "prüfen die Operatoren »E<lt>« und »E<gt>« nur die obere Grenze der Bereiche."
 
 #. type: TP
-#: ipptoolfile.man:294
+#: ipptoolfile.man:329
 #, no-wrap
 msgid "WITH-ALL-VALUES \"false\""
 msgstr "WITH-ALL-VALUES \"false\""
 
 #. type: TP
-#: ipptoolfile.man:296
+#: ipptoolfile.man:331
 #, no-wrap
 msgid "WITH-ALL-VALUES \"true\""
 msgstr "WITH-ALL-VALUES \"true\""
 
 #. type: Plain text
-#: ipptoolfile.man:299
+#: ipptoolfile.man:334
 msgid ""
 "Requires that all values of the EXPECT attribute match the boolean value "
 "given."
@@ -7885,13 +8153,13 @@ msgstr ""
 "Wert passen."
 
 #. type: TP
-#: ipptoolfile.man:299
+#: ipptoolfile.man:334
 #, no-wrap
 msgid "WITH-ALL-VALUES \"/regular expression/\""
 msgstr "WITH-ALL-VALUES \"/regulärer Ausdruck/\""
 
 #. type: Plain text
-#: ipptoolfile.man:302
+#: ipptoolfile.man:337
 msgid ""
 "Requires that all values of the EXPECT attribute match the regular "
 "expression, which must conform to the POSIX regular expression syntax. "
@@ -7902,13 +8170,90 @@ msgstr ""
 "Vergleiche berücksichtigen Groß- und Kleinschreibung."
 
 #. type: TP
-#: ipptoolfile.man:302
+#: ipptoolfile.man:337
+#, fuzzy, no-wrap
+#| msgid "WITH-VALUE \"literal string\""
+msgid "WITH-HOSTNAME \"literal string\""
+msgstr "WITH-VALUE »Zeichenkette«"
+
+#. type: TP
+#: ipptoolfile.man:339
+#, fuzzy, no-wrap
+#| msgid "WITH-VALUE \"/regular expression/\""
+msgid "WITH-HOSTNAME \"/regular expression/\""
+msgstr "WITH-VALUE \"/regulärer Ausdruck/\""
+
+#. type: Plain text
+#: ipptoolfile.man:342
+#, fuzzy
+#| msgid ""
+#| "Requires that at least one value of the EXPECT attribute matches the "
+#| "boolean value given."
+msgid "Requires that at least one URI value contains a matching hostname."
+msgstr ""
+"Verlangt, dass mindestens ein Wert des EXPECT-Attributs auf den übergebenen "
+"logischen Wert passt."
+
+#. type: TP
+#: ipptoolfile.man:342
+#, fuzzy, no-wrap
+#| msgid "WITH-VALUE \"literal string\""
+msgid "WITH-RESOURCE \"literal string\""
+msgstr "WITH-VALUE »Zeichenkette«"
+
+#. type: TP
+#: ipptoolfile.man:344
+#, fuzzy, no-wrap
+#| msgid "WITH-VALUE \"/regular expression/\""
+msgid "WITH-RESOURCE \"/regular expression/\""
+msgstr "WITH-VALUE \"/regulärer Ausdruck/\""
+
+#. type: Plain text
+#: ipptoolfile.man:347
+#, fuzzy
+#| msgid ""
+#| "Requires that at least one value of the EXPECT attribute matches the "
+#| "boolean value given."
+msgid ""
+"Requires that at least one URI value contains a matching resource (including "
+"leading /)."
+msgstr ""
+"Verlangt, dass mindestens ein Wert des EXPECT-Attributs auf den übergebenen "
+"logischen Wert passt."
+
+#. type: TP
+#: ipptoolfile.man:347
+#, fuzzy, no-wrap
+#| msgid "WITH-VALUE \"literal string\""
+msgid "WITH-SCHEME \"literal string\""
+msgstr "WITH-VALUE »Zeichenkette«"
+
+#. type: TP
+#: ipptoolfile.man:349
+#, fuzzy, no-wrap
+#| msgid "WITH-VALUE \"/regular expression/\""
+msgid "WITH-SCHEME \"/regular expression/\""
+msgstr "WITH-VALUE \"/regulärer Ausdruck/\""
+
+#. type: Plain text
+#: ipptoolfile.man:352
+#, fuzzy
+#| msgid ""
+#| "Requires that at least one value of the EXPECT attribute matches the "
+#| "boolean value given."
+msgid "Requires that at least one URI value contains a matching scheme."
+msgstr ""
+"Verlangt, dass mindestens ein Wert des EXPECT-Attributs auf den übergebenen "
+"logischen Wert passt."
+
+#. type: TP
+#: ipptoolfile.man:352
 #, no-wrap
 msgid "WITH-VALUE \"literal string\""
 msgstr "WITH-VALUE »Zeichenkette«"
 
 #. type: Plain text
-#: ipptoolfile.man:305
+#: ipptoolfile.man:355
 msgid ""
 "Requires that at least one value of the EXPECT attribute matches the literal "
 "string. Comparisons are case-sensitive."
@@ -7917,35 +8262,35 @@ msgstr ""
 "passt. Vergleiche berücksichtigen Groß- und Kleinschreibung."
 
 #. type: TP
-#: ipptoolfile.man:305
+#: ipptoolfile.man:355
 #, no-wrap
 msgid "WITH-VALUE E<lt>number"
 msgstr "WITH-VALUE E<lt>Zahl"
 
 #. type: TP
-#: ipptoolfile.man:307
+#: ipptoolfile.man:357
 #, no-wrap
 msgid "WITH-VALUE =number"
 msgstr "WITH-VALUE =Zahl"
 
 #. type: TP
-#: ipptoolfile.man:309
+#: ipptoolfile.man:359
 #, no-wrap
 msgid "WITH-VALUE E<gt>number"
 msgstr "WITH-VALUE E<gt>Zahl"
 
 #. type: TP
-#: ipptoolfile.man:311
+#: ipptoolfile.man:361
 #, no-wrap
 msgid "WITH-VALUE number[,number,...]"
 msgstr "WITH-VALUE Zahl[,Zahl,…]"
 
 #. type: Plain text
-#: ipptoolfile.man:314
+#: ipptoolfile.man:364
 msgid ""
-"Requires that at least one value of the EXPECT attribute matches the number"
-"(s) or numeric comparison. When comparing rangeOfInteger values, the \"E<lt>"
-"\" and \"E<gt>\" operators only check the upper bound of the range."
+"Requires that at least one value of the EXPECT attribute matches the "
+"number(s) or numeric comparison. When comparing rangeOfInteger values, the "
+"\"E<lt>\" and \"E<gt>\" operators only check the upper bound of the range."
 msgstr ""
 "Verlangt, dass mindestens ein Wert des EXPECT-Attributs auf die Zahl(en) "
 "passt oder den numerischen Vergleich erfüllt. Beim Vergleich von "
@@ -7953,19 +8298,19 @@ msgstr ""
 "obere Grenze der Bereiche."
 
 #. type: TP
-#: ipptoolfile.man:314
+#: ipptoolfile.man:364
 #, no-wrap
 msgid "WITH-VALUE \"false\""
 msgstr "WITH-VALUE \"false\""
 
 #. type: TP
-#: ipptoolfile.man:316
+#: ipptoolfile.man:366
 #, no-wrap
 msgid "WITH-VALUE \"true\""
 msgstr "WITH-VALUE \"true\""
 
 #. type: Plain text
-#: ipptoolfile.man:319
+#: ipptoolfile.man:369
 msgid ""
 "Requires that at least one value of the EXPECT attribute matches the boolean "
 "value given."
@@ -7974,13 +8319,13 @@ msgstr ""
 "logischen Wert passt."
 
 #. type: TP
-#: ipptoolfile.man:319
+#: ipptoolfile.man:369
 #, no-wrap
 msgid "WITH-VALUE \"/regular expression/\""
 msgstr "WITH-VALUE \"/regulärer Ausdruck/\""
 
 #. type: Plain text
-#: ipptoolfile.man:322
+#: ipptoolfile.man:372
 msgid ""
 "Requires that at least one value of the EXPECT attribute matches the regular "
 "expression, which must conform to the POSIX regular expression syntax. "
@@ -7991,13 +8336,13 @@ msgstr ""
 "Vergleiche berücksichtigen Groß- und Kleinschreibung."
 
 #. type: SH
-#: ipptoolfile.man:323
+#: ipptoolfile.man:373
 #, no-wrap
 msgid "STATUS PREDICATES"
 msgstr "STATUS-EIGENSCHAFTEN"
 
 #. type: Plain text
-#: ipptoolfile.man:325
+#: ipptoolfile.man:375
 msgid ""
 "The following predicates are understood following the STATUS test directive:"
 msgstr ""
@@ -8005,7 +8350,7 @@ msgstr ""
 "verstanden:"
 
 #. type: Plain text
-#: ipptoolfile.man:328
+#: ipptoolfile.man:378
 msgid ""
 "Defines the variable to \"1\" when the STATUS matches. A side-effect of this "
 "predicate is that this STATUS will never fail a test."
@@ -8014,7 +8359,7 @@ msgstr ""
 "Eigenschaft ist, dass dieser EXPECT niemals bei einem Test fehlschlägt."
 
 #. type: Plain text
-#: ipptoolfile.man:331
+#: ipptoolfile.man:381
 msgid ""
 "Defines the variable to \"1\" when the STATUS does not match. A side-effect "
 "of this predicate is that this STATUS will never fail a test."
@@ -8024,21 +8369,21 @@ msgstr ""
 "fehlschlägt."
 
 #. type: Plain text
-#: ipptoolfile.man:334
+#: ipptoolfile.man:384
 msgid "Makes the STATUS apply only if the specified variable is defined."
 msgstr ""
 "Führt dazu, dass der STATUS nur angewandt wird, falls die angegebene "
 "Variable definiert ist."
 
 #. type: Plain text
-#: ipptoolfile.man:337
+#: ipptoolfile.man:387
 msgid "Makes the STATUS apply only if the specified variable is not defined."
 msgstr ""
 "Führt dazu, dass der STATUS nur angewandt wird, falls die angegebene "
 "Variable nicht definiert ist."
 
 #. type: Plain text
-#: ipptoolfile.man:347
+#: ipptoolfile.man:397
 msgid ""
 "Specifies that the current test should be repeated when the response status-"
 "code matches or does not match the value specified by the STATUS directive."
@@ -8048,13 +8393,13 @@ msgstr ""
 "Wert passt."
 
 #. type: SH
-#: ipptoolfile.man:348
+#: ipptoolfile.man:398
 #, no-wrap
 msgid "OPERATION CODES"
 msgstr "BETRIEBS-CODES"
 
 #. type: Plain text
-#: ipptoolfile.man:351
+#: ipptoolfile.man:401
 msgid ""
 "Operation codes correspond to the hexadecimal numbers (0xHHHH) and names "
 "from RFC 2911 and other IPP extension specifications. Here is a complete "
@@ -8065,8 +8410,75 @@ msgstr ""
 "Liste:"
 
 #. type: Plain text
-#: ipptoolfile.man:418
-#, no-wrap
+#: ipptoolfile.man:469
+#, fuzzy, no-wrap
+#| msgid ""
+#| "    Activate-Printer\n"
+#| "    CUPS-Accept-Jobs\n"
+#| "    CUPS-Add-Modify-Class\n"
+#| "    CUPS-Add-Modify-Printer\n"
+#| "    CUPS-Authenticate-Job\n"
+#| "    CUPS-Delete-Class\n"
+#| "    CUPS-Delete-Printer\n"
+#| "    CUPS-Get-Classes\n"
+#| "    CUPS-Get-Default\n"
+#| "    CUPS-Get-Devices\n"
+#| "    CUPS-Get-Document\n"
+#| "    CUPS-Get-PPD\n"
+#| "    CUPS-Get-PPDs\n"
+#| "    CUPS-Get-Printers\n"
+#| "    CUPS-Move-Job\n"
+#| "    CUPS-Reject-Jobs\n"
+#| "    CUPS-Set-Default\n"
+#| "    Cancel-Current-Job\n"
+#| "    Cancel-Job\n"
+#| "    Cancel-Jobs\n"
+#| "    Cancel-My-Jobs\n"
+#| "    Cancel-Subscription\n"
+#| "    Close-Job\n"
+#| "    Create-Job\n"
+#| "    Create-Job-Subscription\n"
+#| "    Create-Printer-Subscription\n"
+#| "    Deactivate-Printer\n"
+#| "    Disable-Printer\n"
+#| "    Enable-Printer\n"
+#| "    Get-Job-Attributes\n"
+#| "    Get-Jobs\n"
+#| "    Get-Notifications\n"
+#| "    Get-Printer-Attributes\n"
+#| "    Get-Printer-Support-Files\n"
+#| "    Get-Printer-Supported-Values\n"
+#| "    Get-Subscription-Attributes\n"
+#| "    Get-Subscriptions\n"
+#| "    Hold-Job\n"
+#| "    Hold-New-Jobs\n"
+#| "    Identify-Printer\n"
+#| "    Pause-Printer\n"
+#| "    Pause-Printer-After-Current-Job\n"
+#| "    Print-Job\n"
+#| "    Print-URI\n"
+#| "    Promote-Job\n"
+#| "    Purge-Jobs\n"
+#| "    Release-Held-New-Jobs\n"
+#| "    Release-Job\n"
+#| "    Renew-Subscription\n"
+#| "    Reprocess-Job\n"
+#| "    Restart-Job\n"
+#| "    Restart-Printer\n"
+#| "    Resubmit-Job\n"
+#| "    Resume-Job\n"
+#| "    Resume-Printer\n"
+#| "    Schedule-Job-After\n"
+#| "    Send-Document\n"
+#| "    Send-Notifications\n"
+#| "    Send-URI\n"
+#| "    Set-Job-Attributes\n"
+#| "    Set-Printer-Attributes\n"
+#| "    Shutdown-Printer\n"
+#| "    Startup-Printer\n"
+#| "    Suspend-Current-Job\n"
+#| "    Validate-Document\n"
+#| "    Validate-Job\n"
 msgid ""
 "    Activate-Printer\n"
 "    CUPS-Accept-Jobs\n"
@@ -8125,6 +8537,7 @@ msgid ""
 "    Resume-Printer\n"
 "    Schedule-Job-After\n"
 "    Send-Document\n"
+"    Send-Hardcopy-Document\n"
 "    Send-Notifications\n"
 "    Send-URI\n"
 "    Set-Job-Attributes\n"
@@ -8203,13 +8616,13 @@ msgstr ""
 "    Validate-Job\n"
 
 #. type: SH
-#: ipptoolfile.man:420
+#: ipptoolfile.man:471
 #, no-wrap
 msgid "STATUS CODES"
 msgstr "STATUS-CODES"
 
 #. type: Plain text
-#: ipptoolfile.man:423
+#: ipptoolfile.man:474
 msgid ""
 "Status codes correspond to the hexadecimal numbers (0xHHHH) and names from "
 "RFC 2911 and other IPP extension specifications. Here is a complete list:"
@@ -8219,7 +8632,7 @@ msgstr ""
 "Liste:"
 
 #. type: Plain text
-#: ipptoolfile.man:473
+#: ipptoolfile.man:524
 #, no-wrap
 msgid ""
 "    client-error-attributes-not-settable\n"
@@ -8323,13 +8736,13 @@ msgstr ""
 "    successful-ok-too-many-events\n"
 
 #. type: SH
-#: ipptoolfile.man:475
+#: ipptoolfile.man:526
 #, no-wrap
 msgid "TAGS"
 msgstr "MARKIERUNGEN"
 
 #. type: Plain text
-#: ipptoolfile.man:478
+#: ipptoolfile.man:529
 msgid ""
 "Value and group tags correspond to the names from RFC 2911 and other IPP "
 "extension specifications. Here are the group tags:"
@@ -8338,7 +8751,7 @@ msgstr ""
 "anderen IPP-Erweiterungsspezifikationen. Hier sind die Gruppenmarkierungen:"
 
 #. type: Plain text
-#: ipptoolfile.man:485
+#: ipptoolfile.man:536
 #, no-wrap
 msgid ""
 "    event-notification-attributes-tag\n"
@@ -8356,12 +8769,12 @@ msgstr ""
 "    unsupported-attributes-tag\n"
 
 #. type: Plain text
-#: ipptoolfile.man:488
+#: ipptoolfile.man:539
 msgid "Here are the value tags:"
 msgstr "Hier sind die Wertemarkierungen:"
 
 #. type: Plain text
-#: ipptoolfile.man:514
+#: ipptoolfile.man:565
 #, no-wrap
 msgid ""
 "    admin-define\n"
@@ -8417,13 +8830,13 @@ msgstr ""
 "    uriScheme\n"
 
 #. type: SH
-#: ipptoolfile.man:516
+#: ipptoolfile.man:567
 #, no-wrap
 msgid "VARIABLES"
 msgstr "VARIABLEN"
 
 #. type: Plain text
-#: ipptoolfile.man:521
+#: ipptoolfile.man:572
 msgid ""
 "The I<ipptool> program maintains a list of variables that can be used in any "
 "literal string or attribute value by specifying \"$variable-name\". Aside "
@@ -8437,24 +8850,24 @@ msgstr ""
 "verfügbar:"
 
 #. type: TP
-#: ipptoolfile.man:521
+#: ipptoolfile.man:572
 #, no-wrap
 msgid "$$"
 msgstr "$$"
 
 #. type: Plain text
-#: ipptoolfile.man:524
+#: ipptoolfile.man:575
 msgid "Inserts a single \"$\" character."
 msgstr "Fügt ein einzelnes »$«-Zeichen ein."
 
 #. type: TP
-#: ipptoolfile.man:524
+#: ipptoolfile.man:575
 #, no-wrap
 msgid "$ENV[name]"
 msgstr "$ENV[Name]"
 
 #. type: Plain text
-#: ipptoolfile.man:528
+#: ipptoolfile.man:579
 msgid ""
 "Inserts the value of the named environment variable, or an empty string if "
 "the environment variable is not defined."
@@ -8463,36 +8876,36 @@ msgstr ""
 "falls die Umgebungsvariable nicht definiert ist, ein."
 
 #. type: TP
-#: ipptoolfile.man:528
+#: ipptoolfile.man:579
 #, no-wrap
 msgid "$filename"
 msgstr "$filename"
 
 #. type: Plain text
-#: ipptoolfile.man:531
+#: ipptoolfile.man:582
 msgid "Inserts the filename provided to I<ipptool> with the \"-f\" option."
 msgstr ""
 "Fügt den mit der Option »-f« an I<ipptool> bereitgestellten Dateinamen ein."
 
 #. type: TP
-#: ipptoolfile.man:531
+#: ipptoolfile.man:582
 #, no-wrap
 msgid "$hostname"
 msgstr "$hostname"
 
 #. type: Plain text
-#: ipptoolfile.man:534
+#: ipptoolfile.man:585
 msgid "Inserts the hostname from the URI provided to I<ipptool>."
 msgstr "Fügt den Rechnernamen aus der I<ipptool> bereitgestellten URI ein."
 
 #. type: TP
-#: ipptoolfile.man:534
+#: ipptoolfile.man:585
 #, no-wrap
 msgid "$job-id"
 msgstr "$job-id"
 
 #. type: Plain text
-#: ipptoolfile.man:538
+#: ipptoolfile.man:589
 msgid ""
 "Inserts the last job-id value returned in a test response or 0 if no job-id "
 "has been seen."
@@ -8501,13 +8914,13 @@ msgstr ""
 "oder 0, falls keine Auftrags-ID gesehen wurde, ein."
 
 #. type: TP
-#: ipptoolfile.man:538
+#: ipptoolfile.man:589
 #, no-wrap
 msgid "$job-uri"
 msgstr "$job-uri"
 
 #. type: Plain text
-#: ipptoolfile.man:542
+#: ipptoolfile.man:593
 msgid ""
 "Inserts the last job-uri value returned in a test response or an empty "
 "string if no job-uri has been seen."
@@ -8516,24 +8929,24 @@ msgstr ""
 "oder eine leere Zeichenkette, falls keine Auftrags-ID gesehen wurde, ein."
 
 #. type: TP
-#: ipptoolfile.man:542
+#: ipptoolfile.man:593
 #, no-wrap
 msgid "$scheme"
 msgstr "$scheme"
 
 #. type: Plain text
-#: ipptoolfile.man:545
+#: ipptoolfile.man:596
 msgid "Inserts the scheme from the URI provided to I<ipptool>."
 msgstr "Fügt das Schema aus der I<ipptool> übergebenen URI ein."
 
 #. type: TP
-#: ipptoolfile.man:545
+#: ipptoolfile.man:596
 #, no-wrap
 msgid "$notify-subscription-id"
 msgstr "$notify-subscription-id"
 
 #. type: Plain text
-#: ipptoolfile.man:549
+#: ipptoolfile.man:600
 msgid ""
 "Inserts the last notify-subscription-id value returned in a test response or "
 "0 if no notify-subscription-id has been seen."
@@ -8542,69 +8955,69 @@ msgstr ""
 "id«-Wert oder 0, falls keine »notify-subscription-id« gesehen wurde, ein."
 
 #. type: TP
-#: ipptoolfile.man:549
+#: ipptoolfile.man:600
 #, no-wrap
 msgid "$port"
 msgstr "$port"
 
 #. type: Plain text
-#: ipptoolfile.man:552
+#: ipptoolfile.man:603
 msgid "Inserts the port number from the URI provided to I<ipptool>."
 msgstr "Fügt die Portnummer aus der an I<ipptool> übergebenen URI ein."
 
 #. type: TP
-#: ipptoolfile.man:552
+#: ipptoolfile.man:603
 #, no-wrap
 msgid "$resource"
 msgstr "$resource"
 
 #. type: Plain text
-#: ipptoolfile.man:555
+#: ipptoolfile.man:606
 msgid "Inserts the resource path from the URI provided to I<ipptool>."
 msgstr "Fügt den Ressourcenpfad aus der an I<ipptool> übergebenen URI ein."
 
 #. type: TP
-#: ipptoolfile.man:555
+#: ipptoolfile.man:606
 #, no-wrap
 msgid "$uri"
 msgstr "$uri"
 
 #. type: Plain text
-#: ipptoolfile.man:558
+#: ipptoolfile.man:609
 msgid "Inserts the URI provided to I<ipptool>."
 msgstr "Fügt die an I<ipptool> übergebene URI ein."
 
 #. type: TP
-#: ipptoolfile.man:558
+#: ipptoolfile.man:609
 #, no-wrap
 msgid "$user"
 msgstr "$user"
 
 #. type: Plain text
-#: ipptoolfile.man:561
+#: ipptoolfile.man:612
 msgid "Inserts the current user's login name."
 msgstr "Fügt den Anmeldenamen des aktuellen Benutzers ein."
 
 #. type: TP
-#: ipptoolfile.man:561
+#: ipptoolfile.man:612
 #, no-wrap
 msgid "$username"
 msgstr "$username"
 
 #. type: Plain text
-#: ipptoolfile.man:564
+#: ipptoolfile.man:615
 msgid "Inserts the username from the URI provided to I<ipptool>, if any."
 msgstr ""
 "Fügt den Benutzernamen aus der I<ipptool> übergebenen URI ein, falls "
 "vorhanden."
 
 #. type: Plain text
-#: ipptoolfile.man:567
+#: ipptoolfile.man:618
 msgid "I<ipptool(1)>,"
 msgstr "I<ipptool(1)>,"
 
 #. type: Plain text
-#: ipptoolfile.man:571
+#: ipptoolfile.man:622
 msgid "RFC2911 http://tools.ietf.org/html/rfc2911"
 msgstr "RFC2911 http://tools.ietf.org/html/rfc2911"
 
@@ -8671,14 +9084,14 @@ msgstr ""
 #: lpadmin.man:60
 msgid ""
 "The first form of the command (I<-d>) sets the default printer or class to "
-"I<destination>.  Subsequent print jobs submitted via the I<lp(1)> or I<lpr(1)"
-"> commands will use this destination unless the user specifies otherwise "
-"with the I<lpoptions(1)> command."
+"I<destination>.  Subsequent print jobs submitted via the I<lp(1)> or "
+"I<lpr(1)> commands will use this destination unless the user specifies "
+"otherwise with the I<lpoptions(1)> command."
 msgstr ""
 "Die erste Form des Befehls (I<-d>) setzt den Standarddrucker oder Klasse auf "
-"I<Ziel>. Folgende Druckaufträge, die mit den Befehlen I<lp(1)> oder I<lpr(1)"
-"> eingereicht werden, verwenden dieses Ziel solange der Benutzer nichts "
-"anderes mit dem Befehl I<lpoptions(1)> spezifiziert hat."
+"I<Ziel>. Folgende Druckaufträge, die mit den Befehlen I<lp(1)> oder "
+"I<lpr(1)> eingereicht werden, verwenden dieses Ziel solange der Benutzer "
+"nichts anderes mit dem Befehl I<lpoptions(1)> spezifiziert hat."
 
 #. type: Plain text
 #: lpadmin.man:63
@@ -8766,8 +9179,8 @@ msgid ""
 msgstr ""
 "Setzt ein Standard-System-V-Schnittstellenskript oder eine PPD-Datei für den "
 "Drucker aus dem Verzeichnis I<Model> oder verwendet eine der "
-"Druckerschnittstellen. Verwenden Sie die Option I<-m> mit dem Befehl I<lpinfo"
-"(8)>, um eine Liste der unterstützten Modelle zu erhalten."
+"Druckerschnittstellen. Verwenden Sie die Option I<-m> mit dem Befehl "
+"I<lpinfo(8)>, um eine Liste der unterstützten Modelle zu erhalten."
 
 #. type: TP
 #: lpadmin.man:88
@@ -9290,11 +9703,11 @@ msgstr ""
 #. type: Plain text
 #: lpc.man:65
 msgid ""
-"I<cancel(1)>, I<cupsaccept(8)>, I<cupsenable(8)>, I<lp(1)>, I<lpr(1)>, I<lprm"
-"(1)>, I<lpstat(1)>,"
+"I<cancel(1)>, I<cupsaccept(8)>, I<cupsenable(8)>, I<lp(1)>, I<lpr(1)>, "
+"I<lprm(1)>, I<lpstat(1)>,"
 msgstr ""
-"I<cancel(1)>, I<cupsaccept(8)>, I<cupsenable(8)>, I<lp(1)>, I<lpr(1)>, I<lprm"
-"(1)>, I<lpstat(1)>,"
+"I<cancel(1)>, I<cupsaccept(8)>, I<cupsenable(8)>, I<lp(1)>, I<lpr(1)>, "
+"I<lprm(1)>, I<lpstat(1)>,"
 
 # type: TH
 #. type: TH
@@ -9552,8 +9965,8 @@ msgstr ""
 "CUPS stellt viele Möglichkeiten bereit, den Vorgabebeziele zu setzen. Die "
 "Umgebungsvariablen »LPDEST« und »PRINTER« werden zuerst herangezogen. Wenn "
 "keine von beiden gesetzt ist, wird der aktuell unter Benutzung des Befehls "
-"I<lpoptions(1)> gesetzte benutzt, gefolgt von der durch den Befehl I<lpadmin"
-"(8)> gesetzten Vorgabe."
+"I<lpoptions(1)> gesetzte benutzt, gefolgt von der durch den Befehl "
+"I<lpadmin(8)> gesetzten Vorgabe."
 
 # type: Plain text
 #. type: Plain text
@@ -10098,12 +10511,6 @@ msgstr "I<cancel(1)>, I<lp(1)>,"
 msgid "lpoptions"
 msgstr "lpoptions"
 
-#. type: TH
-#: lpoptions.man.in:15 lpr.man:15
-#, no-wrap
-msgid "29 August 2008"
-msgstr "29. August 2008"
-
 #. type: Plain text
 #: lpoptions.man.in:18
 msgid "lpoptions - display or set printer options and defaults"
@@ -10113,11 +10520,11 @@ msgstr "lpoptions - zeigt oder setzt Druckeroptionen und -voreinstellungen"
 #: lpoptions.man.in:31
 msgid ""
 "B<lpoptions> [ -E ] [ -U I<username> ] [ -h I<server[:port]> ] -d "
-"I<destination[/instance]> [ -o I<option[=value]> ] ... [ -o I<option[=value]"
-"> ]"
+"I<destination[/instance]> [ -o I<option[=value]> ] ... [ -o "
+"I<option[=value]> ]"
 msgstr ""
-"B<lpoptions> [ -E ] [ -U I<Benutzername> ] [ -h I<Server[:Port]> ] -d I<Ziel"
-"[/Instanz]> [ -o I<Option[=Wert]> ] … [ -o I<Option[=Wert]> ]"
+"B<lpoptions> [ -E ] [ -U I<Benutzername> ] [ -h I<Server[:Port]> ] -d "
+"I<Ziel[/Instanz]> [ -o I<Option[=Wert]> ] … [ -o I<Option[=Wert]> ]"
 
 #. type: Plain text
 #: lpoptions.man.in:40
@@ -10131,9 +10538,9 @@ msgstr ""
 #. type: Plain text
 #: lpoptions.man.in:54
 msgid ""
-"B<lpoptions> [ -E ] [ -U I<username> ] [ -h I<server[:port]> ] [ -o I<option"
-"[=value]> ] ... [ -o I<option[=value]> ] [ -p I<destination[/instance]> ] -r "
-"I<option>"
+"B<lpoptions> [ -E ] [ -U I<username> ] [ -h I<server[:port]> ] [ -o "
+"I<option[=value]> ] ... [ -o I<option[=value]> ] [ -p I<destination[/"
+"instance]> ] -r I<option>"
 msgstr ""
 "B<lpoptions> [ -E ] [ -U I<Benutzername> ] [ -h I<Server[:Port]> ] [ -o "
 "I<Option[=Wert]> ] … [ -o I<Option[=Wert]> ] [ -p I<Ziel[/Instanz]> ] -r "
@@ -10145,8 +10552,8 @@ msgid ""
 "B<lpoptions> [ -E ] [ -U I<username> ] [ -h I<server[:port]> ] -x "
 "I<destination[/instance]>"
 msgstr ""
-"B<lpoptions> [ -E ] [ -U I<Benutzername> ] [ -h I<Server[:Port]> ] -x I<Ziel"
-"[/Instanz]>"
+"B<lpoptions> [ -E ] [ -U I<Benutzername> ] [ -h I<Server[:Port]> ] -x "
+"I<Ziel[/Instanz]>"
 
 #. type: Plain text
 #: lpoptions.man.in:66
@@ -10279,8 +10686,8 @@ msgstr ""
 #. type: Plain text
 #: lpoptions.man.in:115
 msgid ""
-"Options set with the I<lpoptions> command are used by the I<lp(1)> and I<lpr"
-"(1)> commands when submitting jobs."
+"Options set with the I<lpoptions> command are used by the I<lp(1)> and "
+"I<lpr(1)> commands when submitting jobs."
 msgstr ""
 "Optionen, die mit dem Befehl I<lpoptions> gesetzt werden, werden von den "
 "Befehlen I<lp(1)> und I<lpr(1)> bein Einreichen von Druckaufträgen verwandt."
@@ -10295,9 +10702,13 @@ msgstr "ROOT-KONTOOPTIONEN"
 # type: Plain text
 #. type: Plain text
 #: lpoptions.man.in:119
+#, fuzzy
+#| msgid ""
+#| "When run by the root user, I<lpoptions> gets and sets default options and "
+#| "instances for I<all users> in the @CUPS_SERVERROOT@/lpoptions file."
 msgid ""
 "When run by the root user, I<lpoptions> gets and sets default options and "
-"instances for I<all users> in the @CUPS_SERVERROOT@/lpoptions file."
+"instances for I<all users> in the /etc/cups/lpoptions file."
 msgstr ""
 "Wenn I<lpoptions> vom Benutzer root ausgeführt wird, erhält und setzt es "
 "Optionen und Instanzen für I<alle Benutzer> in der Datei @CUPS_SERVERROOT@/"
@@ -10328,9 +10739,13 @@ msgstr ""
 # type: Plain text
 #. type: Plain text
 #: lpoptions.man.in:127
+#, fuzzy
+#| msgid ""
+#| "@CUPS_SERVERROOT@/lpoptions - system-wide defaults and instances created "
+#| "by the root user."
 msgid ""
-"@CUPS_SERVERROOT@/lpoptions - system-wide defaults and instances created by "
-"the root user."
+"/etc/cups/lpoptions - system-wide defaults and instances created by the root "
+"user."
 msgstr ""
 "@CUPS_SERVERROOT@/lpoptions - systemweite Vorgaben und Instanzen, die vom "
 "Root-Benutzer erstellt wurden."
@@ -10465,6 +10880,12 @@ msgstr "I<lp(1)>, I<lpr(1)>,"
 msgid "lpq"
 msgstr "lpq"
 
+#. type: TH
+#: lpq.man:15
+#, no-wrap
+msgid "16 June 2008"
+msgstr "16. Juni 2008"
+
 # type: Plain text
 #. type: Plain text
 #: lpq.man:18
@@ -10550,6 +10971,12 @@ msgstr "I<cancel(1)>, I<lp(1)>, I<lpr(1)>, I<lprm(1)>, I<lpstat(1)>,"
 msgid "lpr"
 msgstr "lpr"
 
+#. type: TH
+#: lpr.man:15
+#, no-wrap
+msgid "29 August 2008"
+msgstr "29. August 2008"
+
 # type: Plain text
 #. type: Plain text
 #: lpr.man:18
@@ -10561,12 +10988,12 @@ msgstr "lpr - druckt Dateien"
 #: lpr.man:35
 msgid ""
 "B<lpr> [ -E ] [ -H I<server[:port]> ] [ -U I<username> ] [ -P I<destination[/"
-"instance]> ] [ -# I<num-copies> [ -h ] [ -l ] [ -m ] [ -o I<option[=value]"
-"> ] [ -p] [ -q ] [ -r ] [ -C/J/T I<title> ] [ I<file(s)> ]"
+"instance]> ] [ -# I<num-copies> [ -h ] [ -l ] [ -m ] [ -o "
+"I<option[=value]> ] [ -p] [ -q ] [ -r ] [ -C/J/T I<title> ] [ I<file(s)> ]"
 msgstr ""
 "B<lpr> [ -E ] [ -H I<Server[:Port]> ] [ -U I<Benutzername> ] [ -P I<Ziel[/"
-"Instanz]> ] [ -# I<Anzahl-Kopien> [ -h ] [ -l ] [ -m ] [ -o I<Option[=Wert]"
-"> ] [ -p] [ -q ] [ -r ] [ -C/J/T I<Titel> ] [ I<Datei(en)> ]"
+"Instanz]> ] [ -# I<Anzahl-Kopien> [ -h ] [ -l ] [ -m ] [ -o "
+"I<Option[=Wert]> ] [ -p] [ -q ] [ -r ] [ -C/J/T I<Titel> ] [ I<Datei(en)> ]"
 
 # type: Plain text
 #. type: Plain text
@@ -10695,11 +11122,11 @@ msgstr ""
 #. type: Plain text
 #: lpr.man:116
 msgid ""
-"I<cancel(1)>, I<lp(1)>, I<lpadmin(8)>, I<lpoptions(1)>, I<lpq(1)>, I<lprm(1)"
-">, I<lpstat(1)>,"
+"I<cancel(1)>, I<lp(1)>, I<lpadmin(8)>, I<lpoptions(1)>, I<lpq(1)>, "
+"I<lprm(1)>, I<lpstat(1)>,"
 msgstr ""
-"I<cancel(1)>, I<lp(1)>, I<lpadmin(8)>, I<lpoptions(1)>, I<lpq(1)>, I<lprm(1)"
-">, I<lpstat(1)>,"
+"I<cancel(1)>, I<lp(1)>, I<lpadmin(8)>, I<lpoptions(1)>, I<lpq(1)>, "
+"I<lprm(1)>, I<lpstat(1)>,"
 
 #. type: TH
 #: lprm.man:15
@@ -10721,8 +11148,8 @@ msgstr "lprm - Druckaufträge abbrechen"
 #. type: Plain text
 #: lprm.man:29
 msgid ""
-"B<lprm> [ -E ] [ -U I<username> ] [ -h I<server[:port]> ] [ -P I<destination"
-"[/instance]> ] [ - ] [ I<job ID(s)> ]"
+"B<lprm> [ -E ] [ -U I<username> ] [ -h I<server[:port]> ] [ -P "
+"I<destination[/instance]> ] [ - ] [ I<job ID(s)> ]"
 msgstr ""
 "B<lprm> [ -E ] [ -U I<Benutzername> ] [ -h I<Server[:Port]> ] [ -P I<Ziel[/"
 "Instanz]> ] [ - ] [ I<Auftrags-ID(s)> ]"
@@ -10798,9 +11225,9 @@ msgid ""
 "s ] [ -t ] [ -u [ I<user(s)> ] ] [ -v [ I<printer(s)> ] ]"
 msgstr ""
 "B<lpstat> [ -E ] [ -H ] [ -U I<Benutzername> ] [ -h I<Rechnername[:Port]> ] "
-"[ -l ] [ -W I<welche-Druckaufträge> ] [ -a [ I<Ziel(e)> ] ] [ -c [ I<Klasse"
-"(n)> ] ] [ -d ] [ -o [ I<Ziel(e)> ] ] [ -p [ I<Drucker> ] ] [ -r ] [ -R ] [ -"
-"s ] [ -t ] [ -u [ I<Benutzer> ] ] [ -v [ I<Drucker> ] ]"
+"[ -l ] [ -W I<welche-Druckaufträge> ] [ -a [ I<Ziel(e)> ] ] [ -c "
+"[ I<Klasse(n)> ] ] [ -d ] [ -o [ I<Ziel(e)> ] ] [ -p [ I<Drucker> ] ] [ -r ] "
+"[ -R ] [ -s ] [ -t ] [ -u [ I<Benutzer> ] ] [ -v [ I<Drucker> ] ]"
 
 # type: Plain text
 #. type: Plain text
@@ -11862,6 +12289,27 @@ msgstr ""
 "I<classes.conf(5)>, I<cupsd(8)>, I<cupsd.conf(5)>, I<mime.convs(5)>, I<mime."
 "types(5)>, printers.conf(5)"
 
+#~ msgid "25 June 2013"
+#~ msgstr "25. Juni 2013"
+
+#~ msgid "19 November 2012"
+#~ msgstr "19. November 2012"
+
+#~ msgid "9 March 2009"
+#~ msgstr "9. März 2009"
+
+#~ msgid "6 January 2011"
+#~ msgstr "6. Januar 2011"
+
+#~ msgid "4 August 2008"
+#~ msgstr "4. August 2008"
+
+#~ msgid "9 November 2010"
+#~ msgstr "9. November 2010"
+
+#~ msgid "10 January 2013"
+#~ msgstr "10. Januar 2013"
+
 #~ msgid ""
 #~ "Specifies the address and optionally the port to use when connecting to "
 #~ "the server. The IPP version (2.0 by default, can be 1.1 or 1.0) can be "
@@ -12387,10 +12835,6 @@ msgstr ""
 #~ "Setzt die Fehlersucheprotokollierstufe auf I<N>; 0 deaktiviert das "
 #~ "Fehlersucheprotokollieren, 1 aktiviert grundlegendes Protokollieren, 2 "
 #~ "zeigt SNMP-Werte und 3 zeigt rohe hexadezimale Daten."
-
-# type: TH
-#~ msgid "13 May 2009"
-#~ msgstr "13. Mai 2009"
 
 # type: Plain text
 #~ msgid ""

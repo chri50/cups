@@ -1,5 +1,5 @@
 /*
- * "$Id: common.h 11173 2013-07-23 12:31:34Z msweet $"
+ * "$Id: common.h 10996 2013-05-29 11:51:34Z msweet $"
  *
  *   Common filter definitions for CUPS.
  *
@@ -74,5 +74,5 @@ extern void	WriteTextComment(const char *name, const char *value);
 
 
 /*
- * End of "$Id: common.h 11173 2013-07-23 12:31:34Z msweet $".
+ * End of "$Id: common.h 10996 2013-05-29 11:51:34Z msweet $".
  */

@@ -1,5 +1,5 @@
 /*
- * "$Id: auth.c 11173 2013-07-23 12:31:34Z msweet $"
+ * "$Id: auth.c 10996 2013-05-29 11:51:34Z msweet $"
  *
  *   Authentication functions for CUPS.
  *
@@ -112,7 +112,7 @@ static int	cups_local_auth(http_t *http);
 /*
  * 'cupsDoAuthentication()' - Authenticate a request.
  *
- * This function should be called in response to a @code HTTP_UNAUTHORIZED@
+ * This function should be called in response to a @code HTTP_STATUS_UNAUTHORIZED@
  * status, prior to resubmitting your request.
  *
  * @since CUPS 1.1.20/OS X 10.4@
@@ -164,14 +164,14 @@ cupsDoAuthentication(
       DEBUG_printf(("2cupsDoAuthentication: authstring=\"%s\"",
                     http->authstring));
 
-      if (http->status == HTTP_UNAUTHORIZED)
+      if (http->status == HTTP_STATUS_UNAUTHORIZED)
 	http->digest_tries ++;
 
       return (0);
     }
     else if (localauth == -1)
     {
-      http->status = HTTP_AUTHORIZATION_CANCELED;
+      http->status = HTTP_STATUS_CUPS_AUTHORIZATION_CANCELED;
       return (-1);			/* Error or canceled */
     }
   }
@@ -190,10 +190,17 @@ cupsDoAuthentication(
     * Nope - get a new password from the user...
     */
 
+    char default_username[HTTP_MAX_VALUE];
+					/* Default username */
+
     cg = _cupsGlobals();
 
     if (!cg->lang_default)
       cg->lang_default = cupsLangDefault();
+
+    if (httpGetSubField(http, HTTP_FIELD_WWW_AUTHENTICATE, "username",
+                        default_username))
+      cupsSetUser(default_username);
 
     snprintf(prompt, sizeof(prompt),
              _cupsLangString(cg->lang_default, _("Password for %s on %s? ")),
@@ -205,22 +212,22 @@ cupsDoAuthentication(
 
     if ((password = cupsGetPassword2(prompt, http, method, resource)) == NULL)
     {
-      http->status = HTTP_AUTHORIZATION_CANCELED;
+      http->status = HTTP_STATUS_CUPS_AUTHORIZATION_CANCELED;
       return (-1);
     }
 
     snprintf(http->userpass, sizeof(http->userpass), "%s:%s", cupsUser(),
              password);
   }
-  else if (http->status == HTTP_UNAUTHORIZED)
+  else if (http->status == HTTP_STATUS_UNAUTHORIZED)
     http->digest_tries ++;
 
-  if (http->status == HTTP_UNAUTHORIZED && http->digest_tries >= 3)
+  if (http->status == HTTP_STATUS_UNAUTHORIZED && http->digest_tries >= 3)
   {
     DEBUG_printf(("1cupsDoAuthentication: Too many authentication tries (%d)",
 		  http->digest_tries));
 
-    http->status = HTTP_AUTHORIZATION_CANCELED;
+    http->status = HTTP_STATUS_CUPS_AUTHORIZATION_CANCELED;
     return (-1);
   }
 
@@ -237,7 +244,7 @@ cupsDoAuthentication(
 
     if (_cupsSetNegotiateAuthString(http, method, resource))
     {
-      http->status = HTTP_AUTHORIZATION_CANCELED;
+      http->status = HTTP_STATUS_CUPS_AUTHORIZATION_CANCELED;
       return (-1);
     }
   }
@@ -280,7 +287,7 @@ cupsDoAuthentication(
   {
     DEBUG_printf(("1cupsDoAuthentication: Unknown auth type: \"%s\"",
                   www_auth));
-    http->status = HTTP_AUTHORIZATION_CANCELED;
+    http->status = HTTP_STATUS_CUPS_AUTHORIZATION_CANCELED;
     return (-1);
   }
 
@@ -458,7 +465,7 @@ _cupsSetNegotiateAuthString(
       authsize         = sizeof(http->_authstring);
     }
 
-    strcpy(http->authstring, "Negotiate ");
+    strlcpy(http->authstring, "Negotiate ", authsize);
     httpEncode64_2(http->authstring + 10, authsize - 10, output_token.value,
 		   output_token.length);
 
@@ -881,5 +888,5 @@ cups_local_auth(http_t *http)		/* I - HTTP connection to server */
 
 
 /*
- * End of "$Id: auth.c 11173 2013-07-23 12:31:34Z msweet $".
+ * End of "$Id: auth.c 10996 2013-05-29 11:51:34Z msweet $".
  */

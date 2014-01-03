@@ -1,5 +1,5 @@
 /*
- * "$Id: options.c 11173 2013-07-23 12:31:34Z msweet $"
+ * "$Id: options.c 10996 2013-05-29 11:51:34Z msweet $"
  *
  *   Option routines for CUPS.
  *
@@ -707,5 +707,5 @@ cups_find_option(
 
 
 /*
- * End of "$Id: options.c 11173 2013-07-23 12:31:34Z msweet $".
+ * End of "$Id: options.c 10996 2013-05-29 11:51:34Z msweet $".
  */

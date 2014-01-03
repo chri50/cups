@@ -1,5 +1,5 @@
 /*
- * "$Id: lpr.c 11173 2013-07-23 12:31:34Z msweet $"
+ * "$Id: lpr.c 11101 2013-07-08 11:20:33Z msweet $"
  *
  *   "lpr" command for CUPS.
  *
@@ -227,8 +227,8 @@ main(int  argc,				/* I - Number of command-line arguments */
 		                              dest->options[j].value,
 					      num_options, &options);
 	    }
-	    else if (cupsLastError() == IPP_BAD_REQUEST ||
-		     cupsLastError() == IPP_VERSION_NOT_SUPPORTED)
+	    else if (cupsLastError() == IPP_STATUS_ERROR_BAD_REQUEST ||
+		     cupsLastError() == IPP_STATUS_ERROR_VERSION_NOT_SUPPORTED)
 	    {
 	      _cupsLangPrintf(stderr,
 			      _("%s: Error - add '/version=1.1' to server "
@@ -330,8 +330,8 @@ main(int  argc,				/* I - Number of command-line arguments */
 		                      dest->options[j].value,
 				      num_options, &options);
     }
-    else if (cupsLastError() == IPP_BAD_REQUEST ||
-	     cupsLastError() == IPP_VERSION_NOT_SUPPORTED)
+    else if (cupsLastError() == IPP_STATUS_ERROR_BAD_REQUEST ||
+	     cupsLastError() == IPP_STATUS_ERROR_VERSION_NOT_SUPPORTED)
     {
       _cupsLangPrintf(stderr,
 		      _("%s: Error - add '/version=1.1' to server "
@@ -436,5 +436,5 @@ main(int  argc,				/* I - Number of command-line arguments */
 
 
 /*
- * End of "$Id: lpr.c 11173 2013-07-23 12:31:34Z msweet $".
+ * End of "$Id: lpr.c 11101 2013-07-08 11:20:33Z msweet $".
  */

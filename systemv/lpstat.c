@@ -1,5 +1,5 @@
 /*
- * "$Id: lpstat.c 11173 2013-07-23 12:31:34Z msweet $"
+ * "$Id: lpstat.c 11101 2013-07-08 11:20:33Z msweet $"
  *
  *   "lpstat" command for CUPS.
  *
@@ -201,8 +201,8 @@ main(int  argc,				/* I - Number of command-line arguments */
 		num_dests = cupsGetDests(&dests);
 
 		if (num_dests == 0 &&
-		    (cupsLastError() == IPP_BAD_REQUEST ||
-		     cupsLastError() == IPP_VERSION_NOT_SUPPORTED))
+		    (cupsLastError() == IPP_STATUS_ERROR_BAD_REQUEST ||
+		     cupsLastError() == IPP_STATUS_ERROR_VERSION_NOT_SUPPORTED))
 		{
 		  _cupsLangPrintf(stderr,
 				  _("%s: Error - add '/version=1.1' to server "
@@ -214,38 +214,6 @@ main(int  argc,				/* I - Number of command-line arguments */
 	      status |= show_accepting(NULL, num_dests, dests);
 	    }
 	    break;
-
-#ifdef __sgi
-        case 'b' : /* Show both the local and remote status */
-	    op = 'b';
-
-	    if (argv[i][2])
-	    {
-	     /*
-	      * The local and remote status are separated by a blank line;
-	      * since all CUPS jobs are networked, we only output the
-	      * second list for now...  In the future, we might further
-	      * emulate this by listing the remote server's queue, but
-	      * for now this is enough to make the SGI printstatus program
-	      * happy...
-	      */
-
-              check_dest(argv[0], argv[i] + 2, &num_dests, &dests);
-
-	      puts("");
-	      status |= show_jobs(argv[i] + 2, NULL, 3, ranking, which);
-	    }
-	    else
-	    {
-	      _cupsLangPrintf(stderr,
-	                      _("%s: Error - expected destination after "
-			        "\"-b\" option."),
-			      argv[0]);
-
-	      return (1);
-	    }
-	    break;
-#endif /* __sgi */
 
         case 'c' : /* Show classes and members */
 	    op = 'c';
@@ -279,8 +247,8 @@ main(int  argc,				/* I - Number of command-line arguments */
 	      num_dests = dests ? 1 : 0;
 
 	      if (num_dests == 0 &&
-	          (cupsLastError() == IPP_BAD_REQUEST ||
-		   cupsLastError() == IPP_VERSION_NOT_SUPPORTED))
+	          (cupsLastError() == IPP_STATUS_ERROR_BAD_REQUEST ||
+		   cupsLastError() == IPP_STATUS_ERROR_VERSION_NOT_SUPPORTED))
 	      {
 		_cupsLangPrintf(stderr,
 				_("%s: Error - add '/version=1.1' to server "
@@ -319,18 +287,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 	    break;
 
         case 'l' : /* Long status or long job status */
-#ifdef __sgi
-	    op = 'l';
-
-	    if (argv[i][2])
-	    {
-              check_dest(argv[0], argv[i] + 2, &num_dests, &dests);
-
-	      status |= show_jobs(argv[i] + 2, NULL, 3, ranking, which);
-	    }
-	    else
-#endif /* __sgi */
-	      long_status = 2;
+	    long_status = 2;
 	    break;
 
         case 'o' : /* Show jobs by destination */
@@ -381,8 +338,8 @@ main(int  argc,				/* I - Number of command-line arguments */
 		num_dests = cupsGetDests(&dests);
 
 		if (num_dests == 0 &&
-		    (cupsLastError() == IPP_BAD_REQUEST ||
-		     cupsLastError() == IPP_VERSION_NOT_SUPPORTED))
+		    (cupsLastError() == IPP_STATUS_ERROR_BAD_REQUEST ||
+		     cupsLastError() == IPP_STATUS_ERROR_VERSION_NOT_SUPPORTED))
 		{
 		  _cupsLangPrintf(stderr,
 				  _("%s: Error - add '/version=1.1' to server "
@@ -410,8 +367,8 @@ main(int  argc,				/* I - Number of command-line arguments */
 	      num_dests = cupsGetDests(&dests);
 
 	      if (num_dests == 0 &&
-		  (cupsLastError() == IPP_BAD_REQUEST ||
-		   cupsLastError() == IPP_VERSION_NOT_SUPPORTED))
+		  (cupsLastError() == IPP_STATUS_ERROR_BAD_REQUEST ||
+		   cupsLastError() == IPP_STATUS_ERROR_VERSION_NOT_SUPPORTED))
 	      {
 		_cupsLangPrintf(stderr,
 				_("%s: Error - add '/version=1.1' to server "
@@ -434,8 +391,8 @@ main(int  argc,				/* I - Number of command-line arguments */
 	      num_dests = cupsGetDests(&dests);
 
 	      if (num_dests == 0 &&
-		  (cupsLastError() == IPP_BAD_REQUEST ||
-		   cupsLastError() == IPP_VERSION_NOT_SUPPORTED))
+		  (cupsLastError() == IPP_STATUS_ERROR_BAD_REQUEST ||
+		   cupsLastError() == IPP_STATUS_ERROR_VERSION_NOT_SUPPORTED))
 	      {
 		_cupsLangPrintf(stderr,
 				_("%s: Error - add '/version=1.1' to server "
@@ -493,8 +450,8 @@ main(int  argc,				/* I - Number of command-line arguments */
 		num_dests = cupsGetDests(&dests);
 
 		if (num_dests == 0 &&
-		    (cupsLastError() == IPP_BAD_REQUEST ||
-		     cupsLastError() == IPP_VERSION_NOT_SUPPORTED))
+		    (cupsLastError() == IPP_STATUS_ERROR_BAD_REQUEST ||
+		     cupsLastError() == IPP_STATUS_ERROR_VERSION_NOT_SUPPORTED))
 		{
 		  _cupsLangPrintf(stderr,
 				  _("%s: Error - add '/version=1.1' to server "
@@ -560,8 +517,8 @@ check_dest(const char  *command,	/* I  - Command name */
 
       if ((*dests = cupsGetNamedDest(CUPS_HTTP_DEFAULT, printer, pptr)) == NULL)
       {
-	if (cupsLastError() == IPP_BAD_REQUEST ||
-	    cupsLastError() == IPP_VERSION_NOT_SUPPORTED)
+	if (cupsLastError() == IPP_STATUS_ERROR_BAD_REQUEST ||
+	    cupsLastError() == IPP_STATUS_ERROR_VERSION_NOT_SUPPORTED)
 	  _cupsLangPrintf(stderr,
 			  _("%s: Error - add '/version=1.1' to server name."),
 			  command);
@@ -621,8 +578,8 @@ check_dest(const char  *command,	/* I  - Command name */
 
     if (!cupsGetDest(printer, NULL, *num_dests, *dests))
     {
-      if (cupsLastError() == IPP_BAD_REQUEST ||
-          cupsLastError() == IPP_VERSION_NOT_SUPPORTED)
+      if (cupsLastError() == IPP_STATUS_ERROR_BAD_REQUEST ||
+          cupsLastError() == IPP_STATUS_ERROR_VERSION_NOT_SUPPORTED)
 	_cupsLangPrintf(stderr,
 	                _("%s: Error - add '/version=1.1' to server name."),
 			command);
@@ -746,8 +703,8 @@ show_accepting(const char  *printers,	/* I - Destinations */
 
   response = cupsDoRequest(CUPS_HTTP_DEFAULT, request, "/");
 
-  if (cupsLastError() == IPP_BAD_REQUEST ||
-      cupsLastError() == IPP_VERSION_NOT_SUPPORTED)
+  if (cupsLastError() == IPP_STATUS_ERROR_BAD_REQUEST ||
+      cupsLastError() == IPP_STATUS_ERROR_VERSION_NOT_SUPPORTED)
   {
     _cupsLangPrintf(stderr,
 		    _("%s: Error - add '/version=1.1' to server name."),
@@ -755,7 +712,7 @@ show_accepting(const char  *printers,	/* I - Destinations */
     ippDelete(response);
     return (1);
   }
-  else if (cupsLastError() > IPP_OK_CONFLICT)
+  else if (cupsLastError() > IPP_STATUS_OK_CONFLICTING)
   {
     _cupsLangPrintf(stderr, "lpstat: %s", cupsLastErrorString());
     ippDelete(response);
@@ -931,8 +888,8 @@ show_classes(const char *dests)		/* I - Destinations */
 
   response = cupsDoRequest(CUPS_HTTP_DEFAULT, request, "/");
 
-  if (cupsLastError() == IPP_BAD_REQUEST ||
-      cupsLastError() == IPP_VERSION_NOT_SUPPORTED)
+  if (cupsLastError() == IPP_STATUS_ERROR_BAD_REQUEST ||
+      cupsLastError() == IPP_STATUS_ERROR_VERSION_NOT_SUPPORTED)
   {
     _cupsLangPrintf(stderr,
 		    _("%s: Error - add '/version=1.1' to server name."),
@@ -940,7 +897,7 @@ show_classes(const char *dests)		/* I - Destinations */
     ippDelete(response);
     return (1);
   }
-  else if (cupsLastError() > IPP_OK_CONFLICT)
+  else if (cupsLastError() > IPP_STATUS_OK_CONFLICTING)
   {
     _cupsLangPrintf(stderr, "lpstat: %s", cupsLastErrorString());
     ippDelete(response);
@@ -1192,8 +1149,8 @@ show_devices(const char  *printers,	/* I - Destinations */
 
   response = cupsDoRequest(CUPS_HTTP_DEFAULT, request, "/");
 
-  if (cupsLastError() == IPP_BAD_REQUEST ||
-      cupsLastError() == IPP_VERSION_NOT_SUPPORTED)
+  if (cupsLastError() == IPP_STATUS_ERROR_BAD_REQUEST ||
+      cupsLastError() == IPP_STATUS_ERROR_VERSION_NOT_SUPPORTED)
   {
     _cupsLangPrintf(stderr,
 		    _("%s: Error - add '/version=1.1' to server name."),
@@ -1201,7 +1158,7 @@ show_devices(const char  *printers,	/* I - Destinations */
     ippDelete(response);
     return (1);
   }
-  else if (cupsLastError() > IPP_OK_CONFLICT)
+  else if (cupsLastError() > IPP_STATUS_OK_CONFLICTING)
   {
     _cupsLangPrintf(stderr, "lpstat: %s", cupsLastErrorString());
     ippDelete(response);
@@ -1435,8 +1392,8 @@ show_jobs(const char *dests,		/* I - Destinations */
 
   response = cupsDoRequest(CUPS_HTTP_DEFAULT, request, "/");
 
-  if (cupsLastError() == IPP_BAD_REQUEST ||
-      cupsLastError() == IPP_VERSION_NOT_SUPPORTED)
+  if (cupsLastError() == IPP_STATUS_ERROR_BAD_REQUEST ||
+      cupsLastError() == IPP_STATUS_ERROR_VERSION_NOT_SUPPORTED)
   {
     _cupsLangPrintf(stderr,
 		    _("%s: Error - add '/version=1.1' to server name."),
@@ -1444,7 +1401,7 @@ show_jobs(const char *dests,		/* I - Destinations */
     ippDelete(response);
     return (1);
   }
-  else if (cupsLastError() > IPP_OK_CONFLICT)
+  else if (cupsLastError() > IPP_STATUS_OK_CONFLICTING)
   {
     _cupsLangPrintf(stderr, "lpstat: %s", cupsLastErrorString());
     ippDelete(response);
@@ -1547,7 +1504,7 @@ show_jobs(const char *dests,		/* I - Destinations */
 	  */
 
 	  if (!strftime(date, sizeof(date), "%b %d %H:%M", jobdate))
-	    strcpy(date, "Unknown");
+	    strlcpy(date, "Unknown", sizeof(date));
 
 	  _cupsLangPrintf(stdout, "%s;%s;%d;%s;%s",
 	                  temp, username ? username : "unknown",
@@ -1556,7 +1513,7 @@ show_jobs(const char *dests,		/* I - Destinations */
 	else
 	{
 	  if (!strftime(date, sizeof(date), "%c", jobdate))
-	    strcpy(date, "Unknown");
+	    strlcpy(date, "Unknown", sizeof(date));
 
           if (ranking)
 	    _cupsLangPrintf(stdout, "%3d %-21s %-13s %8.0f %s",
@@ -1694,8 +1651,8 @@ show_printers(const char  *printers,	/* I - Destinations */
 
   response = cupsDoRequest(CUPS_HTTP_DEFAULT, request, "/");
 
-  if (cupsLastError() == IPP_BAD_REQUEST ||
-      cupsLastError() == IPP_VERSION_NOT_SUPPORTED)
+  if (cupsLastError() == IPP_STATUS_ERROR_BAD_REQUEST ||
+      cupsLastError() == IPP_STATUS_ERROR_VERSION_NOT_SUPPORTED)
   {
     _cupsLangPrintf(stderr,
 		    _("%s: Error - add '/version=1.1' to server name."),
@@ -1703,7 +1660,7 @@ show_printers(const char  *printers,	/* I - Destinations */
     ippDelete(response);
     return (1);
   }
-  else if (cupsLastError() > IPP_OK_CONFLICT)
+  else if (cupsLastError() > IPP_STATUS_OK_CONFLICTING)
   {
     _cupsLangPrintf(stderr, "lpstat: %s", cupsLastErrorString());
     ippDelete(response);
@@ -2161,5 +2118,5 @@ show_scheduler(void)
 
 
 /*
- * End of "$Id: lpstat.c 11173 2013-07-23 12:31:34Z msweet $".
+ * End of "$Id: lpstat.c 11101 2013-07-08 11:20:33Z msweet $".
  */

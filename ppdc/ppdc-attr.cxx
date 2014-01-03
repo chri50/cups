@@ -1,5 +1,5 @@
 //
-// "$Id: ppdc-attr.cxx 11173 2013-07-23 12:31:34Z msweet $"
+// "$Id: ppdc-attr.cxx 1378 2009-04-08 03:17:45Z msweet $"
 //
 //   Attribute class for the CUPS PPD Compiler.
 //
@@ -62,5 +62,5 @@ ppdcAttr::~ppdcAttr()
 
 
 //
-// End of "$Id: ppdc-attr.cxx 11173 2013-07-23 12:31:34Z msweet $".
+// End of "$Id: ppdc-attr.cxx 1378 2009-04-08 03:17:45Z msweet $".
 //

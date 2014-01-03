@@ -1,5 +1,5 @@
 /*
- * "$Id: snmp.c 11173 2013-07-23 12:31:34Z msweet $"
+ * "$Id: snmp.c 4167 2013-02-04 19:27:13Z msweet $"
  *
  *   SNMP functions for CUPS.
  *
@@ -362,11 +362,7 @@ _cupsSNMPOpen(int family)		/* I - Address family - @code AF_INET@ or @code AF_IN
 
   val = 1;
 
-#ifdef WIN32
-  if (setsockopt(fd, SOL_SOCKET, SO_BROADCAST, (char *)&val, sizeof(val)))
-#else
-  if (setsockopt(fd, SOL_SOCKET, SO_BROADCAST, &val, sizeof(val)))
-#endif /* WIN32 */
+  if (setsockopt(fd, SOL_SOCKET, SO_BROADCAST, CUPS_SOCAST &val, sizeof(val)))
   {
     DEBUG_printf(("5_cupsSNMPOpen: Returning -1 (%s)", strerror(errno)));
 
@@ -1733,5 +1729,5 @@ snmp_set_error(cups_snmp_t *packet,	/* I - Packet */
 
 
 /*
- * End of "$Id: snmp.c 11173 2013-07-23 12:31:34Z msweet $".
+ * End of "$Id: snmp.c 4167 2013-02-04 19:27:13Z msweet $".
  */

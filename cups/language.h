@@ -1,5 +1,5 @@
 /*
- * "$Id: language.h 11173 2013-07-23 12:31:34Z msweet $"
+ * "$Id: language.h 10996 2013-05-29 11:51:34Z msweet $"
  *
  *   Multi-language support for CUPS.
  *
@@ -111,5 +111,5 @@ extern cups_lang_t	*cupsLangGet(const char *language);
 #endif /* !_CUPS_LANGUAGE_H_ */
 
 /*
- * End of "$Id: language.h 11173 2013-07-23 12:31:34Z msweet $".
+ * End of "$Id: language.h 10996 2013-05-29 11:51:34Z msweet $".
  */
