@@ -2429,8 +2429,8 @@ cups_fill(cups_file_t *fp)		/* I - CUPS file */
 	}
 	else
 	{
-	  tcrc = (((((trailer[3] << 8) | trailer[2]) << 8) | trailer[1]) << 8) |
-        	 trailer[0];
+	  tcrc = (((uLong) ((trailer[3] << 8) | trailer[2])) << 16) |
+		   (uLong) ((trailer[1] << 8) | trailer[0]);
 
 	  if (tcrc != fp->crc)
 	  {
