@@ -1,5 +1,5 @@
 /*
- * "$Id: lpd.c 11173 2013-07-23 12:31:34Z msweet $"
+ * "$Id: lpd.c 10996 2013-05-29 11:51:34Z msweet $"
  *
  *   Line Printer Daemon backend for CUPS.
  *
@@ -707,7 +707,7 @@ lpd_queue(const char      *hostname,	/* I - Host to connect to */
     */
 
     fprintf(stderr, "DEBUG: Connecting to %s:%d for printer %s\n", hostname,
-            _httpAddrPort(&(addrlist->addr)), printer);
+            httpAddrPort(&(addrlist->addr)), printer);
     _cupsLangPrintFilter(stderr, "INFO", _("Connecting to printer."));
 
     for (lport = reserve == RESERVE_RFC1179 ? 732 : 1024, addr = addrlist,
@@ -889,7 +889,7 @@ lpd_queue(const char      *hostname,	/* I - Host to connect to */
 
     fprintf(stderr, "DEBUG: Connected to %s:%d (local port %d)...\n",
 	    httpAddrString(&(addr->addr), addrname, sizeof(addrname)),
-	    _httpAddrPort(&(addr->addr)), lport);
+	    httpAddrPort(&(addr->addr)), lport);
 
    /*
     * See if the printer supports SNMP...
@@ -1331,5 +1331,5 @@ sigterm_handler(int sig)		/* I - Signal */
 
 
 /*
- * End of "$Id: lpd.c 11173 2013-07-23 12:31:34Z msweet $".
+ * End of "$Id: lpd.c 10996 2013-05-29 11:51:34Z msweet $".
  */

@@ -55,6 +55,7 @@
   /dev/parport* rw,
   /etc/cups/ rw,
   /etc/cups/** rw,
+  /etc/cups/interfaces/* ixrw,
   /etc/foomatic/* r,
   /etc/gai.conf r,
   /etc/papersize r,
@@ -134,6 +135,9 @@
   # likewise authentication
   /etc/likewise r,
   /etc/likewise/* r,
+
+  # silence noise
+  deny /etc/udev/udev.conf r,
 
   # Site-specific additions and overrides. See local/README for details.
   #include <local/usr.sbin.cupsd>

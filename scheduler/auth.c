@@ -1,5 +1,5 @@
 /*
- * "$Id: auth.c 11173 2013-07-23 12:31:34Z msweet $"
+ * "$Id: auth.c 10996 2013-05-29 11:51:34Z msweet $"
  *
  *   Authorization routines for the CUPS scheduler.
  *
@@ -1183,7 +1183,7 @@ cupsdAuthorize(cupsd_client_t *con)	/* I - Client connection */
 
 
     if (sscanf(authorization, "%255s", scheme) != 1)
-      strcpy(scheme, "UNKNOWN");
+      strlcpy(scheme, "UNKNOWN", sizeof(scheme));
 
     cupsdLogMessage(CUPSD_LOG_ERROR,
                     "[Client %d] Bad authentication data \"%s ...\"",
@@ -2607,5 +2607,5 @@ to64(char          *s,			/* O - Output string */
 
 
 /*
- * End of "$Id: auth.c 11173 2013-07-23 12:31:34Z msweet $".
+ * End of "$Id: auth.c 10996 2013-05-29 11:51:34Z msweet $".
  */

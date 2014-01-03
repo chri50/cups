@@ -1,5 +1,5 @@
 /*
- * "$Id: usb-unix.c 11173 2013-07-23 12:31:34Z msweet $"
+ * "$Id: usb-unix.c 10996 2013-05-29 11:51:34Z msweet $"
  *
  *   USB port backend for CUPS.
  *
@@ -257,7 +257,6 @@ list_devices(void)
 
     close(fd);
   }
-#elif defined(__sgi)
 #elif defined(__sun) && defined(ECPPIOC_GETDEVID)
   int	i;			/* Looping var */
   int	fd;			/* File descriptor */
@@ -613,5 +612,5 @@ side_cb(int         print_fd,		/* I - Print file */
 
 
 /*
- * End of "$Id: usb-unix.c 11173 2013-07-23 12:31:34Z msweet $".
+ * End of "$Id: usb-unix.c 10996 2013-05-29 11:51:34Z msweet $".
  */

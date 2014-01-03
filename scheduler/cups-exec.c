@@ -1,9 +1,9 @@
 /*
- * "$Id: cups-exec.c 11173 2013-07-23 12:31:34Z msweet $"
+ * "$Id: cups-exec.c 11144 2013-07-17 02:45:55Z msweet $"
  *
  *   Sandbox helper for CUPS.
  *
- *   Copyright 2007-2012 by Apple Inc.
+ *   Copyright 2007-2013 by Apple Inc.
  *
  *   These coded instructions, statements, and computer programs are the
  *   property of Apple Inc. and are protected by Federal copyright
@@ -43,7 +43,6 @@ int					/* O - Exit status */
 main(int  argc,				/* I - Number of command-line args */
      char *argv[])			/* I - Command-line arguments */
 {
-  int	i;				/* Looping var */
 #ifdef HAVE_SANDBOX_H
   char	*sandbox_error = NULL;		/* Sandbox error, if any */
 #endif /* HAVE_SANDBOX_H */
@@ -76,20 +75,6 @@ main(int  argc,				/* I - Number of command-line args */
 #endif /* HAVE_SANDBOX_H */
 
  /*
-  * Close file descriptors we don't need (insurance):
-  *
-  * 0   = stdin
-  * 1   = stdout
-  * 2   = stderr
-  * 3   = back-channel
-  * 4   = side-channel
-  * 5-N = unused
-  */
-
-  for (i = 5; i < 1024; i ++)
-    close(i);
-
- /*
   * Execute the program...
   */
 
@@ -105,5 +90,5 @@ main(int  argc,				/* I - Number of command-line args */
 
 
 /*
- * End of "$Id: cups-exec.c 11173 2013-07-23 12:31:34Z msweet $".
+ * End of "$Id: cups-exec.c 11144 2013-07-17 02:45:55Z msweet $".
  */

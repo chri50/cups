@@ -1,5 +1,5 @@
 /*
- * "$Id: custom.c 11173 2013-07-23 12:31:34Z msweet $"
+ * "$Id: custom.c 10996 2013-05-29 11:51:34Z msweet $"
  *
  *   PPD custom option routines for CUPS.
  *
@@ -118,5 +118,5 @@ ppdNextCustomParam(ppd_coption_t *opt)	/* I - Custom option */
 
 
 /*
- * End of "$Id: custom.c 11173 2013-07-23 12:31:34Z msweet $".
+ * End of "$Id: custom.c 10996 2013-05-29 11:51:34Z msweet $".
  */

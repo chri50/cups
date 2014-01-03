@@ -20,7 +20,7 @@ dnl Set the name of the config header file...
 AC_CONFIG_HEADER(config.h)
 
 dnl Version number information...
-CUPS_VERSION=1.6.4
+CUPS_VERSION=1.7.0
 CUPS_REVISION=
 #if test -z "$CUPS_REVISION" -a -d .svn; then
 #	CUPS_REVISION="-r`svnversion . | awk -F: '{print $NF}' | sed -e '1,$s/[[a-zA-Z]]*//g'`"
@@ -267,6 +267,7 @@ AC_CHECK_HEADER(zlib.h,
 	AC_DEFINE(HAVE_LIBZ)
 	LIBZ="-lz"
 	LIBS="$LIBS -lz"
+	AC_CHECK_LIB(z, inflateCopy, AC_DEFINE(HAVE_INFLATECOPY))
 	if test "x$GZIP" != z; then
 		INSTALL_GZIP="-z"
 	fi))
@@ -308,7 +309,7 @@ else
 	DBUSDIR=""
 fi
 
-AC_ARG_ENABLE(dbus, [  --enable-dbus           build with DBUS support])
+AC_ARG_ENABLE(dbus, [  --disable-dbus           build without DBUS support])
 AC_ARG_WITH(dbusdir, [  --with-dbusdir          set DBUS configuration directory ],
 	DBUSDIR="$withval")
 

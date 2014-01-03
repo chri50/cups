@@ -2,7 +2,7 @@ Author: till.kamppeter@gmail.com
 
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -886,7 +886,7 @@
+@@ -885,7 +885,7 @@
      cupsdAddAlias(ServerAlias, temp);
      cupsdLogMessage(CUPSD_LOG_DEBUG, "Added auto ServerAlias %s", temp);
  

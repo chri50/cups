@@ -1,5 +1,5 @@
 //
-// "$Id: ppdc-group.cxx 11173 2013-07-23 12:31:34Z msweet $"
+// "$Id: ppdc-group.cxx 3275 2011-05-20 07:26:13Z msweet $"
 //
 //   Group class for the CUPS PPD Compiler.
 //
@@ -99,5 +99,5 @@ ppdcGroup::find_option(const char *n)	// I - Name of option
 
 
 //
-// End of "$Id: ppdc-group.cxx 11173 2013-07-23 12:31:34Z msweet $".
+// End of "$Id: ppdc-group.cxx 3275 2011-05-20 07:26:13Z msweet $".
 //

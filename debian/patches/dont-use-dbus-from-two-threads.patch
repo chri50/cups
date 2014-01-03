@@ -556,7 +556,7 @@ Last-Updated: 2013-11-28
  
  /*
   * Prototypes...
-@@ -228,6 +243,17 @@
+@@ -229,6 +244,17 @@
  extern void		cupsdStartServer(void);
  extern void		cupsdStopServer(void);
  
@@ -573,7 +573,7 @@ Last-Updated: 2013-11-28
 +#endif /* HAVE_AVAHI */
  
  /*
-  * End of "$Id: cupsd.h 11173 2013-07-23 12:31:34Z msweet $".
+  * End of "$Id: cupsd.h 10996 2013-05-29 11:51:34Z msweet $".
 --- a/scheduler/dirsvc.c
 +++ b/scheduler/dirsvc.c
 @@ -212,7 +212,7 @@
@@ -607,7 +607,7 @@ Last-Updated: 2013-11-28
      }
  #  endif /* HAVE_DNSSD */
  
-@@ -752,9 +750,7 @@
+@@ -754,9 +752,7 @@
    DNSServiceRefDeallocate(*srv);
  
  #  else /* HAVE_AVAHI */
@@ -617,7 +617,7 @@ Last-Updated: 2013-11-28
  #  endif /* HAVE_DNSSD */
  
    *srv = NULL;
-@@ -1049,14 +1045,10 @@
+@@ -1051,14 +1047,10 @@
    (void)commit;
  
  #  else /* HAVE_AVAHI */
@@ -632,7 +632,7 @@ Last-Updated: 2013-11-28
      cupsdLogMessage(CUPSD_LOG_WARN, "DNS-SD registration of \"%s\" failed: %s",
                      name, dnssdErrorString(avahi_client_errno(DNSSDClient)));
      return (0);
-@@ -1171,8 +1163,6 @@
+@@ -1173,8 +1165,6 @@
        cupsdLogMessage(CUPSD_LOG_DEBUG, "DNS-SD commit of \"%s\" failed.",
                        name);
    }
@@ -641,7 +641,12 @@ Last-Updated: 2013-11-28
  #  endif /* HAVE_DNSSD */
  
    if (error)
-@@ -1343,7 +1333,7 @@
+@@ -1341,12 +1331,10 @@
+   DNSSDMaster = NULL;
+ 
+ #  else /* HAVE_AVAHI */
+-  avahi_threaded_poll_stop(DNSSDMaster);
+-
    avahi_client_free(DNSSDClient);
    DNSSDClient = NULL;
  
@@ -663,7 +668,7 @@ Last-Updated: 2013-11-28
  					/* Client information */
 --- a/scheduler/main.c
 +++ b/scheduler/main.c
-@@ -152,6 +152,10 @@
+@@ -148,6 +148,10 @@
    int			launchd_idle_exit;
  					/* Idle exit on select timeout? */
  #endif	/* HAVE_LAUNCHD */
@@ -674,7 +679,7 @@ Last-Updated: 2013-11-28
  
  
  #ifdef HAVE_GETEUID
-@@ -579,6 +583,14 @@
+@@ -572,6 +576,14 @@
  
    httpInitialize();
  
@@ -689,7 +694,7 @@ Last-Updated: 2013-11-28
    cupsdStartServer();
  
   /*
-@@ -918,6 +930,16 @@
+@@ -889,6 +901,16 @@
      }
  #endif /* __APPLE__ */
  
@@ -706,7 +711,7 @@ Last-Updated: 2013-11-28
  #ifndef __APPLE__
     /*
      * Update the network interfaces once a minute...
-@@ -1845,6 +1867,10 @@
+@@ -1804,6 +1826,10 @@
    cupsd_job_t		*job;		/* Job information */
    cupsd_subscription_t	*sub;		/* Subscription information */
    const char		*why;		/* Debugging aid */
@@ -717,7 +722,7 @@ Last-Updated: 2013-11-28
  
  
    cupsdLogMessage(CUPSD_LOG_DEBUG2, "select_timeout: JobHistoryUpdate=%ld",
-@@ -1890,6 +1916,19 @@
+@@ -1849,6 +1875,19 @@
    }
  #endif /* __APPLE__ */
  

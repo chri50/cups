@@ -1,5 +1,5 @@
 /*
- * "$Id: printers.c 11173 2013-07-23 12:31:34Z msweet $"
+ * "$Id: printers.c 10996 2013-05-29 11:51:34Z msweet $"
  *
  *   Printer routines for the CUPS scheduler.
  *
@@ -49,10 +49,6 @@
  *   load_ppd()                 - Load a cached PPD file, updating the cache as
  *                                needed.
  *   new_media_col()            - Create a media-col collection value.
- *   write_irix_config()        - Update the config files used by the IRIX
- *                                desktop tools.
- *   write_irix_state()         - Update the status files used by IRIX printing
- *                                desktop tools.
  *   write_xml_string()         - Write a string with XML escaping.
  */
 
@@ -96,10 +92,6 @@ static void	load_ppd(cupsd_printer_t *p);
 static void	log_ipp_conformance(cupsd_printer_t *p, const char *reason);
 static ipp_t	*new_media_col(_pwg_size_t *size, const char *source,
 		               const char *type);
-#ifdef __sgi
-static void	write_irix_config(cupsd_printer_t *p);
-static void	write_irix_state(cupsd_printer_t *p);
-#endif /* __sgi */
 static void	write_xml_string(cups_file_t *fp, const char *s);
 
 
@@ -142,12 +134,13 @@ cupsdAddPrinter(const char *name)	/* I - Name of printer */
   cupsdSetString(&p->uuid, _httpAssembleUUID(ServerName, RemotePort, name, 0,
                                              uuid, sizeof(uuid)));
   cupsdSetDeviceURI(p, "file:///dev/null");
-
-  p->state      = IPP_PRINTER_STOPPED;
-  p->state_time = time(NULL);
-  p->accepting  = 0;
-  p->shared     = DefaultShared;
-  p->filetype   = mimeAddType(MimeDatabase, "printer", name);
+  cupsdSetString(&p->ppd_timestamp, "*");
+  p->state         = IPP_PRINTER_STOPPED;
+  p->state_time    = time(NULL);
+  p->accepting     = 0;
+  p->color_managed = 1;
+  p->shared        = DefaultShared;
+  p->filetype      = mimeAddType(MimeDatabase, "printer", name);
 
   cupsdSetString(&p->job_sheets[0], "none");
   cupsdSetString(&p->job_sheets[1], "none");
@@ -348,9 +341,9 @@ cupsdCreateCommonData(void)
 		  "multiple-document-handling",
 		  "number-up",
 		  "output-bin",
-		  "output-mode",
 		  "orientation-requested",
 		  "page-ranges",
+		  "print-color-mode",
 		  "print-quality",
 		  "printer-resolution",
 		  "sides"
@@ -367,9 +360,9 @@ cupsdCreateCommonData(void)
 		  "multiple-document-handling",
 		  "number-up",
 		  "output-bin",
-		  "output-mode",
 		  "orientation-requested",
 		  "page-ranges",
+		  "print-color-mode",
 		  "print-quality",
 		  "printer-resolution",
 		  "sides"
@@ -720,9 +713,6 @@ cupsdDeletePrinter(
 {
   int	i,				/* Looping var */
 	changed = 0;			/* Class changed? */
-#ifdef __sgi
-  char	filename[1024];			/* Interface script filename */
-#endif /* __sgi */
 
 
   cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdDeletePrinter(p=%p(%s), update=%d)",
@@ -754,31 +744,6 @@ cupsdDeletePrinter(
   cupsdLogMessage(CUPSD_LOG_DEBUG2,
                   "cupsdDeletePrinter: Removing %s from Printers", p->name);
   cupsArrayRemove(Printers, p);
-
- /*
-  * Remove the dummy interface/icon/option files under IRIX...
-  */
-
-#ifdef __sgi
-  snprintf(filename, sizeof(filename), "/var/spool/lp/interface/%s", p->name);
-  unlink(filename);
-
-  snprintf(filename, sizeof(filename), "/var/spool/lp/gui_interface/ELF/%s.gui",
-           p->name);
-  unlink(filename);
-
-  snprintf(filename, sizeof(filename), "/var/spool/lp/activeicons/%s", p->name);
-  unlink(filename);
-
-  snprintf(filename, sizeof(filename), "/var/spool/lp/pod/%s.config", p->name);
-  unlink(filename);
-
-  snprintf(filename, sizeof(filename), "/var/spool/lp/pod/%s.status", p->name);
-  unlink(filename);
-
-  snprintf(filename, sizeof(filename), "/var/spool/lp/member/%s", p->name);
-  unlink(filename);
-#endif /* __sgi */
 
  /*
   * If p is the default printer, assign a different one...
@@ -829,6 +794,7 @@ cupsdDeletePrinter(
   cupsdClearString(&p->job_sheets[0]);
   cupsdClearString(&p->job_sheets[1]);
   cupsdClearString(&p->device_uri);
+  cupsdClearString(&p->ppd_timestamp);
   cupsdClearString(&p->sanitized_device_uri);
   cupsdClearString(&p->port_monitor);
   cupsdClearString(&p->op_policy);
@@ -1028,6 +994,11 @@ cupsdLoadAllPrinters(void)
       if (value)
 	cupsdSetString(&p->make_model, value);
     }
+    else if (!_cups_strcasecmp(line, "PPDTimeStamp"))
+    {
+      if (value)
+	cupsdSetString(&p->ppd_timestamp, value);
+    }
     else if (!_cups_strcasecmp(line, "Location"))
     {
       if (value)
@@ -1181,6 +1152,26 @@ cupsdLoadAllPrinters(void)
         	!_cups_strcasecmp(value, "off") ||
         	!_cups_strcasecmp(value, "false")))
         p->shared = 0;
+      else
+	cupsdLogMessage(CUPSD_LOG_ERROR,
+	                "Syntax error on line %d of printers.conf.", linenum);
+    }
+    else if (!_cups_strcasecmp(line, "ColorManaged"))
+    {
+     /*
+      * Set the initial color-managed state...
+      */
+
+      if (value &&
+          (!_cups_strcasecmp(value, "yes") ||
+           !_cups_strcasecmp(value, "on") ||
+           !_cups_strcasecmp(value, "true")))
+        p->color_managed = 1;
+      else if (value &&
+               (!_cups_strcasecmp(value, "no") ||
+        	!_cups_strcasecmp(value, "off") ||
+        	!_cups_strcasecmp(value, "false")))
+        p->color_managed = 0;
       else
 	cupsdLogMessage(CUPSD_LOG_ERROR,
 	                "Syntax error on line %d of printers.conf.", linenum);
@@ -1491,6 +1482,9 @@ cupsdSaveAllPrinters(void)
 
     cupsFilePutConf(fp, "DeviceURI", printer->device_uri);
 
+    if (printer->ppd_timestamp)
+      cupsFilePutConf(fp, "PPDTimeStamp", printer->ppd_timestamp);
+
     if (printer->port_monitor)
       cupsFilePutConf(fp, "PortMonitor", printer->port_monitor);
 
@@ -1523,6 +1517,11 @@ cupsdSaveAllPrinters(void)
       cupsFilePuts(fp, "Shared Yes\n");
     else
       cupsFilePuts(fp, "Shared No\n");
+
+    if (printer->color_managed)
+      cupsFilePuts(fp, "ColorManaged Yes\n");
+    else
+      cupsFilePuts(fp, "ColorManaged No\n");
 
     snprintf(value, sizeof(value), "%s %s", printer->job_sheets[0],
              printer->job_sheets[1]);
@@ -1657,14 +1656,6 @@ cupsdSaveAllPrinters(void)
                      (long)printer->marker_time);
 
     cupsFilePuts(fp, "</Printer>\n");
-
-#ifdef __sgi
-    /*
-     * Make IRIX desktop & printer status happy
-     */
-
-    write_irix_state(printer);
-#endif /* __sgi */
   }
 
   cupsdCloseCreatedConfFile(fp, filename);
@@ -1910,12 +1901,13 @@ void
 cupsdSetPrinterAttr(
     cupsd_printer_t *p,			/* I - Printer */
     const char      *name,		/* I - Attribute name */
-    char            *value)		/* I - Attribute value string */
+    const char      *value)		/* I - Attribute value string */
 {
   ipp_attribute_t	*attr;		/* Attribute */
   int			i,		/* Looping var */
 			count;		/* Number of values */
-  char			*ptr,		/* Pointer into value */
+  char			*temp,		/* Temporary copy of value string */
+			*ptr,		/* Pointer into value */
 			*start,		/* Start of value */
 			quote;		/* Quote character */
   ipp_tag_t		value_tag;	/* Value tag for this attribute */
@@ -1932,10 +1924,21 @@ cupsdSetPrinterAttr(
   }
 
  /*
+  * Copy the value string so we can do what we want with it...
+  */
+
+  if ((temp = strdup(value)) == NULL)
+  {
+    cupsdLogMessage(CUPSD_LOG_ERROR,
+                    "Unable to duplicate value for \"%s\" attribute.", name);
+    return;
+  }
+
+ /*
   * Count the number of values...
   */
 
-  for (count = 1, quote = '\0', ptr = value;
+  for (count = 1, quote = '\0', ptr = temp;
        *ptr;
        ptr ++)
   {
@@ -1983,15 +1986,15 @@ cupsdSetPrinterAttr(
       return;
     }
 
-    for (i = 0; i < count; i ++)
+    for (i = 0, start = temp; i < count; i ++)
     {
-      if ((ptr = strchr(value, ',')) != NULL)
+      if ((ptr = strchr(start, ',')) != NULL)
         *ptr++ = '\0';
 
-      attr->values[i].integer = strtol(value, NULL, 10);
+      attr->values[i].integer = strtol(start, NULL, 10);
 
       if (ptr)
-        value = ptr;
+        start = ptr;
     }
   }
   else
@@ -2033,7 +2036,7 @@ cupsdSetPrinterAttr(
       return;
     }
 
-    for (i = 0, quote = '\0', ptr = value; i < count; i ++)
+    for (i = 0, quote = '\0', ptr = temp; i < count; i ++)
     {
       for (start = ptr; *ptr; ptr ++)
       {
@@ -2062,6 +2065,8 @@ cupsdSetPrinterAttr(
       attr->values[i].string.text = _cupsStrAlloc(start);
     }
   }
+
+  free(temp);
 }
 
 
@@ -2157,6 +2162,8 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */
                NULL, p->info ? p->info : "");
   ippAddString(p->attrs, IPP_TAG_PRINTER, IPP_TAG_URI, "printer-uuid", NULL,
 	       p->uuid);
+  ippAddString(p->attrs, IPP_TAG_PRINTER, IPP_TAG_TEXT,
+               "ppd-timestamp", NULL, p->ppd_timestamp ? p->ppd_timestamp : "*");
 
   if (cupsArrayCount(p->users) > 0)
   {
@@ -2172,7 +2179,7 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */
     for (i = 0, name = (char *)cupsArrayFirst(p->users);
          name;
 	 i ++, name = (char *)cupsArrayNext(p->users))
-      attr->values[i].string.text = _cupsStrRetain(name);
+      attr->values[i].string.text = _cupsStrAlloc(name);
   }
 
   ippAddInteger(p->attrs, IPP_TAG_PRINTER, IPP_TAG_INTEGER,
@@ -2239,7 +2246,7 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */
       for (i = 0; i < p->num_printers; i ++)
       {
 	if (attr != NULL)
-	  attr->values[i].string.text = _cupsStrRetain(p->printers[i]->name);
+	  attr->values[i].string.text = _cupsStrAlloc(p->printers[i]->name);
 
 	p->type &= ~CUPS_PRINTER_OPTIONS | p->printers[i]->type;
       }
@@ -2339,7 +2346,7 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */
       {
 	for (i = 0; i < oldattr->num_values; i ++)
 	  attr->values[i].string.text =
-	      _cupsStrRetain(oldattr->values[i].string.text);
+	      _cupsStrAlloc(oldattr->values[i].string.text);
       }
     }
 
@@ -2393,7 +2400,7 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */
       {
 	for (i = 0; i < oldattr->num_values; i ++)
 	  attr->values[i].string.text =
-	      _cupsStrRetain(oldattr->values[i].string.text);
+	      _cupsStrAlloc(oldattr->values[i].string.text);
       }
     }
 
@@ -2406,7 +2413,7 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */
       {
 	for (i = 0; i < oldattr->num_values; i ++)
 	  attr->values[i].string.text =
-	      _cupsStrRetain(oldattr->values[i].string.text);
+	      _cupsStrAlloc(oldattr->values[i].string.text);
       }
     }
 
@@ -2434,15 +2441,6 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */
   */
 
   add_printer_defaults(p);
-
-#ifdef __sgi
- /*
-  * Write the IRIX printer config and status files...
-  */
-
-  write_irix_config(p);
-  write_irix_state(p);
-#endif /* __sgi */
 
  /*
   * Let the browse protocols reflect the change
@@ -2631,10 +2629,6 @@ cupsdSetPrinterState(
     */
 
     p->state_time = time(NULL);
-
-#ifdef __sgi
-    write_irix_state(p);
-#endif /* __sgi */
   }
 
  /*
@@ -3023,16 +3017,6 @@ cupsdWritePrintcap(void)
   cupsd_printer_t	*p;		/* Current printer */
 
 
-#ifdef __sgi
- /*
-  * Update the IRIX printer state for the default printer; if
-  * no printers remain, then the default printer file will be
-  * removed...
-  */
-
-  write_irix_state(DefaultPrinter);
-#endif /* __sgi */
-
  /*
   * See if we have a printcap file; if not, don't bother writing it.
   */
@@ -3122,6 +3106,7 @@ cupsdWritePrintcap(void)
 			     "\t\t<%s/>\n"
 			     "\t\t<key>printer-location</key>\n"
 			     "\t\t<string>", p->accepting ? "true" : "false");
+
 	  write_xml_string(fp, p->location);
 	  cupsFilePuts(fp, "</string>\n"
 			   "\t\t<key>printer-make-and-model</key>\n"
@@ -3226,6 +3211,9 @@ add_printer_defaults(cupsd_printer_t *p)/* I - Printer */
     cupsArrayAdd(CommonDefaults, _cupsStrAlloc("copies-default"));
     cupsArrayAdd(CommonDefaults, _cupsStrAlloc("document-format-default"));
     cupsArrayAdd(CommonDefaults, _cupsStrAlloc("finishings-default"));
+    cupsArrayAdd(CommonDefaults, _cupsStrAlloc("job-account-id-default"));
+    cupsArrayAdd(CommonDefaults,
+                 _cupsStrAlloc("job-accounting-user-id-default"));
     cupsArrayAdd(CommonDefaults, _cupsStrAlloc("job-hold-until-default"));
     cupsArrayAdd(CommonDefaults, _cupsStrAlloc("job-priority-default"));
     cupsArrayAdd(CommonDefaults, _cupsStrAlloc("job-sheets-default"));
@@ -3733,7 +3721,8 @@ load_ppd(cupsd_printer_t *p)		/* I - Printer */
 		qualities[3];		/* print-quality values */
   int		num_margins,		/* Number of media-*-margin-supported values */
 		margins[16];		/* media-*-margin-supported values */
-  const char	*filter;		/* Current filter */
+  const char	*filter,		/* Current filter */
+		*mandatory;		/* Current mandatory attribute */
   static const char * const sides[3] =	/* sides-supported values */
 		{
 		  "one-sided",
@@ -3805,6 +3794,10 @@ load_ppd(cupsd_printer_t *p)		/* I - Printer */
 
     p->pc = _ppdCacheCreateWithPPD(ppd);
 
+    if (!p->pc)
+      cupsdLogMessage(CUPSD_LOG_WARN, "Unable to create cache of \"%s\": %s",
+                      ppd_name, cupsLastErrorString());
+
     ppdMarkDefaults(ppd);
 
     if (ppd->color_device)
@@ -3819,6 +3812,27 @@ load_ppd(cupsd_printer_t *p)		/* I - Printer */
 
     ippAddBoolean(p->ppd_attrs, IPP_TAG_PRINTER, "color-supported",
 		  ppd->color_device);
+
+    if (p->pc && p->pc->charge_info_uri)
+      ippAddString(p->ppd_attrs, IPP_TAG_PRINTER, IPP_TAG_URI,
+                   "printer-charge-info-uri", NULL, p->pc->charge_info_uri);
+
+    if (p->pc && p->pc->account_id)
+      ippAddBoolean(p->ppd_attrs, IPP_TAG_PRINTER, "job-account-id-supported",
+                    1);
+
+    if (p->pc && p->pc->accounting_user_id)
+      ippAddBoolean(p->ppd_attrs, IPP_TAG_PRINTER,
+                    "job-accounting-user-id-supported", 1);
+
+    if (p->pc && p->pc->password)
+    {
+      ippAddString(p->ppd_attrs, IPP_TAG_PRINTER, IPP_TAG_KEYWORD,
+                   "job-password-encryption-supported", NULL, "none");
+      ippAddInteger(p->ppd_attrs, IPP_TAG_PRINTER, IPP_TAG_INTEGER,
+                    "job-password-supported", strlen(p->pc->password));
+    }
+
     if (ppd->throughput)
     {
       ippAddInteger(p->ppd_attrs, IPP_TAG_PRINTER, IPP_TAG_INTEGER,
@@ -3975,13 +3989,13 @@ load_ppd(cupsd_printer_t *p)		/* I - Printer */
         for (i = p->pc->num_sizes, pwgsize = p->pc->sizes;
 	     i > 0;
 	     i --, pwgsize ++, val ++)
-	  val->string.text = _cupsStrRetain(pwgsize->map.pwg);
+	  val->string.text = _cupsStrAlloc(pwgsize->map.pwg);
 
         if (p->pc->custom_min_keyword)
 	{
-	  val->string.text = _cupsStrRetain(p->pc->custom_min_keyword);
+	  val->string.text = _cupsStrAlloc(p->pc->custom_min_keyword);
 	  val ++;
-	  val->string.text = _cupsStrRetain(p->pc->custom_max_keyword);
+	  val->string.text = _cupsStrAlloc(p->pc->custom_max_keyword);
         }
       }
 
@@ -4033,7 +4047,7 @@ load_ppd(cupsd_printer_t *p)		/* I - Printer */
 	         val = attr->values;
 	     i > 0;
 	     i --, pwgsource ++, val ++)
-	  val->string.text = _cupsStrRetain(pwgsource->pwg);
+	  val->string.text = _cupsStrAlloc(pwgsource->pwg);
       }
 
      /*
@@ -4049,7 +4063,7 @@ load_ppd(cupsd_printer_t *p)		/* I - Printer */
 	         val = attr->values;
 	     i > 0;
 	     i --, pwgtype ++, val ++)
-	  val->string.text = _cupsStrRetain(pwgtype->pwg);
+	  val->string.text = _cupsStrAlloc(pwgtype->pwg);
       }
 
      /*
@@ -4294,38 +4308,48 @@ load_ppd(cupsd_printer_t *p)		/* I - Printer */
     }
 
    /*
-    * output-mode and print-color-mode...
+    * print-color-mode...
     */
 
     if (ppd->color_device)
     {
-      static const char * const output_modes[] =
+      static const char * const color_modes[] =
       {
         "monochrome",
 	"color"
       };
 
       ippAddStrings(p->ppd_attrs, IPP_TAG_PRINTER, IPP_TAG_KEYWORD,
-                    "output-mode-supported", 2, NULL, output_modes);
-      ippAddString(p->ppd_attrs, IPP_TAG_PRINTER, IPP_TAG_KEYWORD,
-                   "output-mode-default", NULL, "color");
-
-      ippAddStrings(p->ppd_attrs, IPP_TAG_PRINTER, IPP_TAG_KEYWORD,
-                    "print-color-mode-supported", 2, NULL, output_modes);
+                    "print-color-mode-supported", 2, NULL, color_modes);
       ippAddString(p->ppd_attrs, IPP_TAG_PRINTER, IPP_TAG_KEYWORD,
                    "print-color-mode-default", NULL, "color");
     }
     else
     {
       ippAddString(p->ppd_attrs, IPP_TAG_PRINTER, IPP_TAG_KEYWORD,
-                   "output-mode-supported", NULL, "monochrome");
-      ippAddString(p->ppd_attrs, IPP_TAG_PRINTER, IPP_TAG_KEYWORD,
-                   "output-mode-default", NULL, "monochrome");
-
-      ippAddString(p->ppd_attrs, IPP_TAG_PRINTER, IPP_TAG_KEYWORD,
                    "print-color-mode-supported", NULL, "monochrome");
       ippAddString(p->ppd_attrs, IPP_TAG_PRINTER, IPP_TAG_KEYWORD,
                    "print-color-mode-default", NULL, "monochrome");
+    }
+
+   /*
+    * Mandatory job attributes, if any...
+    */
+
+    if (p->pc && cupsArrayCount(p->pc->mandatory) > 0)
+    {
+      int	count = cupsArrayCount(p->pc->mandatory);
+					/* Number of mandatory attributes */
+
+      attr = ippAddStrings(p->ppd_attrs, IPP_TAG_PRINTER, IPP_TAG_KEYWORD,
+                           "printer-mandatory-job-attributes", count, NULL,
+                           NULL);
+
+      for (val = attr->values,
+               mandatory = (char *)cupsArrayFirst(p->pc->mandatory);
+           mandatory;
+           val ++, mandatory = (char *)cupsArrayNext(p->pc->mandatory))
+        val->string.text = _cupsStrAlloc(mandatory);
     }
 
    /*
@@ -5024,261 +5048,6 @@ new_media_col(_pwg_size_t *size,	/* I - media-size/margin values */
 }
 
 
-#ifdef __sgi
-/*
- * 'write_irix_config()' - Update the config files used by the IRIX
- *                         desktop tools.
- */
-
-static void
-write_irix_config(cupsd_printer_t *p)	/* I - Printer to update */
-{
-  char		filename[1024];		/* Interface script filename */
-  cups_file_t	*fp;			/* Interface script file */
-  ipp_attribute_t *attr;		/* Attribute data */
-
-
- /*
-  * Add dummy interface and GUI scripts to fool SGI's "challenged" printing
-  * tools.  First the interface script that tells the tools what kind of
-  * printer we have...
-  */
-
-  snprintf(filename, sizeof(filename), "/var/spool/lp/interface/%s", p->name);
-
-  if (p->type & CUPS_PRINTER_CLASS)
-    unlink(filename);
-  else if ((fp = cupsFileOpen(filename, "w")) != NULL)
-  {
-    cupsFilePuts(fp, "#!/bin/sh\n");
-
-    if ((attr = ippFindAttribute(p->attrs, "printer-make-and-model",
-                                 IPP_TAG_TEXT)) != NULL)
-      cupsFilePrintf(fp, "NAME=\"%s\"\n", attr->values[0].string.text);
-    else if (p->type & CUPS_PRINTER_CLASS)
-      cupsFilePuts(fp, "NAME=\"Printer Class\"\n");
-    else
-      cupsFilePuts(fp, "NAME=\"Remote Destination\"\n");
-
-    if (p->type & CUPS_PRINTER_COLOR)
-      cupsFilePuts(fp, "TYPE=ColorPostScript\n");
-    else
-      cupsFilePuts(fp, "TYPE=MonoPostScript\n");
-
-    cupsFilePrintf(fp, "HOSTNAME=%s\n", ServerName);
-    cupsFilePrintf(fp, "HOSTPRINTER=%s\n", p->name);
-
-    cupsFileClose(fp);
-
-    chmod(filename, 0755);
-    chown(filename, User, Group);
-  }
-
- /*
-  * Then the member file that tells which device file the queue is connected
-  * to...  Networked printers use "/dev/null" in this file, so that's what
-  * we use (the actual device URI can confuse some apps...)
-  */
-
-  snprintf(filename, sizeof(filename), "/var/spool/lp/member/%s", p->name);
-
-  if (p->type & CUPS_PRINTER_CLASS)
-    unlink(filename);
-  else if ((fp = cupsFileOpen(filename, "w")) != NULL)
-  {
-    cupsFilePuts(fp, "/dev/null\n");
-
-    cupsFileClose(fp);
-
-    chmod(filename, 0644);
-    chown(filename, User, Group);
-  }
-
- /*
-  * The gui_interface file is a script or program that launches a GUI
-  * option panel for the printer, using options specified on the
-  * command-line in the third argument.  The option panel must send
-  * any printing options to stdout on a single line when the user
-  * accepts them, or nothing if the user cancels the dialog.
-  *
-  * The default options panel program is /usr/bin/glpoptions, from
-  * the ESP Print Pro software.  You can select another using the
-  * PrintcapGUI option.
-  */
-
-  snprintf(filename, sizeof(filename), "/var/spool/lp/gui_interface/ELF/%s.gui", p->name);
-
-  if (p->type & CUPS_PRINTER_CLASS)
-    unlink(filename);
-  else if ((fp = cupsFileOpen(filename, "w")) != NULL)
-  {
-    cupsFilePuts(fp, "#!/bin/sh\n");
-    cupsFilePrintf(fp, "%s -d %s -o \"$3\"\n", PrintcapGUI, p->name);
-
-    cupsFileClose(fp);
-
-    chmod(filename, 0755);
-    chown(filename, User, Group);
-  }
-
- /*
-  * The POD config file is needed by the printstatus command to show
-  * the printer location and device.
-  */
-
-  snprintf(filename, sizeof(filename), "/var/spool/lp/pod/%s.config", p->name);
-
-  if (p->type & CUPS_PRINTER_CLASS)
-    unlink(filename);
-  else if ((fp = cupsFileOpen(filename, "w")) != NULL)
-  {
-    cupsFilePrintf(fp, "Printer Class      | %s\n",
-            (p->type & CUPS_PRINTER_COLOR) ? "ColorPostScript" : "MonoPostScript");
-    cupsFilePrintf(fp, "Printer Model      | %s\n", p->make_model ? p->make_model : "");
-    cupsFilePrintf(fp, "Location Code      | %s\n", p->location ? p->location : "");
-    cupsFilePrintf(fp, "Physical Location  | %s\n", p->info ? p->info : "");
-    cupsFilePrintf(fp, "Port Path          | %s\n", p->device_uri);
-    cupsFilePrintf(fp, "Config Path        | /var/spool/lp/pod/%s.config\n", p->name);
-    cupsFilePrintf(fp, "Active Status Path | /var/spool/lp/pod/%s.status\n", p->name);
-    cupsFilePuts(fp, "Status Update Wait | 10 seconds\n");
-
-    cupsFileClose(fp);
-
-    chmod(filename, 0664);
-    chown(filename, User, Group);
-  }
-}
-
-
-/*
- * 'write_irix_state()' - Update the status files used by IRIX printing
- *                        desktop tools.
- */
-
-static void
-write_irix_state(cupsd_printer_t *p)	/* I - Printer to update */
-{
-  char		filename[1024];		/* Interface script filename */
-  cups_file_t	*fp;			/* Interface script file */
-  int		tag;			/* Status tag value */
-
-
-  if (p)
-  {
-   /*
-    * The POD status file is needed for the printstatus window to
-    * provide the current status of the printer.
-    */
-
-    snprintf(filename, sizeof(filename), "/var/spool/lp/pod/%s.status", p->name);
-
-    if (p->type & CUPS_PRINTER_CLASS)
-      unlink(filename);
-    else if ((fp = cupsFileOpen(filename, "w")) != NULL)
-    {
-      cupsFilePrintf(fp, "Operational Status | %s\n",
-              (p->state == IPP_PRINTER_IDLE)       ? "Idle" :
-              (p->state == IPP_PRINTER_PROCESSING) ? "Busy" :
-                                                     "Faulted");
-      cupsFilePrintf(fp, "Information        | 01 00 00 | %s\n", CUPS_SVERSION);
-      cupsFilePrintf(fp, "Information        | 02 00 00 | Device URI: %s\n",
-              p->device_uri);
-      cupsFilePrintf(fp, "Information        | 03 00 00 | %s jobs\n",
-              p->accepting ? "Accepting" : "Not accepting");
-      cupsFilePrintf(fp, "Information        | 04 00 00 | %s\n", p->state_message);
-
-      cupsFileClose(fp);
-
-      chmod(filename, 0664);
-      chown(filename, User, Group);
-    }
-
-   /*
-    * The activeicons file is needed to provide desktop icons for printers:
-    *
-    * [ quoted from /usr/lib/print/tagit ]
-    *
-    * --- Type of printer tags (base values)
-    *
-    * Dumb=66048			# 0x10200
-    * DumbColor=66080		# 0x10220
-    * Raster=66112		# 0x10240
-    * ColorRaster=66144		# 0x10260
-    * Plotter=66176		# 0x10280
-    * PostScript=66208		# 0x102A0
-    * ColorPostScript=66240	# 0x102C0
-    * MonoPostScript=66272	# 0x102E0
-    *
-    * --- Printer state modifiers for local printers
-    *
-    * Idle=0			# 0x0
-    * Busy=1			# 0x1
-    * Faulted=2			# 0x2
-    * Unknown=3			# 0x3 (Faulted due to unknown reason)
-    *
-    * --- Printer state modifiers for network printers
-    *
-    * NetIdle=8			# 0x8
-    * NetBusy=9			# 0x9
-    * NetFaulted=10		# 0xA
-    * NetUnknown=11		# 0xB (Faulted due to unknown reason)
-    */
-
-    snprintf(filename, sizeof(filename), "/var/spool/lp/activeicons/%s", p->name);
-
-    if (p->type & CUPS_PRINTER_CLASS)
-      unlink(filename);
-    else if ((fp = cupsFileOpen(filename, "w")) != NULL)
-    {
-      if (p->type & CUPS_PRINTER_COLOR)
-	tag = 66240;
-      else
-	tag = 66272;
-
-      if (p->type & CUPS_PRINTER_REMOTE)
-	tag |= 8;
-
-      if (p->state == IPP_PRINTER_PROCESSING)
-	tag |= 1;
-
-      else if (p->state == IPP_PRINTER_STOPPED)
-	tag |= 2;
-
-      cupsFilePuts(fp, "#!/bin/sh\n");
-      cupsFilePrintf(fp, "#Tag %d\n", tag);
-
-      cupsFileClose(fp);
-
-      chmod(filename, 0755);
-      chown(filename, User, Group);
-    }
-  }
-
- /*
-  * The default file is needed by the printers window to show
-  * the default printer.
-  */
-
-  snprintf(filename, sizeof(filename), "/var/spool/lp/default");
-
-  if (DefaultPrinter != NULL)
-  {
-    if ((fp = cupsFileOpen(filename, "w")) != NULL)
-    {
-      cupsFilePrintf(fp, "%s\n", DefaultPrinter->name);
-
-      cupsFileClose(fp);
-
-      chmod(filename, 0644);
-      chown(filename, User, Group);
-    }
-  }
-  else
-    unlink(filename);
-}
-#endif /* __sgi */
-
-
 /*
  * 'write_xml_string()' - Write a string with XML escaping.
  */
@@ -5319,5 +5088,5 @@ write_xml_string(cups_file_t *fp,	/* I - File to write to */
 
 
 /*
- * End of "$Id: printers.c 11173 2013-07-23 12:31:34Z msweet $".
+ * End of "$Id: printers.c 10996 2013-05-29 11:51:34Z msweet $".
  */

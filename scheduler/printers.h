@@ -1,5 +1,5 @@
 /*
- * "$Id: printers.h 11173 2013-07-23 12:31:34Z msweet $"
+ * "$Id: printers.h 10996 2013-05-29 11:51:34Z msweet $"
  *
  *   Printer definitions for the CUPS scheduler.
  *
@@ -70,6 +70,7 @@ struct cupsd_printer_s
 		*error_policy;		/* Error policy */
   cupsd_policy_t *op_policy_ptr;	/* Pointer to operation policy */
   int		shared;			/* Shared? */
+  int		color_managed;		/* Color Managed? */
   int		accepting;		/* Accepting jobs? */
   int		holding_new_jobs;	/* Holding new jobs for printing? */
   int		in_implicit_class;	/* In an implicit class? */
@@ -81,6 +82,7 @@ struct cupsd_printer_s
   char		*job_sheets[2];		/* Banners/job sheets */
   cups_ptype_t	type;			/* Printer type (color, small, etc.) */
   char		*device_uri;		/* Device URI */
+  char		*ppd_timestamp;	        /* Driver Modification Date */
   char		*sanitized_device_uri;	/* Sanitized device URI */
   char		*port_monitor;		/* Port monitor */
   int		raw;			/* Raw queue? */
@@ -166,7 +168,8 @@ extern int		cupsdSetAuthInfoRequired(cupsd_printer_t *p,
 						 ipp_attribute_t *attr);
 extern void		cupsdSetDeviceURI(cupsd_printer_t *p, const char *uri);
 extern void		cupsdSetPrinterAttr(cupsd_printer_t *p,
-			                    const char *name, char *value);
+			                    const char *name,
+			                    const char *value);
 extern void		cupsdSetPrinterAttrs(cupsd_printer_t *p);
 extern int		cupsdSetPrinterReasons(cupsd_printer_t *p,
 			                       const char *s);
@@ -189,5 +192,5 @@ extern void		cupsdWritePrintcap(void);
 
 
 /*
- * End of "$Id: printers.h 11173 2013-07-23 12:31:34Z msweet $".
+ * End of "$Id: printers.h 10996 2013-05-29 11:51:34Z msweet $".
  */

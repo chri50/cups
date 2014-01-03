@@ -1,5 +1,5 @@
 /*
- * "$Id: classes.c 11173 2013-07-23 12:31:34Z msweet $"
+ * "$Id: classes.c 10996 2013-05-29 11:51:34Z msweet $"
  *
  *   Printer class routines for the CUPS scheduler.
  *
@@ -506,6 +506,26 @@ cupsdLoadAllClasses(void)
 	                "Syntax error on line %d of classes.conf.",
 	                linenum);
     }
+    else if (!_cups_strcasecmp(line, "ColorManaged"))
+    {
+     /*
+      * Set the initial color-managed state...
+      */
+
+      if (value &&
+          (!_cups_strcasecmp(value, "yes") ||
+           !_cups_strcasecmp(value, "on") ||
+           !_cups_strcasecmp(value, "true")))
+        p->color_managed = 1;
+      else if (value &&
+               (!_cups_strcasecmp(value, "no") ||
+        	!_cups_strcasecmp(value, "off") ||
+        	!_cups_strcasecmp(value, "false")))
+        p->color_managed = 0;
+      else
+	cupsdLogMessage(CUPSD_LOG_ERROR,
+	                "Syntax error on line %d of printers.conf.", linenum);
+    }
     else if (!_cups_strcasecmp(line, "Shared"))
     {
      /*
@@ -772,6 +792,11 @@ cupsdSaveAllClasses(void)
     else
       cupsFilePuts(fp, "Accepting No\n");
 
+    if (pclass->color_managed)
+      cupsFilePuts(fp, "ColorManaged Yes\n");
+    else
+      cupsFilePuts(fp, "ColorManaged No\n");
+
     if (pclass->shared)
       cupsFilePuts(fp, "Shared Yes\n");
     else
@@ -814,5 +839,5 @@ cupsdSaveAllClasses(void)
 
 
 /*
- * End of "$Id: classes.c 11173 2013-07-23 12:31:34Z msweet $".
+ * End of "$Id: classes.c 10996 2013-05-29 11:51:34Z msweet $".
  */

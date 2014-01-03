@@ -1,5 +1,5 @@
 /*
- * "$Id: job.c 11173 2013-07-23 12:31:34Z msweet $"
+ * "$Id: job.c 11147 2013-07-17 02:54:31Z msweet $"
  *
  *   Job management routines for the CUPS scheduler.
  *
@@ -598,7 +598,6 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
 
   memset(job->filters, 0, sizeof(job->filters));
 
-
   if (job->printer->raw)
   {
    /*
@@ -667,6 +666,9 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
 		   "FINAL_CONTENT_TYPE=%s/%s", filter->dst->super,
 		   filter->dst->type);
       }
+      else
+        snprintf(final_content_type, sizeof(final_content_type),
+                 "FINAL_CONTENT_TYPE=printer/%s", job->printer->name);
     }
 
    /*
@@ -936,7 +938,7 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
                           IPP_TAG_LANGUAGE);
 
 #ifdef __APPLE__
-  strcpy(apple_language, "APPLE_LANGUAGE=");
+  strlcpy(apple_language, "APPLE_LANGUAGE=", sizeof(apple_language));
   _cupsAppleLanguage(attr->values[0].string.text,
 		     apple_language + 15, sizeof(apple_language) - 15);
 #endif /* __APPLE__ */
@@ -949,7 +951,7 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
 	* the POSIX locale...
 	*/
 
-	strcpy(lang, "LANG=C");
+	strlcpy(lang, "LANG=C", sizeof(lang));
 	break;
 
     case 2 :
@@ -1007,14 +1009,15 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
       * All of these strcpy's are safe because we allocated the psr string...
       */
 
-      strcpy(printer_state_reasons, "PRINTER_STATE_REASONS=");
+      strlcpy(printer_state_reasons, "PRINTER_STATE_REASONS=", psrlen);
       for (psrptr = printer_state_reasons + 22, i = 0;
            i < job->printer->num_reasons;
 	   i ++)
       {
         if (i)
 	  *psrptr++ = ',';
-	strcpy(psrptr, job->printer->reasons[i]);
+	strlcpy(psrptr, job->printer->reasons[i],
+	        psrlen - (psrptr - printer_state_reasons));
 	psrptr += strlen(psrptr);
       }
     }
@@ -1125,9 +1128,6 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
  /*
   * Now create processes for all of the filters...
   */
-
-  cupsdSetPrinterReasons(job->printer, "-cups-missing-filter-warning,"
-			               "cups-insecure-filter-warning");
 
   for (i = 0, slot = 0, filter = (mime_filter_t *)cupsArrayFirst(filters);
        filter;
@@ -1887,6 +1887,12 @@ cupsdLoadJob(cupsd_job_t *job)		/* I - Job */
 						 fileid);
         }
 
+	if (compressions)
+	  job->compressions = compressions;
+
+	if (filetypes)
+	  job->filetypes = filetypes;
+
         if (!compressions || !filetypes)
 	{
           cupsdLogMessage(CUPSD_LOG_ERROR,
@@ -1895,12 +1901,6 @@ cupsdLoadJob(cupsd_job_t *job)		/* I - Job */
 
 	  ippDelete(job->attrs);
 	  job->attrs = NULL;
-
-	  if (compressions)
-	    free(compressions);
-
-	  if (filetypes)
-	    free(filetypes);
 
 	  if (job->compressions)
 	  {
@@ -1918,9 +1918,7 @@ cupsdLoadJob(cupsd_job_t *job)		/* I - Job */
 	  return (0);
 	}
 
-        job->compressions = compressions;
-        job->filetypes    = filetypes;
-	job->num_files    = fileid;
+	job->num_files = fileid;
       }
 
       job->filetypes[fileid - 1] = mimeFileType(MimeDatabase, jobfile, NULL,
@@ -3063,8 +3061,9 @@ finalize_job(cupsd_job_t *job,		/* I - Job */
 	job_state = IPP_JOB_COMPLETED;
 	message   = "Job completed.";
 
-	ippSetString(job->attrs, &job->reasons, 0,
-	             "job-completed-successfully");
+        if (!job->status)
+	  ippSetString(job->attrs, &job->reasons, 0,
+		       "job-completed-successfully");
         break;
 
     case IPP_JOB_STOPPED :
@@ -3250,13 +3249,48 @@ finalize_job(cupsd_job_t *job,		/* I - Job */
 	    * Hold the job...
 	    */
 
-	    cupsdSetJobHoldUntil(job, "indefinite", 1);
-	    ippSetString(job->attrs, &job->reasons, 0,
-	                 "job-hold-until-specified");
+	    const char *reason = ippGetString(job->reasons, 0, NULL);
+
+	    cupsdLogJob(job, CUPSD_LOG_DEBUG, "job-state-reasons=\"%s\"",
+	                reason);
+
+	    if (!reason || strncmp(reason, "account-", 8))
+	    {
+	      cupsdSetJobHoldUntil(job, "indefinite", 1);
+
+	      ippSetString(job->attrs, &job->reasons, 0,
+			   "job-hold-until-specified");
+	      message = "Job held indefinitely due to backend errors; please "
+			"consult the error_log file for details.";
+            }
+            else if (!strcmp(reason, "account-info-needed"))
+            {
+	      cupsdSetJobHoldUntil(job, "indefinite", 0);
+
+	      message = "Job held indefinitely - account information is "
+	                "required.";
+            }
+            else if (!strcmp(reason, "account-closed"))
+            {
+	      cupsdSetJobHoldUntil(job, "indefinite", 0);
+
+	      message = "Job held indefinitely - account has been closed.";
+	    }
+            else if (!strcmp(reason, "account-limit-reached"))
+            {
+	      cupsdSetJobHoldUntil(job, "indefinite", 0);
+
+	      message = "Job held indefinitely - account limit has been "
+	                "reached.";
+	    }
+            else
+            {
+	      cupsdSetJobHoldUntil(job, "indefinite", 0);
+
+	      message = "Job held indefinitely - account authorization failed.";
+	    }
 
 	    job_state = IPP_JOB_HELD;
-	    message   = "Job held indefinitely due to backend errors; please "
-			"consult the error_log file for details.";
           }
           break;
 
@@ -3290,8 +3324,9 @@ finalize_job(cupsd_job_t *job,		/* I - Job */
 	    job_state = IPP_JOB_HELD;
 	    message   = "Job held for authentication.";
 
-	    ippSetString(job->attrs, &job->reasons, 0,
-	                 "cups-held-for-authentication");
+            if (strncmp(job->reasons->values[0].string.text, "account-", 8))
+	      ippSetString(job->attrs, &job->reasons, 0,
+			   "cups-held-for-authentication");
           }
           break;
 
@@ -3475,19 +3510,16 @@ get_options(cupsd_job_t *job,		/* I - Job */
                         "com.apple.print.DocumentTicket.PMSpoolFormat",
 			IPP_TAG_ZERO) &&
       !ippFindAttribute(job->attrs, "APPrinterPreset", IPP_TAG_ZERO) &&
-      (ippFindAttribute(job->attrs, "output-mode", IPP_TAG_ZERO) ||
-       ippFindAttribute(job->attrs, "print-color-mode", IPP_TAG_ZERO) ||
+      (ippFindAttribute(job->attrs, "print-color-mode", IPP_TAG_ZERO) ||
        ippFindAttribute(job->attrs, "print-quality", IPP_TAG_ZERO)))
   {
    /*
-    * Map output-mode and print-quality to a preset...
+    * Map print-color-mode and print-quality to a preset...
     */
 
     if ((attr = ippFindAttribute(job->attrs, "print-color-mode",
-				 IPP_TAG_KEYWORD)) == NULL)
-      attr = ippFindAttribute(job->attrs, "output-mode", IPP_TAG_KEYWORD);
-
-    if (attr && !strcmp(attr->values[0].string.text, "monochrome"))
+				 IPP_TAG_KEYWORD)) != NULL &&
+        !strcmp(attr->values[0].string.text, "monochrome"))
       print_color_mode = _PWG_PRINT_COLOR_MODE_MONOCHROME;
     else
       print_color_mode = _PWG_PRINT_COLOR_MODE_COLOR;
@@ -3674,7 +3706,8 @@ get_options(cupsd_job_t *job,		/* I - Job */
           attr->value_tag == IPP_TAG_MIMETYPE ||
 	  attr->value_tag == IPP_TAG_NAMELANG ||
 	  attr->value_tag == IPP_TAG_TEXTLANG ||
-	  (attr->value_tag == IPP_TAG_URI && strcmp(attr->name, "job-uuid")) ||
+	  (attr->value_tag == IPP_TAG_URI && strcmp(attr->name, "job-uuid") &&
+	   strcmp(attr->name, "job-authorization-uri")) ||
 	  attr->value_tag == IPP_TAG_URISCHEME ||
 	  attr->value_tag == IPP_TAG_BEGIN_COLLECTION) /* Not yet supported */
 	continue;
@@ -3689,9 +3722,14 @@ get_options(cupsd_job_t *job,		/* I - Job */
 	continue;
 
       if (!strncmp(attr->name, "job-", 4) &&
+          strcmp(attr->name, "job-account-id") &&
+          strcmp(attr->name, "job-accounting-user-id") &&
+          strcmp(attr->name, "job-authorization-uri") &&
           strcmp(attr->name, "job-billing") &&
           strcmp(attr->name, "job-impressions") &&
           strcmp(attr->name, "job-originating-host-name") &&
+          strcmp(attr->name, "job-password") &&
+          strcmp(attr->name, "job-password-encryption") &&
           strcmp(attr->name, "job-uuid") &&
           !(job->printer->type & CUPS_PRINTER_REMOTE))
 	continue;
@@ -3798,10 +3836,10 @@ get_options(cupsd_job_t *job,		/* I - Job */
   for (i = num_pwgppds, pwgppd = pwgppds; i > 0; i --, pwgppd ++)
   {
     *optptr++ = ' ';
-    strcpy(optptr, pwgppd->name);
+    strlcpy(optptr, pwgppd->name, optlength - (optptr - options));
     optptr += strlen(optptr);
     *optptr++ = '=';
-    strcpy(optptr, pwgppd->value);
+    strlcpy(optptr, pwgppd->value, optlength - (optptr - options));
     optptr += strlen(optptr);
   }
 
@@ -4177,6 +4215,13 @@ load_job_cache(const char *filename)	/* I - job.cache filename */
                       line, linenum);
   }
 
+  if (job)
+  {
+    cupsdLogMessage(CUPSD_LOG_ERROR,
+		    "Missing </Job> directive on line %d.", linenum);
+    cupsdDeleteJob(job, CUPSD_JOB_PURGE);
+  }
+
   cupsFileClose(fp);
 }
 
@@ -4338,10 +4383,7 @@ remove_job_files(cupsd_job_t *job)	/* I - Job */
   {
     snprintf(filename, sizeof(filename), "%s/d%05d-%03d", RequestRoot,
 	     job->id, i);
-    if (Classification)
-      cupsdRemoveFile(filename);
-    else
-      unlink(filename);
+    cupsdUnlinkOrRemoveFile(filename);
   }
 
   free(job->filetypes);
@@ -4372,10 +4414,7 @@ remove_job_history(cupsd_job_t *job)	/* I - Job */
 
   snprintf(filename, sizeof(filename), "%s/c%05d", RequestRoot,
 	   job->id);
-  if (Classification)
-    cupsdRemoveFile(filename);
-  else
-    unlink(filename);
+  cupsdUnlinkOrRemoveFile(filename);
 
   LastEvent |= CUPSD_EVENT_PRINTER_STATE_CHANGED;
 }
@@ -4435,6 +4474,9 @@ static void
 start_job(cupsd_job_t     *job,		/* I - Job ID */
           cupsd_printer_t *printer)	/* I - Printer to print job */
 {
+  const char	*filename;		/* Support filename */
+
+
   cupsdLogMessage(CUPSD_LOG_DEBUG2, "start_job(job=%p(%d), printer=%p(%s))",
                   job, job->id, printer, printer->name);
 
@@ -4487,6 +4529,25 @@ start_job(cupsd_job_t     *job,		/* I - Job ID */
     job->cancel_time = time(NULL) + MaxJobTime;
   else
     job->cancel_time = 0;
+
+ /*
+  * Check for support files...
+  */
+
+  cupsdSetPrinterReasons(job->printer, "-cups-missing-filter-warning,"
+			               "cups-insecure-filter-warning");
+
+  if (printer->pc)
+  {
+    for (filename = (const char *)cupsArrayFirst(printer->pc->support_files);
+         filename;
+         filename = (const char *)cupsArrayNext(printer->pc->support_files))
+    {
+      if (_cupsFileCheck(filename, _CUPS_FILE_CHECK_FILE, !RunUser,
+			 cupsdLogFCMessage, printer))
+        break;
+    }
+  }
 
  /*
   * Setup the last exit status and security profiles...
@@ -4736,6 +4797,17 @@ update_job(cupsd_job_t *job)		/* I - Job to check */
 	cupsdAddEvent(CUPSD_EVENT_JOB_PROGRESS, job->printer, job,
 		      "Printed %d page(s).", job->sheets->values[0].integer);
     }
+    else if (loglevel == CUPSD_LOG_JOBSTATE)
+    {
+     /*
+      * Support "keyword" to set job-state-reasons to the specified keyword.
+      * This is sufficient for the current paid printing stuff.
+      */
+
+      cupsdLogJob(job, CUPSD_LOG_DEBUG, "JOBSTATE: %s", message);
+
+      ippSetString(job->attrs, &job->reasons, 0, message);
+    }
     else if (loglevel == CUPSD_LOG_STATE)
     {
       cupsdLogJob(job, CUPSD_LOG_DEBUG, "STATE: %s", message);
@@ -4776,10 +4848,20 @@ update_job(cupsd_job_t *job)		/* I - Job to check */
       cups_option_t	*attrs;		/* Attributes */
       const char	*attr;		/* Attribute */
 
-
       cupsdLogJob(job, CUPSD_LOG_DEBUG, "ATTR: %s", message);
 
       num_attrs = cupsParseOptions(message, 0, &attrs);
+
+      if ((attr = cupsGetOption("auth-info-default", num_attrs,
+                                attrs)) != NULL)
+      {
+        job->printer->num_options = cupsAddOption("auth-info", attr,
+						  job->printer->num_options,
+						  &(job->printer->options));
+	cupsdSetPrinterAttrs(job->printer);
+
+	cupsdMarkDirty(CUPSD_DIRTY_PRINTERS);
+      }
 
       if ((attr = cupsGetOption("auth-info-required", num_attrs,
                                 attrs)) != NULL)
@@ -5116,5 +5198,5 @@ update_job_attrs(cupsd_job_t *job,	/* I - Job to update */
 
 
 /*
- * End of "$Id: job.c 11173 2013-07-23 12:31:34Z msweet $".
+ * End of "$Id: job.c 11147 2013-07-17 02:54:31Z msweet $".
  */

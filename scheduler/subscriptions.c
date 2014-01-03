@@ -1,5 +1,5 @@
 /*
- * "$Id: subscriptions.c 11173 2013-07-23 12:31:34Z msweet $"
+ * "$Id: subscriptions.c 10996 2013-05-29 11:51:34Z msweet $"
  *
  *   Subscription routines for the CUPS scheduler.
  *
@@ -1638,5 +1638,5 @@ cupsd_update_notifier(void)
 
 
 /*
- * End of "$Id: subscriptions.c 11173 2013-07-23 12:31:34Z msweet $".
+ * End of "$Id: subscriptions.c 10996 2013-05-29 11:51:34Z msweet $".
  */

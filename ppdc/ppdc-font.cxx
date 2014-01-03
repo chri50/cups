@@ -1,5 +1,5 @@
 //
-// "$Id: ppdc-font.cxx 11173 2013-07-23 12:31:34Z msweet $"
+// "$Id: ppdc-font.cxx 1378 2009-04-08 03:17:45Z msweet $"
 //
 //   Shared font class for the CUPS PPD Compiler.
 //
@@ -62,5 +62,5 @@ ppdcFont::~ppdcFont()
 
 
 //
-// End of "$Id: ppdc-font.cxx 11173 2013-07-23 12:31:34Z msweet $".
+// End of "$Id: ppdc-font.cxx 1378 2009-04-08 03:17:45Z msweet $".
 //

@@ -1,5 +1,5 @@
 /*
- * "$Id: md5passwd.c 11173 2013-07-23 12:31:34Z msweet $"
+ * "$Id: md5passwd.c 10996 2013-05-29 11:51:34Z msweet $"
  *
  *   MD5 password support for CUPS.
  *
@@ -138,5 +138,5 @@ httpMD5String(const unsigned char *sum,	/* I - MD5 sum data */
 
 
 /*
- * End of "$Id: md5passwd.c 11173 2013-07-23 12:31:34Z msweet $".
+ * End of "$Id: md5passwd.c 10996 2013-05-29 11:51:34Z msweet $".
  */

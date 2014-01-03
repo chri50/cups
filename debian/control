@@ -6,7 +6,6 @@ Maintainer: Debian Printing Team <debian-printing@lists.debian.org>
 Uploaders: 
  Masayuki Hatta (mhatta) <mhatta@debian.org>,
  Till Kamppeter <till.kamppeter@gmail.com>,
- Roger Leigh <rleigh@debian.org>, 
  Jeff Licquia <licquia@debian.org>,
  Martin Pitt <mpitt@debian.org>,
  Didier Raboud <odyx@debian.org>
@@ -151,7 +150,7 @@ Depends: ${shlibs:Depends},
  cups-filters (>= 1.0.24-3~)
 Recommends: avahi-daemon,
  colord,
- foomatic-filters (>= 4.0), 
+ cups-filters (>= 1.0.42) | foomatic-filters (>= 4.0),
  printer-driver-gutenprint,
  cups-filters (>= 1.0.36) | ghostscript-cups (>= 9.02~)
 Suggests: cups-bsd,
@@ -196,7 +195,7 @@ Suggests: cups, cups-bsd,
  cups-filters,
  poppler-utils (>= 0.12),
  ghostscript (>= 9.02~),
- foomatic-filters (>= 4.0), 
+ cups-filters (>= 1.0.42) | foomatic-filters (>= 4.0),
  foomatic-db-compressed-ppds | foomatic-db,
  printer-driver-gutenprint,
  printer-driver-hpcups,
@@ -353,8 +352,8 @@ Description: Common UNIX Printing System(tm) - common files
 Package: cups-server-common
 Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Replaces: cups (<< 1.6.2-2~)
-Breaks: cups (<< 1.6.2-2~)
+Replaces: cups (<< 1.6.2-2~), cups-common (<< 1.7.0)
+Breaks: cups (<< 1.6.2-2~), cups-common (<< 1.7.0)
 Multi-Arch: foreign
 Description: Common UNIX Printing System(tm) - server common files
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and

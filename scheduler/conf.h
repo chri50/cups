@@ -1,5 +1,5 @@
 /*
- * "$Id: conf.h 11221 2013-08-06 16:16:01Z msweet $"
+ * "$Id: conf.h 11202 2013-07-26 21:31:54Z msweet $"
  *
  *   Configuration file definitions for the CUPS scheduler.
  *
@@ -20,9 +20,10 @@
 
 typedef enum
 {
-  CUPSD_LOG_PPD = -4,			/* Used internally for PPD keywords */
+  CUPSD_LOG_PPD = -5,			/* Used internally for PPD keywords */
   CUPSD_LOG_ATTR,			/* Used internally for attributes */
-  CUPSD_LOG_STATE,			/* Used internally for state-reasons */
+  CUPSD_LOG_STATE,			/* Used internally for printer-state-reasons */
+  CUPSD_LOG_JOBSTATE,			/* Used internally for job-state-reasons */
   CUPSD_LOG_PAGE,			/* Used internally for page logging */
   CUPSD_LOG_NONE,
   CUPSD_LOG_EMERG,			/* Emergency issues */
@@ -149,8 +150,6 @@ VAR char		*AccessLog		VALUE(NULL),
 					/* Temporary directory */
 			*Printcap		VALUE(NULL),
 					/* Printcap file */
-			*PrintcapGUI		VALUE(NULL),
-					/* GUI program to use for IRIX */
 			*FontPath		VALUE(NULL),
 					/* Font search path */
 			*RemoteRoot		VALUE(NULL),
@@ -300,5 +299,5 @@ extern int	cupsdWriteErrorLog(int level, const char *message);
 
 
 /*
- * End of "$Id: conf.h 11221 2013-08-06 16:16:01Z msweet $".
+ * End of "$Id: conf.h 11202 2013-07-26 21:31:54Z msweet $".
  */

@@ -1,5 +1,5 @@
 /*
- * "$Id: sidechannel.h 11173 2013-07-23 12:31:34Z msweet $"
+ * "$Id: sidechannel.h 10996 2013-05-29 11:51:34Z msweet $"
  *
  *   Side-channel API definitions for CUPS.
  *
@@ -143,5 +143,5 @@ extern cups_sc_status_t	cupsSideChannelSNMPWalk(const char *oid, double timeout,
 #endif /* !_CUPS_SIDECHANNEL_H_ */
 
 /*
- * End of "$Id: sidechannel.h 11173 2013-07-23 12:31:34Z msweet $".
+ * End of "$Id: sidechannel.h 10996 2013-05-29 11:51:34Z msweet $".
  */
