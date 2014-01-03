@@ -148,6 +148,10 @@ main(int  argc,				/* I - Number of command-line args */
   int			launchd_idle_exit;
 					/* Idle exit on select timeout? */
 #endif	/* HAVE_LAUNCHD */
+#ifdef HAVE_AVAHI
+  cupsd_timeout_t	*tmo;		/* Next scheduled timed callback */
+  long			tmo_delay;	/* Time before it must be called */
+#endif /* HAVE_AVAHI */
 
 
 #ifdef HAVE_GETEUID
@@ -572,6 +576,14 @@ main(int  argc,				/* I - Number of command-line args */
 
   httpInitialize();
 
+#ifdef HAVE_AVAHI
+ /*
+  * Initialize timed callback structures.
+  */
+
+  cupsdInitTimeouts();
+#endif /* HAVE_AVAHI */
+
   cupsdStartServer();
 
  /*
@@ -888,6 +900,16 @@ main(int  argc,				/* I - Number of command-line args */
       cupsdStopAllJobs(CUPSD_JOB_DEFAULT, 5);
     }
 #endif /* __APPLE__ */
+
+#ifdef HAVE_AVAHI
+   /*
+    * If a timed callback is due, run it.
+    */
+
+    tmo = cupsdNextTimeout (&tmo_delay);
+    if (tmo && tmo_delay == 0)
+      cupsdRunTimeout (tmo);
+#endif /* HAVE_AVAHI */
 
 #ifndef __APPLE__
    /*
@@ -1804,6 +1826,10 @@ select_timeout(int fds)			/* I - Number of descriptors returned */
   cupsd_job_t		*job;		/* Job information */
   cupsd_subscription_t	*sub;		/* Subscription information */
   const char		*why;		/* Debugging aid */
+#ifdef HAVE_AVAHI
+  cupsd_timeout_t	*tmo;		/* Timed callback */
+  long			tmo_delay;	/* Seconds before calling it */
+#endif /* HAVE_AVAHI */
 
 
   cupsdLogMessage(CUPSD_LOG_DEBUG2, "select_timeout: JobHistoryUpdate=%ld",
@@ -1848,6 +1874,19 @@ select_timeout(int fds)			/* I - Number of descriptors returned */
     why     = "cancel jobs before sleeping";
   }
 #endif /* __APPLE__ */
+
+#ifdef HAVE_AVAHI
+ /*
+  * See if there are any scheduled timed callbacks to run.
+  */
+
+  if ((tmo = cupsdNextTimeout(&tmo_delay)) != NULL &&
+      (now + tmo_delay) < timeout)
+  {
+    timeout = tmo_delay;
+    why = "run a timed callback";
+  }
+#endif /* HAVE_AVAHI */
 
  /*
   * Check whether we are accepting new connections...
