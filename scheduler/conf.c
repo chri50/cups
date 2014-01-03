@@ -737,7 +737,7 @@ cupsdReadConfiguration(void)
   ReloadTimeout	           = DEFAULT_KEEPALIVE;
   RootCertDuration         = 300;
   StrictConformance        = FALSE;
-  SyncOnClose              = FALSE;
+  SyncOnClose              = TRUE;
   Timeout                  = DEFAULT_TIMEOUT;
   WebInterface             = CUPS_DEFAULT_WEBIF;
 
