@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups\n"
-"POT-Creation-Date: 2014-01-03 18:24+0100\n"
+"POT-Creation-Date: 2014-01-04 13:31+0100\n"
 "PO-Revision-Date: 2013-01-27 19:07+0100\n"
 "Last-Translator: Julien Patriarca <leatherface@debian.org>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
@@ -5622,8 +5622,8 @@ msgstr ""
 # type: Plain text
 #. type: Plain text
 #: cups-lpd.man.in:118
-msgid "I<cups(1)>, I<cupsd(8)>, I<inetconv(1m)>, I<inetd(8)>, I<xinetd(8)>,"
-msgstr "B<cups>(1), B<cupsd>(8), B<inetconv>(1m), B<inetd>(8), B<xinetd>(8),"
+msgid "I<cupsd(8)>, I<inetd(8)>, I<xinetd(8)>,"
+msgstr "B<cupsd>(8), B<inetd>(8), B<xinetd>(8),"
 
 # type: TH
 #. type: TH

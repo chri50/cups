@@ -30,6 +30,7 @@ build-with-full-relro.patch
 fix-job-history-logging.patch
 fix-stringpool-corruption.patch
 prevent-USB-timeouts-causing-incorrect-print-output.patch
+fix-template.c-typo.patch
 # Fix tests, should probably go upstream
 tests-ignore-warnings.patch
 tests-ignore-usb-crash.patch
@@ -48,6 +49,7 @@ show-compile-command-lines.patch
 ppdc-dynamic-linking.patch
 log-debug-history-nearly-unlimited.patch
 cupsd-set-default-for-SyncOnClose-to-Yes.patch
+man-cups-lpd-drop-dangling-references.patch
 # Disabled in 1.6.1-1 as it breaks the tests. It addresses #593338
 # pstops-based-workflow-only-for-printing-ps-on-a-ps-printer.patch
 

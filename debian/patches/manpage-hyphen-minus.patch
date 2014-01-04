@@ -3,7 +3,7 @@ Description: Fix all spotted hyphen-used-as-minus-sign manpage errors
 Author: Didier Raboud <odyx@debian.org>
 Origin: vendor
 Bug-Upstream: https://cups.org/str.php?L4299
-Last-Update: 2014-01-03
+Last-Update: 2014-01-04
 
 --- a/man/cups-files.conf.man.in
 +++ b/man/cups-files.conf.man.in
@@ -2473,8 +2473,9 @@ Last-Update: 2014-01-03
 +\-l
  .TP 5
 ---ls
+-Lists attributes returned by Get-Printer-Attributes for IPP printers and traditional \fIfind\fR "-ls" output for HTTP URLs. The result is true if the URI is accessible, false otherwise.
 +\--ls
- Lists attributes returned by Get-Printer-Attributes for IPP printers and traditional \fIfind\fR "-ls" output for HTTP URLs. The result is true if the URI is accessible, false otherwise.
++Lists attributes returned by Get-Printer-Attributes for IPP printers and traditional \fIfind\fR "\-ls" output for HTTP URLs. The result is true if the URI is accessible, false otherwise.
  .TP 5
 ---local
 +\--local
@@ -2492,10 +2493,10 @@ Last-Update: 2014-01-03
  True if the URI resource path matches the given regular expression.
  .TP 5
 --P number[-number]
-+\-P number[-number]
++\-P number[\-number]
  .TP 5
 ---port number[-number]
-+\--port number[-number]
++\--port number[\-number]
  True if the port matches the given number or range.
  .TP 5
 --p

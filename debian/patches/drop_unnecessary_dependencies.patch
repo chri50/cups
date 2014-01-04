@@ -3,7 +3,7 @@ Description: Do not link libcups.so and libcupsimage.so against
  both libcups, as well as for packages using cups-config.
 Author: Martin Pitt <mpitt@debian.org>
 Bug-Debian: http://bugs.debian.org/438067
-Last-Update: 2014-01-03
+Last-Update: 2014-01-04
 
 --- a/Makedefs.in
 +++ b/Makedefs.in
@@ -56,4 +56,15 @@ Last-Update: 2014-01-03
 +		-lpthread $(LIBZ) -lm
  	$(RM) $@
  	$(AR) $(ARFLAGS) $@ libcups_s.o
+ 
+--- a/filter/Makefile
++++ b/filter/Makefile
+@@ -269,7 +269,7 @@
+ libcupsimage.so.2 libcupsimage.sl.2:	$(IMAGEOBJS)
+ 	echo Linking $@...
+ 	$(DSO) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(IMAGEOBJS) $(DSOLIBS) \
+-		-L../cups $(LINKCUPS)
++		-L../cups $(LINKCUPS) -lpthread
+ 	$(RM) `basename $@ .2`
+ 	$(LN) $@ `basename $@ .2`
  

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2014-01-03 18:24+0100\n"
+"POT-Creation-Date: 2014-01-04 13:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4235,7 +4235,7 @@ msgstr ""
 
 #. type: Plain text
 #: cups-lpd.man.in:118
-msgid "I<cups(1)>, I<cupsd(8)>, I<inetconv(1m)>, I<inetd(8)>, I<xinetd(8)>,"
+msgid "I<cupsd(8)>, I<inetd(8)>, I<xinetd(8)>,"
 msgstr ""
 
 #. type: TH

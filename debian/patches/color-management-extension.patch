@@ -1,6 +1,6 @@
 Description: Color management per queue using colord.
 Author: Joe Simon <jsimon383@gmail.com>
-Last-Update: 2013-10-31
+Last-Update: 2014-01-04
 --- a/cgi-bin/admin.c
 +++ b/cgi-bin/admin.c
 @@ -27,6 +27,8 @@
@@ -71,7 +71,7 @@ Last-Update: 2013-10-31
 +   /*
 +    * If asked for a per-queue job...
 +    */
-+  if((var = cgiGetVariable("PER_QUEUE_SUBMIT") != NULL))
++  if((var = cgiGetVariable("PER_QUEUE_SUBMIT")) != NULL)
 +  {
 +    cgiStartHTML("Replace PPD");
 +    cgiCopyTemplateLang("replace-ppd.tmpl");
@@ -80,7 +80,7 @@ Last-Update: 2013-10-31
 +
    file = cgiGetFile();
  
-+  if ((var = cgiGetVariable("PER_QUEUE") != NULL))
++  if ((var = cgiGetVariable("PER_QUEUE")) != NULL)
 +    is_per_queue = 1;
 +  else 
 +    is_per_queue = 0;
