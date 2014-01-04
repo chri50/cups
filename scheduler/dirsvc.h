@@ -51,7 +51,7 @@ VAR cups_array_t	*DNSSDPrinters	VALUE(NULL);
 VAR DNSServiceRef	DNSSDMaster	VALUE(NULL);
 					/* Master DNS-SD service reference */
 #  else /* HAVE_AVAHI */
-VAR AvahiThreadedPoll	*DNSSDMaster	VALUE(NULL);
+VAR AvahiCupsPoll	*DNSSDMaster	VALUE(NULL);
 					/* Master polling interface for Avahi */
 VAR AvahiClient		*DNSSDClient	VALUE(NULL);
 					/* Client information */
