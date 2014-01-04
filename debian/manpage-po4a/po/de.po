@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 1.5.2-10\n"
-"POT-Creation-Date: 2014-01-03 18:24+0100\n"
+"POT-Creation-Date: 2014-01-04 13:31+0100\n"
 "PO-Revision-Date: 2013-10-12 13:42+0200\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
@@ -5322,8 +5322,8 @@ msgstr ""
 
 #. type: Plain text
 #: cups-lpd.man.in:118
-msgid "I<cups(1)>, I<cupsd(8)>, I<inetconv(1m)>, I<inetd(8)>, I<xinetd(8)>,"
-msgstr "I<cups(1)>, I<cupsd(8)>, I<inetconv(1m)>, I<inetd(8)>, I<xinetd(8)>,"
+msgid "I<cupsd(8)>, I<inetd(8)>, I<xinetd(8)>,"
+msgstr "I<cupsd(8)>, I<inetd(8)>, I<xinetd(8)>,"
 
 #. type: TH
 #: cups-snmp.conf.man:15

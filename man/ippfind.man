@@ -99,7 +99,7 @@ True is the hostname matches the given regular expression.
 \-l
 .TP 5
 \--ls
-Lists attributes returned by Get-Printer-Attributes for IPP printers and traditional \fIfind\fR "-ls" output for HTTP URLs. The result is true if the URI is accessible, false otherwise.
+Lists attributes returned by Get-Printer-Attributes for IPP printers and traditional \fIfind\fR "\-ls" output for HTTP URLs. The result is true if the URI is accessible, false otherwise.
 .TP 5
 \--local
 True if the service is local to this computer.
@@ -112,9 +112,9 @@ True if the service instance name matches the given regular expression.
 \--path regex
 True if the URI resource path matches the given regular expression.
 .TP 5
-\-P number[-number]
+\-P number[\-number]
 .TP 5
-\--port number[-number]
+\--port number[\-number]
 True if the port matches the given number or range.
 .TP 5
 \-p

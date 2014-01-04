@@ -1,3 +1,40 @@
+cups (1.7.0-2) unstable; urgency=low
+
+  [ Russell Coker ]
+  * In the cups init script, run restorecon after creating a /var/run
+    directory (Closes: #677580)
+
+  [ Bastien ROUCARIÈS ]
+  * Add patch to drop two dangling references in cups-lpd.man
+    (Closes: #570157)
+
+  [ Nicolas Boulenguez ]
+  * Enhance cups' init-script(Closes: #718798)
+    - Specify SCRIPTNAME instead of relying on N=${0##*/} bashism
+    - Replace restart_xprint() implicit parameter (success) with an
+      explicit first parameter for readability
+    - Replace log_begin_msg() calls by log_daemon_msg() to use the
+      vendor-specific formatting
+    - Clarify exit statuses handling by making sure only the result of
+      start-stop-daemon is returned
+    - Don't call coldplug_usb_printers when the daemon fails to start
+    - Use status_of_proc from lsb-base >= 3.2.14 instead of a
+      hand-written implementation
+    - Unimplemented actions must return 3
+
+  [ Didier Raboud ]
+  * Let uscan verify PGP signatures on signed upstream tarballs
+  * Update manpage-hyphen-minus.patch to fix three missing fixes in
+    ippfind.1
+  * Add patch to fix expres{,s}ion typo
+  * Fix two occurences of pointer-from-integer in the color-management
+    extension patch
+  * Update drop_unnecessary_dependencies patch to make sure
+    libcupsimage2 is linked against pthread
+  * Bump Standards-Version to 3.9.5 without changes needed
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 04 Jan 2014 15:46:02 +0100
+
 cups (1.7.0-1) unstable; urgency=low
 
   * New 1.7.0 upstream release

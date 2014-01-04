@@ -930,7 +930,7 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
    /*
     * If asked for a per-queue job...
     */
-  if((var = cgiGetVariable("PER_QUEUE_SUBMIT") != NULL))
+  if((var = cgiGetVariable("PER_QUEUE_SUBMIT")) != NULL)
   {
     cgiStartHTML("Replace PPD");
     cgiCopyTemplateLang("replace-ppd.tmpl");
@@ -939,7 +939,7 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
 
   file = cgiGetFile();
 
-  if ((var = cgiGetVariable("PER_QUEUE") != NULL))
+  if ((var = cgiGetVariable("PER_QUEUE")) != NULL)
     is_per_queue = 1;
   else 
     is_per_queue = 0;
