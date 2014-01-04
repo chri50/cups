@@ -168,7 +168,8 @@ extern int		cupsdSetAuthInfoRequired(cupsd_printer_t *p,
 						 ipp_attribute_t *attr);
 extern void		cupsdSetDeviceURI(cupsd_printer_t *p, const char *uri);
 extern void		cupsdSetPrinterAttr(cupsd_printer_t *p,
-			                    const char *name, char *value);
+			                    const char *name,
+			                    const char *value);
 extern void		cupsdSetPrinterAttrs(cupsd_printer_t *p);
 extern int		cupsdSetPrinterReasons(cupsd_printer_t *p,
 			                       const char *s);
