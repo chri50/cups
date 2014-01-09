@@ -13,7 +13,7 @@
 .\"
 .TH ippfind 1 "CUPS" "6 June 2013" "Apple Inc."
 .SH NAME
-ippfind - find internet printing protocol printers
+ippfind \- find internet printing protocol printers
 .SH SYNOPSIS
 .B ippfind
 [
@@ -28,38 +28,38 @@ ippfind - find internet printing protocol printers
 .I expression ...
 ]
 .B ippfind
---help
+\--help
 .B ippfind
---version
+\--version
 .SH OPTIONS
 .TP 5
---help
+\--help
 Show program help
 .TP 5
---version
+\--version
 Show program version
 .TP 5
--4
+\-4
 Use IPv4 when listing
 .TP 5
--6
+\-6
 Use IPv6 when listing
 .TP 5
--T seconds
+\-T seconds
 Specify find timeout in seconds. If 1 or less, \fIippfind\fR stops as soon as it thinks it has found everything. The default is 1 second.
 .TP 5
--V version
+\-V version
 Specifies the IPP version when listing. Supported values are 1.1, 2.0, 2.1, and 2.2.
 
 .SH DESCRIPTION
 \fIippfind\fR finds services registered with a DNS server or available through local devices. Its primary purpose is to find IPP printers and show their URIs, show their current status, or run commands. For example, to show the status of all registered IPP printers on your network, run:
 .nf
-    ippfind --ls
+    ippfind \--ls
 .fi
 Similarly, to send a PostScript test page to every PostScript printer, run:
 .nf
-    ippfind --txt-pdl application/postscript --exec ipptool \\
-        -f onepage-letter.ps '{}' print-job.test \\;
+    ippfind \--txt-pdl application/postscript \--exec ipptool \\
+        \-f onepage-letter.ps '{}' print-job.test \\;
 .fi
 
 .SH REGISTRATION TYPES
@@ -81,83 +81,83 @@ _printer._tcp
 Line Printer Daemon (LPD, RFC 1179)
 
 .SH EXPRESSIONS
-\fIippfind\fR supports expressions much like the \fIfind(1)\fR utility. However, unlike \fIfind\fR, \fIippfind\fR uses POSIX regular expressions instead of shell filename matching patterns. If --exec, -l, --ls, -p, --print, --print-name, -q, --quiet, -s, or -x is not specified, \fIippfind\fR adds --print to print the service URI of anything it finds. The following expressions are supported:
+\fIippfind\fR supports expressions much like the \fIfind(1)\fR utility. However, unlike \fIfind\fR, \fIippfind\fR uses POSIX regular expressions instead of shell filename matching patterns. If \--exec, \-l, \--ls, \-p, \--print, \--print-name, \-q, \--quiet, \-s, or \-x is not specified, \fIippfind\fR adds \--print to print the service URI of anything it finds. The following expressions are supported:
 .TP 5
--d regex
+\-d regex
 .TP 5
---domain regex
+\--domain regex
 True if the domain matches the given regular expression.
 .TP 5
---false
+\--false
 Always false.
 .TP 5
--h regex
+\-h regex
 .TP 5
---host regex
+\--host regex
 True is the hostname matches the given regular expression.
 .TP 5
--l
+\-l
 .TP 5
---ls
-Lists attributes returned by Get-Printer-Attributes for IPP printers and traditional \fIfind\fR "-ls" output for HTTP URLs. The result is true if the URI is accessible, false otherwise.
+\--ls
+Lists attributes returned by Get-Printer-Attributes for IPP printers and traditional \fIfind\fR "\-ls" output for HTTP URLs. The result is true if the URI is accessible, false otherwise.
 .TP 5
---local
+\--local
 True if the service is local to this computer.
 .TP 5
--n regex
+\-n regex
 .TP 5
---name regex
+\--name regex
 True if the service instance name matches the given regular expression.
 .TP 5
---path regex
+\--path regex
 True if the URI resource path matches the given regular expression.
 .TP 5
--P number[-number]
+\-P number[\-number]
 .TP 5
---port number[-number]
+\--port number[\-number]
 True if the port matches the given number or range.
 .TP 5
--p
+\-p
 .TP 5
---print
+\--print
 Prints the URI if the result of previous expressions is true. The result is always true.
 .TP 5
--q
+\-q
 .TP 5
---quiet
-Quiet mode - just returns the exit codes below.
+\--quiet
+Quiet mode \- just returns the exit codes below.
 .TP 5
--r
+\-r
 .TP 5
---remote
+\--remote
 True if the service is not local to this computer.
 .TP 5
--s
+\-s
 .TP 5
---print-name
+\--print-name
 Prints the service instance name if the result of previous expressions is true. The result is always true.
 .TP 5
---true
+\--true
 Always true.
 .TP 5
--t key
+\-t key
 .TP 5
---txt key
+\--txt key
 True if the TXT record contains the named key.
 .TP 5
---txt-\fIkey\fR regex
+\--txt-\fIkey\fR regex
 True if the TXT record contains the named key and matches the given regular
 expression.
 .TP 5
--u regex
+\-u regex
 .TP 5
---uri regex
+\--uri regex
 True if the URI matches the given regular expression.
 .TP 5
--x utility [argument ...] ;
+\-x utility [argument ...] ;
 .TP 5
---exec utility [argument ...] ;
-Executes the specified program if the current result is true. "{foo}" arguments are replaced with the corresponding value - see SUBSTITUTIONS below.
+\--exec utility [argument ...] ;
+Executes the specified program if the current result is true. "{foo}" arguments are replaced with the corresponding value \- see SUBSTITUTIONS below.
 .PP
 Expressions may also contain modifiers:
 .TP 5
@@ -166,19 +166,19 @@ Group the result of expressions.
 .TP 5
 ! expression
 .TP 5
---not expression
+\--not expression
 Unary NOT of the expression.
 .TP 5
 expression expression
 .TP 5
-expression --and expression
+expression \--and expression
 Logical AND of expressions.
 .TP 5
-expression --or expression
+expression \--or expression
 Logical OR of expressions.
 
 .SH SUBSTITUTIONS
-The substitutions for "{foo}" in -e and --exec are:
+The substitutions for "{foo}" in \-e and \--exec are:
 .TP 5
 {}
 URI
