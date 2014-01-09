@@ -5,8 +5,8 @@ libcups.so.2 libcups2 #MINVER#
  (optional|regex)"^_http.*@Base$" 1.6.2
  (optional|regex)"^_ipp.*@Base$" 1.6.2
  (optional|regex)"^_ppd.*@Base$" 1.6.2
- _httpReadGNUTLS@Base 1.4.4-3~
- _httpWriteGNUTLS@Base 1.4.4-3~
+ (optional=GnuTLS)_httpReadGNUTLS@Base 1.4.4-3~
+ (optional=GnuTLS)_httpWriteGNUTLS@Base 1.4.4-3~
  cupsAddDest@Base 1.4.0
  cupsAddOption@Base 1.4.0
  cupsAdminCreateWindowsPPD@Base 1.4.0

@@ -834,7 +834,7 @@ Last-Update: 2014-01-04
             cupsLastErrorString());
 --- a/scheduler/ipp.c
 +++ b/scheduler/ipp.c
-@@ -1057,6 +1057,10 @@
+@@ -974,6 +974,10 @@
                                 IPP_TAG_TEXT)) != NULL)
      cupsdSetString(&pclass->info, attr->values[0].string.text);
  
@@ -845,7 +845,7 @@ Last-Update: 2014-01-04
    if ((attr = ippFindAttribute(con->request, "printer-is-accepting-jobs",
                                 IPP_TAG_BOOLEAN)) != NULL &&
        attr->values[0].boolean != pclass->accepting)
-@@ -1084,6 +1088,13 @@
+@@ -1001,6 +1005,13 @@
      pclass->shared = attr->values[0].boolean;
    }
  
@@ -859,7 +859,7 @@ Last-Update: 2014-01-04
    if ((attr = ippFindAttribute(con->request, "printer-state",
                                 IPP_TAG_ENUM)) != NULL)
    {
-@@ -2415,6 +2426,10 @@
+@@ -2332,6 +2343,10 @@
                                 IPP_TAG_TEXT)) != NULL)
      cupsdSetString(&printer->info, attr->values[0].string.text);
  
@@ -870,7 +870,7 @@ Last-Update: 2014-01-04
    set_device_uri = 0;
  
    if ((attr = ippFindAttribute(con->request, "device-uri",
-@@ -2574,6 +2589,12 @@
+@@ -2491,6 +2506,12 @@
  		  printer->accepting ? "Now" : "No longer");
    }
  
@@ -883,7 +883,7 @@ Last-Update: 2014-01-04
    if ((attr = ippFindAttribute(con->request, "printer-is-shared",
                                 IPP_TAG_BOOLEAN)) != NULL)
    {
-@@ -4988,6 +5009,10 @@
+@@ -4905,6 +4926,10 @@
      ippAddBoolean(con->response, IPP_TAG_PRINTER, "printer-is-shared",
                    printer->shared);
  
@@ -894,7 +894,7 @@ Last-Update: 2014-01-04
    if (!ra || cupsArrayFind(ra, "printer-more-info"))
    {
      httpAssembleURIf(HTTP_URI_CODING_ALL, printer_uri, sizeof(printer_uri),
-@@ -5036,6 +5061,9 @@
+@@ -4953,6 +4978,9 @@
      if (!printer->shared)
        type |= CUPS_PRINTER_NOT_SHARED;
  
@@ -906,7 +906,7 @@ Last-Update: 2014-01-04
    }
 --- a/scheduler/printers.c
 +++ b/scheduler/printers.c
-@@ -134,12 +134,13 @@
+@@ -95,12 +95,13 @@
    cupsdSetString(&p->uuid, _httpAssembleUUID(ServerName, RemotePort, name, 0,
                                               uuid, sizeof(uuid)));
    cupsdSetDeviceURI(p, "file:///dev/null");
@@ -926,7 +926,7 @@ Last-Update: 2014-01-04
  
    cupsdSetString(&p->job_sheets[0], "none");
    cupsdSetString(&p->job_sheets[1], "none");
-@@ -793,6 +794,7 @@
+@@ -754,6 +755,7 @@
    cupsdClearString(&p->job_sheets[0]);
    cupsdClearString(&p->job_sheets[1]);
    cupsdClearString(&p->device_uri);
@@ -934,7 +934,7 @@ Last-Update: 2014-01-04
    cupsdClearString(&p->sanitized_device_uri);
    cupsdClearString(&p->port_monitor);
    cupsdClearString(&p->op_policy);
-@@ -992,6 +994,11 @@
+@@ -953,6 +955,11 @@
        if (value)
  	cupsdSetString(&p->make_model, value);
      }
@@ -946,7 +946,7 @@ Last-Update: 2014-01-04
      else if (!_cups_strcasecmp(line, "Location"))
      {
        if (value)
-@@ -1149,6 +1156,26 @@
+@@ -1110,6 +1117,26 @@
  	cupsdLogMessage(CUPSD_LOG_ERROR,
  	                "Syntax error on line %d of printers.conf.", linenum);
      }
@@ -973,7 +973,7 @@ Last-Update: 2014-01-04
      else if (!_cups_strcasecmp(line, "JobSheets"))
      {
       /*
-@@ -1455,6 +1482,9 @@
+@@ -1416,6 +1443,9 @@
  
      cupsFilePutConf(fp, "DeviceURI", printer->device_uri);
  
@@ -983,7 +983,7 @@ Last-Update: 2014-01-04
      if (printer->port_monitor)
        cupsFilePutConf(fp, "PortMonitor", printer->port_monitor);
  
-@@ -1488,6 +1518,11 @@
+@@ -1449,6 +1479,11 @@
      else
        cupsFilePuts(fp, "Shared No\n");
  
@@ -995,7 +995,7 @@ Last-Update: 2014-01-04
      snprintf(value, sizeof(value), "%s %s", printer->job_sheets[0],
               printer->job_sheets[1]);
      cupsFilePutConf(fp, "JobSheets", value);
-@@ -2113,6 +2148,8 @@
+@@ -2090,6 +2125,8 @@
                 NULL, p->info ? p->info : "");
    ippAddString(p->attrs, IPP_TAG_PRINTER, IPP_TAG_URI, "printer-uuid", NULL,
  	       p->uuid);
@@ -1004,7 +1004,7 @@ Last-Update: 2014-01-04
  
    if (cupsArrayCount(p->users) > 0)
    {
-@@ -3055,6 +3092,7 @@
+@@ -3032,6 +3069,7 @@
  			     "\t\t<%s/>\n"
  			     "\t\t<key>printer-location</key>\n"
  			     "\t\t<string>", p->accepting ? "true" : "false");
