@@ -1,16 +1,16 @@
 /*
- * "$Id: printers.h 10996 2013-05-29 11:51:34Z msweet $"
+ * "$Id: printers.h 11380 2013-11-05 01:14:53Z msweet $"
  *
- *   Printer definitions for the CUPS scheduler.
+ * Printer definitions for the CUPS scheduler.
  *
- *   Copyright 2007-2012 by Apple Inc.
- *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright 2007-2013 by Apple Inc.
+ * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  */
 
 #ifdef HAVE_DNSSD
@@ -192,5 +192,5 @@ extern void		cupsdWritePrintcap(void);
 
 
 /*
- * End of "$Id: printers.h 10996 2013-05-29 11:51:34Z msweet $".
+ * End of "$Id: printers.h 11380 2013-11-05 01:14:53Z msweet $".
  */

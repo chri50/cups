@@ -6,7 +6,7 @@ Last-Update: 2012-11-29
 
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -178,7 +178,8 @@
+@@ -155,7 +155,8 @@
  #ifdef HAVE_AUTHORIZATION_H
    { "SystemGroupAuthKey",	&SystemGroupAuthKey,	CUPSD_VARTYPE_STRING },
  #endif /* HAVE_AUTHORIZATION_H */
@@ -16,7 +16,7 @@ Last-Update: 2012-11-29
  };
  
  static int		default_auth_type = CUPSD_AUTH_AUTO;
-@@ -594,6 +595,7 @@
+@@ -571,6 +572,7 @@
    cupsdSetStringf(&ServerHeader, "CUPS/%d.%d IPP/2.1", CUPS_VERSION_MAJOR,
                    CUPS_VERSION_MINOR);
    cupsdSetString(&StateDir, CUPS_STATEDIR);
@@ -24,7 +24,7 @@ Last-Update: 2012-11-29
  
    if (!strcmp(CUPS_DEFAULT_PRINTCAP, "/etc/printers.conf"))
      PrintcapFormat = PRINTCAP_SOLARIS;
-@@ -3349,6 +3351,7 @@
+@@ -3331,6 +3333,7 @@
               !_cups_strcasecmp(line, "SystemGroup") ||
               !_cups_strcasecmp(line, "SystemGroupAuthKey") ||
               !_cups_strcasecmp(line, "TempDir") ||
@@ -110,7 +110,7 @@ Last-Update: 2012-11-29
   */
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -427,6 +427,7 @@
+@@ -486,6 +486,7 @@
  DocumentRoot $root/doc
  RequestRoot /tmp/cups-$user/spool
  TempDir /tmp/cups-$user/spool/temp

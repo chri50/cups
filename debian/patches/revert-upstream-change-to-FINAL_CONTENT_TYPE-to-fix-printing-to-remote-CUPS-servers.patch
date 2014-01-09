@@ -3,7 +3,7 @@ Bug-RedHat: https://bugzilla.redhat.com/show_bug.cgi?id=1010580
 Last-Updated: 2013-11-28
 --- a/scheduler/job.c
 +++ b/scheduler/job.c
-@@ -654,12 +654,7 @@
+@@ -599,12 +599,7 @@
  
      if (!job->printer->remote)
      {

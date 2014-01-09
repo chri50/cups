@@ -1,23 +1,18 @@
 /*
- * "$Id: dbus.c 3933 2012-10-01 03:01:10Z msweet $"
+ * "$Id: dbus.c 11500 2014-01-06 22:21:15Z msweet $"
  *
- *   D-Bus notifier for CUPS.
+ * D-Bus notifier for CUPS.
  *
- *   Copyright 2008-2012 by Apple Inc.
- *   Copyright (C) 2011, 2013 Red Hat, Inc.
- *   Copyright (C) 2007 Tim Waugh <twaugh@redhat.com>
- *   Copyright 1997-2005 by Easy Software Products.
+ * Copyright 2008-2014 by Apple Inc.
+ * Copyright (C) 2011, 2013 Red Hat, Inc.
+ * Copyright (C) 2007 Tim Waugh <twaugh@redhat.com>
+ * Copyright 1997-2005 by Easy Software Products.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
- *
- * Contents:
- *
- *   main()         - Read events and send DBUS notifications.
- *   acquire_lock() - Acquire a lock so we only have a single notifier running.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -31,9 +26,6 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <assert.h>
-#include <locale.h>
-#include <wchar.h>
 
 #ifdef HAVE_DBUS
 #  include <dbus/dbus.h>
@@ -162,87 +154,14 @@ enum
 
 static char		lock_filename[1024];	/* Lock filename */
 
+
 /*
  * Local functions...
  */
 
-static void		release_lock(void);
-static int		acquire_lock(int *fd, char *lockfile, size_t locksize);
-static const char	*validate_utf8(const char *str);
+static int	acquire_lock(int *fd, char *lockfile, size_t locksize);
+static void	release_lock(void);
 
-
-/*
- * 'validate_utf8()' - Convert to valid UTF-8
- */
-
-static const char *
-validate_utf8 (const char *str)
-{
-  static char *buffer = NULL;
-  static size_t buflen = 0;
-  char *p;
-  size_t str_len;
-  unsigned int i;
-  mbstate_t instate, outstate;
-
-  if (str == NULL)
-  {
-    buflen = 0;
-    free (buffer);
-    buffer = NULL;
-    return (NULL);
-  }
-
-  /* Is it already valid? */
-  if (mbstowcs (NULL, str, 0) != (size_t) -1)
-    return str;
-
-  /* Make sure our buffer is at least as large as the input string */
-  str_len = strlen (str);
-  if (str_len >= buflen)
-  {
-    if (buffer == NULL)
-      /* Set encoding type to UTF-8 the first time we need to */
-      setlocale (LC_CTYPE, "C.UTF-8");
-
-    buflen = str_len + 1;
-    buffer = realloc (buffer, buflen);
-  }
-
-  memset (&instate, '\0', sizeof (mbstate_t));
-  memset (&outstate, '\0', sizeof (mbstate_t));
-  p = buffer;
-  i = 0;
-  while (i < str_len)
-  {
-    wchar_t wc;
-    size_t used, written;
-    mbstate_t orig_instate = instate;
-    used = mbrtowc (&wc, str + i, str_len - i, &instate);
-    switch (used)
-    {
-    case (size_t) -2:
-    case (size_t) -1:
-      wc = L'?'; /* so replacement is never longer than original char */
-      instate = orig_instate;
-      /* fallthru */
-    case 0:
-      used = 1;
-    }
-
-    written = wcrtomb (p, wc, &outstate);
-    if (written != -1)
-    {
-      p += written;
-      assert (p - buffer < buflen);
-    }
-
-    i += used;
-  }
-
-  *p = '\0';
-  return buffer;
-}
 
 /*
  * 'main()' - Read events and send DBUS notifications.
@@ -309,7 +228,6 @@ main(int  argc,				/* I - Number of command-line args */
     int			no = 0;		/* Boolean "no" value */
     int			params = PARAMS_NONE;
 					/* What parameters to include? */
-    const char		*val;
 
 
    /*
@@ -449,7 +367,7 @@ main(int  argc,				/* I - Number of command-line args */
     attr = ippFindAttribute(msg, "notify-text", IPP_TAG_TEXT);
     if (attr)
     {
-      const char *val = validate_utf8 (ippGetString(attr, 0, NULL));
+      const char *val = ippGetString(attr, 0, NULL);
       if (!dbus_message_iter_append_string(&iter, &val))
         goto bail;
     }
@@ -615,7 +533,7 @@ main(int  argc,				/* I - Number of command-line args */
       attr = ippFindAttribute(msg, "job-name", IPP_TAG_NAME);
       if (attr)
       {
-        const char *val = validate_utf8(ippGetString(attr, 0, NULL));
+        const char *val = ippGetString(attr, 0, NULL);
         if (!dbus_message_iter_append_string(&iter, &val))
           goto bail;
       }
@@ -686,7 +604,7 @@ static void
 handle_sigterm(int signum)
 {
   release_lock();
-  _exit (0);
+  _exit(0);
 }
 
 /*
@@ -738,5 +656,5 @@ main(void)
 
 
 /*
- * End of "$Id: dbus.c 3933 2012-10-01 03:01:10Z msweet $".
+ * End of "$Id: dbus.c 11500 2014-01-06 22:21:15Z msweet $".
  */

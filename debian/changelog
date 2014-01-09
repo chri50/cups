@@ -1,3 +1,41 @@
+cups (1.7.1-1) unstable; urgency=medium
+
+  * New 1.7.0 upstream release
+   - Security: the lppasswd program incorrectly used settings from
+     ~/.cups/client.conf (STR #4319)
+   - Some gzip'd PPD files could not be used
+   - Cleaned up some job logging in the scheduler
+   - ATTR messages could cause string pool memory corruption in the
+     scheduler
+   - Printing to a raw queue could result in corrupt output due to
+     opportunistic compression
+   - The "make check" test suite did not work on Linux without the
+     cups-filters package installed (That's not fully fixed yet)
+   - The libusb-based USB backend incorrectly used write timeouts
+   - Using "@IF(name)" in an Allow or Deny rule did not wor
+     (STR #4328, Closes: #674520)
+   - The D-BUS notifier did not remove its lockfile (STR #4314)
+
+  [ Didier Raboud ]
+  * Link against OpenSSL instead of GnuTLS; mark two GnuTLS-specific
+    symbols in libcups2 as optional (Closes: #714492)
+  * Refresh 13 patches for 1.7.1
+  * Drop patches obsoleted by 1.7.1:
+    - avoid-sign-extending-CRCs-for-gz-decompression
+    - avoid_stale_lockfile_in_dbus_notifier
+    - cups-dbus-utf8
+    - fix-job-history-logging
+    - fix-stringpool-corruption
+    - prevent-USB-timeouts-causing-incorrect-print-output
+  * Refresh the testsuite patches
+  * Rewrite tests-use-cupsfilters patch to have the whole test-suite
+    pass
+
+  [ wookey ]
+  * Honour DEB_BUILD_OPTIONS=nocheck (Closes: #734670)
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 09 Jan 2014 16:54:26 +0100
+
 cups (1.7.0-2) unstable; urgency=low
 
   [ Russell Coker ]
