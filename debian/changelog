@@ -1,3 +1,12 @@
+cups (1.6.1-0ubuntu11.5) quantal-security; urgency=low
+
+  * SECURITY UPDATE: information disclosure via lppasswd binary
+    - debian/patches/CVE-2013-6891.patch: don't parse user file if setuid
+      in cups/usersys.c.
+    - CVE-2013-6891
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Tue, 14 Jan 2014 10:18:06 -0500
+
 cups (1.6.1-0ubuntu11.4) quantal-proposed; urgency=low
 
   * debian/cups.logrotate: Do not remove CUPS' log files while the CUPS
