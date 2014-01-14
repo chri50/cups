@@ -1721,6 +1721,22 @@ cups_get_printer_uri(
 
       return (1);
     }
+    else if (device_uri &&
+	     (!strncmp(device_uri, "ipp:", 4) != NULL ||
+	      !strncmp(device_uri, "ipps:", 5) != NULL))
+    {
+     /*
+      * Statically-configured IPP shared printer.
+      */
+
+      httpSeparateURI(HTTP_URI_CODING_ALL,
+                      device_uri,
+                      scheme, sizeof(scheme), username, sizeof(username),
+		      host, hostsize, port, resource, resourcesize);
+      ippDelete(response);
+
+      return (1);
+    }
     else if ((attr = ippFindAttribute(response, "member-uris",
                                       IPP_TAG_URI)) != NULL)
     {
