@@ -885,7 +885,13 @@ _cupsSetDefaults(void)
   if (cg->encryption == (http_encryption_t)-1 || !cg->server[0] ||
       !cg->user[0] || !cg->ipp_port)
   {
+#  ifdef HAVE_GETEUID
+    if ((geteuid() == getuid() || !getuid()) && getegid() == getgid() && (home = getenv("HOME")) != NULL)
+#  elif !defined(WIN32)
+    if (getuid() && (home = getenv("HOME")) != NULL)
+#  else
     if ((home = getenv("HOME")) != NULL)
+#  endif /* HAVE_GETEUID */
     {
      /*
       * Look for ~/.cups/client.conf...

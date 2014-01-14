@@ -1,3 +1,12 @@
+cups (1.7.0~rc1-0ubuntu5.2) saucy-security; urgency=low
+
+  * SECURITY UPDATE: information disclosure via lppasswd binary
+    - debian/patches/CVE-2013-6891.patch: don't parse user file if setuid
+      in cups/usersys.c.
+    - CVE-2013-6891
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Tue, 14 Jan 2014 10:05:35 -0500
+
 cups (1.7.0~rc1-0ubuntu5.1) saucy-proposed; urgency=low
 
   * debian/patches/lpadmin-ppdname-fix.patch: The lpadmin command did not send
