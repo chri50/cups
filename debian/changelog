@@ -1,3 +1,11 @@
+cups (1.7.1-2) unstable; urgency=medium
+
+  * Revert "Link against OpenSSL instead of GnuTLS", reopens #714492
+  * Add tests' patch to ignore a kfreebsd-amd64 error that breaks the
+    error lines counting
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 14 Jan 2014 10:03:37 +0100
+
 cups (1.7.1-1) unstable; urgency=medium
 
   * New 1.7.0 upstream release

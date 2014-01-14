@@ -25,7 +25,7 @@ Build-Depends:
  libdbus-1-dev,
  libfontconfig1-dev,
  libfreetype6-dev,
- libssl-dev,
+ libgnutls-dev, 
  libijs-dev,
  libjpeg-dev,
  libldap2-dev,
@@ -237,7 +237,7 @@ Section: libdevel
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},
  libcups2 (= ${binary:Version}), 
- libssl-dev,
+ libgnutls-dev,
  libkrb5-dev
 Description: Common UNIX Printing System(tm) - Development files CUPS library
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
