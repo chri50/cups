@@ -2,6 +2,7 @@ Description: Do not link libcups.so and libcupsimage.so against
  unnecessary libraries.  This avoids unnecessary package dependencies for
  both libcups, as well as for packages using cups-config.
 Author: Martin Pitt <mpitt@debian.org>
+Bug: https://www.cups.org/str.php?L4343
 Bug-Debian: http://bugs.debian.org/438067
 Last-Update: 2014-01-04
 

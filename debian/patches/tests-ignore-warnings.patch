@@ -4,7 +4,7 @@ Last-Update: 2014-01-09
 
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -913,7 +913,7 @@
+@@ -912,7 +912,7 @@
  fi
  
  # Warning log messages

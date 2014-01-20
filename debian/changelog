@@ -1,3 +1,36 @@
+cups (1.7.1-3) unstable; urgency=low
+
+  [ Till Kamppeter ]
+  * Split binary package "cups" into "cups" and "cups-core-drivers". In
+    low-footprint (mobile) environments we can restrict the printer
+    support to only IPP printers with known common languages (PDF,
+    PostScript, PWG Raster, PCL) to get rid of the heavy load of drivers
+    and PPDs for thousands of printers. From CUPS we need only the
+    "cups-daemon" and "cups-core-drivers" (plus library packages) then.
+    "cups-core-drivers" currently only contains the gziptoany and pstops
+    filters.
+
+  [ Didier Raboud ]
+  * Avoid specifying mode, user and (wrong) group in the logrotate
+    'create' statement (LP: #1268011)
+  * Install cups-daemon AppArmor, ufw profile and apport hooks on Debian
+    too (Closes: #735313)
+  * Replace custom AppArmor post{inst,rm} machinery with a dh_apparmor
+    call
+  * Add patch to move cupsd.conf.default from /etc/cups to
+    /usr/share/cups as it's not a configuration file (Closes: #640124)
+  * Reorder most patches to let those that upstream doesn't intend to
+    fix stay on top of the pile; most also mark those reported upstream
+    as such
+  * Drop configure-default-browse-protocols patch, now useless
+  * Drop update-rc.d arguments in Debian, as they are no longer
+    supported
+
+  [ Helge Kreutzmann ]
+  * Update German man page (1518t)
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 20 Jan 2014 23:06:36 +0100
+
 cups (1.7.1-2) unstable; urgency=medium
 
   * Revert "Link against OpenSSL instead of GnuTLS", reopens #714492

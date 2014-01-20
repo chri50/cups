@@ -1,8 +1,9 @@
 Description: Patch to support Apple AirPrint (printing from iPhone, iPad, iPod Touch to a CUPS server)
 Author: Till Kamppeter <till.kamppeter@gmail.com>
-Bug: https://bugs.launchpad.net/bugs/711779
-Bug: https://bugs.launchpad.net/bugs/1054495
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/711779
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/1054495
 Bug-Debian: http://bugs.debian.org/700961
+Bug: https://cups.org/str.php?L4341
 Last-Update: 2013-02-20
 
 --- a/scheduler/dirsvc.c
@@ -59,7 +60,7 @@ Last-Update: 2013-02-20
  	  strlcat(pdl, "image/png,", sizeof(pdl));
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -724,7 +724,7 @@
+@@ -722,7 +722,7 @@
    DefaultShared            = CUPS_DEFAULT_DEFAULT_SHARED;
  
  #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)

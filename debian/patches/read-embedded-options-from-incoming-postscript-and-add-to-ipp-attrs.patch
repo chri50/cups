@@ -1,4 +1,13 @@
-Author: till.kamppeter@gmail.com
+Description: Make CUPS reading all option settings in PostScript print
+ jobs and add the option settings to the filter command line before
+ starting the filter chain. This fixes the problem that in the PDF
+ printing workflow (where incoming PostScript gets converted to PDF by
+ pstopdf) option settings embedded in the incoming PostScript code do
+ not get obeyed. Especially the options of jobs from Windows clients get
+ ignored.
+Origin: vendor
+Author: Till Kamppeter <till.kamppeter@gmail.com>
+Bug: https://www.cups.org/str.php?L4344
 
 --- a/scheduler/ipp.c
 +++ b/scheduler/ipp.c

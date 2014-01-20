@@ -1,29 +1,16 @@
 # patches accepted and committed upstream:
 
 # patches sent upstream
-pidfile.patch
-ppd-poll-with-client-conf.patch
 manpage-hyphen-minus.patch
 rootbackends-worldreadable.patch
-
-# patches which should go upstream
-color-management-extension.patch
-airprint-support.patch
-removecvstag.patch
-no-conffile-timestamp.patch
-drop_unnecessary_dependencies.patch
-reactivate_recommended_driver.patch
-read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.patch
-do-not-broadcast-with-hostnames.patch
-cups-deviced-allow-device-ids-with-newline.patch
-cups-snmp-oids-device-id-hp-ricoh.patch
-configure-default-browse-protocols.patch
 mention-rfc2911-in-ipptoolfile-for-clarity.patch
 dont-use-dbus-from-two-threads.patch
 fixes-for-jobs-with-multiple-files-and-multiple-formats.patch
-revert-upstream-change-to-FINAL_CONTENT_TYPE-to-fix-printing-to-remote-CUPS-servers.patch
 build-with-full-relro.patch
 fix-template.c-typo.patch
+
+# patches which should go upstream
+color-management-extension.patch
 # Fix tests, should probably go upstream
 tests-ignore-warnings.patch
 tests-ignore-usb-crash.patch
@@ -33,7 +20,22 @@ tests-wait-on-unfinished-jobs-everytime.patch
 tests-fix-ppdLocalize-on-unclean-env.patch
 tests-use-cupsfilters.patch
 
+# Debian patches that upstream doesn't want to fix
+move-cupsd-conf-default-to-share.patch
+drop_unnecessary_dependencies.patch
+read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.patch
+cups-deviced-allow-device-ids-with-newline.patch
+airprint-support.patch
+cups-snmp-oids-device-id-hp-ricoh.patch
+no-conffile-timestamp.patch
+pidfile.patch
+ppd-poll-with-client-conf.patch
+removecvstag.patch
+
 # Debian patches
+revert-upstream-change-to-FINAL_CONTENT_TYPE-to-fix-printing-to-remote-CUPS-servers.patch
+do-not-broadcast-with-hostnames.patch
+reactivate_recommended_driver.patch
 add-ipp-backend-of-cups-1.4.patch
 logfiles_adm_readable.patch
 default_log_settings.patch

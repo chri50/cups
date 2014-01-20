@@ -2,7 +2,9 @@ Description: For clarity, mention that possible attribute-name are
  defined in RFC2911.
 Author: Helge Kreutzmann <debian@helgefjell.de>
 Bug-Debian: http://bugs.debian.org/711709
+Bug: https://www.cups.org/str.php?L4346
 Last-Update: 2013-06-09
+
 --- a/man/ipptoolfile.man
 +++ b/man/ipptoolfile.man
 @@ -152,7 +152,7 @@
