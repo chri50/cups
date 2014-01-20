@@ -1,6 +1,7 @@
 Description: Fix expres{,s}ion typo
 Author: Didier Raboud <odyx@debian.org>
 Origin: vendor
+Bug: https://cups.org/str.php?L4350
 Last-Update: 2014-01-04
 --- a/cgi-bin/template.c
 +++ b/cgi-bin/template.c

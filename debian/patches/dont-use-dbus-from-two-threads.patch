@@ -1,6 +1,7 @@
 Description: Don't use D-Bus from two threads
 Author: Tim Waugh <twaugh@redhat.com>
 Bug-Redhat: https://bugzilla.redhat.com/show_bug.cgi?id=979748
+Bug: https://cups.org/str.php?L4347
 Last-Updated: 2013-11-28
 --- /dev/null
 +++ b/scheduler/avahi.c
@@ -668,7 +669,7 @@ Last-Updated: 2013-11-28
  					/* Client information */
 --- a/scheduler/main.c
 +++ b/scheduler/main.c
-@@ -148,6 +148,10 @@
+@@ -146,6 +146,10 @@
    int			launchd_idle_exit;
  					/* Idle exit on select timeout? */
  #endif	/* HAVE_LAUNCHD */
@@ -679,7 +680,7 @@ Last-Updated: 2013-11-28
  
  
  #ifdef HAVE_GETEUID
-@@ -572,6 +576,14 @@
+@@ -570,6 +574,14 @@
  
    httpInitialize();
  
@@ -694,7 +695,7 @@ Last-Updated: 2013-11-28
    cupsdStartServer();
  
   /*
-@@ -889,6 +901,16 @@
+@@ -882,6 +894,16 @@
      }
  #endif /* __APPLE__ */
  
@@ -711,7 +712,7 @@ Last-Updated: 2013-11-28
  #ifndef __APPLE__
     /*
      * Update the network interfaces once a minute...
-@@ -1804,6 +1826,10 @@
+@@ -1766,6 +1788,10 @@
    cupsd_job_t		*job;		/* Job information */
    cupsd_subscription_t	*sub;		/* Subscription information */
    const char		*why;		/* Debugging aid */
@@ -722,7 +723,7 @@ Last-Updated: 2013-11-28
  
  
    cupsdLogMessage(CUPSD_LOG_DEBUG2, "select_timeout: JobHistoryUpdate=%ld",
-@@ -1849,6 +1875,19 @@
+@@ -1811,6 +1837,19 @@
    }
  #endif /* __APPLE__ */
  

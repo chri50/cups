@@ -6,7 +6,7 @@ Author: Didier Raboud <odyx@debian.org>
 Last-Update: 2014-01-14
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -898,7 +898,7 @@
+@@ -897,7 +897,7 @@
  fi
  
  # Error log messages
