@@ -1,3 +1,14 @@
+cups (1.7.1-2git1) trusty; urgency=medium
+
+  Backport from Debian packaging git:
+  * debian/libcups2-dev.preinst: Move aside a /usr/include/cups/i18n.h
+    directory during upgrades (from wheezy/precise); this directory got
+    replaced with a file, and triggers a bug in overlayfs when dist-upgrading
+    schroots/containers/similar. This is a hackish workaround and can be
+    dropped again in jessie+1/trusty+1. (LP: #1272285)
+
+ -- Martin Pitt <martin.pitt@ubuntu.com>  Mon, 27 Jan 2014 08:42:51 +0100
+
 cups (1.7.1-2) unstable; urgency=medium
 
   * Revert "Link against OpenSSL instead of GnuTLS", reopens #714492
