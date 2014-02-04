@@ -1,3 +1,18 @@
+cups (1.7.1-4) unstable; urgency=medium
+
+  [ Martin Pitt ]
+  * debian/libcups2-dev.preinst: Move aside a /usr/include/cups/i18n.h
+    directory during upgrades (from wheezy/precise); this directory got
+    replaced with a file, and triggers a bug in overlayfs when dist-upgrading
+    schroots/containers/similar. This is a hackish workaround and can be
+    dropped again in jessie+1/trusty+1. (LP: #1272285)
+
+  [ Didier Raboud ]
+  * Fix LGPL-2 references in debian/copyright, hanks to Thorsten Alteholz
+  * Move commandtops from cups to cups-core-drivers (Closes: #737306)
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 04 Feb 2014 15:31:13 +0100
+
 cups (1.7.1-3) unstable; urgency=low
 
   [ Till Kamppeter ]
