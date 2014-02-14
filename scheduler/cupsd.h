@@ -119,6 +119,7 @@ extern const char *cups_hstrerror(int);
 #include "colorman.h"
 #include "conf.h"
 #include "banners.h"
+#include "avahi.h"
 #include "dirsvc.h"
 #include "network.h"
 #include "subscriptions.h"
@@ -138,6 +139,15 @@ extern const char *cups_hstrerror(int);
  */
 
 typedef void (*cupsd_selfunc_t)(void *data);
+
+#ifdef HAVE_AVAHI
+/*
+ * Timeout callback function type...
+ */
+
+typedef struct _cupsd_timeout_s cupsd_timeout_t;
+typedef void (*cupsd_timeoutfunc_t)(cupsd_timeout_t *timeout, void *data);
+#endif /* HAVE_AVAHI */
 
 
 /*
@@ -164,6 +174,11 @@ VAR void		*DefaultProfile	VALUE(0);
 VAR int			Launchd		VALUE(0);
 					/* Running from launchd */
 #endif /* HAVE_LAUNCH_H */
+
+#ifdef HAVE_AVAHI
+VAR cups_array_t *Timeouts;		/* Timed callbacks for main loop */
+#endif /* HAVE_AVAHI */
+
 
 
 /*
@@ -229,6 +244,17 @@ extern void		cupsdStopSelect(void);
 extern void		cupsdStartServer(void);
 extern void		cupsdStopServer(void);
 
+#ifdef HAVE_AVAHI
+extern void     cupsdInitTimeouts(void);
+extern cupsd_timeout_t *cupsdAddTimeout (const struct timeval *tv,
+					 cupsd_timeoutfunc_t cb,
+					 void *data);
+extern cupsd_timeout_t *cupsdNextTimeout (long *delay);
+extern void     cupsdRunTimeout (cupsd_timeout_t *timeout);
+extern void     cupsdUpdateTimeout (cupsd_timeout_t *timeout,
+				    const struct timeval *tv);
+extern void     cupsdRemoveTimeout (cupsd_timeout_t *timeout);
+#endif /* HAVE_AVAHI */
 
 /*
  * End of "$Id: cupsd.h 10996 2013-05-29 11:51:34Z msweet $".
