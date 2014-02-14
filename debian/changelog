@@ -1,3 +1,25 @@
+cups (1.7.1-4ubuntu1) trusty; urgency=low
+
+  * cupsd-upstart-support.patch: Allow starting cupsd socket-triggered
+    through Upstart, for on-demand starting to save resources (especially
+    on mobile devices, LP: #1276713).
+  * cupsd-exit-on-idle.patch: Add mode to let cupsd terminate when it is idle,
+    also for running CUPS on-demand. If the mode is activated, either by
+    ExitOnIdleTimeout=TIMEOUT in cupsd.conf, by "-x TIMEOUT" on the cupsd
+    command line or by setting the env variable CUPSD_EXIT_ON_IDLE_TIMEOUT=
+    TIMEOUT (With TIMEOUT in all theree cases the idle timeout in seconds,
+    0 turning off the feature, off by default), cupsd terminates when it
+    is idle (no jobs, no shared printers) for the given timeout.
+  * cupsd-exit-on-idle-upstart.patch: Set idle timeout of cupsd to 30 sec
+    if CUPS is started socket-triggered by Upstart and the timeout is not
+    explicitly set (LP: #1276713).
+  * airprint-support.patch, pidfile.patch,
+    do-not-broadcast-with-hostnames.patch, confdirperms.patch,
+    log-debug-history-nearly-unlimited.patch,
+    cupsd-set-default-for-SyncOnClose-to-Yes.patch: Refreshed with quilt.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 14 Feb 2014 17:08:01 +0100
+
 cups (1.7.1-4) unstable; urgency=medium
 
   [ Martin Pitt ]
