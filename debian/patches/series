@@ -11,6 +11,9 @@ fix-template.c-typo.patch
 
 # patches which should go upstream
 color-management-extension.patch
+cupsd-upstart-support.patch
+cupsd-exit-on-idle.patch
+cupsd-exit-on-idle-upstart.patch
 # Fix tests, should probably go upstream
 tests-ignore-warnings.patch
 tests-ignore-usb-crash.patch

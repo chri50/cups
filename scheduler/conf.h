@@ -248,6 +248,9 @@ VAR int			SSLOptions		VALUE(CUPSD_SSL_NONE);
 VAR char		*PidFile		VALUE(NULL);
 					/* Debian CUPS pid file */
 
+VAR int			ExitOnIdleTimeout	VALUE(0);
+					/* Time after which an idle cupsd will exit */
+
 #ifdef HAVE_LAUNCHD
 VAR int			LaunchdTimeout		VALUE(10);
 					/* Time after which an idle cupsd will exit */
