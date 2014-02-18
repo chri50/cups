@@ -47,13 +47,6 @@ if [ -z "$TZ" -a -e /etc/timezone ]; then
     export TZ
 fi
 
-# Only effective if first parameter = 0.
-restart_xprint() {
-    if [ "$1" = 0 ] && [ -x /etc/init.d/xprint ]; then
-        invoke-rc.d xprint force-reload || true
-    fi
-}
-
 coldplug_usb_printers() {
     if type udevadm > /dev/null 2>&1 && [ -x /lib/udev/udev-configure-printer ]; then
 	for printer in `udevadm trigger --verbose --dry-run --subsystem-match=usb \
@@ -81,21 +74,18 @@ case "$1" in
 	status=$?
 	[ $status = 0 ] && coldplug_usb_printers
 	log_end_msg $status
-	restart_xprint $status
 	;;
   stop)
 	log_daemon_msg "Stopping $DESC" "$NAME"
 	start-stop-daemon --stop --quiet --retry 5 --oknodo --pidfile $PIDFILE --name $NAME
 	status=$?
 	log_end_msg $status
-	restart_xprint $status
 	;;
   reload|force-reload)
        log_daemon_msg "Reloading $DESC" "$NAME"
        start-stop-daemon --stop --quiet --pidfile $PIDFILE --name $NAME --signal 1
        status=$?
        log_end_msg $status
-       restart_xprint $status
        ;;
   restart)
 	log_daemon_msg "Restarting $DESC" "$NAME"
@@ -104,7 +94,6 @@ case "$1" in
 	fi
 	status=$?
 	log_end_msg $status
-	restart_xprint $status
 	;;
   status)
 	status_of_proc -p "$PIDFILE" "$DAEMON" "$NAME" && exit 0 || exit $?
