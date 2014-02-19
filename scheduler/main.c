@@ -26,6 +26,8 @@
  *   launchd_checkin()     - Check-in with launchd and collect the listening
  *                           fds.
  *   launchd_checkout()    - Update the launchd KeepAlive file as needed.
+ *   upstart_checkin()     - Check-in with Upstart and collect the
+ *                           listening fds.
  *   parent_handler()      - Catch USR1/CHLD signals...
  *   process_children()    - Process all dead children...
  *   select_timeout()      - Calculate the select timeout value.
@@ -83,6 +85,7 @@
 static void		launchd_checkin(void);
 static void		launchd_checkout(void);
 #endif /* HAVE_LAUNCHD */
+static void		upstart_checkin(void);
 static void		parent_handler(int sig);
 static void		process_children(void);
 static void		sigchld_handler(int sig);
@@ -119,6 +122,8 @@ main(int  argc,				/* I - Number of command-line args */
      char *argv[])			/* I - Command-line arguments */
 {
   int			i;		/* Looping var */
+  char			*val;		/* Value of environment variable */
+  int			t = -1;		/* Timeout */
   char			*opt;		/* Option character */
   int			fg;		/* Run in the foreground */
   int			fds;		/* Number of ready descriptors */
@@ -144,6 +149,8 @@ main(int  argc,				/* I - Number of command-line args */
 #else
   time_t		netif_time = 0;	/* Time since last network update */
 #endif /* __APPLE__ */
+  int			idle_exit;
+					/* Idle exit on select timeout? */
 #if HAVE_LAUNCHD
   int			launchd_idle_exit;
 					/* Idle exit on select timeout? */
@@ -171,6 +178,11 @@ main(int  argc,				/* I - Number of command-line args */
   */
 
   fg = 0;
+
+  if (val = getenv("CUPSD_EXIT_ON_IDLE_TIMEOUT"))
+  {
+    t = atoi(val);
+  }
 
 #ifdef HAVE_LAUNCHD
   if (getenv("CUPSD_LAUNCHD"))
@@ -311,6 +323,21 @@ main(int  argc,				/* I - Number of command-line args */
           case 't' : /* Test the cupsd.conf file... */
 	      TestConfigFile = 1;
 	      fg             = 1;
+	      break;
+
+	  case 'x' : /* Exit on idle timeout */
+	      i ++;
+	      if (i >= argc)
+	      {
+	        _cupsLangPuts(stderr, _("cupsd: Expected exit-on-idle timeout in seconds "
+		                        "after \"-x\" option."));
+	        usage(1);
+	      }
+
+	      if ((t = atoi(argv[i])) < 0)
+		_cupsLangPrintf(stderr,
+				_("cupsd: Invalid exit-on-idle timeout value \"%s\"."),
+				argv[i]);
 	      break;
 
 	  default : /* Unknown option */
@@ -550,6 +577,13 @@ main(int  argc,				/* I - Number of command-line args */
   }
 
  /*
+  * Exit-on-idle timeout set by command line or environment variable
+  */
+
+  if (t >= 0)
+    ExitOnIdleTimeout = t;
+
+ /*
   * Clean out old temp files and printer cache data.
   */
 
@@ -569,6 +603,11 @@ main(int  argc,				/* I - Number of command-line args */
     launchd_checkout();
   }
 #endif /* HAVE_LAUNCHD */
+
+ /*
+  * If we were started by Upstart get the listen sockets file descriptors...
+  */
+  upstart_checkin();
 
  /*
   * Startup the server...
@@ -772,6 +811,13 @@ main(int  argc,				/* I - Number of command-line args */
 #endif /* HAVE_LAUNCHD */
 
        /*
+        * If we were started by Upstart get the listen sockets file
+	* descriptors...
+        */
+
+        upstart_checkin();
+
+       /*
         * Startup the server...
         */
 
@@ -799,6 +845,26 @@ main(int  argc,				/* I - Number of command-line args */
 
     if ((timeout = select_timeout(fds)) > 1 && LastEvent)
       timeout = 1;
+
+   /*
+    * If no other work is scheduled and we've set the exit-on-idle timeout
+    * then timeout after 'ExitOnIdleTimeout' seconds of inactivity...
+    */
+
+    if (ExitOnIdleTimeout && timeout >= ExitOnIdleTimeout &&
+        !cupsArrayCount(ActiveJobs) &&
+	(!Browsing || !BrowseLocalProtocols || !cupsArrayCount(Printers)))
+    {
+      cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsd is idle, scheduling shutdown in %d seconds.",
+                      ExitOnIdleTimeout);
+      timeout		= ExitOnIdleTimeout;
+      idle_exit = 1;
+    }
+    else
+    {
+      cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsd is not idle any more, canceling shutdown.");
+      idle_exit = 0;
+    }
 
 #if HAVE_LAUNCHD
    /*
@@ -922,6 +988,20 @@ main(int  argc,				/* I - Number of command-line args */
       NetIFUpdate = 1;
     }
 #endif /* !__APPLE__ */
+
+   /*
+    * If no other work is scheduled and we've set the exit-on-idle timeout
+    * then timeout after 'ExitOnIdleTimeout' seconds of inactivity...
+    */
+
+    if (!fds && idle_exit)
+    {
+      cupsdLogMessage(CUPSD_LOG_INFO,
+                      "Printer sharing is off and there are no jobs pending, "
+		      "shutting down for now.");
+      stop_scheduler = 1;
+      break;
+    }
 
 #if HAVE_LAUNCHD
    /*
@@ -1561,6 +1641,103 @@ launchd_checkout(void)
 }
 #endif /* HAVE_LAUNCHD */
 
+static void
+upstart_checkin(void)
+{
+  int fd;
+  const char *e;
+  char *p = NULL;
+  unsigned long l;
+  http_addr_t addr;
+  socklen_t addrlen;
+  cupsd_listener_t *lis;
+  char s[256];
+
+  if (!(e = getenv("UPSTART_JOB")))
+    return;
+
+  if (strcasecmp(e, "socket"))
+    return;
+
+  if (!(e = getenv("UPSTART_FDS")))
+  {
+    cupsdLogMessage(CUPSD_LOG_ERROR,
+		    "upstart_checkin: We got started via Upstart socket event but no environment variable UPSTART_FDS is not set");
+    return;
+  }
+
+  errno = 0;
+  l = strtoul(e, &p, 10);
+
+  if (errno != 0) {
+    cupsdLogMessage(CUPSD_LOG_ERROR,
+		    "upstart_checkin: We got started via Upstart socket event but environment variable UPSTART_FDS is not readable with error %d.", -errno);
+    return;
+  }
+
+  if (!p || *p || l <= 0) {
+    cupsdLogMessage(CUPSD_LOG_ERROR,
+		    "upstart_checkin: We got started via Upstart socket event but environment variable UPSTART_FDS has invalid value.");
+  }
+
+  fd = (int)l;
+  if (getsockname(fd, (struct sockaddr*) &addr, &addrlen))
+  {
+    cupsdLogMessage(CUPSD_LOG_ERROR,
+		    "upstart_checkin: Unable to get local address - %s",
+		    strerror(errno));
+    return;
+  }
+
+ /*
+  * Try to match the systemd socket address to one of the listeners...
+  */
+
+  for (lis = (cupsd_listener_t *)cupsArrayFirst(Listeners);
+       lis;
+       lis = (cupsd_listener_t *)cupsArrayNext(Listeners))
+    if (httpAddrEqual(&lis->address, &addr))
+      break;
+
+  if (lis)
+  {
+    cupsdLogMessage(CUPSD_LOG_DEBUG,
+		    "upstart_checkin: Matched existing listener %s with fd %d...",
+		    httpAddrString(&(lis->address), s, sizeof(s)), fd);
+  }
+  else
+  {
+    cupsdLogMessage(CUPSD_LOG_DEBUG,
+		    "upstart_checkin: Adding new listener %s with fd %d...",
+		    httpAddrString(&addr, s, sizeof(s)), fd);
+
+    if ((lis = calloc(1, sizeof(cupsd_listener_t))) == NULL)
+    {
+      cupsdLogMessage(CUPSD_LOG_ERROR,
+		      "upstart_checkin: Unable to allocate listener - "
+		      "%s.", strerror(errno));
+      exit(EXIT_FAILURE);
+    }
+
+    cupsArrayAdd(Listeners, lis);
+
+    memcpy(&lis->address, &addr, sizeof(lis->address));
+  }
+
+  lis->fd = fd;
+
+#  ifdef HAVE_SSL
+  if (_httpAddrPort(&(lis->address)) == 443)
+    lis->encryption = HTTP_ENCRYPT_ALWAYS;
+#  endif /* HAVE_SSL */
+
+  /* As we are started on-demand, stop on idle */
+  if (!ExitOnIdleTimeout)
+    ExitOnIdleTimeout = 30;
+  cupsdLogMessage(CUPSD_LOG_DEBUG, "As we are starting on-demand (socket-triggered), activate exit-on-idle mode, timeout: %d seconds.",
+                      ExitOnIdleTimeout);
+
+}
 
 /*
  * 'parent_handler()' - Catch USR1/CHLD signals...
