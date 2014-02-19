@@ -50,7 +50,7 @@ Last-Update: 2013-10-31
  .br
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -714,7 +714,7 @@
+@@ -715,7 +715,7 @@
    ReloadTimeout	           = DEFAULT_KEEPALIVE;
    RootCertDuration         = 300;
    StrictConformance        = FALSE;
