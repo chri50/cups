@@ -26,6 +26,8 @@
  *   launchd_checkin()     - Check-in with launchd and collect the listening
  *                           fds.
  *   launchd_checkout()    - Update the launchd KeepAlive file as needed.
+ *   upstart_checkin()     - Check-in with Upstart and collect the
+ *                           listening fds.
  *   parent_handler()      - Catch USR1/CHLD signals...
  *   process_children()    - Process all dead children...
  *   select_timeout()      - Calculate the select timeout value.
@@ -83,6 +85,7 @@
 static void		launchd_checkin(void);
 static void		launchd_checkout(void);
 #endif /* HAVE_LAUNCHD */
+static void		upstart_checkin(void);
 static void		parent_handler(int sig);
 static void		process_children(void);
 static void		sigchld_handler(int sig);
@@ -573,6 +576,11 @@ main(int  argc,				/* I - Number of command-line args */
 #endif /* HAVE_LAUNCHD */
 
  /*
+  * If we were started by Upstart get the listen sockets file descriptors...
+  */
+  upstart_checkin();
+
+ /*
   * Startup the server...
   */
 
@@ -759,6 +767,13 @@ main(int  argc,				/* I - Number of command-line args */
 	  launchd_checkout();
 	}
 #endif /* HAVE_LAUNCHD */
+
+       /*
+        * If we were started by Upstart get the listen sockets file
+	* descriptors...
+        */
+
+        upstart_checkin();
 
        /*
         * Startup the server...
@@ -1509,6 +1524,96 @@ launchd_checkout(void)
 }
 #endif /* HAVE_LAUNCHD */
 
+static void
+upstart_checkin(void)
+{
+  int fd;
+  const char *e;
+  char *p = NULL;
+  unsigned long l;
+  http_addr_t addr;
+  socklen_t addrlen;
+  cupsd_listener_t *lis;
+  char s[256];
+
+  if (!(e = getenv("UPSTART_JOB")))
+    return;
+
+  if (strcasecmp(e, "socket"))
+    return;
+
+  if (!(e = getenv("UPSTART_FDS")))
+  {
+    cupsdLogMessage(CUPSD_LOG_ERROR,
+		    "upstart_checkin: We got started via Upstart socket event but no environment variable UPSTART_FDS is not set");
+    return;
+  }
+
+  errno = 0;
+  l = strtoul(e, &p, 10);
+
+  if (errno != 0) {
+    cupsdLogMessage(CUPSD_LOG_ERROR,
+		    "upstart_checkin: We got started via Upstart socket event but environment variable UPSTART_FDS is not readable with error %d.", -errno);
+    return;
+  }
+
+  if (!p || *p || l <= 0) {
+    cupsdLogMessage(CUPSD_LOG_ERROR,
+		    "upstart_checkin: We got started via Upstart socket event but environment variable UPSTART_FDS has invalid value.");
+  }
+
+  fd = (int)l;
+  if (getsockname(fd, (struct sockaddr*) &addr, &addrlen))
+  {
+    cupsdLogMessage(CUPSD_LOG_ERROR,
+		    "upstart_checkin: Unable to get local address - %s",
+		    strerror(errno));
+    return;
+  }
+
+ /*
+  * Try to match the systemd socket address to one of the listeners...
+  */
+
+  for (lis = (cupsd_listener_t *)cupsArrayFirst(Listeners);
+       lis;
+       lis = (cupsd_listener_t *)cupsArrayNext(Listeners))
+    if (httpAddrEqual(&lis->address, &addr))
+      break;
+
+  if (lis)
+  {
+    cupsdLogMessage(CUPSD_LOG_DEBUG,
+		    "upstart_checkin: Matched existing listener %s with fd %d...",
+		    httpAddrString(&(lis->address), s, sizeof(s)), fd);
+  }
+  else
+  {
+    cupsdLogMessage(CUPSD_LOG_DEBUG,
+		    "upstart_checkin: Adding new listener %s with fd %d...",
+		    httpAddrString(&addr, s, sizeof(s)), fd);
+
+    if ((lis = calloc(1, sizeof(cupsd_listener_t))) == NULL)
+    {
+      cupsdLogMessage(CUPSD_LOG_ERROR,
+		      "upstart_checkin: Unable to allocate listener - "
+		      "%s.", strerror(errno));
+      exit(EXIT_FAILURE);
+    }
+
+    cupsArrayAdd(Listeners, lis);
+
+    memcpy(&lis->address, &addr, sizeof(lis->address));
+  }
+
+  lis->fd = fd;
+
+#  ifdef HAVE_SSL
+  if (_httpAddrPort(&(lis->address)) == 443)
+    lis->encryption = HTTP_ENCRYPT_ALWAYS;
+#  endif /* HAVE_SSL */
+}
 
 /*
  * 'parent_handler()' - Catch USR1/CHLD signals...
