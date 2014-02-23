@@ -1,3 +1,24 @@
+cups (1.7.1-5ubuntu3) trusty; urgency=low
+
+  * cupsd-support-avahi-daemon-restarting.patch: Allow avahi-daemon be started
+    after CUPS and stopped and re-started while CUPS is running, without loss
+    of Bonjour broadcasting of shared printers and without need of restarting
+    CUPS.
+  * airprint-support.patch: Refreshed with quilt.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Sun, 23 Feb 2014 16:23:01 +0100
+
+cups (1.7.1-5ubuntu2) trusty; urgency=low
+
+  * cupsd-enable-dbus-threading-support.patch: Let cupsd enable threading
+    support in D-BUS instead of doing the complex workaround of the former
+    dont-use-dbus-from-two-threads.patch (CUPS STR #4347).
+  * cupsd-upstart-support.patch, cupsd-exit-on-idle.patch,
+    cupsd-exit-on-idle-upstart.patch, airprint-support.patch, pidfile.patch:
+    Refreshed with quilt.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 21 Feb 2014 15:17:01 +0100
+
 cups (1.7.1-5ubuntu1) trusty; urgency=low
 
   * Merge from Debian unstable.  Remaining changes:

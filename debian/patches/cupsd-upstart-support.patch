@@ -17,7 +17,7 @@
  static void		parent_handler(int sig);
  static void		process_children(void);
  static void		sigchld_handler(int sig);
-@@ -569,6 +572,11 @@
+@@ -573,6 +576,11 @@
  #endif /* HAVE_LAUNCHD */
  
   /*
@@ -29,7 +29,7 @@
    * Startup the server...
    */
  
-@@ -765,6 +773,13 @@
+@@ -761,6 +769,13 @@
  #endif /* HAVE_LAUNCHD */
  
         /*
@@ -43,7 +43,7 @@
          * Startup the server...
          */
  
-@@ -1523,6 +1538,96 @@
+@@ -1509,6 +1524,96 @@
  }
  #endif /* HAVE_LAUNCHD */
  
