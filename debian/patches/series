@@ -1,10 +1,11 @@
 # patches accepted and committed upstream:
+cupsd-enable-dbus-threading-support.patch
 
 # patches sent upstream
+cupsd-support-avahi-daemon-restarting.patch
 manpage-hyphen-minus.patch
 rootbackends-worldreadable.patch
 mention-rfc2911-in-ipptoolfile-for-clarity.patch
-dont-use-dbus-from-two-threads.patch
 fixes-for-jobs-with-multiple-files-and-multiple-formats.patch
 build-with-full-relro.patch
 fix-template.c-typo.patch
