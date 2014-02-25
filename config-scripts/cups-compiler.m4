@@ -185,7 +185,7 @@ if test -n "$GCC"; then
 			# The -z relro option is provided by the Linux linker command to
 			# make relocatable data read-only.
 			if test x$enable_relro = xyes; then
-				RELROFLAGS="-Wl,-z,relro"
+				RELROFLAGS="-Wl,-z,relro,-z,now"
 			fi
 			;;
 	esac
