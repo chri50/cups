@@ -26,6 +26,8 @@
  *   launchd_checkin()     - Check-in with launchd and collect the listening
  *                           fds.
  *   launchd_checkout()    - Update the launchd KeepAlive file as needed.
+ *   systemd_checkin()     - Check-in with systemd and collect the
+ *                           listening fds.
  *   parent_handler()      - Catch USR1/CHLD signals...
  *   process_children()    - Process all dead children...
  *   select_timeout()      - Calculate the select timeout value.
@@ -62,6 +64,10 @@
 #  endif /* !LAUNCH_JOBKEY_SERVICEIPC */
 #endif /* HAVE_LAUNCH_H */
 
+#ifdef HAVE_SYSTEMD
+#include <systemd/sd-daemon.h>
+#endif /* HAVE_SYSTEMD */
+
 #if defined(HAVE_MALLOC_H) && defined(HAVE_MALLINFO)
 #  include <malloc.h>
 #endif /* HAVE_MALLOC_H && HAVE_MALLINFO */
@@ -83,6 +89,9 @@
 static void		launchd_checkin(void);
 static void		launchd_checkout(void);
 #endif /* HAVE_LAUNCHD */
+#ifdef HAVE_SYSTEMD
+static int		systemd_checkin(void);
+#endif /* HAVE_SYSTEMD */
 static void		parent_handler(int sig);
 static void		process_children(void);
 static void		sigchld_handler(int sig);
@@ -119,6 +128,7 @@ main(int  argc,				/* I - Number of command-line args */
      char *argv[])			/* I - Command-line arguments */
 {
   int			i;		/* Looping var */
+  int			t = -1;		/* Timeout */
   char			*opt;		/* Option character */
   int			fg;		/* Run in the foreground */
   int			fds;		/* Number of ready descriptors */
@@ -144,14 +154,12 @@ main(int  argc,				/* I - Number of command-line args */
 #else
   time_t		netif_time = 0;	/* Time since last network update */
 #endif /* __APPLE__ */
+  int			idle_exit;
+					/* Idle exit on select timeout? */
 #if HAVE_LAUNCHD
   int			launchd_idle_exit;
 					/* Idle exit on select timeout? */
 #endif	/* HAVE_LAUNCHD */
-#ifdef HAVE_AVAHI
-  cupsd_timeout_t	*tmo;		/* Next scheduled timed callback */
-  long			tmo_delay;	/* Time before it must be called */
-#endif /* HAVE_AVAHI */
 
 
 #ifdef HAVE_GETEUID
@@ -311,6 +319,21 @@ main(int  argc,				/* I - Number of command-line args */
           case 't' : /* Test the cupsd.conf file... */
 	      TestConfigFile = 1;
 	      fg             = 1;
+	      break;
+
+	  case 'x' : /* Exit on idle timeout */
+	      i ++;
+	      if (i >= argc)
+	      {
+	        _cupsLangPuts(stderr, _("cupsd: Expected exit-on-idle timeout in seconds "
+		                        "after \"-x\" option."));
+	        usage(1);
+	      }
+
+	      if ((t = atoi(argv[i])) < 0)
+		_cupsLangPrintf(stderr,
+				_("cupsd: Invalid exit-on-idle timeout value \"%s\"."),
+				argv[i]);
 	      break;
 
 	  default : /* Unknown option */
@@ -512,6 +535,14 @@ main(int  argc,				/* I - Number of command-line args */
   setlocale(LC_TIME, "");
 #endif /* LC_TIME */
 
+#ifdef HAVE_DBUS_THREADS_INIT
+ /*
+  * Enable threading support for D-BUS...
+  */
+
+  dbus_threads_init();
+#endif /* HAVE_DBUS_THREADS_INIT */
+
  /*
   * Set the maximum number of files...
   */
@@ -550,6 +581,13 @@ main(int  argc,				/* I - Number of command-line args */
   }
 
  /*
+  * Exit-on-idle timeout set by command line or configuration file
+  */
+
+  if (t >= 0)
+    IdleExitTimeout = t;
+
+ /*
   * Clean out old temp files and printer cache data.
   */
 
@@ -570,19 +608,19 @@ main(int  argc,				/* I - Number of command-line args */
   }
 #endif /* HAVE_LAUNCHD */
 
+#ifdef HAVE_SYSTEMD
+ /*
+  * If we were started by systemd get the listen sockets file descriptors...
+  */
+  if (systemd_checkin() < 0)
+    exit(EXIT_FAILURE);
+#endif /* HAVE_SYSTEMD */
+
  /*
   * Startup the server...
   */
 
   httpInitialize();
-
-#ifdef HAVE_AVAHI
- /*
-  * Initialize timed callback structures.
-  */
-
-  cupsdInitTimeouts();
-#endif /* HAVE_AVAHI */
 
   cupsdStartServer();
 
@@ -771,6 +809,16 @@ main(int  argc,				/* I - Number of command-line args */
 	}
 #endif /* HAVE_LAUNCHD */
 
+#ifdef HAVE_SYSTEMD
+       /*
+	* If we were started by systemd get the listen sockets file
+	* descriptors...
+        */
+
+        if (systemd_checkin() < 0)
+          exit(EXIT_FAILURE);
+#endif /* HAVE_SYSTEMD */
+
        /*
         * Startup the server...
         */
@@ -799,6 +847,26 @@ main(int  argc,				/* I - Number of command-line args */
 
     if ((timeout = select_timeout(fds)) > 1 && LastEvent)
       timeout = 1;
+
+   /*
+    * If no other work is scheduled and we've set the exit-on-idle timeout
+    * then timeout after 'IdleExitTimeout' seconds of inactivity...
+    */
+
+    if (IdleExitTimeout && timeout >= IdleExitTimeout &&
+        !cupsArrayCount(ActiveJobs) &&
+	(!Browsing || !BrowseLocalProtocols || !cupsArrayCount(Printers)))
+    {
+      cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsd is idle, scheduling shutdown in %d seconds.",
+                      IdleExitTimeout);
+      timeout		= IdleExitTimeout;
+      idle_exit = 1;
+    }
+    else
+    {
+      cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsd is not idle any more, canceling shutdown.");
+      idle_exit = 0;
+    }
 
 #if HAVE_LAUNCHD
    /*
@@ -901,16 +969,6 @@ main(int  argc,				/* I - Number of command-line args */
     }
 #endif /* __APPLE__ */
 
-#ifdef HAVE_AVAHI
-   /*
-    * If a timed callback is due, run it.
-    */
-
-    tmo = cupsdNextTimeout (&tmo_delay);
-    if (tmo && tmo_delay == 0)
-      cupsdRunTimeout (tmo);
-#endif /* HAVE_AVAHI */
-
 #ifndef __APPLE__
    /*
     * Update the network interfaces once a minute...
@@ -922,6 +980,20 @@ main(int  argc,				/* I - Number of command-line args */
       NetIFUpdate = 1;
     }
 #endif /* !__APPLE__ */
+
+   /*
+    * If no other work is scheduled and we've set the exit-on-idle timeout
+    * then timeout after 'IdleExitTimeout' seconds of inactivity...
+    */
+
+    if (!fds && idle_exit)
+    {
+      cupsdLogMessage(CUPSD_LOG_INFO,
+                      "Printer sharing is off and there are no jobs pending, "
+		      "shutting down for now.");
+      stop_scheduler = 1;
+      break;
+    }
 
 #if HAVE_LAUNCHD
    /*
@@ -1561,6 +1633,113 @@ launchd_checkout(void)
 }
 #endif /* HAVE_LAUNCHD */
 
+#ifdef HAVE_SYSTEMD
+static int
+systemd_checkin(void)
+{
+  int n, fd;
+
+  n = sd_listen_fds(0);
+  if (n < 0)
+  {
+    cupsdLogMessage(CUPSD_LOG_ERROR,
+           "systemd_checkin: Failed to acquire sockets from systemd - %s"
+           " -- skipping systemd activation",
+           strerror(-n));
+    return (1);
+  }
+
+  if (n == 0)
+    return (0);
+
+  for (fd = SD_LISTEN_FDS_START; fd < SD_LISTEN_FDS_START + n; fd ++)
+  {
+    http_addr_t addr;
+    socklen_t addrlen = sizeof (addr);
+    int r;
+    cupsd_listener_t *lis;
+    char s[256];
+
+    r = sd_is_socket(fd, AF_UNSPEC, SOCK_STREAM, 1);
+    if (r < 0)
+    {
+      cupsdLogMessage(CUPSD_LOG_ERROR,
+             "systemd_checkin: Unable to verify socket type - %s",
+             strerror(-r));
+      continue;
+    }
+
+    if (!r)
+    {
+      cupsdLogMessage(CUPSD_LOG_ERROR,
+             "systemd_checkin: Socket not of the right type");
+      continue;
+    }
+
+    if (getsockname(fd, (struct sockaddr*) &addr, &addrlen))
+    {
+      cupsdLogMessage(CUPSD_LOG_ERROR,
+             "systemd_checkin: Unable to get local address - %s",
+             strerror(errno));
+      continue;
+    }
+
+   /*
+    * Try to match the systemd socket address to one of the listeners...
+    */
+
+    for (lis = (cupsd_listener_t *)cupsArrayFirst(Listeners);
+       lis;
+       lis = (cupsd_listener_t *)cupsArrayNext(Listeners))
+      if (httpAddrEqual(&lis->address, &addr))
+	break;
+
+    if (lis)
+    {
+      cupsdLogMessage(CUPSD_LOG_DEBUG,
+                      "systemd_checkin: Matched existing listener %s with fd %d...",
+                      httpAddrString(&(lis->address), s, sizeof(s)), fd);
+    }
+    else
+    {
+      cupsdLogMessage(CUPSD_LOG_DEBUG,
+                      "systemd_checkin: Adding new listener %s with fd %d...",
+                      httpAddrString(&addr, s, sizeof(s)), fd);
+
+      if ((lis = calloc(1, sizeof(cupsd_listener_t))) == NULL)
+      {
+        cupsdLogMessage(CUPSD_LOG_ERROR,
+                        "systemd_checkin: Unable to allocate listener - "
+                        "%s.", strerror(errno));
+        return (-ENOMEM);
+      }
+
+      cupsArrayAdd(Listeners, lis);
+
+      memcpy(&lis->address, &addr, sizeof(lis->address));
+    }
+
+    lis->fd = fd;
+    lis->is_systemd = 1;
+
+#  ifdef HAVE_SSL
+    if (_httpAddrPort(&(lis->address)) == 443)
+      lis->encryption = HTTP_ENCRYPT_ALWAYS;
+#  endif /* HAVE_SSL */
+  }
+
+  if(SystemdIdleExit)
+  {
+    /* As we are started on-demand, stop on idle */
+    if (!IdleExitTimeout)
+      IdleExitTimeout = 30;
+
+    cupsdLogMessage(CUPSD_LOG_DEBUG, "systemd_checkin: Activate exit-on-idle mode, timeout: %d seconds.",
+                                     IdleExitTimeout);
+  }
+  return (0);
+}
+#endif /* HAVE_SYSTEMD */
 
 /*
  * 'parent_handler()' - Catch USR1/CHLD signals...
@@ -1826,10 +2005,6 @@ select_timeout(int fds)			/* I - Number of descriptors returned */
   cupsd_job_t		*job;		/* Job information */
   cupsd_subscription_t	*sub;		/* Subscription information */
   const char		*why;		/* Debugging aid */
-#ifdef HAVE_AVAHI
-  cupsd_timeout_t	*tmo;		/* Timed callback */
-  long			tmo_delay;	/* Seconds before calling it */
-#endif /* HAVE_AVAHI */
 
 
   cupsdLogMessage(CUPSD_LOG_DEBUG2, "select_timeout: JobHistoryUpdate=%ld",
@@ -1874,19 +2049,6 @@ select_timeout(int fds)			/* I - Number of descriptors returned */
     why     = "cancel jobs before sleeping";
   }
 #endif /* __APPLE__ */
-
-#ifdef HAVE_AVAHI
- /*
-  * See if there are any scheduled timed callbacks to run.
-  */
-
-  if ((tmo = cupsdNextTimeout(&tmo_delay)) != NULL &&
-      (now + tmo_delay) < timeout)
-  {
-    timeout = tmo_delay;
-    why = "run a timed callback";
-  }
-#endif /* HAVE_AVAHI */
 
  /*
   * Check whether we are accepting new connections...

@@ -1,17 +1,20 @@
 # patches accepted and committed upstream:
+cupsd-support-avahi-daemon-restarting.patch
+prevent-dnssd-backend-exiting-too-early.patch
+fix-a-dbus-threading-issue-that-caused-the-scheduler-to-crash.patch
+ipptool-doco-updates.patch
 
 # patches sent upstream
 manpage-hyphen-minus.patch
 rootbackends-worldreadable.patch
-mention-rfc2911-in-ipptoolfile-for-clarity.patch
-dont-use-dbus-from-two-threads.patch
 fixes-for-jobs-with-multiple-files-and-multiple-formats.patch
 build-with-full-relro.patch
 fix-template.c-typo.patch
-prevent-dnssd-backend-exiting-too-early.patch
+cupsd-idleexittimeout.patch
 
 # patches which should go upstream
 color-management-extension.patch
+systemd-optional-socket-activation.patch
 # Fix tests, should probably go upstream
 tests-ignore-warnings.patch
 tests-ignore-usb-crash.patch
@@ -47,6 +50,8 @@ ppdc-dynamic-linking.patch
 log-debug-history-nearly-unlimited.patch
 cupsd-set-default-for-SyncOnClose-to-Yes.patch
 man-cups-lpd-drop-dangling-references.patch
+systemd-make-sure-localhost-ipv4-socket-is-enabled.patch
+cupsd-idleexittimeout-systemd.patch
 # Disabled in 1.6.1-1 as it breaks the tests. It addresses #593338
 # pstops-based-workflow-only-for-printing-ps-on-a-ps-printer.patch
 

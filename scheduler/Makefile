@@ -17,7 +17,6 @@ include ../Makedefs
 
 CUPSDOBJS =	\
 		auth.o \
-		avahi.o \
 		banners.o \
 		cert.o \
 		classes.o \
@@ -42,7 +41,6 @@ CUPSDOBJS =	\
 		statbuf.o \
 		subscriptions.o \
 		sysman.o \
-		timeout.o \
 		tls.o
 LIBOBJS =	\
 		filter.o \
@@ -383,7 +381,7 @@ cupsd:	$(CUPSDOBJS) $(LIBCUPSMIME) ../cups/$(LIBCUPS)
 	$(CC) $(LDFLAGS) -o cupsd $(CUPSDOBJS) -L. -lcupsmime \
 		$(LIBZ) $(SSLLIBS) $(LIBSLP) $(LIBLDAP) $(PAMLIBS) \
 		$(LIBPAPER) $(LIBMALLOC) $(SERVERLIBS) $(DNSSDLIBS) $(LIBS) \
-		$(LIBGSSAPI) $(LIBWRAP)
+		$(LIBGSSAPI) $(LIBWRAP) $(SDLIBS)
 
 cupsd-static:	$(CUPSDOBJS) libcupsmime.a ../cups/$(LIBCUPSSTATIC)
 	echo Linking $@...
@@ -391,7 +389,7 @@ cupsd-static:	$(CUPSDOBJS) libcupsmime.a ../cups/$(LIBCUPSSTATIC)
 		$(LIBZ) $(SSLLIBS) $(LIBSLP) $(LIBLDAP) $(PAMLIBS) \
 		../cups/$(LIBCUPSSTATIC) $(COMMONLIBS) $(LIBZ) $(LIBPAPER) \
 		$(LIBMALLOC) $(SERVERLIBS) $(DNSSDLIBS) $(LIBGSSAPI) \
-		$(LIBWRAP)
+		$(LIBWRAP)  $(SDLIBS)
 
 tls.o:	tls-darwin.c tls-gnutls.c tls-openssl.c
 

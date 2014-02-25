@@ -560,12 +560,12 @@ main(int  argc,				/* I - Number of command-line args */
 
       fprintf(stderr, "DEBUG: sent=%d, count=%d\n", sent, count);
 
-      if (sent == cupsArrayCount(devices))
 #ifdef HAVE_AVAHI
-	  if (browsers == 0)
-	      /* All service browsers have finished */
+      if (sent == cupsArrayCount(devices) && browsers == 0)
+#else
+      if (sent == cupsArrayCount(devices))
 #endif /* HAVE_AVAHI */
-	      break;
+	break;
     }
   }
 

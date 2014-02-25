@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups\n"
-"POT-Creation-Date: 2014-01-04 13:31+0100\n"
+"POT-Creation-Date: 2014-02-23 15:37+0100\n"
 "PO-Revision-Date: 2013-01-27 19:07+0100\n"
 "Last-Translator: Julien Patriarca <leatherface@debian.org>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
@@ -184,7 +184,7 @@ msgstr ""
 # type: TP
 #. type: TP
 #: cupsaccept.man:44 cancel.man:38 cupsctl.man:35 cupsenable.man:39
-#: ipptool.man:58 lpadmin.man:192 lpinfo.man:57 lp.man:77 lpmove.man:46
+#: ipptool.man:60 lpadmin.man:192 lpinfo.man:57 lp.man:77 lpmove.man:46
 #: lpoptions.man.in:66 lpq.man:39 lpr.man:47 lprm.man:37 lpstat.man:45
 #, no-wrap
 msgid "-E"
@@ -244,7 +244,7 @@ msgstr ""
 # type: SH
 #. type: SH
 #: cupsaccept.man:61 cancel.man:63 cupsd.man.in:57 cupsenable.man:70
-#: cups-lpd.man.in:104 filter.man:225 ipptool.man:105 lpadmin.man:207
+#: cups-lpd.man.in:104 filter.man:225 ipptool.man:107 lpadmin.man:207
 #: lpc.man:59 lpinfo.man:105 lp.man:234 lpoptions.man.in:119 lpr.man:110
 #: lprm.man:53 lpstat.man:127
 #, no-wrap
@@ -285,7 +285,7 @@ msgstr ""
 #: cups-deviced.man.in:36 cupsd.man.in:61 cups-driverd.man.in:114
 #: cupsenable.man:83 cupsfilter.man:101 cups-lpd.man.in:115
 #: cups-snmp.conf.man:70 cupstestdsc.man:41 cupstestppd.man:155 filter.man:230
-#: ipptool.man:152 ipptoolfile.man:616 lpadmin.man:218 lpc.man:62
+#: ipptool.man:154 ipptoolfile.man:616 lpadmin.man:218 lpc.man:62
 #: lpinfo.man:107 lp.man:243 lpmove.man:58 lpoptions.man.in:127
 #: lppasswd.man:60 lpq.man:63 lpr.man:113 lprm.man:56 lpstat.man:135
 #: mailto.conf.man:51 mime.convs.man:37 mime.types.man:106
@@ -307,7 +307,7 @@ msgstr "B<cancel>(1), B<cupsenable>(8), B<lp>(1), B<lpadmin>(8), B<lpstat>(1),"
 #: cupsd.conf.man.in:521 cups-files.conf.man.in:148 cups-deviced.man.in:40
 #: cupsd.man.in:68 cups-driverd.man.in:118 cupsenable.man:88
 #: cupsfilter.man:105 cups-lpd.man.in:120 cups-snmp.conf.man:74
-#: cupstestdsc.man:43 cupstestppd.man:159 filter.man:234 ipptool.man:156
+#: cupstestdsc.man:43 cupstestppd.man:159 filter.man:234 ipptool.man:158
 #: ipptoolfile.man:620 lpadmin.man:223 lpc.man:67 lpinfo.man:111 lp.man:248
 #: lpmove.man:62 lpoptions.man.in:131 lppasswd.man:64 lpq.man:68 lpr.man:118
 #: lprm.man:61 lpstat.man:139 mailto.conf.man:56 mime.convs.man:42
@@ -323,7 +323,7 @@ msgstr "E<lt>URL:I<http://localhost:631/help>E<gt>"
 #: cups-deviced.man.in:40 cupsd.man.in:68 cups-driverd.man.in:118
 #: cupsenable.man:88 cupsfilter.man:105 cups-lpd.man.in:120
 #: cups-snmp.conf.man:74 cupstestdsc.man:46 cupstestppd.man:161 filter.man:234
-#: ipptool.man:156 ipptoolfile.man:623 lpadmin.man:223 lpc.man:67
+#: ipptool.man:162 ipptoolfile.man:624 lpadmin.man:223 lpc.man:67
 #: lpinfo.man:111 lp.man:248 lpmove.man:62 lpoptions.man.in:131
 #: lppasswd.man:64 lpq.man:68 lpr.man:118 lprm.man:61 lpstat.man:139
 #: mailto.conf.man:56 mime.convs.man:42 mime.types.man:111
@@ -340,10 +340,9 @@ msgstr "COPYRIGHT"
 #: cups-deviced.man.in:41 cupsd.man.in:69 cups-driverd.man.in:119
 #: cupsenable.man:90 cupsfilter.man:106 cups-lpd.man.in:121
 #: cups-snmp.conf.man:75 cupstestdsc.man:47 cupstestppd.man:162 filter.man:235
-#: ipptool.man:157 ipptoolfile.man:624 lpadmin.man:224 lpc.man:68
-#: lpinfo.man:112 lp.man:249 lpmove.man:63 lpoptions.man.in:132
-#: lppasswd.man:65 lpq.man:69 lpr.man:119 lprm.man:62 lpstat.man:140
-#: mailto.conf.man:57 mime.convs.man:43 mime.types.man:112
+#: lpadmin.man:224 lpc.man:68 lpinfo.man:112 lp.man:249 lpmove.man:63
+#: lpoptions.man.in:132 lppasswd.man:65 lpq.man:69 lpr.man:119 lprm.man:62
+#: lpstat.man:140 mailto.conf.man:57 mime.convs.man:43 mime.types.man:112
 #: printers.conf.man:121 subscriptions.conf.man:86
 msgid "Copyright 2007-2013 by Apple Inc."
 msgstr "Copyright 2007-2013 par Apple Inc."
@@ -1544,7 +1543,7 @@ msgstr "Définir un autre serveur CUPS à utiliser."
 
 # type: TP
 #. type: TP
-#: cupsaddsmb.man.in:67 cupstestppd.man:105 ipptool.man:100
+#: cupsaddsmb.man.in:67 cupstestppd.man:105 ipptool.man:102
 #, no-wrap
 msgid "-v"
 msgstr "B<-v>"
@@ -2090,7 +2089,7 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-config.man:106
+#: cups-config.man:106 ipptool.man:48
 #, no-wrap
 msgid "--version"
 msgstr "B<--version>"
@@ -2266,7 +2265,7 @@ msgstr ""
 
 # type: SH
 #. type: SH
-#: cupsctl.man:67 cupstestppd.man:137 ipptool.man:107 lp.man:218
+#: cupsctl.man:67 cupstestppd.man:137 ipptool.man:109 lp.man:218
 #, no-wrap
 msgid "EXAMPLES"
 msgstr "EXEMPLES"
@@ -4602,7 +4601,7 @@ msgstr "Afficher un message d'aide."
 
 # type: TP
 #. type: TP
-#: cupsd.man.in:48 ipptool.man:91 lpinfo.man:69 lpoptions.man.in:84 lpq.man:59
+#: cupsd.man.in:48 ipptool.man:93 lpinfo.man:69 lpoptions.man.in:84 lpq.man:59
 #: lpr.man:80 lpstat.man:87
 #, no-wrap
 msgid "-l"
@@ -4617,7 +4616,7 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cupsd.man.in:53 ipptool.man:97 lpstat.man:112
+#: cupsd.man.in:53 ipptool.man:99 lpstat.man:112
 #, no-wrap
 msgid "-t"
 msgstr "B<-t>"
@@ -5037,7 +5036,7 @@ msgstr "Utiliser l'utilisateur indiqué pour les connexions au serveur."
 
 # type: TP
 #. type: TP
-#: cupsenable.man:47 ipptool.man:79 lp.man:85
+#: cupsenable.man:47 ipptool.man:81 lp.man:85
 #, no-wrap
 msgid "-c"
 msgstr "B<-c>"
@@ -7044,8 +7043,8 @@ msgstr ""
 #. type: TH
 #: ipptool.man:14 ipptoolfile.man:14
 #, no-wrap
-msgid "13 May 2013"
-msgstr "13 mai 2013"
+msgid "20 February 2014"
+msgstr "20 février 2014"
 
 #. type: Plain text
 #: ipptool.man:17
@@ -7081,18 +7080,38 @@ msgstr ""
 msgid "The following options are recognized by I<ipptool>:"
 msgstr "Les options suivantes sont reconnues par B<lp> :"
 
+# type: Plain text
 #. type: Plain text
-#: ipptool.man:49
-msgid ""
-"Shows program help.  --stop-after-include-error Tells I<ipptool> to stop if "
-"an error occurs in an included file. Normally I<ipptool> will continue with "
-"subsequent tests after the INCLUDE directive.  --version Shows the version "
-"of I<ipptool> being used."
+#: ipptool.man:45
+#, fuzzy
+#| msgid "Shows the program usage."
+msgid "Shows program help."
+msgstr "Afficher un message d'aide."
+
+#. type: TP
+#: ipptool.man:45
+#, no-wrap
+msgid "--stop-after-include-error"
 msgstr ""
+
+#. type: Plain text
+#: ipptool.man:48
+msgid ""
+"Tells I<ipptool> to stop if an error occurs in an included file. Normally "
+"I<ipptool> will continue with subsequent tests after the INCLUDE directive."
+msgstr ""
+
+# type: Plain text
+#. type: Plain text
+#: ipptool.man:51
+#, fuzzy
+#| msgid "Shows the ranking of print jobs."
+msgid "Shows the version of I<ipptool> being used."
+msgstr "Afficher le rang des travaux d'impression."
 
 # type: TP
 #. type: TP
-#: ipptool.man:49
+#: ipptool.man:51
 #, fuzzy, no-wrap
 #| msgid "4"
 msgid "-4"
@@ -7100,7 +7119,7 @@ msgstr "4"
 
 # type: Plain text
 #. type: Plain text
-#: ipptool.man:52
+#: ipptool.man:54
 #, fuzzy
 #| msgid "Specifies the protocols to use for remote printer browsing."
 msgid ""
@@ -7110,14 +7129,14 @@ msgstr ""
 "distantes."
 
 #. type: TP
-#: ipptool.man:52
+#: ipptool.man:54
 #, no-wrap
 msgid "-6"
 msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: ipptool.man:55
+#: ipptool.man:57
 #, fuzzy
 #| msgid "Specifies the protocols to use for remote printer browsing."
 msgid ""
@@ -7127,13 +7146,13 @@ msgstr ""
 "distantes."
 
 #. type: TP
-#: ipptool.man:55
+#: ipptool.man:57
 #, no-wrap
 msgid "-C"
 msgstr ""
 
 #. type: Plain text
-#: ipptool.man:58
+#: ipptool.man:60
 msgid ""
 "Specifies that requests should be sent using the HTTP/1.1 \"Transfer-"
 "Encoding: chunked\" header, which is required for conformance by all "
@@ -7144,7 +7163,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: ipptool.man:61
+#: ipptool.man:63
 #, fuzzy
 #| msgid "Forces encryption when connecting to the server."
 msgid ""
@@ -7153,24 +7172,24 @@ msgid ""
 msgstr "Forcer le chiffrement lors de la connexion au serveur."
 
 #. type: TP
-#: ipptool.man:61
+#: ipptool.man:63
 #, no-wrap
 msgid "-I"
 msgstr ""
 
 #. type: Plain text
-#: ipptool.man:64
+#: ipptool.man:66
 msgid "Specifies that I<ipptool> will continue past errors."
 msgstr ""
 
 #. type: TP
-#: ipptool.man:64
+#: ipptool.man:66
 #, no-wrap
 msgid "-L"
 msgstr ""
 
 #. type: Plain text
-#: ipptool.man:67
+#: ipptool.man:69
 msgid ""
 "Specifies that requests should be sent using the HTTP/1.0 \"Content-Length:"
 "\" header, which is required for conformance by all versions of IPP. The "
@@ -7179,14 +7198,14 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: ipptool.man:67
+#: ipptool.man:69
 #, no-wrap
 msgid "-S"
 msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: ipptool.man:70
+#: ipptool.man:72
 #, fuzzy
 #| msgid "Forces encryption when connecting to the server."
 msgid "Forces (dedicated) SSL encryption when connecting to the server."
@@ -7194,7 +7213,7 @@ msgstr "Forcer le chiffrement lors de la connexion au serveur."
 
 # type: TP
 #. type: TP
-#: ipptool.man:70
+#: ipptool.man:72
 #, fuzzy, no-wrap
 #| msgid "Timeout seconds"
 msgid "-T seconds"
@@ -7202,7 +7221,7 @@ msgstr "Timeout secondes"
 
 # type: Plain text
 #. type: Plain text
-#: ipptool.man:73
+#: ipptool.man:75
 #, fuzzy
 #| msgid "Specifies the HTTP request timeout in seconds."
 msgid "Specifies a timeout for IPP requests in seconds."
@@ -7210,27 +7229,27 @@ msgstr "Définir le délai d'attente des requêtes HTTP (en secondes)."
 
 # type: TP
 #. type: TP
-#: ipptool.man:73
+#: ipptool.man:75
 #, fuzzy, no-wrap
 #| msgid "--version"
 msgid "-V version"
 msgstr "B<--version>"
 
 #. type: Plain text
-#: ipptool.man:76
+#: ipptool.man:78
 msgid ""
 "Specifies the default IPP version to use: 1.0, 1.1, 2.0, 2.1, or 2.2. If not "
 "specified, version 1.1 is used."
 msgstr ""
 
 #. type: TP
-#: ipptool.man:76
+#: ipptool.man:78
 #, no-wrap
 msgid "-X"
 msgstr ""
 
 #. type: Plain text
-#: ipptool.man:79
+#: ipptool.man:81
 msgid ""
 "Specifies that XML (Apple plist) output is desired instead of the plain text "
 "report. This option is incompatible with the I<-i> (interval) and I<-n> "
@@ -7238,7 +7257,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ipptool.man:82
+#: ipptool.man:84
 msgid ""
 "Specifies that CSV (comma-separated values) output is desired instead of the "
 "plain text output."
@@ -7246,7 +7265,7 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: ipptool.man:82
+#: ipptool.man:84
 #, fuzzy, no-wrap
 #| msgid "-o name=value"
 msgid "-d name=value"
@@ -7254,7 +7273,7 @@ msgstr "B<-o> I<nom=valeur>"
 
 # type: Plain text
 #. type: Plain text
-#: ipptool.man:85
+#: ipptool.man:87
 #, fuzzy
 #| msgid "Includes the named file."
 msgid "Defines the named variable."
@@ -7262,7 +7281,7 @@ msgstr "Inclure le fichier donné."
 
 # type: TP
 #. type: TP
-#: ipptool.man:85
+#: ipptool.man:87
 #, fuzzy, no-wrap
 #| msgid "-I filename"
 msgid "-f filename"
@@ -7270,7 +7289,7 @@ msgstr "-I fichier"
 
 # type: Plain text
 #. type: Plain text
-#: ipptool.man:88
+#: ipptool.man:90
 #, fuzzy
 #| msgid "Specifies the default user name to use for requests."
 msgid "Defines the default request filename for tests."
@@ -7278,14 +7297,14 @@ msgstr "Indiquer le nom d'utilisateur à utiliser pour les requêtes."
 
 # type: TP
 #. type: TP
-#: ipptool.man:88
+#: ipptool.man:90
 #, fuzzy, no-wrap
 #| msgid "--timeout seconds"
 msgid "-i seconds"
 msgstr "--timeout secondes"
 
 #. type: Plain text
-#: ipptool.man:91
+#: ipptool.man:93
 msgid ""
 "Specifies that the (last) file should be repeated at the specified interval. "
 "This option is incompatible with the I<-X> (XML plist output) option."
@@ -7293,34 +7312,34 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: ipptool.man:94
+#: ipptool.man:96
 #, fuzzy
 #| msgid "Specifies whether the printer is shared."
 msgid "Specifies that plain text output is desired."
 msgstr "Définir si l'imprimante est partagée."
 
 #. type: TP
-#: ipptool.man:94
+#: ipptool.man:96
 #, no-wrap
 msgid "-n repeat-count"
 msgstr ""
 
 #. type: Plain text
-#: ipptool.man:97
+#: ipptool.man:99
 msgid ""
 "Specifies that the (last) file should be repeated the specified number of "
 "times. This option is incompatible with the I<-X> (XML plist output) option."
 msgstr ""
 
 #. type: Plain text
-#: ipptool.man:100
+#: ipptool.man:102
 msgid ""
 "Specifies that CUPS test report output is desired instead of the plain text "
 "output."
 msgstr ""
 
 #. type: Plain text
-#: ipptool.man:103
+#: ipptool.man:105
 msgid ""
 "Specifies that all request and response attributes should be output in CUPS "
 "test mode (I<-t>). This is the default for XML output."
@@ -7328,65 +7347,65 @@ msgstr ""
 
 # type: SH
 #. type: SH
-#: ipptool.man:103
+#: ipptool.man:105
 #, fuzzy, no-wrap
 #| msgid "EXIT CODES"
 msgid "EXIT CODE"
 msgstr "CODES DE RETOUR"
 
 #. type: Plain text
-#: ipptool.man:105
+#: ipptool.man:107
 msgid ""
 "The I<ipptool> program returns 0 if all tests were sucessful and 1 otherwise."
 msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: ipptool.man:107
+#: ipptool.man:109
 #, fuzzy
 #| msgid "The I<lpoptions> command is unique to CUPS."
 msgid "The I<ipptool> program is unique to CUPS."
 msgstr "La commande B<lpoptions> est spécifique à CUPS."
 
 #. type: Plain text
-#: ipptool.man:109
+#: ipptool.man:111
 msgid "Get a list of completed jobs for \"myprinter\":"
 msgstr ""
 
 #. type: Plain text
-#: ipptool.man:111
+#: ipptool.man:113
 #, no-wrap
 msgid "    ipptool ipp://localhost/printers/myprinter get-completed-jobs.test\n"
 msgstr ""
 
 #. type: Plain text
-#: ipptool.man:114
+#: ipptool.man:116
 msgid ""
 "Send email notifications to \"user@example.com\" when \"myprinter\" changes:"
 msgstr ""
 
 #. type: Plain text
-#: ipptool.man:117
+#: ipptool.man:119
 #, no-wrap
 msgid "    ipptool -d recipient=mailto:user@example.com         ipp://localhost/printers/myprinter create-printer-subscription.test\n"
 msgstr ""
 
 #. type: SH
-#: ipptool.man:118
+#: ipptool.man:120
 #, no-wrap
 msgid "STANDARD FILES"
 msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: ipptool.man:120
+#: ipptool.man:122
 #, fuzzy
 #| msgid "The following options are recognized:"
 msgid "The following standard files are available:"
 msgstr "Les options suivantes sont reconnues :"
 
 #. type: Plain text
-#: ipptool.man:151
+#: ipptool.man:153
 #, no-wrap
 msgid ""
 "    color.jpg\n"
@@ -7422,9 +7441,28 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ipptool.man:154
-msgid "I<ipptoolfile(5)>,"
+#: ipptool.man:156
+msgid "I<ipptoolfile(5)>, RFC 2911,"
 msgstr ""
+
+#. type: Plain text
+#: ipptool.man:160 ipptoolfile.man:622
+msgid "http://www.iana.org/assignments/ipp-registrations"
+msgstr ""
+
+# type: Plain text
+#. type: Plain text
+#: ipptool.man:162 ipptoolfile.man:624
+#, fuzzy
+#| msgid "http://www.cups.org/windows/"
+msgid "http://www.pwg.org/ipp"
+msgstr "http://www.cups.org/windows/"
+
+# type: Plain text
+#. type: Plain text
+#: ipptool.man:163 ipptoolfile.man:625
+msgid "Copyright 2007-2014 by Apple Inc."
+msgstr "Copyright 2007-2014 par Apple Inc."
 
 #. type: TH
 #: ipptoolfile.man:14
@@ -7825,12 +7863,12 @@ msgstr ""
 msgid "ATTR tag attribute-name value(s)"
 msgstr "ATTR: attribut=valeur [attribut=valeur]"
 
+#.  character. Common attributes and values are listed in the IANA IPP registry \- see references below.
 #. type: Plain text
 #: ipptoolfile.man:156
 msgid ""
 "Adds an attribute to the test request. Values are separated by the comma (\","
-"\")  character - escape commas using the \"\\e\" character. Possible "
-"attribute-name are defined in RFC2911."
+"\")  character - escape commas using the \""
 msgstr ""
 
 #. type: TP
@@ -9005,12 +9043,7 @@ msgstr ""
 
 #. type: Plain text
 #: ipptoolfile.man:618
-msgid "I<ipptool(1)>,"
-msgstr ""
-
-#. type: Plain text
-#: ipptoolfile.man:622
-msgid "RFC2911 http://tools.ietf.org/html/rfc2911"
+msgid "I<ipptool(1)>, RFC 2911,"
 msgstr ""
 
 # type: TH
@@ -12449,6 +12482,10 @@ msgstr ""
 "types>(5), B<printers.conf>(5)"
 
 # type: TH
+#~ msgid "13 May 2013"
+#~ msgstr "13 mai 2013"
+
+# type: TH
 #~ msgid "25 June 2013"
 #~ msgstr "25 juin 2013"
 
@@ -12527,10 +12564,6 @@ msgstr ""
 #~ "    pscript.hlp (from your Windows system)\n"
 #~ "    pscript.ntf (from your Windows system)\n"
 #~ "    pscript5.dll (from your Windows system)\n"
-
-# type: Plain text
-#~ msgid "http://www.cups.org/windows/"
-#~ msgstr "http://www.cups.org/windows/"
 
 # type: Plain text
 #~ msgid "Enable printing using the file: pseudo-device:"

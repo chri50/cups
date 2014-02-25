@@ -79,6 +79,8 @@ static const cupsd_var_t	cupsd_vars[] =
   { "DefaultShared",		&DefaultShared,		CUPSD_VARTYPE_BOOLEAN },
   { "DirtyCleanInterval",	&DirtyCleanInterval,	CUPSD_VARTYPE_TIME },
   { "ErrorPolicy",		&ErrorPolicy,		CUPSD_VARTYPE_STRING },
+  { "IdleExitTimeout",		&IdleExitTimeout,	CUPSD_VARTYPE_TIME },
+  { "SystemdIdleExit",		&SystemdIdleExit,	CUPSD_VARTYPE_BOOLEAN },
   { "FilterLimit",		&FilterLimit,		CUPSD_VARTYPE_INTEGER },
   { "FilterNice",		&FilterNice,		CUPSD_VARTYPE_INTEGER },
 #ifdef HAVE_GSSAPI
@@ -756,6 +758,8 @@ cupsdReadConfiguration(void)
   MaxSubscriptionsPerUser    = 0;
   DefaultLeaseDuration       = 86400;
   MaxLeaseDuration           = 0;
+  IdleExitTimeout            = 0;
+  SystemdIdleExit            = TRUE;
 
 #ifdef HAVE_LAUNCHD
   LaunchdTimeout = 10;

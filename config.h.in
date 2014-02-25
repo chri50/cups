@@ -451,6 +451,13 @@
 
 
 /*
+ * Do we have systemd support?
+ */
+
+#undef HAVE_SYSTEMD
+
+
+/*
  * Various scripting languages...
  */
 
@@ -535,6 +542,7 @@
 
 #undef HAVE_DBUS
 #undef HAVE_DBUS_MESSAGE_ITER_INIT_APPEND
+#undef HAVE_DBUS_THREADS_INIT
 
 
 /*

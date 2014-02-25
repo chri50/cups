@@ -1,3 +1,34 @@
+cups (1.7.1-6) unstable; urgency=low
+
+  * Add systemd socket activation support (Closes: #732435):
+    - Add Gentoo patch to enable runtime-detected systemd socket activation
+    - Build-depend on libsystemd-daemon-dev on linux-any
+    - Build-depend on and use dh-systemd
+    - Install cups.service, cups.path and cups.socket files in cups-daemon
+    - Add Ubuntu patch to implement IdleExitTimeout
+    - Add patch to let cupsd exit-on-idle after 30-seconds when started
+      by systemd, given that systemdIdleExit is not set to Off
+    - Add ListenStream=127.0.0.1:631 to cups.socket to ensure that
+      http://localhost:631 works in Debian
+    - Explain the above configuration options in cups-daemon.NEWS and
+      README.Debian
+
+  * Drop /etc/default/cups in favour of its handling by cups-filters:
+    LOAD_LP_MODULES' configuration is moved to
+    /etc/modules-load.d/cups-filters.conf
+  * Update and reoder patches included upstream:
+    - Prevent dnssd backend from exiting too early (STR: #4365)
+    - ipptool doco updates (STR #3259, STR #4346), replaces the custom
+      ipptoolfile manpage fix
+    - Let cupsd cope with avahi daemon server restarts (STR: #4373)
+    - Fix a D-BUS threading issue that caused the scheduler to crash
+      (STR #4347), replace Fedora's fix for the multiple-threads dbus
+      usage; require dbus >= 1.0.2
+  * Replace the upstream pgp keyring with an armored version in
+    debian/upstream to cope with uscan's new default
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 25 Feb 2014 12:06:47 +0100
+
 cups (1.7.1-5) unstable; urgency=medium
 
   * In cups' initscript, stop trying to restart xprint.
