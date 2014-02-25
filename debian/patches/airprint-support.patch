@@ -8,7 +8,7 @@ Last-Update: 2013-02-20
 
 --- a/scheduler/dirsvc.c
 +++ b/scheduler/dirsvc.c
-@@ -622,6 +622,12 @@
+@@ -812,6 +812,12 @@
      keyvalue[count  ][0] = "pdl";
      keyvalue[count++][1] = p->pdl ? p->pdl : "application/postscript";
  
@@ -60,7 +60,7 @@ Last-Update: 2013-02-20
  	  strlcat(pdl, "image/png,", sizeof(pdl));
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -722,7 +722,7 @@
+@@ -723,7 +723,7 @@
    DefaultShared            = CUPS_DEFAULT_DEFAULT_SHARED;
  
  #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)

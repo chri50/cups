@@ -125,6 +125,20 @@ cups-browsed available to install so can only process CUPS/IPP protocol
 broadcasts. But, once again, cups-browsed on your machine can help your
 cups daemon out. Please read its documentation.
 
+Socket-activation when run under systemd
+========================================
+
+Since 1.7.1-6, when systemd is the active init system, CUPS is launched
+on accesses to its sockets as defined in /lib/systemd/system/cups.socket
+The list of sockets can be edited by creating
+/etc/systemd/system/cups.socket; see systemd.unit(5).
+
+When launched by socket-activation, CUPS will exit itself after being
+idle for some time (30 seconds by default). The delay before exiting on
+idle can be configured using 'IdleExitTimeout' in /etc/cups/cupsd.conf.
+CUPS can also be left running continuously using 'SystemdIdleExit off'
+in that same file.
+
 Printing without using a local cups daemon
 ==========================================
 

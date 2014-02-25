@@ -25,11 +25,6 @@ set -e
 # Debconf
 . /usr/share/debconf/confmodule
 
-# Default Configuration file
-if [ -e /etc/default/cups ]; then
-	. /etc/default/cups
-fi
-
 if [ "$1" = configure ]; then
     # set up custom PPD directory
     chown root:lpadmin /usr/share/ppd/custom 2>/dev/null || true

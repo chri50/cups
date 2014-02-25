@@ -22,11 +22,6 @@ set -e
 #     installation fails and the `postinst' is called with `abort-upgrade',
 #     `abort-remove' or `abort-deconfigure'.
 
-# Default Configuration file
-if [ -e /etc/default/cups ]; then
-	. /etc/default/cups
-fi
-
 if [ "$1" = configure ]; then
     # Set up lpadmin group.
     if [ -z "`getent group lpadmin`" ]; then 

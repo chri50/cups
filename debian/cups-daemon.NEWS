@@ -1,0 +1,11 @@
+cups (1.7.1-6) unstable; urgency=low
+
+  CUPS is now socket-activated when running under systemd as init: the
+  daemon will be launched when needed and exit itself after being idle
+  for some time (30 seconds by default).
+
+  The delay before exiting on idle can be configured using
+  'IdleExitTimeout' in /etc/cups/cupsd.conf. CUPS can also be left
+  running continuously using 'SystemdIdleExit off' in that same file.
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 25 Feb 2014 11:06:31 +0100
