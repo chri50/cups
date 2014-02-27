@@ -1,26 +1,6 @@
 #! /bin/sh
-# postinst script for cups-daemon
-#
-# see: dh_installdeb(1)
 
 set -e
-
-# summary of how this script can be called:
-#        * <postinst> `configure' <most-recently-configured-version>
-#        * <old-postinst> `abort-upgrade' <new version>
-#        * <conflictor's-postinst> `abort-remove' `in-favour' <package>
-#          <new-version>
-#        * <deconfigured's-postinst> `abort-deconfigure' `in-favour'
-#          <failed-install-package> <version> `removing'
-#          <conflicting-package> <version>
-# for details, see /usr/doc/packaging-manual/
-#
-# quoting from the policy:
-#     Any necessary prompting should almost always be confined to the
-#     post-installation script, and should be protected with a conditional
-#     so that unnecessary prompting doesn't happen if a package's
-#     installation fails and the `postinst' is called with `abort-upgrade',
-#     `abort-remove' or `abort-deconfigure'.
 
 if [ "$1" = configure ]; then
     # Set up lpadmin group.
@@ -28,12 +8,12 @@ if [ "$1" = configure ]; then
 	addgroup --system lpadmin
     fi
 
-    if [ -f /etc/cups/classes.conf ]; then
-      chown root:lp /etc/cups/classes.conf ; chmod 600 /etc/cups/classes.conf
-    fi
-    if [ -f /etc/cups/printers.conf ]; then
-      chown root:lp /etc/cups/printers.conf ; chmod 600 /etc/cups/printers.conf
-    fi
+    for i in /etc/cups/classes.conf /etc/cups/printers.conf
+    do
+        if [ -f $i ] && ! dpkg-statoverride --list $i > /dev/null; then
+            chown root:lp $i; chmod 600 $i
+        fi
+    done
 
     # symlink snakeoil SSL certificate if present
     if [ -e /etc/ssl/certs/ssl-cert-snakeoil.pem -a \

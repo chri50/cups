@@ -23,7 +23,7 @@ Origin: http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/net-print/cups/f
 Origin: http://pkgs.fedoraproject.org/cgit/cups.git/tree/cups-systemd-socket.patch?id=7048cf473bca56b13d3c2f140fd749d561490784
 From: Lennart Poettering <lennart@poettering.net>
 Author: Lennart Poettering <lennart@poettering.net>
-Last-Update: 2014-02-18
+Last-Update: 2014-02-25
 --- a/config.h.in
 +++ b/config.h.in
 @@ -451,6 +451,13 @@
@@ -142,8 +142,8 @@ Last-Update: 2014-02-18
 +
 +[Socket]
 +ListenStream=@CUPS_DEFAULT_DOMAINSOCKET@
-+ListenStream=631
-+ListenDatagram=0.0.0.0:631
++ListenStream=0.0.0.0:631
++ListenStream=[::]:631
 +BindIPv6Only=ipv6-only
 +
 +[Install]

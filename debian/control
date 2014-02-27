@@ -164,8 +164,8 @@ Suggests: cups-bsd,
  cups-pdf,
  udev,
  smbclient
-Replaces: ghostscript-cups (<< 9.02~)
-Breaks: foomatic-filters (<< 4.0), ghostscript-cups (<< 9.02~)
+Replaces: ghostscript-cups (<< 9.02~), cups-bsd (<< 1.7.1-7~)
+Breaks: foomatic-filters (<< 4.0), ghostscript-cups (<< 9.02~), cups-bsd (<< 1.7.1-7~)
 Multi-Arch: foreign
 Description: Common UNIX Printing System(tm) - PPD/driver support, web interface
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
@@ -245,8 +245,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
  cups-common (>= ${source:Version}),
  libcups2 (= ${binary:Version}),
  adduser
-Recommends: smbclient
-Suggests: cups, xpp, cups-bsd
+Suggests: cups, xpp, cups-bsd, smbclient
 Conflicts: lprng
 Multi-Arch: foreign
 Description: Common UNIX Printing System(tm) - client programs (SysV)
@@ -345,9 +344,8 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, 
  cups-client (= ${binary:Version}),
  debconf | debconf-2.0,
- update-inetd,
  cups-common (>= ${source:Version})
-Suggests: cups
+Suggests: cups, update-inetd
 Conflicts: lpr, lprng
 Replaces: lpr
 Provides: lpr
