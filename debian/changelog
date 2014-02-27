@@ -1,3 +1,24 @@
+cups (1.7.1-7) unstable; urgency=low
+
+  * systemd socket activation:
+    - Drop ListenDatagram from cups.socket as that's now in use by
+      cups-browsed
+    - Drop the Debian-specific patch to make sure that the localhost web
+      access works; Listen on 0.0.0.0 and [::] in the main patch instead
+  * cups-bsd cleanup:
+    - Demote update-inetd Dependency to a Suggests, add conditionals in
+      the maintainer scripts (Closes: #590436)
+    - Move the cupsd-lpd manpage to cups
+    - Install the translated manpages
+  * In postinst scripts, only chown and chmod when no dpkg-statoverrides
+    are set (Closes: #587015)
+  * Demote cups-client's smbclient Recommendation to a Suggests
+    (Closes: #618545)
+  * Drop two obsolete configuration options from dh_auto_configure
+  * Drop boilerplate comments from all maintainer scripts
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 27 Feb 2014 16:14:55 +0100
+
 cups (1.7.1-6) unstable; urgency=low
 
   * Add systemd socket activation support (Closes: #732435):
