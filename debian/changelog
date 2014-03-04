@@ -1,3 +1,10 @@
+cups (1.5.3-0ubuntu8.1) precise; urgency=low
+
+  * debian/patches/handle-server-terminating-connection.patch: Fix the 
+    handling of a connection terminated by the server (LP: #1020048)
+
+ -- Ryan Tandy <rtandy@sd63.bc.ca>  Tue, 04 Mar 2014 13:07:24 -0800
+
 cups (1.5.3-0ubuntu8) precise-proposed; urgency=low
 
   * debian/patches/usb-backend-do-not-crash-if-usb-disabled-in-bios.patch:
