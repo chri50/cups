@@ -1,3 +1,14 @@
+cups (1.7.1-5ubuntu4) trusty; urgency=low
+
+  * cupsd-exit-on-idle.patch: Use "IdleExitTimeout" as cupsd.conf directive as
+    this is the term settled on by Debian and upstream, to not have 14.04 LTS
+    to support the first-shot expresssion "ExitOnIdleTimeout" for five years.
+    Note that we do not overtake the Debian patch as a whole at this time as
+    this requires changes in many other patches. This will be done after the
+    14.04 LTS release.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Tue,  4 Mar 2014 18:46:01 +0100
+
 cups (1.7.1-5ubuntu3) trusty; urgency=low
 
   * cupsd-support-avahi-daemon-restarting.patch: Allow avahi-daemon be started
