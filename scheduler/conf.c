@@ -79,7 +79,7 @@ static const cupsd_var_t	cupsd_vars[] =
   { "DefaultShared",		&DefaultShared,		CUPSD_VARTYPE_BOOLEAN },
   { "DirtyCleanInterval",	&DirtyCleanInterval,	CUPSD_VARTYPE_TIME },
   { "ErrorPolicy",		&ErrorPolicy,		CUPSD_VARTYPE_STRING },
-  { "ExitOnIdleTimeout",	&ExitOnIdleTimeout,	CUPSD_VARTYPE_TIME },
+  { "IdleExitTimeout",		&ExitOnIdleTimeout,	CUPSD_VARTYPE_TIME },
   { "FilterLimit",		&FilterLimit,		CUPSD_VARTYPE_INTEGER },
   { "FilterNice",		&FilterNice,		CUPSD_VARTYPE_INTEGER },
 #ifdef HAVE_GSSAPI
