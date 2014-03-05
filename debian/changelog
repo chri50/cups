@@ -1,3 +1,12 @@
+cups (1.7.1-5ubuntu5) trusty; urgency=low
+
+  * cupsenumdests-does-not-set-cb.patch: Let the cupsEnumDests() function
+    correctly set "cb" and "user_data" in the context data structure, to
+    avoid crashes and hangs of print dialogs (CUPS STR #4380, Red Hat bug
+    #1054312).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed,  5 Mar 2014 17:35:01 +0100
+
 cups (1.7.1-5ubuntu4) trusty; urgency=low
 
   * cupsd-exit-on-idle.patch: Use "IdleExitTimeout" as cupsd.conf directive as

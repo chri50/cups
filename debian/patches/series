@@ -1,4 +1,5 @@
 # patches accepted and committed upstream:
+cupsenumdests-does-not-set-cb.patch
 cupsd-enable-dbus-threading-support.patch
 
 # patches sent upstream
