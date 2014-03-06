@@ -1,0 +1,88 @@
+Description: Fix cups upstart socket activation:
+ - run by default in foreground (-f), not foreground (-F). With -F cups
+ closes all inherited file descriptors, which is not needed under
+ upstart since it does that on our behalf, furthermore closing passed
+ socket activation descriptors prevents us from using socket
+ activation.
+ - force foreground (-f) mode if environment suggests, we are upstart
+ socket activated. (similar to "-l" flag for launchd)
+ - initialize addrlen to the sizeof addr, such that getsockname works
+ - correct environmental variable name used to check event type
+ - simplify logic to get UPSTART_FDS, simply use atoi
+ - perform explicit return code checking from getsockname function call
+Author: Dimitri John Ledkov <xnox@ubuntu.com>
+
+--- cups-1.7.1.orig/scheduler/main.c
++++ cups-1.7.1/scheduler/main.c
+@@ -349,6 +349,14 @@ main(int  argc,				/* I - Number of comm
+       usage(1);
+     }
+ 
++  /* force non-disconnecting foreground mode upon upstart socket
++   * activation, as otherwise all fd's are closed before we get to use
++   * them */
++  if (getenv("UPSTART_FDS"))
++  {
++    fg      = 1;
++  }
++
+   if (!ConfigurationFile)
+     cupsdSetString(&ConfigurationFile, CUPS_SERVERROOT "/cupsd.conf");
+ 
+@@ -1630,16 +1638,26 @@ launchd_checkout(void)
+ static void
+ upstart_checkin(void)
+ {
+-  int fd;
++  /*
++   * Example socket event environment:
++   *
++   * UPSTART_INSTANCE=
++   * PORT=34568
++   * PROTO=inet
++   * UPSTART_JOB=foo5
++   * UPSTART_FDS=43
++   * UPSTART_EVENTS=socket
++   * ADDR=127.0.0.1
++   *
++   */
++  int fd = 0;
+   const char *e;
+-  char *p = NULL;
+-  unsigned long l;
+   http_addr_t addr;
+-  socklen_t addrlen;
++  socklen_t addrlen = sizeof(addr);
+   cupsd_listener_t *lis;
+   char s[256];
+ 
+-  if (!(e = getenv("UPSTART_JOB")))
++  if (!(e = getenv("UPSTART_EVENTS")))
+     return;
+ 
+   if (strcasecmp(e, "socket"))
+@@ -1652,22 +1670,9 @@ upstart_checkin(void)
+     return;
+   }
+ 
+-  errno = 0;
+-  l = strtoul(e, &p, 10);
+-
+-  if (errno != 0) {
+-    cupsdLogMessage(CUPSD_LOG_ERROR,
+-		    "upstart_checkin: We got started via Upstart socket event but environment variable UPSTART_FDS is not readable with error %d.", -errno);
+-    return;
+-  }
+-
+-  if (!p || *p || l <= 0) {
+-    cupsdLogMessage(CUPSD_LOG_ERROR,
+-		    "upstart_checkin: We got started via Upstart socket event but environment variable UPSTART_FDS has invalid value.");
+-  }
++  fd = atoi(e);
+ 
+-  fd = (int)l;
+-  if (getsockname(fd, (struct sockaddr*) &addr, &addrlen))
++  if (getsockname(fd, (struct sockaddr*) &addr, &addrlen) < 0)
+   {
+     cupsdLogMessage(CUPSD_LOG_ERROR,
+ 		    "upstart_checkin: Unable to get local address - %s",

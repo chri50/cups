@@ -1,3 +1,20 @@
+cups (1.7.1-5ubuntu6) trusty; urgency=medium
+
+  * Fix cups upstart socket activation:
+    - run by default in foreground (-f), not foreground (-F). With -F cups
+    closes all inherited file descriptors, which is not needed under
+    upstart since it does that on our behalf, furthermore closing passed
+    socket activation descriptors prevents us from using socket
+    activation.
+    - force foreground (-f) mode if environment suggests, we are upstart
+    socket activated. (similar to "-l" flag for launchd)
+    - initialize addrlen to the sizeof addr
+    - correct environmental variable name used to check for event type
+    - simplify logic to get UPSTART_FDS, simply use atoi
+    - perform explicit return code checking from getsockname function call
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Thu, 06 Mar 2014 10:53:25 +0000
+
 cups (1.7.1-5ubuntu5) trusty; urgency=low
 
   * cupsenumdests-does-not-set-cb.patch: Let the cupsEnumDests() function
