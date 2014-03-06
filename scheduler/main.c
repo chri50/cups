@@ -120,6 +120,8 @@ main(int  argc,				/* I - Number of command-line args */
      char *argv[])			/* I - Command-line arguments */
 {
   int			i;		/* Looping var */
+  char			*val;		/* Value of environment variable */
+  int			t = -1;		/* Timeout */
   char			*opt;		/* Option character */
   int			fg;		/* Run in the foreground */
   int			fds;		/* Number of ready descriptors */
@@ -145,6 +147,8 @@ main(int  argc,				/* I - Number of command-line args */
 #else
   time_t		netif_time = 0;	/* Time since last network update */
 #endif /* __APPLE__ */
+  int			idle_exit;
+					/* Idle exit on select timeout? */
 #if HAVE_LAUNCHD
   int			launchd_idle_exit;
 					/* Idle exit on select timeout? */
@@ -168,6 +172,11 @@ main(int  argc,				/* I - Number of command-line args */
   */
 
   fg = 0;
+
+  if (val = getenv("CUPSD_EXIT_ON_IDLE_TIMEOUT"))
+  {
+    t = atoi(val);
+  }
 
 #ifdef HAVE_LAUNCHD
   if (getenv("CUPSD_LAUNCHD"))
@@ -308,6 +317,21 @@ main(int  argc,				/* I - Number of command-line args */
           case 't' : /* Test the cupsd.conf file... */
 	      TestConfigFile = 1;
 	      fg             = 1;
+	      break;
+
+	  case 'x' : /* Exit on idle timeout */
+	      i ++;
+	      if (i >= argc)
+	      {
+	        _cupsLangPuts(stderr, _("cupsd: Expected exit-on-idle timeout in seconds "
+		                        "after \"-x\" option."));
+	        usage(1);
+	      }
+
+	      if ((t = atoi(argv[i])) < 0)
+		_cupsLangPrintf(stderr,
+				_("cupsd: Invalid exit-on-idle timeout value \"%s\"."),
+				argv[i]);
 	      break;
 
 	  default : /* Unknown option */
@@ -553,6 +577,13 @@ main(int  argc,				/* I - Number of command-line args */
     printf("\"%s\" is OK.\n", ConfigurationFile);
     return (0);
   }
+
+ /*
+  * Exit-on-idle timeout set by command line or environment variable
+  */
+
+  if (t >= 0)
+    ExitOnIdleTimeout = t;
 
  /*
   * Clean out old temp files and printer cache data.
@@ -804,6 +835,26 @@ main(int  argc,				/* I - Number of command-line args */
     if ((timeout = select_timeout(fds)) > 1 && LastEvent)
       timeout = 1;
 
+   /*
+    * If no other work is scheduled and we've set the exit-on-idle timeout
+    * then timeout after 'ExitOnIdleTimeout' seconds of inactivity...
+    */
+
+    if (ExitOnIdleTimeout && timeout >= ExitOnIdleTimeout &&
+        !cupsArrayCount(ActiveJobs) &&
+	(!Browsing || !BrowseLocalProtocols || !cupsArrayCount(Printers)))
+    {
+      cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsd is idle, scheduling shutdown in %d seconds.",
+                      ExitOnIdleTimeout);
+      timeout		= ExitOnIdleTimeout;
+      idle_exit = 1;
+    }
+    else
+    {
+      cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsd is not idle any more, canceling shutdown.");
+      idle_exit = 0;
+    }
+
 #if HAVE_LAUNCHD
    /*
     * If no other work is scheduled and we're being controlled by
@@ -916,6 +967,20 @@ main(int  argc,				/* I - Number of command-line args */
       NetIFUpdate = 1;
     }
 #endif /* !__APPLE__ */
+
+   /*
+    * If no other work is scheduled and we've set the exit-on-idle timeout
+    * then timeout after 'ExitOnIdleTimeout' seconds of inactivity...
+    */
+
+    if (!fds && idle_exit)
+    {
+      cupsdLogMessage(CUPSD_LOG_INFO,
+                      "Printer sharing is off and there are no jobs pending, "
+		      "shutting down for now.");
+      stop_scheduler = 1;
+      break;
+    }
 
 #if HAVE_LAUNCHD
    /*
