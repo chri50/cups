@@ -8,7 +8,7 @@ Last-Update: 2013-02-20
 
 --- a/scheduler/dirsvc.c
 +++ b/scheduler/dirsvc.c
-@@ -812,6 +812,12 @@
+@@ -446,6 +446,12 @@
      keyvalue[count  ][0] = "pdl";
      keyvalue[count++][1] = p->pdl ? p->pdl : "application/postscript";
  

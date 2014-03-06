@@ -1,6 +1,6 @@
 --- a/cups/dest.c
 +++ b/cups/dest.c
-@@ -953,11 +953,11 @@
+@@ -982,11 +982,11 @@
    * Get Bonjour-shared printers...
    */
  
