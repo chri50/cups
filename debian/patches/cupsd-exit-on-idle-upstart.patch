@@ -1,6 +1,6 @@
 --- a/scheduler/main.c
 +++ b/scheduler/main.c
-@@ -1678,6 +1678,13 @@
+@@ -1683,6 +1683,13 @@
    if (_httpAddrPort(&(lis->address)) == 443)
      lis->encryption = HTTP_ENCRYPT_ALWAYS;
  #  endif /* HAVE_SSL */

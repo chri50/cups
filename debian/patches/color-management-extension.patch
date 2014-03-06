@@ -443,7 +443,7 @@ Last-Update: 2014-01-04
  					 * NOT_SHARED | AUTHENTICATED |
 --- a/cups/dest.c
 +++ b/cups/dest.c
-@@ -1404,11 +1404,13 @@
+@@ -1433,11 +1433,13 @@
  #ifdef __APPLE__
  		  "media-supported",
  #endif /* __APPLE__ */
@@ -458,7 +458,7 @@ Last-Update: 2014-01-04
  		  "printer-location",
  		  "printer-make-and-model",
  		  "printer-mandatory-job-attributes",
-@@ -1513,8 +1515,10 @@
+@@ -1542,8 +1544,10 @@
  	    !strcmp(attr->name, "marker-message") ||
  	    !strcmp(attr->name, "marker-names") ||
  	    !strcmp(attr->name, "marker-types") ||

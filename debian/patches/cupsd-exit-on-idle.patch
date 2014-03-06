@@ -82,7 +82,7 @@
  	  default : /* Unknown option */
                _cupsLangPrintf(stderr, _("cupsd: Unknown option \"%c\" - "
  	                                "aborting."), *opt);
-@@ -555,6 +579,13 @@
+@@ -563,6 +587,13 @@
    }
  
   /*
@@ -96,7 +96,7 @@
    * Clean out old temp files and printer cache data.
    */
  
-@@ -804,6 +835,26 @@
+@@ -812,6 +843,26 @@
      if ((timeout = select_timeout(fds)) > 1 && LastEvent)
        timeout = 1;
  
@@ -123,7 +123,7 @@
  #if HAVE_LAUNCHD
     /*
      * If no other work is scheduled and we're being controlled by
-@@ -917,6 +968,20 @@
+@@ -925,6 +976,20 @@
      }
  #endif /* !__APPLE__ */
  

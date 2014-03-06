@@ -19,18 +19,12 @@
  *				 remote printers.
  *   cupsdRegisterPrinter()    - Start sending broadcast information for a
  *				 printer or update the broadcast contents.
- *   dnssdDeregisterPrinters() - Unregister the individual printers
- *   dnssdRegisterPrinters()   - Register the individual printers
- *   avahi_client_callback()   - Callback function called on avahi-daemon
- *                               status change.
  *   cupsdStartBrowsing()      - Start sending and receiving broadcast
  *				 information.
  *   cupsdStopBrowsing()       - Stop sending and receiving broadcast
  *				 information.
  *   cupsdUpdateDNSSDName()    - Update the computer name we use for
- *				 browsing... (wrapper for external access)
- *   dnssdUpdateDNSSDName()    - Update the computer name we use for
- *				 browsing... (for Avahi client callback)
+ *				 browsing...
  *   dnssdAddAlias()	       - Add a DNS-SD alias name.
  *   dnssdBuildTxtRecord()     - Build a TXT record from printer info.
  *   dnssdDeregisterInstance() - Deregister a DNS-SD service instance.
@@ -64,17 +58,19 @@
 
 
 /*
+ * Local globals...
+ */
+
+#ifdef HAVE_AVAHI
+static int	avahi_running = 0;
+#endif /* HAVE_AVAHI */
+
+
+/*
  * Local functions...
  */
 
 #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
-void			dnssdDeregisterPrinters(int from_callback);
-void			dnssdRegisterPrinters(int from_callback);
-#ifdef HAVE_AVAHI
-static void		avahi_client_callback(AvahiClient *c,
-					      AvahiClientState state,
-					      AVAHI_GCC_UNUSED void * userdata);
-#endif /* HAVE_AVAHI */
 static char		*get_auth_info_required(cupsd_printer_t *p,
 			                        char *buffer, size_t bufsize);
 #endif /* HAVE_DNSSD || HAVE_AVAHI */
@@ -86,19 +82,20 @@ static void		update_smb(int onoff);
 
 
 #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
-void			dnssdUpdateDNSSDName(int from_callback);
 #  ifdef __APPLE__
 static void		dnssdAddAlias(const void *key, const void *value,
 			              void *context);
 #  endif /* __APPLE__ */
 static cupsd_txt_t	dnssdBuildTxtRecord(cupsd_printer_t *p, int for_lpd);
-static void		dnssdDeregisterInstance(cupsd_srv_t *srv,
-						int from_callback);
-static void		dnssdDeregisterPrinter(cupsd_printer_t *p,
-			                       int clear_name,
-					       int from_callback);
+#  ifdef HAVE_AVAHI
+static void		dnssdClientCallback(AvahiClient *c, AvahiClientState state, void *userdata);
+#  endif /* HAVE_AVAHI */
+static void		dnssdDeregisterAllPrinters(int from_callback);
+static void		dnssdDeregisterInstance(cupsd_srv_t *srv, int from_callback);
+static void		dnssdDeregisterPrinter(cupsd_printer_t *p, int clear_name, int from_callback);
 static const char	*dnssdErrorString(int error);
 static void		dnssdFreeTxtRecord(cupsd_txt_t *txt);
+static void		dnssdRegisterAllPrinters(int from_callback);
 #  ifdef HAVE_DNSSD
 static void		dnssdRegisterCallback(DNSServiceRef sdRef,
 					      DNSServiceFlags flags,
@@ -112,18 +109,13 @@ static void		dnssdRegisterCallback(AvahiEntryGroup *p,
 					      AvahiEntryGroupState state,
 					      void *context);
 #  endif /* HAVE_DNSSD */
-static int		dnssdRegisterInstance(cupsd_srv_t *srv,
-					      cupsd_printer_t *p,
-					      char *name, const char *type,
-					      const char *subtypes, int port,
-					      cupsd_txt_t *txt, int commit,
-					      int from_callback);
-static void		dnssdRegisterPrinter(cupsd_printer_t *p,
-					     int from_callback);
+static int		dnssdRegisterInstance(cupsd_srv_t *srv, cupsd_printer_t *p, char *name, const char *type, const char *subtypes, int port, cupsd_txt_t *txt, int commit, int from_callback);
+static void		dnssdRegisterPrinter(cupsd_printer_t *p, int from_callback);
 static void		dnssdStop(void);
 #  ifdef HAVE_DNSSD
 static void		dnssdUpdate(void);
 #  endif /* HAVE_DNSSD */
+static void		dnssdUpdateDNSSDName(int from_callback);
 #endif /* HAVE_DNSSD || HAVE_AVAHI */
 
 
@@ -183,169 +175,6 @@ cupsdRegisterPrinter(cupsd_printer_t *p)/* I - Printer */
 }
 
 
-#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
-/*
- * 'dnssdDeregisterPrinters()' - Unregister the individual printers
- */
-
-void
-dnssdDeregisterPrinters(int from_callback)
-{
-  cupsd_printer_t	*p;		/* Current printer */
-
-  cupsdLogMessage(CUPSD_LOG_DEBUG2,
-		  "dnssdDeregisterPrinters(from_callback=%d)", from_callback);
-  if (!Browsing || !BrowseLocalProtocols ||
-      !(BrowseLocalProtocols & BROWSE_DNSSD) || !DNSSDMaster)
-    return;
-
-  for (p = (cupsd_printer_t *)cupsArrayFirst(Printers);
-       p;
-       p = (cupsd_printer_t *)cupsArrayNext(Printers))
-    if (!(p->type & (CUPS_PRINTER_REMOTE | CUPS_PRINTER_SCANNER)))
-      dnssdDeregisterPrinter(p, 1, from_callback);
-}
-
-
-/*
- * 'dnssdRegisterPrinters()' - Register the individual printers
- */
-
-void
-dnssdRegisterPrinters(int from_callback)
-{
-  cupsd_printer_t	*p;		/* Current printer */
-
-  cupsdLogMessage(CUPSD_LOG_DEBUG2,
-		  "dnssdRegisterPrinters(from_callback=%d)", from_callback);
-  if (!Browsing || !BrowseLocalProtocols ||
-      !(BrowseLocalProtocols & BROWSE_DNSSD) || !DNSSDMaster)
-    return;
-
-  for (p = (cupsd_printer_t *)cupsArrayFirst(Printers);
-       p;
-       p = (cupsd_printer_t *)cupsArrayNext(Printers))
-    if (!(p->type & (CUPS_PRINTER_REMOTE | CUPS_PRINTER_SCANNER)))
-      dnssdRegisterPrinter(p, from_callback);
-}
-#endif /* HAVE_DNSSD || HAVE_AVAHI */
-
-
-#ifdef HAVE_AVAHI
-/*
- * 'avahi_client_callback()' - Callback function called on avahi-daemon
- * status change. Registers printer broadcasts if avahi-daemon appears and
- * unregisters the broadcasts if avahi-daemon disappears.
- */
-
-static void
-avahi_client_callback(AvahiClient *c,
-		      AvahiClientState state,
-		      AVAHI_GCC_UNUSED void * userdata)
-{
-  int error;			/* Error code, if any */
-
-  cupsdLogMessage(CUPSD_LOG_DEBUG2,
-		  "avahi_client_callback(state=%d)", state);
-  if (!c)
-    return;
-
-  /* Make sure DNSSDClient is already set also if this callback function is
-     already running before avahi_client_new() in dnssdStartBrowsing()
-     finishes. */
-  if (!DNSSDClient)
-    DNSSDClient = c;
-
-  /* Called whenever the client or server state changes */
-  switch (state)
-  {
-
-  /* avahi-daemon available */
-  case AVAHI_CLIENT_S_REGISTERING:
-  case AVAHI_CLIENT_S_RUNNING:
-  case AVAHI_CLIENT_S_COLLISION:
-
-    cupsdLogMessage(CUPSD_LOG_DEBUG,
-		    "Avahi server connection got available, registering printers for Bonjour broadcasting.\n");
-
-   /*
-    * Mark that Avahi server is present
-    */
-
-    DNSSDAvahiServerPresent = 1;
-
-   /*
-    * Set the computer name and register the web interface...
-    */
-
-    DNSSDPort = 0;
-    dnssdUpdateDNSSDName(1);
-
-   /*
-    * Register the individual printers
-    */
-
-    dnssdRegisterPrinters(1);
-
-    break;
-
-  /* Avahi client error */
-  case AVAHI_CLIENT_FAILURE:
-
-    if (avahi_client_errno(c) == AVAHI_ERR_DISCONNECTED)
-    {
-      cupsdLogMessage(CUPSD_LOG_DEBUG,
-		    "Avahi server disappeared, unregistering printers for Bonjour broadcasting.\n");
-
-     /*
-      * Shut down Bonjour broadcasting
-      */
-
-      dnssdDeregisterPrinters(1);
-      dnssdDeregisterInstance(&WebIFSrv, 1);
-      avahi_client_free(DNSSDClient);
-      DNSSDClient = NULL;
-
-      /*
-       * Mark that Avahi server is not present
-       */
-
-      DNSSDAvahiServerPresent = 0;
-
-     /*
-      * Renew Avahi client
-      */
-
-      DNSSDClient = avahi_client_new(avahi_threaded_poll_get(DNSSDMaster),
-				     AVAHI_CLIENT_NO_FAIL,
-                                     avahi_client_callback, NULL, &error);
-
-      if (DNSSDClient == NULL)
-      {
-        cupsdLogMessage(CUPSD_LOG_ERROR,
-                        "Unable to communicate with avahi-daemon: %s",
-                        dnssdErrorString(error));
-        if (FatalErrors & CUPSD_FATAL_BROWSE)
-	  cupsdEndProcess(getpid(), 0);
-      }
-    }
-    else
-    {
-      cupsdLogMessage(CUPSD_LOG_ERROR,
-		      "cups-browsed: ERROR: Avahi server connection failure: %s",
-		      avahi_strerror(avahi_client_errno(c)));
-      if (FatalErrors & CUPSD_FATAL_BROWSE)
-	cupsdEndProcess(getpid(), 0);
-    }
-    break;
-
-  default:
-    break;
-  }
-}
-#endif /* HAVE_AVAHI */
-
-
 /*
  * 'cupsdStartBrowsing()' - Start sending and receiving broadcast information.
  */
@@ -388,13 +217,13 @@ cupsdStartBrowsing(void)
       cupsdAddSelect(fd, (cupsd_selfunc_t)dnssdUpdate, NULL, NULL);
     }
 
-
    /*
     * Set the computer name and register the web interface...
     */
 
     DNSSDPort = 0;
     cupsdUpdateDNSSDName();
+
 #  else /* HAVE_AVAHI */
     if ((DNSSDMaster = avahi_threaded_poll_new()) == NULL)
     {
@@ -408,8 +237,8 @@ cupsdStartBrowsing(void)
       int error;			/* Error code, if any */
 
       DNSSDClient = avahi_client_new(avahi_threaded_poll_get(DNSSDMaster),
-				     AVAHI_CLIENT_NO_FAIL,
-                                     avahi_client_callback, NULL, &error);
+				     AVAHI_CLIENT_NO_FAIL, dnssdClientCallback,
+				     NULL, &error);
 
       if (DNSSDClient == NULL)
       {
@@ -440,13 +269,11 @@ cupsdStartBrowsing(void)
   if (BrowseLocalProtocols & BROWSE_SMB)
     update_smb(1);
 
-#  ifdef HAVE_DNSSD
  /*
   * Register the individual printers
   */
 
-  dnssdRegisterPrinters(0);
-#  endif /* HAVE_DNSSD */
+  dnssdRegisterAllPrinters(0);
 }
 
 
@@ -457,9 +284,6 @@ cupsdStartBrowsing(void)
 void
 cupsdStopBrowsing(void)
 {
-  cupsd_printer_t	*p;		/* Current printer */
-
-
   if (!Browsing || !BrowseLocalProtocols)
     return;
 
@@ -467,11 +291,7 @@ cupsdStopBrowsing(void)
   * De-register the individual printers
   */
 
-  for (p = (cupsd_printer_t *)cupsArrayFirst(Printers);
-       p;
-       p = (cupsd_printer_t *)cupsArrayNext(Printers))
-    if (!(p->type & (CUPS_PRINTER_REMOTE | CUPS_PRINTER_SCANNER)))
-      cupsdDeregisterPrinter(p, 1);
+  dnssdDeregisterAllPrinters(0);
 
  /*
   * Shut down browsing sockets...
@@ -497,198 +317,12 @@ cupsdStopBrowsing(void)
 #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
 /*
  * 'cupsdUpdateDNSSDName()' - Update the computer name we use for browsing...
- *                            Wrapper for cupsd-internal API
  */
 
 void
 cupsdUpdateDNSSDName(void)
 {
   dnssdUpdateDNSSDName(0);
-}
-
-
-/*
- * 'dnssdUpdateDNSSDName()' - Update the computer name we use for browsing...
- *                            Can be called from Avahi server client callback
- */
-
-void
-dnssdUpdateDNSSDName(int from_callback)
-{
-  char		webif[1024];		/* Web interface share name */
-  cupsd_listener_t *lis;		/* Current listening socket */
-#  ifdef __APPLE__
-  SCDynamicStoreRef sc;			/* Context for dynamic store */
-  CFDictionaryRef btmm;			/* Back-to-My-Mac domains */
-  CFStringEncoding nameEncoding;	/* Encoding of computer name */
-  CFStringRef	nameRef;		/* Host name CFString */
-  char		nameBuffer[1024];	/* C-string buffer */
-#  endif /* __APPLE__ */
-
-
- /*
-  * Get the port we use for registrations.  If we are not listening
-  * on any non-local ports, there is no sense sharing local printers via
-  * Bonjour...
-  */
-
-  if (!DNSSDPort)
-    for (lis = (cupsd_listener_t *)cupsArrayFirst(Listeners);
-	 lis;
-	 lis = (cupsd_listener_t *)cupsArrayNext(Listeners))
-    {
-      if (httpAddrLocalhost(&(lis->address)))
-	continue;
-
-      DNSSDPort = httpAddrPort(&(lis->address));
-      break;
-    }
-
- /*
-  * Only share the web interface and printers when non-local listening is
-  * enabled...
-  */
-
-  if (!DNSSDPort)
-    return;
-
- /*
-  * Get the computer name as a c-string...
-  */
-
-#  ifdef __APPLE__
-  sc = SCDynamicStoreCreate(kCFAllocatorDefault, CFSTR("cupsd"), NULL, NULL);
-
-  if (sc)
-  {
-   /*
-    * Get the computer name from the dynamic store...
-    */
-
-    cupsdClearString(&DNSSDComputerName);
-
-    if ((nameRef = SCDynamicStoreCopyComputerName(sc, &nameEncoding)) != NULL)
-    {
-      if (CFStringGetCString(nameRef, nameBuffer, sizeof(nameBuffer),
-			     kCFStringEncodingUTF8))
-      {
-        cupsdLogMessage(CUPSD_LOG_DEBUG,
-	                "Dynamic store computer name is \"%s\".", nameBuffer);
-	cupsdSetString(&DNSSDComputerName, nameBuffer);
-      }
-
-      CFRelease(nameRef);
-    }
-
-    if (!DNSSDComputerName)
-    {
-     /*
-      * Use the ServerName instead...
-      */
-
-      cupsdLogMessage(CUPSD_LOG_DEBUG,
-                      "Using ServerName \"%s\" as computer name.", ServerName);
-      cupsdSetString(&DNSSDComputerName, ServerName);
-    }
-
-   /*
-    * Get the local hostname from the dynamic store...
-    */
-
-    cupsdClearString(&DNSSDHostName);
-
-    if ((nameRef = SCDynamicStoreCopyLocalHostName(sc)) != NULL)
-    {
-      if (CFStringGetCString(nameRef, nameBuffer, sizeof(nameBuffer),
-			     kCFStringEncodingUTF8))
-      {
-        cupsdLogMessage(CUPSD_LOG_DEBUG,
-	                "Dynamic store host name is \"%s\".", nameBuffer);
-	cupsdSetString(&DNSSDHostName, nameBuffer);
-      }
-
-      CFRelease(nameRef);
-    }
-
-    if (!DNSSDHostName)
-    {
-     /*
-      * Use the ServerName instead...
-      */
-
-      cupsdLogMessage(CUPSD_LOG_DEBUG,
-                      "Using ServerName \"%s\" as host name.", ServerName);
-      cupsdSetString(&DNSSDHostName, ServerName);
-    }
-
-   /*
-    * Get any Back-to-My-Mac domains and add them as aliases...
-    */
-
-    cupsdFreeAliases(DNSSDAlias);
-    DNSSDAlias = NULL;
-
-    btmm = SCDynamicStoreCopyValue(sc, CFSTR("Setup:/Network/BackToMyMac"));
-    if (btmm && CFGetTypeID(btmm) == CFDictionaryGetTypeID())
-    {
-      cupsdLogMessage(CUPSD_LOG_DEBUG, "%d Back to My Mac aliases to add.",
-		      (int)CFDictionaryGetCount(btmm));
-      CFDictionaryApplyFunction(btmm, dnssdAddAlias, NULL);
-    }
-    else if (btmm)
-      cupsdLogMessage(CUPSD_LOG_ERROR,
-		      "Bad Back to My Mac data in dynamic store!");
-    else
-      cupsdLogMessage(CUPSD_LOG_DEBUG, "No Back to My Mac aliases to add.");
-
-    if (btmm)
-      CFRelease(btmm);
-
-    CFRelease(sc);
-  }
-  else
-#  endif /* __APPLE__ */
-#  ifdef HAVE_AVAHI
-  if (DNSSDClient)
-  {
-    const char	*host_name = avahi_client_get_host_name(DNSSDClient);
-    const char	*host_fqdn = avahi_client_get_host_name_fqdn(DNSSDClient);
-
-    cupsdSetString(&DNSSDComputerName, host_name ? host_name : ServerName);
-
-    if (host_fqdn)
-      cupsdSetString(&DNSSDHostName, host_fqdn);
-    else if (strchr(ServerName, '.'))
-      cupsdSetString(&DNSSDHostName, ServerName);
-    else
-      cupsdSetStringf(&DNSSDHostName, "%s.local", ServerName);
-  }
-  else
-#  endif /* HAVE_AVAHI */
-  {
-    cupsdSetString(&DNSSDComputerName, ServerName);
-
-    if (strchr(ServerName, '.'))
-      cupsdSetString(&DNSSDHostName, ServerName);
-    else
-      cupsdSetStringf(&DNSSDHostName, "%s.local", ServerName);
-  }
-
- /*
-  * Then (re)register the web interface if enabled...
-  */
-
-  if (BrowseWebIF)
-  {
-    if (DNSSDComputerName)
-      snprintf(webif, sizeof(webif), "CUPS @ %s", DNSSDComputerName);
-    else
-      strlcpy(webif, "CUPS", sizeof(webif));
-
-    dnssdDeregisterInstance(&WebIFSrv, from_callback);
-    dnssdRegisterInstance(&WebIFSrv, NULL, webif, "_http._tcp", "_printer",
-                          DNSSDPort, NULL, 1, from_callback);
-  }
 }
 
 
@@ -929,6 +563,133 @@ dnssdBuildTxtRecord(
 }
 
 
+#  ifdef HAVE_AVAHI
+/*
+ * 'dnssdClientCallback()' - Client callback for Avahi.
+ *
+ * Called whenever the client or server state changes...
+ */
+
+static void
+dnssdClientCallback(
+    AvahiClient      *c,		/* I - Client */
+    AvahiClientState state,		/* I - Current state */
+    void             *userdata)		/* I - User data (unused) */
+{
+  int	error;				/* Error code, if any */
+
+
+  (void)userdata;
+
+  if (!c)
+    return;
+
+ /*
+  * Make sure DNSSDClient is already set also if this callback function is
+  * already running before avahi_client_new() in dnssdStartBrowsing()
+  * finishes.
+  */
+
+  if (!DNSSDClient)
+    DNSSDClient = c;
+
+  switch (state)
+  {
+    case AVAHI_CLIENT_S_REGISTERING:
+    case AVAHI_CLIENT_S_RUNNING:
+    case AVAHI_CLIENT_S_COLLISION:
+	cupsdLogMessage(CUPSD_LOG_DEBUG, "Avahi server connection now available, registering printers for Bonjour broadcasting.");
+
+       /*
+	* Mark that Avahi server is running...
+	*/
+
+	avahi_running = 1;
+
+       /*
+	* Set the computer name and register the web interface...
+	*/
+
+	DNSSDPort = 0;
+	dnssdUpdateDNSSDName(1);
+
+       /*
+	* Register the individual printers
+	*/
+
+	dnssdRegisterAllPrinters(1);
+	break;
+
+    case AVAHI_CLIENT_FAILURE:
+	if (avahi_client_errno(c) == AVAHI_ERR_DISCONNECTED)
+	{
+	  cupsdLogMessage(CUPSD_LOG_DEBUG, "Avahi server disappeared, unregistering printers for Bonjour broadcasting.");
+
+	 /*
+	  * Unregister everything and close the client...
+	  */
+
+	  dnssdDeregisterAllPrinters(1);
+	  dnssdDeregisterInstance(&WebIFSrv, 1);
+	  avahi_client_free(DNSSDClient);
+	  DNSSDClient = NULL;
+
+	 /*
+	  * Mark that Avahi server is not running...
+	  */
+
+	  avahi_running = 0;
+
+	 /*
+	  * Renew Avahi client...
+	  */
+
+	  DNSSDClient = avahi_client_new(avahi_threaded_poll_get(DNSSDMaster), AVAHI_CLIENT_NO_FAIL, dnssdClientCallback, NULL, &error);
+
+	  if (!DNSSDClient)
+	  {
+	    cupsdLogMessage(CUPSD_LOG_ERROR, "Unable to communicate with avahi-daemon: %s", dnssdErrorString(error));
+	    if (FatalErrors & CUPSD_FATAL_BROWSE)
+	      cupsdEndProcess(getpid(), 0);
+	  }
+	}
+	else
+	{
+	  cupsdLogMessage(CUPSD_LOG_ERROR, "Communication with avahi-daemon has failed: %s", avahi_strerror(avahi_client_errno(c)));
+	  if (FatalErrors & CUPSD_FATAL_BROWSE)
+	    cupsdEndProcess(getpid(), 0);
+	}
+	break;
+
+    default:
+        break;
+  }
+}
+#  endif /* HAVE_AVAHI */
+
+
+/*
+ * 'dnssdDeregisterAllPrinters()' - Deregister all printers.
+ */
+
+static void
+dnssdDeregisterAllPrinters(
+    int             from_callback)	/* I - Deregistering because of callback? */
+{
+  cupsd_printer_t	*p;		/* Current printer */
+
+
+  if (!DNSSDMaster)
+    return;
+
+  for (p = (cupsd_printer_t *)cupsArrayFirst(Printers);
+       p;
+       p = (cupsd_printer_t *)cupsArrayNext(Printers))
+    if (!(p->type & (CUPS_PRINTER_REMOTE | CUPS_PRINTER_SCANNER)))
+      dnssdDeregisterPrinter(p, 1, from_callback);
+}
+
+
 /*
  * 'dnssdDeregisterInstance()' - Deregister a DNS-SD service instance.
  */
@@ -936,19 +697,22 @@ dnssdBuildTxtRecord(
 static void
 dnssdDeregisterInstance(
     cupsd_srv_t     *srv,		/* I - Service */
-    int             from_callback)	/* I - Are we called from Avahi client
-					       calllback? */
+    int             from_callback)	/* I - Called from callback? */
 {
   if (!srv || !*srv)
     return;
 
 #  ifdef HAVE_DNSSD
+  (void)from_callback;
+
   DNSServiceRefDeallocate(*srv);
 
 #  else /* HAVE_AVAHI */
   if (!from_callback)
     avahi_threaded_poll_lock(DNSSDMaster);
+
   avahi_entry_group_free(*srv);
+
   if (!from_callback)
     avahi_threaded_poll_unlock(DNSSDMaster);
 #  endif /* HAVE_DNSSD */
@@ -965,12 +729,12 @@ static void
 dnssdDeregisterPrinter(
     cupsd_printer_t *p,			/* I - Printer */
     int             clear_name,		/* I - Clear the name? */
-    int             from_callback)	/* I - Are we called from Avahi client
-					       calllback? */
+    int             from_callback)	/* I - Called from callback? */
+
 {
   cupsdLogMessage(CUPSD_LOG_DEBUG2,
-                  "dnssdDeregisterPrinter(p=%p(%s), clear_name=%d, from_callback=%d)",
-		  p, p->name, clear_name, from_callback);
+                  "dnssdDeregisterPrinter(p=%p(%s), clear_name=%d)", p, p->name,
+                  clear_name);
 
   if (p->ipp_srv)
   {
@@ -1132,6 +896,27 @@ dnssdFreeTxtRecord(cupsd_txt_t *txt)	/* I - TXT record */
 
 
 /*
+ * 'dnssdRegisterAllPrinters()' - Register all printers.
+ */
+
+static void
+dnssdRegisterAllPrinters(int from_callback)	/* I - Called from callback? */
+{
+  cupsd_printer_t	*p;			/* Current printer */
+
+
+  if (!DNSSDMaster)
+    return;
+
+  for (p = (cupsd_printer_t *)cupsArrayFirst(Printers);
+       p;
+       p = (cupsd_printer_t *)cupsArrayNext(Printers))
+    if (!(p->type & (CUPS_PRINTER_REMOTE | CUPS_PRINTER_SCANNER)))
+      dnssdRegisterPrinter(p, from_callback);
+}
+
+
+/*
  * 'dnssdRegisterCallback()' - DNSServiceRegister callback.
  */
 
@@ -1212,16 +997,18 @@ dnssdRegisterInstance(
     int             port,		/* I - Port number or 0 */
     cupsd_txt_t     *txt,		/* I - TXT record */
     int             commit,		/* I - Commit registration? */
-    int             from_callback)	/* I - Are we called from Avahi client
-					       calllback? */
+    int             from_callback)	/* I - Called from callback? */
 {
   char	temp[256],			/* Temporary string */
 	*ptr;				/* Pointer into string */
   int	error;				/* Any error */
 
 
-  cupsdLogMessage(CUPSD_LOG_DEBUG,
-		  "Registering \"%s\" with DNS-SD type \"%s\".", name, type);
+#  ifdef HAVE_DNSSD
+  (void)from_callback;
+#  endif /* HAVE_DNSSD */
+
+  cupsdLogMessage(CUPSD_LOG_DEBUG, "Registering \"%s\" with DNS-SD type \"%s\".", name, type);
 
   if (p && !srv)
   {
@@ -1396,9 +1183,9 @@ dnssdRegisterInstance(
  */
 
 static void
-dnssdRegisterPrinter(cupsd_printer_t *p,/* I - Printer */
-		     int from_callback) /* I - Are we called from Avahi client
-					       callback */
+dnssdRegisterPrinter(
+    cupsd_printer_t *p,			/* I - Printer */
+    int             from_callback)	/* I - Called from callback? */
 {
   char		name[256];		/* Service name */
   int		printer_port;		/* LPD port number */
@@ -1406,15 +1193,12 @@ dnssdRegisterPrinter(cupsd_printer_t *p,/* I - Printer */
   cupsd_txt_t	ipp_txt,		/* IPP(S) TXT record */
  		printer_txt;		/* LPD TXT record */
 
-  cupsdLogMessage(CUPSD_LOG_DEBUG2, "dnssdRegisterPrinter(%s) %s from_callback=%d",
-		  p->name, !p->ipp_srv ? "new" : "update", from_callback);
+
+  cupsdLogMessage(CUPSD_LOG_DEBUG2, "dnssdRegisterPrinter(%s) %s", p->name,
+                  !p->ipp_srv ? "new" : "update");
 
 #  ifdef HAVE_AVAHI
- /*
-  * Do nothing if the Avahi server is not present
-  */
-
-  if (!DNSSDAvahiServerPresent)
+  if (!avahi_running)
     return;
 #  endif /* HAVE_AVAHI */
 
@@ -1466,13 +1250,11 @@ dnssdRegisterPrinter(cupsd_printer_t *p,/* I - Printer */
   else
     printer_port = 0;
 
-  status = dnssdRegisterInstance(NULL, p, name, "_printer._tcp", NULL,
-                                 printer_port, &printer_txt, 0, from_callback);
+  status = dnssdRegisterInstance(NULL, p, name, "_printer._tcp", NULL, printer_port, &printer_txt, 0, from_callback);
 
 #  ifdef HAVE_SSL
   if (status)
-    dnssdRegisterInstance(NULL, p, name, "_ipps._tcp", DNSSDSubTypes,
-			  DNSSDPort, &ipp_txt, 0, from_callback);
+    dnssdRegisterInstance(NULL, p, name, "_ipps._tcp", DNSSDSubTypes, DNSSDPort, &ipp_txt, 0, from_callback);
 #  endif /* HAVE_SSL */
 
   if (status)
@@ -1482,12 +1264,9 @@ dnssdRegisterPrinter(cupsd_printer_t *p,/* I - Printer */
     */
 
     if (p->type & CUPS_PRINTER_FAX)
-      status = dnssdRegisterInstance(NULL, p, name, "_fax-ipp._tcp",
-                                     DNSSDSubTypes, DNSSDPort, &ipp_txt, 1,
-				     from_callback);
+      status = dnssdRegisterInstance(NULL, p, name, "_fax-ipp._tcp", DNSSDSubTypes, DNSSDPort, &ipp_txt, 1, from_callback);
     else
-      status = dnssdRegisterInstance(NULL, p, name, "_ipp._tcp", DNSSDSubTypes,
-                                     DNSSDPort, &ipp_txt, 1, from_callback);
+      status = dnssdRegisterInstance(NULL, p, name, "_ipp._tcp", DNSSDSubTypes, DNSSDPort, &ipp_txt, 1, from_callback);
   }
 
   dnssdFreeTxtRecord(&ipp_txt);
@@ -1589,6 +1368,191 @@ dnssdUpdate(void)
   }
 }
 #  endif /* HAVE_DNSSD */
+
+
+/*
+ * 'dnssdUpdateDNSSDName()' - Update the listen port, computer name, and web interface registration.
+ */
+
+static void
+dnssdUpdateDNSSDName(int from_callback)	/* I - Called from callback? */
+{
+  char		webif[1024];		/* Web interface share name */
+#  ifdef __APPLE__
+  SCDynamicStoreRef sc;			/* Context for dynamic store */
+  CFDictionaryRef btmm;			/* Back-to-My-Mac domains */
+  CFStringEncoding nameEncoding;	/* Encoding of computer name */
+  CFStringRef	nameRef;		/* Host name CFString */
+  char		nameBuffer[1024];	/* C-string buffer */
+#  endif /* __APPLE__ */
+
+
+ /*
+  * Only share the web interface and printers when non-local listening is
+  * enabled...
+  */
+
+  if (!DNSSDPort)
+  {
+   /*
+    * Get the port we use for registrations.  If we are not listening on any
+    * non-local ports, there is no sense sharing local printers via Bonjour...
+    */
+
+    cupsd_listener_t	*lis;		/* Current listening socket */
+
+    for (lis = (cupsd_listener_t *)cupsArrayFirst(Listeners);
+	 lis;
+	 lis = (cupsd_listener_t *)cupsArrayNext(Listeners))
+    {
+      if (httpAddrLocalhost(&(lis->address)))
+	continue;
+
+      DNSSDPort = httpAddrPort(&(lis->address));
+      break;
+    }
+  }
+
+  if (!DNSSDPort)
+    return;
+
+ /*
+  * Get the computer name as a c-string...
+  */
+
+#  ifdef __APPLE__
+  sc = SCDynamicStoreCreate(kCFAllocatorDefault, CFSTR("cupsd"), NULL, NULL);
+
+  if (sc)
+  {
+   /*
+    * Get the computer name from the dynamic store...
+    */
+
+    cupsdClearString(&DNSSDComputerName);
+
+    if ((nameRef = SCDynamicStoreCopyComputerName(sc, &nameEncoding)) != NULL)
+    {
+      if (CFStringGetCString(nameRef, nameBuffer, sizeof(nameBuffer),
+			     kCFStringEncodingUTF8))
+      {
+        cupsdLogMessage(CUPSD_LOG_DEBUG,
+	                "Dynamic store computer name is \"%s\".", nameBuffer);
+	cupsdSetString(&DNSSDComputerName, nameBuffer);
+      }
+
+      CFRelease(nameRef);
+    }
+
+    if (!DNSSDComputerName)
+    {
+     /*
+      * Use the ServerName instead...
+      */
+
+      cupsdLogMessage(CUPSD_LOG_DEBUG,
+                      "Using ServerName \"%s\" as computer name.", ServerName);
+      cupsdSetString(&DNSSDComputerName, ServerName);
+    }
+
+   /*
+    * Get the local hostname from the dynamic store...
+    */
+
+    cupsdClearString(&DNSSDHostName);
+
+    if ((nameRef = SCDynamicStoreCopyLocalHostName(sc)) != NULL)
+    {
+      if (CFStringGetCString(nameRef, nameBuffer, sizeof(nameBuffer),
+			     kCFStringEncodingUTF8))
+      {
+        cupsdLogMessage(CUPSD_LOG_DEBUG,
+	                "Dynamic store host name is \"%s\".", nameBuffer);
+	cupsdSetString(&DNSSDHostName, nameBuffer);
+      }
+
+      CFRelease(nameRef);
+    }
+
+    if (!DNSSDHostName)
+    {
+     /*
+      * Use the ServerName instead...
+      */
+
+      cupsdLogMessage(CUPSD_LOG_DEBUG,
+                      "Using ServerName \"%s\" as host name.", ServerName);
+      cupsdSetString(&DNSSDHostName, ServerName);
+    }
+
+   /*
+    * Get any Back-to-My-Mac domains and add them as aliases...
+    */
+
+    cupsdFreeAliases(DNSSDAlias);
+    DNSSDAlias = NULL;
+
+    btmm = SCDynamicStoreCopyValue(sc, CFSTR("Setup:/Network/BackToMyMac"));
+    if (btmm && CFGetTypeID(btmm) == CFDictionaryGetTypeID())
+    {
+      cupsdLogMessage(CUPSD_LOG_DEBUG, "%d Back to My Mac aliases to add.",
+		      (int)CFDictionaryGetCount(btmm));
+      CFDictionaryApplyFunction(btmm, dnssdAddAlias, NULL);
+    }
+    else if (btmm)
+      cupsdLogMessage(CUPSD_LOG_ERROR,
+		      "Bad Back to My Mac data in dynamic store!");
+    else
+      cupsdLogMessage(CUPSD_LOG_DEBUG, "No Back to My Mac aliases to add.");
+
+    if (btmm)
+      CFRelease(btmm);
+
+    CFRelease(sc);
+  }
+  else
+#  endif /* __APPLE__ */
+#  ifdef HAVE_AVAHI
+  if (DNSSDClient)
+  {
+    const char	*host_name = avahi_client_get_host_name(DNSSDClient);
+    const char	*host_fqdn = avahi_client_get_host_name_fqdn(DNSSDClient);
+
+    cupsdSetString(&DNSSDComputerName, host_name ? host_name : ServerName);
+
+    if (host_fqdn)
+      cupsdSetString(&DNSSDHostName, host_fqdn);
+    else if (strchr(ServerName, '.'))
+      cupsdSetString(&DNSSDHostName, ServerName);
+    else
+      cupsdSetStringf(&DNSSDHostName, "%s.local", ServerName);
+  }
+  else
+#  endif /* HAVE_AVAHI */
+  {
+    cupsdSetString(&DNSSDComputerName, ServerName);
+
+    if (strchr(ServerName, '.'))
+      cupsdSetString(&DNSSDHostName, ServerName);
+    else
+      cupsdSetStringf(&DNSSDHostName, "%s.local", ServerName);
+  }
+
+ /*
+  * Then (re)register the web interface if enabled...
+  */
+
+  if (BrowseWebIF)
+  {
+    if (DNSSDComputerName)
+      snprintf(webif, sizeof(webif), "CUPS @ %s", DNSSDComputerName);
+    else
+      strlcpy(webif, "CUPS", sizeof(webif));
+
+    dnssdDeregisterInstance(&WebIFSrv, from_callback);
+    dnssdRegisterInstance(&WebIFSrv, NULL, webif, "_http._tcp", "_printer", DNSSDPort, NULL, 1, from_callback);
+  }
+}
 
 
 /*
