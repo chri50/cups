@@ -1,3 +1,11 @@
+cups (1.7.1-5ubuntu8) trusty; urgency=low
+
+  * Removed har dependency of cups-daemon on avahi-daemon, demoted Depends: yo
+    Recommends: and removed "on started avahi-daemon" from the "start on ..."
+    rule in /etc/init/cups.conf (LP: #1242185, LP: #1178172).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri,  7 Mar 2014 17:45:01 +0100
+
 cups (1.7.1-5ubuntu7) trusty; urgency=low
 
   * cupsd-upstart-support.patch: Merged in fix-upstart-socket-activation.patch
