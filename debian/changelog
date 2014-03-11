@@ -1,3 +1,19 @@
+cups (1.4.3-1ubuntu1.10) lucid-security; urgency=medium
+
+  * SECURITY UPDATE: arbitrary code execution via overflows in pdftoopvp
+    - debian/local/filters/pdf-filters/pdftoopvp/{oprs/OPVPSplash.cxx,
+      OPVPOutputDev.cxx}: use gmallocn and gmallocn3.
+    - backported from 1.0.47 release
+    - CVE-2013-6474
+    - CVE-2013-6475
+  * SECURITY UPDATE: arbitrary code execution via driver in pdftoopvp
+    - debian/local/filters/pdf-filters/pdftoopvp/oprs/OPVPWrapper.cxx:
+      restrict driver path.
+    - backported from 1.0.47 release
+    - CVE-2013-6476
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Tue, 11 Mar 2014 11:08:40 -0400
+
 cups (1.4.3-1ubuntu1.9) lucid-security; urgency=low
 
   * SECURITY UPDATE: privilege escalation via config file editing
