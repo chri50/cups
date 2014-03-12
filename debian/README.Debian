@@ -128,10 +128,21 @@ cups daemon out. Please read its documentation.
 Socket-activation when run under systemd
 ========================================
 
-Since 1.7.1-6, when systemd is the active init system, CUPS is launched
+Since 1.7.1-7, when systemd is the active init system, CUPS is launched
 on accesses to its sockets as defined in /lib/systemd/system/cups.socket
-The list of sockets can be edited by creating
-/etc/systemd/system/cups.socket; see systemd.unit(5).
+and all files in /etc/systemd/system/cups.socket.d/; see
+systemd.unit(5).
+ 
+CUPS opens its listening ports based on 'Port' and 'Listen' stanzas in
+/etc/cups/cupsd.conf. When options for remote access are modified through
+the webinterface at http://localhost:631, CUPS will write a systemd socket
+configuration file /etc/cups/cupsd-systemd-listen.conf, which is by
+default symlinked as cups-listen.conf in the
+/etc/systemd/system/cups.socket.d/ directory. For systemd's socket
+activation to keep working, cups.socket needs to be configured to listen
+to the correct IPs and ports. That automatic setup can be disabled by
+deleting the symlink and enhanced by dropping other files in the
+/etc/systemd/system/cups.socket.d/ directory.
 
 When launched by socket-activation, CUPS will exit itself after being
 idle for some time (30 seconds by default). The delay before exiting on

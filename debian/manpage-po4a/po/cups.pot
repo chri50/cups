@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2014-02-23 15:37+0100\n"
+"POT-Creation-Date: 2014-03-11 16:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -170,7 +170,7 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: cupsaccept.man:70 backend.man:163 cancel.man:71 classes.conf.man:101 client.conf.man.in:59 cupsaddsmb.man.in:168 cups-config.man:111 cupsctl.man:89 cupsd.conf.man.in:515 cups-files.conf.man.in:142 cups-deviced.man.in:36 cupsd.man.in:61 cups-driverd.man.in:114 cupsenable.man:83 cupsfilter.man:101 cups-lpd.man.in:115 cups-snmp.conf.man:70 cupstestdsc.man:41 cupstestppd.man:155 filter.man:230 ipptool.man:154 ipptoolfile.man:616 lpadmin.man:218 lpc.man:62 lpinfo.man:107 lp.man:243 lpmove.man:58 lpoptions.man.in:127 lppasswd.man:60 lpq.man:63 lpr.man:113 lprm.man:56 lpstat.man:135 mailto.conf.man:51 mime.convs.man:37 mime.types.man:106 printers.conf.man:115 subscriptions.conf.man:80
+#: cupsaccept.man:70 backend.man:163 cancel.man:71 classes.conf.man:101 client.conf.man.in:59 cupsaddsmb.man.in:168 cups-config.man:111 cupsctl.man:89 cupsd.conf.man.in:515 cups-files.conf.man.in:142 cups-deviced.man.in:36 cupsd.man.in:61 cups-driverd.man.in:114 cupsenable.man:83 cupsfilter.man:101 cups-lpd.man.in:115 cups-snmp.conf.man:70 cupstestdsc.man:41 cupstestppd.man:155 filter.man:230 ipptool.man:154 ipptoolfile.man:616 lpadmin.man:218 lpc.man:62 lpinfo.man:107 lp.man:243 lpmove.man:58 lpoptions.man.in:127 lppasswd.man:69 lpq.man:63 lpr.man:113 lprm.man:56 lpstat.man:135 mailto.conf.man:51 mime.convs.man:37 mime.types.man:106 printers.conf.man:115 subscriptions.conf.man:80
 #, no-wrap
 msgid "SEE ALSO"
 msgstr ""
@@ -181,18 +181,18 @@ msgid "I<cancel(1)>, I<cupsenable(8)>, I<lp(1)>, I<lpadmin(8)>, I<lpstat(1)>,"
 msgstr ""
 
 #. type: Plain text
-#: cupsaccept.man:75 backend.man:168 cancel.man:75 classes.conf.man:106 client.conf.man.in:61 cups-config.man:113 cupsctl.man:93 cupsd.conf.man.in:521 cups-files.conf.man.in:148 cups-deviced.man.in:40 cupsd.man.in:68 cups-driverd.man.in:118 cupsenable.man:88 cupsfilter.man:105 cups-lpd.man.in:120 cups-snmp.conf.man:74 cupstestdsc.man:43 cupstestppd.man:159 filter.man:234 ipptool.man:158 ipptoolfile.man:620 lpadmin.man:223 lpc.man:67 lpinfo.man:111 lp.man:248 lpmove.man:62 lpoptions.man.in:131 lppasswd.man:64 lpq.man:68 lpr.man:118 lprm.man:61 lpstat.man:139 mailto.conf.man:56 mime.convs.man:42 mime.types.man:111 printers.conf.man:120 subscriptions.conf.man:85
+#: cupsaccept.man:75 backend.man:168 cancel.man:75 classes.conf.man:106 client.conf.man.in:61 cups-config.man:113 cupsctl.man:93 cupsd.conf.man.in:521 cups-files.conf.man.in:148 cups-deviced.man.in:40 cupsd.man.in:68 cups-driverd.man.in:118 cupsenable.man:88 cupsfilter.man:105 cups-lpd.man.in:120 cups-snmp.conf.man:74 cupstestdsc.man:43 cupstestppd.man:159 filter.man:234 ipptool.man:158 ipptoolfile.man:620 lpadmin.man:223 lpc.man:67 lpinfo.man:111 lp.man:248 lpmove.man:62 lpoptions.man.in:131 lppasswd.man:73 lpq.man:68 lpr.man:118 lprm.man:61 lpstat.man:139 mailto.conf.man:56 mime.convs.man:42 mime.types.man:111 printers.conf.man:120 subscriptions.conf.man:85
 msgid "http://localhost:631/help"
 msgstr ""
 
 #. type: SH
-#: cupsaccept.man:75 backend.man:168 cancel.man:75 classes.conf.man:106 client.conf.man.in:61 cupsaddsmb.man.in:172 cups-config.man:113 cupsctl.man:93 cupsd.conf.man.in:521 cups-files.conf.man.in:148 cups-deviced.man.in:40 cupsd.man.in:68 cups-driverd.man.in:118 cupsenable.man:88 cupsfilter.man:105 cups-lpd.man.in:120 cups-snmp.conf.man:74 cupstestdsc.man:46 cupstestppd.man:161 filter.man:234 ipptool.man:162 ipptoolfile.man:624 lpadmin.man:223 lpc.man:67 lpinfo.man:111 lp.man:248 lpmove.man:62 lpoptions.man.in:131 lppasswd.man:64 lpq.man:68 lpr.man:118 lprm.man:61 lpstat.man:139 mailto.conf.man:56 mime.convs.man:42 mime.types.man:111 printers.conf.man:120 subscriptions.conf.man:85
+#: cupsaccept.man:75 backend.man:168 cancel.man:75 classes.conf.man:106 client.conf.man.in:61 cupsaddsmb.man.in:172 cups-config.man:113 cupsctl.man:93 cupsd.conf.man.in:521 cups-files.conf.man.in:148 cups-deviced.man.in:40 cupsd.man.in:68 cups-driverd.man.in:118 cupsenable.man:88 cupsfilter.man:105 cups-lpd.man.in:120 cups-snmp.conf.man:74 cupstestdsc.man:46 cupstestppd.man:161 filter.man:234 ipptool.man:162 ipptoolfile.man:624 lpadmin.man:223 lpc.man:67 lpinfo.man:111 lp.man:248 lpmove.man:62 lpoptions.man.in:131 lppasswd.man:73 lpq.man:68 lpr.man:118 lprm.man:61 lpstat.man:139 mailto.conf.man:56 mime.convs.man:42 mime.types.man:111 printers.conf.man:120 subscriptions.conf.man:85
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr ""
 
 #. type: Plain text
-#: cupsaccept.man:76 backend.man:169 cancel.man:76 classes.conf.man:107 client.conf.man.in:62 cupsaddsmb.man.in:173 cups-config.man:114 cupsctl.man:94 cupsd.conf.man.in:522 cups-files.conf.man.in:149 cups-deviced.man.in:41 cupsd.man.in:69 cups-driverd.man.in:119 cupsenable.man:90 cupsfilter.man:106 cups-lpd.man.in:121 cups-snmp.conf.man:75 cupstestdsc.man:47 cupstestppd.man:162 filter.man:235 lpadmin.man:224 lpc.man:68 lpinfo.man:112 lp.man:249 lpmove.man:63 lpoptions.man.in:132 lppasswd.man:65 lpq.man:69 lpr.man:119 lprm.man:62 lpstat.man:140 mailto.conf.man:57 mime.convs.man:43 mime.types.man:112 printers.conf.man:121 subscriptions.conf.man:86
+#: cupsaccept.man:76 backend.man:169 cancel.man:76 classes.conf.man:107 client.conf.man.in:62 cupsaddsmb.man.in:173 cups-config.man:114 cupsctl.man:94 cupsd.conf.man.in:522 cups-files.conf.man.in:149 cups-deviced.man.in:41 cupsd.man.in:69 cups-driverd.man.in:119 cupsenable.man:90 cupsfilter.man:106 cups-lpd.man.in:121 cups-snmp.conf.man:75 cupstestdsc.man:47 cupstestppd.man:162 filter.man:235 lpadmin.man:224 lpc.man:68 lpinfo.man:112 lp.man:249 lpmove.man:63 lpoptions.man.in:132 lppasswd.man:74 lpq.man:69 lpr.man:119 lprm.man:62 lpstat.man:140 mailto.conf.man:57 mime.convs.man:43 mime.types.man:112 printers.conf.man:121 subscriptions.conf.man:86
 msgid "Copyright 2007-2013 by Apple Inc."
 msgstr ""
 
@@ -8595,13 +8595,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: lppasswd.man:54
+#: lppasswd.man:55
 #, no-wrap
 msgid "chmod u+s lppasswd\n"
 msgstr ""
 
 #. type: Plain text
-#: lppasswd.man:60
+#: lppasswd.man:59
+msgid ""
+"This change will be overriden by further updates of the cups-client "
+"package.  The following command ensures that it will be preserved:"
+msgstr ""
+
+#. type: Plain text
+#: lppasswd.man:62
+#, no-wrap
+msgid "dpkg-statoverride --add root root 4755 /usr/bin/lppasswd\n"
+msgstr ""
+
+#. type: Plain text
+#: lppasswd.man:69
 msgid ""
 "While every attempt has been made to make I<lppasswd> secure against "
 "exploits that could grant super-user privileges to unprivileged users, "
@@ -8610,7 +8623,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: lppasswd.man:62
+#: lppasswd.man:71
 msgid "I<lp(1)>, I<lpr(1)>,"
 msgstr ""
 

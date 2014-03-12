@@ -23,7 +23,7 @@ Origin: http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/net-print/cups/f
 Origin: http://pkgs.fedoraproject.org/cgit/cups.git/tree/cups-systemd-socket.patch?id=7048cf473bca56b13d3c2f140fd749d561490784
 From: Lennart Poettering <lennart@poettering.net>
 Author: Lennart Poettering <lennart@poettering.net>
-Last-Update: 2014-02-25
+Last-Update: 2014-03-03
 --- a/config.h.in
 +++ b/config.h.in
 @@ -451,6 +451,13 @@
@@ -123,9 +123,10 @@ Last-Update: 2014-02-25
 +WantedBy=multi-user.target
 --- /dev/null
 +++ b/data/cups.service.in
-@@ -0,0 +1,10 @@
+@@ -0,0 +1,11 @@
 +[Unit]
 +Description=CUPS Printing Service
++Documentation=man:cupsd(8) man:cupsd.conf(5)
 +
 +[Service]
 +ExecStart=@sbindir@/cupsd -f
@@ -136,14 +137,12 @@ Last-Update: 2014-02-25
 +WantedBy=printer.target
 --- /dev/null
 +++ b/data/cups.socket.in
-@@ -0,0 +1,11 @@
+@@ -0,0 +1,9 @@
 +[Unit]
 +Description=CUPS Printing Service Sockets
 +
 +[Socket]
 +ListenStream=@CUPS_DEFAULT_DOMAINSOCKET@
-+ListenStream=0.0.0.0:631
-+ListenStream=[::]:631
 +BindIPv6Only=ipv6-only
 +
 +[Install]

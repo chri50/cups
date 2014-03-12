@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 1.7.1-2\n"
-"POT-Creation-Date: 2014-02-23 15:37+0100\n"
-"PO-Revision-Date: 2014-01-18 20:46+0100\n"
+"POT-Creation-Date: 2014-03-11 16:58+0100\n"
+"PO-Revision-Date: 2014-03-03 19:49+0100\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
 "Language: de\n"
@@ -272,7 +272,7 @@ msgstr ""
 #: cups-snmp.conf.man:70 cupstestdsc.man:41 cupstestppd.man:155 filter.man:230
 #: ipptool.man:154 ipptoolfile.man:616 lpadmin.man:218 lpc.man:62
 #: lpinfo.man:107 lp.man:243 lpmove.man:58 lpoptions.man.in:127
-#: lppasswd.man:60 lpq.man:63 lpr.man:113 lprm.man:56 lpstat.man:135
+#: lppasswd.man:69 lpq.man:63 lpr.man:113 lprm.man:56 lpstat.man:135
 #: mailto.conf.man:51 mime.convs.man:37 mime.types.man:106
 #: printers.conf.man:115 subscriptions.conf.man:80
 #, no-wrap
@@ -294,7 +294,7 @@ msgstr "I<cancel(1)>, I<cupsenable(8)>, I<lp(1)>, I<lpadmin(8)>, I<lpstat(1)>,"
 #: cupsfilter.man:105 cups-lpd.man.in:120 cups-snmp.conf.man:74
 #: cupstestdsc.man:43 cupstestppd.man:159 filter.man:234 ipptool.man:158
 #: ipptoolfile.man:620 lpadmin.man:223 lpc.man:67 lpinfo.man:111 lp.man:248
-#: lpmove.man:62 lpoptions.man.in:131 lppasswd.man:64 lpq.man:68 lpr.man:118
+#: lpmove.man:62 lpoptions.man.in:131 lppasswd.man:73 lpq.man:68 lpr.man:118
 #: lprm.man:61 lpstat.man:139 mailto.conf.man:56 mime.convs.man:42
 #: mime.types.man:111 printers.conf.man:120 subscriptions.conf.man:85
 msgid "http://localhost:631/help"
@@ -310,7 +310,7 @@ msgstr "http://localhost:631/help"
 #: cups-snmp.conf.man:74 cupstestdsc.man:46 cupstestppd.man:161 filter.man:234
 #: ipptool.man:162 ipptoolfile.man:624 lpadmin.man:223 lpc.man:67
 #: lpinfo.man:111 lp.man:248 lpmove.man:62 lpoptions.man.in:131
-#: lppasswd.man:64 lpq.man:68 lpr.man:118 lprm.man:61 lpstat.man:139
+#: lppasswd.man:73 lpq.man:68 lpr.man:118 lprm.man:61 lpstat.man:139
 #: mailto.conf.man:56 mime.convs.man:42 mime.types.man:111
 #: printers.conf.man:120 subscriptions.conf.man:85
 #, no-wrap
@@ -326,7 +326,7 @@ msgstr "COPYRIGHT"
 #: cupsenable.man:90 cupsfilter.man:106 cups-lpd.man.in:121
 #: cups-snmp.conf.man:75 cupstestdsc.man:47 cupstestppd.man:162 filter.man:235
 #: lpadmin.man:224 lpc.man:68 lpinfo.man:112 lp.man:249 lpmove.man:63
-#: lpoptions.man.in:132 lppasswd.man:65 lpq.man:69 lpr.man:119 lprm.man:62
+#: lpoptions.man.in:132 lppasswd.man:74 lpq.man:69 lpr.man:119 lprm.man:62
 #: lpstat.man:140 mailto.conf.man:57 mime.convs.man:43 mime.types.man:112
 #: printers.conf.man:121 subscriptions.conf.man:86
 msgid "Copyright 2007-2013 by Apple Inc."
@@ -4080,6 +4080,10 @@ msgstr "SyncOnClose No"
 
 #. type: Plain text
 #: cups-files.conf.man.in:130
+#, fuzzy
+#| msgid ""
+#| "Specifies whether the scheduler calls I<fsync(2)> after writing "
+#| "configuration or state files. The default is Yes."
 msgid ""
 "Specifies whether the scheduler calls I<fsync(2)> after writing "
 "configuration or state files. The default is Yes."
@@ -5198,6 +5202,8 @@ msgstr ""
 
 #. type: Plain text
 #: cups-lpd.man.in:118
+#, fuzzy
+#| msgid "I<cupsd(8)>, I<inetd(8)>, I<xinetd(8)>,"
 msgid "I<cupsd(8)>, I<inetd(8)>, I<xinetd(8)>,"
 msgstr "I<cupsd(8)>, I<inetd(8)>, I<xinetd(8)>,"
 
@@ -6576,46 +6582,36 @@ msgstr ""
 msgid "The following options are recognized by I<ipptool>:"
 msgstr "Die folgenden Optionen werden von I<ipptool> erkannt:"
 
-# type: Plain text
 #. type: Plain text
 #: ipptool.man:45
-#, fuzzy
-#| msgid "Shows the program usage."
 msgid "Shows program help."
-msgstr "Zeigt die Programm-Verwendung."
+msgstr "Zeigt die Programmhilfe."
 
 #. type: TP
 #: ipptool.man:45
 #, no-wrap
 msgid "--stop-after-include-error"
-msgstr ""
+msgstr "--stop-after-include-error"
 
-# FIXME: Fehler in der Formatierung?
 #. type: Plain text
 #: ipptool.man:48
 #, fuzzy
 #| msgid ""
-#| "Shows program help.  --stop-after-include-error Tells I<ipptool> to stop "
-#| "if an error occurs in an included file. Normally I<ipptool> will continue "
-#| "with subsequent tests after the INCLUDE directive.  --version Shows the "
-#| "version of I<ipptool> being used."
+#| "Tells I<ipptool> to stop if an error occurs in an included file. Normally "
+#| "I<ipptool> will continue with subsequent tests after the INCLUDE "
+#| "directive."
 msgid ""
 "Tells I<ipptool> to stop if an error occurs in an included file. Normally "
 "I<ipptool> will continue with subsequent tests after the INCLUDE directive."
 msgstr ""
-"Zeigt die Programmhilfe.  --stop-after-include-error  Teilt I<ipptool> mit, "
-"abzubrechen, falls ein Fehler in der eingebundenen Datei auftritt. "
-"Normalerweise wird I<ipptool> mit folgenden Tests nachd der INCLUDE-"
-"Direktive fortfahren.   --version Zeigt die verwandte Version von I<ipptool> "
-"an."
+"Teilt I<ipptool> mit, abzubrechen, falls ein Fehler in der eingebundenen "
+"Datei auftritt. Normalerweise wird I<ipptool> mit folgenden Tests nach der "
+"INCLUDE-Direktive fortfahren."
 
-# type: Plain text
 #. type: Plain text
 #: ipptool.man:51
-#, fuzzy
-#| msgid "Shows the ranking of print jobs."
 msgid "Shows the version of I<ipptool> being used."
-msgstr "Zeigt die Rangordnung der Druckaufträge."
+msgstr "Zeigt die verwandte Version von I<ipptool> an."
 
 #. type: TP
 #: ipptool.man:51
@@ -6970,24 +6966,20 @@ msgstr ""
 #. type: Plain text
 #: ipptool.man:156
 #, fuzzy
-#| msgid "I<ipptoolfile(5)>,"
+#| msgid "I<ipptoolfile(5)>, RFC 2911,"
 msgid "I<ipptoolfile(5)>, RFC 2911,"
-msgstr "I<ipptoolfile(5)>,"
+msgstr "I<ipptoolfile(5)>, RFC 2911,"
 
 #. type: Plain text
 #: ipptool.man:160 ipptoolfile.man:622
 msgid "http://www.iana.org/assignments/ipp-registrations"
-msgstr ""
+msgstr "http://www.iana.org/assignments/ipp-registrations"
 
-# type: Plain text
 #. type: Plain text
 #: ipptool.man:162 ipptoolfile.man:624
-#, fuzzy
-#| msgid "http://www.cups.org/windows/"
 msgid "http://www.pwg.org/ipp"
-msgstr "http://www.cups.org/windows/"
+msgstr "http://www.pwg.org/ipp"
 
-# type: Plain text
 #. type: Plain text
 #: ipptool.man:163 ipptoolfile.man:625
 msgid "Copyright 2007-2014 by Apple Inc."
@@ -7433,6 +7425,7 @@ msgstr "Die nachfolgenden Direktiven werden in einem Test verstanden:"
 msgid "ATTR tag attribute-name value(s)"
 msgstr "ATTR Markierung Attributname Wert(e)"
 
+# FIXME Broken man page?
 #.  character. Common attributes and values are listed in the IANA IPP registry \- see references below.
 #. type: Plain text
 #: ipptoolfile.man:156
@@ -8818,9 +8811,9 @@ msgstr ""
 #. type: Plain text
 #: ipptoolfile.man:618
 #, fuzzy
-#| msgid "I<ipptool(1)>,"
+#| msgid "I<ipptool(1)>, RFC 2911,"
 msgid "I<ipptool(1)>, RFC 2911,"
-msgstr "I<ipptool(1)>,"
+msgstr "I<ipptool(1)>, RFC 2911,"
 
 #. type: TH
 #: lpadmin.man:15
@@ -10629,13 +10622,26 @@ msgstr ""
 "muss der I<lppasswd>-Befehl setuid auf Root gemacht werden mit dem Befehl:"
 
 #. type: Plain text
-#: lppasswd.man:54
+#: lppasswd.man:55
 #, no-wrap
 msgid "chmod u+s lppasswd\n"
 msgstr "chmod u+s lppasswd\n"
 
 #. type: Plain text
-#: lppasswd.man:60
+#: lppasswd.man:59
+msgid ""
+"This change will be overriden by further updates of the cups-client "
+"package.  The following command ensures that it will be preserved:"
+msgstr ""
+
+#. type: Plain text
+#: lppasswd.man:62
+#, no-wrap
+msgid "dpkg-statoverride --add root root 4755 /usr/bin/lppasswd\n"
+msgstr "dpkg-statoverride --add root root 4755 /usr/bin/lppasswd\n"
+
+#. type: Plain text
+#: lppasswd.man:69
 msgid ""
 "While every attempt has been made to make I<lppasswd> secure against "
 "exploits that could grant super-user privileges to unprivileged users, "
@@ -10648,7 +10654,7 @@ msgstr ""
 "stattdessen mit Konten zu benutzen, die von PAM verwaltet werden."
 
 #. type: Plain text
-#: lppasswd.man:62
+#: lppasswd.man:71
 msgid "I<lp(1)>, I<lpr(1)>,"
 msgstr "I<lp(1)>, I<lpr(1)>,"
 

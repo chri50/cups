@@ -1,3 +1,42 @@
+cups (1.7.1-8) unstable; urgency=medium
+
+  [ Helge Kreutzmann ]
+  * Update German man page (1522t1f)
+
+  [ Didier Raboud ]
+  * Make libcups2-dev Multi-Arch: same (Closes: #689084)
+  * Replace the cupsd-support-avahi-daemon-restarting patch with the latest
+    upstream iteration (STR: #4373)
+  * Add patch to let CUPS write its own systemd sockets configuration when
+    configured through the webinterface; document this new behaviour in
+    cups-daemon.NEWS and README.Debian (Closes: #740382)
+  * Stop making lppasswd setuid root as it is only needed in specific cases
+    - Add patch to lppasswd manpage to document how dpkg-statoverride should be
+      used
+    - Update translations
+  * Move the repository from pkg-cups to printing; update the VCS-* fields
+    accordingly
+
+  [ Ansgar Burchardt ]
+  * systemd socket activation support: add cups.socket in Requires of
+    cups.service to ensure that the service is stopped before the socket is
+    attempted to be started. Also add Documentation references in cups.service
+
+  [ Till Kamppeter ]
+  * Fix crash bug in the cupsEnumDests() function (STR #4380).
+  * Import upstream patch to fix race condition in cupsDoIORequest()
+    (STR: #4386)
+  * Import upstream patch to fix a missing NULL check for input parameters in
+    cupsdGetPrivateAttrs() from scheduler/policy.c (STR: #4378)
+  * Import upstream fix to let cupsEnumDests() fill in is_default field
+    (STR: #4332)
+
+  [ Michael Biebl ]
+  * Fix the logrotate script to use delaycompress instead of stopping and
+    restarting cups, which spits out warnings under systemd (Closes: #740380)
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 12 Mar 2014 12:03:14 +0100
+
 cups (1.7.1-7) unstable; urgency=low
 
   * systemd socket activation:
