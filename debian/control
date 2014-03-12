@@ -48,8 +48,8 @@ Build-Depends:
  cups-filters (>= 1.0.38~),
  libcupsfilters-dev (>= 1.0.38~)
 Homepage: http://www.cups.org
-Vcs-Git: git://anonscm.debian.org/pkg-cups/cups.git
-Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-cups/cups.git;a=summary
+Vcs-Git: https://alioth.debian.org/anonscm/git/printing/cups.git
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=printing/cups.git
 
 Package: libcups2
 Section: libs
@@ -259,6 +259,7 @@ Description: Common UNIX Printing System(tm) - client programs (SysV)
 Package: libcups2-dev
 Section: libdevel
 Architecture: any
+Multi-Arch: same
 Depends: ${shlibs:Depends}, ${misc:Depends},
  libcups2 (= ${binary:Version}), 
  libgnutls-dev,

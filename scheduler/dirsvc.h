@@ -55,8 +55,6 @@ VAR AvahiThreadedPoll	*DNSSDMaster	VALUE(NULL);
 					/* Master polling interface for Avahi */
 VAR AvahiClient		*DNSSDClient	VALUE(NULL);
 					/* Client information */
-VAR int			DNSSDAvahiServerPresent	VALUE(0);
-					/* avahi-daemon present? */
 #  endif /* HAVE_DNSSD */
 VAR cupsd_srv_t		WebIFSrv	VALUE(NULL);
 					/* Service reference for the web interface */

@@ -296,6 +296,12 @@ cupsdGetPrivateAttrs(
 		  con->http.fd, printer, printer ? printer->name : "", owner);
 #endif /* DEBUG */
 
+  if (!policy)
+  {
+    cupsdLogMessage(CUPSD_LOG_CRIT, "cupsdGetPrivateAttrs: policy=%p, con=%p, printer=%p, owner=\"%s\", DefaultPolicyPtr=%p: This should never happen, please report a bug.", policy, con, printer, owner, DefaultPolicyPtr);
+    policy = DefaultPolicyPtr;
+  }
+
  /*
   * Get the access and attributes lists that correspond to the request...
   */

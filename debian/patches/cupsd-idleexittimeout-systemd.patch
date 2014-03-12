@@ -1,6 +1,6 @@
 Description: When cupsd is started by systemd, let it die after 30 seconds by default
 Author: Didier Raboud <odyx@debian.org>
-Last-Update: 2013-02-23
+Last-Update: 2014-03-03
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -80,6 +80,7 @@
@@ -49,3 +49,13 @@ Last-Update: 2013-02-23
    return (0);
  }
  #endif /* HAVE_SYSTEMD */
+--- a/data/cups.service.in
++++ b/data/cups.service.in
+@@ -1,6 +1,7 @@
+ [Unit]
+ Description=CUPS Printing Service
+ Documentation=man:cupsd(8) man:cupsd.conf(5)
++Requires=cups.socket
+ 
+ [Service]
+ ExecStart=@sbindir@/cupsd -f

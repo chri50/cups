@@ -7,12 +7,6 @@ case "$1" in
         if [ -z "`getent group lpadmin`" ]; then
             addgroup --system lpadmin
         fi
-
-        if ! dpkg-statoverride --list /usr/bin/lppasswd > /dev/null
-        then
-            chown root:lpadmin /usr/bin/lppasswd
-            chmod u+s /usr/bin/lppasswd
-        fi
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
