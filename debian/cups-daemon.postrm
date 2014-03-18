@@ -17,6 +17,7 @@ case "$1" in
 	rm -rf /etc/cups/passwd.md5
 	rm -rf /etc/cups/cups.d
 	rm -f /etc/cups/cupsd.conf
+	rm -f /etc/cups/cupsd-systemd-listen.conf
 	rm -f /etc/cups/cupsd.conf.pre16-bak
 	rm -f /etc/cups/printers.conf* /etc/cups/classes.conf*
 	rmdir /etc/cups 2>/dev/null || true

@@ -1,3 +1,12 @@
+cups (1.7.1-9) unstable; urgency=medium
+
+  * Remove cupsd-systemd-listen.conf on purge (Closes: #741489)
+  * In logrotate script, use 'compress' in addition to 'delaycompress',
+  * thanks to Michael Biebl (Closes: #741896), re-order and compress the
+    logs that weren't in postinst.
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 18 Mar 2014 19:34:44 +0100
+
 cups (1.7.1-8) unstable; urgency=medium
 
   [ Helge Kreutzmann ]
