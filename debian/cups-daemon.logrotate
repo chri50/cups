@@ -6,6 +6,7 @@
 	postrotate
 		invoke-rc.d --quiet cups restart > /dev/null
 	endscript
+	compress
 	delaycompress
 	notifempty
 	create

@@ -116,6 +116,25 @@ EOF
             fi
         fi
     fi
+
+    if dpkg --compare-versions "$2" le "1.7.1-9~" && [ -x /usr/sbin/logrotate ]; then
+        rotatemax=$(grep '^\s*rotate' /etc/logrotate.d/cups-daemon | sed -e 's/^\s*rotate\s*\(\d*\)/\1/g')
+        for logfiletype in access_log error_log cups-pdf_log error_log page_log; do
+            for biggest_non_gzipped in $(seq $rotatemax -1 1); do
+                if [ -f /var/log/cups/$logfiletype.$biggest_non_gzipped ]; then
+                    max=$((rotatemax-biggest_non_gzipped))
+                    for i in $(seq 1 $max); do
+                        new=$((i+biggest_non_gzipped))
+                        [ ! -f /var/log/cups/$logfiletype.$i.gz ] && rename -f "s/${i}\.gz$/${new}\.gz/" /var/log/cups/$logfiletype.$i.gz
+                    done
+                    for i in $(seq 1 $biggest_non_gzipped); do
+                        gzip -f /var/log/cups/$logfiletype.$i
+                    done
+                    break;
+                fi
+            done
+        done
+    fi
 fi
 
 #DEBHELPER#
