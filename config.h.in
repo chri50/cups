@@ -451,6 +451,13 @@
 
 
 /*
+ * Do we have systemd support?
+ */
+
+#undef HAVE_SYSTEMD
+
+
+/*
  * Various scripting languages...
  */
 
