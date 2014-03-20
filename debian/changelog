@@ -1,3 +1,12 @@
+cups (1.7.1-10) unstable; urgency=medium
+
+  [ Till Kamppeter ]
+  * Remove upstream patch to fix race condition in cupsDoIORequest, as this
+    does not actually solve STR #4386 and also causes STR #4391, CUPS not being
+    able to communicate with Brother printers anymore
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 20 Mar 2014 22:00:41 +0100
+
 cups (1.7.1-9) unstable; urgency=medium
 
   * Remove cupsd-systemd-listen.conf on purge (Closes: #741489)
