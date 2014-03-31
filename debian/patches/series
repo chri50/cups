@@ -1,4 +1,5 @@
 # patches accepted and committed upstream:
+str4393-fix-memoryleak-in-rastertolabel.patch
 fix-cupsdgetprivateattrs-function-missing-null-check.patch
 fix-cupsenumdests-does-not-fill-in-is_default-field.patch
 cupsenumdests-does-not-set-cb.patch
@@ -56,8 +57,7 @@ man-cups-lpd-drop-dangling-references.patch
 cupsd-idleexittimeout-systemd.patch
 cupsd-write-systemd-Port.patch
 lppasswd-manpage-mention-dpkg-statoverride.patch
-# Disabled in 1.6.1-1 as it breaks the tests. It addresses #593338
-# pstops-based-workflow-only-for-printing-ps-on-a-ps-printer.patch
+debianize_cups-config.patch
 
 # This one has been submitted upstream but no answer has been given yet,
 # po4a might not be appropriate. It also needs to be high on the patch

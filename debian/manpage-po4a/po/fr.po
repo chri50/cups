@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups\n"
-"POT-Creation-Date: 2014-03-11 16:58+0100\n"
+"POT-Creation-Date: 2014-03-26 07:59+0100\n"
 "PO-Revision-Date: 2013-01-27 19:07+0100\n"
 "Last-Translator: Julien Patriarca <leatherface@debian.org>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
@@ -7865,12 +7865,13 @@ msgstr ""
 msgid "ATTR tag attribute-name value(s)"
 msgstr "ATTR: attribut=valeur [attribut=valeur]"
 
-#.  character. Common attributes and values are listed in the IANA IPP registry \- see references below.
 #. type: Plain text
 #: ipptoolfile.man:156
 msgid ""
 "Adds an attribute to the test request. Values are separated by the comma (\","
-"\")  character - escape commas using the \""
+"\")  character - escape commas using the \"\\e\" character. Common "
+"attributes and values are listed in the IANA IPP registry - see references "
+"below."
 msgstr ""
 
 #. type: TP

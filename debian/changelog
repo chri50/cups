@@ -1,3 +1,26 @@
+cups (1.7.1-11) unstable; urgency=medium
+
+  [ Didier Raboud ]
+  * Add patch on cups-config to:
+    - let it use dpkg-architecture at runtime to make it
+      architecture-independent (Closes: #741519)
+    - avoid /usr/lib/triplet appearing in --ldflags output
+      (Closes: #727058)
+    - strip unnecessary libs from --libs output (Closes: #730838); therefore
+      also strip libgnutls-dev and libkrb5-dev from libcups2-dev's Depends
+  * Drop now-unused rfc2911 patch in ipptoolfile manpage as it got replaced by
+    upstream's; fix missing backslash escape in upstream fix that broke po4a
+    translation, thanks to Helge Kreutzmann
+  * Add upstream patch to fix memoryleak in rastertolabel
+  * Move the cupsd-systemd-listen.conf file creation from postinst to preinst as
+    it is a symlink's destination. Letting said symlink be dangling for a
+    timespan can make systemd crash, see #742322
+
+  [ Helge Kreutzmann ]
+  * Update German man page (1525t)
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 31 Mar 2014 10:00:00 +0200
+
 cups (1.7.1-10) unstable; urgency=medium
 
   [ Till Kamppeter ]

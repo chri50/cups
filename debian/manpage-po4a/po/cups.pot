@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2014-03-11 16:58+0100\n"
+"POT-Creation-Date: 2014-03-26 07:59+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6031,12 +6031,13 @@ msgstr ""
 msgid "ATTR tag attribute-name value(s)"
 msgstr ""
 
-#.  character. Common attributes and values are listed in the IANA IPP registry \- see references below.
 #. type: Plain text
 #: ipptoolfile.man:156
 msgid ""
 "Adds an attribute to the test request. Values are separated by the comma "
-"(\",\")  character - escape commas using the \""
+"(\",\")  character - escape commas using the \"\\e\" character. Common "
+"attributes and values are listed in the IANA IPP registry - see references "
+"below."
 msgstr ""
 
 #. type: TP

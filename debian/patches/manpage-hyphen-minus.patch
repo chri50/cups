@@ -1,9 +1,10 @@
 Description: Fix all spotted hyphen-used-as-minus-sign manpage errors
  Automatically generated using sed -i -s 's/^-/\\-/g;s/ -/ \\-/g' man/*.man*
+ Also fix a missing backslash escape
 Author: Didier Raboud <odyx@debian.org>
 Origin: vendor
 Bug-Upstream: https://cups.org/str.php?L4299
-Last-Update: 2014-01-04
+Last-Update: 2014-03-26
 
 --- a/man/cups-files.conf.man.in
 +++ b/man/cups-files.conf.man.in
@@ -1149,7 +1150,7 @@ Last-Update: 2014-01-04
  ATTR tag attribute-name value(s)
  Adds an attribute to the test request. Values are separated by the comma (",")
 -character - escape commas using the "\" character. Common attributes and values are listed in the IANA IPP registry - see references below.
-+character \- escape commas using the "\" character. Common attributes and values are listed in the IANA IPP registry \- see references below.
++character \- escape commas using the "\\" character. Common attributes and values are listed in the IANA IPP registry \- see references below.
  .TP 5
  ATTR collection attribute-name { MEMBER tag member-name value(s) ... } [ ... { ... } ]
  Adds a collection attribute to the test request. Member attributes follow the
