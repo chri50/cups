@@ -1,0 +1,39 @@
+Description: Use dpkg-architecture in cups-config to make it architecture-independant
+ Also filter -L/usr/lib/(triplet) out of LDFLAGS.
+ Also strip unnecessary libs from --libs.
+Bug-Debian: https://bugs.debian.org/741519
+Bug-Debian: https://bugs.debian.org/727058
+Bug-Debian: https://bugs.debian.org/730838
+Author: Didier Raboud <odyx@debian.org>
+Last-Update: 2014-03-28
+--- a/cups-config.in
++++ b/cups-config.in
+@@ -22,8 +22,8 @@
+ exec_prefix=@exec_prefix@
+ bindir=@bindir@
+ includedir=@includedir@
+-libdir=@libdir@
+-imagelibdir=@libdir@
++libdir=${prefix}/lib/$(dpkg-architecture -qDEB_HOST_ARCH)
++imagelibdir=${prefix}/lib/$(dpkg-architecture -qDEB_HOST_ARCH)
+ datarootdir=@datadir@
+ datadir=@datadir@
+ sysconfdir=@sysconfdir@
+@@ -50,7 +50,7 @@
+ 	CFLAGS="$CFLAGS -I$includedir"
+     fi
+ 
+-    if test $libdir != /usr/lib -a $libdir != /usr/lib32 -a $libdir != /usr/lib64; then
++    if test $libdir != /usr/lib -a $libdir != /usr/lib32 -a $libdir != /usr/lib64 -a $libdir != /usr/lib/$(dpkg-architecture -qDEB_HOST_ARCH); then
+ 	LDFLAGS="$LDFLAGS -L$libdir"
+     fi
+ fi
+@@ -105,7 +105,7 @@
+ 	    ;;
+ 	--libs)
+ 	    if test $static = no; then
+-	        libs="@EXTLINKCUPS@ $LIBS";
++	        libs="@EXTLINKCUPS@";
+  	        if test $image = yes; then
+  	            libs="@EXTLINKCUPSIMAGE@ $libs"
+ 		fi

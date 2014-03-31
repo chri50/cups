@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 1.7.1-2\n"
-"POT-Creation-Date: 2014-03-11 16:58+0100\n"
-"PO-Revision-Date: 2014-03-03 19:49+0100\n"
+"POT-Creation-Date: 2014-03-26 07:59+0100\n"
+"PO-Revision-Date: 2014-03-27 20:43+0100\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
 "Language: de\n"
@@ -4080,10 +4080,6 @@ msgstr "SyncOnClose No"
 
 #. type: Plain text
 #: cups-files.conf.man.in:130
-#, fuzzy
-#| msgid ""
-#| "Specifies whether the scheduler calls I<fsync(2)> after writing "
-#| "configuration or state files. The default is Yes."
 msgid ""
 "Specifies whether the scheduler calls I<fsync(2)> after writing "
 "configuration or state files. The default is Yes."
@@ -5172,7 +5168,6 @@ msgstr ""
 "fragen Sie beim Betriebssystem-Vertreiber nach, ob es auf Ihrem System "
 "aktiviert ist oder nicht."
 
-# type: Plain text
 #. type: Plain text
 #: cups-lpd.man.in:110
 msgid ""
@@ -5187,7 +5182,6 @@ msgstr ""
 "standardmäßigen Berkeley-LPD-Implementierungen unterscheidet, sollte es den "
 "normalen Betrieb von Clients nicht betreffen."
 
-# type: Plain text
 #. type: Plain text
 #: cups-lpd.man.in:115
 msgid ""
@@ -5202,8 +5196,6 @@ msgstr ""
 
 #. type: Plain text
 #: cups-lpd.man.in:118
-#, fuzzy
-#| msgid "I<cupsd(8)>, I<inetd(8)>, I<xinetd(8)>,"
 msgid "I<cupsd(8)>, I<inetd(8)>, I<xinetd(8)>,"
 msgstr "I<cupsd(8)>, I<inetd(8)>, I<xinetd(8)>,"
 
@@ -6595,11 +6587,6 @@ msgstr "--stop-after-include-error"
 
 #. type: Plain text
 #: ipptool.man:48
-#, fuzzy
-#| msgid ""
-#| "Tells I<ipptool> to stop if an error occurs in an included file. Normally "
-#| "I<ipptool> will continue with subsequent tests after the INCLUDE "
-#| "directive."
 msgid ""
 "Tells I<ipptool> to stop if an error occurs in an included file. Normally "
 "I<ipptool> will continue with subsequent tests after the INCLUDE directive."
@@ -6965,8 +6952,6 @@ msgstr ""
 
 #. type: Plain text
 #: ipptool.man:156
-#, fuzzy
-#| msgid "I<ipptoolfile(5)>, RFC 2911,"
 msgid "I<ipptoolfile(5)>, RFC 2911,"
 msgstr "I<ipptoolfile(5)>, RFC 2911,"
 
@@ -7425,22 +7410,18 @@ msgstr "Die nachfolgenden Direktiven werden in einem Test verstanden:"
 msgid "ATTR tag attribute-name value(s)"
 msgstr "ATTR Markierung Attributname Wert(e)"
 
-# FIXME Broken man page?
-#.  character. Common attributes and values are listed in the IANA IPP registry \- see references below.
 #. type: Plain text
 #: ipptoolfile.man:156
-#, fuzzy
-#| msgid ""
-#| "Adds an attribute to the test request. Values are separated by the comma "
-#| "(\",\")  character - escape commas using the \"\\e\" character. Possible "
-#| "attribute-name are defined in RFC2911."
 msgid ""
 "Adds an attribute to the test request. Values are separated by the comma (\","
-"\")  character - escape commas using the \""
+"\")  character - escape commas using the \"\\e\" character. Common "
+"attributes and values are listed in the IANA IPP registry - see references "
+"below."
 msgstr ""
 "Fügt der Testanfrage ein Attribut hinzu. Werte werden durch Kommata (»,«) "
-"getrennt, maskieren Sie Kommata mit dem Zeichen \"\\e\". Mögliche "
-"Attributnamen sind in RFC2911 definiert."
+"getrennt, maskieren Sie Kommata mit dem Zeichen \"\\e\". Gebräuchliche "
+"Attribute und Werte werden in der IANA-IPP-Registratur aufgeführt -- lesen "
+"Sie die Referenzen unten."
 
 #. type: TP
 #: ipptoolfile.man:156
@@ -8810,8 +8791,6 @@ msgstr ""
 
 #. type: Plain text
 #: ipptoolfile.man:618
-#, fuzzy
-#| msgid "I<ipptool(1)>, RFC 2911,"
 msgid "I<ipptool(1)>, RFC 2911,"
 msgstr "I<ipptool(1)>, RFC 2911,"
 
@@ -10633,6 +10612,8 @@ msgid ""
 "This change will be overriden by further updates of the cups-client "
 "package.  The following command ensures that it will be preserved:"
 msgstr ""
+"Diese Änderung wird bei weiteren Updates des Pakets cups-client außer Kraft "
+"gesetzt. Der folgende Befehl sorgt dafür, dass sie beibehalten wird:"
 
 #. type: Plain text
 #: lppasswd.man:62
