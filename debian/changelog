@@ -1,3 +1,15 @@
+cups (1.7.1-12) unstable; urgency=medium
+
+  [ Didier Raboud ]
+  * Fix the implicit-declaration problem in the D-BUS threading patch
+    by backporting an upstream update
+
+  [ Alf Gaida ]
+  * Create /etc/cups directory before attempting to create files in it
+    (Closes: #743249)
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 01 Apr 2014 08:00:00 +0200
+
 cups (1.7.1-11) unstable; urgency=medium
 
   [ Didier Raboud ]
