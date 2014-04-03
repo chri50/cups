@@ -1,3 +1,13 @@
+cups (1.7.1-5ubuntu10) trusty; urgency=low
+
+  * fix-a-dbus-threading-issue-that-caused-the-scheduler-to-crash.patch:
+    Replace the old cupsd-enable-dbus-threading-support.patch by the patch from
+    the current Debian package, containing an extra fix from CUPS upstream.
+  * str4393-fix-memoryleak-in-rastertolabel.patch: Fixed memory leaks in the
+    rastertolabel filter (CUPS STR #4393).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Thu,  3 Apr 2014 23:17:01 +0200
+
 cups (1.7.1-5ubuntu9) trusty; urgency=low
 
   * fix-race-condition-in-cupsdoiorequest.patch: Removed, as this does not

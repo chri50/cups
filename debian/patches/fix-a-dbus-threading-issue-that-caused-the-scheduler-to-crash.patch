@@ -1,3 +1,16 @@
+commit 0cf0c416ec73f65d4631ec8e2b6409f95462c76e
+commit e7f455a5b39f6716835b083be5ba49a5cd795675
+Author: msweet <msweet@a1ca3aef-8c08-0410-bb20-df032aa958be>
+Date:   Fri Mar 21 18:17:50 2014 +0000
+
+    Fix a D-BUS threading issue that caused the scheduler to crash (STR #4347)
+    
+    Apparently D-BUS is not thread-safe by default...
+    
+    
+    git-svn-id: svn+ssh://src.apple.com/svn/cups/cups.org/trunk@11626 a1ca3aef-8c08-0410-bb20-df032aa958be
+    git-svn-id: svn+ssh://src.apple.com/svn/cups/cups.org/trunk@11720 a1ca3aef-8c08-0410-bb20-df032aa958be
+
 --- a/config-scripts/cups-common.m4
 +++ b/config-scripts/cups-common.m4
 @@ -303,16 +303,11 @@
@@ -43,7 +56,18 @@
  /*
 --- a/scheduler/main.c
 +++ b/scheduler/main.c
-@@ -506,6 +506,14 @@
+@@ -70,6 +70,10 @@
+ #  include <notify.h>
+ #endif /* HAVE_NOTIFY_H */
+ 
++#ifdef HAVE_DBUS
++#  include <dbus/dbus.h>
++#endif /* HAVE_DBUS */
++
+ #ifdef HAVE_SYS_PARAM_H
+ #  include <sys/param.h>
+ #endif /* HAVE_SYS_PARAM_H */
+@@ -506,6 +510,14 @@
    setlocale(LC_TIME, "");
  #endif /* LC_TIME */
  
@@ -52,7 +76,7 @@
 +  * Enable threading support for D-BUS...
 +  */
 +
-+  dbus_threads_init();
++  dbus_threads_init_default();
 +#endif /* HAVE_DBUS_THREADS_INIT */
 +
   /*
