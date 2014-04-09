@@ -54,11 +54,11 @@ must be made setuid to root with the command:
 chmod u+s lppasswd
 .RE
 .fi
-This change will be overriden by further updates of the cups-client package.
+This change will be overridden by further updates of the cups\-client package.
 The following command ensures that it will be preserved:
 .nf
 .RS
-dpkg-statoverride --add root root 4755 /usr/bin/lppasswd
+dpkg-statoverride \-\-add root root 4755 /usr/bin/lppasswd
 .RE
 .fi
 .PP

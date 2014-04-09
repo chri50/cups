@@ -27,7 +27,7 @@ Build-Depends:
  libdbus-1-dev (>= 1.0.2),
  libfontconfig1-dev,
  libfreetype6-dev,
- libgnutls-dev, 
+ libgnutls28-dev,
  libijs-dev,
  libjpeg-dev,
  libldap2-dev,
@@ -47,6 +47,8 @@ Build-Depends:
 # Needed for running the tests, not for the build
  cups-filters (>= 1.0.38~),
  libcupsfilters-dev (>= 1.0.38~)
+# libgmp-dev is not GPL-2 compatible before it's 6 release, which makes it also GPL-2+
+Build-Conflicts: libgmp-dev (<< 2:6)
 Homepage: http://www.cups.org
 Vcs-Git: https://alioth.debian.org/anonscm/git/printing/cups.git
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=printing/cups.git

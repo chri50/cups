@@ -1,3 +1,19 @@
+cups (1.7.1-13) unstable; urgency=medium
+
+  * Fix hyphen-used-as-minus and a typo in the lppasswd manpage patch
+  * Build against GnuTLS 3.x (Closes: #638416, #714492)
+    - Add Build-Conflicts against libgmp-dev (<< 2:6) to avoid license
+      incompatibilities
+    - Build-Depend against libgnutls28-dev
+    - Add patch to stop build-depending on libgcrypt as nothing is used from
+      it (STR: #4399)
+    - Refresh affected patches
+  * In the postinst code fixing the lack of 'compress' stanza in the logrotate
+    for some versions, don't assume that all uncompressed files are present;
+    also clarify when the renaming should happen (Closes: #742668)
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 09 Apr 2014 21:04:57 +0200
+
 cups (1.7.1-12) unstable; urgency=medium
 
   [ Didier Raboud ]

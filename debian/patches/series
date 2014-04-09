@@ -15,6 +15,7 @@ fixes-for-jobs-with-multiple-files-and-multiple-formats.patch
 build-with-full-relro.patch
 fix-template.c-typo.patch
 cupsd-idleexittimeout.patch
+cups-no-gcrypt.patch
 
 # patches which should go upstream
 color-management-extension.patch
