@@ -97,10 +97,14 @@ if [ "$1" = configure ]; then
                     max=$((rotatemax-biggest_non_gzipped))
                     for i in $(seq 1 $max); do
                         new=$((i+biggest_non_gzipped))
-                        [ ! -f /var/log/cups/$logfiletype.$i.gz ] && rename -f "s/${i}\.gz$/${new}\.gz/" /var/log/cups/$logfiletype.$i.gz
+                        if [ -f /var/log/cups/$logfiletype.$i.gz ]; then
+                            mv /var/log/cups/$logfiletype.$i.gz /var/log/cups/$logfiletype.$new.gz
+                        fi
                     done
                     for i in $(seq 1 $biggest_non_gzipped); do
-                        gzip -f /var/log/cups/$logfiletype.$i
+                        if [ -f /var/log/cups/$logfiletype.$i ]; then
+                          gzip -f /var/log/cups/$logfiletype.$i
+                        fi
                     done
                     break;
                 fi

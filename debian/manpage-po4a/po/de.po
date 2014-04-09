@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 1.7.1-2\n"
-"POT-Creation-Date: 2014-03-26 07:59+0100\n"
+"POT-Creation-Date: 2014-04-01 09:35+0300\n"
 "PO-Revision-Date: 2014-03-27 20:43+0100\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
@@ -10609,7 +10609,7 @@ msgstr "chmod u+s lppasswd\n"
 #. type: Plain text
 #: lppasswd.man:59
 msgid ""
-"This change will be overriden by further updates of the cups-client "
+"This change will be overridden by further updates of the cups-client "
 "package.  The following command ensures that it will be preserved:"
 msgstr ""
 "Diese Änderung wird bei weiteren Updates des Pakets cups-client außer Kraft "

@@ -247,7 +247,7 @@ Last-Update: 2014-03-03
  #if defined(HAVE_MALLOC_H) && defined(HAVE_MALLINFO)
  #  include <malloc.h>
  #endif /* HAVE_MALLOC_H && HAVE_MALLINFO */
-@@ -83,6 +89,9 @@
+@@ -87,6 +93,9 @@
  static void		launchd_checkin(void);
  static void		launchd_checkout(void);
  #endif /* HAVE_LAUNCHD */
@@ -257,7 +257,7 @@ Last-Update: 2014-03-03
  static void		parent_handler(int sig);
  static void		process_children(void);
  static void		sigchld_handler(int sig);
-@@ -597,6 +606,14 @@
+@@ -601,6 +610,14 @@
    }
  #endif /* HAVE_LAUNCHD */
  
@@ -272,7 +272,7 @@ Last-Update: 2014-03-03
   /*
    * Startup the server...
    */
-@@ -785,6 +802,16 @@
+@@ -789,6 +806,16 @@
  	}
  #endif /* HAVE_LAUNCHD */
  
@@ -289,7 +289,7 @@ Last-Update: 2014-03-03
         /*
          * Startup the server...
          */
-@@ -1568,6 +1595,104 @@
+@@ -1572,6 +1599,104 @@
  }
  #endif /* HAVE_LAUNCHD */
  
