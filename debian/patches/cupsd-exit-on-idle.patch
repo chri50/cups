@@ -30,7 +30,7 @@
  					/* Time after which an idle cupsd will exit */
 --- a/scheduler/main.c
 +++ b/scheduler/main.c
-@@ -120,6 +120,8 @@
+@@ -99,6 +99,8 @@
       char *argv[])			/* I - Command-line arguments */
  {
    int			i;		/* Looping var */
@@ -39,7 +39,7 @@
    char			*opt;		/* Option character */
    int			fg;		/* Run in the foreground */
    int			fds;		/* Number of ready descriptors */
-@@ -145,6 +147,8 @@
+@@ -124,6 +126,8 @@
  #else
    time_t		netif_time = 0;	/* Time since last network update */
  #endif /* __APPLE__ */
@@ -48,7 +48,7 @@
  #if HAVE_LAUNCHD
    int			launchd_idle_exit;
  					/* Idle exit on select timeout? */
-@@ -169,6 +173,11 @@
+@@ -148,6 +152,11 @@
  
    fg = 0;
  
@@ -60,7 +60,7 @@
  #ifdef HAVE_LAUNCHD
    if (getenv("CUPSD_LAUNCHD"))
    {
-@@ -310,6 +319,21 @@
+@@ -289,6 +298,21 @@
  	      fg             = 1;
  	      break;
  
@@ -82,7 +82,7 @@
  	  default : /* Unknown option */
                _cupsLangPrintf(stderr, _("cupsd: Unknown option \"%c\" - "
  	                                "aborting."), *opt);
-@@ -563,6 +587,13 @@
+@@ -542,6 +566,13 @@
    }
  
   /*
@@ -96,7 +96,7 @@
    * Clean out old temp files and printer cache data.
    */
  
-@@ -812,6 +843,26 @@
+@@ -791,6 +822,26 @@
      if ((timeout = select_timeout(fds)) > 1 && LastEvent)
        timeout = 1;
  
@@ -123,7 +123,7 @@
  #if HAVE_LAUNCHD
     /*
      * If no other work is scheduled and we're being controlled by
-@@ -925,6 +976,20 @@
+@@ -904,6 +955,20 @@
      }
  #endif /* !__APPLE__ */
  

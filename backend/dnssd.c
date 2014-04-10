@@ -1,5 +1,5 @@
 /*
- * "$Id: dnssd.c 4074 2012-12-12 20:54:21Z msweet $"
+ * "$Id: dnssd.c 11623 2014-02-19 20:18:10Z msweet $"
  *
  *   DNS-SD discovery backend for CUPS.
  *
@@ -560,12 +560,12 @@ main(int  argc,				/* I - Number of command-line args */
 
       fprintf(stderr, "DEBUG: sent=%d, count=%d\n", sent, count);
 
-      if (sent == cupsArrayCount(devices))
 #ifdef HAVE_AVAHI
-	  if (browsers == 0)
-	      /* All service browsers have finished */
+      if (sent == cupsArrayCount(devices) && browsers == 0)
+#else
+      if (sent == cupsArrayCount(devices))
 #endif /* HAVE_AVAHI */
-	      break;
+	break;
     }
   }
 
@@ -1329,5 +1329,5 @@ unquote(char       *dst,		/* I - Destination buffer */
 
 
 /*
- * End of "$Id: dnssd.c 4074 2012-12-12 20:54:21Z msweet $".
+ * End of "$Id: dnssd.c 11623 2014-02-19 20:18:10Z msweet $".
  */

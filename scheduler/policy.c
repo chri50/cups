@@ -1,5 +1,5 @@
 /*
- * "$Id: policy.c 10996 2013-05-29 11:51:34Z msweet $"
+ * "$Id: policy.c 11684 2014-03-05 20:01:48Z msweet $"
  *
  * Policy routines for the CUPS scheduler.
  *
@@ -503,5 +503,5 @@ hash_op(cupsd_location_t *op)		/* I - Operation */
 
 
 /*
- * End of "$Id: policy.c 10996 2013-05-29 11:51:34Z msweet $".
+ * End of "$Id: policy.c 11684 2014-03-05 20:01:48Z msweet $".
  */

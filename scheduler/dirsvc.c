@@ -1,46 +1,16 @@
 /*
- * "$Id: dirsvc.c 11193 2013-07-26 03:12:37Z msweet $"
+ * "$Id: dirsvc.c 11688 2014-03-05 21:11:32Z msweet $"
  *
- *   Directory services routines for the CUPS scheduler.
+ * Directory services routines for the CUPS scheduler.
  *
- *   Copyright 2007-2013 by Apple Inc.
- *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright 2007-2014 by Apple Inc.
+ * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
- *
- * Contents:
- *
- *   cupsdDeregisterPrinter()  - Stop sending broadcast information for a local
- *				 printer and remove any pending references to
- *				 remote printers.
- *   cupsdRegisterPrinter()    - Start sending broadcast information for a
- *				 printer or update the broadcast contents.
- *   cupsdStartBrowsing()      - Start sending and receiving broadcast
- *				 information.
- *   cupsdStopBrowsing()       - Stop sending and receiving broadcast
- *				 information.
- *   cupsdUpdateDNSSDName()    - Update the computer name we use for
- *				 browsing...
- *   dnssdAddAlias()	       - Add a DNS-SD alias name.
- *   dnssdBuildTxtRecord()     - Build a TXT record from printer info.
- *   dnssdDeregisterInstance() - Deregister a DNS-SD service instance.
- *   dnssdDeregisterPrinter()  - Deregister all services for a printer.
- *   dnssdErrorString()        - Return an error string for an error code.
- *   dnssdRegisterCallback()   - Free a TXT record.
- *   dnssdRegisterCallback()   - DNSServiceRegister callback.
- *   dnssdRegisterInstance()   - Register an instance of a printer service.
- *   dnssdRegisterPrinter()    - Start sending broadcast information for a
- *				 printer or update the broadcast contents.
- *   dnssdStop()	       - Stop all DNS-SD registrations.
- *   dnssdUpdate()	       - Handle DNS-SD queries.
- *   get_auth_info_required()  - Get the auth-info-required value to advertise.
- *   get_hostconfig()	       - Get an /etc/hostconfig service setting.
- *   update_lpd()	       - Update the LPD configuration as needed.
- *   update_smb()	       - Update the SMB configuration as needed.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -236,9 +206,7 @@ cupsdStartBrowsing(void)
     {
       int error;			/* Error code, if any */
 
-      DNSSDClient = avahi_client_new(avahi_threaded_poll_get(DNSSDMaster),
-				     AVAHI_CLIENT_NO_FAIL, dnssdClientCallback,
-				     NULL, &error);
+      DNSSDClient = avahi_client_new(avahi_threaded_poll_get(DNSSDMaster), AVAHI_CLIENT_NO_FAIL, dnssdClientCallback, NULL, &error);
 
       if (DNSSDClient == NULL)
       {
@@ -1852,5 +1820,5 @@ update_smb(int onoff)			/* I - 1 = turn on, 0 = turn off */
 
 
 /*
- * End of "$Id: dirsvc.c 11193 2013-07-26 03:12:37Z msweet $".
+ * End of "$Id: dirsvc.c 11688 2014-03-05 21:11:32Z msweet $".
  */
