@@ -1,5 +1,5 @@
 .\"
-.\" "$Id: ipptoolfile.man 11022 2013-06-06 22:14:09Z msweet $"
+.\" "$Id: ipptoolfile.man 11734 2014-03-25 18:01:47Z msweet $"
 .\"
 .\" ipptoolfile man page for CUPS.
 .\"
@@ -11,7 +11,7 @@
 .\" which should have been included with this file.  If this file is
 .\" file is missing or damaged, see the license at "http://www.cups.org/".
 .\"
-.TH ipptoolfile 5 "CUPS" "20 February 2014" "Apple Inc."
+.TH ipptoolfile 5 "CUPS" "25 March 2014" "Apple Inc."
 .SH NAME
 ipptoolfile \- ipptool file format
 
@@ -423,8 +423,8 @@ RFC 2911 and other IPP extension specifications. Here is a complete list:
     Cancel-Subscription
     Close-Job
     Create-Job
-    Create-Job-Subscription
-    Create-Printer-Subscription
+    Create-Job-Subscriptions
+    Create-Printer-Subscriptions
     Deactivate-Printer
     Disable-Printer
     Enable-Printer
@@ -624,5 +624,5 @@ http://www.pwg.org/ipp
 .SH COPYRIGHT
 Copyright 2007-2014 by Apple Inc.
 .\"
-.\" End of "$Id: ipptoolfile.man 11022 2013-06-06 22:14:09Z msweet $".
+.\" End of "$Id: ipptoolfile.man 11734 2014-03-25 18:01:47Z msweet $".
 .\"

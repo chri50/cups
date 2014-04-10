@@ -1,5 +1,5 @@
 .\"
-.\" "$Id: ipptool.man 11022 2013-06-06 22:14:09Z msweet $"
+.\" "$Id: ipptool.man 11642 2014-02-27 15:57:59Z msweet $"
 .\"
 .\" ipptool man page for CUPS.
 .\"
@@ -162,5 +162,5 @@ http://www.pwg.org/ipp
 .SH COPYRIGHT
 Copyright 2007-2014 by Apple Inc.
 .\"
-.\" End of "$Id: ipptool.man 11022 2013-06-06 22:14:09Z msweet $".
+.\" End of "$Id: ipptool.man 11642 2014-02-27 15:57:59Z msweet $".
 .\"

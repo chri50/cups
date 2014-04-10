@@ -4,7 +4,7 @@ Description: Fix all spotted hyphen-used-as-minus-sign manpage errors
 Author: Didier Raboud <odyx@debian.org>
 Origin: vendor
 Bug-Upstream: https://cups.org/str.php?L4299
-Last-Update: 2014-03-26
+Last-Update: 2014-04-10
 
 --- a/man/cups-files.conf.man.in
 +++ b/man/cups-files.conf.man.in
@@ -110,8 +110,8 @@ Last-Update: 2014-03-26
  .I filename
  .SH DESCRIPTION
  \fIcupsfilter\fR is a front-end to the CUPS filter subsystem which allows you
-@@ -44,58 +44,58 @@
- through CUPS. By default, \fIcupsfilter\fR generates a PDF file.
+@@ -45,58 +45,58 @@
+ file is sent to the standard output.
  .SH OPTIONS
  .TP 5
 --D
@@ -127,7 +127,7 @@ Last-Update: 2014-03-26
 --c config-file
 +\-c config-file
  .br
- Uses the named cupsd.conf configuration file.
+ Uses the named cups-files.conf configuration file.
  .TP 5
 --d printer
 +\-d printer

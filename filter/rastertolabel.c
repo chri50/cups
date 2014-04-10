@@ -1,5 +1,5 @@
 /*
- * "$Id: rastertolabel.c 10996 2013-05-29 11:51:34Z msweet $"
+ * "$Id: rastertolabel.c 11756 2014-03-27 17:06:25Z msweet $"
  *
  *   Label printer filter for CUPS.
  *
@@ -567,7 +567,7 @@ EndPage(ppd_file_t *ppd,		/* I - PPD file */
 	*/
 
 	if (header->cupsRowStep != 200)
-	  printf("^LT%u\n", header->cupsRowStep);
+	  printf("^LT%d\n", header->cupsRowStep);
 
        /*
         * Set media type...
@@ -1302,5 +1302,5 @@ main(int  argc,				/* I - Number of command-line arguments */
 
 
 /*
- * End of "$Id: rastertolabel.c 10996 2013-05-29 11:51:34Z msweet $".
+ * End of "$Id: rastertolabel.c 11756 2014-03-27 17:06:25Z msweet $".
  */

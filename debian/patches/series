@@ -1,19 +1,9 @@
-# patches accepted and committed upstream:
-str4393-fix-memoryleak-in-rastertolabel.patch
-fix-cupsdgetprivateattrs-function-missing-null-check.patch
-fix-cupsenumdests-does-not-fill-in-is_default-field.patch
-cupsenumdests-does-not-set-cb.patch
-cupsd-support-avahi-daemon-restarting.patch
-prevent-dnssd-backend-exiting-too-early.patch
-fix-a-dbus-threading-issue-that-caused-the-scheduler-to-crash.patch
-ipptool-doco-updates.patch
+# patches accepted and committed upstream
 
 # patches sent upstream
 manpage-hyphen-minus.patch
 rootbackends-worldreadable.patch
 fixes-for-jobs-with-multiple-files-and-multiple-formats.patch
-build-with-full-relro.patch
-fix-template.c-typo.patch
 cupsd-idleexittimeout.patch
 cups-no-gcrypt.patch
 

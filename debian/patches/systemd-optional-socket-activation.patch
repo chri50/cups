@@ -101,7 +101,7 @@ Last-Update: 2014-03-03
  	  doc/help/ref-cupsd-conf.html
 --- a/cups/usersys.c
 +++ b/cups/usersys.c
-@@ -1045,7 +1045,7 @@
+@@ -1050,7 +1050,7 @@
      struct stat	sockinfo;		/* Domain socket information */
  
      if (!stat(CUPS_DEFAULT_DOMAINSOCKET, &sockinfo) &&
@@ -227,16 +227,7 @@ Last-Update: 2014-03-03
        closesocket(lis->fd);
 --- a/scheduler/main.c
 +++ b/scheduler/main.c
-@@ -26,6 +26,8 @@
-  *   launchd_checkin()     - Check-in with launchd and collect the listening
-  *                           fds.
-  *   launchd_checkout()    - Update the launchd KeepAlive file as needed.
-+ *   systemd_checkin()     - Check-in with systemd and collect the
-+ *                           listening fds.
-  *   parent_handler()      - Catch USR1/CHLD signals...
-  *   process_children()    - Process all dead children...
-  *   select_timeout()      - Calculate the select timeout value.
-@@ -62,6 +64,10 @@
+@@ -39,6 +39,10 @@
  #  endif /* !LAUNCH_JOBKEY_SERVICEIPC */
  #endif /* HAVE_LAUNCH_H */
  
@@ -247,7 +238,7 @@ Last-Update: 2014-03-03
  #if defined(HAVE_MALLOC_H) && defined(HAVE_MALLINFO)
  #  include <malloc.h>
  #endif /* HAVE_MALLOC_H && HAVE_MALLINFO */
-@@ -87,6 +93,9 @@
+@@ -64,6 +68,9 @@
  static void		launchd_checkin(void);
  static void		launchd_checkout(void);
  #endif /* HAVE_LAUNCHD */
@@ -257,7 +248,7 @@ Last-Update: 2014-03-03
  static void		parent_handler(int sig);
  static void		process_children(void);
  static void		sigchld_handler(int sig);
-@@ -601,6 +610,14 @@
+@@ -578,6 +585,14 @@
    }
  #endif /* HAVE_LAUNCHD */
  
@@ -272,7 +263,7 @@ Last-Update: 2014-03-03
   /*
    * Startup the server...
    */
-@@ -789,6 +806,16 @@
+@@ -766,6 +781,16 @@
  	}
  #endif /* HAVE_LAUNCHD */
  
@@ -289,7 +280,7 @@ Last-Update: 2014-03-03
         /*
          * Startup the server...
          */
-@@ -1572,6 +1599,104 @@
+@@ -1549,6 +1574,104 @@
  }
  #endif /* HAVE_LAUNCHD */
  

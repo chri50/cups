@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2014-04-01 09:35+0300\n"
+"POT-Creation-Date: 2014-04-10 21:59+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -93,7 +93,7 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: cupsaccept.man:41 cancel.man:36 cupsaddsmb.man.in:45 cups-config.man:58 cupsctl.man:33 cupsd.man.in:28 cupsfilter.man:45 cups-lpd.man.in:62 cupstestppd.man:44 filter.man:44 ipptool.man:40 lpinfo.man:55 lp.man:70 lpmove.man:44 lppasswd.man:41 lpq.man:37 lpr.man:45 lprm.man:35 lpstat.man:43
+#: cupsaccept.man:41 cancel.man:36 cupsaddsmb.man.in:45 cups-config.man:58 cupsctl.man:33 cupsd.man.in:28 cupsfilter.man:46 cups-lpd.man.in:62 cupstestppd.man:44 filter.man:44 ipptool.man:40 lpinfo.man:55 lp.man:70 lpmove.man:44 lppasswd.man:41 lpq.man:37 lpr.man:45 lprm.man:35 lpstat.man:43
 #, no-wrap
 msgid "OPTIONS"
 msgstr ""
@@ -170,7 +170,7 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: cupsaccept.man:70 backend.man:163 cancel.man:71 classes.conf.man:101 client.conf.man.in:59 cupsaddsmb.man.in:168 cups-config.man:111 cupsctl.man:89 cupsd.conf.man.in:515 cups-files.conf.man.in:142 cups-deviced.man.in:36 cupsd.man.in:61 cups-driverd.man.in:114 cupsenable.man:83 cupsfilter.man:101 cups-lpd.man.in:115 cups-snmp.conf.man:70 cupstestdsc.man:41 cupstestppd.man:155 filter.man:230 ipptool.man:154 ipptoolfile.man:616 lpadmin.man:218 lpc.man:62 lpinfo.man:107 lp.man:243 lpmove.man:58 lpoptions.man.in:127 lppasswd.man:69 lpq.man:63 lpr.man:113 lprm.man:56 lpstat.man:135 mailto.conf.man:51 mime.convs.man:37 mime.types.man:106 printers.conf.man:115 subscriptions.conf.man:80
+#: cupsaccept.man:70 backend.man:163 cancel.man:71 classes.conf.man:101 client.conf.man.in:59 cupsaddsmb.man.in:168 cups-config.man:111 cupsctl.man:89 cupsd.conf.man.in:515 cups-files.conf.man.in:142 cups-deviced.man.in:36 cupsd.man.in:61 cups-driverd.man.in:114 cupsenable.man:83 cupsfilter.man:102 cups-lpd.man.in:115 cups-snmp.conf.man:70 cupstestdsc.man:41 cupstestppd.man:155 filter.man:230 ipptool.man:154 ipptoolfile.man:616 lpadmin.man:218 lpc.man:62 lpinfo.man:107 lp.man:243 lpmove.man:58 lpoptions.man.in:127 lppasswd.man:69 lpq.man:63 lpr.man:113 lprm.man:56 lpstat.man:135 mailto.conf.man:51 mime.convs.man:37 mime.types.man:106 printers.conf.man:115 subscriptions.conf.man:80
 #, no-wrap
 msgid "SEE ALSO"
 msgstr ""
@@ -181,18 +181,18 @@ msgid "I<cancel(1)>, I<cupsenable(8)>, I<lp(1)>, I<lpadmin(8)>, I<lpstat(1)>,"
 msgstr ""
 
 #. type: Plain text
-#: cupsaccept.man:75 backend.man:168 cancel.man:75 classes.conf.man:106 client.conf.man.in:61 cups-config.man:113 cupsctl.man:93 cupsd.conf.man.in:521 cups-files.conf.man.in:148 cups-deviced.man.in:40 cupsd.man.in:68 cups-driverd.man.in:118 cupsenable.man:88 cupsfilter.man:105 cups-lpd.man.in:120 cups-snmp.conf.man:74 cupstestdsc.man:43 cupstestppd.man:159 filter.man:234 ipptool.man:158 ipptoolfile.man:620 lpadmin.man:223 lpc.man:67 lpinfo.man:111 lp.man:248 lpmove.man:62 lpoptions.man.in:131 lppasswd.man:73 lpq.man:68 lpr.man:118 lprm.man:61 lpstat.man:139 mailto.conf.man:56 mime.convs.man:42 mime.types.man:111 printers.conf.man:120 subscriptions.conf.man:85
+#: cupsaccept.man:75 backend.man:168 cancel.man:75 classes.conf.man:106 client.conf.man.in:61 cups-config.man:113 cupsctl.man:93 cupsd.conf.man.in:521 cups-files.conf.man.in:148 cups-deviced.man.in:40 cupsd.man.in:68 cups-driverd.man.in:118 cupsenable.man:88 cupsfilter.man:106 cups-lpd.man.in:120 cups-snmp.conf.man:74 cupstestdsc.man:43 cupstestppd.man:159 filter.man:234 ipptool.man:158 ipptoolfile.man:620 lpadmin.man:223 lpc.man:67 lpinfo.man:111 lp.man:248 lpmove.man:62 lpoptions.man.in:131 lppasswd.man:73 lpq.man:68 lpr.man:118 lprm.man:61 lpstat.man:139 mailto.conf.man:56 mime.convs.man:42 mime.types.man:111 printers.conf.man:120 subscriptions.conf.man:85
 msgid "http://localhost:631/help"
 msgstr ""
 
 #. type: SH
-#: cupsaccept.man:75 backend.man:168 cancel.man:75 classes.conf.man:106 client.conf.man.in:61 cupsaddsmb.man.in:172 cups-config.man:113 cupsctl.man:93 cupsd.conf.man.in:521 cups-files.conf.man.in:148 cups-deviced.man.in:40 cupsd.man.in:68 cups-driverd.man.in:118 cupsenable.man:88 cupsfilter.man:105 cups-lpd.man.in:120 cups-snmp.conf.man:74 cupstestdsc.man:46 cupstestppd.man:161 filter.man:234 ipptool.man:162 ipptoolfile.man:624 lpadmin.man:223 lpc.man:67 lpinfo.man:111 lp.man:248 lpmove.man:62 lpoptions.man.in:131 lppasswd.man:73 lpq.man:68 lpr.man:118 lprm.man:61 lpstat.man:139 mailto.conf.man:56 mime.convs.man:42 mime.types.man:111 printers.conf.man:120 subscriptions.conf.man:85
+#: cupsaccept.man:75 backend.man:168 cancel.man:75 classes.conf.man:106 client.conf.man.in:61 cupsaddsmb.man.in:172 cups-config.man:113 cupsctl.man:93 cupsd.conf.man.in:521 cups-files.conf.man.in:148 cups-deviced.man.in:40 cupsd.man.in:68 cups-driverd.man.in:118 cupsenable.man:88 cupsfilter.man:106 cups-lpd.man.in:120 cups-snmp.conf.man:74 cupstestdsc.man:46 cupstestppd.man:161 filter.man:234 ipptool.man:162 ipptoolfile.man:624 lpadmin.man:223 lpc.man:67 lpinfo.man:111 lp.man:248 lpmove.man:62 lpoptions.man.in:131 lppasswd.man:73 lpq.man:68 lpr.man:118 lprm.man:61 lpstat.man:139 mailto.conf.man:56 mime.convs.man:42 mime.types.man:111 printers.conf.man:120 subscriptions.conf.man:85
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr ""
 
 #. type: Plain text
-#: cupsaccept.man:76 backend.man:169 cancel.man:76 classes.conf.man:107 client.conf.man.in:62 cupsaddsmb.man.in:173 cups-config.man:114 cupsctl.man:94 cupsd.conf.man.in:522 cups-files.conf.man.in:149 cups-deviced.man.in:41 cupsd.man.in:69 cups-driverd.man.in:119 cupsenable.man:90 cupsfilter.man:106 cups-lpd.man.in:121 cups-snmp.conf.man:75 cupstestdsc.man:47 cupstestppd.man:162 filter.man:235 lpadmin.man:224 lpc.man:68 lpinfo.man:112 lp.man:249 lpmove.man:63 lpoptions.man.in:132 lppasswd.man:74 lpq.man:69 lpr.man:119 lprm.man:62 lpstat.man:140 mailto.conf.man:57 mime.convs.man:43 mime.types.man:112 printers.conf.man:121 subscriptions.conf.man:86
+#: cupsaccept.man:76 backend.man:169 cancel.man:76 classes.conf.man:107 client.conf.man.in:62 cupsaddsmb.man.in:173 cups-config.man:114 cupsctl.man:94 cupsd.conf.man.in:522 cups-files.conf.man.in:149 cups-deviced.man.in:41 cupsd.man.in:69 cups-driverd.man.in:119 cupsenable.man:90 cups-lpd.man.in:121 cups-snmp.conf.man:75 cupstestdsc.man:47 cupstestppd.man:162 filter.man:235 lpadmin.man:224 lpc.man:68 lpinfo.man:112 lp.man:249 lpmove.man:63 lpoptions.man.in:132 lppasswd.man:74 lpq.man:69 lpr.man:119 lprm.man:62 lpstat.man:140 mailto.conf.man:57 mime.convs.man:43 mime.types.man:112 printers.conf.man:121 subscriptions.conf.man:86
 msgid "Copyright 2007-2013 by Apple Inc."
 msgstr ""
 
@@ -3448,7 +3448,7 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cupsd.man.in:29 cupsfilter.man:54
+#: cupsd.man.in:29 cupsfilter.man:55
 #, no-wrap
 msgid "-c config-file"
 msgstr ""
@@ -3896,7 +3896,7 @@ msgstr ""
 #. type: TH
 #: cupsfilter.man:14
 #, no-wrap
-msgid "20 June 2012"
+msgid "28 March 2014"
 msgstr ""
 
 #. type: Plain text
@@ -3914,98 +3914,99 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: cupsfilter.man:45
+#: cupsfilter.man:46
 msgid ""
 "I<cupsfilter> is a front-end to the CUPS filter subsystem which allows you "
 "to convert a file to a specific format, just as if you had printed the file "
-"through CUPS. By default, I<cupsfilter> generates a PDF file."
+"through CUPS. By default, I<cupsfilter> generates a PDF file. The converted "
+"file is sent to the standard output."
 msgstr ""
 
 #. type: TP
-#: cupsfilter.man:46
+#: cupsfilter.man:47
 #, no-wrap
 msgid "-D"
 msgstr ""
 
 #. type: Plain text
-#: cupsfilter.man:50
+#: cupsfilter.man:51
 msgid "Delete the input file after conversion."
 msgstr ""
 
 #. type: TP
-#: cupsfilter.man:50
+#: cupsfilter.man:51
 #, no-wrap
 msgid "-U user"
 msgstr ""
 
 #. type: Plain text
-#: cupsfilter.man:54
+#: cupsfilter.man:55
 msgid ""
 "Specifies the username passed to the filters. The default is the name of the "
 "current user."
 msgstr ""
 
 #. type: Plain text
-#: cupsfilter.man:58
-msgid "Uses the named cupsd.conf configuration file."
+#: cupsfilter.man:59
+msgid "Uses the named cups-files.conf configuration file."
 msgstr ""
 
 #. type: TP
-#: cupsfilter.man:58
+#: cupsfilter.man:59
 #, no-wrap
 msgid "-d printer"
 msgstr ""
 
 #. type: Plain text
-#: cupsfilter.man:61
+#: cupsfilter.man:62
 msgid "Uses information from the named printer."
 msgstr ""
 
 #. type: TP
-#: cupsfilter.man:61
+#: cupsfilter.man:62
 #, no-wrap
 msgid "-e"
 msgstr ""
 
 #. type: Plain text
-#: cupsfilter.man:65
+#: cupsfilter.man:66
 msgid "Use every filter from the PPD file."
 msgstr ""
 
 #. type: TP
-#: cupsfilter.man:65
+#: cupsfilter.man:66
 #, no-wrap
 msgid "-i mime/type"
 msgstr ""
 
 #. type: Plain text
-#: cupsfilter.man:70
+#: cupsfilter.man:71
 msgid ""
 "Specifies the source file type. The default file type is guessed using the "
 "filename and contents of the file."
 msgstr ""
 
 #. type: TP
-#: cupsfilter.man:70
+#: cupsfilter.man:71
 #, no-wrap
 msgid "-j job-id[,N]"
 msgstr ""
 
 #. type: Plain text
-#: cupsfilter.man:75
+#: cupsfilter.man:76
 msgid ""
 "Converts document N from the specified job. If N is omitted, document 1 is "
 "converted."
 msgstr ""
 
 #. type: TP
-#: cupsfilter.man:75
+#: cupsfilter.man:76
 #, no-wrap
 msgid "-m mime/type"
 msgstr ""
 
 #. type: Plain text
-#: cupsfilter.man:81
+#: cupsfilter.man:82
 msgid ""
 "Specifies the destination file type. The default file type is "
 "application/pdf.  Use printer/foo to convert to the printer format defined "
@@ -4013,63 +4014,68 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cupsfilter.man:81 lp.man:109
+#: cupsfilter.man:82 lp.man:109
 #, no-wrap
 msgid "-n copies"
 msgstr ""
 
 #. type: Plain text
-#: cupsfilter.man:85
+#: cupsfilter.man:86
 msgid "Specifies the number of copies to generate."
 msgstr ""
 
 #. type: TP
-#: cupsfilter.man:85 cups-lpd.man.in:73 lpadmin.man:122
+#: cupsfilter.man:86 cups-lpd.man.in:73 lpadmin.man:122
 #, no-wrap
 msgid "-o name=value"
 msgstr ""
 
 #. type: Plain text
-#: cupsfilter.man:89
+#: cupsfilter.man:90
 msgid "Specifies options to pass to the CUPS filters."
 msgstr ""
 
 #. type: TP
-#: cupsfilter.man:89
+#: cupsfilter.man:90
 #, no-wrap
 msgid "-p filename.ppd"
 msgstr ""
 
 #. type: Plain text
-#: cupsfilter.man:93
+#: cupsfilter.man:94
 msgid "Specifies the PPD file to use."
 msgstr ""
 
 #. type: TP
-#: cupsfilter.man:93
+#: cupsfilter.man:94
 #, no-wrap
 msgid "-t title"
 msgstr ""
 
 #. type: Plain text
-#: cupsfilter.man:97
+#: cupsfilter.man:98
 msgid "Specifies the document title."
 msgstr ""
 
 #. type: TP
-#: cupsfilter.man:97
+#: cupsfilter.man:98
 #, no-wrap
 msgid "-u"
 msgstr ""
 
 #. type: Plain text
-#: cupsfilter.man:101
+#: cupsfilter.man:102
 msgid "Delete the PPD file after conversion."
 msgstr ""
 
 #. type: Plain text
-#: cupsfilter.man:103
-msgid "I<cupsd.conf(5)>"
+#: cupsfilter.man:104
+msgid "I<cups-files.conf(5)>"
+msgstr ""
+
+#. type: Plain text
+#: cupsfilter.man:107 ipptool.man:163 ipptoolfile.man:625
+msgid "Copyright 2007-2014 by Apple Inc."
 msgstr ""
 
 #. type: TH
@@ -5308,7 +5314,7 @@ msgid "ipptool"
 msgstr ""
 
 #. type: TH
-#: ipptool.man:14 ipptoolfile.man:14
+#: ipptool.man:14
 #, no-wrap
 msgid "20 February 2014"
 msgstr ""
@@ -5667,15 +5673,16 @@ msgstr ""
 msgid "http://www.pwg.org/ipp"
 msgstr ""
 
-#. type: Plain text
-#: ipptool.man:163 ipptoolfile.man:625
-msgid "Copyright 2007-2014 by Apple Inc."
+#. type: TH
+#: ipptoolfile.man:14
+#, no-wrap
+msgid "ipptoolfile"
 msgstr ""
 
 #. type: TH
 #: ipptoolfile.man:14
 #, no-wrap
-msgid "ipptoolfile"
+msgid "25 March 2014"
 msgstr ""
 
 #. type: Plain text
@@ -6790,8 +6797,8 @@ msgid ""
 "    Cancel-Subscription\n"
 "    Close-Job\n"
 "    Create-Job\n"
-"    Create-Job-Subscription\n"
-"    Create-Printer-Subscription\n"
+"    Create-Job-Subscriptions\n"
+"    Create-Printer-Subscriptions\n"
 "    Deactivate-Printer\n"
 "    Disable-Printer\n"
 "    Enable-Printer\n"
