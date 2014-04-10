@@ -471,7 +471,7 @@ Last-Update: 2014-01-04
  	    !strcmp(attr->name, "printer-mandatory-job-attributes") ||
 --- a/cups/encode.c
 +++ b/cups/encode.c
-@@ -288,6 +288,7 @@
+@@ -294,6 +294,7 @@
    { 0, "ppd-type",		IPP_TAG_KEYWORD,	IPP_TAG_OPERATION,
  							IPP_TAG_ZERO,
  							cups_get_ppds },
@@ -479,7 +479,7 @@ Last-Update: 2014-01-04
    { 0, "ppi",			IPP_TAG_INTEGER,	IPP_TAG_JOB },
    { 0, "ppi-default",		IPP_TAG_INTEGER,	IPP_TAG_PRINTER },
    { 0, "prettyprint",		IPP_TAG_BOOLEAN,	IPP_TAG_JOB },
-@@ -299,6 +300,7 @@
+@@ -305,6 +306,7 @@
    { 0, "printer-error-policy",	IPP_TAG_NAME,		IPP_TAG_PRINTER },
    { 0, "printer-info",		IPP_TAG_TEXT,		IPP_TAG_PRINTER },
    { 0, "printer-is-accepting-jobs", IPP_TAG_BOOLEAN,	IPP_TAG_PRINTER },
@@ -707,7 +707,7 @@ Last-Update: 2014-01-04
      else
 --- a/scheduler/cups-lpd.c
 +++ b/scheduler/cups-lpd.c
-@@ -71,7 +71,7 @@
+@@ -60,7 +60,7 @@
  			   int num_options, cups_option_t *options);
  static int	get_printer(http_t *http, const char *name, char *dest,
  		            int destsize, cups_option_t **options,
@@ -716,7 +716,7 @@ Last-Update: 2014-01-04
  static int	print_file(http_t *http, int id, const char *filename,
  		           const char *docname, const char *user,
  			   const char *format, int last);
-@@ -412,6 +412,7 @@
+@@ -401,6 +401,7 @@
              int           destsize,	/* I - Size of destination buffer */
  	    cups_option_t **options,	/* O - Printer options */
  	    int           *accepting,	/* O - printer-is-accepting-jobs value */
@@ -724,7 +724,7 @@ Last-Update: 2014-01-04
  	    int           *shared,	/* O - printer-is-shared value */
  	    ipp_pstate_t  *state)	/* O - printer-state value */
  {
-@@ -430,6 +431,7 @@
+@@ -419,6 +420,7 @@
  		{			/* Requested attributes */
  		  "printer-info",
  		  "printer-is-accepting-jobs",
@@ -732,7 +732,7 @@ Last-Update: 2014-01-04
  		  "printer-is-shared",
  		  "printer-name",
  		  "printer-state"
-@@ -442,6 +444,8 @@
+@@ -431,6 +433,8 @@
  
    if (accepting)
      *accepting = 0;
@@ -741,7 +741,7 @@ Last-Update: 2014-01-04
    if (shared)
      *shared = 0;
    if (state)
-@@ -488,6 +492,7 @@
+@@ -477,6 +481,7 @@
      */
  
      ipp_attribute_t	*accepting_attr,/* printer-is-accepting-jobs */
@@ -749,7 +749,7 @@ Last-Update: 2014-01-04
  			*info_attr,	/* printer-info */
  			*name_attr,	/* printer-name */
  			*shared_attr,	/* printer-is-shared */
-@@ -547,6 +552,7 @@
+@@ -536,6 +541,7 @@
        */
  
        accepting_attr = NULL;
@@ -757,7 +757,7 @@ Last-Update: 2014-01-04
        info_attr      = NULL;
        name_attr      = NULL;
        shared_attr    = NULL;
-@@ -563,6 +569,9 @@
+@@ -552,6 +558,9 @@
  	else if (!strcmp(attr->name, "printer-name") &&
  	         attr->value_tag == IPP_TAG_NAME)
  	  name_attr = attr;
@@ -767,7 +767,7 @@ Last-Update: 2014-01-04
  	else if (!strcmp(attr->name, "printer-is-shared") &&
  	         attr->value_tag == IPP_TAG_BOOLEAN)
  	  shared_attr = attr;
-@@ -585,6 +594,9 @@
+@@ -574,6 +583,9 @@
  	if (accepting && accepting_attr)
  	  *accepting = accepting_attr->values[0].boolean;
  
@@ -777,7 +777,7 @@ Last-Update: 2014-01-04
  	if (shared && shared_attr)
  	  *shared = shared_attr->values[0].boolean;
  
-@@ -622,6 +634,19 @@
+@@ -611,6 +623,19 @@
  	*accepting = attr->values[0].boolean;
      }
  
@@ -797,7 +797,7 @@ Last-Update: 2014-01-04
      if (shared)
      {
        if ((attr = ippFindAttribute(response, "printer-is-shared",
-@@ -654,7 +679,7 @@
+@@ -643,7 +668,7 @@
  
    num_options = 0;
  
@@ -806,7 +806,7 @@ Last-Update: 2014-01-04
    {
      if ((cups_serverroot = getenv("CUPS_SERVERROOT")) == NULL)
        cups_serverroot = CUPS_SERVERROOT;
-@@ -796,6 +821,7 @@
+@@ -786,6 +811,7 @@
  		docname[1024],		/* Document name */
  		dest[256];		/* Printer/class queue */
    int		accepting,		/* printer-is-accepting */
@@ -814,7 +814,7 @@ Last-Update: 2014-01-04
  		shared,			/* printer-is-shared */
  		num_options;		/* Number of options */
    cups_option_t	*options;		/* Options */
-@@ -823,7 +849,7 @@
+@@ -813,7 +839,7 @@
    */
  
    num_options = get_printer(http, queue, dest, sizeof(dest), &options,
@@ -823,7 +823,7 @@ Last-Update: 2014-01-04
  
    if (num_options < 0 || !accepting || !shared)
    {
-@@ -1372,7 +1398,7 @@
+@@ -1362,7 +1388,7 @@
    * Get the actual destination name and printer state...
    */
  
@@ -906,7 +906,7 @@ Last-Update: 2014-01-04
    }
 --- a/scheduler/printers.c
 +++ b/scheduler/printers.c
-@@ -95,12 +95,13 @@
+@@ -94,12 +94,13 @@
    cupsdSetString(&p->uuid, _httpAssembleUUID(ServerName, RemotePort, name, 0,
                                               uuid, sizeof(uuid)));
    cupsdSetDeviceURI(p, "file:///dev/null");
@@ -926,7 +926,7 @@ Last-Update: 2014-01-04
  
    cupsdSetString(&p->job_sheets[0], "none");
    cupsdSetString(&p->job_sheets[1], "none");
-@@ -754,6 +755,7 @@
+@@ -753,6 +754,7 @@
    cupsdClearString(&p->job_sheets[0]);
    cupsdClearString(&p->job_sheets[1]);
    cupsdClearString(&p->device_uri);
@@ -934,7 +934,7 @@ Last-Update: 2014-01-04
    cupsdClearString(&p->sanitized_device_uri);
    cupsdClearString(&p->port_monitor);
    cupsdClearString(&p->op_policy);
-@@ -953,6 +955,11 @@
+@@ -952,6 +954,11 @@
        if (value)
  	cupsdSetString(&p->make_model, value);
      }
@@ -946,7 +946,7 @@ Last-Update: 2014-01-04
      else if (!_cups_strcasecmp(line, "Location"))
      {
        if (value)
-@@ -1110,6 +1117,26 @@
+@@ -1109,6 +1116,26 @@
  	cupsdLogMessage(CUPSD_LOG_ERROR,
  	                "Syntax error on line %d of printers.conf.", linenum);
      }
@@ -973,7 +973,7 @@ Last-Update: 2014-01-04
      else if (!_cups_strcasecmp(line, "JobSheets"))
      {
       /*
-@@ -1416,6 +1443,9 @@
+@@ -1415,6 +1442,9 @@
  
      cupsFilePutConf(fp, "DeviceURI", printer->device_uri);
  
@@ -983,7 +983,7 @@ Last-Update: 2014-01-04
      if (printer->port_monitor)
        cupsFilePutConf(fp, "PortMonitor", printer->port_monitor);
  
-@@ -1449,6 +1479,11 @@
+@@ -1448,6 +1478,11 @@
      else
        cupsFilePuts(fp, "Shared No\n");
  
@@ -995,7 +995,7 @@ Last-Update: 2014-01-04
      snprintf(value, sizeof(value), "%s %s", printer->job_sheets[0],
               printer->job_sheets[1]);
      cupsFilePutConf(fp, "JobSheets", value);
-@@ -2090,6 +2125,8 @@
+@@ -2089,6 +2124,8 @@
                 NULL, p->info ? p->info : "");
    ippAddString(p->attrs, IPP_TAG_PRINTER, IPP_TAG_URI, "printer-uuid", NULL,
  	       p->uuid);
@@ -1004,7 +1004,7 @@ Last-Update: 2014-01-04
  
    if (cupsArrayCount(p->users) > 0)
    {
-@@ -3032,6 +3069,7 @@
+@@ -3027,6 +3064,7 @@
  			     "\t\t<%s/>\n"
  			     "\t\t<key>printer-location</key>\n"
  			     "\t\t<string>", p->accepting ? "true" : "false");

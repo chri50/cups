@@ -33,7 +33,7 @@ Last-Update: 2014-03-03
  					/* Time after which an idle cupsd will exit */
 --- a/scheduler/main.c
 +++ b/scheduler/main.c
-@@ -1732,6 +1732,15 @@
+@@ -1707,6 +1707,15 @@
  #  endif /* HAVE_SSL */
    }
  

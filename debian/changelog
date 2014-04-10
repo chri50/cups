@@ -1,3 +1,35 @@
+cups (1.7.2-1) unstable; urgency=medium
+
+  * New 1.7.2 upstream release
+    - Security: The scheduler now blocks URLs containing embedded HTML
+      (STR #4356)
+  * Drop 10 patches that were backported from upstream or are now solved
+    differently:
+    - str4393-fix-memoryleak-in-rastertolabel
+    - fix-cupsdgetprivateattrs-function-missing-null-check
+    - fix-cupsenumdests-does-not-fill-in-is_default-field
+    - cupsenumdests-does-not-set-cb
+    - cupsd-support-avahi-daemon-restarting
+    - prevent-dnssd-backend-exiting-too-early
+    - fix-a-dbus-threading-issue-that-caused-the-scheduler-to-crash
+    - ipptool-doco-updates
+    - build-with-full-relro
+    - fix-template.c-typo
+  * Regenerate manpage-hyphen-minus patch to adapt to upstream changes
+  * Refresh 9 patches with quilt to cope with upstream updates
+    - airprint-support
+    - color-management-extension
+    - cupsd-idleexittimeout-systemd
+    - cupsd-idleexittimeout
+    - cupsd-write-systemd-Port
+    - no-conffile-timestamp
+    - pidfile
+    - read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs
+    - systemd-optional-socket-activation
+  * Refresh manpage translation files
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 10 Apr 2014 22:05:22 +0200
+
 cups (1.7.1-13) unstable; urgency=medium
 
   * Fix hyphen-used-as-minus and a typo in the lppasswd manpage patch

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 1.7.1-2\n"
-"POT-Creation-Date: 2014-04-01 09:35+0300\n"
+"POT-Creation-Date: 2014-04-10 21:59+0300\n"
 "PO-Revision-Date: 2014-03-27 20:43+0100\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
@@ -96,8 +96,8 @@ msgstr "SYNOPSIS"
 #. type: Plain text
 #: cupsaccept.man:25
 msgid ""
-"B<cupsaccept> [ -E ] [ -U I<username> ] [ -h I<hostname[:port]> ] "
-"destination(s)"
+"B<cupsaccept> [ -E ] [ -U I<username> ] [ -h I<hostname[:port]> ] destination"
+"(s)"
 msgstr ""
 "B<cupsaccept> [ -E ] [ -U I<Benutzername> ] [ -h I<Hostname[:Port]> ] Ziel(e)"
 
@@ -152,7 +152,7 @@ msgstr ""
 # type: SH
 #. type: SH
 #: cupsaccept.man:41 cancel.man:36 cupsaddsmb.man.in:45 cups-config.man:58
-#: cupsctl.man:33 cupsd.man.in:28 cupsfilter.man:45 cups-lpd.man.in:62
+#: cupsctl.man:33 cupsd.man.in:28 cupsfilter.man:46 cups-lpd.man.in:62
 #: cupstestppd.man:44 filter.man:44 ipptool.man:40 lpinfo.man:55 lp.man:70
 #: lpmove.man:44 lppasswd.man:41 lpq.man:37 lpr.man:45 lprm.man:35
 #: lpstat.man:43
@@ -268,7 +268,7 @@ msgstr ""
 #: client.conf.man.in:59 cupsaddsmb.man.in:168 cups-config.man:111
 #: cupsctl.man:89 cupsd.conf.man.in:515 cups-files.conf.man.in:142
 #: cups-deviced.man.in:36 cupsd.man.in:61 cups-driverd.man.in:114
-#: cupsenable.man:83 cupsfilter.man:101 cups-lpd.man.in:115
+#: cupsenable.man:83 cupsfilter.man:102 cups-lpd.man.in:115
 #: cups-snmp.conf.man:70 cupstestdsc.man:41 cupstestppd.man:155 filter.man:230
 #: ipptool.man:154 ipptoolfile.man:616 lpadmin.man:218 lpc.man:62
 #: lpinfo.man:107 lp.man:243 lpmove.man:58 lpoptions.man.in:127
@@ -291,7 +291,7 @@ msgstr "I<cancel(1)>, I<cupsenable(8)>, I<lp(1)>, I<lpadmin(8)>, I<lpstat(1)>,"
 #: client.conf.man.in:61 cups-config.man:113 cupsctl.man:93
 #: cupsd.conf.man.in:521 cups-files.conf.man.in:148 cups-deviced.man.in:40
 #: cupsd.man.in:68 cups-driverd.man.in:118 cupsenable.man:88
-#: cupsfilter.man:105 cups-lpd.man.in:120 cups-snmp.conf.man:74
+#: cupsfilter.man:106 cups-lpd.man.in:120 cups-snmp.conf.man:74
 #: cupstestdsc.man:43 cupstestppd.man:159 filter.man:234 ipptool.man:158
 #: ipptoolfile.man:620 lpadmin.man:223 lpc.man:67 lpinfo.man:111 lp.man:248
 #: lpmove.man:62 lpoptions.man.in:131 lppasswd.man:73 lpq.man:68 lpr.man:118
@@ -306,7 +306,7 @@ msgstr "http://localhost:631/help"
 #: client.conf.man.in:61 cupsaddsmb.man.in:172 cups-config.man:113
 #: cupsctl.man:93 cupsd.conf.man.in:521 cups-files.conf.man.in:148
 #: cups-deviced.man.in:40 cupsd.man.in:68 cups-driverd.man.in:118
-#: cupsenable.man:88 cupsfilter.man:105 cups-lpd.man.in:120
+#: cupsenable.man:88 cupsfilter.man:106 cups-lpd.man.in:120
 #: cups-snmp.conf.man:74 cupstestdsc.man:46 cupstestppd.man:161 filter.man:234
 #: ipptool.man:162 ipptoolfile.man:624 lpadmin.man:223 lpc.man:67
 #: lpinfo.man:111 lp.man:248 lpmove.man:62 lpoptions.man.in:131
@@ -323,11 +323,11 @@ msgstr "COPYRIGHT"
 #: client.conf.man.in:62 cupsaddsmb.man.in:173 cups-config.man:114
 #: cupsctl.man:94 cupsd.conf.man.in:522 cups-files.conf.man.in:149
 #: cups-deviced.man.in:41 cupsd.man.in:69 cups-driverd.man.in:119
-#: cupsenable.man:90 cupsfilter.man:106 cups-lpd.man.in:121
-#: cups-snmp.conf.man:75 cupstestdsc.man:47 cupstestppd.man:162 filter.man:235
-#: lpadmin.man:224 lpc.man:68 lpinfo.man:112 lp.man:249 lpmove.man:63
-#: lpoptions.man.in:132 lppasswd.man:74 lpq.man:69 lpr.man:119 lprm.man:62
-#: lpstat.man:140 mailto.conf.man:57 mime.convs.man:43 mime.types.man:112
+#: cupsenable.man:90 cups-lpd.man.in:121 cups-snmp.conf.man:75
+#: cupstestdsc.man:47 cupstestppd.man:162 filter.man:235 lpadmin.man:224
+#: lpc.man:68 lpinfo.man:112 lp.man:249 lpmove.man:63 lpoptions.man.in:132
+#: lppasswd.man:74 lpq.man:69 lpr.man:119 lprm.man:62 lpstat.man:140
+#: mailto.conf.man:57 mime.convs.man:43 mime.types.man:112
 #: printers.conf.man:121 subscriptions.conf.man:86
 msgid "Copyright 2007-2013 by Apple Inc."
 msgstr "Copyright 2007-2013 by Apple Inc."
@@ -390,15 +390,15 @@ msgstr ""
 #: backend.man:39
 msgid ""
 "The command name (argv[0]) is set to the device URI of the destination "
-"printer.  Starting with CUPS 1.1.22, any authentication information in "
-"argv[0] is removed, so backend developers are urged to use the DEVICE_URI "
+"printer.  Starting with CUPS 1.1.22, any authentication information in argv"
+"[0] is removed, so backend developers are urged to use the DEVICE_URI "
 "environment variable whenever authentication information is required. The "
 "CUPS API includes a I<cupsBackendDeviceURI> function for retrieving the "
 "correct device URI."
 msgstr ""
 "Der Befehlsname (argv[0]) wird auf die Geräte-URI des Zieldruckers gesetzt. "
-"Beginnend mit CUPS 1.1.22 wird jede Authentifizierungsinformation aus "
-"argv[0] entfernt, daher wird Backend-Entwicklern empfohlen, die "
+"Beginnend mit CUPS 1.1.22 wird jede Authentifizierungsinformation aus argv"
+"[0] entfernt, daher wird Backend-Entwicklern empfohlen, die "
 "Umgebungsvariable DEVICE_URI zu verwenden, wennimmer "
 "Authentifizierungsinformationen benötigt werden. Das CUPS-API enthält eine "
 "Funktion I<cupsBackendDeviceURI> zum Ermitteln der korrekten Geräte-URI."
@@ -1334,8 +1334,8 @@ msgid ""
 "B<cupsaddsmb> [ -H I<samba-server> ] [ -U I<samba-user[%samba-password]> ] "
 "[ -h I<cups-server[:port]> ] [ -v ] -a"
 msgstr ""
-"B<cupsaddsmb> [ -H I<Samba-Server> ] [ -U I<Samba-Benutzer[%Samba-"
-"Passwort]> ] [ -h I<CUPS-Server[:Port]> ] [ -v ] -a"
+"B<cupsaddsmb> [ -H I<Samba-Server> ] [ -U I<Samba-Benutzer[%Samba-Passwort]"
+"> ] [ -h I<CUPS-Server[:Port]> ] [ -v ] -a"
 
 #. type: Plain text
 #: cupsaddsmb.man.in:37
@@ -1343,8 +1343,8 @@ msgid ""
 "B<cupsaddsmb> [ -H I<samba-server> ] [ -U I<samba-user[%samba-password]> ] "
 "[ -h I<cups-server[:port]> ] [ -v ] printer [ ... printer ]"
 msgstr ""
-"B<cupsaddsmb> [ -H I<Samba-Server> ] [ -U I<Samba-Benutzer[%Samba-"
-"Passwort]> ] [ -h I<CUPS-Server[:Port]> ] [ -v ] Drucker [ … Drucker ]"
+"B<cupsaddsmb> [ -H I<Samba-Server> ] [ -U I<Samba-Benutzer[%Samba-Passwort]"
+"> ] [ -h I<CUPS-Server[:Port]> ] [ -v ] Drucker [ … Drucker ]"
 
 #. type: Plain text
 #: cupsaddsmb.man.in:44
@@ -1934,8 +1934,8 @@ msgid ""
 "When used with I<--libs>, shows the static libraries instead of the default "
 "(shared) libraries."
 msgstr ""
-"Zeigt die statischen Bibliotheken an, statt der Standard "
-"(Laufzeit-)Bibliotheken, wenn mit I<--libs> verwandt."
+"Zeigt die statischen Bibliotheken an, statt der Standard (Laufzeit-)"
+"Bibliotheken, wenn mit I<--libs> verwandt."
 
 #. type: TP
 #: cups-config.man:106 ipptool.man:48
@@ -4215,7 +4215,7 @@ msgstr ""
 "cups/cupsd.conf> verwandt."
 
 #. type: TP
-#: cupsd.man.in:29 cupsfilter.man:54
+#: cupsd.man.in:29 cupsfilter.man:55
 #, no-wrap
 msgid "-c config-file"
 msgstr "-c Konfig-Datei"
@@ -4311,12 +4311,12 @@ msgstr ""
 #: cupsd.man.in:66
 msgid ""
 "I<backend(7)>, I<classes.conf(5)>, I<cups-deviced(8)>, I<cups-driverd(8)>, "
-"I<cups-lpd(8)>, I<cups-polld(8)>, I<cupsd.conf(5)>, I<filter(7)>, "
-"I<launchd(8)>, I<mime.convs(5)>, I<mime.types(5)>, I<printers.conf(5)>,"
+"I<cups-lpd(8)>, I<cups-polld(8)>, I<cupsd.conf(5)>, I<filter(7)>, I<launchd"
+"(8)>, I<mime.convs(5)>, I<mime.types(5)>, I<printers.conf(5)>,"
 msgstr ""
 "I<backend(7)>, I<classes.conf(5)>, I<cups-deviced(8)>, I<cups-driverd(8)>, "
-"I<cups-lpd(8)>, I<cups-polld(8)>, I<cupsd.conf(5)>, I<filter(7)>, "
-"I<launchd(8)>, I<mime.convs(5)>, I<mime.types(5)>, I<printers.conf(5)>,"
+"I<cups-lpd(8)>, I<cups-polld(8)>, I<cupsd.conf(5)>, I<filter(7)>, I<launchd"
+"(8)>, I<mime.convs(5)>, I<mime.types(5)>, I<printers.conf(5)>,"
 
 #. type: TH
 #: cups-driverd.man.in:15
@@ -4769,11 +4769,12 @@ msgstr ""
 msgid "cupsfilter"
 msgstr "cupsfilter"
 
+# type: TH
 #. type: TH
 #: cupsfilter.man:14
 #, no-wrap
-msgid "20 June 2012"
-msgstr "20. Juni 2012"
+msgid "28 March 2014"
+msgstr "28. März 2014"
 
 #. type: Plain text
 #: cupsfilter.man:17
@@ -4795,11 +4796,17 @@ msgstr ""
 "I<Titel> ] [ -u ] I<Dateiname>"
 
 #. type: Plain text
-#: cupsfilter.man:45
+#: cupsfilter.man:46
+#, fuzzy
+#| msgid ""
+#| "I<cupsfilter> is a front-end to the CUPS filter subsystem which allows "
+#| "you to convert a file to a specific format, just as if you had printed "
+#| "the file through CUPS. By default, I<cupsfilter> generates a PDF file."
 msgid ""
 "I<cupsfilter> is a front-end to the CUPS filter subsystem which allows you "
 "to convert a file to a specific format, just as if you had printed the file "
-"through CUPS. By default, I<cupsfilter> generates a PDF file."
+"through CUPS. By default, I<cupsfilter> generates a PDF file. The converted "
+"file is sent to the standard output."
 msgstr ""
 "I<cupsfilter> ist eine Oberfläche für das CUPS-Filter-Subsystem, das es "
 "erlaubt, eine Datei in ein spezielles Format umzuwandeln, als ob Sie diese "
@@ -4807,24 +4814,24 @@ msgstr ""
 "PDF-Datei."
 
 #. type: TP
-#: cupsfilter.man:46
+#: cupsfilter.man:47
 #, no-wrap
 msgid "-D"
 msgstr "-D"
 
 #. type: Plain text
-#: cupsfilter.man:50
+#: cupsfilter.man:51
 msgid "Delete the input file after conversion."
 msgstr "Löscht die Eingabedatei nach der Umwandlung."
 
 #. type: TP
-#: cupsfilter.man:50
+#: cupsfilter.man:51
 #, no-wrap
 msgid "-U user"
 msgstr "-U Benutzer"
 
 #. type: Plain text
-#: cupsfilter.man:54
+#: cupsfilter.man:55
 msgid ""
 "Specifies the username passed to the filters. The default is the name of the "
 "current user."
@@ -4833,40 +4840,42 @@ msgstr ""
 "Standardmäßig ist dies der Name des aktuellen Benutzers."
 
 #. type: Plain text
-#: cupsfilter.man:58
-msgid "Uses the named cupsd.conf configuration file."
+#: cupsfilter.man:59
+#, fuzzy
+#| msgid "Uses the named cupsd.conf configuration file."
+msgid "Uses the named cups-files.conf configuration file."
 msgstr "Verwendet die benannte cupsd.conf-Konfigurationsdatei."
 
 #. type: TP
-#: cupsfilter.man:58
+#: cupsfilter.man:59
 #, no-wrap
 msgid "-d printer"
 msgstr "-d Drucker"
 
 #. type: Plain text
-#: cupsfilter.man:61
+#: cupsfilter.man:62
 msgid "Uses information from the named printer."
 msgstr "Verwendet Informationen von dem benannten Drucker."
 
 #. type: TP
-#: cupsfilter.man:61
+#: cupsfilter.man:62
 #, no-wrap
 msgid "-e"
 msgstr "-e"
 
 #. type: Plain text
-#: cupsfilter.man:65
+#: cupsfilter.man:66
 msgid "Use every filter from the PPD file."
 msgstr "Verwendet jeden Filter aus der PPD-Datei."
 
 #. type: TP
-#: cupsfilter.man:65
+#: cupsfilter.man:66
 #, no-wrap
 msgid "-i mime/type"
 msgstr "-i MIME/Typ"
 
 #. type: Plain text
-#: cupsfilter.man:70
+#: cupsfilter.man:71
 msgid ""
 "Specifies the source file type. The default file type is guessed using the "
 "filename and contents of the file."
@@ -4875,13 +4884,13 @@ msgstr ""
 "Dateinamens und des Inhalts der Datei geraten."
 
 #. type: TP
-#: cupsfilter.man:70
+#: cupsfilter.man:71
 #, no-wrap
 msgid "-j job-id[,N]"
 msgstr "-i Auftrags-ID[,N]"
 
 #. type: Plain text
-#: cupsfilter.man:75
+#: cupsfilter.man:76
 msgid ""
 "Converts document N from the specified job. If N is omitted, document 1 is "
 "converted."
@@ -4890,13 +4899,13 @@ msgstr ""
 "ausgelassen wird, wird Dokument 1 konvertiert."
 
 #. type: TP
-#: cupsfilter.man:75
+#: cupsfilter.man:76
 #, no-wrap
 msgid "-m mime/type"
 msgstr "-m MIME/Typ"
 
 #. type: Plain text
-#: cupsfilter.man:81
+#: cupsfilter.man:82
 msgid ""
 "Specifies the destination file type. The default file type is application/"
 "pdf.  Use printer/foo to convert to the printer format defined by the "
@@ -4907,66 +4916,73 @@ msgstr ""
 "in der PPD-Datei definiert ist, zu konvertieren."
 
 #. type: TP
-#: cupsfilter.man:81 lp.man:109
+#: cupsfilter.man:82 lp.man:109
 #, no-wrap
 msgid "-n copies"
 msgstr "-n Kopien"
 
 # type: Plain text
 #. type: Plain text
-#: cupsfilter.man:85
+#: cupsfilter.man:86
 msgid "Specifies the number of copies to generate."
 msgstr "Spezifiziert die Anzahl der zu erstellenden Kopien."
 
 # type: TP
 #. type: TP
-#: cupsfilter.man:85 cups-lpd.man.in:73 lpadmin.man:122
+#: cupsfilter.man:86 cups-lpd.man.in:73 lpadmin.man:122
 #, no-wrap
 msgid "-o name=value"
 msgstr "-o Name=Wert"
 
 #. type: Plain text
-#: cupsfilter.man:89
+#: cupsfilter.man:90
 msgid "Specifies options to pass to the CUPS filters."
 msgstr "Spezifiziert die an die CUPS-Filter zu übergebenden Optionen."
 
 #. type: TP
-#: cupsfilter.man:89
+#: cupsfilter.man:90
 #, no-wrap
 msgid "-p filename.ppd"
 msgstr "-p Dateiname.ppd"
 
 #. type: Plain text
-#: cupsfilter.man:93
+#: cupsfilter.man:94
 msgid "Specifies the PPD file to use."
 msgstr "Spezifiziert die zu verwendende PPD-Datei."
 
 #. type: TP
-#: cupsfilter.man:93
+#: cupsfilter.man:94
 #, no-wrap
 msgid "-t title"
 msgstr "-t Titel"
 
 #. type: Plain text
-#: cupsfilter.man:97
+#: cupsfilter.man:98
 msgid "Specifies the document title."
 msgstr "Spezifiziert den Dokumententitel."
 
 #. type: TP
-#: cupsfilter.man:97
+#: cupsfilter.man:98
 #, no-wrap
 msgid "-u"
 msgstr "-u"
 
 #. type: Plain text
-#: cupsfilter.man:101
+#: cupsfilter.man:102
 msgid "Delete the PPD file after conversion."
 msgstr "die PPD-Datei nach der Umwandlung löschen."
 
 #. type: Plain text
-#: cupsfilter.man:103
-msgid "I<cupsd.conf(5)>"
-msgstr "I<cupsd.conf(5)>"
+#: cupsfilter.man:104
+#, fuzzy
+#| msgid "cups-files.conf"
+msgid "I<cups-files.conf(5)>"
+msgstr "cups-files.conf"
+
+#. type: Plain text
+#: cupsfilter.man:107 ipptool.man:163 ipptoolfile.man:625
+msgid "Copyright 2007-2014 by Apple Inc."
+msgstr "Copyright 2007-2014 by Apple Inc."
 
 #. type: TH
 #: cups-lpd.man.in:15
@@ -5015,8 +5031,8 @@ msgstr ""
 #. type: Plain text
 #: cups-lpd.man.in:44
 msgid ""
-"B<Note:> If you are using Solaris 10 or higher, you must run the "
-"I<inetdconv(1m)> program to register the changes to the inetd.conf file."
+"B<Note:> If you are using Solaris 10 or higher, you must run the I<inetdconv"
+"(1m)> program to register the changes to the inetd.conf file."
 msgstr ""
 "B<Hinweis:> Falls Sie Solaris 10 oder höher betreiben, müssen Sie das "
 "Programm I<inetdconv(1m)> ausführen, um die Änderungen an der Datei inetd."
@@ -5474,8 +5490,8 @@ msgstr ""
 msgid ""
 "B<cupstestppd> [ -R I<rootdir> ] [ -W I<category> ] [ -q ] [-r] [ -v[v] ] -"
 msgstr ""
-"B<cupstestppd> [ -R I<Wurzelverz> ] [ -W I<Kategorie> ] [ -q ] [-r] [ -"
-"v[v] ] -"
+"B<cupstestppd> [ -R I<Wurzelverz> ] [ -W I<Kategorie> ] [ -q ] [-r] [ -v"
+"[v] ] -"
 
 #. type: Plain text
 #: cupstestppd.man:40
@@ -6526,7 +6542,7 @@ msgid "ipptool"
 msgstr "ipptool"
 
 #. type: TH
-#: ipptool.man:14 ipptoolfile.man:14
+#: ipptool.man:14
 #, no-wrap
 msgid "20 February 2014"
 msgstr "20. Februar 2014"
@@ -6965,16 +6981,19 @@ msgstr "http://www.iana.org/assignments/ipp-registrations"
 msgid "http://www.pwg.org/ipp"
 msgstr "http://www.pwg.org/ipp"
 
-#. type: Plain text
-#: ipptool.man:163 ipptoolfile.man:625
-msgid "Copyright 2007-2014 by Apple Inc."
-msgstr "Copyright 2007-2014 by Apple Inc."
-
 #. type: TH
 #: ipptoolfile.man:14
 #, no-wrap
 msgid "ipptoolfile"
 msgstr "ipptoolfile"
+
+# type: TH
+#. type: TH
+#: ipptoolfile.man:14
+#, fuzzy, no-wrap
+#| msgid "4 March 2010"
+msgid "25 March 2014"
+msgstr "4. März 2010"
 
 #. type: Plain text
 #: ipptoolfile.man:17
@@ -8132,9 +8151,9 @@ msgstr "WITH-VALUE Zahl[,Zahl,…]"
 #. type: Plain text
 #: ipptoolfile.man:364
 msgid ""
-"Requires that at least one value of the EXPECT attribute matches the "
-"number(s) or numeric comparison. When comparing rangeOfInteger values, the "
-"\"E<lt>\" and \"E<gt>\" operators only check the upper bound of the range."
+"Requires that at least one value of the EXPECT attribute matches the number"
+"(s) or numeric comparison. When comparing rangeOfInteger values, the \"E<lt>"
+"\" and \"E<gt>\" operators only check the upper bound of the range."
 msgstr ""
 "Verlangt, dass mindestens ein Wert des EXPECT-Attributs auf die Zahl(en) "
 "passt oder den numerischen Vergleich erfüllt. Beim Vergleich von "
@@ -8255,7 +8274,75 @@ msgstr ""
 
 #. type: Plain text
 #: ipptoolfile.man:469
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "    Activate-Printer\n"
+#| "    CUPS-Accept-Jobs\n"
+#| "    CUPS-Add-Modify-Class\n"
+#| "    CUPS-Add-Modify-Printer\n"
+#| "    CUPS-Authenticate-Job\n"
+#| "    CUPS-Delete-Class\n"
+#| "    CUPS-Delete-Printer\n"
+#| "    CUPS-Get-Classes\n"
+#| "    CUPS-Get-Default\n"
+#| "    CUPS-Get-Devices\n"
+#| "    CUPS-Get-Document\n"
+#| "    CUPS-Get-PPD\n"
+#| "    CUPS-Get-PPDs\n"
+#| "    CUPS-Get-Printers\n"
+#| "    CUPS-Move-Job\n"
+#| "    CUPS-Reject-Jobs\n"
+#| "    CUPS-Set-Default\n"
+#| "    Cancel-Current-Job\n"
+#| "    Cancel-Job\n"
+#| "    Cancel-Jobs\n"
+#| "    Cancel-My-Jobs\n"
+#| "    Cancel-Subscription\n"
+#| "    Close-Job\n"
+#| "    Create-Job\n"
+#| "    Create-Job-Subscription\n"
+#| "    Create-Printer-Subscription\n"
+#| "    Deactivate-Printer\n"
+#| "    Disable-Printer\n"
+#| "    Enable-Printer\n"
+#| "    Get-Job-Attributes\n"
+#| "    Get-Jobs\n"
+#| "    Get-Notifications\n"
+#| "    Get-Printer-Attributes\n"
+#| "    Get-Printer-Support-Files\n"
+#| "    Get-Printer-Supported-Values\n"
+#| "    Get-Subscription-Attributes\n"
+#| "    Get-Subscriptions\n"
+#| "    Hold-Job\n"
+#| "    Hold-New-Jobs\n"
+#| "    Identify-Printer\n"
+#| "    Pause-Printer\n"
+#| "    Pause-Printer-After-Current-Job\n"
+#| "    Print-Job\n"
+#| "    Print-URI\n"
+#| "    Promote-Job\n"
+#| "    Purge-Jobs\n"
+#| "    Release-Held-New-Jobs\n"
+#| "    Release-Job\n"
+#| "    Renew-Subscription\n"
+#| "    Reprocess-Job\n"
+#| "    Restart-Job\n"
+#| "    Restart-Printer\n"
+#| "    Resubmit-Job\n"
+#| "    Resume-Job\n"
+#| "    Resume-Printer\n"
+#| "    Schedule-Job-After\n"
+#| "    Send-Document\n"
+#| "    Send-Hardcopy-Document\n"
+#| "    Send-Notifications\n"
+#| "    Send-URI\n"
+#| "    Set-Job-Attributes\n"
+#| "    Set-Printer-Attributes\n"
+#| "    Shutdown-Printer\n"
+#| "    Startup-Printer\n"
+#| "    Suspend-Current-Job\n"
+#| "    Validate-Document\n"
+#| "    Validate-Job\n"
 msgid ""
 "    Activate-Printer\n"
 "    CUPS-Accept-Jobs\n"
@@ -8281,8 +8368,8 @@ msgid ""
 "    Cancel-Subscription\n"
 "    Close-Job\n"
 "    Create-Job\n"
-"    Create-Job-Subscription\n"
-"    Create-Printer-Subscription\n"
+"    Create-Job-Subscriptions\n"
+"    Create-Printer-Subscriptions\n"
 "    Deactivate-Printer\n"
 "    Disable-Printer\n"
 "    Enable-Printer\n"
@@ -8857,14 +8944,14 @@ msgstr ""
 #: lpadmin.man:60
 msgid ""
 "The first form of the command (I<-d>) sets the default printer or class to "
-"I<destination>.  Subsequent print jobs submitted via the I<lp(1)> or "
-"I<lpr(1)> commands will use this destination unless the user specifies "
-"otherwise with the I<lpoptions(1)> command."
+"I<destination>.  Subsequent print jobs submitted via the I<lp(1)> or I<lpr(1)"
+"> commands will use this destination unless the user specifies otherwise "
+"with the I<lpoptions(1)> command."
 msgstr ""
 "Die erste Form des Befehls (I<-d>) setzt den Standarddrucker oder Klasse auf "
-"I<Ziel>. Folgende Druckaufträge, die mit den Befehlen I<lp(1)> oder "
-"I<lpr(1)> eingereicht werden, verwenden dieses Ziel solange der Benutzer "
-"nichts anderes mit dem Befehl I<lpoptions(1)> spezifiziert hat."
+"I<Ziel>. Folgende Druckaufträge, die mit den Befehlen I<lp(1)> oder I<lpr(1)"
+"> eingereicht werden, verwenden dieses Ziel solange der Benutzer nichts "
+"anderes mit dem Befehl I<lpoptions(1)> spezifiziert hat."
 
 #. type: Plain text
 #: lpadmin.man:63
@@ -8952,8 +9039,8 @@ msgid ""
 msgstr ""
 "Setzt ein Standard-System-V-Schnittstellenskript oder eine PPD-Datei für den "
 "Drucker aus dem Verzeichnis I<Model> oder verwendet eine der "
-"Druckerschnittstellen. Verwenden Sie die Option I<-m> mit dem Befehl "
-"I<lpinfo(8)>, um eine Liste der unterstützten Modelle zu erhalten."
+"Druckerschnittstellen. Verwenden Sie die Option I<-m> mit dem Befehl I<lpinfo"
+"(8)>, um eine Liste der unterstützten Modelle zu erhalten."
 
 #. type: TP
 #: lpadmin.man:88
@@ -9476,11 +9563,11 @@ msgstr ""
 #. type: Plain text
 #: lpc.man:65
 msgid ""
-"I<cancel(1)>, I<cupsaccept(8)>, I<cupsenable(8)>, I<lp(1)>, I<lpr(1)>, "
-"I<lprm(1)>, I<lpstat(1)>,"
+"I<cancel(1)>, I<cupsaccept(8)>, I<cupsenable(8)>, I<lp(1)>, I<lpr(1)>, I<lprm"
+"(1)>, I<lpstat(1)>,"
 msgstr ""
-"I<cancel(1)>, I<cupsaccept(8)>, I<cupsenable(8)>, I<lp(1)>, I<lpr(1)>, "
-"I<lprm(1)>, I<lpstat(1)>,"
+"I<cancel(1)>, I<cupsaccept(8)>, I<cupsenable(8)>, I<lp(1)>, I<lpr(1)>, I<lprm"
+"(1)>, I<lpstat(1)>,"
 
 # type: TH
 #. type: TH
@@ -9738,8 +9825,8 @@ msgstr ""
 "CUPS stellt viele Möglichkeiten bereit, den Vorgabebeziele zu setzen. Die "
 "Umgebungsvariablen »LPDEST« und »PRINTER« werden zuerst herangezogen. Wenn "
 "keine von beiden gesetzt ist, wird der aktuell unter Benutzung des Befehls "
-"I<lpoptions(1)> gesetzte benutzt, gefolgt von der durch den Befehl "
-"I<lpadmin(8)> gesetzten Vorgabe."
+"I<lpoptions(1)> gesetzte benutzt, gefolgt von der durch den Befehl I<lpadmin"
+"(8)> gesetzten Vorgabe."
 
 # type: Plain text
 #. type: Plain text
@@ -10293,11 +10380,11 @@ msgstr "lpoptions - zeigt oder setzt Druckeroptionen und -voreinstellungen"
 #: lpoptions.man.in:31
 msgid ""
 "B<lpoptions> [ -E ] [ -U I<username> ] [ -h I<server[:port]> ] -d "
-"I<destination[/instance]> [ -o I<option[=value]> ] ... [ -o "
-"I<option[=value]> ]"
+"I<destination[/instance]> [ -o I<option[=value]> ] ... [ -o I<option[=value]"
+"> ]"
 msgstr ""
-"B<lpoptions> [ -E ] [ -U I<Benutzername> ] [ -h I<Server[:Port]> ] -d "
-"I<Ziel[/Instanz]> [ -o I<Option[=Wert]> ] … [ -o I<Option[=Wert]> ]"
+"B<lpoptions> [ -E ] [ -U I<Benutzername> ] [ -h I<Server[:Port]> ] -d I<Ziel"
+"[/Instanz]> [ -o I<Option[=Wert]> ] … [ -o I<Option[=Wert]> ]"
 
 #. type: Plain text
 #: lpoptions.man.in:40
@@ -10311,9 +10398,9 @@ msgstr ""
 #. type: Plain text
 #: lpoptions.man.in:54
 msgid ""
-"B<lpoptions> [ -E ] [ -U I<username> ] [ -h I<server[:port]> ] [ -o "
-"I<option[=value]> ] ... [ -o I<option[=value]> ] [ -p I<destination[/"
-"instance]> ] -r I<option>"
+"B<lpoptions> [ -E ] [ -U I<username> ] [ -h I<server[:port]> ] [ -o I<option"
+"[=value]> ] ... [ -o I<option[=value]> ] [ -p I<destination[/instance]> ] -r "
+"I<option>"
 msgstr ""
 "B<lpoptions> [ -E ] [ -U I<Benutzername> ] [ -h I<Server[:Port]> ] [ -o "
 "I<Option[=Wert]> ] … [ -o I<Option[=Wert]> ] [ -p I<Ziel[/Instanz]> ] -r "
@@ -10325,8 +10412,8 @@ msgid ""
 "B<lpoptions> [ -E ] [ -U I<username> ] [ -h I<server[:port]> ] -x "
 "I<destination[/instance]>"
 msgstr ""
-"B<lpoptions> [ -E ] [ -U I<Benutzername> ] [ -h I<Server[:Port]> ] -x "
-"I<Ziel[/Instanz]>"
+"B<lpoptions> [ -E ] [ -U I<Benutzername> ] [ -h I<Server[:Port]> ] -x I<Ziel"
+"[/Instanz]>"
 
 #. type: Plain text
 #: lpoptions.man.in:66
@@ -10458,8 +10545,8 @@ msgstr ""
 #. type: Plain text
 #: lpoptions.man.in:115
 msgid ""
-"Options set with the I<lpoptions> command are used by the I<lp(1)> and "
-"I<lpr(1)> commands when submitting jobs."
+"Options set with the I<lpoptions> command are used by the I<lp(1)> and I<lpr"
+"(1)> commands when submitting jobs."
 msgstr ""
 "Optionen, die mit dem Befehl I<lpoptions> gesetzt werden, werden von den "
 "Befehlen I<lp(1)> und I<lpr(1)> bein Einreichen von Druckaufträgen verwandt."
@@ -10753,12 +10840,12 @@ msgstr "lpr - druckt Dateien"
 #: lpr.man:35
 msgid ""
 "B<lpr> [ -E ] [ -H I<server[:port]> ] [ -U I<username> ] [ -P I<destination[/"
-"instance]> ] [ -# I<num-copies> [ -h ] [ -l ] [ -m ] [ -o "
-"I<option[=value]> ] [ -p] [ -q ] [ -r ] [ -C/J/T I<title> ] [ I<file(s)> ]"
+"instance]> ] [ -# I<num-copies> [ -h ] [ -l ] [ -m ] [ -o I<option[=value]"
+"> ] [ -p] [ -q ] [ -r ] [ -C/J/T I<title> ] [ I<file(s)> ]"
 msgstr ""
 "B<lpr> [ -E ] [ -H I<Server[:Port]> ] [ -U I<Benutzername> ] [ -P I<Ziel[/"
-"Instanz]> ] [ -# I<Anzahl-Kopien> [ -h ] [ -l ] [ -m ] [ -o "
-"I<Option[=Wert]> ] [ -p] [ -q ] [ -r ] [ -C/J/T I<Titel> ] [ I<Datei(en)> ]"
+"Instanz]> ] [ -# I<Anzahl-Kopien> [ -h ] [ -l ] [ -m ] [ -o I<Option[=Wert]"
+"> ] [ -p] [ -q ] [ -r ] [ -C/J/T I<Titel> ] [ I<Datei(en)> ]"
 
 # type: Plain text
 #. type: Plain text
@@ -10887,11 +10974,11 @@ msgstr ""
 #. type: Plain text
 #: lpr.man:116
 msgid ""
-"I<cancel(1)>, I<lp(1)>, I<lpadmin(8)>, I<lpoptions(1)>, I<lpq(1)>, "
-"I<lprm(1)>, I<lpstat(1)>,"
+"I<cancel(1)>, I<lp(1)>, I<lpadmin(8)>, I<lpoptions(1)>, I<lpq(1)>, I<lprm(1)"
+">, I<lpstat(1)>,"
 msgstr ""
-"I<cancel(1)>, I<lp(1)>, I<lpadmin(8)>, I<lpoptions(1)>, I<lpq(1)>, "
-"I<lprm(1)>, I<lpstat(1)>,"
+"I<cancel(1)>, I<lp(1)>, I<lpadmin(8)>, I<lpoptions(1)>, I<lpq(1)>, I<lprm(1)"
+">, I<lpstat(1)>,"
 
 #. type: TH
 #: lprm.man:15
@@ -10913,8 +11000,8 @@ msgstr "lprm - Druckaufträge abbrechen"
 #. type: Plain text
 #: lprm.man:29
 msgid ""
-"B<lprm> [ -E ] [ -U I<username> ] [ -h I<server[:port]> ] [ -P "
-"I<destination[/instance]> ] [ - ] [ I<job ID(s)> ]"
+"B<lprm> [ -E ] [ -U I<username> ] [ -h I<server[:port]> ] [ -P I<destination"
+"[/instance]> ] [ - ] [ I<job ID(s)> ]"
 msgstr ""
 "B<lprm> [ -E ] [ -U I<Benutzername> ] [ -h I<Server[:Port]> ] [ -P I<Ziel[/"
 "Instanz]> ] [ - ] [ I<Auftrags-ID(s)> ]"
@@ -10990,9 +11077,9 @@ msgid ""
 "s ] [ -t ] [ -u [ I<user(s)> ] ] [ -v [ I<printer(s)> ] ]"
 msgstr ""
 "B<lpstat> [ -E ] [ -H ] [ -U I<Benutzername> ] [ -h I<Rechnername[:Port]> ] "
-"[ -l ] [ -W I<welche-Druckaufträge> ] [ -a [ I<Ziel(e)> ] ] [ -c "
-"[ I<Klasse(n)> ] ] [ -d ] [ -o [ I<Ziel(e)> ] ] [ -p [ I<Drucker> ] ] [ -r ] "
-"[ -R ] [ -s ] [ -t ] [ -u [ I<Benutzer> ] ] [ -v [ I<Drucker> ] ]"
+"[ -l ] [ -W I<welche-Druckaufträge> ] [ -a [ I<Ziel(e)> ] ] [ -c [ I<Klasse"
+"(n)> ] ] [ -d ] [ -o [ I<Ziel(e)> ] ] [ -p [ I<Drucker> ] ] [ -r ] [ -R ] [ -"
+"s ] [ -t ] [ -u [ I<Benutzer> ] ] [ -v [ I<Drucker> ] ]"
 
 # type: Plain text
 #. type: Plain text
@@ -12054,6 +12141,12 @@ msgstr ""
 "I<classes.conf(5)>, I<cupsd(8)>, I<cupsd.conf(5)>, I<mime.convs(5)>, I<mime."
 "types(5)>, printers.conf(5)"
 
+#~ msgid "20 June 2012"
+#~ msgstr "20. Juni 2012"
+
+#~ msgid "I<cupsd.conf(5)>"
+#~ msgstr "I<cupsd.conf(5)>"
+
 #~ msgid "13 May 2013"
 #~ msgstr "13. Mai 2013"
 
@@ -12525,10 +12618,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Spezifiziert, ob implizite Klassen aus identischen nicht-lokalen Druckern "
 #~ "erstellt werden sollen oder nicht."
-
-# type: TH
-#~ msgid "4 March 2010"
-#~ msgstr "4. März 2010"
 
 # type: Plain text
 #~ msgid ""
