@@ -27,6 +27,8 @@
  *   do_list_printers()        - List available printers.
  *   do_menu()                 - Show the main menu.
  *   do_set_allowed_users()    - Set the allowed/denied users for a queue.
+ *   do_update_ppd()           - Enable/Disable color management for a queue.
+ *   do_set_timestamp()        - Set the server default printer/class.
  *   do_set_default()          - Set the server default printer/class.
  *   do_set_options()          - Configure the default options for a queue.
  *   do_set_sharing()          - Set printer-is-shared value.
@@ -46,6 +48,7 @@
 #include <fcntl.h>
 #include <sys/wait.h>
 #include <limits.h>
+#include <time.h>
 
 
 /*
@@ -82,6 +85,12 @@ static void	do_set_sharing(http_t *http);
 static char	*get_option_value(ppd_file_t *ppd, const char *name,
 		                  char *buffer, size_t bufsize);
 static double	get_points(double number, const char *uval);
+/* Per-queue extension */
+static void     do_set_timestamp(http_t* http, ipp_t* request);
+static void     do_update_ppd(http_t* http, 
+                              ipp_t *request, int is_cm, 
+                              const char* file);
+
 
 
 /*
@@ -697,6 +706,10 @@ do_am_class(http_t *http,		/* I - HTTP connection */
           }
 	}
 
+	if ((attr = ippFindAttribute(response, "ppd-timestamp",
+	                             IPP_TAG_TEXT)) != NULL)
+	  cgiSetVariable("PPD_TIMESTAMP", attr->values[0].string.text);
+
 	if ((attr = ippFindAttribute(response, "printer-info",
 	                             IPP_TAG_TEXT)) != NULL)
 	  cgiSetVariable("PRINTER_INFO", attr->values[0].string.text);
@@ -852,12 +865,17 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
 		*response,		/* IPP response */
 		*oldinfo;		/* Old printer information */
   const cgi_file_t *file;		/* Uploaded file, if any */
-  const char	*var;			/* CGI variable */
+  const char	*var,			/* CGI variable */
+              	*cm_var;		/* Color-management variable */
   char		uri[HTTP_MAX_URI],	/* Device or printer URI */
 		*uriptr;		/* Pointer into URI */
-  int		maxrate;		/* Maximum baud rate */
+  int		maxrate,		/* Maximum baud rate */
+  		is_per_queue,		/* Using per-queue interface? */
+                is_colormanaged;        /* Color management on? */
   char		baudrate[255];		/* Baud rate string */
+  char		new_makeppd[1024];	/* New make file PPD */
   const char	*name,			/* Pointer to class name */
+                *printer,		/* Pointer to class name */
 		*ptr;			/* Pointer to CGI variable */
   const char	*title;			/* Title of page */
   static int	baudrates[] =		/* Baud rates */
@@ -909,7 +927,22 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
   else
     oldinfo = NULL;
 
+   /*
+    * If asked for a per-queue job...
+    */
+  if((var = cgiGetVariable("PER_QUEUE_SUBMIT")) != NULL)
+  {
+    cgiStartHTML("Replace PPD");
+    cgiCopyTemplateLang("replace-ppd.tmpl");
+    cgiEndHTML();
+  }
+
   file = cgiGetFile();
+
+  if ((var = cgiGetVariable("PER_QUEUE")) != NULL)
+    is_per_queue = 1;
+  else 
+    is_per_queue = 0;
 
   if (file)
   {
@@ -917,6 +950,15 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
     fprintf(stderr, "DEBUG: file->name=%s\n", file->name);
     fprintf(stderr, "DEBUG: file->filename=%s\n", file->filename);
     fprintf(stderr, "DEBUG: file->mimetype=%s\n", file->mimetype);
+  } 
+  else if (is_per_queue)
+  {
+    cgiSetVariable("ERROR",
+	           cgiText(_("No PPD file specified.")));
+    cgiStartHTML(title);
+    cgiCopyTemplateLang("error.tmpl");
+    cgiEndHTML();
+    return;
   }
 
   if ((name = cgiGetVariable("PRINTER_NAME")) != NULL)
@@ -1128,10 +1170,19 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
 	                             IPP_TAG_TEXT)) != NULL)
           cgiSetVariable("PRINTER_LOCATION", attr->values[0].string.text);
 
+        if ((attr = ippFindAttribute(oldinfo, "ppd-timestamp",
+	                             IPP_TAG_TEXT)) != NULL)
+          cgiSetVariable("PPD_TIMESTAMP", attr->values[0].string.text);
+
 	if ((attr = ippFindAttribute(oldinfo, "printer-is-shared",
 				     IPP_TAG_BOOLEAN)) != NULL)
 	  cgiSetVariable("PRINTER_IS_SHARED",
 			 attr->values[0].boolean ? "1" : "0");
+
+        if ((attr = ippFindAttribute(oldinfo, "printer-is-colormanaged",
+				     IPP_TAG_BOOLEAN)) != NULL)
+	  cgiSetVariable("PRINTER_IS_COLORMANAGED",
+			 attr->values[0].boolean ? "1" : "0");      
       }
 
       cgiCopyTemplateLang("modify-printer.tmpl");
@@ -1148,6 +1199,7 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
       else
 #endif /* __APPLE__ */
         cgiSetVariable("printer_is_shared", "0");
+        cgiSetVariable("printer_is_colormanaged", "1");
 
       cgiCopyTemplateLang("add-printer.tmpl");
     }
@@ -1169,7 +1221,6 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
       */
 
       int		fd;		/* PPD file */
-      char		filename[1024];	/* PPD filename */
       ppd_file_t	*ppd;		/* PPD information */
       char		buffer[1024];	/* Buffer */
       int		bytes;		/* Number of bytes */
@@ -1191,28 +1242,27 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
         fprintf(stderr, "ERROR: Unable to get PPD file %s: %d - %s\n",
 	        uri, get_status, httpStatus(get_status));
       }
-      else if ((fd = cupsTempFd(filename, sizeof(filename))) >= 0)
+      else if ((fd = cupsTempFd(new_makeppd, sizeof(new_makeppd))) >= 0)
       {
 	while ((bytes = httpRead2(http, buffer, sizeof(buffer))) > 0)
           write(fd, buffer, bytes);
 
 	close(fd);
 
-        if ((ppd = ppdOpenFile(filename)) != NULL)
+        if ((ppd = ppdOpenFile(new_makeppd)) != NULL)
 	{
 	  if (ppd->manufacturer)
 	    cgiSetVariable("CURRENT_MAKE", ppd->manufacturer);
 
 	  if (ppd->nickname)
 	    cgiSetVariable("CURRENT_MAKE_AND_MODEL", ppd->nickname);
-
+      
           ppdClose(ppd);
-          unlink(filename);
 	}
 	else
 	{
 	  fprintf(stderr, "ERROR: Unable to open PPD file %s: %s\n",
-	          filename, ppdErrorString(ppdLastError(&bytes)));
+	          new_makeppd, ppdErrorString(ppdLastError(&bytes)));
 	}
       }
       else
@@ -1296,7 +1346,7 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
 	cgiCopyTemplateLang("choose-make.tmpl");
         cgiEndHTML();
       }
-      else
+      else if (!cgiGetVariable("PER_QUEUE_SUBMIT"))
       {
        /*
 	* Let the user choose a model...
@@ -1336,6 +1386,7 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
     *    ppd-name
     *    device-uri
     *    printer-is-accepting-jobs
+    *    printer-is-colormanaged
     *    printer-is-shared
     *    printer-state
     */
@@ -1395,17 +1446,56 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
     ippAddBoolean(request, IPP_TAG_PRINTER, "printer-is-shared",
                   var && (!strcmp(var, "1") || !strcmp(var, "on")));
 
+    cm_var = cgiGetVariable("printer_is_colormanaged");
+    ippAddBoolean(request, IPP_TAG_PRINTER, "printer-is-colormanaged",
+                  cm_var && (!strcmp(cm_var, "1") || !strcmp(cm_var, "on")));
+
     ippAddInteger(request, IPP_TAG_PRINTER, IPP_TAG_ENUM, "printer-state",
                   IPP_PRINTER_IDLE);
+
+   if (cm_var && (!strcmp(cm_var, "1") || !strcmp(cm_var, "on")))
+     is_colormanaged = 1;
+   else
+     is_colormanaged = 0;
 
    /*
     * Do the request and get back a response...
     */
 
     if (file)
-      ippDelete(cupsDoFileRequest(http, request, "/admin/", file->tempfile));
-    else
-      ippDelete(cupsDoRequest(http, request, "/admin/"));
+    {
+     /*
+      * If user uploads a PPD, mark color management in file...
+      */
+     if (modify)
+        do_set_timestamp(http, request);
+
+     do_update_ppd(http, request, is_colormanaged, file->tempfile);
+    } 
+    else if (cupsGetPPD2(http, new_makeppd))
+    {
+     /*
+      * Obtain a PPD from a specific make
+      */
+      if (modify)
+        do_set_timestamp(http, request);
+
+      do_update_ppd(http, request, is_colormanaged, new_makeppd); 
+      unlink(new_makeppd);
+    }
+    else 
+    {
+     /*
+      * If no new file is added, we only mark color management 
+      * in the existing printer.
+      */
+      var = cgiGetVariable("PRINTER_NAME");
+    
+      const char *filename = cupsGetPPD2(http, var);
+
+      do_update_ppd(http, request, is_colormanaged, filename);
+      unlink(filename);
+    }
 
     if (cupsLastError() == IPP_NOT_AUTHORIZED)
     {
@@ -1423,14 +1513,16 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
      /*
       * Redirect successful updates back to the printer page...
       */
-
       char	refresh[1024];		/* Refresh URL */
-
 
       cgiFormEncode(uri, name, sizeof(uri));
 
-      snprintf(refresh, sizeof(refresh),
-	       "5;/admin/?OP=redirect&URL=/printers/%s", uri);
+      if (!is_per_queue)
+        snprintf(refresh, sizeof(refresh),
+	         "5;/admin/?OP=redirect&URL=/printers/%s", uri);
+      else
+        snprintf(refresh, sizeof(refresh),
+	         "5;/admin/?OP=redirect&URL=/printers/", uri);
 
       cgiSetVariable("refresh_page", refresh);
 
@@ -1443,7 +1535,6 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
      /*
       * Set the printer options...
       */
-
       cgiSetVariable("OP", "set-printer-options");
       do_set_options(http, 0);
       return;
@@ -3015,6 +3106,120 @@ do_set_allowed_users(http_t *http)	/* I - HTTP connection */
   }
 }
 
+/*
+ * 'do_update_ppd()' - Refreshes the PPD file for a given queue
+ */
+
+static void     
+do_update_ppd(http_t* http, ipp_t* request, int is_cm, const char* file)
+{
+   char		line[1024];		/* Line from PPD file */ 
+   cups_file_t	*in,			/* Input file */
+  	        *out;			/* Output file */
+   const char *temp = "/tmp/temp.ppd";
+
+   if (!request)     
+     return;
+   else if(!file)
+   {
+     ippDelete(cupsDoRequest(http, request, "/admin/")); 
+     return;
+   }
+
+   in = cupsFileOpen(file, "r");
+   out = cupsFileOpen(temp, "w");
+
+  /*
+   * Here we enable or disable color management inside
+   * a PPD file.
+   */
+   while (cupsFileGets(in, line, sizeof(line)))
+   {
+     if (!strncmp(line, "*OpenUI *Resolution", 19) ||
+         !strncmp(line, "*OpenUI *ColorModel", 19) ||
+         !strncmp(line, "*OpenUI *MediaType", 18))
+     {            
+        do
+        {
+           if (!is_cm)
+             cupsFilePuts(out, "*%(CM_OFF)");
+
+             cupsFilePrintf(out, "%s\n", line);             
+        } while (cupsFileGets(in, line, sizeof(line)) &&
+                 strncmp(line, "*CloseUI", 8) != 0);
+
+        if (!is_cm)
+          cupsFilePuts(out, "*%(CM_OFF)");
+
+        cupsFilePrintf(out, "%s\n", line); 
+     }
+     else if (!strncmp(line, "*%(CM_OFF)*OpenUI *Resolution", 29) ||
+              !strncmp(line, "*%(CM_OFF)*OpenUI *ColorModel", 29) ||
+              !strncmp(line, "*%(CM_OFF)*OpenUI *MediaType", 28))
+     {       
+        if(is_cm)
+        {
+          do             
+          {
+           cupsFilePrintf(out, "%s\n", line+10); 
+          } while (cupsFileGets(in, line, sizeof(line)) &&
+                   strncmp(line, "*%(CM_OFF)*CloseUI", 18) != 0);
+           cupsFilePrintf(out, "%s\n", line+10); 
+        }
+     }
+     else if (!strncmp(line, "*cupsICCProfile", 15))
+     {
+        if (!is_cm)
+          cupsFilePuts(out, "*%(CM_OFF)");
+
+        cupsFilePrintf(out, "%s\n", line);
+     }
+     else if (!strncmp(line, "*%(CM_OFF)*cupsICCProfile", 25))
+     {
+        if (is_cm)
+          cupsFilePrintf(out, "%s\n", line+10); 
+        else 
+          cupsFilePrintf(out, "%s\n", line); 
+     }
+     else if (!strncmp(line, "*cupsICCQualifier", 17))
+     {
+        if (!is_cm)
+          cupsFilePuts(out, "*%(CM_OFF)");
+
+        cupsFilePrintf(out, "%s\n", line);
+     }
+     else if (!strncmp(line, "*%(CM_OFF)*cupsICCQualifier", 27))
+     {
+        if (is_cm)
+          cupsFilePrintf(out, "%s\n", line+10); 
+        else 
+          cupsFilePrintf(out, "%s\n", line); 
+     }
+     else
+       cupsFilePrintf(out, "%s\n", line);
+   }
+     
+   cupsFileClose(in);
+   cupsFileClose(out);
+
+   ippDelete(cupsDoFileRequest(http, request, "/admin/", temp)); 
+}
+
+static 
+void     do_set_timestamp(http_t* http, ipp_t* request)
+{
+   time_t       curtime;
+   struct tm    *loctime;	
+
+   /*
+    * Update the PPD 'last modified' timestamp.
+    */
+   curtime = time(NULL);
+   loctime = localtime (&curtime);
+
+   ippAddString(request, IPP_TAG_PRINTER, IPP_TAG_TEXT, "ppd-timestamp",
+                 NULL, asctime(loctime));     
+}
 
 /*
  * 'do_set_default()' - Set the server default printer/class.
