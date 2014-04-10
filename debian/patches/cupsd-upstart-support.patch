@@ -16,16 +16,7 @@ Author: Till Kamppeter <till.kamppeter@gmail.com>,
 Bug: https://bugs.launchpad.net/ubuntu/+source/cups/+bug/1276713
 --- a/scheduler/main.c
 +++ b/scheduler/main.c
-@@ -26,6 +26,8 @@
-  *   launchd_checkin()     - Check-in with launchd and collect the listening
-  *                           fds.
-  *   launchd_checkout()    - Update the launchd KeepAlive file as needed.
-+ *   upstart_checkin()     - Check-in with Upstart and collect the
-+ *                           listening fds.
-  *   parent_handler()      - Catch USR1/CHLD signals...
-  *   process_children()    - Process all dead children...
-  *   select_timeout()      - Calculate the select timeout value.
-@@ -83,6 +85,7 @@
+@@ -64,6 +64,7 @@
  static void		launchd_checkin(void);
  static void		launchd_checkout(void);
  #endif /* HAVE_LAUNCHD */
@@ -33,7 +24,7 @@ Bug: https://bugs.launchpad.net/ubuntu/+source/cups/+bug/1276713
  static void		parent_handler(int sig);
  static void		process_children(void);
  static void		sigchld_handler(int sig);
-@@ -320,6 +323,14 @@
+@@ -301,6 +302,14 @@
        usage(1);
      }
  
@@ -48,7 +39,7 @@ Bug: https://bugs.launchpad.net/ubuntu/+source/cups/+bug/1276713
    if (!ConfigurationFile)
      cupsdSetString(&ConfigurationFile, CUPS_SERVERROOT "/cupsd.conf");
  
-@@ -573,6 +584,11 @@
+@@ -554,6 +563,11 @@
  #endif /* HAVE_LAUNCHD */
  
   /*
@@ -60,7 +51,7 @@ Bug: https://bugs.launchpad.net/ubuntu/+source/cups/+bug/1276713
    * Startup the server...
    */
  
-@@ -761,6 +777,13 @@
+@@ -742,6 +756,13 @@
  #endif /* HAVE_LAUNCHD */
  
         /*
@@ -74,7 +65,7 @@ Bug: https://bugs.launchpad.net/ubuntu/+source/cups/+bug/1276713
          * Startup the server...
          */
  
-@@ -1509,6 +1532,93 @@
+@@ -1490,6 +1511,93 @@
  }
  #endif /* HAVE_LAUNCHD */
  
