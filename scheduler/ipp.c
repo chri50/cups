@@ -826,7 +826,8 @@ cupsdTimeoutJob(cupsd_job_t *job)	/* I - Job to timeout */
   printer = cupsdFindDest(job->dest);
   attr    = ippFindAttribute(job->attrs, "job-sheets", IPP_TAG_NAME);
 
-  if (printer && !(printer->type & CUPS_PRINTER_REMOTE) &&
+  if (printer &&
+      !(printer->type & (CUPS_PRINTER_REMOTE | CUPS_PRINTER_IMPLICIT)) &&
       attr && attr->num_values > 1)
   {
    /*
@@ -941,6 +942,7 @@ add_class(cupsd_client_t  *con,		/* I - Client connection */
   cups_ptype_t	dtype;			/* Destination type */
   ipp_attribute_t *attr;		/* Printer attribute */
   int		modify;			/* Non-zero if we just modified */
+  char		newname[IPP_MAX_NAME];	/* New class name */
   int		need_restart_job;	/* Need to restart job? */
 
 
@@ -994,7 +996,8 @@ add_class(cupsd_client_t  *con,		/* I - Client connection */
     * Class doesn't exist; see if we have a printer of the same name...
     */
 
-    if ((pclass = cupsdFindPrinter(resource + 9)) != NULL)
+    if ((pclass = cupsdFindPrinter(resource + 9)) != NULL &&
+        !(pclass->type & CUPS_PRINTER_DISCOVERED))
     {
      /*
       * Yes, return an error...
@@ -1015,6 +1018,56 @@ add_class(cupsd_client_t  *con,		/* I - Client connection */
       send_http_error(con, status, NULL);
       return;
     }
+
+    pclass = cupsdAddClass(resource + 9);
+    modify = 0;
+  }
+  else if (pclass->type & CUPS_PRINTER_IMPLICIT)
+  {
+   /*
+    * Check the default policy, then rename the implicit class to "AnyClass"
+    * or remove it...
+    */
+
+    if ((status = cupsdCheckPolicy(DefaultPolicyPtr, con, NULL)) != HTTP_OK)
+    {
+      send_http_error(con, status, NULL);
+      return;
+    }
+
+    if (ImplicitAnyClasses)
+    {
+      snprintf(newname, sizeof(newname), "Any%s", resource + 9);
+      cupsdRenamePrinter(pclass, newname);
+    }
+    else
+      cupsdDeletePrinter(pclass, 1);
+
+   /*
+    * Add the class as a new local class...
+    */
+
+    pclass = cupsdAddClass(resource + 9);
+    modify = 0;
+  }
+  else if (pclass->type & CUPS_PRINTER_DISCOVERED)
+  {
+   /*
+    * Check the default policy, then rename the remote class to "Class"...
+    */
+
+    if ((status = cupsdCheckPolicy(DefaultPolicyPtr, con, NULL)) != HTTP_OK)
+    {
+      send_http_error(con, status, NULL);
+      return;
+    }
+
+    snprintf(newname, sizeof(newname), "%s@%s", resource + 9, pclass->hostname);
+    cupsdRenamePrinter(pclass, newname);
+
+   /*
+    * Add the class as a new local class...
+    */
 
     pclass = cupsdAddClass(resource + 9);
     modify = 0;
@@ -1550,7 +1603,8 @@ add_job(cupsd_client_t  *con,		/* I - Client connection */
     return (NULL);
   }
 
-  job->dtype   = printer->type & (CUPS_PRINTER_CLASS | CUPS_PRINTER_REMOTE);
+  job->dtype   = printer->type & (CUPS_PRINTER_CLASS | CUPS_PRINTER_IMPLICIT |
+                                  CUPS_PRINTER_REMOTE);
   job->attrs   = con->request;
   job->dirty   = 1;
   con->request = ippNewRequest(job->attrs->request.op.operation_id);
@@ -1741,7 +1795,8 @@ add_job(cupsd_client_t  *con,		/* I - Client connection */
     ippSetString(job->attrs, &job->reasons, 0, "none");
   }
 
-  if (!(printer->type & CUPS_PRINTER_REMOTE) || Classification)
+  if (!(printer->type & (CUPS_PRINTER_REMOTE | CUPS_PRINTER_IMPLICIT)) ||
+      Classification)
   {
    /*
     * Add job sheets options...
@@ -1874,7 +1929,7 @@ add_job(cupsd_client_t  *con,		/* I - Client connection */
     * See if we need to add the starting sheet...
     */
 
-    if (!(printer->type & CUPS_PRINTER_REMOTE))
+    if (!(printer->type & (CUPS_PRINTER_REMOTE | CUPS_PRINTER_IMPLICIT)))
     {
       cupsdLogJob(job, CUPSD_LOG_INFO, "Adding start banner page \"%s\".",
 		  attr->values[0].string.text);
@@ -2218,6 +2273,7 @@ add_printer(cupsd_client_t  *con,	/* I - Client connection */
   char		srcfile[1024],		/* Source Script/PPD file */
 		dstfile[1024];		/* Destination Script/PPD file */
   int		modify;			/* Non-zero if we are modifying */
+  char		newname[IPP_MAX_NAME];	/* New printer name */
   int		changed_driver,		/* Changed the PPD/interface script? */
 		need_restart_job,	/* Need to restart job? */
 		set_device_uri,		/* Did we set the device URI? */
@@ -2273,7 +2329,8 @@ add_printer(cupsd_client_t  *con,	/* I - Client connection */
     * Printer doesn't exist; see if we have a class of the same name...
     */
 
-    if ((printer = cupsdFindClass(resource + 10)) != NULL)
+    if ((printer = cupsdFindClass(resource + 10)) != NULL &&
+        !(printer->type & CUPS_PRINTER_DISCOVERED))
     {
      /*
       * Yes, return an error...
@@ -2294,6 +2351,58 @@ add_printer(cupsd_client_t  *con,	/* I - Client connection */
       send_http_error(con, status, NULL);
       return;
     }
+
+    printer = cupsdAddPrinter(resource + 10);
+    modify  = 0;
+  }
+  else if (printer->type & CUPS_PRINTER_IMPLICIT)
+  {
+   /*
+    * Check the default policy, then rename the implicit printer to
+    * "AnyPrinter" or delete it...
+    */
+
+    if ((status = cupsdCheckPolicy(DefaultPolicyPtr, con, NULL)) != HTTP_OK)
+    {
+      send_http_error(con, status, NULL);
+      return;
+    }
+
+    if (ImplicitAnyClasses)
+    {
+      snprintf(newname, sizeof(newname), "Any%s", resource + 10);
+      cupsdRenamePrinter(printer, newname);
+    }
+    else
+      cupsdDeletePrinter(printer, 1);
+
+   /*
+    * Add the printer as a new local printer...
+    */
+
+    printer = cupsdAddPrinter(resource + 10);
+    modify  = 0;
+  }
+  else if (printer->type & CUPS_PRINTER_DISCOVERED)
+  {
+   /*
+    * Check the default policy, then rename the remote printer to
+    * "Printer@server"...
+    */
+
+    if ((status = cupsdCheckPolicy(DefaultPolicyPtr, con, NULL)) != HTTP_OK)
+    {
+      send_http_error(con, status, NULL);
+      return;
+    }
+
+    snprintf(newname, sizeof(newname), "%s@%s", resource + 10,
+             printer->hostname);
+    cupsdRenamePrinter(printer, newname);
+
+   /*
+    * Add the printer as a new local printer...
+    */
 
     printer = cupsdAddPrinter(resource + 10);
     modify  = 0;
@@ -4716,8 +4825,8 @@ copy_job_attrs(cupsd_client_t *con,	/* I - Client connection */
   {
     httpAssembleURIf(HTTP_URI_CODING_ALL, job_uri, sizeof(job_uri), "ipp", NULL,
 		     con->servername, con->serverport,
-		     (job->dtype & CUPS_PRINTER_CLASS) ? "/classes/%s" :
-		                                         "/printers/%s",
+		     job->dtype & (CUPS_PRINTER_IMPLICIT | CUPS_PRINTER_CLASS) ?
+		         "/classes/%s" : "/printers/%s",
 		     job->dest);
     ippAddString(con->response, IPP_TAG_JOB, IPP_TAG_URI,
         	 "job-printer-uri", NULL, job_uri);
@@ -4839,7 +4948,7 @@ copy_printer_attrs(
 		    "stop-printer"
 		  };
 
-    if (printer->type & CUPS_PRINTER_CLASS)
+    if (printer->type & (CUPS_PRINTER_IMPLICIT | CUPS_PRINTER_CLASS))
       ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_NAME | IPP_TAG_COPY,
                    "printer-error-policy-supported", NULL, "retry-current-job");
     else
@@ -4866,7 +4975,8 @@ copy_printer_attrs(
     ippAddBoolean(con->response, IPP_TAG_PRINTER, "printer-is-shared",
                   printer->shared);
 
-  if (!ra || cupsArrayFind(ra, "printer-more-info"))
+  if ((!ra || cupsArrayFind(ra, "printer-more-info")) &&
+      !(printer->type & CUPS_PRINTER_DISCOVERED))
   {
     httpAssembleURIf(HTTP_URI_CODING_ALL, printer_uri, sizeof(printer_uri),
                      "http", NULL, con->servername, con->serverport,
@@ -4922,7 +5032,8 @@ copy_printer_attrs(
     ippAddInteger(con->response, IPP_TAG_PRINTER, IPP_TAG_INTEGER,
                   "printer-up-time", curtime);
 
-  if (!ra || cupsArrayFind(ra, "printer-uri-supported"))
+  if ((!ra || cupsArrayFind(ra, "printer-uri-supported")) &&
+      !(printer->type & CUPS_PRINTER_DISCOVERED))
   {
     httpAssembleURIf(HTTP_URI_CODING_ALL, printer_uri, sizeof(printer_uri),
                      "ipp", NULL, con->servername, con->serverport,
@@ -6873,10 +6984,11 @@ get_ppd(cupsd_client_t  *con,		/* I - Client connection */
                    "printer-uri", NULL, dest->uri);
       return;
     }
-    else if (dtype & CUPS_PRINTER_CLASS)
+    else if (dtype & (CUPS_PRINTER_CLASS | CUPS_PRINTER_IMPLICIT))
     {
       for (i = 0; i < dest->num_printers; i ++)
-        if (!(dest->printers[i]->type & CUPS_PRINTER_CLASS))
+        if (!(dest->printers[i]->type &
+	      (CUPS_PRINTER_CLASS | CUPS_PRINTER_IMPLICIT)))
 	{
 	  snprintf(filename, sizeof(filename), "%s/ppd/%s.ppd", ServerRoot,
 		   dest->printers[i]->name);
@@ -7323,6 +7435,15 @@ get_printers(cupsd_client_t *con,	/* I - Client connection */
 	(!location ||
 	 (printer->location && !_cups_strcasecmp(printer->location, location))))
     {
+     /*
+      * If HideImplicitMembers is enabled, see if this printer or class
+      * is a member of an implicit class...
+      */
+
+      if (ImplicitClasses && HideImplicitMembers &&
+          printer->in_implicit_class)
+        continue;
+
      /*
       * If a username is specified, see if it is allowed or denied
       * access...
@@ -9950,7 +10071,7 @@ set_default(cupsd_client_t  *con,	/* I - Client connection */
 		"%s is now the default printer.", printer->name);
 
   cupsdMarkDirty(CUPSD_DIRTY_PRINTERS | CUPSD_DIRTY_CLASSES |
-                 CUPSD_DIRTY_PRINTCAP);
+                 CUPSD_DIRTY_REMOTE | CUPSD_DIRTY_PRINTCAP);
 
   cupsdLogMessage(CUPSD_LOG_INFO,
                   "Default destination set to \"%s\" by \"%s\".",
@@ -10571,7 +10692,7 @@ set_printer_defaults(
         continue;
 
       if (strcmp(attr->values[0].string.text, "retry-current-job") &&
-          ((printer->type & CUPS_PRINTER_CLASS) ||
+          ((printer->type & (CUPS_PRINTER_IMPLICIT | CUPS_PRINTER_CLASS)) ||
 	   (strcmp(attr->values[0].string.text, "abort-job") &&
 	    strcmp(attr->values[0].string.text, "retry-job") &&
 	    strcmp(attr->values[0].string.text, "stop-printer"))))
