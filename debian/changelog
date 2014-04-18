@@ -1,3 +1,14 @@
+cups (1.5.3-0ubuntu8.2) precise-security; urgency=medium
+
+  * SECURITY UPDATE: cross-site scripting issue in web interface
+    - debian/patches/CVE-2014-2856.patch: filter bad characters from the
+      URL in scheduler/client.c.
+    - CVE-2014-2856
+  * This package does _not_ contain the changes from 1.5.3-0ubuntu8.1 in
+    precise-proposed.
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 18 Apr 2014 11:57:36 -0400
+
 cups (1.5.3-0ubuntu8) precise-proposed; urgency=low
 
   * debian/patches/usb-backend-do-not-crash-if-usb-disabled-in-bios.patch:
