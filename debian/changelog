@@ -1,3 +1,14 @@
+cups (1.4.3-1ubuntu1.11) lucid-security; urgency=medium
+
+  * SECURITY UPDATE: cross-site scripting issue in web interface
+    - debian/patches/CVE-2014-2856.dpatch: filter bad characters from the
+      URL in scheduler/client.c.
+    - CVE-2014-2856
+  * This package does _not_ contain the changes from 1.5.3-0ubuntu8.1 in
+    precise-proposed.
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 18 Apr 2014 11:59:42 -0400
+
 cups (1.4.3-1ubuntu1.10) lucid-security; urgency=medium
 
   * SECURITY UPDATE: arbitrary code execution via overflows in pdftoopvp
