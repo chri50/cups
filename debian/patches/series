@@ -54,3 +54,4 @@ forward-port-cups-1-5-x-cups-browsing.patch
 cupsd-no-crash-on-avahi-threaded-poll-shutdown.patch
 CVE-2012-5519.patch
 CVE-2013-6891.patch
+CVE-2014-2856.patch
