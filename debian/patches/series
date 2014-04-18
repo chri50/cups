@@ -50,3 +50,4 @@ log-debug-history-nearly-unlimited.patch
 
 cupsd-sync-files-on-close.patch
 CVE-2013-6891.patch
+CVE-2014-2856.patch

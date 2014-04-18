@@ -1,3 +1,12 @@
+cups (1.7.0~rc1-0ubuntu5.3) saucy-security; urgency=medium
+
+  * SECURITY UPDATE: cross-site scripting issue in web interface
+    - debian/patches/CVE-2014-2856.patch: filter bad characters from the
+      URL in scheduler/client.c.
+    - CVE-2014-2856
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 18 Apr 2014 11:03:53 -0400
+
 cups (1.7.0~rc1-0ubuntu5.2) saucy-security; urgency=low
 
   * SECURITY UPDATE: information disclosure via lppasswd binary
