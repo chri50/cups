@@ -246,6 +246,8 @@ VAR char		*ServerKey		VALUE(NULL);
 VAR int			SSLOptions		VALUE(CUPSD_SSL_NONE);
 					/* SSL/TLS options */
 #endif /* HAVE_SSL */
+VAR char		*PidFile		VALUE(NULL);
+					/* Debian CUPS pid file */
 
 #ifdef HAVE_LAUNCHD
 VAR int			LaunchdTimeout		VALUE(DEFAULT_KEEPALIVE);
