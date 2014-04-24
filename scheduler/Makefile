@@ -28,6 +28,7 @@ CUPSDOBJS =	\
 		file.o \
 		main.o \
 		ipp.o \
+		colord.o \
 		listen.o \
 		job.o \
 		log.o \
