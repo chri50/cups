@@ -242,7 +242,7 @@ Last-Update: 2014-03-05
  			*ServerAdmin		VALUE(NULL),
 --- a/scheduler/main.c
 +++ b/scheduler/main.c
-@@ -331,6 +331,9 @@
+@@ -340,6 +340,9 @@
    if (!ConfigurationFile)
      cupsdSetString(&ConfigurationFile, CUPS_SERVERROOT "/cupsd.conf");
  
@@ -252,7 +252,7 @@ Last-Update: 2014-03-05
    if (!CupsFilesFile)
    {
      char	*filename,		/* Copy of cupsd.conf filename */
-@@ -790,6 +793,15 @@
+@@ -804,6 +807,15 @@
  
  #ifdef HAVE_SYSTEMD
         /*
