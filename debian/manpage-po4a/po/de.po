@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 1.7.1-2\n"
 "POT-Creation-Date: 2014-04-10 21:59+0300\n"
-"PO-Revision-Date: 2014-03-27 20:43+0100\n"
+"PO-Revision-Date: 2014-04-18 11:11+0200\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
 "Language: de\n"
@@ -4797,11 +4797,6 @@ msgstr ""
 
 #. type: Plain text
 #: cupsfilter.man:46
-#, fuzzy
-#| msgid ""
-#| "I<cupsfilter> is a front-end to the CUPS filter subsystem which allows "
-#| "you to convert a file to a specific format, just as if you had printed "
-#| "the file through CUPS. By default, I<cupsfilter> generates a PDF file."
 msgid ""
 "I<cupsfilter> is a front-end to the CUPS filter subsystem which allows you "
 "to convert a file to a specific format, just as if you had printed the file "
@@ -4811,7 +4806,7 @@ msgstr ""
 "I<cupsfilter> ist eine Oberfläche für das CUPS-Filter-Subsystem, das es "
 "erlaubt, eine Datei in ein spezielles Format umzuwandeln, als ob Sie diese "
 "Datei mittels CUPS gedruckt hätten. Standardmäßig erzeugt I<cupsfilter> eine "
-"PDF-Datei."
+"PDF-Datei. Die konvertierte Datei wird zur Standardausgabe geschickt."
 
 #. type: TP
 #: cupsfilter.man:47
@@ -4841,10 +4836,8 @@ msgstr ""
 
 #. type: Plain text
 #: cupsfilter.man:59
-#, fuzzy
-#| msgid "Uses the named cupsd.conf configuration file."
 msgid "Uses the named cups-files.conf configuration file."
-msgstr "Verwendet die benannte cupsd.conf-Konfigurationsdatei."
+msgstr "Verwendet die benannte cups-files.conf-Konfigurationsdatei."
 
 #. type: TP
 #: cupsfilter.man:59
@@ -4974,10 +4967,8 @@ msgstr "die PPD-Datei nach der Umwandlung löschen."
 
 #. type: Plain text
 #: cupsfilter.man:104
-#, fuzzy
-#| msgid "cups-files.conf"
 msgid "I<cups-files.conf(5)>"
-msgstr "cups-files.conf"
+msgstr "I<cups-files.conf(5)>"
 
 #. type: Plain text
 #: cupsfilter.man:107 ipptool.man:163 ipptoolfile.man:625
@@ -6987,13 +6978,11 @@ msgstr "http://www.pwg.org/ipp"
 msgid "ipptoolfile"
 msgstr "ipptoolfile"
 
-# type: TH
 #. type: TH
 #: ipptoolfile.man:14
-#, fuzzy, no-wrap
-#| msgid "4 March 2010"
+#, no-wrap
 msgid "25 March 2014"
-msgstr "4. März 2010"
+msgstr "25. März 2014"
 
 #. type: Plain text
 #: ipptoolfile.man:17
@@ -8274,75 +8263,7 @@ msgstr ""
 
 #. type: Plain text
 #: ipptoolfile.man:469
-#, fuzzy, no-wrap
-#| msgid ""
-#| "    Activate-Printer\n"
-#| "    CUPS-Accept-Jobs\n"
-#| "    CUPS-Add-Modify-Class\n"
-#| "    CUPS-Add-Modify-Printer\n"
-#| "    CUPS-Authenticate-Job\n"
-#| "    CUPS-Delete-Class\n"
-#| "    CUPS-Delete-Printer\n"
-#| "    CUPS-Get-Classes\n"
-#| "    CUPS-Get-Default\n"
-#| "    CUPS-Get-Devices\n"
-#| "    CUPS-Get-Document\n"
-#| "    CUPS-Get-PPD\n"
-#| "    CUPS-Get-PPDs\n"
-#| "    CUPS-Get-Printers\n"
-#| "    CUPS-Move-Job\n"
-#| "    CUPS-Reject-Jobs\n"
-#| "    CUPS-Set-Default\n"
-#| "    Cancel-Current-Job\n"
-#| "    Cancel-Job\n"
-#| "    Cancel-Jobs\n"
-#| "    Cancel-My-Jobs\n"
-#| "    Cancel-Subscription\n"
-#| "    Close-Job\n"
-#| "    Create-Job\n"
-#| "    Create-Job-Subscription\n"
-#| "    Create-Printer-Subscription\n"
-#| "    Deactivate-Printer\n"
-#| "    Disable-Printer\n"
-#| "    Enable-Printer\n"
-#| "    Get-Job-Attributes\n"
-#| "    Get-Jobs\n"
-#| "    Get-Notifications\n"
-#| "    Get-Printer-Attributes\n"
-#| "    Get-Printer-Support-Files\n"
-#| "    Get-Printer-Supported-Values\n"
-#| "    Get-Subscription-Attributes\n"
-#| "    Get-Subscriptions\n"
-#| "    Hold-Job\n"
-#| "    Hold-New-Jobs\n"
-#| "    Identify-Printer\n"
-#| "    Pause-Printer\n"
-#| "    Pause-Printer-After-Current-Job\n"
-#| "    Print-Job\n"
-#| "    Print-URI\n"
-#| "    Promote-Job\n"
-#| "    Purge-Jobs\n"
-#| "    Release-Held-New-Jobs\n"
-#| "    Release-Job\n"
-#| "    Renew-Subscription\n"
-#| "    Reprocess-Job\n"
-#| "    Restart-Job\n"
-#| "    Restart-Printer\n"
-#| "    Resubmit-Job\n"
-#| "    Resume-Job\n"
-#| "    Resume-Printer\n"
-#| "    Schedule-Job-After\n"
-#| "    Send-Document\n"
-#| "    Send-Hardcopy-Document\n"
-#| "    Send-Notifications\n"
-#| "    Send-URI\n"
-#| "    Set-Job-Attributes\n"
-#| "    Set-Printer-Attributes\n"
-#| "    Shutdown-Printer\n"
-#| "    Startup-Printer\n"
-#| "    Suspend-Current-Job\n"
-#| "    Validate-Document\n"
-#| "    Validate-Job\n"
+#, no-wrap
 msgid ""
 "    Activate-Printer\n"
 "    CUPS-Accept-Jobs\n"
@@ -8436,8 +8357,8 @@ msgstr ""
 "    Cancel-Subscription\n"
 "    Close-Job\n"
 "    Create-Job\n"
-"    Create-Job-Subscription\n"
-"    Create-Printer-Subscription\n"
+"    Create-Job-Subscriptions\n"
+"    Create-Printer-Subscriptions\n"
 "    Deactivate-Printer\n"
 "    Disable-Printer\n"
 "    Enable-Printer\n"

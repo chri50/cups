@@ -1,3 +1,22 @@
+cups (1.7.2-2) unstable; urgency=low
+
+  [ Helge Kreutzmann ]
+  * Update German man page (1526t)
+
+  [ Till Kamppeter ]
+  * Removed Ubuntu difference in the dependency of cups-deamon on avahi-daemon:
+    avahi-daemon is a Recommends for both now; remove "on started avahi-daemon"
+    from the "start on ..." rule in /etc/init/cups.conf upstart script
+    (LP: #1242185, #1178172)
+  * Add two patches for Upstart socket-triggered activation:
+    - allow starting cupsd socket-triggered through Upstart, for on-demand
+      starting to save resources (especially on mobile devices)
+    - let cupsd stop after 30 seconds idle time in when started by Upstart
+      socket-activation (if timeout is not explicitly set to another time)
+    (Closes: #742666, LP: #1276713)
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 02 May 2014 15:54:20 +0200
+
 cups (1.7.2-1) unstable; urgency=medium
 
   * New 1.7.2 upstream release

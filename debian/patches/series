@@ -10,6 +10,7 @@ cups-no-gcrypt.patch
 # patches which should go upstream
 color-management-extension.patch
 systemd-optional-socket-activation.patch
+cupsd-upstart-support.patch
 # Fix tests, should probably go upstream
 tests-ignore-warnings.patch
 tests-ignore-usb-crash.patch
@@ -46,6 +47,7 @@ log-debug-history-nearly-unlimited.patch
 cupsd-set-default-for-SyncOnClose-to-Yes.patch
 man-cups-lpd-drop-dangling-references.patch
 cupsd-idleexittimeout-systemd.patch
+cupsd-idleexittimeout-upstart.patch
 cupsd-write-systemd-Port.patch
 lppasswd-manpage-mention-dpkg-statoverride.patch
 debianize_cups-config.patch

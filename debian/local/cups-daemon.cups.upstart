@@ -4,7 +4,6 @@ description     "CUPS printing spooler/server"
 author          "Michael Sweet <msweet@apple.com>"
 
 start on (filesystem
-          and started avahi-daemon
           and (started dbus or runlevel [2345]))
 stop on runlevel [016]
 
@@ -31,7 +30,7 @@ pre-start script
     fi
 end script
 
-exec /usr/sbin/cupsd -F
+exec /usr/sbin/cupsd -f
 
 post-start script
     # wait until daemon is ready
