@@ -1,4 +1,5 @@
 # patches accepted and committed upstream:
+fix-xss-in-cups-webinterface-str43576.patch
 split-configuration-files-STR4223.patch
 
 # patches sent upstream
@@ -31,6 +32,7 @@ cups-deviced-allow-device-ids-with-newline.patch
 cups-snmp-oids-device-id-hp-ricoh.patch
 configure-default-browse-protocols.patch
 fix_russian_japanese_templates.patch
+fix_hungarian_templates.patch
 
 # Debian patches
 add-ipp-backend-of-cups-1.4.patch

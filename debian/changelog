@@ -1,3 +1,11 @@
+cups (1.5.3-5+deb7u2) stable; urgency=low
+
+  * Add patch to fix hungarian templates syntax typos (Closes: #737709)
+  * Import upstream patch to fix XSS in the CUPS webinterface (STR #4356),
+    fixes CVE-2014-2856
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 03 May 2014 15:24:00 +0200
+
 cups (1.5.3-5+deb7u1) stable; urgency=low
 
   [ Tim Waugh ]
