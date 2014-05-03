@@ -1,3 +1,21 @@
+cups (1.4.4-7+squeeze5) oldstable; urgency=low
+
+  * Import upstream patch to fix XSS in the CUPS webinterface (STR #4356),
+    fixes CVE-2014-2856
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 03 May 2014 15:43:50 +0200
+
+cups (1.4.4-7+squeeze4) oldstable-security; urgency=high
+
+  * Backport security fix from cups-filters 1.0.47:
+    pdftoopvp: SECURITY FIX for CVE-2013-6474, CVE-2013-6475, and
+    CVE-2013-6476: Introduction of gmallocn and gmallocn3 to protect against
+    arbitrary code execution with the privileges of the "lp" user via
+    malicious PDF files. Also restrict the directory from where OPVP drivers
+    can get loaded (Closes: #741333)
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 11 Mar 2014 14:42:08 +0100
+
 cups (1.4.4-7+squeeze3) stable; urgency=low
 
   [ Didier Raboud ]
