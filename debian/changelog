@@ -1,3 +1,11 @@
+cups (1.7.2-3) unstable; urgency=medium
+
+  [ Till Kamppeter ]
+  * Updated version numbers in Replaces:/Breaks: for cups-bsd to also work with
+    updating CUPS under Ubuntu (LP: #1315766)
+
+ -- Didier Raboud <odyx@debian.org>  Sun, 04 May 2014 12:18:32 +0200
+
 cups (1.7.2-2) unstable; urgency=low
 
   [ Helge Kreutzmann ]
