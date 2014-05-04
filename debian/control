@@ -166,8 +166,8 @@ Suggests: cups-bsd,
  cups-pdf,
  udev,
  smbclient
-Replaces: ghostscript-cups (<< 9.02~), cups-bsd (<< 1.7.1-7~)
-Breaks: foomatic-filters (<< 4.0), ghostscript-cups (<< 9.02~), cups-bsd (<< 1.7.1-7~)
+Replaces: ghostscript-cups (<< 9.02~), cups-bsd (<< 1.7.2-3~)
+Breaks: foomatic-filters (<< 4.0), ghostscript-cups (<< 9.02~), cups-bsd (<< 1.7.2-3~)
 Multi-Arch: foreign
 Description: Common UNIX Printing System(tm) - PPD/driver support, web interface
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
