@@ -1,3 +1,10 @@
+cups (1.7.2-3build1) utopic; urgency=high
+
+  * No change rebuild against new dh_installinit, to call update-rc.d at
+    postinst.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Wed, 28 May 2014 10:39:38 +0100
+
 cups (1.7.2-3) unstable; urgency=medium
 
   [ Till Kamppeter ]
