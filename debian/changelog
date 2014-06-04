@@ -1,3 +1,16 @@
+cups (1.7.3-1) unstable; urgency=medium
+
+  * New 1.7.3 upstream release
+    - Refresh patches
+
+  * Add one simple autopackagetest
+  * In cups-daemon.preinst, only write ListenStream stanzas for 'Port' OR
+    'Listen localhost', not both (Closes: #742668)
+  * Explicitly install README.Debian to libcups2, add symlinks in various
+    other packages (Closes: #750532)
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 04 Jun 2014 15:27:04 +0200
+
 cups (1.7.2-3) unstable; urgency=medium
 
   [ Till Kamppeter ]
