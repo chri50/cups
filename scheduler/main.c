@@ -79,6 +79,8 @@ static void		sighup_handler(int sig);
 static void		sigterm_handler(int sig);
 static long		select_timeout(int fds);
 static void		usage(int status) __attribute__((noreturn));
+int			write_pid(void);
+int			remove_pid(void);
 
 
 /*
@@ -688,6 +690,11 @@ main(int  argc,				/* I - Number of command-line args */
     cupsdStartSystemMonitor();
 #endif /* __APPLE__ */
 
+  if (write_pid() == 0) {
+    cupsdLogMessage(CUPSD_LOG_ERROR, "Unable to write pid file");
+    return (1);
+  }
+
  /*
   * Send server-started event...
   */
@@ -1234,9 +1241,40 @@ main(int  argc,				/* I - Number of command-line args */
 
   cupsdStopSelect();
 
+  remove_pid();
+
   return (!stop_scheduler);
 }
 
+
+/* 'write_pid()' - Write PID file.
+   'remove_pid()' - Delete PID file.
+*/
+int
+write_pid()
+{
+  FILE *f;
+  int fd;
+  int pid;
+  if (((fd = open(PidFile, O_RDWR|O_CREAT, 0644)) == -1)
+      || ((f = fdopen(fd, "r+")) == NULL) ) {
+    return 0;
+  }
+  pid = getpid();
+  if (!fprintf(f, "%d\n", pid)) {
+    close(fd);
+    return 0;
+  }
+  fflush(f);
+  close(fd);
+
+  return pid;
+}
+
+int
+remove_pid() {
+  return unlink(PidFile);
+}
 
 /*
  * 'cupsdAddString()' - Copy and add a string to an array.
