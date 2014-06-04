@@ -13,7 +13,7 @@ Author: Julien Desfossez at Revolution Linux
   *   ippReadFile()	     - Read data for an IPP message from a file.
   *   ippReadIO()	     - Read data for an IPP message.
   *   ippSetBoolean()	     - Set a boolean value in an attribute.
-@@ -2754,6 +2756,120 @@
+@@ -2762,6 +2764,120 @@
    return (temp);
  }
  
@@ -134,7 +134,7 @@ Author: Julien Desfossez at Revolution Linux
  
  /*
   *  'ippNewRequest()' - Allocate a new IPP request message.
-@@ -3104,6 +3220,8 @@
+@@ -3112,6 +3228,8 @@
  	    */
  
              DEBUG_puts("2ippReadIO: IPP_TAG_END.");

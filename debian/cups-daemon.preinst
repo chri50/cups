@@ -10,7 +10,11 @@ install|upgrade)
         mv /etc/cups/cupsd.conf /etc/cups/cupsd.conf.conffile-bak
     fi
 
-    if [ ! -f /etc/cups/cupsd-systemd-listen.conf ]; then
+    # If file doesn't exist or if it has two conflicting stanzas
+    if [ ! -f /etc/cups/cupsd-systemd-listen.conf ] || \
+       ( grep -q '^ListenStream=0.0.0.0:' /etc/cups/cupsd-systemd-listen.conf 2>/dev/null && \
+         grep -q '^ListenStream=127.0.0.1:' /etc/cups/cupsd-systemd-listen.conf 2>/dev/null ) ;\
+    then
         mkdir -p /etc/cups
         cat >/etc/cups/cupsd-systemd-listen.conf <<EOF
 [Socket]
@@ -21,21 +25,19 @@ install|upgrade)
 # and write your own file there if you don't want this. See systemd.socket(5).
 EOF
         if [ -e /etc/cups/cupsd.conf ]; then
-            if grep -q '^\s*Listen localhost:' /etc/cups/cupsd.conf 2>/dev/null; then
-                localport=`grep '^\s*Listen localhost:' /etc/cups/cupsd.conf | head -n1 | sed -e 's/.*localhost\:\([[:digit:]]*\)$/\1/'`
-                cat >>/etc/cups/cupsd-systemd-listen.conf <<EOF
-# Matches 'Listen localhost:$localport' from cupsd.conf
-ListenStream=127.0.0.1:$localport
-ListenStream=[::1]:$localport
-EOF
-            fi
-
             if grep -q '^\s*Port' /etc/cups/cupsd.conf 2>/dev/null; then
                 localport=`grep '^\s*Port' /etc/cups/cupsd.conf | head -n1 | sed -e 's/.*Port \([[:digit:]]*\)$/\1/'`
                 cat >>/etc/cups/cupsd-systemd-listen.conf <<EOF
 # Matches 'Port $localport' from cupsd.conf
 ListenStream=0.0.0.0:$localport
 ListenStream=[::]:$localport
+EOF
+            elif grep -q '^\s*Listen localhost:' /etc/cups/cupsd.conf 2>/dev/null; then
+                localport=`grep '^\s*Listen localhost:' /etc/cups/cupsd.conf | head -n1 | sed -e 's/.*localhost\:\([[:digit:]]*\)$/\1/'`
+                cat >>/etc/cups/cupsd-systemd-listen.conf <<EOF
+# Matches 'Listen localhost:$localport' from cupsd.conf
+ListenStream=127.0.0.1:$localport
+ListenStream=[::1]:$localport
 EOF
             fi
         else
