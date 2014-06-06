@@ -1,3 +1,9 @@
+cups (1.7.3-1build1) utopic; urgency=medium
+
+  * Rebuild against libgnutls-deb0-28.
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Fri, 06 Jun 2014 15:23:18 +0100
+
 cups (1.7.3-1) unstable; urgency=medium
 
   * New 1.7.3 upstream release
