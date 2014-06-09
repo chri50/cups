@@ -202,6 +202,11 @@ HostNameLookups Double
 .br
 Specifies whether or not to do reverse lookups on client addresses.
 .TP 5
+IdleExitTimeout seconds
+.br
+Specifies the number of seconds to wait before exiting on inactivity under
+systemd or upstart.
+.TP 5
 Include filename
 .br
 Includes the named file.
@@ -503,6 +508,12 @@ SubscriptionPrivateValues attribute-name-1 [ ... attribute-name-N ]
 Specifies the list of job values to make private. The "default" values are
 "notify-events", "notify-pull-method", "notify-recipient-uri",
 "notify-subscriber-user-name", and "notify-user-data".
+.TP 5
+SystemdIdleExit Yes
+.TP 5
+SystemdIdleExit No
+.br
+Specifies whether to exit on inactivity when launched by systemd.
 .TP 5
 Timeout seconds
 .br

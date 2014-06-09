@@ -1,0 +1,34 @@
+#!/bin/sh
+
+set -e -u
+
+DUMMY_PRINTER_NAME=adt-printer0
+
+# Test all available drivers besides textonly that doesn't work
+for driver in $(lpinfo -m | cut -f1 -d' ' | grep -v 'textonly' | grep -v 'pdftoijs' | sort -u); do
+
+    echo -n "* Driver $driver : "
+
+    # Create dummy printer
+    /usr/sbin/lpadmin -p $DUMMY_PRINTER_NAME -E -m $driver -v file:///dev/null
+
+    echo -n "created test printer, "
+    
+    # Print the default testprint to it, get request id
+    rid=$(/usr/bin/lp -d $DUMMY_PRINTER_NAME /usr/share/cups/data/testprint | sed -e 's/^.*request id is \(.*\) (.*)$/\1/g')
+    
+    echo -n "launched test print job ("
+
+    # Wait for the print to finish
+    while /usr/bin/lpstat | grep -q "^$rid "; do
+        /bin/sleep 1s
+        echo -n "."
+    done
+
+    echo -n ") and "
+
+    # Delete it
+    /usr/sbin/lpadmin -x $DUMMY_PRINTER_NAME
+    echo "deleted printer."
+    
+done

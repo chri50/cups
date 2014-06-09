@@ -1,3 +1,7 @@
-Tests: add-remove-dummy-printer
-Restrictions: needs-root isolation-container
-Depends: cups, cups-client, cups-filters
+Tests: cups-core-drivers
+Restrictions: needs-root
+Depends: cups-core-drivers, cups-client
+
+Tests: cups
+Restrictions: needs-root
+Depends: cups, cups-client

@@ -6,7 +6,7 @@ Description: Add mode to let cupsd terminate when it is idle,
  is idle (no jobs, no shared printers) for the given timeout.
 Author: Till Kamppeter <till.kamppeter@gmail.com>
 Bug: https://cups.org/str.php?L4374
-Last-Update: 2014-02-24
+Last-Update: 2014-06-04
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -79,6 +79,7 @@
@@ -140,3 +140,17 @@ Last-Update: 2014-02-24
  #if HAVE_LAUNCHD
     /*
      * If no other work was scheduled and we're being controlled by launchd
+--- a/man/cupsd.conf.man.in
++++ b/man/cupsd.conf.man.in
+@@ -202,6 +202,11 @@
+ .br
+ Specifies whether or not to do reverse lookups on client addresses.
+ .TP 5
++IdleExitTimeout seconds
++.br
++Specifies the number of seconds to wait before exiting on inactivity under
++systemd or upstart.
++.TP 5
+ Include filename
+ .br
+ Includes the named file.
