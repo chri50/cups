@@ -1,3 +1,23 @@
+cups (1.7.3-2) unstable; urgency=medium
+
+  [ Till Kamppeter ]
+  * Added IPP attributes required by IPP Everywhere for PWG Raster when PWG
+    Raster as input format is supported. This is needed for shared printers
+    correctly emulating an IPP Everywhere printer (CUPS STR #4428)
+
+  [ Didier Raboud ]
+  * Add SystemdIdleExit and IdleExitTimeout references in cupsd.conf manpage
+  * Rename the cups pam configfile from cups-daemon to cups (Closes: #750602)
+  * Rewrite the autopkgtests suite:
+    - Drop isolation-container restriction
+    - Test cups-core-drivers with no driver for now
+    - Test cups with all available drivers
+
+  [ Jean-Paul Guillonneau ]
+  * Update the manpages' french translation (Closes: #744987)
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 09 Jun 2014 20:46:07 +0200
+
 cups (1.7.3-1) unstable; urgency=medium
 
   * New 1.7.3 upstream release

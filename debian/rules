@@ -174,5 +174,9 @@ override_dh_installdocs:
 	rm -f debian/libcups2-dev/usr/share/doc/libcups2-dev/examples/scripting/php/*.o
 	rm -f debian/libcups2-dev/usr/share/doc/libcups2-dev/examples/scripting/php/*.so
 
+override_dh_installpam:
+	dh_installpam -pcups-daemon --name=cups
+	dh_installpam --remaining-packages
+
 override_dh_strip:
 	dh_strip --dbg-package=cups-dbg
