@@ -1,0 +1,34 @@
+#!/bin/sh
+
+set -e -u
+
+DUMMY_PRINTER_NAME=$1
+shift
+
+for driver in $@; do
+
+    echo "* Driver $driver"
+
+    echo -n " - Create test printer:"
+    # Create dummy printer
+    /usr/sbin/lpadmin -p $DUMMY_PRINTER_NAME -E -m $driver -v file:///dev/null
+    echo " done."
+    
+    for file in $(find ./test -name '*.pdf') ; do
+        echo -n " - Print test job with $file: "
+        # Print the default testprint to it, get request id
+        rid=$(/usr/bin/lp -d $DUMMY_PRINTER_NAME $file | sed -e 's/^.*request id is \(.*\) (.*)$/\1/g')
+    
+        # Wait for the print to finish
+        while /usr/bin/lpstat | grep -q "^$rid "; do
+            /bin/sleep 1s
+            echo -n "."
+        done
+        echo " done."
+    done
+
+    # Delete it
+    echo -n " - Delete test printer:"
+    /usr/sbin/lpadmin -x $DUMMY_PRINTER_NAME
+    echo " done."
+done

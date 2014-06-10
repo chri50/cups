@@ -1,3 +1,12 @@
+cups (1.7.3-3) unstable; urgency=medium
+
+  * Fix autopkgtests:
+    - only use accessible files,
+    - extend the tests to test-print all PDFs in the source test/ directory,
+    - abstract the drivers testing script as a separate script.
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 10 Jun 2014 13:18:23 +0200
+
 cups (1.7.3-2) unstable; urgency=medium
 
   [ Till Kamppeter ]
