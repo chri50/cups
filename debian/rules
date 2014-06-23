@@ -142,6 +142,8 @@ override_dh_fixperms:
 override_dh_auto_test:
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 	make check
+	# Check that cups-config is not architecture-specific
+	[ -r cups-config ] && grep -vq $(shell dpkg-architecture -qDEB_HOST_MULTIARCH) cups-config
 endif
 
 ifeq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))

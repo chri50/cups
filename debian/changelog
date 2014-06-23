@@ -1,3 +1,14 @@
+cups (1.7.3-4) unstable; urgency=medium
+
+  * In cups-config, run krb5-config at runtime to avoid architecture
+    differences due to the output of krb5-config; add check at build-time to
+    avoid this happening again (Closes: #751157)
+  * Fix dpkg-architecture calls in cups-config
+  * Make the test-drivers utility more generic, install it in the cups package
+    to be able to use it in other packages' autopkgtests
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 23 Jun 2014 17:09:02 +0200
+
 cups (1.7.3-3) unstable; urgency=medium
 
   * Fix autopkgtests:
