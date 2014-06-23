@@ -2,7 +2,4 @@
 
 set -e -u
 
-#Test all available drivers besides textonly (which doesn't make sense for pdf, and pdftoijs that doesn't work
-drivers=$(lpinfo -m | cut -f1 -d' ' | grep -v 'textonly' | grep -v 'pdftoijs' | sort -u)
-
-./debian/tests/utils/test-drivers adt-printer0 $drivers
+./debian/tests/utils/test-drivers
