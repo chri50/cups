@@ -39,3 +39,4 @@ usr/share/man/man8/cupsdisable.8.gz
 usr/share/man/man8/cupsaccept.8.gz
 usr/share/man/man8/cupsctl.8.gz
 usr/share/cups/ipptool/*.test
+debian/tests/utils/test-drivers usr/share/cups/

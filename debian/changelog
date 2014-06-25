@@ -1,3 +1,10 @@
+cups (1.7.3-5) unstable; urgency=medium
+
+  * Add a trap to test-drivers utility, move it to cups-client instead of cups
+  * Run the tests using the installed test-drivers utility
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 25 Jun 2014 09:53:34 +0200
+
 cups (1.7.3-4) unstable; urgency=medium
 
   * In cups-config, run krb5-config at runtime to avoid architecture
