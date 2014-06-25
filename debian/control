@@ -248,6 +248,8 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
  libcups2 (= ${binary:Version}),
  adduser
 Suggests: cups, xpp, cups-bsd, smbclient
+Replaces: cups (<< 1.7.3-5~)
+Breaks: cups (<< 1.7.3-5~)
 Conflicts: lprng
 Multi-Arch: foreign
 Description: Common UNIX Printing System(tm) - client programs (SysV)

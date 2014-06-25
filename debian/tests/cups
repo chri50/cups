@@ -2,4 +2,4 @@
 
 set -e -u
 
-./debian/tests/utils/test-drivers
+/usr/share/cups/test-drivers
