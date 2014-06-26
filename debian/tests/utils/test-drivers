@@ -28,7 +28,7 @@ fi
 cleanup() {
     # Delete it
     echo -n "Interrupted, delete test printer:"
-    /usr/sbin/lpadmin -x $DUMMY_PRINTER_NAME || :
+    /usr/sbin/lpadmin -x $DUMMY_PRINTER_NAME 2>/dev/null || :
     echo " done."
 }
 
