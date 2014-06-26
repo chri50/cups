@@ -1,3 +1,9 @@
+cups (1.7.3-6) unstable; urgency=medium
+
+  * Discard lpadmin stderr in the tests' utility, fixes autopkgtests.
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 26 Jun 2014 07:51:30 +0200
+
 cups (1.7.3-5) unstable; urgency=medium
 
   * Add a trap to test-drivers utility, move it to cups-client instead of cups
