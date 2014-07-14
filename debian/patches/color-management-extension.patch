@@ -429,7 +429,7 @@ Last-Update: 2014-01-04
    * Do the request and get back a response...
 --- a/cups/cups.h
 +++ b/cups/cups.h
-@@ -244,7 +244,10 @@
+@@ -240,7 +240,10 @@
    CUPS_PRINTER_SCANNER = 0x2000000,	/* Scanner-only device
  					 * @since CUPS 1.4/OS X 10.6@ */
    CUPS_PRINTER_MFP = 0x4000000,		/* Printer with scanning capabilities

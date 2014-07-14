@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 1.7.1-2\n"
 "POT-Creation-Date: 2014-06-04 20:43+0200\n"
-"PO-Revision-Date: 2014-04-18 11:11+0200\n"
+"PO-Revision-Date: 2014-07-07 21:09+0200\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
 "Language: de\n"
@@ -2762,24 +2762,18 @@ msgstr ""
 
 #. type: TP
 #: cupsd.conf.man.in:204
-#, fuzzy, no-wrap
-#| msgid "Timeout seconds"
+#, no-wrap
 msgid "IdleExitTimeout seconds"
-msgstr "Timeout Sekunden"
+msgstr "IdleExitTimeout Sekunden"
 
 #. type: Plain text
 #: cupsd.conf.man.in:209
-#, fuzzy
-#| msgid ""
-#| "Specifies the number of seconds to wait before killing the filters and "
-#| "backend associated with a canceled or held job."
 msgid ""
 "Specifies the number of seconds to wait before exiting on inactivity under "
 "systemd or upstart."
 msgstr ""
-"Spezifiziert die Anzahl von Sekunden zum Warten, bevor die Filter und "
-"Backends beendet werden, die mit einem abgebrochenen oder angehaltenen "
-"Druckauftrag verbunden sind."
+"Spezifiziert die Anzahl von Sekunden zum Warten, bevor bei Inkativität unter "
+"Systemd oder Upstart beendet wird."
 
 #. type: TP
 #: cupsd.conf.man.in:209
@@ -3734,20 +3728,18 @@ msgstr ""
 #: cupsd.conf.man.in:511
 #, no-wrap
 msgid "SystemdIdleExit Yes"
-msgstr ""
+msgstr "SystemdIdleExit Yes"
 
 #. type: TP
 #: cupsd.conf.man.in:513
 #, no-wrap
 msgid "SystemdIdleExit No"
-msgstr ""
+msgstr "SystemdIdleExit No"
 
 #. type: Plain text
 #: cupsd.conf.man.in:517
-#, fuzzy
-#| msgid "Specifies whether the web interface is enabled."
 msgid "Specifies whether to exit on inactivity when launched by systemd."
-msgstr "Spezifiziert, ob die Webschnittstelle freigegeben ist."
+msgstr "Spezifiziert, ob beim Start durch Systemd im Falle von Inaktivität beendet werden soll."
 
 #. type: TP
 #: cupsd.conf.man.in:517
