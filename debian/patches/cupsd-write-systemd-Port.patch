@@ -146,7 +146,7 @@ Last-Update: 2014-03-05
  	      */
  
  	      cupsdLogMessage(CUPSD_LOG_ERROR,
-@@ -3451,6 +3451,7 @@
+@@ -3476,6 +3476,7 @@
  		*out;			/* Output file */
    char		buffer[16384];		/* Copy buffer */
    ssize_t	bytes;			/* Number of bytes */
@@ -154,7 +154,7 @@ Last-Update: 2014-03-05
  
  
   /*
-@@ -3465,17 +3466,30 @@
+@@ -3490,17 +3491,30 @@
    }
  
   /*
@@ -187,7 +187,7 @@ Last-Update: 2014-03-05
  
   /*
    * Copy from the request to the new config file...
-@@ -3486,12 +3500,12 @@
+@@ -3511,12 +3525,12 @@
      {
        cupsdLogMessage(CUPSD_LOG_ERROR,
                        "Unable to copy to config file \"%s\": %s",
@@ -202,7 +202,7 @@ Last-Update: 2014-03-05
        cupsdUnlinkOrRemoveFile(filename);
  
        return (HTTP_SERVER_ERROR);
-@@ -3503,7 +3517,7 @@
+@@ -3528,7 +3542,7 @@
  
    cupsFileClose(in);
  
@@ -211,7 +211,7 @@ Last-Update: 2014-03-05
      return (HTTP_SERVER_ERROR);
  
   /*
-@@ -3517,8 +3531,15 @@
+@@ -3542,8 +3556,15 @@
    * Set the NeedReload flag...
    */
  

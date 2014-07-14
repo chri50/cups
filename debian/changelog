@@ -1,3 +1,24 @@
+cups (1.7.4-1) unstable; urgency=medium
+
+  * New 1.7.4 upstream release
+    - Security: The web interface incorrectly served symlinked files and
+      files that were not world-readable, potentially leading to a
+      disclosure of information (STR #4450, CVE-2014-3537)
+    - Added USB quirk rule for Lexmark E230 (STR #4448)
+    - Fix broken links on the web homepage (STR #4453, Closes: #754243)
+    - Refresh patches
+
+  [ Helge Kreutzmann ]
+  * Update German man page (1531t)
+
+  [ Didier Raboud ]
+  * Stop managing the rename of /etc/pam.d/cups in the cups binary package:
+    /etc/pam.d/cups is not renamed anymore but is now just installed from a
+    different package (cups-daemon). (Closes: #753439)
+    Thanks to Raphaël Hertzog
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 14 Jul 2014 16:55:45 +0200
+
 cups (1.7.3-6) unstable; urgency=medium
 
   * Discard lpadmin stderr in the tests' utility, fixes autopkgtests.
