@@ -1,0 +1,9 @@
+[Unit]
+Description=CUPS Printing Service Sockets
+
+[Socket]
+ListenStream=@CUPS_DEFAULT_DOMAINSOCKET@
+BindIPv6Only=ipv6-only
+
+[Install]
+WantedBy=sockets.target
