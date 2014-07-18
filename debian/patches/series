@@ -45,3 +45,4 @@ test-i18n-nonlinux.patch
 CVE-2012-5519.patch
 CVE-2014-2856.patch
 handle-server-terminating-connection.patch
+CVE-2014-3537.patch
