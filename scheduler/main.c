@@ -218,7 +218,6 @@ main(int  argc,				/* I - Number of command-line args */
 
                 char *current;		/* Current directory */
 
-
 	       /*
 	        * Allocate a buffer for the current working directory to
 		* reduce run-time stack usage; this approximates the
@@ -282,6 +281,29 @@ main(int  argc,				/* I - Number of command-line args */
 	      UseProfiles = 0;
 	      break;
 
+          case 's' : /* Set cups-files.conf location */
+              i ++;
+	      if (i >= argc)
+	      {
+	        _cupsLangPuts(stderr, _("cupsd: Expected cups-files.conf "
+	                                "filename after \"-s\" option."));
+	        usage(1);
+	      }
+
+              if (argv[i][0] != '/')
+	      {
+	       /*
+	        * Relative filename not allowed...
+		*/
+
+	        _cupsLangPuts(stderr, _("cupsd: Relative cups-files.conf "
+	                                "filename not allowed."));
+	        usage(1);
+              }
+
+	      cupsdSetString(&CupsFilesFile, argv[i]);
+	      break;
+
 #ifdef __APPLE__
           case 'S' : /* Disable system management functions */
               fputs("cupsd: -S (disable system management) for internal "
@@ -309,7 +331,39 @@ main(int  argc,				/* I - Number of command-line args */
     }
 
   if (!ConfigurationFile)
+  {
     cupsdSetString(&ConfigurationFile, CUPS_SERVERROOT "/cupsd.conf");
+    cupsdSetString(&CupsFilesFile, CUPS_SERVERROOT "/cups-files.conf");
+  }
+
+  if (!CupsFilesFile)
+  {
+    char	*filename,		/* Copy of cupsd.conf filename */
+		*slash;			/* Final slash in cupsd.conf filename */
+    size_t	len;			/* Size of buffer */
+
+    len = strlen(ConfigurationFile) + 15;
+    if ((filename = malloc(len)) == NULL)
+    {
+      _cupsLangPrintf(stderr,
+		      _("cupsd: Unable to get path to "
+			"cups-files.conf file."));
+      return (1);
+    }
+
+    strlcpy(filename, ConfigurationFile, len);
+    if ((slash = strrchr(filename, '/')) == NULL)
+    {
+      _cupsLangPrintf(stderr,
+		      _("cupsd: Unable to get path to "
+			"cups-files.conf file."));
+      return (1);
+    }
+
+    strlcpy(slash, "/cups-files.conf", len - (slash - filename));
+    cupsdSetString(&CupsFilesFile, filename);
+    free(filename);
+  }
 
  /*
   * If the user hasn't specified "-f", run in the background...
