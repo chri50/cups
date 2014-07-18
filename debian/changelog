@@ -1,3 +1,12 @@
+cups (1.7.2-0ubuntu1.1) trusty-security; urgency=medium
+
+  * SECURITY UPDATE: privilege escalation via rss dir symlink
+    - debian/patches/CVE-2014-3537.patch: check for symlinks and proper
+      permissions in scheduler/client.c.
+    - CVE-2014-3537
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 18 Jul 2014 16:23:48 -0400
+
 cups (1.7.2-0ubuntu1) trusty; urgency=medium
 
   * New upstream bug fix release
