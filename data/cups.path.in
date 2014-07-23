@@ -5,4 +5,4 @@ Description=CUPS Printer Service Spool
 PathExistsGlob=@CUPS_REQUESTS@/d*
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=paths.target

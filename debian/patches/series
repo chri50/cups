@@ -1,4 +1,6 @@
 # patches accepted and committed upstream
+fix-cgi-scripts.patch
+fix-unsufficient-permission-checking.patch
 
 # patches sent upstream
 pwg-raster-attributes.patch

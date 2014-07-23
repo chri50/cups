@@ -1,0 +1,24 @@
+commit 3d1f41307e66ceb5ab9e8f903aeda66359615483
+Author: msweet <msweet@a1ca3aef-8c08-0410-bb20-df032aa958be>
+Date:   Fri Jul 18 20:37:49 2014 +0000
+
+    Fix CGI scripts (STR #4454)
+
+    git-svn-id: svn+ssh://src.apple.com/svn/cups/cups.org/branches/branch-1.7@12052 a1ca3aef-8c08-0410-bb20-df032aa958be
+
+--- a/scheduler/client.c
++++ b/scheduler/client.c
+@@ -3812,12 +3812,7 @@
+   argv[0] = command;
+ 
+   if (options)
+-  {
+-    commptr = options;
+-    if (*commptr == ' ')
+-      commptr ++;
+-    strlcpy(argbuf, commptr, sizeof(argbuf));
+-  }
++    strlcpy(argbuf, options, sizeof(argbuf));
+   else
+     argbuf[0] = '\0';
+ 

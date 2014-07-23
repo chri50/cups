@@ -23,7 +23,7 @@ Origin: http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/net-print/cups/f
 Origin: http://pkgs.fedoraproject.org/cgit/cups.git/tree/cups-systemd-socket.patch?id=7048cf473bca56b13d3c2f140fd749d561490784
 From: Lennart Poettering <lennart@poettering.net>
 Author: Lennart Poettering <lennart@poettering.net>
-Last-Update: 2014-03-03
+Last-Update: 2014-07-23
 --- a/config.h.in
 +++ b/config.h.in
 @@ -451,6 +451,13 @@
@@ -120,7 +120,7 @@ Last-Update: 2014-03-03
 +PathExistsGlob=@CUPS_REQUESTS@/d*
 +
 +[Install]
-+WantedBy=multi-user.target
++WantedBy=paths.target
 --- /dev/null
 +++ b/data/cups.service.in
 @@ -0,0 +1,11 @@
