@@ -1,3 +1,18 @@
+cups (1.7.4-2) unstable; urgency=medium
+
+  * Install systemd's cups.path in paths.target instead of multi-user.target
+    (Closes: #755690)
+  * Import two upstream patches:
+    - Fix for unsufficient permission checking for files accesses from the
+      webinterface (STR: #4455)
+      CVE-2014-5029 Incomplete fix CVE-2014-3537
+      CVE-2014-5030 Disallow symlinks for directory index files
+      CVE-2014-5031 File/directory does not have world read permissions for
+                    directory index files
+    - Fix for CGI scripts (STR: #4454)
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 23 Jul 2014 09:45:49 +0200
+
 cups (1.7.4-1) unstable; urgency=medium
 
   * New 1.7.4 upstream release
