@@ -2092,7 +2092,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
    cgiSetVariable("HAVE_LDAP", "1");
 --- a/scheduler/client.c
 +++ b/scheduler/client.c
-@@ -4990,7 +4990,7 @@
+@@ -5040,7 +5040,7 @@
  	    !strncmp(host, "[::1]:", 6));
    }
  
@@ -2101,7 +2101,7 @@ Origin: git clone http://twaugh.fedorapeople.org/cups-avahi.git (Aug 11, 2011)
   /*
    * Check if the hostname is something.local (Bonjour); if so, allow it.
    */
-@@ -4999,7 +4999,7 @@
+@@ -5049,7 +5049,7 @@
        (!_cups_strcasecmp(end, ".local") || !_cups_strncasecmp(end, ".local:", 7) ||
         !_cups_strcasecmp(end, ".local.") || !_cups_strncasecmp(end, ".local.:", 8)))
      return (1);

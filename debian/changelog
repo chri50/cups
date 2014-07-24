@@ -1,3 +1,18 @@
+cups (1.5.3-5+deb7u4) wheezy-security; urgency=high
+
+  * Backport upstream patch to fix insufficient checking when allowing files
+    download from the webinterface (STR #4455), fixes CVE-2014-5029,
+    CVE-2014-5030 and CVE-2014-5031
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 24 Jul 2014 22:44:08 +0200
+
+cups (1.5.3-5+deb7u3) wheezy-security; urgency=high
+
+  * Backport upstream patch to fix privilege escalation through the CUPS
+    webinterface (STR #4450), fixes CVE-2014-3537
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 14 Jul 2014 19:22:54 +0200
+
 cups (1.5.3-5+deb7u2) stable; urgency=low
 
   * Add patch to fix hungarian templates syntax typos (Closes: #737709)
