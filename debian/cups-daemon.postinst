@@ -111,6 +111,11 @@ if [ "$1" = configure ]; then
             done
         done
     fi
+
+    # Remove cups.path leftover symlink
+    if dpkg --compare-versions "$2" lt "1.7.4-3~" ; then
+        rm -f /etc/systemd/system/multi-user.target.wants/cups.path
+    fi
 fi
 
 #DEBHELPER#
