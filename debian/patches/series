@@ -18,6 +18,7 @@ cupsd-upstart-support.patch
 tests-ignore-warnings.patch
 tests-ignore-usb-crash.patch
 tests-ignore-kfreebsd-amd64-not-a-pdf.patch
+tests-ignore-system-bus-failure.patch
 test-i18n-nonlinux.patch
 tests-wait-on-unfinished-jobs-everytime.patch
 tests-fix-ppdLocalize-on-unclean-env.patch

@@ -1,3 +1,11 @@
+cups (1.7.4-4) unstable; urgency=medium
+
+  * Add patch to ignore the 'Failed to connect to system bus' error that
+    sometimes breaks the errorlines counting on various architectures
+  * Refresh cupsd-write-systemd-Port patch
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 30 Jul 2014 10:40:53 +0200
+
 cups (1.7.4-3) unstable; urgency=medium
 
   * In cups-daemon's postinst, remove leftover cups.patch symlink in
