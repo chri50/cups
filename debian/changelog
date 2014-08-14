@@ -1,3 +1,11 @@
+cups (1.7.5-1) unstable; urgency=medium
+
+  * New 1.7.5 upstream release
+    - Drop upstream-originated patches, refresh all
+    - Refresh manpage translations for new upstream release
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 14 Aug 2014 19:32:52 +0200
+
 cups (1.7.4-5) unstable; urgency=medium
 
   [ Till Kamppeter ]
