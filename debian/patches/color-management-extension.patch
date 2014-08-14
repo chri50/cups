@@ -1175,3 +1175,57 @@ Last-Update: 2014-01-04
 +</DIV>
 +
 +
+--- a/templates/ja/add-printer.tmpl
++++ b/templates/ja/add-printer.tmpl
+@@ -38,6 +38,11 @@
+ このプリンターを共有する</TD>
+ </TR>
+ <TR>
++<TH CLASS="label">カラーマネジメント:</TH>
++<TD><INPUT TYPE="CHECKBOX" NAME="PRINTER_IS_COLORMANAGED" {PRINTER_IS_COLORMANAGED=1?CHECKED:}>
++有効</TD>
++</TR>
++<TR>
+ <TD></TD>
+ <TD><INPUT TYPE="SUBMIT" VALUE="続ける"></TD>
+ </TR>
+--- a/templates/ja/choose-make.tmpl
++++ b/templates/ja/choose-make.tmpl
+@@ -34,6 +34,10 @@
+ このプリンターを共有{?printer_is_shared=?しない:{?printer_is_shared=0?しない:する}}</TD>
+ </TR>
+ <TR>
++<TH CLASS="label">カラーマネジメント:</TH>
++<TD><INPUT TYPE="HIDDEN" NAME="PRINTER_IS_COLORMANAGED" VALUE="{?printer_is_colormanaged}">{?printer_is_colormanaged=?有効:{?printer_is_colormanaged=0?無効:}}</TD>
++</TR>
++<TR>
+ <TH CLASS="label">メーカー:</TH>
+ <TD>
+ <SELECT NAME="PPD_MAKE" SIZE="10">
+--- a/templates/ja/choose-model.tmpl
++++ b/templates/ja/choose-model.tmpl
+@@ -33,6 +33,10 @@
+ このプリンターを共有{?printer_is_shared=?しない:{?printer_is_shared=0?しない:する}}</TD>
+ </TR>
+ <TR>
++<TH CLASS="label">カラーマネジメント:</TH>
++<TD><INPUT TYPE="HIDDEN" NAME="PRINTER_IS_COLORMANAGED" VALUE="{?printer_is_colormanaged}">{?printer_is_colormanaged=?有効:{?printer_is_colormanaged=0?無効:}}</TD>
++</TR>
++<TR>
+ <TH CLASS="label">メーカー:</TH>
+ <TD>{PPD_MAKE} <INPUT TYPE="SUBMIT" NAME="SELECT_MAKE" VALUE="他のメーカー/製造元を選択"></TD>
+ </TR>
+--- a/templates/ja/modify-printer.tmpl
++++ b/templates/ja/modify-printer.tmpl
+@@ -32,6 +32,11 @@
+ このプリンターを共有する</TD>
+ </TR>
+ <TR>
++<TH CLASS="label">カラーマネジメント:</TH>
++<TD><INPUT TYPE="CHECKBOX" NAME="PRINTER_IS_COLORMANAGED" {PRINTER_IS_COLORMANAGED=1?CHECKED:}>
++有効</TD>
++</TR>
++<TR>
+ <TR>
+ <TD></TD>
+ <TD><INPUT TYPE="SUBMIT" VALUE="続ける"></TD>
