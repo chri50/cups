@@ -142,7 +142,7 @@ Last-Update: 2014-06-04
      * If no other work was scheduled and we're being controlled by launchd
 --- a/man/cupsd.conf.man.in
 +++ b/man/cupsd.conf.man.in
-@@ -202,6 +202,11 @@
+@@ -214,6 +214,11 @@
  .br
  Specifies whether or not to do reverse lookups on client addresses.
  .TP 5

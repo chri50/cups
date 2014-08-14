@@ -1,5 +1,5 @@
 /*
- * "$Id: client.c 12009 2014-07-09 17:02:38Z msweet $"
+ * "$Id: client.c 12057 2014-07-22 14:03:19Z msweet $"
  *
  * Client routines for the CUPS scheduler.
  *
@@ -4442,5 +4442,5 @@ write_pipe(cupsd_client_t *con)		/* I - Client connection */
 
 
 /*
- * End of "$Id: client.c 12009 2014-07-09 17:02:38Z msweet $".
+ * End of "$Id: client.c 12057 2014-07-22 14:03:19Z msweet $".
  */

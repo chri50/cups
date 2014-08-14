@@ -61,7 +61,7 @@ Last-Update: 2014-06-04
  ExecStart=@sbindir@/cupsd -f
 --- a/man/cupsd.conf.man.in
 +++ b/man/cupsd.conf.man.in
-@@ -509,6 +509,12 @@
+@@ -521,6 +521,12 @@
  "notify-events", "notify-pull-method", "notify-recipient-uri",
  "notify-subscriber-user-name", and "notify-user-data".
  .TP 5
