@@ -1,3 +1,15 @@
+cups (1.7.4-5) unstable; urgency=medium
+
+  [ Till Kamppeter ]
+  * Color management extensions: Added color management checkboxes to the
+    Japanese version of the web interface, on request of Deng Pang from Ricoh.
+
+  [ Didier Raboud ]
+  * Add patch from RedHat to restore access to logfiles from the webinterface,
+    regression from the fix for STR: #4455 (Closes: #757964)
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 14 Aug 2014 08:52:09 +0200
+
 cups (1.7.4-4) unstable; urgency=medium
 
   * Add patch to ignore the 'Failed to connect to system bus' error that
