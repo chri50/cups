@@ -1,0 +1,33 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+# Description: Restore access to cupsd.conf and logfiles, fix regression
+#  introduced by STR: #4455
+# Author: Tim Waugh <twaugh@redhat.com>
+# Bug-Upstream: https://www.cups.org/str.php?L4461
+# Bug-Debian: https://bugs.debian.org/757964
+# Last-Update: 2014-08-12
+
+@DPATCH@
+diff -urNad '--exclude=CVS' '--exclude=.svn' '--exclude=.git' '--exclude=.arch' '--exclude=.hg' '--exclude=_darcs' '--exclude=.bzr' cups-1.4.3~/scheduler/client.c cups-1.4.3/scheduler/client.c
+--- cups-1.4.3~/scheduler/client.c	2014-09-05 15:20:49.000000000 -0400
++++ cups-1.4.3/scheduler/client.c	2014-09-05 15:20:56.658318868 -0400
+@@ -3589,8 +3589,18 @@
+ 
+   if (!status && !(filestats->st_mode & S_IROTH))
+   {
+-    cupsdLogMessage(CUPSD_LOG_INFO, "[Client %d] Files/directories such as \"%s\" must be world-readable.", con->http.fd, filename);
+-    return (NULL);
++   /*
++    * The exception is for cupsd.conf and log files for
++    * authenticated access.
++    */
++
++    if ((strncmp(con->uri, "/admin/conf/cupsd.conf", 22) &&
++        strncmp(con->uri, "/admin/log/", 11)) ||
++       cupsdIsAuthorized(con, NULL) != HTTP_OK)
++    {
++      cupsdLogMessage(CUPSD_LOG_INFO, "[Client %d] Files/directories such as \"%s\" must be world-readable.", con->http.fd, filename);
++      return (NULL);
++    }
+   }
+ 
+  /*
