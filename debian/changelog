@@ -1,3 +1,18 @@
+cups (1.7.2-0ubuntu1.2) trusty-security; urgency=medium
+
+  * SECURITY UPDATE: privilege escalation via symlinks and world-readable
+    permissions
+    - debian/patches/CVE-2014-50xx.patch: add some more symlink and
+      permission checks to scheduler/client.c.
+    - CVE-2014-5029
+    - CVE-2014-5030
+    - CVE-2014-5031
+  * debian/patches/cups-restore-access-to-logfiles.patch: fix regressions
+    caused by recent security updates by allowing access to cupsd.conf and
+    the log files. (LP: #1349387)
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 05 Sep 2014 15:04:59 -0400
+
 cups (1.7.2-0ubuntu1.1) trusty-security; urgency=medium
 
   * SECURITY UPDATE: privilege escalation via rss dir symlink
