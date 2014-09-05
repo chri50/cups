@@ -1,0 +1,31 @@
+Description: Restore access to cupsd.conf and logfiles, fix regression
+ introduced by STR: #4455
+Author: Tim Waugh <twaugh@redhat.com>
+Bug-Upstream: https://www.cups.org/str.php?L4461
+Bug-Debian: https://bugs.debian.org/757964
+Last-Update: 2014-08-12
+Index: cups-1.7.2/scheduler/client.c
+===================================================================
+--- cups-1.7.2.orig/scheduler/client.c	2014-09-05 15:04:49.126292958 -0400
++++ cups-1.7.2/scheduler/client.c	2014-09-05 15:04:49.122292958 -0400
+@@ -3356,8 +3356,18 @@
+ 
+   if (!status && !(filestats->st_mode & S_IROTH))
+   {
+-    cupsdLogMessage(CUPSD_LOG_INFO, "[Client %d] Files/directories such as \"%s\" must be world-readable.", con->http.fd, filename);
+-    return (NULL);
++   /*
++    * The exception is for cupsd.conf and log files for
++    * authenticated access.
++    */
++
++    if ((strncmp(con->uri, "/admin/conf/cupsd.conf", 22) &&
++        strncmp(con->uri, "/admin/log/", 11)) ||
++       cupsdIsAuthorized(con, NULL) != HTTP_OK)
++    {
++      cupsdLogMessage(CUPSD_LOG_INFO, "[Client %d] Files/directories such as \"%s\" must be world-readable.", con->http.fd, filename);
++      return (NULL);
++    }
+   }
+ 
+  /*
