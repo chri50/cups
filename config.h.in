@@ -397,6 +397,13 @@
 
 
 /*
+ * Do we have Avahi for DNS Service Discovery?
+ */
+
+#undef HAVE_AVAHI
+
+
+/*
  * Do we have <sys/ioctl.h>?
  */
 
