@@ -599,12 +599,7 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
 
     if (!job->printer->remote)
     {
-      for (filter = (mime_filter_t *)cupsArrayLast(filters);
-           filter && filter->dst;
-           filter = (mime_filter_t *)cupsArrayPrev(filters))
-        if (strcmp(filter->dst->super, "printer") ||
-            strcmp(filter->dst->type, job->printer->name))
-          break;
+      filter = (mime_filter_t *)cupsArrayLast(filters);
 
       if (filter && filter->dst)
       {
