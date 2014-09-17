@@ -97,7 +97,6 @@ HELPFILES	=	\
 			help/network.html \
 			help/options.html \
 			help/overview.html \
-			help/perqueue.html \
 			help/policies.html \
 			help/postscript-driver.html \
 			help/ppd-compiler.html \

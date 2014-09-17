@@ -974,10 +974,6 @@ add_class(cupsd_client_t  *con,		/* I - Client connection */
                                IPP_TAG_TEXT)) != NULL)
     cupsdSetString(&pclass->info, attr->values[0].string.text);
 
-  if ((attr = ippFindAttribute(con->request, "ppd-timestamp",
-                               IPP_TAG_TEXT)) != NULL)
-    cupsdSetString(&pclass->ppd_timestamp, attr->values[0].string.text);
-
   if ((attr = ippFindAttribute(con->request, "printer-is-accepting-jobs",
                                IPP_TAG_BOOLEAN)) != NULL &&
       attr->values[0].boolean != pclass->accepting)
@@ -992,6 +988,16 @@ add_class(cupsd_client_t  *con,		/* I - Client connection */
 		  pclass->accepting ? "Now" : "No longer");
   }
 
+  if ((attr = ippFindAttribute(con->request, "printer-is-cm-calibrating",
+                               IPP_TAG_BOOLEAN)) != NULL)
+  {
+    cupsdLogMessage(CUPSD_LOG_INFO,
+                    "Setting %s printer-is-cm-calibrating to %d (was %d.)",
+                    pclass->name, attr->values[0].boolean, pclass->calibrating);
+
+    pclass->calibrating = attr->values[0].boolean;
+  }
+
   if ((attr = ippFindAttribute(con->request, "printer-is-shared",
                                IPP_TAG_BOOLEAN)) != NULL)
   {
@@ -1003,13 +1009,6 @@ add_class(cupsd_client_t  *con,		/* I - Client connection */
                     pclass->name, attr->values[0].boolean, pclass->shared);
 
     pclass->shared = attr->values[0].boolean;
-  }
-
-  if ((attr = ippFindAttribute(con->request, "printer-is-colormanaged",
-                               IPP_TAG_BOOLEAN)) != NULL)
-  {
-    if (pclass->color_managed && !attr->values[0].boolean)
-        pclass->color_managed = attr->values[0].boolean;
   }
 
   if ((attr = ippFindAttribute(con->request, "printer-state",
@@ -2343,10 +2342,6 @@ add_printer(cupsd_client_t  *con,	/* I - Client connection */
                                IPP_TAG_TEXT)) != NULL)
     cupsdSetString(&printer->info, attr->values[0].string.text);
 
-  if ((attr = ippFindAttribute(con->request, "ppd-timestamp",
-                               IPP_TAG_TEXT)) != NULL)
-    cupsdSetString(&printer->ppd_timestamp, attr->values[0].string.text);
-
   set_device_uri = 0;
 
   if ((attr = ippFindAttribute(con->request, "device-uri",
@@ -2506,10 +2501,14 @@ add_printer(cupsd_client_t  *con,	/* I - Client connection */
 		  printer->accepting ? "Now" : "No longer");
   }
 
-if ((attr = ippFindAttribute(con->request, "printer-is-colormanaged",
-                               IPP_TAG_BOOLEAN)) != NULL)
-  {
-    printer->color_managed = attr->values[0].boolean;
+  if ((attr = ippFindAttribute(con->request, "printer-is-cm-calibrating",
+                                 IPP_TAG_BOOLEAN)) != NULL)
+  {    
+    cupsdLogMessage(CUPSD_LOG_INFO,
+                    "Setting %s printer-is-cm-calibrating to %d (was %d.)",
+                    printer->name, attr->values[0].boolean, printer->calibrating);
+
+    printer->calibrating = attr->values[0].boolean;
   }
 
   if ((attr = ippFindAttribute(con->request, "printer-is-shared",
@@ -2755,7 +2754,6 @@ if ((attr = ippFindAttribute(con->request, "printer-is-colormanaged",
 
       cupsdLogMessage(CUPSD_LOG_DEBUG,
 		      "Copied PPD file successfully");
-      chmod(dstfile, 0644);
     }
   }
 
@@ -4662,7 +4660,7 @@ copy_model(cupsd_client_t *con,		/* I - Client connection */
   * Open the destination file for a copy...
   */
 
-  if ((dst = cupsFileOpen(to, "wb")) == NULL)
+  if ((dst = cupsdCreateConfFile(to, ConfigFilePerm)) == NULL)
   {
     cupsFreeOptions(num_defaults, defaults);
     cupsFileClose(src);
@@ -4717,7 +4715,7 @@ copy_model(cupsd_client_t *con,		/* I - Client connection */
 
   unlink(tempfile);
 
-  return (cupsFileClose(dst));
+  return (cupsdCloseCreatedConfFile(dst, to));
 }
 
 
@@ -4922,13 +4920,13 @@ copy_printer_attrs(
     ippAddBoolean(con->response, IPP_TAG_PRINTER, "printer-is-accepting-jobs",
                   printer->accepting);
 
+  if (!ra || cupsArrayFind(ra, "printer-is-cm-calibrating"))
+    ippAddBoolean(con->response, IPP_TAG_PRINTER, "printer-is-cm-calibrating",
+                  printer->calibrating);
+
   if (!ra || cupsArrayFind(ra, "printer-is-shared"))
     ippAddBoolean(con->response, IPP_TAG_PRINTER, "printer-is-shared",
                   printer->shared);
-
-  if (!ra || cupsArrayFind(ra, "printer-is-colormanaged"))
-    ippAddBoolean(con->response, IPP_TAG_PRINTER, "printer-is-colormanaged",
-                  printer->color_managed);
 
   if (!ra || cupsArrayFind(ra, "printer-more-info"))
   {
@@ -4975,11 +4973,11 @@ copy_printer_attrs(
     if (!printer->accepting)
       type |= CUPS_PRINTER_REJECTING;
 
+    if (!printer->calibrating)
+      type |= CUPS_PRINTER_CM_OFF;
+
     if (!printer->shared)
       type |= CUPS_PRINTER_NOT_SHARED;
-
-    if (!printer->color_managed)
-      type |= CUPS_CM_OFF;
 
     ippAddInteger(con->response, IPP_TAG_PRINTER, IPP_TAG_ENUM, "printer-type",
 		  type);

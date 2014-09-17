@@ -94,13 +94,13 @@ cupsdAddPrinter(const char *name)	/* I - Name of printer */
   cupsdSetString(&p->uuid, _httpAssembleUUID(ServerName, RemotePort, name, 0,
                                              uuid, sizeof(uuid)));
   cupsdSetDeviceURI(p, "file:///dev/null");
-  cupsdSetString(&p->ppd_timestamp, "*");
-  p->state         = IPP_PRINTER_STOPPED;
-  p->state_time    = time(NULL);
-  p->accepting     = 0;
-  p->color_managed = 1;
-  p->shared        = DefaultShared;
-  p->filetype      = mimeAddType(MimeDatabase, "printer", name);
+
+  p->state       = IPP_PRINTER_STOPPED;
+  p->state_time  = time(NULL);
+  p->accepting   = 0;
+  p->calibrating = 0;
+  p->shared      = DefaultShared;
+  p->filetype    = mimeAddType(MimeDatabase, "printer", name);
 
   cupsdSetString(&p->job_sheets[0], "none");
   cupsdSetString(&p->job_sheets[1], "none");
@@ -754,7 +754,6 @@ cupsdDeletePrinter(
   cupsdClearString(&p->job_sheets[0]);
   cupsdClearString(&p->job_sheets[1]);
   cupsdClearString(&p->device_uri);
-  cupsdClearString(&p->ppd_timestamp);
   cupsdClearString(&p->sanitized_device_uri);
   cupsdClearString(&p->port_monitor);
   cupsdClearString(&p->op_policy);
@@ -954,11 +953,6 @@ cupsdLoadAllPrinters(void)
       if (value)
 	cupsdSetString(&p->make_model, value);
     }
-    else if (!_cups_strcasecmp(line, "PPDTimeStamp"))
-    {
-      if (value)
-	cupsdSetString(&p->ppd_timestamp, value);
-    }
     else if (!_cups_strcasecmp(line, "Location"))
     {
       if (value)
@@ -1088,6 +1082,26 @@ cupsdLoadAllPrinters(void)
 	cupsdLogMessage(CUPSD_LOG_ERROR,
 	                "Syntax error on line %d of printers.conf.", linenum);
     }
+    else if (!_cups_strcasecmp(line, "CM-Calibration"))
+    {
+     /*
+      * Set the initial color calibration mode state...
+      */
+
+      if (value &&
+          (!_cups_strcasecmp(value, "yes") ||
+           !_cups_strcasecmp(value, "on") ||
+           !_cups_strcasecmp(value, "true")))
+        p->calibrating = 1;
+      else if (value &&
+               (!_cups_strcasecmp(value, "no") ||
+        	!_cups_strcasecmp(value, "off") ||
+        	!_cups_strcasecmp(value, "false")))
+        p->calibrating = 0;
+      else
+	cupsdLogMessage(CUPSD_LOG_ERROR,
+	                "Syntax error on line %d of printers.conf.", linenum);
+    }
     else if (!_cups_strcasecmp(line, "Type"))
     {
       if (value)
@@ -1112,26 +1126,6 @@ cupsdLoadAllPrinters(void)
         	!_cups_strcasecmp(value, "off") ||
         	!_cups_strcasecmp(value, "false")))
         p->shared = 0;
-      else
-	cupsdLogMessage(CUPSD_LOG_ERROR,
-	                "Syntax error on line %d of printers.conf.", linenum);
-    }
-    else if (!_cups_strcasecmp(line, "ColorManaged"))
-    {
-     /*
-      * Set the initial color-managed state...
-      */
-
-      if (value &&
-          (!_cups_strcasecmp(value, "yes") ||
-           !_cups_strcasecmp(value, "on") ||
-           !_cups_strcasecmp(value, "true")))
-        p->color_managed = 1;
-      else if (value &&
-               (!_cups_strcasecmp(value, "no") ||
-        	!_cups_strcasecmp(value, "off") ||
-        	!_cups_strcasecmp(value, "false")))
-        p->color_managed = 0;
       else
 	cupsdLogMessage(CUPSD_LOG_ERROR,
 	                "Syntax error on line %d of printers.conf.", linenum);
@@ -1442,9 +1436,6 @@ cupsdSaveAllPrinters(void)
 
     cupsFilePutConf(fp, "DeviceURI", printer->device_uri);
 
-    if (printer->ppd_timestamp)
-      cupsFilePutConf(fp, "PPDTimeStamp", printer->ppd_timestamp);
-
     if (printer->port_monitor)
       cupsFilePutConf(fp, "PortMonitor", printer->port_monitor);
 
@@ -1473,15 +1464,15 @@ cupsdSaveAllPrinters(void)
     else
       cupsFilePuts(fp, "Accepting No\n");
 
+    if (printer->calibrating)
+      cupsFilePuts(fp, "CM-Calibration Yes\n");
+    else
+      cupsFilePuts(fp, "CM-Calibration No\n");
+
     if (printer->shared)
       cupsFilePuts(fp, "Shared Yes\n");
     else
       cupsFilePuts(fp, "Shared No\n");
-
-    if (printer->color_managed)
-      cupsFilePuts(fp, "ColorManaged Yes\n");
-    else
-      cupsFilePuts(fp, "ColorManaged No\n");
 
     snprintf(value, sizeof(value), "%s %s", printer->job_sheets[0],
              printer->job_sheets[1]);
@@ -2125,8 +2116,6 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */
                NULL, p->info ? p->info : "");
   ippAddString(p->attrs, IPP_TAG_PRINTER, IPP_TAG_URI, "printer-uuid", NULL,
 	       p->uuid);
-  ippAddString(p->attrs, IPP_TAG_PRINTER, IPP_TAG_TEXT,
-               "ppd-timestamp", NULL, p->ppd_timestamp ? p->ppd_timestamp : "*");
 
   if (cupsArrayCount(p->users) > 0)
   {
@@ -3139,7 +3128,6 @@ cupsdWritePrintcap(void)
 			     "\t\t<%s/>\n"
 			     "\t\t<key>printer-location</key>\n"
 			     "\t\t<string>", p->accepting ? "true" : "false");
-
 	  write_xml_string(fp, p->location);
 	  cupsFilePuts(fp, "</string>\n"
 			   "\t\t<key>printer-make-and-model</key>\n"

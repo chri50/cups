@@ -60,7 +60,8 @@ static int	create_job(http_t *http, const char *dest, const char *title,
 			   int num_options, cups_option_t *options);
 static int	get_printer(http_t *http, const char *name, char *dest,
 		            int destsize, cups_option_t **options,
-			    int *accepting, int *color_managed, int *shared, ipp_pstate_t *state);
+			    int *accepting, int *calibrating, int *shared, 
+                            ipp_pstate_t *state);
 static int	print_file(http_t *http, int id, const char *filename,
 		           const char *docname, const char *user,
 			   const char *format, int last);
@@ -401,7 +402,7 @@ get_printer(http_t        *http,	/* I - HTTP connection */
             int           destsize,	/* I - Size of destination buffer */
 	    cups_option_t **options,	/* O - Printer options */
 	    int           *accepting,	/* O - printer-is-accepting-jobs value */
-            int           *color_managed,	/* O - printer-is-colormanaged value */
+            int           *calibrating,	/* O - printer-is-cm-calibrating value */
 	    int           *shared,	/* O - printer-is-shared value */
 	    ipp_pstate_t  *state)	/* O - printer-state value */
 {
@@ -420,7 +421,7 @@ get_printer(http_t        *http,	/* I - HTTP connection */
 		{			/* Requested attributes */
 		  "printer-info",
 		  "printer-is-accepting-jobs",
-		  "printer-is-colormanaged",
+                  "printer-is-cm-calibrating",
 		  "printer-is-shared",
 		  "printer-name",
 		  "printer-state"
@@ -433,8 +434,8 @@ get_printer(http_t        *http,	/* I - HTTP connection */
 
   if (accepting)
     *accepting = 0;
-  if (color_managed)
-    *color_managed = 0;
+  if (calibrating)
+    *calibrating = 0;
   if (shared)
     *shared = 0;
   if (state)
@@ -480,12 +481,12 @@ get_printer(http_t        *http,	/* I - HTTP connection */
     * using the printer-info values...
     */
 
-    ipp_attribute_t	*accepting_attr,/* printer-is-accepting-jobs */
-			*cm_attr,	/* printer-is-colormanaged */
-			*info_attr,	/* printer-info */
-			*name_attr,	/* printer-name */
-			*shared_attr,	/* printer-is-shared */
-			*state_attr;	/* printer-state */
+    ipp_attribute_t	*accepting_attr,  /* printer-is-accepting-jobs */
+                        *calibrating_attr,/* printer-is-cm-calibrating */
+			*info_attr,	  /* printer-info */
+			*name_attr,	  /* printer-name */
+			*shared_attr,	  /* printer-is-shared */
+			*state_attr;	  /* printer-state */
 
 
     ippDelete(response);
@@ -540,27 +541,27 @@ get_printer(http_t        *http,	/* I - HTTP connection */
       * Get all of the attributes for the current printer...
       */
 
-      accepting_attr = NULL;
-      cm_attr        = NULL;
-      info_attr      = NULL;
-      name_attr      = NULL;
-      shared_attr    = NULL;
-      state_attr     = NULL;
+      accepting_attr  = NULL;
+      calibrating_attr = NULL;
+      info_attr       = NULL;
+      name_attr       = NULL;
+      shared_attr     = NULL;
+      state_attr      = NULL;
 
       while (attr && attr->group_tag == IPP_TAG_PRINTER)
       {
         if (!strcmp(attr->name, "printer-is-accepting-jobs") &&
 	    attr->value_tag == IPP_TAG_BOOLEAN)
 	  accepting_attr = attr;
+        else if (!strcmp(attr->name, "printer-is-cm-calibrating") &&
+	    attr->value_tag == IPP_TAG_BOOLEAN)
+	  calibrating_attr = attr;
 	else if (!strcmp(attr->name, "printer-info") &&
 	         attr->value_tag == IPP_TAG_TEXT)
 	  info_attr = attr;
 	else if (!strcmp(attr->name, "printer-name") &&
 	         attr->value_tag == IPP_TAG_NAME)
 	  name_attr = attr;
-	else if (!strcmp(attr->name, "printer-is-colormanaged") &&
-	         attr->value_tag == IPP_TAG_BOOLEAN)
-	  cm_attr = attr;
 	else if (!strcmp(attr->name, "printer-is-shared") &&
 	         attr->value_tag == IPP_TAG_BOOLEAN)
 	  shared_attr = attr;
@@ -583,8 +584,8 @@ get_printer(http_t        *http,	/* I - HTTP connection */
 	if (accepting && accepting_attr)
 	  *accepting = accepting_attr->values[0].boolean;
 
-	if (color_managed && cm_attr)
-	  *color_managed = cm_attr->values[0].boolean;
+	if (calibrating && calibrating_attr)
+	  *calibrating = calibrating_attr->values[0].boolean;
 
 	if (shared && shared_attr)
 	  *shared = shared_attr->values[0].boolean;
@@ -623,17 +624,17 @@ get_printer(http_t        *http,	/* I - HTTP connection */
 	*accepting = attr->values[0].boolean;
     }
 
-   if (color_managed)
-   {
-    if ((attr = ippFindAttribute(response, "printer-is-colormanaged",
-				   IPP_TAG_BOOLEAN)) == NULL)
+    if (calibrating)
+    {
+      if ((attr = ippFindAttribute(response, "printer-is-cm-calibrating",
+				   IPP_TAG_BOOLEAN)) == NULL) 
       {
-	syslog(LOG_ERR, "No printer-is-colormanaged attribute found in "
+	syslog(LOG_ERR, "No printer-is-cm-calibrating attribute found in "
 			"response from server!");
-	*color_managed = 1;
+        *calibrating = 1;
       }
       else
-       *color_managed = attr->values[0].boolean;
+	*calibrating = attr->values[0].boolean;
     }
 
     if (shared)
@@ -668,7 +669,7 @@ get_printer(http_t        *http,	/* I - HTTP connection */
 
   num_options = 0;
 
-  if (options && color_managed && shared && accepting)
+  if (options && shared && calibrating && accepting)
   {
     if ((cups_serverroot = getenv("CUPS_SERVERROOT")) == NULL)
       cups_serverroot = CUPS_SERVERROOT;
@@ -811,7 +812,7 @@ recv_print_job(
 		docname[1024],		/* Document name */
 		dest[256];		/* Printer/class queue */
   int		accepting,		/* printer-is-accepting */
-		color_managed,		/* printer-is-colormanaged */
+                calibrating,		/* printer-is-cm-calibrating */
 		shared,			/* printer-is-shared */
 		num_options;		/* Number of options */
   cups_option_t	*options;		/* Options */
@@ -839,7 +840,7 @@ recv_print_job(
   */
 
   num_options = get_printer(http, queue, dest, sizeof(dest), &options,
-                            &accepting, &color_managed, &shared, NULL);
+                            &accepting, &calibrating, &shared, NULL);
 
   if (num_options < 0 || !accepting || !shared)
   {

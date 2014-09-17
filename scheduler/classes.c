@@ -506,25 +506,26 @@ cupsdLoadAllClasses(void)
 	                "Syntax error on line %d of classes.conf.",
 	                linenum);
     }
-    else if (!_cups_strcasecmp(line, "ColorManaged"))
+    else if (!_cups_strcasecmp(line, "CM-Calibration"))
     {
      /*
-      * Set the initial color-managed state...
+      * Set the initial color calibration mode state...
       */
 
       if (value &&
           (!_cups_strcasecmp(value, "yes") ||
            !_cups_strcasecmp(value, "on") ||
            !_cups_strcasecmp(value, "true")))
-        p->color_managed = 1;
+        p->calibrating = 1;
       else if (value &&
                (!_cups_strcasecmp(value, "no") ||
         	!_cups_strcasecmp(value, "off") ||
         	!_cups_strcasecmp(value, "false")))
-        p->color_managed = 0;
+        p->calibrating = 0;
       else
 	cupsdLogMessage(CUPSD_LOG_ERROR,
-	                "Syntax error on line %d of printers.conf.", linenum);
+	                "Syntax error on line %d of classes.conf.",
+	                linenum);
     }
     else if (!_cups_strcasecmp(line, "Shared"))
     {
@@ -792,10 +793,10 @@ cupsdSaveAllClasses(void)
     else
       cupsFilePuts(fp, "Accepting No\n");
 
-    if (pclass->color_managed)
-      cupsFilePuts(fp, "ColorManaged Yes\n");
+    if (pclass->calibrating)
+      cupsFilePuts(fp, "CM-Calibration Yes\n");
     else
-      cupsFilePuts(fp, "ColorManaged No\n");
+      cupsFilePuts(fp, "CM-Calibration No\n");
 
     if (pclass->shared)
       cupsFilePuts(fp, "Shared Yes\n");
