@@ -1,3 +1,18 @@
+cups (1.7.5-2) unstable; urgency=medium
+
+  [ Helge Kreutzmann ]
+  * Update German man page (1537t)
+
+  [ Till Kamppeter ]
+  * Updated color management extension patch to the newest version from Joseph
+    Simon, especially to fix PPD updates via the web interface (LP: #1362321).
+
+  [ Didier Raboud ]
+  * Replace the RedHat patch restoring the access to cupsd.conf and logfiles
+    with upstream's
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 17 Sep 2014 13:37:01 +0200
+
 cups (1.7.5-1) unstable; urgency=medium
 
   * New 1.7.5 upstream release

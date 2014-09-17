@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 1.7.1-2\n"
 "POT-Creation-Date: 2014-08-14 19:28+0200\n"
-"PO-Revision-Date: 2014-07-07 21:09+0200\n"
+"PO-Revision-Date: 2014-08-14 21:18+0200\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
 "Language: de\n"
@@ -2687,7 +2687,6 @@ msgstr "Deny @LOCAL"
 msgid "Denies access to the named host or address."
 msgstr "Verweigert Zugriff auf die benannten Rechner oder Adressen."
 
-# type: TP
 #. type: TP
 #: cupsd.conf.man.in:167
 #, no-wrap
@@ -2714,18 +2713,13 @@ msgstr "ErrorPolicy abort-job"
 
 #. type: Plain text
 #: cupsd.conf.man.in:185
-#, fuzzy
-#| msgid ""
-#| "Specifies that the named print files should be deleted after printing "
-#| "them."
 msgid ""
 "Specifies that a failed print job should be aborted (discarded) unless "
 "otherwise specified for the printer."
 msgstr ""
-"Spezifiziert, dass die benannte Druckdatei nach dem Druck gelöscht werden "
-"soll."
+"Spezifiziert, dass ein fehlgeschlagener Druckauftrag abgebrochen (verworfen) "
+"werden soll, es sei denn, es wurde anders für den Drucker spezifiziert."
 
-# type: TP
 #. type: TP
 #: cupsd.conf.man.in:185 printers.conf.man:57
 #, no-wrap
@@ -2734,18 +2728,14 @@ msgstr "ErrorPolicy retry-job"
 
 #. type: Plain text
 #: cupsd.conf.man.in:188
-#, fuzzy
-#| msgid ""
-#| "Specifies that the named print files should be deleted after printing "
-#| "them."
 msgid ""
 "Specifies that a failed print job should be retried at a later time unless "
 "otherwise specified for the printer."
 msgstr ""
-"Spezifiziert, dass die benannte Druckdatei nach dem Druck gelöscht werden "
-"soll."
+"Spezifiziert, dass ein fehlgeschlagener Druckauftrag zu einem späteren "
+"Zeitpunkt neu versucht werden soll, es sei denn, es wurde anders für den "
+"Drucker spezifiziert."
 
-# type: TP
 #. type: TP
 #: cupsd.conf.man.in:188
 #, no-wrap
@@ -2754,18 +2744,13 @@ msgstr "ErrorPolicy retry-this-job"
 
 #. type: Plain text
 #: cupsd.conf.man.in:191
-#, fuzzy
-#| msgid ""
-#| "Specifies that the named print files should be deleted after printing "
-#| "them."
 msgid ""
 "Specifies that a failed print job should be retried immediately unless "
 "otherwise specified for the printer."
 msgstr ""
-"Spezifiziert, dass die benannte Druckdatei nach dem Druck gelöscht werden "
-"soll."
+"Spezifiziert, dass ein fehlgeschlagener Druckauftrag sofort neu versucht "
+"werden soll, es sei denn, es wurde anders für den Drucker spezifiziert."
 
-# type: TP
 #. type: TP
 #: cupsd.conf.man.in:191 printers.conf.man:59
 #, no-wrap
@@ -2778,6 +2763,9 @@ msgid ""
 "Specifies that a failed print job should stop the printer unless otherwise "
 "specified for the printer. The 'stop-printer' error policy is the default."
 msgstr ""
+"Spezifiziert, dass ein fehlgeschlagener Druckauftrag den Drucker anhalten "
+"soll, es sei denn, es wurde anders für den Drucker spezifiziert. Die Fehler-"
+"Richtlinie »stop-printer« ist die Vorgabe."
 
 #. type: TP
 #: cupsd.conf.man.in:194
