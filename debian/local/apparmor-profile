@@ -92,7 +92,7 @@
   /usr/lib/cups/backend/cups-pdf Px,
   # third party backends get no restrictions as they often need high
   # privileges and this is beyond our control
-  /usr/lib/cups/backend/* Ux,
+  /usr/lib/cups/backend/* Cx -> third_party,
 
   /usr/lib/cups/cgi-bin/* ixr,
   /usr/lib/cups/daemon/* ixr,
@@ -100,8 +100,8 @@
   /usr/lib/cups/notifier/* ixr,
   # filters and drivers (PPD generators) are always run as non-root,
   # and there are a lot of third-party drivers which we cannot predict
-  /usr/lib/cups/filter/** Uxr, 
-  /usr/lib/cups/driver/* Uxr,
+  /usr/lib/cups/filter/** Cxr -> third_party,
+  /usr/lib/cups/driver/* Cxr -> third_party,
   /usr/local/** rm,
   /usr/local/lib/cups/** rix,
   /usr/share/** r,
@@ -109,6 +109,8 @@
   /{,var/}run/avahi-daemon/socket rw,
   deny /{,var/}run/samba/ rw,
   /{,var/}run/samba/** rw,
+  /var/cache/samba/*.tdb r,
+  /var/{cache,lib}/samba/printing/printers.tdb r,
   /{,var/}run/cups/ rw,
   /{,var/}run/cups/** rw,
   /var/cache/cups/ rw,
@@ -122,8 +124,8 @@
   /opt/** rix,
 
   # FIXME: no policy ATM for hplip and Brother drivers
-  /usr/bin/hpijs Ux,
-  /usr/Brother/** Ux,
+  /usr/bin/hpijs Cx -> third_party,
+  /usr/Brother/** Cx -> third_party,
 
   # Kerberos authentication
   /etc/krb5.conf r,
@@ -138,6 +140,21 @@
 
   # silence noise
   deny /etc/udev/udev.conf r,
+
+  signal (receive, send) peer=third_party,
+  profile third_party {
+    # third party backends, filters, and drivers get relatively no restrictions
+    # as they often need high privileges, are unpredictable or otherwise beyond
+    # our control
+    file,
+    capability,
+    audit deny capability mac_admin,
+    network,
+    dbus,
+    signal,
+    ptrace,
+    unix,
+  }
 
   # Site-specific additions and overrides. See local/README for details.
   #include <local/usr.sbin.cupsd>
