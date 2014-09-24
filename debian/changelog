@@ -1,3 +1,16 @@
+cups (1.7.5-2ubuntu1) utopic; urgency=medium
+
+  * debian/local/apparmor-profile:
+    - move Ux to Cx -> third_party and provie a third_party child profile. In
+      this manner, we can add some modest confinement (can't change MAC
+      policy, change_profile or mount) but more importantly it allows us to
+      specify peer=third_party to restrict where the strictly confined cups
+      process can send signals (LP: #1370930)
+    - allow r of /var/cache/samba/*.tdb (LP: #1371097)
+    - allow r of /var/{cache,lib}/samba/printing/printers.tdb
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Wed, 24 Sep 2014 11:24:03 -0500
+
 cups (1.7.5-2) unstable; urgency=medium
 
   [ Helge Kreutzmann ]
