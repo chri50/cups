@@ -274,6 +274,7 @@ static const _ipp_option_t ipp_options[] =
   { 0, "printer-error-policy",	IPP_TAG_NAME,		IPP_TAG_PRINTER },
   { 0, "printer-info",		IPP_TAG_TEXT,		IPP_TAG_PRINTER },
   { 0, "printer-is-accepting-jobs", IPP_TAG_BOOLEAN,	IPP_TAG_PRINTER },
+  { 0, "printer-is-cm-calibrating", IPP_TAG_BOOLEAN,	IPP_TAG_PRINTER },
   { 0, "printer-is-shared",	IPP_TAG_BOOLEAN,	IPP_TAG_PRINTER },
   { 0, "printer-location",	IPP_TAG_TEXT,		IPP_TAG_PRINTER },
   { 0, "printer-make-and-model", IPP_TAG_TEXT,		IPP_TAG_PRINTER },
