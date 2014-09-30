@@ -1,3 +1,21 @@
+cups (1.7.5-3) unstable; urgency=medium
+
+  [ Didier Raboud ]
+  * Add two USB quirk fixes for Canon MX310 and MX320 printers
+    (LP: #1346868, #1369547)
+
+  [ Jamie Strandboge ]
+  * Update the apparmor-profile
+    - move Ux to Cx -> third_party and provie a third_party child profile. In
+      this manner, we can add some modest confinement (can't change MAC
+      policy, change_profile or mount) but more importantly it allows us to
+      specify peer=third_party to restrict where the strictly confined cups
+      process can send signals (LP: #1370930)
+    - allow r of /var/cache/samba/*.tdb (LP: #1371097)
+    - allow r of /var/{cache,lib}/samba/printing/printers.tdb
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 30 Sep 2014 08:21:21 +0200
+
 cups (1.7.5-2) unstable; urgency=medium
 
   [ Helge Kreutzmann ]
