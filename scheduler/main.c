@@ -71,6 +71,7 @@ static void		launchd_checkout(void);
 #ifdef HAVE_SYSTEMD
 static int		systemd_checkin(void);
 #endif /* HAVE_SYSTEMD */
+static void		upstart_checkin(void);
 static void		parent_handler(int sig);
 static void		process_children(void);
 static void		sigchld_handler(int sig);
@@ -325,6 +326,14 @@ main(int  argc,				/* I - Number of command-line args */
                       argv[i]);
       usage(1);
     }
+
+  /* force non-disconnecting foreground mode upon upstart socket
+   * activation, as otherwise all fd's are closed before we get to use
+   * them */
+  if (getenv("UPSTART_FDS"))
+  {
+    fg      = 1;
+  }
 
   if (!ConfigurationFile)
     cupsdSetString(&ConfigurationFile, CUPS_SERVERROOT "/cupsd.conf");
@@ -594,6 +603,11 @@ main(int  argc,				/* I - Number of command-line args */
 #endif /* HAVE_SYSTEMD */
 
  /*
+  * If we were started by Upstart get the listen sockets file descriptors...
+  */
+  upstart_checkin();
+
+ /*
   * Startup the server...
   */
 
@@ -790,6 +804,13 @@ main(int  argc,				/* I - Number of command-line args */
         if (systemd_checkin() < 0)
           exit(EXIT_FAILURE);
 #endif /* HAVE_SYSTEMD */
+
+       /*
+        * If we were started by Upstart get the listen sockets file
+        * descriptors...
+        */
+
+        upstart_checkin();
 
        /*
         * Startup the server...
@@ -1672,6 +1693,94 @@ systemd_checkin(void)
   return (0);
 }
 #endif /* HAVE_SYSTEMD */
+
+static void
+upstart_checkin(void)
+{
+  /*
+   * Example socket event environment:
+   *
+   * UPSTART_INSTANCE=
+   * PORT=34568
+   * PROTO=inet
+   * UPSTART_JOB=foo5
+   * UPSTART_FDS=43
+   * UPSTART_EVENTS=socket
+   * ADDR=127.0.0.1
+   *
+   */
+  int fd = 0;
+  const char *e;
+  http_addr_t addr;
+  socklen_t addrlen = sizeof(addr);
+  cupsd_listener_t *lis;
+  char s[256];
+
+  if (!(e = getenv("UPSTART_EVENTS")))
+    return;
+
+  if (strcasecmp(e, "socket"))
+    return;
+
+  if (!(e = getenv("UPSTART_FDS")))
+  {
+    cupsdLogMessage(CUPSD_LOG_ERROR,
+            "upstart_checkin: We got started via Upstart socket event but no environment variable UPSTART_FDS is not set");
+    return;
+  }
+
+  fd = atoi(e);
+
+  if (getsockname(fd, (struct sockaddr*) &addr, &addrlen) < 0)
+  {
+    cupsdLogMessage(CUPSD_LOG_ERROR,
+            "upstart_checkin: Unable to get local address - %s",
+            strerror(errno));
+    return;
+  }
+
+ /*
+  * Try to match the systemd socket address to one of the listeners...
+  */
+
+  for (lis = (cupsd_listener_t *)cupsArrayFirst(Listeners);
+       lis;
+       lis = (cupsd_listener_t *)cupsArrayNext(Listeners))
+    if (httpAddrEqual(&lis->address, &addr))
+      break;
+
+  if (lis)
+  {
+    cupsdLogMessage(CUPSD_LOG_DEBUG,
+            "upstart_checkin: Matched existing listener %s with fd %d...",
+            httpAddrString(&(lis->address), s, sizeof(s)), fd);
+  }
+  else
+  {
+    cupsdLogMessage(CUPSD_LOG_DEBUG,
+            "upstart_checkin: Adding new listener %s with fd %d...",
+            httpAddrString(&addr, s, sizeof(s)), fd);
+
+    if ((lis = calloc(1, sizeof(cupsd_listener_t))) == NULL)
+    {
+      cupsdLogMessage(CUPSD_LOG_ERROR,
+              "upstart_checkin: Unable to allocate listener - "
+              "%s.", strerror(errno));
+      exit(EXIT_FAILURE);
+    }
+
+    cupsArrayAdd(Listeners, lis);
+
+    memcpy(&lis->address, &addr, sizeof(lis->address));
+  }
+
+  lis->fd = fd;
+
+#  ifdef HAVE_SSL
+  if (_httpAddrPort(&(lis->address)) == 443)
+    lis->encryption = HTTP_ENCRYPT_ALWAYS;
+#  endif /* HAVE_SSL */
+}
 
 /*
  * 'parent_handler()' - Catch USR1/CHLD signals...
