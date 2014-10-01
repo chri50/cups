@@ -1,3 +1,14 @@
+cups (1.7.5-4) unstable; urgency=medium
+
+  [ intrigeri ]
+  * In the apparmor profile, drop features yet unsupported in Debian
+    (Closes: #763673)
+
+  [ Didier Raboud ]
+  * Add the Ubuntu-specific apparmor profile as Ubuntu-specific patch
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 01 Oct 2014 21:40:15 +0200
+
 cups (1.7.5-3) unstable; urgency=medium
 
   [ Didier Raboud ]
