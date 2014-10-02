@@ -1,3 +1,13 @@
+cups (1.7.5-3ubuntu1) utopic; urgency=medium
+
+  * debian/local/apparmor-profile:
+    - fix peer on signal rule to use /usr/sbin/cupsd//third_party
+      (LP: #1376611)
+    - temporarily use attach_disconnected to work around LP: #1373070. This
+      should be undone once 1373070 is properly fixed
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 02 Oct 2014 08:22:36 -0500
+
 cups (1.7.5-3) unstable; urgency=medium
 
   [ Didier Raboud ]
@@ -6,7 +16,7 @@ cups (1.7.5-3) unstable; urgency=medium
 
   [ Jamie Strandboge ]
   * Update the apparmor-profile
-    - move Ux to Cx -> third_party and provie a third_party child profile. In
+    - move Ux to Cx -> third_party and provide a third_party child profile. In
       this manner, we can add some modest confinement (can't change MAC
       policy, change_profile or mount) but more importantly it allows us to
       specify peer=third_party to restrict where the strictly confined cups
