@@ -1,3 +1,11 @@
+cups (1.7.5-3ubuntu2) utopic; urgency=medium
+
+  * debian/local/apparmor-profile:
+    - allow all signals to /usr/sbin/cupsd//third_party
+    - allow unix to /usr/sbin/cupsd//third_party (LP: #1382042)
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 16 Oct 2014 08:28:29 -0500
+
 cups (1.7.5-3ubuntu1) utopic; urgency=medium
 
   * debian/local/apparmor-profile:

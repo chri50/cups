@@ -141,7 +141,8 @@
   # silence noise
   deny /etc/udev/udev.conf r,
 
-  signal (receive, send) peer=/usr/sbin/cupsd//third_party,
+  signal peer=/usr/sbin/cupsd//third_party,
+  unix peer=(label=/usr/sbin/cupsd//third_party),
   profile third_party {
     # third party backends, filters, and drivers get relatively no restrictions
     # as they often need high privileges, are unpredictable or otherwise beyond
