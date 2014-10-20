@@ -1,14 +1,11 @@
 Source: cups
-Standards-Version: 3.9.5
+Standards-Version: 3.9.6
 Priority: optional
 Section: net
 Maintainer: Debian Printing Team <debian-printing@lists.debian.org>
 Uploaders: 
- Masayuki Hatta (mhatta) <mhatta@debian.org>,
+ Didier Raboud <odyx@debian.org>,
  Till Kamppeter <till.kamppeter@gmail.com>,
- Jeff Licquia <licquia@debian.org>,
- Martin Pitt <mpitt@debian.org>,
- Didier Raboud <odyx@debian.org>
 Build-Depends: 
  debhelper (>= 9~),
  dh-apparmor,
@@ -287,7 +284,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
  libcupsfilters-dev (>= 1.0~b1),
  libpng-dev,
  libtiff-dev,
- libjpeg8-dev | libjpeg-dev,
+ libjpeg-dev,
  zlib1g-dev
 Description: Common UNIX Printing System(tm) - Development files CUPS image library
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
