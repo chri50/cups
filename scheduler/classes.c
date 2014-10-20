@@ -506,6 +506,27 @@ cupsdLoadAllClasses(void)
 	                "Syntax error on line %d of classes.conf.",
 	                linenum);
     }
+    else if (!_cups_strcasecmp(line, "CM-Calibration"))
+    {
+     /*
+      * Set the initial color calibration mode state...
+      */
+
+      if (value &&
+          (!_cups_strcasecmp(value, "yes") ||
+           !_cups_strcasecmp(value, "on") ||
+           !_cups_strcasecmp(value, "true")))
+        p->calibrating = 1;
+      else if (value &&
+               (!_cups_strcasecmp(value, "no") ||
+        	!_cups_strcasecmp(value, "off") ||
+        	!_cups_strcasecmp(value, "false")))
+        p->calibrating = 0;
+      else
+	cupsdLogMessage(CUPSD_LOG_ERROR,
+	                "Syntax error on line %d of classes.conf.",
+	                linenum);
+    }
     else if (!_cups_strcasecmp(line, "Shared"))
     {
      /*
@@ -771,6 +792,11 @@ cupsdSaveAllClasses(void)
       cupsFilePuts(fp, "Accepting Yes\n");
     else
       cupsFilePuts(fp, "Accepting No\n");
+
+    if (pclass->calibrating)
+      cupsFilePuts(fp, "CM-Calibration Yes\n");
+    else
+      cupsFilePuts(fp, "CM-Calibration No\n");
 
     if (pclass->shared)
       cupsFilePuts(fp, "Shared Yes\n");
