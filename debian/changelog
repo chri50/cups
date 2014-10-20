@@ -1,3 +1,16 @@
+cups (1.7.5-5) unstable; urgency=medium
+
+  [ Didier Raboud ]
+  * In debian/rules, add conditionals to enable build-indep build
+  * Bump Standards-Version to 3.9.6 without changes needed
+  * Remove Martin Pitt, Masayuki Hatta and Jeff Licquia from the Uploaders'
+    field; with many thanks for their past work on CUPS.
+
+  [ Ondřej Surý ]
+  * Remove libjpeg8-dev from libcupsimage2-dev (Closes: #765919)
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 20 Oct 2014 08:54:21 +0200
+
 cups (1.7.5-4) unstable; urgency=medium
 
   [ intrigeri ]
