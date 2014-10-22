@@ -27,7 +27,7 @@ Bug-Debian: http://bugs.debian.org/410171
    cupsDirClose(dir);
 --- a/scheduler/job.c
 +++ b/scheduler/job.c
-@@ -1206,7 +1206,7 @@
+@@ -1207,7 +1207,7 @@
        else if (stat(command, &backinfo))
  	backroot = 0;
        else
