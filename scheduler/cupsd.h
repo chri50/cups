@@ -155,6 +155,8 @@ VAR time_t		ReloadTime	VALUE(0);
 					/* Time of reload request... */
 VAR int			NeedReload	VALUE(RELOAD_ALL),
 					/* Need to load configuration? */
+			NeedSystemdReload	VALUE(0),
+					/* Need to reload systemd? */
 			DoingShutdown	VALUE(0);
 					/* Shutting down the scheduler? */
 VAR void		*DefaultProfile	VALUE(0);
