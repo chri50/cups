@@ -1,3 +1,21 @@
+cups (1.7.5-6) unstable; urgency=medium
+
+  * Backport several upstream patches:
+    - Update the patch restoring the access to cupsd.conf with Upstream's
+      latest
+    - Fix the icon display in web interface during server restart (STR: #4475)
+    - Enforce correct newest-to-oldest order in the completed jobs returned by
+      the scheduler (STR: #4396)
+    - Limit Get-Jobs replies to 500 jobs (STR: #2913)
+    - Do not let cupsGetPPD* return a symlink if it was not readable by the
+      user (STR: #4500). This should help with #764253.
+  * Dropped the FINAL_CONTENT_TYPE revert, stick back to upstream, following
+    RedHat's analysis
+  * Add tests' patch to ignore the 'Address family not supported' that breaks
+    the errorlines counting on buildds without a working IPv6 stack
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 22 Oct 2014 13:44:42 +0200
+
 cups (1.7.5-5) unstable; urgency=medium
 
   [ Didier Raboud ]

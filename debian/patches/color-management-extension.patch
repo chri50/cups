@@ -310,7 +310,7 @@ Last-Update: 2014-08-29
    if ((attr = ippFindAttribute(con->request, "printer-is-shared",
                                 IPP_TAG_BOOLEAN)) != NULL)
    {
-@@ -2491,6 +2501,16 @@
+@@ -2492,6 +2502,16 @@
  		  printer->accepting ? "Now" : "No longer");
    }
  
@@ -327,7 +327,7 @@ Last-Update: 2014-08-29
    if ((attr = ippFindAttribute(con->request, "printer-is-shared",
                                 IPP_TAG_BOOLEAN)) != NULL)
    {
-@@ -4900,6 +4920,10 @@
+@@ -4950,6 +4970,10 @@
      ippAddBoolean(con->response, IPP_TAG_PRINTER, "printer-is-accepting-jobs",
                    printer->accepting);
  
@@ -338,7 +338,7 @@ Last-Update: 2014-08-29
    if (!ra || cupsArrayFind(ra, "printer-is-shared"))
      ippAddBoolean(con->response, IPP_TAG_PRINTER, "printer-is-shared",
                    printer->shared);
-@@ -4949,6 +4973,9 @@
+@@ -4999,6 +5023,9 @@
      if (!printer->accepting)
        type |= CUPS_PRINTER_REJECTING;
  

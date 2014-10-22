@@ -1,5 +1,9 @@
 # patches accepted and committed upstream
+str4396-make-scheduler-return-completed-jobs-in-correct-order.patch
+str2913-limit-Get-Jobs-replies-to-500-jobs.patch
 str4461-restore-access-to-logfiles.patch
+str4475-fix-the-spinner-imager-on-restart.patch
+str4500-cupsGetPPD3-Only-use-symlink-if-file-is-readable-STR.patch
 
 # patches sent upstream
 pwg-raster-attributes.patch
@@ -19,6 +23,7 @@ tests-ignore-warnings.patch
 tests-ignore-usb-crash.patch
 tests-ignore-kfreebsd-amd64-not-a-pdf.patch
 tests-ignore-system-bus-failure.patch
+tests-ignore-ipv6-address-family-not-supported.patch
 test-i18n-nonlinux.patch
 tests-wait-on-unfinished-jobs-everytime.patch
 tests-fix-ppdLocalize-on-unclean-env.patch
@@ -37,7 +42,6 @@ ppd-poll-with-client-conf.patch
 removecvstag.patch
 
 # Debian patches
-revert-upstream-change-to-FINAL_CONTENT_TYPE-to-fix-printing-to-remote-CUPS-servers.patch
 do-not-broadcast-with-hostnames.patch
 reactivate_recommended_driver.patch
 add-ipp-backend-of-cups-1.4.patch

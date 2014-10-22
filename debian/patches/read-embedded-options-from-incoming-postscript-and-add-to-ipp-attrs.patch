@@ -11,7 +11,7 @@ Bug: https://www.cups.org/str.php?L4344
 
 --- a/scheduler/ipp.c
 +++ b/scheduler/ipp.c
-@@ -8269,6 +8269,11 @@
+@@ -8381,6 +8381,11 @@
    ipp_attribute_t	*attr,		/* Current attribute */
  			*attr2,		/* Job attribute */
  			*prev2;		/* Previous job attribute */
@@ -23,7 +23,7 @@ Bug: https://www.cups.org/str.php?L4344
  
  
   /*
-@@ -8330,6 +8335,85 @@
+@@ -8442,6 +8447,85 @@
    }
  
   /*
