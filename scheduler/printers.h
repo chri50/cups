@@ -69,6 +69,7 @@ struct cupsd_printer_s
 		*op_policy,		/* Operation policy name */
 		*error_policy;		/* Error policy */
   cupsd_policy_t *op_policy_ptr;	/* Pointer to operation policy */
+  int		calibrating;		/* Color-calibration Mode? */
   int		shared;			/* Shared? */
   int		accepting;		/* Accepting jobs? */
   int		holding_new_jobs;	/* Holding new jobs for printing? */
