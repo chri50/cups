@@ -29,6 +29,7 @@
  */
 
 #include <cups/cups.h>
+#include <sys/stat.h>
 #include <cups/language.h>
 #include <cups/string-private.h>
 #include <cups/array.h>
@@ -628,6 +629,8 @@ save_rss(cups_array_t *rss,		/* I - RSS messages */
             strerror(errno));
     return (0);
   }
+
+  fchmod(fileno(fp), 0644);
 
   fputs("<?xml version=\"1.0\"?>\n", fp);
   fputs("<rss version=\"2.0\">\n", fp);
