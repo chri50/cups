@@ -1,6 +1,6 @@
 Description: When cupsd is started by systemd, let it die after 30 seconds by default
 Author: Didier Raboud <odyx@debian.org>
-Last-Update: 2014-06-04
+Last-Update: 2014-10-23
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -80,6 +80,7 @@
@@ -15,7 +15,7 @@ Last-Update: 2014-06-04
    DefaultLeaseDuration       = 86400;
    MaxLeaseDuration           = 0;
    IdleExitTimeout            = 0;
-+  SystemdIdleExit            = TRUE;
++  SystemdIdleExit            = FALSE;
  
  #ifdef HAVE_LAUNCHD
    LaunchdTimeout = 10;
@@ -25,7 +25,7 @@ Last-Update: 2014-06-04
  VAR int			IdleExitTimeout		VALUE(0);
  					/* Time after which an idle cupsd will exit */
  
-+VAR int			SystemdIdleExit		VALUE(TRUE);
++VAR int			SystemdIdleExit		VALUE(FALSE);
 +					/* Whether cups when launched by systemd should exit on idle */
 +
  #ifdef HAVE_LAUNCHD
@@ -49,25 +49,15 @@ Last-Update: 2014-06-04
    return (0);
  }
  #endif /* HAVE_SYSTEMD */
---- a/data/cups.service.in
-+++ b/data/cups.service.in
-@@ -1,6 +1,7 @@
- [Unit]
- Description=CUPS Printing Service
- Documentation=man:cupsd(8) man:cupsd.conf(5)
-+Requires=cups.socket
- 
- [Service]
- ExecStart=@sbindir@/cupsd -f
 --- a/man/cupsd.conf.man.in
 +++ b/man/cupsd.conf.man.in
 @@ -521,6 +521,12 @@
  "notify-events", "notify-pull-method", "notify-recipient-uri",
  "notify-subscriber-user-name", and "notify-user-data".
  .TP 5
-+SystemdIdleExit Yes
-+.TP 5
 +SystemdIdleExit No
++.TP 5
++SystemdIdleExit Yes
 +.br
 +Specifies whether to exit on inactivity when launched by systemd.
 +.TP 5

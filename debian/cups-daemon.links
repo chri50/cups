@@ -1,2 +1,1 @@
-etc/cups/cupsd-systemd-listen.conf etc/systemd/system/cups.socket.d/cupsd-listen.conf
 /usr/share/doc/libcups2/README.Debian.gz /usr/share/doc/cups-daemon/README.Debian.gz

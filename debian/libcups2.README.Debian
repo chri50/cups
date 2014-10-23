@@ -1,4 +1,4 @@
-Coventions used in this document
+Conventions used in this document
 ================================
 
 In this README we will use 'cups' to refer to versions 1.6.x (and newer)
@@ -125,30 +125,24 @@ cups-browsed available to install so can only process CUPS/IPP protocol
 broadcasts. But, once again, cups-browsed on your machine can help your
 cups daemon out. Please read its documentation.
 
-Socket-activation when run under systemd
+Socket-activation under systemd
 ========================================
 
-Since 1.7.1-7, when systemd is the active init system, CUPS is launched
-on accesses to its sockets as defined in /lib/systemd/system/cups.socket
-and all files in /etc/systemd/system/cups.socket.d/; see
-systemd.unit(5).
+Since 1.7.1-7, when systemd is the active init system, CUPS can be
+configured to be socket-activated; it will then only be launched on accesses to
+its sockets. The socket definition in /lib/systemd/system/cups.socket gets
+configured through files in /etc/systemd/system/cups.socket.d/; see
+systemd.unit(5) and the examples files in /usr/share/doc/cups-daemon/examples .
  
 CUPS opens its listening ports based on 'Port' and 'Listen' stanzas in
-/etc/cups/cupsd.conf. When options for remote access are modified through
-the webinterface at http://localhost:631, CUPS will write a systemd socket
-configuration file /etc/cups/cupsd-systemd-listen.conf, which is by
-default symlinked as cups-listen.conf in the
-/etc/systemd/system/cups.socket.d/ directory. For systemd's socket
-activation to keep working, cups.socket needs to be configured to listen
-to the correct IPs and ports. That automatic setup can be disabled by
-deleting the symlink and enhanced by dropping other files in the
-/etc/systemd/system/cups.socket.d/ directory.
+/etc/cups/cupsd.conf. For systemd's socket activation to working, cups.socket
+needs to be configured to listen to the correct IPs and aports by dropping
+configuration files in the /etc/systemd/system/cups.socket.d/ directory.
 
-When launched by socket-activation, CUPS will exit itself after being
-idle for some time (30 seconds by default). The delay before exiting on
-idle can be configured using 'IdleExitTimeout' in /etc/cups/cupsd.conf.
-CUPS can also be left running continuously using 'SystemdIdleExit off'
-in that same file.
+When launched by socket-activation, CUPS can additionally exit itself after
+being idle for some time (30 seconds by default) by using 'SystemdIdleExit on'
+in /etc/cups/cupsd.conf'. The delay before exiting on idle can be configured
+using 'IdleExitTimeout' in that same file.
 
 Printing without using a local cups daemon
 ==========================================

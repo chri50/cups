@@ -56,7 +56,6 @@ cupsd-set-default-for-SyncOnClose-to-Yes.patch
 man-cups-lpd-drop-dangling-references.patch
 cupsd-idleexittimeout-systemd.patch
 cupsd-idleexittimeout-upstart.patch
-cupsd-write-systemd-Port.patch
 lppasswd-manpage-mention-dpkg-statoverride.patch
 debianize_cups-config.patch
 
