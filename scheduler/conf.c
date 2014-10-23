@@ -759,7 +759,7 @@ cupsdReadConfiguration(void)
   DefaultLeaseDuration       = 86400;
   MaxLeaseDuration           = 0;
   IdleExitTimeout            = 0;
-  SystemdIdleExit            = TRUE;
+  SystemdIdleExit            = FALSE;
 
 #ifdef HAVE_LAUNCHD
   LaunchdTimeout = 10;

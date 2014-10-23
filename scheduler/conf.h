@@ -100,8 +100,6 @@ VAR char		*ConfigurationFile	VALUE(NULL),
 					/* cupsd.conf file to use */
 			*CupsFilesFile		VALUE(NULL),
 					/* cups-files.conf file to use */
-			*SystemdConfigurationFile		VALUE(NULL),
-					/* cupsd-systemd-listen.conf file to use */
 			*ServerName		VALUE(NULL),
 					/* FQDN for server */
 			*ServerAdmin		VALUE(NULL),
@@ -253,7 +251,7 @@ VAR char		*PidFile		VALUE(NULL);
 VAR int			IdleExitTimeout		VALUE(0);
 					/* Time after which an idle cupsd will exit */
 
-VAR int			SystemdIdleExit		VALUE(TRUE);
+VAR int			SystemdIdleExit		VALUE(FALSE);
 					/* Whether cups when launched by systemd should exit on idle */
 
 #ifdef HAVE_LAUNCHD

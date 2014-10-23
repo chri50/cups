@@ -1,25 +1,8 @@
-cups (1.7.1-8) unstable; urgency=medium
+cups (1.7.5-7) unstable; urgency=medium
 
-  CUPS is now socket-activated when running under systemd as init: this
-  impacts the usual ways of managing a cups daemon instance in two ways:
+  CUPS can now be socket-activated when running under systemd as init, but
+  isn't by default; if configured to do so, it can automatically exit itself
+  after being idle for some time (30 seconds by default) by using the
+  'SystemdIdleExit on' stanza in /etc/cups/cupsd.conf.
 
-  - Configuration of the listening ports of CUPS
-    CUPS opens its listening ports based on 'Port' and 'Listen' stanzas in
-    /etc/cups/cupsd.conf. When options for remote access are modified through
-    the webinterface at http://localhost:631, CUPS will write a systemd socket
-    configuration file (see systemd.socket(5) ) in
-    /etc/cups/cupsd-systemd-listen.conf, which is by default symlinked as
-    cups-listen.conf in the /etc/systemd/system/cups.socket.d/ directory. For
-    systemd's socket activation to keep working, cups.socket needs to be
-    configured to listen to the correct IPs and ports. That automatic setup
-    can be disabled by deleting the symlink and enhanced by dropping other
-    files in the /etc/systemd/system/cups.socket.d/ directory.
-
-  - Automatic exit when idle
-    When operated under systemd as init, the CUPS daemon will be launched when
-    needed (through socket activation) and exit itself after being idle for
-    some time (30 seconds by default). The delay before exiting on idle can be
-    configured using 'IdleExitTimeout' in /etc/cups/cupsd.conf. CUPS can also
-    be left running continuously using 'SystemdIdleExit off' in that same file.
-
- -- Didier Raboud <odyx@debian.org>  Wed, 12 Mar 2014 12:03:14 +0100
+ -- Didier Raboud <odyx@debian.org>  Thu, 23 Oct 2014 22:06:18 +0200

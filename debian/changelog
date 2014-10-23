@@ -1,3 +1,21 @@
+cups (1.7.5-7) unstable; urgency=medium
+
+  * Revert to not socket-activating CUPS (Closes: #747073)
+    - Drop patch to let CUPS write the systemd.socket configuration files
+    - Replace preinst generation of the same configuration file, delete them on
+      upgrade
+    - Drop the symlink enforcing the automatic configuration
+    - Update NEWS and README.Debian to reflect that change
+    - Create two cups socket configuration examples, document their existence
+      in README.Debian
+    - Update the systemd socket activation patch to include
+      PassCredentials=true in the socket configuration, following upstream's
+      feedback
+    - Disable automatic idle exit timeout under systemd, as this will get
+      activated without socket activation
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 23 Oct 2014 22:06:18 +0200
+
 cups (1.7.5-6) unstable; urgency=medium
 
   * Backport several upstream patches:
