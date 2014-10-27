@@ -70,6 +70,7 @@ struct cupsd_printer_s
 		*error_policy;		/* Error policy */
   cupsd_policy_t *op_policy_ptr;	/* Pointer to operation policy */
   int		shared;			/* Shared? */
+  int		color_managed;		/* Color Managed? */
   int		accepting;		/* Accepting jobs? */
   int		holding_new_jobs;	/* Holding new jobs for printing? */
   int		in_implicit_class;	/* In an implicit class? */
@@ -81,6 +82,7 @@ struct cupsd_printer_s
   char		*job_sheets[2];		/* Banners/job sheets */
   cups_ptype_t	type;			/* Printer type (color, small, etc.) */
   char		*device_uri;		/* Device URI */
+  char		*ppd_timestamp;	        /* Driver Modification Date */
   char		*sanitized_device_uri;	/* Sanitized device URI */
   char		*port_monitor;		/* Port monitor */
   int		raw;			/* Raw queue? */
