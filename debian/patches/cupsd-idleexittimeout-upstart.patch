@@ -4,7 +4,7 @@ Author: Till Kamppeter <till.kamppeter@gmail.com>,
 Bug: https://bugs.launchpad.net/ubuntu/+source/cups/+bug/1276713
 --- a/scheduler/main.c
 +++ b/scheduler/main.c
-@@ -1827,6 +1827,13 @@
+@@ -1835,6 +1835,13 @@
    if (_httpAddrPort(&(lis->address)) == 443)
      lis->encryption = HTTP_ENCRYPT_ALWAYS;
  #  endif /* HAVE_SSL */
