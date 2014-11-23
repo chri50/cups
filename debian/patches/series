@@ -3,6 +3,7 @@ str4396-make-scheduler-return-completed-jobs-in-correct-order.patch
 str2913-limit-Get-Jobs-replies-to-500-jobs.patch
 str4461-restore-access-to-logfiles.patch
 str4475-fix-the-spinner-imager-on-restart.patch
+str4484-fix-random-crash-in-scheduler.patch
 str4500-cupsGetPPD3-Only-use-symlink-if-file-is-readable-STR.patch
 
 # patches sent upstream
@@ -13,6 +14,7 @@ fixes-for-jobs-with-multiple-files-and-multiple-formats.patch
 cupsd-idleexittimeout.patch
 cups-no-gcrypt.patch
 canon-mx3x0-quirks.patch
+brother-hl-1250-quirks.patch
 
 # patches which should go upstream
 color-management-extension.patch

@@ -1,3 +1,11 @@
+cups (1.7.5-8) unstable; urgency=medium
+
+  * Add a USB quirk fix for Brother HL-1250 (Closes: #712512)
+  * Backport upstream patch to fix random crash in TLS handling. The patch also
+    enables coredumps.(Closes: #760475, #760476)
+
+ -- Didier Raboud <odyx@debian.org>  Sun, 23 Nov 2014 13:26:24 +0100
+
 cups (1.7.5-7) unstable; urgency=medium
 
   * Revert to not socket-activating CUPS (Closes: #747073)

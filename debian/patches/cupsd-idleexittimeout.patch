@@ -46,8 +46,8 @@ Last-Update: 2014-06-04
 +  int			t = -1;		/* Timeout */
    char			*opt;		/* Option character */
    int			fg;		/* Run in the foreground */
-   int			fds;		/* Number of ready descriptors */
-@@ -123,6 +124,8 @@
+   int			close_all = 1,	/* Close all file descriptors? */
+@@ -125,6 +126,8 @@
  #else
    time_t		netif_time = 0;	/* Time since last network update */
  #endif /* __APPLE__ */
@@ -56,8 +56,8 @@ Last-Update: 2014-06-04
  #if HAVE_LAUNCHD
    int			launchd_idle_exit;
  					/* Idle exit on select timeout? */
-@@ -288,6 +291,21 @@
- 	      fg             = 1;
+@@ -304,6 +307,21 @@
+ 	      close_all      = 0;
  	      break;
  
 +	  case 'x' : /* Exit on idle timeout */
@@ -78,7 +78,7 @@ Last-Update: 2014-06-04
  	  default : /* Unknown option */
                _cupsLangPrintf(stderr, _("cupsd: Unknown option \"%c\" - "
  	                                "aborting."), *opt);
-@@ -533,6 +551,13 @@
+@@ -541,6 +559,13 @@
    }
  
   /*
@@ -92,7 +92,7 @@ Last-Update: 2014-06-04
    * Clean out old temp files and printer cache data.
    */
  
-@@ -770,6 +795,26 @@
+@@ -778,6 +803,26 @@
      if ((timeout = select_timeout(fds)) > 1 && LastEvent)
        timeout = 1;
  
@@ -119,7 +119,7 @@ Last-Update: 2014-06-04
  #if HAVE_LAUNCHD
     /*
      * If no other work is scheduled and we're being controlled by
-@@ -883,6 +928,20 @@
+@@ -891,6 +936,20 @@
      }
  #endif /* !__APPLE__ */
  

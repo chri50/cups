@@ -24,7 +24,7 @@ Bug: https://bugs.launchpad.net/ubuntu/+source/cups/+bug/1276713
  static void		parent_handler(int sig);
  static void		process_children(void);
  static void		sigchld_handler(int sig);
-@@ -326,6 +327,14 @@
+@@ -342,6 +343,14 @@
        usage(1);
      }
  
@@ -39,7 +39,7 @@ Bug: https://bugs.launchpad.net/ubuntu/+source/cups/+bug/1276713
    if (!ConfigurationFile)
      cupsdSetString(&ConfigurationFile, CUPS_SERVERROOT "/cupsd.conf");
  
-@@ -594,6 +603,11 @@
+@@ -602,6 +611,11 @@
  #endif /* HAVE_SYSTEMD */
  
   /*
@@ -51,7 +51,7 @@ Bug: https://bugs.launchpad.net/ubuntu/+source/cups/+bug/1276713
    * Startup the server...
    */
  
-@@ -792,6 +806,13 @@
+@@ -800,6 +814,13 @@
  #endif /* HAVE_SYSTEMD */
  
         /*
@@ -65,7 +65,7 @@ Bug: https://bugs.launchpad.net/ubuntu/+source/cups/+bug/1276713
          * Startup the server...
          */
  
-@@ -1673,6 +1694,94 @@
+@@ -1681,6 +1702,94 @@
  }
  #endif /* HAVE_SYSTEMD */
  
