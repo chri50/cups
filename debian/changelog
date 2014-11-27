@@ -1,3 +1,12 @@
+cups (1.7.5-9) unstable; urgency=medium
+
+  * Drop color-management patch; it got refused by upstream and is not
+    available in non-english translations (Closes: #763517, #768163)
+  * Drop the upstream patch to limit Get-Jobs replies to 500, as this triggers
+    a FTBS on mips
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 27 Nov 2014 20:44:45 +0100
+
 cups (1.7.5-8) unstable; urgency=medium
 
   * Add a USB quirk fix for Brother HL-1250 (Closes: #712512)

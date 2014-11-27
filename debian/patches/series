@@ -1,6 +1,5 @@
 # patches accepted and committed upstream
 str4396-make-scheduler-return-completed-jobs-in-correct-order.patch
-str2913-limit-Get-Jobs-replies-to-500-jobs.patch
 str4461-restore-access-to-logfiles.patch
 str4475-fix-the-spinner-imager-on-restart.patch
 str4484-fix-random-crash-in-scheduler.patch
@@ -17,7 +16,6 @@ canon-mx3x0-quirks.patch
 brother-hl-1250-quirks.patch
 
 # patches which should go upstream
-color-management-extension.patch
 systemd-optional-socket-activation.patch
 cupsd-upstart-support.patch
 # Fix tests, should probably go upstream
