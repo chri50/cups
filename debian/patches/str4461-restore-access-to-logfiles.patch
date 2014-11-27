@@ -103,7 +103,7 @@ Last-Update: 2014-10-22
  			     Group, 1, 1) < 0 ||
 --- a/scheduler/ipp.c
 +++ b/scheduler/ipp.c
-@@ -2735,7 +2735,6 @@
+@@ -2734,7 +2734,6 @@
  
        cupsdLogMessage(CUPSD_LOG_DEBUG,
  		      "Copied PPD file successfully");
@@ -111,7 +111,7 @@ Last-Update: 2014-10-22
      }
    }
  
-@@ -4643,7 +4642,7 @@
+@@ -4641,7 +4640,7 @@
    * Open the destination file for a copy...
    */
  
@@ -120,7 +120,7 @@ Last-Update: 2014-10-22
    {
      cupsFreeOptions(num_defaults, defaults);
      cupsFileClose(src);
-@@ -4698,7 +4697,7 @@
+@@ -4696,7 +4695,7 @@
  
    unlink(tempfile);
  

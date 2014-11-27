@@ -1437,7 +1437,6 @@ _cupsGetDests(http_t       *http,	/* I  - Connection to server or
 		  "printer-defaults",
 		  "printer-info",
 		  "printer-is-accepting-jobs",
-		  "printer-is-cm-calibrating",
 		  "printer-is-shared",
 		  "printer-location",
 		  "printer-make-and-model",
@@ -1545,8 +1544,7 @@ _cupsGetDests(http_t       *http,	/* I  - Connection to server or
 	    !strcmp(attr->name, "marker-types") ||
 	    !strcmp(attr->name, "printer-commands") ||
 	    !strcmp(attr->name, "printer-info") ||
-	    !strcmp(attr->name, "printer-info") ||
-	    !strcmp(attr->name, "printer-is-cm-calibrating") ||
+	    !strcmp(attr->name, "printer-is-shared") ||
 	    !strcmp(attr->name, "printer-make-and-model") ||
 	    !strcmp(attr->name, "printer-mandatory-job-attributes") ||
 	    !strcmp(attr->name, "printer-state") ||
@@ -1583,7 +1581,7 @@ _cupsGetDests(http_t       *http,	/* I  - Connection to server or
               break;
 	    }
 	}
-#endif /* __APPLE__ */        
+#endif /* __APPLE__ */
         else if (!strcmp(attr->name, "printer-name") &&
 	         attr->value_tag == IPP_TAG_NAME)
 	  printer_name = attr->values[0].string.text;

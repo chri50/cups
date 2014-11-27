@@ -1556,7 +1556,6 @@ ippCreateRequestedArray(ipp_t *request)	/* I - IPP request */
     "printer-icons",
     "printer-info",
     "printer-is-accepting-jobs",
-    "printer-is-cm-calibrating",	/* CUPS extension */
     "printer-is-shared",		/* CUPS extension */
     "printer-kind",			/* IPP Paid Printing */
     "printer-location",
