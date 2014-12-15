@@ -1,3 +1,10 @@
+cups (1.7.5-10) unstable; urgency=medium
+
+  * Change ppd-updaters trigger to use interest-noawait instead of interest to
+    avoid trigger cycles (Closes: #772871, #771765)
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 15 Dec 2014 22:22:33 +0100
+
 cups (1.7.5-9) unstable; urgency=medium
 
   * Drop color-management patch; it got refused by upstream and is not
