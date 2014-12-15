@@ -119,6 +119,7 @@ static mime_filter_t	gziptoany_filter =
  */
 
 static int	compare_active_jobs(void *first, void *second, void *data);
+static int	compare_completed_jobs(void *first, void *second, void *data);
 static int	compare_jobs(void *first, void *second, void *data);
 static void	dump_job_history(cupsd_job_t *job);
 static void	finalize_job(cupsd_job_t *job, int set_job_state);
@@ -1429,6 +1430,30 @@ cupsdFindJob(int id)			/* I - Job ID */
 
 
 /*
+ * 'cupsdGetCompletedJobs()'- Generate a completed jobs list.
+ */
+
+cups_array_t *				/* O - Array of jobs */
+cupsdGetCompletedJobs(
+    cupsd_printer_t *p)			/* I - Printer */
+{
+  cups_array_t	*list;			/* Array of jobs */
+  cupsd_job_t	*job;			/* Current job */
+
+
+  list = cupsArrayNew(compare_completed_jobs, NULL);
+
+  for (job = (cupsd_job_t *)cupsArrayFirst(Jobs);
+       job;
+       job = (cupsd_job_t *)cupsArrayNext(Jobs))
+    if ((!p || !_cups_strcasecmp(p->name, job->dest)) && job->state_value >= IPP_JOB_STOPPED && job->completed_time)
+      cupsArrayAdd(list, job);
+
+  return (list);
+}
+
+
+/*
  * 'cupsdGetPrinterJobCount()' - Get the number of pending, processing,
  *                               or held jobs in a printer or class.
  */
@@ -1627,6 +1652,8 @@ cupsdLoadJob(cupsd_job_t *job)		/* I - Job */
       (attr = ippFindAttribute(job->attrs, "time-at-completed",
 			       IPP_TAG_INTEGER)) != NULL)
   {
+    job->completed_time = attr->values[0].integer;
+
     if (JobHistory < INT_MAX)
       job->history_time = attr->values[0].integer + JobHistory;
     else
@@ -2104,8 +2131,11 @@ cupsdSaveAllJobs(void)
   {
     cupsFilePrintf(fp, "<Job %d>\n", job->id);
     cupsFilePrintf(fp, "State %d\n", job->state_value);
+    if (job->completed_time)
+      cupsFilePrintf(fp, "Completed %ld\n", (long)job->completed_time);
     cupsFilePrintf(fp, "Priority %d\n", job->priority);
-    cupsFilePrintf(fp, "HoldUntil %d\n", (int)job->hold_until);
+    if (job->hold_until)
+      cupsFilePrintf(fp, "HoldUntil %ld\n", (long)job->hold_until);
     cupsFilePrintf(fp, "Username %s\n", job->username);
     cupsFilePrintf(fp, "Destination %s\n", job->dest);
     cupsFilePrintf(fp, "DestType %d\n", job->dtype);
@@ -2755,6 +2785,28 @@ compare_active_jobs(void *first,	/* I - First job */
 
   if ((diff = ((cupsd_job_t *)second)->priority -
               ((cupsd_job_t *)first)->priority) != 0)
+    return (diff);
+  else
+    return (((cupsd_job_t *)first)->id - ((cupsd_job_t *)second)->id);
+}
+
+
+/*
+ * 'compare_completed_jobs()' - Compare the job IDs and completion times of two jobs.
+ */
+
+static int				/* O - Difference */
+compare_completed_jobs(void *first,	/* I - First job */
+                       void *second,	/* I - Second job */
+		       void *data)	/* I - App data (not used) */
+{
+  int	diff;				/* Difference */
+
+
+  (void)data;
+
+  if ((diff = ((cupsd_job_t *)second)->completed_time -
+              ((cupsd_job_t *)first)->completed_time) != 0)
     return (diff);
   else
     return (((cupsd_job_t *)first)->id - ((cupsd_job_t *)second)->id);
@@ -4025,6 +4077,14 @@ load_job_cache(const char *filename)	/* I - job.cache filename */
 
       if (job->state_value <= IPP_JOB_STOPPED && cupsdLoadJob(job))
 	cupsArrayAdd(ActiveJobs, job);
+      else if (job->state_value > IPP_JOB_STOPPED)
+      {
+        if (!job->completed_time)
+	{
+	  cupsdLoadJob(job);
+	  unload_job(job);
+	}
+      }
 
       job = NULL;
     }
@@ -4042,9 +4102,13 @@ load_job_cache(const char *filename)	/* I - job.cache filename */
       else if (job->state_value > IPP_JOB_COMPLETED)
         job->state_value = IPP_JOB_COMPLETED;
     }
+    else if (!_cups_strcasecmp(line, "Completed"))
+    {
+      job->completed_time = strtol(value, NULL, 10);
+    }
     else if (!_cups_strcasecmp(line, "HoldUntil"))
     {
-      job->hold_until = atoi(value);
+      job->hold_until = strtol(value, NULL, 10);
     }
     else if (!_cups_strcasecmp(line, "Priority"))
     {
@@ -4382,6 +4446,8 @@ set_time(cupsd_job_t *job,		/* I - Job to update */
 
   if (!strcmp(name, "time-at-completed"))
   {
+    job->completed_time = curtime;
+
     if (JobHistory < INT_MAX && attr)
       job->history_time = attr->values[0].integer + JobHistory;
     else
