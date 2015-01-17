@@ -1,3 +1,10 @@
+cups (1.7.5-10ubuntu1) vivid; urgency=medium
+
+  * Merge with Debian unstable, and movie Jamie's apparmor profile delta
+    into upstream's debian/patches/ubuntu/ubuntu-apparmor-profile.patch.
+
+ -- Adam Conrad <adconrad@ubuntu.com>  Fri, 16 Jan 2015 17:12:25 -0700
+
 cups (1.7.5-10) unstable; urgency=medium
 
   * Change ppd-updaters trigger to use interest-noawait instead of interest to
@@ -81,6 +88,24 @@ cups (1.7.5-4) unstable; urgency=medium
   * Add the Ubuntu-specific apparmor profile as Ubuntu-specific patch
 
  -- Didier Raboud <odyx@debian.org>  Wed, 01 Oct 2014 21:40:15 +0200
+
+cups (1.7.5-3ubuntu2) utopic; urgency=medium
+
+  * debian/local/apparmor-profile:
+    - allow all signals to /usr/sbin/cupsd//third_party
+    - allow unix to /usr/sbin/cupsd//third_party (LP: #1382042)
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 16 Oct 2014 08:28:29 -0500
+
+cups (1.7.5-3ubuntu1) utopic; urgency=medium
+
+  * debian/local/apparmor-profile:
+    - fix peer on signal rule to use /usr/sbin/cupsd//third_party
+      (LP: #1376611)
+    - temporarily use attach_disconnected to work around LP: #1373070. This
+      should be undone once 1373070 is properly fixed
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 02 Oct 2014 08:22:36 -0500
 
 cups (1.7.5-3) unstable; urgency=medium
 
