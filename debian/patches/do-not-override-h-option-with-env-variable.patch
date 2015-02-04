@@ -1,0 +1,22 @@
+Description: do not override -h option with CUPS_SERVER variable
+
+Author: Louis Bouchard <louis.bouchard@canonical.com>
+Origin: https://www.cups.org/str.php?L4528+P-1+S-2+C0+I0+E0+Q
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/1352809
+Index: cups-1.7.5/cups/usersys.c
+===================================================================
+--- cups-1.7.5.orig/cups/usersys.c	2015-02-04 12:58:39.000000000 +0100
++++ cups-1.7.5/cups/usersys.c	2015-02-04 13:10:54.062431647 +0100
+@@ -891,6 +891,12 @@
+     }
+ 
+    /*
++    * Check if values have been provided as CLI options
++    */
++    if (cg->server[0])
++      cups_server = cg->server;
++
++   /*
+     * Read the configuration file and apply any environment variables; both
+     * functions handle NULL cups_file_t pointers...
+     */
