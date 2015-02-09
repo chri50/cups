@@ -53,7 +53,7 @@ Specifies the error log filename.
 .TP 5
 FatalErrors none
 .TP 5
-FatalErrors all -kind [... -kind]
+FatalErrors all \-kind [... \-kind]
 .TP 5
 FatalErrors kind [... kind]
 .br
