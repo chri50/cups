@@ -79,6 +79,9 @@ typedef struct
   int			fd;		/* File descriptor for this server */
   http_addr_t		address;	/* Bind address of socket */
   http_encryption_t	encryption;	/* To encrypt or not to encrypt... */
+#ifdef HAVE_SYSTEMD
+  int			is_systemd;	/* Is this a systemd socket? */
+#endif /* HAVE_SYSTEMD */
 } cupsd_listener_t;
 
 
