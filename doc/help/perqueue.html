@@ -1,0 +1,34 @@
+<HTML>
+<!-- SECTION: Getting Started -->
+<HEAD>
+	<TITLE>Using the Per-Queue Interface</TITLE>
+	<LINK REL="STYLESHEET" TYPE="text/css" HREF="../cups-printable.css">
+</HEAD>
+<BODY>
+
+<P>This version of CUPS has been enhanced with an interface for per-queue color management, allowing a much easier way for color-savvy users to test and distribute printer drivers in order to produce precise results.</P>
+
+<P>In addition to a new interface, a means to disable color management for a given queue has been included as well. This makes it so that target printing can be achieved on individual queues.</P>
+
+<H2 CLASS="title"><A NAME="USING">How Do I Use It?</A></H2>
+
+<P>Click on the <A HREF="http://localhost:631/printers">Printers</A> tab at
+the top of this page. There you will see the usual interface for managing your 
+printers, along with an additional "Settings" column for each of your queues.</P>
+
+<P>There are two buttons available for each printer. <B>Download</B> simply lets you save the PPD file currently associated with a queue (where available) to your computer. If want to change the currently associated driver, use <B>Replace</B> to upload a PPD file from your hard drive. This will update the queue and mark a time stamp in the “Last Modified” column. Note that if you added a queue, the time stamp will simply display an asterisk (*).</P>
+
+<P>Modifying any queue requires administrative privileges.</P>
+
+<H2 CLASS="title"><A NAME="COLOR">Color Management</A></H2>
+
+<P>A feature to enable/disable color management has been implemented. To use it, you will need to select a queue in <A HREF="http://localhost:631/printers">Printers</A> (listed below "Queue Name"). Once selected, click on the “Administration” combo box located below the header, and select “Modify Printer”.</P>
+
+<P>You will be asked to make the usual changes to a queue, but you will also see a “Color Management” check box option, where a check will enable color management for a printer. Un-check if you wish to use the queue for duties such as target printing.</P>
+
+<P>Color management is enabled by default whenever you add a new queue.</P>
+
+<BLOCKQUOTE>This build was produced during the 2013 Google Summer of Code. As such, it is still experimental and a few bugs will likely need to be addressed in the future.</BLOCKQUOTE>
+
+</BODY>
+</HTML>
