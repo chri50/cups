@@ -1728,6 +1728,15 @@ systemd_checkin(void)
 #  endif /* HAVE_SSL */
   }
 
+  if(SystemdIdleExit)
+  {
+    /* As we are started on-demand, stop on idle */
+    if (!IdleExitTimeout)
+      IdleExitTimeout = 30;
+
+    cupsdLogMessage(CUPSD_LOG_DEBUG, "systemd_checkin: Activate exit-on-idle mode, timeout: %d seconds.",
+                                     IdleExitTimeout);
+  }
   return (0);
 }
 #endif /* HAVE_SYSTEMD */
