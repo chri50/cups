@@ -17,12 +17,12 @@
 cupsctl \- configure cupsd.conf options
 .SH SYNOPSIS
 .B cupsctl
-[ -E ] [-U
+[ \-E ] [\-U
 .I username
-] [ -h
+] [ \-h
 .I server[:port]
-] [ --[no-]debug-logging ] [ --[no-]remote-admin ] [ --[no-]remote-any ]
-[ --[no-]share-printers ] [ --[no-]user-cancel-any ]
+] [ \-\-[no-]debug-logging ] [ \-\-[no-]remote-admin ] [ \-\-[no-]remote-any ]
+[ \-\-[no-]share-printers ] [ \-\-[no-]user-cancel-any ]
 [
 .I name=value
 ]
@@ -33,35 +33,35 @@ standard output in the format "name=value", one per line.
 .SH OPTIONS
 The following options are recognized:
 .TP 5
--E
+\-E
 .br
 Enables encryption on the connection to the scheduler.
 .TP 5
--U \fIusername\fR
+\-U \fIusername\fR
 .br
 Specifies an alternate username to use when authenticating with the scheduler.
 .TP 5
--h \fIserver[:port]\fR
+\-h \fIserver[:port]\fR
 .br
 Specifies the server address.
 .TP 5
---[no-]debug-logging
+\--[no-]debug-logging
 .br
 Enables or disables debug logging in the \fBerror_log\fR file.
 .TP 5
---[no-]remote-admin
+\--[no-]remote-admin
 .br
 Enables or disables remote administration.
 .TP 5
---[no-]remote-any
+\--[no-]remote-any
 .br
 Enables or disables printing from any address, e.g. the Internet.
 .TP 5
---[no-]share-printers
+\--[no-]share-printers
 .br
 Enables or disables sharing of local printers with other computers.
 .TP 5
---[no-]user-cancel-any
+\--[no-]user-cancel-any
 .br
 Allows or prevents users from canceling jobs owned by others.
 .SH EXAMPLES
@@ -72,17 +72,17 @@ Display the current settings:
 .LP
 Enable debug logging:
 .nf
-    cupsctl --debug-logging
+    cupsctl \--debug-logging
 .fi
 .LP
 Get the current debug logging state:
 .nf
-    cupsctl | grep '^_debug_logging' | awk -F= '{print $2}'
+    cupsctl | grep '^_debug_logging' | awk \-F= '{print $2}'
 .fi
 .LP
 Disable printer sharing:
 .nf
-    cupsctl --no-share-printers
+    cupsctl \--no-share-printers
 .fi
 .SH KNOWN ISSUES
 You cannot set the Listen or Port directives using \fIcupsctl\fR.
