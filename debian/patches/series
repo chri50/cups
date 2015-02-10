@@ -5,8 +5,6 @@ pwg-raster-attributes.patch
 manpage-hyphen-minus.patch
 rootbackends-worldreadable.patch
 fixes-for-jobs-with-multiple-files-and-multiple-formats.patch
-canon-mx3x0-quirks.patch
-brother-hl-1250-quirks.patch
 
 # patches which should go upstream
 cupsd-upstart-support.patch
@@ -47,7 +45,6 @@ ppdc-dynamic-linking.patch
 log-debug-history-nearly-unlimited.patch
 cupsd-set-default-for-SyncOnClose-to-Yes.patch
 man-cups-lpd-drop-dangling-references.patch
-cupsd-idleexittimeout-upstart.patch
 debianize_cups-config.patch
 
 # This one has been submitted upstream but no answer has been given yet,
