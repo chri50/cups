@@ -1,11 +1,11 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: CUPS
 Upstream-Contact: Michael Sweet <msweet@apple.com>
-Source: ftp://ftp.easysw.com/pub/cups/
+Source: http://cups.org/software.php
 
 Files: *
-Copyright: Copyright 2007-2011 by Apple Inc.
-License: GPL-2 with exceptions
+Copyright: Copyright 2007-2013 by Apple Inc.
+License: GPL-2 with AOSDL exception
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, version 2 of the License.
@@ -14,7 +14,7 @@ License: GPL-2 with exceptions
  /usr/share/common-licenses/GPL-2 on Debian systems.
  .
  In addition, as the copyright holder of CUPS, Apple Inc. grants
- the following special exceptions:
+ the following special exception:
  .
       1. Apple Operating System Development License Exception;
  .
@@ -65,8 +65,8 @@ License: GPL-2 with exceptions
  derived work.
 
 Files: cups/* filter/*
-Copyright: Copyright 2007-2011 by Apple Inc.
-License: LGPL-2 with exceptions
+Copyright: Copyright 2007-2013 by Apple Inc.
+License: LGPL-2 with AOSDL exception
  This program is free software; you can redistribute it and/or modify it
  under the terms of the GNU Library General Public License as published
  by the Free Software Foundation, version 2 of the License.
@@ -74,4 +74,4 @@ License: LGPL-2 with exceptions
  The full text of the LGPL is distributed as in
  /usr/share/common-licenses/LGPL-2 on Debian systems.
  .
- The same exceptions as above apply.
+ The same exception as above applies.

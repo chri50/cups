@@ -4,7 +4,7 @@ Bug-Ubuntu: https://bugs.launchpad.net/bugs/711779
 Bug-Ubuntu: https://bugs.launchpad.net/bugs/1054495
 Bug-Debian: http://bugs.debian.org/700961
 Bug: https://cups.org/str.php?L4341
-Last-Update: 2013-02-20
+Last-Update: 2015-02-10
 
 --- a/scheduler/dirsvc.c
 +++ b/scheduler/dirsvc.c
@@ -35,7 +35,7 @@ Last-Update: 2013-02-20
  # Raw filter...
 --- a/conf/mime.types
 +++ b/conf/mime.types
-@@ -110,6 +110,9 @@
+@@ -111,6 +111,9 @@
  image/x-bitmap			bmp string(0,BM) + !printable(2,14)
  image/x-icon			ico
  
@@ -47,7 +47,7 @@ Last-Update: 2013-02-20
  # Text files...
 --- a/scheduler/printers.c
 +++ b/scheduler/printers.c
-@@ -3575,7 +3575,9 @@
+@@ -3587,7 +3587,9 @@
        }
        else if (!_cups_strcasecmp(type->super, "image"))
        {
@@ -60,7 +60,7 @@ Last-Update: 2013-02-20
  	  strlcat(pdl, "image/png,", sizeof(pdl));
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -723,7 +723,7 @@
+@@ -724,7 +724,7 @@
    DefaultShared            = CUPS_DEFAULT_DEFAULT_SHARED;
  
  #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)

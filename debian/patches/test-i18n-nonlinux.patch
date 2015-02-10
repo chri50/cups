@@ -1,9 +1,10 @@
 Description: Do not run the CUPS_EUC_JP test case on BSD/Hurd either, as glibc's iconv behavior is different than what the test expects.
 Bug-Debian: http://bugs.debian.org/662996
 
+Last-Update: 2015-10-02
 --- a/cups/testi18n.c
 +++ b/cups/testi18n.c
-@@ -423,7 +423,7 @@
+@@ -418,7 +418,7 @@
        puts("PASS");
    }
  

@@ -14,17 +14,18 @@ Description: CUPS Upstart socket activation:
 Author: Till Kamppeter <till.kamppeter@gmail.com>,
  Dimitri John Ledkov <xnox@ubuntu.com>
 Bug: https://bugs.launchpad.net/ubuntu/+source/cups/+bug/1276713
+Last-Update: 2015-10-02
 --- a/scheduler/main.c
 +++ b/scheduler/main.c
-@@ -71,6 +71,7 @@
- #ifdef HAVE_SYSTEMD
- static int		systemd_checkin(void);
- #endif /* HAVE_SYSTEMD */
+@@ -61,6 +61,7 @@
+  * Local functions...
+  */
+ 
 +static void		upstart_checkin(void);
  static void		parent_handler(int sig);
  static void		process_children(void);
  static void		sigchld_handler(int sig);
-@@ -342,6 +343,14 @@
+@@ -316,6 +317,14 @@
        usage(1);
      }
  
@@ -39,8 +40,8 @@ Bug: https://bugs.launchpad.net/ubuntu/+source/cups/+bug/1276713
    if (!ConfigurationFile)
      cupsdSetString(&ConfigurationFile, CUPS_SERVERROOT "/cupsd.conf");
  
-@@ -602,6 +611,11 @@
- #endif /* HAVE_SYSTEMD */
+@@ -562,6 +571,11 @@
+ #endif /* HAVE_LAUNCHD || HAVE_SYSTEMD */
  
   /*
 +  * If we were started by Upstart get the listen sockets file descriptors...
@@ -51,8 +52,8 @@ Bug: https://bugs.launchpad.net/ubuntu/+source/cups/+bug/1276713
    * Startup the server...
    */
  
-@@ -800,6 +814,13 @@
- #endif /* HAVE_SYSTEMD */
+@@ -734,6 +748,13 @@
+ 	}
  
         /*
 +        * If we were started by Upstart get the listen sockets file
@@ -65,9 +66,9 @@ Bug: https://bugs.launchpad.net/ubuntu/+source/cups/+bug/1276713
          * Startup the server...
          */
  
-@@ -1681,6 +1702,94 @@
+@@ -1543,6 +1564,94 @@
  }
- #endif /* HAVE_SYSTEMD */
+ 
  
 +static void
 +upstart_checkin(void)
@@ -152,11 +153,11 @@ Bug: https://bugs.launchpad.net/ubuntu/+source/cups/+bug/1276713
 +  lis->fd = fd;
 +
 +#  ifdef HAVE_SSL
-+  if (_httpAddrPort(&(lis->address)) == 443)
++  if (httpAddrPort(&(lis->address)) == 443)
 +    lis->encryption = HTTP_ENCRYPT_ALWAYS;
 +#  endif /* HAVE_SSL */
 +}
 +
  /*
-  * 'parent_handler()' - Catch USR1/CHLD signals...
-  */
+  * 'select_timeout()' - Calculate the select timeout value.
+  *

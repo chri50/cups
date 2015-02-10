@@ -100,12 +100,6 @@ install-data:
 		$(INSTALL_DATA) $$file $(DATADIR)/ppdc; \
 	done
 	$(INSTALL_DIR) -m 755 $(DATADIR)/profiles
-	if test "x$(SYSTEMD_UNITS)" != "x" ; then \
-		$(INSTALL_DIR) -m 755 $(SYSTEMDUNITDIR); \
-		for file in $(SYSTEMD_UNITS); do \
-			$(INSTALL_DATA) $$file $(SYSTEMDUNITDIR); \
-		done; \
-	fi
 
 
 #
@@ -149,9 +143,6 @@ uninstall:
 	-$(RMDIR) $(DATADIR)/data
 	-$(RMDIR) $(DATADIR)/banners
 	-$(RMDIR) $(DATADIR)
-	for file in $(SYSTEMD_UNITS); do \
-		$(RM) $(SYSTEMDUNITDIR)/$$file; \
-	done
 
 
 #

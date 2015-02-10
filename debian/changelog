@@ -1,3 +1,34 @@
+cups (2.0.2-1) experimental; urgency=low
+
+  * New 2.0.2 upstream version
+    - Add 2.0.2 symbols
+    - Drop 5 upstream patches that were from the upstream 2.0 branch
+    - Drop systemd patches as systemd support got included upstream
+    - Drop the patch avoiding the linking against libgrypt, as it got included
+      upstream
+    - Add patch and dh-exec magic to rename the upstream systemd units away
+      from org.cups.cupsd.*
+    - Drop all references to lppasswd, as it got dropped by upstream in 2.0b1
+    - Refresh all patches for 2.0.2
+    - Rebase the manpage translation infrastructure for 2.0.2
+    - Refresh all test-related patches
+    - Update debian/copyright with the updates made in 2.0.0
+    - Update configure arguments
+
+  [ Till Kamppeter ]
+  * Merged in more Ubuntu-specific AppArmor profile changes:
+     - Fix peer on signal rule to use /usr/sbin/cupsd//third_party
+       (LP: #1376611)
+     - Temporarily use attach_disconnected to work around LP: 1373070.
+     - Allow all signals to /usr/sbin/cupsd//third_party
+     - Allow unix to /usr/sbin/cupsd//third_party (LP: #1382042)
+     - Added "flags=(attach_disconnected)" to third_party profile
+       (LP: #1413313)
+  * Fix -h option not honoured when CUPS_SERVER variable is defined
+    (LP: #1352809)
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 10 Feb 2015 17:13:38 +0100
+
 cups (1.7.5-10) unstable; urgency=medium
 
   * Change ppd-updaters trigger to use interest-noawait instead of interest to

@@ -2,7 +2,7 @@ Description: Add support for creating pid files.
 Author: Martin Pitt <mpitt@debian.org>
 Bug: http://www.cups.org/str.php?L2465
 
-Last-Update: 2012-11-29
+Last-Update: 2015-02-10
 
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
@@ -24,7 +24,7 @@ Last-Update: 2012-11-29
  
    if (!strcmp(CUPS_DEFAULT_PRINTCAP, "/etc/printers.conf"))
      PrintcapFormat = PRINTCAP_SOLARIS;
-@@ -3333,6 +3335,7 @@
+@@ -3378,6 +3380,7 @@
               !_cups_strcasecmp(line, "SystemGroup") ||
               !_cups_strcasecmp(line, "SystemGroupAuthKey") ||
               !_cups_strcasecmp(line, "TempDir") ||
@@ -34,27 +34,27 @@ Last-Update: 2012-11-29
        cupsdLogMessage(CUPSD_LOG_INFO,
 --- a/scheduler/conf.h
 +++ b/scheduler/conf.h
-@@ -245,6 +245,8 @@
- VAR int			SSLOptions		VALUE(CUPSD_SSL_NONE);
- 					/* SSL/TLS options */
+@@ -243,6 +243,8 @@
+ VAR char		*ServerKeychain		VALUE(NULL);
+ 					/* Keychain holding cert + key */
  #endif /* HAVE_SSL */
 +VAR char		*PidFile		VALUE(NULL);
 +					/* Debian CUPS pid file */
  
- VAR int			IdleExitTimeout		VALUE(0);
- 					/* Time after which an idle cupsd will exit */
+ #if defined(HAVE_LAUNCHD) || defined(HAVE_SYSTEMD)
+ VAR int			IdleExitTimeout		VALUE(60);
 --- a/scheduler/main.c
 +++ b/scheduler/main.c
-@@ -79,6 +79,8 @@
- static void		sigterm_handler(int sig);
- static long		select_timeout(int fds);
+@@ -73,6 +73,8 @@
+ static void		service_checkout(void);
+ #endif /* HAVE_LAUNCHD || HAVE_SYSTEMD */
  static void		usage(int status) __attribute__((noreturn));
 +int			write_pid(void);
 +int			remove_pid(void);
  
  
  /*
-@@ -696,6 +698,11 @@
+@@ -656,6 +658,11 @@
      cupsdStartSystemMonitor();
  #endif /* __APPLE__ */
  
@@ -66,7 +66,7 @@ Last-Update: 2012-11-29
   /*
    * Send server-started event...
    */
-@@ -1242,10 +1249,41 @@
+@@ -1143,10 +1150,41 @@
  
    cupsdStopSelect();
  
@@ -110,11 +110,11 @@ Last-Update: 2012-11-29
   */
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -502,6 +502,7 @@
+@@ -540,6 +540,7 @@
  DocumentRoot $root/doc
- RequestRoot /tmp/cups-$user/spool
- TempDir /tmp/cups-$user/spool/temp
-+PidFile /tmp/cups-$user/cupsd.pid
- AccessLog /tmp/cups-$user/log/access_log
- ErrorLog /tmp/cups-$user/log/error_log
- PageLog /tmp/cups-$user/log/page_log
+ RequestRoot $BASE/spool
+ TempDir $BASE/spool/temp
++PidFile $BASE/cupsd.pid
+ AccessLog $BASE/log/access_log
+ ErrorLog $BASE/log/error_log
+ PageLog $BASE/log/page_log

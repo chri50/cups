@@ -141,7 +141,7 @@
   # silence noise
   deny /etc/udev/udev.conf r,
 
-  profile third_party {
+  profile third_party flags=(attach_disconnected) {
     # third party backends, filters, and drivers get relatively no restrictions
     # as they often need high privileges, are unpredictable or otherwise beyond
     # our control
