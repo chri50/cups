@@ -1,12 +1,12 @@
 Description: Deactivate CUPS' own log rotating as the system already provides a more sophisticated log rotating
 
-Last-Update: 2012-11-27
+Last-Update: 2015-02-10
 
 --- a/conf/cupsd.conf.in
 +++ b/conf/cupsd.conf.in
-@@ -9,6 +9,10 @@
- # for troubleshooting...
+@@ -8,6 +8,10 @@
  LogLevel @CUPS_LOG_LEVEL@
+ @CUPS_PAGE_LOG_FORMAT@
  
 +# Deactivate CUPS' internal logrotating, as we provide a better one, especially
 +# LogLevel debug2 gets usable now

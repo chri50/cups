@@ -1,9 +1,9 @@
 /*
- * "$Id: cupstestppd.c 10996 2013-05-29 11:51:34Z msweet $"
+ * "$Id: cupstestppd.c 12412 2015-01-19 15:18:02Z msweet $"
  *
  *   PPD test program for CUPS.
  *
- *   Copyright 2007-2013 by Apple Inc.
+ *   Copyright 2007-2015 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -15,26 +15,6 @@
  *   PostScript is a trademark of Adobe Systems, Inc.
  *
  *   This file is subject to the Apple OS-Developed Software exception.
- *
- * Contents:
- *
- *   main()               - Main entry for test program.
- *   check_basics()       - Check for CR LF, mixed line endings, and blank
- *                          lines.
- *   check_constraints()  - Check UIConstraints in the PPD file.
- *   check_case()         - Check that there are no duplicate groups, options,
- *                          or choices that differ only by case.
- *   check_defaults()     - Check default option keywords in the PPD file.
- *   check_duplex()       - Check duplex keywords in the PPD file.
- *   check_filters()      - Check filters in the PPD file.
- *   check_profiles()     - Check ICC color profiles in the PPD file.
- *   check_sizes()        - Check media sizes in the PPD file.
- *   check_translations() - Check translations in the PPD file.
- *   show_conflicts()     - Show option conflicts in a PPD file.
- *   test_raster()        - Test PostScript commands for raster printers.
- *   usage()              - Show program usage.
- *   valid_path()         - Check whether a path has the correct capitalization.
- *   valid_utf8()         - Check whether a string contains valid UTF-8 text.
  */
 
 /*
@@ -144,7 +124,7 @@ main(int  argc,				/* I - Number of command-line args */
      char *argv[])			/* I - Command-line arguments */
 {
   int		i, j, k, m, n;		/* Looping vars */
-  int		len;			/* Length of option name */
+  size_t	len;			/* Length of option name */
   char		*opt;			/* Option character */
   const char	*ptr;			/* Pointer into string */
   cups_file_t	*fp;			/* PPD file */
@@ -1470,7 +1450,7 @@ main(int  argc,				/* I - Number of command-line args */
 	       k < group->num_options;
 	       k ++, option ++)
 	  {
-	    len = (int)strlen(option->keyword);
+	    len = strlen(option->keyword);
 
 	    for (m = 0, group2 = ppd->groups;
 		 m < ppd->num_groups;
@@ -1479,7 +1459,7 @@ main(int  argc,				/* I - Number of command-line args */
 	           n < group2->num_options;
 		   n ++, option2 ++)
 		if (option != option2 &&
-	            len < (int)strlen(option2->keyword) &&
+	            len < strlen(option2->keyword) &&
 	            !strncmp(option->keyword, option2->keyword, len))
 		{
 		  _cupsLangPrintf(stdout,
@@ -3218,8 +3198,8 @@ check_sizes(ppd_file_t *ppd,		/* I - PPD file */
       pwg_media      = pwgMediaForSize(width_2540ths, length_2540ths);
 
       if (pwg_media &&
-          (fabs(pwg_media->width - width_2540ths) > 34 ||
-           fabs(pwg_media->length - length_2540ths) > 34))
+          (abs(pwg_media->width - width_2540ths) > 34 ||
+           abs(pwg_media->length - length_2540ths) > 34))
         pwg_media = NULL;		/* Only flag matches within a point */
 
       if (pwg_media && pwg_media->ppd &&
@@ -3992,5 +3972,5 @@ valid_utf8(const char *s)		/* I - String to check */
 
 
 /*
- * End of "$Id: cupstestppd.c 10996 2013-05-29 11:51:34Z msweet $".
+ * End of "$Id: cupstestppd.c 12412 2015-01-19 15:18:02Z msweet $".
  */

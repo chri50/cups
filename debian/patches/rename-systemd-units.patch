@@ -1,0 +1,13 @@
+Description: Rename the systemd service file from org.cups.cups.* to cups.*
+Author: Didier Raboud <odyx@debian.org>
+Last-Update: 2015-02-10
+
+--- a/scheduler/org.cups.cupsd.service.in
++++ b/scheduler/org.cups.cupsd.service.in
+@@ -7,5 +7,5 @@
+ Type=simple
+ 
+ [Install]
+-Also=org.cups.cupsd.socket org.cups.cupsd.path
++Also=cups.socket cups.path
+ WantedBy=printer.target

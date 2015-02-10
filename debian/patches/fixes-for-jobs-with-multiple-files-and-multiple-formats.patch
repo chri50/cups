@@ -2,10 +2,10 @@ Description: Fix jobs with multiple files or multiple formats
 Author: Tim Waugh <twaugh@redhat.com>
 Bug-Redhat: https://bugzilla.redhat.com/show_bug.cgi?id=972242
 Bug: https://www.cups.org/str.php?L4348
-Last-Updated: 2013-11-28
+Last-Updated: 2015-02-10
 --- a/backend/ipp.c
 +++ b/backend/ipp.c
-@@ -1688,7 +1688,10 @@
+@@ -1724,7 +1724,10 @@
  	ippAddBoolean(request, IPP_TAG_OPERATION, "last-document",
          	      (i + 1) >= num_files);
  

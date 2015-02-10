@@ -5,10 +5,11 @@ Description: Some printers have broken device IDs with newline
 Bug-Ubuntu: https://bugs.launchpad.net/bugs/468701
 Bug: https://www.cups.org/str.php?L4345
 Author: Till Kamppeter <till.kamppeter@gmail.com>
+Last-Update: 2015-02-10
 
 --- a/scheduler/cups-deviced.c
 +++ b/scheduler/cups-deviced.c
-@@ -577,15 +577,30 @@
+@@ -564,15 +564,30 @@
  
      if (*ptr == '\"')
      {
