@@ -20,9 +20,9 @@ cups-lpd \- receive print jobs and report printer status to lpd clients
 [
 \fB\-h \fIhostname\fR[\fB:\fIport\fR]
 ] [
-.B -n
+.B \-n
 ] [
-.B -o
+.B \-o
 .I option=value
 ]
 .SH DESCRIPTION
@@ -39,7 +39,7 @@ and
 \fB-h \fIhostname\fR[\fB:\fIport\fR]
 Sets the CUPS server (and port) to use.
 .TP 5
-.B -n
+.B \-n
 Disables reverse address lookups; normally
 .B cups-lpd
 will try to discover the hostname of the client via a reverse DNS lookup.
