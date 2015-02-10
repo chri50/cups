@@ -1,5 +1,5 @@
 /*
- * "$Id: versioning.h 11056 2013-06-25 14:27:30Z msweet $"
+ * "$Id: versioning.h 12419 2015-01-22 15:51:20Z msweet $"
  *
  *   API versioning definitions for CUPS.
  *
@@ -21,9 +21,9 @@
  * This header defines several constants - _CUPS_DEPRECATED,
  * _CUPS_DEPRECATED_MSG, _CUPS_INTERNAL_MSG, _CUPS_API_1_1, _CUPS_API_1_1_19,
  * _CUPS_API_1_1_20, _CUPS_API_1_1_21, _CUPS_API_1_2, _CUPS_API_1_3,
- * _CUPS_API_1_4, _CUPS_API_1_5, _CUPS_API_1_6, and _CUPS_API_1_7 - which add
- * compiler-specific attributes that flag functions that are deprecated, added
- * in particular releases, or internal to CUPS.
+ * _CUPS_API_1_4, _CUPS_API_1_5, _CUPS_API_1_6, _CUPS_API_1_7, and
+ * _CUPS_API_2_0 - which add compiler-specific attributes that flag functions
+ * that are deprecated, added in particular releases, or internal to CUPS.
  *
  * On OS X, the _CUPS_API_* constants are defined based on the values of
  * the MAC_OS_X_VERSION_MIN_ALLOWED and MAC_OS_X_VERSION_MAX_ALLOWED constants
@@ -53,6 +53,9 @@
 #    ifndef AVAILABLE_MAC_OS_X_VERSION_10_9_AND_LATER
 #      define AVAILABLE_MAC_OS_X_VERSION_10_9_AND_LATER __attribute__((unavailable))
 #    endif /* !AVAILABLE_MAC_OS_X_VERSION_10_9_AND_LATER */
+#    ifndef AVAILABLE_MAC_OS_X_VERSION_10_10_AND_LATER
+#      define AVAILABLE_MAC_OS_X_VERSION_10_10_AND_LATER __attribute__((unavailable))
+#    endif /* !AVAILABLE_MAC_OS_X_VERSION_10_10_AND_LATER */
 #    define _CUPS_API_1_1_19 AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER
 #    define _CUPS_API_1_1_20 AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER
 #    define _CUPS_API_1_1_21 AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER
@@ -62,6 +65,7 @@
 #    define _CUPS_API_1_5 AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER
 #    define _CUPS_API_1_6 AVAILABLE_MAC_OS_X_VERSION_10_8_AND_LATER
 #    define _CUPS_API_1_7 AVAILABLE_MAC_OS_X_VERSION_10_9_AND_LATER
+#    define _CUPS_API_2_0 AVAILABLE_MAC_OS_X_VERSION_10_10_AND_LATER
 #  else
 #    define _CUPS_API_1_1_19
 #    define _CUPS_API_1_1_20
@@ -72,6 +76,7 @@
 #    define _CUPS_API_1_5
 #    define _CUPS_API_1_6
 #    define _CUPS_API_1_7
+#    define _CUPS_API_2_0
 #  endif /* __APPLE__ && !_CUPS_SOURCE */
 
 /*
@@ -157,5 +162,5 @@
 #endif /* !_CUPS_VERSIONING_H_ */
 
 /*
- * End of "$Id: versioning.h 11056 2013-06-25 14:27:30Z msweet $".
+ * End of "$Id: versioning.h 12419 2015-01-22 15:51:20Z msweet $".
  */

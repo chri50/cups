@@ -44,7 +44,6 @@ endif
 		--enable-libpaper \
 		--enable-ssl \
 		--enable-gnutls \
-		--disable-openssl \
 		--enable-threads \
 		--enable-static \
 		--enable-debug \
@@ -58,7 +57,7 @@ endif
 		--with-printcap=/var/run/cups/printcap \
 		--with-log-file-perm=0640 \
 		--with-local_protocols='dnssd' \
-		--with-systemdsystemunitdir=/lib/systemd/system \
+		--with-systemd=/lib/systemd/system \
 		$(CONFIG_LIBUSB)
 
 override_dh_auto_install:

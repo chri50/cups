@@ -2,9 +2,10 @@ Description: Make log files readable to group "adm", if present.
 Author: Martin Pitt <mpitt@debian.org>
 Bug-Ubuntu: https://launchpad.net/bugs/345953
 
+Last-Update: 2015-02-10
 --- a/scheduler/log.c
 +++ b/scheduler/log.c
-@@ -32,6 +32,7 @@
+@@ -20,6 +20,7 @@
  #include "cupsd.h"
  #include <stdarg.h>
  #include <syslog.h>
@@ -12,7 +13,7 @@ Bug-Ubuntu: https://launchpad.net/bugs/345953
  
  
  /*
-@@ -77,6 +78,7 @@
+@@ -67,6 +68,7 @@
  		filename[1024],		/* Formatted log filename */
  		*ptr;			/* Pointer into filename */
    const char	*logptr;		/* Pointer into log filename */
@@ -20,7 +21,7 @@ Bug-Ubuntu: https://launchpad.net/bugs/345953
  
  
   /*
-@@ -87,6 +89,11 @@
+@@ -77,6 +79,11 @@
      return (1);
  
   /*
@@ -32,7 +33,7 @@ Bug-Ubuntu: https://launchpad.net/bugs/345953
    * Format the filename as needed...
    */
  
-@@ -196,7 +203,7 @@
+@@ -185,7 +192,7 @@
        * Change ownership and permissions of non-device logs...
        */
  
@@ -41,7 +42,7 @@ Bug-Ubuntu: https://launchpad.net/bugs/345953
        fchmod(cupsFileNumber(*lf), LogFilePerm);
      }
    }
-@@ -235,7 +242,7 @@
+@@ -224,7 +231,7 @@
      * Change ownership and permissions of non-device logs...
      */
  
