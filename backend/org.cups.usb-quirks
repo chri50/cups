@@ -75,11 +75,17 @@
 # Canon, Inc. MP510 Printer, https://bugs.launchpad.net/bugs/1050009
 0x04a9 0x1717 unidir
 
+# Canon, Inc. MX310 Printer, https://bugs.launchpad.net/bugs/1346868
+0x04a9 0x1728 unidir
+
 # Canon, Inc. MP550 Printer, http://www.cups.org/str.php?L4155
 0x04a9 0x173d unidir
 
 # Canon, Inc. MP560 Printer, http://www.cups.org/str.php?L4155
 0x04a9 0x173e unidir
+
+# Canon, Inc. MX320 Printer, https://bugs.launchpad.net/bugs/1369547
+0x04a9 0x1736 unidir
 
 # Canon, Inc. MF4150 Printer, https://bugs.launchpad.net/bugs/1160638
 0x04a9 0x26a3 no-reattach
