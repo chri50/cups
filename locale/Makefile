@@ -1,23 +1,23 @@
 #
-# "$Id: Makefile 10996 2013-05-29 11:51:34Z msweet $"
+# "$Id: Makefile 12347 2014-12-09 21:47:23Z msweet $"
 #
-#   Locale file makefile for CUPS.
+# Locale file makefile for CUPS.
 #
-#   Copyright 2007-2012 by Apple Inc.
-#   Copyright 1993-2007 by Easy Software Products.
+# Copyright 2007-2014 by Apple Inc.
+# Copyright 1993-2007 by Easy Software Products.
 #
-#   These coded instructions, statements, and computer programs are the
-#   property of Apple Inc. and are protected by Federal copyright
-#   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
-#   which should have been included with this file.  If this file is
-#   file is missing or damaged, see the license at "http://www.cups.org/".
+# These coded instructions, statements, and computer programs are the
+# property of Apple Inc. and are protected by Federal copyright
+# law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+# which should have been included with this file.  If this file is
+# file is missing or damaged, see the license at "http://www.cups.org/".
 #
 
 include ../Makedefs
 
 
-OBJS	=	checkpo.o po2strings.o strings2po.o translate.o
-TARGETS	=	checkpo po2strings strings2po translate
+OBJS	=	checkpo.o po2strings.o strings2po.o
+TARGETS	=	checkpo po2strings strings2po
 
 
 #
@@ -159,7 +159,7 @@ pot:	checkpo po2strings
 #
 
 checkpo:	checkpo.o ../cups/$(LIBCUPSSTATIC)
-	echo Linking $<...
+	echo Linking $@...
 	$(CC) $(ARCHFLAGS) $(LDFLAGS) -o checkpo checkpo.o \
 		../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
 		$(COMMONLIBS) $(LIBZ)
@@ -178,7 +178,7 @@ checkall:	checkpo
 #
 
 po2strings:	po2strings.o ../cups/$(LIBCUPSSTATIC)
-	echo Linking $<...
+	echo Linking $@...
 	$(CC) $(ARCHFLAGS) $(LDFLAGS) -o po2strings po2strings.o \
 		../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
 		$(COMMONLIBS) $(LIBZ)
@@ -192,22 +192,8 @@ po2strings:	po2strings.o ../cups/$(LIBCUPSSTATIC)
 #
 
 strings2po:	strings2po.o
-	echo Linking $<...
+	echo Linking $@...
 	$(CC) $(ARCHFLAGS) $(LDFLAGS) -o strings2po strings2po.o
-
-
-#
-# translate - A simple utility which uses Google to translate the cups.pot
-#             file to one of several languages.
-#
-# translate outfile language
-#
-
-translate:	translate.o ../cups/$(LIBCUPSSTATIC)
-	echo Linking $<...
-	$(CC) $(ARCHFLAGS) $(LDFLAGS) -o translate translate.o \
-		../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
-		$(COMMONLIBS) $(LIBZ)
 
 
 #
@@ -218,5 +204,5 @@ include Dependencies
 
 
 #
-# End of "$Id: Makefile 10996 2013-05-29 11:51:34Z msweet $".
+# End of "$Id: Makefile 12347 2014-12-09 21:47:23Z msweet $".
 #

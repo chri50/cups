@@ -7,7 +7,7 @@ Bug-Ubuntu: https://bugs.launchpad.net/bugs/973270
 Bug-Ubuntu: https://bugs.launchpad.net/bugs/990734
 Bug-Ubuntu: https://bugs.launchpad.net/bugs/992468
 Bug-Ubuntu: https://bugs.launchpad.net/bugs/992982
-Last-Update: 2012-07-27
+Last-Update: 2015-02-10
 
 --- a/backend/Makefile
 +++ b/backend/Makefile
@@ -19,7 +19,7 @@ Last-Update: 2012-07-27
  		lpd \
  		$(DNSSD_BACKEND)
  UBACKENDS =	\
-@@ -50,6 +51,7 @@
+@@ -52,6 +53,7 @@
  		snmp-supplies.o
  OBJS	=	\
  		ipp.o \
@@ -27,7 +27,7 @@ Last-Update: 2012-07-27
  		lpd.o \
  		dnssd.o \
  		snmp.o \
-@@ -256,6 +258,17 @@
+@@ -270,6 +272,17 @@
  
  
  #

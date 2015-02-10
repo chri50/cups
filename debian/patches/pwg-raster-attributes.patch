@@ -2,9 +2,10 @@ Description: Add IPP attributes required by IPP Everywhere for PWG Raster when
  PWG Raster as input format is supported
 Author: Till Kamppeter <till.kamppeter@gmail.com>
 Bug-Upstream: https://www.cups.org/str.php?L4428
+Last-Update: 2015-02-10
 --- a/scheduler/printers.c
 +++ b/scheduler/printers.c
-@@ -2009,9 +2009,10 @@
+@@ -2012,9 +2012,10 @@
    cupsd_location_t *auth;		/* Pointer to authentication element */
    const char	*auth_supported;	/* Authentication supported */
    ipp_t		*oldattrs;		/* Old printer attributes */
@@ -16,7 +17,7 @@ Bug-Upstream: https://www.cups.org/str.php?L4428
  
  
    DEBUG_printf(("cupsdSetPrinterAttrs: entering name = %s, type = %x\n", p->name,
-@@ -2361,6 +2362,80 @@
+@@ -2362,6 +2363,80 @@
    DEBUG_printf(("cupsdSetPrinterAttrs: leaving name = %s, type = %x\n", p->name,
                  p->type));
  

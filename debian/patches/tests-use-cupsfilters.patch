@@ -2,10 +2,10 @@ Description: Use cups-filter's filters, type declarations, conversions (from 1.0
  and libraries. This fixes the tests that need those.
 Origin: vendor
 Author: Didier Raboud <odyx@debian.org>
-Last-Update: 2014-01-09
+Last-Update: 2015-02-10
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -434,6 +434,22 @@
+@@ -467,6 +467,23 @@
  	instfilter pstoraster pstoraster raster
  	instfilter texttopdf texttopdf pdf
  
@@ -17,6 +17,7 @@ Last-Update: 2014-01-09
 +	instfilter imagetoraster imagetoraster raster
 +	instfilter pstopdf pstopdf pdf
 +	instfilter urftopdf urftopdf pdf
++	instfilter bannertopdf bannertopdf pdf
 +
 +	ln -sf /usr/share/cups/banners/classified /tmp/cups-$user/share/banners/
 +	ln -sf /usr/share/cups/banners/confidential /tmp/cups-$user/share/banners/
@@ -26,7 +27,7 @@ Last-Update: 2014-01-09
 +	ln -sf /usr/share/cups/banners/unclassified /tmp/cups-$user/share/banners/
 +
  	if test -d /usr/share/cups/charsets; then
- 		ln -s /usr/share/cups/charsets /tmp/cups-$user/share
+ 		ln -s /usr/share/cups/charsets $BASE/share
  	fi
 --- /dev/null
 +++ b/test/cupsfilters.convs

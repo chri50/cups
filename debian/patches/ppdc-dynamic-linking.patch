@@ -1,10 +1,11 @@
 Description: Dynamically link ppdc, to work around segfault on mipsen.
 Author: Sune Vuorela <debian@pusling.com>
 Bug-Debian: http://bugs.debian.org/548246
+Last-Update: 2015-02-10
 
 --- a/ppdc/Makefile
 +++ b/ppdc/Makefile
-@@ -239,14 +239,14 @@
+@@ -236,14 +236,14 @@
  # genstrings - generate GNU gettext strings.
  #
  
@@ -22,7 +23,7 @@ Bug-Debian: http://bugs.debian.org/548246
  
  
  #
-@@ -260,12 +260,12 @@
+@@ -257,12 +257,12 @@
  
  ppdc-static:		ppdc.o libcupsppdc.a ../cups/$(LIBCUPSSTATIC) foo.drv foo-fr.po
  	echo Linking $@...
@@ -38,7 +39,7 @@ Bug-Debian: http://bugs.debian.org/548246
  
  
  #
-@@ -288,14 +288,14 @@
+@@ -285,14 +285,14 @@
  
  ppdi-static:		ppdc-static ppdi.o libcupsppdc.a  ../cups/$(LIBCUPSSTATIC)
  	echo Linking $@...
@@ -48,16 +49,16 @@ Bug-Debian: http://bugs.debian.org/548246
  		$(COMMONLIBS) $(LIBZ)
  	echo Testing PPD importer...
  	$(RM) -r ppd ppd2 sample-import.drv
--	./ppdc-static -I ../data sample.drv
+-	./ppdc-static -l en -I ../data sample.drv
 -	./ppdi-static -I ../data -o sample-import.drv ppd/*
--	./ppdc-static -I ../data -d ppd2 sample-import.drv
-+	LD_LIBRARY_PATH=.:../cups/ ./ppdc-static -I ../data sample.drv
+-	./ppdc-static -l en -I ../data -d ppd2 sample-import.drv
++	LD_LIBRARY_PATH=.:../cups/ ./ppdc-static -l en -I ../data sample.drv
 +	LD_LIBRARY_PATH=.:../cups/ ./ppdi-static -I ../data -o sample-import.drv ppd/*
-+	LD_LIBRARY_PATH=.:../cups/ ./ppdc-static -I ../data -d ppd2 sample-import.drv
++	LD_LIBRARY_PATH=.:../cups/ ./ppdc-static -l en -I ../data -d ppd2 sample-import.drv
  	if diff -r ppd ppd2 >/dev/null; then \
  		echo PPD import OK; \
  	else \
-@@ -328,7 +328,7 @@
+@@ -325,7 +325,7 @@
  
  testcatalog:		testcatalog.o libcupsppdc.a ../cups/$(LIBCUPSSTATIC)
  	echo Linking $@...

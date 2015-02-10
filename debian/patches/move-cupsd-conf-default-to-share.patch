@@ -3,11 +3,11 @@ Author: Didier Raboud <odyx@debian.org>
 Origin: vendor
 Bug: https://cups.org/str.php?L4342
 Bug-Debian: http://bugs.debian.org/640124
-Last-Update: 2014-01-16
+Last-Update: 2015-02-10
 
 --- a/cgi-bin/admin.c
 +++ b/cgi-bin/admin.c
-@@ -1937,6 +1937,7 @@
+@@ -1917,6 +1917,7 @@
      int		ch;			/* Character from file */
      char	filename[1024];		/* Filename */
      const char	*server_root;		/* Location of config files */
@@ -15,7 +15,7 @@ Last-Update: 2014-01-16
  
  
     /*
-@@ -2020,7 +2021,10 @@
+@@ -2000,7 +2001,10 @@
      * well...
      */
  

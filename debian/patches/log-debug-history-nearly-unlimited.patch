@@ -1,5 +1,6 @@
 Author: till.kamppeter@gmail.com
 
+Last-Update: 2015-02-10
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -702,7 +702,7 @@
@@ -14,9 +15,9 @@ Author: till.kamppeter@gmail.com
 --- a/scheduler/conf.h
 +++ b/scheduler/conf.h
 @@ -166,7 +166,7 @@
+ 					/* Access log level */
+ VAR int			ClassifyOverride	VALUE(0),
  					/* Allow overrides? */
- 			ConfigFilePerm		VALUE(0640),
- 					/* Permissions for config files */
 -			LogDebugHistory		VALUE(200),
 +			LogDebugHistory		VALUE(99999),
  					/* Amount of automatic debug history */

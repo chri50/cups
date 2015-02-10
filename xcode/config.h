@@ -1,17 +1,16 @@
-/* config.h.  Generated from config.h.in by configure.  */
 /*
- * "$Id: config.h 4216 2013-03-11 13:57:36Z msweet $"
+ * "$Id: config.h 12280 2014-12-02 01:49:48Z msweet $"
  *
- *   Configuration file for CUPS.
+ * Configuration file for CUPS and Xcode.
  *
- *   Copyright 2007-2013 by Apple Inc.
- *   Copyright 1997-2007 by Easy Software Products.
+ * Copyright 2007-2014 by Apple Inc.
+ * Copyright 1997-2007 by Easy Software Products.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  */
 
 #ifndef _CUPS_CONFIG_H_
@@ -21,8 +20,8 @@
  * Version of software...
  */
 
-#define CUPS_SVERSION "CUPS v1.7.0"
-#define CUPS_MINIMAL "CUPS/1.7.0"
+#define CUPS_SVERSION "CUPS v2.0.1"
+#define CUPS_MINIMAL "CUPS/2.0.1"
 
 
 /*
@@ -33,6 +32,7 @@
 #define CUPS_DEFAULT_GROUP "_lp"
 #define CUPS_DEFAULT_SYSTEM_GROUPS "admin"
 #define CUPS_DEFAULT_PRINTOPERATOR_AUTH "@AUTHKEY(system.print.operator) @admin @lpadmin"
+#define CUPS_DEFAULT_SYSTEM_AUTHKEY "system.print.admin"
 
 
 /*
@@ -129,6 +129,13 @@
 #define CUPS_SERVERBIN "/usr/libexec/cups"
 #define CUPS_SERVERROOT "/private/etc/cups"
 #define CUPS_STATEDIR "/private/etc/cups"
+
+
+/*
+ * Do we have posix_spawn?
+ */
+
+#define HAVE_POSIX_SPAWN 1
 
 
 /*
@@ -290,15 +297,21 @@
 
 #define HAVE_CDSASSL 1
 /* #undef HAVE_GNUTLS */
-/* #undef HAVE_LIBSSL */
 #define HAVE_SSL 1
 
 
 /*
- * Do we have the SSL_set_tlsext_host_name function?
+ * Do we have the gnutls_transport_set_pull_timeout_function function?
  */
 
-/* #undef HAVE_SSL_SET_TLSEXT_HOST_NAME */
+/* #undef HAVE_GNUTLS_TRANSPORT_SET_PULL_TIMEOUT_FUNCTION */
+
+
+/*
+ * Do we have the gnutls_priority_set_direct function?
+ */
+
+/* #undef HAVE_GNUTLS_PRIORITY_SET_DIRECT */
 
 
 /*
@@ -321,6 +334,20 @@
  */
 
 #define HAVE_CSSMERRORSTRING 1
+
+
+/*
+ * Do we have the SecGenerateSelfSignedCertificate function?
+ */
+
+/* #undef HAVE_SECGENERATESELFSIGNEDCERTIFICATE */
+
+
+/*
+ * Do we have the SecKeychainOpen function?
+ */
+
+#define HAVE_SECKEYCHAINOPEN 1
 
 
 /*
@@ -429,13 +456,6 @@
 
 
 /*
- * Do we have the AIX usersec.h header file?
- */
-
-/* #undef HAVE_USERSEC_H */
-
-
-/*
  * Do we have pthread support?
  */
 
@@ -448,6 +468,7 @@
 
 #define HAVE_LAUNCH_H 1
 #define HAVE_LAUNCHD 1
+#undef HAVE_LAUNCH_ACTIVATE_SOCKET
 
 
 /*
@@ -520,13 +541,6 @@
 
 #define HAVE_NOTIFY_H 1
 #define HAVE_NOTIFY_POST 1
-
-
-/*
- * Do we have Darwin's IOKit private headers?
- */
-
-/* #undef HAVE_IOKIT_PWR_MGT_IOPMLIBPRIVATE_H */
 
 
 /*
@@ -625,13 +639,6 @@
 
 
 /*
- * Do we have vproc_transaction_begin/end?
- */
-
-#define HAVE_VPROC_TRANSACTION_BEGIN 1
-
-
-/*
  * Do we have libusb?
  */
 
@@ -706,5 +713,5 @@ static __inline int _cups_abs(int i) { return (i < 0 ? -i : i); }
 #endif /* !_CUPS_CONFIG_H_ */
 
 /*
- * End of "$Id: config.h 4216 2013-03-11 13:57:36Z msweet $".
+ * End of "$Id: config.h 12280 2014-12-02 01:49:48Z msweet $".
  */
