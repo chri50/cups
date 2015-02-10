@@ -1917,6 +1917,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
     int		ch;			/* Character from file */
     char	filename[1024];		/* Filename */
     const char	*server_root;		/* Location of config files */
+    const char	*data_dir;		/* Location of data files */
 
 
    /*
@@ -2000,7 +2001,10 @@ do_config_server(http_t *http)		/* I - HTTP connection */
     * well...
     */
 
-    strlcat(filename, ".default", sizeof(filename));
+    if ((data_dir = getenv("CUPS_DATADIR")) == NULL)
+      data_dir = CUPS_DATADIR;
+
+    snprintf(filename, sizeof(filename), "%s/cupsd.conf.default",data_dir);
 
     if (!stat(filename, &info) && info.st_size < (1024 * 1024) &&
         (cupsd = cupsFileOpen(filename, "r")) != NULL)
