@@ -29,7 +29,7 @@ Last-Update: 2014-10-16
  
 +  signal peer=/usr/sbin/cupsd//third_party,
 +  unix peer=(label=/usr/sbin/cupsd//third_party),
-   profile third_party {
+   profile third_party flags=(attach_disconnected) {
      # third party backends, filters, and drivers get relatively no restrictions
      # as they often need high privileges, are unpredictable or otherwise beyond
 @@ -149,6 +151,10 @@

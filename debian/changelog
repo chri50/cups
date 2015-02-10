@@ -1,3 +1,15 @@
+cups (2.0.2-2) experimental; urgency=low
+
+  [ Till Kamppeter ]
+  * Removed patches for USB quirk rules which got included upstream
+  * Updated Ubuntu-specific patch for the AppArmor profile
+
+  [ Didier Raboud ]
+  * Drop the patch for IdleExitTimeout under upstart, as it breaks non-linux
+    builds
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 10 Feb 2015 21:25:32 +0100
+
 cups (2.0.2-1) experimental; urgency=low
 
   * New 2.0.2 upstream version
