@@ -1,4 +1,5 @@
 # patches accepted and committed upstream
+ipp-everywhere-ppd-generator.patch
 
 # patches sent upstream
 pwg-raster-attributes.patch

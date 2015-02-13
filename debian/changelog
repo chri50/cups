@@ -1,3 +1,14 @@
+cups (2.0.2-1ubuntu2) vivid; urgency=low
+
+  * Added auto-generation of PPD files for IPP Everywhere printers, based on
+    the Get-Printer-Attributes IPP request (CUPS STR #4258). Use a command
+    like "lpadmin -p pr -E -v ipp://... -m everywhere" or equivalent IPP
+    calls to trigger this functionality.
+  * manpage-hyphen-minus.patch, move-cupsd-conf-default-to-share.patch:
+    Refreshed with quilt.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Thu, 12 Feb 2015 22:54:01 -0200
+
 cups (2.0.2-1ubuntu1) vivid; urgency=low
 
   * Removed USB quirk rule patches for Brother and Canon printers as these
