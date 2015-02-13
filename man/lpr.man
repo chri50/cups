@@ -119,19 +119,19 @@ The \fI\-c\fR, \fI\-d\fR, \fI\-f\fR, \fI\-g\fR, \fI\-i\fR, \fI\-n\fR, \fI\-t\fR,
 Print two copies of a document to the default printer:
 .nf
 
-    lpr -# 2 filename
+    lpr \-# 2 filename
 
 .fi
 Print a double-sided legal document to a printer called "foo":
 .nf
 
-    lpr -P foo -o media=legal -o sides=two-sided-long-edge filename
+    lpr \-P foo \-o media=legal \-o sides=two-sided-long-edge filename
 
 .fi
 Print a presentation document 2-up to a printer called "foo":
 .nf
 
-    lpr -P foo -o number-up=2 filename
+    lpr \-P foo \-o number-up=2 filename
 .fi
 .SH SEE ALSO
 .BR cancel (1),
