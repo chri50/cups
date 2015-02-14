@@ -1,3 +1,10 @@
+cups (2.0.2-1ubuntu3) vivid; urgency=low
+
+  * debian/tests/utils/test-drivers: Exclude the "everywhere" driver from the
+    tests as it requires a physical printer to poll capability info from.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Sat, 14 Feb 2015 09:12:01 -0200
+
 cups (2.0.2-1ubuntu2) vivid; urgency=low
 
   * Added auto-generation of PPD files for IPP Everywhere printers, based on
