@@ -17,20 +17,20 @@
 cupstestppd \- test conformance of ppd files
 .SH SYNOPSIS
 .B cupstestppd
-[ -I
+[ \-I
 .I category
-] [ -R
+] [ \-R
 .I rootdir
-] [ -W
+] [ \-W
 .I category
-] [ -q ] [-r] [ -v[v] ] filename.ppd[.gz] [ ... filenameN.ppd[.gz] ]
+] [ \-q ] [\-r] [ \-v[v] ] filename.ppd[.gz] [ ... filenameN.ppd[.gz] ]
 .br
 .B cupstestppd
-[ -R
+[ \-R
 .I rootdir
-] [ -W
+] [ \-W
 .I category
-] [ -q ] [-r] [ -v[v] ] -
+] [ \-q ] [\-r] [ \-v[v] ] \-
 .SH DESCRIPTION
 \fIcupstestppd\fR tests the conformance of PPD files to the
 Adobe PostScript Printer Description file format specification
@@ -44,71 +44,71 @@ on the standard input.
 .SH OPTIONS
 \fIcupstestppd\fR supports the following options:
 .TP 5
--I filename
+\-I filename
 .br
 Ignores all PCFileName warnings.
 .TP 5
--I filters
+\-I filters
 .br
 Ignores all filter errors.
 .TP 5
--I profiles
+\-I profiles
 .br
 Ignores all profile errors.
 .TP 5
--R rootdir
+\-R rootdir
 .br
 Specifies an alternate root directory for the filter, pre-filter,
 and other support file checks.
 .TP 5
--W constraints
+\-W constraints
 .br
 Report all UIConstraint errors as warnings.
 .TP 5
--W defaults
+\-W defaults
 .br
 Except for size-related options, report all default option errors as warnings.
 .TP 5
--W filters
+\-W filters
 .br
 Report all filter errors as warnings.
 .TP 5
--W profiles
+\-W profiles
 .br
 Report all profile errors as warnings.
 .TP 5
--W sizes
+\-W sizes
 .br
 Report all media size errors as warnings.
 .TP 5
--W translations
+\-W translations
 .br
 Report all translation errors as warnings.
 .TP 5
--W all
+\-W all
 .br
 Report all of the previous errors as warnings.
 .TP 5
--W none
+\-W none
 .br
 Report all of the previous errors as errors.
 .TP 5
--q
+\-q
 .br
 Specifies that no information should be displayed.
 .TP 5
--r
+\-r
 .br
 Relaxes the PPD conformance requirements so that common
 whitespace, control character, and formatting problems are not
 treated as hard errors.
 .TP 5
--v
+\-v
 .br
 Specifies that detailed conformance testing results should be
 displayed rather than the concise PASS/FAIL/ERROR status.
 .TP 5
--vv
+\-vv
 .br
 Specifies that all information in the PPD file should be
 displayed in addition to the detailed conformance testing
@@ -140,7 +140,7 @@ directory and print the names of each file that does not
 conform:
 .nf
 
-    find . -name \\*.ppd \\! -exec cupstestppd -q '{}' \\; -print
+    find . \-name \\*.ppd \\! \-exec cupstestppd \-q '{}' \\; \-print
 
 .fi
 The next command tests all PPD files under the current directory
@@ -148,8 +148,8 @@ and print detailed conformance testing results for the files
 that do not conform:
 .nf
 
-    find . -name \\*.ppd \\! -exec cupstestppd -q '{}' \\; \\
-        -exec cupstestppd -v '{}' \\;
+    find . \-name \\*.ppd \\! \-exec cupstestppd \-q '{}' \\; \\
+        \-exec cupstestppd \-v '{}' \\;
 
 .fi
 .SH SEE ALSO
