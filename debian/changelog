@@ -1,3 +1,11 @@
+cups (1.7.5-11) unstable; urgency=medium
+
+  * Backport upstream patch to fix cupsRasterReadPixels buffer overflow with
+    invalid page header and compressed raster data
+    (STR: #4551, Closes: #778387)
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 16 Feb 2015 08:19:17 +0100
+
 cups (1.7.5-10) unstable; urgency=medium
 
   * Change ppd-updaters trigger to use interest-noawait instead of interest to
