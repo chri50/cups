@@ -521,6 +521,12 @@ Specifies the list of job values to make private. The "default" values are
 "notify-events", "notify-pull-method", "notify-recipient-uri",
 "notify-subscriber-user-name", and "notify-user-data".
 .TP 5
+SystemdIdleExit No
+.TP 5
+SystemdIdleExit Yes
+.br
+Specifies whether to exit on inactivity when launched by systemd.
+.TP 5
 Timeout seconds
 .br
 Specifies the HTTP request timeout in seconds.

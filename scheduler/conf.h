@@ -251,6 +251,9 @@ VAR char		*PidFile		VALUE(NULL);
 VAR int			IdleExitTimeout		VALUE(0);
 					/* Time after which an idle cupsd will exit */
 
+VAR int			SystemdIdleExit		VALUE(FALSE);
+					/* Whether cups when launched by systemd should exit on idle */
+
 #ifdef HAVE_LAUNCHD
 VAR int			LaunchdTimeout		VALUE(10);
 					/* Time after which an idle cupsd will exit */
