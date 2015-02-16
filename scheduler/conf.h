@@ -246,6 +246,9 @@ VAR int			SSLOptions		VALUE(CUPSD_SSL_NONE);
 					/* SSL/TLS options */
 #endif /* HAVE_SSL */
 
+VAR int			IdleExitTimeout		VALUE(0);
+					/* Time after which an idle cupsd will exit */
+
 #ifdef HAVE_LAUNCHD
 VAR int			LaunchdTimeout		VALUE(10);
 					/* Time after which an idle cupsd will exit */
