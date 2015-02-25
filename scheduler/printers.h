@@ -180,6 +180,10 @@ extern const char	*cupsdValidateDest(const char *uri,
 			        	   cups_ptype_t *dtype,
 					   cupsd_printer_t **printer);
 extern void		cupsdWritePrintcap(void);
+extern void		cupsdCmsRegisterPrinter(cupsd_printer_t *p);
+extern void		cupsdCmsUnregisterPrinter(cupsd_printer_t *p);
+extern void		cupsdCmsStart(void);
+extern void		cupsdCmsStop(void);
 
 
 /*
