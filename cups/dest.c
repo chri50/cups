@@ -1433,11 +1433,13 @@ _cupsGetDests(http_t       *http,	/* I  - Connection to server or
 #ifdef __APPLE__
 		  "media-supported",
 #endif /* __APPLE__ */
+                  "ppd-timestamp",
 		  "printer-commands",
 		  "printer-defaults",
 		  "printer-info",
 		  "printer-is-accepting-jobs",
-		  "printer-is-shared",
+		  "printer-is-colormanaged",
+                  "printer-is-shared"
 		  "printer-location",
 		  "printer-make-and-model",
 		  "printer-mandatory-job-attributes",
@@ -1542,8 +1544,10 @@ _cupsGetDests(http_t       *http,	/* I  - Connection to server or
 	    !strcmp(attr->name, "marker-message") ||
 	    !strcmp(attr->name, "marker-names") ||
 	    !strcmp(attr->name, "marker-types") ||
+	    !strcmp(attr->name, "ppd-timestamp") ||
 	    !strcmp(attr->name, "printer-commands") ||
 	    !strcmp(attr->name, "printer-info") ||
+	    !strcmp(attr->name, "printer-is-colormanaged") ||
 	    !strcmp(attr->name, "printer-is-shared") ||
 	    !strcmp(attr->name, "printer-make-and-model") ||
 	    !strcmp(attr->name, "printer-mandatory-job-attributes") ||
