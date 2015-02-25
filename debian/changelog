@@ -1,3 +1,12 @@
+cups (1.4.3-1ubuntu1.14) lucid-security; urgency=medium
+
+  * SECURITY UPDATE: buffer overflow in cupsRasterReadPixels
+    - debian/patches/CVE-2014-9679.dpatch: validate cupsBytesPerLine and
+      clear returned buffer in filter/raster.c.
+    - CVE-2014-9679
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Wed, 25 Feb 2015 13:45:29 -0500
+
 cups (1.4.3-1ubuntu1.13) lucid-security; urgency=medium
 
   * SECURITY UPDATE: privilege escalation via symlinks and world-readable
