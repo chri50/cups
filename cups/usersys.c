@@ -913,6 +913,12 @@ _cupsSetDefaults(void)
     }
 
    /*
+    * Check if values have been provided as CLI options
+    */
+    if (cg->server[0])
+      cups_server = cg->server;
+
+   /*
     * Read the configuration file and apply any environment variables; both
     * functions handle NULL cups_file_t pointers...
     */
