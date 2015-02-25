@@ -17,12 +17,12 @@
 cupstestdsc \- test conformance of postscript files
 .SH SYNOPSIS
 .B cupstestdsc
-[ -h ] filename.ps [ ...
+[ \-h ] filename.ps [ ...
 .I filenameN.ps
 ]
 .br
 .B cupstestdsc
-[ -h ] -
+[ \-h ] \-
 .SH DESCRIPTION
 \fIcupstestdsc\fR tests the conformance of PostScript files to
 the Adobe PostScript Language Document Structuring Conventions
