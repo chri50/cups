@@ -56,3 +56,4 @@ CVE-2014-3537.patch
 CVE-2014-50xx.patch
 cups-restore-access-to-logfiles.patch
 do-not-override-h-option-with-env-variable.patch
+CVE-2014-9679.patch
