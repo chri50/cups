@@ -17,17 +17,17 @@
 lpmove \- move a job or all jobs to a new destination
 .SH SYNOPSIS
 .B lpmove
-[ -E ] [ -h
+[ \-E ] [ \-h
 .I server[:port]
-] [ -U
+] [ \-U
 .I username
 ]
 .I job destination
 .br
 .B lpmove
-[ -E ] [ -h
+[ \-E ] [ \-h
 .I server[:port]
-] [ -U
+] [ \-U
 .I username
 ]
 .I source destination
@@ -44,15 +44,15 @@ number or the old destination and job ID:
 .SH OPTIONS
 The \fIlpmove\fR command supports the following options:
 .TP 5
--E
+\-E
 .br
 Forces encryption when connecting to the server.
 .TP 5
--U username
+\-U username
 .br
 Specifies an alternate username.
 .TP 5
--h server[:port]
+\-h server[:port]
 .br
 Specifies an alternate server.
 .SH SEE ALSO
