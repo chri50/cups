@@ -1741,10 +1741,10 @@ cupsdReadClient(cupsd_client_t *con)	/* I - Client to read from */
 	    * Validate the resource name...
 	    */
 
-            if (strcmp(con->uri, "/admin/conf/cupsd.conf"))
+            if (strcmp(con->uri, "/admin/conf/cupsd.conf") && strcmp(con->uri, "/admin/conf/cupsd-systemd-listen.conf"))
 	    {
 	     /*
-	      * PUT can only be done to the cupsd.conf file...
+	      * PUT can only be done to the cupsd.conf and cupsd-systemd-listen.conf files...
 	      */
 
 	      cupsdLogMessage(CUPSD_LOG_ERROR,
@@ -3510,6 +3510,7 @@ install_cupsd_conf(cupsd_client_t *con)	/* I - Connection */
 		*out;			/* Output file */
   char		buffer[16384];		/* Copy buffer */
   ssize_t	bytes;			/* Number of bytes */
+  char		*conffile;		/* Configuration file */
 
 
  /*
@@ -3524,17 +3525,30 @@ install_cupsd_conf(cupsd_client_t *con)	/* I - Connection */
   }
 
  /*
+  * Determine which configuration file we're writing
+  */
+
+  if (strcmp(con->uri, "/admin/conf/cupsd.conf") == 0)
+  {
+    conffile = ConfigurationFile;
+  }
+  else if(strcmp(con->uri, "/admin/conf/cupsd-systemd-listen.conf") == 0)
+  {
+    conffile = SystemdConfigurationFile;
+  }
+
+ /*
   * Open the new config file...
   */
 
-  if ((out = cupsdCreateConfFile(ConfigurationFile, ConfigFilePerm)) == NULL)
+  if ((out = cupsdCreateConfFile(conffile, ConfigFilePerm)) == NULL)
   {
     cupsFileClose(in);
     return (HTTP_SERVER_ERROR);
   }
 
   cupsdLogMessage(CUPSD_LOG_INFO, "Installing config file \"%s\"...",
-                  ConfigurationFile);
+                  conffile);
 
  /*
   * Copy from the request to the new config file...
@@ -3545,12 +3559,12 @@ install_cupsd_conf(cupsd_client_t *con)	/* I - Connection */
     {
       cupsdLogMessage(CUPSD_LOG_ERROR,
                       "Unable to copy to config file \"%s\": %s",
-        	      ConfigurationFile, strerror(errno));
+        	      conffile, strerror(errno));
 
       cupsFileClose(in);
       cupsFileClose(out);
 
-      snprintf(filename, sizeof(filename), "%s.N", ConfigurationFile);
+      snprintf(filename, sizeof(filename), "%s.N", conffile);
       cupsdUnlinkOrRemoveFile(filename);
 
       return (HTTP_SERVER_ERROR);
@@ -3562,7 +3576,7 @@ install_cupsd_conf(cupsd_client_t *con)	/* I - Connection */
 
   cupsFileClose(in);
 
-  if (cupsdCloseCreatedConfFile(out, ConfigurationFile))
+  if (cupsdCloseCreatedConfFile(out, conffile))
     return (HTTP_SERVER_ERROR);
 
  /*
@@ -3576,8 +3590,15 @@ install_cupsd_conf(cupsd_client_t *con)	/* I - Connection */
   * Set the NeedReload flag...
   */
 
-  NeedReload = RELOAD_CUPSD;
-  ReloadTime = time(NULL);
+  if(conffile == ConfigurationFile)
+  {
+    NeedReload = RELOAD_CUPSD;
+    ReloadTime = time(NULL);
+  }
+  else if(conffile == SystemdConfigurationFile)
+  {
+    NeedSystemdReload = 1;
+  }
 
  /*
   * Return that the file was created successfully...
