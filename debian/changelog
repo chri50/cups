@@ -1,3 +1,12 @@
+cups (1.5.3-0ubuntu8.6) precise-security; urgency=medium
+
+  * SECURITY UPDATE: buffer overflow in cupsRasterReadPixels
+    - debian/patches/CVE-2014-9679.patch: validate cupsBytesPerLine and
+      clear returned buffer in filter/raster.c.
+    - CVE-2014-9679
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Wed, 25 Feb 2015 13:42:18 -0500
+
 cups (1.5.3-0ubuntu8.5) precise-security; urgency=medium
 
   * SECURITY UPDATE: privilege escalation via symlinks and world-readable
