@@ -3356,8 +3356,18 @@ get_file(cupsd_client_t *con,		/* I  - Client connection */
 
   if (!status && !(filestats->st_mode & S_IROTH))
   {
-    cupsdLogMessage(CUPSD_LOG_INFO, "[Client %d] Files/directories such as \"%s\" must be world-readable.", con->http.fd, filename);
-    return (NULL);
+   /*
+    * The exception is for cupsd.conf and log files for
+    * authenticated access.
+    */
+
+    if ((strncmp(con->uri, "/admin/conf/cupsd.conf", 22) &&
+        strncmp(con->uri, "/admin/log/", 11)) ||
+       cupsdIsAuthorized(con, NULL) != HTTP_OK)
+    {
+      cupsdLogMessage(CUPSD_LOG_INFO, "[Client %d] Files/directories such as \"%s\" must be world-readable.", con->http.fd, filename);
+      return (NULL);
+    }
   }
 
  /*
