@@ -1533,6 +1533,7 @@ ippCreateRequestedArray(ipp_t *request)	/* I - IPP request */
     "pdf-k-octets-supported",		/* CUPS extension */
     "pdf-versions-supported",		/* CUPS extension */
     "pdl-override-supported",
+    "ppd-timestamp",
     "port-monitor",			/* CUPS extension */
     "port-monitor-supported",		/* CUPS extension */
     "preferred-attributes-supported",
@@ -1556,6 +1557,7 @@ ippCreateRequestedArray(ipp_t *request)	/* I - IPP request */
     "printer-icons",
     "printer-info",
     "printer-is-accepting-jobs",
+    "printer-is-colormanaged",
     "printer-is-shared",		/* CUPS extension */
     "printer-kind",			/* IPP Paid Printing */
     "printer-location",
