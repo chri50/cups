@@ -1,3 +1,14 @@
+cups (1.7.5-3ubuntu3.2) utopic-security; urgency=medium
+
+  * SECURITY UPDATE: privilege escalation through dynamic linker and
+    isolated vulnerabilities
+    - debian/patches/str4609.patch: apply patch from upstream to
+      cgi-bin/ipp-var.c, cgi-bin/template.c, scheduler/client.c,
+      scheduler/env.c, scheduler/ipp.c, scheduler/job.c, scheduler/main.c.
+    - CVE number pending
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Thu, 04 Jun 2015 08:07:45 -0400
+
 cups (1.7.5-3ubuntu3.1) utopic-security; urgency=medium
 
   * SECURITY UPDATE: buffer overflow in cupsRasterReadPixels
