@@ -44,10 +44,10 @@ appropriate filters to do the conversions you need.
 .SH OPTIONS
 Options passed on the command-line typically do not include the default choices
 the printer's PPD file. In addition, some options may be specified in multiple
-ways - "landscape" is a synonym for "orientation-requested=4", "media" is a
+ways \- "landscape" is a synonym for "orientation-requested=4", "media" is a
 synonym for "PageSize", "PageRegion", "InputSlot", and "MediaType", and "sides"
 is a synonym for the various "Duplex" options. Non-raster filters \fBmust\fR
-support both explicit and implicit specification of PPD options - use the
+support both explicit and implicit specification of PPD options \- use the
 ppdMarkDefaults and cupsMarkOptions functions in the CUPS library to use the
 correct mapping, and ppdFindMarkedChoice to get the user-selected choice.
 .LP
@@ -127,7 +127,7 @@ STATE: printer-state-reason [printer-state-reason ...]
 .TP 5
 STATE: + printer-state-reason [printer-state-reason ...]
 .TP 5
-STATE: - printer-state-reason [printer-state-reason ...]
+STATE: \- printer-state-reason [printer-state-reason ...]
 .br
 Sets, adds, or removes printer-state-reason keywords to the
 current queue. Typically this is used to indicate media, ink, and
