@@ -434,6 +434,22 @@ else
 	instfilter pstoraster pstoraster raster
 	instfilter texttopdf texttopdf pdf
 
+	# cups-filters types, filters and banners
+	ln -s /usr/share/cups/mime/cupsfilters.types /tmp/cups-$user/share/mime
+	ln -s $root/test/cupsfilters.convs /tmp/cups-$user/share/mime
+
+	instfilter gstoraster gstoraster raster
+	instfilter imagetoraster imagetoraster raster
+	instfilter pstopdf pstopdf pdf
+	instfilter urftopdf urftopdf pdf
+
+	ln -sf /usr/share/cups/banners/classified /tmp/cups-$user/share/banners/
+	ln -sf /usr/share/cups/banners/confidential /tmp/cups-$user/share/banners/
+	ln -sf /usr/share/cups/banners/secret /tmp/cups-$user/share/banners/
+	ln -sf /usr/share/cups/banners/standard /tmp/cups-$user/share/banners/
+	ln -sf /usr/share/cups/banners/topsecret /tmp/cups-$user/share/banners/
+	ln -sf /usr/share/cups/banners/unclassified /tmp/cups-$user/share/banners/
+
 	if test -d /usr/share/cups/charsets; then
 		ln -s /usr/share/cups/charsets /tmp/cups-$user/share
 	fi
