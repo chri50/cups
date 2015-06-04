@@ -1,3 +1,15 @@
+cups (2.0.2-1ubuntu3.1) vivid-security; urgency=medium
+
+  * SECURITY UPDATE: privilege escalation through dynamic linker and
+    isolated vulnerabilities
+    - debian/patches/str4609.patch: apply patch from upstream to
+      cgi-bin/ipp-var.c, cgi-bin/template.c, scheduler/client.c,
+      scheduler/conf.c, scheduler/env.c, scheduler/ipp.c, scheduler/job.c,
+      scheduler/main.c.
+    - CVE number pending
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Thu, 04 Jun 2015 07:37:56 -0400
+
 cups (2.0.2-1ubuntu3) vivid; urgency=low
 
   * debian/tests/utils/test-drivers: Exclude the "everywhere" driver from the
