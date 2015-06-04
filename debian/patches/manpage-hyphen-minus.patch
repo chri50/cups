@@ -415,7 +415,7 @@ Last-Update: 2015-02-10
  .BR ppdhtml (1),
 --- a/man/lpadmin.man
 +++ b/man/lpadmin.man
-@@ -127,7 +127,7 @@
+@@ -128,7 +128,7 @@
  .TP 5
  \fB\-o \fIname\fB-default=\fIvalue\fR
  Sets a default server-side option for the destination.

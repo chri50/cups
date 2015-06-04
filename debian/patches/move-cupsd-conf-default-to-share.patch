@@ -7,7 +7,7 @@ Last-Update: 2015-02-10
 
 --- a/cgi-bin/admin.c
 +++ b/cgi-bin/admin.c
-@@ -1917,6 +1917,7 @@
+@@ -1923,6 +1923,7 @@
      int		ch;			/* Character from file */
      char	filename[1024];		/* Filename */
      const char	*server_root;		/* Location of config files */
@@ -15,7 +15,7 @@ Last-Update: 2015-02-10
  
  
     /*
-@@ -2000,7 +2001,10 @@
+@@ -2006,7 +2007,10 @@
      * well...
      */
  

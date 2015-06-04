@@ -1,3 +1,22 @@
+cups (2.0.2-3) experimental; urgency=medium
+
+  [ Till Kamppeter ]
+  * Re-introduced the patch for IdleExitTimeout under upstart, but
+    Ubuntu-only.
+  * Added PPD generator to support IPP Everywhere printers (Use "lpadmin -p pr
+    -E -v ipp://... -m everywhere" or equivalent operation in the CUPS web
+    interface).
+  * Exclude driver "everywhere" from auto package tests as it only works with
+    IPP URIs.
+  * Refreshed patches with quilt.
+
+  [ Didier Raboud ]
+  * Merge Ubuntu's AppArmor profile diff in Debian's (Closes: #779901)
+  * Import upstream fix for the FTBS on mips through reordering the IPP-1.1
+    tests to avoid a timing issue
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 04 Jun 2015 13:41:53 +0200
+
 cups (2.0.2-2) experimental; urgency=low
 
   [ Till Kamppeter ]
