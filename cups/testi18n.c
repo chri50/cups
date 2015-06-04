@@ -423,7 +423,7 @@ main(int  argc,				/* I - Argument Count */
       puts("PASS");
   }
 
-#ifndef __linux
+#if !defined(__linux__) && !defined(__GLIBC__)
   fputs("cupsCharsetToUTF8(CUPS_EUC_JP): ", stdout);
 
   strcpy(legsrc, legdest);
