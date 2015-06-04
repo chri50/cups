@@ -988,6 +988,16 @@ add_class(cupsd_client_t  *con,		/* I - Client connection */
 		  pclass->accepting ? "Now" : "No longer");
   }
 
+  if ((attr = ippFindAttribute(con->request, "printer-is-cm-calibrating",
+                               IPP_TAG_BOOLEAN)) != NULL)
+  {
+    cupsdLogMessage(CUPSD_LOG_INFO,
+                    "Setting %s printer-is-cm-calibrating to %d (was %d.)",
+                    pclass->name, attr->values[0].boolean, pclass->calibrating);
+
+    pclass->calibrating = attr->values[0].boolean;
+  }
+
   if ((attr = ippFindAttribute(con->request, "printer-is-shared",
                                IPP_TAG_BOOLEAN)) != NULL)
   {
@@ -2489,6 +2499,16 @@ add_printer(cupsd_client_t  *con,	/* I - Client connection */
     cupsdAddEvent(CUPSD_EVENT_PRINTER_STATE, printer, NULL,
                   "%s accepting jobs.",
 		  printer->accepting ? "Now" : "No longer");
+  }
+
+  if ((attr = ippFindAttribute(con->request, "printer-is-cm-calibrating",
+                                 IPP_TAG_BOOLEAN)) != NULL)
+  {    
+    cupsdLogMessage(CUPSD_LOG_INFO,
+                    "Setting %s printer-is-cm-calibrating to %d (was %d.)",
+                    printer->name, attr->values[0].boolean, printer->calibrating);
+
+    printer->calibrating = attr->values[0].boolean;
   }
 
   if ((attr = ippFindAttribute(con->request, "printer-is-shared",
@@ -4900,6 +4920,10 @@ copy_printer_attrs(
     ippAddBoolean(con->response, IPP_TAG_PRINTER, "printer-is-accepting-jobs",
                   printer->accepting);
 
+  if (!ra || cupsArrayFind(ra, "printer-is-cm-calibrating"))
+    ippAddBoolean(con->response, IPP_TAG_PRINTER, "printer-is-cm-calibrating",
+                  printer->calibrating);
+
   if (!ra || cupsArrayFind(ra, "printer-is-shared"))
     ippAddBoolean(con->response, IPP_TAG_PRINTER, "printer-is-shared",
                   printer->shared);
@@ -4948,6 +4972,9 @@ copy_printer_attrs(
 
     if (!printer->accepting)
       type |= CUPS_PRINTER_REJECTING;
+
+    if (!printer->calibrating)
+      type |= CUPS_PRINTER_CM_OFF;
 
     if (!printer->shared)
       type |= CUPS_PRINTER_NOT_SHARED;

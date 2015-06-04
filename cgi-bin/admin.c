@@ -1132,6 +1132,11 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
 				     IPP_TAG_BOOLEAN)) != NULL)
 	  cgiSetVariable("PRINTER_IS_SHARED",
 			 attr->values[0].boolean ? "1" : "0");
+
+        if ((attr = ippFindAttribute(oldinfo, "printer-is-cm-calibrating",
+                                     IPP_TAG_BOOLEAN)) != NULL)
+          cgiSetVariable("PRINTER_IS_CM_CALIBRATING",
+                         attr->values[0].boolean ? "1" : "0");
       }
 
       cgiCopyTemplateLang("modify-printer.tmpl");
@@ -1148,6 +1153,8 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
       else
 #endif /* __APPLE__ */
         cgiSetVariable("printer_is_shared", "0");
+
+      cgiSetVariable("printer_is_cm_calibrating", "0");
 
       cgiCopyTemplateLang("add-printer.tmpl");
     }
@@ -1335,6 +1342,7 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
     *    printer-info
     *    ppd-name
     *    device-uri
+    *    printer-is-cm-calibrating
     *    printer-is-accepting-jobs
     *    printer-is-shared
     *    printer-state
@@ -1393,6 +1401,10 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
 
     var = cgiGetVariable("printer_is_shared");
     ippAddBoolean(request, IPP_TAG_PRINTER, "printer-is-shared",
+                  var && (!strcmp(var, "1") || !strcmp(var, "on")));
+
+    var = cgiGetVariable("printer_is_cm_calibrating");
+    ippAddBoolean(request, IPP_TAG_PRINTER, "printer-is-cm-calibrating",
                   var && (!strcmp(var, "1") || !strcmp(var, "on")));
 
     ippAddInteger(request, IPP_TAG_PRINTER, IPP_TAG_ENUM, "printer-state",

@@ -95,11 +95,12 @@ cupsdAddPrinter(const char *name)	/* I - Name of printer */
                                              uuid, sizeof(uuid)));
   cupsdSetDeviceURI(p, "file:///dev/null");
 
-  p->state      = IPP_PRINTER_STOPPED;
-  p->state_time = time(NULL);
-  p->accepting  = 0;
-  p->shared     = DefaultShared;
-  p->filetype   = mimeAddType(MimeDatabase, "printer", name);
+  p->state       = IPP_PRINTER_STOPPED;
+  p->state_time  = time(NULL);
+  p->accepting   = 0;
+  p->calibrating = 0;
+  p->shared      = DefaultShared;
+  p->filetype    = mimeAddType(MimeDatabase, "printer", name);
 
   cupsdSetString(&p->job_sheets[0], "none");
   cupsdSetString(&p->job_sheets[1], "none");
@@ -1081,6 +1082,26 @@ cupsdLoadAllPrinters(void)
 	cupsdLogMessage(CUPSD_LOG_ERROR,
 	                "Syntax error on line %d of printers.conf.", linenum);
     }
+    else if (!_cups_strcasecmp(line, "CM-Calibration"))
+    {
+     /*
+      * Set the initial color calibration mode state...
+      */
+
+      if (value &&
+          (!_cups_strcasecmp(value, "yes") ||
+           !_cups_strcasecmp(value, "on") ||
+           !_cups_strcasecmp(value, "true")))
+        p->calibrating = 1;
+      else if (value &&
+               (!_cups_strcasecmp(value, "no") ||
+        	!_cups_strcasecmp(value, "off") ||
+        	!_cups_strcasecmp(value, "false")))
+        p->calibrating = 0;
+      else
+	cupsdLogMessage(CUPSD_LOG_ERROR,
+	                "Syntax error on line %d of printers.conf.", linenum);
+    }
     else if (!_cups_strcasecmp(line, "Type"))
     {
       if (value)
@@ -1442,6 +1463,11 @@ cupsdSaveAllPrinters(void)
       cupsFilePuts(fp, "Accepting Yes\n");
     else
       cupsFilePuts(fp, "Accepting No\n");
+
+    if (printer->calibrating)
+      cupsFilePuts(fp, "CM-Calibration Yes\n");
+    else
+      cupsFilePuts(fp, "CM-Calibration No\n");
 
     if (printer->shared)
       cupsFilePuts(fp, "Shared Yes\n");
