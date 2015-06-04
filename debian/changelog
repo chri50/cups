@@ -1,3 +1,14 @@
+cups (1.5.3-0ubuntu8.7) precise-security; urgency=medium
+
+  * SECURITY UPDATE: privilege escalation through dynamic linker and
+    isolated vulnerabilities
+    - debian/patches/str4609.patch: apply patch from upstream to
+      cgi-bin/ipp-var.c, cgi-bin/template.c, scheduler/ipp.c,
+      scheduler/job.c.
+    - CVE number pending
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Thu, 04 Jun 2015 08:08:32 -0400
+
 cups (1.5.3-0ubuntu8.6) precise-security; urgency=medium
 
   * SECURITY UPDATE: buffer overflow in cupsRasterReadPixels
