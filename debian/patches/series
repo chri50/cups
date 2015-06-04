@@ -62,3 +62,4 @@ debianize_cups-config.patch
 manpage-translations.patch
 do-not-override-h-option-with-env-variable.patch
 CVE-2014-9679.patch
+str4609.patch
