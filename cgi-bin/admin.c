@@ -1643,7 +1643,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
       else
 	local_protocols[0] = '\0';
 
-#ifdef HAVE_DNSSD
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
       if (cgiGetVariable("BROWSE_LOCAL_DNSSD"))
       {
 	if (local_protocols[0])
@@ -1651,7 +1651,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
 	else
 	  strcat(local_protocols, "dnssd");
       }
-#endif /* HAVE_DNSSD */
+#endif /* defined(HAVE_DNSSD) || defined(HAVE_AVAHI) */
 
 #ifdef HAVE_LDAP
       if (cgiGetVariable("BROWSE_LOCAL_LDAP"))
@@ -2718,9 +2718,9 @@ do_menu(http_t *http)			/* I - HTTP connection */
 #endif /* HAVE_GSSAPI */
   cgiSetVariable("KERBEROS", "");
 
-#ifdef HAVE_DNSSD
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
   cgiSetVariable("HAVE_DNSSD", "1");
-#endif /* HAVE_DNSSD */
+#endif /* defined(HAVE_DNSSD) || defined(HAVE_AVAHI) */
 
 #ifdef HAVE_LDAP
   cgiSetVariable("HAVE_LDAP", "1");
