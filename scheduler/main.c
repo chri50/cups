@@ -340,6 +340,9 @@ main(int  argc,				/* I - Number of command-line args */
   if (!ConfigurationFile)
     cupsdSetString(&ConfigurationFile, CUPS_SERVERROOT "/cupsd.conf");
 
+  if (!SystemdConfigurationFile)
+    cupsdSetString(&SystemdConfigurationFile, CUPS_SERVERROOT "/cupsd-systemd-listen.conf");
+
   if (!CupsFilesFile)
   {
     char	*filename,		/* Copy of cupsd.conf filename */
@@ -803,6 +806,15 @@ main(int  argc,				/* I - Number of command-line args */
 #endif /* HAVE_LAUNCHD */
 
 #ifdef HAVE_SYSTEMD
+       /*
+        * If systemd is the init system, reload the systemd configuration
+        */
+        if (NeedSystemdReload) {
+          cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsd changed the systemd sockets, reload systemd and restart cups.socket");
+          system("test -d /run/systemd/system -a -x /bin/systemctl && /bin/systemctl --system daemon-reload && /bin/systemctl restart cups.socket");
+          NeedSystemdReload = 0;
+        }
+
        /*
 	* If we were started by systemd get the listen sockets file
 	* descriptors...

@@ -100,6 +100,8 @@ VAR char		*ConfigurationFile	VALUE(NULL),
 					/* cupsd.conf file to use */
 			*CupsFilesFile		VALUE(NULL),
 					/* cups-files.conf file to use */
+			*SystemdConfigurationFile		VALUE(NULL),
+					/* cupsd-systemd-listen.conf file to use */
 			*ServerName		VALUE(NULL),
 					/* FQDN for server */
 			*ServerAdmin		VALUE(NULL),
