@@ -4,7 +4,7 @@
 
 #include <tunables/global>
 
-/usr/sbin/cupsd {
+/usr/sbin/cupsd flags=(attach_disconnected) {
   #include <abstractions/base>
   #include <abstractions/bash>
   #include <abstractions/authentication>
@@ -141,6 +141,8 @@
   # silence noise
   deny /etc/udev/udev.conf r,
 
+  signal peer=/usr/sbin/cupsd//third_party,
+  unix peer=(label=/usr/sbin/cupsd//third_party),
   profile third_party flags=(attach_disconnected) {
     # third party backends, filters, and drivers get relatively no restrictions
     # as they often need high privileges, are unpredictable or otherwise beyond
@@ -149,6 +151,10 @@
     capability,
     audit deny capability mac_admin,
     network,
+    dbus,
+    signal,
+    ptrace,
+    unix,
   }
 
   # Site-specific additions and overrides. See local/README for details.
