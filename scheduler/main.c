@@ -1662,6 +1662,13 @@ upstart_checkin(void)
   if (_httpAddrPort(&(lis->address)) == 443)
     lis->encryption = HTTP_ENCRYPT_ALWAYS;
 #  endif /* HAVE_SSL */
+
+  /* As we are started on-demand, stop on idle */
+  if (!ExitOnIdleTimeout)
+    ExitOnIdleTimeout = 30;
+  cupsdLogMessage(CUPSD_LOG_DEBUG, "As we are starting on-demand (socket-triggered), activate exit-on-idle mode, timeout: %d seconds.",
+                      ExitOnIdleTimeout);
+
 }
 
 /*
