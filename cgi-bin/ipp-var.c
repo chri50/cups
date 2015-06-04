@@ -1230,21 +1230,7 @@ cgiSetIPPObjectVars(
 	      * Rewrite URIs...
 	      */
 
-              if (!strcmp(name, "member_uris"))
-	      {
-		char	url[1024];	/* URL for class member... */
-
-
-		cgiRewriteURL(attr->values[i].string.text, url,
-		              sizeof(url), NULL);
-
-                snprintf(valptr, sizeof(value) - (valptr - value),
-		         "<A HREF=\"%s\">%s</A>", url,
-			 strrchr(attr->values[i].string.text, '/') + 1);
-	      }
-	      else
-		cgiRewriteURL(attr->values[i].string.text, valptr,
-		              sizeof(value) - (valptr - value), NULL);
+	      cgiRewriteURL(attr->values[i].string.text, valptr, sizeof(value) - (valptr - value), NULL);
               break;
             }
 
