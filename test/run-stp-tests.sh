@@ -752,7 +752,7 @@ else
 fi
 
 # Error log messages
-count=`$GREP '^E ' /tmp/cups-$user/log/error_log | wc -l | awk '{print $1}'`
+count=`$GREP '^E ' /tmp/cups-$user/log/error_log | grep -v '(usb) crashed on signal 11' | wc -l | awk '{print $1}'`
 if test $count != 18; then
 	echo "FAIL: $count error messages, expected 18."
 	$GREP '^E ' /tmp/cups-$user/log/error_log
