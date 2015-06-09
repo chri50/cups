@@ -1163,11 +1163,13 @@ open_device(usb_printer_t *printer,	/* I - Printer */
   while ((errcode = libusb_claim_interface(printer->handle, number1)) < 0)
   {
     if (errcode != LIBUSB_ERROR_BUSY)
+    {
       fprintf(stderr,
               "DEBUG: Failed to claim interface %d for %04x:%04x: %s\n",
               number1, devdesc.idVendor, devdesc.idProduct, strerror(errno));
 
-    goto error;
+      goto error;
+    }
   }
 
  /*
@@ -1187,12 +1189,14 @@ open_device(usb_printer_t *printer,	/* I - Printer */
 	   < 0)
     {
       if (errcode != LIBUSB_ERROR_BUSY)
+      {
         fprintf(stderr,
                 "DEBUG: Failed to set alternate interface %d for %04x:%04x: "
                 "%s\n",
                 number2, devdesc.idVendor, devdesc.idProduct, strerror(errno));
 
-      goto error;
+	goto error;
+      }
     }
   }
 
