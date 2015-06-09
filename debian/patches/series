@@ -5,6 +5,7 @@ str4475-fix-the-spinner-imager-on-restart.patch
 str4484-fix-random-crash-in-scheduler.patch
 str4500-cupsGetPPD3-Only-use-symlink-if-file-is-readable-STR.patch
 str4551-fix-buffer-overflow-in-cupsRasterReadPixels.patch
+str4609-prevent-privilege-escalation-through-dynamic-linker.patch
 
 # patches sent upstream
 pwg-raster-attributes.patch
