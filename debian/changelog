@@ -1,3 +1,29 @@
+cups (2.0.3-1) experimental; urgency=medium
+
+  * New 2.0.3 upstream release
+    - Security: Fixed CERT VU #810572 exploiting the dynamic linker (STR #4609)
+      - CVE-2015-1158 Improper Update of Reference Count
+      - CVE-2015-1159 Cross-Site Scripting
+    - Security: The scheduler could hang with malformed gzip data (STR #4602)
+
+  [ Didier Raboud ]
+  * Remove the upstream fix for the FTBS on mips through reordering of IPP-1.1
+    tests, included in 2.0.3
+  * Refresh patches
+  * Disable the IPP Everywhere PPD generator patch, as it breaks the test-suite
+
+  [ Till Kamppeter ]
+  * Fixed PPD generator (for IPP printers) to write floating-point numbers in
+    a locale-neutral way (always with decimal point, CUPS STR #4579).
+  * Make fix for floating point number output in the PPD generator also apply
+    to the PageRegion option (CUPS STR #4579).
+  * Let the PPD generator not create a ColorModel option without choices
+    (CUPS STR #4638).
+  * Fix values of the pwg-raster-document-types-supported attribute of
+    ippserver, the IPP printer emulator.
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 09 Jun 2015 11:07:54 +0200
+
 cups (2.0.2-3) experimental; urgency=medium
 
   [ Till Kamppeter ]

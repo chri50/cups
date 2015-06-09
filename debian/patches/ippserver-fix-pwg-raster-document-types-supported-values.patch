@@ -1,0 +1,25 @@
+Description: Fix values for the pwg-raster-document-types-supported IPP
+ attribute (CUPS upstream SVN revision 12509, GIT mirror revision 14537a4d).
+ This makes the IPP attributes of the printers emulated by ippserver IPP-
+ Everywhere-conforming.
+Author: Michael Sweet <msweet@apple.com>
+Last-Update: 2015-02-11
+--- a/test/ippserver.c
++++ b/test/ippserver.c
+@@ -1376,11 +1376,11 @@
+   };
+   static const char * const pwg_raster_document_type_supported[] =
+   {
+-    "black-1",
+-    "cmyk-8",
+-    "sgray-8",
+-    "srgb-8",
+-    "srgb-16"
++    "black_1",
++    "cmyk_8",
++    "sgray_8",
++    "srgb_8",
++    "srgb_16"
+   };
+   static const char * const reference_uri_schemes_supported[] =
+   {					/* reference-uri-schemes-supported */
