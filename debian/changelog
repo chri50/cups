@@ -1,3 +1,16 @@
+cups (2.0.2-3ubuntu1) wily; urgency=medium
+
+  * SECURITY UPDATE: privilege escalation through dynamic linker and
+    isolated vulnerabilities
+    - debian/patches/str4609.patch: apply patch from upstream to
+      cgi-bin/ipp-var.c, cgi-bin/template.c, scheduler/client.c,
+      scheduler/conf.c, scheduler/env.c, scheduler/ipp.c, scheduler/job.c,
+      scheduler/main.c.
+    - CVE-2015-1158
+    - CVE-2015-1159
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Wed, 10 Jun 2015 08:56:10 -0400
+
 cups (2.0.2-3) experimental; urgency=medium
 
   [ Till Kamppeter ]

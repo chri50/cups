@@ -53,3 +53,4 @@ debianize_cups-config.patch
 # po4a might not be appropriate. It also needs to be high on the patch
 # queue to catch all Debian-specific changes
 manpage-translations.patch
+str4609.patch
