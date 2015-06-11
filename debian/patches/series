@@ -1,6 +1,6 @@
 # patches accepted and committed upstream
 # Disabled for now, it breaks the test-suite
-# ipp-everywhere-ppd-generator.patch
+ipp-everywhere-ppd-generator.patch
 ippserver-fix-pwg-raster-document-types-supported-values.patch
 
 # patches sent upstream

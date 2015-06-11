@@ -1,3 +1,11 @@
+cups (2.0.3-1ubuntu1) wily; urgency=medium
+
+  * Fixed test-suite failure with the IPP Everywhere PPD generator patch
+    by making the patch update systemv/lpadmin.c completely to the state of
+    current CUPS 2.1.x repo, re-activated the patch.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Thu, 11 Jun 2015 11:25:01 -0300
+
 cups (2.0.3-1) experimental; urgency=medium
 
   * New 2.0.3 upstream release

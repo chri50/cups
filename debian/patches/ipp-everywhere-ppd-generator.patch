@@ -995,6 +995,13 @@ Last-Update: 2015-06-05
    * Send IPP attributes...
 --- a/systemv/lpadmin.c
 +++ b/systemv/lpadmin.c
+@@ -1,5 +1,5 @@
+ /*
+- * "$Id: lpadmin.c 12604 2015-05-06 01:43:05Z msweet $"
++ * "$Id$"
+  *
+  * "lpadmin" command for CUPS.
+  *
 @@ -17,6 +17,8 @@
   * Include necessary headers...
   */
@@ -1505,7 +1512,7 @@ Last-Update: 2015-06-05
    if (file)
      ppdfile = file;
    else if ((ppdname = cupsGetOption("ppd-name", num_options, options)) != NULL && strcmp(ppdname, "raw") && num_options > 1)
-@@ -1316,12 +1386,32 @@
+@@ -1316,12 +1386,25 @@
        options        = temp;
      }
    }
@@ -1516,13 +1523,6 @@ Last-Update: 2015-06-05
      ppdfile = NULL;
  
 -  if (ppdfile != NULL)
-+  if (file)
-+    ppdfile = file;
-+  else if (request->request.op.operation_id == IPP_OP_CUPS_ADD_MODIFY_PRINTER)
-+    ppdfile = cupsGetPPD(printer);
-+  else
-+    ppdfile = NULL;
-+
 +  cupsEncodeOptions2(request, num_options, options, IPP_TAG_OPERATION);
 +  cupsEncodeOptions2(request, num_options, options, IPP_TAG_PRINTER);
 +
@@ -1540,7 +1540,7 @@ Last-Update: 2015-06-05
    {
     /*
      * Set default options in the PPD file...
-@@ -1493,7 +1583,7 @@
+@@ -1493,7 +1576,7 @@
    * Check the response...
    */
  
@@ -1549,3 +1549,10 @@ Last-Update: 2015-06-05
    {
      _cupsLangPrintf(stderr, _("%s: %s"), "lpadmin", cupsLastErrorString());
  
+@@ -1534,5 +1617,5 @@
+ 
+ 
+ /*
+- * End of "$Id: lpadmin.c 12604 2015-05-06 01:43:05Z msweet $".
++ * End of "$Id$".
+  */
