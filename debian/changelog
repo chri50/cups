@@ -1,3 +1,10 @@
+cups (2.0.2-1ubuntu3.2) vivid-proposed; urgency=medium
+
+  * debian/patches/cups-busy-loop.patch: Fixed scheduler sometimes
+    getting caught in a busy loop (LP: #1426490, CUPS STR #4605).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 12 Jun 2015 13:18:01 -0300
+
 cups (2.0.2-1ubuntu3.1) vivid-security; urgency=medium
 
   * SECURITY UPDATE: privilege escalation through dynamic linker and

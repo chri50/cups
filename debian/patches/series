@@ -54,3 +54,4 @@ debianize_cups-config.patch
 # queue to catch all Debian-specific changes
 manpage-translations.patch
 str4609.patch
+cups-busy-loop.patch
