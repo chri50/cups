@@ -11,4 +11,4 @@ The really short path to get a buildable source tree is:
 
   debcheckout cups
   cd cups
-  quilt push -af
+  QUILT_PATCHES=debian/patches quilt push -af

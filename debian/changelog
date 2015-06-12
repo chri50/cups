@@ -1,3 +1,16 @@
+cups (2.0.3-2) experimental; urgency=medium
+
+  [ Till Kamppeter ]
+  * Fixed IPP Everywhere PPD generator patch. It passes the tests now.
+
+  [ Helge Kreutzmann ]
+  * Update German man page (870t789f404u)
+
+  [ Didier Raboud ]
+  * Set QUILT_PATCHES in the two README files that need it (Closes: #788481)
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 12 Jun 2015 08:46:01 +0200
+
 cups (2.0.3-1) experimental; urgency=medium
 
   * New 2.0.3 upstream release

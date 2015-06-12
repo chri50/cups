@@ -4,7 +4,7 @@ Description: Added auto-generation of PPD files for IPP Everywhere printers,
  functionality.
 Author: Till Kamppeter <till.kamppeter@gmail.com>
 Bug: https://cups.org/str.php?L4258
-Last-Update: 2015-06-05
+Last-Update: 2015-06-11
 --- a/cgi-bin/admin.c
 +++ b/cgi-bin/admin.c
 @@ -3,7 +3,7 @@
@@ -1505,7 +1505,7 @@ Last-Update: 2015-06-05
    if (file)
      ppdfile = file;
    else if ((ppdname = cupsGetOption("ppd-name", num_options, options)) != NULL && strcmp(ppdname, "raw") && num_options > 1)
-@@ -1316,12 +1386,32 @@
+@@ -1316,12 +1386,25 @@
        options        = temp;
      }
    }
@@ -1516,13 +1516,6 @@ Last-Update: 2015-06-05
      ppdfile = NULL;
  
 -  if (ppdfile != NULL)
-+  if (file)
-+    ppdfile = file;
-+  else if (request->request.op.operation_id == IPP_OP_CUPS_ADD_MODIFY_PRINTER)
-+    ppdfile = cupsGetPPD(printer);
-+  else
-+    ppdfile = NULL;
-+
 +  cupsEncodeOptions2(request, num_options, options, IPP_TAG_OPERATION);
 +  cupsEncodeOptions2(request, num_options, options, IPP_TAG_PRINTER);
 +
@@ -1540,7 +1533,7 @@ Last-Update: 2015-06-05
    {
     /*
      * Set default options in the PPD file...
-@@ -1493,7 +1583,7 @@
+@@ -1493,7 +1576,7 @@
    * Check the response...
    */
  
