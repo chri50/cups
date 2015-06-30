@@ -258,6 +258,21 @@ Description: Common UNIX Printing System(tm) - client programs (SysV)
  .
  This package provides the System V style print client programs.
 
+Package: cups-ipp-utils
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, 
+ libcups2 (= ${binary:Version})
+Replaces: cups (<< 1.7.3-5~), cups-client (<< 2.0.3-2~)
+Breaks: cups (<< 1.7.3-5~), cups-client (<< 2.0.3-2~)
+Multi-Arch: foreign
+Description: Common UNIX Printing System(tm) - IPP developer/admin utilities
+ The Common UNIX Printing System (or CUPS(tm)) is a printing system and
+ general replacement for lpd and the like.  It supports the Internet
+ Printing Protocol (IPP), and has its own filtering driver model for
+ handling various document types.
+ .
+ This package provides IPP utilities for developers and system administrators
+
 Package: libcups2-dev
 Section: libdevel
 Architecture: any

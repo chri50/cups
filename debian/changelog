@@ -1,3 +1,18 @@
+cups (2.0.3-3) experimental; urgency=medium
+
+  [ Till Kamppeter ]
+  * Created new binary package cups-ipp-utils for the IPP utilities ippfind,
+    ipptool, and ippserver.
+
+  [ Didier Raboud ]
+  * Install the cups-ipp-utils translated manpages in the correct package
+  * Translate the ippserver.1 manpage too, refresh the manpage translation
+    files
+  * Add debian/gbp.conf to ease dch and import-orig
+  * Update README.source with the latest branch names
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 30 Jun 2015 08:46:04 +0200
+
 cups (2.0.3-2) experimental; urgency=medium
 
   [ Till Kamppeter ]

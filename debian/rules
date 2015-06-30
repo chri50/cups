@@ -65,8 +65,9 @@ override_dh_auto_install:
 
 MANPAGES_L10N_CUPS=man5/subscriptions.conf.5 man5/mime.convs.5 man7/filter.7 man8/cupsfilter.8 man8/cups-deviced.8 man8/cups-driverd.8 man8/cupsd-lpd.8
 MANPAGES_L10N_CUPS_DAEMON=man5/classes.conf.5 man5/cupsd.conf.5 man5/cups-files.conf.5 man5/cups-snmp.conf.5 man5/mailto.conf.5 man5/mime.types.5 man5/printers.conf.5 man7/backend.7 man8/cupsd.8
-MANPAGES_L10N_CUPS_CLIENT=man1/cupstestppd.1 man1/cupstestdsc.1 man1/ippfind.1 man1/ipptool.1 man1/lp.1 man1/lpoptions.1 man1/lppasswd.1 man1/lpstat.1 man1/cancel.1 man5/client.conf.5 man5/ipptoolfile.5 man8/cupsaddsmb.8 man8/cupsenable.8 man8/lpadmin.8 man8/lpinfo.8 man8/lpmove.8 man8/cupsreject.8 man8/cupsdisable.8 man8/cupsaccept.8 man8/cupsctl.8
+MANPAGES_L10N_CUPS_CLIENT=man1/cupstestppd.1 man1/cupstestdsc.1 man1/lp.1 man1/lpoptions.1 man1/lppasswd.1 man1/lpstat.1 man1/cancel.1 man5/client.conf.5 man8/cupsaddsmb.8 man8/cupsenable.8 man8/lpadmin.8 man8/lpinfo.8 man8/lpmove.8 man8/cupsreject.8 man8/cupsdisable.8 man8/cupsaccept.8 man8/cupsctl.8
 MANPAGES_L10N_CUPS_BSD=man1/lpr.1 man1/lprm.1 man1/lpq.1 man8/lpc.8
+MANPAGES_L10N_CUPS_IPP_UTILS=man1/ippfind.1 man1/ippserver.1 man1/ipptool.1 man5/ipptoolfile.5
 
 override_dh_install:
 ifeq ($(derives_from_ubuntu),yes)
@@ -134,6 +135,17 @@ ifneq (,$(filter cups-bsd,$(shell dh_listpackages)))
 	set -e; for m in $(MANPAGES_L10N_CUPS_BSD); do \
 	       for manp in $$(ls debian/tmp/usr/share/man/*/$$m.gz); do \
                         install -D -m 644 $$manp $$(echo $$manp | sed -e 's#^debian/tmp#debian/cups-bsd#');\
+                done; \
+        done
+endif
+
+ifneq (,$(filter cups-ipp-utils,$(shell dh_listpackages)))
+	# gzip and install english manpage for ippserver
+	cat test/ippserver.man | gzip -9 > debian/cups-ipp-utils/usr/share/man/man1/ippserver.1.gz
+        # Try to install the translated manpages to cups-ipp-utils
+	set -e; for m in $(MANPAGES_L10N_CUPS_IPP_UTILS); do \
+	       for manp in $$(ls debian/tmp/usr/share/man/*/$$m.gz); do \
+                        install -D -m 644 $$manp $$(echo $$manp | sed -e 's#^debian/tmp#debian/cups-ipp-utils#');\
                 done; \
         done
 endif
