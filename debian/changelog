@@ -1,3 +1,15 @@
+cups (2.0.3-4) experimental; urgency=medium
+
+  [ Helge Kreutzmann ]
+  * Update German man page (1366t464f280u)
+
+  [ Didier Raboud ]
+  * Replace full paths in maintainer scripts '[ -x ]' by 'which' calls
+  * Refresh debian/copyright thanks to cme
+  * Remove the superfluous XS-Testsuite header in debian/control
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 06 Jul 2015 21:57:18 +0200
+
 cups (2.0.3-3) experimental; urgency=medium
 
   [ Till Kamppeter ]
