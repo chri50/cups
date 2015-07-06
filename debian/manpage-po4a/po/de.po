@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 2.0.2-3\n"
 "POT-Creation-Date: 2015-06-30 08:36+0200\n"
-"PO-Revision-Date: 2015-06-11 20:52+0200\n"
+"PO-Revision-Date: 2015-07-05 22:34+0200\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
 "Language: de\n"
@@ -1099,6 +1099,8 @@ msgid ""
 "Specifies whether to allow TLS with certificates that have not been signed "
 "by a trusted Certificate Authority.  The default is \"Yes\"."
 msgstr ""
+"Legt fest, ob TLS mit Zertifikaten, die nicht von einer vertrauenswürdigen "
+"Zertifizierungsstelle signiert wurden, erlaubt wird. Die Vorgabe ist »Yes«."
 
 #. type: TP
 #: client.conf.man.in:32
@@ -1114,16 +1116,12 @@ msgstr "B<AllowExpiredCerts No>"
 
 #. type: Plain text
 #: client.conf.man.in:38
-#, fuzzy
-#| msgid ""
-#| "Specifies whether the scheduler calls I<fsync(2)> after writing "
-#| "configuration or state files. The default is Yes."
 msgid ""
 "Specifies whether to allow TLS with expired certificates.  The default is "
 "\"Yes\"."
 msgstr ""
-"Spezifiziert, ob der Auftragsplaner nach dem Schreiben der Konfigurations- "
-"oder Zustandsdateien I<fsync(2)> aufruft. Standardmäßig »Yes«."
+"Legt fest, ob TLS mit abgelaufenen Zertifikaten erlaubt wird. Die Vorgabe ist "
+"»Yes«."
 
 #. type: TP
 #: client.conf.man.in:38 cupsd.conf.man.in:758
@@ -1145,10 +1143,8 @@ msgstr "B<Encryption Required>"
 
 #. type: Plain text
 #: client.conf.man.in:45
-#, fuzzy
-#| msgid "Specifies the encryption certificate to use."
 msgid "Specifies the level of encryption that should be used."
-msgstr "Spezifiziert das zu verwendende Verschlüsselungszertifikat."
+msgstr "Legt die zu verwendende Verschlüsselungsstufe fest."
 
 #. type: TP
 #: client.conf.man.in:45 cupsd.conf.man.in:178
@@ -1158,11 +1154,6 @@ msgstr "B<GSSServiceName >I<Name>"
 
 #. type: Plain text
 #: client.conf.man.in:49
-#, fuzzy
-#| msgid ""
-#| "Specifies the Kerberos service name that is used for authentication, "
-#| "typically \"host\", \"http\", or \"ipp\". CUPS adds the remote hostname "
-#| "(\"name@server.example.com\") for you. The default name is \"http\"."
 msgid ""
 "Specifies the Kerberos service name that is used for authentication, "
 "typically \"host\", \"http\", or \"ipp\".  CUPS adds the remote hostname "
@@ -1175,30 +1166,25 @@ msgstr ""
 
 #. type: TP
 #: client.conf.man.in:49
-#, fuzzy, no-wrap
-#| msgid "ServerName hostname-or-ip-address[:port]"
+#, no-wrap
 msgid "B<ServerName >I<hostname-or-ip-address>[I<:port>]"
-msgstr "ServerName Hostname-oder-IP-Adresse[:Port]"
+msgstr "B<ServerName >I<Hostname-oder-IP-Adresse>[I<:Port>]"
 
 #. type: TP
 #: client.conf.man.in:51
-#, fuzzy, no-wrap
-#| msgid "ServerName /domain/socket"
+#, no-wrap
 msgid "B<ServerName >I</domain/socket>"
-msgstr "ServerName /Domäne/Socket"
+msgstr "B<ServerName >I</Domäne/Socket>"
 
+# FIXME: s/it not/is not/
 #. type: Plain text
 #: client.conf.man.in:55
-#, fuzzy
-#| msgid ""
-#| "Specifies the address and optionally the port to use when connecting to "
-#| "the server. B<Note: Not supported on OS X 10.7 or later.>"
 msgid ""
 "Specifies the address and optionally the port to use when connecting to the "
 "server.  B<Note: This directive it not supported on OS X 10.7 or later.>"
 msgstr ""
 "Spezifiziert die Adresse und optional den Port, die bei der Verbindung zum "
-"Server verwandt werden sollen. B<Hinweis: Auf OS X 10.7 oder neuer nicht "
+"Server verwandt werden sollen. B<Hinweis: Diese Direktive wird auf OS X 10.7 oder neuer nicht "
 "unterstützt.>"
 
 #. type: TP
@@ -1209,18 +1195,12 @@ msgstr "B<ServerName >I<Hostname-oder-IP-Adresse>[I<:Port>]B</version=1.1>"
 
 #. type: Plain text
 #: client.conf.man.in:58
-#, fuzzy
-#| msgid ""
-#| "Specifies the address and optionally the port to use when connecting to a "
-#| "server running CUPS 1.3.12 and earlier. B<Note: Not supported on OS X "
-#| "10.7 or later.>"
 msgid ""
 "Specifies the address and optionally the port to use when connecting to a "
 "server running CUPS 1.3.12 and earlier."
 msgstr ""
 "Spezifiziert die Adresse und optional den Port, die bei der Verbindung zum "
 "Server verwandt werden sollen, auf dem CUPS 1.3.12 oder älter läuft. "
-"B<Hinweis: Auf OS X 10.7 oder neuer nicht unterstützt.>"
 
 #. type: TP
 #: client.conf.man.in:58 cupsd.conf.man.in:475
@@ -1244,6 +1224,12 @@ msgid ""
 "I<AllowSSL3> option enables SSL v3.0, which is required for some older "
 "clients that do not support TLS v1.0."
 msgstr ""
+"Setzt die Verschlüsselungsoptionen (nur in /etc/cups/client.conf). "
+"Standardmäßig unterstützt CUPS nur Verschlüsselung mit TLS v1.0 oder höher "
+"mit bekannt sicheren Algorithmen. Die Option I<AllowRC4> aktiviert die 128-"
+"bit-RC4-Algorithmen, die für einige älteren Clients benötigt werden, die "
+"keine neueren implementierten. Die Option I<AllowSSL3> aktiviert SSL v3.0, "
+"das für einige ältere Clients benötigt wird, die TLS v1.0 nicht unterstützen."
 
 #. type: TP
 #: client.conf.man.in:66
@@ -1820,10 +1806,8 @@ msgstr "B<--cflags>"
 
 #. type: Plain text
 #: cups-config.man:68
-#, fuzzy
-#| msgid "Displays the necessary compiler options."
 msgid "Reports the necessary compiler options."
-msgstr "Zeigt die notwendigen Compiler-Optionen an."
+msgstr "Berichtet die notwendigen Compiler-Optionen."
 
 #. type: TP
 #: cups-config.man:68
@@ -1833,10 +1817,8 @@ msgstr "B<--datadir>"
 
 #. type: Plain text
 #: cups-config.man:71
-#, fuzzy
-#| msgid "Displays the default CUPS data directory."
 msgid "Reports the default CUPS data directory."
-msgstr "Zeigt das Standard-CUPS-Datenverzeichnis an."
+msgstr "Berichtet das Standard-CUPS-Datenverzeichnis."
 
 #. type: TP
 #: cups-config.man:71 ippfind.man:193 ipptool.man:91
@@ -1846,10 +1828,8 @@ msgstr "B<--help>"
 
 #. type: Plain text
 #: cups-config.man:74
-#, fuzzy
-#| msgid "Displays the program usage message."
 msgid "Reports the program usage message."
-msgstr "Zeigt die Programm-Verwendungshinweise an."
+msgstr "Berichtet die Programm-Verwendungshinweise."
 
 #. type: TP
 #: cups-config.man:74
@@ -1859,16 +1839,12 @@ msgstr "B<--image>"
 
 #. type: Plain text
 #: cups-config.man:78
-#, fuzzy
-#| msgid ""
-#| "When used with I<--libs>, adds the CUPS imaging library to the list of "
-#| "displayed libraries."
 msgid ""
 "When used with I<--libs>, adds the CUPS imaging library to the list of "
 "libraries."
 msgstr ""
 "Wird dies mit I<--libs> verwandt, wird die CUPS Imaging-Bibliothek zu der "
-"Liste der angezeigten Bibliotheken hinzugefügt."
+"Liste der Bibliotheken hinzugefügt."
 
 #. type: TP
 #: cups-config.man:78
@@ -1878,50 +1854,35 @@ msgstr "B<--ldflags>"
 
 #. type: Plain text
 #: cups-config.man:81
-#, fuzzy
-#| msgid "Displays the necessary linker options."
 msgid "Reports the necessary linker options."
-msgstr "Zeigt die notwendigen Linker-Optionen an."
+msgstr "Berichtet die notwendigen Linker-Optionen."
 
-# type: TP
 #. type: TP
 #: cups-config.man:81
-#, fuzzy, no-wrap
-#| msgid "--libs"
+#, no-wrap
 msgid "B<--libs>"
-msgstr "--libs"
+msgstr "B<--libs>"
 
-# type: Plain text
 #. type: Plain text
 #: cups-config.man:84
-#, fuzzy
-#| msgid "Displays the necessary librarys to link to."
 msgid "Reports the necessary libraries to link to."
-msgstr "Zeigt die zum Linken notwendigen Bibliotheken an."
+msgstr "Berichtet die zum Linken notwendigen Bibliotheken."
 
-# type: TP
 #. type: TP
 #: cups-config.man:84
-#, fuzzy, no-wrap
-#| msgid "--serverbin"
+#, no-wrap
 msgid "B<--serverbin>"
-msgstr "--serverbin"
+msgstr "B<--serverbin>"
 
-# type: Plain text
 #. type: Plain text
 #: cups-config.man:87
-#, fuzzy
-#| msgid ""
-#| "Displays the default CUPS binary directory, where filters and backends "
-#| "are stored."
 msgid ""
 "Reports the default CUPS binary directory, where filters and backends are "
 "stored."
 msgstr ""
-"Zeigt das Standard-CUPS-Verzeichnis an, in dem Filter und Backends "
+"Berichtet das Standard-CUPS-Verzeichnis, in dem Filter und Backends "
 "gespeichert werden."
 
-# type: TP
 #. type: TP
 #: cups-config.man:87
 #, no-wrap
@@ -2243,10 +2204,8 @@ msgstr "OBERSTE DIREKTIVEN"
 #. #AccessLogLevel
 #. type: Plain text
 #: cupsd.conf.man.in:38
-#, fuzzy
-#| msgid "The following directives are understood in a test:"
 msgid "The following top-level directives are understood by B<cupsd>(8):"
-msgstr "Die nachfolgenden Direktiven werden in einem Test verstanden:"
+msgstr "Die nachfolgenden obersten Direktiven werden von B<cupsd>(8) verstanden:"
 
 #. type: TP
 #: cupsd.conf.man.in:38
@@ -2277,6 +2236,13 @@ msgid ""
 "any of the conditions for \"config\".  The \"all\" level logs all requests.  "
 "The default access log level is \"actions\"."
 msgstr ""
+"Spezifiziert die Protokollierstufe für die Datei AccessLog. Die Stufe "
+"»config« protokolliert, wenn Drucker und Klassen hinzugefügt, gelöscht oder "
+"verändert werden und wenn auf Konfigurationsdateien zugegriffen oder diese "
+"geändert werden. Die Stufe »actions« protokolliert, wenn Druckaufträge "
+"hinzugefügt, gehalten, freigegeben, verändert oder abgebrochen werden oder "
+"einer der Bedingungen für »config« zutrifft. Die Stufe »all« protokolliert "
+"alle Anfragen. Die Vorgabestufe ist »actions«."
 
 #. type: TP
 #: cupsd.conf.man.in:50
@@ -2293,16 +2259,13 @@ msgstr "B<AutoPurgeJobs No>"
 #. #BrowseLocalProtocols
 #. type: Plain text
 #: cupsd.conf.man.in:58
-#, fuzzy
-#| msgid ""
-#| "Specifies whether to purge job history data automatically when it is no "
-#| "longer required for quotas."
 msgid ""
 "Specifies whether to purge job history data automatically when it is no "
 "longer required for quotas.  The default is \"No\"."
 msgstr ""
 "Spezifiziert, ob die Verlaufsdaten des Auftrags automatisch bereinigt "
-"(gelöscht) werden sollen, wenn sie nicht mehr für Quotas benötigt werden."
+"(gelöscht) werden sollen, wenn sie nicht mehr für Quotas benötigt werden. Die "
+"Vorgabe ist »No«."
 
 #. type: TP
 #: cupsd.conf.man.in:58
@@ -2329,6 +2292,9 @@ msgid ""
 "Specifies which protocols to use for local printer sharing.  The default is "
 "\"dnssd\" on systems that support Bonjour and \"none\" otherwise."
 msgstr ""
+"Spezifziert, welches Protokoll für die lokale Druckerfreigabe verwandt wird. "
+"Die Vorgabe ist »dnssd« auf Systemen, die Bonjour unterstützen und "
+"andernfalls »none«."
 
 #. type: TP
 #: cupsd.conf.man.in:67
@@ -2345,12 +2311,12 @@ msgstr "B<BrowseWebIF No>"
 #. #Browsing
 #. type: Plain text
 #: cupsd.conf.man.in:75
-#, fuzzy
-#| msgid "Specifies whether the CUPS web interface is advertised via DNS-SD."
 msgid ""
 "Specifies whether the CUPS web interface is advertised.  The default is \"No"
 "\"."
-msgstr "Gibt an, ob die CUPS-Web-Schnittstelle über DNS-SD angekündigt wird."
+msgstr ""
+"Spezifiziert, ob die CUPS-Web-Schnittstelle bekanntgemacht wird. Die "
+"Vorgabe ist »No«."
 
 #. type: TP
 #: cupsd.conf.man.in:75
@@ -2367,11 +2333,10 @@ msgstr "B<Browsing No>"
 #. #Classification
 #. type: Plain text
 #: cupsd.conf.man.in:83
-#, fuzzy
-#| msgid "Specifies whether local printers are shared by default."
 msgid ""
 "Specifies whether shared printers are advertised.  The default is \"No\"."
-msgstr "Spezifiziert, ob lokale Drucker standardmäßig freigegeben sind."
+msgstr ""
+"Spezifiziert, ob freigegebene Drucker bekanntgemacht werden. Die Vorgabe ist »No«."
 
 #. type: TP
 #: cupsd.conf.man.in:83
@@ -2380,6 +2345,7 @@ msgid "B<Classification >I<banner>"
 msgstr "B<Classification >I<Deckblatt>"
 
 #. #ClassifyOverride
+#, fuzzy
 #. type: Plain text
 #: cupsd.conf.man.in:90
 msgid ""
@@ -2388,6 +2354,10 @@ msgid ""
 "\"topsecret\", and \"unclassified\", or the banner can be omitted to disable "
 "secure printing functions.  The default is no classification banner."
 msgstr ""
+"Spezifiziert die Sicherheitsklassifizierung des Servers. Jeder gültige FIXME-"
+"Name kann verwandt werden, darunter »classified«, »confidential«, »secret«, "
+"»topsecret« und »unclassified«. Der FIXME kann auch entfallen, um die "
+"sicheren Druckfunktionen zu deaktivieren. Standardmäßig gibt es kein FIXME."
 
 #. type: TP
 #: cupsd.conf.man.in:90
@@ -2431,12 +2401,11 @@ msgstr "B<DefaultAuthType Negotiate>"
 #. #DefaultEncryption
 #. type: Plain text
 #: cupsd.conf.man.in:106
-#, fuzzy
-#| msgid "Specifies the default type of authentication to use."
 msgid ""
 "Specifies the default type of authentication to use.  The default is \"Basic"
 "\"."
-msgstr "Spezifiziert den standardmäßig zu verwendenden Authentifizierungstyp."
+msgstr ""
+"Spezifiziert den standardmäßig zu verwendenden Authentifizierungstyp. Die Vorgabe ist »Basic«."
 
 #. type: TP
 #: cupsd.conf.man.in:106
@@ -2459,14 +2428,12 @@ msgstr "B<DefaultEncryption Required>"
 #. #DefaultLanguage
 #. type: Plain text
 #: cupsd.conf.man.in:115
-#, fuzzy
-#| msgid "Specifies the type of encryption to use for authenticated requests."
 msgid ""
 "Specifies whether encryption will be used for authenticated requests.  The "
 "default is \"Required\"."
 msgstr ""
-"Gibt den Typ der Verschlüsselung an, der für authentifizierte Anfragen "
-"benutzt werden soll."
+"Gibt an, ob Verschlüsselung für authentifizierte Anfragen "
+"benutzt werden soll. Die Vorgabe ist »Required«."
 
 #. type: TP
 #: cupsd.conf.man.in:115
@@ -2478,14 +2445,12 @@ msgstr "DefaultLanguage Locale (Standorteinstellung)"
 #. #DefaultPaperSize
 #. type: Plain text
 #: cupsd.conf.man.in:120
-#, fuzzy
-#| msgid "Specifies the default language to use for text and web content."
 msgid ""
 "Specifies the default language to use for text and web content.  The default "
 "is \"en\"."
 msgstr ""
 "Spezifiziert die Standardsprache, die für Text und Webinhalte verwandt "
-"werden soll."
+"werden soll. Die Vorgabe ist »en«."
 
 #. type: TP
 #: cupsd.conf.man.in:120
@@ -2508,11 +2473,6 @@ msgstr "B<DefaultPaperSize >I<Größenname>"
 #. #DefaultPolicy
 #. type: Plain text
 #: cupsd.conf.man.in:130
-#, fuzzy
-#| msgid ""
-#| "Specifies the default paper size for new print queues. \"Auto\" uses a "
-#| "locale- specific default, while \"None\" specifies there is no default "
-#| "paper size."
 msgid ""
 "Specifies the default paper size for new print queues. \"Auto\" uses a "
 "locale-specific default, while \"None\" specifies there is no default paper "
@@ -2521,7 +2481,8 @@ msgid ""
 msgstr ""
 "Gibt die Standardpapiergröße für neue Druckerwarteschlangen an. »Auto« "
 "benutzt eine sprachabhängige Vorgabe, während »None« angibt, dass keine "
-"Papiergröße vorgegeben ist."
+"Papiergröße vorgegeben ist. Bestimmte Größennamen sind typischerweise "
+"»Letter« oder »A4«. Die Vorgabe ist »Auto«."
 
 #. type: TP
 #: cupsd.conf.man.in:130
@@ -2532,12 +2493,12 @@ msgstr "B<DefaultPolicy >I<Richtlinienname>"
 #. #DefaultShared
 #. type: Plain text
 #: cupsd.conf.man.in:135
-#, fuzzy
-#| msgid "Specifies the default access policy to use."
 msgid ""
 "Specifies the default access policy to use.  The default access policy is "
 "\"default\"."
-msgstr "Spezifiziert die zu verwendende Standardzugriffsrichtlinie."
+msgstr ""
+"Spezifiziert die zu verwendende Standardzugriffsrichtlinie. Die "
+"Standardzugriffsrichtlinie ist »Default«."
 
 #. type: TP
 #: cupsd.conf.man.in:135
@@ -2554,12 +2515,10 @@ msgstr "B<DefaultShared No>"
 #. #DirtyCleanInterval
 #. type: Plain text
 #: cupsd.conf.man.in:142
-#, fuzzy
-#| msgid "Specifies whether local printers are shared by default."
 msgid ""
 "Specifies whether local printers are shared by default.  The default is \"Yes"
 "\"."
-msgstr "Spezifiziert, ob lokale Drucker standardmäßig freigegeben sind."
+msgstr "Spezifiziert, ob lokale Drucker standardmäßig freigegeben sind. Die Vorgabe ist »Yes«."
 
 #. type: TP
 #: cupsd.conf.man.in:142
@@ -2570,11 +2529,6 @@ msgstr "B<DirtyCleanInterval >I<Sekunden>"
 #. #ErrorPolicy
 #. type: Plain text
 #: cupsd.conf.man.in:148
-#, fuzzy
-#| msgid ""
-#| "Specifies the delay for updating of configuration and state files. A "
-#| "value of 0 causes the update to happen as soon as possible, typically "
-#| "within a few milliseconds."
 msgid ""
 "Specifies the delay for updating of configuration and state files.  A value "
 "of 0 causes the update to happen as soon as possible, typically within a few "
@@ -2583,7 +2537,7 @@ msgstr ""
 "Gibt die Verzögerungszeit für die Aktualisierung von Konfigurations- und "
 "Statusdateien an. Ein Wert von 0 veranlasst, dass die Aktualisierung so "
 "schnell wie möglich erfolgt, typischerweise innerhalb von wenigen "
-"Millisekunden."
+"Millisekunden. Die Vorgabe ist »30«."
 
 #. type: TP
 #: cupsd.conf.man.in:148
@@ -2676,24 +2630,18 @@ msgstr "B<FilterNice >I<Nice-Wert>"
 #. #GSSServiceName
 #. type: Plain text
 #: cupsd.conf.man.in:178
-#, fuzzy
-#| msgid ""
-#| "Specifies the scheduling priority (\"nice\" value) of filters that are "
-#| "run to print a job."
 msgid ""
 "Specifies the scheduling priority ( B<nice>(8)  value) of filters that are "
 "run to print a job.  The nice value ranges from 0, the highest priority, to "
 "19, the lowest priority.  The default is 0."
 msgstr ""
-"Spezifiziert die Planungspriorität (»nice«-Wert) von Filtern, die laufen, um "
-"einen Druckauftrag auszudrucken."
+"Spezifiziert die Planungspriorität (B<nice>(8)-Wert) von Filtern, die laufen, um "
+"einen Druckauftrag auszudrucken. Die »nice«-Werte liegen im Bereich von 0 "
+"(der höchsten Priorität) bis zu 19, der niedrigsten Priorität. Die Vorgabe "
+"ist 0."
 
 #. type: Plain text
 #: cupsd.conf.man.in:182
-#, fuzzy
-#| msgid ""
-#| "Specifies the service name when using Kerberos authentication. The "
-#| "default service name is \"http\"."
 msgid ""
 "Specifies the service name when using Kerberos authentication.  The default "
 "service name is \"http.\""
@@ -2742,17 +2690,13 @@ msgstr "B<JobKillDelay >I<Sekunden>"
 #. #JobRetryInterval
 #. type: Plain text
 #: cupsd.conf.man.in:202
-#, fuzzy
-#| msgid ""
-#| "Specifies the number of seconds to wait before killing the filters and "
-#| "backend associated with a canceled or held job."
 msgid ""
 "Specifies the number of seconds to wait before killing the filters and "
 "backend associated with a canceled or held job.  The default is \"30\"."
 msgstr ""
 "Spezifiziert die Anzahl von Sekunden zum Warten, bevor die Filter und "
 "Backends beendet werden, die mit einem abgebrochenen oder angehaltenen "
-"Druckauftrag verbunden sind."
+"Druckauftrag verbunden sind. Die Vorgabe ist »30«."
 
 #. type: TP
 #: cupsd.conf.man.in:202
@@ -2769,6 +2713,10 @@ msgid ""
 "whose error policy is \"retry-job\" or \"retry-current-job\".  The default "
 "is \"30\"."
 msgstr ""
+"Spezifiziert das Intervall in Sekunden, in dem der Auftrag erneut versucht "
+"wird. Dies wird typischerweise für Fax-Warteschlangen verwandt, kann aber "
+"auch mit normalen Druckwarteschlangen verwendet werden, deren Fehlerrichtlinie "
+"»retry-job« oder »retry-current-job« ist. Die Vorgabe ist »30«."
 
 #. type: TP
 #: cupsd.conf.man.in:208
@@ -2785,6 +2733,10 @@ msgid ""
 "error policy is \"retry-job\" or \"retry-current-job\".  The default is "
 "\"5\"."
 msgstr ""
+"Spezifiziert die Anzahl der Wiederholungen für Aufträge. Dies wird "
+"typischerweise für Fax-Warteschlangen verwandt, kann aber auch mit normalen "
+"Druckwarteschlangen verwendet werden, deren Fehlerrichtlinie »retry-job« oder "
+"»retry-current-job« ist. Die Vorgabe ist »5«."
 
 #. type: TP
 #: cupsd.conf.man.in:214
@@ -2801,12 +2753,12 @@ msgstr "B<KeepAlive No>"
 #. #KeepAliveTimeout
 #. type: Plain text
 #: cupsd.conf.man.in:221
-#, fuzzy
-#| msgid "Specifies whether to support HTTP keep-alive connections."
 msgid ""
 "Specifies whether to support HTTP keep-alive connections.  The default is "
 "\"Yes\"."
-msgstr "Spezifiziert, ob HTTP-keep-alive-Verbindungen unterstützt werden."
+msgstr ""
+"Spezifiziert, ob HTTP-keep-alive-Verbindungen unterstützt werden. Die Vorgabe "
+"ist »Yes«."
 
 #. type: TP
 #: cupsd.conf.man.in:221
@@ -2821,50 +2773,49 @@ msgid ""
 "Specifies how long an idle client connection remains open.  The default is "
 "\"30\"."
 msgstr ""
+"Spezifiziert, wie lange leer laufende Client-Verbindugnen offen bleiben "
+"sollen. Die Vorgabe ist »30«."
 
 #. type: TP
 #: cupsd.conf.man.in:226
-#, fuzzy, no-wrap
-#| msgid "E<lt>Limit operationsE<gt> ... E<lt>/LimitE<gt>"
+#, no-wrap
 msgid "B<E<lt>Limit >I<operation >...B<E<gt> >... B<E<lt>/LimitE<gt>>"
-msgstr "E<lt>Limit operationsE<gt> … E<lt>/LimitE<gt>"
+msgstr "B<E<lt>Limit >I<Vorgang >…B<E<gt> >… B<E<lt>/LimitE<gt>>"
 
 #. #Limit
+# FIXME: IPP OPERATIONS → IPP OPERATION NAMES ?
 #. type: Plain text
 #: cupsd.conf.man.in:230
-#, fuzzy
-#| msgid "Specifies the IPP operations that are being limited inside a policy."
 msgid ""
 "Specifies the IPP operations that are being limited inside a Policy section. "
 "IPP operation names are listed below in the section \"IPP OPERATIONS\"."
 msgstr ""
-"Spezifiziert die IPP-Operationen, die innerhalb einer Richtlinie begrenzt "
-"werden."
+"Spezifiziert die IPP-Vorgänge, die innerhalb eines Richtlinienabschnitts begrenzt "
+"werden. IPP-Vorgangsnamen sind weiter unten im Abschnitt »IPP-VORGÄNGE« beschrieben."
 
 #. type: TP
 #: cupsd.conf.man.in:230
-#, fuzzy, no-wrap
-#| msgid "E<lt>Limit methodsE<gt> ... E<lt>/LimitE<gt>"
+#, no-wrap
 msgid "B<E<lt>Limit >I<method >...B<E<gt> >... B<E<lt>/LimitE<gt>>"
-msgstr "E<lt>Limit methodsE<gt> … E<lt>/LimitE<gt>"
+msgstr "B<E<lt>Limit >I<Methode >…B<E<gt> >… B<E<lt>/LimitE<gt>>"
 
 #. type: TP
 #: cupsd.conf.man.in:233
-#, fuzzy, no-wrap
-#| msgid "E<lt>LimitExcept methodsE<gt> ... E<lt>/LimitExceptE<gt>"
+#, no-wrap
 msgid "B<E<lt>LimitExcept >I<method >...B<E<gt> >... B<E<lt>/LimitExceptE<gt>>"
-msgstr "E<lt>LimitExcept methodsE<gt> … E<lt>/LimitExceptE<gt>"
+msgstr "B<E<lt>LimitExcept >I<Methode >…B<E<gt> >… B<E<lt>/LimitExceptE<gt>>"
 
 #. #LimitRequestBody
+# FIXME: HTTP METHODS does not exist; HTTP METHOD NAMES?
 #. type: Plain text
 #: cupsd.conf.man.in:237
-#, fuzzy
-#| msgid "Specifies the HTTP methods that are being limited inside a location."
 msgid ""
 "Specifies the HTTP methods that are being limited inside a Location section. "
 "HTTP method names are listed below in the section \"HTTP METHODS\"."
 msgstr ""
-"Spezifiziert die HTTP-Methoden, die innerhalb eines Ortes begrenzt werden."
+"Spezifiziert die HTTP-Methoden, die innerhalb eines »Location«-Abschnittes "
+"begrenzt werden. HTTP-Methodennamen sind weiter unten im Abschnitt »HTTP-"
+"METHODEN« aufgeführt."
 
 #. type: TP
 #: cupsd.conf.man.in:237
@@ -2879,6 +2830,8 @@ msgid ""
 "Specifies the maximum size of print files, IPP requests, and HTML form "
 "data.  The default is \"0\" which disables the limit check."
 msgstr ""
+"Legt die maximale Größe von Druckdateien, IPP-Anfragen und HTML-Formulardaten "
+"fest. Die Vorgabe ist »0«, womit die Überprüfung deaktiviert wird."
 
 #. type: TP
 #: cupsd.conf.man.in:242
@@ -2935,10 +2888,9 @@ msgstr ""
 
 #. type: TP
 #: cupsd.conf.man.in:261
-#, fuzzy, no-wrap
-#| msgid "E<lt>Location /pathE<gt> ... E<lt>/LocationE<gt>"
+#, no-wrap
 msgid "B<E<lt>Location >I</path>B<E<gt> >... B<E<lt>/LocationE<gt>>"
-msgstr "E<lt>Location /pathE<gt> … E<lt>/LocationE<gt>"
+msgstr "B<E<lt>Location >I</Pfad>B<E<gt> >… B<E<lt>/LocationE<gt>>"
 
 #. #LogDebugHistory
 #. type: Plain text
@@ -2948,14 +2900,15 @@ msgstr "E<lt>Location /pathE<gt> … E<lt>/LocationE<gt>"
 msgid ""
 "Specifies access control for the named location.  Paths are documented below "
 "in the section \"LOCATION PATHS\"."
-msgstr "Spezifiziert die Zugriffssteuerung für den benannten Ort."
+msgstr ""
+"Spezifiziert die Zugriffssteuerung für den benannten Ort. Pfade werden weiter "
+"unten im Abschnitt »ORTSPFADE« beschrieben."
 
 #. type: TP
 #: cupsd.conf.man.in:266
-#, fuzzy, no-wrap
-#| msgid "LogDebugHistory #-messages"
+#, no-wrap
 msgid "B<LogDebugHistory >I<number>"
-msgstr "LogDebugHistory #-messages"
+msgstr "B<LogDebugHistory >I<Anzahl>"
 
 #. #LogLevel
 #. type: Plain text
@@ -3067,7 +3020,6 @@ msgstr ""
 msgid "B<MaxClients >I<number>"
 msgstr "B<MaxClients >I<Anzahl>"
 
-# type: Plain text
 #. #MaxClientPerHost
 #. type: Plain text
 #: cupsd.conf.man.in:306
@@ -3079,13 +3031,11 @@ msgid ""
 msgstr ""
 "Spezifiziert die maximale Anzahl an simultan zu unterstützenden Clients."
 
-# type: TP
 #. type: TP
 #: cupsd.conf.man.in:306
-#, fuzzy, no-wrap
-#| msgid "MaxClientsPerHost number"
+#, no-wrap
 msgid "B<MaxClientsPerHost >I<number>"
-msgstr "MaxClientsPerHost Anzahl"
+msgstr "B<MaxClientsPerHost >I<Anzahl>"
 
 #. #MaxCopies
 #. type: Plain text
@@ -3103,10 +3053,9 @@ msgstr ""
 
 #. type: TP
 #: cupsd.conf.man.in:312
-#, fuzzy, no-wrap
-#| msgid "MaxCopies number"
+#, no-wrap
 msgid "B<MaxCopies >I<number>"
-msgstr "MaxCopies Anzahl"
+msgstr "B<MaxCopies >I<Anzahl>"
 
 #. #MaxHoldTime
 #. type: Plain text
@@ -3123,10 +3072,9 @@ msgstr ""
 
 #. type: TP
 #: cupsd.conf.man.in:317
-#, fuzzy, no-wrap
-#| msgid "MaxHoldTime seconds"
+#, no-wrap
 msgid "B<MaxHoldTime >I<seconds>"
-msgstr "MaxHoldTime Sekunden"
+msgstr "B<MaxHoldTime >I<Sekunden>"
 
 #. #MaxJobs
 #. type: Plain text
@@ -3147,10 +3095,9 @@ msgstr ""
 
 #. type: TP
 #: cupsd.conf.man.in:322
-#, fuzzy, no-wrap
-#| msgid "MaxJobs number"
+#, no-wrap
 msgid "B<MaxJobs >I<number>"
-msgstr "MaxJobs Anzahl"
+msgstr "B<MaxJobs >I<Anzahl>"
 
 #. #MaxJobsPerPrinter
 #. type: Plain text
@@ -3162,10 +3109,9 @@ msgstr ""
 
 #. type: TP
 #: cupsd.conf.man.in:328
-#, fuzzy, no-wrap
-#| msgid "MaxJobsPerPrinter number"
+#, no-wrap
 msgid "B<MaxJobsPerPrinter >I<number>"
-msgstr "MaxJobsPerPrinter Anzahl"
+msgstr "B<MaxJobsPerPrinter >I<Anzahl>"
 
 #. #MaxJobsPerUser
 #. type: Plain text
@@ -3182,10 +3128,9 @@ msgstr ""
 
 #. type: TP
 #: cupsd.conf.man.in:333
-#, fuzzy, no-wrap
-#| msgid "MaxJobsPerUser number"
+#, no-wrap
 msgid "B<MaxJobsPerUser >I<number>"
-msgstr "MaxJobsPerUser Anzahl"
+msgstr "B<MaxJobsPerUser >I<Anzahl>"
 
 #. #MaxJobTime
 #. type: Plain text
@@ -3205,7 +3150,7 @@ msgstr ""
 #, fuzzy, no-wrap
 #| msgid "MaxJobTime seconds"
 msgid "B<MaxJobTime >I<seconds>"
-msgstr "MaxJobTime Sekunden"
+msgstr "B<MaxJobTime >I<Sekunden>"
 
 #. #MaxLogSize
 #. type: Plain text
@@ -3228,7 +3173,7 @@ msgstr ""
 #: cupsd.conf.man.in:344
 #, no-wrap
 msgid "B<MaxLogSize >I<size>"
-msgstr ""
+msgstr "B<MaxLogSize >I<Größe>"
 
 #. #MultipleOperationTimeout
 #. type: Plain text
@@ -3246,10 +3191,9 @@ msgstr ""
 
 #. type: TP
 #: cupsd.conf.man.in:350
-#, fuzzy, no-wrap
-#| msgid "MultipleOperationTimeout seconds"
+#, no-wrap
 msgid "B<MultipleOperationTimeout >I<seconds>"
-msgstr "MultipleOperationTimeout Sekunden"
+msgstr "B<MultipleOperationTimeout >I<Sekunden>"
 
 # type: Plain text
 #. #PageLogFormat
@@ -3268,10 +3212,9 @@ msgstr ""
 
 #. type: TP
 #: cupsd.conf.man.in:355
-#, fuzzy, no-wrap
-#| msgid "PageLogFormat format string"
+#, no-wrap
 msgid "B<PageLogFormat >I<format-string>"
-msgstr "PageLogFormat Format Zeichenkette"
+msgstr "B<PageLogFormat >I<Formatzeichenkette>"
 
 #. type: Plain text
 #: cupsd.conf.man.in:360
@@ -3306,10 +3249,9 @@ msgstr ""
 
 #. type: TP
 #: cupsd.conf.man.in:374
-#, fuzzy, no-wrap
-#| msgid "PassEnv variable [... variable]"
+#, no-wrap
 msgid "B<PassEnv >I<variable >[ ... I<variable >]"
-msgstr "PassEnv Variable [… Variable]"
+msgstr "B<PassEnv >I<Variable >[ … I<Variable >]"
 
 #. #Policy
 #. type: Plain text
@@ -3332,10 +3274,9 @@ msgstr "Spezifiziert die Zugriffskontrolle für die genannte Richtlinie."
 
 #. type: TP
 #: cupsd.conf.man.in:382
-#, fuzzy, no-wrap
-#| msgid "Port number"
+#, no-wrap
 msgid "B<Port >I<number>"
-msgstr "Port Nummer"
+msgstr "B<Port >I<Nummer>"
 
 #. #PreserveJobFiles
 #. type: Plain text
@@ -3696,17 +3637,15 @@ msgstr "Spezifiziert die HTTP-Zeitüberschreitung in Sekunden."
 
 #. type: TP
 #: cupsd.conf.man.in:500
-#, fuzzy, no-wrap
-#| msgid "WebInterface yes"
+#, no-wrap
 msgid "B<WebInterface yes>"
-msgstr "WebInterface yes"
+msgstr "B<WebInterface yes>"
 
 #. type: TP
 #: cupsd.conf.man.in:502
-#, fuzzy, no-wrap
-#| msgid "WebInterface no"
+#, no-wrap
 msgid "B<WebInterface no>"
-msgstr "WebInterface no"
+msgstr "B<WebInterface no>"
 
 #. type: Plain text
 #: cupsd.conf.man.in:506
@@ -3719,9 +3658,8 @@ msgstr "Spezifiziert, ob die Webschnittstelle freigegeben ist."
 #: cupsd.conf.man.in:506
 #, no-wrap
 msgid "HTTP METHOD NAMES"
-msgstr ""
+msgstr "HTTP-METHODENNAMEN"
 
-# type: Plain text
 #. type: Plain text
 #: cupsd.conf.man.in:509
 #, fuzzy
@@ -3736,7 +3674,7 @@ msgstr ""
 #: cupsd.conf.man.in:509
 #, no-wrap
 msgid "GET"
-msgstr ""
+msgstr "GET"
 
 #. type: Plain text
 #: cupsd.conf.man.in:512
@@ -3749,7 +3687,7 @@ msgstr ""
 #: cupsd.conf.man.in:512
 #, no-wrap
 msgid "HEAD"
-msgstr ""
+msgstr "HEAD"
 
 #. type: Plain text
 #: cupsd.conf.man.in:515
@@ -3766,7 +3704,7 @@ msgstr ""
 #: cupsd.conf.man.in:518
 #, no-wrap
 msgid "POST"
-msgstr ""
+msgstr "POST"
 
 #. type: Plain text
 #: cupsd.conf.man.in:521
@@ -3779,7 +3717,7 @@ msgstr ""
 #: cupsd.conf.man.in:521
 #, no-wrap
 msgid "PUT"
-msgstr ""
+msgstr "PUT"
 
 #. type: Plain text
 #: cupsd.conf.man.in:524
@@ -3793,9 +3731,8 @@ msgstr "Verwende die benannte Konfigurationsdatei."
 #, fuzzy, no-wrap
 #| msgid "OPERATION CODES"
 msgid "IPP OPERATION NAMES"
-msgstr "BETRIEBS-CODES"
+msgstr "IPP-VORGANGSNAMEN"
 
-# type: Plain text
 #. type: Plain text
 #: cupsd.conf.man.in:527
 #, fuzzy
@@ -3807,7 +3744,7 @@ msgstr "Die folgenden Optionen werden von I<lp> erkannt:"
 #: cupsd.conf.man.in:527
 #, no-wrap
 msgid "CUPS-Accept-Jobs"
-msgstr ""
+msgstr "CUPS-Accept-Jobs"
 
 #. type: Plain text
 #: cupsd.conf.man.in:530
@@ -3820,7 +3757,7 @@ msgstr "Spezifiziert, ob der Drucker neue Aufträge akzeptiert."
 #: cupsd.conf.man.in:530
 #, no-wrap
 msgid "CUPS-Add-Modify-Class"
-msgstr ""
+msgstr "CUPS-Add-Modify-Class"
 
 #. type: Plain text
 #: cupsd.conf.man.in:533
@@ -4332,9 +4269,8 @@ msgstr "Setzt eine Auftrags-Option."
 #: cupsd.conf.man.in:653
 #, no-wrap
 msgid "Set-Printer-Attributes"
-msgstr ""
+msgstr "Set-Printer-Attributes"
 
-# type: Plain text
 #. type: Plain text
 #: cupsd.conf.man.in:656
 #, fuzzy
@@ -4347,7 +4283,7 @@ msgstr ""
 #: cupsd.conf.man.in:656
 #, no-wrap
 msgid "Validate-Job"
-msgstr ""
+msgstr "Validate-Job"
 
 #. type: Plain text
 #: cupsd.conf.man.in:659
@@ -4358,9 +4294,8 @@ msgstr ""
 #: cupsd.conf.man.in:659
 #, no-wrap
 msgid "LOCATION PATHS"
-msgstr ""
+msgstr "ORTSPFADE"
 
-# type: Plain text
 #. type: Plain text
 #: cupsd.conf.man.in:662
 #, fuzzy
@@ -4375,7 +4310,7 @@ msgstr ""
 #: cupsd.conf.man.in:662
 #, no-wrap
 msgid "/"
-msgstr ""
+msgstr "/"
 
 #. type: Plain text
 #: cupsd.conf.man.in:665
@@ -4384,10 +4319,9 @@ msgstr ""
 
 #. type: TP
 #: cupsd.conf.man.in:665
-#, fuzzy, no-wrap
-#| msgid "lpadmin"
+#, no-wrap
 msgid "/admin"
-msgstr "lpadmin"
+msgstr "/admin"
 
 #. type: Plain text
 #: cupsd.conf.man.in:668
@@ -5108,6 +5042,9 @@ msgid ""
 "    LogLevel debug2\n"
 "    MaxLogSize 32m\n"
 msgstr ""
+"    AccessLogLevel all\n"
+"    LogLevel debug2\n"
+"    MaxLogSize 32m\n"
 
 #. type: Plain text
 #: cupsd.conf.man.in:852
@@ -5126,55 +5063,50 @@ msgid ""
 "    Satisfy any\n"
 "    E<lt>/LocationE<gt>\n"
 msgstr ""
+"    E<lt>Location /E<gt>\n"
+"    Order allow,deny\n"
+"    Allow from 10./8\n"
+"    AuthType Basic\n"
+"    Require valid-user\n"
+"    Satisfy any\n"
+"    E<lt>/LocationE<gt>\n"
 
 #. type: Plain text
 #: cupsd.conf.man.in:871
-#, fuzzy
-#| msgid ""
-#| "I<classes.conf(5)>, I<cups-files.conf(5)>, I<cupsd(8)>, I<mime.convs(5)>, "
-#| "I<mime.types(5)>, I<printers.conf(5)>, I<subscriptions.conf(5)>,"
 msgid ""
 "B<classes.conf>(5), B<cups-files.conf>(5), B<cupsd>(8), B<mime.convs>(5), "
 "B<mime.types>(5), B<printers.conf>(5), B<subscriptions.conf>(5), CUPS Online "
 "Help (http://localhost:631/help)"
 msgstr ""
-"I<classes.conf(5)>, I<cups-files.conf(5)>, I<cupsd(8)>, I<mime.convs(5)>, "
-"I<mime.types(5)>, I<printers.conf(5)>, I<subscriptions.conf(5)>,"
+"B<classes.conf>(5), B<cups-files.conf>(5), B<cupsd>(8), B<mime.convs>(5), "
+"B<mime.types>(5), B<printers.conf>(5), B<subscriptions.conf>(5), CUPS-Online-"
+"Hilfe (http://localhost:631/help)"
 
 #. type: TH
 #: cupsd-helper.man:15
-#, fuzzy, no-wrap
-#| msgid "cups-lpd"
+#, no-wrap
 msgid "cupsd-helper"
-msgstr "cups-lpd"
+msgstr "cupsd-helper"
 
 #. type: Plain text
 #: cupsd-helper.man:18
-#, fuzzy
-#| msgid "cupsd - cups scheduler"
 msgid "cupsd-helper - cupsd helper programs"
-msgstr "cupsd - Cups-Autragsplaner"
+msgstr "cupsd-helper - cupsd-Helferprogramme"
 
 #. type: Plain text
 #: cupsd-helper.man:24
-#, fuzzy
-#| msgid "B<cups-deviced> I<request-id limit user-id options>"
 msgid "B<cups-deviced> I<request-id> I<limit> I<user-id> I<options>"
-msgstr "B<cups-deviced> I<Anfrage-ID Grenze Benutzer-ID Optionen>"
+msgstr "B<cups-deviced> I<Anfrage-ID> I<Begrenzung> I<Benutzer-ID> I<Optionen>"
 
 #. type: Plain text
 #: cupsd-helper.man:28
-#, fuzzy
-#| msgid "B<cups-driverd> cat I<ppd-name>"
 msgid "B<cups-driverd> B<cat> I<ppd-name>"
-msgstr "B<cups-driverd> cat I<PPD-Name>"
+msgstr "B<cups-driverd> B<cat> I<PPD-Name>"
 
 #. type: Plain text
 #: cupsd-helper.man:34
-#, fuzzy
-#| msgid "B<cups-driverd> list I<request_id limit options>"
 msgid "B<cups-driverd> B<list> I<request_id> I<limit> I<options>"
-msgstr "B<cups-driverd> list I<Anfrage-ID Grenze Optionen>"
+msgstr "B<cups-driverd> B<list> I<Anfrage-ID> I<Begrenzung> I<Optionen>"
 
 #. type: Plain text
 #: cupsd-helper.man:51
@@ -5182,6 +5114,8 @@ msgid ""
 "B<cups-exec> I<sandbox-profile> [ I<-g> I<group-id> ] [ I<-n> I<nice-"
 "value> ] [ I<-u> I<user-id> ] I</path/to/program> I<argv0> I<...> I<argvN>"
 msgstr ""
+"B<cups-exec> I<Spielwiesenprofil> [ I<-g> I<Gruppen-ID> ] [ I<-n> I<nice-"
+"Wert> ] [ I<-u> I<Benutzer-ID> ] I</Pfad/zu/Programm> I<argv0> I<…> I<argvN>"
 
 #. type: Plain text
 #: cupsd-helper.man:57
@@ -5191,6 +5125,10 @@ msgid ""
 "CUPS B<backend>(7)  with no arguments in order to discover the available "
 "printers."
 msgstr ""
+"Die Programme B<cupsd-helper> führen langlaufende Vorgänge im Auftrag des "
+"Auftragsplaners, B<cupsd>(8), durch. Das Helferprogramm B<cups-deviced> führt "
+"jedes CUPS-B<backend>(7) ohne Argumente aus, um verfügbare Drucker zu "
+"entdecken."
 
 #. type: Plain text
 #: cupsd-helper.man:59
@@ -5199,6 +5137,9 @@ msgid ""
 "subset of \"matching\" printer drivers, or a copy of a specific driver PPD "
 "file."
 msgstr ""
+"Das Helferprogramm B<cups-driverd> listet alle verfügbaren Druckertreiber "
+"auf, eine Teilmenge, die auf Druckertreiber »passt« oder eine Kopie einer "
+"bestimmten PPD-Treiberdatei."
 
 #. type: Plain text
 #: cupsd-helper.man:61
@@ -5206,6 +5147,8 @@ msgid ""
 "The B<cups-exec> helper program runs backends, filters, and other programs. "
 "On OS X these programs are run in a secure sandbox."
 msgstr ""
+"Das Helferprogramm B<cups-exec> führt Backends, Filter und andere Programme "
+"aus. Unter OS X laufen diese Programme in einer sicheren Spielwiese."
 
 #. type: Plain text
 #: cupsd-helper.man:63
@@ -5213,6 +5156,8 @@ msgid ""
 "The B<cups-driverd> program looks for PPD and driver information files in "
 "the following directories:"
 msgstr ""
+"Das Programm B<cups-driverd> sucht in den folgenden Verzeichnissen nach PPDs "
+"und Treiberinformationen:"
 
 #. type: Plain text
 #: cupsd-helper.man:72
@@ -5226,6 +5171,13 @@ msgid ""
 "    I</usr/share/cups/model>\n"
 "    I</usr/share/ppd>\n"
 msgstr ""
+"    I</Library/Printers>\n"
+"    I</opt/share/ppd>\n"
+"    I</System/Library/Printers>\n"
+"    I</usr/local/share/ppd>\n"
+"    I</usr/share/cups/drv>\n"
+"    I</usr/share/cups/model>\n"
+"    I</usr/share/ppd>\n"
 
 #. type: Plain text
 #: cupsd-helper.man:79
@@ -5380,6 +5332,8 @@ msgid ""
 "The I<version> field is the HTTP specification version used by the client.  "
 "For CUPS clients this will always be \"HTTP/1.1\"."
 msgstr ""
+"Das Feld I<Version> ist die vom Client verwandte HTTP-Spezifikationsversion. "
+"Für CUPS-Clients wird sie stets »HTTP/1.1« sein."
 
 #. type: Plain text
 #: cupsd-logs.man:73
@@ -5398,7 +5352,7 @@ msgstr "200"
 #. type: Plain text
 #: cupsd-logs.man:77
 msgid "Successful operation."
-msgstr ""
+msgstr "Vorgang erfolgreich."
 
 #. type: TP
 #: cupsd-logs.man:77
@@ -5409,7 +5363,7 @@ msgstr "201"
 #. type: Plain text
 #: cupsd-logs.man:80
 msgid "File created/modified successfully."
-msgstr ""
+msgstr "Datei erfolgreich erstellt/verändert."
 
 #. type: TP
 #: cupsd-logs.man:80
@@ -5420,7 +5374,7 @@ msgstr "304"
 #. type: Plain text
 #: cupsd-logs.man:83
 msgid "The requested file has not changed."
-msgstr ""
+msgstr "Die angeforderte Datei hat sich nicht geändert."
 
 #. type: TP
 #: cupsd-logs.man:83
@@ -5463,7 +5417,7 @@ msgstr ""
 #: cupsd-logs.man:92
 #, no-wrap
 msgid "404"
-msgstr ""
+msgstr "404"
 
 #. type: Plain text
 #: cupsd-logs.man:95
@@ -5474,7 +5428,7 @@ msgstr ""
 #: cupsd-logs.man:95
 #, no-wrap
 msgid "405"
-msgstr ""
+msgstr "405"
 
 #. type: Plain text
 #: cupsd-logs.man:98
@@ -5487,7 +5441,7 @@ msgstr ""
 #: cupsd-logs.man:98
 #, no-wrap
 msgid "413"
-msgstr ""
+msgstr "413"
 
 #. type: Plain text
 #: cupsd-logs.man:101
@@ -5500,7 +5454,7 @@ msgstr ""
 #: cupsd-logs.man:101
 #, no-wrap
 msgid "426"
-msgstr ""
+msgstr "426"
 
 #. type: Plain text
 #: cupsd-logs.man:104
@@ -5511,7 +5465,7 @@ msgstr ""
 #: cupsd-logs.man:104
 #, no-wrap
 msgid "500"
-msgstr ""
+msgstr "500"
 
 #. type: Plain text
 #: cupsd-logs.man:107
@@ -5524,7 +5478,7 @@ msgstr ""
 #: cupsd-logs.man:107
 #, no-wrap
 msgid "501"
-msgstr ""
+msgstr "501"
 
 #. type: Plain text
 #: cupsd-logs.man:110
@@ -5537,7 +5491,7 @@ msgstr ""
 #: cupsd-logs.man:110
 #, no-wrap
 msgid "505"
-msgstr ""
+msgstr "505"
 
 #. type: Plain text
 #: cupsd-logs.man:113
@@ -5615,7 +5569,7 @@ msgstr ""
 #: cupsd-logs.man:148
 #, no-wrap
 msgid "A"
-msgstr ""
+msgstr "A"
 
 #. type: Plain text
 #: cupsd-logs.man:151
@@ -5624,10 +5578,9 @@ msgstr ""
 
 #. type: TP
 #: cupsd-logs.man:151
-#, fuzzy, no-wrap
-#| msgid "-C"
+#, no-wrap
 msgid "C"
-msgstr "-C"
+msgstr "C"
 
 #. type: Plain text
 #: cupsd-logs.man:154
@@ -5636,12 +5589,10 @@ msgstr ""
 
 #. type: TP
 #: cupsd-logs.man:154
-#, fuzzy, no-wrap
-#| msgid "-D"
+#, no-wrap
 msgid "D"
-msgstr "-D"
+msgstr "D"
 
-# type: Plain text
 #. type: Plain text
 #: cupsd-logs.man:157
 #, fuzzy
@@ -5649,20 +5600,17 @@ msgstr "-D"
 msgid "Debugging message (LogLevel debug)"
 msgstr "Fehlersuchenachrichten"
 
-# type: TP
 #. type: TP
 #: cupsd-logs.man:157
 #, fuzzy, no-wrap
-#| msgid "-d"
 msgid "d"
-msgstr "-d"
+msgstr "d"
 
 #. type: Plain text
 #: cupsd-logs.man:160
 msgid "Detailed debugging message (LogLevel debug2)"
 msgstr ""
 
-# type: TP
 #. type: TP
 #: cupsd-logs.man:160
 #, fuzzy, no-wrap
@@ -5882,15 +5830,14 @@ msgid ""
 "IPP Create-Job or Print-Job requests or \"-\" if none was provided."
 msgstr ""
 
-# type: Plain text
 #. type: Plain text
 #: cupsd-logs.man:237
-#, fuzzy
-#| msgid "I<cupsaccept(8)>, I<cupsenable(8)>, I<lpinfo(8)>, I<lpoptions(1)>,"
 msgid ""
 "B<cupsd>(8), B<cupsd.conf>(5), B<cups-files.conf>(5), CUPS Online Help "
 "(http://localhost:631/help)"
-msgstr "I<cupsaccept(8)>, I<cupsenable(8)>, I<lpinfo(8)>, I<lpoptions(1)>,"
+msgstr ""
+"B<cupsd>(8), B<cupsd.conf>(5), B<cups-files.conf>(5), CUPS-Online-Hilfe "
+"(http://localhost:631/help)"
 
 #. type: TH
 #: cupsd.man.in:15
@@ -5900,10 +5847,9 @@ msgstr "cupsd"
 
 #. type: TH
 #: cupsd.man.in:15
-#, fuzzy, no-wrap
-#| msgid "28 July 2014"
+#, no-wrap
 msgid "8 July 2014"
-msgstr "28. Juli 2014"
+msgstr "8. Juli 2014"
 
 #. type: Plain text
 #: cupsd.man.in:18
@@ -5912,28 +5858,22 @@ msgstr "cupsd - Cups-Autragsplaner"
 
 #. type: Plain text
 #: cupsd.man.in:34
-#, fuzzy
-#| msgid "B<cupsd> [ -c I<config-file> ] [ -f ] [ -F ] [ -h ] [ -l ] [ -t ]"
 msgid ""
 "B<cupsd> [ B<-c> I<config-file> ] [ B<-f> ] [ B<-F> ] [ B<-h> ] [ B<-l> ] "
 "[ B<-t> ]"
-msgstr "B<cupsd> [ -c I<Konfig-Datei> ] [ -f ] [ -F ] [ -h ] [ -l ] [ -t ]"
+msgstr ""
+"B<cupsd> [ B<-c> I<Konfig-Datei> ] [ B<-f> ] [ B<-F> ] [ B<-h> ] [ B<-l> ] "
+"[ B<-t> ]"
 
 #. type: Plain text
 #: cupsd.man.in:39
-#, fuzzy
-#| msgid ""
-#| "I<cupsd> is the scheduler for CUPS. It implements a printing system based "
-#| "upon the Internet Printing Protocol, version 2.1.  If no options are "
-#| "specified on the command-line then the default configuration file I</etc/"
-#| "cups/cupsd.conf> will be used."
 msgid ""
 "B<cupsd> is the scheduler for CUPS. It implements a printing system based "
 "upon the Internet Printing Protocol, version 2.1. If no options are "
 "specified on the command-line then the default configuration file I</etc/"
 "cups/cupsd.conf> will be used."
 msgstr ""
-"I<cupsd> ist der Auftragsplaner (Scheduler) für das Common UNIX Printing "
+"B<cupsd> ist der Auftragsplaner (Scheduler) für das Common UNIX Printing "
 "System. Es implementiert ein Drucksystem, das auf dem Internet Printing "
 "Protocol Version 2.1 basiert. Falls auf der Befehlszeile keine Optionen "
 "angegeben werden, wird stattdessen die Standard-Konfigurationsdatei I</etc/"
@@ -5941,10 +5881,9 @@ msgstr ""
 
 #. type: TP
 #: cupsd.man.in:40
-#, fuzzy, no-wrap
-#| msgid "-c config-file"
+#, no-wrap
 msgid "B<-c>I<\\ config-file>"
-msgstr "-c Konfig-Datei"
+msgstr "B<-c>I<\\ Konfig-Datei>"
 
 #. type: Plain text
 #: cupsd.man.in:43
@@ -5955,19 +5894,15 @@ msgstr "Verwende die benannte Konfigurationsdatei."
 #: cupsd.man.in:43
 #, no-wrap
 msgid "B<-f>"
-msgstr ""
+msgstr "B<-f>"
 
 #. type: Plain text
 #: cupsd.man.in:48
-#, fuzzy
-#| msgid ""
-#| "Run I<cupsd> in the foreground; the default is to run in the background "
-#| "as a \"daemon\"."
 msgid ""
 "Run B<cupsd> in the foreground; the default is to run in the background as a "
 "\"daemon\"."
 msgstr ""
-"Führe I<cupsd> im Vordergrund aus; standardmäßig wird er im Hintergrund als "
+"Führe B<cupsd> im Vordergrund aus; standardmäßig wird er im Hintergrund als "
 "»Daemon« ausgeführt."
 
 #. type: TP
@@ -5978,19 +5913,14 @@ msgstr "B<-F>"
 
 #. type: Plain text
 #: cupsd.man.in:56
-#, fuzzy
-#| msgid ""
-#| "Run I<cupsd> in the foreground but detach the process from the "
-#| "controlling terminal and current directory. This is useful for running "
-#| "I<cupsd> from I<init(8)>."
 msgid ""
 "Run B<cupsd> in the foreground but detach the process from the controlling "
 "terminal and current directory. This is useful for running B<cupsd> from "
 "B<init>(8)."
 msgstr ""
-"Führe I<cupsd> im Vordergrund aus, aber kopple den Prozess von dem "
+"Führe B<cupsd> im Vordergrund aus, aber kopple den Prozess von dem "
 "steuernden Terminal und dem aktuellen Verzeichnis ab. Dies ist nützlich, um "
-"I<cupsd> von I<init(8)> aus auszuführen."
+"B<cupsd> von B<init>(8) aus auszuführen."
 
 #. type: TP
 #: cupsd.man.in:56 ../test/ippserver.man:91 lpr.man:93
@@ -5998,7 +5928,6 @@ msgstr ""
 msgid "B<-h>"
 msgstr "B<-h>"
 
-# type: Plain text
 #. type: Plain text
 #: cupsd.man.in:59
 msgid "Shows the program usage."
@@ -6831,17 +6760,15 @@ msgstr ""
 
 #. type: TP
 #: cups-files.conf.man.in:185
-#, fuzzy, no-wrap
-#| msgid "SyncOnClose Yes"
+#, no-wrap
 msgid "B<SyncOnClose Yes>"
-msgstr "SyncOnClose Yes"
+msgstr "B<SyncOnClose Yes>"
 
 #. type: TP
 #: cups-files.conf.man.in:187
-#, fuzzy, no-wrap
-#| msgid "SyncOnClose No"
+#, no-wrap
 msgid "B<SyncOnClose No>"
-msgstr "SyncOnClose No"
+msgstr "B<SyncOnClose No>"
 
 #. #SystemGroup
 #. type: Plain text
@@ -7917,10 +7844,6 @@ msgstr ""
 
 #. type: Plain text
 #: cups.man:143
-#, fuzzy
-#| msgid ""
-#| "I<cancel(1)>, I<cupsaccept(8)>, I<cupsenable(8)>, I<lp(1)>, I<lpr(1)>, "
-#| "I<lprm(1)>, I<lpstat(1)>,"
 msgid ""
 "B<cancel>(1), B<client.conf>(7), B<cupsctl>(8), B<cupsd>(8), B<lp>(1), "
 "B<lpadmin>(8), B<lpinfo>(8), B<lpoptions>(1), B<lpr>(1), B<lprm>(1), "
@@ -7928,8 +7851,11 @@ msgid ""
 "Web Site (http://www.CUPS.org), PWG Internet Printing Protocol Workgroup "
 "(http://www.pwg.org/ipp)"
 msgstr ""
-"I<cancel(1)>, I<cupsaccept(8)>, I<cupsenable(8)>, I<lp(1)>, I<lpr(1)>, "
-"I<lprm(1)>, I<lpstat(1)>,"
+"B<cancel>(1), B<client.conf>(7), B<cupsctl>(8), B<cupsd>(8), B<lp>(1), "
+"B<lpadmin>(8), B<lpinfo>(8), B<lpoptions>(1), B<lpr>(1), B<lprm>(1), "
+"B<lpq>(1), B<lpstat>(1), CUPS-Online-Hilfe (http://localhost:631/help), CUPS-"
+"Website (http://www.CUPS.org), PWG Internet Printing Protocol Workgroup "
+"(http://www.pwg.org/ipp)"
 
 #. type: TH
 #: cups-snmp.conf.man:15
@@ -7944,13 +7870,6 @@ msgstr "snmp.conf - SNMP-Konfigurationsdatei für CUPS"
 
 #. type: Plain text
 #: cups-snmp.conf.man:23
-#, fuzzy
-#| msgid ""
-#| "The I<snmp.conf> file configures how the standard CUPS network backends "
-#| "(http, https, ipp, ipps, lpd, snmp, and socket) access printer "
-#| "information using SNMPv1 and is normally located in the I</etc/cups> "
-#| "directory. Each line in the file can be a configuration directive, a "
-#| "blank line, or a comment. Comment lines start with the # character."
 msgid ""
 "The B<snmp.conf> file configures how the standard CUPS network backends "
 "(http, https, ipp, ipps, lpd, snmp, and socket) access printer information "
@@ -7958,7 +7877,7 @@ msgid ""
 "line in the file can be a configuration directive, a blank line, or a "
 "comment. Comment lines start with the # character."
 msgstr ""
-"Die Datei I<snmp.conf> konfiguriert, wie die Standard-CUPS-Netz-Backends "
+"Die Datei B<snmp.conf> konfiguriert, wie die Standard-CUPS-Netz-Backends "
 "(http, https, ipp, ipps, lpd, snmp und socket) auf Druckerinformationen "
 "mittels SNMPv1 zugreifen. Sie befindet sich normalerweise im Verzeichnis I</"
 "etc/cups>. Jede Zeile in der Datei kann eine Konfigurationsdirektive, eine "
@@ -7967,71 +7886,54 @@ msgstr ""
 
 #. type: Plain text
 #: cups-snmp.conf.man:26
-#, fuzzy
-#| msgid ""
-#| "The Community and DebugLevel directives are used by all backends. The "
-#| "remainder apply only to the SNMP backend (I<cups-snmp(8)>)."
 msgid ""
 "The Community and DebugLevel directives are used by all backends. The "
 "remainder apply only to the SNMP backend - B<cups-snmp>(8)."
 msgstr ""
 "Die Direktiven Community und DebugLevel werden von allen Backends verwandt. "
-"Die restlichen gelten nur für das SNMP-Backend (I<cups-snmp(8)>)."
+"Die restlichen gelten nur für das SNMP-Backend - B<cups-snmp>(8)."
 
 #. type: Plain text
 #: cups-snmp.conf.man:28
-#, fuzzy
-#| msgid "The following directives are understood in a test:"
 msgid "The following directives are understood by the CUPS network backends:"
-msgstr "Die nachfolgenden Direktiven werden in einem Test verstanden:"
+msgstr ""
+"Die nachfolgenden Direktiven werden von dem CUPS-Netz-Backend verstanden:"
 
 #. type: TP
 #: cups-snmp.conf.man:28
-#, fuzzy, no-wrap
-#| msgid "Address @IF(I<name>)"
+#, no-wrap
 msgid "B<Address @IF(>I<name>B<)>"
-msgstr "Address @IF(I<Name>)"
+msgstr "B<Address @IF(>I<Name>B<)>"
 
 #. type: TP
 #: cups-snmp.conf.man:30
-#, fuzzy, no-wrap
-#| msgid "Address @LOCAL"
+#, no-wrap
 msgid "B<Address @LOCAL>"
-msgstr "Address @LOCAL"
+msgstr "B<Address @LOCAL>"
 
 #. type: TP
 #: cups-snmp.conf.man:32
-#, fuzzy, no-wrap
-#| msgid "Address I<address>"
+#, no-wrap
 msgid "B<Address >I<address>"
-msgstr "Address I<Adresse>"
+msgstr "B<Address >I<Adresse>"
 
 #. type: Plain text
 #: cups-snmp.conf.man:36
-#, fuzzy
-#| msgid ""
-#| "Sends SNMP broadcast queries to the specified address(es). There is no "
-#| "default for the broadcast address."
 msgid ""
 "Sends SNMP broadcast queries (for discovery) to the specified address(es).  "
 "There is no default for the broadcast address."
 msgstr ""
-"Sendet SNMP-Broadcast-Anfragen an die angegebene(n) Adresse(n). Es gibt "
-"keine Vorgabe für die Übetragungsanfrageadresse."
+"Sendet SNMP-Broadcast-Anfragen (zur Ermittlung) an die angegebene(n) "
+"Adresse(n). Es gibt keine Vorgabe für die Broadcast-Adresse."
 
 #. type: TP
 #: cups-snmp.conf.man:36
-#, fuzzy, no-wrap
-#| msgid "Community I<name>"
+#, no-wrap
 msgid "B<Community >I<name>"
-msgstr "Community I<Name>"
+msgstr "B<Community >I<Name>"
 
 #. type: Plain text
 #: cups-snmp.conf.man:41
-#, fuzzy
-#| msgid ""
-#| "Specifies the community name to use. Only a single community name may be "
-#| "specified. The default community name is \"public\"."
 msgid ""
 "Specifies the community name to use.  Only a single community name may be "
 "specified.  The default community name is \"public\"."
@@ -8041,17 +7943,12 @@ msgstr ""
 
 #. type: TP
 #: cups-snmp.conf.man:41
-#, fuzzy, no-wrap
-#| msgid "DebugLevel number"
+#, no-wrap
 msgid "B<DebugLevel >I<number>"
-msgstr "DebugLevel Nummer"
+msgstr "B<DebugLevel >I<Nummer>"
 
 #. type: Plain text
 #: cups-snmp.conf.man:46
-#, fuzzy
-#| msgid ""
-#| "Specifies the logging level from 0 (none) to 3 (everything). Typically "
-#| "only used for debugging (thus the name). The default debug level is 0."
 msgid ""
 "Specifies the logging level from 0 (none) to 3 (everything).  Typically only "
 "used for debugging (thus the name).  The default debug level is 0."
@@ -8062,20 +7959,12 @@ msgstr ""
 
 #. type: TP
 #: cups-snmp.conf.man:46
-#, fuzzy, no-wrap
-#| msgid "DeviceURI \"regular expression\" device-uri [... device-uri]"
+#, no-wrap
 msgid "B<DeviceURI \">I<regular expression>B<\" >I<device-uri >[... I<device-uri>]"
-msgstr "DeviceURI \"regulärer Ausdruck\" Geräte-URI [… Geräte-URI]"
+msgstr "B<DeviceURI \">I<regulärer Ausdruck>B<\" >I<Geräte-URI >[… I<Geräte-URI>]"
 
 #. type: Plain text
 #: cups-snmp.conf.man:51
-#, fuzzy
-#| msgid ""
-#| "Specifies one or more device URIs that should be used for a given make "
-#| "and model string. The regular expression is used to match the detected "
-#| "make and model, and the device URI strings must be of the form \"scheme://"
-#| "%s[:port]/[path]\", where \"%s\" represents the detected address or "
-#| "hostname. There are no default device URI matching rules."
 msgid ""
 "Specifies one or more device URIs that should be used for a given make and "
 "model string.  The regular expression is used to match the detected make and "
@@ -8092,24 +7981,18 @@ msgstr ""
 
 #. type: TP
 #: cups-snmp.conf.man:51
-#, fuzzy, no-wrap
-#| msgid "HostNameLookups on"
+#, no-wrap
 msgid "B<HostNameLookups on>"
-msgstr "HostNameLookups on"
+msgstr "B<HostNameLookups on>"
 
 #. type: TP
 #: cups-snmp.conf.man:53
-#, fuzzy, no-wrap
-#| msgid "HostNameLookups off"
+#, no-wrap
 msgid "B<HostNameLookups off>"
-msgstr "HostNameLookups off"
+msgstr "B<HostNameLookups off>"
 
 #. type: Plain text
 #: cups-snmp.conf.man:57
-#, fuzzy
-#| msgid ""
-#| "Specifies whether the addresses of printers should be converted to "
-#| "hostnames or left as numeric IP addresses. The default is \"off\"."
 msgid ""
 "Specifies whether the addresses of printers should be converted to hostnames "
 "or left as numeric IP addresses.  The default is \"off\"."
@@ -8119,17 +8002,12 @@ msgstr ""
 
 #. type: TP
 #: cups-snmp.conf.man:57
-#, fuzzy, no-wrap
-#| msgid "MaxRunTime I<seconds>"
+#, no-wrap
 msgid "B<MaxRunTime >I<seconds>"
-msgstr "MaxRunTime I<Sekunden>"
+msgstr "B<MaxRunTime >I<Sekunden>"
 
 #. type: Plain text
 #: cups-snmp.conf.man:62
-#, fuzzy
-#| msgid ""
-#| "Specifies the maximum number of seconds that the SNMP backend will scan "
-#| "the network for printers. The default is 120 seconds (2 minutes)."
 msgid ""
 "Specifies the maximum number of seconds that the SNMP backend will scan the "
 "network for printers.  The default is 120 seconds (2 minutes)."
@@ -8138,40 +8016,36 @@ msgstr ""
 "Netz nach Druckern durchsuchen wird. Die Vorgabe ist 120 Sekunden (2 "
 "Minuten)."
 
-# type: Plain text
 #. type: Plain text
 #: cups-snmp.conf.man:65
-#, fuzzy
-#| msgid "I<smbd(8)>, I<smb.conf(5)>, http://localhost:631/help"
 msgid "B<cups-snmp>(8), CUPS Online Help (http://localhost:631/help)"
-msgstr "I<smbd(8)>, I<smb.conf(5)>, http://localhost:631/help"
+msgstr "B<cups-snmp>(8), CUPS-Online-Hilfe (http://localhost:631/help)"
 
 #. type: TH
 #: cups-snmp.man.in:14
-#, fuzzy, no-wrap
-#| msgid "cups-snmp(8),"
+#, no-wrap
 msgid "cups-snmp"
-msgstr "cups-snmp(8),"
+msgstr "cups-snmp"
 
 #. type: Plain text
 #: cups-snmp.man.in:17
 msgid "snmp - cups snmp backend"
-msgstr ""
+msgstr "snmp - CUPS-SNMP-Backend"
 
 #. type: Plain text
 #: cups-snmp.man.in:20
 msgid "B</usr/lib/cups/backend/snmp> I<ip-address-or-hostname>"
-msgstr ""
+msgstr "B</usr/lib/cups/backend/snmp> I<IP-Adresse-oder-Rechnername>"
 
 #. type: Plain text
 #: cups-snmp.man.in:23
 msgid "B</usr/libexec/cups/backend/snmp> I<ip-address-or-hostname>"
-msgstr ""
+msgstr "B</usr/libexec/cups/backend/snmp> I<IP-Adresse-oder-Rechnername>"
 
 #. type: Plain text
 #: cups-snmp.man.in:28
 msgid "B<lpinfo> B<-v> B<--include-schemes> snmp"
-msgstr ""
+msgstr "B<lpinfo> B<-v> B<--include-schemes> snmp"
 
 #. type: Plain text
 #: cups-snmp.man.in:32
@@ -8183,6 +8057,13 @@ msgid ""
 "then sent to printers that respond in order to determine the correct device "
 "URI, make and model, and other information needed for printing."
 msgstr ""
+"Das CUPS-SNMP-Backend stellt eine alte Erkennungs- und Identifikationsmethode "
+"für Netzdrucker mittels SNMPv1 bereit. Wenn dies zur Erkennung durch den "
+"Auftragsplaner genutzt wird, wird das Backend alle Drucker, die sich auf "
+"eine verteilte SNMPv1-Abfrage mit dem Gemeinschaftsnamen »public« melden, "
+"auflisten. Zusätzliche Abfragen werden an Drucker gesandt, die sich gemeldet "
+"haben, um die korrekte Geräte-URI, die Marke und das Modell und weitere "
+"druckrelevante Informationen zu bestimmen."
 
 #. type: Plain text
 #: cups-snmp.man.in:35
@@ -8192,6 +8073,11 @@ msgid ""
 "hostname.  This can be used for programs that need to configure print queues "
 "where the user has supplied an address but nothing else."
 msgstr ""
+"In der ersten Form wird das SNMP-Backend direkt vom Benutzer aufgerufen, um "
+"die Geräte-URI und andere Informationen nachzuschlagen, wenn er über die IP-"
+"Adresse oder den Rechnernamen verfügt. Dies kann für Programme verwandt "
+"werden, die die Druckerwarteschlangen konfigurieren müssen, wenn der Benutzer "
+"nichts außer der Adresse bereitgestellt hat."
 
 #. type: Plain text
 #: cups-snmp.man.in:42
@@ -8201,6 +8087,10 @@ msgid ""
 "on the configured broadcast addresses.  I<Note: no broadcast addresses are "
 "configured by default.>"
 msgstr ""
+"In der zweiten Form wird das SNMP-Backend indirekt durch den Befehl "
+"B<lpinfo>(8) ausgeführt. Die Ausgabe stellt alle via SNMP über die "
+"konfigurierte Broadcast-Adresse erkannten Drucker bereit. I<Hinweis: "
+"Standardmäßig sind keine Broadcast-Adresse konfiguriert.>"
 
 #. type: Plain text
 #: cups-snmp.man.in:45
@@ -8209,6 +8099,9 @@ msgid ""
 "environment variable.  The MaxRunTime value can be overridden using the "
 "CUPS_MAX_RUN_TIME environment variable."
 msgstr ""
+"Der Wert »DebugLevel« kann mit der Umgebungsvariablen CUPS_DEBUG_LEVEL außer "
+"Kraft gesetzt werden. Der Wert MaxRunTime kann mit der Umgebungsvariablen "
+"CUPS_MAX_RUN_TIME außer Kraft gesetzt werden."
 
 #. type: Plain text
 #: cups-snmp.man.in:49
@@ -8217,26 +8110,21 @@ msgid ""
 "present, to set the default broadcast address, community name, and logging "
 "level."
 msgstr ""
+"Das SNMP-Backend liest, falls vorhanden, die Konfigurationsdatei I</etc/cups/"
+"snmp.conf>, um die Vorgabewerte für die Broadcast-Adresse, den "
+"Gemeinschaftsnamen und die Protokollierstufe zu setzen."
 
 #. type: Plain text
 #: cups-snmp.man.in:51
-#, fuzzy
-#| msgid ""
-#| "The SNMP backend uses the SNMPv1 protocol to discover network printers, "
-#| "collecting information from the Host MIB along with intelligent port "
-#| "probes to determine the correct device URI and make and model for each "
-#| "printer. Future versions of CUPS will likely support the new Port Monitor "
-#| "MIB as well."
 msgid ""
 "The CUPS SNMP backend uses the information from the Host, Printer, and Port "
 "Monitor MIBs along with some vendor private MIBs and intelligent port probes "
 "to determine the correct device URI and make and model for each printer."
 msgstr ""
-"Das SNMP-Backend benutzt das SNMPv1-Protokoll, um Netzwerkdrucker zu suchen, "
-"Informationen vom MIB-Host zu sammeln, zusammen mit intelligenten Port-"
-"Untersuchungen, um für jeden Drucker die korrekte Geräte-URI, Hersteller und "
-"Modell zu bestimmen. Zukünftige Versionen von CUPS werden wahrscheinlich "
-"auch den neuen Port-Monitor MIB unterstützen."
+"Das CUPS-SNMP-Backend verwendet Informationen von den Host-, Printer- und "
+"Port-Monitor-MIBS zusammen mit einigen privaten MIBS der Hersteller und "
+"intelligenten Port-Abfragen, um die korrekte Geräte-URI und die Marke und das "
+"Modell für jeden Drucker zu ermitteln."
 
 #. type: Plain text
 #: cups-snmp.man.in:57
@@ -8694,7 +8582,6 @@ msgstr ""
 "Verzeichnisse und gibt detaillierte Konformitätstestergebnisse für die "
 "Dateien aus, die keine Konformität aufweisen."
 
-# type: Plain text
 #. type: Plain text
 #: cupstestppd.man:142
 #, no-wrap
@@ -8705,40 +8592,33 @@ msgstr ""
 "    find . -name \\e*.ppd \\e! -exec cupstestppd -q '{}' \\e; \\e\n"
 "        -exec cupstestppd -v '{}' \\e;\n"
 
-# type: Plain text
 #. type: Plain text
 #: cupstestppd.man:147
-#, fuzzy
-#| msgid ""
-#| "Adobe PostScript Printer Description File Format Specification, Version "
-#| "4.3."
 msgid ""
 "B<lpadmin>(8), CUPS Online Help (http://localhost:631/help), Adobe "
 "PostScript Printer Description File Format Specification, Version 4.3."
 msgstr ""
-"Adobe PostScript Printer Description File Format Specification, Version 4.3."
+"B<lpadmin>(8), CUPS-Online-Hilfe (http://localhost:631/help), Adobe "
+"PostScript Printer Description File Format Specification, Version 4.3."
 
-# type: TH
 #. type: TH
 #: filter.man:15
 #, no-wrap
 msgid "filter"
 msgstr "filter"
 
-# type: Plain text
 #. type: Plain text
 #: filter.man:18
 msgid "filter - cups file conversion filter interface"
 msgstr "filter - CUPS-Datei-Umwandlungsfilter-Schnittstelle"
 
-# type: Plain text
 #. type: Plain text
 #: filter.man:28
-#, fuzzy
-#| msgid "B<filter> job user title num-copies options [ I<filename> ]"
 msgid ""
 "B<filter> I<job> I<user> I<title> I<num-copies> I<options> [ I<filename> ]"
-msgstr "B<filter> Auftrag Benutzer Titel Anz-Kopien Optionen [ I<Dateiname> ]"
+msgstr ""
+"B<filter> I<Auftrag> I<Benutzer> I<Titel> I<Anz-Kopien> I<Optionen> "
+"[ I<Dateiname> ]"
 
 #. type: Plain text
 #: filter.man:34
@@ -8747,6 +8627,8 @@ msgid ""
 "B<ssize_t cupsBackChannelRead>(B<char *>I<buffer>, B<size_t >I<bytes>,\n"
 "                            B<double >I<timeout>);\n"
 msgstr ""
+"B<ssize_t cupsBackChannelRead>(B<char *>I<buffer>, B<size_t >I<bytes>,\n"
+"                            B<double >I<timeout>);\n"
 
 #. type: Plain text
 #: filter.man:38
@@ -8756,12 +8638,15 @@ msgid ""
 "                                          B<char *>I<data>, B<int *>I<datalen>,\n"
 "                                          B<double >I<timeout>);\n"
 msgstr ""
+"B<cups_sc_status_t cupsSideChannelDoRequest>(B<cups_sc_command_t >I<command>,\n"
+"                                          B<char *>I<data>, B<int *>I<datalen>,\n"
+"                                          B<double >I<timeout>);\n"
 
 #. type: Plain text
 #: filter.man:40
 #, no-wrap
 msgid "B<#include E<lt>cups/ppd.hE<gt>>\n"
-msgstr ""
+msgstr "B<#include E<lt>cups/ppd.hE<gt>>\n"
 
 #. type: Plain text
 #: filter.man:43
@@ -8770,6 +8655,8 @@ msgid ""
 "B<const char *cupsGetOption>(B<const char *>I<name>, B<int >I<num_options>,\n"
 "                 B<cups_option_t *>I<options>);\n"
 msgstr ""
+"B<const char *cupsGetOption>(B<const char *>I<name>, B<int >I<num_options>,\n"
+"                 B<cups_option_t *>I<options>);\n"
 
 #. type: Plain text
 #: filter.man:46
@@ -8778,6 +8665,8 @@ msgid ""
 "B<int cupsMarkOptions>(B<ppd_file_t *>I<ppd>, B<int >I<num_options>,\n"
 "                    B<cups_option_t *>I<options>);\n"
 msgstr ""
+"B<int cupsMarkOptions>(B<ppd_file_t *>I<ppd>, B<int >I<num_options>,\n"
+"                    B<cups_option_t *>I<options>);\n"
 
 #. type: Plain text
 #: filter.man:49
@@ -8786,34 +8675,29 @@ msgid ""
 "B<int cupsParseOptions>(B<const char *>I<arg>, B<int >I<num_options>,\n"
 "                     B<cups_option_t **>I<options>);\n"
 msgstr ""
+"B<int cupsParseOptions>(B<const char *>I<arg>, B<int >I<num_options>,\n"
+"                     B<cups_option_t **>I<options>);\n"
 
 #. type: Plain text
 #: filter.man:51
 #, no-wrap
 msgid "B<ppd_choice_t *ppdFindMarkedChoice>(B<ppd_file_t *>I<ppd>, B<const char *>I<keyword>);\n"
-msgstr ""
+msgstr "B<ppd_choice_t *ppdFindMarkedChoice>(B<ppd_file_t *>I<ppd>, B<const char *>I<keyword>);\n"
 
 #. type: Plain text
 #: filter.man:53
 #, no-wrap
 msgid "B<void ppdMarkDefaults>(B<ppd_file_t *>I<ppd>);\n"
-msgstr ""
+msgstr "B<void ppdMarkDefaults>(B<ppd_file_t *>I<ppd>);\n"
 
 #. type: Plain text
 #: filter.man:55
 #, no-wrap
 msgid "B<ppd_file_t *ppdOpenFile>(B<const char *>I<filename>);\n"
-msgstr ""
+msgstr "B<ppd_file_t *ppdOpenFile>(B<const char *>I<filename>);\n"
 
-# type: Plain text
 #. type: Plain text
 #: filter.man:59
-#, fuzzy
-#| msgid ""
-#| "The CUPS filter interface provides a standard method for adding support "
-#| "for new document types to CUPS. Each filter is capable of converting from "
-#| "one or more input formats to another format that can either be printed "
-#| "directly or piped into another filter to get it to a printable format."
 msgid ""
 "The CUPS filter interface provides a standard method for adding support for "
 "new document types or printers to CUPS.  Each filter is capable of "
@@ -8822,19 +8706,13 @@ msgid ""
 "format."
 msgstr ""
 "Die CUPS-Filterschnittstelle stellt eine Standardmethode zum Hinzufügen von "
-"Unterstützungen für neue Dokumententypen zu CUPS bereit. Jeder Filter ist in "
+"Unterstützungen für neue Dokumententypen oder Drucker zu CUPS bereit. Jeder Filter ist in "
 "der Lage, von einem oder mehreren Eingabeformaten in andere Ausgabeformate "
 "zu konvertieren, die entweder direkt gedruckt oder an einen weiteren Filter "
 "weitergeleitet werden können, der es dann in ein druckbares Format wandelt."
 
 #. type: Plain text
 #: filter.man:63
-#, fuzzy
-#| msgid ""
-#| "Filters B<must> be capable of reading from a filename on the command-line "
-#| "or from the standard input, copying the standard input to a temporary "
-#| "file as required by the file format. All output B<must> be sent to the "
-#| "standard output."
 msgid ""
 "Filters B<MUST> be capable of reading from a filename on the command-line or "
 "from the standard input, copying the standard input to a temporary file as "
@@ -8842,24 +8720,21 @@ msgid ""
 "output.  Filters B<MUST NOT> attempt to communicate directly with the "
 "printer, other processes, or other services."
 msgstr ""
-"Filter B<müssen> in der Lage sein, aus einem Dateinamen auf der "
+"Filter B<MÜSSEN> in der Lage sein, aus einem Dateinamen auf der "
 "Kommandozeile oder der Standardeingabe zu lesen und in letzterem Fall die "
 "Standardeingabe in eine temporäre Datei zu kopieren, wie dies vom "
-"Dateiformat benötigt wird. Die gesamte Ausgabe B<muss> an die "
-"Standardausgabe gesandt werden."
+"Dateiformat benötigt wird. Die gesamte Ausgabe B<MUSS> an die "
+"Standardausgabe gesandt werden. Filter B<DÜRFEN NICHT> versuchen, direkt mit "
+"dem Drucker, anderen Prozessen oder Diensten zu kommunizieren."
 
 #. type: Plain text
 #: filter.man:65
-#, fuzzy
-#| msgid ""
-#| "The command name (argv[0]) is set to the name of the destination printer "
-#| "but is also available in the PRINTER environment variable."
 msgid ""
 "The command name (I<argv[0]>) is set to the name of the destination printer "
 "but is also available in the B<PRINTER>I< environment variable.>"
 msgstr ""
-"Der Befehlsname (argv[0]) wird auf den Namen des Zieldruckers gesetzt. Er "
-"ist aber auch über die Umgebungsvariable PRINTER verfügbar."
+"Der Befehlsname (I<argv[0]>) wird auf den Namen des Zieldruckers gesetzt. Er "
+"ist aber auch über die I<Umgebungsvariable> B<PRINTER> verfügbar."
 
 #. type: Plain text
 #: filter.man:72
@@ -8871,6 +8746,13 @@ msgid ""
 "careful to look for common aliases of IPP attributes such as \"lansdscape\" "
 "for the IPP \"orientation-requested\" attribute."
 msgstr ""
+"Optionen werden in I<argv[5]> übergeben und werden aus den bei der "
+"Einreichung des Auftrags entsprechenden IPP-Attributen kodiert. Verwenden "
+"Sie die Funktion B<cupsParseOptions>(), um die Optionen in ein Feld "
+"B<cups_option_t> zu laden und die Funktion B<cupsGetOption>(), um den Wert "
+"eines bestimmten Attributes zu ermitteln. Seien Sie vorsichtig, nach häufigen "
+"Alias von IPP-Attributen, wie »lansdscape« für das IPP-Attribut »orientation-"
+"requested«, Ausblick zu halten."
 
 #. type: Plain text
 #: filter.man:81
@@ -8883,6 +8765,14 @@ msgid ""
 "a PPD option. For example, a filter might use the following code to "
 "determine the current value of the B<Duplex> PPD option:"
 msgstr ""
+"Auf der Befehlszeile übergebene Optionen enthalten typischerweise nicht die "
+"Standardauswahl aus der PPD-Datei des Druckers. Verwenden Sie die Funktionen "
+"B<ppdMarkDefaults>() und B<cupsMarkOptions>() in der CUPS-Bibliothek, um die "
+"Optionen auf die PPD-Vorgaben anzuwenden und alle IPP-Attribute auf die "
+"entsprechenden Optionen abzubilden. Verwenden Sie B<ppdFindMarkedChoice>(), "
+"um die vom Benutzer ausgewählte Auswahl für eine PPD-Option zu ermitteln. Ein "
+"Filter kann beispielsweise den folgenden Code verwenden, um den aktuellen "
+"Wert der PPD-Option B<Duplex> zu ermitteln:"
 
 #. type: Plain text
 #: filter.man:86
@@ -8892,6 +8782,9 @@ msgid ""
 "    cups_option_t *options = NULL;\n"
 "    int num_options = cupsParseOptions(argv[5], 0, &options);\n"
 msgstr ""
+"    ppd_file_t *ppd = ppdOpenFile(getenv(\"PPD\"));\n"
+"    cups_option_t *options = NULL;\n"
+"    int num_options = cupsParseOptions(argv[5], 0, &options);\n"
 
 #. type: Plain text
 #: filter.man:89
@@ -8900,21 +8793,17 @@ msgid ""
 "    ppdMarkDefaults(ppd);\n"
 "    cupsMarkOptions(ppd, num_options, options);\n"
 msgstr ""
+"    ppdMarkDefaults(ppd);\n"
+"    cupsMarkOptions(ppd, num_options, options);\n"
 
 #. type: Plain text
 #: filter.man:91
 #, no-wrap
 msgid "    ppd_choice_t *choice = ppdFindMarkedChoice(ppd, \"Duplex\");\n"
-msgstr ""
+msgstr "    ppd_choice_t *choice = ppdFindMarkedChoice(ppd, \"Duplex\");\n"
 
 #. type: Plain text
 #: filter.man:95
-#, fuzzy
-#| msgid ""
-#| "Raster filters should use option choices set through the raster page "
-#| "header, as those reflect the options in effect for a given page. Options "
-#| "specified on the command-line determine the default values for the entire "
-#| "job, which can be overridden on a per-page basis."
 msgid ""
 "Raster filters should use option choices set through the raster page header, "
 "as those reflect the options in effect for a given page.  Options specified "
@@ -8935,46 +8824,36 @@ msgstr "PROTOKOLLNACHRICHTEN"
 
 #. type: Plain text
 #: filter.man:98
-#, fuzzy
-#| msgid ""
-#| "Messages sent to stderr are generally logged to printer-state-message "
-#| "attribute and the current I<ErrorLog>.  Each line begins with a standard "
-#| "prefix:"
 msgid ""
 "Messages sent to the standard error are generally stored in the printer's "
 "\"printer-state-message\" attribute and the current B<ErrorLog> file.  Each "
 "line begins with a standard prefix:"
 msgstr ""
-"Nachrichten, die an stderr gesendet werden, werden generell zum Printer-"
-"state-message-Attribut und das aktuelle I<ErrorLog> protokolliert werden. "
+"Nachrichten, die an die Standard-Fehlerausgabe gesandt werden, werden im "
+"Allgemeinen im Attribut »printer-state-message« des Druckers und der "
+"aktuellen B<ErrorLog>-Datei gespeichert. "
 "Jede Zeile beginnt mit einem Standard-Präfix:"
 
 #. type: TP
 #: filter.man:98
-#, fuzzy, no-wrap
-#| msgid "ALERT: message"
+#, no-wrap
 msgid "B<ALERT: >I<message>"
-msgstr "ALERT: Nachricht"
+msgstr "B<ALERT: >I<Nachricht>"
 
 #. type: Plain text
 #: filter.man:101
-#, fuzzy
-#| msgid ""
-#| "Sets the printer-state-message attribute and adds the specified message "
-#| "to the current I<ErrorLog> using the \"alert\" log level."
 msgid ""
 "Sets the \"printer-state-message\" attribute and adds the specified message "
 "to the current B<ErrorLog> using the \"alert\" log level."
 msgstr ""
-"Setzt das Attribut printer-state-message und fügt die angegebene Nachricht "
-"zum aktuellen I<ErrorLog> unter Verwendung der Protokollstufe »alter« hinzu."
+"Setzt das Attribut »printer-state-message« und fügt die angegebene Nachricht "
+"zum aktuellen B<ErrorLog> unter Verwendung der Protokollstufe »alert« hinzu."
 
 #. type: TP
 #: filter.man:101
-#, fuzzy, no-wrap
-#| msgid "ATTR: attribute=value [attribute=value]"
+#, no-wrap
 msgid "B<ATTR: >I<attribute=value >[ I<... attribute=value>]"
-msgstr "ATTR: Attribut=Wert [Attribut=Wert]"
+msgstr "B<ATTR: >I<Attribut=Wert >[ I<… Attribut=Wert>]"
 
 #. type: Plain text
 #: filter.man:107
@@ -8994,31 +8873,25 @@ msgstr ""
 
 #. type: TP
 #: filter.man:107
-#, fuzzy, no-wrap
-#| msgid "CRIT: message"
+#, no-wrap
 msgid "B<CRIT: >I<message>"
-msgstr "CRIT: Nachricht"
+msgstr "B<CRIT: >I<Nachricht>"
 
 #. type: Plain text
 #: filter.man:110
-#, fuzzy
-#| msgid ""
-#| "Sets the printer-state-message attribute and adds the specified message "
-#| "to the current I<ErrorLog> using the \"critical\" log level."
 msgid ""
 "Sets the \"printer-state-message\" attribute and adds the specified message "
 "to the current B<ErrorLog> using the \"critical\" log level."
 msgstr ""
-"Setzt das Attribut printer-state-message und fügt die angegebene Nachricht "
-"zum aktuellen I<ErrorLog> unter Verwendung der Protokollstufe »critical« "
+"Setzt das Attribut »printer-state-message« und fügt die angegebene Nachricht "
+"zum aktuellen B<ErrorLog> unter Verwendung der Protokollstufe »critical« "
 "hinzu."
 
 #. type: TP
 #: filter.man:110
-#, fuzzy, no-wrap
-#| msgid "DEBUG: message"
+#, no-wrap
 msgid "B<DEBUG: >I<message>"
-msgstr "DEBUG: Nachricht"
+msgstr "B<DEBUG: >I<Nachricht>"
 
 #. type: Plain text
 #: filter.man:114
@@ -9027,13 +8900,15 @@ msgid ""
 "log level.  B<DEBUG> messages are never stored in the \"printer-state-message"
 "\" attribute."
 msgstr ""
+"Fügt die angegebene Nachricht zu dem aktuellen B<ErrorLog> mit der "
+"Protokollstufe »debug« hinzu. B<DEBUG>-Nachrichten werden nie im Attribut "
+"»printer-state-message« gespeichert."
 
 #. type: TP
 #: filter.man:114
-#, fuzzy, no-wrap
-#| msgid "DEBUG2: message"
+#, no-wrap
 msgid "B<DEBUG2: >I<message>"
-msgstr "DEBUG2: Nachricht"
+msgstr "B<DEBUG2: >I<Nachricht>"
 
 #. type: Plain text
 #: filter.man:119
@@ -9042,220 +8917,165 @@ msgid ""
 "log level.  B<DEBUG2> messages are never stored in the \"printer-state-"
 "message\" attribute."
 msgstr ""
+"Fügt die angegebene Nachricht zu dem aktuellen B<ErrorLog> mit der "
+"Protokollstufe »debug2« hinzu. B<DEBUG2>-Nachrichten werden nie im Attribut "
+"»printer-state-message« gespeichert."
 
-# type: TP
 #. type: TP
 #: filter.man:119
-#, fuzzy, no-wrap
-#| msgid "EMERG: message"
+#, no-wrap
 msgid "B<EMERG: >I<message>"
-msgstr "EMERG: Nachricht"
+msgstr "B<EMERG: >I<Nachricht>"
 
-# type: Plain text
 #. type: Plain text
 #: filter.man:122
-#, fuzzy
-#| msgid ""
-#| "Sets the printer-state-message attribute and adds the specified message "
-#| "to the current I<ErrorLog> using the \"emergency\" log level."
 msgid ""
 "Sets the \"printer-state-message\" attribute and adds the specified message "
 "to the current B<ErrorLog> using the \"emergency\" log level."
 msgstr ""
-"Setzt das Attribut printer-state-message und fügt die angegebene Nachricht "
-"zum aktuellen I<ErrorLog> unter Verwendung der Protokollstufe »emergency« "
+"Setzt das Attribut »printer-state-message« und fügt die angegebene Nachricht "
+"zum aktuellen B<ErrorLog> unter Verwendung der Protokollstufe »emergency« "
 "hinzu."
 
-# type: TP
 #. type: TP
 #: filter.man:122
-#, fuzzy, no-wrap
-#| msgid "ERROR: message"
+#, no-wrap
 msgid "B<ERROR:>I< message>"
-msgstr "ERROR: Nachricht"
+msgstr "B<ERROR:>I< Nachricht>"
 
-# type: Plain text
 #. type: Plain text
 #: filter.man:125
-#, fuzzy
-#| msgid ""
-#| "Sets the printer-state-message attribute and adds the specified message "
-#| "to the current I<ErrorLog> using the \"error\" log level."
 msgid ""
 "Sets the \"printer-state-message\" attribute and adds the specified message "
 "to the current B<ErrorLog> using the \"error\" log level."
 msgstr ""
-"Setzt das Attribut printer-state-message und fügt die angegebene Nachricht "
-"zum aktuellen I<ErrorLog> unter Verwendung der Protokollstufe »error« hinzu."
+"Setzt das Attribut »printer-state-message« und fügt die angegebene Nachricht "
+"zum aktuellen B<ErrorLog> unter Verwendung der Protokollstufe »error« hinzu."
 
-# type: TP
 #. type: TP
 #: filter.man:125
-#, fuzzy, no-wrap
-#| msgid "INFO: message"
+#, no-wrap
 msgid "B<INFO:>I< message>"
-msgstr "INFO: Nachricht"
+msgstr "B<INFO:>I< Nachricht>"
 
-# type: Plain text
 #. type: Plain text
 #: filter.man:128
-#, fuzzy
-#| msgid ""
-#| "Sets the printer-state-message attribute. If the current I<LogLevel> is "
-#| "set to \"debug2\", also adds the specified message to the current "
-#| "I<ErrorLog> using the \"info\" log level."
 msgid ""
 "Sets the \"printer-state-message\" attribute. If the current B<LogLevel> is "
 "set to \"debug2\", also adds the specified message to the current "
 "B<ErrorLog> using the \"info\" log level."
 msgstr ""
-"Setzt das Printer-state-message-Attribut. Wenn der aktuelle I<LogLevel> auf "
+"Setzt das Attribut »printer-state-message«. Wenn der aktuelle B<LogLevel> auf "
 "»debug2« gesetzt ist, wird die angegebene Nachricht außerdem dem aktuellen "
-"I<ErrorLog> unter Benutzung der »info«-Protokollstufe hinzugefügt."
+"B<ErrorLog> unter Benutzung der »info«-Protokollstufe hinzugefügt."
 
-# type: TP
 #. type: TP
 #: filter.man:128
-#, fuzzy, no-wrap
-#| msgid "NOTICE: message"
+#, no-wrap
 msgid "B<NOTICE:>I< message>"
-msgstr "NOTICE: Nachricht"
+msgstr "B<NOTICE:>I< Nachricht>"
 
 #. type: Plain text
 #: filter.man:131
-#, fuzzy
-#| msgid ""
-#| "Sets the printer-state-message attribute and adds the specified message "
-#| "to the current I<ErrorLog> using the \"notice\" log level."
 msgid ""
 "Sets the \"printer-state-message\" attribute and adds the specified message "
 "to the current B<ErrorLog> using the \"notice\" log level."
 msgstr ""
-"Setzt das Attribut printer-state-message und fügt die angegebene Nachricht "
-"zum aktuellen I<ErrorLog> unter Verwendung der Protokollstufe »notice« hinzu."
+"Setzt das Attribut »printer-state-message« und fügt die angegebene Nachricht "
+"zum aktuellen B<ErrorLog> unter Verwendung der Protokollstufe »notice« hinzu."
 
 #. type: TP
 #: filter.man:131
-#, fuzzy, no-wrap
-#| msgid "PAGE: page-number #-copies"
+#, no-wrap
 msgid "B<PAGE:>I< page-number #-copies>"
-msgstr "PAGE: Seitenzahl #-Kopien"
+msgstr "B<PAGE:>I< Seitenzahl #-Kopien>"
 
 #. type: TP
 #: filter.man:133
-#, fuzzy, no-wrap
-#| msgid "PAGE: total #-pages"
+#, no-wrap
 msgid "B<PAGE:>I< total #-pages>"
-msgstr "PAGE: Gesamt #-Seiten"
+msgstr "B<PAGE:>I< Gesamt #-Seiten>"
 
 #. type: Plain text
 #: filter.man:136
-#, fuzzy
-#| msgid ""
-#| "Adds an entry to the current I<PageLog>. The first form adds #-copies to "
-#| "the job-media-sheets-completed attribute. The second form sets the job-"
-#| "media-sheets-completed attribute to #-pages."
 msgid ""
 "Adds an entry to the current B<PageLog>. The first form adds I<#-copies> to "
 "the \"job-media-sheets-completed\" attribute. The second form sets the \"job-"
 "media-sheets-completed\" attribute to I<#-pages>."
 msgstr ""
-"Fügt einen Eintrag zum aktuellen I<PageLog> hinzu. Die erste Form fügt #-"
-"Kopien zum Attribut job-media-sheets-completed hinzu. Die zweite Form setzt "
-"das Attribut job-media-sheets-completed auf #-Seiten."
+"Fügt einen Eintrag zum aktuellen B<PageLog> hinzu. Die erste Form fügt I<#-"
+"Kopien> zum Attribut »job-media-sheets-completed« hinzu. Die zweite Form setzt "
+"das Attribut »job-media-sheets-completed« auf I<#-Seiten>."
 
 #. type: TP
 #: filter.man:136
-#, fuzzy, no-wrap
-#| msgid "PPD: Keyword=Value ... KeywordN=Value"
+#, no-wrap
 msgid "B<PPD:>I< Keyword=Value> [ I<... KeywordN=Value> ]"
-msgstr "PPD: Schlüsselwort=Wert … SchlüsselwortN=Wert"
+msgstr "B<PPD:>I< Schlüsselwort=Wert> [ I<… SchlüsselwortN=Wert> ]"
 
 #. type: Plain text
 #: filter.man:139
-#, fuzzy
-#| msgid ""
-#| "Sets the named keywords in the printer's PPD file. This is typically used "
-#| "to update default option keywords such as DefaultPageSize and the various "
-#| "installable options in the PPD file."
 msgid ""
 "Sets the named keywords in the printer's PPD file. This is typically used to "
 "update default option keywords such as B<DefaultPageSize> and the various "
 "installable options in the PPD file."
 msgstr ""
 "Setzt die genannten Schlüsselworte in die PPD-Datei des Druckers. Dies wird "
-"normalerweise benutzt, um Standardschlüsselwortoptionen zu aktualisieren, "
-"wie DefaultPageSize und verschiedene installierbare Optionen in der PPD-"
-"Datei."
+"normalerweise benutzt, um Standardschlüsselwortoptionen, wie B<DefaultPageSize> "
+"und verschiedene installierbare Optionen in der PPD-"
+"Datei, zu aktualisieren."
 
 #. type: TP
 #: filter.man:139
-#, fuzzy, no-wrap
-#| msgid "STATE: printer-state-reason [printer-state-reason ...]"
+#, no-wrap
 msgid "B<STATE:>I< printer-state-reason >[ I<... printer-state-reason> ]"
-msgstr "STATE: printer-state-reason [printer-state-reason …]"
+msgstr "B<STATE:>I< Drucker-Zustand-Grund >[ I<… Drucker-Zustand-Grund> ]"
 
 #. type: TP
 #: filter.man:141
-#, fuzzy, no-wrap
-#| msgid "STATE: + printer-state-reason [printer-state-reason ...]"
+#, no-wrap
 msgid "B<STATE: +>I< printer-state-reason >[ I<... printer-state-reason> ]"
-msgstr "STATE: + printer-state-reason [printer-state-reason …]"
+msgstr "B<STATE: +>I< Drucker-Zustand-Grund >[ I<… Drucker-Zustand-Grund> ]"
 
 #. type: TP
 #: filter.man:143
-#, fuzzy, no-wrap
-#| msgid "STATE: - printer-state-reason [printer-state-reason ...]"
+#, no-wrap
 msgid "B<STATE: ->I< printer-state-reason >[ I<... printer-state-reason> ]"
-msgstr "STATE: - printer-state-reason [printer-state-reason …]"
+msgstr "B<STATE: ->I< Drucker-Zustand-Grund >[ I<… Drucker-Zustand-Grund> ]"
 
 #. type: Plain text
 #: filter.man:146
-#, fuzzy
-#| msgid ""
-#| "Sets, adds, or removes printer-state-reason keywords to the current "
-#| "queue. Typically this is used to indicate media, ink, and toner "
-#| "conditions on a printer."
 msgid ""
 "Sets, adds, or removes \"printer-state-reason\" keywords for the current "
 "queue. Typically this is used to indicate media, ink, and toner conditions "
 "on a printer."
 msgstr ""
-"Setzt, enfernt oder fügt Printer-state-reason-Schlüsselwörter zu der "
-"aktuellen Druckschlange hinzu. Typischerweise wird dies benutzt, um Medien-, "
+"Setzt, enfernt oder fügt »printer-state-reason«-Schlüsselwörter für die "
+"aktuelle Druckwarteschlange hinzu. Typischerweise wird dies benutzt, um Medien-, "
 "Tinten- und Toner-Bedingungen auf einem Drucker anzuzeigen."
 
-# type: TP
 #. type: TP
 #: filter.man:146
-#, fuzzy, no-wrap
-#| msgid "WARNING: message"
+#, no-wrap
 msgid "B<WARNING:>I< message>"
-msgstr "WARNING: Nachricht"
+msgstr "B<WARNING:>I< Nachricht>"
 
-# type: Plain text
 #. type: Plain text
 #: filter.man:149
-#, fuzzy
-#| msgid ""
-#| "Sets the printer-state-message attribute and adds the specified message "
-#| "to the current I<ErrorLog> using the \"warning\" log level."
 msgid ""
 "Sets the \"printer-state-message\" attribute and adds the specified message "
 "to the current B<ErrorLog> using the \"warning\" log level."
 msgstr ""
-"Setzt das Attribut printer-state-message und fügt die angegebene Nachricht "
-"zum aktuellen I<ErrorLog> unter Verwendung der Protokollstufe »warning« "
+"Setzt das Attribut »printer-state-message« und fügt die angegebene Nachricht "
+"zum aktuellen B<ErrorLog> unter Verwendung der Protokollstufe »warning« "
 "hinzu."
 
-# type: SH
 #. type: SH
 #: filter.man:149
 #, no-wrap
 msgid "ENVIRONMENT VARIABLES"
 msgstr "UMGEBUNGSVARIABLEN"
 
-# type: Plain text
 #. type: Plain text
 #: filter.man:152
 msgid ""
@@ -9265,31 +9085,23 @@ msgstr ""
 "Die folgenden Umgebungsvariablen sind vom CUPS-Server beim Ausführen von "
 "Filtern gesetzt:"
 
-# type: TP
 #. type: TP
 #: filter.man:152
-#, fuzzy, no-wrap
-#| msgid "CHARSET"
+#, no-wrap
 msgid "B<CHARSET>"
-msgstr "CHARSET"
+msgstr "B<CHARSET>"
 
-# type: Plain text
 #. type: Plain text
 #: filter.man:155
-#, fuzzy
-#| msgid "The default text character set, typically utf-8."
 msgid "The default text character set, typically \"utf-8\"."
-msgstr "Der standard Textzeichensatz, typischerweise UTF-8."
+msgstr "Der Standard-Textzeichensatz, typischerweise »utf-8«."
 
-# type: TP
 #. type: TP
 #: filter.man:155
-#, fuzzy, no-wrap
-#| msgid "CLASS"
+#, no-wrap
 msgid "B<CLASS>"
-msgstr "CLASS"
+msgstr "B<CLASS>"
 
-# type: Plain text
 #. type: Plain text
 #: filter.man:158
 msgid ""
@@ -9301,43 +9113,34 @@ msgstr ""
 "Namen der Bestimmungsdruckerklasse. Ansonsten wird diese Umgebungsvariable "
 "nicht gesetzt."
 
-# type: TP
 #. type: TP
 #: filter.man:158
-#, fuzzy, no-wrap
-#| msgid "CONTENT_TYPE"
+#, no-wrap
 msgid "B<CONTENT_TYPE>"
-msgstr "CONTENT_TYPE"
+msgstr "B<CONTENT_TYPE>"
 
-# type: Plain text
 #. type: Plain text
 #: filter.man:161
-#, fuzzy
-#| msgid ""
-#| "The MIME type associated with the file (e.g.  application/postscript)."
 msgid ""
 "The MIME media type associated with the submitted job file, for example "
 "\"application/postscript\"."
 msgstr ""
-"Der MIME-Typ, der der Datei zugeordnet ist (z.B. application/postscript)."
+"Der MIME-Typ, der der eingereichten Druckdatei zugeordnet ist (z.B. "
+"»application/postscript«)."
 
-# type: Plain text
 #. type: Plain text
 #: filter.man:164
-#, fuzzy
-#| msgid "The directory for semi-persistent cache files can be found."
 msgid ""
 "The directory where semi-persistent cache files can be found and stored."
 msgstr ""
-"Das Verzeichnis für halb-beständige Zwischenspeicherdateien kann gefunden "
-"werden."
+"Das Verzeichnis, in dem halb-beständige Zwischenspeicherdateien gefunden und "
+"gespeichert werden."
 
 #. type: TP
 #: filter.man:167
-#, fuzzy, no-wrap
-#| msgid "CUPS_FILETYPE"
+#, no-wrap
 msgid "B<CUPS_FILETYPE>"
-msgstr "CUPS_FILETYPE"
+msgstr "B<CUPS_FILETYPE>"
 
 #. type: Plain text
 #: filter.man:171
@@ -9350,67 +9153,51 @@ msgstr ""
 
 #. type: TP
 #: filter.man:171
-#, fuzzy, no-wrap
-#| msgid "CUPS_MAX_MESSAGE"
+#, no-wrap
 msgid "B<CUPS_MAX_MESSAGE>"
-msgstr "CUPS_MAX_MESSAGE"
+msgstr "B<CUPS_MAX_MESSAGE>"
 
 #. type: Plain text
 #: filter.man:174
-#, fuzzy
-#| msgid ""
-#| "The maximum size of a message sent to stderr, including any leading "
-#| "prefix and the trailing newline."
 msgid ""
 "The maximum size of a message sent to I<stderr>, including any leading "
 "prefix and the trailing newline."
 msgstr ""
-"Die maximale Größe einer nach Stderr gesandten Nachricht. Enthält alle "
+"Die maximale Größe einer nach I<stderr> gesandten Nachricht. Enthält alle "
 "Präfixe und den abschließenden Zeilenumbruch."
 
 #. type: TP
 #: filter.man:177
-#, fuzzy, no-wrap
-#| msgid "FINAL_CONTENT_TYPE"
+#, no-wrap
 msgid "B<FINAL_CONTENT_TYPE>"
-msgstr "FINAL_CONTENT_TYPE"
+msgstr "B<FINAL_CONTENT_TYPE>"
 
 #. type: Plain text
 #: filter.man:180
-#, fuzzy
-#| msgid ""
-#| "The MIME type associated with the printer (e.g.  application/vnd.cups-"
-#| "postscript)."
 msgid ""
 "The MIME media type associated with the output destined for the printer, for "
 "example \"application/vnd.cups-postscript\"."
 msgstr ""
-"Der MIME-Typ, der dem Drucker zugeordnet ist (z.B. application/vnd.cups-"
+"Der MIME-Medientyp, der der dem Drucker bestimmten Ausgabe zugeordnet ist (z.B. application/vnd.cups-"
 "postscript)."
 
-# type: TP
 #. type: TP
 #: filter.man:180
-#, fuzzy, no-wrap
-#| msgid "LANG"
+#, no-wrap
 msgid "B<LANG>"
-msgstr "LANG"
+msgstr "B<LANG>"
 
-# type: Plain text
 #. type: Plain text
 #: filter.man:183
 msgid "The default language locale (typically C or en)."
 msgstr "Die Standardsprach-Locale (normalerweise C oder en)."
 
-# type: TP
 #. type: TP
 #: filter.man:183
-#, fuzzy, no-wrap
-#| msgid "PATH"
+#, no-wrap
 msgid "B<PATH>"
-msgstr "PATH"
+msgstr "B<PATH>"
 
-# type: Plain text
 #. type: Plain text
 #: filter.man:186
 msgid ""
@@ -9577,6 +9364,8 @@ msgid ""
 "B<ippfind> [ I<options> ] I<regtype>[B<,>I<subtype>][B<.>I<domain>B<.>] ... "
 "[ I<expression> ... ]"
 msgstr ""
+"B<ippfind> [ I<Optionen> ] I<Regtyp>[B<,>I<Untertyp>][B<.>I<Domain>B<.>] … "
+"[ I<Ausdruck> … ]"
 
 #. type: Plain text
 #: ippfind.man:31
@@ -9584,6 +9373,8 @@ msgid ""
 "B<ippfind> [ I<options> ] I<name>[B<.>I<regtype>[B<.>I<domain>B<.>]] ... "
 "[ I<expression> ... ]"
 msgstr ""
+"B<ippfind> [ I<Optionen> ] I<Name>[B<.>I<Regtyp>[B<.>I<Domain>B<.>]] … "
+"[ I<Ausdruck> … ]"
 
 #. type: Plain text
 #: ippfind.man:34
@@ -9602,20 +9393,21 @@ msgid ""
 "local devices.  Its primary purpose is to find IPP printers and show their "
 "URIs, show their current status, or run commands."
 msgstr ""
+"B<ippfind> findet Dienste, die bei einem DNS-Server registriert oder über "
+"lokale Geräte verfügbar sind. Sein Hauptzwweck ist das Auffinden von IPP-"
+"Druckern und Anzeigen ihrer URIs, der Anzeige ihres aktuellen Status oder dem "
+"Ausführen von Befehlen."
 
 #. type: SS
 #: ippfind.man:40
-#, fuzzy, no-wrap
-#| msgid "OPERATION CODES"
+#, no-wrap
 msgid "REGISTRATION TYPES"
-msgstr "BETRIEBS-CODES"
+msgstr "REGISTRIERUNGSTYPEN"
 
 #. type: Plain text
 #: ippfind.man:42
-#, fuzzy
-#| msgid "I<lpq> supports the following options:"
 msgid "B<ippfind> supports the following registration types:"
-msgstr "I<lpq> unterstützt die folgenden Optionen:"
+msgstr "B<ippfind> unterstützt die folgenden Registrierungstypen:"
 
 #. type: TP
 #: ippfind.man:42
@@ -9626,7 +9418,7 @@ msgstr "_http._tcp"
 #. type: Plain text
 #: ippfind.man:45
 msgid "HyperText Transport Protocol (HTTP, RFC 2616)"
-msgstr ""
+msgstr "HyperText Transport Protocol (HTTP, RFC 2616)"
 
 #. type: TP
 #: ippfind.man:45
@@ -9637,7 +9429,7 @@ msgstr "_https._tcp"
 #. type: Plain text
 #: ippfind.man:48
 msgid "Secure HyperText Transport Protocol (HTTPS, RFC 2818)"
-msgstr ""
+msgstr "Secure HyperText Transport Protocol (HTTPS, RFC 2818)"
 
 #. type: TP
 #: ippfind.man:48
@@ -9648,7 +9440,7 @@ msgstr "_ipp._tcp"
 #. type: Plain text
 #: ippfind.man:51
 msgid "Internet Printing Protocol (IPP, RFC 2911)"
-msgstr ""
+msgstr "Internet Printing Protocol (IPP, RFC 2911)"
 
 #. type: TP
 #: ippfind.man:51
@@ -9659,7 +9451,7 @@ msgstr "_ipps._tcp"
 #. type: Plain text
 #: ippfind.man:54
 msgid "Secure Internet Printing Protocol (IPPS, draft)"
-msgstr ""
+msgstr "Secure Internet Printing Protocol (IPPS, draft)"
 
 #. type: TP
 #: ippfind.man:54
@@ -9846,29 +9638,26 @@ msgstr ""
 
 #. type: TP
 #: ippfind.man:114
-#, fuzzy, no-wrap
-#| msgid "--release"
+#, no-wrap
 msgid "B<--remote>"
-msgstr "--release"
+msgstr "B<--remote>"
 
 #. type: Plain text
 #: ippfind.man:117
 msgid "True if the service is not local to this computer."
-msgstr ""
+msgstr "Wahr, falls der Dienst nicht lokal am Computer ist."
 
 #. type: TP
 #: ippfind.man:117 lp.man:136 lpstat.man:118
 #, no-wrap
 msgid "B<-s>"
-msgstr ""
+msgstr "B<-s>"
 
-# type: TP
 #. type: TP
 #: ippfind.man:119
-#, fuzzy, no-wrap
-#| msgid "--product name"
+#, no-wrap
 msgid "B<--print-name>"
-msgstr "--product Name"
+msgstr "B<--print-name>"
 
 #. type: Plain text
 #: ippfind.man:123
@@ -9877,34 +9666,29 @@ msgid ""
 "true.  The result is always true."
 msgstr ""
 
-# type: TP
 #. type: TP
 #: ippfind.man:123
-#, fuzzy, no-wrap
-#| msgid "--datadir"
+#, no-wrap
 msgid "B<--true>"
-msgstr "--datadir"
+msgstr "B<--true>"
 
 #. type: Plain text
 #: ippfind.man:126
 msgid "Always true."
-msgstr ""
+msgstr "Immer wahr."
 
 #. type: TP
 #: ippfind.man:126
-#, fuzzy, no-wrap
-#| msgid "-t title"
+#, no-wrap
 msgid "B<-t >I<key>"
-msgstr "-t Titel"
+msgstr "B<-t >I<Schlüssel>"
 
 #. type: TP
 #: ippfind.man:128
-#, fuzzy, no-wrap
-#| msgid "-t title"
+#, no-wrap
 msgid "B<--txt >I<key>"
-msgstr "-t Titel"
+msgstr "B<--txt >I<Schlüssel>"
 
-# type: Plain text
 #. type: Plain text
 #: ippfind.man:131
 #, fuzzy
@@ -10299,10 +10083,9 @@ msgstr ""
 # type: TH
 #. type: Plain text
 #: ippfind.man:247
-#, fuzzy, no-wrap
-#| msgid "lpinfo"
+#, no-wrap
 msgid "    ippfind --ls\n"
-msgstr "lpinfo"
+msgstr "    ippfind --ls\n"
 
 #. type: Plain text
 #: ippfind.man:250
@@ -10317,50 +10100,38 @@ msgid ""
 "    ippfind --txt-pdl application/postscript --exec ipptool\n"
 "      -f onepage-letter.ps '{}' print-job.test \\e;\n"
 msgstr ""
+"    ippfind --txt-pdl application/postscript --exec ipptool\n"
+"      -f onepage-letter.ps '{}' print-job.test \\e;\n"
 
 #. type: Plain text
 #: ippfind.man:257
-#, fuzzy
-#| msgid "ipptool"
 msgid "B<ipptool>(1)"
-msgstr "ipptool"
+msgstr "B<ipptool>(1)"
 
 #. type: Plain text
 #: ippfind.man:258
-#, fuzzy
-#| msgid "Copyright 2007-2014 by Apple Inc."
 msgid "Copyright \\[co] 2013-2014 by Apple Inc."
-msgstr "Copyright 2007-2014 by Apple Inc."
+msgstr "Copyright \\[co] 2013-2014 by Apple Inc."
 
 #. type: TH
 #: ../test/ippserver.man:14
 #, no-wrap
 msgid "ippserver"
-msgstr ""
+msgstr "ippserver"
 
 #. type: TH
 #: ../test/ippserver.man:14
-#, fuzzy, no-wrap
-#| msgid "29 August 2008"
+#, no-wrap
 msgid "28 August 2014"
-msgstr "29. August 2008"
+msgstr "28. August 2014"
 
 #. type: Plain text
 #: ../test/ippserver.man:17
-#, fuzzy
-#| msgid "ippfind - find internet printing protocol printers"
 msgid "ippserver - a simple internet printing protocol server"
-msgstr "ippfind - Internet-Printing-Protocol-Drucker finden"
+msgstr "ippserver - ein einfacher internet-Printing-Protocol-Server"
 
 #. type: Plain text
 #: ../test/ippserver.man:64
-#, fuzzy
-#| msgid ""
-#| "B<cupsfilter> [ B<--list-filters> ] [ B<-D> ] [ B<-U> I<user> ] [ B<-c> "
-#| "I<config-file> ] [ B<-d> I<printer> ] [ B<-e> ] [ B<-i> I<mime/type> ] "
-#| "[ B<-j> I<job-id[,N]> ] [ B<-m> I<mime/type> ] [ B<-n> I<copies> ] [ B<-"
-#| "o> I<name=value> ] [ B<-p> I<filename.ppd> ] [ B<-t> I<title> ] [ B<-u> ] "
-#| "I<filename>"
 msgid ""
 "B<ippserver> [ B<-2> ] [ B<-M> I<manufacturer> ] [ B<-P> ] [ B<-c> "
 "I<command> ] [ B<-d> I<spool-directory> ] [ B<-f> I<type/subtype[,...]> ] "
@@ -10368,11 +10139,11 @@ msgid ""
 "I<model> ] [ B<-n> I<hostname> ] [ B<-p> I<port> ] [ B<-r> I<subtype> ] [ B<-"
 "s> I<speed[,color-speed]> ] [ B<-v[vvv]> ] I<service-name>"
 msgstr ""
-"B<cupsfilter> [ B<--list-filters> ] [ B<-D> ] [ B<-U> I<Benutzer> ] [ B<-c> "
-"I<Konfig-Datei> ] [ B<-d> I<Drucker> ] [ B<-e> ] [ B<-i> I<MIME/typ> ] [ B<-"
-"j> I<Auftrags-ID[,N]> ] [ B<-m> I<MIME/typ> ] [ B<-n> I<Kopien> ] [ B<-o> "
-"I<Name=Wert> ] [ B<-p> I<Dateiname.ppd> ] [ B<-t> I<Titel> ] [ B<-u> ] "
-"I<Dateiname>"
+"B<ippserver> [ B<-2> ] [ B<-M> I<Hersteller> ] [ B<-P> ] [ B<-c> "
+"I<Befehl> ] [ B<-d> I<Spool-Verzeichnis> ] [ B<-f> I<Typ/Untertyp[,… ]> "
+"[ B<-h> ] [ B<-i> I<icondatei.png> ] [ B<-k> ] [ B<-l> I<Ort> ] [ B<-m> "
+"I<Modell> ] [ B<-n> I<Rechnername> ] [ B<-p> I<Port> ] [ B<-r> I<Untertyp> ] [ B<-"
+"s> I<Geschwindigkeit[,Farbgeschwindigkeit]> ] [ B<-v[vvv]> ] I<Dienstename>"
 
 #. type: Plain text
 #: ../test/ippserver.man:67
@@ -10382,91 +10153,81 @@ msgid ""
 "client software or act as a very basic print server that runs a command for "
 "every job that is printed."
 msgstr ""
+"B<ippserver> ist ein einfacher Internet Printing Protocol (IPP)-Server, der "
+"der Spezifikation »IPP Everywhere (PWG 5100.14)« folgt. Er kann zum Testen "
+"von Client-Software dienen oder als sehr rudimentärer Server, der für jeden "
+"Druckauftrag einen Befehl ausführt, verwandt werden."
 
 #. type: Plain text
 #: ../test/ippserver.man:70
-#, fuzzy
-#| msgid "The following options are recognized by I<ipptool>:"
 msgid "The following options are recognized by B<ippserver:>"
-msgstr "Die folgenden Optionen werden von I<ipptool> erkannt:"
+msgstr "Die folgenden Optionen werden von I<ippserver> erkannt:"
 
 #. type: TP
 #: ../test/ippserver.man:70
 #, no-wrap
 msgid "B<-2>"
-msgstr ""
+msgstr "B<-2>"
 
 #. type: Plain text
 #: ../test/ippserver.man:73
 msgid "Report support for two-sided (duplex) printing."
-msgstr ""
+msgstr "Meldet die Unterstützung für zweiseitigen (Duplex-)Druck."
 
-# type: TP
 #. type: TP
 #: ../test/ippserver.man:73
-#, fuzzy, no-wrap
-#| msgid "-i interface"
+#, no-wrap
 msgid "B<-M >I<manufacturer>"
-msgstr "-i Schnittstelle"
+msgstr "B<-M >I<Hersteller>"
 
 #. type: Plain text
 #: ../test/ippserver.man:77
-#, fuzzy
-#| msgid "Specifies the default type of authentication to use."
 msgid "Set the manufacturer of the printer.  The default is \"Test\"."
-msgstr "Spezifiziert den standardmäßig zu verwendenden Authentifizierungstyp."
+msgstr "Setzt den Hersteller des Druckers. Die Vorgabe ist »Test«."
 
 #. type: TP
 #: ../test/ippserver.man:77
 #, no-wrap
 msgid "B<-P>"
-msgstr ""
+msgstr "B<-P>"
 
 #. type: Plain text
 #: ../test/ippserver.man:80
-#, fuzzy
-#| msgid "Hold job for printing."
 msgid "Report support for PIN printing."
-msgstr "Druckauftrag zum Drucken anhalten."
+msgstr "Berichtet die Unterstützung für PIN-Drucken."
 
 #. type: TP
 #: ../test/ippserver.man:80
-#, fuzzy, no-wrap
-#| msgid "B<? >[I<command>]"
+#, no-wrap
 msgid "B<-c >I<command>"
-msgstr "B<?> [I<Befehl>]"
+msgstr "B<-c >I<Befehl>"
 
 #. type: Plain text
 #: ../test/ippserver.man:83
 msgid "Run the specified command for each document that is printed."
-msgstr ""
+msgstr "Führt den angegebenen Befehl für jedes zu druckende Dokument aus."
 
 #. type: TP
 #: ../test/ippserver.man:83
-#, fuzzy, no-wrap
-#| msgid "B<-d >I<output-directory>"
+#, no-wrap
 msgid "B<-d >I<spool-directory>"
-msgstr "B<-d >I<Ausgabeverzeichnis>"
+msgstr "B<-d >I<Spool-Verzeichnis>"
 
 #. type: Plain text
 #: ../test/ippserver.man:87
-#, fuzzy
-#| msgid ""
-#| "Specifies the username passed to the filters. The default is the name of "
-#| "the current user."
 msgid ""
 "Specifies the directory that will hold the print files.  The default is a "
 "directory under the user's current temporary directory."
 msgstr ""
-"Spezifiziert den Benutzernamen, der an die Filter weitergegeben wird. "
-"Standardmäßig ist dies der Name des aktuellen Benutzers."
+"Legt das Verzeichnis, in denen die Druckaufträge gehalten werden, fest. Die "
+"Vorgabe ist ein Verzeichnis unter dem aktuellen temporären Verzeichnis des "
+"Benutzers."
 
 #. type: TP
 #: ../test/ippserver.man:87
-#, fuzzy, no-wrap
-#| msgid "B<-i >I<mime/type>"
+#, no-wrap
 msgid "B<-f >I<type/subtype[,...]>"
-msgstr "B<-i >I<MIME/Typ>"
+msgstr "B<-f >I<Typ/Untertyp[,…]>"
 
 #. type: Plain text
 #: ../test/ippserver.man:91
@@ -10474,6 +10235,8 @@ msgid ""
 "Specifies a list of MIME media types that the server will accept.  The "
 "default is \"application/pdf,image/jpeg,image/pwg-raster\"."
 msgstr ""
+"Legt eine Liste von MIME-Medientypen fest, die der Server akzeptiert. Die "
+"Vorgabe ist »application/pdf,image/jpeg,image/pwg-raster«."
 
 #. type: Plain text
 #: ../test/ippserver.man:94 ipptool.man:94
@@ -10482,88 +10245,77 @@ msgstr "Zeigt die Programmhilfe."
 
 #. type: TP
 #: ../test/ippserver.man:94
-#, fuzzy, no-wrap
-#| msgid "B<-c >I<config-file>"
+#, no-wrap
 msgid "B<-i >I<iconfile.png>"
-msgstr "B<-c >I<Konfig-Datei>"
+msgstr "B<-i >I<icondatei.png>"
 
 #. type: Plain text
 #: ../test/ippserver.man:98
-#, fuzzy
-#| msgid "Specifies whether local printers are shared by default."
 msgid ""
 "Specifies the printer icon file for the server.  The default is \"printer.png"
 "\"."
-msgstr "Spezifiziert, ob lokale Drucker standardmäßig freigegeben sind."
+msgstr ""
+"Legt die Drucker-Icon-Datei für den Server fest. Die Vorgabe ist "
+"»printer.png«."
 
 #. type: TP
 #: ../test/ippserver.man:98
 #, no-wrap
 msgid "B<-k>"
-msgstr ""
+msgstr "B<-k>"
 
 #. type: Plain text
 #: ../test/ippserver.man:101
 msgid ""
 "Keeps the print documents in the spool directory rather than deleting them."
-msgstr ""
+msgstr "Belässt die Druckdokumente im Spool-Verzeichnis, statt sie zu löschen."
 
 #. type: TP
 #: ../test/ippserver.man:101
-#, fuzzy, no-wrap
-#| msgid "-L \"location\""
+#, no-wrap
 msgid "B<-l >I<location>"
-msgstr "-L »Ort«"
+msgstr "B<-l >I<Ort>"
 
-# type: Plain text
 #. type: Plain text
 #: ../test/ippserver.man:105
-#, fuzzy
-#| msgid "Specifies the maximum number of simultaneous clients to support."
 msgid ""
 "Specifies the human-readable location string that is reported by the "
 "server.  The default is the empty string."
 msgstr ""
-"Spezifiziert die maximale Anzahl an simultan zu unterstützenden Clients."
+"Legt die menschenlesbare Ortszeichenkette fest, die vom Server berichtet "
+"wird. Die Vorgabe ist die leere Zeichenkette."
 
-# type: TP
 #. type: TP
 #: ../test/ippserver.man:105 lpadmin.man:88
-#, fuzzy, no-wrap
-#| msgid "-m model"
+#, no-wrap
 msgid "B<-m >I<model>"
-msgstr "-m Modell"
+msgstr "B<-m >I<Modell>"
 
 #. type: Plain text
 #: ../test/ippserver.man:109
-#, fuzzy
-#| msgid "Specifies the default type of authentication to use."
 msgid "Specifies the model name of the printer.  The default is \"Printer\"."
-msgstr "Spezifiziert den standardmäßig zu verwendenden Authentifizierungstyp."
+msgstr "Legt den Modellnamen des Druckers fest. Die Vorgabe ist »Printer«."
 
 #. type: TP
 #: ../test/ippserver.man:109
-#, fuzzy, no-wrap
-#| msgid "B<-h >I<hostname[:port]>"
+#, no-wrap
 msgid "B<-n >I<hostname>"
-msgstr "B<-h >I<Hostname[:Port]>"
+msgstr "B<-n >I<Rechnername>"
 
-# type: Plain text
 #. type: Plain text
 #: ../test/ippserver.man:115
-#, fuzzy
-#| msgid "Specifies the fully-qualified hostname of the server."
 msgid ""
 "Specifies the hostname that is reported by the server.  The default is the "
 "name returned by the B<hostname>(1)  command."
-msgstr "Spezifiziert den vollqualifizierten Rechnernamen des Servers."
+msgstr ""
+"Legt den Rechnernamen, der vom Server gemeldet wird, fest. Die Vorgabe ist "
+"der durch den Befehl B<hostname>(1) zurückgelieferte Name."
 
 #. type: TP
 #: ../test/ippserver.man:115
-#, fuzzy, no-wrap
-#| msgid "-q priority"
+#, no-wrap
 msgid "B<-p >I<port>"
-msgstr "-q Priorität"
+msgstr "B<-p >I<Port>"
 
 #. type: Plain text
 #: ../test/ippserver.man:119
@@ -10571,13 +10323,14 @@ msgid ""
 "Specifies the port number to listen on.  The default is a user-specific "
 "number from 8000 to 8999."
 msgstr ""
+"Legt den Port fest, bei dem auf Anfragen gewartet werden soll. Die Vorgabe "
+"ist eine benutzerspezifische Nummer zwischen 8000 und 8999."
 
 #. type: TP
 #: ../test/ippserver.man:119
-#, fuzzy, no-wrap
-#| msgid "B<-i >I<mime/type>"
+#, no-wrap
 msgid "B<-r >I<subtype>"
-msgstr "B<-i >I<MIME/Typ>"
+msgstr "B<-r >I<Untertyp>"
 
 #. type: Plain text
 #: ../test/ippserver.man:124
@@ -10585,12 +10338,14 @@ msgid ""
 "Specifies the Bonjour subtype(s) to advertise.  Separate multiple subtypes "
 "with a comma.  The default is \"_print\"."
 msgstr ""
+"Legt den/die Bonjour-Untertyp(en) fest, die bekanntgegeben werden sollen. "
+"Mehrere Untertypen werden mit Kommata getrennt. Die Vorgabe ist »_print«."
 
 #. type: TP
 #: ../test/ippserver.man:124
 #, no-wrap
 msgid "B<-s >I<speed[,color-speed]>"
-msgstr ""
+msgstr "B<-s >I<Geschwindigkeit[,Farb-Geschwindigkeit]>"
 
 #. type: Plain text
 #: ../test/ippserver.man:129
@@ -10599,18 +10354,22 @@ msgid ""
 "specified and the second number is greater than zero, the server will report "
 "support for color printing.  The default is \"10,0\"."
 msgstr ""
+"Legt die Druckergeschwindigkeit in Seiten pro Minute fest. Falls zwei Nummern "
+"angegeben werden und die zweite Nummer größer als 0 ist, wird der Server "
+"angeben, dass er Farbdruck unterstützt. Die Vorgabe ist »10,0«."
 
 #. type: TP
 #: ../test/ippserver.man:129
-#, fuzzy, no-wrap
-#| msgid "B<-vv>"
+#, no-wrap
 msgid "B<-v[vvv]>"
-msgstr "B<-vv>"
+msgstr "B<-v[vvv]>"
 
 #. type: Plain text
 #: ../test/ippserver.man:132
 msgid "Be (very) verbose when logging activity to the standard output."
 msgstr ""
+"Das Protokollieren der Aktivitäten auf die Standardausgabe erfolgt (sehr) "
+"ausführlich."
 
 #. type: Plain text
 #: ../test/ippserver.man:139
@@ -10619,6 +10378,9 @@ msgid ""
 "line arguments or register the IPP service.  Otherwise B<ippserver> will run "
 "continuously until terminated."
 msgstr ""
+"Das Programm B<ippserver> liefert 1 zurück, falls es nicht in der Lage ist, "
+"die Befehlszeilenargumente zu verarbeiten oder den IPP-Dienst zu "
+"registrieren. Andernfalls läuft B<ippserver> dauerhaft, bis er beendet wird."
 
 #. type: Plain text
 #: ../test/ippserver.man:143
@@ -10626,6 +10388,8 @@ msgid ""
 "The B<ippserver> program is unique to CUPS and conforms to the IPP "
 "Everywhere (PWG 5100.14) specification."
 msgstr ""
+"Das Programm B<ippserver> ist eine Besonderheit von CUPS und konform zu der "
+"Spezifikation »IPP Everywhere (PWG 5100.14)«."
 
 #. type: Plain text
 #: ../test/ippserver.man:147
@@ -10636,6 +10400,11 @@ msgid ""
 "\"IPP_MEDIA\" environment variable will be set to the value of that "
 "attribute."
 msgstr ""
+"B<ippserver> fügt für alle IPP-Auftragsattribute in der Druckwarteschlange "
+"Umgebungsvariablen hinzu, die mit »IPP_« beginnen. Wird beispielsweise ein "
+"Befehl für einen IPP-Auftrag ausgeführt, der das Attribut »media« des »Job "
+"Template« enthält, wird die Umgebungsvariable »IPP_MEDIA« auf den Wert des "
+"Attributes gesetzt."
 
 #. type: Plain text
 #: ../test/ippserver.man:150
@@ -10671,7 +10440,7 @@ msgstr ""
 #. type: Plain text
 #: ../test/ippserver.man:168
 msgid "PWG Internet Printing Protocol Workgroup (http://www.pwg.org/ipp)"
-msgstr ""
+msgstr "PWG Internet Printing Protocol Workgroup (http://www.pwg.org/ipp)"
 
 #. type: TH
 #: ipptoolfile.man:14
@@ -10681,10 +10450,9 @@ msgstr "ipptoolfile"
 
 #. type: TH
 #: ipptoolfile.man:14
-#, fuzzy, no-wrap
-#| msgid "18 May 2012"
+#, no-wrap
 msgid "15 May 2014"
-msgstr "18. Mai 2012"
+msgstr "15. Mai 2014"
 
 #. type: Plain text
 #: ipptoolfile.man:17
@@ -10693,31 +10461,20 @@ msgstr "ipptoolfile - ipptool-Dateiformat"
 
 #. type: Plain text
 #: ipptoolfile.man:21
-#, fuzzy
-#| msgid ""
-#| "The I<ipptool(1)> program accepts free-form plain text files that "
-#| "describe one or more IPP requests. Comments start with the \"#\" "
-#| "character and continue to the end of the line. Each request is enclosed "
-#| "by curly braces, for example:"
 msgid ""
 "The B<ipptool>(1)  program accepts free-form plain text files that describe "
 "one or more IPP requests. Comments start with the \"#\" character and "
 "continue to the end of the line. Each request is enclosed by curly braces, "
 "for example:"
 msgstr ""
-"Das Programm I<ipptool(1)> akzeptiert frei formatierte einfache Textdateien, "
+"Das Programm B<ipptool>(1) akzeptiert frei formatierte einfache Textdateien, "
 "die eine oder mehrere IPP-Anfragen beschreiben. Kommentare beginnen mit dem "
 "Zeichen »#« und gehen bis zum Zeilenende. Jede Anfrage ist in geschweiften "
 "Klammern eingeschlossen. Beispiel:"
 
 #. type: Plain text
 #: ipptoolfile.man:27
-#, fuzzy, no-wrap
-#| msgid ""
-#| "    # This is a comment\n"
-#| "    {\n"
-#| "      # The name of the test\n"
-#| "      NAME \"Print PostScript Job\"\n"
+#, no-wrap
 msgid ""
 "    # This is a comment\n"
 "    {\n"
@@ -10727,7 +10484,7 @@ msgstr ""
 "    # Dies ist ein Kommentar\n"
 "    {\n"
 "      # Der Name des Tests\n"
-"      NAME \"Drucke PostScript-Auftrag\"\n"
+"      NAME \"Drucke PostScript-Datei\"\n"
 
 #. type: Plain text
 #: ipptoolfile.man:36
@@ -10753,18 +10510,7 @@ msgstr ""
 
 #. type: Plain text
 #: ipptoolfile.man:45
-#, fuzzy, no-wrap
-#| msgid ""
-#| "      # The response to expect\n"
-#| "      STATUS successful-ok\n"
-#| "      EXPECT attributes-charset OF-TYPE charset\n"
-#| "      EXPECT attributes-natural-language OF-TYPE naturalLanguage\n"
-#| "      EXPECT job-id OF-TYPE integer\n"
-#| "      EXPECT job-uri OF-TYPE uri\n"
-#| "    }\n"
-#| "    {\n"
-#| "      # The name of the test\n"
-#| "      NAME \"Get Attributes of PostScript Job\"\n"
+#, no-wrap
 msgid ""
 "      # The response to expect\n"
 "      STATUS successful-ok\n"
@@ -10777,9 +10523,7 @@ msgid ""
 msgstr ""
 "      # Die zu erwartende Antwort\n"
 "      STATUS successful-ok\n"
-"      EXPECT attributes-charset OF-TYPE charset\n"
-"      EXPECT attributes-natural-language OF-TYPE naturalLanguage\n"
-"      EXPECT job-id OF-TYPE integer\n"
+"      EXPECT job-id OF-TYPE integer WITH-VALUE E<gt>0\n"
 "      EXPECT job-uri OF-TYPE uri\n"
 "    }\n"
 "    {\n"
@@ -10810,17 +10554,7 @@ msgstr ""
 
 #. type: Plain text
 #: ipptoolfile.man:62
-#, fuzzy, no-wrap
-#| msgid ""
-#| "      # The response to expect\n"
-#| "      STATUS successful-ok\n"
-#| "      EXPECT attributes-charset OF-TYPE charset\n"
-#| "      EXPECT attributes-natural-language OF-TYPE naturalLanguage\n"
-#| "      EXPECT job-id OF-TYPE integer\n"
-#| "      EXPECT job-uri OF-TYPE uri\n"
-#| "      EXPECT job-state OF-TYPE enum\n"
-#| "      EXPECT job-originating-user-name OF-TYPE name WITH-VALUE \"$user\"\n"
-#| "    }\n"
+#, no-wrap
 msgid ""
 "      # The response to expect\n"
 "      STATUS successful-ok\n"
@@ -10832,27 +10566,22 @@ msgid ""
 msgstr ""
 "      # Die zu erwartende Antwort\n"
 "      STATUS successful-ok\n"
-"      EXPECT attributes-charset OF-TYPE charset\n"
-"      EXPECT attributes-natural-language OF-TYPE naturalLanguage\n"
-"      EXPECT job-id OF-TYPE integer\n"
+"      EXPECT job-id OF-TYPE integer WITH-VALUE $job-id\n"
 "      EXPECT job-uri OF-TYPE uri\n"
-"      EXPECT job-state OF-TYPE enum\n"
+"      EXPECT job-state OF-TYPE enum WITH-VALUE 3,4,5,6,7,8,9\n"
 "      EXPECT job-originating-user-name OF-TYPE name WITH-VALUE \"$user\"\n"
 "    }\n"
 
 #. type: Plain text
 #: ipptoolfile.man:65
-#, fuzzy
-#| msgid "The following directives can be used outside of a test:"
 msgid "The following directives can be used outside of a I<test>:"
-msgstr "Die folgenden Direktiven können außerhalb eines Tests verwandt werden:"
+msgstr "Die folgenden Direktiven können außerhalb eines I<Tests> verwandt werden:"
 
 #. type: TP
 #: ipptoolfile.man:65
-#, fuzzy, no-wrap
-#| msgid "{ test }"
+#, no-wrap
 msgid "B<{ >I<test >B<}>"
-msgstr "{ Test }"
+msgstr "B<{ >I<Test >B<}>"
 
 #. type: Plain text
 #: ipptoolfile.man:68
@@ -10861,31 +10590,25 @@ msgstr "Definiert einen Test."
 
 #. type: TP
 #: ipptoolfile.man:68
-#, fuzzy, no-wrap
-#| msgid "DEFINE variable-name value"
+#, no-wrap
 msgid "B<DEFINE >I<variable-name value>"
-msgstr "DEFINE Variablennamen Wert"
+msgstr "B<DEFINE >I<Variablennamen Wert>"
 
 #. type: Plain text
 #: ipptoolfile.man:73
-#, fuzzy
-#| msgid ""
-#| "Defines the named variable to the given value. This is equivalent to "
-#| "specifying \"-d variable-name=value\" on the I<ipptool> command-line."
 msgid ""
 "Defines the named variable to the given value. This is equivalent to "
 "specifying I<-d variable-name=value> on the B<ipptool>(8)  command-line."
 msgstr ""
 "Definiert die benannte Variable auf den angegebenen Wert. Dies ist zur "
-"Angabe von »-d Variablennamen=Wert« auf der I<ipptool>-Befehlszeile "
+"Angabe von I<-d Variablennamen=Wert> auf der B<ipptool>(8)-Befehlszeile "
 "äquivalent."
 
 #. type: TP
 #: ipptoolfile.man:73
-#, fuzzy, no-wrap
-#| msgid "DEFINE-DEFAULT variable-name value"
+#, no-wrap
 msgid "B<DEFINE-DEFAULT >I<variable-name value>"
-msgstr "DEFINE-DEFAULT Variablennamen Wert"
+msgstr "B<DEFINE-DEFAULT >I<Variablennamen Wert>"
 
 #. type: Plain text
 #: ipptoolfile.man:76
@@ -10898,10 +10621,9 @@ msgstr ""
 
 #. type: TP
 #: ipptoolfile.man:76
-#, fuzzy, no-wrap
-#| msgid "FILE-ID \"identifier\""
+#, no-wrap
 msgid "B<FILE-ID \">I<identifier>B<\">"
-msgstr "FILE-ID \"Identifikator\""
+msgstr "B<FILE-ID \">I<Identifikator>B<\">"
 
 #. type: Plain text
 #: ipptoolfile.man:79
@@ -10910,52 +10632,39 @@ msgstr "Spezifiziert die Identifikatorzeichenkette für die aktuelle Datei."
 
 #. type: TP
 #: ipptoolfile.man:79 ipptoolfile.man:176
-#, fuzzy, no-wrap
-#| msgid "IGNORE-ERRORS yes"
+#, no-wrap
 msgid "B<IGNORE-ERRORS yes>"
-msgstr "IGNORE-ERRORS yes"
+msgstr "B<IGNORE-ERRORS yes>"
 
 #. type: TP
 #: ipptoolfile.man:81 ipptoolfile.man:178
-#, fuzzy, no-wrap
-#| msgid "IGNORE-ERRORS no"
+#, no-wrap
 msgid "B<IGNORE-ERRORS no>"
-msgstr "IGNORE-ERRORS no"
+msgstr "B<IGNORE-ERRORS no>"
 
 #. type: Plain text
 #: ipptoolfile.man:86
-#, fuzzy
-#| msgid ""
-#| "Specifies whether, by default, I<ipptool> will ignore errors and continue "
-#| "with subsequent tests."
 msgid ""
 "Specifies whether, by default, B<ipptool>(8)  will ignore errors and "
 "continue with subsequent tests."
 msgstr ""
-"Spezifiziert, ob I<ipptool> standardmäßig Fehler ignorieren und mit "
+"Spezifiziert, ob B<ipptool>(8) standardmäßig Fehler ignorieren und mit "
 "folgenden Tests fortfahren wird."
 
 #. type: TP
 #: ipptoolfile.man:86
-#, fuzzy, no-wrap
-#| msgid "INCLUDE \"filename\""
+#, no-wrap
 msgid "B<INCLUDE \">I<filename>B<\">"
-msgstr "INCLUDE \"Dateiname\""
+msgstr "B<INCLUDE \">I<Dateiname>B<\">"
 
 #. type: TP
 #: ipptoolfile.man:88
-#, fuzzy, no-wrap
-#| msgid "INCLUDE E<lt>filenameE<gt>"
+#, no-wrap
 msgid "B<INCLUDE E<lt>>I<filename>B<E<gt>>"
-msgstr "INCLUDE E<lt>DateinameE<gt>"
+msgstr "B<INCLUDE E<lt>>I<Dateiname>B<E<gt>>"
 
 #. type: Plain text
 #: ipptoolfile.man:93
-#, fuzzy
-#| msgid ""
-#| "Includes another test file. The first form includes a file relative to "
-#| "the current test file, while the second form includes a file from the "
-#| "I<ipptool> include directory."
 msgid ""
 "Includes another test file. The first form includes a file relative to the "
 "current test file, while the second form includes a file from the "
@@ -10963,29 +10672,22 @@ msgid ""
 msgstr ""
 "Bindet eine andere Testdatei ein. Die erste Form bindet eine Datei relativ "
 "zu der aktuellen Testdatei ein, während die zweite Form eine Datei aus dem "
-"I<ipptool>-Einbindeverzeichnis einbindet."
+"B<ipptool>(8)-Einbindeverzeichnis einbindet."
 
 #. type: TP
 #: ipptoolfile.man:93
-#, fuzzy, no-wrap
-#| msgid "INCLUDE-IF-DEFINED name \"filename\""
+#, no-wrap
 msgid "B<INCLUDE-IF-DEFINED >I<name >B<\">I<filename>B<\">"
-msgstr "INCLUDE-IF-DEFINED Name \"Dateiname\""
+msgstr "B<INCLUDE-IF-DEFINED >I<Name >B<\">I<Dateiname>B<\">"
 
 #. type: TP
 #: ipptoolfile.man:95
-#, fuzzy, no-wrap
-#| msgid "INCLUDE-IF-DEFINED name E<lt>filenameE<gt>"
+#, no-wrap
 msgid "B<INCLUDE-IF-DEFINED >I<name >B<E<lt>>I<filename>B<E<gt>>"
-msgstr "INCLUDE-IF-DEFINED Name E<lt>DateinameE<gt>"
+msgstr "B<INCLUDE-IF-DEFINED >I<Name >B<E<lt>>I<Dateiname>B<E<gt>>"
 
 #. type: Plain text
 #: ipptoolfile.man:100
-#, fuzzy
-#| msgid ""
-#| "Includes another test file if the named variable is defined. The first "
-#| "form includes a file relative to the current test file, while the second "
-#| "form includes a file from the I<ipptool> include directory."
 msgid ""
 "Includes another test file if the named variable is defined. The first form "
 "includes a file relative to the current test file, while the second form "
@@ -10993,30 +10695,23 @@ msgid ""
 msgstr ""
 "Bindet eine andere Testdatei ein, falls die benannte Variable definiert ist. "
 "Die erste Form bindet eine Datei relativ zu der aktuellen Testdatei ein, "
-"während die zweite Form eine Datei aus dem I<ipptool>-Einbindeverzeichnis "
+"während die zweite Form eine Datei aus dem B<ipptool>(8)-Einbindeverzeichnis "
 "einbindet."
 
 #. type: TP
 #: ipptoolfile.man:100
-#, fuzzy, no-wrap
-#| msgid "INCLUDE-IF-NOT-DEFINED name \"filename\""
+#, no-wrap
 msgid "B<INCLUDE-IF-NOT-DEFINED >I<name >B<\">I<filename>B<\">"
-msgstr "INCLUDE-IF-NOT-DEFINED Name \"Dateiname\""
+msgstr "B<INCLUDE-IF-NOT-DEFINED >I<Name >B<\">I<Dateiname>B<\">"
 
 #. type: TP
 #: ipptoolfile.man:102
-#, fuzzy, no-wrap
-#| msgid "INCLUDE-IF-NOT-DEFINED name E<lt>filenameE<gt>"
+#, no-wrap
 msgid "B<INCLUDE-IF-NOT-DEFINED >I<name >B<E<lt>>I<filename>B<E<gt>>"
-msgstr "INCLUDE-IF-NOT-DEFINED Name E<lt>DateinameE<gt>"
+msgstr "B<INCLUDE-IF-NOT-DEFINED >I<Name >B<E<lt>>I<Dateiname>B<E<gt>>"
 
 #. type: Plain text
 #: ipptoolfile.man:107
-#, fuzzy
-#| msgid ""
-#| "Includes another test file if the named variable is not defined. The "
-#| "first form includes a file relative to the current test file, while the "
-#| "second form includes a file from the I<ipptool> include directory."
 msgid ""
 "Includes another test file if the named variable is not defined. The first "
 "form includes a file relative to the current test file, while the second "
@@ -11024,22 +10719,20 @@ msgid ""
 msgstr ""
 "Bindet eine andere Testdatei ein, falls die benannte Variable nicht "
 "definiert ist. Die erste Form bindet eine Datei relativ zu der aktuellen "
-"Testdatei ein, während die zweite Form eine Datei aus dem I<ipptool>-"
+"Testdatei ein, während die zweite Form eine Datei aus dem B<ipptool>(8)-"
 "Einbindeverzeichnis einbindet."
 
 #. type: TP
 #: ipptoolfile.man:107 ipptoolfile.man:202
-#, fuzzy, no-wrap
-#| msgid "SKIP-IF-DEFINED variable-name"
+#, no-wrap
 msgid "B<SKIP-IF-DEFINED >I<variable-name>"
-msgstr "SKIP-IF-DEFINED Variablenname"
+msgstr "B<SKIP-IF-DEFINED >I<variablenname>"
 
 #. type: TP
 #: ipptoolfile.man:109 ipptoolfile.man:204
-#, fuzzy, no-wrap
-#| msgid "SKIP-IF-NOT-DEFINED variable-name"
+#, no-wrap
 msgid "B<SKIP-IF-NOT-DEFINED >I<variable-name>"
-msgstr "SKIP-IF-NOT-DEFINED Variablenname"
+msgstr "B<SKIP-IF-NOT-DEFINED >I<Variablenname>"
 
 #. type: Plain text
 #: ipptoolfile.man:112
@@ -11052,17 +10745,15 @@ msgstr ""
 
 #. type: TP
 #: ipptoolfile.man:112
-#, fuzzy, no-wrap
-#| msgid "STOP-AFTER-INCLUDE-ERROR no"
+#, no-wrap
 msgid "B<STOP-AFTER-INCLUDE-ERROR no>"
-msgstr "STOP-AFTER-INCLUDE-ERROR no"
+msgstr "B<STOP-AFTER-INCLUDE-ERROR no>"
 
 #. type: TP
 #: ipptoolfile.man:114
-#, fuzzy, no-wrap
-#| msgid "STOP-AFTER-INCLUDE-ERROR yes"
+#, no-wrap
 msgid "B<STOP-AFTER-INCLUDE-ERROR yes>"
-msgstr "STOP-AFTER-INCLUDE-ERROR yes"
+msgstr "B<STOP-AFTER-INCLUDE-ERROR yes>"
 
 #. type: Plain text
 #: ipptoolfile.man:117
@@ -11074,10 +10765,9 @@ msgstr ""
 
 #. type: TP
 #: ipptoolfile.man:117 ipptoolfile.man:220
-#, fuzzy, no-wrap
-#| msgid "TRANSFER auto"
+#, no-wrap
 msgid "B<TRANSFER auto>"
-msgstr "TRANSFER auto"
+msgstr "B<TRANSFER auto>"
 
 #. type: Plain text
 #: ipptoolfile.man:120
@@ -11092,19 +10782,12 @@ msgstr ""
 
 #. type: TP
 #: ipptoolfile.man:120 ipptoolfile.man:223
-#, fuzzy, no-wrap
-#| msgid "TRANSFER chunked"
+#, no-wrap
 msgid "B<TRANSFER chunked>"
-msgstr "TRANSFER chunked"
+msgstr "B<TRANSFER chunked>"
 
 #. type: Plain text
 #: ipptoolfile.man:125
-#, fuzzy
-#| msgid ""
-#| "Specifies that tests will, by default, use the HTTP/1.1 \"Transfer-"
-#| "Encoding: chunked\" header. This is the default and is equivalent to "
-#| "specifying \"-c\" on the I<ipptool> command-line. Support for chunked "
-#| "requests is required for conformance with all versions of IPP."
 msgid ""
 "Specifies that tests will, by default, use the HTTP/1.1 \"Transfer-Encoding: "
 "chunked\" header. This is the default and is equivalent to specifying I<-c> "
@@ -11113,25 +10796,18 @@ msgid ""
 msgstr ""
 "Spezifiziert, dass die Tests standarmäßig den HTTP/1.1-Header »Transfer-"
 "Encoding: chunked« verwenden. Dies ist die Vorgabe und äquivalent zur Angabe "
-"von »-c« auf der Befehlszeile von I<ipptool>. Die Unterstützung für "
+"von I<-c> auf der Befehlszeile von B<ipptool>(8). Die Unterstützung für "
 "blockweise Abfragen wird für die Konformität mit allen Versionen von IPP "
 "benötigt."
 
 #. type: TP
 #: ipptoolfile.man:125 ipptoolfile.man:226
-#, fuzzy, no-wrap
-#| msgid "TRANSFER length"
+#, no-wrap
 msgid "B<TRANSFER length>"
-msgstr "TRANSFER length"
+msgstr "B<TRANSFER length>"
 
 #. type: Plain text
 #: ipptoolfile.man:130
-#, fuzzy
-#| msgid ""
-#| "Specifies that tests will, by default, use the HTTP/1.0 \"Content-Length:"
-#| "\" header. This is equivalent to specifying \"-l\" on the I<ipptool> "
-#| "command-line.  Support for content length requests is required for "
-#| "conformance with all versions of IPP."
 msgid ""
 "Specifies that tests will, by default, use the HTTP/1.0 \"Content-Length:\" "
 "header. This is equivalent to specifying I<-l> on the B<ipptool>(8)  command-"
@@ -11139,44 +10815,39 @@ msgid ""
 "all versions of IPP."
 msgstr ""
 "Spezifiziert, dass die Tests standarmäßig den HTTP/1.0-Header »Content-"
-"Length« verwenden. Dies ist die Vorgabe und äquivalent zur Angabe von »-l« "
-"auf der Befehlszeile von I<ipptool>. Die Unterstützung für Inhaltslängen-"
+"Length« verwenden. Dies ist die Vorgabe und äquivalent zur Angabe von I<-l> "
+"auf der Befehlszeile von B<ipptool>(8). Die Unterstützung für Inhaltslängen-"
 "Abfragen wird für die Konformität mit allen Versionen von IPP benötigt."
 
 #. type: TP
 #: ipptoolfile.man:130 ipptoolfile.man:229
-#, fuzzy, no-wrap
-#| msgid "VERSION 1.0"
+#, no-wrap
 msgid "B<VERSION 1.0>"
-msgstr "VERSION 1.0"
+msgstr "B<VERSION 1.0>"
 
 #. type: TP
 #: ipptoolfile.man:132 ipptoolfile.man:231
-#, fuzzy, no-wrap
-#| msgid "VERSION 1.1"
+#, no-wrap
 msgid "B<VERSION 1.1>"
-msgstr "VERSION 1.1"
+msgstr "B<VERSION 1.1>"
 
 #. type: TP
 #: ipptoolfile.man:134 ipptoolfile.man:233
-#, fuzzy, no-wrap
-#| msgid "VERSION 2.0"
+#, no-wrap
 msgid "B<VERSION 2.0>"
-msgstr "VERSION 2.0"
+msgstr "B<VERSION 2.0>"
 
 #. type: TP
 #: ipptoolfile.man:136 ipptoolfile.man:235
-#, fuzzy, no-wrap
-#| msgid "VERSION 2.1"
+#, no-wrap
 msgid "B<VERSION 2.1>"
-msgstr "VERSION 2.1"
+msgstr "B<VERSION 2.1>"
 
 #. type: TP
 #: ipptoolfile.man:138 ipptoolfile.man:237
-#, fuzzy, no-wrap
-#| msgid "VERSION 2.2"
+#, no-wrap
 msgid "B<VERSION 2.2>"
-msgstr "VERSION 2.2"
+msgstr "B<VERSION 2.2>"
 
 #. type: Plain text
 #: ipptoolfile.man:141
@@ -13491,12 +13162,13 @@ msgstr ""
 
 #. type: Plain text
 #: ipptool.man:237
-#, fuzzy, no-wrap
-#| msgid "    ipptool -d recipient=mailto:user@example.com         ipp://localhost/printers/myprinter create-printer-subscription.test\n"
+#, no-wrap
 msgid ""
 "    ipptool -d recipient=mailto:user@example.com \\e\n"
 "        ipp://localhost/printers/myprinter create-printer-subscription.test\n"
-msgstr "    ipptool -d recipient=mailto:user@example.com         ipp://localhost/printers/MeinDrucker create-printer-subscription.test\n"
+msgstr ""
+"    ipptool -d recipient=mailto:user@example.com \\e\n"
+"        ipp://localhost/printers/myprinter create-printer-subscription.test\n"
 
 #. type: Plain text
 #: ipptool.man:244
@@ -13515,10 +13187,9 @@ msgstr "lpadmin"
 
 #. type: TH
 #: lpadmin.man:15
-#, fuzzy, no-wrap
-#| msgid "2 February 2015"
+#, no-wrap
 msgid "11 February 2015"
-msgstr "2. Februar 2015"
+msgstr "11. Februar 2015"
 
 #. type: Plain text
 #: lpadmin.man:18
@@ -13527,52 +13198,38 @@ msgstr "lpadmin - CUPS-Treiber und -Klassen konfigurieren"
 
 #. type: Plain text
 #: lpadmin.man:30
-#, fuzzy
-#| msgid ""
-#| "B<lpadmin> [ -E ] [-U I<username> ] [ -h I<server[:port]> ] -d "
-#| "I<destination>"
 msgid ""
 "B<lpadmin> [ B<-E> ] [ B<-U> I<username> ] [ B<-h >I<server>[B<:>I<port>] ] "
 "B<-d> I<destination>"
 msgstr ""
-"B<lpadmin> [ -E ] [-U I<Benutzername> ] [ -h I<Server[:Port]> ] -d I<Ziel>"
+"B<lpadmin> [ B<-E> ] [ B<-U> I<Benutzername> ] [ B<-h >I<Server>[B<:>I<Port>] ] "
+"B<-d> I<Ziel>"
 
 #. type: Plain text
 #: lpadmin.man:47
-#, fuzzy
-#| msgid ""
-#| "B<lpadmin> [ -E ] [-U I<username> ] [ -h I<server[:port]> ] -p "
-#| "I<destination> [ -R I<name-default> ] I<option(s)>"
 msgid ""
 "B<lpadmin> [ B<-E> ] [ B<-U> I<username> ] [ B<-h >I<server>[B<:>I<port>] ] "
 "B<-p> I<destination> [ B<-R> I<name-default> ] I<option(s)>"
 msgstr ""
-"B<lpadmin> [ -E ] [-U I<Benutzername> ] [ -h I<Server[:Port]> ] -p I<Ziel> "
-"[ -R I<name-default> ] I<Option(en)>"
+"B<lpadmin> [ B<-E> ] [ B<-U> I<Benutzername> ] [ B<-h >I<Server>[B<:>I<Port>] ] "
+"B<-p> I<Ziel> [ B<-R> I<Name-default> ] I<Option(en)>"
 
 #. type: Plain text
 #: lpadmin.man:59
-#, fuzzy
-#| msgid ""
-#| "B<lpadmin> [ -E ] [-U I<username> ] [ -h I<server[:port]> ] -x "
-#| "I<destination>"
 msgid ""
 "B<lpadmin> [ B<-E> ] [ B<-U> I<username> ] [ B<-h >I<server>[B<:>I<port>] ] "
 "B<-x> I<destination>"
 msgstr ""
-"B<lpadmin> [ -E ] [-U I<Benutzername> ] [ -h I<Server[:Port]> ] -x I<Ziel>"
+"B<lpadmin> [ B<-E> ] [ B<-U> I<Benutzername> ] [ B<-h >I<Server>[B<:>I<Port>] ] "
+"B<-x> I<Ziel>"
 
 #. type: Plain text
 #: lpadmin.man:62
-#, fuzzy
-#| msgid ""
-#| "I<lpadmin> configures printer and class queues provided by CUPS. It can "
-#| "also be used to set the server default printer or class."
 msgid ""
 "B<lpadmin> configures printer and class queues provided by CUPS.  It can "
 "also be used to set the server default printer or class."
 msgstr ""
-"I<lpadmin> konfiguriert von CUPS bereitgestellte Warteschlangen für Drucker "
+"B<lpadmin> konfiguriert von CUPS bereitgestellte Warteschlangen für Drucker "
 "und Druckerklassen. Es kann auch zur Einstellung des Standarddruckers oder "
 "der Standardklasse verwandt werden."
 
@@ -13587,12 +13244,6 @@ msgstr ""
 
 #. type: Plain text
 #: lpadmin.man:73
-#, fuzzy
-#| msgid ""
-#| "The first form of the command (I<-d>) sets the default printer or class "
-#| "to I<destination>.  Subsequent print jobs submitted via the I<lp(1)> or "
-#| "I<lpr(1)> commands will use this destination unless the user specifies "
-#| "otherwise with the I<lpoptions(1)> command."
 msgid ""
 "The first form of the command (I<-d>) sets the default printer or class to "
 "I<destination>.  Subsequent print jobs submitted via the B<lp>(1)  or "
@@ -13600,9 +13251,9 @@ msgid ""
 "otherwise with the B<lpoptions>(1)  command."
 msgstr ""
 "Die erste Form des Befehls (I<-d>) setzt den Standarddrucker oder Klasse auf "
-"I<Ziel>. Folgende Druckaufträge, die mit den Befehlen I<lp(1)> oder "
-"I<lpr(1)> eingereicht werden, verwenden dieses Ziel solange der Benutzer "
-"nichts anderes mit dem Befehl I<lpoptions(1)> spezifiziert hat."
+"I<Ziel>. Folgende Druckaufträge, die mit den Befehlen B<lp>(1) oder "
+"B<lpr>(1) eingereicht werden, verwenden dieses Ziel solange der Benutzer "
+"nichts anderes mit dem Befehl B<lpoptions>(1) spezifiziert hat."
 
 #. type: Plain text
 #: lpadmin.man:75
@@ -13615,11 +13266,6 @@ msgstr ""
 
 #. type: Plain text
 #: lpadmin.man:78
-#, fuzzy
-#| msgid ""
-#| "The third form of the command (I<-x>) deletes the printer or class "
-#| "I<destination>. Any jobs that are pending for the destination will be "
-#| "removed and any job that is currently printed will be aborted."
 msgid ""
 "The third form of the command (I<-x>) deletes the printer or class "
 "I<destination>.  Any jobs that are pending for the destination will be "
@@ -13629,7 +13275,6 @@ msgstr ""
 "Alle Aufträge, die für dieses Ziel noch warten, werden entfernt und im Druck "
 "befindliche Aufträge werden abgebrochen."
 
-# type: Plain text
 #. type: Plain text
 #: lpadmin.man:80
 msgid "The following options are recognized when configuring a printer queue:"
@@ -13637,15 +13282,12 @@ msgstr ""
 "Die folgenden Optionen werden bei der Konfiguration einer "
 "Druckerwarteschlange verstanden:"
 
-# type: TP
 #. type: TP
 #: lpadmin.man:80
-#, fuzzy, no-wrap
-#| msgid "-c class"
+#, no-wrap
 msgid "B<-c >I<class>"
-msgstr "-c Klasse"
+msgstr "B<-c >I<Klasse>"
 
-# type: Plain text
 #. type: Plain text
 #: lpadmin.man:84
 msgid ""
@@ -13655,22 +13297,14 @@ msgstr ""
 "Fügt den benannten I<Drucker> zu der I<Klasse> hinzu. Falls I<Klasse> nicht "
 "existiert, so wird sie automatisch erstellt."
 
-# type: TP
 #. type: TP
 #: lpadmin.man:84
-#, fuzzy, no-wrap
-#| msgid "-i interface"
+#, no-wrap
 msgid "B<-i >I<interface>"
-msgstr "-i Schnittstelle"
+msgstr "B<-i >I<Schnittstelle>"
 
-# type: Plain text
 #. type: Plain text
 #: lpadmin.man:88
-#, fuzzy
-#| msgid ""
-#| "Sets a System V style interface script for the printer. This option "
-#| "cannot be specified with the I<-P> option (PPD file)  and is intended for "
-#| "providing support for legacy printer drivers."
 msgid ""
 "Sets a System V style interface script for the printer.  This option cannot "
 "be specified with the I<-P> option (PPD file) and is intended for providing "
@@ -13682,12 +13316,6 @@ msgstr ""
 
 #. type: Plain text
 #: lpadmin.man:95
-#, fuzzy
-#| msgid ""
-#| "Sets a standard System V interface script or PPD file for the printer "
-#| "from the I<model> directory or using one of the driver interfaces. Use "
-#| "the I<-m> option with the I<lpinfo(8)> command to get a list of supported "
-#| "models."
 msgid ""
 "Sets a standard System V interface script or PPD file for the printer from "
 "the I<model> directory or using one of the driver interfaces.  Use the I<-m> "
@@ -13699,21 +13327,22 @@ msgstr ""
 "Setzt ein Standard-System-V-Schnittstellenskript oder eine PPD-Datei für den "
 "Drucker aus dem Verzeichnis I<Model> oder verwendet eine der "
 "Druckerschnittstellen. Verwenden Sie die Option I<-m> mit dem Befehl "
-"I<lpinfo(8)>, um eine Liste der unterstützten Modelle zu erhalten."
+"B<lpinfo>(8), um eine Liste der unterstützten Modelle zu erhalten. Das Modell "
+"»raw« bereinigt jedes Schnittstellenskript oder jede PPD-Datei und das Modell "
+"»everywhere« fragt die von der angegebenen IPP-I<Geräte-URI> referenzierten "
+"Drucker ab."
 
 #. type: TP
 #: lpadmin.man:95
-#, fuzzy, no-wrap
-#| msgid "-o cupsIPPSupplies=true"
+#, no-wrap
 msgid "B<-o cupsIPPSupplies=true>"
-msgstr "-o cupsIPPSupplies=true"
+msgstr "B<-o cupsIPPSupplies=true>"
 
 #. type: TP
 #: lpadmin.man:97
-#, fuzzy, no-wrap
-#| msgid "-o cupsIPPSupplies=false"
+#, no-wrap
 msgid "B<-o cupsIPPSupplies=false>"
-msgstr "-o cupsIPPSupplies=false"
+msgstr "B<-o cupsIPPSupplies=false>"
 
 #. type: Plain text
 #: lpadmin.man:100
@@ -13722,17 +13351,15 @@ msgstr "Spezifiziert, ob IPP-Bereitstellungsstufen berichtet werden sollen."
 
 #. type: TP
 #: lpadmin.man:100
-#, fuzzy, no-wrap
-#| msgid "-o cupsSNMPSupplies=true"
+#, no-wrap
 msgid "B<-o cupsSNMPSupplies=true>"
-msgstr "-o cupsSNMPSupplies=true"
+msgstr "B<-o cupsSNMPSupplies=true>"
 
 #. type: TP
 #: lpadmin.man:102
-#, fuzzy, no-wrap
-#| msgid "-o cupsSNMPSupplies=false"
+#, no-wrap
 msgid "B<-o cupsSNMPSupplies=false>"
-msgstr "-o cupsSNMPSupplies=false"
+msgstr "B<-o cupsSNMPSupplies=false>"
 
 #. type: Plain text
 #: lpadmin.man:105
@@ -13744,17 +13371,12 @@ msgstr ""
 
 #. type: TP
 #: lpadmin.man:105
-#, fuzzy, no-wrap
-#| msgid "-o job-k-limit=value"
+#, no-wrap
 msgid "B<-o job-k-limit=>I<value>"
-msgstr "-o job-k-limit=Wert"
+msgstr "B<-o job-k-limit=>I<Wert>"
 
 #. type: Plain text
 #: lpadmin.man:109
-#, fuzzy
-#| msgid ""
-#| "Sets the kilobyte limit for per-user quotas. The value is an integer "
-#| "number of kilobytes; one kilobyte is 1024 bytes."
 msgid ""
 "Sets the kilobyte limit for per-user quotas.  The value is an integer number "
 "of kilobytes; one kilobyte is 1024 bytes."
@@ -13764,18 +13386,12 @@ msgstr ""
 
 #. type: TP
 #: lpadmin.man:109
-#, fuzzy, no-wrap
-#| msgid "-o job-page-limit=value"
+#, no-wrap
 msgid "B<-o job-page-limit=>I<value>"
-msgstr "-o job-page-limit=Wert"
+msgstr "B<-o job-page-limit=>I<Wert>"
 
-# type: Plain text
 #. type: Plain text
 #: lpadmin.man:113
-#, fuzzy
-#| msgid ""
-#| "Sets the page limit for per-user quotas. The value is the integer number "
-#| "of pages that can be printed; double-sided pages are counted as two pages."
 msgid ""
 "Sets the page limit for per-user quotas.  The value is the integer number of "
 "pages that can be printed; double-sided pages are counted as two pages."
@@ -13784,21 +13400,14 @@ msgstr ""
 "Ganzzahl von Seiten, die gedruckt werden können. Doppelseitige Seiten werden "
 "als zwei Seiten gezählt."
 
-# type: TP
 #. type: TP
 #: lpadmin.man:113
-#, fuzzy, no-wrap
-#| msgid "-o job-quota-period=value"
+#, no-wrap
 msgid "B<-o job-quota-period=>I<value>"
-msgstr "-o job-quota-period=Wert"
+msgstr "B<-o job-quota-period=>I<Wert>"
 
-# type: Plain text
 #. type: Plain text
 #: lpadmin.man:117
-#, fuzzy
-#| msgid ""
-#| "Sets the accounting period for per-user quotas. The value is an integer "
-#| "number of seconds; 86,400 seconds are in one day."
 msgid ""
 "Sets the accounting period for per-user quotas.  The value is an integer "
 "number of seconds; 86,400 seconds are in one day."
@@ -13806,7 +13415,6 @@ msgstr ""
 "Setzt die Berechnungsperiode für Quotas je Benutzer. Der Wert ist eine "
 "Ganzzahl von Sekunden; 86,400 Sekunden sind ein Tag."
 
-# type: TP
 #. type: TP
 #: lpadmin.man:117
 #, fuzzy, no-wrap
@@ -13814,7 +13422,6 @@ msgstr ""
 msgid "B<-o job-sheets-default=>I<banner>"
 msgstr "-o job-sheets-default=Banner"
 
-# type: TP
 #. type: TP
 #: lpadmin.man:119
 #, fuzzy, no-wrap
@@ -13822,75 +13429,51 @@ msgstr "-o job-sheets-default=Banner"
 msgid "B<-o job-sheets-default=>I<banner>B<,>I<banner>"
 msgstr "-o job-sheets-default=Banner,Banner"
 
-# type: Plain text
 #. type: Plain text
 #: lpadmin.man:122
 msgid "Sets the default banner page(s) to use for print jobs."
 msgstr "Spezifiziert die Standarddeckblätter für das Drucken von Aufträgen."
 
-# type: TP
 #. type: TP
 #: lpadmin.man:122
-#, fuzzy, no-wrap
-#| msgid "-o name=value"
+#, no-wrap
 msgid "B<-o >I<name>B<=>I<value>"
-msgstr "-o Name=Wert"
+msgstr "B<-o >I<Name>B<=>I<Wert>"
 
-# type: Plain text
 #. type: Plain text
 #: lpadmin.man:128
-#, fuzzy
-#| msgid ""
-#| "Sets a PPD option for the printer. PPD options can be listed using the I<-"
-#| "l> option with the I<lpoptions(1)> command."
 msgid ""
 "Sets a PPD option for the printer.  PPD options can be listed using the I<-"
 "l> option with the B<lpoptions>(1)  command."
 msgstr ""
 "Setzt eine PPD-Option für den Drucker. PPD-Optionen können mittels der "
-"Option I<-l> des Befehls I<lpoptions(1)> aufgelistet werden."
+"Option I<-l> des Befehls B<lpoptions>(1) aufgelistet werden."
 
-# type: TP
 #. type: TP
 #: lpadmin.man:128
-#, fuzzy, no-wrap
-#| msgid "-o name-default=value"
+#, no-wrap
 msgid "B<-o >I<name>B<-default=>I<value>"
-msgstr "-o name-default=Wert"
+msgstr "B<-o >I<name>B<-default=>I<Wert>"
 
-# type: Plain text
 #. type: Plain text
 #: lpadmin.man:132
-#, fuzzy
-#| msgid ""
-#| "Sets a default server-side option for the destination. Any print-time "
-#| "option can be defaulted, e.g. \"-o cpi-default=17\" to set the default "
-#| "\"cpi\" option value to 17."
 msgid ""
 "Sets a default server-side option for the destination.  Any print-time "
 "option can be defaulted, e.g., \"-o number-up-default=2\" to set the default "
 "\"number-up\" option value to 2."
 msgstr ""
 "Setzt eine Standard serverseitige Option für das Ziel. Jede Option zur "
-"Druckzeit kann mit einem Standardwert belegt werden, z.B. »-o cpi-"
-"default=17«, um den Standard-»cpi«-Optionswert auf 17 zu setzen."
+"Druckzeit kann mit einem Standardwert belegt werden, z.B. »-o number-"
+"up-default=2«, um den Standard-»number-up«-Optionswert auf 2 zu setzen."
 
-# type: TP
 #. type: TP
 #: lpadmin.man:132
-#, fuzzy, no-wrap
-#| msgid "-o port-monitor=name"
+#, no-wrap
 msgid "B<-o port-monitor=>I<name>"
-msgstr "-o port-monitor=Name"
+msgstr "B<-o port-monitor=>I<Name>"
 
-# type: Plain text
 #. type: Plain text
 #: lpadmin.man:137
-#, fuzzy
-#| msgid ""
-#| "Sets the binary communications program to use when printing, \"none\", "
-#| "\"bcp\", or \"tbcp\". The default program is \"none\". The specified port "
-#| "monitor must be listed in the printer's PPD file."
 msgid ""
 "Sets the binary communications program to use when printing, \"none\", \"bcp"
 "\", or \"tbcp\".  The default program is \"none\".  The specified port "
@@ -13900,23 +13483,14 @@ msgstr ""
 "oder »tbcp« zu drucken. Das Standardprogramm ist »none«. Der angegebene "
 "Monitorport muss in der PPD-Datei des Druckers aufgelistet sein."
 
-# type: TP
 #. type: TP
 #: lpadmin.man:137
-#, fuzzy, no-wrap
-#| msgid "-o printer-error-policy=name"
+#, no-wrap
 msgid "B<-o printer-error-policy=>I<name>"
-msgstr "-o printer-error-policy=Name"
+msgstr "B<-o printer-error-policy=>I<Name>"
 
 #. type: Plain text
 #: lpadmin.man:143
-#, fuzzy
-#| msgid ""
-#| "Sets the error policy to be used when the printer backend is unable to "
-#| "send the job to the printer. The name must be one of \"abort-job\", "
-#| "\"retry-job\", \"retry-current-job\", or \"stop-printer\". The default "
-#| "error policy is \"stop-printer\" for printers and \"retry-current-job\" "
-#| "for classes."
 msgid ""
 "Sets the error policy to be used when the printer backend is unable to send "
 "the job to the printer.  The name must be one of \"abort-job\", \"retry-job"
@@ -13931,26 +13505,18 @@ msgstr ""
 
 #. type: TP
 #: lpadmin.man:143
-#, fuzzy, no-wrap
-#| msgid "-o printer-is-shared=true/false"
+#, no-wrap
 msgid "B<-o printer-is-shared=true>"
-msgstr "-o printer-is-shared=true/false"
+msgstr "B<-o printer-is-shared=true>"
 
 #. type: TP
 #: lpadmin.man:145
-#, fuzzy, no-wrap
-#| msgid "-o printer-is-shared=true/false"
+#, no-wrap
 msgid "B<-o printer-is-shared=false>"
-msgstr "-o printer-is-shared=true/false"
+msgstr "B<-o printer-is-shared=false>"
 
 #. type: Plain text
 #: lpadmin.man:150
-#, fuzzy
-#| msgid ""
-#| "Sets the destination to shared/published or unshared/unpublished.  Shared/"
-#| "published destinations are publicly announced by the server on the LAN "
-#| "based on the browsing configuration in B<cupsd.conf>, while unshared/"
-#| "unpublished destinations are not announced. The default value is \"true\"."
 msgid ""
 "Sets the destination to shared/published or unshared/unpublished.  Shared/"
 "published destinations are publicly announced by the server on the LAN based "
@@ -13959,39 +13525,32 @@ msgid ""
 msgstr ""
 "Setzt, ob das Ziel freigegeben/veröffentlicht oder nicht freigegeben/"
 "unveröffentlicht ist. Freigegebene/Veröffentlichte Ziele werden öffentlich "
-"angezeigt durch den Server im LAN, der auf der Suchkonfiguration in B<cupsd."
+"angezeigt durch den Server im LAN, der auf der Suchkonfiguration in I<cupsd."
 "conf> basiert, während nicht freigegebene/unveröffentlichte Ziele nicht "
 "angezeigt werden. Vorgabewert ist »true«."
 
 #. type: TP
 #: lpadmin.man:150
-#, fuzzy, no-wrap
-#| msgid "-o printer-op-policy=name"
+#, no-wrap
 msgid "B<-o printer-op-policy=>I<name>"
-msgstr "-o printer-op-policy=Name"
+msgstr "B<-o printer-op-policy=>I<Name>"
 
 #. type: Plain text
 #: lpadmin.man:155
-#, fuzzy
-#| msgid ""
-#| "Sets the IPP operation policy associated with the destination. The name "
-#| "must be defined in the B<cupsd.conf> in a Policy section.  The default "
-#| "operation policy is \"default\"."
 msgid ""
 "Sets the IPP operation policy associated with the destination.  The name "
 "must be defined in the I<cupsd.conf> in a Policy section.  The default "
 "operation policy is \"default\"."
 msgstr ""
 "Setzt die mit dem Ziel verbundene IPP-Operationsrichtlinie. Der Name muss in "
-"einem Richtlinienabschnitt der B<cupsd.conf> definiert sein. Die "
+"einem Richtlinienabschnitt der I<cupsd.conf> definiert sein. Die "
 "Standardoperationsrichtlinie ist »default«."
 
 #. type: TP
 #: lpadmin.man:155
-#, fuzzy, no-wrap
-#| msgid "-R name-default"
+#, no-wrap
 msgid "B<-R >I<name>B<-default>"
-msgstr "-R name-default"
+msgstr "B<-R >I<Name>B<-default>"
 
 #. type: Plain text
 #: lpadmin.man:158
@@ -14000,10 +13559,9 @@ msgstr "Löscht die benannte Option aus I<Drucker>."
 
 #. type: TP
 #: lpadmin.man:158
-#, fuzzy, no-wrap
-#| msgid "-r class"
+#, no-wrap
 msgid "B<-r >I<class>"
-msgstr "-r Klasse"
+msgstr "B<-r >I<Klasse>"
 
 #. type: Plain text
 #: lpadmin.man:162
@@ -14018,28 +13576,25 @@ msgstr ""
 #: lpadmin.man:162
 #, no-wrap
 msgid "B<-u allow:>{I<user>|B<@>I<group>}{B<,>I<user>|B<,@>I<group>}*"
-msgstr ""
+msgstr "B<-u allow:>{I<Benutzer>|B<@>I<Gruppe>}{B<,>I<Benutzer>|B<,@>I<Gruppe>}*"
 
 #. type: TP
 #: lpadmin.man:164
 #, no-wrap
 msgid "B<-u deny:>{I<user>|B<@>I<group>}{B<,>I<user>|B<,@>I<group>}*"
-msgstr ""
+msgstr "B<-u deny:>{I<Benutzer>|B<@>I<Gruppe>}{B<,>I<Benutzer>|B<,@>I<Gruppe>}*"
 
 #. type: TP
 #: lpadmin.man:166
-#, fuzzy, no-wrap
-#| msgid "-u allow:all"
+#, no-wrap
 msgid "B<-u allow:all>"
-msgstr "-u allow:all"
+msgstr "B<-u allow:all>"
 
-# type: TP
 #. type: TP
 #: lpadmin.man:168
-#, fuzzy, no-wrap
-#| msgid "-u deny:none"
+#, no-wrap
 msgid "B<-u deny:none>"
-msgstr "-u deny:none"
+msgstr "B<-u deny:none>"
 
 #. type: Plain text
 #: lpadmin.man:173
@@ -14059,10 +13614,9 @@ msgstr ""
 
 #. type: TP
 #: lpadmin.man:173
-#, fuzzy, no-wrap
-#| msgid "-v \"device-uri\""
+#, no-wrap
 msgid "B<-v \">I<device-uri>B<\">"
-msgstr "-v \"device-uri\""
+msgstr "B<-v \">I<Geräte-URI>B<\">"
 
 #. type: Plain text
 #: lpadmin.man:179
@@ -14557,12 +14111,6 @@ msgstr "lp - Dateien drucken"
 
 #. type: Plain text
 #: lp.man:57
-#, fuzzy
-#| msgid ""
-#| "B<lp> [ -E ] [ -U I<username> ] [ -c ] [ -d I<destination[/instance]> ] "
-#| "[ -h I<hostname[:port]> ] [ -m ] [ -n I<num-copies> ] [ -o "
-#| "I<option[=value]> ] [ -q I<priority> ] [ -s ] [ -t I<title> ] [ -H "
-#| "I<handling> ] [ -P I<page-list> ] [ -- ] [ I<file(s)> ]"
 msgid ""
 "B<lp> [ B<-E> ] [ B<-U> I<username> ] [ B<-c> ] [ B<-d >I<destination>[B</"
 ">I<instance>] ] [ B<-h >I<hostname>[B<:>I<port>] ] [ B<-m> ] [ B<-n> I<num-"
@@ -14570,39 +14118,32 @@ msgid ""
 "[ B<-t> I<title> ] [ B<-H> I<handling> ] [ B<-P> I<page-list> ] [ B<--> ] "
 "[ I<file(s)> ]"
 msgstr ""
-"B<lp> [ -E ] [ -U I<Benutzername> ] [ -c ] [ -d I<Ziel[/Instanz]> ] [ -h "
-"I<Rechnername[:Port]> ] [ -m ] [ -n I<Anz-Kopien> ] [ -o I<Option[=Wert]> ] "
-"[ -q I<Priorität> ] [ -s ] [ -t I<Titel> ] [ -H I<Handhabung> ] [ -P "
-"I<Seitenliste> ] [ -- ] [ I<Datei(en)> ]"
+"B<lp> [ B<-E> ] [ B<-U> I<Benutzername> ] [ B<-c> ] [ B<-d >I<Ziel>[B</"
+">I<Instanz>] ] [ B<-h >I<Rechnername>[B<:>I<Port>] ] [ B<-m> ] [ B<-n> I<Anz-"
+"Kopien> ] [ B<-o >I<Option>[B<=>I<Wert>] ] [ B<-q> I<Priorität> ] [ B<-s> ] "
+"[ B<-t> I<Titel> ] [ B<-H> I<Handhabung> ] [ B<-P> I<Seitenliste> ] [ B<--> ] "
+"[ I<Datei(en)> ]"
 
 #. type: Plain text
 #: lp.man:89
-#, fuzzy
-#| msgid ""
-#| "B<lp> [ -E ] [ -U I<username> ] [ -c ] [ -h I<hostname[:port]> ] [ -i "
-#| "I<job-id> ] [ -n I<num-copies> ] [ -o I<option[=value]> ] [ -q "
-#| "I<priority> ] [ -t I<title> ] [ -H I<handling> ] [ -P I<page-list> ]"
 msgid ""
 "B<lp> [ B<-E> ] [ B<-U> I<username> ] [ B<-c> ] [ B<-h >I<hostname>[B<:"
 ">I<port>] ] [ B<-i> I<job-id> ] [ B<-n> I<num-copies> ] [ B<-o "
 ">I<option>[B<=>I<value>] ] [ B<-q> I<priority> ] [ B<-t> I<title> ] [ B<-H> "
 "I<handling> ] [ B<-P> I<page-list> ]"
 msgstr ""
-"B<lp> [ -E ] [ -U I<Benutzername> ] [ -c ] [ -h I<Rechnername[:Port]> ] [ -i "
-"I<Auftrags-ID> ] [ -n I<Anz-Kopien> ] [ -o I<Option[=Wert]> ] [ -q "
-"I<Priorität> ] [ -t I<Titel> ] [ -H I<Handhabung> ] [ -P I<Seitenliste> ]"
+"B<lp> [ B<-E> ] [ B<-U> I<Benutzername> ] [ B<-c> ] [ B<-h >I<Rechnername>[B<:"
+">I<Port>] ] [ B<-i> I<Auftrags-ID> ] [ B<-n> I<Anz-Kopien> ] [ B<-o "
+">I<Option>[B<=>I<Wert>] ] [ B<-q> I<Priorität> ] [ B<-t> I<Titel> ] [ B<-H> "
+"I<Handhabung> ] [ B<-P> I<Seitenliste> ]"
 
 #. type: Plain text
 #: lp.man:92
-#, fuzzy
-#| msgid ""
-#| "I<lp> submits files for printing or alters a pending job. Use a filename "
-#| "of \"-\" to force printing from the standard input."
 msgid ""
 "B<lp> submits files for printing or alters a pending job.  Use a filename of "
 "\"-\" to force printing from the standard input."
 msgstr ""
-"I<lp> reicht Dateien zum Druck ein oder ändert einen anhängenden "
+"B<lp> reicht Dateien zum Druck ein oder ändert einen anhängenden "
 "Druckauftrag. Verwenden Sie als Dateinamen »-«, um das Drucken von der "
 "Standardeingabe zu erzwingen."
 
@@ -14648,12 +14189,6 @@ msgstr ""
 
 #. type: Plain text
 #: lp.man:114
-#, fuzzy
-#| msgid ""
-#| "This option is provided for backwards-compatibility only. On systems that "
-#| "support it, this option forces the print file to be copied to the spool "
-#| "directory before printing. In CUPS, print files are always sent to the "
-#| "scheduler via IPP which has the same effect."
 msgid ""
 "This option is provided for backwards-compatibility only. On systems that "
 "support it, this option forces the print file to be copied to the spool "
@@ -14706,10 +14241,9 @@ msgstr "Setzt die Anzahl der zu druckenden Kopien."
 
 #. type: TP
 #: lp.man:129
-#, fuzzy, no-wrap
-#| msgid "-o \"name=value [name=value ...]\""
+#, no-wrap
 msgid "B<-o \">I<name>B<=>I<value >[ ... I<name>B<=>I<value >]B<\">"
-msgstr "-o \"Name=Wert [Name=Wert …]\""
+msgstr "B<-o \">I<Name>B<=>I<Wert >[ … I<Name>B<=>I<Wert >]B<\">"
 
 #. type: Plain text
 #: lp.man:132
@@ -14718,17 +14252,12 @@ msgstr "Setzt eine oder mehrere Optionen für den Auftrag."
 
 #. type: TP
 #: lp.man:132
-#, fuzzy, no-wrap
-#| msgid "-q priority"
+#, no-wrap
 msgid "B<-q >I<priority>"
-msgstr "-q Priorität"
+msgstr "B<-q >I<Priorität>"
 
 #. type: Plain text
 #: lp.man:136
-#, fuzzy
-#| msgid ""
-#| "Sets the job priority from 1 (lowest) to 100 (highest). The default "
-#| "priority is 50."
 msgid ""
 "Sets the job priority from 1 (lowest) to 100 (highest).  The default "
 "priority is 50."
@@ -14743,64 +14272,47 @@ msgstr "Die sich ergebenden Druckauftrags-IDs nicht berichten (stiller Modus)."
 
 #. type: TP
 #: lp.man:139
-#, fuzzy, no-wrap
-#| msgid "-t \"name\""
+#, no-wrap
 msgid "B<-t \">I<name>B<\">"
-msgstr "-t \"Name\""
+msgstr "B<-t \">I<Name>B<\">"
 
 #. type: Plain text
 #: lp.man:142
 msgid "Sets the job name."
 msgstr "Setzt den Namen des Auftrags."
 
-# type: TP
 #. type: TP
 #: lp.man:142
-#, fuzzy, no-wrap
-#| msgid "-H hh:mm"
+#, no-wrap
 msgid "B<-H >I<hh:mm>"
-msgstr "-H hh:mm"
+msgstr "B<-H >I<hh:mm>"
 
-# type: TP
 #. type: TP
 #: lp.man:144
-#, fuzzy, no-wrap
-#| msgid "-H hold"
+#, no-wrap
 msgid "B<-H hold>"
-msgstr "-H hold"
+msgstr "B<-H hold>"
 
-# type: TP
 #. type: TP
 #: lp.man:146
-#, fuzzy, no-wrap
-#| msgid "-H immediate"
+#, no-wrap
 msgid "B<-H immediate>"
-msgstr "-H immediate"
+msgstr "B<-H immediate>"
 
 #. type: TP
 #: lp.man:148
-#, fuzzy, no-wrap
-#| msgid "-H restart"
+#, no-wrap
 msgid "B<-H restart>"
-msgstr "-H restart"
+msgstr "B<-H restart>"
 
 #. type: TP
 #: lp.man:150
-#, fuzzy, no-wrap
-#| msgid "-H resume"
+#, no-wrap
 msgid "B<-H resume>"
-msgstr "-H resume"
+msgstr "B<-H resume>"
 
 #. type: Plain text
 #: lp.man:156
-#, fuzzy
-#| msgid ""
-#| "Specifies when the job should be printed. A value of I<immediate> will "
-#| "print the file immediately, a value of I<hold> will hold the job "
-#| "indefinitely, and a UTC time value (HH:MM) will hold the job until the "
-#| "specified UTC (not local)  time. Use a value of I<resume> with the I<-i> "
-#| "option to resume a held job.  Use a value of I<restart> with the I<-i> "
-#| "option to restart a completed job."
 msgid ""
 "Specifies when the job should be printed.  A value of I<immediate> will "
 "print the file immediately, a value of I<hold> will hold the job "
@@ -14819,19 +14331,12 @@ msgstr ""
 
 #. type: TP
 #: lp.man:156
-#, fuzzy, no-wrap
-#| msgid "-P page-list"
+#, no-wrap
 msgid "B<-P >I<page-list>"
-msgstr "-P Seitenliste"
+msgstr "B<-P >I<Seitenliste>"
 
 #. type: Plain text
 #: lp.man:161
-#, fuzzy
-#| msgid ""
-#| "Specifies which pages to print in the document. The list can contain a "
-#| "list of numbers and ranges (#-#) separated by commas (e.g. 1,3-5,16). The "
-#| "page numbers refer to the output pages and not the document's original "
-#| "pages - options like \"number-up\" can affect the numbering of the pages."
 msgid ""
 "Specifies which pages to print in the document.  The list can contain a list "
 "of numbers and ranges (#-#) separated by commas, e.g., \"1,3-5,16\".  The "
@@ -14839,8 +14344,8 @@ msgid ""
 "- options like \"number-up\" can affect the numbering of the pages."
 msgstr ""
 "Spezifiziert, welche Seiten im Dokument gedruckt werden. Die Liste kann eine "
-"durch Kommata getrennte Liste von Nummern und Bereichen (#-#) enthalten (z."
-"B. 1,3-5,16). Die Seitennummern beziehen sich auf die Ausgabeseiten und "
+"durch Kommata getrennte Liste von Nummern und Bereichen (#-#) enthalten, z."
+"B. 1,3-5,16. Die Seitennummern beziehen sich auf die Ausgabeseiten und "
 "nicht auf die Originalseiten des Dokuments – Optionen wie »number-up« können "
 "die Nummerierung der Seiten beeinflussen."
 
@@ -14852,25 +14357,19 @@ msgstr "HÄUFIGE DRUCKAUFTRAGSOPTIONEN"
 
 #. type: Plain text
 #: lp.man:165
-#, fuzzy
-#| msgid ""
-#| "Aside from the printer-specific options reported by the I<lpoptions(1)> "
-#| "command, the following generic options are available:"
 msgid ""
 "Aside from the printer-specific options reported by the B<lpoptions>(1)  "
 "command, the following generic options are available:"
 msgstr ""
-"Abgesehen von druckerspezifischen Optionen, die vom Befehl I<lpoptions(1)> "
+"Abgesehen von druckerspezifischen Optionen, die vom Befehl B<lpoptions>(1) "
 "berichtet werden, sind die folgenden allgemeinen Optionen verfügbar:"
 
 #. type: TP
 #: lp.man:165
-#, fuzzy, no-wrap
-#| msgid "-o media=size"
+#, no-wrap
 msgid "B<-o media=>I<size>"
-msgstr "-o media=Größe"
+msgstr "B<-o media=>I<Größe>"
 
-# type: Plain text
 #. type: Plain text
 #: lp.man:168
 msgid ""
@@ -14880,65 +14379,55 @@ msgstr ""
 "Setzt die Seitengröße auf I<Größe>. Die meisten Drucker unterstützen "
 "mindestens die Seitennamen »a4«, »letter« und »legal«."
 
-# type: TP
 #. type: TP
 #: lp.man:168
-#, fuzzy, no-wrap
-#| msgid "-o orientation-requested=4"
+#, no-wrap
 msgid "B<-o orientation-requested=4>"
-msgstr "-o orientation-requested=4"
+msgstr "B<-o orientation-requested=4>"
 
-# type: Plain text
 #. type: Plain text
 #: lp.man:171
 msgid "Prints the job in landscape (rotated 90 degrees)."
 msgstr "Druckt den Druckauftrag im Querformat (gedreht um 90 Grad)."
 
-# type: TP
 #. type: TP
 #: lp.man:171
-#, fuzzy, no-wrap
-#| msgid "-o sides=one-sided"
+#, no-wrap
 msgid "B<-o sides=one-sided>"
-msgstr "-o sides=one-sided"
+msgstr "B<-o sides=one-sided>"
 
 #. type: Plain text
 #: lp.man:174
-#, fuzzy
-#| msgid "Prints files to the named printer."
 msgid "Prints on one side of the paper."
-msgstr "Druckt Dateien auf den benannten Drucker."
+msgstr "Druckt auf einer Seite des Papiers."
 
 #. type: TP
 #: lp.man:174
-#, fuzzy, no-wrap
-#| msgid "-o sides=two-sided-long-edge"
+#, no-wrap
 msgid "B<-o sides=two-sided-long-edge>"
-msgstr "-o sides=two-sided-long-edge"
+msgstr "B<-o sides=two-sided-long-edge>"
 
 #. type: Plain text
 #: lp.man:177
 msgid "Prints on both sides of the paper for portrait output."
-msgstr ""
+msgstr "Druckt auf beiden Seiten des Papiers für Hochkant-Ausgabe."
 
 #. type: TP
 #: lp.man:177
-#, fuzzy, no-wrap
-#| msgid "-o sides=two-sided-short-edge"
+#, no-wrap
 msgid "B<-o sides=two-sided-short-edge>"
-msgstr "-o sides=two-sided-short-edge"
+msgstr "B<-o sides=two-sided-short-edge>"
 
 #. type: Plain text
 #: lp.man:180
 msgid "Prints on both sides of the paper for landscape output."
-msgstr ""
+msgstr "Druckt auf beiden Seiten des Papiers für Querformat-Ausgabe."
 
 #. type: TP
 #: lp.man:180
-#, fuzzy, no-wrap
-#| msgid "-o fit-to-page"
+#, no-wrap
 msgid "B<-o fit-to-page>"
-msgstr "-o fit-to-page"
+msgstr "B<-o fit-to-page>"
 
 #. type: Plain text
 #: lp.man:183
@@ -15798,13 +15287,6 @@ msgstr "lpstat - gibt CUPS-Statusinformationen aus"
 
 #. type: Plain text
 #: lpstat.man:69
-#, fuzzy
-#| msgid ""
-#| "B<lpstat> [ -E ] [ -H ] [ -U I<username> ] [ -h I<hostname[:port]> ] [ -"
-#| "l ] [ -W I<which-jobs> ] [ -a [ I<destination(s)> ] ] [ -c "
-#| "[ I<class(es)> ] ] [ -d ] [ -o [ I<destination(s)> ] ] [ -p "
-#| "[ I<printer(s)> ] ] [ -r ] [ -R ] [ -s ] [ -t ] [ -u [ I<user(s)> ] ] [ -"
-#| "v [ I<printer(s)> ] ]"
 msgid ""
 "B<lpstat> [ B<-E> ] [ B<-H> ] [ B<-U> I<username> ] [ B<-h >I<hostname>[B<:"
 ">I<port>] ] [ B<-l> ] [ B<-W> I<which-jobs> ] [ B<-a> "
@@ -15812,43 +15294,34 @@ msgid ""
 "[ I<destination(s)> ] ] [ B<-p> [ I<printer(s)> ] ] [ B<-r> ] [ B<-R> ] [ B<-"
 "s> ] [ B<-t> ] [ B<-u> [ I<user(s)> ] ] [ B<-v> [ I<printer(s)> ] ]"
 msgstr ""
-"B<lpstat> [ -E ] [ -H ] [ -U I<Benutzername> ] [ -h I<Rechnername[:Port]> ] "
-"[ -l ] [ -W I<welche-Druckaufträge> ] [ -a [ I<Ziel(e)> ] ] [ -c "
-"[ I<Klasse(n)> ] ] [ -d ] [ -o [ I<Ziel(e)> ] ] [ -p [ I<Drucker> ] ] [ -r ] "
-"[ -R ] [ -s ] [ -t ] [ -u [ I<Benutzer> ] ] [ -v [ I<Drucker> ] ]"
+"B<lpstat> [ B<-E> ] [ B<-H> ] [ B<-U> I<Benutzername> ] [ B<-h >I<Rechnername>[B<:"
+">I<Port>] ] [ B<-l> ] [ B<-W> I<welche-Druckaufträge> ] [ B<-a> "
+"[ I<Ziel(e)> ] ] [ B<-c> [ I<Klasse(n)> ] ] [ B<-d> ] [ B<-o> "
+"[ I<Ziel(e)> ] ] [ B<-p> [ I<Drucker> ] ] [ B<-r> ] [ B<-R> ] [ B<-"
+"s> ] [ B<-t> ] [ B<-u> [ I<Benutzer> ] ] [ B<-v> [ I<Drucker> ] ]"
 
-# type: Plain text
 #. type: Plain text
 #: lpstat.man:72
-#, fuzzy
-#| msgid ""
-#| "I<lpstat> displays status information about the current classes, jobs, "
-#| "and printers. When run with no arguments, I<lpstat> will list jobs queued "
-#| "by the current user."
 msgid ""
 "B<lpstat> displays status information about the current classes, jobs, and "
 "printers.  When run with no arguments, B<lpstat> will list active jobs "
 "queued by the current user."
 msgstr ""
-"I<lpstat> zeigt Statusinformationen über die aktuellen Klassen, Aufträge und "
-"Drucker an. Falls I<lpstat> ohne Argumente aufgerufen wird, führt es die vom "
+"B<lpstat> zeigt Statusinformationen über die aktuellen Klassen, Aufträge und "
+"Drucker an. Falls I<lpstat> ohne Argumente aufgerufen wird, führt es die aktiven, vom "
 "aktuellen Benutzer eingereichten Druckaufträge auf."
 
-# type: Plain text
 #. type: Plain text
 #: lpstat.man:74
-#, fuzzy
-#| msgid "The I<lpstat> command supports the following options:"
 msgid "The B<lpstat> command supports the following options:"
-msgstr "Der Befehl I<lpstat> unterstützt die folgenden Optionen:"
+msgstr "Der Befehl B<lpstat> unterstützt die folgenden Optionen:"
 
 #. type: TP
 #: lpstat.man:77
 #, no-wrap
 msgid "B<-H>"
-msgstr ""
+msgstr "B<-H>"
 
-# type: Plain text
 #. type: Plain text
 #: lpstat.man:80
 msgid "Shows the server hostname and port."
@@ -15858,31 +15331,21 @@ msgstr "Zeigt den Rechnernamen und Port des Servers."
 #: lpstat.man:80
 #, no-wrap
 msgid "B<-R>"
-msgstr ""
+msgstr "B<-R>"
 
-# type: Plain text
 #. type: Plain text
 #: lpstat.man:83
 msgid "Shows the ranking of print jobs."
 msgstr "Zeigt die Rangordnung der Druckaufträge."
 
-# type: TP
 #. type: TP
 #: lpstat.man:86
-#, fuzzy, no-wrap
-#| msgid "-W which-jobs"
+#, no-wrap
 msgid "B<-W >I<which-jobs>"
-msgstr "-W welche-Aufträge"
+msgstr "B<-W >I<welche-Aufträge>"
 
-# type: Plain text
 #. type: Plain text
 #: lpstat.man:90
-#, fuzzy
-#| msgid ""
-#| "Specifies which jobs to show, I<completed> or I<not-completed> (the "
-#| "default). This option I<must> appear before the I<-o> option and/or any "
-#| "printer names, otherwise the default (not-completed) value will be used "
-#| "in the request to the scheduler."
 msgid ""
 "Specifies which jobs to show, \"completed\" or \"not-completed\" (the "
 "default).  This option I<must> appear before the I<-o> option and/or any "
@@ -15890,27 +15353,20 @@ msgid ""
 "in the request to the scheduler."
 msgstr ""
 "Spezifiziert welche Druckaufträge angezeigt werden sollen, die "
-"»I<completed>« (abgeschlossenen) oder (standardmäßig) die »I<not-"
-"completed>« (nicht-abgeschlossenen). Diese Option I<muss> vor der Option I<-"
+"»completed« (abgeschlossenen) oder (standardmäßig) die »not-"
+"completed« (nicht-abgeschlossenen). Diese Option I<muss> vor der Option I<-"
 "o> und/oder allen Druckernamen aufgeführt werden, da ansonsten der "
-"Vorgabewert (not-completed) für alle Anfragen am Auftragsplaner (Scheduler) "
+"Vorgabewert (»not-completed«) für alle Anfragen am Auftragsplaner (Scheduler) "
 "verwandt wird."
 
-# type: TP
 #. type: TP
 #: lpstat.man:90
-#, fuzzy, no-wrap
-#| msgid "-a [printer(s)]"
+#, no-wrap
 msgid "B<-a >[I<printer(s)>]"
-msgstr "-a [Drucker]"
+msgstr "B<-a >[I<Drucker>]"
 
-# type: Plain text
 #. type: Plain text
 #: lpstat.man:94
-#, fuzzy
-#| msgid ""
-#| "Shows the accepting state of printer queues. If no printers are specified "
-#| "then all printers are listed."
 msgid ""
 "Shows the accepting state of printer queues.  If no printers are specified "
 "then all printers are listed."
@@ -15918,15 +15374,12 @@ msgstr ""
 "Zeigt den Akzeptierzustand der Druckerwarteschlangen. Falls keine Drucker "
 "angegeben sind, werden alle Drucker aufgeführt."
 
-# type: TP
 #. type: TP
 #: lpstat.man:94
-#, fuzzy, no-wrap
-#| msgid "-c [class(es)]"
+#, no-wrap
 msgid "B<-c >[I<class(es)>]"
-msgstr "-c [Klasse(n)]"
+msgstr "B<-c >[I<Klasse(n)>]"
 
-# type: Plain text
 #. type: Plain text
 #: lpstat.man:98
 msgid ""
@@ -15940,35 +15393,26 @@ msgstr ""
 #: lpstat.man:98
 #, no-wrap
 msgid "B<-d>"
-msgstr ""
+msgstr "B<-d>"
 
-# type: Plain text
 #. type: Plain text
 #: lpstat.man:101
 msgid "Shows the current default destination."
 msgstr "Zeigt das aktuelle Standardziel."
 
-# type: Plain text
 #. type: Plain text
 #: lpstat.man:107
 msgid "Shows a long listing of printers, classes, or jobs."
 msgstr "Zeigt eine lange Auflistung von Druckern, Klassen oder Aufträgen."
 
-# type: TP
 #. type: TP
 #: lpstat.man:107
-#, fuzzy, no-wrap
-#| msgid "-o [destination(s)]"
+#, no-wrap
 msgid "B<-o >[I<destination(s)>]"
-msgstr "-o [Ziel(e)]"
+msgstr "B<-o >[I<Ziel(e)>]"
 
-# type: Plain text
 #. type: Plain text
 #: lpstat.man:111
-#, fuzzy
-#| msgid ""
-#| "Shows the jobs queue on the specified destinations. If no destinations "
-#| "are specified all jobs are shown."
 msgid ""
 "Shows the jobs queued on the specified destinations.  If no destinations are "
 "specified all jobs are shown."
@@ -15976,21 +15420,14 @@ msgstr ""
 "Zeigt die Auftragswarteschlangen der angegebenen Ziele. Falls keine Ziele "
 "angegeben sind, werden alle Aufträge gezeigt."
 
-# type: TP
 #. type: TP
 #: lpstat.man:111
-#, fuzzy, no-wrap
-#| msgid "-p [printer(s)]"
+#, no-wrap
 msgid "B<-p >[I<printer(s)>]"
-msgstr "-p [Drucker]"
+msgstr "B<-p >[I<Drucker>]"
 
-# type: Plain text
 #. type: Plain text
 #: lpstat.man:115
-#, fuzzy
-#| msgid ""
-#| "Shows the printers and whether or not they are enabled for printing. If "
-#| "no printers are specified then all printers are listed."
 msgid ""
 "Shows the printers and whether they are enabled for printing.  If no "
 "printers are specified then all printers are listed."
@@ -15998,21 +15435,13 @@ msgstr ""
 "Zeigt die Drucker und ob sie zum Druck aktiviert wurden. Falls keine Drucker "
 "angegeben wurden, werden alle Drucker aufgeführt."
 
-# type: Plain text
 #. type: Plain text
 #: lpstat.man:118
 msgid "Shows whether the CUPS server is running."
 msgstr "Zeigt, ob der CUPS-Server läuft."
 
-# type: Plain text
 #. type: Plain text
 #: lpstat.man:122
-#, fuzzy
-#| msgid ""
-#| "Shows a status summary, including the default destination, a list of "
-#| "classes and their member printers, and a list of printers and their "
-#| "associated devices. This is equivalent to using the \"-d\", \"-c\", and "
-#| "\"-v\" options."
 msgid ""
 "Shows a status summary, including the default destination, a list of classes "
 "and their member printers, and a list of printers and their associated "
@@ -16020,38 +15449,26 @@ msgid ""
 msgstr ""
 "Zeigt eine Statuszusammenfassung, darunter das Standardziel, eine Liste der "
 "Klassen und ihrer zugehörigen Drucker und eine Liste der Drucker und der "
-"zugehörigen Geräte. Dies ist äquivalent zur Verwendung der Optionen »-d«, »-"
-"c« und »-v«."
+"zugehörigen Geräte. Dies ist äquivalent zur Verwendung der Optionen I<-d>, I<-"
+"c> und I<-v>."
 
-# type: Plain text
 #. type: Plain text
 #: lpstat.man:126
-#, fuzzy
-#| msgid ""
-#| "Shows all status information. This is equivalent to using the \"-r\", \"-d"
-#| "\", \"-c\", \"-v\", \"-a\", \"-p\", and \"-o\" options."
 msgid ""
 "Shows all status information.  This is equivalent to using the I<-r>, I<-d>, "
 "I<-c>, I<-v>, I<-a>, I<-p>, and I<-o> options."
 msgstr ""
 "Zeigt alle Statusinformationen. Dies ist äquivalent zur Verwendung der "
-"Optionen »-r«, »-d«, »-c«, »-v«, »-a«, »-p«, and »-o«."
+"Optionen I<-r>, I<-d>, I<-c>, I<-v>, I<-a>, I<-p> und I<-o>."
 
-# type: TP
 #. type: TP
 #: lpstat.man:126
-#, fuzzy, no-wrap
-#| msgid "-u [user(s)]"
+#, no-wrap
 msgid "B<-u >[I<user(s)>]"
-msgstr "-u [Benutzer]"
+msgstr "B<-u >[I<Benutzer>]"
 
-# type: Plain text
 #. type: Plain text
 #: lpstat.man:130
-#, fuzzy
-#| msgid ""
-#| "Shows a list of print jobs queued by the specified users. If no users are "
-#| "specified, lists the jobs queued by the current user."
 msgid ""
 "Shows a list of print jobs queued by the specified users.  If no users are "
 "specified, lists the jobs queued by the current user."
@@ -16060,21 +15477,14 @@ msgstr ""
 "anstehen. Wenn keine Benutzer angegeben wurden, werden die Druckaufträge des "
 "aktuellen Benutzers aufgelistet."
 
-# type: TP
 #. type: TP
 #: lpstat.man:130
-#, fuzzy, no-wrap
-#| msgid "-v [printer(s)]"
+#, no-wrap
 msgid "B<-v >[I<printer(s)>]"
-msgstr "-v [Drucker]"
+msgstr "B<-v >[I<Drucker>]"
 
-# type: Plain text
 #. type: Plain text
 #: lpstat.man:134
-#, fuzzy
-#| msgid ""
-#| "Shows the printers and what device they are attached to. If no printers "
-#| "are specified then all printers are listed."
 msgid ""
 "Shows the printers and what device they are attached to.  If no printers are "
 "specified then all printers are listed."
@@ -16082,7 +15492,6 @@ msgstr ""
 "Zeigt die Drucker und welchem Gerät sie zugeordnet sind. Wenn keine Drucker "
 "angegeben sind, werden alle Drucker aufgelistet."
 
-# type: Plain text
 #. type: Plain text
 #: lpstat.man:137
 msgid ""
@@ -16097,19 +15506,15 @@ msgstr ""
 
 #. type: Plain text
 #: lpstat.man:139
-#, fuzzy
-#| msgid "The \"-h\", \"-E\", \"-U\", and \"-W\" options are unique to CUPS."
 msgid "The I<-h>, I<-E>, I<-U>, and I<-W> options are unique to CUPS."
 msgstr ""
-"Die Optionen »-h«, »-E«, »-U« und »-W« sind eine Besonderheit von CUPS."
+"Die Optionen I<-h>, I<-E>, I<-U> und I<-W> sind eine Besonderheit von CUPS."
 
 #. type: Plain text
 #: lpstat.man:141
-#, fuzzy
-#| msgid "The Solaris \"-f\", \"-P\", and \"-S\" options are silently ignored."
 msgid "The Solaris I<-f>, I<-P>, and I<-S> options are silently ignored."
 msgstr ""
-"Die Solaris-Optionen »-f«, »-P« und »-S« werden stillschweigend ignoriert."
+"Die Solaris-Optionen I<-f>, I<-P> und I<-S> werden stillschweigend ignoriert."
 
 #. type: Plain text
 #: lpstat.man:148
@@ -16281,11 +15686,14 @@ msgstr ""
 "Filter verarbeitet wird."
 
 #. type: Plain text
+#FIXME: destiantion → destination
 #: mime.convs.man:36
 msgid ""
 "The I<destination/type> field specifies the destiantion MIME media type that "
 "is produced by the filter."
 msgstr ""
+"Das Feld I<Ziel/Typ> legt den Ziel-MIME-Medientyp fest, der vom Filter erzeugt "
+"wird."
 
 #. type: Plain text
 #: mime.convs.man:39
@@ -16294,6 +15702,10 @@ msgid ""
 "value of 100 means that the filter uses a large amount of resources while a "
 "value of 0 means that the filter uses very few resources."
 msgstr ""
+"Das Feld I<Belastung> legt die relative Belastung für die Ausführung des "
+"Filters fest. Ein Wert von 100 bedeutet, dass der Filter einen großen Anteil "
+"von Ressourcen belegt, während ein Wert von 0 bedeutet, dass der Filter sehr "
+"wenige Ressourcen verwendet."
 
 #. type: Plain text
 #: mime.convs.man:42
@@ -16301,41 +15713,37 @@ msgid ""
 "The I<filter> field specifies the filter program filename.  Filenames are "
 "relative to the CUPS filter directory."
 msgstr ""
+"Das Feld I<Filter> legt den Programmdateinamen des Filters fest. Dateinamen "
+"sind relativ zu dem CUPS-Filterverzeichnis."
 
 #. type: Plain text
 #: mime.convs.man:44 mime.types.man:94
-#, fuzzy
-#| msgid "Displays the default CUPS configuration file directory."
 msgid "I</etc/cups> - Typical CUPS configuration directory."
-msgstr "Zeigt das Standard-CUPS-Konfigurationsverzeichnis an."
+msgstr "I</etc/cups> - Typisches CUPS-Konfigurationsverzeichnis"
 
 #. type: Plain text
 #: mime.convs.man:46
 msgid "I</usr/lib/cups/filter> - Typical CUPS filter directory."
-msgstr ""
+msgstr "I</usr/lib/cups/filter> - Typisches CUPS-Filterverzeichnis."
 
 #. type: Plain text
 #: mime.convs.man:48
 msgid "I</usr/libexec/cups/filter> - CUPS filter directory on OS X."
-msgstr ""
+msgstr "I</usr/libexec/cups/filter> - CUPS-Filterverzeichnis unter OS X."
 
 #. type: Plain text
 #: mime.convs.man:50
 msgid ""
 "Define a filter that converts PostScript documents to CUPS Raster format:"
 msgstr ""
+"Definiert einen Filter, der PostScript-Dokumente in das CUPS-Rasterformat "
+"umwandelt:"
 
-# type: Plain text
 #. type: Plain text
 #: mime.convs.man:53
-#, fuzzy, no-wrap
-#| msgid ""
-#| "super/type super/type cost filter\n"
-#| "application/postscript application/vnd.cups-raster 50 pstoraster\n"
+#, no-wrap
 msgid "    application/vnd.cups-postscript application/vnd.cups-raster 50 pstoraster\n"
-msgstr ""
-"super/type super/type cost filter\n"
-"application/postscript application/vnd.cups-raster 50 pstoraster\n"
+msgstr "    application/vnd.cups-postscript application/vnd.cups-raster 50 pstoraster\n"
 
 #. type: Plain text
 #: mime.convs.man:62
@@ -16343,8 +15751,9 @@ msgid ""
 "B<cups-files.conf>(5), B<cupsd.conf>(5), B<cupsd>(8), B<cupsfilter>(8), "
 "B<mime.types>(5), CUPS Online Help (http://localhost:631/help)"
 msgstr ""
+"B<cups-files.conf>(5), B<cupsd.conf>(5), B<cupsd>(8), B<cupsfilter>(8), "
+"B<mime.types>(5), CUPS-Online-Hilfe (http://localhost:631/help)"
 
-# type: TH
 #. type: TH
 #: mime.types.man:15
 #, no-wrap
@@ -16358,50 +15767,36 @@ msgstr "mime.types - MIME-Typ-Beschreibungsdatei für CUPS"
 
 #. type: Plain text
 #: mime.types.man:20
-#, fuzzy
-#| msgid "The I<mime.types> file defines the recognized file types."
 msgid "The B<mime.types> file defines the recognized file types."
-msgstr "Die Datei I<mime.types> beschreibt die erkannten Dateitypen."
+msgstr "Die Datei B<mime.types> beschreibt die erkannten Dateitypen."
 
-# type: Plain text
 #. type: Plain text
 #: mime.types.man:22
-#, fuzzy
-#| msgid ""
-#| "Additional filters can be added to the I<mime.convs> file or (preferably) "
-#| "to other files in the CUPS configuration directory."
 msgid ""
 "Additional file types are specified in files with the extension I<.types> in "
 "the CUPS configuration directory."
 msgstr ""
-"Zusätzliche Filter können zu der Datei I<mime.convs> oder (bevorzugt) zu "
-"anderen Dateien im CUPS-Konfigurationsverzeichnis hinzugefügt werden."
+"Zusätzliche Filtertyp werden in Dateien mit der Endung I<.types> in dem CUPS-"
+"Konfigurationsverzeichnis festgelegt."
 
 #. type: Plain text
 #: mime.types.man:26
-#, fuzzy
-#| msgid ""
-#| "Each line in the I<mime.types> file is a comment, blank, or rule line. "
-#| "Comment lines start with the # character. Rule lines start with the MIME "
-#| "type name and are optionally followed by a series of file recognition "
-#| "rules that are used to automatically identify print and web files:"
 msgid ""
 "Each line in the B<mime.types> file is a comment, blank, or rule line.  "
 "Comment lines start with the # character.  Rule lines start with the MIME "
 "media type and are optionally followed by a series of file recognition rules:"
 msgstr ""
-"Jede Zeile in der Datei I<mime.types> ist ein Kommentar, leer oder eine "
+"Jede Zeile in der Datei B<mime.types> ist ein Kommentar, leer oder eine "
 "Regelzeile. Kommentarzeilen beginnen mit dem #-Zeichen. Regelzeilen beginnen "
-"mit dem MIME-Typnamen und werden optional von einer Serie von "
+"mit dem MIME-Medientyp und werden optional von einer Serie von "
 "Dateierkennungsregeln gefolgt, die benutzt werden, um Druck- und Web-Dateien "
 "automatisch zu erkennen:"
 
 #. type: Plain text
 #: mime.types.man:29
-#, fuzzy, no-wrap
-#| msgid "    super/type rule [ ... ruleN]\n"
+#, no-wrap
 msgid "    I<mime/type >[ I<rule >... I<rule >]\n"
-msgstr "    super/type Regel [ … RegelN]\n"
+msgstr "    I<MIME/Typ >[ I<Regel >… I<Regel >]\n"
 
 #. type: Plain text
 #: mime.types.man:32
@@ -16409,6 +15804,8 @@ msgid ""
 "Rules can be extended over multiple lines using the backslash character "
 "(\\e):"
 msgstr ""
+"Regeln können über mehrere Zeilen erweitert werden, indem der "
+"Rückwärtsschrägstrich (\\e) verwandt wird:"
 
 #. type: Plain text
 #: mime.types.man:36
@@ -16417,32 +15814,24 @@ msgid ""
 "    I<mime/type >[ I<really-really-really-long-rule >... B<\\e\n"
 "      >I<rule >]\n"
 msgstr ""
+"    I<MIME/Typ >[ I<wirklich-wirklich-wirklich-lange-Regel >… B<\\e\n"
+"      >I<Regel >]\n"
 
 #. type: Plain text
 #: mime.types.man:40
-#, fuzzy
-#| msgid ""
-#| "MIME type names are case-insensitive and are sorted in ascending "
-#| "alphanumeric order for the purposes of matching. See the \"TYPE MATCHING "
-#| "AND PRIORITY\" section for more information."
 msgid ""
 "MIME media types specified by the I<mime/type> field are case-insensitive "
 "and are sorted in ascending alphanumeric order for the purposes of "
 "matching.  See the \"TYPE MATCHING AND PRIORITY\" section for more "
 "information."
 msgstr ""
-"Bei MIME-Typnamen wird Groß- und Kleinschreibung nicht berücksichtigt. Sie "
+"Bei MIME-Medientypnamen, die im Feld I<MIME/Typ> festgelegt werden, wird Groß- und Kleinschreibung nicht berücksichtigt. Sie "
 "sind in absteigender alphanumerischer Reihenfolge für Suchzwecke sortiert. "
 "Siehe den Abschnitt »TYP-ÜBEREINSTIMMUNG UND PRIORITÄT«, um weitere "
 "Informationen zu erhalten."
 
 #. type: Plain text
 #: mime.types.man:42
-#, fuzzy
-#| msgid ""
-#| "The rules may be grouped using parenthesis, joined using \"+\" for a "
-#| "logical AND and \",\" or whitespace for a logical OR, and negated using "
-#| "\"!\"."
 msgid ""
 "The rules may be grouped using parenthesis, joined using \"+\" for a logical "
 "AND, joined using \",\" or whitespace for a logical OR, and negated using \"!"
@@ -16460,10 +15849,6 @@ msgstr "REGELN"
 
 #. type: Plain text
 #: mime.types.man:46
-#, fuzzy
-#| msgid ""
-#| "Rules take two forms - a filename extension by itself and functions with "
-#| "test values inside parenthesis. The following functions are available:"
 msgid ""
 "Rules take two forms - a filename extension by itself and functions with "
 "test values inside parenthesis.  The following functions are available:"
@@ -16472,74 +15857,55 @@ msgstr ""
 "Funktionen mit Testwerten innerhalb von Klammern. Die folgenden Funktionen "
 "sind verfügbar:"
 
-# type: TP
 #. type: TP
 #: mime.types.man:46
-#, fuzzy, no-wrap
-#| msgid "match(\"pattern\")"
+#, no-wrap
 msgid "B<match(\">I<pattern>B<\")>"
-msgstr "match(\"Muster\")"
+msgstr "B<match(\">I<Muster>B<\")>"
 
 #. type: Plain text
 #: mime.types.man:49
 msgid "True if the filename matches the given shell wildcard I<pattern>."
 msgstr ""
 
-# type: TP
 #. type: TP
 #: mime.types.man:49
-#, fuzzy, no-wrap
-#| msgid "ascii(offset,length)"
+#, no-wrap
 msgid "B<ascii(>I<offset>B<,>I<length>B<)>"
-msgstr "ascii(Versatz,Länge)"
+msgstr "B<ascii(>I<Versatz>B<,>I<Länge>B<)>"
 
-# type: Plain text
 #. type: Plain text
 #: mime.types.man:52
-#, fuzzy
-#| msgid "True if bytes are valid printable ASCII (CR, NL, TAB, BS, 32-126)"
 msgid ""
 "True if the I<length> bytes starting at I<offset> are valid printable ASCII "
 "(CR, NL, TAB, BS, 32-126)."
 msgstr ""
-"Wahr, wenn Bytes gültiges druckbares ASCII sind (CR, NL, TAB, BS, 32-126)"
+"Wahr, falls die I<Längen> Bytes beginnend an I<Versatz> gültige druckbare "
+"ASCII-Zeichen sind (CR, NL, TAB, BS, 32-126)"
 
-# type: TP
 #. type: TP
 #: mime.types.man:52
-#, fuzzy, no-wrap
-#| msgid "printable(offset,length)"
+#, no-wrap
 msgid "B<printable(>I<offset>B<,>I<length>B<)>"
-msgstr "printable(Versatz,Länge)"
+msgstr "B<printable(>I<Versatz>B<,>I<Länge>B<)>"
 
-# type: Plain text
 #. type: Plain text
 #: mime.types.man:55
-#, fuzzy
-#| msgid ""
-#| "True if bytes are printable 8-bit chars (CR, NL, TAB, BS, 32-126, 128-254)"
 msgid ""
 "True if the I<length> bytes starting at I<offset> are printable 8-bit chars "
 "(CR, NL, TAB, BS, 32-126, 128-254)."
 msgstr ""
-"Wahr, wenn Bytes gültige druckbare 8-Bit-Zeichen sind (CR, NL, TAB, BS, "
-"32-126, 128-254)"
+"Wahr, falls die I<Längen> Bytes beginnend an I<Versatz> gültige druckbare "
+"8-Bit-Zeichen sind (CR, NL, TAB, BS, 32-126, 128-254)."
 
-# type: TP
 #. type: TP
 #: mime.types.man:55
-#, fuzzy, no-wrap
-#| msgid "priority(number)"
+#, no-wrap
 msgid "B<priority(>I<number>B<)>"
-msgstr "priority(Zahl)"
+msgstr "B<priority(>I<Zahl>B<)>"
 
 #. type: Plain text
 #: mime.types.man:60
-#, fuzzy
-#| msgid ""
-#| "Specifies the relative priority of this MIME type. The default priority "
-#| "is 100.  Larger values have higher priority while smaller values have "
-#| "lower priority."
 msgid ""
 "Specifies the relative priority of this MIME media type.  The default "
 "priority is 100.  Larger values have higher priority while smaller values "
@@ -16549,29 +15915,24 @@ msgstr ""
 "ist 100. Größere Werte haben höhere Priorität, während kleinere Werte eine "
 "niedrigere Priorität haben."
 
-# type: TP
 #. type: TP
 #: mime.types.man:60
-#, fuzzy, no-wrap
-#| msgid "string(offset,\"string\")"
+#, no-wrap
 msgid "B<string(>I<offset>B<,\">I<string>B<\")>"
-msgstr "string(Versatz,\"Zeichenkette\")"
+msgstr "B<string(>I<Versatz>B<,\">I<Zeichenkette>B<\")>"
 
-# type: Plain text
 #. type: Plain text
 #: mime.types.man:63
-#, fuzzy
-#| msgid "True if bytes are identical to string"
 msgid "True if the bytes starting at I<offset> are identical to I<string>."
-msgstr "Wahr, wenn Bytes der Zeichenkette entsprechen"
+msgstr ""
+"Wahr, falls die bei I<Versatz> beginnenden Bytes identisch zur "
+"I<Zeichenkette> sind."
 
-# type: TP
 #. type: TP
 #: mime.types.man:63
-#, fuzzy, no-wrap
-#| msgid "istring(offset,\"string\")"
+#, no-wrap
 msgid "B<istring(>I<offset>B<,\">I<string>B<\")>"
-msgstr "istring(Versatz,\"Zeichenkette\")"
+msgstr "B<istring(>I<Versatz>B<,\">I<Zeichenkette>B<\")>"
 
 #. type: Plain text
 #: mime.types.man:66
@@ -16579,66 +15940,54 @@ msgid ""
 "True if the bytes starting at I<offset> match I<string> without respect to "
 "case."
 msgstr ""
+"Wahr, falls die bei I<Versatz> beginnenden Bytes auf die I<Zeichenkette> "
+"unabhängig von der Groß-/Kleinschreibung passen."
 
-# type: TP
 #. type: TP
 #: mime.types.man:66
-#, fuzzy, no-wrap
-#| msgid "char(offset,value)"
+#, no-wrap
 msgid "B<char(>I<offset>B<,>I<value>B<)>"
-msgstr "char(Versatz,Wert)"
+msgstr "B<char(>I<Versatz>B<,>I<Wert>B<)>"
 
-# type: Plain text
 #. type: Plain text
 #: mime.types.man:69
-#, fuzzy
-#| msgid "True if bytes are identical to string"
 msgid "True if the byte at I<offset> is identical to I<value>."
-msgstr "Wahr, wenn Bytes der Zeichenkette entsprechen"
+msgstr "Wahr, falls Byte bei I<Versatz> identisch zu I<Wert> ist."
 
-# type: TP
 #. type: TP
 #: mime.types.man:69
-#, fuzzy, no-wrap
-#| msgid "short(offset,value)"
+#, no-wrap
 msgid "B<short(>I<offset>B<,>I<value>B<)>"
-msgstr "short(Versatz,Wert)"
+msgstr "B<short(>I<Versatz>B<,>I<Wert>B<)>"
 
-# type: Plain text
 #. type: Plain text
 #: mime.types.man:72
-#, fuzzy
-#| msgid "True if 16-bit integer is identical"
 msgid ""
 "True if the 16-bit big-endian integer at I<offset> is identical to I<value>."
-msgstr "Wahr, wenn 16-Bit-Ganzzahl identisch ist"
+msgstr ""
+"Wahr, falls die 16-bit Big-Endian-Ganzzahl bei I<Versatz> identisch mit "
+"I<Wert> ist."
 
-# type: TP
 #. type: TP
 #: mime.types.man:72
-#, fuzzy, no-wrap
-#| msgid "int(offset,value)"
+#, no-wrap
 msgid "B<int(>I<offset>B<,>I<value>B<)>"
-msgstr "int(Versatz,Wert)"
+msgstr "B<int(>I<Versatz>B<,>I<Wert>B<)>"
 
-# type: Plain text
 #. type: Plain text
 #: mime.types.man:75
-#, fuzzy
-#| msgid "True if 32-bit integer is identical"
 msgid ""
 "True if the 32-bit big-endian integer at I<offset> is identical to I<value>."
-msgstr "Wahr, wenn 32-Bit-Ganzzahl identisch ist"
+msgstr ""
+"Wahr, falls die 32-bit Big-Endian-Ganzzahl bei I<Versatz> identisch mit "
+"I<Wert> ist."
 
-# type: TP
 #. type: TP
 #: mime.types.man:75
-#, fuzzy, no-wrap
-#| msgid "locale(\"string\")"
+#, no-wrap
 msgid "B<locale(\">I<string>B<\")>"
-msgstr "locale(\"Zeichenkette\")"
+msgstr "B<locale(\">I<Zeichenkette>B<\")>"
 
-# type: Plain text
 #. type: Plain text
 #: mime.types.man:78
 #, fuzzy
@@ -16646,13 +15995,11 @@ msgstr "locale(\"Zeichenkette\")"
 msgid "True if current locale matches I<string>."
 msgstr "Wahr, wenn aktuelle Locale zu Zeichenkette passt"
 
-# type: TP
 #. type: TP
 #: mime.types.man:78
-#, fuzzy, no-wrap
-#| msgid "contains(offset,range,\"string\")"
+#, no-wrap
 msgid "B<contains(>I<offset>B<,>I<range>B<,\">I<string>B<\")>"
-msgstr "contains(Versatz,Bereich,\"Zeichenkette\")"
+msgstr "B<contains(>I<Versatz>B<,>I<Bereich>B<,\">I<Zeichenkette>B<\")>"
 
 #. type: Plain text
 #: mime.types.man:81
@@ -16660,15 +16007,15 @@ msgid ""
 "True if the bytes starting at I<offset> for I<range> bytes contains "
 "I<string>."
 msgstr ""
+"Wahr, falls die bei I<Versatz> beginnenden Bytes für den I<Bereich> "
+"I<Zeichenkette> enthält."
 
-# type: SH
 #. type: SS
 #: mime.types.man:81
 #, no-wrap
 msgid "STRING CONSTANTS"
 msgstr "ZEICHENKETTENKONSTANTEN"
 
-# type: Plain text
 #. type: Plain text
 #: mime.types.man:83
 msgid ""
@@ -16688,14 +16035,6 @@ msgstr "TYP-ÜBEREINSTIMMUNG UND PRIORITÄT"
 
 #. type: Plain text
 #: mime.types.man:87
-#, fuzzy
-#| msgid ""
-#| "When CUPS needs to determine the MIME type of a given file, it checks "
-#| "every MIME type defined in the .types files. When two types have the same "
-#| "matching rules, the type chosen will depend on the type name and "
-#| "priority, with higher- priority types being used over lower-priority "
-#| "ones. If the types have the same priority, the type names are sorted "
-#| "alphanumerically in ascending order and the first type is chosen."
 msgid ""
 "When CUPS needs to determine the MIME media type of a given file, it checks "
 "every MIME media type defined in the I<.types> files.  When two or more "
@@ -16704,9 +16043,9 @@ msgid ""
 "If the types have the same priority, the type names are sorted "
 "alphanumerically in ascending order and the first type is chosen."
 msgstr ""
-"Wenn CUPS den MIME-Typ einer gegebenen Datei bestimmt, wird jeder MIME-Typ, "
-"der in den .types-Dateien definiert ist, geprüft. Wenn zwei Typen die "
-"gleichen passenden Regeln aufweisen, dann hängt der ausgewählte Typ von "
+"Wenn CUPS den MIME-Medientyp einer gegebenen Datei bestimmt, wird jeder MIME-Typ, "
+"der in den I<.types>-Dateien definiert ist, geprüft. Wenn zwei oder mehr "
+"Typen auf eine übergebene Datei passen die, dann hängt der ausgewählte Typ von "
 "Typname und der Priorität ab, wobei Typen höherer Priorität denen mit "
 "niedriger Priorität vorgezogen werden. Wenn die Typen die gleiche Priorität "
 "haben, werden die Typnamen in alphanumerischer Reihenfolge sortiert und der "
@@ -16714,13 +16053,6 @@ msgstr ""
 
 #. type: Plain text
 #: mime.types.man:92
-#, fuzzy
-#| msgid ""
-#| "For example, if two types \"text/bar\" and \"text/foo\" are defined as "
-#| "matching the extension \"doc\", normally the type \"text/bar\" will be "
-#| "chosen since its name is alphanumerically smaller than \"text/foo\". "
-#| "However, if \"text/foo\" also defines a higher priority than \"text/bar"
-#| "\", \"text/foo\" will be chosen instead."
 msgid ""
 "For example, if two types \"text/bar\" and \"text/foo\" are defined as "
 "matching the extension \"doc\", normally the type \"text/bar\" will be "
@@ -16740,6 +16072,8 @@ msgid ""
 "Define two MIME media types for raster data, with one being a subset with "
 "higher priority:"
 msgstr ""
+"Zwei MIME-Medientypen für Raster-Daten definieren, wobei eines eine Teilmenge "
+"mit höherer Priorität ist:"
 
 #. type: Plain text
 #: mime.types.man:101
@@ -16843,6 +16177,11 @@ msgid ""
 "quick reference to the supported keywords and should be used in conjunction "
 "with the online help for CUPS."
 msgstr ""
+"Der CUPS-PPD-Compiler liest Metadateien, die Beschreibungen von einer oder "
+"mehrere PPD-Dateien, die durch B<ppdc>(1) erstellt werden sollen, enthalten, "
+"ein. Diese Handbuchseite stellt eine Schnellreferenz für die unterstützten "
+"Schlüsselwörter dar und sollte zusammen mit der Online-Hilfe von CUPS "
+"verwandt werden."
 
 #. type: Plain text
 #: ppdcfile.man:24
@@ -16851,6 +16190,9 @@ msgid ""
 "favorite text editor. Comments are supported using the C (/* ... */) and C++ "
 "(// ...) comment mechanisms."
 msgstr ""
+"Das Quelldateiformat ist reiner ASCII-Text, der mit Ihrem bevorzugten Editor "
+"bearbeitet werden kann. Kommentare erfolgen mit dem C- (/* … */) und C++- (// "
+"…) Kommentarmechanismus."
 
 #. type: Plain text
 #: ppdcfile.man:26
@@ -16859,6 +16201,10 @@ msgid ""
 "({ ... }); PPD files are written when a close brace or end-of-file is seen "
 "and a PCFileName directive has been defined."
 msgstr ""
+"Druckertreiberinformationen können gruppiert werden und mit geschweiften "
+"Klammern ({ … }) mehrfach genutzt werden; PPD-Dateien werden geschrieben, "
+"wenn eine schließende Klammer gelesen wird oder die Datei endet und eine "
+"PCFileName-Direktive definiert wurde."
 
 #. type: Plain text
 #: ppdcfile.man:28
@@ -16867,6 +16213,9 @@ msgid ""
 "values. The following is a list of the available directives and the values "
 "they accept:"
 msgstr ""
+"Direktiven können überall auf einer Zeile angeordnet werden und werden von "
+"einem oder mehreren Werten gefolgt. Es folgt eine Liste von verfügbaren "
+"Direktiven und den Werten, die sie akzeptieren:"
 
 #. type: TP
 #: ppdcfile.man:28
@@ -16942,259 +16291,238 @@ msgstr "B<Attribute >I<Name >B<\"\" >I<Wert>"
 
 #. type: TP
 #: ppdcfile.man:52
-#, fuzzy, no-wrap
-#| msgid "ATTR tag attribute-name value(s)"
+#, no-wrap
 msgid "B<Attribute >I<name keyword value>"
-msgstr "ATTR Markierung Attributname Wert(e)"
+msgstr "B<Attribute >I<Name Schlüsselwort Wert>"
 
 #. type: TP
 #: ppdcfile.man:54
 #, no-wrap
 msgid "B<Attribute >I<name >B<\">I<keyword>B</>I<text>B<\" >I<value>"
-msgstr ""
+msgstr "B<Attribute >I<Name >B<\">I<Schlüsselwort>B</>I<Text>B<\" >I<Wert>"
 
 #. type: TP
 #: ppdcfile.man:56
-#, fuzzy, no-wrap
-#| msgid "-o name=value"
+#, no-wrap
 msgid "B<Choice >I<name >B<\">I<code>B<\">"
-msgstr "-o Name=Wert"
+msgstr "B<Choice >I<Name >B<\">I<Code>B<\">"
 
 #. type: TP
 #: ppdcfile.man:58
 #, no-wrap
 msgid "B<Choice \">I<name>B</>I<text>B<\" \">I<code>B<\">"
-msgstr ""
+msgstr "B<Choice \">I<Name>B</>I<Text>B<\" \">I<Code>B<\">"
 
 #. type: TP
 #: ppdcfile.man:60
-#, fuzzy, no-wrap
-#| msgid "FilterNice nice-value"
+#, no-wrap
 msgid "B<ColorDevice >I<boolean-value>"
-msgstr "FilterNice Nice-Wert"
+msgstr "B<ColorDevice >I<logischer-Wert>"
 
 #. type: TP
 #: ppdcfile.man:62
 #, no-wrap
 msgid "B<ColorModel >I<name colorspace colororder compression>"
-msgstr ""
+msgstr "B<ColorModel >I<Name Farbraum Farbreihenfolge Komprimierung>"
 
 #. type: TP
 #: ppdcfile.man:64
 #, no-wrap
 msgid "B<ColorModel \">I<name>B</>I<text>B<\" >I<colorspace colororder compression>"
-msgstr ""
+msgstr "B<ColorModel \">I<Name>B</>I<Text>B<\" >I<Farbraum Farbreihenfolge Komprimierung>"
 
 #. type: TP
 #: ppdcfile.man:66
 #, no-wrap
 msgid "B<ColorProfile >I<resolution>B</>I<mediatype gamma density matrix>"
-msgstr ""
+msgstr "B<ColorProfile >I<Auflösung>B</>I<Medientyp Gamma Dichte Matrix>"
 
 #. type: TP
 #: ppdcfile.man:68
 #, no-wrap
 msgid "B<Copyright \">I<text>\""
-msgstr ""
+msgstr "B<Copyright \">I<Text>\""
 
 #. type: TP
 #: ppdcfile.man:70
 #, no-wrap
 msgid "B<CustomMedia >I<name width length left bottom right top >B<\">I<size-code>B<\" \">I<region-code>B<\">"
-msgstr ""
+msgstr "B<CustomMedia >I<Name Breite Länge links unten rechts oben >B<\">I<Größencode>B<\" \">I<Regionscode>B<\">"
 
 #. type: TP
 #: ppdcfile.man:72
 #, no-wrap
 msgid "B<CustomMedia \">I<name>B</>I<text>B<\" >I<width length left bottom right top >B<\">I<size-code>B<\" \">I<region-code>B<\">"
-msgstr ""
+msgstr "B<CustomMedia \">I<Name>B</>I<Text>B<\" >I<Breite Länge links unten rechts oben >B<\">I<Größencode>B<\" \">I<Regionscode>B<\">"
 
 #. type: TP
 #: ppdcfile.man:74
-#, fuzzy, no-wrap
-#| msgid "FilterNice nice-value"
+#, no-wrap
 msgid "B<Cutter >I<boolean-value>"
-msgstr "FilterNice Nice-Wert"
+msgstr "B<Cutter >I<logischer-Wert>"
 
 #. type: TP
 #: ppdcfile.man:76
 #, no-wrap
 msgid "B<Darkness >I<temperature name>"
-msgstr ""
+msgstr "B<Darkness >I<Temperatur Name>"
 
 #. type: TP
 #: ppdcfile.man:78
 #, no-wrap
 msgid "B<Darkness >I<temperature >B<\">I<name>B</>I<text>B<\">"
-msgstr ""
+msgstr "B<Darkness >I<Temperatur >B<\">I<Name>B</>I<Text>B<\">"
 
 #. type: TP
 #: ppdcfile.man:80
-#, fuzzy, no-wrap
-#| msgid "-i mime/type"
+#, no-wrap
 msgid "B<DriverType >I<type>"
-msgstr "-i MIME/Typ"
+msgstr "B<DriverType >I<Typ>"
 
 #. type: TP
 #: ppdcfile.man:82
-#, fuzzy, no-wrap
-#| msgid "-i mime/type"
+#, no-wrap
 msgid "B<Duplex >I<type>"
-msgstr "-i MIME/Typ"
+msgstr "B<Duplex >I<Typ>"
 
 #. type: TP
+# FIXME Original i.O.?
 #: ppdcfile.man:84
 #, no-wrap
 msgid "B<Filter \\Imime-type cost program>"
-msgstr ""
+msgstr "B<Filter \\Imime-Typ Belastung Programm>"
 
 #. type: TP
 #: ppdcfile.man:86
-#, fuzzy, no-wrap
-#| msgid "User name"
+#, no-wrap
 msgid "B<Finishing >I<name>"
-msgstr "Benutzername"
+msgstr "B<Finishing >I<Name>"
 
-# type: TP
 #. type: TP
 #: ppdcfile.man:88
-#, fuzzy, no-wrap
-#| msgid "istring(offset,\"string\")"
+#, no-wrap
 msgid "B<Finishing \">I<name>B</>I<text>B<\">"
-msgstr "istring(Versatz,\"Zeichenkette\")"
+msgstr "B<Finishing \">I<Name>B</>I<Text>B<\">"
 
 #. type: TP
 #: ppdcfile.man:90
 #, no-wrap
 msgid "B<Font *>"
-msgstr ""
+msgstr "B<Font *>"
 
 #. type: TP
 #: ppdcfile.man:92
 #, no-wrap
 msgid "B<Font >I<name encoding >B<\">I<version>B<\" >I<charset status>"
-msgstr ""
+msgstr "B<Font >I<Name Kodierung >B<\">I<Version>B<\" >I<Zeichensatz Status>"
 
-# type: TP
 #. type: TP
 #: ppdcfile.man:94
-#, fuzzy, no-wrap
-#| msgid "--product name"
+#, no-wrap
 msgid "B<Group >I<name>"
-msgstr "--product Name"
+msgstr "B<Group >I<Name>"
 
-# type: TP
 #. type: TP
 #: ppdcfile.man:96
-#, fuzzy, no-wrap
-#| msgid "-o name=value"
+#, no-wrap
 msgid "B<Group \">I<name>B</>I<text>B<\">"
-msgstr "-o Name=Wert"
+msgstr "B<Group \">I<Name>B</>I<Text>B<\">"
 
 #. type: TP
 #: ppdcfile.man:98
 #, no-wrap
 msgid "B<HWMargins >I<left bottom right top>"
-msgstr ""
+msgstr "B<HWMargins >I<links unten rechts oben>"
 
 #. type: TP
 #: ppdcfile.man:100
 #, no-wrap
 msgid "B<InputSlot >I<position name>"
-msgstr ""
+msgstr "B<InputSlot >I<Position Name>"
 
 #. type: TP
 #: ppdcfile.man:102
 #, no-wrap
 msgid "B<InputSlot >I<position >B<\">I<name>B</>I<text>B<\">"
-msgstr ""
+msgstr "B<InputSlot >I<Position >B<\">I<Name>B</>I<Text>B<\">"
 
 #. type: TP
 #: ppdcfile.man:104
-#, fuzzy, no-wrap
-#| msgid "User name"
+#, no-wrap
 msgid "B<Installable >I<name>"
-msgstr "Benutzername"
+msgstr "B<Installable >I<Name>"
 
-# type: TP
 #. type: TP
 #: ppdcfile.man:106
-#, fuzzy, no-wrap
-#| msgid "printable(offset,length)"
+#, no-wrap
 msgid "B<Installable \">I<name>B</>I<text>B<\">"
-msgstr "printable(Versatz,Länge)"
+msgstr "B<Installable \">I<Name>B</>I<Text>B<\">"
 
 #. type: TP
 #: ppdcfile.man:108
 #, no-wrap
 msgid "B<LocAttribute >I<name >B<\">I<keyword>B</>I<text>B<\" >I<value>"
-msgstr ""
+msgstr "B<LocAttribute >I<Name >B<\">I<Schlüsselwort>B</>I<Text>B<\" >I<Wert>"
 
 #. type: TP
 #: ppdcfile.man:110
-#, fuzzy, no-wrap
-#| msgid "MaxCopies number"
+#, no-wrap
 msgid "B<ManualCopies >I<boolean-value>"
-msgstr "MaxCopies Anzahl"
+msgstr "B<ManualCopies >I<logischer-Wert>"
 
 #. type: TP
 #: ppdcfile.man:112
-#, fuzzy, no-wrap
-#| msgid "-t \"name\""
+#, no-wrap
 msgid "B<Manufacturer \">I<name>B<\">"
-msgstr "-t \"Name\""
+msgstr "B<Manufacturer \">I<Name>B<\">"
 
 #. type: TP
 #: ppdcfile.man:114
 #, no-wrap
 msgid "B<MaxSize >I<width length>"
-msgstr ""
+msgstr "B<MaxSize >I<Breite Länge>"
 
 #. type: TP
 #: ppdcfile.man:116
-#, fuzzy, no-wrap
-#| msgid "User name"
+#, no-wrap
 msgid "B<MediaSize >I<name>"
-msgstr "Benutzername"
+msgstr "B<MediaSize >I<Name>"
 
 #. type: TP
 #: ppdcfile.man:118
-#, fuzzy, no-wrap
-#| msgid "GSSServiceName name"
+#, no-wrap
 msgid "B<MediaType >I<type name>"
-msgstr "GSSServiceName Name"
+msgstr "B<MediaType >I<Typ Name>"
 
 #. type: TP
 #: ppdcfile.man:120
 #, no-wrap
 msgid "B<MediaType >I<type >B<\">I<name>B</>I<text>B<\">"
-msgstr ""
+msgstr "B<MediaType >I<Typ >B<\">I<Name>B</>I<Text>B<\">"
 
 #. type: TP
 #: ppdcfile.man:122
 #, no-wrap
 msgid "B<MinSize >I<width length>"
-msgstr ""
+msgstr "B<MinSize >I<Breite Länge>"
 
 #. type: TP
 #: ppdcfile.man:124
-#, fuzzy, no-wrap
-#| msgid "-t \"name\""
+#, no-wrap
 msgid "B<ModelName \">I<name>B<\">"
-msgstr "-t \"Name\""
+msgstr "B<ModelName \">I<Name>B<\">"
 
 #. type: TP
 #: ppdcfile.man:126
-#, fuzzy, no-wrap
-#| msgid "Port number"
+#, no-wrap
 msgid "B<ModelNumber >I<number>"
-msgstr "Port Nummer"
+msgstr "B<ModelNumber >I<Nummer>"
 
 #. type: TP
 #: ppdcfile.man:128
 #, no-wrap
 msgid "B<Option >I<name type section order>"
-msgstr ""
+msgstr "B<Option >I<Name Typ Abschnitt Reihenfolge>"
 
 #. type: TP
 #: ppdcfile.man:130
@@ -17259,59 +16587,50 @@ msgstr ""
 msgid "B<UIConstraints \">I<*Option1 Choice1 *Option2 Choice2>B<\">"
 msgstr ""
 
-# type: TP
 #. type: TP
 #: ppdcfile.man:150
-#, fuzzy, no-wrap
-#| msgid "DefaultPaperSize sizename"
+#, no-wrap
 msgid "B<VariablePaperSize >I<boolean-value>"
-msgstr "DefaultPaperSize Größenname"
+msgstr "B<VariablePaperSize >I<logischer-Wert>"
 
 #. type: TP
 #: ppdcfile.man:152
-#, fuzzy, no-wrap
-#| msgid "Port number"
+#, no-wrap
 msgid "B<Version >I<number>"
-msgstr "Port Nummer"
+msgstr "B<Version >I<Nummer>"
 
-# type: Plain text
 #. type: Plain text
 #: ppdcfile.man:161
-#, fuzzy
-#| msgid "I<cancel(1)>, I<lp(1)>, I<lpq(1)>, I<lpr(1)>, I<lpstat(1)>,"
 msgid ""
 "B<ppdc>(1), B<ppdhtml>(1), B<ppdi>(1), B<ppdmerge>(1), B<ppdpo>(1), CUPS "
 "Online Help (http://localhost:631/help)"
-msgstr "I<cancel(1)>, I<lp(1)>, I<lpq(1)>, I<lpr(1)>, I<lpstat(1)>,"
+msgstr ""
+"B<ppdc>(1), B<ppdhtml>(1), B<ppdi>(1), B<ppdmerge>(1), B<ppdpo>(1), CUPS-"
+"Online-Hilfe (http://localhost:631/help)"
 
 #. type: TH
 #: ppdc.man:15
 #, no-wrap
 msgid "ppdc"
-msgstr ""
+msgstr "ppdc"
 
 #. type: Plain text
 #: ppdc.man:18
 msgid "ppdc - cups ppd compiler (deprecated)"
-msgstr ""
+msgstr "ppdc - CUPS-PPD-Compiler (veraltet)"
 
-# type: Plain text
 #. type: Plain text
 #: ppdc.man:50
-#, fuzzy
-#| msgid ""
-#| "B<lpr> [ -E ] [ -H I<server[:port]> ] [ -U I<username> ] [ -P "
-#| "I<destination[/instance]> ] [ -# I<num-copies> [ -h ] [ -l ] [ -m ] [ -o "
-#| "I<option[=value]> ] [ -p] [ -q ] [ -r ] [ -C/J/T I<title> ] [ I<file(s)> ]"
 msgid ""
 "B<ppdc> [ B<-D >I<name>[B<=>I<value>] ] [ B<-I> I<include-directory> ] [ B<-"
 "c> I<message-catalog> ] [ B<-d> I<output-directory> ] [ B<-l> "
 "I<language(s)> ] [ B<-m> ] [ B<-t> ] [ B<-v> ] [ B<-z> ] [ B<--cr> ] [ B<--"
 "crlf> ] [ B<--lf> ] I<source-file>"
 msgstr ""
-"B<lpr> [ -E ] [ -H I<Server[:Port]> ] [ -U I<Benutzername> ] [ -P I<Ziel[/"
-"Instanz]> ] [ -# I<Anzahl-Kopien> [ -h ] [ -l ] [ -m ] [ -o "
-"I<Option[=Wert]> ] [ -p] [ -q ] [ -r ] [ -C/J/T I<Titel> ] [ I<Datei(en)> ]"
+"B<ppdc> [ B<-D >I<Name>[B<=>I<Wert>] ] [ B<-I> I<include-Verzeichnis> ] [ B<-"
+"c> I<Nachrichtenkatalog> ] [ B<-d> I<Ausgabeverzeichnis> ] [ B<-l> "
+"I<Sprache(n)> ] [ B<-m> ] [ B<-t> ] [ B<-v> ] [ B<-z> ] [ B<--cr> ] [ B<--"
+"crlf> ] [ B<--lf> ] I<Quelldatei>"
 
 #. type: Plain text
 #: ppdc.man:53
@@ -17319,6 +16638,9 @@ msgid ""
 "B<ppdc> compiles PPDC source files into one or more PPD files.  B<This "
 "program is deprecated and will be removed in a future release of CUPS.>"
 msgstr ""
+"B<ppdc> übersetzt PPDC-Quelldateien in eine oder mehrere PPD-Dateien. "
+"B<Dieses Programm ist veraltet und wird in einer zukünftigen Veröffentlichung "
+"von CUPS entfernt.>"
 
 #. type: Plain text
 #: ppdc.man:55
@@ -17337,6 +16659,8 @@ msgid ""
 "Sets the named variable for use in the source file.  It is equivalent to "
 "using the I<#define> directive in the source file."
 msgstr ""
+"Setzt die benannte Variable für die Verwendung in der Quelldatei. Dies ist "
+"äquivalent zu der Verwendung von I<#define>-Direktiven in der Quelldatei."
 
 #. type: TP
 #: ppdc.man:59 ppdhtml.man:36 ppdi.man:37 ppdpo.man:39
@@ -17365,6 +16689,9 @@ msgid ""
 "Specifies a single message catalog file in GNU gettext (filename.po) or "
 "Apple strings (filename.strings) format to be used for localization."
 msgstr ""
+"Legt ein einfache Nachrichtenkatalogdatei im GNU-Gettext- (Dateiname.po) oder "
+"Apple-Strings- (Dateiname.strings) Format für die Verwendung in der "
+"Lokalisierung fest."
 
 #. type: TP
 #: ppdc.man:66
@@ -17374,21 +16701,18 @@ msgstr "B<-d >I<Ausgabeverzeichnis>"
 
 #. type: Plain text
 #: ppdc.man:70
-#, fuzzy
-#| msgid "Specified the directory where data files can be found."
 msgid ""
 "Specifies the output directory for PPD files.  The default output directory "
 "is \"ppd\"."
 msgstr ""
-"Spezifiziert das Verzeichnis, in dem Datendateien gefunden werden können."
+"Legt das Ausgabeverzeichnis für PPD-Dateien fest. Die Vorgabe für das "
+"Ausgabeverzeichnis ist »ppd«."
 
-# type: TP
 #. type: TP
 #: ppdc.man:70
-#, fuzzy, no-wrap
-#| msgid "-u [user(s)]"
+#, no-wrap
 msgid "B<-l >I<language(s)>"
-msgstr "-u [Benutzer]"
+msgstr "B<-l >I<Sprache(n)>"
 
 #. type: Plain text
 #: ppdc.man:75
@@ -17399,58 +16723,56 @@ msgid ""
 "create PPD files with German, UK English, Spanish (Spain, Mexico, and US), "
 "French (France and Canada), and Italian languages in each file."
 msgstr ""
+"Legt eine oder mehrere Sprachen fest, die bei der Lokalisierung von PPD-"
+"Datei(n) verwandt werden sollen. Die Vorgabesprache ist »en« (englisch). "
+"Mehrere Sprachen können mit Kommata getrennt angegeben werden, z.B. wird "
+"»de_DE,en_UK,es_ES,es_MX,es_US,fr_CA,fr_FR,it_IT« PPD-Dateien mit deutschen, "
+"UK-englischen spanischen (Spanien, Mexiko und USA), französischen (Frankreich "
+"und Kanada) und italienischen Sprachen in einer Datei erstellen."
 
 #. type: Plain text
 #: ppdc.man:78
-#, fuzzy
-#| msgid ""
-#| "Specifies that the current test should be skipped when the variable is or "
-#| "is not defined."
 msgid ""
 "Specifies that the output filename should be based on the ModelName value "
 "instead of FileName or PCFilenName."
 msgstr ""
-"Spezifiziert, dass der aktuelle Test übersprungen werden soll, wenn die "
-"Variable (nicht) definiert ist."
+"Legt fest, dass der Ausgabename auf dem Wert von ModelName statt von FileName oder PCFilenName basieren soll."
 
 #. type: Plain text
 #: ppdc.man:81
-#, fuzzy
-#| msgid "Specifies that no information should be displayed."
 msgid "Specifies that PPD files should be tested instead of generated."
-msgstr "Spezifiziert, dass keine Information angezeigt werden soll."
+msgstr "Legt fest, dass PPD-Dateien getestet anstatt erstellt werden sollen."
 
 #. type: Plain text
+# FIXME: Original i.O.?
 #: ppdc.man:87
 msgid ""
 "Specifies verbose output, basically a running status of which files are "
 "being loaded or written.  B<-z> Generates compressed PPD files (filename.ppd."
 "gz).  The default is to generate uncompressed PPD files."
 msgstr ""
+"Legt ausführliche Ausgabe fest, im Prinzip ein laufender Status welche "
+"Dateien geladen oder geschrieben werden. B<-z> erstellt komprimierte PPD-"
+"Dateien (Dateiname.ppd.gz). Standardmäßig werden unkomprimierte PPD-Dateien "
+"erstellt."
 
-# type: TP
 #. type: TP
 #: ppdc.man:87
-#, fuzzy, no-wrap
-#| msgid "--cflags"
+#, no-wrap
 msgid "B<--cr>"
-msgstr "--cflags"
+msgstr "B<--cr>"
 
-# type: TP
 #. type: TP
 #: ppdc.man:89
-#, fuzzy, no-wrap
-#| msgid "--cflags"
+#, no-wrap
 msgid "B<--crlf>"
-msgstr "--cflags"
+msgstr "B<--crlf>"
 
-# type: TP
 #. type: TP
 #: ppdc.man:91
-#, fuzzy, no-wrap
-#| msgid "--libs"
+#, no-wrap
 msgid "B<--lf>"
-msgstr "--libs"
+msgstr "B<--lf>"
 
 #. type: Plain text
 #: ppdc.man:95
@@ -17459,22 +16781,24 @@ msgid ""
 "feed, or line feed alone.  The default is to use the line feed character "
 "alone."
 msgstr ""
+"Legt das zu verwendene Zeilenende fest - Wagenrücklauf, Wagenrücklauf und "
+"Zeilenumbruch oder nur Zeilenumbruch. Standardmäßig wird nur ein "
+"Zeilenumbruch verwandt."
 
-# type: Plain text
 #. type: Plain text
 #: ppdc.man:102
-#, fuzzy
-#| msgid "I<cancel(1)>, I<lp(1)>, I<lpr(1)>, I<lprm(1)>, I<lpstat(1)>,"
 msgid ""
 "B<ppdhtml>(1), B<ppdi>(1), B<ppdmerge>(1), B<ppdpo>(1), B<ppdcfile>(5), CUPS "
 "Online Help (http://localhost:631/help)"
-msgstr "I<cancel(1)>, I<lp(1)>, I<lpr(1)>, I<lprm(1)>, I<lpstat(1)>,"
+msgstr ""
+"B<ppdhtml>(1), B<ppdi>(1), B<ppdmerge>(1), B<ppdpo>(1), B<ppdcfile>(5), CUPS-"
+"Online-Hilfe (http://localhost:631/help)"
 
 #. type: TH
 #: ppdhtml.man:15
 #, no-wrap
 msgid "ppdhtml"
-msgstr ""
+msgstr "ppdhtml"
 
 #. type: Plain text
 #: ppdhtml.man:18
