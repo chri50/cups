@@ -20,6 +20,7 @@ test-i18n-nonlinux.patch
 tests-wait-on-unfinished-jobs-everytime.patch
 tests-fix-ppdLocalize-on-unclean-env.patch
 tests-use-cupsfilters.patch
+tests-fix-mips-getjobs.patch
 
 # Debian patches that upstream doesn't want to fix
 move-cupsd-conf-default-to-share.patch
