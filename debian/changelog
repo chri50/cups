@@ -1,5 +1,15 @@
-cups (2.0.3-4) experimental; urgency=medium
+cups (2.0.3-5) unstable; urgency=low
 
+  * Amend the previous changelog to reflect its upload to unstable
+  * Add patch to make some attributes optional in the IPP-1.1 3.2.6 GetJobs
+    test, that was causing a FTBFS on mips
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 07 Jul 2015 14:41:57 +0200
+
+cups (2.0.3-4) unstable; urgency=medium
+
+  * Upload to unstable
+  
   [ Helge Kreutzmann ]
   * Update German man page (1366t464f280u)
 
