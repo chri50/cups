@@ -5,7 +5,7 @@ set -e
 case "$1" in
     purge)
         # Remove inetd entry
-	if [ -x `which update-inetd` ]; then
+	if [ -x "`which update-inetd 2>/dev/null`" ]; then
             update-inetd --pattern cups-lpd --remove printer 2>/dev/null || true
         fi
 

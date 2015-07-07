@@ -1,3 +1,9 @@
+cups (2.0.3-6) unstable; urgency=low
+
+  * Fix the 'which' calls, causing uninstallation error of cups-bsd
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 07 Jul 2015 16:24:20 +0200
+
 cups (2.0.3-5) unstable; urgency=low
 
   * Amend the previous changelog to reflect its upload to unstable
