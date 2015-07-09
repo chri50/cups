@@ -47,7 +47,7 @@ Last-Update: 2015-02-10
  # Text files...
 --- a/scheduler/printers.c
 +++ b/scheduler/printers.c
-@@ -3587,7 +3587,9 @@
+@@ -3721,7 +3721,9 @@
        }
        else if (!_cups_strcasecmp(type->super, "image"))
        {
@@ -60,7 +60,7 @@ Last-Update: 2015-02-10
  	  strlcat(pdl, "image/png,", sizeof(pdl));
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -724,7 +724,7 @@
+@@ -779,7 +779,7 @@
    DefaultShared            = CUPS_DEFAULT_DEFAULT_SHARED;
  
  #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)

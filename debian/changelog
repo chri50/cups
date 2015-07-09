@@ -1,3 +1,26 @@
+cups (2.1~b1-1) experimental; urgency=low
+
+  * New 2.1~b1 release
+   - No longer install banner files since third-party banner filters now
+     supply their own (STR #4518)
+   - The scheduler no longer listens on the loopback interface unless the
+     web interface or printer sharing are enabled
+   - Added a PPD generator for IPP Everywhere printers (STR #4258)
+   - Now install "default" versions of more configuration files
+   - Added SSLOptions values to allow Diffie-Hellman key exchange and
+     disable TLS/1.0 support.
+   - The scheduler now supports advanced ASL and journald logging when
+     "syslog" output is configured (STR #4474)
+   - The scheduler now supports logging to stderr when running in the
+     foreground (STR #4505)
+
+  * Drop two patches included upstream
+  * Refresh all patches
+  * Refresh manpage translations
+  * Install the cups-files.conf and snmp.conf default files in usr/share/cups
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 09 Jul 2015 13:36:17 +0200
+
 cups (2.0.3-6) unstable; urgency=low
 
   * Fix the 'which' calls, causing uninstallation error of cups-bsd

@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups\n"
-"POT-Creation-Date: 2015-06-30 08:36+0200\n"
+"POT-Creation-Date: 2015-07-09 12:36+0200\n"
 "PO-Revision-Date: 2014-05-27 09:21+0200\n"
 "Last-Translator: Jean-Paul Guillonneau <guillonneau.jeanpaul@free.fr>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
@@ -746,7 +746,7 @@ msgstr "B<cups-files.conf>(5)"
 
 # type: SH
 #. type: SH
-#: backend.man:174 cancel.man:86 classes.conf.man:22 client.conf.man.in:75
+#: backend.man:174 cancel.man:86 classes.conf.man:22 client.conf.man.in:77
 #: cupsfilter.man:122 cups-lpd.man.in:65 cupstestdsc.man:37 filter.man:209
 #: lpadmin.man:201 lpc.man:45 lpr.man:116 ppdmerge.man:40 printers.conf.man:22
 #: subscriptions.conf.man:22
@@ -814,13 +814,13 @@ msgstr ""
 
 # type: SH
 #. type: SH
-#: backend.man:190 cancel.man:89 classes.conf.man:24 client.conf.man.in:77
+#: backend.man:190 cancel.man:89 classes.conf.man:24 client.conf.man.in:79
 #: cupsaccept.man:82 cupsaddsmb.man.in:121 cups-config.man:109 cupsctl.man:97
 #: cupsd.conf.man.in:862 cupsd-helper.man:82 cupsd-logs.man:232
-#: cupsd.man.in:108 cupsenable.man:93 cups-files.conf.man.in:208
+#: cupsd.man.in:108 cupsenable.man:93 cups-files.conf.man.in:215
 #: cupsfilter.man:132 cups-lpd.man.in:113 cups.man:127 cups-snmp.conf.man:62
 #: cups-snmp.man.in:51 cupstestdsc.man:43 cupstestppd.man:143 filter.man:216
-#: ippfind.man:255 ../test/ippserver.man:166 ipptoolfile.man:606
+#: ippfind.man:255 ../test/ippserver.man:166 ipptoolfile.man:615
 #: ipptool.man:238 lpadmin.man:210 lpc.man:50 lpinfo.man:131 lp.man:209
 #: lpmove.man:71 lpoptions.man.in:130 lpq.man:61 lpr.man:136 lprm.man:79
 #: lpstat.man:141 mailto.conf.man:45 mime.convs.man:55 mime.types.man:105
@@ -854,13 +854,13 @@ msgstr "E<lt>URL:I<http://localhost:631/help>E<gt>"
 
 # type: SH
 #. type: SH
-#: backend.man:201 cancel.man:95 classes.conf.man:32 client.conf.man.in:80
+#: backend.man:201 cancel.man:95 classes.conf.man:32 client.conf.man.in:82
 #: cupsaccept.man:90 cupsaddsmb.man.in:127 cups-config.man:112 cupsctl.man:102
 #: cupsd.conf.man.in:871 cupsd-helper.man:90 cupsd-logs.man:237
-#: cupsd.man.in:123 cupsenable.man:101 cups-files.conf.man.in:218
+#: cupsd.man.in:123 cupsenable.man:101 cups-files.conf.man.in:225
 #: cupsfilter.man:139 cups-lpd.man.in:120 cups.man:143 cups-snmp.conf.man:65
 #: cups-snmp.man.in:57 cupstestdsc.man:47 cupstestppd.man:147 filter.man:224
-#: ippfind.man:257 ../test/ippserver.man:168 ipptoolfile.man:612
+#: ippfind.man:257 ../test/ippserver.man:168 ipptoolfile.man:621
 #: ipptool.man:244 lpadmin.man:216 lpc.man:60 lpinfo.man:134 lp.man:218
 #: lpmove.man:78 lpoptions.man.in:137 lpq.man:68 lpr.man:145 lprm.man:86
 #: lpstat.man:148 mailto.conf.man:48 mime.convs.man:62 mime.types.man:112
@@ -872,17 +872,17 @@ msgstr "COPYRIGHT"
 
 # type: Plain text
 #. type: Plain text
-#: backend.man:202 cancel.man:96 classes.conf.man:33 client.conf.man.in:81
-#: cupsaccept.man:91 cupsaddsmb.man.in:128 cups-config.man:113 cupsctl.man:103
+#: backend.man:202 cancel.man:96 classes.conf.man:33 cupsaccept.man:91
+#: cupsaddsmb.man.in:128 cups-config.man:113 cupsctl.man:103
 #: cupsd.conf.man.in:872 cupsd-helper.man:91 cupsd-logs.man:238
 #: cupsd.man.in:124 cupsenable.man:103 cupsfilter.man:140 cups-lpd.man.in:121
 #: cups.man:144 cups-snmp.conf.man:66 cups-snmp.man.in:58 cupstestdsc.man:48
-#: cupstestppd.man:148 filter.man:225 ../test/ippserver.man:169
-#: ipptoolfile.man:613 ipptool.man:245 lpc.man:61 lpinfo.man:135 lp.man:219
-#: lpmove.man:79 lpoptions.man.in:138 lpq.man:69 lpr.man:146 lprm.man:87
-#: lpstat.man:149 mailto.conf.man:49 mime.convs.man:63 mime.types.man:113
-#: notifier.man:41 ppdcfile.man:162 ppdc.man:103 ppdhtml.man:48 ppdi.man:55
-#: ppdmerge.man:51 ppdpo.man:55 printers.conf.man:33 subscriptions.conf.man:33
+#: cupstestppd.man:148 filter.man:225 ../test/ippserver.man:169 lpc.man:61
+#: lpinfo.man:135 lp.man:219 lpmove.man:79 lpoptions.man.in:138 lpq.man:69
+#: lpr.man:146 lprm.man:87 lpstat.man:149 mailto.conf.man:49 mime.convs.man:63
+#: mime.types.man:113 notifier.man:41 ppdcfile.man:162 ppdc.man:103
+#: ppdhtml.man:48 ppdi.man:55 ppdmerge.man:51 ppdpo.man:55
+#: printers.conf.man:33 subscriptions.conf.man:33
 #, fuzzy
 #| msgid "Copyright 2007-2014 by Apple Inc."
 msgid "Copyright \\[co] 2007-2014 by Apple Inc."
@@ -1206,11 +1206,11 @@ msgstr "client.conf"
 
 # type: TH
 #. type: TH
-#: client.conf.man.in:15 cupsd.conf.man.in:15
+#: client.conf.man.in:15
 #, fuzzy, no-wrap
-#| msgid "3 October 2011"
-msgid "20 October 2014"
-msgstr "3 octobre 2011"
+#| msgid "18 May 2012"
+msgid "19 May 2015"
+msgstr "18 mai 2012"
 
 # type: Plain text
 #. type: Plain text
@@ -1244,8 +1244,8 @@ msgstr ""
 #: client.conf.man.in:24
 msgid ""
 "B<Note:> Starting with OS X 10.7, this file is only used by command-line and "
-"X11 applications.  The B<ServerName> directive is not supported on OS X at "
-"all."
+"X11 applications plus the IPP backend.  The B<ServerName> directive is not "
+"supported on OS X at all."
 msgstr ""
 
 # type: SH
@@ -1425,9 +1425,9 @@ msgstr ""
 "OS X 10.7 ou plus récent.>"
 
 #. type: TP
-#: client.conf.man.in:58 cupsd.conf.man.in:475
+#: client.conf.man.in:58
 #, no-wrap
-msgid "B<SSLOptions >[I<AllowRC4>] [I<AllowSSL3>]"
+msgid "B<SSLOptions >[I<AllowDH>] [I<AllowRC4>] [I<AllowSSL3>] [I<DenyTLS1.0>]"
 msgstr ""
 
 #. type: TP
@@ -1438,19 +1438,22 @@ msgid "B<SSLOptions None>"
 msgstr "B<SSLOptions> I<None>"
 
 #. type: Plain text
-#: client.conf.man.in:66
+#: client.conf.man.in:68
 msgid ""
 "Sets encryption options (only in /etc/cups/client.conf).  By default, CUPS "
 "only supports encryption using TLS v1.0 or higher using known secure cipher "
-"suites.  The I<AllowRC4> option enables the 128-bit RC4 cipher suites, which "
-"are required for some older clients that do not implement newer ones.  The "
-"I<AllowSSL3> option enables SSL v3.0, which is required for some older "
-"clients that do not support TLS v1.0."
+"suites.  The I<AllowDH> option enables cipher suites using plain Diffie-"
+"Hellman key negotiation.  The I<AllowRC4> option enables the 128-bit RC4 "
+"cipher suites, which are required for some older clients that do not "
+"implement newer ones.  The I<AllowSSL3> option enables SSL v3.0, which is "
+"required for some older clients that do not support TLS v1.0.  The "
+"I<DenyTLS1.0> option disables TLS v1.0 support - this sets the minimum "
+"protocol version to TLS v1.1."
 msgstr ""
 
 # type: TP
 #. type: TP
-#: client.conf.man.in:66
+#: client.conf.man.in:68
 #, fuzzy, no-wrap
 #| msgid "User name"
 msgid "B<User >I<name>"
@@ -1458,31 +1461,31 @@ msgstr "B<User> I<nom>"
 
 # type: Plain text
 #. type: Plain text
-#: client.conf.man.in:69
+#: client.conf.man.in:71
 msgid "Specifies the default user name to use for requests."
 msgstr "Indiquer le nom d'utilisateur à utiliser pour les requêtes."
 
 #. type: TP
-#: client.conf.man.in:69
+#: client.conf.man.in:71
 #, no-wrap
 msgid "B<ValidateCerts Yes>"
 msgstr ""
 
 #. type: TP
-#: client.conf.man.in:71
+#: client.conf.man.in:73
 #, no-wrap
 msgid "B<ValidateCerts No>"
 msgstr ""
 
 #. type: Plain text
-#: client.conf.man.in:75
+#: client.conf.man.in:77
 msgid ""
 "Specifies whether to only allow TLS with certificates whose common name "
 "matches the hostname.  The default is \"No\"."
 msgstr ""
 
 #. type: Plain text
-#: client.conf.man.in:77
+#: client.conf.man.in:79
 msgid ""
 "The B<client.conf> file is deprecated and will no longer be supported in a "
 "future version of CUPS."
@@ -1490,11 +1493,20 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: client.conf.man.in:80 cups-config.man:112
+#: client.conf.man.in:82 cups-config.man:112
 #, fuzzy
 #| msgid "http://localhost:631/help"
 msgid "B<cups>(1), CUPS Online Help (http://localhost:631/help)"
 msgstr "E<lt>URL:I<http://localhost:631/help>E<gt>"
+
+# type: Plain text
+#. type: Plain text
+#: client.conf.man.in:83 cups-files.conf.man.in:226 ipptoolfile.man:622
+#: ipptool.man:245 lpadmin.man:217
+#, fuzzy
+#| msgid "Copyright 2007-2013 by Apple Inc."
+msgid "Copyright \\[co] 2007-2015 by Apple Inc."
+msgstr "Copyright 2007-2013 par Apple Inc."
 
 # type: TH
 #. type: TH
@@ -2660,6 +2672,14 @@ msgstr "B<cupsd.conf>(5), B<cupsd>(8),"
 #, no-wrap
 msgid "cupsd.conf"
 msgstr "cupsd.conf"
+
+# type: TH
+#. type: TH
+#: cupsd.conf.man.in:15
+#, fuzzy, no-wrap
+#| msgid "3 October 2011"
+msgid "20 October 2014"
+msgstr "3 octobre 2011"
 
 # type: Plain text
 #. type: Plain text
@@ -4268,6 +4288,12 @@ msgstr "B<Listen> I<*>:I<port>"
 msgid "Listens on the specified address and port for encrypted connections."
 msgstr ""
 "Écouter à l'adresse et au port indiqués pour les connexions sécurisées."
+
+#. type: TP
+#: cupsd.conf.man.in:475
+#, no-wrap
+msgid "B<SSLOptions >[I<AllowRC4>] [I<AllowSSL3>]"
+msgstr ""
 
 #. #SSLPort
 #. type: Plain text
@@ -7068,9 +7094,9 @@ msgstr "cups-files.conf"
 #. type: TH
 #: cups-files.conf.man.in:15
 #, fuzzy, no-wrap
-#| msgid "20 February 2014"
-msgid "2 February 2015"
-msgstr "20 février 2014"
+#| msgid "20 June 2012"
+msgid "3 June 2015"
+msgstr "20 juin 2012"
 
 # type: Plain text
 #. type: Plain text
@@ -7127,33 +7153,43 @@ msgstr "B<AccessLog> I<nom-fichier>"
 #: cups-files.conf.man.in:35
 #, fuzzy, no-wrap
 #| msgid "AccessLog syslog"
+msgid "B<AccessLog stderr>"
+msgstr "B<AccessLog syslog>"
+
+# type: TP
+#. type: TP
+#: cups-files.conf.man.in:37
+#, fuzzy, no-wrap
+#| msgid "AccessLog syslog"
 msgid "B<AccessLog syslog>"
 msgstr "B<AccessLog syslog>"
 
 #. type: Plain text
-#: cups-files.conf.man.in:41
+#: cups-files.conf.man.in:44
 msgid ""
 "Defines the access log filename.  Specifying a blank filename disables "
-"access log generation.  The value \"syslog\" causes log entries to be sent "
-"to the system log daemon.  The server name may be included in filenames "
-"using the string \"%s\", for example:"
+"access log generation.  The value \"stderr\" causes log entries to be sent "
+"to the standard error file when the scheduler is running in the foreground, "
+"or to the system log daemon when run in the background.  The value \"syslog"
+"\" causes log entries to be sent to the system log daemon.  The server name "
+"may be included in filenames using the string \"%s\", for example:"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:44
+#: cups-files.conf.man.in:47
 #, no-wrap
 msgid "    AccessLog /var/log/cups/%s-access_log\n"
 msgstr ""
 
 #. #ConfigFilePerm
 #. type: Plain text
-#: cups-files.conf.man.in:48
+#: cups-files.conf.man.in:51
 msgid "The default is \"/var/log/cups/access_log\"."
 msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:48
+#: cups-files.conf.man.in:51
 #, fuzzy, no-wrap
 #| msgid "ConfigFilePerm mode"
 msgid "B<ConfigFilePerm >I<mode>"
@@ -7161,7 +7197,7 @@ msgstr "B<ConfigFilePerm> I<mode>"
 
 # type: Plain text
 #. type: Plain text
-#: cups-files.conf.man.in:52
+#: cups-files.conf.man.in:55
 #, fuzzy
 #| msgid ""
 #| "Specifies the permissions for all configuration files that the scheduler "
@@ -7176,7 +7212,7 @@ msgstr ""
 
 #. #DataDir
 #. type: Plain text
-#: cups-files.conf.man.in:57
+#: cups-files.conf.man.in:60
 msgid ""
 "B<Note:> The permissions for the I<printers.conf> file are currently masked "
 "to only allow access from the scheduler user (typically root).  This is done "
@@ -7187,7 +7223,7 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:57
+#: cups-files.conf.man.in:60
 #, fuzzy, no-wrap
 #| msgid "DataDir path"
 msgid "B<DataDir >I<path>"
@@ -7196,7 +7232,7 @@ msgstr "B<DataDir> I<chemin>"
 # type: Plain text
 #. #DocumentRoot
 #. type: Plain text
-#: cups-files.conf.man.in:62
+#: cups-files.conf.man.in:65
 #, fuzzy
 #| msgid "Specified the directory where data files can be found."
 msgid ""
@@ -7206,7 +7242,7 @@ msgstr "Définir le répertoire où se trouvent les fichiers de données."
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:62
+#: cups-files.conf.man.in:65
 #, fuzzy, no-wrap
 #| msgid "DocumentRoot directory"
 msgid "B<DocumentRoot >I<directory>"
@@ -7215,7 +7251,7 @@ msgstr "B<DocumentRoot> I<répertoire>"
 # type: Plain text
 #. #ErrorLog
 #. type: Plain text
-#: cups-files.conf.man.in:67
+#: cups-files.conf.man.in:70
 #, fuzzy
 #| msgid "Specifies the root directory for the internal web server documents."
 msgid ""
@@ -7225,7 +7261,7 @@ msgstr "Définir le répertoire racine des documents du serveur web interne."
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:67
+#: cups-files.conf.man.in:70
 #, fuzzy, no-wrap
 #| msgid "ErrorLog syslog"
 msgid "B<ErrorLog>"
@@ -7233,7 +7269,7 @@ msgstr "B<ErrorLog syslog>"
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:69
+#: cups-files.conf.man.in:72
 #, fuzzy, no-wrap
 #| msgid "ErrorLog filename"
 msgid "B<ErrorLog >I<filename>"
@@ -7241,56 +7277,66 @@ msgstr "B<ErrorLog> I<nom-fichier>"
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:71
+#: cups-files.conf.man.in:74
+#, fuzzy, no-wrap
+#| msgid "ErrorLog syslog"
+msgid "B<ErrorLog stderr>"
+msgstr "B<ErrorLog syslog>"
+
+# type: TP
+#. type: TP
+#: cups-files.conf.man.in:76
 #, fuzzy, no-wrap
 #| msgid "ErrorLog syslog"
 msgid "B<ErrorLog syslog>"
 msgstr "B<ErrorLog syslog>"
 
 #. type: Plain text
-#: cups-files.conf.man.in:77
+#: cups-files.conf.man.in:83
 msgid ""
 "Defines the error log filename.  Specifying a blank filename disables error "
-"log generation.  The value \"syslog\" causes log entries to be sent to the "
-"system log daemon.  The server name may be included in filenames using the "
-"string \"%s\", for example:"
+"log generation.  The value \"stderr\" causes log entries to be sent to the "
+"standard error file when the scheduler is running in the foreground, or to "
+"the system log daemon when run in the background.  The value \"syslog\" "
+"causes log entries to be sent to the system log daemon.  The server name may "
+"be included in filenames using the string \"%s\", for example:"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:80
+#: cups-files.conf.man.in:86
 #, no-wrap
 msgid "    ErrorLog /var/log/cups/%s-error_log\n"
 msgstr ""
 
 #. #FatalErrors
 #. type: Plain text
-#: cups-files.conf.man.in:84
+#: cups-files.conf.man.in:90
 msgid "The default is \"/var/log/cups/error_log\"."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:84
+#: cups-files.conf.man.in:90
 #, fuzzy, no-wrap
 #| msgid "FatalErrors none"
 msgid "B<FatalErrors none>"
 msgstr "B<FatalErrors> I<none>"
 
 #. type: TP
-#: cups-files.conf.man.in:86
+#: cups-files.conf.man.in:92
 #, fuzzy, no-wrap
 #| msgid "FatalErrors all -kind [... -kind]"
 msgid "B<FatalErrors all >I<-kind >[ ... I<-kind >]"
 msgstr "B<FatalErrors> I<tout -type> [... -I<type>]"
 
 #. type: TP
-#: cups-files.conf.man.in:88
+#: cups-files.conf.man.in:94
 #, fuzzy, no-wrap
 #| msgid "FatalErrors kind [... kind]"
 msgid "B<FatalErrors >I<kind >[ ... I<kind >]"
 msgstr "B<FatalErrors> I<type> [... I<type>]"
 
 #. type: Plain text
-#: cups-files.conf.man.in:93
+#: cups-files.conf.man.in:99
 #, fuzzy
 #| msgid ""
 #| "Specifies which errors are fatal, causing the scheduler to exit. \"Kind\" "
@@ -7304,35 +7350,35 @@ msgstr ""
 "« permissions »."
 
 #. type: TP
-#: cups-files.conf.man.in:94
+#: cups-files.conf.man.in:100
 #, no-wrap
 msgid "B<none>"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:97
+#: cups-files.conf.man.in:103
 msgid "No errors are fatal."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:97
+#: cups-files.conf.man.in:103
 #, no-wrap
 msgid "B<all>"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:100
+#: cups-files.conf.man.in:106
 msgid "All of the errors below are fatal."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:100
+#: cups-files.conf.man.in:106
 #, no-wrap
 msgid "B<browse>"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:103
+#: cups-files.conf.man.in:109
 msgid ""
 "Browsing initialization errors are fatal, for example failed connections to "
 "the DNS-SD daemon."
@@ -7340,7 +7386,7 @@ msgstr ""
 
 # type: Plain text
 #. type: TP
-#: cups-files.conf.man.in:103
+#: cups-files.conf.man.in:109
 #, fuzzy, no-wrap
 #| msgid "B<cups-config> --help"
 msgid "B<config>"
@@ -7348,44 +7394,44 @@ msgstr "B<cups-config --help>"
 
 # type: Plain text
 #. type: Plain text
-#: cups-files.conf.man.in:106
+#: cups-files.conf.man.in:112
 #, fuzzy
 #| msgid "Test the configuration file for syntax errors."
 msgid "Configuration file syntax errors are fatal."
 msgstr "Tester le fichier de configuration pour les erreurs de syntaxe."
 
 #. type: TP
-#: cups-files.conf.man.in:106
+#: cups-files.conf.man.in:112
 #, no-wrap
 msgid "B<listen>"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:109
+#: cups-files.conf.man.in:115
 msgid ""
 "Listen or Port errors are fatal, except for IPv6 failures on the loopback or "
 "\"any\" addresses."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:109
+#: cups-files.conf.man.in:115
 #, no-wrap
 msgid "B<log>"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:112
+#: cups-files.conf.man.in:118
 msgid "Log file creation or write errors are fatal."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:112
+#: cups-files.conf.man.in:118
 #, no-wrap
 msgid "B<permissions>"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:115
+#: cups-files.conf.man.in:121
 msgid ""
 "Bad startup file permissions are fatal, for example shared TLS certificate "
 "and key files with world-read permissions."
@@ -7393,7 +7439,7 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:117
+#: cups-files.conf.man.in:123
 #, fuzzy, no-wrap
 #| msgid "FileDevice Yes"
 msgid "B<FileDevice Yes>"
@@ -7401,7 +7447,7 @@ msgstr "B<FileDevice> I<Yes>"
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:119
+#: cups-files.conf.man.in:125
 #, fuzzy, no-wrap
 #| msgid "FileDevice No"
 msgid "B<FileDevice No>"
@@ -7410,7 +7456,7 @@ msgstr "B<FileDevice> I<No>"
 # type: Plain text
 #. #Group
 #. type: Plain text
-#: cups-files.conf.man.in:124
+#: cups-files.conf.man.in:130
 #, fuzzy
 #| msgid ""
 #| "Specifies whether the file pseudo-device can be used for new printer "
@@ -7424,7 +7470,7 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:124
+#: cups-files.conf.man.in:130
 #, fuzzy, no-wrap
 #| msgid "Group group-name-or-number"
 msgid "B<Group >I<group-name-or-number>"
@@ -7433,7 +7479,7 @@ msgstr "B<Group> I<nom-groupe>-ou-I<identifiant-numérique>"
 # type: Plain text
 #. #LogFilePerm
 #. type: Plain text
-#: cups-files.conf.man.in:129
+#: cups-files.conf.man.in:135
 #, fuzzy
 #| msgid ""
 #| "Specifies the group name or ID that will be used when executing external "
@@ -7448,7 +7494,7 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:129
+#: cups-files.conf.man.in:135
 #, fuzzy, no-wrap
 #| msgid "LogFilePerm mode"
 msgid "B<LogFilePerm >I<mode>"
@@ -7457,7 +7503,7 @@ msgstr "B<LogFilePerm> I<mode>"
 # type: Plain text
 #. #PageLog
 #. type: Plain text
-#: cups-files.conf.man.in:134
+#: cups-files.conf.man.in:140
 #, fuzzy
 #| msgid ""
 #| "Specifies the permissions for all log files that the scheduler writes."
@@ -7469,7 +7515,7 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:134
+#: cups-files.conf.man.in:140
 #, fuzzy, no-wrap
 #| msgid "PageLog filename"
 msgid "B<PageLog >[ I<filename> ]"
@@ -7477,36 +7523,46 @@ msgstr "B<PageLog> I<nom-fichier>"
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:136
+#: cups-files.conf.man.in:142
+#, fuzzy, no-wrap
+#| msgid "PageLog syslog"
+msgid "B<PageLog stderr>"
+msgstr "B<PageLog syslog>"
+
+# type: TP
+#. type: TP
+#: cups-files.conf.man.in:144
 #, fuzzy, no-wrap
 #| msgid "PageLog syslog"
 msgid "B<PageLog syslog>"
 msgstr "B<PageLog syslog>"
 
 #. type: Plain text
-#: cups-files.conf.man.in:142
+#: cups-files.conf.man.in:151
 msgid ""
-"Defines the page log filename.  The value \"syslog\" causes log entries to "
-"be sent to the system log daemon.  Specifying a blank filename disables page "
-"log generation.  The server name may be included in filenames using the "
-"string \"%s\", for example:"
+"Defines the page log filename.  The value \"stderr\" causes log entries to "
+"be sent to the standard error file when the scheduler is running in the "
+"foreground, or to the system log daemon when run in the background.  The "
+"value \"syslog\" causes log entries to be sent to the system log daemon.  "
+"Specifying a blank filename disables page log generation.  The server name "
+"may be included in filenames using the string \"%s\", for example:"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:145
+#: cups-files.conf.man.in:154
 #, no-wrap
 msgid "    PageLog /var/log/cups/%s-page_log\n"
 msgstr ""
 
 #. #RemoteRoot
 #. type: Plain text
-#: cups-files.conf.man.in:149
+#: cups-files.conf.man.in:158
 msgid "The default is \"/var/log/cups/page_log\"."
 msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:149
+#: cups-files.conf.man.in:158
 #, fuzzy, no-wrap
 #| msgid "RemoteRoot user-name"
 msgid "B<RemoteRoot >I<username>"
@@ -7515,7 +7571,7 @@ msgstr "B<RemoteRoot> I<identifiant>"
 # type: Plain text
 #. #RequestRoot
 #. type: Plain text
-#: cups-files.conf.man.in:154
+#: cups-files.conf.man.in:163
 #, fuzzy
 #| msgid ""
 #| "Specifies the username that is associated with unauthenticated root "
@@ -7528,7 +7584,7 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:154
+#: cups-files.conf.man.in:163
 #, fuzzy, no-wrap
 #| msgid "RequestRoot directory"
 msgid "B<RequestRoot >I<directory>"
@@ -7537,7 +7593,7 @@ msgstr "B<RequestRoot> I<répertoire>"
 # type: Plain text
 #. #Sandboxing
 #. type: Plain text
-#: cups-files.conf.man.in:159
+#: cups-files.conf.man.in:168
 #, fuzzy
 #| msgid ""
 #| "Specifies the directory to store print jobs and other HTTP request data."
@@ -7549,26 +7605,20 @@ msgstr ""
 "requêtes HTTP."
 
 #. type: TP
-#: cups-files.conf.man.in:159
-#, no-wrap
-msgid "B<Sandboxing off>"
-msgstr ""
-
-#. type: TP
-#: cups-files.conf.man.in:161
+#: cups-files.conf.man.in:168
 #, no-wrap
 msgid "B<Sandboxing relaxed>"
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:163
+#: cups-files.conf.man.in:170
 #, no-wrap
 msgid "B<Sandboxing strict>"
 msgstr ""
 
 #. #ServerBin
 #. type: Plain text
-#: cups-files.conf.man.in:169
+#: cups-files.conf.man.in:176
 msgid ""
 "Specifies the level of security sandboxing that is applied to print filters, "
 "backends, and other child processes of the scheduler.  The default is "
@@ -7577,7 +7627,7 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:169
+#: cups-files.conf.man.in:176
 #, fuzzy, no-wrap
 #| msgid "ServerBin directory"
 msgid "B<ServerBin >I<directory>"
@@ -7585,7 +7635,7 @@ msgstr "B<ServerBin> I<répertoire>"
 
 #. #ServerKeychain
 #. type: Plain text
-#: cups-files.conf.man.in:174
+#: cups-files.conf.man.in:181
 msgid ""
 "Specifies the directory containing the backends, CGI programs, filters, "
 "helper programs, notifiers, and port monitors.  The default is \"/usr/lib/"
@@ -7593,14 +7643,14 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:174
+#: cups-files.conf.man.in:181
 #, no-wrap
 msgid "B<ServerKeychain >I<path>"
 msgstr ""
 
 #. #ServerRoot
 #. type: Plain text
-#: cups-files.conf.man.in:180
+#: cups-files.conf.man.in:187
 msgid ""
 "Specifies the location of TLS certificates and private keys.  The default is "
 "\"/Library/Keychains/System.keychain\" on OS X and \"/etc/cups/ssl\" on all "
@@ -7612,7 +7662,7 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:180
+#: cups-files.conf.man.in:187
 #, fuzzy, no-wrap
 #| msgid "ServerRoot directory"
 msgid "B<ServerRoot >I<directory>"
@@ -7621,7 +7671,7 @@ msgstr "B<ServerRoot> I<répertoire>"
 # type: Plain text
 #. #SyncOnClose
 #. type: Plain text
-#: cups-files.conf.man.in:185
+#: cups-files.conf.man.in:192
 #, fuzzy
 #| msgid ""
 #| "Specifies the directory where the server configuration files can be found."
@@ -7633,14 +7683,14 @@ msgstr ""
 "stockés."
 
 #. type: TP
-#: cups-files.conf.man.in:185
+#: cups-files.conf.man.in:192
 #, fuzzy, no-wrap
 #| msgid "SyncOnClose Yes"
 msgid "B<SyncOnClose Yes>"
 msgstr "B<SyncOnClose> I<Yes>"
 
 #. type: TP
-#: cups-files.conf.man.in:187
+#: cups-files.conf.man.in:194
 #, fuzzy, no-wrap
 #| msgid "SyncOnClose No"
 msgid "B<SyncOnClose No>"
@@ -7648,7 +7698,7 @@ msgstr "B<SyncOnClose> I<No>"
 
 #. #SystemGroup
 #. type: Plain text
-#: cups-files.conf.man.in:194
+#: cups-files.conf.man.in:201
 #, fuzzy
 #| msgid ""
 #| "Specifies whether the scheduler calls I<fsync(2)> after writing "
@@ -7662,7 +7712,7 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:194
+#: cups-files.conf.man.in:201
 #, fuzzy, no-wrap
 #| msgid "SystemGroup group-name [group-name ...]"
 msgid "B<SystemGroup >I<group-name >[ ... I<group-name> ]"
@@ -7670,7 +7720,7 @@ msgstr "B<SystemGroup> I<groupe> [I<groupe> ...]"
 
 #. #TempDir
 #. type: Plain text
-#: cups-files.conf.man.in:199
+#: cups-files.conf.man.in:206
 msgid ""
 "Specifies the group(s) to use for I<@SYSTEM> group authentication.  The "
 "default contains \"admin\", \"lpadmin\", \"root\", \"sys\", and/or \"system"
@@ -7679,7 +7729,7 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:199
+#: cups-files.conf.man.in:206
 #, fuzzy, no-wrap
 #| msgid "TempDir directory"
 msgid "B<TempDir >I<directory>"
@@ -7688,7 +7738,7 @@ msgstr "B<TempDir> I<répertoire>"
 # type: Plain text
 #. #User
 #. type: Plain text
-#: cups-files.conf.man.in:204
+#: cups-files.conf.man.in:211
 #, fuzzy
 #| msgid "Specifies the directory where temporary files are stored."
 msgid ""
@@ -7698,7 +7748,7 @@ msgstr "Définir le répertoire où les fichiers temporaires sont stockés."
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:204
+#: cups-files.conf.man.in:211
 #, fuzzy, no-wrap
 #| msgid "-U I<username>"
 msgid "B<User >I<username>"
@@ -7706,7 +7756,7 @@ msgstr "B<-U> I<identifiant>"
 
 # type: Plain text
 #. type: Plain text
-#: cups-files.conf.man.in:208
+#: cups-files.conf.man.in:215
 #, fuzzy
 #| msgid ""
 #| "Specifies the user name or ID that is used when running external programs."
@@ -7719,7 +7769,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: cups-files.conf.man.in:218
+#: cups-files.conf.man.in:225
 #, fuzzy
 #| msgid ""
 #| "I<classes.conf(5)>, I<cupsd(8)>, I<cupsd.conf(5)>, I<mime.convs(5)>, "
@@ -7731,14 +7781,6 @@ msgid ""
 msgstr ""
 "B<classes.conf>(5), B<cupsd>(8), B<cupsd.conf>(5), B<mime.convs>(5), B<mime."
 "types>(5), B<printers.conf>(5), B<subscriptions.conf>(5),"
-
-# type: Plain text
-#. type: Plain text
-#: cups-files.conf.man.in:219 lpadmin.man:217
-#, fuzzy
-#| msgid "Copyright 2007-2013 by Apple Inc."
-msgid "Copyright \\[co] 2007-2015 by Apple Inc."
-msgstr "Copyright 2007-2013 par Apple Inc."
 
 # type: TP
 #. type: TH
@@ -11764,9 +11806,9 @@ msgstr "ipptoolfile"
 #. type: TH
 #: ipptoolfile.man:14
 #, fuzzy, no-wrap
-#| msgid "18 May 2012"
-msgid "15 May 2014"
-msgstr "18 mai 2012"
+#| msgid "20 February 2014"
+msgid "4 February 2015"
+msgstr "20 février 2014"
 
 #. type: Plain text
 #: ipptoolfile.man:17
@@ -11994,14 +12036,14 @@ msgid "Specifies an identifier string for the current file."
 msgstr "Définir la chaîne d’identificateur pour le fichier actuel."
 
 #. type: TP
-#: ipptoolfile.man:79 ipptoolfile.man:176
+#: ipptoolfile.man:79 ipptoolfile.man:181
 #, fuzzy, no-wrap
 #| msgid "IGNORE-ERRORS yes"
 msgid "B<IGNORE-ERRORS yes>"
 msgstr "IGNORE-ERRORS yes"
 
 #. type: TP
-#: ipptoolfile.man:81 ipptoolfile.man:178
+#: ipptoolfile.man:81 ipptoolfile.man:183
 #, fuzzy, no-wrap
 #| msgid "IGNORE-ERRORS no"
 msgid "B<IGNORE-ERRORS no>"
@@ -12112,14 +12154,14 @@ msgstr ""
 "que la seconde inclut un fichier du répertoire inclus de B<ipptool>."
 
 #. type: TP
-#: ipptoolfile.man:107 ipptoolfile.man:202
+#: ipptoolfile.man:107 ipptoolfile.man:207
 #, fuzzy, no-wrap
 #| msgid "SKIP-IF-DEFINED variable-name"
 msgid "B<SKIP-IF-DEFINED >I<variable-name>"
 msgstr "SKIP-IF-DEFINED nom-variable"
 
 #. type: TP
-#: ipptoolfile.man:109 ipptoolfile.man:204
+#: ipptoolfile.man:109 ipptoolfile.man:209
 #, fuzzy, no-wrap
 #| msgid "SKIP-IF-NOT-DEFINED variable-name"
 msgid "B<SKIP-IF-NOT-DEFINED >I<variable-name>"
@@ -12158,7 +12200,7 @@ msgstr ""
 "Indiquer si les tests seront arrêtés après une erreur dans un fichier inclus "
 
 #. type: TP
-#: ipptoolfile.man:117 ipptoolfile.man:220
+#: ipptoolfile.man:117 ipptoolfile.man:225
 #, fuzzy, no-wrap
 #| msgid "TRANSFER auto"
 msgid "B<TRANSFER auto>"
@@ -12176,7 +12218,7 @@ msgstr ""
 "celles sans fichier joint."
 
 #. type: TP
-#: ipptoolfile.man:120 ipptoolfile.man:223
+#: ipptoolfile.man:120 ipptoolfile.man:228
 #, fuzzy, no-wrap
 #| msgid "TRANSFER chunked"
 msgid "B<TRANSFER chunked>"
@@ -12203,7 +12245,7 @@ msgstr ""
 "toutes les versions de IPP."
 
 #. type: TP
-#: ipptoolfile.man:125 ipptoolfile.man:226
+#: ipptoolfile.man:125 ipptoolfile.man:231
 #, fuzzy, no-wrap
 #| msgid "TRANSFER length"
 msgid "B<TRANSFER length>"
@@ -12229,35 +12271,35 @@ msgstr ""
 "de contenu est exigée pour conformité avec toutes les versions de IPP."
 
 #. type: TP
-#: ipptoolfile.man:130 ipptoolfile.man:229
+#: ipptoolfile.man:130 ipptoolfile.man:234
 #, fuzzy, no-wrap
 #| msgid "VERSION 1.0"
 msgid "B<VERSION 1.0>"
 msgstr "VERSION 1.0"
 
 #. type: TP
-#: ipptoolfile.man:132 ipptoolfile.man:231
+#: ipptoolfile.man:132 ipptoolfile.man:236
 #, fuzzy, no-wrap
 #| msgid "VERSION 1.1"
 msgid "B<VERSION 1.1>"
 msgstr "VERSION 1.1"
 
 #. type: TP
-#: ipptoolfile.man:134 ipptoolfile.man:233
+#: ipptoolfile.man:134 ipptoolfile.man:238
 #, fuzzy, no-wrap
 #| msgid "VERSION 2.0"
 msgid "B<VERSION 2.0>"
 msgstr "VERSION 2.0"
 
 #. type: TP
-#: ipptoolfile.man:136 ipptoolfile.man:235
+#: ipptoolfile.man:136 ipptoolfile.man:240
 #, fuzzy, no-wrap
 #| msgid "VERSION 2.1"
 msgid "B<VERSION 2.1>"
 msgstr "VERSION 2.1"
 
 #. type: TP
-#: ipptoolfile.man:138 ipptoolfile.man:237
+#: ipptoolfile.man:138 ipptoolfile.man:242
 #, fuzzy, no-wrap
 #| msgid "VERSION 2.2"
 msgid "B<VERSION 2.2>"
@@ -12438,16 +12480,37 @@ msgstr ""
 "— consultez la section « EXPECT PREDICATES » pour davantage d’information "
 "sur les prédicats."
 
-# type: TP
 #. type: TP
 #: ipptoolfile.man:170
+#, fuzzy, no-wrap
+#| msgid "EXPECT attribute-name [ predicate(s) ]"
+msgid "B<EXPECT-ALL >I<attribute-name >[ I<predicate(s) >]"
+msgstr "EXPECT nom-attribut [ prédicat(s) ]"
+
+#. type: TP
+#: ipptoolfile.man:172
+#, fuzzy, no-wrap
+#| msgid "EXPECT ?attribute-name predicate(s)"
+msgid "B<EXPECT-ALL ?>I<attribute-name predicate(s)>"
+msgstr "EXPECT ?nom-attribut prédicat(s)"
+
+#. type: Plain text
+#: ipptoolfile.man:175
+msgid ""
+"Specifies that the response must/may include the named attribute and that "
+"all occurrences of that attribute must match the given predicates."
+msgstr ""
+
+# type: TP
+#. type: TP
+#: ipptoolfile.man:175
 #, fuzzy, no-wrap
 #| msgid "FILE filename"
 msgid "B<FILE filename>"
 msgstr "FILE nom-fichier"
 
 #. type: Plain text
-#: ipptoolfile.man:173
+#: ipptoolfile.man:178
 msgid ""
 "Specifies a file to include at the end of the request. This is typically "
 "used when sending a test print file."
@@ -12456,7 +12519,7 @@ msgstr ""
 "habituellement utilisé lors de l’envoi d’un fichier de test d’impression."
 
 #. type: TP
-#: ipptoolfile.man:173
+#: ipptoolfile.man:178
 #, fuzzy, no-wrap
 #| msgid "GROUP tag"
 msgid "B<GROUP tag>"
@@ -12464,13 +12527,13 @@ msgstr "GROUP étiquette"
 
 # type: Plain text
 #. type: Plain text
-#: ipptoolfile.man:176
+#: ipptoolfile.man:181
 msgid "Specifies the group tag for subsequent attributes in the request."
 msgstr ""
 "Indiquer l’étiquette de groupe pour les attributs suivants dans la requête."
 
 #. type: Plain text
-#: ipptoolfile.man:183
+#: ipptoolfile.man:188
 #, fuzzy
 #| msgid ""
 #| "Specifies whether I<ipptool> will ignore errors and continue with "
@@ -12483,7 +12546,7 @@ msgstr ""
 "suivants."
 
 #. type: TP
-#: ipptoolfile.man:183
+#: ipptoolfile.man:188
 #, fuzzy, no-wrap
 #| msgid "NAME \"literal string\""
 msgid "B<NAME \">I<literal string>B<\">"
@@ -12491,13 +12554,13 @@ msgstr "NAME « chaîne littérale »"
 
 # type: Plain text
 #. type: Plain text
-#: ipptoolfile.man:186
+#: ipptoolfile.man:191
 msgid "Specifies the human-readable name of the test."
 msgstr ""
 "Décrire le nom de test de manière compréhensible par les utilisateurs. "
 
 #. type: TP
-#: ipptoolfile.man:186
+#: ipptoolfile.man:191
 #, fuzzy, no-wrap
 #| msgid "OPERATION operation-code"
 msgid "B<OPERATION >I<operation-code>"
@@ -12505,39 +12568,39 @@ msgstr "OPERATION code-opération"
 
 # type: Plain text
 #. type: Plain text
-#: ipptoolfile.man:189
+#: ipptoolfile.man:194
 msgid "Specifies the operation to be performed."
 msgstr "Indiquer les opérations à effectuer."
 
 #. type: TP
-#: ipptoolfile.man:189
+#: ipptoolfile.man:194
 #, no-wrap
 msgid "B<PAUSE \">I<message>B<\">"
 msgstr ""
 
 #. type: Plain text
-#: ipptoolfile.man:192
+#: ipptoolfile.man:197
 msgid ""
 "Displays the provided message and waits for the user to press a key to "
 "continue."
 msgstr ""
 
 #. type: TP
-#: ipptoolfile.man:192
+#: ipptoolfile.man:197
 #, fuzzy, no-wrap
 #| msgid "REQUEST-ID number"
 msgid "B<REQUEST-ID >I<number>"
 msgstr "REQUEST-ID nombre"
 
 #. type: TP
-#: ipptoolfile.man:194
+#: ipptoolfile.man:199
 #, fuzzy, no-wrap
 #| msgid "REQUEST-ID random"
 msgid "B<REQUEST-ID random>"
 msgstr "REQUEST-ID aléatoire"
 
 #. type: Plain text
-#: ipptoolfile.man:197
+#: ipptoolfile.man:202
 msgid ""
 "Specifies the request-id value to use in the request, either an integer or "
 "the word \"random\" to use a randomly generated value (the default)."
@@ -12547,14 +12610,14 @@ msgstr ""
 "aléatoirement (comportement par défaut)."
 
 #. type: TP
-#: ipptoolfile.man:197
+#: ipptoolfile.man:202
 #, fuzzy, no-wrap
 #| msgid "RESOURCE path"
 msgid "B<RESOURCE >I<path>"
 msgstr "RESOURCE chemin"
 
 #. type: Plain text
-#: ipptoolfile.man:202
+#: ipptoolfile.man:207
 #, fuzzy
 #| msgid ""
 #| "Specifies an alternate resource path that is used for the HTTP POST "
@@ -12570,7 +12633,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: ipptoolfile.man:207
+#: ipptoolfile.man:212
 msgid ""
 "Specifies that the current test should be skipped when the variable is or is "
 "not defined."
@@ -12579,21 +12642,21 @@ msgstr ""
 "définie."
 
 #. type: TP
-#: ipptoolfile.man:207
+#: ipptoolfile.man:212
 #, fuzzy, no-wrap
 #| msgid "SKIP-PREVIOUS-ERROR yes"
 msgid "B<SKIP-PREVIOUS-ERROR yes>"
 msgstr "SKIP-PREVIOUS-ERROR yes"
 
 #. type: TP
-#: ipptoolfile.man:209
+#: ipptoolfile.man:214
 #, fuzzy, no-wrap
 #| msgid "SKIP-PREVIOUS-ERROR no"
 msgid "B<SKIP-PREVIOUS-ERROR no>"
 msgstr "SKIP-PREVIOUS-ERROR no"
 
 #. type: Plain text
-#: ipptoolfile.man:214
+#: ipptoolfile.man:219
 #, fuzzy
 #| msgid ""
 #| "Specifies whether I<ipptool> will skip the current test if the previous "
@@ -12606,14 +12669,14 @@ msgstr ""
 "termine sur une erreur ou un succès."
 
 #. type: TP
-#: ipptoolfile.man:214
+#: ipptoolfile.man:219
 #, fuzzy, no-wrap
 #| msgid "STATUS status-code [ predicate ]"
 msgid "B<STATUS >I<status-code >[ I<predicate> ]"
 msgstr "STATUS code-état [ prédicat ]"
 
 #. type: Plain text
-#: ipptoolfile.man:217
+#: ipptoolfile.man:222
 msgid ""
 "Specifies an expected response status-code value. Additional requirements "
 "can be added as predicates - see the \"STATUS PREDICATES\" section for more "
@@ -12624,7 +12687,7 @@ msgstr ""
 "« STATUS PREDICATES » pour davantage d’information sur les prédicats."
 
 #. type: TP
-#: ipptoolfile.man:217
+#: ipptoolfile.man:222
 #, fuzzy, no-wrap
 #| msgid "TEST-ID \"identifier\""
 msgid "B<TEST-ID \">I<identifier>\""
@@ -12632,12 +12695,12 @@ msgstr "TEST-ID « identificateur »"
 
 # type: Plain text
 #. type: Plain text
-#: ipptoolfile.man:220
+#: ipptoolfile.man:225
 msgid "Specifies an identifier string for the current test."
 msgstr "Définir une chaîne d’identificateur pour le test actuel."
 
 #. type: Plain text
-#: ipptoolfile.man:223
+#: ipptoolfile.man:228
 msgid ""
 "Specifies that this test will use \"Transfer-Encoding: chunked\" if it has "
 "an attached file or \"Content-Length:\" otherwise."
@@ -12646,7 +12709,7 @@ msgstr ""
 "est joint ou  «Content-Length: » sinon."
 
 #. type: Plain text
-#: ipptoolfile.man:226
+#: ipptoolfile.man:231
 msgid ""
 "Specifies that this test will use the HTTP/1.1 \"Transfer-Encoding: chunked"
 "\" header."
@@ -12655,7 +12718,7 @@ msgstr ""
 "chunked »."
 
 #. type: Plain text
-#: ipptoolfile.man:229
+#: ipptoolfile.man:234
 msgid ""
 "Specifies that this test will use the HTTP/1.0 \"Content-Length:\" header."
 msgstr ""
@@ -12663,19 +12726,19 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: ipptoolfile.man:240
+#: ipptoolfile.man:245
 msgid "Specifies the IPP version number to use for this test."
 msgstr "Indiquer le numéro de version de IPP à utiliser pour ce test."
 
 #. type: SS
-#: ipptoolfile.man:240
+#: ipptoolfile.man:245
 #, no-wrap
 msgid "EXPECT PREDICATES"
 msgstr "EXPECT PREDICATES"
 
 # type: Plain text
 #. type: Plain text
-#: ipptoolfile.man:242
+#: ipptoolfile.man:247
 #, fuzzy
 #| msgid ""
 #| "The following predicates are understood following the EXPECT test "
@@ -12688,14 +12751,14 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: ipptoolfile.man:242
+#: ipptoolfile.man:247
 #, fuzzy, no-wrap
 #| msgid "COUNT number"
 msgid "B<COUNT >I<number>"
 msgstr "COUNT nombre"
 
 #. type: Plain text
-#: ipptoolfile.man:245
+#: ipptoolfile.man:250
 #, fuzzy
 #| msgid ""
 #| "Requires the EXPECT attribute to have the specified number of values."
@@ -12704,14 +12767,14 @@ msgid ""
 msgstr "Exiger l’attribut EXPECT pour avoir le nombre indiqué de valeurs."
 
 #. type: TP
-#: ipptoolfile.man:245 ipptoolfile.man:350
+#: ipptoolfile.man:250 ipptoolfile.man:359
 #, fuzzy, no-wrap
 #| msgid "DEFINE-MATCH variable-name"
 msgid "B<DEFINE-MATCH >I<variable-name>"
 msgstr "DEFINE-MATCH nom-variable"
 
 #. type: Plain text
-#: ipptoolfile.man:248
+#: ipptoolfile.man:253
 #, fuzzy
 #| msgid ""
 #| "Defines the variable to \"1\" when the EXPECT condition matches. A side-"
@@ -12724,14 +12787,14 @@ msgstr ""
 "de bord de ce prédicat est que EXPECT n’échouera jamais à un test."
 
 #. type: TP
-#: ipptoolfile.man:248 ipptoolfile.man:353
+#: ipptoolfile.man:253 ipptoolfile.man:362
 #, fuzzy, no-wrap
 #| msgid "DEFINE-NO-MATCH variable-name"
 msgid "B<DEFINE-NO-MATCH >I<variable-name>"
 msgstr "DEFINE-NO-MATCH nom-variable"
 
 #. type: Plain text
-#: ipptoolfile.man:251
+#: ipptoolfile.man:256
 #, fuzzy
 #| msgid ""
 #| "Defines the variable to \"1\" when the EXPECT condition does not match. A "
@@ -12744,14 +12807,14 @@ msgstr ""
 "effet de bord de ce prédicat est que EXPECT n’échouera jamais à un test."
 
 #. type: TP
-#: ipptoolfile.man:251
+#: ipptoolfile.man:256
 #, fuzzy, no-wrap
 #| msgid "DEFINE-VALUE variable-name"
 msgid "B<DEFINE-VALUE >I<variable-name>"
 msgstr "DEFINE-VALUE nom-variable"
 
 #. type: Plain text
-#: ipptoolfile.man:254
+#: ipptoolfile.man:259
 #, fuzzy
 #| msgid ""
 #| "Defines the variable to the value of the attribute when the EXPECT "
@@ -12767,14 +12830,14 @@ msgstr ""
 "à un test."
 
 #. type: TP
-#: ipptoolfile.man:254 ipptoolfile.man:356
+#: ipptoolfile.man:259 ipptoolfile.man:365
 #, fuzzy, no-wrap
 #| msgid "IF-DEFINED variable-name"
 msgid "B<IF-DEFINED >I<variable-name>"
 msgstr "IF-DEFINED nom-variable"
 
 #. type: Plain text
-#: ipptoolfile.man:257
+#: ipptoolfile.man:262
 #, fuzzy
 #| msgid ""
 #| "Makes the EXPECT conditions apply only if the specified variable is "
@@ -12787,14 +12850,14 @@ msgstr ""
 "définie."
 
 #. type: TP
-#: ipptoolfile.man:257 ipptoolfile.man:359
+#: ipptoolfile.man:262 ipptoolfile.man:368
 #, fuzzy, no-wrap
 #| msgid "IF-NOT-DEFINED variable-name"
 msgid "B<IF-NOT-DEFINED >I<variable-name>"
 msgstr "IF-NOT-DEFINED nom-variable"
 
 #. type: Plain text
-#: ipptoolfile.man:260
+#: ipptoolfile.man:265
 #, fuzzy
 #| msgid ""
 #| "Makes the EXPECT conditions apply only if the specified variable is not "
@@ -12807,14 +12870,14 @@ msgstr ""
 "définie."
 
 #. type: TP
-#: ipptoolfile.man:260
+#: ipptoolfile.man:265
 #, fuzzy, no-wrap
 #| msgid "IN-GROUP tag"
 msgid "B<IN-GROUP >I<tag>"
 msgstr "IN-GROUP étiquette"
 
 #. type: Plain text
-#: ipptoolfile.man:263
+#: ipptoolfile.man:268
 #, fuzzy
 #| msgid "Requires the EXPECT attribute to be in the specified group tag."
 msgid "Requires the B<EXPECT> attribute to be in the specified group tag."
@@ -12822,14 +12885,14 @@ msgstr ""
 "Exiger l’attribut EXPECT qui doit être dans l’étiquette de groupe indiquée."
 
 #. type: TP
-#: ipptoolfile.man:263
+#: ipptoolfile.man:268
 #, fuzzy, no-wrap
 #| msgid "OF-TYPE tag[,tag,...]"
 msgid "B<OF-TYPE >I<tag[,tag,...]>"
 msgstr "OF-TYPE étiquette[,étiquette,...]"
 
 #. type: Plain text
-#: ipptoolfile.man:266
+#: ipptoolfile.man:271
 #, fuzzy
 #| msgid "Requires the EXPECT attribute to use the specified value tag(s)."
 msgid ""
@@ -12838,7 +12901,7 @@ msgstr ""
 "Exiger l’attribut EXPECT qui doit utiliser la valeur d’étiquette(s) indiquée."
 
 #. type: TP
-#: ipptoolfile.man:266 ipptoolfile.man:362
+#: ipptoolfile.man:271 ipptoolfile.man:371
 #, fuzzy, no-wrap
 #| msgid "REPEAT-LIMIT number"
 msgid "B<REPEAT-LIMIT >I<number>"
@@ -12846,7 +12909,7 @@ msgstr "REPEAT-LIMIT nombre"
 
 # type: Plain text
 #. type: Plain text
-#: ipptoolfile.man:270
+#: ipptoolfile.man:275
 #, fuzzy
 #| msgid ""
 #| "Specifies the maximum number of times to repeat. The default value is "
@@ -12858,14 +12921,14 @@ msgstr ""
 "Définir le nombre maximal de répétitions. La valeur par défaut est 1000."
 
 #. type: TP
-#: ipptoolfile.man:270 ipptoolfile.man:366
+#: ipptoolfile.man:275 ipptoolfile.man:375
 #, fuzzy, no-wrap
 #| msgid "REPEAT-MATCH"
 msgid "B<REPEAT-MATCH>"
 msgstr "REPEAT-MATCH"
 
 #. type: TP
-#: ipptoolfile.man:272 ipptoolfile.man:368
+#: ipptoolfile.man:277 ipptoolfile.man:377
 #, fuzzy, no-wrap
 #| msgid "REPEAT-NO-MATCH"
 msgid "B<REPEAT-NO-MATCH>"
@@ -12873,7 +12936,7 @@ msgstr "REPEAT-NO-MATCH"
 
 # type: Plain text
 #. type: Plain text
-#: ipptoolfile.man:275
+#: ipptoolfile.man:280
 #, fuzzy
 #| msgid ""
 #| "Specifies that the current test should be repeated when the EXPECT "
@@ -12886,14 +12949,14 @@ msgstr ""
 "pas."
 
 #. type: TP
-#: ipptoolfile.man:275
+#: ipptoolfile.man:280
 #, fuzzy, no-wrap
 #| msgid "SAME-COUNT-AS attribute-name"
 msgid "B<SAME-COUNT-AS >I<attribute-name>"
 msgstr "SAME-COUNT-AS nom-attribut"
 
 #. type: Plain text
-#: ipptoolfile.man:278
+#: ipptoolfile.man:283
 #, fuzzy
 #| msgid ""
 #| "Requires the EXPECT attribute to have the same number of values as the "
@@ -12906,41 +12969,41 @@ msgstr ""
 "parallèle."
 
 #. type: TP
-#: ipptoolfile.man:278
+#: ipptoolfile.man:283
 #, fuzzy, no-wrap
 #| msgid "WITH-ALL-HOSTNAMES \"literal string\""
 msgid "B<WITH-ALL-HOSTNAMES \">I<literal string>B<\">"
 msgstr "WITH-ALL-HOSTNAMES « chaîne littérale »"
 
 #. type: TP
-#: ipptoolfile.man:280
+#: ipptoolfile.man:285
 #, fuzzy, no-wrap
 #| msgid "WITH-ALL-HOSTNAMES \"/regular expression/\""
 msgid "B<WITH-ALL-HOSTNAMES \"/>I<regular expression>B</\">"
 msgstr "WITH-ALL-HOSTNAMES « expression rationnelle »"
 
 #. type: Plain text
-#: ipptoolfile.man:283
+#: ipptoolfile.man:288
 msgid "Requires that all URI values contain a matching hostname."
 msgstr ""
 "Exiger que toutes les valeurs d’URI contiennent un nom d’hôte correspondant."
 
 #. type: TP
-#: ipptoolfile.man:283
+#: ipptoolfile.man:288
 #, fuzzy, no-wrap
 #| msgid "WITH-ALL-RESOURCES \"literal string\""
 msgid "B<WITH-ALL-RESOURCES \">I<literal string>B<\">"
 msgstr "WITH-ALL-RESOURCES « chaîne littérale »"
 
 #. type: TP
-#: ipptoolfile.man:285
+#: ipptoolfile.man:290
 #, fuzzy, no-wrap
 #| msgid "WITH-ALL-RESOURCES \"/regular expression/\""
 msgid "B<WITH-ALL-RESOURCES \"/>I<regular expression>B</\">"
 msgstr "WITH-ALL-RESOURCES « expression rationnelle »"
 
 #. type: Plain text
-#: ipptoolfile.man:288
+#: ipptoolfile.man:293
 msgid ""
 "Requires that all URI values contain a matching resource (including "
 "leading /)."
@@ -12949,34 +13012,34 @@ msgstr ""
 "y compris le « / » de début)"
 
 #. type: TP
-#: ipptoolfile.man:288
+#: ipptoolfile.man:293
 #, fuzzy, no-wrap
 #| msgid "WITH-ALL-SCHEMES \"literal string\""
 msgid "B<WITH-ALL-SCHEMES \">I<literal string>B<\">"
 msgstr "WITH-ALL-SCHEMES « chaîne littérale »"
 
 #. type: TP
-#: ipptoolfile.man:290
+#: ipptoolfile.man:295
 #, fuzzy, no-wrap
 #| msgid "WITH-ALL-SCHEMES \"/regular expression/\""
 msgid "B<WITH-ALL-SCHEMES \"/>I<regular expression>B</\">"
 msgstr "WITH-ALL-SCHEMES « expression rationnelle »"
 
 #. type: Plain text
-#: ipptoolfile.man:293
+#: ipptoolfile.man:298
 msgid "Requires that all URI values contain a matching scheme."
 msgstr ""
 "Exiger que toutes les valeurs d’URI contiennent un schéma correspondant."
 
 #. type: TP
-#: ipptoolfile.man:293
+#: ipptoolfile.man:298
 #, fuzzy, no-wrap
 #| msgid "WITH-ALL-VALUES \"literal string\""
 msgid "B<WITH-ALL-VALUES \">I<literal string>B<\">"
 msgstr "WITH-ALL-VALUES « chaîne littérale »"
 
 #. type: Plain text
-#: ipptoolfile.man:296
+#: ipptoolfile.man:301
 #, fuzzy
 #| msgid ""
 #| "Requires that all values of the EXPECT attribute match the literal "
@@ -12989,35 +13052,35 @@ msgstr ""
 "littérale. Les comparaisons sont sensibles à la casse."
 
 #. type: TP
-#: ipptoolfile.man:296
+#: ipptoolfile.man:301
 #, fuzzy, no-wrap
 #| msgid "WITH-ALL-VALUES E<lt>number"
 msgid "B<WITH-ALL-VALUES E<lt>>I<number>"
 msgstr "WITH-ALL-VALUES E<lt>nombre"
 
 #. type: TP
-#: ipptoolfile.man:298
+#: ipptoolfile.man:303
 #, fuzzy, no-wrap
 #| msgid "WITH-ALL-VALUES =number"
 msgid "B<WITH-ALL-VALUES =>I<number>"
 msgstr "WITH-ALL-VALUES =nombre"
 
 #. type: TP
-#: ipptoolfile.man:300
+#: ipptoolfile.man:305
 #, fuzzy, no-wrap
 #| msgid "WITH-ALL-VALUES E<gt>number"
 msgid "B<WITH-ALL-VALUES E<gt>>I<number>"
 msgstr "WITH-ALL-VALUES E<gt>nombre"
 
 #. type: TP
-#: ipptoolfile.man:302
+#: ipptoolfile.man:307
 #, fuzzy, no-wrap
 #| msgid "WITH-ALL-VALUES number[,number,...]"
 msgid "B<WITH-ALL-VALUES >I<number>[I<,...,number>]"
 msgstr "WITH-ALL-VALUES nombre[,nombre,...]"
 
 #. type: Plain text
-#: ipptoolfile.man:305
+#: ipptoolfile.man:310
 #, fuzzy
 #| msgid ""
 #| "Requires that all values of the EXPECT attribute match the number(s) or "
@@ -13034,21 +13097,21 @@ msgstr ""
 "contrôlent seulement la limite supérieure de l’intervalle."
 
 #. type: TP
-#: ipptoolfile.man:305
+#: ipptoolfile.man:310
 #, fuzzy, no-wrap
 #| msgid "WITH-ALL-VALUES \"false\""
 msgid "B<WITH-ALL-VALUES \"false\">"
 msgstr "WITH-ALL-VALUES « faux »"
 
 #. type: TP
-#: ipptoolfile.man:307
+#: ipptoolfile.man:312
 #, fuzzy, no-wrap
 #| msgid "WITH-ALL-VALUES \"true\""
 msgid "B<WITH-ALL-VALUES \"true\">"
 msgstr "WITH-ALL-VALUES « vrai »"
 
 #. type: Plain text
-#: ipptoolfile.man:310
+#: ipptoolfile.man:315
 #, fuzzy
 #| msgid ""
 #| "Requires that all values of the EXPECT attribute match the boolean value "
@@ -13061,14 +13124,14 @@ msgstr ""
 "booléenne donnée"
 
 #. type: TP
-#: ipptoolfile.man:310
+#: ipptoolfile.man:315
 #, fuzzy, no-wrap
 #| msgid "WITH-ALL-VALUES \"/regular expression/\""
 msgid "B<WITH-ALL-VALUES \"/>I<regular expression>B</\">"
 msgstr "WITH-ALL-VALUES « expression rationnelle »"
 
 #. type: Plain text
-#: ipptoolfile.man:313
+#: ipptoolfile.man:318
 #, fuzzy
 #| msgid ""
 #| "Requires that all values of the EXPECT attribute match the regular "
@@ -13084,41 +13147,41 @@ msgstr ""
 "rationnelles. Les comparaisons sont sensibles à la casse."
 
 #. type: TP
-#: ipptoolfile.man:313
+#: ipptoolfile.man:318
 #, fuzzy, no-wrap
 #| msgid "WITH-HOSTNAME \"literal string\""
 msgid "B<WITH-HOSTNAME \">I<literal string>B<\">"
 msgstr "WITH-HOSTNAME « chaîne littérale »"
 
 #. type: TP
-#: ipptoolfile.man:315
+#: ipptoolfile.man:320
 #, fuzzy, no-wrap
 #| msgid "WITH-HOSTNAME \"/regular expression/\""
 msgid "B<WITH-HOSTNAME \"/>I<regular expression>B</\">"
 msgstr "WITH-HOSTNAME « expression rationnelle »"
 
 #. type: Plain text
-#: ipptoolfile.man:318
+#: ipptoolfile.man:323
 msgid "Requires that at least one URI value contains a matching hostname."
 msgstr ""
 "Exiger qu’au moins une valeur d’URI contienne un nom d’hôte concordant."
 
 #. type: TP
-#: ipptoolfile.man:318
+#: ipptoolfile.man:323
 #, fuzzy, no-wrap
 #| msgid "WITH-RESOURCE \"literal string\""
 msgid "B<WITH-RESOURCE \">I<literal string>B<\">"
 msgstr "WITH-RESOURCE « chaîne littérale »"
 
 #. type: TP
-#: ipptoolfile.man:320
+#: ipptoolfile.man:325
 #, fuzzy, no-wrap
 #| msgid "WITH-RESOURCE \"/regular expression/\""
 msgid "B<WITH-RESOURCE \"/>I<regular expression>B</\">"
 msgstr "WITH-RESOURCE « expression rationnelle »"
 
 #. type: Plain text
-#: ipptoolfile.man:323
+#: ipptoolfile.man:328
 msgid ""
 "Requires that at least one URI value contains a matching resource (including "
 "leading /)."
@@ -13127,33 +13190,33 @@ msgstr ""
 "(y compris le « / » de début)."
 
 #. type: TP
-#: ipptoolfile.man:323
+#: ipptoolfile.man:328
 #, fuzzy, no-wrap
 #| msgid "WITH-SCHEME \"literal string\""
 msgid "B<WITH-SCHEME \">I<literal string>B<\">"
 msgstr "WITH-SCHEME « chaîne littérale »"
 
 #. type: TP
-#: ipptoolfile.man:325
+#: ipptoolfile.man:330
 #, fuzzy, no-wrap
 #| msgid "WITH-SCHEME \"/regular expression/\""
 msgid "B<WITH-SCHEME \"/>I<regular expression>B</\">"
 msgstr "WITH-SCHEME « expression rationnelle »"
 
 #. type: Plain text
-#: ipptoolfile.man:328
+#: ipptoolfile.man:333
 msgid "Requires that at least one URI value contains a matching scheme."
 msgstr "Exiger qu’au moins une valeur d’URI contienne un schéma concordant."
 
 #. type: TP
-#: ipptoolfile.man:328
+#: ipptoolfile.man:333
 #, fuzzy, no-wrap
 #| msgid "WITH-VALUE \"literal string\""
 msgid "B<WITH-VALUE \">I<literal string>B<\">"
 msgstr "WITH-VALUE « chaîne littérale »"
 
 #. type: Plain text
-#: ipptoolfile.man:331
+#: ipptoolfile.man:336
 #, fuzzy
 #| msgid ""
 #| "Requires that at least one value of the EXPECT attribute matches the "
@@ -13166,35 +13229,35 @@ msgstr ""
 "littérale. Les comparaisons sont sensibles à la casse."
 
 #. type: TP
-#: ipptoolfile.man:331
+#: ipptoolfile.man:336
 #, fuzzy, no-wrap
 #| msgid "WITH-VALUE E<lt>number"
 msgid "B<WITH-VALUE E<lt>>I<number>"
 msgstr "WITH-VALUE E<lt>nombre"
 
 #. type: TP
-#: ipptoolfile.man:333
+#: ipptoolfile.man:338
 #, fuzzy, no-wrap
 #| msgid "WITH-VALUE =number"
 msgid "B<WITH-VALUE =>I<number>"
 msgstr "WITH-VALUE =nombre"
 
 #. type: TP
-#: ipptoolfile.man:335
+#: ipptoolfile.man:340
 #, fuzzy, no-wrap
 #| msgid "WITH-VALUE E<gt>number"
 msgid "B<WITH-VALUE E<gt>>I<number>"
 msgstr "WITH-VALUE E<gt>nombre"
 
 #. type: TP
-#: ipptoolfile.man:337
+#: ipptoolfile.man:342
 #, fuzzy, no-wrap
 #| msgid "WITH-VALUE number[,number,...]"
 msgid "B<WITH-VALUE >I<number>[I<,...,number>]"
 msgstr "WITH-VALUE nombre[,nombre,...]"
 
 #. type: Plain text
-#: ipptoolfile.man:340
+#: ipptoolfile.man:345
 #, fuzzy
 #| msgid ""
 #| "Requires that at least one value of the EXPECT attribute matches the "
@@ -13212,21 +13275,21 @@ msgstr ""
 "contrôlent seulement la limite supérieure de l’intervalle."
 
 #. type: TP
-#: ipptoolfile.man:340
+#: ipptoolfile.man:345
 #, fuzzy, no-wrap
 #| msgid "WITH-VALUE \"false\""
 msgid "B<WITH-VALUE \"false\">"
 msgstr "WITH-VALUE « faux »"
 
 #. type: TP
-#: ipptoolfile.man:342
+#: ipptoolfile.man:347
 #, fuzzy, no-wrap
 #| msgid "WITH-VALUE \"true\""
 msgid "B<WITH-VALUE \"true\">"
 msgstr "WITH-VALUE « vrai »"
 
 #. type: Plain text
-#: ipptoolfile.man:345
+#: ipptoolfile.man:350
 #, fuzzy
 #| msgid ""
 #| "Requires that at least one value of the EXPECT attribute matches the "
@@ -13239,14 +13302,14 @@ msgstr ""
 "booléenne donnée"
 
 #. type: TP
-#: ipptoolfile.man:345
+#: ipptoolfile.man:350
 #, fuzzy, no-wrap
 #| msgid "WITH-VALUE \"/regular expression/\""
 msgid "B<WITH-VALUE \"/>I<regular expression>B</\">"
 msgstr "WITH-VALUE « expression rationnelle »"
 
 #. type: Plain text
-#: ipptoolfile.man:348
+#: ipptoolfile.man:353
 #, fuzzy
 #| msgid ""
 #| "Requires that at least one value of the EXPECT attribute matches the "
@@ -13261,15 +13324,31 @@ msgstr ""
 "l’expression rationnelle, qui doit être conforme à la syntaxe POSIX des "
 "expressions rationnelles. Les comparaisons sont sensibles à la casse."
 
+#. type: TP
+#: ipptoolfile.man:353
+#, fuzzy, no-wrap
+#| msgid "DISPLAY attribute-name"
+msgid "B<WITH-VALUE-FROM >I<attribute-name>"
+msgstr "DISPLAY nom-attribut"
+
+#. type: Plain text
+#: ipptoolfile.man:357
+msgid ""
+"Requires that the value(s) of the B<EXPECT> attribute matches the value(s) "
+"in the specified attribute.  For example, \"EXPECT job-sheets WITH-VALUE-"
+"FROM job-sheets-supported\" requires that the \"job-sheets\" value is listed "
+"as a value of the \"job-sheets-supported\" attribute."
+msgstr ""
+
 #. type: SS
-#: ipptoolfile.man:348
+#: ipptoolfile.man:357
 #, no-wrap
 msgid "STATUS PREDICATES"
 msgstr "STATUS PREDICATES"
 
 # type: Plain text
 #. type: Plain text
-#: ipptoolfile.man:350
+#: ipptoolfile.man:359
 #, fuzzy
 #| msgid ""
 #| "The following predicates are understood following the STATUS test "
@@ -13281,7 +13360,7 @@ msgstr ""
 "Les prédicats ci-dessous sont compris suivant la directive de test STATUS :"
 
 #. type: Plain text
-#: ipptoolfile.man:353
+#: ipptoolfile.man:362
 #, fuzzy
 #| msgid ""
 #| "Defines the variable to \"1\" when the STATUS matches. A side-effect of "
@@ -13294,7 +13373,7 @@ msgstr ""
 "ce prédicat est que ce STATUS n’échouera jamais à un test."
 
 #. type: Plain text
-#: ipptoolfile.man:356
+#: ipptoolfile.man:365
 #, fuzzy
 #| msgid ""
 #| "Defines the variable to \"1\" when the STATUS does not match. A side-"
@@ -13307,14 +13386,14 @@ msgstr ""
 "bord de ce prédicat est que ce STATUS n’échouera jamais à un test."
 
 #. type: Plain text
-#: ipptoolfile.man:359
+#: ipptoolfile.man:368
 #, fuzzy
 #| msgid "Makes the STATUS apply only if the specified variable is defined."
 msgid "Makes the B<STATUS> apply only if the specified variable is defined."
 msgstr "Appliquer le STATUS seulement si la variable indiquée est définie."
 
 #. type: Plain text
-#: ipptoolfile.man:362
+#: ipptoolfile.man:371
 #, fuzzy
 #| msgid ""
 #| "Makes the STATUS apply only if the specified variable is not defined."
@@ -13325,14 +13404,14 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: ipptoolfile.man:366
+#: ipptoolfile.man:375
 msgid ""
 "Specifies the maximum number of times to repeat. The default value is 1000."
 msgstr ""
 "Définir le nombre maximal de répétitions. La valeur par défaut est 1000."
 
 #. type: Plain text
-#: ipptoolfile.man:371
+#: ipptoolfile.man:380
 msgid ""
 "Specifies that the current test should be repeated when the response status-"
 "code matches or does not match the value specified by the STATUS directive."
@@ -13343,13 +13422,13 @@ msgstr ""
 
 # type: SH
 #. type: SS
-#: ipptoolfile.man:371
+#: ipptoolfile.man:380
 #, no-wrap
 msgid "OPERATION CODES"
 msgstr "CODES D’OPÉRATION"
 
 #. type: Plain text
-#: ipptoolfile.man:374
+#: ipptoolfile.man:383
 #, fuzzy
 #| msgid ""
 #| "Operation codes correspond to the hexadecimal numbers (0xHHHH) and names "
@@ -13365,7 +13444,7 @@ msgstr ""
 "liste complète :"
 
 #. type: Plain text
-#: ipptoolfile.man:443
+#: ipptoolfile.man:452
 #, no-wrap
 msgid ""
 "    Activate-Printer\n"
@@ -13573,13 +13652,13 @@ msgstr ""
 
 # type: SH
 #. type: SS
-#: ipptoolfile.man:444
+#: ipptoolfile.man:453
 #, no-wrap
 msgid "STATUS CODES"
 msgstr "CODES D’ÉTAT"
 
 #. type: Plain text
-#: ipptoolfile.man:447
+#: ipptoolfile.man:456
 #, fuzzy
 #| msgid ""
 #| "Status codes correspond to the hexadecimal numbers (0xHHHH) and names "
@@ -13595,7 +13674,7 @@ msgstr ""
 "complète :"
 
 #. type: Plain text
-#: ipptoolfile.man:506
+#: ipptoolfile.man:515
 #, fuzzy, no-wrap
 #| msgid ""
 #| "    client-error-attributes-not-settable\n"
@@ -13757,13 +13836,13 @@ msgstr ""
 "    successful-ok-too-many-events\n"
 
 #. type: SS
-#: ipptoolfile.man:507
+#: ipptoolfile.man:516
 #, no-wrap
 msgid "TAGS"
 msgstr "ÉTIQUETTES"
 
 #. type: Plain text
-#: ipptoolfile.man:509
+#: ipptoolfile.man:518
 msgid ""
 "Value and group tags correspond to the names from RFC 2911 and other IPP "
 "extension specifications. Here are the group tags:"
@@ -13772,7 +13851,7 @@ msgstr ""
 "d’autres spécifications d’extensions IPP. Voici les étiquettes de groupe :"
 
 #. type: Plain text
-#: ipptoolfile.man:518
+#: ipptoolfile.man:527
 #, fuzzy, no-wrap
 #| msgid ""
 #| "    event-notification-attributes-tag\n"
@@ -13798,12 +13877,12 @@ msgstr ""
 "    unsupported-attributes-tag\n"
 
 #. type: Plain text
-#: ipptoolfile.man:521
+#: ipptoolfile.man:530
 msgid "Here are the value tags:"
 msgstr "Voici les étiquettes de valeur :"
 
 #. type: Plain text
-#: ipptoolfile.man:548
+#: ipptoolfile.man:557
 #, no-wrap
 msgid ""
 "    admin-define\n"
@@ -13860,13 +13939,13 @@ msgstr ""
 
 # type: SH
 #. type: SS
-#: ipptoolfile.man:549
+#: ipptoolfile.man:558
 #, no-wrap
 msgid "VARIABLES"
 msgstr "VARIABLES"
 
 #. type: Plain text
-#: ipptoolfile.man:553
+#: ipptoolfile.man:562
 #, fuzzy
 #| msgid ""
 #| "The I<ipptool> program maintains a list of variables that can be used in "
@@ -13886,25 +13965,25 @@ msgstr ""
 "suivantes sont disponibles :"
 
 #. type: TP
-#: ipptoolfile.man:553
+#: ipptoolfile.man:562
 #, no-wrap
 msgid "B<$$>"
 msgstr ""
 
 #. type: Plain text
-#: ipptoolfile.man:556
+#: ipptoolfile.man:565
 msgid "Inserts a single \"$\" character."
 msgstr "Insérer un seul caractère « $ »."
 
 #. type: TP
-#: ipptoolfile.man:556
+#: ipptoolfile.man:565
 #, fuzzy, no-wrap
 #| msgid "$ENV[name]"
 msgid "B<$ENV[>I<name>B<]>"
 msgstr "$ENV[nom]"
 
 #. type: Plain text
-#: ipptoolfile.man:559
+#: ipptoolfile.man:568
 msgid ""
 "Inserts the value of the named environment variable, or an empty string if "
 "the environment variable is not defined."
@@ -13914,27 +13993,27 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: ipptoolfile.man:559
+#: ipptoolfile.man:568
 #, fuzzy, no-wrap
 #| msgid "$filename"
 msgid "B<$filename>"
 msgstr "$filename"
 
 #. type: Plain text
-#: ipptoolfile.man:564
+#: ipptoolfile.man:573
 #, fuzzy
 #| msgid "Inserts the filename provided to I<ipptool> with the \"-f\" option."
 msgid "Inserts the filename provided to B<ipptool>(8)  with the I<-f> option."
 msgstr "Insérer le nom de fichier fourni à B<ipptool> avec l’option « B<-f> »."
 
 #. type: TP
-#: ipptoolfile.man:564
+#: ipptoolfile.man:573
 #, no-wrap
 msgid "B<$filetype>"
 msgstr ""
 
 #. type: Plain text
-#: ipptoolfile.man:569
+#: ipptoolfile.man:578
 #, fuzzy
 #| msgid "Inserts the filename provided to I<ipptool> with the \"-f\" option."
 msgid ""
@@ -13943,14 +14022,14 @@ msgid ""
 msgstr "Insérer le nom de fichier fourni à B<ipptool> avec l’option « B<-f> »."
 
 #. type: TP
-#: ipptoolfile.man:569
+#: ipptoolfile.man:578
 #, fuzzy, no-wrap
 #| msgid "$hostname"
 msgid "B<$hostname>"
 msgstr "$hostname"
 
 #. type: Plain text
-#: ipptoolfile.man:573
+#: ipptoolfile.man:582
 #, fuzzy
 #| msgid "Inserts the hostname from the URI provided to I<ipptool>."
 msgid "Inserts the hostname from the URI provided to B<ipptool>(8)."
@@ -13958,14 +14037,14 @@ msgstr "Insérer le nom d’hôte à partir de l’URI fourni à B<ipptool>."
 
 # type: TP
 #. type: TP
-#: ipptoolfile.man:573
+#: ipptoolfile.man:582
 #, fuzzy, no-wrap
 #| msgid "$job-id"
 msgid "B<$job-id>"
 msgstr "$job-id"
 
 #. type: Plain text
-#: ipptoolfile.man:576
+#: ipptoolfile.man:585
 #, fuzzy
 #| msgid ""
 #| "Inserts the last job-id value returned in a test response or 0 if no job-"
@@ -13978,14 +14057,14 @@ msgstr ""
 "d’un test ou 0 si aucun identifiant n’a été trouvé."
 
 #. type: TP
-#: ipptoolfile.man:576
+#: ipptoolfile.man:585
 #, fuzzy, no-wrap
 #| msgid "$job-uri"
 msgid "B<$job-uri>"
 msgstr "$job-uri"
 
 #. type: Plain text
-#: ipptoolfile.man:579
+#: ipptoolfile.man:588
 #, fuzzy
 #| msgid ""
 #| "Inserts the last job-uri value returned in a test response or an empty "
@@ -13998,14 +14077,14 @@ msgstr ""
 "d’un test ou une chaîne vide si aucun identifiant n’a été trouvé."
 
 #. type: TP
-#: ipptoolfile.man:579
+#: ipptoolfile.man:588
 #, fuzzy, no-wrap
 #| msgid "$notify-subscription-id"
 msgid "B<$notify-subscription-id>"
 msgstr "$notify-subscription-id"
 
 #. type: Plain text
-#: ipptoolfile.man:582
+#: ipptoolfile.man:591
 #, fuzzy
 #| msgid ""
 #| "Inserts the last notify-subscription-id value returned in a test response "
@@ -14018,56 +14097,56 @@ msgstr ""
 "renvoyée dans une réponse de test ou 0 si aucun identifiant n’a été trouvé."
 
 #. type: TP
-#: ipptoolfile.man:582
+#: ipptoolfile.man:591
 #, fuzzy, no-wrap
 #| msgid "$port"
 msgid "B<$port>"
 msgstr "$port"
 
 #. type: Plain text
-#: ipptoolfile.man:586
+#: ipptoolfile.man:595
 #, fuzzy
 #| msgid "Inserts the port number from the URI provided to I<ipptool>."
 msgid "Inserts the port number from the URI provided to B<ipptool>(8)."
 msgstr "Insérer le numéro du port à partir de l’URI fourni à B<ipptool>."
 
 #. type: TP
-#: ipptoolfile.man:586
+#: ipptoolfile.man:595
 #, fuzzy, no-wrap
 #| msgid "$resource"
 msgid "B<$resource>"
 msgstr "$resource"
 
 #. type: Plain text
-#: ipptoolfile.man:590
+#: ipptoolfile.man:599
 #, fuzzy
 #| msgid "Inserts the resource path from the URI provided to I<ipptool>."
 msgid "Inserts the resource path from the URI provided to B<ipptool>(8)."
 msgstr "Insérer le chemin de ressource à partir de l’URI fourni à I<ipptool>."
 
 #. type: TP
-#: ipptoolfile.man:590
+#: ipptoolfile.man:599
 #, fuzzy, no-wrap
 #| msgid "$scheme"
 msgid "B<$scheme>"
 msgstr "$scheme"
 
 #. type: Plain text
-#: ipptoolfile.man:594
+#: ipptoolfile.man:603
 #, fuzzy
 #| msgid "Inserts the scheme from the URI provided to I<ipptool>."
 msgid "Inserts the scheme from the URI provided to B<ipptool>(8)."
 msgstr "Insérer le schéma depuis l’URI fourni à B<ipptool>."
 
 #. type: TP
-#: ipptoolfile.man:594
+#: ipptoolfile.man:603
 #, fuzzy, no-wrap
 #| msgid "$uri"
 msgid "B<$uri>"
 msgstr "$uri"
 
 #. type: Plain text
-#: ipptoolfile.man:598
+#: ipptoolfile.man:607
 #, fuzzy
 #| msgid "Inserts the URI provided to I<ipptool>."
 msgid "Inserts the URI provided to B<ipptool>(8)."
@@ -14075,14 +14154,14 @@ msgstr "Insérer l’URI fourni à B<ipptool>."
 
 # type: TP
 #. type: TP
-#: ipptoolfile.man:598
+#: ipptoolfile.man:607
 #, fuzzy, no-wrap
 #| msgid "$user"
 msgid "B<$uriuser>"
 msgstr "$user"
 
 #. type: Plain text
-#: ipptoolfile.man:603
+#: ipptoolfile.man:612
 #, fuzzy
 #| msgid "Inserts the username from the URI provided to I<ipptool>, if any."
 msgid "Inserts the username from the URI provided to B<ipptool>(8), if any."
@@ -14091,7 +14170,7 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: ipptoolfile.man:603
+#: ipptoolfile.man:612
 #, fuzzy, no-wrap
 #| msgid "$user"
 msgid "B<$user>"
@@ -14099,12 +14178,12 @@ msgstr "$user"
 
 # type: Plain text
 #. type: Plain text
-#: ipptoolfile.man:606
+#: ipptoolfile.man:615
 msgid "Inserts the current user's login name."
 msgstr "Insérer le nom de connexion de l’utilisateur actuel."
 
 #. type: Plain text
-#: ipptoolfile.man:612
+#: ipptoolfile.man:621
 msgid ""
 "B<ipptool>(1), CUPS Online Help (http://localhost:631/help), IANA IPP "
 "Registry (http://www.iana.org/assignments/ipp-registrations), PWG Internet "
@@ -14118,12 +14197,13 @@ msgstr ""
 msgid "ipptool"
 msgstr "ipptool"
 
+# type: TH
 #. type: TH
 #: ipptool.man:14
 #, fuzzy, no-wrap
-#| msgid "29 August 2008"
-msgid "29 August 2014"
-msgstr "29 août 2008"
+#| msgid "20 February 2014"
+msgid "3 February 2015"
+msgstr "20 février 2014"
 
 #. type: Plain text
 #: ipptool.man:17
@@ -19462,6 +19542,11 @@ msgid ""
 msgstr ""
 "B<classes.conf>(5), B<cupsd>(8), B<cupsd.conf>(5), B<mime.convs>(5), B<mime."
 "types>(5), B<printers.conf>(5),"
+
+#, fuzzy
+#~| msgid "29 August 2008"
+#~ msgid "29 August 2014"
+#~ msgstr "29 août 2008"
 
 # type: TH
 #~ msgid "12 February 2006"

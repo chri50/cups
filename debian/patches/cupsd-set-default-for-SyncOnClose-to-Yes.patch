@@ -15,7 +15,7 @@ Last-Update: 2015-02-10
  # any user or group that resolves to ID 0 for security reasons...
 --- a/doc/help/man-cups-files.conf.html
 +++ b/doc/help/man-cups-files.conf.html
-@@ -133,7 +133,7 @@
+@@ -138,7 +138,7 @@
  <dd style="margin-left: 5.0em">Specifies whether the scheduler calls
  <b>fsync</b>(2)
  after writing configuration or state files.
@@ -26,7 +26,7 @@ Last-Update: 2015-02-10
  The default contains "admin", "lpadmin", "root", "sys", and/or "system".
 --- a/man/cups-files.conf.man.in
 +++ b/man/cups-files.conf.man.in
-@@ -189,7 +189,7 @@
+@@ -196,7 +196,7 @@
  Specifies whether the scheduler calls
  .BR fsync (2)
  after writing configuration or state files.
@@ -37,7 +37,7 @@ Last-Update: 2015-02-10
  \fBSystemGroup \fIgroup-name \fR[ ... \fIgroup-name\fR ]
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -716,7 +716,7 @@
+@@ -771,7 +771,7 @@
    RootCertDuration         = 300;
    Sandboxing               = CUPSD_SANDBOXING_STRICT;
    StrictConformance        = FALSE;

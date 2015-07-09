@@ -1,5 +1,5 @@
 /*
- * "$Id: usersys.c 12481 2015-02-03 12:45:14Z msweet $"
+ * "$Id: usersys.c 12647 2015-05-20 18:37:52Z msweet $"
  *
  * User, system, and password routines for CUPS.
  *
@@ -1209,10 +1209,10 @@ cups_set_ssl_options(
     const char          *value)		/* I - Value */
 {
  /*
-  * SSLOptions [AllowRC4] [AllowSSL3] [None]
+  * SSLOptions [AllowRC4] [AllowSSL3] [AllowDH] [DenyTLS1.0] [None]
   */
 
-  int	options = 0;			/* SSL/TLS options */
+  int	options = _HTTP_TLS_NONE;	/* SSL/TLS options */
   char	temp[256],			/* Copy of value */
 	*start,				/* Start of option */
 	*end;				/* End of option */
@@ -1241,11 +1241,17 @@ cups_set_ssl_options(
       options |= _HTTP_TLS_ALLOW_RC4;
     else if (!_cups_strcasecmp(start, "AllowSSL3"))
       options |= _HTTP_TLS_ALLOW_SSL3;
+    else if (!_cups_strcasecmp(start, "AllowDH"))
+      options |= _HTTP_TLS_ALLOW_DH;
+    else if (!_cups_strcasecmp(start, "DenyTLS1.0"))
+      options |= _HTTP_TLS_DENY_TLS10;
     else if (!_cups_strcasecmp(start, "None"))
-      options = 0;
+      options = _HTTP_TLS_NONE;
   }
 
   cc->ssl_options = options;
+
+  DEBUG_printf(("4cups_set_ssl_options(cc=%p, value=\"%s\") options=%x", cc, value, options));
 }
 #endif /* HAVE_SSL */
 
@@ -1264,5 +1270,5 @@ cups_set_user(
 
 
 /*
- * End of "$Id: usersys.c 12481 2015-02-03 12:45:14Z msweet $".
+ * End of "$Id: usersys.c 12647 2015-05-20 18:37:52Z msweet $".
  */

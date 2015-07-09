@@ -6,7 +6,7 @@ Last-Update: 2015-02-10
 
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -156,7 +156,8 @@
+@@ -162,7 +162,8 @@
  #ifdef HAVE_AUTHORIZATION_H
    { "SystemGroupAuthKey",	&SystemGroupAuthKey,	CUPSD_VARTYPE_STRING },
  #endif /* HAVE_AUTHORIZATION_H */
@@ -16,7 +16,7 @@ Last-Update: 2015-02-10
  };
  
  static int		default_auth_type = CUPSD_AUTH_AUTO;
-@@ -572,6 +573,7 @@
+@@ -627,6 +628,7 @@
    cupsdSetStringf(&ServerHeader, "CUPS/%d.%d IPP/2.1", CUPS_VERSION_MAJOR,
                    CUPS_VERSION_MINOR);
    cupsdSetString(&StateDir, CUPS_STATEDIR);
@@ -24,7 +24,7 @@ Last-Update: 2015-02-10
  
    if (!strcmp(CUPS_DEFAULT_PRINTCAP, "/etc/printers.conf"))
      PrintcapFormat = PRINTCAP_SOLARIS;
-@@ -3378,6 +3380,7 @@
+@@ -3505,6 +3507,7 @@
               !_cups_strcasecmp(line, "SystemGroup") ||
               !_cups_strcasecmp(line, "SystemGroupAuthKey") ||
               !_cups_strcasecmp(line, "TempDir") ||
@@ -34,7 +34,7 @@ Last-Update: 2015-02-10
        cupsdLogMessage(CUPSD_LOG_INFO,
 --- a/scheduler/conf.h
 +++ b/scheduler/conf.h
-@@ -243,6 +243,8 @@
+@@ -245,6 +245,8 @@
  VAR char		*ServerKeychain		VALUE(NULL);
  					/* Keychain holding cert + key */
  #endif /* HAVE_SSL */
@@ -45,7 +45,7 @@ Last-Update: 2015-02-10
  VAR int			IdleExitTimeout		VALUE(60);
 --- a/scheduler/main.c
 +++ b/scheduler/main.c
-@@ -73,6 +73,8 @@
+@@ -79,6 +79,8 @@
  static void		service_checkout(void);
  #endif /* HAVE_LAUNCHD || HAVE_SYSTEMD */
  static void		usage(int status) __attribute__((noreturn));
@@ -54,7 +54,7 @@ Last-Update: 2015-02-10
  
  
  /*
-@@ -656,6 +658,11 @@
+@@ -664,6 +666,11 @@
      cupsdStartSystemMonitor();
  #endif /* __APPLE__ */
  
@@ -66,7 +66,7 @@ Last-Update: 2015-02-10
   /*
    * Send server-started event...
    */
-@@ -1143,10 +1150,41 @@
+@@ -1162,10 +1169,41 @@
  
    cupsdStopSelect();
  

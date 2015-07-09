@@ -5,15 +5,15 @@ Bug-Ubuntu: https://launchpad.net/bugs/345953
 Last-Update: 2015-02-10
 --- a/scheduler/log.c
 +++ b/scheduler/log.c
-@@ -20,6 +20,7 @@
- #include "cupsd.h"
- #include <stdarg.h>
+@@ -26,6 +26,7 @@
+ #  include <systemd/sd-journal.h>
+ #endif /* HAVE_ASL_H */
  #include <syslog.h>
 +#include <grp.h>
  
  
  /*
-@@ -67,6 +68,7 @@
+@@ -115,6 +116,7 @@
  		filename[1024],		/* Formatted log filename */
  		*ptr;			/* Pointer into filename */
    const char	*logptr;		/* Pointer into log filename */
@@ -21,8 +21,8 @@ Last-Update: 2015-02-10
  
  
   /*
-@@ -77,6 +79,11 @@
-     return (1);
+@@ -135,6 +137,11 @@
+   }
  
   /*
 +  * Use adm group if possible, fall back to Group
@@ -33,7 +33,7 @@ Last-Update: 2015-02-10
    * Format the filename as needed...
    */
  
-@@ -185,7 +192,7 @@
+@@ -255,7 +262,7 @@
        * Change ownership and permissions of non-device logs...
        */
  
@@ -42,7 +42,7 @@ Last-Update: 2015-02-10
        fchmod(cupsFileNumber(*lf), LogFilePerm);
      }
    }
-@@ -224,7 +231,7 @@
+@@ -306,7 +313,7 @@
      * Change ownership and permissions of non-device logs...
      */
  

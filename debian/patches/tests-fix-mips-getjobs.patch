@@ -6,7 +6,7 @@ Last-Update: 2015-07-07
 
 --- a/test/ipp-1.1.test
 +++ b/test/ipp-1.1.test
-@@ -755,7 +755,7 @@ DEFINE IPP_URI_SCHEME "/^ipps?://.+$$/"
+@@ -755,7 +755,7 @@
  	EXPECT job-uri OF-TYPE uri IN-GROUP job-attributes-tag COUNT 1 WITH-VALUE "$IPP_URI_SCHEME"
  	EXPECT job-printer-uri OF-TYPE uri IN-GROUP job-attributes-tag COUNT 1 WITH-VALUE "$IPP_URI_SCHEME"
  	EXPECT ?job-more-info OF-TYPE uri IN-GROUP job-attributes-tag COUNT 1 WITH-VALUE "$HTTP_URI_SCHEME"
@@ -15,7 +15,7 @@ Last-Update: 2015-07-07
  	EXPECT job-originating-user-name OF-TYPE name IN-GROUP job-attributes-tag COUNT 1
  	EXPECT job-state OF-TYPE unknown|enum IN-GROUP job-attributes-tag COUNT 1 WITH-VALUE >2,<10
  	EXPECT job-state-reasons OF-TYPE keyword IN-GROUP job-attributes-tag
-@@ -764,7 +764,7 @@ DEFINE IPP_URI_SCHEME "/^ipps?://.+$$/"
+@@ -764,7 +764,7 @@
  	EXPECT ?number-of-documents OF-TYPE integer IN-GROUP job-attributes-tag COUNT 1
  	EXPECT ?output-device-assigned OF-TYPE name IN-GROUP job-attributes-tag COUNT 1
  	EXPECT time-at-creation OF-TYPE integer IN-GROUP job-attributes-tag COUNT 1 WITH-VALUE >-1

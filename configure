@@ -2519,7 +2519,7 @@ esac
 ac_config_headers="$ac_config_headers config.h"
 
 
-CUPS_VERSION=2.0.3
+CUPS_VERSION=2.1b1
 CUPS_REVISION=
 #if test -z "$CUPS_REVISION" -a -d .svn; then
 #	CUPS_REVISION="-r`svnversion . | awk -F: '{print $NF}' | sed -e '1,$s/[[a-zA-Z]]*//g'`"
@@ -4906,6 +4906,13 @@ fi
 ac_fn_c_check_header_mongrel "$LINENO" "sys/ucred.h" "ac_cv_header_sys_ucred_h" "$ac_includes_default"
 if test "x$ac_cv_header_sys_ucred_h" = xyes; then :
   $as_echo "#define HAVE_SYS_UCRED_H 1" >>confdefs.h
+
+fi
+
+
+ac_fn_c_check_header_mongrel "$LINENO" "asl.h" "ac_cv_header_asl_h" "$ac_includes_default"
+if test "x$ac_cv_header_asl_h" = xyes; then :
+  $as_echo "#define HAVE_ASL_H 1" >>confdefs.h
 
 fi
 
@@ -8150,6 +8157,11 @@ fi
 fi
 
 
+
+		if test $uversion -ge 150; then
+			$as_echo "#define HAVE_SSLSETENABLEDCIPHERS 1" >>confdefs.h
+
+		fi
 	fi
     fi
 
@@ -9134,6 +9146,24 @@ $as_echo "yes" >&6; }
 			if test "x$SYSTEMD_DIR" = x; then
 			        SYSTEMD_DIR="`$PKGCONFIG --variable=systemdsystemunitdir systemd`"
                         fi
+                else
+                        { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+                fi
+        	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for libsystemd-journal" >&5
+$as_echo_n "checking for libsystemd-journal... " >&6; }
+                if $PKGCONFIG --exists libsystemd-journal; then
+                        { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+                        ONDEMANDFLAGS="$ONDEMANDFLAGS `$PKGCONFIG --cflags libsystemd-journal`"
+                        ONDEMANDLIBS="$ONDEMANDLIBS `$PKGCONFIG --libs libsystemd-journal`"
+			ac_fn_c_check_header_mongrel "$LINENO" "systemd/sd-journal.h" "ac_cv_header_systemd_sd_journal_h" "$ac_includes_default"
+if test "x$ac_cv_header_systemd_sd_journal_h" = xyes; then :
+  $as_echo "#define HAVE_SYSTEMD_SD_JOURNAL_H 1" >>confdefs.h
+
+fi
+
+
                 else
                         { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
@@ -10167,7 +10197,7 @@ fi
 
 
 
-ac_config_files="$ac_config_files Makedefs conf/cups-files.conf conf/cupsd.conf conf/mime.convs conf/pam.std conf/snmp.conf cups-config data/testprint desktop/cups.desktop doc/index.html man/client.conf.man man/cups-files.conf.man man/cups-lpd.man man/cups-snmp.man man/cupsaddsmb.man man/cupsd.conf.man man/cupsd.man man/lpoptions.man scheduler/cups-lpd.xinetd scheduler/cups.sh scheduler/cups.xml scheduler/org.cups.cups-lpd.plist scheduler/org.cups.cups-lpdAT.service scheduler/org.cups.cupsd.path scheduler/org.cups.cupsd.service scheduler/org.cups.cupsd.socket templates/header.tmpl packaging/cups.list $LANGFILES"
+ac_config_files="$ac_config_files Makedefs conf/cups-files.conf conf/cupsd.conf conf/mime.convs conf/pam.std conf/snmp.conf cups-config desktop/cups.desktop doc/index.html man/client.conf.man man/cups-files.conf.man man/cups-lpd.man man/cups-snmp.man man/cupsaddsmb.man man/cupsd.conf.man man/cupsd.man man/lpoptions.man scheduler/cups-lpd.xinetd scheduler/cups.sh scheduler/cups.xml scheduler/org.cups.cups-lpd.plist scheduler/org.cups.cups-lpdAT.service scheduler/org.cups.cupsd.path scheduler/org.cups.cupsd.service scheduler/org.cups.cupsd.socket templates/header.tmpl packaging/cups.list $LANGFILES"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -10879,7 +10909,6 @@ do
     "conf/pam.std") CONFIG_FILES="$CONFIG_FILES conf/pam.std" ;;
     "conf/snmp.conf") CONFIG_FILES="$CONFIG_FILES conf/snmp.conf" ;;
     "cups-config") CONFIG_FILES="$CONFIG_FILES cups-config" ;;
-    "data/testprint") CONFIG_FILES="$CONFIG_FILES data/testprint" ;;
     "desktop/cups.desktop") CONFIG_FILES="$CONFIG_FILES desktop/cups.desktop" ;;
     "doc/index.html") CONFIG_FILES="$CONFIG_FILES doc/index.html" ;;
     "man/client.conf.man") CONFIG_FILES="$CONFIG_FILES man/client.conf.man" ;;
