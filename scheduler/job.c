@@ -1,9 +1,9 @@
 /*
- * "$Id: job.c 12701 2015-06-08 18:33:44Z msweet $"
+ * "$Id: job.c 12700 2015-06-08 18:32:35Z msweet $"
  *
  * Job management routines for the CUPS scheduler.
  *
- * Copyright 2007-2014 by Apple Inc.
+ * Copyright 2007-2015 by Apple Inc.
  * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  * These coded instructions, statements, and computer programs are the
@@ -1531,9 +1531,10 @@ void
 cupsdLoadAllJobs(void)
 {
   char		filename[1024];		/* Full filename of job.cache file */
-  struct stat	fileinfo,		/* Information on job.cache file */
-		dirinfo;		/* Information on RequestRoot dir */
-
+  struct stat	fileinfo;		/* Information on job.cache file */
+  cups_dir_t	*dir;			/* RequestRoot dir */
+  cups_dentry_t	*dent;			/* Entry in RequestRoot */
+  int		load_cache = 1;		/* Load the job.cache file? */
 
 
  /*
@@ -1557,36 +1558,65 @@ cupsdLoadAllJobs(void)
 
   if (stat(filename, &fileinfo))
   {
-    fileinfo.st_mtime = 0;
+   /*
+    * No job.cache file...
+    */
+
+    load_cache = 0;
 
     if (errno != ENOENT)
       cupsdLogMessage(CUPSD_LOG_ERROR,
                       "Unable to get file information for \"%s\" - %s",
 		      filename, strerror(errno));
   }
-
-  if (stat(RequestRoot, &dirinfo))
+  else if ((dir = cupsDirOpen(RequestRoot)) == NULL)
   {
-    dirinfo.st_mtime = 0;
+   /*
+    * No spool directory...
+    */
 
-    if (errno != ENOENT)
-      cupsdLogMessage(CUPSD_LOG_ERROR,
-                      "Unable to get directory information for \"%s\" - %s",
-		      RequestRoot, strerror(errno));
+    load_cache = 0;
+  }
+  else
+  {
+    while ((dent = cupsDirRead(dir)) != NULL)
+    {
+      if (strlen(dent->filename) >= 6 && dent->filename[0] == 'c' && dent->fileinfo.st_mtime > fileinfo.st_mtime)
+      {
+       /*
+        * Job history file is newer than job.cache file...
+	*/
+
+        load_cache = 0;
+	break;
+      }
+    }
+
+    cupsDirClose(dir);
   }
 
  /*
   * Load the most recent source for job data...
   */
 
-  if (dirinfo.st_mtime > fileinfo.st_mtime)
+  if (load_cache)
   {
+   /*
+    * Load the job.cache file...
+    */
+
+    load_job_cache(filename);
+  }
+  else
+  {
+   /*
+    * Load the job history files...
+    */
+
     load_request_root();
 
     load_next_job_id(filename);
   }
-  else
-    load_job_cache(filename);
 
  /*
   * Clean out old jobs as needed...
@@ -1793,9 +1823,12 @@ cupsdLoadJob(cupsd_job_t *job)		/* I - Job */
       ippSetString(job->attrs, &job->reasons, 0, "none");
   }
 
-  job->sheets     = ippFindAttribute(job->attrs, "job-media-sheets-completed",
-                                     IPP_TAG_INTEGER);
-  job->job_sheets = ippFindAttribute(job->attrs, "job-sheets", IPP_TAG_NAME);
+  job->impressions = ippFindAttribute(job->attrs, "job-impressions-completed", IPP_TAG_INTEGER);
+  job->sheets      = ippFindAttribute(job->attrs, "job-media-sheets-completed", IPP_TAG_INTEGER);
+  job->job_sheets  = ippFindAttribute(job->attrs, "job-sheets", IPP_TAG_NAME);
+
+  if (!job->impressions)
+    job->impressions = ippAddInteger(job->attrs, IPP_TAG_JOB, IPP_TAG_INTEGER, "job-impressions-completed", 0);
 
   if (!job->priority)
   {
@@ -4483,6 +4516,7 @@ static void
 set_time(cupsd_job_t *job,		/* I - Job to update */
          const char  *name)		/* I - Name of attribute */
 {
+  char			date_name[128];	/* date-time-at-xxx */
   ipp_attribute_t	*attr;		/* Time attribute */
   time_t		curtime;	/* Current time */
 
@@ -4495,6 +4529,14 @@ set_time(cupsd_job_t *job,		/* I - Job to update */
   {
     attr->value_tag         = IPP_TAG_INTEGER;
     attr->values[0].integer = curtime;
+  }
+
+  snprintf(date_name, sizeof(date_name), "date-%s", name);
+
+  if ((attr = ippFindAttribute(job->attrs, date_name, IPP_TAG_ZERO)) != NULL)
+  {
+    attr->value_tag = IPP_TAG_DATE;
+    ippSetDate(job->attrs, &attr, 0, ippTimeToDate(curtime));
   }
 
   if (!strcmp(name, "time-at-completed"))
@@ -4783,6 +4825,7 @@ unload_job(cupsd_job_t *job)		/* I - Job */
   job->attrs           = NULL;
   job->state           = NULL;
   job->reasons         = NULL;
+  job->impressions     = NULL;
   job->sheets          = NULL;
   job->job_sheets      = NULL;
   job->printer_message = NULL;
@@ -4841,6 +4884,25 @@ update_job(cupsd_job_t *job)		/* I - Job to check */
 
       cupsdLogJob(job, CUPSD_LOG_DEBUG, "PAGE: %s", message);
 
+      if (job->impressions)
+      {
+        if (!_cups_strncasecmp(message, "total ", 6))
+	{
+	 /*
+	  * Got a total count of pages from a backend or filter...
+	  */
+
+	  copies = atoi(message + 6);
+	  copies -= ippGetInteger(job->impressions, 0); /* Just track the delta */
+	}
+	else if (!sscanf(message, "%*d%d", &copies))
+	  copies = 1;
+
+        ippSetInteger(job->attrs, &job->impressions, 0, ippGetInteger(job->impressions, 0) + copies);
+        job->dirty = 1;
+	cupsdMarkDirty(CUPSD_DIRTY_JOBS);
+      }
+
       if (job->sheets)
       {
         if (!_cups_strncasecmp(message, "total ", 6))
@@ -4850,12 +4912,14 @@ update_job(cupsd_job_t *job)		/* I - Job to check */
 	  */
 
 	  copies = atoi(message + 6);
-	  copies -= job->sheets->values[0].integer; /* Just track the delta */
+	  copies -= ippGetInteger(job->sheets, 0); /* Just track the delta */
 	}
 	else if (!sscanf(message, "%*d%d", &copies))
 	  copies = 1;
 
-        job->sheets->values[0].integer += copies;
+        ippSetInteger(job->attrs, &job->sheets, 0, ippGetInteger(job->sheets, 0) + copies);
+        job->dirty = 1;
+	cupsdMarkDirty(CUPSD_DIRTY_JOBS);
 
 	if (job->printer->page_limit)
 	  cupsdUpdateQuota(job->printer, job->username, copies, 0);
@@ -4864,8 +4928,7 @@ update_job(cupsd_job_t *job)		/* I - Job to check */
       cupsdLogPage(job, message);
 
       if (job->sheets)
-	cupsdAddEvent(CUPSD_EVENT_JOB_PROGRESS, job->printer, job,
-		      "Printed %d page(s).", job->sheets->values[0].integer);
+	cupsdAddEvent(CUPSD_EVENT_JOB_PROGRESS, job->printer, job, "Printed %d page(s).", ippGetInteger(job->sheets, 0));
     }
     else if (loglevel == CUPSD_LOG_JOBSTATE)
     {
@@ -5280,5 +5343,5 @@ update_job_attrs(cupsd_job_t *job,	/* I - Job to update */
 
 
 /*
- * End of "$Id: job.c 12701 2015-06-08 18:33:44Z msweet $".
+ * End of "$Id: job.c 12700 2015-06-08 18:32:35Z msweet $".
  */

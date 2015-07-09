@@ -1,5 +1,5 @@
 /*
- * "$Id: raster.c 12679 2015-05-28 19:09:57Z msweet $"
+ * "$Id: raster.c 12678 2015-05-28 19:09:48Z msweet $"
  *
  * Raster file routines for CUPS.
  *
@@ -1457,5 +1457,5 @@ cups_write_fd(void          *ctx,	/* I - File descriptor pointer */
 
 
 /*
- * End of "$Id: raster.c 12679 2015-05-28 19:09:57Z msweet $".
+ * End of "$Id: raster.c 12678 2015-05-28 19:09:48Z msweet $".
  */

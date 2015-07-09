@@ -1,5 +1,5 @@
 .\"
-.\" "$Id: lpadmin.man 11922 2014-06-11 23:35:37Z msweet $"
+.\" "$Id: lpadmin.man 12513 2015-02-11 19:45:01Z msweet $"
 .\"
 .\" lpadmin man page for CUPS.
 .\"
@@ -216,5 +216,5 @@ CUPS Online Help (http://localhost:631/help)
 .SH COPYRIGHT
 Copyright \[co] 2007-2015 by Apple Inc.
 .\"
-.\" End of "$Id: lpadmin.man 11922 2014-06-11 23:35:37Z msweet $".
+.\" End of "$Id: lpadmin.man 12513 2015-02-11 19:45:01Z msweet $".
 .\"

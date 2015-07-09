@@ -272,9 +272,9 @@ Last-Update: 2015-02-10
 -Specifies that the response must/may/must not include the named attribute. Additional requirements can be added as predicates - see the "EXPECT PREDICATES" section for more information on predicates. Attribute names can specify member attributes by separating the attribute and member names with the forward slash, for example "media\-col/media\-size/x\-dimension".
 +Specifies that the response must/may/must not include the named attribute. Additional requirements can be added as predicates \- see the "EXPECT PREDICATES" section for more information on predicates. Attribute names can specify member attributes by separating the attribute and member names with the forward slash, for example "media\-col/media\-size/x\-dimension".
  .TP 5
- \fBFILE filename\fR
- Specifies a file to include at the end of the request. This is typically used when sending a test print file.
-@@ -213,7 +213,7 @@
+ \fBEXPECT-ALL \fIattribute-name \fR[ \fIpredicate(s) \fR]
+ .TP 5
+@@ -218,7 +218,7 @@
  will skip the current test if the previous test resulted in an error/failure.
  .TP 5
  \fBSTATUS \fIstatus-code \fR[ \fIpredicate\fR ]

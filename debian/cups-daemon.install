@@ -9,6 +9,8 @@ usr/lib/cups/backend/https
 usr/lib/cups/notifier
 usr/share/cups/mime/mime.types
 usr/share/cups/cupsd.conf.default
+usr/share/cups/cups-files.conf.default
+usr/share/cups/snmp.conf.default
 usr/sbin/cupsd
 usr/share/man/man5/classes.conf.5.gz
 usr/share/man/man5/cupsd.conf.5.gz

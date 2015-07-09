@@ -29,15 +29,15 @@ Last-Update: 2015-02-10
          (cupsd = cupsFileOpen(filename, "r")) != NULL)
 --- a/conf/Makefile
 +++ b/conf/Makefile
-@@ -77,7 +77,7 @@
+@@ -76,7 +76,7 @@
+ 		else \
  			$(INSTALL_CONFIG) -g $(CUPS_GROUP) $$file $(SERVERROOT) ; \
  		fi ; \
+-		$(INSTALL_CONFIG) -g $(CUPS_GROUP) $$file $(SERVERROOT)/$$file.default; \
++		$(INSTALL_CONFIG) -g $(CUPS_GROUP) $$file $(DATADIR)/$$file.default; \
  	done
--	$(INSTALL_CONFIG) -g $(CUPS_GROUP) cupsd.conf $(SERVERROOT)/cupsd.conf.default
-+	$(INSTALL_CONFIG) -g $(CUPS_GROUP) cupsd.conf $(DATADIR)/cupsd.conf.default
  	$(INSTALL_DIR) -m 755 $(DATADIR)/mime
  	for file in $(REPLACE); do \
- 		if test -r $(DATADIR)/mime/$$file ; then \
 @@ -124,9 +124,10 @@
  #
  

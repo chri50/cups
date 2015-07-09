@@ -1,5 +1,5 @@
 /*
- * "$Id: lpadmin.c 12604 2015-05-06 01:43:05Z msweet $"
+ * "$Id: lpadmin.c 12603 2015-05-06 01:42:51Z msweet $"
  *
  * "lpadmin" command for CUPS.
  *
@@ -1617,5 +1617,5 @@ validate_name(const char *name)		/* I - Name to check */
 
 
 /*
- * End of "$Id: lpadmin.c 12604 2015-05-06 01:43:05Z msweet $".
+ * End of "$Id: lpadmin.c 12603 2015-05-06 01:42:51Z msweet $".
  */

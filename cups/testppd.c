@@ -1,5 +1,5 @@
 /*
- * "$Id: testppd.c 12604 2015-05-06 01:43:05Z msweet $"
+ * "$Id: testppd.c 12603 2015-05-06 01:42:51Z msweet $"
  *
  * PPD test program for CUPS.
  *
@@ -51,6 +51,11 @@ static const char	*default_code =
 			"%%EndFeature\n"
 			"} stopped cleartomark\n"
 			"[{\n"
+			"%%BeginFeature: *OutputBin Tray1\n"
+			"OutputBin=Tray1\n"
+			"%%EndFeature\n"
+			"} stopped cleartomark\n"
+			"[{\n"
 			"%%BeginFeature: *MediaType Plain\n"
 			"MediaType=Plain\n"
 			"%%EndFeature\n"
@@ -77,6 +82,11 @@ static const char	*custom_code =
 			"[{\n"
 			"%%BeginFeature: *MediaType Plain\n"
 			"MediaType=Plain\n"
+			"%%EndFeature\n"
+			"} stopped cleartomark\n"
+			"[{\n"
+			"%%BeginFeature: *OutputBin Tray1\n"
+			"OutputBin=Tray1\n"
 			"%%EndFeature\n"
 			"} stopped cleartomark\n"
 			"[{\n"
@@ -1168,5 +1178,5 @@ main(int  argc,				/* I - Number of command-line arguments */
 
 
 /*
- * End of "$Id: testppd.c 12604 2015-05-06 01:43:05Z msweet $".
+ * End of "$Id: testppd.c 12603 2015-05-06 01:42:51Z msweet $".
  */
