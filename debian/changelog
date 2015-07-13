@@ -1,3 +1,13 @@
+cups (2.0.3-7) unstable; urgency=medium
+
+  [ Michael Biebl ]
+  * Transition from libsystemd-daemon to libsystemd:
+    - Update Build-Depends
+    - Patch the configuration system
+    (Closes: #779770)
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 13 Jul 2015 18:35:43 +0200
+
 cups (2.0.3-6) unstable; urgency=low
 
   * Fix the 'which' calls, causing uninstallation error of cups-bsd
