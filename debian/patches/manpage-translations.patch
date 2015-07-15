@@ -2,7 +2,7 @@ Description: po4a infrastructure and translations for manpages.
 Author: Nicolas François <nicolas.francois@centraliens.net>, Helge Kreutzmann <debian@helgefjell.de>
 Origin: vendor
 Bug-Debian: http://bugs.debian.org/478597
-Last-Update: 2014-01-03
+Last-Update: 2015-07-15
 
 --- a/man/Makefile
 +++ b/man/Makefile
@@ -56,20 +56,20 @@ Last-Update: 2014-01-03
  #
 --- /dev/null
 +++ b/man/Makefile.l10n
-@@ -0,0 +1,210 @@
+@@ -0,0 +1,235 @@
 +#
 +# "$Id: $"
 +#
-+#   Man page makefile for the Common UNIX Printing System (CUPS).
++# Man page makefile for CUPS.
 +#
-+#   Copyright 2007 by Apple Inc.
-+#   Copyright 1993-2006 by Easy Software Products.
++# Copyright 2007-2014 by Apple Inc.
++# Copyright 1993-2006 by Easy Software Products.
 +#
-+#   These coded instructions, statements, and computer programs are the
-+#   property of Apple Inc. and are protected by Federal copyright
-+#   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
-+#   which should have been included with this file.  If this file is
-+#   file is missing or damaged, see the license at "http://www.cups.org/".
++# These coded instructions, statements, and computer programs are the
++# property of Apple Inc. and are protected by Federal copyright
++# law.  Distribution and use rights are outlined in the file "LICENSE.txt"
++# which should have been included with this file.  If this file is
++# file is missing or damaged, see the license at "http://www.cups.org/".
 +#
 +
 +include ../../Makedefs
@@ -80,37 +80,47 @@ Last-Update: 2014-01-03
 +#
 +
 +MAN1	=	cancel.$(MAN1EXT) \
++		cups.$(MAN1EXT) \
 +		cups-config.$(MAN1EXT) \
 +		cupstestdsc.$(MAN1EXT) \
 +		cupstestppd.$(MAN1EXT) \
++		$(IPPFIND_MAN) \
++		ipptool.$(MAN1EXT) \
 +		lp.$(MAN1EXT) \
 +		lpoptions.$(MAN1EXT) \
-+		lppasswd.$(MAN1EXT) \
 +		lpq.$(MAN1EXT) \
 +		lprm.$(MAN1EXT) \
 +		lpr.$(MAN1EXT) \
-+		lpstat.$(MAN1EXT)
++		lpstat.$(MAN1EXT) \
++		ppdc.$(MAN1EXT) \
++		ppdhtml.$(MAN1EXT) \
++		ppdi.$(MAN1EXT) \
++		ppdmerge.$(MAN1EXT) \
++		ppdpo.$(MAN1EXT)
 +MAN5	=	classes.conf.$(MAN5EXT) \
 +		client.conf.$(MAN5EXT) \
++		cups-files.conf.$(MAN5EXT) \
 +		cups-snmp.conf.$(MAN5EXT) \
 +		cupsd.conf.$(MAN5EXT) \
-+		cups-files.conf.$(MAN5EXT) \
++		cupsd-logs.$(MAN5EXT) \
++		ipptoolfile.$(MAN5EXT) \
 +		mailto.conf.$(MAN5EXT) \
 +		mime.convs.$(MAN5EXT) \
 +		mime.types.$(MAN5EXT) \
++		ppdcfile.$(MAN5EXT) \
 +		printers.conf.$(MAN5EXT) \
 +		subscriptions.conf.$(MAN5EXT)
 +MAN7	=	backend.$(MAN7EXT) \
-+		filter.$(MAN7EXT)
++		filter.$(MAN7EXT) \
++		notifier.$(MAN7EXT)
 +MAN8	=	cupsaccept.$(MAN8EXT) \
 +		cupsaddsmb.$(MAN8EXT) \
 +		cupsctl.$(MAN8EXT) \
 +		cupsfilter.$(MAN8EXT) \
-+		cups-deviced.$(MAN8EXT) \
-+		cups-driverd.$(MAN8EXT) \
 +		cups-lpd.$(MAN8EXT) \
-+		cups-polld.$(MAN8EXT) \
++		cups-snmp.$(MAN8EXT) \
 +		cupsd.$(MAN8EXT) \
++		cupsd-helper.$(MAN8EXT) \
 +		cupsenable.$(MAN8EXT) \
 +		lpadmin.$(MAN8EXT) \
 +		lpinfo.$(MAN8EXT) \
@@ -165,13 +175,20 @@ Last-Update: 2014-01-03
 +
 +
 +#
-+# Install files...
++# Install all targets...
 +#
 +
 +MANDIR := $(MANDIR)/$(LANGUAGE)
 +AMANDIR := $(AMANDIR)/$(LANGUAGE)
 +
-+install:	all
++install:	all install-data install-headers install-libs install-exec
++
++
++#
++# Install data files...
++#
++
++install-data: all
 +	$(INSTALL_DIR) -m 755 $(MANDIR)/man1
 +	for file in $(wildcard $(MAN1)); do \
 +		echo Installing $$file in $(MANDIR)/man1...; \
@@ -192,18 +209,37 @@ Last-Update: 2014-01-03
 +		echo Installing $$file in $(AMANDIR)/man$(MAN8DIR)...; \
 +		$(INSTALL_MAN) $$file $(AMANDIR)/man$(MAN8DIR); \
 +	done
-+	if [ -f cupsreject.$(MAN8EXT) ]; then \
-+		$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsreject.$(MAN8EXT); \
-+	fi
-+	if [ -f cupsaccept.$(MAN8EXT) ]; then \
-+		$(LN) cupsaccept.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/cupsreject.$(MAN8EXT); \
-+	fi
-+	if [ -f cupsdisable.$(MAN8EXT) ]; then \
-+		$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT); \
-+	fi
-+	if [ -f cupsenable.$(MAN8EXT) ]; then \
-+		$(LN) cupsenable.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT); \
-+	fi
++	for file in accept cupsreject reject; do \
++		$(RM) $(AMANDIR)/man$(MAN8DIR)/$$file.$(MAN8EXT); \
++		$(LN) cupsaccept.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/$$file.$(MAN8EXT); \
++	done
++	$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
++	$(LN) cupsenable.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
++	for file in cups-deviced cups-driverd cups-exec; do \
++		$(RM) $(AMANDIR)/man$(MAN8DIR)/$$file.$(MAN8EXT); \
++		$(LN) cupsd-helper.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/$$file.$(MAN8EXT); \
++	done
++
++
++#
++# Install programs...
++#
++
++install-exec:
++
++
++#
++# Install headers...
++#
++
++install-headers:
++
++
++#
++# Install libraries...
++#
++
++install-libs:
 +
 +
 +#
@@ -226,7 +262,9 @@ Last-Update: 2014-01-03
 +	for file in $(MAN8); do \
 +		$(RM) $(AMANDIR)/man$(MAN8DIR)/$$file; \
 +	done
++	$(RM) $(AMANDIR)/man$(MAN8DIR)/accept.$(MAN8EXT)
 +	$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsreject.$(MAN8EXT)
++	$(RM) $(AMANDIR)/man$(MAN8DIR)/reject.$(MAN8EXT)
 +	$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
 +	-$(RMDIR) $(AMANDIR)/man$(MAN8DIR)
 +
