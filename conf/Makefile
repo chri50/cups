@@ -77,7 +77,7 @@ install-data:
 			$(INSTALL_CONFIG) -g $(CUPS_GROUP) $$file $(SERVERROOT) ; \
 		fi ; \
 	done
-	$(INSTALL_CONFIG) -g $(CUPS_GROUP) cupsd.conf $(SERVERROOT)/cupsd.conf.default
+	$(INSTALL_CONFIG) -g $(CUPS_GROUP) cupsd.conf $(DATADIR)/cupsd.conf.default
 	$(INSTALL_DIR) -m 755 $(DATADIR)/mime
 	for file in $(REPLACE); do \
 		if test -r $(DATADIR)/mime/$$file ; then \
@@ -124,9 +124,10 @@ install-libs:
 #
 
 uninstall:
-	for file in $(KEEP) $(REPLACE) cupsd.conf.default; do \
+	for file in $(KEEP) $(REPLACE); do \
 		$(RM) $(SERVERROOT)/$$file; \
 	done
+	$(RM) $(DATADIR)/cupsd.conf.default
 	-$(RMDIR) $(SERVERROOT)
 	for file in $(REPLACE); do \
 		$(RM) $(DATADIR)/mime/$$file; \
