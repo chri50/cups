@@ -7,9 +7,10 @@ pwg-raster-attributes.patch
 manpage-hyphen-minus.patch
 rootbackends-worldreadable.patch
 fixes-for-jobs-with-multiple-files-and-multiple-formats.patch
+libsystemd.patch
+cupsd-logs-manpage-in-section-5.patch
 
 # patches which should go upstream
-libsystemd.patch
 cupsd-upstart-support.patch
 # Fix tests, should probably go upstream
 tests-ignore-warnings.patch
