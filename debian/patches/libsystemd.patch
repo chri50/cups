@@ -2,6 +2,7 @@ Description: Check for libsystemd instead of libsystemd-daemon; libsystemd repla
 Author: Michael Biebl <biebl@debian.org>
 Orgin: vendor
 Bug-Debian: #779770
+Bug-Upstream: https://www.cups.org/str.php?L4669
 Last-Update: 2015-07-13
 --- a/config-scripts/cups-startup.m4
 +++ b/config-scripts/cups-startup.m4

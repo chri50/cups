@@ -20,6 +20,7 @@ usr/share/man/man5/mailto.conf.5.gz
 usr/share/man/man5/mime.types.5.gz
 usr/share/man/man5/printers.conf.5.gz
 usr/share/man/man7/backend.7.gz
+usr/share/man/man7/notifier.7.gz
 usr/share/man/man8/cupsd.8.gz
 lib/systemd/system/org.cups.cupsd.socket  => lib/systemd/system/cups.socket
 lib/systemd/system/org.cups.cupsd.path    => lib/systemd/system/cups.path
