@@ -1,3 +1,7 @@
+# These two were removed in 1.4.0~svn8773-1~, but we're only finally doing this in 2.0.3-9~
+rm_conffile /etc/cups/mime.convs 2.0.3-9~
+rm_conffile /etc/cups/mime.types 2.0.3-9~
+
 rm_conffile /etc/cups/acroread.conf 1.6.2-9~
 rm_conffile /etc/cups/pdftops.conf  1.6.2-9~
 rm_conffile /etc/modprobe.d/blacklist-cups-usblp.conf 1.5.3-2.1~
