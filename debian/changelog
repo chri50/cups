@@ -1,3 +1,17 @@
+cups (2.0.3-9) unstable; urgency=medium
+
+  [ Helge Kreutzmann ]
+  * Update German man page (1606t320f184u)
+
+  [ Didier Raboud ]
+  * Add patch to relax socket access checking to only check read-and-write, not
+    execution (Closes: #792730)
+  * Add maintscript stanzas to properly remove the mime.convs and mime.types
+    conffiles in /etc/cups that are not shipped in this path since
+    1.4.0~svn8773-1~ (Closes: #792731, LP: #1475683)
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 20 Jul 2015 17:38:49 +0200
+
 cups (2.0.3-8) unstable; urgency=medium
 
   * Mark the libsystemd as reported (and fixed) upstream

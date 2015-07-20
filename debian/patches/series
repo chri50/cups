@@ -9,6 +9,7 @@ rootbackends-worldreadable.patch
 fixes-for-jobs-with-multiple-files-and-multiple-formats.patch
 libsystemd.patch
 cupsd-logs-manpage-in-section-5.patch
+str4679-fix-local-domainsocket-access-checking.patch
 
 # patches which should go upstream
 cupsd-upstart-support.patch
