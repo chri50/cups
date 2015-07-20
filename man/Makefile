@@ -43,6 +43,7 @@ MAN5	=	classes.conf.$(MAN5EXT) \
 		cups-files.conf.$(MAN5EXT) \
 		cups-snmp.conf.$(MAN5EXT) \
 		cupsd.conf.$(MAN5EXT) \
+		cupsd-logs.$(MAN5EXT) \
 		ipptoolfile.$(MAN5EXT) \
 		mailto.conf.$(MAN5EXT) \
 		mime.convs.$(MAN5EXT) \
@@ -61,7 +62,6 @@ MAN8	=	cupsaccept.$(MAN8EXT) \
 		cups-snmp.$(MAN8EXT) \
 		cupsd.$(MAN8EXT) \
 		cupsd-helper.$(MAN8EXT) \
-		cupsd-logs.$(MAN8EXT) \
 		cupsenable.$(MAN8EXT) \
 		lpadmin.$(MAN8EXT) \
 		lpinfo.$(MAN8EXT) \
