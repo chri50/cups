@@ -1,6 +1,8 @@
 # patches accepted and committed upstream
 ipp-everywhere-ppd-generator.patch
 ippserver-fix-pwg-raster-document-types-supported-values.patch
+str4538-fix-redirection-from-cgi-scripts.patch
+str4646-fix-the-activejobs-loop-in-cupsdcheckjobs.patch
 
 # patches sent upstream
 pwg-raster-attributes.patch
