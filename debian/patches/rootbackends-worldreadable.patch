@@ -37,7 +37,7 @@ Last-Update: 2015-02-10
    cupsDirClose(dir);
 --- a/scheduler/job.c
 +++ b/scheduler/job.c
-@@ -1231,7 +1231,7 @@
+@@ -1233,7 +1233,7 @@
        else if (stat(command, &backinfo))
  	backroot = 0;
        else
