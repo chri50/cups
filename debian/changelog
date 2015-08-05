@@ -1,3 +1,24 @@
+cups (2.1~rc1-1) experimental; urgency=low
+
+  * New 2.1~rc1 upstream version
+
+  [ Helge Kreutzmann ]
+  * Update German man page (2000t39f71u)
+
+  [ Didier Raboud ]
+  * Merge upstream version 2.0.4
+    - Fixed processing of server overrides without port numbers
+      (STR #4675, Closes: #711327, #791876)
+  * Drop patches included upstream:
+    - str4538-fix-redirection-from-cgi-scripts.patc
+    - str4646-fix-the-activejobs-loop-in-cupsdcheckjobs.patch
+    - cupsd-logs-manpage-in-section-5.patch
+    - libsystemd.patch
+    - str4679-fix-local-domainsocket-access-checking.patch
+    Refresh other patches
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 05 Aug 2015 14:39:41 +0200
+
 cups (2.1~b1-4) experimental; urgency=medium
 
   * Merge 2.0.3-10 from unstable

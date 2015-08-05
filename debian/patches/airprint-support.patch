@@ -35,7 +35,7 @@ Last-Update: 2015-02-10
  # Raw filter...
 --- a/conf/mime.types
 +++ b/conf/mime.types
-@@ -111,6 +111,9 @@
+@@ -118,6 +118,9 @@
  image/x-bitmap			bmp string(0,BM) + !printable(2,14)
  image/x-icon			ico
  
