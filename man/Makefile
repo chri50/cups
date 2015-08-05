@@ -1,9 +1,9 @@
 #
-# "$Id: Makefile 11919 2014-06-11 15:38:28Z msweet $"
+# "$Id: Makefile 12814 2015-07-30 15:03:33Z msweet $"
 #
 # Man page makefile for CUPS.
 #
-# Copyright 2007-2014 by Apple Inc.
+# Copyright 2007-2015 by Apple Inc.
 # Copyright 1993-2006 by Easy Software Products.
 #
 # These coded instructions, statements, and computer programs are the
@@ -241,5 +241,5 @@ mantohtml:	mantohtml.o ../cups/$(LIBCUPSSTATIC)
 
 
 #
-# End of "$Id: Makefile 11919 2014-06-11 15:38:28Z msweet $".
+# End of "$Id: Makefile 12814 2015-07-30 15:03:33Z msweet $".
 #

@@ -233,3 +233,16 @@ html:	manpages.gz $(MANTOHTML)
 		echo "    $$file..."; \
 		$(MANTOHTML) `basename $$file .$(MAN8EXT)`.man >../../doc/help/man-`basename $$file .$(MAN8EXT)`.$(LANGUAGE).html; \
 	done
+
+.SUFFIXES: .man.in .man
+# Keep the generated .man because they are needed for the html rule
+.PRECIOUS: %.man
+
+.man.in.man:
+	sed -e 's:@CUPS_DATADIR@:$(DATADIR):' \
+	    -e 's:@CUPS_SERVERROOT@:$(SERVERROOT):' \
+	    -e 's:@CUPS_SERVERBIN@:$(SERVERBIN):' $< > $@
+
+#
+# End of "$Id: $".
+#
