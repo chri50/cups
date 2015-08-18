@@ -1,3 +1,10 @@
+cups (2.1~rc1-3) experimental; urgency=medium
+
+  * Remove leftover test changelog entry
+  * Update the GetJobs patch in tests for the mips FTBFS
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 18 Aug 2015 19:56:55 +0200
+
 cups (2.1~rc1-2) experimental; urgency=medium
 
   * Add patch to use the IPv4 127.0.0.1 address instead the 'localhost'
@@ -70,12 +77,6 @@ cups (2.1~b1-1) experimental; urgency=low
   * Install the cups-files.conf and snmp.conf default files in usr/share/cups
 
  -- Didier Raboud <odyx@debian.org>  Thu, 09 Jul 2015 13:36:17 +0200
-
-cups (2.0.4-1~OdyX0) UNRELEASED; urgency=medium
-
-  * Try a reproducible build
-
- -- Didier Raboud <odyx@debian.org>  Thu, 06 Aug 2015 18:26:12 +0200
 
 cups (2.0.3-10) unstable; urgency=medium
 

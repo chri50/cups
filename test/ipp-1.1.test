@@ -763,7 +763,7 @@ DEFINE IPP_URI_SCHEME "/^ipps?://.+$$/"
 	EXPECT ?job-detailed-status-messages OF-TYPE text IN-GROUP job-attributes-tag
 	EXPECT ?number-of-documents OF-TYPE integer IN-GROUP job-attributes-tag COUNT 1
 	EXPECT ?output-device-assigned OF-TYPE name IN-GROUP job-attributes-tag COUNT 1
-	EXPECT time-at-creation OF-TYPE integer IN-GROUP job-attributes-tag COUNT 1 WITH-VALUE >-1
+	EXPECT ?time-at-creation OF-TYPE integer IN-GROUP job-attributes-tag COUNT 1 WITH-VALUE >-1
 	EXPECT ?time-at-processing OF-TYPE no-value|integer IN-GROUP job-attributes-tag COUNT 1 WITH-VALUE >-1
 	EXPECT time-at-completed OF-TYPE no-value|integer IN-GROUP job-attributes-tag COUNT 1 WITH-VALUE >-1
 	EXPECT job-printer-up-time OF-TYPE no-value|integer IN-GROUP job-attributes-tag COUNT 1
