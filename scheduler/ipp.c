@@ -2702,6 +2702,8 @@ add_printer(cupsd_client_t  *con,	/* I - Client connection */
 
       cupsdLogMessage(CUPSD_LOG_DEBUG,
 		      "Copied PPD file successfully");
+      chmod(dstfile, 0644);
+      chown(dstfile, RunUser, getgid());
     }
   }
 

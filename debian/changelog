@@ -1,3 +1,12 @@
+cups (2.1~rc1-4) experimental; urgency=medium
+
+  [ Till Kamppeter ]
+  * Add patch from upstream to fix scheduler and make sure that the permissions
+    and ownerships of PPDs in /etc/cups/ppd/ are always the same
+    (STR #4703, Closes: #784271)
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 28 Aug 2015 15:36:40 +0200
+
 cups (2.1~rc1-3) experimental; urgency=medium
 
   * Remove leftover test changelog entry

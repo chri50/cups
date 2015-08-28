@@ -1,0 +1,15 @@
+Description: The scheduler sets the permissions and ownerships of PPD files in /etc/cups/ppd/ differently depending on whether the IPP request to create or modify the print queue had the PPD attached or a model URI pointing to a system-supplied PPD. This leads to the PPDs in /etc/cups/ppd/ sometimes not being world-readable. Now we assure consistent permissions and ownerships by setting them explicitly in all cases.
+Author: Till Kamppeter <till.kamppeter@gmail.com>
+Bug-Upstream: https://www.cups.org/str.php?L4703
+Last-Update: 2015-08-28
+--- a/scheduler/ipp.c
++++ b/scheduler/ipp.c
+@@ -2702,6 +2702,8 @@
+ 
+       cupsdLogMessage(CUPSD_LOG_DEBUG,
+ 		      "Copied PPD file successfully");
++      chmod(dstfile, 0644);
++      chown(dstfile, RunUser, getgid());
+     }
+   }
+ 
