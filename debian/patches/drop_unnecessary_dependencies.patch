@@ -19,7 +19,7 @@ Last-Update: 2015-10-02
  IPPFIND_MAN	=	@IPPFIND_MAN@
 --- a/cups/Makefile
 +++ b/cups/Makefile
-@@ -308,7 +308,7 @@
+@@ -309,7 +309,7 @@
  libcups.so.2:	$(LIBOBJS)
  	echo Linking $@...
  	$(DSO) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(LIBOBJS) $(LIBGSSAPI) \
@@ -28,7 +28,7 @@ Last-Update: 2015-10-02
  	$(RM) `basename $@ .2`
  	$(LN) $@ `basename $@ .2`
  
-@@ -329,7 +329,7 @@
+@@ -330,7 +330,7 @@
  		-compatibility_version 2.0.0 \
  		-exported_symbols_list t.exp \
  		$(LIBOBJS) $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \

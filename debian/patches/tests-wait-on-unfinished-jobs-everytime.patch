@@ -6,7 +6,7 @@ Last-Update: 2015-02-10
 
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -782,6 +782,11 @@
+@@ -783,6 +783,11 @@
  echo "<PRE>" >>$strfile
  
  for file in 5*.sh; do

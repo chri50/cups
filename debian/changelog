@@ -1,3 +1,12 @@
+cups (2.1.0-0ubuntu1) wily; urgency=medium
+
+  * New 2.1.0 upstream version
+  * Removed scheduler-create-ppd-correct-permissions.patch, included
+    upstream.
+  * Refreshed patches with quilt.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed,  2 Sep 2015 18:12:01 -0300
+
 cups (2.1~rc1-4) experimental; urgency=medium
 
   [ Till Kamppeter ]
