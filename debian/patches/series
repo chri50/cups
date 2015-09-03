@@ -1,7 +1,6 @@
 # patches accepted and committed upstream
 
 # patches sent upstream
-scheduler-create-ppd-correct-permissions.patch
 pwg-raster-attributes.patch
 manpage-hyphen-minus.patch
 rootbackends-worldreadable.patch
