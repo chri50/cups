@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2015-08-05 11:51+0200\n"
+"POT-Creation-Date: 2015-09-02 10:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,7 @@ msgid "CUPS"
 msgstr ""
 
 #. type: TH
-#: backend.man:15 filter.man:15
+#: backend.man:15
 #, no-wrap
 msgid "4 April 2014"
 msgstr ""
@@ -522,8 +522,8 @@ msgid "COPYRIGHT"
 msgstr ""
 
 #. type: Plain text
-#: backend.man:202 cancel.man:96 classes.conf.man:33 cupsaccept.man:91 cupsaddsmb.man.in:128 cups-config.man:113 cupsctl.man:103 cupsd-helper.man:91 cupsd-logs.man:238 cupsd.man.in:124 cupsenable.man:103 cupsfilter.man:140 cups-lpd.man.in:121 cups.man:144 cups-snmp.conf.man:66 cups-snmp.man.in:58 cupstestdsc.man:48 cupstestppd.man:148 filter.man:225 ../test/ippserver.man:169 lpc.man:61 lpinfo.man:135 lp.man:219 lpmove.man:79 lpoptions.man.in:138 lpq.man:69 lpr.man:146 lprm.man:87 lpstat.man:149 mailto.conf.man:49 mime.convs.man:63 mime.types.man:113 notifier.man:41 ppdcfile.man:162 ppdc.man:103 ppdhtml.man:48 ppdi.man:55 ppdmerge.man:51 ppdpo.man:55 printers.conf.man:33 subscriptions.conf.man:33
-msgid "Copyright \\[co] 2007-2014 by Apple Inc."
+#: backend.man:202 cancel.man:96 classes.conf.man:33 client.conf.man.in:83 cupsaccept.man:91 cupsaddsmb.man.in:128 cups-config.man:113 cupsctl.man:103 cupsd.conf.man.in:873 cupsd-helper.man:91 cupsd-logs.man:238 cupsd.man.in:124 cupsenable.man:103 cups-files.conf.man.in:226 cupsfilter.man:140 cups-lpd.man.in:121 cups.man:144 cups-snmp.conf.man:66 cups-snmp.man.in:58 cupstestdsc.man:48 cupstestppd.man:148 filter.man:225 ipptoolfile.man:622 ipptool.man:245 lpadmin.man:217 lpc.man:61 lpinfo.man:135 lp.man:219 lpmove.man:79 lpoptions.man.in:138 lpq.man:69 lpr.man:146 lprm.man:87 lpstat.man:149 mailto.conf.man:49 mime.convs.man:63 mime.types.man:113 notifier.man:41 ppdcfile.man:162 ppdc.man:103 ppdhtml.man:48 ppdi.man:55 ppdmerge.man:51 ppdpo.man:55 printers.conf.man:33 subscriptions.conf.man:33
+msgid "Copyright \\[co] 2007-2015 by Apple Inc."
 msgstr ""
 
 #. type: TH
@@ -961,11 +961,6 @@ msgstr ""
 #. type: Plain text
 #: client.conf.man.in:82 cups-config.man:112
 msgid "B<cups>(1), CUPS Online Help (http://localhost:631/help)"
-msgstr ""
-
-#. type: Plain text
-#: client.conf.man.in:83 cupsd.conf.man.in:873 cups-files.conf.man.in:226 ipptoolfile.man:622 ipptool.man:245 lpadmin.man:217
-msgid "Copyright \\[co] 2007-2015 by Apple Inc."
 msgstr ""
 
 #. type: TH
@@ -7127,6 +7122,12 @@ msgstr ""
 msgid "filter"
 msgstr ""
 
+#. type: TH
+#: filter.man:15 ipptool.man:14 mime.convs.man:15
+#, no-wrap
+msgid "26 August 2015"
+msgstr ""
+
 #. type: Plain text
 #: filter.man:18
 msgid "filter - cups file conversion filter interface"
@@ -7241,7 +7242,7 @@ msgid ""
 "attributes used when the job was submitted. Use the B<cupsParseOptions>()  "
 "function to load the options into a B<cups_option_t> array and the "
 "B<cupsGetOption>()  function to get the value of a specific attribute.  Be "
-"careful to look for common aliases of IPP attributes such as \"lansdscape\" "
+"careful to look for common aliases of IPP attributes such as \"landscape\" "
 "for the IPP \"orientation-requested\" attribute."
 msgstr ""
 
@@ -8424,7 +8425,7 @@ msgstr ""
 
 #. type: Plain text
 #: ippfind.man:258
-msgid "Copyright \\[co] 2013-2014 by Apple Inc."
+msgid "Copyright \\[co] 2013-2015 by Apple Inc."
 msgstr ""
 
 #. type: TH
@@ -8714,6 +8715,11 @@ msgstr ""
 #. type: Plain text
 #: ../test/ippserver.man:168
 msgid "PWG Internet Printing Protocol Workgroup (http://www.pwg.org/ipp)"
+msgstr ""
+
+#. type: Plain text
+#: ../test/ippserver.man:169
+msgid "Copyright \\[co] 2007-2014 by Apple Inc."
 msgstr ""
 
 #. type: TH
@@ -10271,12 +10277,6 @@ msgstr ""
 msgid "ipptool"
 msgstr ""
 
-#. type: TH
-#: ipptool.man:14
-#, no-wrap
-msgid "3 February 2015"
-msgstr ""
-
 #. type: Plain text
 #: ipptool.man:17
 msgid "ipptool - perform internet printing protocol requests"
@@ -10535,7 +10535,7 @@ msgstr ""
 #. type: Plain text
 #: ipptool.man:187
 msgid ""
-"The B<ipptool> program returns 0 if all tests were sucessful and 1 "
+"The B<ipptool> program returns 0 if all tests were successful and 1 "
 "otherwise."
 msgstr ""
 
@@ -11185,7 +11185,7 @@ msgid "lpinfo"
 msgstr ""
 
 #. type: TH
-#: lpinfo.man:15 lpmove.man:15 lpoptions.man.in:15 lpq.man:15 lpstat.man:15 mailto.conf.man:15 mime.convs.man:15 mime.types.man:15 notifier.man:15 ppdcfile.man:15 ppdc.man:15 ppdhtml.man:15 ppdi.man:15 ppdmerge.man:15 ppdpo.man:15
+#: lpinfo.man:15 lpmove.man:15 lpoptions.man.in:15 lpq.man:15 lpstat.man:15 mailto.conf.man:15 mime.types.man:15 notifier.man:15 ppdcfile.man:15 ppdc.man:15 ppdhtml.man:15 ppdi.man:15 ppdmerge.man:15 ppdpo.man:15
 #, no-wrap
 msgid "12 June 2014"
 msgstr ""
@@ -12645,7 +12645,7 @@ msgstr ""
 #. type: Plain text
 #: mime.convs.man:36
 msgid ""
-"The I<destination/type> field specifies the destiantion MIME media type that "
+"The I<destination/type> field specifies the destination MIME media type that "
 "is produced by the filter."
 msgstr ""
 

@@ -5,7 +5,7 @@ Last-Update: 2015-08-06
 
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -504,7 +504,7 @@
+@@ -505,7 +505,7 @@
  cat >$BASE/cupsd.conf <<EOF
  StrictConformance Yes
  Browsing Off
@@ -14,7 +14,7 @@ Last-Update: 2015-08-06
  Listen $BASE/sock
  PassEnv LOCALEDIR
  PassEnv DYLD_INSERT_LIBRARIES
-@@ -633,7 +633,7 @@
+@@ -634,7 +634,7 @@
  export SHLIB_PATH
  
  CUPS_DISABLE_APPLE_DEFAULT=yes; export CUPS_DISABLE_APPLE_DEFAULT
@@ -23,7 +23,7 @@ Last-Update: 2015-08-06
  CUPS_SERVERROOT=$BASE; export CUPS_SERVERROOT
  CUPS_STATEDIR=$BASE; export CUPS_STATEDIR
  CUPS_DATADIR=$BASE/share; export CUPS_DATADIR
-@@ -766,10 +766,10 @@
+@@ -767,10 +767,10 @@
  	echo "" >>$strfile
  
  	if test $file = ipp-2.1.test; then

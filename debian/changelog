@@ -1,3 +1,16 @@
+cups (2.1.0-1) experimental; urgency=medium
+
+  * New 2.1.0 upstream release
+
+  [ Till Kamppeter ]
+  * Removed scheduler-create-ppd-correct-permissions.patch, included upstream
+  * Refreshed patches with quilt for the new 2.1.0 source code
+
+  [ Didier Raboud ]
+  * Refresh manpage translations
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 03 Sep 2015 12:24:12 +0200
+
 cups (2.1~rc1-4) experimental; urgency=medium
 
   [ Till Kamppeter ]
