@@ -1,3 +1,20 @@
+cups (2.1.0-2) unstable; urgency=low
+
+  * Upload to unstable
+
+  [ Helge Kreutzmann ]
+  * Update German man page (2105t4f1u)
+
+  [ Jean-Paul Guillonneau ]
+  * Update french manual pages translations, for 2.0.3-6 (Closes: #798257)
+
+  [ Didier Raboud ]
+  * Refresh the manpage translations for 2.1.0
+  * Given upstream's new enforcement of ConfigFilePerm on /etc/cups/ppd/ files,
+    make sure this is enforced on upgrade
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 11 Sep 2015 09:51:24 +0200
+
 cups (2.1.0-1) experimental; urgency=medium
 
   * New 2.1.0 upstream release
