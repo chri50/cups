@@ -1,3 +1,15 @@
+cups (2.1.0-3) unstable; urgency=medium
+
+  [ Helge Kreutzmann ]
+  * Update German man page (2114t4f1u)
+
+  [ Till Kamppeter ]
+  * The libusb-based USB backend sometimes did not unload the kernel usblp
+    module if it was preventing the backend from accessing the printer causing
+    an infinite loop taking 100% CPU (CUPS STR #4707)
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 14 Sep 2015 11:17:28 +0200
+
 cups (2.1.0-2) unstable; urgency=low
 
   * Upload to unstable
