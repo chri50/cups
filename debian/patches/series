@@ -1,4 +1,5 @@
 # patches accepted and committed upstream
+usb-backend-fix-infinite-loop-when-usblp-module-attached.patch
 
 # patches sent upstream
 pwg-raster-attributes.patch
