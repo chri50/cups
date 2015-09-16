@@ -1,3 +1,18 @@
+cups (2.1.0-4) unstable; urgency=medium
+
+  [ Till Kamppeter ]
+  * Corrected info header (author and Debian bug closure) of
+    usb-backend-fix-infinite-loop-when-usblp-module-attached.patch
+  * USB-backend: Added new quirk rules for delayed closing of the backend for
+    several older HP LaserJet printers (CUPS STR #4549)
+
+  [ Didier Raboud ]
+  * Add maintscript stanzas to properly remove the oopstops.{convs,types}
+    conffiles in /etc/cups that are not shipped since 1.3.10-3
+    (Closes: #799025)
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 16 Sep 2015 19:00:13 +0200
+
 cups (2.1.0-3) unstable; urgency=medium
 
   [ Helge Kreutzmann ]
