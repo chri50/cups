@@ -1,0 +1,68 @@
+Description: Some older HP LaserJet printers need a delayed close when printing
+ using the libusb-based USB backend.
+Author: Michael Sweet <msweet@apple.com>
+Bug-Upstream: https://www.cups.org/str.php?L4549
+Last-Update: 2015-09-15
+--- a/backend/org.cups.usb-quirks
++++ b/backend/org.cups.usb-quirks
+@@ -5,6 +5,7 @@
+ # product ID (omit for all vendor products), and a list of known issues:
+ #
+ #   blacklist     The printer is not functional with the USB backend.
++#   delay-close   Delay close/reset of selected interface
+ #   no-reattach   Do no re-attach usblp kernel module after printing.
+ #   soft-reset    Do a soft reset after printing for cleanup.
+ #   unidir        Only supported unidirectional I/O
+@@ -227,3 +228,13 @@
+ 
+ # All Intermec devices (STR #4553)
+ 0x067e no-reattach
++
++# HP LaserJet 1150 (STR #4549)
++0x03f0 0x0f17 delay-close
++
++# HP LaserJet 1300 (STR #4549)
++0x03f0 0x1017 delay-close
++0x03f0 0x1117 delay-close
++
++# HP LaserJet 1320 (STR #4549)
++0x03f0 0x1d17 delay-close
+--- a/backend/usb-libusb.c
++++ b/backend/usb-libusb.c
+@@ -3,7 +3,7 @@
+  *
+  * LIBUSB interface code for CUPS.
+  *
+- * Copyright 2007-2014 by Apple Inc.
++ * Copyright 2007-2015 by Apple Inc.
+  *
+  * These coded instructions, statements, and computer programs are the
+  * property of Apple Inc. and are protected by Federal copyright
+@@ -103,6 +103,7 @@
+ #define USB_QUIRK_USB_INIT	0x0010	/* Needs vendor USB init string */
+ #define USB_QUIRK_VENDOR_CLASS	0x0020	/* Descriptor uses vendor-specific
+ 					   Class or SubClass */
++#define USB_QUIRK_DELAY_CLOSE	0x0040	/* Delay close */
+ #define USB_QUIRK_WHITELIST	0x0000	/* no quirks */
+ 
+ 
+@@ -641,6 +642,9 @@
+   * Close the connection and input file and general clean up...
+   */
+ 
++  if (g.printer->quirks & USB_QUIRK_DELAY_CLOSE)
++    sleep(1);
++
+   close_device(g.printer);
+ 
+  /*
+@@ -1211,6 +1215,9 @@
+       if (strstr(line, " blacklist"))
+         quirk->quirks |= USB_QUIRK_BLACKLIST;
+ 
++      if (strstr(line, " delay-close"))
++        quirk->quirks |= USB_QUIRK_DELAY_CLOSE;
++
+       if (strstr(line, " no-reattach"))
+         quirk->quirks |= USB_QUIRK_NO_REATTACH;
+ 
