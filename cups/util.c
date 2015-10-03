@@ -991,8 +991,6 @@ cupsGetPPD3(http_t     *http,		/* I  - HTTP connection or @code CUPS_HTTP_DEFAUL
     http2 = http;
   else if ((http2 = httpConnect2(hostname, port, NULL, AF_UNSPEC,
 				 cupsEncryption(), 1, 30000, NULL)) == NULL)
-  if ((http2 = httpConnect2(http_hostname, http_port, NULL, AF_UNSPEC,
-				 cupsEncryption(), 1, 30000, NULL)) == NULL)
   {
     DEBUG_puts("1cupsGetPPD3: Unable to connect to server");
 
@@ -1530,8 +1528,10 @@ cups_get_printer_uri(
     }
 
     if (device_uri &&
-        (!strncmp(device_uri, "ipp://", 6) ||
-         !strncmp(device_uri, "ipps://", 7) ||
+        (((!strncmp(device_uri, "ipp://", 6) ||
+	   !strncmp(device_uri, "ipps://", 7)) &&
+	  !strcmp(device_uri + strlen(device_uri) - strlen(resource),
+		  resource)) ||
          ((strstr(device_uri, "._ipp.") != NULL ||
            strstr(device_uri, "._ipps.") != NULL) &&
           !strcmp(device_uri + strlen(device_uri) - 5, "/cups"))))
