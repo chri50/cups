@@ -1,3 +1,9 @@
+cups (2.1.0-4ubuntu2) wily; urgency=medium
+
+  * Accidentally deactivated ppd-poll-with-client-conf.patch, reactivated.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Sat,  3 Oct 2015 19:17:01 -0300
+
 cups (2.1.0-4ubuntu1) wily; urgency=medium
 
   * Applications were not able to load the PPD file from the CUPS
