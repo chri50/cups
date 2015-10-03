@@ -127,7 +127,7 @@ command use the current user and security session. This may result in different 
 The following command will generate a PDF preview of job 42 for a printer named "myprinter" and save it to a file named "preview.pdf":
 .nf
 
-    cupsfilter -m application/pdf -d myprinter -j 42 >preview.pdf
+    cupsfilter \-m application/pdf \-d myprinter \-j 42 >preview.pdf
 .fi
 .SH SEE ALSO
 .BR cups (1),
