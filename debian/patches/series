@@ -33,7 +33,7 @@ airprint-support.patch
 cups-snmp-oids-device-id-hp-ricoh.patch
 no-conffile-timestamp.patch
 pidfile.patch
-#ppd-poll-with-client-conf.patch
+ppd-poll-with-client-conf.patch
 removecvstag.patch
 rename-systemd-units.patch
 
