@@ -1,3 +1,11 @@
+cups (2.1.0-4ubuntu1) wily; urgency=medium
+
+  * Applications were not able to load the PPD file from the CUPS
+    queues for IPP network printers as they were confused with remote
+    CUPS queues (CUPS STR #4725).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Sat,  3 Oct 2015 18:35:01 -0300
+
 cups (2.1.0-4) unstable; urgency=medium
 
   [ Till Kamppeter ]

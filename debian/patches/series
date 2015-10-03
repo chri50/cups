@@ -3,6 +3,7 @@ usb-backend-fix-infinite-loop-when-usblp-module-attached.patch
 usb-backend-delayed-closing-for-old-laserjets.patch
 
 # patches sent upstream
+fix-ppd-file-load-for-ipp-printers.patch
 pwg-raster-attributes.patch
 manpage-hyphen-minus.patch
 rootbackends-worldreadable.patch
@@ -32,7 +33,7 @@ airprint-support.patch
 cups-snmp-oids-device-id-hp-ricoh.patch
 no-conffile-timestamp.patch
 pidfile.patch
-ppd-poll-with-client-conf.patch
+#ppd-poll-with-client-conf.patch
 removecvstag.patch
 rename-systemd-units.patch
 
