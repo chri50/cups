@@ -1528,8 +1528,10 @@ cups_get_printer_uri(
     }
 
     if (device_uri &&
-        (!strncmp(device_uri, "ipp://", 6) ||
-         !strncmp(device_uri, "ipps://", 7) ||
+        (((!strncmp(device_uri, "ipp://", 6) ||
+	   !strncmp(device_uri, "ipps://", 7)) &&
+	  !strcmp(device_uri + strlen(device_uri) - strlen(resource),
+		  resource)) ||
          ((strstr(device_uri, "._ipp.") != NULL ||
            strstr(device_uri, "._ipps.") != NULL) &&
           !strcmp(device_uri + strlen(device_uri) - 5, "/cups"))))
