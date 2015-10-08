@@ -1,3 +1,10 @@
+cups (2.1.0-4ubuntu3) wily; urgency=medium
+
+  * Updated the patch to patch loading the PPDs for IPP print queues
+    to the corrected upstream fix (CUPS STR #4725).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Thu,  8 Oct 2015 11:46:01 -0300
+
 cups (2.1.0-4ubuntu2) wily; urgency=medium
 
   * Accidentally deactivated ppd-poll-with-client-conf.patch, reactivated.
