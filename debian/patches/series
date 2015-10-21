@@ -1,6 +1,7 @@
 # patches accepted and committed upstream
 usb-backend-fix-infinite-loop-when-usblp-module-attached.patch
 usb-backend-delayed-closing-for-old-laserjets.patch
+fix-ppd-file-load-for-ipp-printers.patch
 
 # patches sent upstream
 pwg-raster-attributes.patch
