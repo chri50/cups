@@ -7,7 +7,9 @@ usr/lib/cups/backend/dnssd usr/lib/cups/backend-available
 usr/lib/cups/backend/snmp usr/lib/cups/backend-available
 usr/lib/cups/cgi-bin
 usr/lib/cups/monitor
-usr/lib/cups/daemon/
+usr/lib/cups/daemon/cups-deviced
+usr/lib/cups/daemon/cups-driverd
+usr/lib/cups/daemon/cups-lpd
 usr/lib/cups/filter/rasterto*
 usr/lib/cups/driver/
 usr/sbin/cupsfilter
