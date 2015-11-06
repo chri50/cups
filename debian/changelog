@@ -1,3 +1,13 @@
+cups (2.1.0-6) unstable; urgency=medium
+
+  [ Till Kamppeter ]
+  * Move /usr/lib/cups/daemom/cups-exec from the "cups" binary package to the
+    "cups-daemon" binary package as it is already needed for basic job
+    execution and therefore already in the level-1 (minimum) printing stack
+    (LP: #1509423)
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 06 Nov 2015 17:09:44 +0100
+
 cups (2.1.0-5) unstable; urgency=medium
 
   [ Till Kamppeter ]
