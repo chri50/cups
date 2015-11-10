@@ -76,6 +76,26 @@ present, only the last one is used. This directive is not supported on OS X 10.7
 </BLOCKQUOTE>
 
 
+<H2 CLASS="title"><A NAME="SSLOptions">SSLOptions</A></H2>
+
+<H3>Examples</H3>
+
+<PRE CLASS="command">
+SSLOptions None
+SSLOptions AllowSSL3
+SSLOptions AllowRC4
+</PRE>
+
+<H3>Description</H3>
+
+<P>Sets encryption options (only in /etc/cups/client.conf). By
+default, CUPS only supports encryption using TLS v1.0 or higher using
+known secure cipher suites. The <i>AllowRC4</i> option enables the
+128-bit RC4 cipher suites, which are required for some older clients
+that do not implement newer ones. The <i>AllowSSL3</i> option enables
+SSL v3.0, which is required for some older clients that do not support
+TLS v1.0.</P>
+
 <H2 CLASS="title"><SPAN CLASS="info">CUPS 1.6/OS X 10.8</SPAN><A NAME="User">User</A></H2>
 
 <H3>Examples</H3>
