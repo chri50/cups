@@ -17,13 +17,13 @@
 lprm \- cancel print jobs
 .SH SYNOPSIS
 .B lprm
-[ -E ] [ -U
+[ \-E ] [ \-U
 .I username
-] [ -h
+] [ \-h
 .I server[:port]
-] [ -P
+] [ \-P
 .I destination[/instance]
-] [ - ] [
+] [ \- ] [
 .I job ID(s)
 ]
 .SH DESCRIPTION
@@ -35,19 +35,19 @@ all jobs.
 .SH OPTIONS
 The \fIlprm\fR command supports the following options:
 .TP 5
--E
+\-E
 .br
 Forces encryption when connecting to the server.
 .TP 5
--P destination[/instance]
+\-P destination[/instance]
 .br
 Specifies the destination printer or class.
 .TP 5
--U username
+\-U username
 .br
 Specifies an alternate username.
 .TP 5
--h server[:port]
+\-h server[:port]
 .br
 Specifies an alternate server.
 .SH COMPATIBILITY
