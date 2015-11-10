@@ -107,6 +107,10 @@ cupsdStartTLS(cupsd_client_t *con)	/* I - Client connection */
   SSL_CTX_set_options(context, SSL_OP_NO_SSLv2); /* Only use SSLv3 or TLS */
   if (SSLOptions & CUPSD_SSL_NOEMPTY)
     SSL_CTX_set_options(context, SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS);
+  if (!(SSLOptions & CUPSD_SSL_ALLOW_SSL3))
+    SSL_CTX_set_options(context, SSL_OP_NO_SSLv3); /* Don't use SSLv3 */
+  if (!(SSLOptions & CUPSD_SSL_ALLOW_RC4))
+    SSL_CTX_set_cipher_list(context, "DEFAULT:-RC4");
   SSL_CTX_use_PrivateKey_file(context, ServerKey, SSL_FILETYPE_PEM);
   SSL_CTX_use_certificate_chain_file(context, ServerCertificate);
 

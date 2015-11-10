@@ -3298,17 +3298,54 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
     else if (!_cups_strcasecmp(line, "SSLOptions"))
     {
      /*
+      * SSLOptions [AllowRC4] [AllowSSL3] [NoEmptyFragments] [None]
+      */
+
+      int	options = 0;	/* SSL/TLS options */
+
+     /*
       * SSLOptions options
       */
 
-      if (!value || !_cups_strcasecmp(value, "none"))
-        SSLOptions = CUPSD_SSL_NONE;
-      else if (!_cups_strcasecmp(value, "noemptyfragments"))
-        SSLOptions = CUPSD_SSL_NOEMPTY;
-      else
-        cupsdLogMessage(CUPSD_LOG_ERROR,
-	                "Unknown value \"%s\" for SSLOptions directive on "
-			"line %d.", value, linenum);
+      if (value)
+      {
+	char	*start,		/* Start of option */
+		*end;		/* End of option */
+
+	for (start = value; *start; start = end)
+	{
+	 /*
+	  * Find end of keyword...
+	  */
+
+	  end = start;
+	  while (*end && !_cups_isspace(*end))
+	    end++;
+
+	  if (*end)
+	    *end++ = '\0';
+
+	 /*
+	  * Compare...
+	  */
+
+	  if (!_cups_strcasecmp(start, "NoEmptyFragments"))
+	    options |= CUPSD_SSL_NOEMPTY;
+	  else if (!_cups_strcasecmp(start, "AllowRC4"))
+	    options |= CUPSD_SSL_ALLOW_RC4;
+	  else if (!_cups_strcasecmp(start, "AllowSSL3"))
+	    options |= CUPSD_SSL_ALLOW_SSL3;
+	  else if (!_cups_strcasecmp(start, "None"))
+	    options = 0;
+	  else
+	    cupsdLogMessage(CUPSD_LOG_ERROR,
+			    "Unknown value \"%s\" for SSLOptions directive on "
+			    "line %d.", start, linenum);
+	}
+      }
+
+      SSLOptions = options;
+      _httpTLSSetOptions (SSLOptions & ~CUPSD_SSL_NOEMPTY);
     }
 #endif /* HAVE_SSL */
     else if (!_cups_strcasecmp(line, "AccessLog") ||
