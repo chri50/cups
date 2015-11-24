@@ -1,3 +1,11 @@
+cups (2.1.0-6ubuntu1) xenial; urgency=medium
+
+  * debian/rules: Drop Ubuntu special-casing of dh_installinit. The
+    --upstart-only option has been a deprecated no-op for a long time.
+    (LP: #1519228)
+
+ -- Martin Pitt <martin.pitt@ubuntu.com>  Tue, 24 Nov 2015 09:48:46 +0100
+
 cups (2.1.0-6) unstable; urgency=medium
 
   [ Till Kamppeter ]
