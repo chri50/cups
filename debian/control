@@ -185,8 +185,10 @@ Depends: ${shlibs:Depends},
  libcups2 (= ${binary:Version}),
  cups-filters-core-drivers (>= 1.0.24-3~)
 Recommends: avahi-daemon
-Replaces: cups (<< 1.7.1-4~)
-Breaks: cups (<< 1.7.1-4~)
+Replaces: cups (<< 1.7.1-4~),
+ cups-server-common (<< 2.1.0-7~)
+Breaks: cups (<< 1.7.1-4~),
+ cups-server-common (<< 2.1.0-7~)
 Multi-Arch: foreign
 Description: Common UNIX Printing System(tm) - PPD-less printing
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 

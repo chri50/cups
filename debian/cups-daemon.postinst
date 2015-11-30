@@ -21,13 +21,15 @@ if [ "$1" = configure ]; then
         if [ -z "$configfileperm" ]; then
             configfileperm=0640
         fi
-        for i in /etc/cups/ppd/*
-        do
-            if [ -f $i ]; then
-                chown root:lp $i
-                chmod $configfileperm $i
-            fi
-        done
+	if [ -d /etc/cups/ppd ]; then
+            for i in /etc/cups/ppd/*
+            do
+		if [ -f $i ]; then
+                    chown root:lp $i
+                    chmod $configfileperm $i
+		fi
+            done
+	fi
     fi
 
     # symlink snakeoil SSL certificate if present
