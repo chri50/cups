@@ -1,3 +1,16 @@
+cups (2.1.0-7) unstable; urgency=medium
+
+  [ Till Kamppeter ]
+  * Removed deprecated no-op "--upstart-only" option from dh_installinit call
+    in debian/rules (LP: #1519228)
+  * Moved empty directories /etc/cups/ppd and /etc/cups/interfaces to the
+    cups-core-drivers binary package
+  * Moved mime.convs from cups-server-common to cups-core-drivers to get it
+    onto mobile devices with level-2 printing stack (support for IPP printers
+    with common PDLs auto-set-up by cups-browsed)
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 30 Nov 2015 22:21:04 +0100
+
 cups (2.1.0-6) unstable; urgency=medium
 
   [ Till Kamppeter ]
