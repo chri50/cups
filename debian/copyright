@@ -4,7 +4,7 @@ Upstream-Contact: Michael Sweet <msweet@apple.com>
 Source: https://cups.org/software.php
 
 Files: *
-Copyright: 2007-2013, Apple Inc.
+Copyright: 2007-2015, Apple Inc.
 License: GPL-2.0 with AOSDL exception
 
 Files: cups/* filter/*

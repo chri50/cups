@@ -39,7 +39,7 @@ Last-Update: 2015-02-10
   /*
 --- a/scheduler/subscriptions.c
 +++ b/scheduler/subscriptions.c
-@@ -1087,7 +1087,7 @@
+@@ -1085,7 +1085,7 @@
    strftime(temp, sizeof(temp) - 1, "%Y-%m-%d %H:%M", curdate);
  
    cupsFilePuts(fp, "# Subscription configuration file for " CUPS_SVERSION "\n");

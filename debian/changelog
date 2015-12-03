@@ -1,3 +1,16 @@
+cups (2.1.2-1) unstable; urgency=low
+
+  * New 2.1.2 upstream release
+
+  * Drop patches included upstream:
+    - usb-backend-fix-infinite-loop-when-usblp-module-attached.patch
+    - usb-backend-delayed-closing-for-old-laserjets.patch
+    - fix-ppd-file-load-for-ipp-printers.patch
+    Refresh 2 other patches
+  * Update Apple Inc. Copyright years in debian/copyright
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 03 Dec 2015 21:25:48 +0100
+
 cups (2.1.0-7) unstable; urgency=medium
 
   [ Till Kamppeter ]

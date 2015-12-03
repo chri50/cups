@@ -1,5 +1,5 @@
 /*
- * "$Id: usb-darwin.c 12818 2015-07-31 13:29:25Z msweet $"
+ * "$Id: usb-darwin.c 12928 2015-10-23 21:31:58Z msweet $"
  *
  * Copyright 2005-2015 Apple Inc. All rights reserved.
  *
@@ -1654,7 +1654,7 @@ static CFStringRef copy_printer_interface_deviceid(printer_interface_t printer, 
 			{
 				ret = CFStringCreateWithBytes(NULL, (const UInt8 *) &request.pData[2], actualLength - 2, kCFStringEncodingUTF8, false);
 			}
-			else {
+			else if (actualLength > 2) {
 				err = sendRequest(actualLength);
 				if (err == kIOReturnSuccess && request.wLenDone > 0)
 				{
@@ -2537,5 +2537,5 @@ log_usb_class_driver(int is_64bit)	/* I - Is the USB class driver 64-bit? */
 
 
 /*
- * End of "$Id: usb-darwin.c 12818 2015-07-31 13:29:25Z msweet $".
+ * End of "$Id: usb-darwin.c 12928 2015-10-23 21:31:58Z msweet $".
  */
