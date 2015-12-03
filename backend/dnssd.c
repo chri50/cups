@@ -1,5 +1,5 @@
 /*
- * "$Id: dnssd.c 12818 2015-07-31 13:29:25Z msweet $"
+ * "$Id: dnssd.c 12970 2015-11-13 20:02:51Z msweet $"
  *
  * DNS-SD discovery backend for CUPS.
  *
@@ -921,13 +921,6 @@ get_device(cups_array_t *devices,	/* I - Device array */
   * Yes, add the device...
   */
 
-#ifdef HAVE_DNSSD
-  DNSServiceConstructFullName(fullName, serviceName, regtype, replyDomain);
-#else /* HAVE_AVAHI */
-  avahi_service_name_join(fullName, kDNSServiceMaxDomainName,
-			   serviceName, regtype, replyDomain);
-#endif /* HAVE_DNSSD */
-
   device           = calloc(sizeof(cups_device_t), 1);
   device->name     = strdup(serviceName);
   device->domain   = strdup(replyDomain);
@@ -943,8 +936,7 @@ get_device(cups_array_t *devices,	/* I - Device array */
 #ifdef HAVE_DNSSD
   DNSServiceConstructFullName(fullName, serviceName, regtype, replyDomain);
 #else /* HAVE_AVAHI */
-  avahi_service_name_join(fullName, kDNSServiceMaxDomainName,
-			   serviceName, regtype, replyDomain);
+  avahi_service_name_join(fullName, kDNSServiceMaxDomainName, serviceName, regtype, replyDomain);
 #endif /* HAVE_DNSSD */
 
   device->fullName = strdup(fullName);
@@ -1330,5 +1322,5 @@ unquote(char       *dst,		/* I - Destination buffer */
 
 
 /*
- * End of "$Id: dnssd.c 12818 2015-07-31 13:29:25Z msweet $".
+ * End of "$Id: dnssd.c 12970 2015-11-13 20:02:51Z msweet $".
  */

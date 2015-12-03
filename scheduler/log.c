@@ -1,5 +1,5 @@
 /*
- * "$Id: log.c 12857 2015-08-31 15:00:45Z msweet $"
+ * "$Id: log.c 12928 2015-10-23 21:31:58Z msweet $"
  *
  * Log file routines for the CUPS scheduler.
  *
@@ -1483,7 +1483,7 @@ format_log_line(const char *message,	/* I - Printf-style format string */
   * Format the log message...
   */
 
-  len = vsnprintf(log_line, log_linesize, message, ap);
+  len = _cups_safe_vsnprintf(log_line, log_linesize, message, ap);
 
  /*
   * Resize the buffer as needed...
@@ -1492,7 +1492,6 @@ format_log_line(const char *message,	/* I - Printf-style format string */
   if ((size_t)len >= log_linesize && log_linesize < 65536)
   {
     char	*temp;			/* Temporary string pointer */
-
 
     len ++;
 
@@ -1517,5 +1516,5 @@ format_log_line(const char *message,	/* I - Printf-style format string */
 
 
 /*
- * End of "$Id: log.c 12857 2015-08-31 15:00:45Z msweet $".
+ * End of "$Id: log.c 12928 2015-10-23 21:31:58Z msweet $".
  */

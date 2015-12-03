@@ -1,5 +1,45 @@
-CHANGES.txt - 2.1.0 - 2015-08-31
+CHANGES.txt - 2.1.2 - 2015-12-02
 --------------------------------
+
+CHANGES IN CUPS V2.1.2
+
+	- Re-release of CUPS 2.1.1 as CUPS 2.1.2 due to error in tagging of the
+	  2.1.1 release (pulled content from the 2.2.x tree instead)
+
+
+CHANGES IN CUPS V2.1.1
+
+	- Security hardening fixes (<rdar://problem/23131948>,
+	  <rdar://problem/23132108>, <rdar://problem/23132353>,
+	  <rdar://problem/23132803>, <rdar://problem/23133230>,
+	  <rdar://problem/23133393>, <rdar://problem/23133466>,
+	  <rdar://problem/23133833>, <rdar://problem/23133998>,
+	  <rdar://problem/23134228>, <rdar://problem/23134299>,
+	  <rdar://problem/23134356>, <rdar://problem/23134415>,
+	  <rdar://problem/23134506>, <rdar://problem/23135066>,
+	  <rdar://problem/23135122>, <rdar://problem/23135207>,
+	  <rdar://problem/23144290>, <rdar://problem/23144358>,
+	  <rdar://problem/23144461>)
+	- The cupsGetPPD* functions did not work with IPP printers (STR #4725)
+	- Some older HP LaserJet printers need a delayed close when printing
+	  using the libusb-based USB backend (STR #4549)
+	- The libusb-based USB backend did not unload the kernel usblp module
+	  if it was preventing the backend from accessing the printer
+	  (STR #4707)
+	- Current Primera printers were incorrectly reported as Fargo printers
+	  (STR #4708)
+	- The IPP backend did not always handle jobs getting canceled at the
+	  printer (<rdar://problem/22716820>)
+	- Scheduler logging change (STR #4728)
+	- Added USB quirk for Canon MP530 (STR #4730)
+	- The scheduler did not deliver job notifications for jobs submitted to
+	  classes (STR #4733)
+	- Changing the printer-is-shared value for a remote queue did not
+	  produce an error (STR #4738)
+	- The IPP backend incorrectly included the job-password attribute in
+	  Validate-Job requests (<rdar://problem/23531939>)
+	- Updated localizations (STR #4709)
+
 
 CHANGES IN CUPS V2.1.0
 

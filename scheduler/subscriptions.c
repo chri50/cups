@@ -1,5 +1,5 @@
 /*
- * "$Id: subscriptions.c 11558 2014-02-06 18:33:34Z msweet $"
+ * "$Id: subscriptions.c 12978 2015-11-17 19:29:52Z msweet $"
  *
  * Subscription routines for the CUPS scheduler.
  *
@@ -105,9 +105,7 @@ cupsdAddEvent(
     * Check if this subscription requires this event...
     */
 
-    if ((sub->mask & event) != 0 &&
-        (sub->dest == dest || !sub->dest) &&
-	(sub->job == job || !sub->job))
+    if ((sub->mask & event) != 0 && (sub->dest == dest || !sub->dest || sub->job == job))
     {
      /*
       * Need this event, so create a new event record...
@@ -1617,5 +1615,5 @@ cupsd_update_notifier(void)
 
 
 /*
- * End of "$Id: subscriptions.c 11558 2014-02-06 18:33:34Z msweet $".
+ * End of "$Id: subscriptions.c 12978 2015-11-17 19:29:52Z msweet $".
  */
