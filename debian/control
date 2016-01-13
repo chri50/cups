@@ -32,7 +32,7 @@ Build-Depends:
  libkrb5-dev,
  libpam0g-dev,
  libpaper-dev,
- libpng-dev | libpng12-dev, 
+ libpng-dev,
  libslp-dev,
  libsystemd-dev [linux-any],
  libtiff-dev,

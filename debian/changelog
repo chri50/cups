@@ -1,3 +1,18 @@
+cups (2.1.2-2) unstable; urgency=medium
+
+  [ Till Kamppeter ]
+  * Add patch to avoid letting pending subscriptions prevent CUPS from
+    auto-shutdown when idle (CUPS STR#4754)
+  * Add patch to allow auto-shutdown when idle if the web interface is not
+    turned off in the CUPS configuration, the web interface is too important
+    (CUPS STR #4755)
+
+  [ Didier Raboud ]
+  * Remove libpng12-dev Build-Depends alternative to libpng-dev
+    (Closes: #810183)
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 13 Jan 2016 16:21:31 +0100
+
 cups (2.1.2-1) unstable; urgency=low
 
   * New 2.1.2 upstream release
