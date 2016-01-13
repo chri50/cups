@@ -1,4 +1,5 @@
 # patches accepted and committed upstream
+fix-pending-subscriptions-prevent-idle-timeout.patch
 
 # patches sent upstream
 pwg-raster-attributes.patch
@@ -7,6 +8,7 @@ rootbackends-worldreadable.patch
 fixes-for-jobs-with-multiple-files-and-multiple-formats.patch
 
 # patches which should go upstream
+auto-shutdown-on-idle-also-with-webinterface-on.patch
 cupsd-upstart-support.patch
 # Fix tests, should probably go upstream
 tests-ignore-warnings.patch
