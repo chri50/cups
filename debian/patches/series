@@ -1,5 +1,4 @@
 # patches accepted and committed upstream
-fix-pending-subscriptions-prevent-idle-timeout.patch
 
 # patches sent upstream
 pwg-raster-attributes.patch
