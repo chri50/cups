@@ -1,3 +1,12 @@
+cups (2.1.3-1) unstable; urgency=medium
+
+  * New 2.1.3 upstream release:
+    - /admin resource files (like config files of CUPS) were not served when
+      the web interface was disabled, breaking utilities like "cupsctl"
+      (CUPS STR #4755)
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 13 Feb 2016 16:35:01 +0100
+
 cups (2.1.2-2) unstable; urgency=medium
 
   [ Till Kamppeter ]

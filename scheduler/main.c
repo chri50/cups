@@ -1,5 +1,5 @@
 /*
- * "$Id: main.c 12700 2015-06-08 18:32:35Z msweet $"
+ * "$Id: main.c 13040 2016-01-11 20:29:13Z msweet $"
  *
  * Main loop for the CUPS scheduler.
  *
@@ -2319,5 +2319,5 @@ usage(int status)			/* O - Exit status */
 
 
 /*
- * End of "$Id: main.c 12700 2015-06-08 18:32:35Z msweet $".
+ * End of "$Id: main.c 13040 2016-01-11 20:29:13Z msweet $".
  */
