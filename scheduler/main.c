@@ -790,9 +790,6 @@ main(int  argc,				/* I - Number of command-line args */
 
     if (timeout == 86400 && OnDemand && IdleExitTimeout &&
         !cupsArrayCount(ActiveJobs) &&
-#  ifdef HAVE_SYSTEMD
-        !WebInterface &&
-#  endif /* HAVE_SYSTEMD */
 	(!Browsing || !BrowseLocalProtocols || !cupsArrayCount(Printers)))
     {
       timeout		= IdleExitTimeout;
