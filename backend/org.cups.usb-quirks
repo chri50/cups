@@ -121,6 +121,9 @@
 # Xerox WorkCentre 3210 https://bugs.launchpad.net/bugs/1102470
 0x0924 0x4293 no-reattach
 
+# Xerox WorkCentre 3220 https://bugs.launchpad.net/bugs/1406203 https://github.com/apple/cups/issues/4789
+0x0924 0x4294 no-reattach
+
 # QinHeng Electronics CH340S (USB -> Parallel adapter), https://bugs.launchpad.net/bugs/1000253
 0x1a86 0x7584 no-reattach
 
@@ -219,6 +222,9 @@
 
 # Lexmark E238 (STR #4448)
 0x043d 0x009a no-reattach
+
+# Lexmark C540n (STR #4778)
+0x043d 0x0139 no-reattach
 
 # Canon MX310 (STR #4482)
 0x04a9 0x1728 unidir
