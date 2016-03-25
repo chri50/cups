@@ -244,4 +244,4 @@ override_dh_installpam:
 	dh_installpam --remaining-packages
 
 override_dh_strip:
-	dh_strip --dbg-package=cups-dbg
+	dh_strip --dbgsym-migration='cups-dbg (<< 2.1.3-5~)'
