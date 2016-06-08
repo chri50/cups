@@ -1,3 +1,22 @@
+cups (2.1.3-6) unstable; urgency=medium
+
+  [ Till Kamppeter ]
+  * De-activate CUPS web interface when the files for it are not installed.
+    This allows for auto-shutdown on mobile device installations.
+  * Make CUPS with the Upstart support patch (Ubuntu-only) also build on
+    ubuntuBSD (LP: #1582002)
+
+  [ Helge Kreutzmann ]
+  * Update German translation
+
+  [ Didier Raboud ]
+  * Backport upstream-included patch to fix malformed device-id for printers
+    found by dnssd, thanks to Laurent Bigonville.
+  * Bump S-V to 3.9.8 without changes needed
+  * Drop duplicate 'using' word in libcups2's README.Debian
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 08 Jun 2016 21:43:14 +0200
+
 cups (2.1.3-5) unstable; urgency=medium
 
   * Automatically generate debug package, B-D against debhelper >= 9.20160114

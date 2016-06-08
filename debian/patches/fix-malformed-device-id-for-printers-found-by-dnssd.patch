@@ -1,0 +1,35 @@
+From 14a71491b6f42f24e25448f88f07e1180aaefcc0 Mon Sep 17 00:00:00 2001
+From: Laurent Bigonville <bigon@bigon.be>
+Date: Wed, 8 Jun 2016 08:59:33 +0200
+Subject: [PATCH] Fix malformed device-id for printers found by dnssd
+
+Add missing semicolon between printer model and command
+
+Closes: #4835
+---
+ backend/dnssd.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+--- a/backend/dnssd.c
++++ b/backend/dnssd.c
+@@ -1194,9 +1194,9 @@
+       snprintf(device_id, sizeof(device_id), "MFG:%s;MDL:%s;",
+ 	       make_and_model, model);
+     else if (!_cups_strncasecmp(model, "designjet ", 10))
+-      snprintf(device_id, sizeof(device_id), "MFG:HP;MDL:%s", model + 10);
++      snprintf(device_id, sizeof(device_id), "MFG:HP;MDL:%s;", model + 10);
+     else if (!_cups_strncasecmp(model, "stylus ", 7))
+-      snprintf(device_id, sizeof(device_id), "MFG:EPSON;MDL:%s", model + 7);
++      snprintf(device_id, sizeof(device_id), "MFG:EPSON;MDL:%s;", model + 7);
+     else if ((ptr = strchr(model, ' ')) != NULL)
+     {
+      /*
+@@ -1206,7 +1206,7 @@
+       memcpy(make_and_model, model, (size_t)(ptr - model));
+       make_and_model[ptr - model] = '\0';
+ 
+-      snprintf(device_id, sizeof(device_id), "MFG:%s;MDL:%s",
++      snprintf(device_id, sizeof(device_id), "MFG:%s;MDL:%s;",
+ 	       make_and_model, ptr + 1);
+     }
+   }
