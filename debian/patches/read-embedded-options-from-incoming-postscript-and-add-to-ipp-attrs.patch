@@ -12,7 +12,7 @@ Last-Update: 2015-02-10
 
 --- a/scheduler/ipp.c
 +++ b/scheduler/ipp.c
-@@ -8371,6 +8371,11 @@
+@@ -8383,6 +8383,11 @@
    ipp_attribute_t	*attr,		/* Current attribute */
  			*attr2,		/* Job attribute */
  			*prev2;		/* Previous job attribute */
@@ -24,7 +24,7 @@ Last-Update: 2015-02-10
  
  
   /*
-@@ -8432,6 +8437,85 @@
+@@ -8444,6 +8449,85 @@
    }
  
   /*

@@ -1,4 +1,5 @@
 # patches accepted and committed upstream
+fix-malformed-device-id-for-printers-found-by-dnssd.patch
 
 # patches sent upstream
 usb-quirk-lexmark-C540n.patch

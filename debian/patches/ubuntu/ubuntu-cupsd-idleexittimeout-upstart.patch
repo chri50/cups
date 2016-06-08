@@ -9,13 +9,13 @@ Last-Update: 2015-02-10
    if (httpAddrPort(&(lis->address)) == 443)
      lis->encryption = HTTP_ENCRYPT_ALWAYS;
  #  endif /* HAVE_SSL */
-+
++#if defined(HAVE_LAUNCHD) || defined(HAVE_SYSTEMD)
 +  /* As we are started on-demand, stop on idle */
 +  if (!IdleExitTimeout)
 +    IdleExitTimeout = 30;
 +  cupsdLogMessage(CUPSD_LOG_DEBUG, "As we are starting on-demand (socket-triggered), activate exit-on-idle mode, timeout: %d seconds.",
 +                      IdleExitTimeout);
-+
++#endif
  }
  
  /*

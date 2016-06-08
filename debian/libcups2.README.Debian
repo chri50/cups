@@ -74,7 +74,7 @@ in /etc/cups can be used to alter this behaviour.
 Printing to advertised, shared print queues
 ===========================================
 
-Suppose you are on a network which has a server using using the
+Suppose you are on a network which has a server using the
 Bonjour/DNS-SD/mDNS protocol to advertise its local print queues as being
 shared. Your machine will have a list of the advertised queues if you have
 avahi-daemon installed and running. But your cups needs a little help to

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 2.0.3-10\n"
 "POT-Creation-Date: 2015-09-07 18:01+0200\n"
-"PO-Revision-Date: 2015-09-12 17:25+0200\n"
+"PO-Revision-Date: 2016-05-01 14:00+0200\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
 "Language: de\n"
@@ -229,7 +229,7 @@ msgstr ""
 "Der Befehlsname (I<argv[0]>) wird auf die Geräte-URI des Zieldruckers "
 "gesetzt. Jede Authentifizierungsinformation wird aus I<argv[0]> entfernt, "
 "daher wird Backend-Entwicklern empfohlen, die Umgebungsvariable "
-"B<DEVICE_URI> zu verwenden, wennimmer Authentifizierungsinformationen "
+"B<DEVICE_URI> zu verwenden, wenn immer Authentifizierungsinformationen "
 "benötigt werden. Die Funktion B<cupsBackendDeviceURI>() kann zum Ermitteln "
 "der korrekten Geräte-URI verwandt werden."
 
@@ -317,7 +317,7 @@ msgid ""
 "such as a parallel, USB, or SCSI device."
 msgstr ""
 "Die Geräte-URI bezieht sich auf spezielle Geräte mit direktem Zugriff ohne "
-"Optionen, wie z.B. parallele, USB- oder SCSI-Geräte."
+"Optionen, wie z.B. Parallelport-, USB- oder SCSI-Geräte."
 
 #. type: TP
 #: backend.man:98
@@ -371,10 +371,10 @@ msgid ""
 "URI using that scheme. The I<device-uri> field specifies the full URI to use "
 "when communicating with the device."
 msgstr ""
-"Das Feld I<scheme> stellt das vom Backend unterstützte URI-Schemata bereit. "
+"Das Feld I<scheme> stellt das vom Backend unterstützte URI-Schema bereit. "
 "Backends sollten diese Form nur verwenden, wenn das Backend jede dem "
-"Schemata folgende URI unterstützt. Das Feld I<device-uri> spezifiziert die "
-"komplette URI, die bei der Kommunikation mit dem Gerät verwandt werden soll."
+"Schema folgende URI unterstützt. Das Feld I<device-uri> legt die "
+"komplette URI, die bei der Kommunikation mit dem Gerät verwandt werden soll, fest."
 
 #. type: Plain text
 #: backend.man:118
@@ -383,8 +383,8 @@ msgid ""
 "device, e.g. \"Example Foojet 2000\". If the make and model is not known, "
 "you must report \"Unknown\"."
 msgstr ""
-"Das Feld I<device-make-and-model> spezifiziert die Marke und das Modell des "
-"Gerätes, z.B. »Beispiel Foojet 2000«. Falls die Marke und das Modell nicht "
+"Das Feld I<device-make-and-model> legt die Marke und das Modell des "
+"Gerätes, z.B. »Beispiel Foojet 2000«, fest. Falls die Marke und das Modell nicht "
 "bekannt ist, müssen Sie »Unknown« melden."
 
 #. type: Plain text
@@ -394,8 +394,8 @@ msgid ""
 "Typically this includes the make and model along with the port number or "
 "network address, e.g. \"Example Foojet 2000 USB #1\"."
 msgstr ""
-"Das Feld I<device-info> spezifiziert zusätzliche Informationen über das "
-"Gerät. Typischerweise enthält es die Marke und das Modell zusammen mit der "
+"Das Feld I<device-info> legt zusätzliche Informationen über das "
+"Gerät fest. Typischerweise enthält es die Marke und das Modell zusammen mit der "
 "Port-Nummer oder der Netz-Adresse, z.B. »Beispiel Foojet 2000 USB #1«."
 
 #. type: Plain text
@@ -404,9 +404,9 @@ msgid ""
 "The optional I<device-id> field specifies the IEEE-1284 device ID string for "
 "the device, which is used to select a matching driver."
 msgstr ""
-"Das optionale Feld I<device-id> spezifiziert die IEEE-1284-Geräte-ID-"
+"Das optionale Feld I<device-id> legt die IEEE-1284-Geräte-ID-"
 "Zeichenkette für das Gerät, die zur Auswahl des passenden Treibers verwandt "
-"wird."
+"wird, fest."
 
 #. type: Plain text
 #: backend.man:130
@@ -415,8 +415,8 @@ msgid ""
 "device, which is often used to pre-populate the printer-location attribute "
 "when adding a printer."
 msgstr ""
-"Das optionale Feld I<device-location> spezifiziert den physischen Standort "
-"des Geräts. Es wird oft dazu verwandt, die Drucker-Standort-Attribute vorab "
+"Das optionale Feld I<device-location> legt den physischen Standort "
+"des Geräts fest. Es wird oft dazu verwandt, die Drucker-Standort-Attribute vorab "
 "zu belegen, wenn ein Drucker hinzugefügt wird."
 
 #. type: SS
@@ -433,7 +433,7 @@ msgid ""
 "typically \"lp\"."
 msgstr ""
 "Backends, denen die Lese- und Ausführungsrechte für »world« (andere) fehlen, "
-"werden als Benutzer root ausgeführt. Andernfalls läuft das Backend unter "
+"werden als Benutzer »root« ausgeführt. Andernfalls läuft das Backend unter "
 "einem unprivilegierten Benutzerkonto, typischerweise »lp«."
 
 #. type: SH
@@ -565,7 +565,8 @@ msgid ""
 msgstr ""
 "Die Druckdatei wurde aufgrund eines temporären Problems nicht erfolgreich "
 "übertragen. Der Auftragsplaner wird den Auftrag zu einem zukünftigen "
-"Zeitpunkt erneut versuchen - andere Aufträge können vor diesem drucken."
+"Zeitpunkt erneut versuchen - andere Aufträge können vor diesem gedruckt "
+"werden."
 
 #. type: TP
 #: backend.man:158
@@ -837,7 +838,7 @@ msgstr "B<-h> I<Hostname>[I<:Port>]"
 #. type: Plain text
 #: cancel.man:57 lpmove.man:55 lpq.man:58 lpr.man:77 lprm.man:57 lpstat.man:104
 msgid "Specifies an alternate server."
-msgstr "Spezifiziert einen alternativen Server."
+msgstr "Legt einen alternativen Server fest."
 
 #. type: TP
 #: cancel.man:57 cupsaccept.man:63 cupsctl.man:50 cupsenable.man:61
@@ -851,8 +852,8 @@ msgstr "B<-U >I<Benutzername>"
 #: cancel.man:60 lp.man:110
 msgid "Specifies the username to use when connecting to the server."
 msgstr ""
-"Spezifiziert den Benutzernamen, der zur Kommunikation mit dem Server "
-"verwandt wird."
+"Legt den Benutzernamen, der zur Kommunikation mit dem Server "
+"verwandt wird, fest."
 
 #. type: TP
 #: cancel.man:60
@@ -892,7 +893,7 @@ msgid ""
 "any printable character except SPACE, TAB, \"/\", or \"#\". Also, printer "
 "and class names are I<not> case-sensitive."
 msgstr ""
-"Anders als das System V-Drucksystem erlaubt es CUPS, dass Druckernamen alle "
+"Anders als das System-V-Drucksystem erlaubt es CUPS, dass Druckernamen alle "
 "druckbaren Zeichen außer Leertaste, Tabulator, »/« und »#« enthalten. Auch "
 "sind Drucker- und Klassennamen I<unabhängig> von der Groß-/Kleinschreibung."
 
@@ -1138,8 +1139,8 @@ msgid ""
 "typically \"host\", \"http\", or \"ipp\".  CUPS adds the remote hostname "
 "(\"name@server.example.com\") for you. The default name is \"http\"."
 msgstr ""
-"Spezifiziert den Kerberos-Dienstenamen, der für die Authentifizierung "
-"benutzt wird, typischerweise »host«, »http« oder »ipp«. CUPS fügt den "
+"Legt den Kerberos-Dienstenamen, der für die Authentifizierung "
+"benutzt wird, typischerweise »host«, »http« oder »ipp«, fest. CUPS fügt den "
 "Hostnamen des Rechners in der Ferne (»name@server.example.com«) für Sie "
 "hinzu. Der Standardname lautet »http«."
 
@@ -1162,8 +1163,8 @@ msgid ""
 "Specifies the address and optionally the port to use when connecting to the "
 "server.  B<Note: This directive it not supported on OS X 10.7 or later.>"
 msgstr ""
-"Spezifiziert die Adresse und optional den Port, die bei der Verbindung zum "
-"Server verwandt werden sollen. B<Hinweis: Diese Direktive wird auf OS X 10.7 "
+"Legt die Adresse und optional den Port, die bei der Verbindung zum "
+"Server verwandt werden sollen, fest. B<Hinweis: Diese Direktive wird auf OS X 10.7 "
 "oder neuer nicht unterstützt.>"
 
 #. type: TP
@@ -1178,8 +1179,8 @@ msgid ""
 "Specifies the address and optionally the port to use when connecting to a "
 "server running CUPS 1.3.12 and earlier."
 msgstr ""
-"Spezifiziert die Adresse und optional den Port, die bei der Verbindung zum "
-"Server verwandt werden sollen, auf dem CUPS 1.3.12 oder älter läuft. "
+"Legt die Adresse und optional den Port, die bei der Verbindung zum "
+"Server verwandt werden sollen, auf dem CUPS 1.3.12 oder älter läuft, fest."
 
 #. type: TP
 #: client.conf.man.in:58
@@ -1227,7 +1228,7 @@ msgstr "B<User >I<Name>"
 #: client.conf.man.in:71
 msgid "Specifies the default user name to use for requests."
 msgstr ""
-"Spezifiziert den für Anfragen standardmäßigen zu verwendenden Benutzer."
+"Legt den für Anfragen standardmäßigen zu verwendenden Benutzer fest."
 
 #. type: TP
 #: client.conf.man.in:71
@@ -1247,7 +1248,7 @@ msgid ""
 "Specifies whether to only allow TLS with certificates whose common name "
 "matches the hostname.  The default is \"No\"."
 msgstr ""
-"Spezifiziert, ob nur TLS mit Zertifikaten erlaubt wird, deren »common name« "
+"Legt fest, ob nur TLS mit Zertifikaten erlaubt wird, deren »common name« "
 "auf den Rechnernamen passt. Die Vorgabe ist »No«."
 
 #. type: Plain text
@@ -1370,7 +1371,7 @@ msgid ""
 "class names are I<not> case-sensitive."
 msgstr ""
 "Die Befehle B<cupsaccept> und B<cupsreject> entsprechend den System-V-"
-"Drucksystembefehlen »accept« respektive »reject«. Anders als das System V-"
+"Drucksystembefehlen »accept« respektive »reject«. Anders als das System-V-"
 "Drucksystem erlaubt es CUPS, dass Druckernamen alle druckbaren Zeichen außer "
 "Leertaste, Tabulator, »/« und »#« enthalten. Auch sind Drucker- und "
 "Klassennamen I<unabhängig> von der Groß-/Kleinschreibung."
@@ -1605,8 +1606,8 @@ msgstr "B<-H >I<Samba-Server>"
 #: cupsaddsmb.man.in:106
 msgid "Specifies the SAMBA server which defaults to the CUPS server."
 msgstr ""
-"Spezifiziert den Samba-Server, der standardmäßig auf den CUPS-Server gesetzt "
-"wird."
+"Legt den Samba-Server, der standardmäßig auf den CUPS-Server gesetzt "
+"wird, fest."
 
 #. type: TP
 #: cupsaddsmb.man.in:106
@@ -1621,8 +1622,8 @@ msgid ""
 "username.  If the username contains a percent (%) character, then the text "
 "following the percent is treated as the SAMBA password to use."
 msgstr ""
-"Spezifiziert den Benutzernamen des Samba-Druck-Administrators, standardmäßig "
-"Ihr aktueller Benutzername. Falls der Benutzername ein Prozentzeichen (%) "
+"Legt den Benutzernamen des Samba-Druck-Administrators, standardmäßig "
+"Ihr aktueller Benutzername, fest. Falls der Benutzername ein Prozentzeichen (%) "
 "enthält, wird der Text, der dem Prozentzeichen folgt, als zu verwendendes "
 "Samba-Passwort behandelt."
 
@@ -1643,7 +1644,7 @@ msgstr "B<-h >I<CUPS-Server>[B<:>I<port>]"
 #. type: Plain text
 #: cupsaddsmb.man.in:117
 msgid "Specifies a different CUPS server to use."
-msgstr "Spezifiziert einen anderen zu verwendenden CUPS-Server."
+msgstr "Legt einen anderen zu verwendenden CUPS-Server fest."
 
 #. type: TP
 #: cupsaddsmb.man.in:117 cupstestppd.man:107 ipptool.man:179 ppdc.man:81
@@ -1657,7 +1658,7 @@ msgid ""
 "Specifies that verbose information should be shown.  This is useful for "
 "debugging SAMBA configuration problems."
 msgstr ""
-"Spezifiziert, dass ausführliche Informationen angezeigt werden sollen. Dies "
+"Legt fest, dass ausführliche Informationen angezeigt werden sollen. Dies "
 "ist für die Fehlersuche bei Samba-Konfigurationsproblemen nützlich."
 
 #. type: Plain text
@@ -1978,8 +1979,8 @@ msgid ""
 "Specifies an alternate username to use when authenticating with the "
 "scheduler."
 msgstr ""
-"Spezifiziert einen alternativen Benutzernamen, der bei Authentifizierung mit "
-"dem Auftragsplaner verwandt werden soll."
+"Legt einen alternativen Benutzernamen, der bei Authentifizierung mit "
+"dem Auftragsplaner verwandt werden soll, fest."
 
 #. type: TP
 #: cupsctl.man:53 cupsenable.man:67 lpinfo.man:82 lpmove.man:52
@@ -1991,7 +1992,7 @@ msgstr "B<-h> I<Server>[B<:>I<Port>]"
 #. type: Plain text
 #: cupsctl.man:56
 msgid "Specifies the server address."
-msgstr "Spezifiziert die Server-Adresse."
+msgstr "Legt die Server-Adresse fest."
 
 #. type: TP
 #: cupsctl.man:56
@@ -2208,7 +2209,7 @@ msgid ""
 "any of the conditions for \"config\".  The \"all\" level logs all requests.  "
 "The default access log level is \"actions\"."
 msgstr ""
-"Spezifiziert die Protokollierstufe für die Datei AccessLog. Die Stufe "
+"Legt die Protokollierstufe für die Datei AccessLog fest. Die Stufe "
 "»config« protokolliert, wenn Drucker und Klassen hinzugefügt, gelöscht oder "
 "verändert werden und wenn auf Konfigurationsdateien zugegriffen oder diese "
 "geändert werden. Die Stufe »actions« protokolliert, wenn Druckaufträge "
@@ -2235,7 +2236,7 @@ msgid ""
 "Specifies whether to purge job history data automatically when it is no "
 "longer required for quotas.  The default is \"No\"."
 msgstr ""
-"Spezifiziert, ob die Verlaufsdaten des Auftrags automatisch bereinigt "
+"Legt fest, ob die Verlaufsdaten des Auftrags automatisch bereinigt "
 "(gelöscht) werden sollen, wenn sie nicht mehr für Quotas benötigt werden. "
 "Die Vorgabe ist »No«."
 
@@ -2287,7 +2288,7 @@ msgid ""
 "Specifies whether the CUPS web interface is advertised.  The default is \"No"
 "\"."
 msgstr ""
-"Spezifiziert, ob die CUPS-Web-Schnittstelle bekanntgemacht wird. Die Vorgabe "
+"Legt fest, ob die CUPS-Web-Schnittstelle bekanntgemacht wird. Die Vorgabe "
 "ist »No«."
 
 #. type: TP
@@ -2308,7 +2309,7 @@ msgstr "B<Browsing No>"
 msgid ""
 "Specifies whether shared printers are advertised.  The default is \"No\"."
 msgstr ""
-"Spezifiziert, ob freigegebene Drucker bekanntgemacht werden. Die Vorgabe ist "
+"Legt fest, ob freigegebene Drucker bekanntgemacht werden. Die Vorgabe ist "
 "»No«."
 
 #. type: TP
@@ -2326,7 +2327,7 @@ msgid ""
 "\"topsecret\", and \"unclassified\", or the banner can be omitted to disable "
 "secure printing functions.  The default is no classification banner."
 msgstr ""
-"Spezifiziert die Sicherheitsklassifizierung des Servers. Jeder gültige "
+"Legt die Sicherheitsklassifizierung des Servers fest. Jeder gültige "
 "Deckblattname kann verwandt werden, darunter »classified«, »confidential«, "
 "»secret«, »topsecret« und »unclassified«. Der Deckblattname kann auch "
 "entfallen, um die sicheren Druckfunktionen zu deaktivieren. Standardmäßig "
@@ -2352,7 +2353,7 @@ msgid ""
 "individual print jobs using the \"job-sheets\" option.  The default is \"No"
 "\"."
 msgstr ""
-"Spezifiziert, ob es Benutzern erlaubt werden soll, die Einstufung "
+"Legt fest, ob es Benutzern erlaubt werden soll, die Einstufung "
 "(Titelseite) individueller Druckaufträge mit der Option »job-sheets« zu "
 "ändern. Die Vorgabe ist »No«."
 
@@ -2375,7 +2376,7 @@ msgid ""
 "Specifies the default type of authentication to use.  The default is \"Basic"
 "\"."
 msgstr ""
-"Spezifiziert den standardmäßig zu verwendenden Authentifizierungstyp. Die "
+"Legt den standardmäßig zu verwendenden Authentifizierungstyp fest. Die "
 "Vorgabe ist »Basic«."
 
 #. type: TP
@@ -2419,8 +2420,8 @@ msgid ""
 "Specifies the default language to use for text and web content.  The default "
 "is \"en\"."
 msgstr ""
-"Spezifiziert die Standardsprache, die für Text und Webinhalte verwandt "
-"werden soll. Die Vorgabe ist »en«."
+"Legt die Standardsprache, die für Text und Webinhalte verwandt "
+"werden soll, fest. Die Vorgabe ist »en«."
 
 #. type: TP
 #: cupsd.conf.man.in:120
@@ -2467,7 +2468,7 @@ msgid ""
 "Specifies the default access policy to use.  The default access policy is "
 "\"default\"."
 msgstr ""
-"Spezifiziert die zu verwendende Standardzugriffsrichtlinie. Die "
+"Legt die zu verwendende Standardzugriffsrichtlinie fest. Die "
 "Standardzugriffsrichtlinie ist »Default«."
 
 #. type: TP
@@ -2489,7 +2490,7 @@ msgid ""
 "Specifies whether local printers are shared by default.  The default is \"Yes"
 "\"."
 msgstr ""
-"Spezifiziert, ob lokale Drucker standardmäßig freigegeben sind. Die Vorgabe "
+"Legt fest, ob lokale Drucker standardmäßig freigegeben sind. Die Vorgabe "
 "ist »Yes«."
 
 #. type: TP
@@ -2523,8 +2524,8 @@ msgid ""
 "Specifies that a failed print job should be aborted (discarded) unless "
 "otherwise specified for the printer."
 msgstr ""
-"Spezifiziert, dass ein fehlgeschlagener Druckauftrag abgebrochen (verworfen) "
-"werden soll, es sei denn, es wurde anders für den Drucker spezifiziert."
+"Legt fest, dass ein fehlgeschlagener Druckauftrag abgebrochen (verworfen) "
+"werden soll, es sei denn, es wurde anders für den Drucker festgelegt."
 
 #. type: TP
 #: cupsd.conf.man.in:151
@@ -2538,9 +2539,9 @@ msgid ""
 "Specifies that a failed print job should be retried at a later time unless "
 "otherwise specified for the printer."
 msgstr ""
-"Spezifiziert, dass ein fehlgeschlagener Druckauftrag zu einem späteren "
+"Legt fest, dass ein fehlgeschlagener Druckauftrag zu einem späteren "
 "Zeitpunkt neu versucht werden soll, es sei denn, es wurde anders für den "
-"Drucker spezifiziert."
+"Drucker festgelegt."
 
 #. type: TP
 #: cupsd.conf.man.in:154
@@ -2554,8 +2555,8 @@ msgid ""
 "Specifies that a failed print job should be retried immediately unless "
 "otherwise specified for the printer."
 msgstr ""
-"Spezifiziert, dass ein fehlgeschlagener Druckauftrag sofort neu versucht "
-"werden soll, es sei denn, es wurde anders für den Drucker spezifiziert."
+"Legt fest, dass ein fehlgeschlagener Druckauftrag sofort neu versucht "
+"werden soll, es sei denn, es wurde anders für den Drucker festgelegt."
 
 #. type: TP
 #: cupsd.conf.man.in:157
@@ -2570,8 +2571,8 @@ msgid ""
 "Specifies that a failed print job should stop the printer unless otherwise "
 "specified for the printer. The 'stop-printer' error policy is the default."
 msgstr ""
-"Spezifiziert, dass ein fehlgeschlagener Druckauftrag den Drucker anhalten "
-"soll, es sei denn, es wurde anders für den Drucker spezifiziert. Die Fehler-"
+"Legt fest, dass ein fehlgeschlagener Druckauftrag den Drucker anhalten "
+"soll, es sei denn, es wurde anders für den Drucker festgelegt. Die Fehler-"
 "Richtlinie »stop-printer« ist die Vorgabe."
 
 #. type: TP
@@ -2592,7 +2593,7 @@ msgid ""
 "the scheduler to printing a single job at any time.  The default limit is "
 "\"0\"."
 msgstr ""
-"Spezifiziert die maximale Belastung gleichzeitig ausgeführter Filter. Damit "
+"Legt die maximale Belastung gleichzeitig ausgeführter Filter fest. Damit "
 "können Platten-, Arbeitsspeicher- und CPU-Ressourcenprobleme minimiert "
 "werden. Eine Beschränkung von 0 deaktiviert die Beschränkung von Filtern. "
 "Ein durchschnittlicher Ausdruck auf einen nicht PostScript-Drucker benötigt "
@@ -2616,8 +2617,8 @@ msgid ""
 "run to print a job.  The nice value ranges from 0, the highest priority, to "
 "19, the lowest priority.  The default is 0."
 msgstr ""
-"Spezifiziert die Planungspriorität (B<nice>(8)-Wert) von Filtern, die "
-"laufen, um einen Druckauftrag auszudrucken. Die »nice«-Werte liegen im "
+"Legt die Planungspriorität (B<nice>(8)-Wert) von Filtern, die "
+"laufen, um einen Druckauftrag auszudrucken, fest. Die »nice«-Werte liegen im "
 "Bereich von 0 (der höchsten Priorität) bis zu 19, der niedrigsten Priorität. "
 "Die Vorgabe ist 0."
 
@@ -2627,8 +2628,8 @@ msgid ""
 "Specifies the service name when using Kerberos authentication.  The default "
 "service name is \"http.\""
 msgstr ""
-"Spezifiziert den Dienstenamen, wenn Kerberos-Authentifizierung eingesetzt "
-"wird. Die Vorgabedienstname ist »http«."
+"Legt den Dienstenamen, wenn Kerberos-Authentifizierung eingesetzt "
+"wird, fest. Der Vorgabedienstname ist »http«."
 
 #. #HostNameLookups
 #. type: TP
@@ -2662,7 +2663,7 @@ msgid ""
 "performance problems with hostname lookups.  Only set this option to \"On\" "
 "or \"Double\" if absolutely required."
 msgstr ""
-"Spezifiziert, ob Rückwärtsauflösung bei sich verbindenden Clients "
+"Legt fest, ob Rückwärtsauflösung bei sich verbindenden Clients "
 "durchgeführt werden soll. Die Einstellung »Double« führt dazu, dass "
 "B<cupsd>(8) den Rechnernamen, der aus der "
 
@@ -2679,9 +2680,9 @@ msgid ""
 "Specifies the number of seconds to wait before killing the filters and "
 "backend associated with a canceled or held job.  The default is \"30\"."
 msgstr ""
-"Spezifiziert die Anzahl von Sekunden zum Warten, bevor die Filter und "
+"Legt die Anzahl von Sekunden zum Warten, bevor die Filter und "
 "Backends beendet werden, die mit einem abgebrochenen oder angehaltenen "
-"Druckauftrag verbunden sind. Die Vorgabe ist »30«."
+"Druckauftrag verbunden sind, fest. Die Vorgabe ist »30«."
 
 #. type: TP
 #: cupsd.conf.man.in:202
@@ -2698,8 +2699,8 @@ msgid ""
 "whose error policy is \"retry-job\" or \"retry-current-job\".  The default "
 "is \"30\"."
 msgstr ""
-"Spezifiziert das Intervall in Sekunden, in dem der Auftrag erneut versucht "
-"wird. Dies wird typischerweise für Fax-Warteschlangen verwandt, kann aber "
+"Legt das Intervall in Sekunden, in dem der Auftrag erneut versucht "
+"wird, fest. Dies wird typischerweise für Fax-Warteschlangen verwandt, kann aber "
 "auch mit normalen Druckwarteschlangen verwendet werden, deren "
 "Fehlerrichtlinie »retry-job« oder »retry-current-job« ist. Die Vorgabe ist "
 "»30«."
@@ -2719,7 +2720,7 @@ msgid ""
 "error policy is \"retry-job\" or \"retry-current-job\".  The default is "
 "\"5\"."
 msgstr ""
-"Spezifiziert die Anzahl der Wiederholungen für Aufträge. Dies wird "
+"Legt die Anzahl der Wiederholungen für Aufträge fest. Dies wird "
 "typischerweise für Fax-Warteschlangen verwandt, kann aber auch mit normalen "
 "Druckwarteschlangen verwendet werden, deren Fehlerrichtlinie »retry-job« "
 "oder »retry-current-job« ist. Die Vorgabe ist »5«."
@@ -2743,7 +2744,7 @@ msgid ""
 "Specifies whether to support HTTP keep-alive connections.  The default is "
 "\"Yes\"."
 msgstr ""
-"Spezifiziert, ob HTTP-keep-alive-Verbindungen unterstützt werden. Die "
+"Legt fest, ob HTTP-keep-alive-Verbindungen unterstützt werden. Die "
 "Vorgabe ist »Yes«."
 
 #. type: TP
@@ -2759,7 +2760,7 @@ msgid ""
 "Specifies how long an idle client connection remains open.  The default is "
 "\"30\"."
 msgstr ""
-"Spezifiziert, wie lange leer laufende Client-Verbindugnen offen bleiben "
+"Legt fest, wie lange leer laufende Client-Verbindungen offen bleiben "
 "sollen. Die Vorgabe ist »30«."
 
 #. type: TP
@@ -2776,8 +2777,8 @@ msgid ""
 "Specifies the IPP operations that are being limited inside a Policy section. "
 "IPP operation names are listed below in the section \"IPP OPERATIONS\"."
 msgstr ""
-"Spezifiziert die IPP-Vorgänge, die innerhalb eines Richtlinienabschnitts "
-"begrenzt werden. IPP-Vorgangsnamen sind weiter unten im Abschnitt »IPP-"
+"Legt die IPP-Vorgänge, die innerhalb eines Richtlinienabschnitts "
+"begrenzt werden, fest. IPP-Vorgangsnamen sind weiter unten im Abschnitt »IPP-"
 "VORGÄNGE« beschrieben."
 
 #. type: TP
@@ -2800,8 +2801,8 @@ msgid ""
 "Specifies the HTTP methods that are being limited inside a Location section. "
 "HTTP method names are listed below in the section \"HTTP METHODS\"."
 msgstr ""
-"Spezifiziert die HTTP-Methoden, die innerhalb eines »Location«-Abschnittes "
-"begrenzt werden. HTTP-Methodennamen sind weiter unten im Abschnitt »HTTP-"
+"Legt die HTTP-Methoden, die innerhalb eines »Location«-Abschnittes "
+"begrenzt werden, fest. HTTP-Methodennamen sind weiter unten im Abschnitt »HTTP-"
 "METHODEN« aufgeführt."
 
 #. type: TP
@@ -2878,7 +2879,7 @@ msgid ""
 "default is the OS-defined default limit, typically either \"5\" for older "
 "operating systems or \"128\" for newer operating systems."
 msgstr ""
-"Spezifiziert die Anzahl von erlaubten unerledigten Verbindungen. Dies "
+"Legt die Anzahl von erlaubten unerledigten Verbindungen fest. Dies "
 "betrifft normalerweise nur sehr beschäftigte Server, die die MaxClients-"
 "Beschränkung erreicht haben, kann aber auch von einer großen Anzahl von "
 "gleichzeitigen Verbindungen ausgelöst werden. Wenn die Beschränkung erreicht "
@@ -2900,7 +2901,7 @@ msgid ""
 "Specifies access control for the named location.  Paths are documented below "
 "in the section \"LOCATION PATHS\"."
 msgstr ""
-"Spezifiziert die Zugriffssteuerung für den benannten Ort. Pfade werden "
+"Legt die Zugriffssteuerung für den benannten Ort fest. Pfade werden "
 "weiter unten im Abschnitt »ORTSPFADE« beschrieben."
 
 #. type: TP
@@ -2917,8 +2918,8 @@ msgid ""
 "an error occurs in a print job. Debug messages are logged regardless of the "
 "LogLevel setting."
 msgstr ""
-"Spezifiziert die Anzahl der Fehlersuchnachrichten, die zum Protokollieren "
-"zurückgehalten werden, wenn ein Fehler in einem Druckauftrag auftritt. "
+"Legt die Anzahl der Fehlersuchnachrichten, die zum Protokollieren "
+"zurückgehalten werden, wenn ein Fehler in einem Druckauftrag auftritt, fest. "
 "Fehlersuchnachrichten werden unabhängig von der LogLevel-Einstellung "
 "protokolliert."
 
@@ -2989,7 +2990,7 @@ msgid ""
 "Specifies the level of logging for the ErrorLog file.  The value \"none\" "
 "stops all logging while \"debug2\" logs everything.  The default is \"warn\"."
 msgstr ""
-"Spezifiziert die Protokollierstufe in der Datei ErrorLog. Der Wert »none« "
+"Legt die Protokollierstufe in der Datei ErrorLog fest. Der Wert »none« "
 "beendet alle Protokollierung, während »debug2« alles protokolliert. Die "
 "Vorgabe ist »warn«."
 
@@ -3013,7 +3014,7 @@ msgid ""
 "\"standard\" is the default and logs whole seconds while \"usecs\" logs "
 "microseconds."
 msgstr ""
-"Spezifiziert das Format von Datum und Uhrzeit in den Protokolldateien. Der "
+"Legt das Format von Datum und Uhrzeit in den Protokolldateien fest. Der "
 "Wert »standard« ist die Vorgabe und protokolliert in ganzen Sekunden, "
 "während »usecs« in Mikrosekunden protokolliert."
 
@@ -3030,8 +3031,8 @@ msgid ""
 "Specifies the maximum number of simultaneous clients that are allowed by the "
 "scheduler.  The default is \"100\"."
 msgstr ""
-"Spezifiziert die maximale Anzahl an gleichzeitigen Clients, die vom "
-"Auftragsplaner erlaubt werden. Die Vorgabe ist »100«."
+"Legt die maximale Anzahl an gleichzeitigen Clients, die vom "
+"Auftragsplaner erlaubt werden, fest. Die Vorgabe ist »100«."
 
 #. type: TP
 #: cupsd.conf.man.in:306
@@ -3046,8 +3047,8 @@ msgid ""
 "Specifies the maximum number of simultaneous clients that are allowed from a "
 "single address.  The default is the MaxClients value."
 msgstr ""
-"Spezifiziert die maximale Anzahl an gleichzeitigen Clients, die von einer "
-"einzigen Adresse erlaubt sind. Die Vorgabe ist der Wert MaxClients."
+"Legt die maximale Anzahl an gleichzeitigen Clients, die von einer "
+"einzigen Adresse erlaubt sind, fest. Die Vorgabe ist der Wert MaxClients."
 
 #. type: TP
 #: cupsd.conf.man.in:312
@@ -3062,8 +3063,8 @@ msgid ""
 "Specifies the maximum number of copies that a user can print of each job.  "
 "The default is \"9999\"."
 msgstr ""
-"Spezifiziert die maximale Anzahl an Kopien, die ein Benutzer bei jedem "
-"Auftrag drucken kann. Die Vorgabe ist »9999«."
+"Legt die maximale Anzahl an Kopien, die ein Benutzer bei jedem "
+"Auftrag drucken kann, fest. Die Vorgabe ist »9999«."
 
 #. type: TP
 #: cupsd.conf.man.in:317
@@ -3079,8 +3080,8 @@ msgid ""
 "before it is canceled.  The default is \"0\" which disables cancellation of "
 "held jobs."
 msgstr ""
-"Spezifiziert die maximale Zeit, die ein Auftrag für »unbestimmte« Zeit "
-"angehalten bleiben darf, bevor er abgebrochen wird. Die Vorgabe ist »0«, "
+"Legt die maximale Zeit, die ein Auftrag für »unbestimmte« Zeit "
+"angehalten bleiben darf, bevor er abgebrochen wird, fest. Die Vorgabe ist »0«, "
 "womit gehaltene Aufträge abgebrochen werden."
 
 #. type: TP
@@ -3096,8 +3097,8 @@ msgid ""
 "Specifies the maximum number of simultaneous jobs that are allowed.  Set to "
 "\"0\" to allow an unlimited number of jobs.  The default is \"500\"."
 msgstr ""
-"Spezifiziert die maximale Anzahl an gleichzeitigen Aufträgen, die erlaubt "
-"sind. Setzen Sie dies auf »0«, um eine unbegrenzte Anzahl an Aufträgen zu "
+"Legt die maximale Anzahl an gleichzeitigen Aufträgen, die erlaubt "
+"sind, fest. Setzen Sie dies auf »0«, um eine unbegrenzte Anzahl an Aufträgen zu "
 "erlauben. Die Vorgabe ist »500«."
 
 #. type: TP
@@ -3113,8 +3114,8 @@ msgid ""
 "Specifies the maximum number of simultaneous jobs that are allowed per "
 "printer.  The default is \"0\" which allows up to MaxJobs jobs per printer."
 msgstr ""
-"Spezifiziert die maximale Anzahl an Aufträgen, die gleichzeitig pro Drucker "
-"erlaubt sind. Die Vorgabe ist »0«, womit bis zu MaxJobs Aufträge pro Drucker "
+"Legt die maximale Anzahl an Aufträgen, die gleichzeitig pro Drucker "
+"erlaubt sind, fest. Die Vorgabe ist »0«, womit bis zu MaxJobs Aufträge pro Drucker "
 "erlaubt sind."
 
 #. type: TP
@@ -3130,8 +3131,8 @@ msgid ""
 "Specifies the maximum number of simultaneous jobs that are allowed per "
 "user.  The default is \"0\" which allows up to MaxJobs jobs per user."
 msgstr ""
-"Spezifiziert die maximale Anzahl an Aufträgen, die gleichzeitig pro Benutzer "
-"erlaubt sind. Die Vorgabe ist »0«, womit bis zu MaxJobs Aufträge pro "
+"Legt die maximale Anzahl an Aufträgen, die gleichzeitig pro Benutzer "
+"erlaubt sind, fest. Die Vorgabe ist »0«, womit bis zu MaxJobs Aufträge pro "
 "Benutzer erlaubt sind."
 
 #. type: TP
@@ -3148,8 +3149,8 @@ msgid ""
 "Set to \"0\" to disable cancellation of \"stuck\" jobs.  The default is "
 "\"10800\" (3 hours)."
 msgstr ""
-"Spezifiziert die maximale Zeit, die ein Auftrag zum Drucken verbrauchen "
-"darf, bevor er abgebrochen wird. Falls auf 0 gesetzt, werden keine "
+"legt die maximale Zeit, die ein Auftrag zum Drucken verbrauchen "
+"darf, bevor er abgebrochen wird, fest. Falls auf 0 gesetzt, werden keine "
 "»hängenden« (stuck) Aufträge abgebrochen. Die Vorgabe ist 10800 Sekunden (3 "
 "Stunden)."
 
@@ -3166,8 +3167,8 @@ msgid ""
 "Specifies the maximum size of the log files before they are rotated.  The "
 "value \"0\" disables log rotation.  The default is \"1048576\" (1MB)."
 msgstr ""
-"Spezifiziert die maximale Größe der Protokolldateien, bevor sie rotiert "
-"werden. Der Wert »0« deaktiviert die Rotation der Protokolldateien. Die "
+"Legt die maximale Größe der Protokolldateien, bevor sie rotiert "
+"werden, fest. Der Wert »0« deaktiviert die Rotation der Protokolldateien. Die "
 "Vorgabe ist »1048576« (1 MB)."
 
 #. type: TP
@@ -3183,8 +3184,8 @@ msgid ""
 "Specifies the maximum amount of time to allow between files in a multiple "
 "file print job.  The default is \"300\" (5 minutes)."
 msgstr ""
-"Spezifiziert die maximal erlaubte Zeit zwischen Dateien in einem "
-"Druckauftrag aus mehreren Dateien. Die Vorgabe ist »300« (5 Minuten)."
+"Legt die maximal erlaubte Zeit zwischen Dateien in einem "
+"Druckauftrag aus mehreren Dateien fest. Die Vorgabe ist »300« (5 Minuten)."
 
 #. type: TP
 #: cupsd.conf.man.in:355
@@ -3200,7 +3201,7 @@ msgid ""
 "characters are copied literally.  The following percent sequences are "
 "recognized:"
 msgstr ""
-"Spezifiziert das Format der PageLog-Zeilen. Sequenzen beginnen mit einem "
+"Legt das Format der PageLog-Zeilen fest. Sequenzen beginnen mit einem "
 "Prozentzeichen (%) und werden durch die entsprechende Information ersetzt, "
 "während alle anderen Zeichen unverändert kopiert werden. Die folgenden "
 "Prozentsequenzen werden erkannt:"
@@ -3262,7 +3263,7 @@ msgstr "B<E<lt>Policy >I<Name>B<E<gt> >… B<E<lt>/PolicyE<gt>>"
 #. type: Plain text
 #: cupsd.conf.man.in:383
 msgid "Specifies access control for the named policy."
-msgstr "Spezifiziert die Zugriffskontrolle für die genannte Richtlinie."
+msgstr "Legt die Zugriffskontrolle für die genannte Richtlinie fest."
 
 #. type: TP
 #: cupsd.conf.man.in:383
@@ -3303,7 +3304,7 @@ msgid ""
 "indicated number of seconds after printing.  The default is "
 "\"86400\" (preserve 1 day)."
 msgstr ""
-"Spezifiziert, ob Auftragsdateien (Dokumente) erhalten bleiben, nachdem ein "
+"Legt fest, ob Auftragsdateien (Dokumente) erhalten bleiben, nachdem ein "
 "Auftrag gedruckt wurde. Falls ein numerischer Wert angegeben wird, werden "
 "die Auftragsdateien für die angegebene Anzahl an Sekunden nach dem Druck "
 "erhalten. Die Vorgabe ist »86400« (einen Tag erhalten)."
@@ -3335,7 +3336,7 @@ msgid ""
 "number of seconds after printing.  If \"Yes\", the job history is preserved "
 "until the MaxJobs limit is reached.  The default is \"Yes\"."
 msgstr ""
-"Spezifiziert, ob die Auftragschronik nach dem Druck behalten wird. Falls ein "
+"Legt fest, ob die Auftragschronik nach dem Druck behalten wird. Falls ein "
 "numerischer Wert angegeben ist, wird die Auftragschronik für die angegebene "
 "Anzahl von Sekunden nach dem Druck behalten. Falls »Yes« wird die "
 "Auftragschronik behalten, bis die Begrenzung MaxJobs erreicht ist. Die "
@@ -3354,9 +3355,9 @@ msgid ""
 "Specifies the amount of time to wait for job completion before restarting "
 "the scheduler.  The default is \"30\"."
 msgstr ""
-"Spezifiziert die Zeitspanne, während der auf die Beendigung von Aufträgen "
+"Legt die Zeitspanne, während der auf die Beendigung von Aufträgen "
 "gewartet werden soll, bevor der Auftragsplaner (Scheduler) neu gestartet "
-"wird. Die Vorgabe ist »30«."
+"wird, fest. Die Vorgabe ist »30«."
 
 #. type: TP
 #: cupsd.conf.man.in:413
@@ -3371,8 +3372,8 @@ msgid ""
 "Specifies the maximum amount of memory to use when converting documents into "
 "bitmaps for a printer.  The default is \"128m\"."
 msgstr ""
-"Spezifiziert die maximale Menge an zu verwendendem Speicher beim "
-"Konvertieren von Dokumenten in Bitmaps für den Drucker. Die Vorgabe ist "
+"Legt die maximale Menge an zu verwendendem Speicher beim "
+"Konvertieren von Dokumenten in Bitmaps für den Drucker fest. Die Vorgabe ist "
 "»128m«."
 
 #. type: TP
@@ -3388,7 +3389,7 @@ msgid ""
 "Specifies the email address of the server administrator.  The default value "
 "is \"root@ServerName\"."
 msgstr ""
-"Spezifiziert die E-Mail-Adresse des Server-Administrators. Die Vorgabe ist "
+"Legt die E-Mail-Adresse des Server-Administrators fest. Die Vorgabe ist "
 "»root@ServerName«."
 
 #. type: TP
@@ -3436,7 +3437,7 @@ msgid ""
 "Specifies the fully-qualified hostname of the server.  The default is the "
 "value reported by the B<hostname>(1)  command."
 msgstr ""
-"Spezifiziert den vollqualifizierten Rechnernamen des Servers. Die Vorgabe "
+"Legt den vollqualifizierten Rechnernamen des Servers fest. Die Vorgabe "
 "ist der Wert, der von dem Befehl B<hostname>(1) berichtet wird."
 
 #. type: TP
@@ -3492,7 +3493,7 @@ msgid ""
 "where UNAME is the output of the B<uname>(1)  command.  \"Full\" reports "
 "\"CUPS 2.0.0 (UNAME) IPP/2.0\".  The default is \"Minimal\"."
 msgstr ""
-"Spezifiziert, welche Informationen in die Server-Kopfzeilen von HTTP-"
+"Legt fest, welche Informationen in die Server-Kopfzeilen von HTTP-"
 "Antworten aufgenommen werden. »None« deaktiviert die Server-Kopfzeilen. "
 "»ProductOnly« meldet »CUPS«. »Major« berichtet »CUPS 2.0«. »Minimal« "
 "berichtet »CUPS 2.0.0«. »OS« berichtet »CUPS 2.0.0 (UNAME)«, wobei UNAME die "
@@ -3592,7 +3593,7 @@ msgid ""
 "Specifies whether the scheduler requires clients to strictly adhere to the "
 "IPP specifications.  The default is \"No\"."
 msgstr ""
-"Spezifiziert, ob der Auftragsplaner von den Clients verlangt, dass sie "
+"Legt fest, ob der Auftragsplaner von den Clients verlangt, dass sie "
 "streng den IPP-Spezifikationen folgen. Die Vorgabe ist »No«."
 
 #. type: TP
@@ -3607,7 +3608,7 @@ msgstr "B<Timeout >I<Sekunden>"
 msgid ""
 "Specifies the HTTP request timeout.  The default is \"300\" (5 minutes)."
 msgstr ""
-"Spezifiziert die HTTP-Zeitüberschreitung. Die Vorgabe ist »300« (5 Minuten)."
+"Legt die HTTP-Zeitüberschreitung fest. Die Vorgabe ist »300« (5 Minuten)."
 
 #. type: TP
 #: cupsd.conf.man.in:501
@@ -3625,7 +3626,7 @@ msgstr "B<WebInterface no>"
 #: cupsd.conf.man.in:507
 msgid "Specifies whether the web interface is enabled.  The default is \"No\"."
 msgstr ""
-"Spezifiziert, ob die Webschnittstelle freigegeben ist. Die Vorgabe ist »No«."
+"Legt fest, ob die Webschnittstelle freigegeben ist. Die Vorgabe ist »No«."
 
 #. type: SS
 #: cupsd.conf.man.in:507
@@ -4567,8 +4568,8 @@ msgid ""
 "Specifies the level of encryption that is required for a particular "
 "location.  The default value is \"IfRequested\"."
 msgstr ""
-"Spezifiziert die Verschlüsselungsstufe, die für einen bestimmten Ort "
-"benötigt wird. Der Vorgabewert ist »IfRequested«."
+"Legt die Verschlüsselungsstufe, die für einen bestimmten Ort "
+"benötigt wird, fest. Der Vorgabewert ist »IfRequested«."
 
 #. type: TP
 #: cupsd.conf.man.in:767
@@ -4728,7 +4729,7 @@ msgid ""
 "job's owner.  \"@SYSTEM\" maps to the groups listed for the SystemGroup "
 "directive in the B<cups-files.conf>(5)  file."
 msgstr ""
-"Spezifiziert eine Zugriffsliste für die privaten Werte eines Auftrags. Die "
+"Legt eine Zugriffsliste für die privaten Werte eines Auftrags fest. Die "
 "»Standard«- (default) Zugriffsliste ist »@OWNER @SYSTEM«. »@ACL« passt auf "
 "die Werte requesting-user-name-allowed oder requesting-user-name-denied des "
 "Druckers. »@OWNER« passt auf den Eingentümer des Auftrags. »@SYSTEM« passt "
@@ -4766,7 +4767,7 @@ msgid ""
 "are \"job-name\", \"job-originating-host-name\", \"job-originating-user-name"
 "\", and \"phone\"."
 msgstr ""
-"Spezifiziert die Liste der Auftragswerte, die privat werden sollen. Die "
+"Legt die Liste der Auftragswerte, die privat werden sollen, fest. Die "
 "»Standard«- (default) Werte sind »job-name«, »job-originating-host-name«, "
 "»job-originating-user-name« und »phone«."
 
@@ -4797,7 +4798,7 @@ msgid ""
 "\" maps to the job's owner.  \"@SYSTEM\" maps to the groups listed for the "
 "SystemGroup directive in the B<cups-files.conf>(5)  file."
 msgstr ""
-"Spezifiziert eine Zugriffsliste für die privaten Werte eines Abonnements. "
+"Legt eine Zugriffsliste für die privaten Werte eines Abonnements fest. "
 "Die »Standard«- (default) Zugriffsliste ist »@OWNER @SYSTEM«. »@ACL« passt "
 "auf die Werte requesting-user-name-allowed oder requesting-user-name-denied "
 "des Druckers. »@OWNER« passt auf den Eingentümer des Auftrags. »@SYSTEM« "
@@ -4835,7 +4836,7 @@ msgid ""
 "values are \"notify-events\", \"notify-pull-method\", \"notify-recipient-uri"
 "\", \"notify-subscriber-user-name\", and \"notify-user-data\"."
 msgstr ""
-"Spezifiziert die Liste der Abonnementswerte, die privat werden sollen. Die "
+"Legt die Liste der Abonnementswerte, die privat werden sollen, fest. Die "
 "»Standard«- (default) Werte sind »notify-events«, »notify-pull-method«, "
 "»notify-recipient-uri«, »notify-subscriber-user-name« und »notify-user-data«."
 
@@ -6074,7 +6075,7 @@ msgid ""
 "specified then the message is set to \"Reason Unknown\"."
 msgstr ""
 "Setzt die dem Beendet-Zustand zugeordnete Nachricht. Falls kein Grund "
-"spezifiziert ist, wird die Nachricht auf »Reason Unknown« gesetzt."
+"festgelegt ist, wird die Nachricht auf »Reason Unknown« gesetzt."
 
 #. type: TP
 #: cupsenable.man:78
@@ -6098,7 +6099,7 @@ msgid ""
 "any printable character except SPACE, TAB, \"/\", or \"#\".  Also, printer "
 "and class names are I<not> case-sensitive."
 msgstr ""
-"Anders als das System V-Drucksystem erlaubt es CUPS, dass Druckernamen alle "
+"Anders als das System-V-Drucksystem erlaubt es CUPS, dass Druckernamen alle "
 "druckbaren Zeichen außer Leertaste, Tabulator, »/« und »#« enthalten. Auch "
 "sind Drucker- und Klassennamen I<unabhängig> von der Groß-/Kleinschreibung."
 
@@ -6123,7 +6124,7 @@ msgstr ""
 "Die CUPS-Versionen von B<disable> und B<enable> könnten den Benutzer, "
 "abhängig von der Konfiguration des Drucksystems, nach einem Zugriffspasswort "
 "fragen. Dies unterscheidet sich von der System-V-Version, die verlangt, dass "
-"der Benutzer root diese Befehle ausführt."
+"der Benutzer »root« diese Befehle ausführt."
 
 #. type: Plain text
 #: cupsenable.man:101
@@ -6236,8 +6237,8 @@ msgid ""
 "writes.  The default is \"0644\" on OS X and \"0640\" on all other operating "
 "systems."
 msgstr ""
-"Spezifiziert die Rechte für alle vom Auftragsplaner (Scheduler) "
-"geschriebenen Konfigurationsdateien. Die Vorgabe ist »0644« unter OS X und "
+"Legt die Rechte für alle vom Auftragsplaner (Scheduler) "
+"geschriebenen Konfigurationsdateien fest. Die Vorgabe ist »0644« unter OS X und "
 "»0640« unter allen anderen Betriebssystemen."
 
 #. #DataDir
@@ -6270,7 +6271,7 @@ msgid ""
 "Specifies the directory where data files can be found.  The default is "
 "usually \"/usr/share/cups\"."
 msgstr ""
-"Spezifiziert das Verzeichnis, in dem Datendateien gefunden werden können. "
+"Legt das Verzeichnis, in dem Datendateien gefunden werden können, fest. "
 "Die Vorgabe ist normalerweise »/usr/share/cups«."
 
 #. type: TP
@@ -6286,7 +6287,7 @@ msgid ""
 "Specifies the root directory for the CUPS web interface content.  The "
 "default is usually \"/usr/share/doc/cups\"."
 msgstr ""
-"Spezifiziert das Wurzelverzeichnis für den Inhalt der CUPS-Weboberfläche. "
+"Legt das Wurzelverzeichnis für den Inhalt der CUPS-Weboberfläche fest. "
 "Die Vorgabe ist normalerweise »/usr/share/doc/cups«."
 
 #. type: TP
@@ -6482,7 +6483,7 @@ msgid ""
 "Specifies whether the file pseudo-device can be used for new printer "
 "queues.  The URI \"file:///dev/null\" is always allowed."
 msgstr ""
-"Spezifiziert, ob das Pseudo-Gerät file für neue Druckerwarteschlangen "
+"Legt fest, ob das Pseudo-Gerät file für neue Druckerwarteschlangen "
 "benutzt werden kann. Die URI »file:///dev/null« ist immer erlaubt."
 
 #. type: TP
@@ -6499,8 +6500,8 @@ msgid ""
 "programs.  The default group is operating system specific but is usually \"lp"
 "\" or \"nobody\"."
 msgstr ""
-"Spezifiziert den Gruppenname oder deren ID, die bei der Ausführung externer "
-"Programme verwandt wird. Die Vorgabegruppe ist abhängig vom Betriebssystem; "
+"Legt den Gruppenname oder deren ID, die bei der Ausführung externer "
+"Programme verwandt wird, fest. Die Vorgabegruppe ist abhängig vom Betriebssystem; "
 "gewöhnlich ist sie »lp« oder »nobody«."
 
 #. type: TP
@@ -6516,8 +6517,8 @@ msgid ""
 "Specifies the permissions of all log files that the scheduler writes.  The "
 "default is \"0644\"."
 msgstr ""
-"Spezifiziert die Rechte für alle vom Auftragsplaner (Scheduler) "
-"geschriebenen Protokolldateien. Die Vorgabe ist »0644«."
+"Legt die Rechte für alle vom Auftragsplaner (Scheduler) "
+"geschriebenen Protokolldateien fest. Die Vorgabe ist »0644«."
 
 #. type: TP
 #: cups-files.conf.man.in:140
@@ -6581,8 +6582,8 @@ msgid ""
 "Specifies the username that is associated with unauthenticated accesses by "
 "clients claiming to be the root user.  The default is \"remroot\"."
 msgstr ""
-"Spezifiziert den Benutzernamen, der mit nicht-authentifiziertem Zugang durch "
-"Clients, die vorgeben, der Benutzer »root« zu sein, assoziiert ist. Die "
+"Legt den Benutzernamen, der mit nicht-authentifiziertem Zugang durch "
+"Clients, die vorgeben, der Benutzer »root« zu sein, assoziiert ist, fest. Die "
 "Vorgabe ist »remroot«."
 
 #. type: TP
@@ -6598,8 +6599,8 @@ msgid ""
 "Specifies the directory that contains print jobs and other HTTP request "
 "data.  The default is \"/var/spool/cups\"."
 msgstr ""
-"Spezifiziert das Verzeichnis, in dem Druckaufträge und andere HTTP-"
-"Anfragedaten enthalten sind. Die Vorgabe ist »/var/spool/cups«."
+"Legt das Verzeichnis, in dem Druckaufträge und andere HTTP-"
+"Anfragedaten enthalten sind, fest. Die Vorgabe ist »/var/spool/cups«."
 
 #. type: TP
 #: cups-files.conf.man.in:168
@@ -6636,8 +6637,8 @@ msgid ""
 "helper programs, notifiers, and port monitors.  The default is \"/usr/lib/"
 "cups\" or \"/usr/libexec/cups\" depending on the platform."
 msgstr ""
-"Spezifiziert das Verzeichnis, das die Backends, CGI-Programme, Filter, "
-"Helferprogramme, Benachrichtiger und Port-Monitore enthält. Die Vorgabe ist "
+"Legt das Verzeichnis, das die Backends, CGI-Programme, Filter, "
+"Helferprogramme, Benachrichtiger und Port-Monitore enthält, fest. Die Vorgabe ist "
 "»/usr/lib/cups« oder »/usr/libexec/cups«, abhängig von der Plattform."
 
 #. type: TP
@@ -6657,7 +6658,7 @@ msgid ""
 "specified directory, *.crt for PEM-encoded certificates and *.key for PEM-"
 "encoded private keys."
 msgstr ""
-"Spezifiziert den Ort der TLS-Zertifikate und privaten Schlüssel. Die Vorgabe "
+"Legt den Ort der TLS-Zertifikate und privaten Schlüssel fest. Die Vorgabe "
 "ist »/Library/Keychains/System.keychain« unter OS X und »/etc/cups/ssl« auf "
 "allen anderen Betriebssystemen. OS X verwendet die Schlüsselring-Datenbank, "
 "um Zertifikate und Schlüssel zu speichern, während andere Plattformen "
@@ -6677,7 +6678,7 @@ msgid ""
 "Specifies the directory containing the server configuration files.  The "
 "default is \"/etc/cups\"."
 msgstr ""
-"Spezifiziert das Verzeichnis, in dem die Serverkonfiguration enthalten ist. "
+"Legt das Verzeichnis, in dem die Serverkonfiguration enthalten ist, fest. "
 "Die Vorgabe ist »/etc/cups«."
 
 #. type: TP
@@ -6699,7 +6700,7 @@ msgid ""
 "Specifies whether the scheduler calls B<fsync>(2)  after writing "
 "configuration or state files.  The default is \"Yes\"."
 msgstr ""
-"Spezifiziert, ob der Auftragsplaner nach dem Schreiben der Konfigurations- "
+"Legt fest, ob der Auftragsplaner nach dem Schreiben der Konfigurations- "
 "oder Zustandsdateien B<fsync>(2) aufruft. Die Vorgabe ist »Yes«."
 
 #. type: TP
@@ -6716,8 +6717,8 @@ msgid ""
 "default contains \"admin\", \"lpadmin\", \"root\", \"sys\", and/or \"system"
 "\"."
 msgstr ""
-"Spezifiziert die Gruppe(n), die für I<@SYSTEM>-Gruppenauthentifizierung "
-"verwendet werden. Die Vorgabe enthält »admin«, »lpadmin«, »root«, »sys« und/"
+"Legt die Gruppe(n), die für I<@SYSTEM>-Gruppenauthentifizierung "
+"verwendet werden, fest. Die Vorgabe enthält »admin«, »lpadmin«, »root«, »sys« und/"
 "oder »system«."
 
 #. type: TP
@@ -6733,7 +6734,7 @@ msgid ""
 "Specifies the directory where temporary files are stored.  The default is \"/"
 "var/spool/cups/tmp\"."
 msgstr ""
-"Spezifiziert das Verzeichnis, in dem temporäre Dateien gespeichert werden. "
+"Legt das Verzeichnis, in dem temporäre Dateien gespeichert werden, fest. "
 "Die Vorgabe ist »/var/spool/cups/tmp«."
 
 #. type: TP
@@ -6748,8 +6749,8 @@ msgid ""
 "Specifies the user name or ID that is used when running external programs.  "
 "The default is \"lp\"."
 msgstr ""
-"Spezifiziert den Benutzernamen oder die ID, die bei der Ausführung externer "
-"Programme verwandt wird. Die Vorgabe ist »lp«."
+"Legt den Benutzernamen oder die ID, die bei der Ausführung externer "
+"Programme verwandt wird, fest. Die Vorgabe ist »lp«."
 
 #. type: Plain text
 #: cups-files.conf.man.in:225
@@ -6838,7 +6839,7 @@ msgid ""
 "Specifies the username passed to the filters. The default is the name of the "
 "current user."
 msgstr ""
-"Spezifiziert den Benutzernamen, der an die Filter weitergegeben wird. "
+"Legt den Benutzernamen, der an die Filter weitergegeben wird, fest. "
 "Standardmäßig ist dies der Name des aktuellen Benutzers."
 
 #. type: TP
@@ -6886,7 +6887,7 @@ msgid ""
 "Specifies the source file type. The default file type is guessed using the "
 "filename and contents of the file."
 msgstr ""
-"Spezifiziert den Quelldateityp. Der Vorgabedateityp wird anhand des "
+"Legt den Quelldateityp fest. Der Vorgabedateityp wird anhand des "
 "Dateinamens und des Inhalts der Datei geraten."
 
 #. type: TP
@@ -6901,7 +6902,7 @@ msgid ""
 "Converts document N from the specified job. If N is omitted, document 1 is "
 "converted."
 msgstr ""
-"Konvertiert Dokument N aus dem spezifizierten Druckauftrag. Falls N "
+"Konvertiert Dokument N aus dem festgelegten Druckauftrag. Falls N "
 "ausgelassen wird, wird Dokument 1 konvertiert."
 
 #. type: TP
@@ -6917,7 +6918,7 @@ msgid ""
 "pdf. Use printer/foo to convert to the printer format defined by the filters "
 "in the PPD file."
 msgstr ""
-"Spezifiziert den Zieldateityp. Standardmäßig ist dies application/pdf. "
+"Legt den Zieldateityp fest. Standardmäßig ist dies application/pdf. "
 "Verwenden Sie Drucker/foo, um zu dem Druckerformat, wie es von den Filtern "
 "in der PPD-Datei definiert ist, zu konvertieren."
 
@@ -6930,7 +6931,7 @@ msgstr "B<-n >I<Kopien>"
 #. type: Plain text
 #: cupsfilter.man:95
 msgid "Specifies the number of copies to generate."
-msgstr "Spezifiziert die Anzahl der zu erstellenden Kopien."
+msgstr "Legt die Anzahl der zu erstellenden Kopien fest."
 
 #. type: TP
 #: cupsfilter.man:95 cups-lpd.man.in:46
@@ -6941,7 +6942,7 @@ msgstr "B<-o >I<Name=Wert>"
 #. type: Plain text
 #: cupsfilter.man:98
 msgid "Specifies options to pass to the CUPS filters."
-msgstr "Spezifiziert die an die CUPS-Filter zu übergebenden Optionen."
+msgstr "Legt die an die CUPS-Filter zu übergebenden Optionen fest."
 
 #. type: TP
 #: cupsfilter.man:98
@@ -6952,7 +6953,7 @@ msgstr "B<-p >I<Dateiname.ppd>"
 #. type: Plain text
 #: cupsfilter.man:101
 msgid "Specifies the PPD file to use."
-msgstr "Spezifiziert die zu verwendende PPD-Datei."
+msgstr "Legt die zu verwendende PPD-Datei fest."
 
 #. type: TP
 #: cupsfilter.man:101
@@ -6963,7 +6964,7 @@ msgstr "B<-t >I<Titel>"
 #. type: Plain text
 #: cupsfilter.man:104
 msgid "Specifies the document title."
-msgstr "Spezifiziert den Dokumententitel."
+msgstr "Legt den Dokumententitel fest."
 
 #. type: TP
 #: cupsfilter.man:104
@@ -7644,7 +7645,7 @@ msgstr "B<CUPS_USER>"
 #. type: Plain text
 #: cups.man:101
 msgid "Specifies the name of the user for print requests."
-msgstr "Spezifiziert den Benutzernamen für Druckanfragen."
+msgstr "Legt den Benutzernamen für Druckanfragen fest."
 
 #. type: TP
 #: cups.man:101
@@ -7655,7 +7656,7 @@ msgstr "B<HOME>"
 #. type: Plain text
 #: cups.man:104
 msgid "Specifies the home directory of the current user."
-msgstr "Spezifiziert das Home-Verzeichnis des aktuellen Benutzers."
+msgstr "Legt das Home-Verzeichnis des aktuellen Benutzers fest."
 
 #. type: TP
 #: cups.man:104
@@ -7666,7 +7667,7 @@ msgstr "B<IPP_PORT>"
 #. type: Plain text
 #: cups.man:107
 msgid "Specifies the default port number for IPP requests."
-msgstr "Spezifiziert die Standard-Port-Nummer für IPP-Anfragen."
+msgstr "Legt die Standard-Port-Nummer für IPP-Anfragen fest."
 
 #. type: TP
 #: cups.man:107
@@ -7677,7 +7678,7 @@ msgstr "B<LOCALEDIR>"
 #. type: Plain text
 #: cups.man:110
 msgid "Specifies the location of localization files."
-msgstr "Spezifiziert den Ort der Lokalisierungsdateien."
+msgstr "Legt den Ort der Lokalisierungsdateien fest."
 
 #. type: TP
 #: cups.man:110
@@ -7688,7 +7689,7 @@ msgstr "B<LPDEST>"
 #. type: Plain text
 #: cups.man:113
 msgid "Specifies the default print queue (System V standard)."
-msgstr "Spezifiziert die Standard-Druckwarteschlange (System-V-Standard)."
+msgstr "Legt die Standard-Druckwarteschlange (System-V-Standard) fest."
 
 #. type: TP
 #: cups.man:113 filter.man:189
@@ -7699,7 +7700,7 @@ msgstr "B<PRINTER>"
 #. type: Plain text
 #: cups.man:116
 msgid "Specifies the default print queue (Berkeley standard)."
-msgstr "Spezifiziert die Standard-Druckwarteschlange (Berkeley-Standard)."
+msgstr "Legt die Standard-Druckwarteschlange (Berkeley-Standard) fest."
 
 #. type: TP
 #: cups.man:116
@@ -7710,7 +7711,7 @@ msgstr "B<TMPDIR>"
 #. type: Plain text
 #: cups.man:119
 msgid "Specifies the location of temporary files."
-msgstr "Spezifiziert den Ort von temporären Dateien."
+msgstr "Legt den Ort von temporären Dateien fest."
 
 #. type: Plain text
 #: cups.man:123
@@ -7827,7 +7828,7 @@ msgid ""
 "Specifies the community name to use.  Only a single community name may be "
 "specified.  The default community name is \"public\"."
 msgstr ""
-"Spezifiziert den zu verwendenen Gemeinschaftsnamen. Es darf nur ein einziger "
+"Legt den zu verwendenen Gemeinschaftsnamen fest. Es darf nur ein einziger "
 "Gemeinschaftsname angegeben werden. Die Vorgabegemeinschaft ist »public«."
 
 #. type: TP
@@ -7842,7 +7843,7 @@ msgid ""
 "Specifies the logging level from 0 (none) to 3 (everything).  Typically only "
 "used for debugging (thus the name).  The default debug level is 0."
 msgstr ""
-"Spezifiziert die Debug-Stufe von 0 (nichts) bis 3 (alles). Wird "
+"Legt die Debug-Stufe von 0 (nichts) bis 3 (alles) fest. Wird "
 "typischerweise nur für die Fehlersuche (Debugging, daher der Name) verwandt. "
 "Die Standard-Debug-Stufe ist 0."
 
@@ -7861,8 +7862,8 @@ msgid ""
 "[path]\", where \"%s\" represents the detected address or hostname.  There "
 "are no default device URI matching rules."
 msgstr ""
-"Spezifiziert eine oder mehrere Geräte-URIS, die für eine angegebene Marken- "
-"und Modellzeichenkette verwandt werden soll. Der reguläre Ausdruck wird "
+"Legt eine oder mehrere Geräte-URIs, die für eine angegebene Marken- "
+"und Modellzeichenkette verwandt werden soll, fest. Der reguläre Ausdruck wird "
 "verwandt, um auf die erkannte Marke und das Modell zu passen, und die Geräte-"
 "URI-Zeichenketten müssen von der Form »Schema://%s[:Port]/[Pfad]« sein, "
 "wobei »%s« die erkannte Adresse oder den Rechnernamen darstellt. Es gibt "
@@ -7886,7 +7887,7 @@ msgid ""
 "Specifies whether the addresses of printers should be converted to hostnames "
 "or left as numeric IP addresses.  The default is \"off\"."
 msgstr ""
-"Spezifiziert, ob die Druckeradressen in Rechnernamen konvertiert werden oder "
+"Legt fest, ob die Druckeradressen in Rechnernamen konvertiert werden oder "
 "als numerische IP-Adressen verbleiben sollen. Der Vorgabewert ist »off«."
 
 #. type: TP
@@ -7901,8 +7902,8 @@ msgid ""
 "Specifies the maximum number of seconds that the SNMP backend will scan the "
 "network for printers.  The default is 120 seconds (2 minutes)."
 msgstr ""
-"Spezifiziert die maximale Zeit in Sekunden, für die das SNMP-Backend das "
-"Netz nach Druckern durchsuchen wird. Die Vorgabe ist 120 Sekunden (2 "
+"Legt die maximale Zeit in Sekunden, für die das SNMP-Backend das "
+"Netz nach Druckern durchsuchen wird, fest. Die Vorgabe ist 120 Sekunden (2 "
 "Minuten)."
 
 #. type: Plain text
@@ -8203,8 +8204,8 @@ msgid ""
 "Specifies an alternate root directory for the filter, pre-filter, and other "
 "support file checks."
 msgstr ""
-"Spezifiziert ein alternatives Wurzelverzeichnis für die filter-, pre-filter- "
-"und andere unterstützte Dateiüberprüfungen."
+"Legt ein alternatives Wurzelverzeichnis für die filter-, pre-filter- "
+"und andere unterstützte Dateiüberprüfungen fest."
 
 #. type: TP
 #: cupstestppd.man:77
@@ -8308,7 +8309,7 @@ msgstr "B<-q>"
 #. type: Plain text
 #: cupstestppd.man:104
 msgid "Specifies that no information should be displayed."
-msgstr "Spezifiziert, dass keine Information angezeigt werden soll."
+msgstr "Legt fest, dass keine Information angezeigt werden soll."
 
 #. type: TP
 #: cupstestppd.man:104 ippfind.man:112 lpr.man:113 lpstat.man:115
@@ -8332,7 +8333,7 @@ msgid ""
 "Specifies that detailed conformance testing results should be displayed "
 "rather than the concise PASS/FAIL/ERROR status."
 msgstr ""
-"Spezifiziert, dass detaillierte Konformitätstestergebnisse anstatt des "
+"Legt fest, dass detaillierte Konformitätstestergebnisse anstatt des "
 "knappen »PASS/FAIL/ERROR« Statusses angezeigt werden sollen."
 
 #. type: TP
@@ -8347,7 +8348,7 @@ msgid ""
 "Specifies that all information in the PPD file should be displayed in "
 "addition to the detailed conformance testing results."
 msgstr ""
-"Spezifiziert, dass alle Informationen in der PPD-Datei zusätzlich zu den "
+"Legt fest, dass alle Informationen in der PPD-Datei zusätzlich zu den "
 "detaillierten Konformitätstestergebnissen angezeigt werden sollen."
 
 #. type: Plain text
@@ -8679,8 +8680,8 @@ msgstr ""
 "Rasterfilter sollten ausgewählte Optionen benutzen, die durch die "
 "Rasterseitenkopfzeilen gesetzt wurden, da jene die tatsächlichen Optionen "
 "für eine angegebene Seite wiedergeben. Auf der Befehlszeile angegebene "
-"Optionen spezifizieren die Vorgabewerte für den ganzen Druckauftrag, die auf "
-"seitenweiser Basis überschrieben werden können."
+"Optionen legen die Vorgabewerte für den ganzen Druckauftrag, die auf "
+"seitenweiser Basis überschrieben werden können, fest."
 
 #. type: SH
 #: filter.man:95
@@ -9744,7 +9745,7 @@ msgstr "B<{service_scheme}>"
 #. type: Plain text
 #: ippfind.man:183 ippfind.man:236
 msgid "URI scheme for DNS-SD registration type, e.g., \"ipp\", \"http\", etc."
-msgstr "URI-Schemata für DNS-SD-Registrationstypen, z.B: »ipp«, »http« usw."
+msgstr "URI-Schema für DNS-SD-Registrationstypen, z.B: »ipp«, »http« usw."
 
 #. type: TP
 #: ippfind.man:183
@@ -10491,7 +10492,7 @@ msgstr "B<FILE-ID \">I<Identifikator>B<\">"
 #. type: Plain text
 #: ipptoolfile.man:79
 msgid "Specifies an identifier string for the current file."
-msgstr "Spezifiziert die Identifikatorzeichenkette für die aktuelle Datei."
+msgstr "Legt die Identifikatorzeichenkette für die aktuelle Datei fest."
 
 #. type: TP
 #: ipptoolfile.man:79 ipptoolfile.man:181
@@ -10511,7 +10512,7 @@ msgid ""
 "Specifies whether, by default, B<ipptool>(8)  will ignore errors and "
 "continue with subsequent tests."
 msgstr ""
-"Spezifiziert, ob B<ipptool>(8) standardmäßig Fehler ignorieren und mit "
+"Legt fest, ob B<ipptool>(8) standardmäßig Fehler ignorieren und mit "
 "folgenden Tests fortfahren wird."
 
 #. type: TP
@@ -10603,7 +10604,7 @@ msgid ""
 "Specifies that the remainder of the test file should be skipped when the "
 "variable is or is not defined."
 msgstr ""
-"Spezifiziert, dass der Rest der Testdatei übersprungen werden soll, wenn die "
+"Legt fest, dass der Rest der Testdatei übersprungen werden soll, wenn die "
 "Variable (nicht) definiert ist."
 
 #. type: TP
@@ -10623,7 +10624,7 @@ msgstr "B<STOP-AFTER-INCLUDE-ERROR yes>"
 msgid ""
 "Specifies whether tests will be stopped after an error in an included file."
 msgstr ""
-"Spezifiziert, ob Tests nach einem Fehler in einer eingebundenen Datei "
+"Legt fest, ob Tests nach einem Fehler in einer eingebundenen Datei "
 "angehalten werden oder nicht."
 
 #. type: TP
@@ -10639,7 +10640,7 @@ msgid ""
 "for requests with attached files and \"Content-Length:\" for requests "
 "without attached files."
 msgstr ""
-"Spezifiziert, dass der Test standardmäßig »Transfer-Encoding: chunked« für "
+"Legt fest, dass der Test standardmäßig »Transfer-Encoding: chunked« für "
 "Anfragen mit angehängten Dateien und »Content-Length:« für Anfragen ohne "
 "angehängte Dateien verwenden wird."
 
@@ -10657,7 +10658,7 @@ msgid ""
 "on the B<ipptool>(8)  command-line. Support for chunked requests is required "
 "for conformance with all versions of IPP."
 msgstr ""
-"Spezifiziert, dass die Tests standarmäßig den HTTP/1.1-Header »Transfer-"
+"Legt fest, dass die Tests standardmäßig den HTTP/1.1-Header »Transfer-"
 "Encoding: chunked« verwenden. Dies ist die Vorgabe und äquivalent zur Angabe "
 "von I<-c> auf der Befehlszeile von B<ipptool>(8). Die Unterstützung für "
 "blockweise Abfragen wird für die Konformität mit allen Versionen von IPP "
@@ -10677,7 +10678,7 @@ msgid ""
 "line. Support for content length requests is required for conformance with "
 "all versions of IPP."
 msgstr ""
-"Spezifiziert, dass die Tests standarmäßig den HTTP/1.0-Header »Content-"
+"Legt fest, dass die Tests standardmäßig den HTTP/1.0-Header »Content-"
 "Length« verwenden. Dies ist die Vorgabe und äquivalent zur Angabe von I<-l> "
 "auf der Befehlszeile von B<ipptool>(8). Die Unterstützung für Inhaltslängen-"
 "Abfragen wird für die Konformität mit allen Versionen von IPP benötigt."
@@ -10717,8 +10718,8 @@ msgstr "B<VERSION 2.2>"
 msgid ""
 "Specifies the default IPP version number to use for the tests that follow."
 msgstr ""
-"Spezifiziert die Standard-IPP-Versionsnummer, die für die nachfolgenden "
-"Tests verwandt werden soll."
+"Legt die Standard-IPP-Versionsnummer, die für die nachfolgenden "
+"Tests verwandt werden soll, fest."
 
 #. type: SS
 #: ipptoolfile.man:141
@@ -10812,7 +10813,7 @@ msgstr "B<DELAY >I<Sekunden>"
 #. type: Plain text
 #: ipptoolfile.man:159
 msgid "Specifies a delay before this test will be run."
-msgstr "Spezifiziert eine Verzögerung, bevor der Test ausgeführt wird."
+msgstr "Legt eine Verzögerung, bevor der Test ausgeführt wird, fest."
 
 #. type: TP
 #: ipptoolfile.man:159
@@ -10826,7 +10827,7 @@ msgid ""
 "Specifies that value of the named attribute should be output as part of the "
 "test report."
 msgstr ""
-"Spezifiziert, dass der Wert des benannten Attributes als Teil des "
+"Legt fest, dass der Wert des benannten Attributes als Teil des "
 "Testberichts ausgegeben werden soll."
 
 #. type: TP
@@ -10856,7 +10857,7 @@ msgid ""
 "specify member attributes by separating the attribute and member names with "
 "the forward slash, for example \"media-col/media-size/x-dimension\"."
 msgstr ""
-"Spezifiziert, dass die Antwort das benannte Attribut enthalten muss/kann/"
+"Legt fest, dass die Antwort das benannte Attribut enthalten muss/kann/"
 "nicht darf. Zusätzliche Anforderungen können als Eigenschaften hinzugefügt "
 "werden - siehe den Abschnitt »EXPECT-EIGENSCHAFTEN« für weitere "
 "Informationen über Eigenschaften. Attributnamen können weitere "
@@ -10882,7 +10883,7 @@ msgid ""
 "Specifies that the response must/may include the named attribute and that "
 "all occurrences of that attribute must match the given predicates."
 msgstr ""
-"Spezifiziert, dass die Antwort das benannte Attribut enthalten muss/kann und "
+"Legt fest, dass die Antwort das benannte Attribut enthalten muss/kann und "
 "dass alle Vorkommen dieses Attributs auf die angegebenen Eigenschaften passen "
 "müssen."
 
@@ -10898,7 +10899,7 @@ msgid ""
 "Specifies a file to include at the end of the request. This is typically "
 "used when sending a test print file."
 msgstr ""
-"Spezifiziert eine Datei, die am Ende der Anfrage eingefügt werden soll. Dies "
+"Legt eine Datei, die am Ende der Anfrage eingefügt werden soll, fest. Dies "
 "wird typischerweise verwandt, wenn eine Testausdrucksdatei gesandt wird."
 
 #. type: TP
@@ -10911,7 +10912,7 @@ msgstr "B<GROUP Markierung>"
 #: ipptoolfile.man:181
 msgid "Specifies the group tag for subsequent attributes in the request."
 msgstr ""
-"Spezifiziert die Gruppenmarkierung für nachfolgende Attribute in der Anfrage."
+"Legt die Gruppenmarkierung für nachfolgende Attribute in der Anfrage fest."
 
 #. type: Plain text
 #: ipptoolfile.man:188
@@ -10919,7 +10920,7 @@ msgid ""
 "Specifies whether B<ipptool>(8)  will ignore errors and continue with "
 "subsequent tests."
 msgstr ""
-"Spezifiziert, ob B<ipptool>(8) Fehler in nachfolgenden Tests ignorieren und "
+"Legt fest, ob B<ipptool>(8) Fehler in nachfolgenden Tests ignorieren und "
 "fortfahren soll."
 
 #. type: TP
@@ -10931,7 +10932,7 @@ msgstr "B<NAME \">I< Zeichenkette>B<\">"
 #. type: Plain text
 #: ipptoolfile.man:191
 msgid "Specifies the human-readable name of the test."
-msgstr "Spezifiziert den menschenlesbaren Namen des Tests."
+msgstr "Legt den menschenlesbaren Namen des Tests fest."
 
 #. type: TP
 #: ipptoolfile.man:191
@@ -10977,9 +10978,9 @@ msgid ""
 "Specifies the request-id value to use in the request, either an integer or "
 "the word \"random\" to use a randomly generated value (the default)."
 msgstr ""
-"Spezifiziert die in der Anfrage zu verwendene Anfrage-ID, entweder eine "
+"Legt die in der Anfrage zu verwendene Anfrage-ID, entweder eine "
 "Ganzzahl oder das Wort »random«, um einen zufällig erzeugten Wert zu "
-"verwenden (Vorgabe)."
+"verwenden (Vorgabe), fest."
 
 #. type: TP
 #: ipptoolfile.man:202
@@ -10994,8 +10995,8 @@ msgid ""
 "The default is the resource from the URI provided to the B<ipptool>(8)  "
 "program."
 msgstr ""
-"Spezifiziert einen alternativen Ressourcen-Pfad, der für HTTP-POST-Anfragen "
-"verwandt wird. Die Vorgabe ist die Ressource, die aus der an das Programm "
+"Legt einen alternativen Ressourcen-Pfad, der für HTTP-POST-Anfragen "
+"verwandt wird, fest. Die Vorgabe ist die Ressource, die aus der an das Programm "
 "B<ipptool>(8) übergebenen URI entstammt."
 
 #. type: Plain text
@@ -11004,7 +11005,7 @@ msgid ""
 "Specifies that the current test should be skipped when the variable is or is "
 "not defined."
 msgstr ""
-"Spezifiziert, dass der aktuelle Test übersprungen werden soll, wenn die "
+"Legt fest, dass der aktuelle Test übersprungen werden soll, wenn die "
 "Variable (nicht) definiert ist."
 
 #. type: TP
@@ -11025,7 +11026,7 @@ msgid ""
 "Specifies whether B<ipptool>(8)  will skip the current test if the previous "
 "test resulted in an error/failure."
 msgstr ""
-"Spezifiziert, ob B<ipptool>(8) den aktuellen Test überspringt, falls der "
+"Legt fest, ob B<ipptool>(8) den aktuellen Test überspringt, falls der "
 "vorhergehende Test zu einem Fehler/Fehlschlag führte."
 
 #. type: TP
@@ -11041,7 +11042,7 @@ msgid ""
 "can be added as predicates - see the \"STATUS PREDICATES\" section for more "
 "information on predicates."
 msgstr ""
-"Spezifiziert den Status-Code-Wert einer erwarteten Antwort. Zusätzliche "
+"Legt den Status-Code-Wert einer erwarteten Antwort fest. Zusätzliche "
 "Anforderungen können als Eigenschaften hinzugefügt werden - siehe den "
 "Abschnitt »EXPECT-EIGENSCHAFTEN« für weitere Informationen über "
 "Eigenschaften."
@@ -11055,7 +11056,7 @@ msgstr "B<TEST-ID \">I<Identifikator>\""
 #. type: Plain text
 #: ipptoolfile.man:225
 msgid "Specifies an identifier string for the current test."
-msgstr "Spezifiziert eine Identifikatorzeichenkette für den aktuellen Test."
+msgstr "Legt eine Identifikatorzeichenkette für den aktuellen Test fest."
 
 #. type: Plain text
 #: ipptoolfile.man:228
@@ -11063,7 +11064,7 @@ msgid ""
 "Specifies that this test will use \"Transfer-Encoding: chunked\" if it has "
 "an attached file or \"Content-Length:\" otherwise."
 msgstr ""
-"Spezifiziert, dass dieser Test »Transfer-Encoding: chunked« verwendet, falls "
+"Legt fest, dass dieser Test »Transfer-Encoding: chunked« verwendet, falls "
 "er eine angehängt Datei hat und »Content-Length:« andernfalls."
 
 #. type: Plain text
@@ -11072,7 +11073,7 @@ msgid ""
 "Specifies that this test will use the HTTP/1.1 \"Transfer-Encoding: chunked"
 "\" header."
 msgstr ""
-"Spezifiziert, dass dieser Test den HTTP/1.1-Header »Transfer-Encoding: "
+"Legt fest, dass dieser Test den HTTP/1.1-Header »Transfer-Encoding: "
 "chunked« verwenden wird."
 
 #. type: Plain text
@@ -11080,13 +11081,13 @@ msgstr ""
 msgid ""
 "Specifies that this test will use the HTTP/1.0 \"Content-Length:\" header."
 msgstr ""
-"Spezifiziert, dass dieser Test den HTTP/1.0-Header »Content-Length:« "
+"Legt fest, dass dieser Test den HTTP/1.0-Header »Content-Length:« "
 "verwenden wird."
 
 #. type: Plain text
 #: ipptoolfile.man:245
 msgid "Specifies the IPP version number to use for this test."
-msgstr "Spezifiziert die für diesen Test zu verwendende IPP-Versionsnummer."
+msgstr "Legt die für diesen Test zu verwendende IPP-Versionsnummer fest."
 
 #. type: SS
 #: ipptoolfile.man:245
@@ -11235,8 +11236,8 @@ msgid ""
 "Specifies the maximum number of times to repeat if the B<REPEAT-MATCH> or "
 "B<REPEAT-NO-MATCH> predicate is specified. The default value is 1000."
 msgstr ""
-"Spezifiziert die maximale Anzahl an Wiederholungen, falls die Eigenschaft "
-"B<REPEAT-MATCH> oder B<REPEAT-NO-MATCH> festgelegt ist. Die Vorgabe ist 1000."
+"Legt die maximale Anzahl an Wiederholungen, falls die Eigenschaft "
+"B<REPEAT-MATCH> oder B<REPEAT-NO-MATCH> festgelegt ist, fest. Die Vorgabe ist 1000."
 
 #. type: TP
 #: ipptoolfile.man:275 ipptoolfile.man:375
@@ -11256,7 +11257,7 @@ msgid ""
 "Specifies that the current test should be repeated when the B<EXPECT> "
 "condition matches or does not match."
 msgstr ""
-"Spezifiziert, dass der aktuelle Test wiederholt werden soll, wenn die "
+"Legt fest, dass der aktuelle Test wiederholt werden soll, wenn die "
 "B<EXPECT>-Bedingung (nicht) passt."
 
 #. type: TP
@@ -11272,7 +11273,7 @@ msgid ""
 "specified parallel attribute."
 msgstr ""
 "Verlangt, dass das B<EXPECT>-Attribut die gleiche Anzahl von Werten wie das "
-"spezifizierte parallele Attribut hat."
+"festgelegte parallele Attribut hat."
 
 #. type: TP
 #: ipptoolfile.man:283
@@ -11327,7 +11328,7 @@ msgstr "B<WITH-ALL-SCHEMES \"/>I<regulärer Ausdruck>B</\">"
 #. type: Plain text
 #: ipptoolfile.man:298
 msgid "Requires that all URI values contain a matching scheme."
-msgstr "Verlangt, dass alle URI-Werte ein passendes Schemata enthalten."
+msgstr "Verlangt, dass alle URI-Werte ein passendes Schema enthalten."
 
 #. type: TP
 #: ipptoolfile.man:298
@@ -11636,7 +11637,7 @@ msgstr ""
 msgid ""
 "Specifies the maximum number of times to repeat. The default value is 1000."
 msgstr ""
-"Spezifiziert die maximale Anzahl an Wiederholungen. Die Vorgabe ist 1000."
+"Legt die maximale Anzahl an Wiederholungen fest. Die Vorgabe ist 1000."
 
 #. type: Plain text
 #: ipptoolfile.man:380
@@ -11644,7 +11645,7 @@ msgid ""
 "Specifies that the current test should be repeated when the response status-"
 "code matches or does not match the value specified by the STATUS directive."
 msgstr ""
-"Sepzifiziert, dass der aktuelle Test wiederholt werden soll, wenn der "
+"Legt fest, dass der aktuelle Test wiederholt werden soll, wenn der "
 "Rückgabestatuscode (nicht) auf den durch die STATUS-Direktive angegebenen "
 "Wert passt."
 
@@ -12329,7 +12330,7 @@ msgstr "Zeigt die verwandte Version von B<ipptool> an."
 msgid ""
 "Specifies that B<ipptool> must connect to the printer or server using IPv4."
 msgstr ""
-"Spezifiziert, dass B<ipptool> sich zu dem Drucker oder Server mit IPv4 "
+"Legt fest, dass B<ipptool> sich zu dem Drucker oder Server mit IPv4 "
 "verbinden muss."
 
 #. type: Plain text
@@ -12337,7 +12338,7 @@ msgstr ""
 msgid ""
 "Specifies that B<ipptool> must connect to the printer or server using IPv6."
 msgstr ""
-"Spezifiziert, dass B<ipptool> sich zu dem Drucker oder Server mit IPv6 "
+"Legt fest, dass B<ipptool> sich zu dem Drucker oder Server mit IPv6 "
 "verbinden muss."
 
 #. type: TP
@@ -12355,7 +12356,7 @@ msgid ""
 "requests with attached files and \"Content-Length:\" for requests without "
 "attached files."
 msgstr ""
-"Spezifiziert, dass Anfragen mit dem HTTP/1.1-Header »Transfer-Encoding: "
+"Legt fest, dass Anfragen mit dem HTTP/1.1-Header »Transfer-Encoding: "
 "chunked« gesendet werden sollen, der für Konformität von allen IPP-Versionen "
 "verlangt wird. Standardmäßig wird »Transfer-Encoding: chunked« für Anfragen "
 "mit anhängenden Dateien und »Content-Length:« für Anfragen ohne anhängende "
@@ -12379,7 +12380,7 @@ msgstr "B<-I>"
 #. type: Plain text
 #: ipptool.man:128
 msgid "Specifies that B<ipptool> will continue past errors."
-msgstr "Spezifiziert, dass B<ipptool> bei Fehlern fortfahren soll."
+msgstr "Legt fest, dass B<ipptool> bei Fehlern fortfahren soll."
 
 #. type: TP
 #: ipptool.man:128
@@ -12395,7 +12396,7 @@ msgid ""
 "default is to use \"Transfer-Encoding: chunked\" for requests with attached "
 "files and \"Content-Length:\" for requests without attached files."
 msgstr ""
-"Spezifiziert, dass Anfragen mit dem HTTP/1.0-Header »Content-Length:« "
+"Legt fest, dass Anfragen mit dem HTTP/1.0-Header »Content-Length:« "
 "gesendet werden sollen, der für Konformität von allen IPP-Versionen verlangt "
 "wird. Standardmäßig wird »Transfer-Encoding: chunked« für Anfragen mit "
 "anhängenden Dateien und »Content-Length:« für Anfragen ohne anhängende "
@@ -12414,7 +12415,7 @@ msgid ""
 "plist) file in addition to the regular test report (B<-t>).  This option is "
 "incompatible with the B<-i> (interval) and B<-n> (repeat-count) options."
 msgstr ""
-"Spezifiziert, dass die Ergebnisse der Tests zusätzlich zu dem normalen "
+"Legt fest, dass die Ergebnisse der Tests zusätzlich zu dem normalen "
 "Testbericht (B<-t>) in die benannte XML- (Apple plist-)Datei geschrieben "
 "werden sollen. Diese Option ist inkompatibel zu den Optionen B<-i> "
 "(Interval) und B<-n> (Anzahl-Wiederholungen)."
@@ -12439,7 +12440,7 @@ msgstr "B<-T>I<\\ Sekunden>"
 #. type: Plain text
 #: ipptool.man:142
 msgid "Specifies a timeout for IPP requests in seconds."
-msgstr "Spezifiziert eine Zeitüberschreitung in Sekunden für IPP-Anfragen."
+msgstr "Legt eine Zeitüberschreitung in Sekunden für IPP-Anfragen fest."
 
 #. type: TP
 #: ipptool.man:142
@@ -12453,7 +12454,7 @@ msgid ""
 "Specifies the default IPP version to use: 1.0, 1.1, 2.0, 2.1, or 2.2. If not "
 "specified, version 1.1 is used."
 msgstr ""
-"Spezifiziert die zu verwendende Standard-IPP-Version: 1.0, 1.1, 2.0, 2.1 "
+"Legt die zu verwendende Standard-IPP-Version fest: 1.0, 1.1, 2.0, 2.1 "
 "oder 2.2. Falls nicht angegeben, wird Version 1.1 verwandt."
 
 #. type: TP
@@ -12469,7 +12470,7 @@ msgid ""
 "report.  This option is incompatible with the B<-i> (interval) and B<-n> "
 "(repeat-count) options."
 msgstr ""
-"Spezifiziert, dass die XML- (Apple-Plist-)Ausgabe statt des reinen "
+"Legt fest, dass die XML- (Apple-Plist-)Ausgabe statt des reinen "
 "Textberichts erwünscht ist. Diese Option ist inkompatibel zu den Optionen B<-"
 "i> (Interval) und B<-n> (Anzahl-Wiederholungen)."
 
@@ -12479,7 +12480,7 @@ msgid ""
 "Specifies that CSV (comma-separated values) output is desired instead of the "
 "plain text output."
 msgstr ""
-"Spezifiziert, dass CVS- (Kommata-getrennte Werte-)Ausgabe statt des reinen "
+"Legt fest, dass CVS- (Kommata-getrennte Werte-)Ausgabe statt des reinen "
 "Textberichts erwünscht ist."
 
 #. type: TP
@@ -12517,14 +12518,14 @@ msgid ""
 "interval.  This option is incompatible with the B<-X> (XML plist output) "
 "option."
 msgstr ""
-"Spezifiziert, dass die (letzte) I<Testdatei> mit dem angegebenen Intervall "
+"Legt fest, dass die (letzte) I<Testdatei> mit dem angegebenen Intervall "
 "wiederholt werden soll. Diese Option ist inkompatibel zu der Option B<-X> "
 "(XML-Plist-Ausgabe)."
 
 #. type: Plain text
 #: ipptool.man:167
 msgid "Specifies that plain text output is desired."
-msgstr "Spezifiziert, dass die Ausgabe als einfacher Text erwünscht ist."
+msgstr "Legt fest, dass die Ausgabe als einfacher Text erwünscht ist."
 
 #. type: TP
 #: ipptool.man:167
@@ -12539,7 +12540,7 @@ msgid ""
 "number of times.  This option is incompatible with the I<-X> (XML plist "
 "output) option."
 msgstr ""
-"Spezifiziert, dass die (letzte) I<Testdatei> entsprechend der angegeben Zahl "
+"Legt fest, dass die (letzte) I<Testdatei> entsprechend der angegeben Zahl "
 "wiederholt werden soll. Diese Option ist inkompatibel zu der Option I<-X> "
 "(XML-Plist-Ausgabe)."
 
@@ -12554,7 +12555,7 @@ msgid ""
 "Specifies that CUPS test report output is desired instead of the plain text "
 "output."
 msgstr ""
-"Spezifiziert, dass CUPS-Testberichtausgabe statt einfache Textausgabe "
+"Legt fest, dass CUPS-Testberichtausgabe statt einfache Textausgabe "
 "erwünscht ist."
 
 #. type: Plain text
@@ -12563,7 +12564,7 @@ msgid ""
 "Specifies that all request and response attributes should be output in CUPS "
 "test mode (B<-t>).  This is the default for XML output."
 msgstr ""
-"Spezifiziert, dass alle Anfrag- und Antwort-Attribute im CUPS-Testmodus (B<-"
+"Legt fest, dass alle Anfrag- und Antwort-Attribute im CUPS-Testmodus (B<-"
 "t>) ausgegeben werden sollen. Dies ist die Vorgabe für XML-Ausgabe."
 
 #. type: Plain text
@@ -12771,7 +12772,7 @@ msgstr ""
 "Die erste Form des Befehls (I<-d>) setzt den Standarddrucker oder Klasse auf "
 "I<Ziel>. Folgende Druckaufträge, die mit den Befehlen B<lp>(1) oder "
 "B<lpr>(1) eingereicht werden, verwenden dieses Ziel solange der Benutzer "
-"nichts anderes mit dem Befehl B<lpoptions>(1) spezifiziert hat."
+"nichts anderes mit dem Befehl B<lpoptions>(1) festgelegt hat."
 
 #. type: Plain text
 #: lpadmin.man:75
@@ -12865,7 +12866,7 @@ msgstr "B<-o cupsIPPSupplies=false>"
 #. type: Plain text
 #: lpadmin.man:100
 msgid "Specifies whether IPP supply level values should be reported."
-msgstr "Spezifiziert, ob IPP-Bereitstellungsstufen berichtet werden sollen."
+msgstr "Legt fest, ob IPP-Bereitstellungsstufen berichtet werden sollen."
 
 #. type: TP
 #: lpadmin.man:100
@@ -12884,7 +12885,7 @@ msgstr "B<-o cupsSNMPSupplies=false>"
 msgid ""
 "Specifies whether SNMP supply level (RFC 3805) values should be reported."
 msgstr ""
-"Spezifiziert, ob SNMP-Bereitstellungsstufen (RFC 3805) berichtet werden "
+"Legt fest, ob SNMP-Bereitstellungsstufen (RFC 3805) berichtet werden "
 "sollen."
 
 #. type: TP
@@ -12949,7 +12950,7 @@ msgstr "B<-o job-sheets-default=>I<Deckblatt>B<,>I<Deckblatt>"
 #: lpadmin.man:122
 msgid "Sets the default banner page(s) to use for print jobs."
 msgstr ""
-"Spezifiziert das/die Standarddeckblätter für das Drucken von Aufträgen."
+"Legt das/die Standarddeckblätter für das Drucken von Aufträgen fest."
 
 #. type: TP
 #: lpadmin.man:122
@@ -13184,8 +13185,8 @@ msgid ""
 "Specifies a PostScript Printer Description file to use with the printer.  If "
 "specified, this option overrides the I<-i> option (interface script)."
 msgstr ""
-"Spezifiziert eine PostScript Printer Description-Datei für die Verwendung "
-"mit dem Drucker. Falls angegeben überschreibt diese Option die Option I<-i> "
+"Legt eine PostScript Printer Description-Datei für die Verwendung "
+"mit dem Drucker fest. Falls angegeben überschreibt diese Option die Option I<-i> "
 "(Schnittstellenskript)."
 
 #. type: Plain text
@@ -13446,8 +13447,8 @@ msgid ""
 "Specifies the IEEE-1284 device ID to match when listing drivers with the I<-"
 "m> option."
 msgstr ""
-"Spezifiziert die IEEE-1284-Geräte-ID, die übereinstimmen muss, wenn "
-"Gerätetreiber mit der Option I<-m> aufgelistet werden."
+"Legt die IEEE-1284-Geräte-ID, die übereinstimmen muss, wenn "
+"Gerätetreiber mit der Option I<-m> aufgelistet werden, fest."
 
 #. type: TP
 #: lpinfo.man:91
@@ -13477,8 +13478,8 @@ msgid ""
 "Specifies a comma-delimited list of device or PPD schemes that should be "
 "included in the results.  Static PPD files use the \"file\" scheme."
 msgstr ""
-"Spezifiziert eine kommabegrenzte Liste von PPD-Schemen, die in den "
-"Ergebnissen enthalten sein sollen. Statische PPD-Dateien benutzen das »file«-"
+"Legt eine kommabegrenzte Liste von PPD-Schemata, die in den "
+"Ergebnissen enthalten sein sollen, fest. Statische PPD-Dateien benutzen das »file«-"
 "Schema."
 
 #. type: TP
@@ -13492,8 +13493,8 @@ msgstr "B<--language >I<Standorteinstellung>"
 msgid ""
 "Specifies the language to match when listing drivers with the I<-m> option."
 msgstr ""
-"Spezifiziert die Sprache, die übereinstimmen muss, wenn Treiber mit der "
-"Option I<-m> aufgelistet werden."
+"Legt die Sprache, die übereinstimmen muss, wenn Treiber mit der "
+"Option I<-m> aufgelistet werden, fest."
 
 #. type: TP
 #: lpinfo.man:102
@@ -13507,8 +13508,8 @@ msgid ""
 "Specifies the make and model to match when listing drivers with the I<-m> "
 "option."
 msgstr ""
-"Spezifiziert die Marke und Modell, die übereinstimmen müssen, wenn Treiber "
-"mit der Option I<-m> aufgelistet werden."
+"Legt die Marke und Modell, die übereinstimmen müssen, wenn Treiber "
+"mit der Option I<-m> aufgelistet werden, fest."
 
 #. type: TP
 #: lpinfo.man:105
@@ -13521,8 +13522,8 @@ msgstr "B<--product >I<Name>"
 msgid ""
 "Specifies the product to match when listing drivers with the I<-m> option."
 msgstr ""
-"Spezifiziert das Produkt, das übereinstimmen muss, wenn Treiber mit der "
-"Option I<-m> aufgelistet werden."
+"Legt das Produkt, das übereinstimmen muss, wenn Treiber mit der "
+"Option I<-m> aufgelistet werden, fest."
 
 #. type: TP
 #: lpinfo.man:108
@@ -13534,8 +13535,8 @@ msgstr "B<--timeout >I<Sekunden>"
 #: lpinfo.man:111
 msgid "Specifies the timeout when listing devices with the I<-v> option."
 msgstr ""
-"Spezifiziert die Zeitüberschreitung, wenn Geräte mit der Option -v "
-"aufgelistet werden."
+"Legt die Zeitüberschreitung, wenn Geräte mit der Option I<-v> "
+"aufgelistet werden, fest."
 
 #. type: Plain text
 #: lpinfo.man:113
@@ -13703,7 +13704,7 @@ msgstr "B<-i >I<Auftrags-ID>"
 #. type: Plain text
 #: lp.man:123
 msgid "Specifies an existing job to modify."
-msgstr "Spezifiziert einen existierenden Auftrag, der geändert werden soll"
+msgstr "Legt einen existierenden Auftrag, der geändert werden soll, fest."
 
 #. type: TP
 #: lp.man:123 lpr.man:100 ppdc.man:75
@@ -13803,7 +13804,7 @@ msgid ""
 "option to resume a held job.  Use a value of I<restart> with the I<-i> "
 "option to restart a completed job."
 msgstr ""
-"Spezifiziert, wann der Druckauftrag gedruckt werden soll. Der Wert "
+"Legt fest, wann der Druckauftrag gedruckt werden soll. Der Wert "
 "I<immediate> führt zum sofortigen Druck. Der Wert I<hold> hält den "
 "Druckauftrag auf unbestimmte Zeit an und ein UTC-Zeitwert (HH:MM) hält den "
 "Druckauftrag bis zur angegebenen UTC- (nicht lokalen) Uhrzeit an. Verwenden "
@@ -13825,7 +13826,7 @@ msgid ""
 "page numbers refer to the output pages and not the document's original pages "
 "- options like \"number-up\" can affect the numbering of the pages."
 msgstr ""
-"Spezifiziert, welche Seiten im Dokument gedruckt werden. Die Liste kann eine "
+"Legt fest, welche Seiten im Dokument gedruckt werden. Die Liste kann eine "
 "durch Kommata getrennte Liste von Nummern und Bereichen (#-#) enthalten, z."
 "B. 1,3-5,16. Die Seitennummern beziehen sich auf die Ausgabeseiten und nicht "
 "auf die Originalseiten des Dokuments – Optionen wie »number-up« können die "
@@ -14024,7 +14025,7 @@ msgid ""
 "I<destination>. I<job> can be the job ID number or the old destination and "
 "job ID."
 msgstr ""
-"B<lpmove> verschiebt den spezifizierten I<Auftrag> oder alle Aufträge von "
+"B<lpmove> verschiebt den festgelegten I<Auftrag> oder alle Aufträge von "
 "der I<Quelle> zum I<Ziel>. I<Auftrag> kann die Auftrags-ID-Nummer oder das "
 "alte Ziel und die Auftrags-ID sein."
 
@@ -14036,7 +14037,7 @@ msgstr "Der Befehl B<lpmove> unterstützt die folgenden Optionen:"
 #. type: Plain text
 #: lpmove.man:52 lpq.man:52 lpr.man:90 lprm.man:54 lpstat.man:86
 msgid "Specifies an alternate username."
-msgstr "Spezifiziert einen alternativen Benutzernamen."
+msgstr "Legt einen alternativen Benutzernamen fest."
 
 #. type: Plain text
 #: lpmove.man:57
@@ -14161,7 +14162,7 @@ msgid ""
 "instances for all users in the I</etc/cups/lpoptions> file.  Otherwise, the "
 "per-user defaults are managed in the I<~/.cups/lpoptions> file."
 msgstr ""
-"Wenn I<lpoptions> vom Benutzer root ausgeführt wird, erhält und setzt es "
+"Wenn I<lpoptions> vom Benutzer »root« ausgeführt wird, erhält und setzt es "
 "Optionen und Instanzen für alle Benutzer in der Datei I</etc/cups/"
 "lpoptions>. Andernfalls werden die benutzerspezifischen Vorgaben in der "
 "Datei I<~/.cups/lpoptions> verwaltet."
@@ -14219,7 +14220,7 @@ msgstr "B<-o >I<Option>[B<=>I<Wert>]"
 #. type: Plain text
 #: lpoptions.man.in:107
 msgid "Specifies a new option for the named destination."
-msgstr "Spezifiziert eine neue Option für das benannte Ziel."
+msgstr "Legt eine neue Option für das benannte Ziel fest."
 
 #. type: TP
 #: lpoptions.man.in:107
@@ -14247,7 +14248,7 @@ msgstr "B<-r >I<Option>"
 #. type: Plain text
 #: lpoptions.man.in:117
 msgid "Removes the specified option from the named destination."
-msgstr "Entfernt die spezifizierte Option aus dem benannten Ziel."
+msgstr "Entfernt die festgelegte Option aus dem benannten Ziel."
 
 #. type: TP
 #: lpoptions.man.in:117
@@ -14354,7 +14355,7 @@ msgstr "B<-P >I<Ziel>[B</>I</Instanz>]"
 #. type: Plain text
 #: lpq.man:49
 msgid "Specifies an alternate printer or class name."
-msgstr "Spezifiziert einen alternativen Drucker- oder Klassennamen."
+msgstr "Legt einen alternativen Drucker- oder Klassennamen fest."
 
 #. type: Plain text
 #: lpq.man:55
@@ -14467,7 +14468,7 @@ msgid ""
 "Specifies that the print file is already formatted for the destination and "
 "should be sent without filtering.  This option is equivalent to I<-o raw>."
 msgstr ""
-"Spezifiziert, dass die Druckdatei bereits für das Ziel formatiert ist und "
+"Legt fest, dass die Druckdatei bereits für das Ziel formatiert ist und "
 "ohne Filtern gesendet werden soll. Diese Option ist äquivalent zu I<-o raw>."
 
 #. type: Plain text
@@ -14487,7 +14488,7 @@ msgid ""
 "the date, time, job name, and page number.  This option is equivalent to I<-"
 "o prettyprint> and is only useful when printing text files."
 msgstr ""
-"Spezifiziert, dass die Druckdatei mit einem schattierten Kopf mit Datum, "
+"Legt fest, dass die Druckdatei mit einem schattierten Kopf mit Datum, "
 "Uhrzeit, Auftragsname und Seitennummer formatiert werden soll. Diese Option "
 "Ist äquivalent zu I<-o prettyprint> und ist nur beim Druck von Textdateien "
 "nützlich."
@@ -14502,7 +14503,7 @@ msgstr "Druckauftrag zum Drucken anhalten."
 msgid ""
 "Specifies that the named print files should be deleted after submitting them."
 msgstr ""
-"Spezifiziert, dass die benannte Druckdatei nach dem Einreichen gelöscht "
+"Legt fest, dass die benannte Druckdatei nach dem Einreichen gelöscht "
 "werden soll."
 
 #. type: Plain text
@@ -14596,7 +14597,7 @@ msgstr "B<-P >I<Ziel>[I</Instanz>]"
 #. type: Plain text
 #: lprm.man:51
 msgid "Specifies the destination printer or class."
-msgstr "Spezifiziert den Zieldrucker oder die Zielklasse."
+msgstr "Legt den Zieldrucker oder die Zielklasse fest."
 
 #. type: TP
 #: lprm.man:54
@@ -14729,7 +14730,7 @@ msgid ""
 "printer names, otherwise the default (\"not-completed\") value will be used "
 "in the request to the scheduler."
 msgstr ""
-"Spezifiziert welche Druckaufträge angezeigt werden sollen, die "
+"Legt fest, welche Druckaufträge angezeigt werden sollen, die "
 "»completed« (abgeschlossenen) oder (standardmäßig) die »not-"
 "completed« (nicht-abgeschlossenen). Diese Option I<muss> vor der Option I<-"
 "o> und/oder allen Druckernamen aufgeführt werden, da ansonsten der "
@@ -14934,7 +14935,7 @@ msgstr "B<Cc >I<CC-Adresse@domain.com>"
 #: mailto.conf.man:29
 msgid "Specifies an additional recipient for all email notifications."
 msgstr ""
-"Spezifiziert einen zusätzlichen Empfänger für alle E-Mail-Benachrichtigungen."
+"Legt einen zusätzlichen Empfänger für alle E-Mail-Benachrichtigungen fest."
 
 #. type: TP
 #: mailto.conf.man:29
@@ -14945,7 +14946,7 @@ msgstr "B<From >I<Von-Adresse@domain.com>"
 #. type: Plain text
 #: mailto.conf.man:32
 msgid "Specifies the sender of email notifications."
-msgstr "Spezifiziert den Sender von E-Mail-Benachrichtigungen."
+msgstr "Legt den Sender von E-Mail-Benachrichtigungen fest."
 
 #. type: TP
 #: mailto.conf.man:32
@@ -14960,8 +14961,8 @@ msgid ""
 "Only one I<Sendmail> or I<SMTPServer> line may be present in the B<mailto."
 "conf> file.  If multiple lines are present, only the last one is used."
 msgstr ""
-"Spezifiziert den Sendmail-Befehl, der benutzt wird, wenn E-Mail-"
-"Benachrichtigungen versandt werden. Nur eine I<Sendmail>- oder I<SMTPServer>-"
+"Legt den Sendmail-Befehl, der benutzt wird, wenn E-Mail-"
+"Benachrichtigungen versandt werden, fest. Nur eine I<Sendmail>- oder I<SMTPServer>-"
 "Zeile kann in der B<mailto.conf>-Datei vorhanden sein. Wenn mehrere Zeilen "
 "vorhanden sind, wird nur die letzte benutzt."
 
@@ -14978,8 +14979,8 @@ msgid ""
 "I<Sendmail> or I<SMTPServer> line may be present in the B<mailto.conf> "
 "file.  If multiple lines are present, only the last one is used."
 msgstr ""
-"Spezifiziert den SMTP-Server, der benutzt wird, um E-Mail-Benachrichtigungen "
-"zu versenden. Nur eine I<Sendmail>- oder I<SMTPServer>-Zeile kann in der "
+"Legt den SMTP-Server, der benutzt wird, um E-Mail-Benachrichtigungen "
+"zu versenden, fest. Nur eine I<Sendmail>- oder I<SMTPServer>-Zeile kann in der "
 "B<mailto.conf>-Datei vorhanden sein. Wenn mehrere Zeilen vorhanden sind, "
 "wird nur die letzte benutzt."
 
@@ -14994,8 +14995,8 @@ msgstr "B<Subject >I<Betreff-Anfang>"
 msgid ""
 "Specifies a prefix string for the subject line of an email notification."
 msgstr ""
-"Spezifiziert eine Vorsilbenzeichenkette für die Betreffzeile einer E-Mail-"
-"Benachrichtigung."
+"Legt eine Vorsilbenzeichenkette für die Betreffzeile einer E-Mail-"
+"Benachrichtigung fest."
 
 #. type: Plain text
 #: mailto.conf.man:48
@@ -15043,9 +15044,9 @@ msgid ""
 msgstr ""
 "Jede Zeile in der Datei B<mime.convs> ist ein Kommentar, leer oder eine "
 "Filterzeile. Kommentardateien beginnen mit dem »#«-Zeichen. Filterzeilen "
-"spezifizieren den Quell- und Ziel-MIME-Typ zusammen mit den relativen "
+"legen den Quell- und Ziel-MIME-Typ zusammen mit den relativen "
 "Belastungen, die mit dem Filter assoziiert sind, und den auszuführenden "
-"Filter:"
+"Filter, fest:"
 
 #. type: Plain text
 #: mime.convs.man:31
@@ -15289,7 +15290,7 @@ msgid ""
 "priority is 100.  Larger values have higher priority while smaller values "
 "have lower priority."
 msgstr ""
-"Spezifiziert die relative Priorität dieses MIME-Typs. Die Vorgabepriorität "
+"Legt die relative Priorität dieses MIME-Typs fest. Die Vorgabepriorität "
 "ist 100. Größere Werte haben höhere Priorität, während kleinere Werte eine "
 "niedrigere Priorität haben."
 
@@ -16474,7 +16475,7 @@ msgid ""
 "intended to be edited or managed manually."
 msgstr ""
 "Die Datei B<subscriptions.conf> definiert die lokalen Ereignis-"
-"Benachrichtigungsabonnements, die lokal aktiv sind. Sie liegt normalerweise "
+"Benachrichtigungsabonnements, die aktiv sind. Sie liegt normalerweise "
 "im Verzeichnis I</etc/cups> und wird vom B<cupsd>(8)-Programm verwaltet. "
 "Diese Datei ist nicht dazu gedacht, bearbeitet oder manuell verwaltet zu "
 "werden."
@@ -16584,20 +16585,20 @@ msgstr ""
 #~ msgstr "Info Text"
 
 #~ msgid "Specifies human-readable text describing the printer."
-#~ msgstr "Spezifiziert menschenlesbaren Text, der den Drucker beschreibt."
+#~ msgstr "Legt menschenlesbaren Text, der den Drucker beschreibt, fest."
 
 #~ msgid "JobSheets banner banner"
 #~ msgstr "JobSheets Deckblatt Deckblatt"
 
 #~ msgid "Specifies the banner pages to use for the printer."
 #~ msgstr ""
-#~ "Spezifiziert die Deckblätter, die für den Drucker zu verwenden sind."
+#~ "Legt die Deckblätter, die für den Drucker zu verwenden sind, fest."
 
 #~ msgid "KLimit number"
 #~ msgstr "KLimit Zahl"
 
 #~ msgid "Specifies the job-k-limit value for the printer."
-#~ msgstr "Spezifiziert den job-k-limit-Wert für den Drucker."
+#~ msgstr "Legt den job-k-limit-Wert für den Drucker fest."
 
 #~ msgid "Location text"
 #~ msgstr "Location text"
@@ -16605,20 +16606,20 @@ msgstr ""
 #~ msgid ""
 #~ "Specifies human-readable text describing the location of the printer."
 #~ msgstr ""
-#~ "Spezifiziert menschenlesbaren Text, der den Standort des Druckers "
-#~ "beschreibt."
+#~ "Legt menschenlesbaren Text, der den Standort des Druckers "
+#~ "beschreibt, fest."
 
 #~ msgid "OpPolicy name"
 #~ msgstr "OpPolicy Name"
 
 #~ msgid "Specifies the operation policy for the printer."
-#~ msgstr "Spezifiziert die Vorgangsrichtlinien für den Drucker."
+#~ msgstr "Legt die Vorgangsrichtlinien für den Drucker fest."
 
 #~ msgid "PageLimit number"
 #~ msgstr "PageLimit Zahl"
 
 #~ msgid "Specifies the job-page-limit value for the printer."
-#~ msgstr "Spezifiziert den job-page-limit-Wert für den Drucker."
+#~ msgstr "Legt den job-page-limit-Wert für den Drucker fest."
 
 # type: TP
 #~ msgid "QuotaPeriod seconds"
@@ -16626,7 +16627,7 @@ msgstr ""
 
 # type: Plain text
 #~ msgid "Specifies the job-quota-period value for the printer."
-#~ msgstr "Spezifiziert den job-quota-period-Wert für den Drucker."
+#~ msgstr "Legt den job-quota-period-Wert für den Drucker fest."
 
 # type: TP
 #~ msgid "Shared Yes"
@@ -16638,7 +16639,7 @@ msgstr ""
 
 # type: Plain text
 #~ msgid "Specifies whether the printer is shared."
-#~ msgstr "Spezifiziert, ob der Drucker für andere freigegeben ist."
+#~ msgstr "Legt fest, ob der Drucker für andere freigegeben ist."
 
 # type: TP
 #~ msgid "State idle"
@@ -16651,8 +16652,8 @@ msgstr ""
 # type: Plain text
 #~ msgid "Specifies the initial state of the printer (Idle or Stopped)"
 #~ msgstr ""
-#~ "Spezifiziert den Anfangszustand des Druckers (Idle (im Leerlauf) oder "
-#~ "Stopped (angehalten))"
+#~ "Legt den Anfangszustand des Druckers (Idle (im Leerlauf) oder "
+#~ "Stopped (angehalten)) fest."
 
 # type: TP
 #~ msgid "StateMessage text"
@@ -16660,13 +16661,13 @@ msgstr ""
 
 # type: Plain text
 #~ msgid "Specifies the message associated with the state."
-#~ msgstr "Spezifiziert die einem Status zugeordnete Nachricht."
+#~ msgstr "Legt die einem Status zugeordnete Nachricht fest."
 
 #~ msgid "StateTime seconds"
 #~ msgstr "StateTime Sekunden"
 
 #~ msgid "Specifies the date/time associated with the state."
-#~ msgstr "Spezifiziert das mit einem Status assoziierte Datum/Uhrzeit."
+#~ msgstr "Legt die mit einem Status assoziierte Datum/Uhrzeit fest."
 
 #~ msgid ""
 #~ "I<cupsd(8)>, I<cupsd.conf(5)>, I<mime.convs(5)>, I<mime.types(5)>, "
@@ -16765,7 +16766,7 @@ msgstr ""
 
 # type: Plain text
 #~ msgid "Specifies the logging level for the AccessLog file."
-#~ msgstr "Spezifiziert die Protokollierungsstufe für die AccessLog-Datei."
+#~ msgstr "Legt die Protokollierungsstufe für die AccessLog-Datei fest."
 
 # type: Plain text
 #~ msgid "Allows access from the named hosts or addresses."
@@ -16780,22 +16781,22 @@ msgstr ""
 #~ "Specifies the authentication type (None, Basic, BasicDigest, Digest, "
 #~ "Negotiate)"
 #~ msgstr ""
-#~ "Spezifiziert den Authentifizierungstyp (None, Basic, BasicDigest, Digest, "
-#~ "Negotiate)"
+#~ "Legt den Authentifizierungstyp (None, Basic, BasicDigest, Digest, "
+#~ "Negotiate) fest."
 
 #~ msgid "Specifies the protocols to use for local printer sharing."
 #~ msgstr ""
-#~ "Spezifiziert die für das gemeinsame Benutzen der lokalen Drucker zu "
-#~ "verwendenden Protokolle."
+#~ "Legt die für das gemeinsame Benutzen der lokalen Drucker zu "
+#~ "verwendenden Protokolle fest."
 
 #~ msgid "Specifies whether or not shared printers should be advertised."
 #~ msgstr ""
-#~ "Spezifiziert, ob gemeinsam genutzte Drucker beworben werden sollen oder "
+#~ "Legt fest, ob gemeinsam genutzte Drucker bekanntgemacht werden sollen oder "
 #~ "nicht."
 
 # type: Plain text
 #~ msgid "Specifies the security classification of the server."
-#~ msgstr "Spezifiziert die Sicherheitseinstufung des Servers."
+#~ msgstr "Legt die Sicherheitseinstufung des Servers fest."
 
 # type: TP
 #~ msgid "DefaultAuthType BasicDigest"
@@ -16811,11 +16812,11 @@ msgstr ""
 
 #~ msgid "Specifies the maximum cost of filters that are run concurrently."
 #~ msgstr ""
-#~ "Spezifiziert die maximale Belastung der Filter, die gleichzeitig laufen."
+#~ "Legt die maximale Belastung der Filter, die gleichzeitig laufen, fest."
 
 #~ msgid "Specifies whether or not to do reverse lookups on client addresses."
 #~ msgstr ""
-#~ "Spezifiziert, ob inverse Client-Adressabfragen erfolgen sollen oder nicht."
+#~ "Legt fest, ob inverse Client-Adressabfragen erfolgen sollen oder nicht."
 
 #~ msgid "IdleExitTimeout seconds"
 #~ msgstr "IdleExitTimeout Sekunden"
@@ -16824,8 +16825,8 @@ msgstr ""
 #~ "Specifies the number of seconds to wait before exiting on inactivity "
 #~ "under systemd or upstart."
 #~ msgstr ""
-#~ "Spezifiziert die Anzahl von Sekunden zum Warten, bevor bei Inkativität "
-#~ "unter Systemd oder Upstart beendet wird."
+#~ "Legt die Anzahl von Sekunden zum Warten, bevor bei Inkativität "
+#~ "unter Systemd oder Upstart beendet wird, fest."
 
 #~ msgid "Include filename"
 #~ msgstr "Include Dateiname"
@@ -16835,19 +16836,19 @@ msgstr ""
 
 #~ msgid "Specifies the interval between retries of jobs in seconds."
 #~ msgstr ""
-#~ "Spezifiziert das Intervall zwischen Neuversuchen von Aufträgen in "
-#~ "Sekunden."
+#~ "Legt das Intervall zwischen Neuversuchen von Aufträgen in "
+#~ "Sekunden fest."
 
 #~ msgid "Specifies the number of retries that are done for jobs."
 #~ msgstr ""
-#~ "Spezifiziert die Anzahl der Neuversuche, die für Auträge durchgeführt "
-#~ "werden."
+#~ "legt die Anzahl der Neuversuche, die für Auträge durchgeführt "
+#~ "werden, fest."
 
 #~ msgid "Specifies the amount of time that connections are kept alive."
-#~ msgstr "Spezifiziert die Zeit, die Verbindungen am Leben erhalten werden."
+#~ msgstr "Legt die Zeit, die Verbindungen am Leben erhalten werden, fest."
 
 #~ msgid "Specifies the maximum size of any print job request."
-#~ msgstr "Spezifiziert die maximale Größe jedes Druckauftrags."
+#~ msgstr "Legt die maximale Größe jedes Druckauftrags fest."
 
 #~ msgid "Listens to the specified address and port or domain socket path."
 #~ msgstr ""
@@ -16856,15 +16857,15 @@ msgstr ""
 
 # type: Plain text
 #~ msgid "Specifies the logging level for the ErrorLog file."
-#~ msgstr "Spezifiziert die Protokollierungsstufe für die ErrorLog-Datei."
+#~ msgstr "Legt die Protokollierungsstufe für die ErrorLog-Datei fest."
 
 # type: Plain text
 #~ msgid "Specifies the format of the date and time in the log files."
-#~ msgstr "Spezifiziert das Format von Datum und Zeit in den Protokolldateien."
+#~ msgstr "Legt das Format von Datum und Zeit in den Protokolldateien fest."
 
 #~ msgid "Specifies the maximum number of simultaneous jobs to support."
 #~ msgstr ""
-#~ "Spezifiziert die maximale Anzahl an simultan zu unterstützenden Aufträgen."
+#~ "Legt die maximale Anzahl an simultan zu unterstützenden Aufträgen fest."
 
 #~ msgid "MaxLogSize number-bytes"
 #~ msgstr "MaxLogSize Byteanzahl"
@@ -16874,26 +16875,26 @@ msgstr ""
 
 #~ msgid "Specifies the maximum request/file size in bytes (0 for no limit)"
 #~ msgstr ""
-#~ "Spezifiziert die maximale Anfrage-/Dateigröße in Bytes (0 für keine "
-#~ "Begrenzung)"
+#~ "Legt die maximale Anfrage-/Dateigröße in Bytes (0 für keine "
+#~ "Begrenzung) fest."
 
 # type: Plain text
 #~ msgid ""
 #~ "Specifies the order of HTTP access control (allow,deny or deny,allow)"
 #~ msgstr ""
-#~ "Spezifiziert die Reihenfolge der HTTP-Zugriffssteuerung (allow, deny oder "
-#~ "deny, allow)"
+#~ "Legt die Reihenfolge der HTTP-Zugriffssteuerung (allow, deny oder "
+#~ "deny, allow) fest."
 
 #~ msgid "Specifies a port number to listen to for HTTP requests."
 #~ msgstr ""
-#~ "Spezifiziert eine Portnummer, an der auf HTTP-Anfragen gewartet werden "
-#~ "soll."
+#~ "Legt eine Portnummer, an der auf HTTP-Anfragen gewartet werden "
+#~ "soll, fest."
 
 # type: Plain text
 #~ msgid ""
 #~ "Specifies whether or not to preserve job files after they are printed."
 #~ msgstr ""
-#~ "Spezifiziert, ob Druckauftragsdateien nach dem Druck aufgehoben werden "
+#~ "Legt fest, ob Druckauftragsdateien nach dem Druck aufgehoben werden "
 #~ "sollen."
 
 # type: Plain text
@@ -16901,7 +16902,7 @@ msgstr ""
 #~ "Specifies whether or not to preserve the job history after they are "
 #~ "printed."
 #~ msgstr ""
-#~ "Spezifiziert, ob die Auftragschronik nach dem Druck aufgehoben werden "
+#~ "Legt fest, ob die Auftragschronik nach dem Druck aufgehoben werden "
 #~ "soll."
 
 # type: TP
@@ -16927,7 +16928,7 @@ msgstr ""
 # type: Plain text
 #~ msgid "Specifies that user or group authentication is required."
 #~ msgstr ""
-#~ "Spezifiziert, dass Benutzer- oder Gruppenauthentifizierung benötigt wird."
+#~ "Legt fest, dass Benutzer- oder Gruppenauthentifizierung benötigt wird."
 
 #~ msgid "ServerAdmin user@domain.com"
 #~ msgstr "ServerAdmin Benutzer@domain.com"
@@ -16936,14 +16937,14 @@ msgstr ""
 #~ "Specifies an alternate name that the server is known by. The special name "
 #~ "\"*\" allows any name to be used."
 #~ msgstr ""
-#~ "Spezifiziert einen alternativen Namen, unter dem der Server bekannt ist. "
+#~ "Legt einen alternativen Namen, unter dem der Server bekannt ist, fest. "
 #~ "Der besondere Name »*« erlaubt die Verwendung jedes Namens."
 
 #~ msgid ""
 #~ "Specifies what information is included in the Server header of HTTP "
 #~ "responses."
 #~ msgstr ""
-#~ "Spezifiziert, welche Informationen im Server-Header von HTTP-Antworten "
+#~ "Legt fest, welche Informationen im Server-Header von HTTP-Antworten "
 #~ "enthalten sein sollen."
 
 #~ msgid "SSLListen"
@@ -16966,7 +16967,7 @@ msgstr ""
 
 #~ msgid "Specifies whether to exit on inactivity when launched by systemd."
 #~ msgstr ""
-#~ "Spezifiziert, ob beim Start durch Systemd im Falle von Inaktivität "
+#~ "Legt fest, ob beim Start durch Systemd im Falle von Inaktivität "
 #~ "beendet werden soll."
 
 #~ msgid "26 July 2013"
@@ -16976,16 +16977,16 @@ msgstr ""
 #~ msgstr "Definiert den Namen der Zugriffsprotokolldatei."
 
 #~ msgid "Specifies the error log filename."
-#~ msgstr "Spezifiziert den Dateinamen des Fehlerprotokolls."
+#~ msgstr "Legt den Dateinamen des Fehlerprotokolls fest."
 
 #~ msgid "FontPath directory[:directory:...]"
 #~ msgstr "FontPath Verzeichnis[:Verzeichnis:…]"
 
 #~ msgid "Specifies the search path for fonts."
-#~ msgstr "Spezifiziert den Suchpfad für Schriften."
+#~ msgstr "Legt den Suchpfad für Schriften fest."
 
 #~ msgid "Specifies the page log filename."
-#~ msgstr "Spezifiziert den Dateinamen des Seitenprotokolls."
+#~ msgstr "Legt den Dateinamen des Seitenprotokolls fest."
 
 # type: TP
 #~ msgid "Printcap"
@@ -17001,17 +17002,17 @@ msgstr ""
 #~ "with a list of available printers (needed for legacy applications); "
 #~ "specifying Printcap with no filename disables printcap generation."
 #~ msgstr ""
-#~ "Spezifiziert den Dateinnamen für eine Printcap-Datei, die automatisch mit "
+#~ "Legt den Dateinnamen für eine Printcap-Datei, die automatisch mit "
 #~ "einer Liste der verfügbaren Drucker aktualisiert wird (benötigt für alte "
-#~ "Programme). Die Angabe von Printcap ohne Dateiname schaltet die Printcap-"
+#~ "Programme), fest. Die Angabe von Printcap ohne Dateiname schaltet die Printcap-"
 #~ "Generierung aus."
 
 #~ msgid ""
 #~ "Specifies the directory where backends, CGIs, daemons, and filters may be "
 #~ "found."
 #~ msgstr ""
-#~ "Spezifiziert das Verzeichnis, in dem Backends, CGIs, Daemons und Filter "
-#~ "gefunden werden können."
+#~ "Legt das Verzeichnis, in dem Backends, CGIs, Daemons und Filter "
+#~ "gefunden werden können, fest."
 
 #~ msgid "ServerCertificate filename"
 #~ msgstr "ServerCertificate Dateiname"
@@ -17022,12 +17023,12 @@ msgstr ""
 
 # type: Plain text
 #~ msgid "Specifies the encryption key to use."
-#~ msgstr "Spezifiziert den zu verwendenden Schlüssel für die Verschlüsselung."
+#~ msgstr "Legt den zu verwendenden Schlüssel für die Verschlüsselung fest."
 
 #~ msgid "Specifies the group(s) to use for System class authentication."
 #~ msgstr ""
-#~ "Spezifiziert den/die Gruppe(n), die für Systemklassen-Authentifizierung "
-#~ "verwandt werden."
+#~ "Legt den/die Gruppe(n), die für Systemklassen-Authentifizierung "
+#~ "verwandt werden, fest."
 
 #~ msgid "User user-name"
 #~ msgstr "User Benutzername"
@@ -17673,7 +17674,7 @@ msgstr ""
 #~ msgstr "-g Gruppenname"
 
 #~ msgid "Specifies a group other than the default system group."
-#~ msgstr "Spezifiziert eine von der Standardsystemgruppe verschiedene Gruppe"
+#~ msgstr "Legt eine von der Standardsystemgruppe verschiedene Gruppe fest."
 
 #~ msgid "SECURITY ISSUES"
 #~ msgstr "SICHERHEITSPROBLEME"
@@ -17797,7 +17798,7 @@ msgstr ""
 #~ msgstr "DeviceURI uri"
 
 #~ msgid "Specifies the device URI for a printer."
-#~ msgstr "Spezifiziert die Geräte-URI eines Druckers."
+#~ msgstr "Legt die Geräte-URI eines Druckers fest."
 
 #~ msgid "ErrorPolicy retry-current-job"
 #~ msgstr "ErrorPolicy retry-current-job"
@@ -17808,7 +17809,7 @@ msgstr ""
 
 # type: Plain text
 #~ msgid "Specifies the port monitor for a printer."
-#~ msgstr "Spezifiziert den Port-Monitor eines Druckers."
+#~ msgstr "Legt den Port-Monitor eines Druckers fest."
 
 # type: Plain text
 #~ msgid ""
@@ -17837,8 +17838,8 @@ msgstr ""
 #~ "Specifies the expiration time of a subscription as a UNIX time value in "
 #~ "seconds since January 1st, 1970."
 #~ msgstr ""
-#~ "Spezifiziert die Ablaufzeit eines Abonnements als UNIX-Zeitwert in "
-#~ "Sekunden seit dem 1. Januar 1970."
+#~ "Legt die Ablaufzeit eines Abonnements als UNIX-Zeitwert in "
+#~ "Sekunden seit dem 1. Januar 1970 fest."
 
 #~ msgid "Interval seconds"
 #~ msgstr "Intervallsekunden"
@@ -17847,8 +17848,8 @@ msgstr ""
 #~ msgid ""
 #~ "Specifies the preferred time interval for event notifications in seconds."
 #~ msgstr ""
-#~ "Spezifiziert das bevorzugte Zeitintervall für Ereignisbenachrichtigungen "
-#~ "in Sekunden."
+#~ "Legt das bevorzugte Zeitintervall für Ereignisbenachrichtigungen "
+#~ "in Sekunden fest."
 
 # type: TP
 #~ msgid "JobId job-id"
@@ -17856,7 +17857,7 @@ msgstr ""
 
 # type: Plain text
 #~ msgid "Specifies the job ID associated with the subscription."
-#~ msgstr "Spezifiziert die mit einem Abonnement verbundene Job-ID."
+#~ msgstr "Legt die mit einem Abonnement verbundene Job-ID fest."
 
 # type: TP
 #~ msgid "LeaseDuration seconds"
@@ -17876,17 +17877,17 @@ msgstr ""
 #~ msgid ""
 #~ "Specifies the next notify-sequence-number to use for the subscription."
 #~ msgstr ""
-#~ "Spezifiziert die nächste Notify-sequence-number, die für ein Abonnement "
-#~ "benutzt wird."
+#~ "Legt die nächste Notify-sequence-number, die für ein Abonnement "
+#~ "benutzt wird, fest."
 
 #~ msgid "Specifies the next subscription-id to use."
-#~ msgstr "Spezifiziert die nächste zu benutzende Subscription-ID."
+#~ msgstr "Legt die nächste zu benutzende Subscription-ID fest."
 
 #~ msgid "Owner username"
 #~ msgstr "Owner Benutzername"
 
 #~ msgid "Specifies the user that owns the subscription."
-#~ msgstr "Spezifiziert den Benutzer, dem das Abonnement gehört."
+#~ msgstr "Legt den Benutzer, dem das Abonnement gehört, fest."
 
 #~ msgid "PrinterName printername"
 #~ msgstr "PrinterName Druckername"
@@ -17901,8 +17902,8 @@ msgstr ""
 #~ msgid ""
 #~ "Specifies the notify-recipient-uri value for push-type notifications."
 #~ msgstr ""
-#~ "Spezifiziert den Notify-recipient-uri-Wert für Push-type-"
-#~ "Benachrichtigungen."
+#~ "Legt den Notify-recipient-uri-Wert für Push-type-"
+#~ "Benachrichtigungen fest."
 
 #~ msgid "UserData hex-escaped-data"
 #~ msgstr "UserData hex-escaped-data"
@@ -17911,8 +17912,8 @@ msgstr ""
 #~ "Specifies user data to be included in event notifications. This is "
 #~ "typically the \"from\" address in mailto: notifications."
 #~ msgstr ""
-#~ "Spezifiziert Benutzerdaten, die in Ereignisbenachrichtigungen eingefügt "
-#~ "werden. Dies ist normalerweise die »Von«-Adresse in mailto:-"
+#~ "Legt Benutzerdaten, die in Ereignisbenachrichtigungen eingefügt "
+#~ "werden, fest. Dies ist normalerweise die »Von«-Adresse in mailto:-"
 #~ "Benachrichtigungen."
 
 #~ msgid ""
@@ -17958,8 +17959,8 @@ msgstr ""
 #~ "specified to access older servers. B<Note: Not supported on OS X 10.7 or "
 #~ "later.>"
 #~ msgstr ""
-#~ "Spezifiziert die Adresse und optional den Port, die bei der Verbindung "
-#~ "zum Server verwandt werden sollen. Die IPP-Version (Standardmäßig 2.0, "
+#~ "Legt die Adresse und optional den Port, die bei der Verbindung "
+#~ "zum Server verwandt werden sollen, fest. Die IPP-Version (Standardmäßig 2.0, "
 #~ "kann 1.1 oder 1.0 sein) kann angegeben werden, um auf ältere Server "
 #~ "zuzugreifen. B<Hinweis: Auf OS X 10.7 oder neuer nicht unterstützt.>"
 
@@ -18020,7 +18021,7 @@ msgstr ""
 #~ "with the date, time, job name, and page number. This option is equivalent "
 #~ "to \"-o prettyprint\" and is only useful when"
 #~ msgstr ""
-#~ "Spezifiziert, dass die Druckdatei mit einem schattierten Kopf mit Datum, "
+#~ "Legt fest, dass die Druckdatei mit einem schattierten Kopf mit Datum, "
 #~ "Uhrzeit, Auftragsname und Seitennummer formatiert werden soll. Diese "
 #~ "Option Ist äquivalent zu »-o prettyprint« und ist nur nützlich, wenn "
 
@@ -18050,7 +18051,7 @@ msgstr ""
 #~ "Specifies the authentication class (User, Group, System) - B<this "
 #~ "directive is deprecated>."
 #~ msgstr ""
-#~ "Spezifiziert die Authentifizierungsklasse (Benutzer, Gruppe, System) - "
+#~ "Legt die Authentifizierungsklasse (Benutzer, Gruppe, System) fest - "
 #~ "B<diese Direktive ist veraltet>."
 
 # type: TP
@@ -18061,7 +18062,7 @@ msgstr ""
 #~ msgid ""
 #~ "Specifies the authentication group - B<this directive is deprecated>."
 #~ msgstr ""
-#~ "Spezifiziert die Authentifizierungsgruppe - B<diese Direktive ist "
+#~ "Legt die Authentifizierungsgruppe fest - B<diese Direktive ist "
 #~ "veraltet>."
 
 # type: TP
@@ -18078,7 +18079,7 @@ msgstr ""
 #~ "operating systems. When provided with no program filename, disables "
 #~ "option panel definition files."
 #~ msgstr ""
-#~ "Spezifiziert, ob Definitionsdateien für die Optionsleiste auf einigen "
+#~ "Legt fest, ob Definitionsdateien für die Optionsleiste auf einigen "
 #~ "Betriebssystemen generiert werden. Diese Option schaltet "
 #~ "Optionsschaltflächendefinitionsdateien aus, wenn sie ohne Dateiname "
 #~ "angegeben wird."
@@ -18117,8 +18118,8 @@ msgstr ""
 #~ msgid ""
 #~ "Specifies a broadcast address for outgoing printer information packets."
 #~ msgstr ""
-#~ "Spezifiziert eine Broadcast-Adresse für ausgehende "
-#~ "Druckerinformationspakete."
+#~ "Legt eine Broadcast-Adresse für ausgehende "
+#~ "Druckerinformationspakete fest."
 
 # type: TP
 #~ msgid "BrowseAllow all"
@@ -18240,7 +18241,7 @@ msgstr ""
 # type: Plain text
 #~ msgid "Specifies the LDAP domain name to use when discovering printers."
 #~ msgstr ""
-#~ "Spezifiziert die LDAP-Domäne, die benutzt wird, um Drucker zu suchen."
+#~ "Legt die LDAP-Domäne, die benutzt wird, um Drucker zu suchen, fest."
 
 #~ msgid "BrowseLDAPPassword"
 #~ msgstr "BrowseLDAPPassword"
@@ -18256,7 +18257,7 @@ msgstr ""
 
 # type: Plain text
 #~ msgid "Specifies the LDAP server to use."
-#~ msgstr "Spezifiziert den zu verwendenden LDAP-Server."
+#~ msgstr "Legt den zu verwendenden LDAP-Server fest."
 
 # type: TP
 #~ msgid "BrowseOrder allow,deny"
@@ -18271,8 +18272,8 @@ msgstr ""
 #~ "Specifies the order of printer information access control (allow,deny or "
 #~ "deny,allow)"
 #~ msgstr ""
-#~ "Spezifiziert die Reihenfolge der Druckerinformations-Zugriffssteuerung "
-#~ "(allow,deny (erlauben,verbieten) oder andersherum)."
+#~ "Legt die Reihenfolge der Druckerinformations-Zugriffssteuerung "
+#~ "(allow,deny (erlauben,verbieten) oder andersherum) fest."
 
 # type: TP
 #~ msgid "BrowsePoll host-or-ip-address"
@@ -18281,8 +18282,8 @@ msgstr ""
 # type: Plain text
 #~ msgid "Specifies the port to listen to for printer information packets."
 #~ msgstr ""
-#~ "Spezifiziert den Port, an dem auf Druckerinformationspakete gewartet "
-#~ "werden soll."
+#~ "Legt den Port, an dem auf Druckerinformationspakete gewartet "
+#~ "werden soll, fest."
 
 # type: TP
 #~ msgid "BrowseProtocols [All] [CUPS] [DNSSD] [LDAP] [SLP]"
@@ -18291,8 +18292,8 @@ msgstr ""
 # type: Plain text
 #~ msgid "Specifies the protocols to use for printer browsing."
 #~ msgstr ""
-#~ "Spezifiziert die für das Durchsuchen der Drucker zu verwendenden "
-#~ "Protokolle."
+#~ "Legt die für das Durchsuchen der Drucker zu verwendenden "
+#~ "Protokolle fest."
 
 # type: TP
 #~ msgid "BrowseRemoteProtocols [All] [CUPS] [DNSSD] [LDAP] [SLP]"
@@ -18307,7 +18308,7 @@ msgstr ""
 #~ "Specifies that printer information packets should be relayed from one "
 #~ "host or network to another."
 #~ msgstr ""
-#~ "Spezifiziert, dass Druckerinformationspakete von einem Rechner oder Netz "
+#~ "Legt fest, dass Druckerinformationspakete von einem Rechner oder Netz "
 #~ "zu einem anderen weitergeleitet werden sollen."
 
 # type: TP
@@ -18324,7 +18325,7 @@ msgstr ""
 #~ "not (\"printer@server\"). This option is ignored if more than one remote "
 #~ "printer exists with the same name."
 #~ msgstr ""
-#~ "Spezifiziert, ob nicht-lokale Drucker kurze Namen verwenden (»Drucker«) "
+#~ "Legt fest, ob nicht-lokale Drucker kurze Namen verwenden (»Drucker«) "
 #~ "oder nicht (»Drucker@Server«). Diese Option wird ignoriert, falls es mehr "
 #~ "als einen nicht-lokalen Drucker mit dem gleichen Namen gibt."
 
@@ -18337,9 +18338,9 @@ msgstr ""
 #~ "Specifies the maximum interval between printer information updates before "
 #~ "remote printers will be removed from the list of available printers."
 #~ msgstr ""
-#~ "Spezifiziert das maximale Intervall zwischen "
+#~ "Legt das maximale Intervall zwischen "
 #~ "Druckerinformationsaktualisierungen, bevor Drucker in der Ferne aus der "
-#~ "Liste der verfügbaren Drucker entfernt werden."
+#~ "Liste der verfügbaren Drucker entfernt werden, fest."
 
 # type: TP
 #~ msgid "HideImplicitMembers Yes"
@@ -18351,7 +18352,7 @@ msgstr ""
 
 # type: Plain text
 #~ msgid "Specifies whether to hide members of implicit classes."
-#~ msgstr "Spezifiziert, ob Mitglieder impliziter Klassen versteckt werden."
+#~ msgstr "Legt fest, ob Mitglieder impliziter Klassen versteckt werden."
 
 # type: TP
 #~ msgid "ImplicitAnyClasses Yes"
@@ -18367,7 +18368,7 @@ msgstr ""
 #~ "printers, e.g. \"AnyPrinter\" from \"Printer\", \"Printer@server1\", and "
 #~ "\"Printer@server2\"."
 #~ msgstr ""
-#~ "Spezifiziert, ob implizite Klassen für lokale und nicht-lokale Drucker "
+#~ "Legt fest, ob implizite Klassen für lokale und nicht-lokale Drucker "
 #~ "erstellt werden sollen oder nicht, z.B. »AnyPrinter« aus »Printer«, "
 #~ "»Printer@server1 und »Printer@server2«."
 
@@ -18384,7 +18385,7 @@ msgstr ""
 #~ "Specifies whether or not to create implicit classes from identical remote "
 #~ "printers."
 #~ msgstr ""
-#~ "Spezifiziert, ob implizite Klassen aus identischen nicht-lokalen Druckern "
+#~ "Legt fest, ob implizite Klassen aus identischen nicht-lokalen Druckern "
 #~ "erstellt werden sollen oder nicht."
 
 # type: Plain text
