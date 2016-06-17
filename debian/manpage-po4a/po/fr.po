@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups-2.0.3-6\n"
-"POT-Creation-Date: 2015-09-07 18:01+0200\n"
+"POT-Creation-Date: 2016-06-17 09:41+0200\n"
 "PO-Revision-Date: 2015-08-27 15:24+0200\n"
 "Last-Translator: Jean-Paul Guillonneau <guillonneau.jeanpaul@free.fr>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
@@ -189,7 +189,7 @@ msgstr ""
 #. type: SH
 #: backend.man:54 cancel.man:42 classes.conf.man:18 client.conf.man.in:18
 #: cupsaccept.man:45 cupsaddsmb.man.in:52 cups-config.man:54 cupsctl.man:41
-#: cupsd.conf.man.in:18 cupsd-helper.man:51 cupsd-logs.man:18 cupsd.man.in:34
+#: cupsd.conf.man.in:18 cupsd-helper.man:51 cupsd-logs.man:18 cupsd.man.in:37
 #: cupsenable.man:51 cups-files.conf.man.in:18 cupsfilter.man:59
 #: cups-lpd.man.in:28 cups.man:18 cups-snmp.conf.man:18 cups-snmp.man.in:28
 #: cupstestdsc.man:33 cupstestppd.man:56 filter.man:56 ippfind.man:37
@@ -672,7 +672,7 @@ msgstr "L'URI du périphérique associé à l'imprimante."
 
 # type: SH
 #. type: SH
-#: backend.man:172 cupsd-helper.man:61 cupsd.man.in:70 cupsfilter.man:115
+#: backend.man:172 cupsd-helper.man:61 cupsd.man.in:76 cupsfilter.man:115
 #: cups-lpd.man.in:59 cups.man:119 cups-snmp.man.in:45 ipptool.man:187
 #: lpoptions.man.in:124 mime.convs.man:42 mime.types.man:92
 #, no-wrap
@@ -741,7 +741,7 @@ msgstr ""
 #: backend.man:190 cancel.man:89 classes.conf.man:24 client.conf.man.in:79
 #: cupsaccept.man:82 cupsaddsmb.man.in:121 cups-config.man:109 cupsctl.man:97
 #: cupsd.conf.man.in:863 cupsd-helper.man:82 cupsd-logs.man:232
-#: cupsd.man.in:108 cupsenable.man:93 cups-files.conf.man.in:215
+#: cupsd.man.in:114 cupsenable.man:93 cups-files.conf.man.in:215
 #: cupsfilter.man:132 cups-lpd.man.in:113 cups.man:127 cups-snmp.conf.man:62
 #: cups-snmp.man.in:51 cupstestdsc.man:43 cupstestppd.man:143 filter.man:216
 #: ippfind.man:255 ../test/ippserver.man:166 ipptoolfile.man:615
@@ -776,7 +776,7 @@ msgstr "Aide en ligne de CUPS : E<lt>URL:I<http://localhost:631/help>E<gt>"
 #: backend.man:201 cancel.man:95 classes.conf.man:32 client.conf.man.in:82
 #: cupsaccept.man:90 cupsaddsmb.man.in:127 cups-config.man:112 cupsctl.man:102
 #: cupsd.conf.man.in:872 cupsd-helper.man:90 cupsd-logs.man:237
-#: cupsd.man.in:123 cupsenable.man:101 cups-files.conf.man.in:225
+#: cupsd.man.in:130 cupsenable.man:101 cups-files.conf.man.in:225
 #: cupsfilter.man:139 cups-lpd.man.in:120 cups.man:143 cups-snmp.conf.man:65
 #: cups-snmp.man.in:57 cupstestdsc.man:47 cupstestppd.man:147 filter.man:224
 #: ippfind.man:257 ../test/ippserver.man:168 ipptoolfile.man:621
@@ -794,15 +794,14 @@ msgstr "COPYRIGHT"
 #: backend.man:202 cancel.man:96 classes.conf.man:33 client.conf.man.in:83
 #: cupsaccept.man:91 cupsaddsmb.man.in:128 cups-config.man:113 cupsctl.man:103
 #: cupsd.conf.man.in:873 cupsd-helper.man:91 cupsd-logs.man:238
-#: cupsd.man.in:124 cupsenable.man:103 cups-files.conf.man.in:226
-#: cupsfilter.man:140 cups-lpd.man.in:121 cups.man:144 cups-snmp.conf.man:66
-#: cups-snmp.man.in:58 cupstestdsc.man:48 cupstestppd.man:148 filter.man:225
-#: ipptoolfile.man:622 ipptool.man:245 lpadmin.man:217 lpc.man:61
-#: lpinfo.man:135 lp.man:219 lpmove.man:79 lpoptions.man.in:138 lpq.man:69
-#: lpr.man:146 lprm.man:87 lpstat.man:149 mailto.conf.man:49 mime.convs.man:63
-#: mime.types.man:113 notifier.man:41 ppdcfile.man:162 ppdc.man:103
-#: ppdhtml.man:48 ppdi.man:55 ppdmerge.man:51 ppdpo.man:55 printers.conf.man:33
-#: subscriptions.conf.man:33
+#: cupsenable.man:103 cups-files.conf.man.in:226 cupsfilter.man:140
+#: cups-lpd.man.in:121 cups.man:144 cups-snmp.conf.man:66 cups-snmp.man.in:58
+#: cupstestdsc.man:48 cupstestppd.man:148 filter.man:225 ipptoolfile.man:622
+#: ipptool.man:245 lpadmin.man:217 lpc.man:61 lpinfo.man:135 lp.man:219
+#: lpmove.man:79 lpoptions.man.in:138 lpq.man:69 lpr.man:146 lprm.man:87
+#: lpstat.man:149 mailto.conf.man:49 mime.convs.man:63 mime.types.man:113
+#: notifier.man:41 ppdcfile.man:162 ppdc.man:103 ppdhtml.man:48 ppdi.man:55
+#: ppdmerge.man:51 ppdpo.man:55 printers.conf.man:33 subscriptions.conf.man:33
 msgid "Copyright \\[co] 2007-2015 by Apple Inc."
 msgstr "Copyright 2007-2015 par Apple Inc."
 
@@ -852,7 +851,7 @@ msgstr ""
 # type: SH
 #. type: SH
 #: cancel.man:45 cupsaccept.man:55 cupsaddsmb.man.in:101 cups-config.man:57
-#: cupsctl.man:45 cupsd.conf.man.in:516 cupsd.man.in:39 cupsenable.man:56
+#: cupsctl.man:45 cupsd.conf.man.in:516 cupsd.man.in:42 cupsenable.man:56
 #: cupsfilter.man:64 cups-lpd.man.in:37 cupstestppd.man:63 filter.man:65
 #: ippfind.man:191 ../test/ippserver.man:67 ipptool.man:88 lpadmin.man:78
 #: lpinfo.man:74 lp.man:99 lpmove.man:44 lpoptions.man.in:85 lpq.man:41
@@ -952,7 +951,7 @@ msgid "Deletes job data files in addition to canceling."
 msgstr "Supprimer les fichiers de données des travaux en plus de l’annulation"
 
 #. type: SH
-#: cancel.man:66 cupsaccept.man:72 cupsd.conf.man.in:841 cupsd.man.in:80
+#: cancel.man:66 cupsaccept.man:72 cupsd.conf.man.in:841 cupsd.man.in:86
 #: cupsenable.man:82 cups-lpd.man.in:51 cups.man:124 cups-snmp.man.in:49
 #: filter.man:204 ../test/ippserver.man:139 ipptool.man:221 lpadmin.man:196
 #: lpinfo.man:111 lp.man:186 lpoptions.man.in:128 lprm.man:57 lpstat.man:134
@@ -976,7 +975,7 @@ msgstr ""
 # type: SH
 #. type: SH
 #: cancel.man:68 cups-config.man:96 cupsctl.man:71 cupsd.conf.man.in:843
-#: cupsd.man.in:83 cupstestppd.man:130 ippfind.man:242
+#: cupsd.man.in:89 cupstestppd.man:130 ippfind.man:242
 #: ../test/ippserver.man:150 ipptool.man:225 lpinfo.man:113 lp.man:191
 #: lpmove.man:55 lpr.man:118 lprm.man:61 mime.convs.man:48 mime.types.man:94
 #, no-wrap
@@ -1528,9 +1527,9 @@ msgstr "cupsaddsmb"
 
 # type: TH
 #. type: TH
-#: cupsaddsmb.man.in:15 cupsctl.man:15 cupsd-logs.man:15 cupsenable.man:15
-#: cupsfilter.man:14 cupstestdsc.man:15 cupstestppd.man:15 ippfind.man:14
-#: lpc.man:15 lp.man:15 lpr.man:15
+#: cupsaddsmb.man.in:15 cupsd-logs.man:15 cupsenable.man:15 cupsfilter.man:14
+#: cupstestdsc.man:15 cupstestppd.man:15 ippfind.man:14 lpc.man:15 lp.man:15
+#: lpr.man:15
 #, no-wrap
 msgid "11 June 2014"
 msgstr "11 juin 2014"
@@ -2120,6 +2119,13 @@ msgstr ""
 #, no-wrap
 msgid "cupsctl"
 msgstr "cupsctl"
+
+# type: TH
+#. type: TH
+#: cupsctl.man:15
+#, no-wrap
+msgid "30 May 2016"
+msgstr "30 mai 2016"
 
 # type: Plain text
 #. type: Plain text
@@ -4721,8 +4727,7 @@ msgstr "Chemin pour l'imprimante nommée."
 # type: TH
 #. type: TP
 #: cupsd.conf.man.in:693
-#, fuzzy, no-wrap
-#| msgid "/printers/nom.png"
+#, no-wrap
 msgid "/printers/name.png"
 msgstr "/printers/nom.png"
 
@@ -6221,8 +6226,8 @@ msgstr "cupsd"
 #. type: TH
 #: cupsd.man.in:15
 #, no-wrap
-msgid "8 July 2014"
-msgstr "8 Juillet 2014"
+msgid "12 February 2016"
+msgstr "12 février 2016"
 
 # type: Plain text
 #. type: Plain text
@@ -6232,50 +6237,64 @@ msgstr "cupsd - ordonnanceur cups"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.man.in:34
+#: cupsd.man.in:37
+#, fuzzy
+#| msgid ""
+#| "B<cupsd> [ B<-c> I<config-file> ] [ B<-f> ] [ B<-F> ] [ B<-h> ] [ B<-l> ] "
+#| "[ B<-t> ]"
 msgid ""
-"B<cupsd> [ B<-c> I<config-file> ] [ B<-f> ] [ B<-F> ] [ B<-h> ] [ B<-l> ] "
-"[ B<-t> ]"
+"B<cupsd> [ B<-c> I<cupsd.conf> ] [ B<-f> ] [ B<-F> ] [ B<-h> ] [ B<-l> ] "
+"[ B<-s> I<cups-files.conf> ] [ B<-t> ]"
 msgstr ""
 "B<cupsd> [ B<-c> I<fichier_configuration> ] [ B<-f> ] [ B<-F> ] [ B<-h> ] "
 "[ B<-l> ] [ B<-t> ]"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.man.in:39
+#: cupsd.man.in:42
+#, fuzzy
+#| msgid ""
+#| "B<cupsd> is the scheduler for CUPS. It implements a printing system based "
+#| "upon the Internet Printing Protocol, version 2.1. If no options are "
+#| "specified on the command-line then the default configuration file I</etc/"
+#| "cups/cupsd.conf> will be used."
 msgid ""
 "B<cupsd> is the scheduler for CUPS. It implements a printing system based "
-"upon the Internet Printing Protocol, version 2.1. If no options are "
-"specified on the command-line then the default configuration file I</etc/"
-"cups/cupsd.conf> will be used."
+"upon the Internet Printing Protocol, version 2.1, and supports most of the "
+"requirements for IPP Everywhere. If no options are specified on the command-"
+"line then the default configuration file I</etc/cups/cupsd.conf> will be "
+"used."
 msgstr ""
 "B<cupsd> est l'ordonnanceur pour CUPS. Il fournit un système d'impression "
 "basé sur l'Internet Printing Protocol, version 2.1. Si aucune option n'est "
 "indiquée sur la ligne de commande, alors le fichier de configuration par "
 "défaut I</etc/cups/cupsd.conf> sera utilisé."
 
-# type: TP
+# type: TH
 #. type: TP
-#: cupsd.man.in:40
-#, no-wrap
-msgid "B<-c>I<\\ config-file>"
-msgstr "B<-c> I<fichier_configuration>"
+#: cupsd.man.in:43
+#, fuzzy, no-wrap
+#| msgid "I<cupsd.conf(5)>"
+msgid "B<-c>I<\\ cupsd.conf>"
+msgstr "B<cupsd.conf>(5)"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.man.in:43
-msgid "Uses the named configuration file."
-msgstr "Utiliser le fichier de configuration donné."
+#: cupsd.man.in:46
+#, fuzzy
+#| msgid "Uses the named cups-files.conf configuration file."
+msgid "Uses the named cupsd.conf configuration file."
+msgstr "Utiliser le fichier de configuration I<cups-files.conf> donné."
 
 #. type: TP
-#: cupsd.man.in:43
+#: cupsd.man.in:46
 #, no-wrap
 msgid "B<-f>"
 msgstr "B<-f>"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.man.in:48
+#: cupsd.man.in:51
 msgid ""
 "Run B<cupsd> in the foreground; the default is to run in the background as a "
 "\"daemon\"."
@@ -6284,14 +6303,14 @@ msgstr ""
 "arrière-plan comme « démon »."
 
 #. type: TP
-#: cupsd.man.in:48
+#: cupsd.man.in:51
 #, no-wrap
 msgid "B<-F>"
 msgstr "B<-F>"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.man.in:56
+#: cupsd.man.in:59
 msgid ""
 "Run B<cupsd> in the foreground but detach the process from the controlling "
 "terminal and current directory. This is useful for running B<cupsd> from "
@@ -6302,19 +6321,19 @@ msgstr ""
 "pour lancer B<cupsd> depuis B<init>(8)."
 
 #. type: TP
-#: cupsd.man.in:56 ../test/ippserver.man:91 lpr.man:93
+#: cupsd.man.in:59 ../test/ippserver.man:91 lpr.man:93
 #, no-wrap
 msgid "B<-h>"
 msgstr "B<-h>"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.man.in:59
+#: cupsd.man.in:62
 msgid "Shows the program usage."
 msgstr "Afficher un message d'aide."
 
 #. type: TP
-#: cupsd.man.in:59 ippfind.man:79 ipptool.man:164 lpinfo.man:85
+#: cupsd.man.in:62 ippfind.man:79 ipptool.man:164 lpinfo.man:85
 #: lpoptions.man.in:101 lpq.man:58 lpr.man:96 lpstat.man:104
 #, no-wrap
 msgid "B<-l>"
@@ -6322,7 +6341,7 @@ msgstr "B<-l>"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.man.in:67
+#: cupsd.man.in:70
 msgid ""
 "This option is passed to B<cupsd> when it is run from B<launchd>(8)  or "
 "B<systemd>(8)."
@@ -6330,21 +6349,35 @@ msgstr ""
 "Cette option est passée à B<cupsd> lorsqu'il est lancé par B<launchd>(8) ou "
 "B<systemd>(8)."
 
+# type: TH
 #. type: TP
-#: cupsd.man.in:67 ipptool.man:176 lpstat.man:122 ppdc.man:78
+#: cupsd.man.in:70
+#, fuzzy, no-wrap
+#| msgid "cups-files.conf"
+msgid "B<-s>I<\\ cups-files.conf>"
+msgstr "cups-files.conf"
+
+# type: Plain text
+#. type: Plain text
+#: cupsd.man.in:73 cupsfilter.man:77
+msgid "Uses the named cups-files.conf configuration file."
+msgstr "Utiliser le fichier de configuration I<cups-files.conf> donné."
+
+#. type: TP
+#: cupsd.man.in:73 ipptool.man:176 lpstat.man:122 ppdc.man:78
 #, no-wrap
 msgid "B<-t>"
 msgstr "B<-t>"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.man.in:70
+#: cupsd.man.in:76
 msgid "Test the configuration file for syntax errors."
 msgstr "Tester le fichier de configuration pour les erreurs de syntaxe."
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.man.in:79
+#: cupsd.man.in:85
 #, no-wrap
 msgid ""
 "I</etc/cups/classes.conf>\n"
@@ -6365,7 +6398,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.man.in:83
+#: cupsd.man.in:89
 msgid ""
 "B<cupsd> implements all of the required IPP/2.1 attributes and operations. "
 "It also implements several CUPS-specific administrative operations."
@@ -6375,7 +6408,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.man.in:87
+#: cupsd.man.in:93
 msgid "Run B<cupsd> in the background with the default configuration file:"
 msgstr ""
 "Forcer B<cupsd> à tourner en arrière-plan avec le fichier de configuration "
@@ -6383,26 +6416,26 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.man.in:90
+#: cupsd.man.in:96
 #, no-wrap
 msgid "    cupsd\n"
 msgstr "    cupsd\n"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.man.in:94
+#: cupsd.man.in:100
 msgid "Test a configuration file called I<test.conf>:"
 msgstr "Tester un fichier de configuration appelé I<test.conf> :"
 
 #. type: Plain text
-#: cupsd.man.in:97
+#: cupsd.man.in:103
 #, no-wrap
 msgid "    cupsd -t -c test.conf\n"
 msgstr "    cupsd -t -c test.conf\n"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.man.in:103
+#: cupsd.man.in:109
 msgid ""
 "Run B<cupsd> in the foreground with a test configuration file called I<test."
 "conf>:"
@@ -6412,24 +6445,36 @@ msgstr ""
 
 # type: TH
 #. type: Plain text
-#: cupsd.man.in:106
+#: cupsd.man.in:112
 #, no-wrap
 msgid "    cupsd -f -c test.conf\n"
 msgstr "    cupsd -f -c test.conf\n"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.man.in:123
+#: cupsd.man.in:130
+#, fuzzy
+#| msgid ""
+#| "B<backend>(7), B<classes.conf>(5), B<cups>(1), B<cups-lpd>(8), B<cupsd."
+#| "conf>(5), B<cupsd-helper>(8), B<cupsd-logs>(8), B<filter>(7), "
+#| "B<launchd>(8), B<mime.convs>(5), B<mime.types>(5), B<printers.conf>(5), "
+#| "B<systemd>(8), CUPS Online Help (http://localhost:631/help)"
 msgid ""
-"B<backend>(7), B<classes.conf>(5), B<cups>(1), B<cups-lpd>(8), B<cupsd."
-"conf>(5), B<cupsd-helper>(8), B<cupsd-logs>(8), B<filter>(7), B<launchd>(8), "
-"B<mime.convs>(5), B<mime.types>(5), B<printers.conf>(5), B<systemd>(8), CUPS "
-"Online Help (http://localhost:631/help)"
+"B<backend>(7), B<classes.conf>(5), B<cups>(1), B<cups-files.conf>(5), B<cups-"
+"lpd>(8), B<cupsd.conf>(5), B<cupsd-helper>(8), B<cupsd-logs>(8), "
+"B<filter>(7), B<launchd>(8), B<mime.convs>(5), B<mime.types>(5), B<printers."
+"conf>(5), B<systemd>(8), CUPS Online Help (http://localhost:631/help)"
 msgstr ""
 "B<backend>(7), B<classes.conf>(5), B<cups>(1), B<cups-lpd>(8), B<cupsd."
 "conf>(5), B<cupsd-helper>(8), B<cupsd-logs>(8), B<filter>(7), B<launchd>(8), "
 "B<mime.convs>(5), B<mime.types>(5), B<printers.conf>(5), B<systemd>(8), aide "
 "en ligne de CUPS E<lt>URL:I<http://localhost:631/help>E<gt>"
+
+# type: Plain text
+#. type: Plain text
+#: cupsd.man.in:131
+msgid "Copyright \\[co] 2007-2016 by Apple Inc."
+msgstr "Copyright 2007-2016 par Apple Inc."
 
 # type: TH
 #. type: TH
@@ -7393,12 +7438,6 @@ msgstr ""
 #, no-wrap
 msgid "B<-c >I<config-file>"
 msgstr "B<-c >I<fichier_configuration>"
-
-# type: Plain text
-#. type: Plain text
-#: cupsfilter.man:77
-msgid "Uses the named cups-files.conf configuration file."
-msgstr "Utiliser le fichier de configuration I<cups-files.conf> donné."
 
 # type: TP
 #. type: TP
@@ -10774,10 +10813,8 @@ msgstr "B<ipptool>(1)"
 # type: Plain text
 #. type: Plain text
 #: ippfind.man:258
-#, fuzzy
-#| msgid "Copyright \\[co] 2013-2014 by Apple Inc."
 msgid "Copyright \\[co] 2013-2015 by Apple Inc."
-msgstr "Copyright 2013-2014 par Apple Inc."
+msgstr "Copyright 2013-2015 par Apple Inc."
 
 #. type: TH
 #: ../test/ippserver.man:14
@@ -14378,8 +14415,8 @@ msgstr "lpinfo"
 # type: TH
 #. type: TH
 #: lpinfo.man:15 lpmove.man:15 lpoptions.man.in:15 lpq.man:15 lpstat.man:15
-#: mailto.conf.man:15 mime.types.man:15 notifier.man:15 ppdcfile.man:15
-#: ppdc.man:15 ppdhtml.man:15 ppdi.man:15 ppdmerge.man:15 ppdpo.man:15
+#: mailto.conf.man:15 mime.types.man:15 notifier.man:15 ppdc.man:15
+#: ppdhtml.man:15 ppdi.man:15 ppdmerge.man:15 ppdpo.man:15
 #, no-wrap
 msgid "12 June 2014"
 msgstr "12 juin 2014"
@@ -16804,6 +16841,13 @@ msgstr ""
 msgid "ppdcfile"
 msgstr "ppdcfile"
 
+# type: TH
+#. type: TH
+#: ppdcfile.man:15
+#, no-wrap
+msgid "5 March 2016"
+msgstr "5 mars 2016"
+
 #. type: Plain text
 #: ppdcfile.man:18
 msgid "ppdcfile - cups ppd compiler source file format"
@@ -17036,8 +17080,9 @@ msgstr "B<Duplex >I<type>"
 
 #. type: TP
 #: ppdcfile.man:84
-#, no-wrap
-msgid "B<Filter \\Imime-type cost program>"
+#, fuzzy, no-wrap
+#| msgid "B<Filter \\Imime-type cost program>"
+msgid "B<Filter >I<mime-type cost program>"
 msgstr "B<Filter >I<type_mime coût programme>"
 
 # type: TP
@@ -17809,6 +17854,18 @@ msgstr ""
 "localhost:631/help>E<gt>."
 
 # type: TH
+#~ msgid "8 July 2014"
+#~ msgstr "8 Juillet 2014"
+
+# type: TP
+#~ msgid "B<-c>I<\\ config-file>"
+#~ msgstr "B<-c> I<fichier_configuration>"
+
+# type: Plain text
+#~ msgid "Uses the named configuration file."
+#~ msgstr "Utiliser le fichier de configuration donné."
+
+# type: TH
 #~ msgid "20 October 2014"
 #~ msgstr "20 octobre 2014"
 
@@ -17817,10 +17874,6 @@ msgstr ""
 
 #~ msgid "29 August 2014"
 #~ msgstr "29 août 2014"
-
-# type: TH
-#~ msgid "12 February 2006"
-#~ msgstr "12 février 2006"
 
 # type: TP
 #~ msgid "-U username"
@@ -18913,10 +18966,6 @@ msgstr ""
 #~ msgid "http://www.pwg.org/ipp"
 #~ msgstr "http://www.pwg.org/ipp"
 
-# type: TH
-#~ msgid "25 March 2014"
-#~ msgstr "25 mars 2014"
-
 #~ msgid "$$"
 #~ msgstr "$$"
 
@@ -19419,10 +19468,6 @@ msgstr ""
 #~ msgstr ""
 #~ "B<classes.conf>(5), B<cupsd>(8), B<cupsd.conf>(5), B<mime.convs>(5), "
 #~ "B<mime.types>(5), B<printers.conf>(5)"
-
-# type: TH
-#~ msgid "I<cupsd.conf(5)>"
-#~ msgstr "B<cupsd.conf>(5)"
 
 # type: TH
 #~ msgid "13 May 2013"
@@ -19934,10 +19979,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Définir l'attribut (les attributs) donné(s) du travail d'impression. "
 #~ "Typiquement, c'est utilisé pour fixer l'attribut job-remote-id."
-
-# type: TH
-#~ msgid "10 May 2011"
-#~ msgstr "10 mai 2011"
 
 # type: TP
 #~ msgid "-o fitplot"

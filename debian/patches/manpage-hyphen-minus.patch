@@ -189,20 +189,6 @@ Last-Update: 2015-02-10
  .SH SEE ALSO
  .BR cupsd (8),
  .BR cupsd.conf (5),
---- a/man/cupsd.man.in
-+++ b/man/cupsd.man.in
-@@ -27,9 +27,9 @@
- ] [
- .B \-h
- ] [
--.B -l
-+.B \-l
- ] [
--.B -t
-+.B \-t
- ]
- .SH DESCRIPTION
- .B cupsd
 --- a/man/cupsfilter.man
 +++ b/man/cupsfilter.man
 @@ -127,7 +127,7 @@
