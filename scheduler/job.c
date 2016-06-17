@@ -229,6 +229,7 @@ cupsdCheckJobs(void)
 			*pclass;	/* Printer class destination */
   ipp_attribute_t	*attr;		/* Job attribute */
   time_t		curtime;	/* Current time */
+  const char		*reasons;	/* job-state-reasons value */
 
 
   curtime = time(NULL);
@@ -323,6 +324,25 @@ cupsdCheckJobs(void)
       cupsdContinueJob(job);
 
    /*
+    * Skip jobs that where held-on-create
+    */
+
+    reasons = ippGetString(job->reasons, 0, NULL);
+    if (reasons && !strcmp(reasons, "job-held-on-create"))
+    {
+     /*
+      * Check whether the printer is still holding new jobs...
+      */
+
+      printer = cupsdFindDest(job->dest);
+
+      if (printer->holding_new_jobs)
+        continue;
+
+      ippSetString(job->attrs, &job->reasons, 0, "none");
+    }
+
+   /*
     * Start pending jobs if the destination is available...
     */
 
@@ -359,7 +379,7 @@ cupsdCheckJobs(void)
 	                 "Job aborted because the destination printer/class "
 			 "has gone away.");
       }
-      else if (printer && !printer->holding_new_jobs)
+      else if (printer)
       {
        /*
         * See if the printer is available or remote and not printing a job;
@@ -732,8 +752,8 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
   * Add decompression/raw filter as needed...
   */
 
-  if (job->compressions[job->current_file] &&
-      (!job->printer->remote || job->num_files == 1))
+  if ((job->compressions[job->current_file] && (!job->printer->remote || job->num_files == 1)) ||
+      (!job->printer->remote && job->printer->raw && job->num_files > 1))
   {
    /*
     * Add gziptoany filter to the front of the list...
