@@ -22,6 +22,7 @@ tests-fix-mips-getjobs.patch
 tests-use-ipv4-lo-address.patch
 
 # Debian patches that upstream doesn't want to fix
+tests-make-lpstat-call-reproducible.patch
 move-cupsd-conf-default-to-share.patch
 drop_unnecessary_dependencies.patch
 read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.patch

@@ -847,7 +847,7 @@ while true; do
 	fi
 done
 
-description="`../systemv/lpstat -l -p Test1 | grep Description | sed -e '1,$s/^[^:]*: //g'`"
+description="`LC_ALL=C ../systemv/lpstat -l -p Test1 | grep Description | sed -e '1,$s/^[^:]*: //g'`"
 if test "x$description" != "xTest Printer 1"; then
 	echo "Failed, printer-info for Test1 is '$description', expected 'Test Printer 1'." >>$strfile
 	echo "FAIL (got '$description', expected 'Test Printer 1')"
