@@ -1,3 +1,15 @@
+cups (2.1.4-2) unstable; urgency=medium
+
+  [ Helge Kreutzmann ]
+  * Update German man page (2118t3f1u)
+
+  [ Didier Raboud ]
+  * Add patch to force LC_ALL=C on lpstat when grepping its output for
+    Description; should fix the FTBFS on forced-languages reproducible builds
+    environments
+
+ -- Didier Raboud <odyx@debian.org>  Sun, 03 Jul 2016 11:35:21 +0200
+
 cups (2.1.4-1) unstable; urgency=medium
 
   * New 2.1.4 upstream release
