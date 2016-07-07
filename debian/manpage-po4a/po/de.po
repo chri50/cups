@@ -11,7 +11,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 2.0.3-10\n"
-"POT-Creation-Date: 2016-06-17 09:41+0200\n"
+"POT-Creation-Date: 2016-07-03 11:50+0200\n"
 "PO-Revision-Date: 2016-07-02 06:34+0200\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
@@ -2169,9 +2169,10 @@ msgid ""
 msgstr ""
 "Jede Zeile in der Datei kann eine Konfigurationsdirektive, eine leere Zeile "
 "oder ein Kommentar sein. Konfigurationsdirektiven bestehen typischerweise "
-"aus einem Namen und keinem oder mehren, durch Leerzeichen getrennten Werten. Die "
-"Groß- und Kleinschreibung der Namen und Werte der Konfigurationsdirektiven "
-"ist nicht relevant. Kommentarzeilen beginnen mit dem Zeichen »#«. "
+"aus einem Namen und keinem oder mehren, durch Leerzeichen getrennten Werten. "
+"Die Groß- und Kleinschreibung der Namen und Werte der "
+"Konfigurationsdirektiven ist nicht relevant. Kommentarzeilen beginnen mit "
+"dem Zeichen »#«. "
 
 #. type: SS
 #: cupsd.conf.man.in:34 ipptoolfile.man:63
@@ -2543,11 +2544,12 @@ msgstr "B<ErrorPolicy retry-job>"
 #: cupsd.conf.man.in:154
 msgid ""
 "Specifies that a failed print job should be retried at a later time unless "
-"otherwise specified for the printer."
+"otherwise specified for the printer. The 'retry-job' error policy is the "
+"default."
 msgstr ""
 "Legt fest, dass ein fehlgeschlagener Druckauftrag zu einem späteren "
 "Zeitpunkt neu versucht werden soll, es sei denn, es wurde anders für den "
-"Drucker festgelegt."
+"Drucker festgelegt. Die Fehler-Richtlinie »retry-job« ist die Vorgabe."
 
 #. type: TP
 #: cupsd.conf.man.in:154
@@ -2575,11 +2577,10 @@ msgstr "B<ErrorPolicy stop-printer>"
 #: cupsd.conf.man.in:161
 msgid ""
 "Specifies that a failed print job should stop the printer unless otherwise "
-"specified for the printer. The 'stop-printer' error policy is the default."
+"specified for the printer."
 msgstr ""
 "Legt fest, dass ein fehlgeschlagener Druckauftrag den Drucker anhalten soll, "
-"es sei denn, es wurde anders für den Drucker festgelegt. Die Fehler-"
-"Richtlinie »stop-printer« ist die Vorgabe."
+"es sei denn, es wurde anders für den Drucker festgelegt."
 
 #. type: TP
 #: cupsd.conf.man.in:161
@@ -2672,11 +2673,11 @@ msgstr ""
 "werden soll. Die Einstellung »Double« veranlasst B<cupsd>(8) zu prüfen, ob "
 "der über die Adresse aufgelöste Rechnername zu einer der dafür "
 "zurückgegebenen Adressen passt. Das Nachschlagen mit »Double« verhindert "
-"außerdem, dass sich Clients mit nicht registrierten Adressen mit Ihrem Server "
-"verbinden. Die Voreinstellung ist »Off«, um potenzielle Probleme mit der "
-"Systemleistung durch das Nachschlagen von Rechnernamen zu vermeiden. Setzen "
-"Sie diese Option nur auf »On« oder »Double«, wenn dies unbedingt erforderlich "
-"ist. "
+"außerdem, dass sich Clients mit nicht registrierten Adressen mit Ihrem "
+"Server verbinden. Die Voreinstellung ist »Off«, um potenzielle Probleme mit "
+"der Systemleistung durch das Nachschlagen von Rechnernamen zu vermeiden. "
+"Setzen Sie diese Option nur auf »On« oder »Double«, wenn dies unbedingt "
+"erforderlich ist. "
 
 #. type: TP
 #: cupsd.conf.man.in:197
@@ -3427,9 +3428,9 @@ msgid ""
 msgstr ""
 "Die Direktive ServerAlias wird für die Überprüfung von HTTP-Host-Kopfzeilen "
 "bei der Verbindungsaufnahme von Clients zum Auftragsplaner über externe "
-"Schnittstellen verwandt. Wenn Sie den besonderen Name »*« verwenden, kann Ihr "
-"System für Browser-basierte DNS-Rebinding-Angriffe verwundbar werden, selbst "
-"wenn die Zugriffe über eine Firewall erfolgen. Falls die automatische "
+"Schnittstellen verwandt. Wenn Sie den besonderen Name »*« verwenden, kann "
+"Ihr System für Browser-basierte DNS-Rebinding-Angriffe verwundbar werden, "
+"selbst wenn die Zugriffe über eine Firewall erfolgen. Falls die automatische "
 "Erkennung von alternativen Namen nicht funktioniert, empfehlen wir, jeden "
 "alternativen Namen mit der Direktive ServerAlias aufzuführen, statt »*« zu "
 "verwenden."
@@ -3661,8 +3662,8 @@ msgid ""
 "Used by a client to download icons and other printer resources and to access "
 "the CUPS web interface."
 msgstr ""
-"Wird von einem Client zum Herunterladen von Icons und anderen Druckressourcen "
-"und zum Zugriff auf die CUPS-Webschnittstelle verwandt."
+"Wird von einem Client zum Herunterladen von Icons und anderen "
+"Druckressourcen und zum Zugriff auf die CUPS-Webschnittstelle verwandt."
 
 #. type: TP
 #: cupsd.conf.man.in:513
@@ -5825,9 +5826,9 @@ msgstr ""
 "B<cupsd> ist der Auftragsplaner (Scheduler) für das Common UNIX Printing "
 "System. Es implementiert ein Drucksystem, das auf dem Internet Printing "
 "Protocol Version 2.1 basiert und die meisten der Anforderungen von »IPP "
-"Everywhere« erfüllt. Falls auf der Befehlszeile keine Optionen "
-"angegeben werden, wird stattdessen die Standard-Konfigurationsdatei I</etc/"
-"cups/cupsd.conf> verwandt."
+"Everywhere« erfüllt. Falls auf der Befehlszeile keine Optionen angegeben "
+"werden, wird stattdessen die Standard-Konfigurationsdatei I</etc/cups/cupsd."
+"conf> verwandt."
 
 #. type: TP
 #: cupsd.man.in:43
@@ -5999,6 +6000,11 @@ msgstr ""
 "lpd>(8), B<cupsd.conf>(5), B<cupsd-helper>(8), B<cupsd-logs>(8), "
 "B<filter>(7), B<launchd>(8), B<mime.convs>(5), B<mime.types>(5), B<printers."
 "conf>(5), B<systemd>(8), CUPS-Online-Hilfe (http://localhost:631/help)"
+
+#. type: Plain text
+#: cupsd.man.in:131
+msgid "Copyright \\[co] 2007-2016 by Apple Inc."
+msgstr "Copyright \\[co] 2007-2016 by Apple Inc."
 
 #. type: TH
 #: cupsenable.man:15
@@ -16503,6 +16509,14 @@ msgid ""
 msgstr ""
 "B<classes.conf>(5), B<cupsd>(8), B<cupsd.conf>(5), B<mime.convs>(5), B<mime."
 "types>(5), B<printers.conf>(5), CUPS Online Help (http://localhost:631/help)"
+
+#~ msgid ""
+#~ "Specifies that a failed print job should be retried at a later time "
+#~ "unless otherwise specified for the printer."
+#~ msgstr ""
+#~ "Legt fest, dass ein fehlgeschlagener Druckauftrag zu einem späteren "
+#~ "Zeitpunkt neu versucht werden soll, es sei denn, es wurde anders für den "
+#~ "Drucker festgelegt."
 
 #~ msgid "8 July 2014"
 #~ msgstr "8. Juli 2014"
