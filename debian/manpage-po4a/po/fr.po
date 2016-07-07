@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups-2.0.3-6\n"
-"POT-Creation-Date: 2016-06-17 09:41+0200\n"
+"POT-Creation-Date: 2016-07-03 11:50+0200\n"
 "PO-Revision-Date: 2015-08-27 15:24+0200\n"
 "Last-Translator: Jean-Paul Guillonneau <guillonneau.jeanpaul@free.fr>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
@@ -2800,10 +2800,12 @@ msgstr "B<ErrorPolicy> I<retry-job>"
 #: cupsd.conf.man.in:154
 msgid ""
 "Specifies that a failed print job should be retried at a later time unless "
-"otherwise specified for the printer."
+"otherwise specified for the printer. The 'retry-job' error policy is the "
+"default."
 msgstr ""
 "Indiquer qu’une tâche d’impression ayant échoué sera recommencée plus tard à "
-"moins d’indication contraire pour l’imprimante."
+"moins d’indication contraire pour l’imprimante. Par défaut, « retry-job » "
+"est la politique d'erreur."
 
 # type: TP
 #. type: TP
@@ -2829,16 +2831,16 @@ msgstr ""
 msgid "B<ErrorPolicy stop-printer>"
 msgstr "B<ErrorPolicy> I<stop-printer>"
 
+# type: Plain text
 #. #FilterLimit
 #. type: Plain text
 #: cupsd.conf.man.in:161
 msgid ""
 "Specifies that a failed print job should stop the printer unless otherwise "
-"specified for the printer. The 'stop-printer' error policy is the default."
+"specified for the printer."
 msgstr ""
 "Indiquer qu’une tâche d’impression ayant échoué arrêtera l’imprimante à "
-"moins d’indication contraire pour l’imprimante. Par défaut, « stop-printer » "
-"est la politique d’erreur."
+"moins d’indication contraire pour l’imprimante."
 
 # type: TP
 #. type: TP
@@ -17852,6 +17854,14 @@ msgstr ""
 "B<classes.conf>(5), B<cupsd>(8), B<cupsd.conf>(5), B<mime.convs>(5), B<mime."
 "types>(5), B<printers.conf>(5), aide en ligne de CUPS E<lt>URL:I<http://"
 "localhost:631/help>E<gt>."
+
+# type: Plain text
+#~ msgid ""
+#~ "Specifies that a failed print job should be retried at a later time "
+#~ "unless otherwise specified for the printer."
+#~ msgstr ""
+#~ "Indiquer qu’une tâche d’impression ayant échoué sera recommencée plus "
+#~ "tard à moins d’indication contraire pour l’imprimante."
 
 # type: TH
 #~ msgid "8 July 2014"

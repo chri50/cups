@@ -1,3 +1,14 @@
+cups (2.1.4-3) unstable; urgency=low
+
+  * Change the default ErrorPolicy from 'stop-printer' to 'retry-job'
+    - Update documentation, manpage and manpage translations
+    - Add a cups-daemon NEWS entry
+    (Closes: #631025)
+  * Patch another lpstat call to also make the build reproducible when built in
+    italian
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 07 Jul 2016 16:43:34 +0200
+
 cups (2.1.4-2) unstable; urgency=medium
 
   [ Helge Kreutzmann ]
