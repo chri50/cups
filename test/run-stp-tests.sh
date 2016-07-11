@@ -841,7 +841,7 @@ kill -HUP $cupsd
 while true; do
 	sleep 10
 
-	running=`../systemv/lpstat -r 2>/dev/null`
+	running=`LC_ALL=C ../systemv/lpstat -r 2>/dev/null`
 	if test "x$running" = "xscheduler is running"; then
 		break
 	fi
