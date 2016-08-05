@@ -311,50 +311,6 @@ Description: Common UNIX Printing System(tm) - Development files CUPS image libr
  This package provides the files necessary for developing applications
  that use the CUPS raster image format.
 
-Package: libcupscgi1-dev
-Section: libdevel
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libcupscgi1 (= ${binary:Version}),
- libcups2-dev (= ${binary:Version})
-Description: Common UNIX Printing System(tm) - Development files for CGI library
- The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
- general replacement for lpd and the like.  It supports the Internet 
- Printing Protocol (IPP), and has its own filtering driver model for 
- handling various document types.
- .
- This package provides the files necessary for developing CGI programs
- for the CUPS web interface using libcupscgi.
-
-Package: libcupsmime1-dev
-Section: libdevel
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends},
- libcupsmime1 (= ${binary:Version}),
- libcups2-dev (= ${binary:Version})
-Description: Common UNIX Printing System(tm) - Development files MIME library
- The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
- general replacement for lpd and the like.  It supports the Internet 
- Printing Protocol (IPP), and has its own filtering driver model for 
- handling various document types.
- .
- This package provides the files necessary for developing programs
- using libcupsmime.
-
-Package: libcupsppdc1-dev
-Section: libdevel
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends},
- libcupsppdc1 (= ${binary:Version}),
- libcups2-dev (= ${binary:Version})
-Description: Common UNIX Printing System(tm) - Development files PPD library
- The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
- general replacement for lpd and the like.  It supports the Internet 
- Printing Protocol (IPP), and has its own filtering driver model for 
- handling various document types.
- .
- This package provides the files necessary for developing programs
- using libcupsppdc.
-
 Package: cups-bsd
 Priority: extra
 Architecture: any

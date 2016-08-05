@@ -6,7 +6,7 @@ Last-Update: 2015-02-10
 
 --- a/backend/Makefile
 +++ b/backend/Makefile
-@@ -21,7 +21,7 @@
+@@ -19,7 +19,7 @@
  # Object files...
  #
  
@@ -15,7 +15,7 @@ Last-Update: 2015-02-10
  #
  # UBACKENDS and ULBACKENDS are installed mode 0755 so cupsd will run them as
  # an unprivileged user...
-@@ -126,7 +126,7 @@
+@@ -124,7 +124,7 @@
  	echo Installing backends in $(SERVERBIN)/backend
  	$(INSTALL_DIR) -m 755 $(SERVERBIN)/backend
  	for file in $(RBACKENDS); do \
@@ -26,7 +26,7 @@ Last-Update: 2015-02-10
  		$(INSTALL_BIN) $$file $(SERVERBIN)/backend; \
 --- a/scheduler/cups-deviced.c
 +++ b/scheduler/cups-deviced.c
-@@ -270,7 +270,7 @@
+@@ -268,7 +268,7 @@
      * all others run as the unprivileged user...
      */
  
@@ -37,7 +37,7 @@ Last-Update: 2015-02-10
    cupsDirClose(dir);
 --- a/scheduler/job.c
 +++ b/scheduler/job.c
-@@ -1233,7 +1233,7 @@
+@@ -1249,7 +1249,7 @@
        else if (stat(command, &backinfo))
  	backroot = 0;
        else

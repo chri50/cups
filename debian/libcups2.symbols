@@ -126,6 +126,7 @@ libcups.so.2 libcups2 #MINVER#
  cupsGetPassword@Base 1.4.0
  cupsGetPrinters@Base 1.4.0
  cupsGetResponse@Base 1.4.0
+ cupsHashData@Base 2.2~b2
  cupsGetServerPPD@Base 1.4.0
  cupsLangDefault@Base 1.4.0
  cupsLangEncoding@Base 1.4.0

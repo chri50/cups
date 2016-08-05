@@ -2,7 +2,7 @@ Author: till.kamppeter@gmail.com
 
 --- a/Makedefs.in
 +++ b/Makedefs.in
-@@ -241,7 +241,6 @@
+@@ -239,7 +239,6 @@
  # Rules...
  #
  

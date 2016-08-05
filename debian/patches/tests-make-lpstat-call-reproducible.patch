@@ -5,7 +5,7 @@ Origin: vendor
 Last-Update: 2016-07-11
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -723,7 +723,7 @@
+@@ -726,7 +726,7 @@
  IPP_PORT=$port; export IPP_PORT
  
  while true; do
@@ -14,7 +14,7 @@ Last-Update: 2016-07-11
  	if test "x$running" = "xscheduler is running"; then
  		break
  	fi
-@@ -840,13 +840,13 @@
+@@ -843,13 +843,13 @@
  while true; do
  	sleep 10
  

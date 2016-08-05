@@ -1,7 +1,5 @@
 #!/bin/sh
 #
-# "$Id: 5.1-lpadmin.sh 12393 2014-12-19 15:33:22Z msweet $"
-#
 # Test the lpadmin command.
 #
 # Copyright 2007-2013 by Apple Inc.
@@ -66,7 +64,3 @@ else
 	echo "    PASSED"
 fi
 echo ""
-
-#
-# End of "$Id: 5.1-lpadmin.sh 12393 2014-12-19 15:33:22Z msweet $".
-#

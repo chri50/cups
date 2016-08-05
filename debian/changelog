@@ -1,3 +1,18 @@
+cups (2.2~b2-1) experimental; urgency=low
+
+  * New 2.2b2 upstream release
+
+  * Patches:
+    - Refresh all
+    - Drop the wrong fix for #2763
+    - Udate patch to use the ipv4's 127.0.0.1 instead of localhost to also
+      patch the ipp:// shared printer URL, that fixes the tests
+    - Add patch to revert the addition of pdftourf usage in the test-suite
+  * Refresh manpage translations
+  * Rewrite debian/watch following the new upstream schema
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 05 Aug 2016 23:36:28 +0200
+
 cups (2.1.4-4) unstable; urgency=medium
 
   * Patch a final lpstat call to really make the build reproducible when built

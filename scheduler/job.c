@@ -1,9 +1,7 @@
 /*
- * "$Id: job.c 13047 2016-01-13 19:16:12Z msweet $"
- *
  * Job management routines for the CUPS scheduler.
  *
- * Copyright 2007-2015 by Apple Inc.
+ * Copyright 2007-2016 by Apple Inc.
  * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  * These coded instructions, statements, and computer programs are the
@@ -389,16 +387,14 @@ cupsdCheckJobs(void)
         if (pclass)
 	{
 	 /*
-	  * Add/update a job-actual-printer-uri attribute for this job
+	  * Add/update a job-printer-uri-actual attribute for this job
 	  * so that we know which printer actually printed the job...
 	  */
 
-          if ((attr = ippFindAttribute(job->attrs, "job-actual-printer-uri",
-	                               IPP_TAG_URI)) != NULL)
+          if ((attr = ippFindAttribute(job->attrs, "job-printer-uri-actual", IPP_TAG_URI)) != NULL)
             ippSetString(job->attrs, &attr, 0, printer->uri);
 	  else
-	    ippAddString(job->attrs, IPP_TAG_JOB, IPP_TAG_URI,
-	                 "job-actual-printer-uri", NULL, printer->uri);
+	    ippAddString(job->attrs, IPP_TAG_JOB, IPP_TAG_URI, "job-printer-uri-actual", NULL, printer->uri);
 
           job->dirty = 1;
           cupsdMarkDirty(CUPSD_DIRTY_JOBS);
@@ -2215,6 +2211,15 @@ cupsdSaveAllJobs(void)
        job;
        job = (cupsd_job_t *)cupsArrayNext(Jobs))
   {
+    if (job->printer && job->printer->temporary)
+    {
+     /*
+      * Don't save jobs on temporary printers...
+      */
+
+      continue;
+    }
+
     cupsFilePrintf(fp, "<Job %d>\n", job->id);
     cupsFilePrintf(fp, "State %d\n", job->state_value);
     cupsFilePrintf(fp, "Created %ld\n", (long)job->creation_time);
@@ -2253,6 +2258,16 @@ cupsdSaveJob(cupsd_job_t *job)		/* I - Job */
 
   cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdSaveJob(job=%p(%d)): job->attrs=%p",
                   job, job->id, job->attrs);
+
+  if (job->printer && job->printer->temporary)
+  {
+   /*
+    * Don't save jobs on temporary printers...
+    */
+
+    job->dirty = 0;
+    return;
+  }
 
   snprintf(filename, sizeof(filename), "%s/c%05d", RequestRoot, job->id);
 
@@ -2809,7 +2824,8 @@ cupsdUnloadCompletedJobs(void)
       if (job->dirty)
         cupsdSaveJob(job);
 
-      unload_job(job);
+      if (!job->dirty)
+        unload_job(job);
     }
 }
 
@@ -3190,7 +3206,7 @@ finalize_job(cupsd_job_t *job,		/* I - Job */
 
    /*
     * Convert the status to an exit code.  Due to the way the W* macros are
-    * implemented on MacOS X (bug?), we have to store the exit status in a
+    * implemented on macOS (bug?), we have to store the exit status in a
     * variable first and then convert...
     */
 
@@ -4136,7 +4152,15 @@ load_job_cache(const char *filename)	/* I - job.cache filename */
 	{
 	  cupsdLogMessage(CUPSD_LOG_ERROR, "[Job %d] Files have gone away.",
 			  jobid);
-	  continue;
+
+         /*
+          * job.cache file is out-of-date compared to spool directory; load
+          * that instead...
+          */
+
+	  cupsFileClose(fp);
+          load_request_root();
+          return;
 	}
       }
 
@@ -5159,7 +5183,7 @@ update_job(cupsd_job_t *job)		/* I - Job to check */
         ptr = message;
 
       if (*ptr)
-        cupsdLogJob(job, loglevel, "%s", ptr);
+        cupsdLogJob(job, loglevel == CUPSD_LOG_INFO ? CUPSD_LOG_DEBUG : loglevel, "%s", ptr);
 
       if (loglevel < CUPSD_LOG_DEBUG &&
           strcmp(job->printer->state_message, ptr))
@@ -5361,8 +5385,3 @@ update_job_attrs(cupsd_job_t *job,	/* I - Job to update */
   job->dirty = 1;
   cupsdMarkDirty(CUPSD_DIRTY_JOBS);
 }
-
-
-/*
- * End of "$Id: job.c 13047 2016-01-13 19:16:12Z msweet $".
- */

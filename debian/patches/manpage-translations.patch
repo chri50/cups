@@ -6,7 +6,7 @@ Last-Update: 2015-07-15
 
 --- a/man/Makefile
 +++ b/man/Makefile
-@@ -68,12 +68,18 @@
+@@ -66,12 +66,18 @@
  		lpmove.$(MAN8EXT) \
  		lpc.$(MAN8EXT)
  
@@ -26,7 +26,7 @@ Last-Update: 2015-07-15
  
  
  #
-@@ -97,6 +103,11 @@
+@@ -95,6 +101,11 @@
  clean:
  	$(RM) mantohtml mantohtml.o
  	$(RM) $(MAN1) $(MAN5) $(MAN7) $(MAN8)
@@ -38,7 +38,7 @@ Last-Update: 2015-07-15
  
  
  #
-@@ -148,6 +159,7 @@
+@@ -146,6 +157,7 @@
  		$(RM) $(AMANDIR)/man$(MAN8DIR)/$$file.$(MAN8EXT); \
  		$(LN) cupsd-helper.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/$$file.$(MAN8EXT); \
  	done
@@ -46,7 +46,7 @@ Last-Update: 2015-07-15
  
  
  #
-@@ -196,6 +208,7 @@
+@@ -194,6 +206,7 @@
  	$(RM) $(AMANDIR)/man$(MAN8DIR)/reject.$(MAN8EXT)
  	$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
  	-$(RMDIR) $(AMANDIR)/man$(MAN8DIR)

@@ -1,6 +1,4 @@
 /*
- * "$Id: testsub.c 11889 2014-05-22 13:54:15Z msweet $"
- *
  * Scheduler notification tester for CUPS.
  *
  * Copyright 2007-2014 by Apple Inc.
@@ -501,9 +499,3 @@ usage(void)
   puts("Usage: testsub [-E] [-e event ... -e eventN] [-h hostname] URI");
   exit(0);
 }
-
-
-
-/*
- * End of "$Id: testsub.c 11889 2014-05-22 13:54:15Z msweet $".
- */

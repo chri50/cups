@@ -11,7 +11,7 @@ Last-Update: 2015-02-10
 
 --- a/backend/Makefile
 +++ b/backend/Makefile
-@@ -29,6 +29,7 @@
+@@ -27,6 +27,7 @@
  # See http://www.cups.org/documentation.php/api-filter.html for more info...
  RBACKENDS =	\
  		ipp \
@@ -19,7 +19,7 @@ Last-Update: 2015-02-10
  		lpd \
  		$(DNSSD_BACKEND)
  UBACKENDS =	\
-@@ -52,6 +53,7 @@
+@@ -50,6 +51,7 @@
  		snmp-supplies.o
  OBJS	=	\
  		ipp.o \
@@ -27,7 +27,7 @@ Last-Update: 2015-02-10
  		lpd.o \
  		dnssd.o \
  		snmp.o \
-@@ -270,6 +272,17 @@
+@@ -268,6 +270,17 @@
  
  
  #

@@ -7,7 +7,7 @@ Last-Update: 2015-02-10
 
 --- a/cgi-bin/admin.c
 +++ b/cgi-bin/admin.c
-@@ -1923,6 +1923,7 @@
+@@ -1921,6 +1921,7 @@
      int		ch;			/* Character from file */
      char	filename[1024];		/* Filename */
      const char	*server_root;		/* Location of config files */
@@ -15,7 +15,7 @@ Last-Update: 2015-02-10
  
  
     /*
-@@ -2006,7 +2007,10 @@
+@@ -2004,7 +2005,10 @@
      * well...
      */
  
@@ -29,7 +29,7 @@ Last-Update: 2015-02-10
          (cupsd = cupsFileOpen(filename, "r")) != NULL)
 --- a/conf/Makefile
 +++ b/conf/Makefile
-@@ -76,7 +76,7 @@
+@@ -74,7 +74,7 @@
  		else \
  			$(INSTALL_CONFIG) -g $(CUPS_GROUP) $$file $(SERVERROOT) ; \
  		fi ; \
@@ -38,7 +38,7 @@ Last-Update: 2015-02-10
  	done
  	$(INSTALL_DIR) -m 755 $(DATADIR)/mime
  	for file in $(REPLACE); do \
-@@ -124,9 +124,10 @@
+@@ -122,9 +122,10 @@
  #
  
  uninstall:

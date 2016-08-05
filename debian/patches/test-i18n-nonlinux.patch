@@ -4,7 +4,7 @@ Bug-Debian: http://bugs.debian.org/662996
 Last-Update: 2015-10-02
 --- a/cups/testi18n.c
 +++ b/cups/testi18n.c
-@@ -418,7 +418,7 @@
+@@ -416,7 +416,7 @@
        puts("PASS");
    }
  

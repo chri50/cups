@@ -1,6 +1,4 @@
 /*
- * "$Id: dbus.c 11594 2014-02-14 20:09:01Z msweet $"
- *
  * D-Bus notifier for CUPS.
  *
  * Copyright 2008-2014 by Apple Inc.
@@ -651,8 +649,3 @@ main(void)
   return (1);
 }
 #endif /* HAVE_DBUS */
-
-
-/*
- * End of "$Id: dbus.c 11594 2014-02-14 20:09:01Z msweet $".
- */

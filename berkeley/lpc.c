@@ -1,6 +1,4 @@
 /*
- * "$Id: lpc.c 11558 2014-02-06 18:33:34Z msweet $"
- *
  * "lpc" command for CUPS.
  *
  * Copyright 2007-2014 by Apple Inc.
@@ -435,8 +433,3 @@ show_status(http_t     *http,		/* I - HTTP connection to server */
     ippDelete(response);
   }
 }
-
-
-/*
- * End of "$Id: lpc.c 11558 2014-02-06 18:33:34Z msweet $".
- */

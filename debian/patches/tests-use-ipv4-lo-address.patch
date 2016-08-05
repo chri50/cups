@@ -1,7 +1,9 @@
-Description: Use 127.0.0.1 instead of localhost in the test-suite. This should make the test-suite work in pbuilder.
+Description: Use 127.0.0.1 instead of localhost in the test-suite. This should
+ make the test-suite work in pbuilder. It apparently also fixes an ipp backend
+ problem in the test-suite.
 Author: Didier Raboud <odyx@debian.org>
 Origin: vendor
-Last-Update: 2015-08-06
+Last-Update: 2016-08-05
 
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
@@ -12,9 +14,9 @@ Last-Update: 2015-08-06
 -Listen localhost:$port
 +Listen 127.0.0.1:$port
  Listen $BASE/sock
- PassEnv LOCALEDIR
- PassEnv DYLD_INSERT_LIBRARIES
-@@ -634,7 +634,7 @@
+ PassEnv DYLD_LIBRARY_PATH
+ PassEnv LD_LIBRARY_PATH
+@@ -637,7 +637,7 @@
  export SHLIB_PATH
  
  CUPS_DISABLE_APPLE_DEFAULT=yes; export CUPS_DISABLE_APPLE_DEFAULT
@@ -23,7 +25,7 @@ Last-Update: 2015-08-06
  CUPS_SERVERROOT=$BASE; export CUPS_SERVERROOT
  CUPS_STATEDIR=$BASE; export CUPS_STATEDIR
  CUPS_DATADIR=$BASE/share; export CUPS_DATADIR
-@@ -767,10 +767,10 @@
+@@ -770,10 +770,10 @@
  	echo "" >>$strfile
  
  	if test $file = ipp-2.1.test; then
@@ -36,3 +38,16 @@ Last-Update: 2015-08-06
  		options=""
  	fi
  	$VALGRIND ./ipptool -tI $options $uri $file >> $strfile
+--- a/test/5.1-lpadmin.sh
++++ b/test/5.1-lpadmin.sh
+@@ -55,8 +55,8 @@
+ 
+ echo "Add Shared Printer Test"
+ echo ""
+-echo "    lpadmin -p Test3 -E -v ipp://localhost:$IPP_PORT/printers/Test2 -m raw"
+-$VALGRIND ../systemv/lpadmin -p Test3 -E -v ipp://localhost:$IPP_PORT/printers/Test2 -m raw 2>&1
++echo "    lpadmin -p Test3 -E -v ipp://127.0.0.1:$IPP_PORT/printers/Test2 -m raw"
++$VALGRIND ../systemv/lpadmin -p Test3 -E -v ipp://127.0.0.1:$IPP_PORT/printers/Test2 -m raw 2>&1
+ if test $? != 0; then
+ 	echo "    FAILED"
+ 	exit 1

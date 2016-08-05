@@ -6,7 +6,7 @@ Last-Update: 2015-02-10
 
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -162,7 +162,8 @@
+@@ -160,7 +160,8 @@
  #ifdef HAVE_AUTHORIZATION_H
    { "SystemGroupAuthKey",	&SystemGroupAuthKey,	CUPSD_VARTYPE_STRING },
  #endif /* HAVE_AUTHORIZATION_H */
@@ -16,7 +16,7 @@ Last-Update: 2015-02-10
  };
  
  static int		default_auth_type = CUPSD_AUTH_AUTO;
-@@ -627,6 +628,7 @@
+@@ -625,6 +626,7 @@
    cupsdSetStringf(&ServerHeader, "CUPS/%d.%d IPP/2.1", CUPS_VERSION_MAJOR,
                    CUPS_VERSION_MINOR);
    cupsdSetString(&StateDir, CUPS_STATEDIR);
@@ -24,7 +24,7 @@ Last-Update: 2015-02-10
  
    if (!strcmp(CUPS_DEFAULT_PRINTCAP, "/etc/printers.conf"))
      PrintcapFormat = PRINTCAP_SOLARIS;
-@@ -3505,6 +3507,7 @@
+@@ -3503,6 +3505,7 @@
               !_cups_strcasecmp(line, "SystemGroup") ||
               !_cups_strcasecmp(line, "SystemGroupAuthKey") ||
               !_cups_strcasecmp(line, "TempDir") ||
@@ -34,27 +34,27 @@ Last-Update: 2015-02-10
        cupsdLogMessage(CUPSD_LOG_INFO,
 --- a/scheduler/conf.h
 +++ b/scheduler/conf.h
-@@ -245,6 +245,8 @@
+@@ -243,6 +243,8 @@
  VAR char		*ServerKeychain		VALUE(NULL);
  					/* Keychain holding cert + key */
  #endif /* HAVE_SSL */
 +VAR char		*PidFile		VALUE(NULL);
 +					/* Debian CUPS pid file */
  
- #if defined(HAVE_LAUNCHD) || defined(HAVE_SYSTEMD)
+ #ifdef HAVE_ONDEMAND
  VAR int			IdleExitTimeout		VALUE(60);
 --- a/scheduler/main.c
 +++ b/scheduler/main.c
-@@ -79,6 +79,8 @@
+@@ -73,6 +73,8 @@
  static void		service_checkout(void);
- #endif /* HAVE_LAUNCHD || HAVE_SYSTEMD */
+ #endif /* HAVE_ONDEMAND */
  static void		usage(int status) __attribute__((noreturn));
 +int			write_pid(void);
 +int			remove_pid(void);
  
  
  /*
-@@ -664,6 +666,11 @@
+@@ -688,6 +690,11 @@
      cupsdStartSystemMonitor();
  #endif /* __APPLE__ */
  
@@ -66,7 +66,7 @@ Last-Update: 2015-02-10
   /*
    * Send server-started event...
    */
-@@ -1162,10 +1169,41 @@
+@@ -1191,10 +1198,41 @@
  
    cupsdStopSelect();
  
@@ -110,7 +110,7 @@ Last-Update: 2015-02-10
   */
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -541,6 +541,7 @@
+@@ -542,6 +542,7 @@
  DocumentRoot $root/doc
  RequestRoot $BASE/spool
  TempDir $BASE/spool/temp

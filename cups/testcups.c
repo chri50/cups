@@ -1,6 +1,4 @@
 /*
- * "$Id: testcups.c 11558 2014-02-06 18:33:34Z msweet $"
- *
  * CUPS API test program for CUPS.
  *
  * Copyright 2007-2014 by Apple Inc.
@@ -582,8 +580,3 @@ show_diffs(cups_dest_t *a,		/* I - First destination */
       printf("    %-20.20s  %-20.20s  %-20.20s\n", aoption->name,
              aoption->value, bval ? bval : "(null)");
 }
-
-
-/*
- * End of "$Id: testcups.c 11558 2014-02-06 18:33:34Z msweet $".
- */

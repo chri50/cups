@@ -7,7 +7,7 @@ Last-Update: 2014-01-16
 
 --- a/conf/Makefile
 +++ b/conf/Makefile
-@@ -75,8 +75,12 @@
+@@ -73,8 +73,12 @@
  			$(INSTALL_CONFIG) -g $(CUPS_GROUP) $$file $(SERVERROOT)/$$file.N ; \
  		else \
  			$(INSTALL_CONFIG) -g $(CUPS_GROUP) $$file $(SERVERROOT) ; \

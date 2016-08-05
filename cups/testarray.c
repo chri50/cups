@@ -1,6 +1,4 @@
 /*
- * "$Id: testarray.c 11558 2014-02-06 18:33:34Z msweet $"
- *
  * Array test program for CUPS.
  *
  * Copyright 2007-2014 by Apple Inc.
@@ -548,8 +546,3 @@ load_words(const char   *filename,	/* I - File to load */
 
   return (1);
 }
-
-
-/*
- * End of "$Id: testarray.c 11558 2014-02-06 18:33:34Z msweet $".
- */

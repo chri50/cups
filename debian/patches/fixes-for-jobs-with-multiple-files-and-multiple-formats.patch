@@ -5,7 +5,7 @@ Bug: https://www.cups.org/str.php?L4348
 Last-Updated: 2015-02-10
 --- a/backend/ipp.c
 +++ b/backend/ipp.c
-@@ -1736,7 +1736,10 @@
+@@ -1762,7 +1762,10 @@
  	ippAddBoolean(request, IPP_TAG_OPERATION, "last-document",
          	      (i + 1) >= num_files);
  
