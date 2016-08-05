@@ -1,6 +1,4 @@
 /*
- * "$Id: cups-deviced.c 11782 2014-03-28 21:03:43Z msweet $"
- *
  * Device scanning mini-daemon for CUPS.
  *
  * Copyright 2007-2014 by Apple Inc.
@@ -805,8 +803,3 @@ start_backend(const char *name,		/* I - Backend to run */
 
   return (0);
 }
-
-
-/*
- * End of "$Id: cups-deviced.c 11782 2014-03-28 21:03:43Z msweet $".
- */

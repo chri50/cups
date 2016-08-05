@@ -3,7 +3,7 @@ Author: till.kamppeter@gmail.com
 Last-Update: 2015-02-10
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -757,7 +757,7 @@
+@@ -755,7 +755,7 @@
    KeepAlive                = TRUE;
    KeepAliveTimeout         = DEFAULT_KEEPALIVE;
    ListenBackLog            = SOMAXCONN;
@@ -14,7 +14,7 @@ Last-Update: 2015-02-10
    LogTimeFormat            = CUPSD_TIME_STANDARD;
 --- a/scheduler/conf.h
 +++ b/scheduler/conf.h
-@@ -166,7 +166,7 @@
+@@ -164,7 +164,7 @@
  					/* Access log level */
  VAR int			ClassifyOverride	VALUE(0),
  					/* Allow overrides? */

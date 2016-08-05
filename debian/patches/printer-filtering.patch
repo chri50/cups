@@ -5,7 +5,7 @@ Last-Update: 2015-10-02
 === modified file 'cups-1.3.9/cups/ipp.c'
 --- a/cups/ipp.c
 +++ b/cups/ipp.c
-@@ -2736,6 +2736,120 @@
+@@ -2701,6 +2701,120 @@
    return (temp);
  }
  
@@ -126,7 +126,7 @@ Last-Update: 2015-10-02
  
  /*
   *  'ippNewRequest()' - Allocate a new IPP request message.
-@@ -3086,6 +3200,8 @@
+@@ -3047,6 +3161,8 @@
  	    */
  
              DEBUG_puts("2ippReadIO: IPP_TAG_END.");

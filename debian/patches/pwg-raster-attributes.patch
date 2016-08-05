@@ -5,7 +5,7 @@ Bug-Upstream: https://www.cups.org/str.php?L4428
 Last-Update: 2015-02-10
 --- a/scheduler/printers.c
 +++ b/scheduler/printers.c
-@@ -2142,9 +2142,10 @@
+@@ -2178,9 +2178,10 @@
    cupsd_location_t *auth;		/* Pointer to authentication element */
    const char	*auth_supported;	/* Authentication supported */
    ipp_t		*oldattrs;		/* Old printer attributes */
@@ -17,7 +17,7 @@ Last-Update: 2015-02-10
  
  
    DEBUG_printf(("cupsdSetPrinterAttrs: entering name = %s, type = %x\n", p->name,
-@@ -2497,6 +2498,80 @@
+@@ -2517,6 +2518,80 @@
    DEBUG_printf(("cupsdSetPrinterAttrs: leaving name = %s, type = %x\n", p->name,
                  p->type));
  

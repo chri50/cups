@@ -1,6 +1,4 @@
 /*
- * "$Id: dirsvc.c 12458 2015-01-30 16:15:53Z msweet $"
- *
  * Directory services routines for the CUPS scheduler.
  *
  * Copyright 2007-2015 by Apple Inc.
@@ -1826,8 +1824,3 @@ update_smb(int onoff)			/* I - 1 = turn on, 0 = turn off */
   else
     cupsdLogMessage(CUPSD_LOG_INFO, "Unknown SMBConfigFile scheme!");
 }
-
-
-/*
- * End of "$Id: dirsvc.c 12458 2015-01-30 16:15:53Z msweet $".
- */

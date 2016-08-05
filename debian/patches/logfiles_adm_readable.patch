@@ -5,7 +5,7 @@ Bug-Ubuntu: https://launchpad.net/bugs/345953
 Last-Update: 2015-02-10
 --- a/scheduler/log.c
 +++ b/scheduler/log.c
-@@ -26,6 +26,7 @@
+@@ -24,6 +24,7 @@
  #  include <systemd/sd-journal.h>
  #endif /* HAVE_ASL_H */
  #include <syslog.h>
@@ -13,7 +13,7 @@ Last-Update: 2015-02-10
  
  
  /*
-@@ -115,6 +116,7 @@
+@@ -113,6 +114,7 @@
  		filename[1024],		/* Formatted log filename */
  		*ptr;			/* Pointer into filename */
    const char	*logptr;		/* Pointer into log filename */
@@ -21,7 +21,7 @@ Last-Update: 2015-02-10
  
  
   /*
-@@ -135,6 +137,11 @@
+@@ -133,6 +135,11 @@
    }
  
   /*
@@ -33,7 +33,7 @@ Last-Update: 2015-02-10
    * Format the filename as needed...
    */
  
-@@ -255,7 +262,7 @@
+@@ -253,7 +260,7 @@
        * Change ownership and permissions of non-device logs...
        */
  
@@ -42,7 +42,7 @@ Last-Update: 2015-02-10
        fchmod(cupsFileNumber(*lf), LogFilePerm);
      }
    }
-@@ -306,7 +313,7 @@
+@@ -304,7 +311,7 @@
      * Change ownership and permissions of non-device logs...
      */
  

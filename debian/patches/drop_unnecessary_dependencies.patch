@@ -8,7 +8,7 @@ Last-Update: 2015-10-02
 
 --- a/Makedefs.in
 +++ b/Makedefs.in
-@@ -136,7 +136,7 @@
+@@ -134,7 +134,7 @@
  DBUS_NOTIFIERLIBS =	@DBUS_NOTIFIERLIBS@
  DNSSD_BACKEND	=	@DNSSD_BACKEND@
  DSOFLAGS	=	-L../cups @DSOFLAGS@
@@ -28,7 +28,7 @@ Last-Update: 2015-10-02
  	$(RM) `basename $@ .2`
  	$(LN) $@ `basename $@ .2`
  
-@@ -330,7 +330,7 @@
+@@ -331,7 +331,7 @@
  		-compatibility_version 2.0.0 \
  		-exported_symbols_list t.exp \
  		$(LIBOBJS) $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
@@ -39,7 +39,7 @@ Last-Update: 2015-10-02
  
 --- a/filter/Makefile
 +++ b/filter/Makefile
-@@ -269,7 +269,7 @@
+@@ -235,7 +235,7 @@
  libcupsimage.so.2 libcupsimage.sl.2:	$(IMAGEOBJS)
  	echo Linking $@...
  	$(DSO) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(IMAGEOBJS) $(DSOLIBS) \

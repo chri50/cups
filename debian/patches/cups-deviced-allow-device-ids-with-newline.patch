@@ -9,7 +9,7 @@ Last-Update: 2015-02-10
 
 --- a/scheduler/cups-deviced.c
 +++ b/scheduler/cups-deviced.c
-@@ -564,15 +564,30 @@
+@@ -562,15 +562,30 @@
  
      if (*ptr == '\"')
      {

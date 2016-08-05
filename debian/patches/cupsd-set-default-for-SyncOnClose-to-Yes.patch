@@ -26,7 +26,7 @@ Last-Update: 2015-02-10
  The default contains "admin", "lpadmin", "root", "sys", and/or "system".
 --- a/man/cups-files.conf.man.in
 +++ b/man/cups-files.conf.man.in
-@@ -196,7 +196,7 @@
+@@ -194,7 +194,7 @@
  Specifies whether the scheduler calls
  .BR fsync (2)
  after writing configuration or state files.
@@ -37,7 +37,7 @@ Last-Update: 2015-02-10
  \fBSystemGroup \fIgroup-name \fR[ ... \fIgroup-name\fR ]
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -771,7 +771,7 @@
+@@ -769,7 +769,7 @@
    RootCertDuration         = 300;
    Sandboxing               = CUPSD_SANDBOXING_STRICT;
    StrictConformance        = FALSE;

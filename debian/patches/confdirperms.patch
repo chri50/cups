@@ -5,7 +5,7 @@ Last-Update: 2015-02-10
 
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -1211,10 +1211,12 @@
+@@ -1209,10 +1209,12 @@
  			     Group, 1, 1) < 0 ||
         cupsdCheckPermissions(ServerRoot, "ssl", 0700, RunUser,
  			     Group, 1, 0) < 0 ||

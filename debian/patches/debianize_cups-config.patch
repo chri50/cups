@@ -10,7 +10,7 @@ Author: Didier Raboud <odyx@debian.org>
 Last-Update: 2014-06-11
 --- a/cups-config.in
 +++ b/cups-config.in
-@@ -22,8 +22,8 @@
+@@ -20,8 +20,8 @@
  exec_prefix=@exec_prefix@
  bindir=@bindir@
  includedir=@includedir@
@@ -21,7 +21,7 @@ Last-Update: 2014-06-11
  datarootdir=@datadir@
  datadir=@datadir@
  sysconfdir=@sysconfdir@
-@@ -35,7 +35,8 @@
+@@ -33,7 +33,8 @@
  # flags for C++ compiler:
  CFLAGS=""
  LDFLAGS="@EXPORT_LDFLAGS@"
@@ -31,7 +31,7 @@ Last-Update: 2014-06-11
  
  # Check for local invocation...
  selfdir=`dirname $0`
-@@ -50,7 +51,7 @@
+@@ -48,7 +49,7 @@
  	CFLAGS="$CFLAGS -I$includedir"
      fi
  
@@ -40,7 +40,7 @@ Last-Update: 2014-06-11
  	LDFLAGS="$LDFLAGS -L$libdir"
      fi
  fi
-@@ -105,7 +106,7 @@
+@@ -103,7 +104,7 @@
  	    ;;
  	--libs)
  	    if test $static = no; then

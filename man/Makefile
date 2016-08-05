@@ -1,6 +1,4 @@
 #
-# "$Id: Makefile 12814 2015-07-30 15:03:33Z msweet $"
-#
 # Man page makefile for CUPS.
 #
 # Copyright 2007-2015 by Apple Inc.
@@ -238,8 +236,3 @@ mantohtml:	mantohtml.o ../cups/$(LIBCUPSSTATIC)
 	$(CC) $(ARCHFLAGS) $(LDFLAGS) -o $@ mantohtml.o \
 		../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) \
 		$(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
-
-
-#
-# End of "$Id: Makefile 12814 2015-07-30 15:03:33Z msweet $".
-#

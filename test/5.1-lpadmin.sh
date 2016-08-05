@@ -1,7 +1,5 @@
 #!/bin/sh
 #
-# "$Id: 5.1-lpadmin.sh 12393 2014-12-19 15:33:22Z msweet $"
-#
 # Test the lpadmin command.
 #
 # Copyright 2007-2013 by Apple Inc.
@@ -57,8 +55,8 @@ echo ""
 
 echo "Add Shared Printer Test"
 echo ""
-echo "    lpadmin -p Test3 -E -v ipp://localhost:$IPP_PORT/printers/Test2 -m raw"
-$VALGRIND ../systemv/lpadmin -p Test3 -E -v ipp://localhost:$IPP_PORT/printers/Test2 -m raw 2>&1
+echo "    lpadmin -p Test3 -E -v ipp://127.0.0.1:$IPP_PORT/printers/Test2 -m raw"
+$VALGRIND ../systemv/lpadmin -p Test3 -E -v ipp://127.0.0.1:$IPP_PORT/printers/Test2 -m raw 2>&1
 if test $? != 0; then
 	echo "    FAILED"
 	exit 1
@@ -66,7 +64,3 @@ else
 	echo "    PASSED"
 fi
 echo ""
-
-#
-# End of "$Id: 5.1-lpadmin.sh 12393 2014-12-19 15:33:22Z msweet $".
-#

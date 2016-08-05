@@ -17,7 +17,7 @@ Bug: https://bugs.launchpad.net/ubuntu/+source/cups/+bug/1276713
 Last-Update: 2015-10-02
 --- a/scheduler/main.c
 +++ b/scheduler/main.c
-@@ -67,6 +67,7 @@
+@@ -61,6 +61,7 @@
   * Local functions...
   */
  
@@ -25,7 +25,7 @@ Last-Update: 2015-10-02
  static void		parent_handler(int sig);
  static void		process_children(void);
  static void		sigchld_handler(int sig);
-@@ -322,6 +323,14 @@
+@@ -325,6 +326,14 @@
        usage(1);
      }
  
@@ -40,8 +40,8 @@ Last-Update: 2015-10-02
    if (!ConfigurationFile)
      cupsdSetString(&ConfigurationFile, CUPS_SERVERROOT "/cupsd.conf");
  
-@@ -570,6 +579,11 @@
- #endif /* HAVE_LAUNCHD || HAVE_SYSTEMD */
+@@ -594,6 +603,11 @@
+ #endif /* HAVE_ONDEMAND */
  
   /*
 +  * If we were started by Upstart get the listen sockets file descriptors...
@@ -52,7 +52,7 @@ Last-Update: 2015-10-02
    * Startup the server...
    */
  
-@@ -753,6 +767,13 @@
+@@ -782,6 +796,13 @@
  	}
  
         /*
@@ -66,7 +66,7 @@ Last-Update: 2015-10-02
          * Startup the server...
          */
  
-@@ -1561,6 +1582,94 @@
+@@ -1590,6 +1611,94 @@
  }
  
  

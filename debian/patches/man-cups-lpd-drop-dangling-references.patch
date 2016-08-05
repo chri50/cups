@@ -4,7 +4,7 @@ Bug-Debian: http://bugs.debian.org/570157
 Last-Update: 2015-10-02
 --- a/man/cups-lpd.man.in
 +++ b/man/cups-lpd.man.in
-@@ -111,9 +111,7 @@
+@@ -109,9 +109,7 @@
  .B cups-lpd
  service using the corresponding control program.
  .SH SEE ALSO

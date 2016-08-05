@@ -1,6 +1,4 @@
 /*
- * "$Id: cups-driverd.cxx 12733 2015-06-12 01:21:05Z msweet $"
- *
  * PPD/driver support for CUPS.
  *
  * This program handles listing and installing static PPD files, PPD files
@@ -437,6 +435,12 @@ cat_ppd(const char *name,		/* I - PPD name */
  /*
   * Figure out if this is a static or dynamic PPD file...
   */
+
+  if (strstr(name, "../"))
+  {
+    fputs("ERROR: Invalid PPD name.\n", stderr);
+    return (1);
+  }
 
   strlcpy(scheme, name, sizeof(scheme));
   if ((sptr = strchr(scheme, ':')) != NULL)
@@ -896,7 +900,7 @@ get_file(const char *name,		/* I - Name */
        slash > printerDriver))
   {
    /*
-    * Map ppd-name to OS X standard locations...
+    * Map ppd-name to macOS standard locations...
     */
 
     snprintf(buffer, bufsize, "/%s", name);
@@ -1067,7 +1071,7 @@ list_ppds(int        request_id,	/* I - Request ID */
 
 #ifdef __APPLE__
  /*
-  * Load PPDs from standard OS X locations...
+  * Load PPDs from standard macOS locations...
   */
 
   load_ppds("/Library/Printers",
@@ -2912,8 +2916,3 @@ regex_string(const char *s)		/* I - String to compare */
 
   return (NULL);
 }
-
-
-/*
- * End of "$Id: cups-driverd.cxx 12733 2015-06-12 01:21:05Z msweet $".
- */

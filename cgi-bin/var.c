@@ -1,6 +1,4 @@
 /*
- * "$Id: var.c 12621 2015-05-06 21:32:18Z msweet $"
- *
  * CGI form variable and array functions for CUPS.
  *
  * Copyright 2007-2015 by Apple Inc.
@@ -1294,8 +1292,3 @@ cgi_unlink_file(void)
     form_file = NULL;
   }
 }
-
-
-/*
- * End of "$Id: var.c 12621 2015-05-06 21:32:18Z msweet $".
- */

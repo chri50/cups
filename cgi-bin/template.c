@@ -1,6 +1,4 @@
 /*
- * "$Id: template.c 12700 2015-06-08 18:32:35Z msweet $"
- *
  * CGI template function.
  *
  * Copyright 2007-2015 by Apple Inc.
@@ -683,8 +681,3 @@ cgi_puturi(const char *s,		/* I - String to output */
     s ++;
   }
 }
-
-
-/*
- * End of "$Id: template.c 12700 2015-06-08 18:32:35Z msweet $".
- */

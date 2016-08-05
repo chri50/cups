@@ -1,9 +1,7 @@
 /*
- * "$Id: log.c 12928 2015-10-23 21:31:58Z msweet $"
- *
  * Log file routines for the CUPS scheduler.
  *
- * Copyright 2007-2015 by Apple Inc.
+ * Copyright 2007-2016 by Apple Inc.
  * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  * These coded instructions, statements, and computer programs are the
@@ -591,9 +589,7 @@ cupsdLogJob(cupsd_job_t *job,		/* I - Job */
   if (TestConfigFile || !ErrorLog)
     return (1);
 
-  if ((level > LogLevel ||
-       (level == CUPSD_LOG_INFO && LogLevel < CUPSD_LOG_DEBUG)) &&
-      LogDebugHistory <= 0)
+  if (level > LogLevel && LogDebugHistory <= 0)
     return (1);
 
 #ifdef HAVE_ASL_H
@@ -709,10 +705,7 @@ cupsdLogJob(cupsd_job_t *job,		/* I - Job */
 
   if (status > 0)
   {
-    if (job &&
-        (level > LogLevel ||
-         (level == CUPSD_LOG_INFO && LogLevel < CUPSD_LOG_DEBUG)) &&
-	LogDebugHistory > 0)
+    if (job && level > LogLevel && LogDebugHistory > 0)
     {
      /*
       * Add message to the job history...
@@ -751,8 +744,7 @@ cupsdLogJob(cupsd_job_t *job,		/* I - Job */
 
       return (1);
     }
-    else if (level <= LogLevel &&
-             (level != CUPSD_LOG_INFO || LogLevel >= CUPSD_LOG_DEBUG))
+    else if (level <= LogLevel)
       return (cupsdWriteErrorLog(level, log_line));
     else
       return (1);
@@ -1513,8 +1505,3 @@ format_log_line(const char *message,	/* I - Printf-style format string */
 
   return (1);
 }
-
-
-/*
- * End of "$Id: log.c 12928 2015-10-23 21:31:58Z msweet $".
- */
