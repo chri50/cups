@@ -1,3 +1,10 @@
+cups (2.2~rc1-1) experimental; urgency=medium
+
+  * New 2.2~rc1 upstream release
+  * Refresh patches
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 08 Aug 2016 20:35:24 +0200
+
 cups (2.2~b2-1) experimental; urgency=low
 
   * New 2.2b2 upstream release
