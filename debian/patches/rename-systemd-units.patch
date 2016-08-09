@@ -1,10 +1,20 @@
-Description: Rename the systemd service file from org.cups.cups.* to cups.*
-Author: Didier Raboud <odyx@debian.org>
+From b04bdf08bc93f93493756681fb36b894b2bcd255 Mon Sep 17 00:00:00 2001
+From: Didier Raboud <odyx@debian.org>
+Date: Tue, 9 Aug 2016 18:11:34 +0200
+Subject: Rename the systemd service file from org.cups.cups.* to cups.*
+
 Last-Update: 2015-02-10
 
+Patch-Name: rename-systemd-units.patch
+---
+ scheduler/org.cups.cupsd.service.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scheduler/org.cups.cupsd.service.in b/scheduler/org.cups.cupsd.service.in
+index 0a27c76..7a04248 100644
 --- a/scheduler/org.cups.cupsd.service.in
 +++ b/scheduler/org.cups.cupsd.service.in
-@@ -7,5 +7,5 @@
+@@ -7,5 +7,5 @@ ExecStart=@sbindir@/cupsd -l
  Type=simple
  
  [Install]

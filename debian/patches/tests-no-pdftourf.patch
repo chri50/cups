@@ -1,14 +1,27 @@
-Description: revert commit 830cfed95a5349b008999eebd34f5233bc35829c
+From daaf576425d5ff9986a5a0aaf14572aa4869c2b4 Mon Sep 17 00:00:00 2001
+From: Michael Sweet <michael.r.sweet@gmail.com>
+Date: Tue, 9 Aug 2016 18:11:23 +0200
+Subject: revert commit 830cfed95a5349b008999eebd34f5233bc35829c
+
  "Update "make test" to include alternate filter."
  .
  This fixes the error lines counting in the test, and is unneeded as pdftourf
  is not shipped in Debian.
-Author: Michael Sweet <michael.r.sweet@gmail.com>
 Origin: upstream
 
+Patch-Name: tests-no-pdftourf.patch
+---
+ test/run-stp-tests.sh | 4 +---
+ test/test.convs       | 1 -
+ test/test.types       | 2 --
+ 3 files changed, 1 insertion(+), 6 deletions(-)
+ delete mode 100644 test/test.types
+
+diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
+index bec6c39..73f141a 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -277,7 +277,7 @@
+@@ -277,7 +277,7 @@ case "$usedebugprintfs" in
  		echo "Enabling debug printfs (level $usedebugprintfs); log files can be found in $BASE/log..."
  		CUPS_DEBUG_LOG="$BASE/log/debug_printfs.%d"; export CUPS_DEBUG_LOG
  		CUPS_DEBUG_LEVEL="$usedebugprintfs"; export CUPS_DEBUG_LEVEL
@@ -17,7 +30,7 @@ Origin: upstream
  		;;
  
  	*)
-@@ -450,14 +450,12 @@
+@@ -450,14 +450,12 @@ EOF
  }
  
  ln -s $root/test/test.convs $BASE/share/mime
@@ -32,6 +45,8 @@ Origin: upstream
  	instfilter cgtexttopdf texttopdf pdf
  	instfilter pstocupsraster pstoraster raster
  else
+diff --git a/test/test.convs b/test/test.convs
+index 77a9ce0..57540aa 100644
 --- a/test/test.convs
 +++ b/test/test.convs
 @@ -2,7 +2,6 @@
@@ -42,6 +57,9 @@ Origin: upstream
  application/postscript application/vnd.cups-raster 100 pstoraster
  image/jpeg application/pdf 100 imagetopdf
  text/plain application/pdf 100 texttopdf
+diff --git a/test/test.types b/test/test.types
+deleted file mode 100644
+index 914081c..0000000
 --- a/test/test.types
 +++ /dev/null
 @@ -1,2 +0,0 @@

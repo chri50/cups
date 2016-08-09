@@ -1,19 +1,13 @@
-# patches accepted and committed upstream
-
-# patches sent upstream
 pwg-raster-attributes.patch
 manpage-hyphen-minus.patch
 rootbackends-worldreadable.patch
 fixes-for-jobs-with-multiple-files-and-multiple-formats.patch
-
-# patches which should go upstream
 cupsd-upstart-support.patch
-# Fix tests, should probably go upstream
 tests-ignore-warnings.patch
 tests-ignore-usb-crash.patch
 tests-ignore-kfreebsd-amd64-not-a-pdf.patch
-tests-ignore-system-bus-failure.patch
 tests-ignore-ipv6-address-family-not-supported.patch
+tests-ignore-kfreebsd-unable-to-write-uncompressed-print-data.pdf
 test-i18n-nonlinux.patch
 tests-wait-on-unfinished-jobs-everytime.patch
 tests-fix-ppdLocalize-on-unclean-env.patch
@@ -22,8 +16,6 @@ tests-fix-mips-getjobs.patch
 tests-use-ipv4-lo-address.patch
 tests-make-lpstat-call-reproducible.patch
 tests-no-pdftourf.patch
-
-# Debian patches that upstream doesn't want to fix
 move-cupsd-conf-default-to-share.patch
 drop_unnecessary_dependencies.patch
 read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.patch
@@ -34,8 +26,6 @@ no-conffile-timestamp.patch
 pidfile.patch
 removecvstag.patch
 rename-systemd-units.patch
-
-# Debian patches
 do-not-broadcast-with-hostnames.patch
 reactivate_recommended_driver.patch
 add-ipp-backend-of-cups-1.4.patch
@@ -50,8 +40,4 @@ cupsd-set-default-for-SyncOnClose-to-Yes.patch
 cups-set-default-error-policy-retry-job.patch
 man-cups-lpd-drop-dangling-references.patch
 debianize_cups-config.patch
-
-# This one has been submitted upstream but no answer has been given yet,
-# po4a might not be appropriate. It also needs to be high on the patch
-# queue to catch all Debian-specific changes
 manpage-translations.patch

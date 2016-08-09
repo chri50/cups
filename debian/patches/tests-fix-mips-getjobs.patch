@@ -1,12 +1,22 @@
-Description: Make some attributes optional in the IPP-1.1 3.2.6 GetJobs test,
+From ede41c80f82691193a0f9a84276a6e0248b00e19 Mon Sep 17 00:00:00 2001
+From: Didier Raboud <odyx@debian.org>
+Date: Tue, 9 Aug 2016 18:11:20 +0200
+Subject: Make some attributes optional in the IPP-1.1 3.2.6 GetJobs test,
+
  that was causing an FTBFS on mips
-Author: Didier Raboud <odyx@debian.org>
 Origin: vendor
 Last-Update: 2015-08-16
 
+Patch-Name: tests-fix-mips-getjobs.patch
+---
+ test/ipp-1.1.test | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/test/ipp-1.1.test b/test/ipp-1.1.test
+index ffb4ae9..2128aed 100644
 --- a/test/ipp-1.1.test
 +++ b/test/ipp-1.1.test
-@@ -755,7 +755,7 @@
+@@ -755,7 +755,7 @@ DEFINE IPP_URI_SCHEME "/^ipps?://.+$$/"
  	EXPECT job-uri OF-TYPE uri IN-GROUP job-attributes-tag COUNT 1 WITH-VALUE "$IPP_URI_SCHEME"
  	EXPECT job-printer-uri OF-TYPE uri IN-GROUP job-attributes-tag COUNT 1 WITH-VALUE "$IPP_URI_SCHEME"
  	EXPECT ?job-more-info OF-TYPE uri IN-GROUP job-attributes-tag COUNT 1 WITH-VALUE "$HTTP_URI_SCHEME"
@@ -15,7 +25,7 @@ Last-Update: 2015-08-16
  	EXPECT job-originating-user-name OF-TYPE name IN-GROUP job-attributes-tag COUNT 1
  	EXPECT job-state OF-TYPE unknown|enum IN-GROUP job-attributes-tag COUNT 1 WITH-VALUE >2,<10
  	EXPECT job-state-reasons OF-TYPE keyword IN-GROUP job-attributes-tag
-@@ -763,8 +763,8 @@
+@@ -763,8 +763,8 @@ DEFINE IPP_URI_SCHEME "/^ipps?://.+$$/"
  	EXPECT ?job-detailed-status-messages OF-TYPE text IN-GROUP job-attributes-tag
  	EXPECT ?number-of-documents OF-TYPE integer IN-GROUP job-attributes-tag COUNT 1
  	EXPECT ?output-device-assigned OF-TYPE name IN-GROUP job-attributes-tag COUNT 1

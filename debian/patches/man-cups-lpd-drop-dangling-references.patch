@@ -1,10 +1,20 @@
-Description: Drop dangling references from cups-lpd.man
-Author: Bastien ROUCARIÈS <bastien.roucaries@u-cergy.fr>
+From bc361b7fdc6348e631f29355cd82cc56f129a27e Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Bastien=20ROUCARI=C3=88S?= <bastien.roucaries@u-cergy.fr>
+Date: Tue, 9 Aug 2016 18:11:48 +0200
+Subject: Drop dangling references from cups-lpd.man
+
 Bug-Debian: http://bugs.debian.org/570157
 Last-Update: 2015-10-02
+Patch-Name: man-cups-lpd-drop-dangling-references.patch
+---
+ man/cups-lpd.man.in | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/man/cups-lpd.man.in b/man/cups-lpd.man.in
+index 7dc6182..470d41d 100644
 --- a/man/cups-lpd.man.in
 +++ b/man/cups-lpd.man.in
-@@ -109,9 +109,7 @@
+@@ -109,9 +109,7 @@ Simply enable the
  .B cups-lpd
  service using the corresponding control program.
  .SH SEE ALSO
