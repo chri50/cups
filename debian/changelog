@@ -1,3 +1,12 @@
+cups (2.2~rc1-2) experimental; urgency=medium
+
+  * Add patch to ignore the 'Unable to write uncompressed print data: Broken
+    pipe' error on kfreebsd
+  * Initialize git-dpm; reword most patch descriptions from the original
+    commits
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 09 Aug 2016 19:09:58 +0200
+
 cups (2.2~rc1-1) experimental; urgency=medium
 
   * New 2.2~rc1 upstream release
