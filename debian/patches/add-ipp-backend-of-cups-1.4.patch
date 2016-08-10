@@ -1,10 +1,7 @@
-From 775e933444bfc3b47d228bed42b0485d46954031 Mon Sep 17 00:00:00 2001
-From: Till Kampetter <till.kampetter@gmail.com>
-Date: Tue, 9 Aug 2016 18:11:37 +0200
-Subject: Add the IPP backend of CUPS 1.4.x to the current CUPS
-
+Description: Add the IPP backend of CUPS 1.4.x to the current CUPS
  package as independent backend "ipp14". Some devices (like the
  LiveBox2) do not work with the current IPP backend.
+Author: Till Kampetter <till.kampetter@gmail.com>
 Bug-Ubuntu: https://bugs.launchpad.net/bugs/945028
 Bug-Ubuntu: https://bugs.launchpad.net/bugs/973270
 Bug-Ubuntu: https://bugs.launchpad.net/bugs/990734
@@ -12,18 +9,9 @@ Bug-Ubuntu: https://bugs.launchpad.net/bugs/992468
 Bug-Ubuntu: https://bugs.launchpad.net/bugs/992982
 Last-Update: 2015-02-10
 
-Patch-Name: add-ipp-backend-of-cups-1.4.patch
----
- backend/Makefile |   13 +
- backend/ipp14.c  | 1953 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 1966 insertions(+)
- create mode 100644 backend/ipp14.c
-
-diff --git a/backend/Makefile b/backend/Makefile
-index aa5450d..56c0ba3 100644
 --- a/backend/Makefile
 +++ b/backend/Makefile
-@@ -27,6 +27,7 @@ include ../Makedefs
+@@ -27,6 +27,7 @@
  # See http://www.cups.org/documentation.php/api-filter.html for more info...
  RBACKENDS =	\
  		ipp \
@@ -31,7 +19,7 @@ index aa5450d..56c0ba3 100644
  		lpd \
  		$(DNSSD_BACKEND)
  UBACKENDS =	\
-@@ -50,6 +51,7 @@ LIBOBJS	=	\
+@@ -50,6 +51,7 @@
  		snmp-supplies.o
  OBJS	=	\
  		ipp.o \
@@ -39,7 +27,7 @@ index aa5450d..56c0ba3 100644
  		lpd.o \
  		dnssd.o \
  		snmp.o \
-@@ -268,6 +270,17 @@ ipp:	ipp.o ../cups/$(LIBCUPS) libbackend.a
+@@ -268,6 +270,17 @@
  
  
  #
@@ -57,9 +45,6 @@ index aa5450d..56c0ba3 100644
  # lpd
  #
  
-diff --git a/backend/ipp14.c b/backend/ipp14.c
-new file mode 100644
-index 0000000..dae5d13
 --- /dev/null
 +++ b/backend/ipp14.c
 @@ -0,0 +1,1953 @@

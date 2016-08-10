@@ -1,18 +1,8 @@
-From 1fbe6349d45868b6ffb206f51d5445f5ead2423a Mon Sep 17 00:00:00 2001
-From: Martin Pitt <mpitt@debian.org>
-Date: Tue, 9 Aug 2016 18:11:38 +0200
-Subject: Make log files readable to group "adm", if present.
-
+Description: Make log files readable to group "adm", if present.
+Author: Martin Pitt <mpitt@debian.org>
 Bug-Ubuntu: https://launchpad.net/bugs/345953
 
 Last-Update: 2015-02-10
-Patch-Name: logfiles_adm_readable.patch
----
- scheduler/log.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/scheduler/log.c b/scheduler/log.c
-index 0a135a7..ecc41e5 100644
 --- a/scheduler/log.c
 +++ b/scheduler/log.c
 @@ -24,6 +24,7 @@
@@ -23,7 +13,7 @@ index 0a135a7..ecc41e5 100644
  
  
  /*
-@@ -113,6 +114,7 @@ cupsdCheckLogFile(cups_file_t **lf,	/* IO - Log file */
+@@ -113,6 +114,7 @@
  		filename[1024],		/* Formatted log filename */
  		*ptr;			/* Pointer into filename */
    const char	*logptr;		/* Pointer into log filename */
@@ -31,7 +21,7 @@ index 0a135a7..ecc41e5 100644
  
  
   /*
-@@ -133,6 +135,11 @@ cupsdCheckLogFile(cups_file_t **lf,	/* IO - Log file */
+@@ -133,6 +135,11 @@
    }
  
   /*
@@ -43,7 +33,7 @@ index 0a135a7..ecc41e5 100644
    * Format the filename as needed...
    */
  
-@@ -253,7 +260,7 @@ cupsdCheckLogFile(cups_file_t **lf,	/* IO - Log file */
+@@ -253,7 +260,7 @@
        * Change ownership and permissions of non-device logs...
        */
  
@@ -52,7 +42,7 @@ index 0a135a7..ecc41e5 100644
        fchmod(cupsFileNumber(*lf), LogFilePerm);
      }
    }
-@@ -304,7 +311,7 @@ cupsdCheckLogFile(cups_file_t **lf,	/* IO - Log file */
+@@ -304,7 +311,7 @@
      * Change ownership and permissions of non-device logs...
      */
  

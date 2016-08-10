@@ -1,22 +1,11 @@
-From 749eac4f03e447f64c17019c5575e92193ace88e Mon Sep 17 00:00:00 2001
-From: Didier Raboud <odyx@debian.org>
-Date: Tue, 9 Aug 2016 18:11:22 +0200
-Subject: Force LC_ALL=C environment variable when grepping the output of
- lpstat.
-
+Description: Force LC_ALL=C environment variable when grepping the output of lpstat.
  Permits testing in non-"C" environments.
+Author: Didier Raboud <odyx@debian.org>
 Origin: vendor
 Last-Update: 2016-07-11
-Patch-Name: tests-make-lpstat-call-reproducible.patch
----
- test/run-stp-tests.sh | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index 4c2d704..bec6c39 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -726,7 +726,7 @@ fi
+@@ -726,7 +726,7 @@
  IPP_PORT=$port; export IPP_PORT
  
  while true; do
@@ -25,7 +14,7 @@ index 4c2d704..bec6c39 100755
  	if test "x$running" = "xscheduler is running"; then
  		break
  	fi
-@@ -843,13 +843,13 @@ kill -HUP $cupsd
+@@ -843,13 +843,13 @@
  while true; do
  	sleep 10
  

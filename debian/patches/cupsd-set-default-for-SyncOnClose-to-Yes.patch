@@ -1,20 +1,7 @@
-From 0edf4d769d812e3a517c2d92899f528647b1cb99 Mon Sep 17 00:00:00 2001
-From: Tim Waugh <twaugh@redhat.com>
-Date: Tue, 9 Aug 2016 18:11:46 +0200
-Subject: Set the default for SyncOnClose to Yes
-
+Description: Set the default for SyncOnClose to Yes
+Author: Tim Waugh <twaugh@redhat.com>
 Last-Update: 2015-02-10
 
-Patch-Name: cupsd-set-default-for-SyncOnClose-to-Yes.patch
----
- conf/cups-files.conf.in           | 2 +-
- doc/help/man-cups-files.conf.html | 2 +-
- man/cups-files.conf.man.in        | 2 +-
- scheduler/conf.c                  | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/conf/cups-files.conf.in b/conf/cups-files.conf.in
-index 4a78ba6..a3d088d 100644
 --- a/conf/cups-files.conf.in
 +++ b/conf/cups-files.conf.in
 @@ -7,7 +7,7 @@
@@ -26,11 +13,9 @@ index 4a78ba6..a3d088d 100644
  
  # Default user and group for filters/backends/helper programs; this cannot be
  # any user or group that resolves to ID 0 for security reasons...
-diff --git a/doc/help/man-cups-files.conf.html b/doc/help/man-cups-files.conf.html
-index 093ba6f..0534def 100644
 --- a/doc/help/man-cups-files.conf.html
 +++ b/doc/help/man-cups-files.conf.html
-@@ -138,7 +138,7 @@ The default is "/etc/cups".
+@@ -138,7 +138,7 @@
  <dd style="margin-left: 5.0em">Specifies whether the scheduler calls
  <b>fsync</b>(2)
  after writing configuration or state files.
@@ -39,11 +24,9 @@ index 093ba6f..0534def 100644
  <dt><a name="SystemGroup"></a><b>SystemGroup </b><i>group-name </i>[ ... <i>group-name</i> ]
  <dd style="margin-left: 5.0em">Specifies the group(s) to use for <i>@SYSTEM</i> group authentication.
  The default contains "admin", "lpadmin", "root", "sys", and/or "system".
-diff --git a/man/cups-files.conf.man.in b/man/cups-files.conf.man.in
-index df001fb..565818d 100644
 --- a/man/cups-files.conf.man.in
 +++ b/man/cups-files.conf.man.in
-@@ -194,7 +194,7 @@ The default is "/etc/cups".
+@@ -194,7 +194,7 @@
  Specifies whether the scheduler calls
  .BR fsync (2)
  after writing configuration or state files.
@@ -52,11 +35,9 @@ index df001fb..565818d 100644
  .\"#SystemGroup
  .TP 5
  \fBSystemGroup \fIgroup-name \fR[ ... \fIgroup-name\fR ]
-diff --git a/scheduler/conf.c b/scheduler/conf.c
-index 4c9182e..2860f17 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -769,7 +769,7 @@ cupsdReadConfiguration(void)
+@@ -769,7 +769,7 @@
    RootCertDuration         = 300;
    Sandboxing               = CUPSD_SANDBOXING_STRICT;
    StrictConformance        = FALSE;

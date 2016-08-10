@@ -1,22 +1,12 @@
-From bae559fb88331492139917a5c204fb9a8519f86c Mon Sep 17 00:00:00 2001
-From: Till Kampetter <till.kampetter@gmail.com>
-Date: Tue, 9 Aug 2016 18:11:35 +0200
-Subject: Do not use host names for broadcasting print queues and
-
+Description: Do not use host names for broadcasting print queues and
  managing print queues broadcasted from other servers by default. Many
  networks do not have valid host names for all machines.
 Bug-Ubuntu: https://bugs.launchpad.net/bugs/449586
+Author: till.kamppeter@gmail.com
 
-Patch-Name: do-not-broadcast-with-hostnames.patch
----
- scheduler/conf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/scheduler/conf.c b/scheduler/conf.c
-index d766a9c..91178f2 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -964,7 +964,7 @@ cupsdReadConfiguration(void)
+@@ -964,7 +964,7 @@
      cupsdAddAlias(ServerAlias, temp);
      cupsdLogMessage(CUPSD_LOG_DEBUG, "Added auto ServerAlias %s", temp);
  

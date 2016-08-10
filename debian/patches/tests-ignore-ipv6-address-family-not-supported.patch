@@ -1,26 +1,16 @@
-From 35d3d461acd57047eca4462a280f38432ede657f Mon Sep 17 00:00:00 2001
-From: Didier Raboud <odyx@debian.org>
-Date: Tue, 9 Aug 2016 18:33:56 +0200
-Subject: Tests: ignore errors triggered on ipv6-deprived hosts
-
-Ignore the 'Address family not supported by protocol' error that breaks the
-errorlines counting on buildds without a working IPv6 stack.
+Description: Ignore the 'Address family not supported by protocol' error that
+ breaks the errorlines counting on buildds without a working IPv6 stack.
 Origin: vendor
+Author: Didier Raboud <odyx@debian.org>
 Last-Update: 2015-02-10
-Patch-Name: tests-ignore-ipv6-address-family-not-supported.patch
----
- test/run-stp-tests.sh | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index 0b299a3..1c17e02 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -989,6 +989,7 @@ count=`$GREP '^E ' $BASE/log/error_log | \
-        $GREP -v '(dnssd) stopped with status 1' | \
-        $GREP -v 'loadFile failed: temp file: not a PDF file' | \
-        $GREP -v 'Failed to connect to system bus' | \
-+       $GREP -v -E 'Unable to open listen socket for address .* Address family not supported by protocol.' | \
-        wc -l | awk '{print $1}'`
+@@ -984,7 +984,7 @@
+ fi
+ 
+ # Error log messages
+-count=`$GREP '^E ' $BASE/log/error_log | $GREP -v '(usb) crashed on signal 11' | $GREP -v '(dnssd) stopped with status 1' | $GREP -v 'loadFile failed: temp file: not a PDF file' | $GREP -v 'Failed to connect to system bus' | wc -l | awk '{print $1}'`
++count=`$GREP '^E ' $BASE/log/error_log | $GREP -v '(usb) crashed on signal 11' | $GREP -v '(dnssd) stopped with status 1' | $GREP -v 'loadFile failed: temp file: not a PDF file' | $GREP -v 'Failed to connect to system bus' | $GREP -v -E 'Unable to open listen socket for address .* Address family not supported by protocol.' | wc -l | awk '{print $1}'`
  if test $count != 33; then
  	echo "FAIL: $count error messages, expected 33."
+ 	$GREP '^E ' $BASE/log/error_log

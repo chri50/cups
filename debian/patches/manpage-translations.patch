@@ -1,32 +1,12 @@
-From 393d9b6bbaeed4f18c0fa5a219edaed50f95b0c4 Mon Sep 17 00:00:00 2001
-From: Didier Raboud <odyx@debian.org>
-Date: Tue, 9 Aug 2016 18:11:50 +0200
-Subject: po4a infrastructure and translations for manpages.
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
+Description: po4a infrastructure and translations for manpages.
 Author: Nicolas François <nicolas.francois@centraliens.net>, Helge Kreutzmann <debian@helgefjell.de>
 Origin: vendor
 Bug-Debian: http://bugs.debian.org/478597
 Last-Update: 2015-07-15
 
-Patch-Name: manpage-translations.patch
----
- man/Makefile      |  15 +++-
- man/Makefile.l10n | 248 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- man/de/Makefile   |  13 +++
- man/fr/Makefile   |  13 +++
- 4 files changed, 288 insertions(+), 1 deletion(-)
- create mode 100644 man/Makefile.l10n
- create mode 100644 man/de/Makefile
- create mode 100644 man/fr/Makefile
-
-diff --git a/man/Makefile b/man/Makefile
-index 8e75e89..48f02cc 100644
 --- a/man/Makefile
 +++ b/man/Makefile
-@@ -66,12 +66,18 @@ MAN8	=	cupsaccept.$(MAN8EXT) \
+@@ -66,12 +66,18 @@
  		lpmove.$(MAN8EXT) \
  		lpc.$(MAN8EXT)
  
@@ -46,7 +26,7 @@ index 8e75e89..48f02cc 100644
  
  
  #
-@@ -95,6 +101,11 @@ unittests:
+@@ -95,6 +101,11 @@
  clean:
  	$(RM) mantohtml mantohtml.o
  	$(RM) $(MAN1) $(MAN5) $(MAN7) $(MAN8)
@@ -58,7 +38,7 @@ index 8e75e89..48f02cc 100644
  
  
  #
-@@ -146,6 +157,7 @@ install-data: all
+@@ -146,6 +157,7 @@
  		$(RM) $(AMANDIR)/man$(MAN8DIR)/$$file.$(MAN8EXT); \
  		$(LN) cupsd-helper.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/$$file.$(MAN8EXT); \
  	done
@@ -66,7 +46,7 @@ index 8e75e89..48f02cc 100644
  
  
  #
-@@ -194,6 +206,7 @@ uninstall:
+@@ -194,6 +206,7 @@
  	$(RM) $(AMANDIR)/man$(MAN8DIR)/reject.$(MAN8EXT)
  	$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
  	-$(RMDIR) $(AMANDIR)/man$(MAN8DIR)
@@ -74,9 +54,6 @@ index 8e75e89..48f02cc 100644
  
  
  #
-diff --git a/man/Makefile.l10n b/man/Makefile.l10n
-new file mode 100644
-index 0000000..dca1d71
 --- /dev/null
 +++ b/man/Makefile.l10n
 @@ -0,0 +1,248 @@
@@ -328,9 +305,6 @@ index 0000000..dca1d71
 +#
 +# End of "$Id: $".
 +#
-diff --git a/man/de/Makefile b/man/de/Makefile
-new file mode 100644
-index 0000000..61025c3
 --- /dev/null
 +++ b/man/de/Makefile
 @@ -0,0 +1,13 @@
@@ -347,9 +321,6 @@ index 0000000..61025c3
 +#
 +# End of "$Id: $".
 +#
-diff --git a/man/fr/Makefile b/man/fr/Makefile
-new file mode 100644
-index 0000000..8d239ba
 --- /dev/null
 +++ b/man/fr/Makefile
 @@ -0,0 +1,13 @@

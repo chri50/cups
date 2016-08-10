@@ -1,22 +1,34 @@
-From 9a60ed740fea0e3d0879b06a2bf7a1a1930cfa29 Mon Sep 17 00:00:00 2001
-From: Didier Raboud <odyx@debian.org>
-Date: Tue, 9 Aug 2016 18:11:19 +0200
-Subject: Use cups-filter's filters, type declarations, conversions (from
- 1.0.38, patched)
-
+Description: Use cups-filter's filters, type declarations, conversions (from 1.0.38, patched)
  and libraries. This fixes the tests that need those.
 Origin: vendor
+Author: Didier Raboud <odyx@debian.org>
 Last-Update: 2015-02-10
-Patch-Name: tests-use-cupsfilters.patch
----
- test/cupsfilters.convs | 128 +++++++++++++++++++++++++++++++++++++++++++++++++
- test/run-stp-tests.sh  |  17 +++++++
- 2 files changed, 145 insertions(+)
- create mode 100644 test/cupsfilters.convs
-
-diff --git a/test/cupsfilters.convs b/test/cupsfilters.convs
-new file mode 100644
-index 0000000..815befb
+--- a/test/run-stp-tests.sh
++++ b/test/run-stp-tests.sh
+@@ -468,6 +468,23 @@
+ 	instfilter pstoraster pstoraster raster
+ 	instfilter texttopdf texttopdf pdf
+ 
++	# cups-filters types, filters and banners
++	ln -s /usr/share/cups/mime/cupsfilters.types /tmp/cups-$user/share/mime
++	ln -s $root/test/cupsfilters.convs /tmp/cups-$user/share/mime
++
++	instfilter gstoraster gstoraster raster
++	instfilter imagetoraster imagetoraster raster
++	instfilter pstopdf pstopdf pdf
++	instfilter urftopdf urftopdf pdf
++	instfilter bannertopdf bannertopdf pdf
++
++	ln -sf /usr/share/cups/banners/classified /tmp/cups-$user/share/banners/
++	ln -sf /usr/share/cups/banners/confidential /tmp/cups-$user/share/banners/
++	ln -sf /usr/share/cups/banners/secret /tmp/cups-$user/share/banners/
++	ln -sf /usr/share/cups/banners/standard /tmp/cups-$user/share/banners/
++	ln -sf /usr/share/cups/banners/topsecret /tmp/cups-$user/share/banners/
++	ln -sf /usr/share/cups/banners/unclassified /tmp/cups-$user/share/banners/
++
+ 	if test -d /usr/share/cups/charsets; then
+ 		ln -s /usr/share/cups/charsets $BASE/share
+ 	fi
 --- /dev/null
 +++ b/test/cupsfilters.convs
 @@ -0,0 +1,128 @@
@@ -148,31 +160,3 @@ index 0000000..815befb
 +#
 +# End of "$Id: $".
 +#
-diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index 631030b..fe560d0 100755
---- a/test/run-stp-tests.sh
-+++ b/test/run-stp-tests.sh
-@@ -468,6 +468,23 @@ else
- 	instfilter pstoraster pstoraster raster
- 	instfilter texttopdf texttopdf pdf
- 
-+	# cups-filters types, filters and banners
-+	ln -s /usr/share/cups/mime/cupsfilters.types /tmp/cups-$user/share/mime
-+	ln -s $root/test/cupsfilters.convs /tmp/cups-$user/share/mime
-+
-+	instfilter gstoraster gstoraster raster
-+	instfilter imagetoraster imagetoraster raster
-+	instfilter pstopdf pstopdf pdf
-+	instfilter urftopdf urftopdf pdf
-+	instfilter bannertopdf bannertopdf pdf
-+
-+	ln -sf /usr/share/cups/banners/classified /tmp/cups-$user/share/banners/
-+	ln -sf /usr/share/cups/banners/confidential /tmp/cups-$user/share/banners/
-+	ln -sf /usr/share/cups/banners/secret /tmp/cups-$user/share/banners/
-+	ln -sf /usr/share/cups/banners/standard /tmp/cups-$user/share/banners/
-+	ln -sf /usr/share/cups/banners/topsecret /tmp/cups-$user/share/banners/
-+	ln -sf /usr/share/cups/banners/unclassified /tmp/cups-$user/share/banners/
-+
- 	if test -d /usr/share/cups/charsets; then
- 		ln -s /usr/share/cups/charsets $BASE/share
- 	fi

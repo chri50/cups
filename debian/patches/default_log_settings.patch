@@ -1,18 +1,7 @@
-From 0dbcfe5a48743edc5f9a50b02554b606c32bd6ff Mon Sep 17 00:00:00 2001
-From: Didier Raboud <odyx@debian.org>
-Date: Tue, 9 Aug 2016 18:11:40 +0200
-Subject: Deactivate CUPS' own log rotating as the system already provides a
- more sophisticated log rotating
+Description: Deactivate CUPS' own log rotating as the system already provides a more sophisticated log rotating
 
 Last-Update: 2015-02-10
 
-Patch-Name: default_log_settings.patch
----
- conf/cupsd.conf.in | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/conf/cupsd.conf.in b/conf/cupsd.conf.in
-index 2fd0de0..42e24a2 100644
 --- a/conf/cupsd.conf.in
 +++ b/conf/cupsd.conf.in
 @@ -8,6 +8,10 @@
