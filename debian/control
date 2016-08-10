@@ -280,6 +280,7 @@ Multi-Arch: same
 Depends: ${shlibs:Depends}, ${misc:Depends},
  libcups2 (= ${binary:Version}), 
  dpkg-dev,
+ libcupsimage2-dev,
 Description: Common UNIX Printing System(tm) - Development files CUPS library
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
  general replacement for lpd and the like.  It supports the Internet 

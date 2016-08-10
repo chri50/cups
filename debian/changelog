@@ -1,3 +1,11 @@
+cups (2.2~rc1-2ubuntu1) yakkety; urgency=medium
+
+  * debian/control:
+    - let libcups2-dev depends on libcupsimage2-dev since, should fix gtk
+      build failing with the current version
+
+ -- Sebastien Bacher <seb128@ubuntu.com>  Wed, 10 Aug 2016 15:19:35 +0200
+
 cups (2.2~rc1-2) experimental; urgency=medium
 
   * Add patch to ignore the 'Unable to write uncompressed print data: Broken
