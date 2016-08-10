@@ -1,29 +1,12 @@
-From 39949964bda2b4cccede93ded762b5a37941220c Mon Sep 17 00:00:00 2001
-From: Martin Pitt <mpitt@debian.org>
-Date: Tue, 9 Aug 2016 18:11:06 +0200
-Subject: Install root backends world-readable.
-
-This is needed:
- - to comply with Debian Policy
- - because it is both nonsensical to to not do so
- - it also breaks system checkers, bug reporting, etc
-
+Description: Install root backends world-readable, to comply to Debian Policy and because it is both nonsensical to to not do so, and also breaks system checkers, bug reporting, etc.
+Author: Martin Pitt <mpitt@debian.org>
 Bug: http://www.cups.org/str.php?L2935
 Bug-Debian: http://bugs.debian.org/410171
 Last-Update: 2015-02-10
 
-Patch-Name: rootbackends-worldreadable.patch
----
- backend/Makefile         | 4 ++--
- scheduler/cups-deviced.c | 2 +-
- scheduler/job.c          | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/backend/Makefile b/backend/Makefile
-index ae08947..aa5450d 100644
 --- a/backend/Makefile
 +++ b/backend/Makefile
-@@ -19,7 +19,7 @@ include ../Makedefs
+@@ -19,7 +19,7 @@
  # Object files...
  #
  
@@ -32,7 +15,7 @@ index ae08947..aa5450d 100644
  #
  # UBACKENDS and ULBACKENDS are installed mode 0755 so cupsd will run them as
  # an unprivileged user...
-@@ -124,7 +124,7 @@ install-exec:	$(INSTALLXPC)
+@@ -124,7 +124,7 @@
  	echo Installing backends in $(SERVERBIN)/backend
  	$(INSTALL_DIR) -m 755 $(SERVERBIN)/backend
  	for file in $(RBACKENDS); do \
@@ -41,11 +24,9 @@ index ae08947..aa5450d 100644
  	done
  	for file in $(UBACKENDS); do \
  		$(INSTALL_BIN) $$file $(SERVERBIN)/backend; \
-diff --git a/scheduler/cups-deviced.c b/scheduler/cups-deviced.c
-index 94e69b4..2a2f34b 100644
 --- a/scheduler/cups-deviced.c
 +++ b/scheduler/cups-deviced.c
-@@ -268,7 +268,7 @@ main(int  argc,				/* I - Number of command-line args */
+@@ -268,7 +268,7 @@
      * all others run as the unprivileged user...
      */
  
@@ -54,11 +35,9 @@ index 94e69b4..2a2f34b 100644
    }
  
    cupsDirClose(dir);
-diff --git a/scheduler/job.c b/scheduler/job.c
-index 0f1d648..f417821 100644
 --- a/scheduler/job.c
 +++ b/scheduler/job.c
-@@ -1249,7 +1249,7 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
+@@ -1249,7 +1249,7 @@
        else if (stat(command, &backinfo))
  	backroot = 0;
        else

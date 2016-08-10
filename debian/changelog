@@ -1,3 +1,11 @@
+cups (2.2~rc1-2ubuntu2) yakkety; urgency=medium
+
+  * Revert 2.2~rc1-2 changes they are buggy and remove ubuntu patches
+    wrongly which leads to a failing build, those needs to be sorted out
+    but meanwhile we want the depends fix in.
+
+ -- Sebastien Bacher <seb128@ubuntu.com>  Wed, 10 Aug 2016 17:06:09 +0200
+
 cups (2.2~rc1-2ubuntu1) yakkety; urgency=medium
 
   * debian/control:

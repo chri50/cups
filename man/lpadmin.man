@@ -169,7 +169,7 @@ If the resulting class becomes empty it is removed.
 Sets user-level access control on a destination.
 Names starting with "@" are interpreted as UNIX groups.
 The latter two forms turn user-level access control off.
-Note: The user 'root' is not granted special access \- using "\-u allow:foo,bar" will allow users 'foo' and 'bar' to access the printer but NOT 'root'.
+Note: The user 'root' is not granted special access - using "-u allow:foo,bar" will allow users 'foo' and 'bar' to access the printer but NOT 'root'.
 .TP 5
 \fB\-v "\fIdevice-uri\fB"\fR
 Sets the \fIdevice-uri\fR attribute of the printer queue.
@@ -200,7 +200,7 @@ The CUPS version of \fBlpadmin\fR does not support all of the System V or Solari
 Create an IPP Everywhere print queue:
 .nf
 
-    lpadmin \-p myprinter \-E \-v ipp://myprinter.local/ipp/print \-m everywhere
+    lpadmin -p myprinter -E -v ipp://myprinter.local/ipp/print -m everywhere
 
 .fi
 .SH SEE ALSO

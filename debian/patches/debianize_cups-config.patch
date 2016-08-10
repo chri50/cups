@@ -1,9 +1,4 @@
-From e719a3db8602eca060f4c360a8335f3ec337093f Mon Sep 17 00:00:00 2001
-From: Didier Raboud <odyx@debian.org>
-Date: Tue, 9 Aug 2016 18:11:49 +0200
-Subject: Use dpkg-architecture in cups-config to make it
- architecture-independant
-
+Description: Use dpkg-architecture in cups-config to make it architecture-independant
  Also filter -L/usr/lib/(triplet) out of LDFLAGS.
  Also strip unnecessary libs from --libs.
  Also launch krb5-config at runtime to avoid getting usr/lib/(triplet) from krb5-config
@@ -11,17 +6,11 @@ Bug-Debian: https://bugs.debian.org/741519
 Bug-Debian: https://bugs.debian.org/727058
 Bug-Debian: https://bugs.debian.org/730838
 Bug-Debian: https://bugs.debian.org/751157
+Author: Didier Raboud <odyx@debian.org>
 Last-Update: 2014-06-11
-Patch-Name: debianize_cups-config.patch
----
- cups-config.in | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
-
-diff --git a/cups-config.in b/cups-config.in
-index f0951d0..f37f4df 100755
 --- a/cups-config.in
 +++ b/cups-config.in
-@@ -20,8 +20,8 @@ prefix=@prefix@
+@@ -20,8 +20,8 @@
  exec_prefix=@exec_prefix@
  bindir=@bindir@
  includedir=@includedir@
@@ -32,7 +21,7 @@ index f0951d0..f37f4df 100755
  datarootdir=@datadir@
  datadir=@datadir@
  sysconfdir=@sysconfdir@
-@@ -33,7 +33,8 @@ INSTALLSTATIC=@INSTALLSTATIC@
+@@ -33,7 +33,8 @@
  # flags for C++ compiler:
  CFLAGS=""
  LDFLAGS="@EXPORT_LDFLAGS@"
@@ -42,7 +31,7 @@ index f0951d0..f37f4df 100755
  
  # Check for local invocation...
  selfdir=`dirname $0`
-@@ -48,7 +49,7 @@ else
+@@ -48,7 +49,7 @@
  	CFLAGS="$CFLAGS -I$includedir"
      fi
  
@@ -51,7 +40,7 @@ index f0951d0..f37f4df 100755
  	LDFLAGS="$LDFLAGS -L$libdir"
      fi
  fi
-@@ -103,7 +104,7 @@ while test $# -gt 0; do
+@@ -103,7 +104,7 @@
  	    ;;
  	--libs)
  	    if test $static = no; then

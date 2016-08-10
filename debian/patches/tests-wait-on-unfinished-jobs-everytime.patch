@@ -1,23 +1,12 @@
-From ab4a7f4d24955c282c061aba1f5f7dc267076c2c Mon Sep 17 00:00:00 2001
-From: Didier Raboud <odyx@debian.org>
-Date: Tue, 9 Aug 2016 18:11:17 +0200
-Subject: Make sure that all scheduled jobs are finished before
-
+Description: Make sure that all scheduled jobs are finished before
  running a new test. Fixes failures on slow architectures like armel and
  mipsel.
 Bug-Debian: http://bugs.debian.org/670878
 Last-Update: 2015-02-10
 
-Patch-Name: tests-wait-on-unfinished-jobs-everytime.patch
----
- test/run-stp-tests.sh | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index 3991e07..631030b 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -786,6 +786,11 @@ echo $date by $user on `hostname`. >>$strfile
+@@ -786,6 +786,11 @@
  echo "<PRE>" >>$strfile
  
  for file in 5*.sh; do
