@@ -38,11 +38,11 @@ A value of 100 means that the filter uses a large amount of resources while a va
 The \fIfilter\fR field specifies the filter program filename.
 Filenames are relative to the CUPS filter directory.
 .SH FILES
-\fI/etc/cups\fR - Typical CUPS configuration directory.
+\fI/etc/cups\fR \- Typical CUPS configuration directory.
 .br
-\fI/usr/lib/cups/filter\fR - Typical CUPS filter directory.
+\fI/usr/lib/cups/filter\fR \- Typical CUPS filter directory.
 .br
-\fI/usr/libexec/cups/filter\fR - CUPS filter directory on macOS.
+\fI/usr/libexec/cups/filter\fR \- CUPS filter directory on macOS.
 .SH EXAMPLES
 Define a filter that converts PostScript documents to CUPS Raster format:
 .nf
