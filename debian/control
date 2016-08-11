@@ -278,6 +278,7 @@ Section: libdevel
 Architecture: any
 Multi-Arch: same
 Depends: ${shlibs:Depends}, ${misc:Depends},
+ libcupsimage2-dev (= ${binary:Version}),
  libcups2 (= ${binary:Version}), 
  dpkg-dev,
 Description: Common UNIX Printing System(tm) - Development files CUPS library

@@ -1,3 +1,11 @@
+cups (2.2~rc1-3) experimental; urgency=medium
+
+  [ Jeremy Bicha ]
+  * Add libcups2-dev dependency on libcupsimage2-dev, as ppd.h includes raster.h
+    (Closes: #833889)
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 11 Aug 2016 15:51:20 +0200
+
 cups (2.2~rc1-2) experimental; urgency=medium
 
   * Add patch to ignore the 'Unable to write uncompressed print data: Broken
