@@ -27,12 +27,12 @@ endif
 
 override_dh_auto_configure:
 ifeq ($(derives_from_ubuntu),yes)
-	set -e; if ! [ -e debian/patches/ubuntu/stamp-applied ]; then \
+	set -e; if ! [ -e debian/patches-ubuntu/stamp-applied ]; then \
 	    echo '---- Applying Ubuntu specific patches'; \
-	    for p in debian/patches/ubuntu/*; do \
+	    for p in debian/patches-ubuntu/*; do \
 	        patch -p1 --no-backup-if-mismatch < $$p; \
 	    done; \
-	    touch debian/patches/ubuntu/stamp-applied; \
+	    touch debian/patches-ubuntu/stamp-applied; \
 	fi
 endif
 	# Rebuild ./configure to get build system patches working
@@ -204,7 +204,7 @@ override_dh_fixperms:
 
 override_dh_auto_test:
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
-	make check
+	CUPS_TESTBASE=$(shell mktemp -d /tmp/cups.XXXXXX) make check
 	# Check that cups-config is not architecture-specific
 	[ -r cups-config ] && grep -vq $(shell dpkg-architecture -qDEB_HOST_MULTIARCH) cups-config
 endif
@@ -216,12 +216,12 @@ endif
 
 override_dh_clean:
 	dh_clean
-	if [ -e debian/patches/ubuntu/stamp-applied ]; then \
+	if [ -e debian/patches-ubuntu/stamp-applied ]; then \
 	    echo '---- Unapplying Ubuntu specific patches'; \
-	    for p in debian/patches/ubuntu/*; do \
+	    for p in debian/patches-ubuntu/*; do \
 	        patch -Rp1 --no-backup-if-mismatch < $$p; \
 	    done; \
-	    rm debian/patches/ubuntu/stamp-applied; \
+	    rm debian/patches-ubuntu/stamp-applied; \
 	fi
 
 override_dh_auto_clean:

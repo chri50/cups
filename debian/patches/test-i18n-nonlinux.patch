@@ -1,8 +1,8 @@
-From ae0da35cdbada1d995b1ea1330e66e2ad3ceed54 Mon Sep 17 00:00:00 2001
+From 7c13cbb13e1d614e09671ac8f440957dab04b34b Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:16 +0200
-Subject: Do not run the CUPS_EUC_JP test case on BSD/Hurd either, as glibc's
- iconv behavior is different than what the test expects.
+Subject: Tests: Do not run the CUPS_EUC_JP test case on BSD/Hurd either, as
+ glibc's iconv behavior is different than what the test expects.
 
 Bug-Debian: http://bugs.debian.org/662996
 
