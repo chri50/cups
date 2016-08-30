@@ -1,4 +1,4 @@
-From bff622d242242789053a32f9374b541a87925cf2 Mon Sep 17 00:00:00 2001
+From 67d9869a395d738da5f3e4aed64f5e4f108f3e54 Mon Sep 17 00:00:00 2001
 From: Till Kamppeter <till.kamppeter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:28 +0200
 Subject: Some printers have broken device IDs with newline

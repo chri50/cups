@@ -1,3 +1,16 @@
+cups (2.2~rc1-5) experimental; urgency=medium
+
+  * In tests, use variable test-environment directory CUPS_TESTBASE, thanks to
+    Santiago Vila for the hint.
+  * Patches:
+    - Drop now-unneeded 'tests-use-cupsfilters.patch' patch
+    - Refresh some patch titles
+    - Rename Ubuntu-specific patches' directory to debian/patches-ubuntu to
+      avoid wrong deletions when using git-dpm update-patches
+  * Remove now-unneeded cups-filters from Build-Depends
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 30 Aug 2016 14:40:09 +0200
+
 cups (2.2~rc1-4) experimental; urgency=medium
 
   * Revert unintentional Ubuntu patches removal; refresh them

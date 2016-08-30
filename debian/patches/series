@@ -11,7 +11,6 @@ tests-ignore-kfreebsd-unable-to-write-uncompressed-print-data.pdf
 test-i18n-nonlinux.patch
 tests-wait-on-unfinished-jobs-everytime.patch
 tests-fix-ppdLocalize-on-unclean-env.patch
-tests-use-cupsfilters.patch
 tests-fix-mips-getjobs.patch
 tests-use-ipv4-lo-address.patch
 tests-make-lpstat-call-reproducible.patch

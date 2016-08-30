@@ -1,4 +1,4 @@
-From 18a030e1b83f279ead3a5cf820fb95f2d2c9def2 Mon Sep 17 00:00:00 2001
+From 515085f639734b0022d69afb7684b6bb98cfa08a Mon Sep 17 00:00:00 2001
 From: Martin Pitt <mpitt@debian.org>
 Date: Tue, 9 Aug 2016 18:11:32 +0200
 Subject: Add support for creating pid files.
@@ -126,10 +126,10 @@ index e0ab6e8..9caa47f 100644
   * 'cupsdAddString()' - Copy and add a string to an array.
   */
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index 73f141a..586152a 100755
+index a6e7b84..603bc50 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -542,6 +542,7 @@ FontPath $BASE/share/fonts
+@@ -525,6 +525,7 @@ FontPath $BASE/share/fonts
  DocumentRoot $root/doc
  RequestRoot $BASE/spool
  TempDir $BASE/spool/temp

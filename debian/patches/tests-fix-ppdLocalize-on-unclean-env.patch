@@ -1,7 +1,8 @@
-From 6148d10865736f66163d430e540995665a80cc61 Mon Sep 17 00:00:00 2001
+From 3b3e398e8b1f7c1431c785adf13e2c7eb4c2a1db Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:18 +0200
-Subject: Force LC_* environment variables when testing (non) l10n'isation.
+Subject: Tests: Force LC_* environment variables when testing (non)
+ l10n'isation.
 
  Permits building in non-"C" environments.
 Origin: vendor
