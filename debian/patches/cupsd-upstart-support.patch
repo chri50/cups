@@ -1,4 +1,4 @@
-From 70965164015faf0f195d97fc837da05a7623fa79 Mon Sep 17 00:00:00 2001
+From 963fee93098be11bb68820299fc596e7a1357584 Mon Sep 17 00:00:00 2001
 From: Till Kamppeter <till.kamppeter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:08 +0200
 Subject: CUPS Upstart socket activation

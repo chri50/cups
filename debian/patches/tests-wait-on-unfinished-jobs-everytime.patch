@@ -1,4 +1,4 @@
-From 6ce9b313b4fed63f094a9b02007d074e0754a46d Mon Sep 17 00:00:00 2001
+From e95f5687eb714608267c6ed3ec0c4d57c82e8b04 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:17 +0200
 Subject: Tests: Make sure that all scheduled jobs are finished before

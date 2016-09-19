@@ -7,9 +7,8 @@ enhance the visibility of these translations.
 
 ## How to update .pot and .po files
 
-1. Apply the patches upto manpage-translations.patch:
-
-	$ QUILT_PATCHES=debian/patches quilt push manpage-translations.patch
+1. Checkout the branch you want to work on (usually 'debian/master').
+   It has the patches already applied.
 
 2. Launch po4a from the correct directory:
 

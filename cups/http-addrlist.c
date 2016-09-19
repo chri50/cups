@@ -78,7 +78,8 @@ httpAddrConnect2(
   struct pollfd		pfds[100];	/* Polled file descriptors */
 #  else
   fd_set		input_set,	/* select() input set */
-			output_set;	/* select() output set */
+			output_set,	/* select() output set */
+			error_set;	/* select() error set */
   struct timeval	timeout;	/* Timeout */
 #  endif /* HAVE_POLL */
 #endif /* O_NONBLOCK */
@@ -238,6 +239,9 @@ httpAddrConnect2(
       addrlist = addrlist->next;
     }
 
+    if (!addrlist && nfds == 0)
+      break;
+
    /*
     * See if we can connect to any of the addresses so far...
     */
@@ -282,11 +286,12 @@ httpAddrConnect2(
       for (i = 0; i < nfds; i ++)
 	FD_SET(fds[i], &input_set);
       output_set = input_set;
+      error_set  = input_set;
 
       timeout.tv_sec  = 0;
       timeout.tv_usec = (addrlist ? 100 : remaining > 250 ? 250 : remaining) * 1000;
 
-      result = select(max_fd + 1, &input_set, &output_set, NULL, &timeout);
+      result = select(max_fd + 1, &input_set, &output_set, &error_set, &timeout);
 
       DEBUG_printf(("1httpAddrConnect2: select() returned %d (%d)", result, errno));
 #  endif /* HAVE_POLL */
@@ -303,9 +308,9 @@ httpAddrConnect2(
       {
 #  ifdef HAVE_POLL
 	DEBUG_printf(("pfds[%d].revents=%x\n", i, pfds[i].revents));
-	if (pfds[i].revents)
+	if (pfds[i].revents && !(pfds[i].revents & (POLLERR | POLLHUP)))
 #  else
-	if (FD_ISSET(fds[i], &input))
+	if (FD_ISSET(fds[i], &input) && !FD_ISSET(fds[i], &error))
 #  endif /* HAVE_POLL */
 	{
 	  *sock    = fds[i];
