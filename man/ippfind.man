@@ -78,7 +78,7 @@ True is the hostname matches the given regular expression.
 .B \-l
 .TP 5
 .B \-\-ls
-Lists attributes returned by Get-Printer-Attributes for IPP printers and traditional \fIfind\fR "-ls" output for HTTP URLs.
+Lists attributes returned by Get-Printer-Attributes for IPP printers and traditional \fIfind\fR "\-ls" output for HTTP URLs.
 The result is true if the URI is accessible, false otherwise.
 .TP 5
 .B \-\-local
@@ -106,7 +106,7 @@ The result is always true.
 .B \-q
 .TP 5
 .B \-\-quiet
-Quiet mode - just returns the exit codes below.
+Quiet mode \- just returns the exit codes below.
 .TP 5
 .B \-r
 .TP 5
@@ -139,7 +139,7 @@ True if the URI matches the given regular expression.
 .TP 5
 \fB\-\-exec \fIutility \fR[ \fIargument \fR... ] \fB;\fR
 Executes the specified program if the current result is true.
-"{foo}" arguments are replaced with the corresponding value - see SUBSTITUTIONS below.
+"{foo}" arguments are replaced with the corresponding value \- see SUBSTITUTIONS below.
 .PP
 Expressions may also contain modifiers:
 .TP 5
