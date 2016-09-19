@@ -1,4 +1,4 @@
-From cbd7c1cc0256b04b0e39ce2213f87d6888fdd597 Mon Sep 17 00:00:00 2001
+From 46c02c2743a04d2b6c0f1e17ef0542b0c2cdb6cf Mon Sep 17 00:00:00 2001
 From: Martin Pitt <mpitt@debian.org>
 Date: Tue, 9 Aug 2016 18:11:09 +0200
 Subject: Tests: Ignore warnings from colord and Avahi

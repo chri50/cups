@@ -1,5 +1,5 @@
-INSTALL - CUPS v2.2rc1 - 2016-08-08
------------------------------------
+INSTALL - CUPS v2.2.0 - 2016-09-13
+----------------------------------
 
 This file describes how to compile and install CUPS from source code. For more
 information on CUPS see the file called "README.txt".  A complete change log can
@@ -30,7 +30,7 @@ BEFORE YOU BEGIN
     make does not support "include".
 
     Besides these tools you'll want ZLIB library for compression support, the
-    GNU TLS library for encryption support on platforms other then iOS, macOS,
+    GNU TLS library for encryption support on platforms other than iOS, macOS,
     or Windows, and either MIT (1.6.3 or higher) or Heimdal Kerberos for
     Kerberos support.  CUPS will compile and run without these, however you'll
     miss out on many of the features provided by CUPS.

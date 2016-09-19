@@ -1,3 +1,17 @@
+cups (2.2.0-1) unstable; urgency=medium
+
+  * New 2.2.0 upstream release
+    - http*Connect did not work on Linux when cupsd was not running
+      (Issue #4870)
+
+  [ Helge Kreutzmann ]
+  * Several fixes due to proofreading on debian-l10n-german
+
+  [ Didier Raboud ]
+  * Update the manpage-po4a README
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 19 Sep 2016 16:29:10 +0200
+
 cups (2.2~rc1-5) experimental; urgency=medium
 
   * In tests, use variable test-environment directory CUPS_TESTBASE, thanks to

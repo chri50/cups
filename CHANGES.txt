@@ -1,5 +1,16 @@
-CHANGES.txt - 2.2rc1 - 2016-08-08
----------------------------------
+CHANGES.txt - 2.2.0 - 2016-09-13
+--------------------------------
+
+CHANGES IN CUPS V2.2.0
+
+	- Normalized the TLS certificate validation code and added additional
+	  error messages to aid troubleshooting.
+	- http*Connect did not work on Linux when cupsd was not running
+	  (Issue #4870)
+	- The --no-remote-any option of cupsctl had no effect (Issue #4866)
+	- http*Connect did not return early when all addresses failed
+	  (Issue #4870)
+
 
 CHANGES IN CUPS V2.2rc1
 

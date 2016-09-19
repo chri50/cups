@@ -1,4 +1,4 @@
-From 52b524df2620df034a79e9dd2002700b62c47682 Mon Sep 17 00:00:00 2001
+From 67deec70af02bd3efcb585498a057c31f3a56af9 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:22 +0200
 Subject: Force LC_ALL=C environment variable when grepping the output of
