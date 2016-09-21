@@ -40,3 +40,4 @@ cups-set-default-error-policy-retry-job.patch
 man-cups-lpd-drop-dangling-references.patch
 debianize_cups-config.patch
 manpage-translations.patch
+0043-Handle-partial-failures-when-connecting.patch
