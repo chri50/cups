@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 2.0.3-10\n"
 "POT-Creation-Date: 2016-08-05 23:30+0200\n"
-"PO-Revision-Date: 2016-09-18 14:03+0200\n"
+"PO-Revision-Date: 2016-09-27 22:53+0200\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
 "Language: de\n"
@@ -643,16 +643,6 @@ msgstr "HINWEISE"
 # FIXME Im Orignal: s/design/designed/
 #. type: Plain text
 #: backend.man:178
-#, fuzzy
-#| msgid ""
-#| "CUPS backends are not generally design to be run directly by the user. "
-#| "Aside from the device URI issue ( I<argv[0]> and B<DEVICE_URI> "
-#| "environment variable contain the device URI), CUPS backends also expect "
-#| "specific environment variables and file descriptors, and typically run in "
-#| "a user session that (on OS X) has additional restrictions that affect how "
-#| "it runs. Backends can also be installed with restricted permissions (0500 "
-#| "or 0700) that tell the scheduler to run them as the \"root\" user instead "
-#| "of an unprivileged user (typically \"lp\") on the system."
 msgid ""
 "CUPS backends are not generally design to be run directly by the user. Aside "
 "from the device URI issue ( I<argv[0]> and B<DEVICE_URI> environment "
@@ -667,7 +657,7 @@ msgstr ""
 "direkt aufgerufen zu werden. Neben der Geräte-URI (I<argv[0]> und der "
 "Umgebungsvariablen B<DEVICE_URI>, die die Geräte-URI enthält) erwarten die "
 "CUPS-Backends auch bestimmte Umgebungsvariablen und Dateideskriptoren und "
-"laufen typischerweise auch in einer Benutzersitzung, die (unter OS X) "
+"laufen typischerweise auch in einer Benutzersitzung, die (unter macOS) "
 "zusätzlichen Beschränkungen unterliegt, die die Ausführung betreffen. "
 "Backends können auch mit eingeschränkten Rechten installiert werden (0500 "
 "oder 0700), die dem Auftragsplaner mitteilen, sie als Benutzer »root« statt "
@@ -1022,17 +1012,14 @@ msgstr "client.conf"
 
 #. type: TH
 #: client.conf.man.in:13 cups-files.conf.man.in:13
-#, fuzzy, no-wrap
-#| msgid "10 June 2014"
+#, no-wrap
 msgid "20 June 2016"
-msgstr "10. Juni 2014"
+msgstr "20. Juni 2016"
 
 #. type: Plain text
 #: client.conf.man.in:16
-#, fuzzy
-#| msgid "client.conf - client configuration file for cups (deprecated)"
 msgid "client.conf - client configuration file for cups"
-msgstr "client.conf - Client-Konfigurationsdatei für CUPS (veraltet)"
+msgstr "client.conf - Client-Konfigurationsdatei für CUPS"
 
 #. type: Plain text
 #: client.conf.man.in:19
@@ -1049,11 +1036,6 @@ msgstr ""
 
 #. type: Plain text
 #: client.conf.man.in:24
-#, fuzzy
-#| msgid ""
-#| "B<Note:> Starting with OS X 10.7, this file is only used by command-line "
-#| "and X11 applications plus the IPP backend.  The B<ServerName> directive "
-#| "is not supported on OS X at all."
 msgid ""
 "B<Note:> Starting with macOS 10.7, this file is only used by command-line "
 "and X11 applications plus the IPP backend.  The B<ServerName> directive is "
@@ -1062,9 +1044,12 @@ msgid ""
 "PrintingPrefs.plist> file instead.  See the NOTES section below for more "
 "information."
 msgstr ""
-"B<Hinweis>: Beginnend mit OS X 10.7 wird diese Datei nur von den "
+"B<Hinweis>: Beginnend mit macOS 10.7 wird diese Datei nur von den "
 "Befehlszeilen- und X11-Anwendungen sowie dem IPP-Backend genutzt. Die "
-"Direktive B<ServerName> wird von OS X überhaupt nicht unterstützt."
+"Direktive B<ServerName> wird von macOS überhaupt nicht unterstützt. Beginnend "
+"mit macOS 10.12 können alle Anwendungen auf diese Einstellungen stattdessen "
+"in der Datei I</Library/Preferences/org.cups.PrintingPrefs.plist> zugreifen. "
+"Siehe den Abschnitt HINWEISE weiter unten für weitere Informationen."
 
 #. type: SS
 #: client.conf.man.in:24 cups-files.conf.man.in:25 cups-snmp.conf.man:24
@@ -1117,16 +1102,12 @@ msgstr "B<AllowExpiredCerts No>"
 
 #. type: Plain text
 #: client.conf.man.in:38
-#, fuzzy
-#| msgid ""
-#| "Specifies whether to allow TLS with expired certificates.  The default is "
-#| "\"Yes\"."
 msgid ""
 "Specifies whether to allow TLS with expired certificates.  The default is "
 "\"No\"."
 msgstr ""
 "Legt fest, ob TLS mit abgelaufenen Zertifikaten erlaubt wird. Die Vorgabe "
-"ist »Yes«."
+"ist »No«."
 
 #. type: TP
 #: client.conf.man.in:38 cupsd.conf.man.in:765
@@ -1184,17 +1165,12 @@ msgstr "B<ServerName >I</Domäne/Socket>"
 # FIXME: s/it not/is not/
 #. type: Plain text
 #: client.conf.man.in:55
-#, fuzzy
-#| msgid ""
-#| "Specifies the address and optionally the port to use when connecting to "
-#| "the server.  B<Note: This directive it not supported on OS X 10.7 or "
-#| "later.>"
 msgid ""
 "Specifies the address and optionally the port to use when connecting to the "
 "server.  B<Note: This directive it not supported on macOS 10.7 or later.>"
 msgstr ""
 "Legt die Adresse und optional den Port, die bei der Verbindung zum Server "
-"verwandt werden sollen, fest. B<Hinweis: Diese Direktive wird auf OS X 10.7 "
+"verwandt werden sollen, fest. B<Hinweis: Diese Direktive wird auf macOS 10.7 "
 "oder neuer nicht unterstützt.>"
 
 #. type: TP
@@ -1252,25 +1228,21 @@ msgstr ""
 #: client.conf.man.in:68
 #, no-wrap
 msgid "B<TrustOnFirstUse Yes>"
-msgstr ""
+msgstr "B<TrustOnFirstUse Yes>"
 
 #. type: TP
 #: client.conf.man.in:70
 #, no-wrap
 msgid "B<TrustOnFirstUse No>"
-msgstr ""
+msgstr "B<TrustOnFirstUse No>"
 
 #. type: Plain text
 #: client.conf.man.in:74
-#, fuzzy
-#| msgid ""
-#| "Specifies whether local printers are shared by default.  The default is "
-#| "\"Yes\"."
 msgid ""
 "Specifies whether to trust new TLS certificates by default.  The default is "
 "\"Yes\"."
 msgstr ""
-"Legt fest, ob lokale Drucker standardmäßig freigegeben sind. Die Vorgabe ist "
+"Legt fest, ob neuen TLS-Zertifikaten standardmäßig vertraut werden soll. Die Vorgabe ist "
 "»Yes«."
 
 #. type: TP
@@ -1307,17 +1279,14 @@ msgstr ""
 
 #. type: Plain text
 #: client.conf.man.in:88
-#, fuzzy
-#| msgid ""
-#| "The B<client.conf> file is deprecated and will no longer be supported in "
-#| "a future version of CUPS."
 msgid ""
 "The B<client.conf> file is deprecated on macOS and will no longer be "
 "supported in a future version of CUPS.  Configuration settings can instead "
 "be viewed or changed using the B<defaults>(1)  command:"
 msgstr ""
-"Die Datei B<client.conf> ist veraltet und wird in zukünftigen Versionen von "
-"CUPS nicht mehr unterstützt."
+"Die Datei B<client.conf> ist unter macOS veraltet und wird in zukünftigen Versionen von "
+"CUPS nicht mehr unterstützt. Die Konfigurationseinstellungen können "
+"stattdessen mit dem Befehl B<defaults>(1) angesehen oder geändert werden:"
 
 #. type: Plain text
 #: client.conf.man.in:91
@@ -1326,12 +1295,14 @@ msgid ""
 "defaults write /Library/Preferences/org.cups.PrintingPrefs.plist Encryption Required\n"
 "defaults write /Library/Preferences/org.cups.PrintingPrefs.plist TrustOnFirstUse -bool NO\n"
 msgstr ""
+"defaults write /Library/Preferences/org.cups.PrintingPrefs.plist Encryption Required\n"
+"defaults write /Library/Preferences/org.cups.PrintingPrefs.plist TrustOnFirstUse -bool NO\n"
 
 #. type: Plain text
 #: client.conf.man.in:93
 #, no-wrap
 msgid "defaults read /Library/Preferences/org.cups.PrintingPrefs.plist Encryption\n"
-msgstr ""
+msgstr "defaults read /Library/Preferences/org.cups.PrintingPrefs.plist Encryption\n"
 
 #. type: Plain text
 #: client.conf.man.in:95
@@ -1340,15 +1311,15 @@ msgid ""
 "file, if present, provides a list of revoked X.509 certificates and is used "
 "when validating certificates."
 msgstr ""
+"Unter Linux und anderen Systemen, die GNU TLS verwenden, enthält die Datei "
+"I</etc/cups/ssl/site.crl>, falls vorhanden, eine Liste der zurückgezogenen X."
+"509-Zertifikate. Sie wird dann zur Prüfung von Zertifikaten verwandt."
 
 #. type: Plain text
 #: client.conf.man.in:99
-#, fuzzy
-#| msgid ""
-#| "B<cupsd>(8), B<filter>(7), CUPS Online Help (http://localhost:631/help)"
 msgid "B<cups>(1), B<default>(1), CUPS Online Help (http://localhost:631/help)"
 msgstr ""
-"B<cupsd>(8), B<filter>(7), CUPS-Online Hilfe (http://localhost:631/help)"
+"B<cups>(1), B<default>(1), CUPS-Online Hilfe (http://localhost:631/help)"
 
 #. type: TH
 #: cupsaccept.man:13
@@ -2218,10 +2189,9 @@ msgstr "cupsd.conf"
 
 #. type: TH
 #: cupsd.conf.man.in:13
-#, fuzzy, no-wrap
-#| msgid "11 June 2014"
+#, no-wrap
 msgid "21 June 2016"
-msgstr "11. Juni 2014"
+msgstr "21. Juni 2016"
 
 #. type: Plain text
 #: cupsd.conf.man.in:16
@@ -2766,10 +2736,9 @@ msgstr ""
 
 #. type: TP
 #: cupsd.conf.man.in:195
-#, fuzzy, no-wrap
-#| msgid "IdleExitTimeout seconds"
+#, no-wrap
 msgid "B<IdleExitTimeout >I<seconds>"
-msgstr "IdleExitTimeout Sekunden"
+msgstr "B<IdleExitTimeout >I<Sekunden>"
 
 #. #JobKillDelay
 #. type: Plain text
@@ -2779,6 +2748,9 @@ msgid ""
 "inactivity.  The default is \"60\" seconds.  Note: Only applicable when "
 "B<cupsd>(8)  is run on-demand (e.g., with B<-l>)."
 msgstr ""
+"Legt die Wartedauer fest, bevor aufgrund von Inaktivität abgeschaltet wird. "
+"Die Vorgabe ist »60« Sekunden. Beachten Sie: Dies trifft nur zu, wenn "
+"B<cupsd>(8) auf Anforderung (z.B. mit B<-l>) läuft."
 
 #. type: TP
 #: cupsd.conf.man.in:203
@@ -4740,14 +4712,6 @@ msgstr "B<Require user {>I<Benutzername>|B<@>I<Gruppenname>} …"
 
 #. type: Plain text
 #: cupsd.conf.man.in:790
-#, fuzzy
-#| msgid ""
-#| "Specifies that an authenticated user must match one of the named users or "
-#| "be a member of one of the named groups.  The group name \"@SYSTEM\" "
-#| "corresponds to the list of groups defined by the SystemGroup directive in "
-#| "the B<cups-files.conf>(5)  file.  The group name \"@OWNER\" corresponds "
-#| "to the owner of the resource, for example the person that submitted a "
-#| "print job."
 msgid ""
 "Specifies that an authenticated user must match one of the named users or be "
 "a member of one of the named groups.  The group name \"@SYSTEM\" corresponds "
@@ -4762,7 +4726,9 @@ msgstr ""
 "Gruppenname »@SYSTEM« entspricht der in der Direktive SystemGroup in der "
 "Datei B<cups-files.conf>(5) definierten Liste von Gruppen. Der Gruppenname "
 "»@OWNER« entspricht dem Eigentümer der Ressource, beispielsweise der Person, "
-"die den Auftrag eingereicht hat."
+"die den Auftrag eingereicht hat. Hinweis: Der Benutzer »root« wird nicht "
+"besonders behandelt und ihm müssen die Privilegien wie bei jedem anderen "
+"Benutzerkonto übertragen werden."
 
 #. type: TP
 #: cupsd.conf.man.in:790
@@ -5087,16 +5053,12 @@ msgstr ""
 
 #. type: Plain text
 #: cupsd-helper.man:59
-#, fuzzy
-#| msgid ""
-#| "The B<cups-exec> helper program runs backends, filters, and other "
-#| "programs. On OS X these programs are run in a secure sandbox."
 msgid ""
 "The B<cups-exec> helper program runs backends, filters, and other programs. "
 "On macOS these programs are run in a secure sandbox."
 msgstr ""
 "Das Helferprogramm B<cups-exec> führt Backends, Filter und andere Programme "
-"aus. Unter OS X laufen diese Programme in einer sicheren Sandbox."
+"aus. Unter macOS laufen diese Programme in einer sicheren Sandbox."
 
 #. type: Plain text
 #: cupsd-helper.man:61
@@ -6365,18 +6327,13 @@ msgstr "B<ConfigFilePerm >I<Modus>"
 
 #. type: Plain text
 #: cups-files.conf.man.in:53
-#, fuzzy
-#| msgid ""
-#| "Specifies the permissions for all configuration files that the scheduler "
-#| "writes.  The default is \"0644\" on OS X and \"0640\" on all other "
-#| "operating systems."
 msgid ""
 "Specifies the permissions for all configuration files that the scheduler "
 "writes.  The default is \"0644\" on macOS and \"0640\" on all other "
 "operating systems."
 msgstr ""
 "Legt die Rechte für alle vom Auftragsplaner (Scheduler) geschriebenen "
-"Konfigurationsdateien fest. Die Vorgabe ist »0644« unter OS X und »0640« "
+"Konfigurationsdateien fest. Die Vorgabe ist »0644« unter macOS und »0640« "
 "unter allen anderen Betriebssystemen."
 
 #. #DataDir
@@ -6755,12 +6712,6 @@ msgstr "B<Sandboxing strict>"
 #. #ServerBin
 #. type: Plain text
 #: cups-files.conf.man.in:174
-#, fuzzy
-#| msgid ""
-#| "Specifies the level of security sandboxing that is applied to print "
-#| "filters, backends, and other child processes of the scheduler.  The "
-#| "default is \"strict\".  This directive is currently only used/supported "
-#| "on OS X."
 msgid ""
 "Specifies the level of security sandboxing that is applied to print filters, "
 "backends, and other child processes of the scheduler.  The default is "
@@ -6768,7 +6719,7 @@ msgid ""
 msgstr ""
 "Legt die Sicherheitsstufe für die Sandbox fest, die auf Druckfilter, "
 "Backends und andere Kindprozesse des Auftragsplaners angewandt werden soll. "
-"Die Vorgabe ist »strict«. Diese Direktive wird derzeit nur unter OS X "
+"Die Vorgabe ist »strict«. Diese Direktive wird derzeit nur unter macOS "
 "verwandt/unterstützt."
 
 #. type: TP
@@ -6799,14 +6750,6 @@ msgstr "B<ServerKeychain >I<Pfad>"
 #. #ServerRoot
 #. type: Plain text
 #: cups-files.conf.man.in:185
-#, fuzzy
-#| msgid ""
-#| "Specifies the location of TLS certificates and private keys.  The default "
-#| "is \"/Library/Keychains/System.keychain\" on OS X and \"/etc/cups/ssl\" "
-#| "on all other operating systems.  OS X uses its keychain database to store "
-#| "certificates and keys while other platforms use separate files in the "
-#| "specified directory, *.crt for PEM-encoded certificates and *.key for PEM-"
-#| "encoded private keys."
 msgid ""
 "Specifies the location of TLS certificates and private keys.  The default is "
 "\"/Library/Keychains/System.keychain\" on macOS and \"/etc/cups/ssl\" on all "
@@ -6816,8 +6759,8 @@ msgid ""
 "encoded private keys."
 msgstr ""
 "Legt den Ort der TLS-Zertifikate und privaten Schlüssel fest. Die Vorgabe "
-"ist »/Library/Keychains/System.keychain« unter OS X und »/etc/cups/ssl« auf "
-"allen anderen Betriebssystemen. OS X verwendet die Schlüsselring-Datenbank, "
+"ist »/Library/Keychains/System.keychain« unter macOS und »/etc/cups/ssl« auf "
+"allen anderen Betriebssystemen. MacOS verwendet die Schlüsselring-Datenbank, "
 "um Zertifikate und Schlüssel zu speichern, während andere Plattformen "
 "einzelne Dateien in dem angegebenen Verzeichnis, *.crt für PEM-kodierte "
 "Zertifikate und *.key für PEM-kodierte private Schlüssel verwenden."
@@ -8290,7 +8233,7 @@ msgid ""
 "results of testing and any other output are sent to the standard output."
 msgstr ""
 "I<cupstestppd> überprüft die Konformität von PPD-Dateien zu der Adobe "
-"PostScript Printer Description-Dateiformatspezifikation Version 4.3. Es kann "
+"PostScript-Printer-Description-Dateiformatspezifikation Version 4.3. Es kann "
 "auch zur Auflistung der in einer PPD-Datei unterstützten Optionen und "
 "verfügbaren Schriften verwandt werden. Das Ergebnis des Tests und alle "
 "anderen Ausgaben werden an die Standardausgabe gesandt."
@@ -8615,10 +8558,9 @@ msgstr "filter"
 
 #. type: TH
 #: filter.man:13
-#, fuzzy, no-wrap
-#| msgid "9 October 2008"
+#, no-wrap
 msgid "19 October 2015"
-msgstr "9. Oktober 2008"
+msgstr "19. Oktober 2015"
 
 #. type: Plain text
 #: filter.man:16
@@ -9233,7 +9175,7 @@ msgid ""
 "The full pathname of the PostScript Printer Description (PPD) file for this "
 "printer."
 msgstr ""
-"Der komplette Pfadname zu der PostScript Printer Description (PPD)-Datei für "
+"Der komplette Pfadname zu der PostScript-Printer-Description-(PPD)-Datei für "
 "diesen Drucker."
 
 #. type: Plain text
@@ -9300,19 +9242,11 @@ msgid ""
 "While the filter interface is compatible with System V interface scripts, "
 "CUPS does not support System V interface scripts."
 msgstr ""
+"Während die Filterschnittstelle mit den Schnittstellenskripten von System V "
+"kompatibel ist, unterstützt CUPS nicht die System-V-Schnittstellenskripte."
 
 #. type: Plain text
 #: filter.man:211
-#, fuzzy
-#| msgid ""
-#| "CUPS filters are not meant to be run directly by the user.  Aside from "
-#| "the legacy System V interface issues (I<argv[0]> is the printer name), "
-#| "CUPS filters also expect specific environment variables and file "
-#| "descriptors, and typically run in a user session that (on OS X) has "
-#| "additional restrictions that affect how it runs.  Unless you are a "
-#| "developer and know what you are doing, please do not run filters "
-#| "directly.  Instead, use the B<cupsfilter>(8)  program to use the "
-#| "appropriate filters to do the conversions you need."
 msgid ""
 "CUPS filters are not meant to be run directly by the user.  Aside from the "
 "legacy System V interface issues (I<argv[0]> is the printer name), CUPS "
@@ -9327,7 +9261,7 @@ msgstr ""
 "Abgesehen von Problemen der veralteten System-V-Schnittstelle (I<argv[0>] "
 "ist der Druckername) erwarten CUPS-Filter auch bestimmte Umgebungsvariablen "
 "und Dateideskriptoren und laufen typischerweise auch in einer "
-"Benutzersitzung, die (unter OS X) zusätzlichen Beschränkungen unterliegt, "
+"Benutzersitzung, die (unter macOS) zusätzlichen Beschränkungen unterliegt, "
 "die die Ausführung betreffen. Sofern Sie kein Entwickler sind und nicht "
 "wissen, was Sie tun, führen Sie keine Filter direkt aus. Verwenden Sie "
 "stattdessen das Programm B<cupsfilter>(8), um die angemessenen Filter für "
@@ -11091,7 +11025,7 @@ msgstr "B<OPERATION >I<Vorgangscode>"
 #. type: Plain text
 #: ipptoolfile.man:192
 msgid "Specifies the operation to be performed."
-msgstr "Spezifziert den auszuführenden Vorgang."
+msgstr "Legt den auszuführenden Vorgang fest."
 
 #. type: TP
 #: ipptoolfile.man:192
@@ -11126,7 +11060,7 @@ msgid ""
 "Specifies the request-id value to use in the request, either an integer or "
 "the word \"random\" to use a randomly generated value (the default)."
 msgstr ""
-"Legt die in der Anfrage zu verwendene Anfrage-ID, entweder eine Ganzzahl "
+"Legt die in der Anfrage zu verwendende Anfrage-ID, entweder eine Ganzzahl "
 "oder das Wort »random«, um einen zufällig erzeugten Wert zu verwenden "
 "(Vorgabe), fest."
 
@@ -12299,7 +12233,7 @@ msgid ""
 "an empty string if no \"job-uri\" attribute has been seen."
 msgstr ""
 "Fügt den letzten in einer Testantwort zurückgelieferten »job-uri«-"
-"Attributwert oder eine leere Zeichenkette, falls keine Attribut »job-uri« "
+"Attributwert oder eine leere Zeichenkette, falls kein Attribut »job-uri« "
 "gesehen wurde, ein."
 
 #. type: TP
@@ -12315,7 +12249,7 @@ msgid ""
 "test response or 0 if no \"notify-subscription-id\" attribute has been seen."
 msgstr ""
 "Fügt den letzten in einer Testantwort zurückgelieferten »notify-subscription-"
-"id«-Attributwert oder 0, falls keine Attribut »notify-subscription-id« "
+"id«-Attributwert oder 0, falls kein Attribut »notify-subscription-id« "
 "gesehen wurde, ein."
 
 #. type: TP
@@ -12476,7 +12410,7 @@ msgstr ""
 #. type: Plain text
 #: ipptool.man:104
 msgid "Shows the version of B<ipptool> being used."
-msgstr "Zeigt die verwandte Version von B<ipptool> an."
+msgstr "Zeigt die verwendete Version von B<ipptool> an."
 
 #. type: Plain text
 #: ipptool.man:109
@@ -12570,7 +12504,7 @@ msgstr ""
 "Legt fest, dass die Ergebnisse der Tests zusätzlich zu dem normalen "
 "Testbericht (B<-t>) in die benannte XML- (Apple plist-)Datei geschrieben "
 "werden sollen. Diese Option ist inkompatibel zu den Optionen B<-i> "
-"(Interval) und B<-n> (Anzahl-Wiederholungen)."
+"(Intervall) und B<-n> (Anzahl-Wiederholungen)."
 
 #. type: TP
 #: ipptool.man:134
@@ -12624,7 +12558,7 @@ msgid ""
 msgstr ""
 "Legt fest, dass die XML- (Apple-Plist-)Ausgabe statt des reinen Textberichts "
 "erwünscht ist. Diese Option ist inkompatibel zu den Optionen B<-i> "
-"(Interval) und B<-n> (Anzahl-Wiederholungen)."
+"(Intervall) und B<-n> (Anzahl-Wiederholungen)."
 
 #. type: Plain text
 #: ipptool.man:150
@@ -12716,7 +12650,7 @@ msgid ""
 "Specifies that all request and response attributes should be output in CUPS "
 "test mode (B<-t>).  This is the default for XML output."
 msgstr ""
-"Legt fest, dass alle Anfrag- und Antwort-Attribute im CUPS-Testmodus (B<-t>) "
+"Legt fest, dass alle Anfrage- und Antwort-Attribute im CUPS-Testmodus (B<-t>) "
 "ausgegeben werden sollen. Dies ist die Vorgabe für XML-Ausgabe."
 
 #. type: Plain text
@@ -12858,10 +12792,9 @@ msgstr "lpadmin"
 
 #. type: TH
 #: lpadmin.man:13
-#, fuzzy, no-wrap
-#| msgid "5 March 2016"
+#, no-wrap
 msgid "29 March 2016"
-msgstr "5. März 2016"
+msgstr "29. März 2016"
 
 #. type: Plain text
 #: lpadmin.man:16
@@ -12884,7 +12817,7 @@ msgid ""
 "B<-p> I<destination> [ B<-R> I<name-default> ] I<option(s)>"
 msgstr ""
 "B<lpadmin> [ B<-E> ] [ B<-U> I<Benutzername> ] [ B<-h >I<Server>[B<:"
-">I<Port>] ] B<-p> I<Ziel> [ B<-R> I<Name-default> ] I<Option(en)>"
+">I<Port>] ] B<-p> I<Ziel> [ B<-R> I<Standardname> ] I<Option(en)>"
 
 #. type: Plain text
 #: lpadmin.man:57
@@ -12971,10 +12904,9 @@ msgstr ""
 
 #. type: TP
 #: lpadmin.man:82
-#, fuzzy, no-wrap
-#| msgid "B<-P >I<ppd-file>"
+#, no-wrap
 msgid "B<-i >I<ppd-file>"
-msgstr "B<-P >I<PPD-Datei>"
+msgstr "B<-i >I<PPD-Datei>"
 
 #. type: TP
 #: lpadmin.man:84
@@ -12984,27 +12916,15 @@ msgstr "B<-P >I<PPD-Datei>"
 
 #. type: Plain text
 #: lpadmin.man:87
-#, fuzzy
-#| msgid ""
-#| "The full pathname of the PostScript Printer Description (PPD) file for "
-#| "this printer."
 msgid ""
 "Specifies a PostScript Printer Description (PPD) file to use with the "
 "printer."
 msgstr ""
-"Der komplette Pfadname zu der PostScript Printer Description (PPD)-Datei für "
-"diesen Drucker."
+"Legt eine mit diesem Drucker zu verwendende PostScript-Printer-Description-"
+"(PPD)-Datei fest."
 
 #. type: Plain text
 #: lpadmin.man:94
-#, fuzzy
-#| msgid ""
-#| "Sets a standard System V interface script or PPD file for the printer "
-#| "from the I<model> directory or using one of the driver interfaces.  Use "
-#| "the I<-m> option with the B<lpinfo>(8)  command to get a list of "
-#| "supported models.  The model \"raw\" clears any existing interface script "
-#| "or PPD file and the model \"everywhere\" queries the printer referred to "
-#| "by the specified IPP I<device-uri>."
 msgid ""
 "Sets a standard PPD file for the printer from the I<model> directory or "
 "using one of the driver interfaces.  Use the I<-m> option with the "
@@ -13012,11 +12932,11 @@ msgid ""
 "clears any existing PPD file and the model \"everywhere\" queries the "
 "printer referred to by the specified IPP I<device-uri>."
 msgstr ""
-"Setzt ein Standard-System-V-Schnittstellenskript oder eine PPD-Datei für den "
+"Setzt eine Standard-PPD-Datei für den "
 "Drucker aus dem Verzeichnis I<Model> oder verwendet eine der "
 "Druckerschnittstellen. Verwenden Sie die Option I<-m> mit dem Befehl "
 "B<lpinfo>(8), um eine Liste der unterstützten Modelle zu erhalten. Das "
-"Modell »raw« bereinigt jedes Schnittstellenskript oder jede PPD-Datei und "
+"Modell »raw« bereinigt jede PPD-Datei und "
 "das Modell »everywhere« fragt die von der angegebenen IPP-I<Geräte-URI> "
 "referenzierten Drucker ab."
 
@@ -13147,7 +13067,7 @@ msgid ""
 "option can be defaulted, e.g., \"-o number-up-default=2\" to set the default "
 "\"number-up\" option value to 2."
 msgstr ""
-"Setzt eine Standard serverseitige Option für das Ziel. Jede Option zur "
+"Setzt eine serverseitige Standardoption für das Ziel. Jede Option zur "
 "Druckzeit kann mit einem Standardwert belegt werden, z.B. »-o number-up-"
 "default=2«, um den Standard-»number-up«-Optionswert auf 2 zu setzen."
 
@@ -13283,11 +13203,6 @@ msgstr "B<-u deny:none>"
 
 #. type: Plain text
 #: lpadmin.man:173
-#, fuzzy
-#| msgid ""
-#| "Sets user-level access control on a destination.  Names starting with \"@"
-#| "\" are interpreted as UNIX groups.  The latter two forms turn user-level "
-#| "access control off."
 msgid ""
 "Sets user-level access control on a destination.  Names starting with \"@\" "
 "are interpreted as UNIX groups.  The latter two forms turn user-level access "
@@ -13297,7 +13212,10 @@ msgid ""
 msgstr ""
 "Setzt die Zugriffsteuerung auf Benutzerebene für ein Ziel. Namen, die mit "
 "»@« beginnen werden als UNIX-Gruppen interpretiert. Die beiden letzten "
-"Formen schalten die Zugriffsteuerung auf Benutzerebene aus."
+"Formen schalten die Zugriffsteuerung auf Benutzerebene aus. Hinweis: Dem "
+"Benutzer »root« wird kein besonderer Zugriff gewährt - mit »-u allow:foo,bar« "
+"wird den Benutzern »foo« und »bar« der Zugriff auf den Drucker erlaubt, aber "
+"NICHT »root«."
 
 #. type: TP
 #: lpadmin.man:173
@@ -13312,7 +13230,7 @@ msgid ""
 "with the B<lpinfo>(8)  command to get a list of supported device URIs and "
 "schemes."
 msgstr ""
-"Setzt das I<device-uri>-Attribut der Druckerwarteschlange. Benutzen Sie den "
+"Setzt das I<Geräte-URI>-Attribut der Druckerwarteschlange. Benutzen Sie den "
 "Befehl B<lpinfo>(8) mit der Option I<-v>, um eine Liste der unterstützten "
 "Geräte-URIs und -Schemen zu erhalten."
 
@@ -13345,7 +13263,7 @@ msgstr "B<-L \">I<Ort>B<\">"
 #. type: Plain text
 #: lpadmin.man:192
 msgid "Provides a textual location of the destination."
-msgstr "Stellt den Ort des Ziel textuell bereit."
+msgstr "Stellt den Ort des Ziels textuell bereit."
 
 #. type: Plain text
 #: lpadmin.man:197
@@ -13537,20 +13455,13 @@ msgstr "lpinfo - zeige verfügbare Geräte oder Drucker"
 
 #. type: Plain text
 #: lpinfo.man:44
-#, fuzzy
-#| msgid ""
-#| "B<lpinfo> [ B<-E> ] [ B<-U> I<username> ] [ B<-h >I<server>[B<:"
-#| ">I<port>] ] [ B<-l> ] [ B<--device-id> I<device-id-string> ] [ B<--"
-#| "exclude-schemes> I<scheme-list> ] [ B<--include-schemes> I<scheme-list> ] "
-#| "[ B<--language> I<locale> ] [ B<--make-and-model> I<name> ] [ B<--"
-#| "product> I<name> ] B<-m>"
 msgid ""
 "B<lpinfo> [ B<-E> ] [ B<-h >I<server>[B<:>I<port>] ] [ B<-l> ] [ B<--device-"
 "id> I<device-id-string> ] [ B<--exclude-schemes> I<scheme-list> ] [ B<--"
 "include-schemes> I<scheme-list> ] [ B<--language> I<locale> ] [ B<--make-and-"
 "model> I<name> ] [ B<--product> I<name> ] B<-m>"
 msgstr ""
-"B<lpinfo> [ B<-E> ] [ B<-U> I<Benutzername> ] [ B<-h >I<Server>[B<:"
+"B<lpinfo> [ B<-E> ] [ B<-h >I<Server>[B<:"
 ">I<Port>] ] [ B<-l> ] [ B<--device-id> I<Geräte-ID-Zeichenkette> ] [ B<--"
 "exclude-schemes> I<Schemenliste> ] [ B<--include-schemes> I<Schemenliste> ] "
 "[ B<--language> I<Standorteinstellung> ] [ B<--make-and-model> I<Name> ] "
@@ -13558,17 +13469,12 @@ msgstr ""
 
 #. type: Plain text
 #: lpinfo.man:63
-#, fuzzy
-#| msgid ""
-#| "B<lpinfo> [ B<-E> ] [ B<-U> I<username> ] [ B<-h >I<server>[B<:"
-#| ">I<port>] ] [ B<-l> ] [ B<--exclude-schemes> I<scheme-list> ] [ B<--"
-#| "include-schemes> I<scheme-list> ] [ B<--timeout> I<seconds> ] B<-v>"
 msgid ""
 "B<lpinfo> [ B<-E> ] [ B<-h >I<server>[B<:>I<port>] ] [ B<-l> ] [ B<--exclude-"
 "schemes> I<scheme-list> ] [ B<--include-schemes> I<scheme-list> ] [ B<--"
 "timeout> I<seconds> ] B<-v>"
 msgstr ""
-"B<lpinfo> [ B<-E> ] [ B<-U> I<Benutzername> ] [ B<-h >I<Server>[B<:"
+"B<lpinfo> [ B<-E> ] [ B<-h >I<Server>[B<:"
 ">I<Port>] ] [ B<-l> ] [ B<--exclude-schemes> I<Schemenliste> ] [ B<--include-"
 "schemes> I<Schemenliste> ] [ B<--timeout> I<Sekunden> ] B<-v>"
 
@@ -13752,10 +13658,9 @@ msgstr "lp"
 
 #. type: TH
 #: lp.man:13 lpr.man:13
-#, fuzzy, no-wrap
-#| msgid "30 May 2016"
+#, no-wrap
 msgid "2 May 2016"
-msgstr "30. Mai 2016"
+msgstr "2. Mai 2016"
 
 #. type: Plain text
 #: lp.man:16
@@ -13900,10 +13805,8 @@ msgstr "B<-o \">I<Name>B<=>I<Wert >[ … I<Name>B<=>I<Wert >]B<\">"
 
 #. type: Plain text
 #: lp.man:131
-#, fuzzy
-#| msgid "Sets one or more job options."
 msgid "Sets one or more job options.  See \"COMMON JOB OPTIONS\" below."
-msgstr "Setzt eine oder mehrere Optionen für den Auftrag."
+msgstr "Setzt eine oder mehrere Optionen für den Auftrag. Siehe »HÄUFIGE DRUCKAUFTRAGSOPTIONEN« unten."
 
 #. type: TP
 #: lp.man:131
@@ -14021,18 +13924,14 @@ msgstr ""
 
 #. type: TP
 #: lp.man:164 lpr.man:119
-#, fuzzy, no-wrap
-#| msgid "B<-o cupsIPPSupplies=true>"
+#, no-wrap
 msgid "B<-o collate=true>"
-msgstr "B<-o cupsIPPSupplies=true>"
+msgstr "B<-o collate=true>"
 
-# type: TP
 #. type: Plain text
 #: lp.man:167 lpr.man:122
-#, fuzzy
-#| msgid "PrintcapFormat plist"
 msgid "Prints collated copies."
-msgstr "PrintcapFormat plist"
+msgstr "Druckt sortierte Kopien."
 
 #. type: TP
 #: lp.man:167 lpr.man:122
@@ -14047,10 +13946,9 @@ msgstr "Skaliert die Druckdatei auf Seitengröße."
 
 #. type: TP
 #: lp.man:170 lpr.man:125
-#, fuzzy, no-wrap
-#| msgid "B<-o job-k-limit=>I<value>"
+#, no-wrap
 msgid "B<-o job-hold-until=>I<when>"
-msgstr "B<-o job-k-limit=>I<Wert>"
+msgstr "B<-o job-hold-until=>I<Wann>"
 
 #. type: Plain text
 #: lp.man:174 lpr.man:129
@@ -14062,46 +13960,47 @@ msgid ""
 "shift\" to print the job between 12am and 8am local time, or \"weekend\" to "
 "print the job on Saturday or Sunday."
 msgstr ""
+"Hält den Auftrag bis zur angegebenen lokalen Uhrzeit. »Wann« kann "
+"»indefinite« enthalten, um das Halten bis zur Freigabe durchzuführen, »day-"
+"time«, um den Auftrag zwischen 6:00 Uhr und 18:00 Uhr lokale Zeit zu drucken, "
+"»night«, um den Auftrag zwischen 4:00 Uhr und 12:00 Uhr lokale Zeit zu "
+"drucken, »third-shift«, um den Auftrag zwischen 12:00 Uhr und 08:00 Uhr "
+"lokale Zeit zu drucken oder »weekend«, um den Auftrag am Samstag oder Sonntag "
+"zu drucken."
 
 #. type: TP
 #: lp.man:174 lpr.man:129
-#, fuzzy, no-wrap
-#| msgid "B<-H >I<hh:mm>"
+#, no-wrap
 msgid "B<-o job-hold-until=>I<hh:mm>"
-msgstr "B<-H >I<hh:mm>"
+msgstr "B<-o job-hold-until=>I<hh:mm>"
 
 #. type: Plain text
 #: lp.man:177 lpr.man:132
 msgid "Holds the job until the specified time in hours and minutes UTC."
-msgstr ""
+msgstr "Hält den Auftrag bis zur angegeben Zeit in Stunden und Minuten UTC."
 
 #. type: TP
 #: lp.man:177 lpr.man:132
-#, fuzzy, no-wrap
-#| msgid "B<-q >I<priority>"
+#, no-wrap
 msgid "B<-o job-priority=>I<priority>"
-msgstr "B<-q >I<Priorität>"
+msgstr "B<-o job-priority=>I<Priorität>"
 
 #. type: Plain text
 #: lp.man:181 lpr.man:136
-#, fuzzy
-#| msgid ""
-#| "Sets the job priority from 1 (lowest) to 100 (highest).  The default "
-#| "priority is 50."
 msgid ""
 "Set the priority to a value from 1 (lowest) to 100 (highest), which "
 "influences when a job is scheduled for printing.  The default priority is "
 "typically 50."
 msgstr ""
-"Setzt die Auftragspriorität von 1 (am niedrigsten) bis 100 (am höchsten). "
-"Die Standardpriorität beträgt 50."
+"Setzt die Priorität auf einen Wert zwischen 1 (niedrigste) und 100 (höchste). "
+"Dies beeinflusst, wann ein Auftrag für den Druck eingeplant wird. Die "
+"Vorgabepriorität ist typischerweise 50."
 
 #. type: TP
 #: lp.man:181 lpr.man:136
-#, fuzzy, no-wrap
-#| msgid "B<-o job-sheets-default=>I<banner>"
+#, no-wrap
 msgid "B<-o job-sheets=>I<name>"
-msgstr "B<-o job-sheets-default=>I<Deckblatt>"
+msgstr "B<-o job-sheets-default=>I<Name>"
 
 #. type: Plain text
 #: lp.man:185 lpr.man:140
@@ -14110,20 +14009,19 @@ msgid ""
 "\"classified\", \"confidential\", \"secret\", \"standard\", \"topsecret\", "
 "or \"unclassified\"."
 msgstr ""
+"Druckt ein Deckblatt mit dem Dokument. Der »Name« kann »classified«, "
+"»confidential«, »secret«, »standard«, »topsecret« oder »unclassified« sein."
 
 #. type: TP
 #: lp.man:185 lpr.man:140
-#, fuzzy, no-wrap
-#| msgid "B<-o job-sheets-default=>I<banner>"
+#, no-wrap
 msgid "B<-o job-sheets=>I<start-name,end-name>"
-msgstr "B<-o job-sheets-default=>I<Deckblatt>"
+msgstr "B<-o job-sheets=>I<Startname,Endname>"
 
 #. type: Plain text
 #: lp.man:188 lpr.man:143
-#, fuzzy
-#| msgid "Creates a new job with no documents."
 msgid "Prints cover pages (banners) with the document."
-msgstr "Erstellt einen neuen Auftrag ohne Dokumente."
+msgstr "Druckt Deckblätter mit dem Dokument."
 
 #. type: TP
 #: lp.man:188 lpr.man:143
@@ -14142,15 +14040,14 @@ msgstr ""
 
 #. type: TP
 #: lp.man:191 lpr.man:146
-#, fuzzy, no-wrap
-#| msgid "B<ErrorLog>"
+#, no-wrap
 msgid "B<-o mirror>"
-msgstr "B<ErrorLog>"
+msgstr "B<-o mirror>"
 
 #. type: Plain text
 #: lp.man:194 lpr.man:149
 msgid "Mirrors each page."
-msgstr ""
+msgstr "Spiegelt jede Seite."
 
 #. type: TP
 #: lp.man:194 lpr.man:149
@@ -14167,10 +14064,9 @@ msgstr ""
 
 #. type: TP
 #: lp.man:197 lpr.man:152
-#, fuzzy, no-wrap
-#| msgid "B<-o number-up=>{I<2|4|6|9|16>}"
+#, no-wrap
 msgid "B<-o number-up-layout=>I<layout>"
-msgstr "B<-o number-up=>{I<2|4|6|9|16>}"
+msgstr "B<-o number-up-layout=>I<Layout>"
 
 #. type: Plain text
 #: lp.man:202 lpr.man:157
@@ -14182,6 +14078,12 @@ msgid ""
 "top, \"lr\" is left-to-right, \"rl\" is right-to-left, and \"tb\" is top-to-"
 "bottom."
 msgstr ""
+"Legt das Layout der Seiten mit der Option »number-up« fest. Die Zeichenkette "
+"»Layout« kann »btlr«, »btrl«, »lrbt«, »lrtb«, »rlbt«, »rltb«, »tblr« oder "
+"»tbrl« sein. Die ersten zwei Buchtaben bestimmen die Spaltenreihenfolge, "
+"während die zweiten zwei Buchstaben die Zeilenreihenfolge bestimmen. »bt« ist "
+"von unten nach oben, »lr« ist links nach rechts, »rl« ist rechts nach links "
+"und »tb« ist oben nach unten."
 
 #. type: TP
 #: lp.man:202 lpr.man:157
@@ -14191,56 +14093,47 @@ msgstr "B<-o orientation-requested=4>"
 
 #. type: Plain text
 #: lp.man:205 lpr.man:160
-#, fuzzy
-#| msgid "Prints the job in landscape (rotated 90 degrees)."
 msgid "Prints the job in landscape (rotated 90 degrees counter-clockwise)."
-msgstr "Druckt den Druckauftrag im Querformat (gedreht um 90 Grad)."
+msgstr "Druckt den Druckauftrag im Querformat (gedreht um 90 Grad gegen den Uhrzeigersinn)."
 
 #. type: TP
 #: lp.man:205 lpr.man:160
-#, fuzzy, no-wrap
-#| msgid "B<-o orientation-requested=4>"
+#, no-wrap
 msgid "B<-o orientation-requested=5>"
-msgstr "B<-o orientation-requested=4>"
+msgstr "B<-o orientation-requested=5>"
 
 #. type: Plain text
 #: lp.man:208 lpr.man:163
-#, fuzzy
-#| msgid "Prints the job in landscape (rotated 90 degrees)."
 msgid "Prints the job in landscape (rotated 90 degrees clockwise)."
-msgstr "Druckt den Druckauftrag im Querformat (gedreht um 90 Grad)."
+msgstr "Druckt den Druckauftrag im Querformat (gedreht um 90 Grad im Uhrzeigersinn)."
 
 #. type: TP
 #: lp.man:208 lpr.man:163
-#, fuzzy, no-wrap
-#| msgid "B<-o orientation-requested=4>"
+#, no-wrap
 msgid "B<-o orientation-requested=6>"
-msgstr "B<-o orientation-requested=4>"
+msgstr "B<-o orientation-requested=6>"
 
 #. type: Plain text
 #: lp.man:211 lpr.man:166
-#, fuzzy
-#| msgid "Prints the job in landscape (rotated 90 degrees)."
 msgid "Prints the job in reverse portrait (rotated 180 degrees)."
-msgstr "Druckt den Druckauftrag im Querformat (gedreht um 90 Grad)."
+msgstr "Druckt den Druckauftrag im inversen Portraitformat (gedreht um 180 Grad)."
 
 #. type: TP
 #: lp.man:211 lpr.man:166
-#, fuzzy, no-wrap
-#| msgid "B<-d >I<output-directory>"
+#, no-wrap
 msgid "B<-o outputorder=reverse>"
-msgstr "B<-d >I<Ausgabeverzeichnis>"
+msgstr "B<-o outputorder=reverse>"
 
 #. type: Plain text
 #: lp.man:214 lpr.man:169
 msgid "Prints pages in reverse order."
-msgstr ""
+msgstr "Druckt Seiten in umgekehrter Reihenfolge"
 
 #. type: TP
 #: lp.man:214 lpr.man:169
 #, no-wrap
 msgid "B<-o page-border=>I<border>"
-msgstr ""
+msgstr "B<-o page-border=>I<Rand>"
 
 #. type: Plain text
 #: lp.man:218 lpr.man:173
@@ -14248,13 +14141,14 @@ msgid ""
 "Prints a border around each document page.  \"border\" is \"double\", "
 "\"double-thick\", \"single\", or \"single-thick\"."
 msgstr ""
+"Druckt einen Rand um jede Dokumentenseite. »Rand« ist »double«, »double-"
+"thick«, »single« oder »single-thick«."
 
 #. type: TP
 #: lp.man:218 lpr.man:173
-#, fuzzy, no-wrap
-#| msgid "B<-P >I<page-list>"
+#, no-wrap
 msgid "B<-o page-ranges=>I<page-list>"
-msgstr "B<-P >I<Seitenliste>"
+msgstr "B<-o page-ranges=>I<Seitenliste>"
 
 #. type: TP
 #: lp.man:223 lpr.man:178
@@ -14356,10 +14250,9 @@ msgstr "lpmove"
 
 #. type: TH
 #: lpmove.man:13
-#, fuzzy, no-wrap
-#| msgid "30 May 2016"
+#, no-wrap
 msgid "26 May 2016"
-msgstr "30. Mai 2016"
+msgstr "26. Mai 2016"
 
 #. type: Plain text
 #: lpmove.man:16
@@ -14846,6 +14739,7 @@ msgstr "Schickt eine E-Mail nach Erledigung des Auftrags."
 #: lpr.man:105
 msgid "Sets a job option.  See \"COMMON JOB OPTIONS\" below."
 msgstr ""
+"Setzt eine Auftragsoption. Siehe »HÄUFIGE DRUCKAUFTRAGSOPTIONEN« weiter unten."
 
 #. type: Plain text
 #: lpr.man:109
@@ -15469,10 +15363,8 @@ msgstr "I</usr/lib/cups/filter> - Typisches CUPS-Filterverzeichnis."
 
 #. type: Plain text
 #: mime.convs.man:46
-#, fuzzy
-#| msgid "I</usr/libexec/cups/filter> - CUPS filter directory on OS X."
 msgid "I</usr/libexec/cups/filter> - CUPS filter directory on macOS."
-msgstr "I</usr/libexec/cups/filter> - CUPS-Filterverzeichnis unter OS X."
+msgstr "I</usr/libexec/cups/filter> - CUPS-Filterverzeichnis unter macOS."
 
 #. type: Plain text
 #: mime.convs.man:48
@@ -16527,7 +16419,7 @@ msgid ""
 "feed, or line feed alone.  The default is to use the line feed character "
 "alone."
 msgstr ""
-"Legt das zu verwendene Zeilenende fest - Wagenrücklauf, Wagenrücklauf und "
+"Legt das zu verwendende Zeilenende fest - Wagenrücklauf, Wagenrücklauf und "
 "Zeilenumbruch oder nur Zeilenumbruch. Standardmäßig wird nur ein "
 "Zeilenumbruch verwandt."
 
@@ -16748,12 +16640,6 @@ msgstr ""
 
 #. type: Plain text
 #: ppdpo.man:31
-#, fuzzy
-#| msgid ""
-#| "B<ppdpo> extracts UI strings from PPDC source files and updates either a "
-#| "GNU gettext or OS X strings format message catalog source file for "
-#| "translation.  B<This program is deprecated and will be removed in a "
-#| "future release of CUPS.>"
 msgid ""
 "B<ppdpo> extracts UI strings from PPDC source files and updates either a GNU "
 "gettext or macOS strings format message catalog source file for "
@@ -16761,7 +16647,7 @@ msgid ""
 "release of CUPS.>"
 msgstr ""
 "B<ppdpo> liest UI-Zeichenketten aus den PPDC-Quelldateien aus und "
-"aktualisiert entweder eine GNU-Gettext- oder einen OS-X-Zeichenkettenformat-"
+"aktualisiert entweder eine GNU-Gettext- oder einen macOS-Zeichenkettenformat-"
 "Nachrichtenkatalogquelldatei für die Übersetzung. B<Dieses Programm ist "
 "veraltet und wird in zukünftigen Veröffentlichungen von CUPS entfernt werden."
 ">"
@@ -16779,18 +16665,13 @@ msgstr "B<-o >I<Ausgabedatei>"
 
 #. type: Plain text
 #: ppdpo.man:45
-#, fuzzy
-#| msgid ""
-#| "Specifies the output file.  The supported extensions are I<.po> or I<.po."
-#| "gz> for GNU gettext format message catalogs and I<.strings> for OS X "
-#| "strings files."
 msgid ""
 "Specifies the output file.  The supported extensions are I<.po> or I<.po.gz> "
 "for GNU gettext format message catalogs and I<.strings> for macOS strings "
 "files."
 msgstr ""
 "Legt die Ausgabedatei fest. Die unterstützten Endungen sind I<.po> oder I<."
-"po.gz> für GNU-Gettext-Nachrichtenkataloge und I<.strings> für OS-X-Strings-"
+"po.gz> für GNU-Gettext-Nachrichtenkataloge und I<.strings> für macOS-Strings-"
 "Dateien."
 
 #. type: Plain text
@@ -16913,7 +16794,7 @@ msgstr ""
 #~ "Specifies a PostScript Printer Description file to use with the printer.  "
 #~ "If specified, this option overrides the I<-i> option (interface script)."
 #~ msgstr ""
-#~ "Legt eine PostScript Printer Description-Datei für die Verwendung mit dem "
+#~ "Legt eine PostScript-Printer-Description-Datei für die Verwendung mit dem "
 #~ "Drucker fest. Falls angegeben überschreibt diese Option die Option I<-i> "
 #~ "(Schnittstellenskript)."
 

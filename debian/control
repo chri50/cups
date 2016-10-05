@@ -67,8 +67,8 @@ Package: libcupsimage2
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},
- libcupsfilters1 (>= 1.0~b1),
  libcups2 (= ${binary:Version}),
+Recommends: libcupsfilters1 (>= 1.0~b1),
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
 Description: Common UNIX Printing System(tm) - Raster image library
@@ -141,7 +141,6 @@ Depends: ${shlibs:Depends},
  poppler-utils (>= 0.12),
  procps,
  ghostscript (>= 9.02~),
- lsb-base (>= 3.2-14~),
  cups-common (>= ${source:Version}),
  cups-server-common (>= ${source:Version}),
  cups-client (>= ${binary:Version}),
@@ -201,7 +200,7 @@ Pre-Depends: dpkg (>= 1.15.7.2)
 Depends: ${shlibs:Depends},
  ${misc:Depends},
  procps,
- lsb-base (>= 3),
+ lsb-base (>= 3.2-14~),
  libcups2 (= ${binary:Version}),
  ssl-cert (>= 1.0.11),
  adduser,
@@ -295,11 +294,11 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, 
  libcupsimage2 (= ${binary:Version}),
  libcups2-dev (= ${binary:Version}), 
- libcupsfilters-dev (>= 1.0~b1),
  libpng-dev,
  libtiff-dev,
  libjpeg-dev,
  zlib1g-dev
+Recommends: libcupsfilters-dev (>= 1.0~b1),
 Description: Common UNIX Printing System(tm) - Development files CUPS image library
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
  general replacement for lpd and the like.  It supports the Internet 

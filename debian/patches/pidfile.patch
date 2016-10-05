@@ -1,4 +1,4 @@
-From 1cca7ab3f03f1b3f37f5884a8b7ccaad6c420b67 Mon Sep 17 00:00:00 2001
+From a60cab9d85fa93e1c18e3910894914c346c107c7 Mon Sep 17 00:00:00 2001
 From: Martin Pitt <mpitt@debian.org>
 Date: Tue, 9 Aug 2016 18:11:32 +0200
 Subject: Add support for creating pid files.
@@ -16,10 +16,10 @@ Patch-Name: pidfile.patch
  4 files changed, 45 insertions(+), 1 deletion(-)
 
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index de736d2..d766a9c 100644
+index 0667a4f..0e7027c 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -160,7 +160,8 @@ static const cupsd_var_t	cupsfiles_vars[] =
+@@ -163,7 +163,8 @@ static const cupsd_var_t	cupsfiles_vars[] =
  #ifdef HAVE_AUTHORIZATION_H
    { "SystemGroupAuthKey",	&SystemGroupAuthKey,	CUPSD_VARTYPE_STRING },
  #endif /* HAVE_AUTHORIZATION_H */
@@ -29,7 +29,7 @@ index de736d2..d766a9c 100644
  };
  
  static int		default_auth_type = CUPSD_AUTH_AUTO;
-@@ -625,6 +626,7 @@ cupsdReadConfiguration(void)
+@@ -628,6 +629,7 @@ cupsdReadConfiguration(void)
    cupsdSetStringf(&ServerHeader, "CUPS/%d.%d IPP/2.1", CUPS_VERSION_MAJOR,
                    CUPS_VERSION_MINOR);
    cupsdSetString(&StateDir, CUPS_STATEDIR);
@@ -37,7 +37,7 @@ index de736d2..d766a9c 100644
  
    if (!strcmp(CUPS_DEFAULT_PRINTCAP, "/etc/printers.conf"))
      PrintcapFormat = PRINTCAP_SOLARIS;
-@@ -3503,6 +3505,7 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
+@@ -3509,6 +3511,7 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
               !_cups_strcasecmp(line, "SystemGroup") ||
               !_cups_strcasecmp(line, "SystemGroupAuthKey") ||
               !_cups_strcasecmp(line, "TempDir") ||
@@ -46,10 +46,10 @@ index de736d2..d766a9c 100644
      {
        cupsdLogMessage(CUPSD_LOG_INFO,
 diff --git a/scheduler/conf.h b/scheduler/conf.h
-index 80250d9..071d42a 100644
+index 585ba92..b33768b 100644
 --- a/scheduler/conf.h
 +++ b/scheduler/conf.h
-@@ -243,6 +243,8 @@ VAR const char		**MimeTypes		VALUE(NULL);
+@@ -245,6 +245,8 @@ VAR int			CreateSelfSignedCerts	VALUE(TRUE);
  VAR char		*ServerKeychain		VALUE(NULL);
  					/* Keychain holding cert + key */
  #endif /* HAVE_SSL */
@@ -126,10 +126,10 @@ index e0ab6e8..9caa47f 100644
   * 'cupsdAddString()' - Copy and add a string to an array.
   */
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index a6e7b84..603bc50 100755
+index bcc4fde..345e875 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -525,6 +525,7 @@ FontPath $BASE/share/fonts
+@@ -524,6 +524,7 @@ FontPath $BASE/share/fonts
  DocumentRoot $root/doc
  RequestRoot $BASE/spool
  TempDir $BASE/spool/temp

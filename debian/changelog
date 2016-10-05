@@ -1,3 +1,22 @@
+cups (2.2.1-1) unstable; urgency=medium
+
+  * New 2.2.1 upstream release
+    - Updated man pages (PR #4885, Closes: #838854)
+
+  [ Helge Kreutzmann ]
+  * Update German man page
+
+  [ Didier Raboud ]
+  * Demote libcupsfilters{1,-dev} dependencies to recommends (Closes: #711697)
+  * Remove lsb Depends from cups, bump cups-daemon's to 3.2-14~
+
+  [ Helmut Grohne ]
+  * Fix FTCBFS (Closes: #837936)
+    - Build mantohtml with the build architecture compiler
+    - Do not execute genstrings during build
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 05 Oct 2016 11:32:06 +0200
+
 cups (2.2.0-2) unstable; urgency=medium
 
   * Backport upstream patch to handle partial failures when connecting

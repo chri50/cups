@@ -1,4 +1,4 @@
-From e662018447430120d745efeb9a5b31d6df2d6b48 Mon Sep 17 00:00:00 2001
+From 0f1361b72f76120baadad82228500a1669111cb1 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:30:48 +0200
 Subject: Tests: ignore loadFile failures
@@ -13,10 +13,10 @@ Patch-Name: tests-ignore-kfreebsd-amd64-not-a-pdf.patch
  1 file changed, 2 insertions(+)
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index 9a50b0a..0b299a3 100755
+index d00dc22..a6c7e55 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -987,6 +987,8 @@ fi
+@@ -986,6 +986,8 @@ fi
  count=`$GREP '^E ' $BASE/log/error_log | \
         $GREP -v '(usb) crashed on signal 11' | \
         $GREP -v '(dnssd) stopped with status 1' | \

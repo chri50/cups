@@ -39,5 +39,6 @@ cupsd-set-default-for-SyncOnClose-to-Yes.patch
 cups-set-default-error-policy-retry-job.patch
 man-cups-lpd-drop-dangling-references.patch
 debianize_cups-config.patch
+0042-Build-mantohtml-with-the-build-architecture-compiler.patch
+0043-Do-not-execute-genstrings-during-build.patch
 manpage-translations.patch
-0043-Handle-partial-failures-when-connecting.patch

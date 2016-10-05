@@ -1,4 +1,4 @@
-From 52908676f07b1b2f06e4a2de40900cfd85c8bc0f Mon Sep 17 00:00:00 2001
+From 69d8b9ced0d0cfb9b22fb4505018444b13a889b6 Mon Sep 17 00:00:00 2001
 From: Martin Pitt <martin.pitt@ubuntu.com>
 Date: Tue, 9 Aug 2016 18:11:47 +0200
 Subject: Set default job error policy to "retry-job", since it is less
@@ -36,7 +36,7 @@ index bfe8e3d..2cdcecb 100644
  <dd style="margin-left: 5.0em">Specifies the maximum cost of filters that are run concurrently, which can be used to minimize disk, memory, and CPU resource problems.
  A limit of 0 disables filter limiting.
 diff --git a/man/cupsd.conf.man.in b/man/cupsd.conf.man.in
-index d4b2f8c..9533ed0 100644
+index 4cede48..92c9774 100644
 --- a/man/cupsd.conf.man.in
 +++ b/man/cupsd.conf.man.in
 @@ -148,13 +148,13 @@ The default value is "30".
@@ -56,10 +56,10 @@ index d4b2f8c..9533ed0 100644
  .TP 5
  \fBFilterLimit \fIlimit\fR
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index 2860f17..f3d8783 100644
+index 5338df1..f3c7763 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -785,7 +785,7 @@ cupsdReadConfiguration(void)
+@@ -789,7 +789,7 @@ cupsdReadConfiguration(void)
    cupsdSetString(&LPDConfigFile, CUPS_DEFAULT_LPD_CONFIG_FILE);
    cupsdSetString(&SMBConfigFile, CUPS_DEFAULT_SMB_CONFIG_FILE);
  
@@ -68,7 +68,7 @@ index 2860f17..f3d8783 100644
  
    JobHistory          = DEFAULT_HISTORY;
    JobFiles            = DEFAULT_FILES;
-@@ -1307,8 +1307,8 @@ cupsdReadConfiguration(void)
+@@ -1313,8 +1313,8 @@ cupsdReadConfiguration(void)
        strcmp(ErrorPolicy, "retry-job") &&
        strcmp(ErrorPolicy, "stop-printer"))
    {
