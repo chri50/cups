@@ -1,4 +1,4 @@
-From edbf3da104d4543971c33e206105d750ce6e193d Mon Sep 17 00:00:00 2001
+From 668dfc8b78ba5770ba9e6b96917cf7fb74c308a8 Mon Sep 17 00:00:00 2001
 From: Till Kamppeter <till.kamppeter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:29 +0200
 Subject: Patch to support Apple AirPrint (printing from iPhone, iPad, iPod
@@ -48,10 +48,10 @@ index dcb0771..6265daa 100644
  #
  # Text files...
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index 088501e..de736d2 100644
+index 8110cb4..0667a4f 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -777,7 +777,7 @@ cupsdReadConfiguration(void)
+@@ -781,7 +781,7 @@ cupsdReadConfiguration(void)
    DefaultShared            = CUPS_DEFAULT_DEFAULT_SHARED;
  
  #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)

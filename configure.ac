@@ -15,12 +15,21 @@ dnl We need at least autoconf 2.60...
 AC_PREREQ(2.60)
 
 dnl Package name and version...
-AC_INIT([CUPS], [2.2.0], [https://github.com/apple/cups/issues], [cups], [https://www.cups.org/])
+AC_INIT([CUPS], [2.2.1], [https://github.com/apple/cups/issues], [cups], [https://www.cups.org/])
 
 sinclude(config-scripts/cups-opsys.m4)
 sinclude(config-scripts/cups-common.m4)
 sinclude(config-scripts/cups-directories.m4)
 sinclude(config-scripts/cups-manpages.m4)
+
+AC_MSG_CHECKING([for build system compiler])
+if test "$cross_compiling" = yes; then
+	CC_FOR_BUILD=${CC_FOR_BUILD-cc}
+else
+	CC_FOR_BUILD=${CC}
+fi
+AC_MSG_RESULT(${CC_FOR_BUILD})
+AC_SUBST(CC_FOR_BUILD)
 
 sinclude(config-scripts/cups-sharedlibs.m4)
 sinclude(config-scripts/cups-libtool.m4)

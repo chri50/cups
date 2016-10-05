@@ -1,0 +1,27 @@
+From f7f952463ef21166836164af10111d025ea58dd4 Mon Sep 17 00:00:00 2001
+From: Helmut Grohne <helmut@subdivi.de>
+Date: Thu, 15 Sep 2016 07:59:13 +0200
+Subject: Do not execute genstrings during build
+
+We cannot run genstrings during build, because it is compiled for the host
+architecture. Fortunately, the generated file sample.c is neither processed any
+further nor installed. Thus skipping it is ok.
+
+Bug-Debian: https://bugs.debian.org/837936
+---
+ ppdc/Makefile | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/ppdc/Makefile b/ppdc/Makefile
+index 62d23a0..6fec8d7 100644
+--- a/ppdc/Makefile
++++ b/ppdc/Makefile
+@@ -221,8 +221,6 @@ genstrings:		genstrings.o libcupsppdc.so ../cups/$(LIBCUPSSTATIC) \
+ 	$(CXX) $(ARCHFLAGS) $(LDFLAGS) -o genstrings genstrings.o \
+ 		-lcupsppdc ../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) \
+ 		$(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+-	echo Generating localization strings...
+-	LD_LIBRARY_PATH=.:../cups/ ./genstrings >sample.c
+ 
+ 
+ #

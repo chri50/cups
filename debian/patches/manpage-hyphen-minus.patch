@@ -1,4 +1,4 @@
-From a37233765a4ffb0382dc22d063a92d6efab0aad7 Mon Sep 17 00:00:00 2001
+From fadb687d827979cf97198ec46434607004e89dff Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:05 +0200
 Subject: Fix hyphen-used-as-minus-sign manpage errors
@@ -34,7 +34,7 @@ Patch-Name: manpage-hyphen-minus.patch
  19 files changed, 62 insertions(+), 62 deletions(-)
 
 diff --git a/man/backend.man b/man/backend.man
-index e5bf2a3..045c1d2 100644
+index b467819..1715e18 100644
 --- a/man/backend.man
 +++ b/man/backend.man
 @@ -152,7 +152,7 @@ The print file was not successfully transmitted because it cannot be printed at
@@ -56,7 +56,7 @@ index e5bf2a3..045c1d2 100644
  for more information.
  .SH SEE ALSO
 diff --git a/man/client.conf.man.in b/man/client.conf.man.in
-index 8f5082a..e7e02b7 100644
+index a623fc0..ea6939d 100644
 --- a/man/client.conf.man.in
 +++ b/man/client.conf.man.in
 @@ -64,7 +64,7 @@ By default, CUPS only supports encryption using TLS v1.0 or higher using known s
@@ -78,7 +78,7 @@ index 8f5082a..e7e02b7 100644
  defaults read /Library/Preferences/org.cups.PrintingPrefs.plist Encryption
  .fi
 diff --git a/man/cups-lpd.man.in b/man/cups-lpd.man.in
-index 42f2453..7dc6182 100644
+index 3b9b410..e03953b 100644
 --- a/man/cups-lpd.man.in
 +++ b/man/cups-lpd.man.in
 @@ -18,9 +18,9 @@ cups-lpd \- receive print jobs and report printer status to lpd clients

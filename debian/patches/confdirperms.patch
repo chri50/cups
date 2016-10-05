@@ -1,4 +1,4 @@
-From d72eb2e24243280732a65092af0554db784676d2 Mon Sep 17 00:00:00 2001
+From 9894209973f0eaf1b317c20c1adceea188fb3c3f Mon Sep 17 00:00:00 2001
 From: Martin Pitt <mpitt@debian.org>
 Date: Tue, 9 Aug 2016 18:11:41 +0200
 Subject: Do not mess with the permissions of cupsd.conf.
@@ -11,10 +11,10 @@ Patch-Name: confdirperms.patch
  1 file changed, 2 insertions(+)
 
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index 91178f2..d71718a 100644
+index 00a1480..02d00a0 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -1209,10 +1209,12 @@ cupsdReadConfiguration(void)
+@@ -1215,10 +1215,12 @@ cupsdReadConfiguration(void)
  			     Group, 1, 1) < 0 ||
         cupsdCheckPermissions(ServerRoot, "ssl", 0700, RunUser,
  			     Group, 1, 0) < 0 ||
