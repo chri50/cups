@@ -1,3 +1,9 @@
+cups (2.2.0-2build1) zesty; urgency=medium
+
+  * No-change rebuild using Linaro GCC.
+
+ -- Matthias Klose <doko@ubuntu.com>  Wed, 19 Oct 2016 08:28:28 +0000
+
 cups (2.2.0-2) unstable; urgency=medium
 
   * Backport upstream patch to handle partial failures when connecting
