@@ -140,7 +140,7 @@ Specifies the default IPP version number to use for the tests that follow.
 The following directives are understood within a \fItest\fR:
 .TP 5
 \fBATTR \fItag attribute-name value(s)\fR
-Adds an attribute to the test request. Values are separated by the comma (",") character - escape commas using the "\" character. Common attributes and values are listed in the IANA IPP registry - see references below.
+Adds an attribute to the test request. Values are separated by the comma (",") character \- escape commas using the "\" character. Common attributes and values are listed in the IANA IPP registry \- see references below.
 .TP 5
 \fBATTR collection \fIattribute-name \fB{ MEMBER \fItag member-name value(s) ... \fB}\fR [ \fI... \fB,{ \fI... \fB} \fR]
 Adds a collection attribute to the test request. Member attributes follow the same syntax as regular attributes and can themselves be nested collections. Multiple collection values can be supplied as needed, separated by commas.
@@ -164,7 +164,7 @@ test report.
 \fBEXPECT ?\fIattribute-name predicate(s)\fR
 .TP 5
 \fBEXPECT !\fIattribute-name\fR
-Specifies that the response must/may/must not include the named attribute. Additional requirements can be added as predicates - see the "EXPECT PREDICATES" section for more information on predicates. Attribute names can specify member attributes by separating the attribute and member names with the forward slash, for example "media\-col/media\-size/x\-dimension".
+Specifies that the response must/may/must not include the named attribute. Additional requirements can be added as predicates \- see the "EXPECT PREDICATES" section for more information on predicates. Attribute names can specify member attributes by separating the attribute and member names with the forward slash, for example "media\-col/media\-size/x\-dimension".
 .TP 5
 \fBEXPECT-ALL \fIattribute-name \fR[ \fIpredicate(s) \fR]
 .TP 5
@@ -216,7 +216,7 @@ Specifies whether
 will skip the current test if the previous test resulted in an error/failure.
 .TP 5
 \fBSTATUS \fIstatus-code \fR[ \fIpredicate\fR ]
-Specifies an expected response status-code value. Additional requirements can be added as predicates - see the "STATUS PREDICATES" section for more information on predicates.
+Specifies an expected response status-code value. Additional requirements can be added as predicates \- see the "STATUS PREDICATES" section for more information on predicates.
 .TP 5
 \fBTEST\-ID "\fIidentifier\fR"
 Specifies an identifier string for the current test.
