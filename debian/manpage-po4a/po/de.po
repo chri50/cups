@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 2.0.3-10\n"
 "POT-Creation-Date: 2016-08-05 23:30+0200\n"
-"PO-Revision-Date: 2016-09-27 22:53+0200\n"
+"PO-Revision-Date: 2016-10-30 12:25+0100\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
 "Language: de\n"
@@ -6446,7 +6446,6 @@ msgstr "Die Vorgabe ist »/var/log/cups/error_log«."
 msgid "B<FatalErrors none>"
 msgstr "B<FatalErrors none>"
 
-# FIXME »-« i.O.?
 #. type: TP
 #: cups-files.conf.man.in:90
 #, no-wrap
@@ -9469,7 +9468,6 @@ msgstr ""
 msgid "B<--ls>"
 msgstr "B<--ls>"
 
-# FIXME: Müsste es nicht B<find -ls> sein?
 #. type: Plain text
 #: ippfind.man:83
 msgid ""
@@ -13719,7 +13717,7 @@ msgid ""
 "the current default set using the B<lpoptions>(1)  command is used, followed "
 "by the default set using the B<lpadmin>(8)  command."
 msgstr ""
-"CUPS stellt viele Möglichkeiten bereit, den Vorgabebeziele zu setzen. Die "
+"CUPS stellt viele Möglichkeiten bereit, das Vorgabeziel zu setzen. Die "
 "Umgebungsvariablen B<LPDEST> und B<PRINTER> werden zuerst herangezogen. Wenn "
 "keine von beiden gesetzt ist, wird der aktuell unter Benutzung des Befehls "
 "B<lpoptions>(1) gesetzte benutzt, gefolgt von der durch den Befehl "
@@ -13948,7 +13946,7 @@ msgstr "Skaliert die Druckdatei auf Seitengröße."
 #: lp.man:170 lpr.man:125
 #, no-wrap
 msgid "B<-o job-hold-until=>I<when>"
-msgstr "B<-o job-hold-until=>I<Wann>"
+msgstr "B<-o job-hold-until=>I<wann>"
 
 #. type: Plain text
 #: lp.man:174 lpr.man:129
@@ -13960,7 +13958,7 @@ msgid ""
 "shift\" to print the job between 12am and 8am local time, or \"weekend\" to "
 "print the job on Saturday or Sunday."
 msgstr ""
-"Hält den Auftrag bis zur angegebenen lokalen Uhrzeit. »Wann« kann "
+"Hält den Auftrag bis zur angegebenen lokalen Uhrzeit. »wann« kann "
 "»indefinite« enthalten, um das Halten bis zur Freigabe durchzuführen, »day-"
 "time«, um den Auftrag zwischen 6:00 Uhr und 18:00 Uhr lokale Zeit zu drucken, "
 "»night«, um den Auftrag zwischen 4:00 Uhr und 12:00 Uhr lokale Zeit zu "
@@ -14080,7 +14078,7 @@ msgid ""
 msgstr ""
 "Legt das Layout der Seiten mit der Option »number-up« fest. Die Zeichenkette "
 "»Layout« kann »btlr«, »btrl«, »lrbt«, »lrtb«, »rlbt«, »rltb«, »tblr« oder "
-"»tbrl« sein. Die ersten zwei Buchtaben bestimmen die Spaltenreihenfolge, "
+"»tbrl« sein. Die ersten zwei Buchstaben bestimmen die Spaltenreihenfolge, "
 "während die zweiten zwei Buchstaben die Zeilenreihenfolge bestimmen. »bt« ist "
 "von unten nach oben, »lr« ist links nach rechts, »rl« ist rechts nach links "
 "und »tb« ist oben nach unten."
@@ -14116,7 +14114,7 @@ msgstr "B<-o orientation-requested=6>"
 #. type: Plain text
 #: lp.man:211 lpr.man:166
 msgid "Prints the job in reverse portrait (rotated 180 degrees)."
-msgstr "Druckt den Druckauftrag im inversen Portraitformat (gedreht um 180 Grad)."
+msgstr "Druckt den Druckauftrag im inversen Hochformat (gedreht um 180 Grad)."
 
 #. type: TP
 #: lp.man:211 lpr.man:166
@@ -14170,7 +14168,7 @@ msgstr "B<-o sides=two-sided-long-edge>"
 #. type: Plain text
 #: lp.man:229 lpr.man:184
 msgid "Prints on both sides of the paper for portrait output."
-msgstr "Druckt auf beiden Seiten des Papiers für Hochkant-Ausgabe."
+msgstr "Druckt auf beiden Seiten des Papiers für Hochformat-Ausgabe."
 
 #. type: TP
 #: lp.man:229 lpr.man:184
@@ -14210,7 +14208,7 @@ msgstr "    lp -n 2 Dateiname\n"
 #: lp.man:245 lpr.man:197
 msgid "Print a double-sided legal document to a printer called \"foo\":"
 msgstr ""
-"Drucke ein doppelseitiges Dokument im Format legal auf dem Drucker mit Namen "
+"Druckt ein doppelseitiges Dokument im Format legal auf dem Drucker mit Namen "
 "»foo«:"
 
 #. type: Plain text
@@ -14221,11 +14219,10 @@ msgstr "    lp -d foo -o media=legal -o sides=two-sided-long-edge Dateiname\n"
 
 #. type: Plain text
 #: lp.man:251 lpr.man:203
-#, fuzzy
-#| msgid "Print a double-sided legal document to a printer called \"foo\":"
 msgid "Print a presentation document 2-up to a printer called \"foo\":"
 msgstr ""
-"Drucke ein Präsentations-Dokument FIXME auf dem Drucker mit Namen »foo«:"
+"Druckt ein Präsentations-Dokument zweifach pro Seite auf dem Drucker mit "
+"Namen »foo«:"
 
 #. type: Plain text
 #: lp.man:254
@@ -14412,7 +14409,7 @@ msgid ""
 "B<lpr>(1)  commands when submitting jobs."
 msgstr ""
 "Optionen, die mit dem Befehl B<lpoptions> gesetzt werden, werden von den "
-"Befehlen I<lp>(1) und I<lpr>(1) bein Einreichen von Druckaufträgen verwandt."
+"Befehlen I<lp>(1) und I<lpr>(1) beim Einreichen von Druckaufträgen verwandt."
 
 #. type: Plain text
 #: lpoptions.man.in:83
@@ -14467,7 +14464,7 @@ msgstr "Verwendet einen alternativen Server."
 #: lpoptions.man.in:102
 msgid "Lists the printer specific options and their current settings."
 msgstr ""
-"Listet die Drucker-spezifischen Optionen und ihre aktuellen Einstellungen "
+"Listet die druckerspezifischen Optionen und ihre aktuellen Einstellungen "
 "auf."
 
 #. type: TP
@@ -14750,7 +14747,7 @@ msgid ""
 msgstr ""
 "Legt fest, dass die Druckdatei mit einem schattierten Kopf mit Datum, "
 "Uhrzeit, Auftragsname und Seitennummer formatiert werden soll. Diese Option "
-"Ist äquivalent zu I<-o prettyprint> und ist nur beim Druck von Textdateien "
+"ist äquivalent zu I<-o prettyprint> und ist nur beim Druck von Textdateien "
 "nützlich."
 
 #. type: Plain text
@@ -15008,7 +15005,7 @@ msgid ""
 "Shows the accepting state of printer queues.  If no printers are specified "
 "then all printers are listed."
 msgstr ""
-"Zeigt den Akzeptierzustand der Druckerwarteschlangen. Falls keine Drucker "
+"Zeigt den Annahmezustand der Druckerwarteschlangen. Falls keine Drucker "
 "angegeben sind, werden alle Drucker aufgeführt."
 
 #. type: TP
@@ -15172,8 +15169,7 @@ msgstr "mailto.conf"
 #: mailto.conf.man:16
 msgid "mailto.conf - configuration file for cups email notifier"
 msgstr ""
-"mailto.conf - Konfigurationsdatei für Versender von CUPS-E-Mail-"
-"Benachrichtigungen"
+"mailto.conf - Konfigurationsdatei für CUPS-E-Mail-Benachrichtigungen"
 
 #. type: Plain text
 #: mailto.conf.man:18
@@ -15282,7 +15278,7 @@ msgid ""
 msgstr ""
 "Die Datei B<mime.convs> definiert die Filter, die für das Konvertieren von "
 "einem Format in ein anderes verfügbar sind. Der Standardfilter unterstützt "
-"text, PDF, PostScript und viele Bilddateitypen."
+"Text, PDF, PostScript und viele Bilddateitypen."
 
 #. type: Plain text
 #: mime.convs.man:21
@@ -15302,7 +15298,7 @@ msgid ""
 "filter and the filter to run:"
 msgstr ""
 "Jede Zeile in der Datei B<mime.convs> ist ein Kommentar, leer oder eine "
-"Filterzeile. Kommentardateien beginnen mit dem »#«-Zeichen. Filterzeilen "
+"Filterzeile. Kommentarzeilen beginnen mit dem »#«-Zeichen. Filterzeilen "
 "legen den Quell- und Ziel-MIME-Typ zusammen mit den relativen Belastungen, "
 "die mit dem Filter assoziiert sind, und den auszuführenden Filter, fest:"
 
@@ -15354,7 +15350,7 @@ msgstr ""
 #. type: Plain text
 #: mime.convs.man:42 mime.types.man:92
 msgid "I</etc/cups> - Typical CUPS configuration directory."
-msgstr "I</etc/cups> - Typisches CUPS-Konfigurationsverzeichnis"
+msgstr "I</etc/cups> - Typisches CUPS-Konfigurationsverzeichnis."
 
 #. type: Plain text
 #: mime.convs.man:44
@@ -15411,7 +15407,7 @@ msgid ""
 "Additional file types are specified in files with the extension I<.types> in "
 "the CUPS configuration directory."
 msgstr ""
-"Zusätzliche Filtertyp werden in Dateien mit der Endung I<.types> in dem CUPS-"
+"Zusätzliche Filtertypen werden in Dateien mit der Endung I<.types> in dem CUPS-"
 "Konfigurationsverzeichnis festgelegt."
 
 #. type: Plain text
@@ -15474,7 +15470,7 @@ msgid ""
 msgstr ""
 "Die Regeln könnten durch Benutzung von Klammern gruppiert werden, zum "
 "Aneinanderhängen wird »+« für ein logisches UND und »,« oder Leerzeichen für "
-"ein logisches ODER und für Negation »!« benutzt."
+"ein logisches ODER und »!« für Negation benutzt."
 
 #. type: SS
 #: mime.types.man:40
@@ -15517,7 +15513,7 @@ msgid ""
 "True if the I<length> bytes starting at I<offset> are valid printable ASCII "
 "(CR, NL, TAB, BS, 32-126)."
 msgstr ""
-"Wahr, falls die I<Längen> Bytes beginnend an I<Versatz> gültige druckbare "
+"Wahr, falls die I<Länge> Bytes beginnend an I<Versatz> gültige druckbare "
 "ASCII-Zeichen sind (CR, NL, TAB, BS, 32-126)"
 
 #. type: TP
@@ -15532,7 +15528,7 @@ msgid ""
 "True if the I<length> bytes starting at I<offset> are printable 8-bit chars "
 "(CR, NL, TAB, BS, 32-126, 128-254)."
 msgstr ""
-"Wahr, falls die I<Längen> Bytes beginnend an I<Versatz> gültige druckbare 8-"
+"Wahr, falls die I<Länge> Bytes beginnend an I<Versatz> gültige druckbare 8-"
 "Bit-Zeichen sind (CR, NL, TAB, BS, 32-126, 128-254)."
 
 #. type: TP
@@ -15589,7 +15585,7 @@ msgstr "B<char(>I<Versatz>B<,>I<Wert>B<)>"
 #. type: Plain text
 #: mime.types.man:67
 msgid "True if the byte at I<offset> is identical to I<value>."
-msgstr "Wahr, falls Byte bei I<Versatz> identisch zu I<Wert> ist."
+msgstr "Wahr, falls das Byte bei I<Versatz> identisch zu I<Wert> ist."
 
 #. type: TP
 #: mime.types.man:67
@@ -15602,7 +15598,7 @@ msgstr "B<short(>I<Versatz>B<,>I<Wert>B<)>"
 msgid ""
 "True if the 16-bit big-endian integer at I<offset> is identical to I<value>."
 msgstr ""
-"Wahr, falls die 16-bit Big-Endian-Ganzzahl bei I<Versatz> identisch mit "
+"Wahr, falls die 16-bit-Big-Endian-Ganzzahl bei I<Versatz> identisch mit "
 "I<Wert> ist."
 
 #. type: TP
@@ -15616,7 +15612,7 @@ msgstr "B<int(>I<Versatz>B<,>I<Wert>B<)>"
 msgid ""
 "True if the 32-bit big-endian integer at I<offset> is identical to I<value>."
 msgstr ""
-"Wahr, falls die 32-bit Big-Endian-Ganzzahl bei I<Versatz> identisch mit "
+"Wahr, falls die 32-bit-Big-Endian-Ganzzahl bei I<Versatz> identisch mit "
 "I<Wert> ist."
 
 #. type: TP
@@ -15680,7 +15676,7 @@ msgid ""
 msgstr ""
 "Wenn CUPS den MIME-Medientyp einer gegebenen Datei bestimmt, wird jeder MIME-"
 "Typ, der in den I<.types>-Dateien definiert ist, geprüft. Wenn zwei oder "
-"mehr Typen auf eine übergebene Datei passen die, dann hängt der ausgewählte "
+"mehr Typen auf eine übergebene Datei passen, dann hängt der ausgewählte "
 "Typ von Typname und der Priorität ab, wobei Typen höherer Priorität denen "
 "mit niedriger Priorität vorgezogen werden. Wenn die Typen die gleiche "
 "Priorität haben, werden die Typnamen in alphanumerischer Reihenfolge "
@@ -15819,7 +15815,7 @@ msgid ""
 "with the online help for CUPS."
 msgstr ""
 "Der CUPS-PPD-Compiler liest Metadateien, die Beschreibungen von einer oder "
-"mehrere PPD-Dateien, die durch B<ppdc>(1) erstellt werden sollen, enthalten, "
+"mehreren PPD-Dateien, die durch B<ppdc>(1) erstellt werden sollen, enthalten, "
 "ein. Diese Handbuchseite stellt eine Schnellreferenz für die unterstützten "
 "Schlüsselwörter dar und sollte zusammen mit der Online-Hilfe von CUPS "
 "verwandt werden."
@@ -16180,13 +16176,13 @@ msgstr "B<PCFileName \">I<Dateiname.ppd>B<\">"
 #: ppdcfile.man:132
 #, no-wrap
 msgid "B<Resolution >I<colorspace bits-per-color row-count row-feed row-step name>"
-msgstr "B<Resolution >I<Farbraum Bits-pro-Farbe Zeilenanzahl Zeilenvorschub row-step Name>"
+msgstr "B<Resolution >I<Farbraum Bits-pro-Farbe Zeilenanzahl Zeilenvorschub Zeilenschrittweite Name>"
 
 #. type: TP
 #: ppdcfile.man:134
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "B<Resolution >I<colorspace bits-per-color row-count row-feed row-step >B<\">I<name>B</>I<text>B<\">"
-msgstr "B<Resolution >I<Farbraum Bits-pro-Farbe Zeilenanzahl Zeilenvorschub row-step >B<\">I<Name>B</>I<Text>B<\">"
+msgstr "B<Resolution >I<Farbraum Bits-pro-Farbe Zeilenanzahl Zeilenvorschub Zeilenschrittweite >B<\">I<Name>B</>I<Text>B<\">"
 
 #. type: TP
 #: ppdcfile.man:136
@@ -16264,7 +16260,7 @@ msgid ""
 "I<language(s)> ] [ B<-m> ] [ B<-t> ] [ B<-v> ] [ B<-z> ] [ B<--cr> ] [ B<--"
 "crlf> ] [ B<--lf> ] I<source-file>"
 msgstr ""
-"B<ppdc> [ B<-D >I<Name>[B<=>I<Wert>] ] [ B<-I> I<include-Verzeichnis> ] [ B<-"
+"B<ppdc> [ B<-D >I<Name>[B<=>I<Wert>] ] [ B<-I> I<Include-Verzeichnis> ] [ B<-"
 "c> I<Nachrichtenkatalog> ] [ B<-d> I<Ausgabeverzeichnis> ] [ B<-l> "
 "I<Sprache(n)> ] [ B<-m> ] [ B<-t> ] [ B<-v> ] [ B<-z> ] [ B<--cr> ] [ B<--"
 "crlf> ] [ B<--lf> ] I<Quelldatei>"
@@ -16303,7 +16299,7 @@ msgstr ""
 #: ppdc.man:57 ppdhtml.man:34 ppdi.man:35 ppdpo.man:37
 #, no-wrap
 msgid "B<-I >I<include-directory>"
-msgstr "B<-I >I<include-Verzeichnis>"
+msgstr "B<-I >I<Include-Verzeichnis>"
 
 #. type: Plain text
 #: ppdc.man:61 ppdhtml.man:38 ppdi.man:39 ppdpo.man:41
@@ -16326,7 +16322,7 @@ msgid ""
 "Specifies a single message catalog file in GNU gettext (filename.po) or "
 "Apple strings (filename.strings) format to be used for localization."
 msgstr ""
-"Legt ein einfache Nachrichtenkatalogdatei im GNU-Gettext- (Dateiname.po) "
+"Legt eine einfache Nachrichtenkatalogdatei im GNU-Gettext- (Dateiname.po) "
 "oder Apple-Strings- (Dateiname.strings) Format für die Verwendung in der "
 "Lokalisierung fest."
 
@@ -16496,7 +16492,7 @@ msgid ""
 "[ ...  I<ppd-file> ]"
 msgstr ""
 "B<ppdi> [ B<-I> I<Include-Verzeichnis> ] [ B<-o> I<Quelldatei> ] I<PPD-"
-"Datei> [ ...  I<PPD-Datei> ]"
+"Datei> [ …  I<PPD-Datei> ]"
 
 #. type: Plain text
 #: ppdi.man:33
@@ -16534,7 +16530,7 @@ msgstr ""
 "Legt die zu aktualisierende PPD-Quelldatei fest. Falls die Quelldatei nicht "
 "existiert, wird eine neue Quelldatei erstellt. Andernfalls wird die "
 "bestehende mit der/den neuen PPD-Datei(en) auf der Befehlszeile "
-"zusammengeführt. Falls keine Quelldatei angegeben ist wird der Dateiname "
+"zusammengeführt. Falls keine Quelldatei angegeben ist, wird der Dateiname "
 "I<ppdi.drv> verwandt."
 
 #. type: Plain text
@@ -16595,7 +16591,7 @@ msgid ""
 "written to the standard output.  If the output file already exists, it is "
 "silently overwritten."
 msgstr ""
-"Legt die zu erstellende PPD-Datei fest. Falls nicht angegeben werden die "
+"Legt die zu erstellende PPD-Datei fest. Falls nicht angegeben, werden die "
 "zusammengeführten PPD-Dateien auf der Standardausgabe ausgegeben. Falls die "
 "Ausgabedatei bereits existiert wird sie ohne Meldung überschrieben."
 
@@ -16606,7 +16602,7 @@ msgid ""
 "device.  Merging of different device PPDs will yield unpredictable results."
 msgstr ""
 "B<ppdmerge> prüft nicht, ob die zusammengeführten PPD-Dateien für das "
-"gleiche Gerät sind. Werden PPDs für verschiedene Geräte zusammengeführt ist "
+"gleiche Gerät sind. Werden PPDs für verschiedene Geräte zusammengeführt, ist "
 "das Ergebnis unvorhersehbar."
 
 #. type: Plain text
@@ -16635,7 +16631,7 @@ msgid ""
 "B<ppdpo> [ B<-D >I<name>[B<=>I<value>] ] [ B<-I> I<include-directory> ] [ B<-"
 "o> I<output-file> ] I<source-file>"
 msgstr ""
-"B<ppdpo> [ B<-D >I<Name>[B<=>I<Wert>] ] [ B<-I> I<include-Verzeichnis> ] "
+"B<ppdpo> [ B<-D >I<Name>[B<=>I<Wert>] ] [ B<-I> I<Include-Verzeichnis> ] "
 "[ B<-o> I<Ausgabedatei> ] I<Quelldatei>"
 
 #. type: Plain text
@@ -17913,14 +17909,14 @@ msgstr ""
 
 # type: Plain text
 #~ msgid "Print an image across 4 pages:"
-#~ msgstr "Drucke ein Bild über 4 Seiten:"
+#~ msgstr "Druckt ein Bild über 4 Seiten:"
 
 # type: Plain text
 #~ msgid ""
 #~ "Print a text file with 12 characters per inch, 8 lines per inch, and a 1 "
 #~ "inch left margin:"
 #~ msgstr ""
-#~ "Drucke eine Textdatei mit 12 Zeichen pro Zoll, 8 Zeilen pro Zoll und "
+#~ "Druckt eine Textdatei mit 12 Zeichen pro Zoll, 8 Zeilen pro Zoll und "
 #~ "einem Rand von einem Zoll:"
 
 # type: Plain text
