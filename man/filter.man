@@ -141,7 +141,7 @@ Sets the named keywords in the printer's PPD file. This is typically used to upd
 .TP 5
 \fBSTATE: +\fI printer-state-reason \fR[ \fI... printer-state-reason\fR ]
 .TP 5
-\fBSTATE: -\fI printer-state-reason \fR[ \fI... printer-state-reason\fR ]
+\fBSTATE: \-\fI printer-state-reason \fR[ \fI... printer-state-reason\fR ]
 Sets, adds, or removes "printer-state-reason" keywords for the current queue. Typically this is used to indicate media, ink, and toner conditions on a printer.
 .TP 5
 \fBWARNING:\fI message\fR
