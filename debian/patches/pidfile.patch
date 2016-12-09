@@ -1,4 +1,4 @@
-From a60cab9d85fa93e1c18e3910894914c346c107c7 Mon Sep 17 00:00:00 2001
+From 3a263c7c5f59d2d2391a99697ddf8df5ddd4aebc Mon Sep 17 00:00:00 2001
 From: Martin Pitt <mpitt@debian.org>
 Date: Tue, 9 Aug 2016 18:11:32 +0200
 Subject: Add support for creating pid files.
@@ -16,7 +16,7 @@ Patch-Name: pidfile.patch
  4 files changed, 45 insertions(+), 1 deletion(-)
 
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index 0667a4f..0e7027c 100644
+index afb70df33..16c23e8d5 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -163,7 +163,8 @@ static const cupsd_var_t	cupsfiles_vars[] =
@@ -29,7 +29,7 @@ index 0667a4f..0e7027c 100644
  };
  
  static int		default_auth_type = CUPSD_AUTH_AUTO;
-@@ -628,6 +629,7 @@ cupsdReadConfiguration(void)
+@@ -592,6 +593,7 @@ cupsdReadConfiguration(void)
    cupsdSetStringf(&ServerHeader, "CUPS/%d.%d IPP/2.1", CUPS_VERSION_MAJOR,
                    CUPS_VERSION_MINOR);
    cupsdSetString(&StateDir, CUPS_STATEDIR);
@@ -37,7 +37,7 @@ index 0667a4f..0e7027c 100644
  
    if (!strcmp(CUPS_DEFAULT_PRINTCAP, "/etc/printers.conf"))
      PrintcapFormat = PRINTCAP_SOLARIS;
-@@ -3509,6 +3511,7 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
+@@ -3427,6 +3429,7 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
               !_cups_strcasecmp(line, "SystemGroup") ||
               !_cups_strcasecmp(line, "SystemGroupAuthKey") ||
               !_cups_strcasecmp(line, "TempDir") ||
@@ -46,7 +46,7 @@ index 0667a4f..0e7027c 100644
      {
        cupsdLogMessage(CUPSD_LOG_INFO,
 diff --git a/scheduler/conf.h b/scheduler/conf.h
-index 585ba92..b33768b 100644
+index 585ba9203..b33768bce 100644
 --- a/scheduler/conf.h
 +++ b/scheduler/conf.h
 @@ -245,6 +245,8 @@ VAR int			CreateSelfSignedCerts	VALUE(TRUE);
@@ -59,7 +59,7 @@ index 585ba92..b33768b 100644
  #ifdef HAVE_ONDEMAND
  VAR int			IdleExitTimeout		VALUE(60);
 diff --git a/scheduler/main.c b/scheduler/main.c
-index e0ab6e8..9caa47f 100644
+index fce22d799..7a5e8b6b9 100644
 --- a/scheduler/main.c
 +++ b/scheduler/main.c
 @@ -73,6 +73,8 @@ static void		service_checkin(void);
@@ -83,7 +83,7 @@ index e0ab6e8..9caa47f 100644
   /*
    * Send server-started event...
    */
-@@ -1191,10 +1198,41 @@ main(int  argc,				/* I - Number of command-line args */
+@@ -1184,10 +1191,41 @@ main(int  argc,				/* I - Number of command-line args */
  
    cupsdStopSelect();
  
@@ -126,7 +126,7 @@ index e0ab6e8..9caa47f 100644
   * 'cupsdAddString()' - Copy and add a string to an array.
   */
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index bcc4fde..345e875 100755
+index bcc4fde64..345e8752b 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
 @@ -524,6 +524,7 @@ FontPath $BASE/share/fonts

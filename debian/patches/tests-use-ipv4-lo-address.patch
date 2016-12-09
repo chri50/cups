@@ -1,4 +1,4 @@
-From 7dfab3da73d4f5579b327c53900dff6a1c38deab Mon Sep 17 00:00:00 2001
+From fa87407792afd242a8b1584bdfe0b2951aa905fd Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:21 +0200
 Subject: Use 127.0.0.1 instead of localhost in the test-suite. This should
@@ -15,7 +15,7 @@ Patch-Name: tests-use-ipv4-lo-address.patch
  2 files changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/test/5.1-lpadmin.sh b/test/5.1-lpadmin.sh
-index 07f1d5a..d715f33 100644
+index 07f1d5aa0..d715f330e 100644
 --- a/test/5.1-lpadmin.sh
 +++ b/test/5.1-lpadmin.sh
 @@ -55,8 +55,8 @@ echo ""
@@ -30,7 +30,7 @@ index 07f1d5a..d715f33 100644
  	echo "    FAILED"
  	exit 1
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index d4087e4..ab7b738 100755
+index d4087e4df..ab7b738e1 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
 @@ -487,7 +487,7 @@ fi

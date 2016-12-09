@@ -1,4 +1,4 @@
-From 668dfc8b78ba5770ba9e6b96917cf7fb74c308a8 Mon Sep 17 00:00:00 2001
+From 8d84be0503ecede5acc3ef17071209318088b9e8 Mon Sep 17 00:00:00 2001
 From: Till Kamppeter <till.kamppeter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:29 +0200
 Subject: Patch to support Apple AirPrint (printing from iPhone, iPad, iPod
@@ -20,12 +20,12 @@ Patch-Name: airprint-support.patch
  5 files changed, 16 insertions(+), 2 deletions(-)
 
 diff --git a/conf/mime.convs.in b/conf/mime.convs.in
-index f460000..e936799 100644
+index bffd04f84..33ce812e3 100644
 --- a/conf/mime.convs.in
 +++ b/conf/mime.convs.in
-@@ -48,6 +48,9 @@ application/postscript		application/vnd.cups-postscript	66	pstops
- # PWG Raster filter for IPP Everywhere...
+@@ -47,6 +47,9 @@ application/postscript		application/vnd.cups-postscript	66	pstops
  application/vnd.cups-raster	image/pwg-raster		100	rastertopwg
+ application/vnd.cups-raster	image/urf			100	rastertopwg
  
 +# Needed for printing from iOS (AirPrint) clients
 +image/urf    	      	       application/pdf			100	-
@@ -34,10 +34,10 @@ index f460000..e936799 100644
  #
  # Raw filter...
 diff --git a/conf/mime.types b/conf/mime.types
-index dcb0771..6265daa 100644
+index 1c50f16a6..40ef6d1b1 100644
 --- a/conf/mime.types
 +++ b/conf/mime.types
-@@ -118,6 +118,9 @@ image/x-alias			pix short(8,8) short(8,24)
+@@ -117,6 +117,9 @@ image/x-alias			pix short(8,8) short(8,24)
  image/x-bitmap			bmp string(0,BM) + !printable(2,14)
  image/x-icon			ico
  
@@ -48,10 +48,10 @@ index dcb0771..6265daa 100644
  #
  # Text files...
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index 8110cb4..0667a4f 100644
+index 0bb2b95d6..afb70df33 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -781,7 +781,7 @@ cupsdReadConfiguration(void)
+@@ -745,7 +745,7 @@ cupsdReadConfiguration(void)
    DefaultShared            = CUPS_DEFAULT_DEFAULT_SHARED;
  
  #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
@@ -61,7 +61,7 @@ index 8110cb4..0667a4f 100644
  
    cupsdSetString(&LPDConfigFile, CUPS_DEFAULT_LPD_CONFIG_FILE);
 diff --git a/scheduler/dirsvc.c b/scheduler/dirsvc.c
-index 2e8303e..035e5fb 100644
+index 2e8303ec6..035e5fbd4 100644
 --- a/scheduler/dirsvc.c
 +++ b/scheduler/dirsvc.c
 @@ -414,6 +414,12 @@ dnssdBuildTxtRecord(
@@ -78,7 +78,7 @@ index 2e8303e..035e5fb 100644
      {
        keyvalue[count  ][0] = "air";
 diff --git a/scheduler/printers.c b/scheduler/printers.c
-index cfa88f0..7d48697 100644
+index cfa88f002..7d48697bc 100644
 --- a/scheduler/printers.c
 +++ b/scheduler/printers.c
 @@ -3743,7 +3743,9 @@ add_printer_formats(cupsd_printer_t *p)	/* I - Printer */

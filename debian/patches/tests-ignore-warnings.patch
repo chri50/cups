@@ -1,4 +1,4 @@
-From 2432e89cdae83ba81d7f78d578dacdb5c30a1d84 Mon Sep 17 00:00:00 2001
+From 36a0890494ce0762874fe66bdd3205b09d2c21fb Mon Sep 17 00:00:00 2001
 From: Martin Pitt <mpitt@debian.org>
 Date: Tue, 9 Aug 2016 18:11:09 +0200
 Subject: Tests: Ignore warnings from colord and Avahi
@@ -13,7 +13,7 @@ Patch-Name: tests-ignore-warnings.patch
  1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index ee5a2cb..d59f601 100755
+index ee5a2cbb5..d59f6014c 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
 @@ -998,7 +998,11 @@ else

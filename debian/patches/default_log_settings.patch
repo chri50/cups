@@ -1,4 +1,4 @@
-From 55326bde527cfe7559104f747e196731a3b57968 Mon Sep 17 00:00:00 2001
+From d2639526f910fe905633c0dcd5ca86f77370a42c Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:40 +0200
 Subject: Deactivate CUPS' own log rotating as the system already provides a
@@ -12,7 +12,7 @@ Patch-Name: default_log_settings.patch
  1 file changed, 4 insertions(+)
 
 diff --git a/conf/cupsd.conf.in b/conf/cupsd.conf.in
-index 2fd0de0..42e24a2 100644
+index ab37ca68c..78189e535 100644
 --- a/conf/cupsd.conf.in
 +++ b/conf/cupsd.conf.in
 @@ -8,6 +8,10 @@
