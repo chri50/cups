@@ -1,4 +1,4 @@
-From 3ffba07dab259e51fe4cdd581088ae242e2b203a Mon Sep 17 00:00:00 2001
+From 1d3eb92caaa778138c49e60ca722004c9e5f2753 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:16 +0200
 Subject: Tests: Do not run the CUPS_EUC_JP test case on BSD/Hurd either, as
@@ -13,7 +13,7 @@ Patch-Name: test-i18n-nonlinux.patch
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/cups/testi18n.c b/cups/testi18n.c
-index a88f1e1..858c548 100644
+index a88f1e1f4..858c5487f 100644
 --- a/cups/testi18n.c
 +++ b/cups/testi18n.c
 @@ -416,7 +416,7 @@ main(int  argc,				/* I - Argument Count */

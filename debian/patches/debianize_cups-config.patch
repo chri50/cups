@@ -1,4 +1,4 @@
-From f3bcef9f7bd74bcf151a546db2c1c79258b51b95 Mon Sep 17 00:00:00 2001
+From 553b5417ccba0d72000d86bb4e9c572feb13a295 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:49 +0200
 Subject: Use dpkg-architecture in cups-config to make it
@@ -18,7 +18,7 @@ Patch-Name: debianize_cups-config.patch
  1 file changed, 6 insertions(+), 5 deletions(-)
 
 diff --git a/cups-config.in b/cups-config.in
-index f0951d0..f37f4df 100755
+index f0951d0e1..f37f4dfd3 100755
 --- a/cups-config.in
 +++ b/cups-config.in
 @@ -20,8 +20,8 @@ prefix=@prefix@

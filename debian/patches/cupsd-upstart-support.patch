@@ -1,4 +1,4 @@
-From 5d2ffb2e83f54f33776caaf0ffb8b449acfacacd Mon Sep 17 00:00:00 2001
+From 0243f4fdb4c925cce767baa662a79c82fc706500 Mon Sep 17 00:00:00 2001
 From: Till Kamppeter <till.kamppeter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:08 +0200
 Subject: CUPS Upstart socket activation
@@ -25,7 +25,7 @@ Patch-Name: cupsd-upstart-support.patch
  1 file changed, 109 insertions(+)
 
 diff --git a/scheduler/main.c b/scheduler/main.c
-index 0dcd32d..e0ab6e8 100644
+index e18ffb0c6..fce22d799 100644
 --- a/scheduler/main.c
 +++ b/scheduler/main.c
 @@ -61,6 +61,7 @@
@@ -63,7 +63,7 @@ index 0dcd32d..e0ab6e8 100644
    * Startup the server...
    */
  
-@@ -782,6 +796,13 @@ main(int  argc,				/* I - Number of command-line args */
+@@ -775,6 +789,13 @@ main(int  argc,				/* I - Number of command-line args */
  	}
  
         /*
@@ -77,7 +77,7 @@ index 0dcd32d..e0ab6e8 100644
          * Startup the server...
          */
  
-@@ -1590,6 +1611,94 @@ process_children(void)
+@@ -1583,6 +1604,94 @@ process_children(void)
  }
  
  

@@ -1,4 +1,4 @@
-From 792dbd9395adbdcc592afc7fd386c0f4bc74d840 Mon Sep 17 00:00:00 2001
+From 03c013e21486f90ed0bb0ff09d78bbae5bd42905 Mon Sep 17 00:00:00 2001
 From: Martin Pitt <mpitt@debian.org>
 Date: Tue, 9 Aug 2016 18:11:06 +0200
 Subject: Install root backends world-readable.
@@ -20,7 +20,7 @@ Patch-Name: rootbackends-worldreadable.patch
  3 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/backend/Makefile b/backend/Makefile
-index ae08947..aa5450d 100644
+index ae08947fb..aa5450d6d 100644
 --- a/backend/Makefile
 +++ b/backend/Makefile
 @@ -19,7 +19,7 @@ include ../Makedefs
@@ -42,7 +42,7 @@ index ae08947..aa5450d 100644
  	for file in $(UBACKENDS); do \
  		$(INSTALL_BIN) $$file $(SERVERBIN)/backend; \
 diff --git a/scheduler/cups-deviced.c b/scheduler/cups-deviced.c
-index 94e69b4..2a2f34b 100644
+index 94e69b4bf..2a2f34bbc 100644
 --- a/scheduler/cups-deviced.c
 +++ b/scheduler/cups-deviced.c
 @@ -268,7 +268,7 @@ main(int  argc,				/* I - Number of command-line args */
@@ -55,7 +55,7 @@ index 94e69b4..2a2f34b 100644
  
    cupsDirClose(dir);
 diff --git a/scheduler/job.c b/scheduler/job.c
-index 0f1d648..f417821 100644
+index 0f1d648d5..f41782190 100644
 --- a/scheduler/job.c
 +++ b/scheduler/job.c
 @@ -1249,7 +1249,7 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */

@@ -1,4 +1,4 @@
-From 0fedf92505892e868c0228e9e9f0bf53edbd1de3 Mon Sep 17 00:00:00 2001
+From 1d7df887197bca89192a22a3ac7d920520c8cb1c Mon Sep 17 00:00:00 2001
 From: Tim Waugh <twaugh@redhat.com>
 Date: Tue, 9 Aug 2016 18:11:30 +0200
 Subject: Let the "snmp" backend also use the manufacturer-specific
@@ -18,7 +18,7 @@ Patch-Name: cups-snmp-oids-device-id-hp-ricoh.patch
  1 file changed, 8 insertions(+)
 
 diff --git a/backend/snmp.c b/backend/snmp.c
-index e66edc9..a135626 100644
+index e66edc980..a13562680 100644
 --- a/backend/snmp.c
 +++ b/backend/snmp.c
 @@ -159,6 +159,8 @@ static const int	UriOID[] = { CUPS_OID_ppmPortServiceNameOrURI, 1, 1, -1 };

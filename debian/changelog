@@ -1,3 +1,9 @@
+cups (2.2.1-41-g49c592936-1) experimental; urgency=medium
+
+  * New 2.2.1+ upstream snapshot
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 09 Dec 2016 09:57:28 +0100
+
 cups (2.2.1-2) unstable; urgency=medium
 
   [ Helge Kreutzmann ]
