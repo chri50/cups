@@ -1,4 +1,4 @@
-From 0f6c0760c1a4c66313922c5243d2a6f2d73eef87 Mon Sep 17 00:00:00 2001
+From cff7a984b80e6392469fa419dba1edb2e234844a Mon Sep 17 00:00:00 2001
 From: Till Kampetter <till.kampetter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:37 +0200
 Subject: Add the IPP backend of CUPS 1.4.x to the current CUPS

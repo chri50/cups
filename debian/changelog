@@ -1,3 +1,11 @@
+cups (2.2.1-46-g10887d272-1) experimental; urgency=medium
+
+  * New 2.2.1+ upstream snapshot
+    - Fix assymetric resolutions in IPP Everywhere and Apple Raster
+      (Closes: #848164)
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 16 Dec 2016 14:28:04 +0100
+
 cups (2.2.1-41-g49c592936-1) experimental; urgency=medium
 
   * New 2.2.1+ upstream snapshot
