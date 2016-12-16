@@ -1,4 +1,4 @@
-From 3f510a1eb81caab1b2345e4a01c73a5bc3407016 Mon Sep 17 00:00:00 2001
+From 5eec55db81cfa0d69917defda095af03d907af3a Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:20 +0200
 Subject: Make some attributes optional in the IPP-1.1 3.2.6 GetJobs test,

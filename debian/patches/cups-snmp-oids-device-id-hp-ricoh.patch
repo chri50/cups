@@ -1,4 +1,4 @@
-From 1d7df887197bca89192a22a3ac7d920520c8cb1c Mon Sep 17 00:00:00 2001
+From bc1444e7848c60ffa000378d67cddcd19cbdb581 Mon Sep 17 00:00:00 2001
 From: Tim Waugh <twaugh@redhat.com>
 Date: Tue, 9 Aug 2016 18:11:30 +0200
 Subject: Let the "snmp" backend also use the manufacturer-specific
