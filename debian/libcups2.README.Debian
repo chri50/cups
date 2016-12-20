@@ -22,7 +22,7 @@ system:
 
 Submitted    cups scheduler    Filtering system	   Transport mechanism
   print	  ->      and	    ->       plus       ->    USB, network,    -> Printer
-  job	      print queue	    drivers           parallel etc
+  job	      print queue	    drivers               etc
 
 For this to take place successfully the scheduler must be told:
 

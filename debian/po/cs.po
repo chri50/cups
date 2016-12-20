@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups\n"
 "Report-Msgid-Bugs-To: cups@packages.debian.org\n"
-"POT-Creation-Date: 2013-03-19 14:39+0100\n"
+"POT-Creation-Date: 2016-12-20 08:55+0100\n"
 "PO-Revision-Date: 2007-12-16 15:37+0900\n"
 "Last-Translator: Miroslav Kure <kurem@debian.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
@@ -133,21 +133,18 @@ msgstr "CUPS používá ovladače pro komunikaci s tiskárnou nebo jejím portem
 #. Description
 #: ../cups.templates:3002
 msgid ""
-"Unfortunately, some backend programs are likely to cause some trouble. For "
-"example, some PPC kernels crash with the parallel backend."
-msgstr ""
-"Bohužel, některé ovladače nejsou zcela stabilní. Například některá PPC jádra "
-"v kombinaci s paralelním ovladačem spadnou."
-
-#. Type: multiselect
-#. Description
-#: ../cups.templates:3002
-msgid ""
 "Please choose the backend program to be used by CUPS. The default choice "
 "should fit the most common environments."
 msgstr ""
 "Vyberte ovladač, který má CUPS  použít. Implicitní volba se hodí do většiny "
 "běžných prostředí."
+
+#~ msgid ""
+#~ "Unfortunately, some backend programs are likely to cause some trouble. "
+#~ "For example, some PPC kernels crash with the parallel backend."
+#~ msgstr ""
+#~ "Bohužel, některé ovladače nejsou zcela stabilní. Například některá PPC "
+#~ "jádra v kombinaci s paralelním ovladačem spadnou."
 
 #~ msgid "ipp"
 #~ msgstr "ipp"

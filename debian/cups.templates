@@ -24,8 +24,5 @@ Default: lpd, socket, usb, snmp, dnssd
 _Description: Printer communication backends:
  CUPS uses backend programs to communicate with the printer device or port.
  .
- Unfortunately, some backend programs are likely to cause some trouble.
- For example, some PPC kernels crash with the parallel backend.
- .
  Please choose the backend program to be used by CUPS. The default choice
  should fit the most common environments.

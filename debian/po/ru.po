@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups_1.2.7-4_ru.po\n"
 "Report-Msgid-Bugs-To: cups@packages.debian.org\n"
-"POT-Creation-Date: 2013-03-19 14:39+0100\n"
+"POT-Creation-Date: 2016-12-20 08:55+0100\n"
 "PO-Revision-Date: 2007-04-05 11:27+0300\n"
 "Last-Translator: Sergey Alyoshin <alyoshin.s@gmail.com>\n"
 "Language-Team: Russian <debian-l10n-russian@lists.debian.org>\n"
@@ -140,21 +140,19 @@ msgstr ""
 #. Description
 #: ../cups.templates:3002
 msgid ""
-"Unfortunately, some backend programs are likely to cause some trouble. For "
-"example, some PPC kernels crash with the parallel backend."
-msgstr ""
-"К сожалению, некоторые интерфейсные программы могут вызывать проблемы. "
-"Например, некоторые ядра PPC рушатся при использовании интерфейса parallel."
-
-#. Type: multiselect
-#. Description
-#: ../cups.templates:3002
-msgid ""
 "Please choose the backend program to be used by CUPS. The default choice "
 "should fit the most common environments."
 msgstr ""
 "Выберите интерфейсную программу, которая будет использоваться CUPS. Выбор по "
 "умолчанию должен работать с большинством оборудования."
+
+#~ msgid ""
+#~ "Unfortunately, some backend programs are likely to cause some trouble. "
+#~ "For example, some PPC kernels crash with the parallel backend."
+#~ msgstr ""
+#~ "К сожалению, некоторые интерфейсные программы могут вызывать проблемы. "
+#~ "Например, некоторые ядра PPC рушатся при использовании интерфейса "
+#~ "parallel."
 
 #~ msgid "ipp"
 #~ msgstr "ipp"
