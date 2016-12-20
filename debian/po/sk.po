@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: cups@packages.debian.org\n"
-"POT-Creation-Date: 2013-03-19 14:39+0100\n"
+"POT-Creation-Date: 2016-12-20 08:55+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ivan Masár <helix84@centrum.sk>\n"
 "Language-Team: \n"
@@ -126,22 +126,19 @@ msgstr ""
 #. Description
 #: ../cups.templates:3002
 msgid ""
-"Unfortunately, some backend programs are likely to cause some trouble. For "
-"example, some PPC kernels crash with the parallel backend."
-msgstr ""
-"Bohužiaľ niektoré pomocné programy pravdepodobne spôsobia isté problémy. "
-"Napríklad niektoré jadrá PPC havarujú pri použití programu pre paralelný "
-"port."
-
-#. Type: multiselect
-#. Description
-#: ../cups.templates:3002
-msgid ""
 "Please choose the backend program to be used by CUPS. The default choice "
 "should fit the most common environments."
 msgstr ""
 "Prosím, vyberte, ktorý pomocný program má CUPS používať. Štandardná voľba by "
 "mala vyhovovať väčšine bežných prostredí."
+
+#~ msgid ""
+#~ "Unfortunately, some backend programs are likely to cause some trouble. "
+#~ "For example, some PPC kernels crash with the parallel backend."
+#~ msgstr ""
+#~ "Bohužiaľ niektoré pomocné programy pravdepodobne spôsobia isté problémy. "
+#~ "Napríklad niektoré jadrá PPC havarujú pri použití programu pre paralelný "
+#~ "port."
 
 #~ msgid "ipp"
 #~ msgstr "ipp"
