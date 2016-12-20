@@ -1,3 +1,14 @@
+cups (2.2.1-4) unstable; urgency=medium
+
+  [ Didier Raboud ]
+  * Cleanup the cups debconf questions from 'parallel' leftovers    
+    (Closes: #848718)
+
+  [ intrigeri ]
+  * AppArmor profile: support merged-/usr (Closes: #846868)
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 20 Dec 2016 08:58:02 +0100
+
 cups (2.2.1-3) unstable; urgency=low
 
   [ Helge Kreutzmann ]

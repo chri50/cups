@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups\n"
 "Report-Msgid-Bugs-To: cups@packages.debian.org\n"
-"POT-Creation-Date: 2013-03-19 14:39+0100\n"
+"POT-Creation-Date: 2016-12-20 08:55+0100\n"
 "PO-Revision-Date: 2007-04-08 23:35+0100\n"
 "Last-Translator: Miguel Figueiredo <elmig@debianpt.org>\n"
 "Language-Team: Portuguese <traduz@debianpt.org>\n"
@@ -129,21 +129,19 @@ msgstr ""
 #. Description
 #: ../cups.templates:3002
 msgid ""
-"Unfortunately, some backend programs are likely to cause some trouble. For "
-"example, some PPC kernels crash with the parallel backend."
-msgstr ""
-"Infelizmente, alguns programas de 'backend' podem causar alguns problemas. "
-"Por exemplo, alguns kernels PPC bloqueiam' com o 'backend' paralelo."
-
-#. Type: multiselect
-#. Description
-#: ../cups.templates:3002
-msgid ""
 "Please choose the backend program to be used by CUPS. The default choice "
 "should fit the most common environments."
 msgstr ""
 "Escolha qual o 'backend' a ser usado pelo CUPS. A escolha por omissão deve "
 "servir a maioria dos ambientes mais comuns."
+
+#~ msgid ""
+#~ "Unfortunately, some backend programs are likely to cause some trouble. "
+#~ "For example, some PPC kernels crash with the parallel backend."
+#~ msgstr ""
+#~ "Infelizmente, alguns programas de 'backend' podem causar alguns "
+#~ "problemas. Por exemplo, alguns kernels PPC bloqueiam' com o 'backend' "
+#~ "paralelo."
 
 #~ msgid "ipp"
 #~ msgstr "ipp"

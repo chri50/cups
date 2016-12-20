@@ -42,9 +42,9 @@
   network econet dgram,
   network ash dgram,
 
-  /bin/bash ixr,
-  /bin/dash ixr,
-  /bin/hostname ixr,
+  /{usr/,}bin/bash ixr,
+  /{usr/,}bin/dash ixr,
+  /{usr/,}bin/hostname ixr,
   /dev/lp* rw,
   deny /dev/tty rw,  # silence noise
   /dev/ttyS* rw,
@@ -72,8 +72,8 @@
   /sys/** r,
   /usr/bin/* ixr,
   /usr/sbin/* ixr,
-  /bin/* ixr,
-  /sbin/* ixr,
+  /{usr/,}bin/* ixr,
+  /{usr/,}sbin/* ixr,
   /usr/lib/** rm,
 
   # backends which come with CUPS can be confined
@@ -180,9 +180,9 @@
 
   @{PROC}/*/auxv r,
 
-  /bin/dash ixr,
-  /bin/bash ixr,
-  /bin/cp ixr,
+  /{usr/,}bin/dash ixr,
+  /{usr/,}bin/bash ixr,
+  /{usr/,}bin/cp ixr,
   /etc/papersize r,
   /etc/cups/cups-pdf.conf r,
   @{HOME}/PDF/ rw,
