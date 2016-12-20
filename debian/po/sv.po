@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups 1.1.23-13\n"
 "Report-Msgid-Bugs-To: cups@packages.debian.org\n"
-"POT-Creation-Date: 2013-03-19 14:39+0100\n"
+"POT-Creation-Date: 2016-12-20 08:55+0100\n"
 "PO-Revision-Date: 2007-03-27 08:57+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -134,21 +134,18 @@ msgstr ""
 #. Description
 #: ../cups.templates:3002
 msgid ""
-"Unfortunately, some backend programs are likely to cause some trouble. For "
-"example, some PPC kernels crash with the parallel backend."
-msgstr ""
-"Tyvärr kan vissa bakändesprogram orsaka en del problem. Till exempel kan "
-"vissa PPC-kärnor krascha när den parallella bakänden används."
-
-#. Type: multiselect
-#. Description
-#: ../cups.templates:3002
-msgid ""
 "Please choose the backend program to be used by CUPS. The default choice "
 "should fit the most common environments."
 msgstr ""
 "Välj det bakändesprogram som ska användas av CUPS. Standardvalet bör passa "
 "de flesta vanliga miljöer."
+
+#~ msgid ""
+#~ "Unfortunately, some backend programs are likely to cause some trouble. "
+#~ "For example, some PPC kernels crash with the parallel backend."
+#~ msgstr ""
+#~ "Tyvärr kan vissa bakändesprogram orsaka en del problem. Till exempel kan "
+#~ "vissa PPC-kärnor krascha när den parallella bakänden används."
 
 #~ msgid "ipp"
 #~ msgstr "ipp"

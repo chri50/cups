@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2016-08-05 23:30+0200\n"
+"POT-Creation-Date: 2016-12-11 08:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -161,7 +161,7 @@ msgstr ""
 msgid ""
 "Backends are responsible for reading side-channel requests using the "
 "B<cupsSideChannelRead>()  function and responding with the "
-"B<cupsSideChannelWrite()> function. The B<CUPS_SC_FD> constant defines the "
+"B<cupsSideChannelWrite>()  function. The B<CUPS_SC_FD> constant defines the "
 "file descriptor that should be monitored for incoming requests."
 msgstr ""
 
@@ -477,11 +477,11 @@ msgstr ""
 #. type: Plain text
 #: backend.man:178
 msgid ""
-"CUPS backends are not generally design to be run directly by the user. Aside "
-"from the device URI issue ( I<argv[0]> and B<DEVICE_URI> environment "
-"variable contain the device URI), CUPS backends also expect specific "
-"environment variables and file descriptors, and typically run in a user "
-"session that (on macOS) has additional restrictions that affect how it "
+"CUPS backends are not generally designed to be run directly by the "
+"user. Aside from the device URI issue ( I<argv[0]> and B<DEVICE_URI> "
+"environment variable contain the device URI), CUPS backends also expect "
+"specific environment variables and file descriptors, and typically run in a "
+"user session that (on macOS) has additional restrictions that affect how it "
 "runs. Backends can also be installed with restricted permissions (0500 or "
 "0700) that tell the scheduler to run them as the \"root\" user instead of an "
 "unprivileged user (typically \"lp\") on the system."
@@ -498,7 +498,7 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: backend.man:188 cancel.man:87 classes.conf.man:22 client.conf.man.in:95 cupsaccept.man:80 cupsaddsmb.man.in:119 cups-config.man:107 cupsctl.man:95 cupsd.conf.man.in:870 cupsd-helper.man:80 cupsd-logs.man:230 cupsd.man.in:112 cupsenable.man:91 cups-files.conf.man.in:213 cupsfilter.man:130 cups-lpd.man.in:111 cups.man:125 cups-snmp.conf.man:60 cups-snmp.man.in:49 cupstestdsc.man:41 cupstestppd.man:141 filter.man:211 ippfind.man:253 ../test/ippserver.man:164 ipptoolfile.man:613 ipptool.man:236 lpadmin.man:206 lpc.man:48 lpinfo.man:120 lp.man:255 lpmove.man:69 lpoptions.man.in:128 lpq.man:59 lpr.man:207 lprm.man:77 lpstat.man:139 mailto.conf.man:43 mime.convs.man:53 mime.types.man:103 notifier.man:34 ppdcfile.man:152 ppdc.man:93 ppdhtml.man:38 ppdi.man:45 ppdmerge.man:41 ppdpo.man:45 printers.conf.man:22 subscriptions.conf.man:22
+#: backend.man:188 cancel.man:87 classes.conf.man:22 client.conf.man.in:95 cupsaccept.man:80 cupsaddsmb.man.in:119 cups-config.man:107 cupsctl.man:95 cupsd.conf.man.in:870 cupsd-helper.man:80 cupsd-logs.man:230 cupsd.man.in:112 cupsenable.man:91 cups-files.conf.man.in:220 cupsfilter.man:130 cups-lpd.man.in:111 cups.man:125 cups-snmp.conf.man:60 cups-snmp.man.in:49 cupstestdsc.man:41 cupstestppd.man:141 filter.man:211 ippfind.man:253 ../test/ippserver.man:164 ipptoolfile.man:613 ipptool.man:236 lpadmin.man:206 lpc.man:48 lpinfo.man:120 lp.man:255 lpmove.man:69 lpoptions.man.in:128 lpq.man:59 lpr.man:207 lprm.man:77 lpstat.man:139 mailto.conf.man:43 mime.convs.man:53 mime.types.man:103 notifier.man:34 ppdcfile.man:152 ppdc.man:93 ppdhtml.man:38 ppdi.man:45 ppdmerge.man:41 ppdpo.man:45 printers.conf.man:22 subscriptions.conf.man:22
 #, no-wrap
 msgid "SEE ALSO"
 msgstr ""
@@ -516,13 +516,13 @@ msgid "CUPS Online Help (http://localhost:631/help)"
 msgstr ""
 
 #. type: SH
-#: backend.man:199 cancel.man:93 classes.conf.man:30 client.conf.man.in:99 cupsaccept.man:88 cupsaddsmb.man.in:125 cups-config.man:110 cupsctl.man:100 cupsd.conf.man.in:879 cupsd-helper.man:88 cupsd-logs.man:235 cupsd.man.in:128 cupsenable.man:99 cups-files.conf.man.in:223 cupsfilter.man:137 cups-lpd.man.in:118 cups.man:141 cups-snmp.conf.man:63 cups-snmp.man.in:55 cupstestdsc.man:45 cupstestppd.man:145 filter.man:219 ippfind.man:255 ../test/ippserver.man:166 ipptoolfile.man:619 ipptool.man:242 lpadmin.man:212 lpc.man:58 lpinfo.man:123 lp.man:264 lpmove.man:76 lpoptions.man.in:135 lpq.man:66 lpr.man:216 lprm.man:84 lpstat.man:146 mailto.conf.man:46 mime.convs.man:60 mime.types.man:110 notifier.man:38 ppdcfile.man:159 ppdc.man:100 ppdhtml.man:45 ppdi.man:52 ppdmerge.man:48 ppdpo.man:52 printers.conf.man:30 subscriptions.conf.man:30
+#: backend.man:199 cancel.man:93 classes.conf.man:30 client.conf.man.in:99 cupsaccept.man:88 cupsaddsmb.man.in:125 cups-config.man:110 cupsctl.man:100 cupsd.conf.man.in:879 cupsd-helper.man:88 cupsd-logs.man:235 cupsd.man.in:128 cupsenable.man:99 cups-files.conf.man.in:230 cupsfilter.man:137 cups-lpd.man.in:118 cups.man:141 cups-snmp.conf.man:63 cups-snmp.man.in:55 cupstestdsc.man:45 cupstestppd.man:145 filter.man:219 ippfind.man:255 ../test/ippserver.man:166 ipptoolfile.man:619 ipptool.man:242 lpadmin.man:212 lpc.man:58 lpinfo.man:123 lp.man:264 lpmove.man:76 lpoptions.man.in:135 lpq.man:66 lpr.man:216 lprm.man:84 lpstat.man:146 mailto.conf.man:46 mime.convs.man:60 mime.types.man:110 notifier.man:38 ppdcfile.man:159 ppdc.man:100 ppdhtml.man:45 ppdi.man:52 ppdmerge.man:48 ppdpo.man:52 printers.conf.man:30 subscriptions.conf.man:30
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr ""
 
 #. type: Plain text
-#: backend.man:200 cancel.man:94 classes.conf.man:31 client.conf.man.in:100 cupsaccept.man:89 cupsaddsmb.man.in:126 cups-config.man:111 cupsctl.man:101 cupsd.conf.man.in:880 cupsd-helper.man:89 cupsd-logs.man:236 cupsd.man.in:129 cupsenable.man:100 cups-files.conf.man.in:224 cupsfilter.man:138 cups-lpd.man.in:119 cups.man:142 cups-snmp.conf.man:64 cups-snmp.man.in:56 cupstestdsc.man:46 cupstestppd.man:146 filter.man:220 ipptoolfile.man:620 ipptool.man:243 lpadmin.man:213 lpc.man:59 lpinfo.man:124 lp.man:265 lpmove.man:77 lpoptions.man.in:136 lpq.man:67 lpr.man:217 lprm.man:85 lpstat.man:147 mailto.conf.man:47 mime.convs.man:61 mime.types.man:111 notifier.man:39 ppdcfile.man:160 ppdc.man:101 ppdhtml.man:46 ppdi.man:53 ppdmerge.man:49 ppdpo.man:53 printers.conf.man:31 subscriptions.conf.man:31
+#: backend.man:200 cancel.man:94 classes.conf.man:31 client.conf.man.in:100 cupsaccept.man:89 cupsaddsmb.man.in:126 cups-config.man:111 cupsctl.man:101 cupsd.conf.man.in:880 cupsd-helper.man:89 cupsd-logs.man:236 cupsd.man.in:129 cupsenable.man:100 cups-files.conf.man.in:231 cupsfilter.man:138 cups-lpd.man.in:119 cups.man:142 cups-snmp.conf.man:64 cups-snmp.man.in:56 cupstestdsc.man:46 cupstestppd.man:146 filter.man:220 ipptoolfile.man:620 ipptool.man:243 lpadmin.man:213 lpc.man:59 lpinfo.man:124 lp.man:265 lpmove.man:77 lpoptions.man.in:136 lpq.man:67 lpr.man:217 lprm.man:85 lpstat.man:147 mailto.conf.man:47 mime.convs.man:61 mime.types.man:111 notifier.man:39 ppdcfile.man:160 ppdc.man:101 ppdhtml.man:46 ppdi.man:53 ppdmerge.man:49 ppdpo.man:53 printers.conf.man:31 subscriptions.conf.man:31
 msgid "Copyright \\[co] 2007-2016 by Apple Inc."
 msgstr ""
 
@@ -748,7 +748,7 @@ msgid "client.conf"
 msgstr ""
 
 #. type: TH
-#: client.conf.man.in:13 cups-files.conf.man.in:13
+#: client.conf.man.in:13
 #, no-wrap
 msgid "20 June 2016"
 msgstr ""
@@ -882,7 +882,7 @@ msgstr ""
 #: client.conf.man.in:55
 msgid ""
 "Specifies the address and optionally the port to use when connecting to the "
-"server.  B<Note: This directive it not supported on macOS 10.7 or later.>"
+"server.  B<Note: This directive is not supported on macOS 10.7 or later.>"
 msgstr ""
 
 #. type: TP
@@ -2311,8 +2311,8 @@ msgstr ""
 #: cupsd.conf.man.in:236
 msgid ""
 "Specifies the IPP operations that are being limited inside a Policy "
-"section. IPP operation names are listed below in the section \"IPP "
-"OPERATIONS\"."
+"section. IPP operation names are listed below in the section \"IPP OPERATION "
+"NAMES\"."
 msgstr ""
 
 #. type: TP
@@ -2332,7 +2332,8 @@ msgstr ""
 #: cupsd.conf.man.in:243
 msgid ""
 "Specifies the HTTP methods that are being limited inside a Location "
-"section. HTTP method names are listed below in the section \"HTTP METHODS\"."
+"section. HTTP method names are listed below in the section \"HTTP METHOD "
+"NAMES\"."
 msgstr ""
 
 #. type: TP
@@ -3703,7 +3704,7 @@ msgstr ""
 
 #. type: Plain text
 #: cupsd.conf.man.in:693
-msgid "The path for the specified job."
+msgid "The path for the specified job"
 msgstr ""
 
 #. type: TP
@@ -5261,6 +5262,12 @@ msgstr ""
 msgid "cups-files.conf"
 msgstr ""
 
+#. type: TH
+#: cups-files.conf.man.in:13
+#, no-wrap
+msgid "19 September 2016"
+msgstr ""
+
 #. type: Plain text
 #: cups-files.conf.man.in:16
 msgid "cups-files.conf - file and directory configuration file for cups"
@@ -5342,7 +5349,7 @@ msgid ""
 "operating systems."
 msgstr ""
 
-#. #DataDir
+#. #CreateSelfSignedCerts
 #. type: Plain text
 #: cups-files.conf.man.in:58
 msgid ""
@@ -5356,57 +5363,77 @@ msgstr ""
 #. type: TP
 #: cups-files.conf.man.in:58
 #, no-wrap
+msgid "B<CreateSelfSignedCerts yes>"
+msgstr ""
+
+#. type: TP
+#: cups-files.conf.man.in:60
+#, no-wrap
+msgid "B<CreateSelfSignedCerts no>"
+msgstr ""
+
+#. #DataDir
+#. type: Plain text
+#: cups-files.conf.man.in:65
+msgid ""
+"Specifies whether the scheduler automatically creates self-signed "
+"certificates for client connections using TLS.  The default is yes."
+msgstr ""
+
+#. type: TP
+#: cups-files.conf.man.in:65
+#, no-wrap
 msgid "B<DataDir >I<path>"
 msgstr ""
 
 #. #DocumentRoot
 #. type: Plain text
-#: cups-files.conf.man.in:63
+#: cups-files.conf.man.in:70
 msgid ""
 "Specifies the directory where data files can be found.  The default is "
 "usually \"/usr/share/cups\"."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:63
+#: cups-files.conf.man.in:70
 #, no-wrap
 msgid "B<DocumentRoot >I<directory>"
 msgstr ""
 
 #. #ErrorLog
 #. type: Plain text
-#: cups-files.conf.man.in:68
+#: cups-files.conf.man.in:75
 msgid ""
 "Specifies the root directory for the CUPS web interface content.  The "
 "default is usually \"/usr/share/doc/cups\"."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:68
+#: cups-files.conf.man.in:75
 #, no-wrap
 msgid "B<ErrorLog>"
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:70
+#: cups-files.conf.man.in:77
 #, no-wrap
 msgid "B<ErrorLog >I<filename>"
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:72
+#: cups-files.conf.man.in:79
 #, no-wrap
 msgid "B<ErrorLog stderr>"
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:74
+#: cups-files.conf.man.in:81
 #, no-wrap
 msgid "B<ErrorLog syslog>"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:81
+#: cups-files.conf.man.in:88
 msgid ""
 "Defines the error log filename.  Specifying a blank filename disables error "
 "log generation.  The value \"stderr\" causes log entries to be sent to the "
@@ -5417,154 +5444,154 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:84
+#: cups-files.conf.man.in:91
 #, no-wrap
 msgid "    ErrorLog /var/log/cups/%s-error_log\n"
 msgstr ""
 
 #. #FatalErrors
 #. type: Plain text
-#: cups-files.conf.man.in:88
+#: cups-files.conf.man.in:95
 msgid "The default is \"/var/log/cups/error_log\"."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:88
+#: cups-files.conf.man.in:95
 #, no-wrap
 msgid "B<FatalErrors none>"
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:90
+#: cups-files.conf.man.in:97
 #, no-wrap
 msgid "B<FatalErrors all >I<-kind >[ ... I<-kind >]"
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:92
+#: cups-files.conf.man.in:99
 #, no-wrap
 msgid "B<FatalErrors >I<kind >[ ... I<kind >]"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:97
+#: cups-files.conf.man.in:104
 msgid ""
 "Specifies which errors are fatal, causing the scheduler to exit.  The "
 "default is \"config\".  The I<kind> strings are:"
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:98
+#: cups-files.conf.man.in:105
 #, no-wrap
 msgid "B<none>"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:101
+#: cups-files.conf.man.in:108
 msgid "No errors are fatal."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:101
+#: cups-files.conf.man.in:108
 #, no-wrap
 msgid "B<all>"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:104
+#: cups-files.conf.man.in:111
 msgid "All of the errors below are fatal."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:104
+#: cups-files.conf.man.in:111
 #, no-wrap
 msgid "B<browse>"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:107
+#: cups-files.conf.man.in:114
 msgid ""
 "Browsing initialization errors are fatal, for example failed connections to "
 "the DNS-SD daemon."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:107
+#: cups-files.conf.man.in:114
 #, no-wrap
 msgid "B<config>"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:110
+#: cups-files.conf.man.in:117
 msgid "Configuration file syntax errors are fatal."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:110
+#: cups-files.conf.man.in:117
 #, no-wrap
 msgid "B<listen>"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:113
+#: cups-files.conf.man.in:120
 msgid ""
 "Listen or Port errors are fatal, except for IPv6 failures on the loopback or "
 "\"any\" addresses."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:113
+#: cups-files.conf.man.in:120
 #, no-wrap
 msgid "B<log>"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:116
+#: cups-files.conf.man.in:123
 msgid "Log file creation or write errors are fatal."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:116
+#: cups-files.conf.man.in:123
 #, no-wrap
 msgid "B<permissions>"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:119
+#: cups-files.conf.man.in:126
 msgid ""
 "Bad startup file permissions are fatal, for example shared TLS certificate "
 "and key files with world-read permissions."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:121
+#: cups-files.conf.man.in:128
 #, no-wrap
 msgid "B<FileDevice Yes>"
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:123
+#: cups-files.conf.man.in:130
 #, no-wrap
 msgid "B<FileDevice No>"
 msgstr ""
 
 #. #Group
 #. type: Plain text
-#: cups-files.conf.man.in:128
+#: cups-files.conf.man.in:135
 msgid ""
 "Specifies whether the file pseudo-device can be used for new printer "
 "queues.  The URI \"file:///dev/null\" is always allowed."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:128
+#: cups-files.conf.man.in:135
 #, no-wrap
 msgid "B<Group >I<group-name-or-number>"
 msgstr ""
 
 #. #LogFilePerm
 #. type: Plain text
-#: cups-files.conf.man.in:133
+#: cups-files.conf.man.in:140
 msgid ""
 "Specifies the group name or ID that will be used when executing external "
 "programs.  The default group is operating system specific but is usually "
@@ -5572,39 +5599,39 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:133
+#: cups-files.conf.man.in:140
 #, no-wrap
 msgid "B<LogFilePerm >I<mode>"
 msgstr ""
 
 #. #PageLog
 #. type: Plain text
-#: cups-files.conf.man.in:138
+#: cups-files.conf.man.in:145
 msgid ""
 "Specifies the permissions of all log files that the scheduler writes.  The "
 "default is \"0644\"."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:138
+#: cups-files.conf.man.in:145
 #, no-wrap
 msgid "B<PageLog >[ I<filename> ]"
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:140
+#: cups-files.conf.man.in:147
 #, no-wrap
 msgid "B<PageLog stderr>"
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:142
+#: cups-files.conf.man.in:149
 #, no-wrap
 msgid "B<PageLog syslog>"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:149
+#: cups-files.conf.man.in:156
 msgid ""
 "Defines the page log filename.  The value \"stderr\" causes log entries to "
 "be sent to the standard error file when the scheduler is running in the "
@@ -5615,60 +5642,60 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:152
+#: cups-files.conf.man.in:159
 #, no-wrap
 msgid "    PageLog /var/log/cups/%s-page_log\n"
 msgstr ""
 
 #. #RemoteRoot
 #. type: Plain text
-#: cups-files.conf.man.in:156
+#: cups-files.conf.man.in:163
 msgid "The default is \"/var/log/cups/page_log\"."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:156
+#: cups-files.conf.man.in:163
 #, no-wrap
 msgid "B<RemoteRoot >I<username>"
 msgstr ""
 
 #. #RequestRoot
 #. type: Plain text
-#: cups-files.conf.man.in:161
+#: cups-files.conf.man.in:168
 msgid ""
 "Specifies the username that is associated with unauthenticated accesses by "
 "clients claiming to be the root user.  The default is \"remroot\"."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:161
+#: cups-files.conf.man.in:168
 #, no-wrap
 msgid "B<RequestRoot >I<directory>"
 msgstr ""
 
 #. #Sandboxing
 #. type: Plain text
-#: cups-files.conf.man.in:166
+#: cups-files.conf.man.in:173
 msgid ""
 "Specifies the directory that contains print jobs and other HTTP request "
 "data.  The default is \"/var/spool/cups\"."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:166
+#: cups-files.conf.man.in:173
 #, no-wrap
 msgid "B<Sandboxing relaxed>"
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:168
+#: cups-files.conf.man.in:175
 #, no-wrap
 msgid "B<Sandboxing strict>"
 msgstr ""
 
 #. #ServerBin
 #. type: Plain text
-#: cups-files.conf.man.in:174
+#: cups-files.conf.man.in:181
 msgid ""
 "Specifies the level of security sandboxing that is applied to print filters, "
 "backends, and other child processes of the scheduler.  The default is "
@@ -5676,14 +5703,14 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:174
+#: cups-files.conf.man.in:181
 #, no-wrap
 msgid "B<ServerBin >I<directory>"
 msgstr ""
 
 #. #ServerKeychain
 #. type: Plain text
-#: cups-files.conf.man.in:179
+#: cups-files.conf.man.in:186
 msgid ""
 "Specifies the directory containing the backends, CGI programs, filters, "
 "helper programs, notifiers, and port monitors.  The default is "
@@ -5691,14 +5718,14 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:179
+#: cups-files.conf.man.in:186
 #, no-wrap
 msgid "B<ServerKeychain >I<path>"
 msgstr ""
 
 #. #ServerRoot
 #. type: Plain text
-#: cups-files.conf.man.in:185
+#: cups-files.conf.man.in:192
 msgid ""
 "Specifies the location of TLS certificates and private keys.  The default is "
 "\"/Library/Keychains/System.keychain\" on macOS and \"/etc/cups/ssl\" on all "
@@ -5709,48 +5736,48 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:185
+#: cups-files.conf.man.in:192
 #, no-wrap
 msgid "B<ServerRoot >I<directory>"
 msgstr ""
 
 #. #SyncOnClose
 #. type: Plain text
-#: cups-files.conf.man.in:190
+#: cups-files.conf.man.in:197
 msgid ""
 "Specifies the directory containing the server configuration files.  The "
 "default is \"/etc/cups\"."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:190
+#: cups-files.conf.man.in:197
 #, no-wrap
 msgid "B<SyncOnClose Yes>"
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:192
+#: cups-files.conf.man.in:199
 #, no-wrap
 msgid "B<SyncOnClose No>"
 msgstr ""
 
 #. #SystemGroup
 #. type: Plain text
-#: cups-files.conf.man.in:199
+#: cups-files.conf.man.in:206
 msgid ""
 "Specifies whether the scheduler calls B<fsync>(2)  after writing "
 "configuration or state files.  The default is \"Yes\"."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:199
+#: cups-files.conf.man.in:206
 #, no-wrap
 msgid "B<SystemGroup >I<group-name >[ ... I<group-name> ]"
 msgstr ""
 
 #. #TempDir
 #. type: Plain text
-#: cups-files.conf.man.in:204
+#: cups-files.conf.man.in:211
 msgid ""
 "Specifies the group(s) to use for I<@SYSTEM> group authentication.  The "
 "default contains \"admin\", \"lpadmin\", \"root\", \"sys\", and/or "
@@ -5758,34 +5785,34 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:204
+#: cups-files.conf.man.in:211
 #, no-wrap
 msgid "B<TempDir >I<directory>"
 msgstr ""
 
 #. #User
 #. type: Plain text
-#: cups-files.conf.man.in:209
+#: cups-files.conf.man.in:216
 msgid ""
 "Specifies the directory where temporary files are stored.  The default is "
 "\"/var/spool/cups/tmp\"."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.man.in:209
+#: cups-files.conf.man.in:216
 #, no-wrap
 msgid "B<User >I<username>"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:213
+#: cups-files.conf.man.in:220
 msgid ""
 "Specifies the user name or ID that is used when running external programs.  "
 "The default is \"lp\"."
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.man.in:223
+#: cups-files.conf.man.in:230
 msgid ""
 "B<classes.conf>(5), B<cups>(1), B<cupsd>(8), B<cupsd.conf>(5), "
 "B<mime.convs>(5), B<mime.types>(5), B<printers.conf>(5), "
@@ -6217,7 +6244,7 @@ msgstr ""
 #: cups-lpd.man.in:111
 msgid ""
 "CUPS includes configuration files for B<launchd>(8), B<systemd>(8), and "
-"B<xinetd(8).> Simply enable the B<cups-lpd> service using the corresponding "
+"B<xinetd>(8).  Simply enable the B<cups-lpd> service using the corresponding "
 "control program."
 msgstr ""
 

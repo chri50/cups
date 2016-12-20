@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups_1.2.11-2\n"
 "Report-Msgid-Bugs-To: cups@packages.debian.org\n"
-"POT-Creation-Date: 2013-03-19 14:39+0100\n"
+"POT-Creation-Date: 2016-12-20 08:55+0100\n"
 "PO-Revision-Date: 2007-05-31 15:31+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -127,21 +127,18 @@ msgstr ""
 #. Description
 #: ../cups.templates:3002
 msgid ""
-"Unfortunately, some backend programs are likely to cause some trouble. For "
-"example, some PPC kernels crash with the parallel backend."
-msgstr ""
-"Rất tiếc là một số chương trình hậu phương có thể gây ra lỗi. Chẳng hạn, một "
-"số hạt nhân PPC sẽ sụp đổ khi chạy cùng với hậu phương song song."
-
-#. Type: multiselect
-#. Description
-#: ../cups.templates:3002
-msgid ""
 "Please choose the backend program to be used by CUPS. The default choice "
 "should fit the most common environments."
 msgstr ""
 "Hãy chọn chương trình hậu phương CUPS cần dùng. Sự chọn mặc định nên thích "
 "hợp với phần lớn môi trường thường dùng."
+
+#~ msgid ""
+#~ "Unfortunately, some backend programs are likely to cause some trouble. "
+#~ "For example, some PPC kernels crash with the parallel backend."
+#~ msgstr ""
+#~ "Rất tiếc là một số chương trình hậu phương có thể gây ra lỗi. Chẳng hạn, "
+#~ "một số hạt nhân PPC sẽ sụp đổ khi chạy cùng với hậu phương song song."
 
 #~ msgid "ipp"
 #~ msgstr "ipp"
