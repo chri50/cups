@@ -1,0 +1,14 @@
+Description: Make cups.path unit be part of the cups.service, since cups.path
+ should stop if and when cups.service is stopped. LP: #1642966
+Author: Dimitri John Ledkov <xnox@ubuntu.com>
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/1642966
+
+--- cups-2.2.1-46-g10887d272.orig/scheduler/org.cups.cupsd.path.in
++++ cups-2.2.1-46-g10887d272/scheduler/org.cups.cupsd.path.in
+@@ -1,5 +1,6 @@
+ [Unit]
+ Description=CUPS Scheduler
++PartOf=cups.service
+ 
+ [Path]
+ PathExists=@CUPS_CACHEDIR@/org.cups.cupsd

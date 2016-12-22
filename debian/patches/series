@@ -41,3 +41,4 @@ man-cups-lpd-drop-dangling-references.patch
 debianize_cups-config.patch
 manpage-translations.patch
 0043-Handle-partial-failures-when-connecting.patch
+systemd-path-partof.patch
