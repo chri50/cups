@@ -1,3 +1,10 @@
+cups (2.2.0-2ubuntu0.1) yakkety; urgency=medium
+
+  * Make cups.path unit be part of the cups.service, since cups.path
+    should stop if and when cups.service is stopped. LP: #1642966
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Thu, 22 Dec 2016 17:06:04 +0000
+
 cups (2.2.0-2) unstable; urgency=medium
 
   * Backport upstream patch to handle partial failures when connecting
