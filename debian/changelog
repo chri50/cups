@@ -1,3 +1,10 @@
+cups (2.1.3-4ubuntu0.2) xenial; urgency=medium
+
+  * Make cups.path unit be part of the cups.service, since cups.path
+    should stop if and when cups.service is stopped. LP: #1642966
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Thu, 22 Dec 2016 17:08:36 +0000
+
 cups (2.1.3-4ubuntu0.1) xenial-proposed; urgency=medium
 
   * Removed auto-shutdown-on-idle-also-with-webinterface-on.patch
