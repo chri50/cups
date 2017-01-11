@@ -14,7 +14,7 @@ Patch-Name: pwg-raster-attributes.patch
  1 file changed, 76 insertions(+), 1 deletion(-)
 
 diff --git a/scheduler/printers.c b/scheduler/printers.c
-index 7aa7bd8..cfa88f0 100644
+index 7aa7bd8f2..cfa88f002 100644
 --- a/scheduler/printers.c
 +++ b/scheduler/printers.c
 @@ -2178,9 +2178,10 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */

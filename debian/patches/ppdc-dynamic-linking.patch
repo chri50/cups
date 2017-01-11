@@ -1,4 +1,4 @@
-From 4e71cfac863a66423e999fc028daa2b601e5e426 Mon Sep 17 00:00:00 2001
+From 0f8309273b9c90bac0e99a134394ebb108f98b3c Mon Sep 17 00:00:00 2001
 From: Sune Vuorela <debian@pusling.com>
 Date: Tue, 9 Aug 2016 18:11:44 +0200
 Subject: Dynamically link ppdc, to work around segfault on mipsen.
@@ -12,7 +12,7 @@ Patch-Name: ppdc-dynamic-linking.patch
  1 file changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/ppdc/Makefile b/ppdc/Makefile
-index 49b93e9..62d23a0 100644
+index 49b93e92d..62d23a0eb 100644
 --- a/ppdc/Makefile
 +++ b/ppdc/Makefile
 @@ -215,14 +215,14 @@ uninstall:

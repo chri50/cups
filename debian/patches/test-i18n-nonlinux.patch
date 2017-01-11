@@ -13,7 +13,7 @@ Patch-Name: test-i18n-nonlinux.patch
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/cups/testi18n.c b/cups/testi18n.c
-index a88f1e1..858c548 100644
+index a88f1e1f4..858c5487f 100644
 --- a/cups/testi18n.c
 +++ b/cups/testi18n.c
 @@ -416,7 +416,7 @@ main(int  argc,				/* I - Argument Count */

@@ -1,7 +1,14 @@
+cups (2.2.1-5) unstable; urgency=medium
+
+  * Cherry-pick and adapt upstream's systemd configuration update to ensure
+    clean shutdown of CUPS (LP: #1642966)
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 11 Jan 2017 09:44:52 +0100
+
 cups (2.2.1-4) unstable; urgency=medium
 
   [ Didier Raboud ]
-  * Cleanup the cups debconf questions from 'parallel' leftovers    
+  * Cleanup the cups debconf questions from 'parallel' leftovers
     (Closes: #848718)
 
   [ intrigeri ]

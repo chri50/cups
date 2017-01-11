@@ -13,7 +13,7 @@ Patch-Name: tests-ignore-ipv6-address-family-not-supported.patch
  1 file changed, 1 insertion(+)
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index a6c7e55..9c970b2 100755
+index a6c7e551f..9c970b27b 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
 @@ -988,6 +988,7 @@ count=`$GREP '^E ' $BASE/log/error_log | \

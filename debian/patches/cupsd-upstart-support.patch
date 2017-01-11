@@ -25,7 +25,7 @@ Patch-Name: cupsd-upstart-support.patch
  1 file changed, 109 insertions(+)
 
 diff --git a/scheduler/main.c b/scheduler/main.c
-index 0dcd32d..e0ab6e8 100644
+index 0dcd32de0..e0ab6e8d8 100644
 --- a/scheduler/main.c
 +++ b/scheduler/main.c
 @@ -61,6 +61,7 @@

@@ -13,7 +13,7 @@ Patch-Name: tests-fix-mips-getjobs.patch
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/test/ipp-1.1.test b/test/ipp-1.1.test
-index ffb4ae9..2128aed 100644
+index ffb4ae92f..2128aedaa 100644
 --- a/test/ipp-1.1.test
 +++ b/test/ipp-1.1.test
 @@ -755,7 +755,7 @@ DEFINE IPP_URI_SCHEME "/^ipps?://.+$$/"

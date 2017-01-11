@@ -18,7 +18,7 @@ Patch-Name: cups-snmp-oids-device-id-hp-ricoh.patch
  1 file changed, 8 insertions(+)
 
 diff --git a/backend/snmp.c b/backend/snmp.c
-index e66edc9..a135626 100644
+index e66edc980..a13562680 100644
 --- a/backend/snmp.c
 +++ b/backend/snmp.c
 @@ -159,6 +159,8 @@ static const int	UriOID[] = { CUPS_OID_ppmPortServiceNameOrURI, 1, 1, -1 };

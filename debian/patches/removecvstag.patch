@@ -14,7 +14,7 @@ Patch-Name: removecvstag.patch
  1 file changed, 4 insertions(+)
 
 diff --git a/conf/Makefile b/conf/Makefile
-index 3e88bdc..c63b124 100644
+index 3e88bdcb5..c63b124b2 100644
 --- a/conf/Makefile
 +++ b/conf/Makefile
 @@ -73,8 +73,12 @@ install-data:
