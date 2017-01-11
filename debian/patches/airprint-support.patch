@@ -20,7 +20,7 @@ Patch-Name: airprint-support.patch
  5 files changed, 16 insertions(+), 2 deletions(-)
 
 diff --git a/conf/mime.convs.in b/conf/mime.convs.in
-index f460000..e936799 100644
+index f460000dd..e9367996b 100644
 --- a/conf/mime.convs.in
 +++ b/conf/mime.convs.in
 @@ -48,6 +48,9 @@ application/postscript		application/vnd.cups-postscript	66	pstops
@@ -34,7 +34,7 @@ index f460000..e936799 100644
  #
  # Raw filter...
 diff --git a/conf/mime.types b/conf/mime.types
-index dcb0771..6265daa 100644
+index dcb07710e..6265daaf5 100644
 --- a/conf/mime.types
 +++ b/conf/mime.types
 @@ -118,6 +118,9 @@ image/x-alias			pix short(8,8) short(8,24)
@@ -48,7 +48,7 @@ index dcb0771..6265daa 100644
  #
  # Text files...
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index 8110cb4..0667a4f 100644
+index 8110cb475..0667a4f39 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -781,7 +781,7 @@ cupsdReadConfiguration(void)
@@ -61,7 +61,7 @@ index 8110cb4..0667a4f 100644
  
    cupsdSetString(&LPDConfigFile, CUPS_DEFAULT_LPD_CONFIG_FILE);
 diff --git a/scheduler/dirsvc.c b/scheduler/dirsvc.c
-index 2e8303e..035e5fb 100644
+index 2e8303ec6..035e5fbd4 100644
 --- a/scheduler/dirsvc.c
 +++ b/scheduler/dirsvc.c
 @@ -414,6 +414,12 @@ dnssdBuildTxtRecord(
@@ -78,7 +78,7 @@ index 2e8303e..035e5fb 100644
      {
        keyvalue[count  ][0] = "air";
 diff --git a/scheduler/printers.c b/scheduler/printers.c
-index cfa88f0..7d48697 100644
+index cfa88f002..7d48697bc 100644
 --- a/scheduler/printers.c
 +++ b/scheduler/printers.c
 @@ -3743,7 +3743,9 @@ add_printer_formats(cupsd_printer_t *p)	/* I - Printer */

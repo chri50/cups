@@ -13,7 +13,7 @@ Patch-Name: tests-ignore-kfreebsd-amd64-not-a-pdf.patch
  1 file changed, 2 insertions(+)
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index d00dc22..a6c7e55 100755
+index d00dc2253..a6c7e551f 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
 @@ -986,6 +986,8 @@ fi

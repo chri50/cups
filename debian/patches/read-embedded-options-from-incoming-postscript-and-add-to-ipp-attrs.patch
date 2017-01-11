@@ -19,7 +19,7 @@ Patch-Name: read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.
  1 file changed, 84 insertions(+)
 
 diff --git a/scheduler/ipp.c b/scheduler/ipp.c
-index c2b67a0..dde976c 100644
+index c2b67a08a..dde976c72 100644
 --- a/scheduler/ipp.c
 +++ b/scheduler/ipp.c
 @@ -8658,6 +8658,11 @@ read_job_ticket(cupsd_client_t *con)	/* I - Client connection */

@@ -16,7 +16,7 @@ Patch-Name: pidfile.patch
  4 files changed, 45 insertions(+), 1 deletion(-)
 
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index 0667a4f..0e7027c 100644
+index 0667a4f39..0e7027c6c 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -163,7 +163,8 @@ static const cupsd_var_t	cupsfiles_vars[] =
@@ -46,7 +46,7 @@ index 0667a4f..0e7027c 100644
      {
        cupsdLogMessage(CUPSD_LOG_INFO,
 diff --git a/scheduler/conf.h b/scheduler/conf.h
-index 585ba92..b33768b 100644
+index 585ba9203..b33768bce 100644
 --- a/scheduler/conf.h
 +++ b/scheduler/conf.h
 @@ -245,6 +245,8 @@ VAR int			CreateSelfSignedCerts	VALUE(TRUE);
@@ -59,7 +59,7 @@ index 585ba92..b33768b 100644
  #ifdef HAVE_ONDEMAND
  VAR int			IdleExitTimeout		VALUE(60);
 diff --git a/scheduler/main.c b/scheduler/main.c
-index e0ab6e8..9caa47f 100644
+index e0ab6e8d8..9caa47fda 100644
 --- a/scheduler/main.c
 +++ b/scheduler/main.c
 @@ -73,6 +73,8 @@ static void		service_checkin(void);
@@ -126,7 +126,7 @@ index e0ab6e8..9caa47f 100644
   * 'cupsdAddString()' - Copy and add a string to an array.
   */
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index bcc4fde..345e875 100755
+index bcc4fde64..345e8752b 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
 @@ -524,6 +524,7 @@ FontPath $BASE/share/fonts

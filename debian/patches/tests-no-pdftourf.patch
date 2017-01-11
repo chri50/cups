@@ -18,7 +18,7 @@ Patch-Name: tests-no-pdftourf.patch
  delete mode 100644 test/test.types
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index 8d03883..bcc4fde 100755
+index 8d0388367..bcc4fde64 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
 @@ -276,7 +276,7 @@ case "$usedebugprintfs" in
@@ -46,7 +46,7 @@ index 8d03883..bcc4fde 100755
  	instfilter pstocupsraster pstoraster raster
  else
 diff --git a/test/test.convs b/test/test.convs
-index 77a9ce0..57540aa 100644
+index 77a9ce01e..57540aac4 100644
 --- a/test/test.convs
 +++ b/test/test.convs
 @@ -2,7 +2,6 @@
@@ -59,7 +59,7 @@ index 77a9ce0..57540aa 100644
  text/plain application/pdf 100 texttopdf
 diff --git a/test/test.types b/test/test.types
 deleted file mode 100644
-index 914081c..0000000
+index 914081c7f..000000000
 --- a/test/test.types
 +++ /dev/null
 @@ -1,2 +0,0 @@

@@ -13,7 +13,7 @@ Patch-Name: tests-fix-ppdLocalize-on-unclean-env.patch
  1 file changed, 8 insertions(+)
 
 diff --git a/cups/testppd.c b/cups/testppd.c
-index 6d5065c..49b2887 100644
+index 6d5065c66..49b2887a3 100644
 --- a/cups/testppd.c
 +++ b/cups/testppd.c
 @@ -503,6 +503,14 @@ main(int  argc,				/* I - Number of command-line arguments */

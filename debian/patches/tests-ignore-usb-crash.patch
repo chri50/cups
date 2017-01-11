@@ -17,7 +17,7 @@ Patch-Name: tests-ignore-usb-crash.patch
  1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index d59f601..d00dc22 100755
+index d59f6014c..d00dc2253 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
 @@ -983,7 +983,10 @@ else

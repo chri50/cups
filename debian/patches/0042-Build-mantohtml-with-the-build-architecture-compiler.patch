@@ -1,4 +1,4 @@
-From 1038b515952b6a13dd97dfbc28cd17d2d2ce0508 Mon Sep 17 00:00:00 2001
+From 3269dac669adbbc7ded8c3ac15bf1e7d2eefcb64 Mon Sep 17 00:00:00 2001
 From: Helmut Grohne <helmut@subdivi.de>
 Date: Tue, 9 Aug 2016 18:11:49 +0200
 Subject: Build mantohtml with the build architecture compiler
@@ -18,7 +18,7 @@ Bug-Debian: https://bugs.debian.org/837936
  4 files changed, 22 insertions(+), 9 deletions(-)
 
 diff --git a/Makedefs.in b/Makedefs.in
-index 52fc3ea..bc3a838 100644
+index 52fc3ea64..bc3a838d4 100644
 --- a/Makedefs.in
 +++ b/Makedefs.in
 @@ -18,6 +18,7 @@
@@ -30,7 +30,7 @@ index 52fc3ea..bc3a838 100644
  CXX		=	@LIBTOOL@ @CXX@
  DSO		=	@DSO@
 diff --git a/configure.ac b/configure.ac
-index b00ed4b..72ef5d1 100644
+index b00ed4bea..72ef5d102 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -22,6 +22,15 @@ sinclude(config-scripts/cups-common.m4)
@@ -50,7 +50,7 @@ index b00ed4b..72ef5d1 100644
  sinclude(config-scripts/cups-libtool.m4)
  sinclude(config-scripts/cups-compiler.m4)
 diff --git a/man/Makefile b/man/Makefile
-index 8e75e89..37e2c3f 100644
+index 8e75e8977..37e2c3f8a 100644
 --- a/man/Makefile
 +++ b/man/Makefile
 @@ -219,7 +219,5 @@ html:	$(MAN1) $(MAN5) $(MAN7) $(MAN8) mantohtml
@@ -64,7 +64,7 @@ index 8e75e89..37e2c3f 100644
 +mantohtml:	mantohtml.c
 +	$(CC_FOR_BUILD) -o $@ $<
 diff --git a/man/mantohtml.c b/man/mantohtml.c
-index 0f46848..bb89f04 100644
+index 0f4684831..bb89f04c0 100644
 --- a/man/mantohtml.c
 +++ b/man/mantohtml.c
 @@ -15,8 +15,10 @@

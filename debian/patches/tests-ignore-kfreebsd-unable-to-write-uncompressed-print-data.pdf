@@ -14,7 +14,7 @@ Patch-Name: tests-ignore-kfreebsd-unable-to-write-uncompressed-print-data.pdf
  1 file changed, 1 insertion(+)
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index 9c970b2..b081eb5 100755
+index 9c970b27b..b081eb58e 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
 @@ -989,6 +989,7 @@ count=`$GREP '^E ' $BASE/log/error_log | \

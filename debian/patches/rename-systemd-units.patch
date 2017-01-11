@@ -1,17 +1,44 @@
-From 9e86960dd447d14e4181f606fed1df47d3c29510 Mon Sep 17 00:00:00 2001
+From de4945b74891efa86afef1e3d5e4a22eddb7edbf Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:34 +0200
 Subject: Rename the systemd service file from org.cups.cups.* to cups.*
 
-Last-Update: 2015-02-10
+Also adapt upstream's :
+  7852449fe24db38dc47b09ba033c93b1b73dfcd6
+  Update systemd config files (Issue #4935)
 
 Patch-Name: rename-systemd-units.patch
 ---
+ scheduler/org.cups.cups-lpd.socket  | 1 +
+ scheduler/org.cups.cupsd.path.in    | 1 +
  scheduler/org.cups.cupsd.service.in | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scheduler/org.cups.cupsd.socket.in  | 1 +
+ 4 files changed, 4 insertions(+), 1 deletion(-)
 
+diff --git a/scheduler/org.cups.cups-lpd.socket b/scheduler/org.cups.cups-lpd.socket
+index dd5288c62..eb8445905 100644
+--- a/scheduler/org.cups.cups-lpd.socket
++++ b/scheduler/org.cups.cups-lpd.socket
+@@ -1,5 +1,6 @@
+ [Unit]
+ Description=CUPS LPD Server Socket
++PartOf=cups-lpd.service
+ 
+ [Socket]
+ ListenStream=515
+diff --git a/scheduler/org.cups.cupsd.path.in b/scheduler/org.cups.cupsd.path.in
+index 1bccc6f9d..7c8509fa6 100644
+--- a/scheduler/org.cups.cupsd.path.in
++++ b/scheduler/org.cups.cupsd.path.in
+@@ -1,5 +1,6 @@
+ [Unit]
+ Description=CUPS Scheduler
++PartOf=cups.service
+ 
+ [Path]
+ PathExists=@CUPS_CACHEDIR@/org.cups.cupsd
 diff --git a/scheduler/org.cups.cupsd.service.in b/scheduler/org.cups.cupsd.service.in
-index 0a27c76..7a04248 100644
+index 0a27c769f..7a042481f 100644
 --- a/scheduler/org.cups.cupsd.service.in
 +++ b/scheduler/org.cups.cupsd.service.in
 @@ -7,5 +7,5 @@ ExecStart=@sbindir@/cupsd -l
@@ -21,3 +48,14 @@ index 0a27c76..7a04248 100644
 -Also=org.cups.cupsd.socket org.cups.cupsd.path
 +Also=cups.socket cups.path
  WantedBy=printer.target
+diff --git a/scheduler/org.cups.cupsd.socket.in b/scheduler/org.cups.cupsd.socket.in
+index b0928c51c..3c37d7213 100644
+--- a/scheduler/org.cups.cupsd.socket.in
++++ b/scheduler/org.cups.cupsd.socket.in
+@@ -1,5 +1,6 @@
+ [Unit]
+ Description=CUPS Scheduler
++PartOf=cups.service
+ 
+ [Socket]
+ ListenStream=@CUPS_DEFAULT_DOMAINSOCKET@

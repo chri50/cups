@@ -16,7 +16,7 @@ Patch-Name: cups-deviced-allow-device-ids-with-newline.patch
  1 file changed, 19 insertions(+), 4 deletions(-)
 
 diff --git a/scheduler/cups-deviced.c b/scheduler/cups-deviced.c
-index 2a2f34b..7bc941f 100644
+index 2a2f34bbc..7bc941f88 100644
 --- a/scheduler/cups-deviced.c
 +++ b/scheduler/cups-deviced.c
 @@ -562,15 +562,30 @@ get_device(cupsd_backend_t *backend)	/* I - Backend to read from */

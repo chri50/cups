@@ -13,7 +13,7 @@ Patch-Name: tests-ignore-warnings.patch
  1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index ee5a2cb..d59f601 100755
+index ee5a2cbb5..d59f6014c 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
 @@ -998,7 +998,11 @@ else

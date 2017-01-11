@@ -12,7 +12,7 @@ Patch-Name: fixes-for-jobs-with-multiple-files-and-multiple-formats.patch
  1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/backend/ipp.c b/backend/ipp.c
-index 67383c7..8ead336 100644
+index 67383c71c..8ead336e0 100644
 --- a/backend/ipp.c
 +++ b/backend/ipp.c
 @@ -1794,7 +1794,10 @@ main(int  argc,				/* I - Number of command-line args */

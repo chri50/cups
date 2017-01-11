@@ -1,4 +1,4 @@
-From 24849a65e11ede60253fff64a6478ec549629d91 Mon Sep 17 00:00:00 2001
+From bda01fbf6f31173a318a3f03ccd552317638bae3 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:50 +0200
 Subject: po4a infrastructure and translations for manpages.
@@ -23,7 +23,7 @@ Patch-Name: manpage-translations.patch
  create mode 100644 man/fr/Makefile
 
 diff --git a/man/Makefile b/man/Makefile
-index 37e2c3f..181521e 100644
+index 37e2c3f8a..181521e81 100644
 --- a/man/Makefile
 +++ b/man/Makefile
 @@ -66,12 +66,18 @@ MAN8	=	cupsaccept.$(MAN8EXT) \
@@ -76,7 +76,7 @@ index 37e2c3f..181521e 100644
  #
 diff --git a/man/Makefile.l10n b/man/Makefile.l10n
 new file mode 100644
-index 0000000..dca1d71
+index 000000000..dca1d716b
 --- /dev/null
 +++ b/man/Makefile.l10n
 @@ -0,0 +1,248 @@
@@ -330,7 +330,7 @@ index 0000000..dca1d71
 +#
 diff --git a/man/de/Makefile b/man/de/Makefile
 new file mode 100644
-index 0000000..61025c3
+index 000000000..61025c308
 --- /dev/null
 +++ b/man/de/Makefile
 @@ -0,0 +1,13 @@
@@ -349,7 +349,7 @@ index 0000000..61025c3
 +#
 diff --git a/man/fr/Makefile b/man/fr/Makefile
 new file mode 100644
-index 0000000..8d239ba
+index 000000000..8d239ba6e
 --- /dev/null
 +++ b/man/fr/Makefile
 @@ -0,0 +1,13 @@
