@@ -1,4 +1,4 @@
-From 088a993412869e60f96c90b6aa0b8148a663735f Mon Sep 17 00:00:00 2001
+From bd5c052ba576e7427840768dae53455115ffc891 Mon Sep 17 00:00:00 2001
 From: Martin Pitt <martin.pitt@ubuntu.com>
 Date: Tue, 9 Aug 2016 18:11:47 +0200
 Subject: Set default job error policy to "retry-job", since it is less
@@ -56,7 +56,7 @@ index 4cede48bd..92c97744c 100644
  .TP 5
  \fBFilterLimit \fIlimit\fR
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index 01817f733..64016aa68 100644
+index 6870aff9a..7cc73de87 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -753,7 +753,7 @@ cupsdReadConfiguration(void)
@@ -68,7 +68,7 @@ index 01817f733..64016aa68 100644
  
    JobHistory          = DEFAULT_HISTORY;
    JobFiles            = DEFAULT_FILES;
-@@ -1231,8 +1231,8 @@ cupsdReadConfiguration(void)
+@@ -1233,8 +1233,8 @@ cupsdReadConfiguration(void)
        strcmp(ErrorPolicy, "retry-job") &&
        strcmp(ErrorPolicy, "stop-printer"))
    {
