@@ -1,4 +1,4 @@
-From 59a769ab2b96788c7819950eddec5af4b386618a Mon Sep 17 00:00:00 2001
+From b7e413e1e31dd3f15cbafad307b3aeb29438eb48 Mon Sep 17 00:00:00 2001
 From: Martin Pitt <mpitt@debian.org>
 Date: Tue, 9 Aug 2016 18:11:32 +0200
 Subject: Add support for creating pid files.
@@ -16,7 +16,7 @@ Patch-Name: pidfile.patch
  4 files changed, 45 insertions(+), 1 deletion(-)
 
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index afb70df33..16c23e8d5 100644
+index d7e3d472f..1bb7dcffa 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -163,7 +163,8 @@ static const cupsd_var_t	cupsfiles_vars[] =
@@ -37,7 +37,7 @@ index afb70df33..16c23e8d5 100644
  
    if (!strcmp(CUPS_DEFAULT_PRINTCAP, "/etc/printers.conf"))
      PrintcapFormat = PRINTCAP_SOLARIS;
-@@ -3427,6 +3429,7 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
+@@ -3429,6 +3431,7 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
               !_cups_strcasecmp(line, "SystemGroup") ||
               !_cups_strcasecmp(line, "SystemGroupAuthKey") ||
               !_cups_strcasecmp(line, "TempDir") ||

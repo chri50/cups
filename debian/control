@@ -185,13 +185,13 @@ Replaces: cups (<< 1.7.1-4~),
 Breaks: cups (<< 1.7.1-4~),
  cups-server-common (<< 2.1.0-7~)
 Multi-Arch: foreign
-Description: Common UNIX Printing System(tm) - PPD-less printing
+Description: Common UNIX Printing System(tm) - driverless printing
  The Common UNIX Printing System (or CUPS(tm)) is a printing system and 
  general replacement for lpd and the like.  It supports the Internet 
  Printing Protocol (IPP), and has its own filtering driver model for 
  handling various document types.
  .
- This package provides the parts of CUPS which are needed for PPD-less
+ This package provides the parts of CUPS which are needed for driverless
  printing on IPP printers with common data formats.
 
 Package: cups-daemon

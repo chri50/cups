@@ -1,3 +1,17 @@
+cups (2.2.1-56-ga2f30a72f-1) experimental; urgency=medium
+
+  * New 2.2.1+ upstream snapshot
+    - Updated systemd config files (Issue #4935)
+
+  [ Didier Raboud ]
+  * Merge 2.2.1-5 from unstable
+
+  [ Till Kamppeter ]
+  * Updated debian/control: CUPS does not support PPD-less printing any
+    more, we do driverless printing instead
+
+ -- Didier Raboud <odyx@debian.org>  Sun, 15 Jan 2017 15:00:04 +0100
+
 cups (2.2.1-46-g10887d272-2) experimental; urgency=medium
 
   * Merge 2.2.1-4 from unstable.
@@ -18,10 +32,17 @@ cups (2.2.1-41-g49c592936-1) experimental; urgency=medium
 
  -- Didier Raboud <odyx@debian.org>  Fri, 09 Dec 2016 09:57:28 +0100
 
+cups (2.2.1-5) unstable; urgency=medium
+
+  * Cherry-pick and adapt upstream's systemd configuration update to ensure
+    clean shutdown of CUPS (LP: #1642966)
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 11 Jan 2017 09:44:52 +0100
+
 cups (2.2.1-4) unstable; urgency=medium
 
   [ Didier Raboud ]
-  * Cleanup the cups debconf questions from 'parallel' leftovers    
+  * Cleanup the cups debconf questions from 'parallel' leftovers
     (Closes: #848718)
 
   [ intrigeri ]
