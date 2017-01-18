@@ -1,4 +1,4 @@
-From 0f8309273b9c90bac0e99a134394ebb108f98b3c Mon Sep 17 00:00:00 2001
+From 1493650d2e3aa73f2b809729fb567bc17e2366e1 Mon Sep 17 00:00:00 2001
 From: Sune Vuorela <debian@pusling.com>
 Date: Tue, 9 Aug 2016 18:11:44 +0200
 Subject: Dynamically link ppdc, to work around segfault on mipsen.

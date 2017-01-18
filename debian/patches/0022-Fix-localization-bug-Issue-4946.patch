@@ -1,0 +1,32 @@
+From a7516c95d3e8ca68bd4e613abfbee358476e35c0 Mon Sep 17 00:00:00 2001
+From: Michael R Sweet <michaelrsweet@gmail.com>
+Date: Mon, 16 Jan 2017 09:00:48 -0500
+Subject: Fix localization bug (Issue #4946)
+
+---
+ doc/ru/index.html.in | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/doc/ru/index.html.in b/doc/ru/index.html.in
+index ccbfdde69..e91a8f4bd 100644
+--- a/doc/ru/index.html.in
++++ b/doc/ru/index.html.in
+@@ -23,8 +23,8 @@
+     </div>
+     <div class="body">
+       <div class="row">
+-	<h1>CUPS 2.0.1</h1>
+-	<P>CUPS — поддерживающая большинство стандартов, свободная подсистема печати, разрабатываемая компанией <A HREF="http://www.apple.com/">Apple Inc.</A> для операционной системы Mac OS<SUP>&reg;</SUP> X и других UNIX<SUP>&reg;</SUP>-подобных операционных систем.</P>
++	<h1>CUPS @CUPS_VERSION@</h1>
++	<P>CUPS — поддерживающая большинство стандартов, свободная подсистема печати, разрабатываемая компанией <A HREF="http://www.apple.com/">Apple Inc.</A> для операционной системы macOS<SUP>&reg;</SUP> и других UNIX<SUP>&reg;</SUP>-подобных операционных систем.</P>
+       </div>
+       <div class="row">
+ 	<div class="thirds">
+@@ -51,6 +51,6 @@
+ </div>
+       </div>
+     </div>
+-    <div class="footer">CUPS а также логотип CUPS являются зарегистрированными торговыми марками <A HREF="http://www.apple.com">Apple Inc.</A> Авторские права на CUPS принадлежат (2007-2014) компании Apple Inc. Все права защищены.</div>
++    <div class="footer">CUPS а также логотип CUPS являются зарегистрированными торговыми марками <A HREF="http://www.apple.com">Apple Inc.</A> Авторские права на CUPS принадлежат (2007-2017) компании Apple Inc. Все права защищены.</div>
+   </body>
+ </html>

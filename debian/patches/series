@@ -18,6 +18,9 @@ tests-no-pdftourf.patch
 move-cupsd-conf-default-to-share.patch
 drop_unnecessary_dependencies.patch
 read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.patch
+0021-Fix-rastertopwg-line-offset-bug-Issue-4942.patch
+0022-Fix-localization-bug-Issue-4946.patch
+0023-Add-a-USB-quirk-rule-for-the-Kyocera-Ecosys-P6026cdn.patch
 cups-deviced-allow-device-ids-with-newline.patch
 airprint-support.patch
 cups-snmp-oids-device-id-hp-ricoh.patch
@@ -39,6 +42,6 @@ cupsd-set-default-for-SyncOnClose-to-Yes.patch
 cups-set-default-error-policy-retry-job.patch
 man-cups-lpd-drop-dangling-references.patch
 debianize_cups-config.patch
-0042-Build-mantohtml-with-the-build-architecture-compiler.patch
-0043-Do-not-execute-genstrings-during-build.patch
+0045-Build-mantohtml-with-the-build-architecture-compiler.patch
+0046-Do-not-execute-genstrings-during-build.patch
 manpage-translations.patch
