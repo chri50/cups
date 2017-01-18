@@ -1,4 +1,4 @@
-From b7e413e1e31dd3f15cbafad307b3aeb29438eb48 Mon Sep 17 00:00:00 2001
+From 8916028ea0deaf149077ddd5c7af34d158701847 Mon Sep 17 00:00:00 2001
 From: Martin Pitt <mpitt@debian.org>
 Date: Tue, 9 Aug 2016 18:11:32 +0200
 Subject: Add support for creating pid files.
@@ -16,7 +16,7 @@ Patch-Name: pidfile.patch
  4 files changed, 45 insertions(+), 1 deletion(-)
 
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index d7e3d472f..1bb7dcffa 100644
+index 7946980ad..71fb10a91 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -163,7 +163,8 @@ static const cupsd_var_t	cupsfiles_vars[] =
@@ -46,7 +46,7 @@ index d7e3d472f..1bb7dcffa 100644
      {
        cupsdLogMessage(CUPSD_LOG_INFO,
 diff --git a/scheduler/conf.h b/scheduler/conf.h
-index 585ba9203..b33768bce 100644
+index 873c370e6..66e4f68a6 100644
 --- a/scheduler/conf.h
 +++ b/scheduler/conf.h
 @@ -245,6 +245,8 @@ VAR int			CreateSelfSignedCerts	VALUE(TRUE);

@@ -1,4 +1,4 @@
-From 0162d45904775642186eb9a32553b01c36e416b3 Mon Sep 17 00:00:00 2001
+From 87a221b1b84e1b2d289c0dc6c50e4550256ab29d Mon Sep 17 00:00:00 2001
 From: Till Kampetter <till.kampetter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:37 +0200
 Subject: Add the IPP backend of CUPS 1.4.x to the current CUPS
@@ -20,7 +20,7 @@ Patch-Name: add-ipp-backend-of-cups-1.4.patch
  create mode 100644 backend/ipp14.c
 
 diff --git a/backend/Makefile b/backend/Makefile
-index aa5450d6d..56c0ba3f5 100644
+index 82b97c50c..4c5e68c88 100644
 --- a/backend/Makefile
 +++ b/backend/Makefile
 @@ -27,6 +27,7 @@ include ../Makedefs

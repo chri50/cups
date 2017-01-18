@@ -1,4 +1,4 @@
-From f7f36c25c68ec1475f5e6eacc750556ee6faa9d1 Mon Sep 17 00:00:00 2001
+From 7171b9ef42f2638d272c822507c038b75502ff79 Mon Sep 17 00:00:00 2001
 From: Till Kamppeter <till.kamppeter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:29 +0200
 Subject: Patch to support Apple AirPrint (printing from iPhone, iPad, iPod
@@ -48,7 +48,7 @@ index 1c50f16a6..40ef6d1b1 100644
  #
  # Text files...
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index f547749c6..d7e3d472f 100644
+index 3cde8bd29..7946980ad 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -745,7 +745,7 @@ cupsdReadConfiguration(void)
@@ -61,7 +61,7 @@ index f547749c6..d7e3d472f 100644
  
    cupsdSetString(&LPDConfigFile, CUPS_DEFAULT_LPD_CONFIG_FILE);
 diff --git a/scheduler/dirsvc.c b/scheduler/dirsvc.c
-index 2e8303ec6..035e5fbd4 100644
+index fdbd7f1b3..2612d4d2f 100644
 --- a/scheduler/dirsvc.c
 +++ b/scheduler/dirsvc.c
 @@ -414,6 +414,12 @@ dnssdBuildTxtRecord(
@@ -78,7 +78,7 @@ index 2e8303ec6..035e5fbd4 100644
      {
        keyvalue[count  ][0] = "air";
 diff --git a/scheduler/printers.c b/scheduler/printers.c
-index cfa88f002..7d48697bc 100644
+index 655552f0f..ead782205 100644
 --- a/scheduler/printers.c
 +++ b/scheduler/printers.c
 @@ -3743,7 +3743,9 @@ add_printer_formats(cupsd_printer_t *p)	/* I - Printer */

@@ -1,4 +1,4 @@
-From ea01c4eaee0da0bde0cd6abbacad74bce7046a24 Mon Sep 17 00:00:00 2001
+From 8a95c6f21dcbf860214fa3a6d6f03fc62aeb9c47 Mon Sep 17 00:00:00 2001
 From: Julien Desfossez at Revolution Linux
  <Julien Desfossez at Revolution Linux>
 Date: Tue, 9 Aug 2016 18:11:42 +0200
@@ -13,7 +13,7 @@ Patch-Name: printer-filtering.patch
  1 file changed, 116 insertions(+)
 
 diff --git a/cups/ipp.c b/cups/ipp.c
-index cd7e0cd88..9fac54b24 100644
+index b2f8bb73e..eef11b94b 100644
 --- a/cups/ipp.c
 +++ b/cups/ipp.c
 @@ -2715,6 +2715,120 @@ ippNew(void)
