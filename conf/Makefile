@@ -73,8 +73,12 @@ install-data:
 			$(INSTALL_CONFIG) -g $(CUPS_GROUP) $$file $(SERVERROOT)/$$file.N ; \
 		else \
 			$(INSTALL_CONFIG) -g $(CUPS_GROUP) $$file $(SERVERROOT) ; \
+			grep -v "\$$Id[:\$$]" $(SERVERROOT)/$$file > $(SERVERROOT)/$$file.n ; \
+			mv $(SERVERROOT)/$$file.n $(SERVERROOT)/$$file ; \
 		fi ; \
 		$(INSTALL_CONFIG) -g $(CUPS_GROUP) $$file $(DATADIR)/$$file.default; \
+		grep -v "\$$Id[:\$$]" $(DATADIR)/$$file.default > $(DATADIR)/$$file.default.n ; \
+		mv $(DATADIR)/$$file.default.n $(DATADIR)/$$file.default ; \
 	done
 	$(INSTALL_DIR) -m 755 $(DATADIR)/mime
 	for file in $(REPLACE); do \
