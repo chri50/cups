@@ -1,0 +1,20 @@
+From e21647559cbcc1ae72aaf2edf22f60aa4a1f89dd Mon Sep 17 00:00:00 2001
+From: Michael Sweet <michael.r.sweet@gmail.com>
+Date: Fri, 21 Oct 2016 01:17:13 -0400
+Subject: Add a USB quirk rule for the Kyocera Ecosys P6026cdn (Issue #4900)
+
+---
+ backend/org.cups.usb-quirks | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/backend/org.cups.usb-quirks b/backend/org.cups.usb-quirks
+index 5368f18a8..d126a3243 100644
+--- a/backend/org.cups.usb-quirks
++++ b/backend/org.cups.usb-quirks
+@@ -247,3 +247,6 @@
+ 
+ # Lexmark C540n (Issue #4778)
+ 0x043d 0x0139 no-reattach
++
++# Kyocera Ecosys P6026cdn (Issue #4900)
++0x0482 0x063f no-reattach

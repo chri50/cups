@@ -1,4 +1,4 @@
-From a60cab9d85fa93e1c18e3910894914c346c107c7 Mon Sep 17 00:00:00 2001
+From a86117cdd744a61307e979c7bc486a1f803ad0bf Mon Sep 17 00:00:00 2001
 From: Martin Pitt <mpitt@debian.org>
 Date: Tue, 9 Aug 2016 18:11:32 +0200
 Subject: Add support for creating pid files.
