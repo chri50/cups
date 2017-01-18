@@ -1,4 +1,4 @@
-From 096a3c2f5070f545a0ff78fa7dcf2437b114fad3 Mon Sep 17 00:00:00 2001
+From cf881984e49240b069a958f5c2a7ea4c7549223a Mon Sep 17 00:00:00 2001
 From: Kenshi Muto <kmuto@debian.org>
 Date: Tue, 9 Aug 2016 18:11:33 +0200
 Subject: Do not write VCS tags into installed conffiles
@@ -14,7 +14,7 @@ Patch-Name: removecvstag.patch
  1 file changed, 4 insertions(+)
 
 diff --git a/conf/Makefile b/conf/Makefile
-index 3e88bdcb5..c63b124b2 100644
+index 4302ebac9..36ab37301 100644
 --- a/conf/Makefile
 +++ b/conf/Makefile
 @@ -73,8 +73,12 @@ install-data:

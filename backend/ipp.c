@@ -2433,10 +2433,13 @@ monitor_printer(
   while (monitor->job_state < IPP_JOB_CANCELED && !job_canceled)
   {
    /*
-    * Reconnect to the printer...
+    * Reconnect to the printer as needed...
     */
 
-    if (!httpReconnect(http))
+    if (httpGetFd(http) < 0)
+      httpReconnect(http);
+
+    if (httpGetFd(http) >= 0)
     {
      /*
       * Connected, so check on the printer state...
@@ -2455,7 +2458,7 @@ monitor_printer(
         * No job-id yet, so continue...
 	*/
 
-        goto monitor_disconnect;
+        goto monitor_sleep;
       }
 
      /*
@@ -2616,19 +2619,13 @@ monitor_printer(
           (monitor->job_state == IPP_JOB_CANCELED ||
 	   monitor->job_state == IPP_JOB_ABORTED))
 	job_canceled = -1;
-
-     /*
-      * Disconnect from the printer - we'll reconnect on the next poll...
-      */
-
-      monitor_disconnect:
-
-      _httpDisconnect(http);
     }
 
    /*
     * Sleep for N seconds...
     */
+
+    monitor_sleep:
 
     sleep((unsigned)delay);
 
@@ -2641,7 +2638,10 @@ monitor_printer(
 
   if (job_canceled > 0 && monitor->job_id > 0)
   {
-    if (!httpReconnect(http))
+    if (httpGetFd(http) < 0)
+      httpReconnect(http);
+
+    if (httpGetFd(http) >= 0)
     {
       cancel_job(http, monitor->uri, monitor->job_id, monitor->resource,
                  monitor->user, monitor->version);

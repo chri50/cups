@@ -11,7 +11,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 2.0.3-10\n"
-"POT-Creation-Date: 2016-12-11 08:58+0100\n"
+"POT-Creation-Date: 2017-01-18 12:24+0100\n"
 "PO-Revision-Date: 2016-12-11 09:18+0100\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
@@ -739,8 +739,8 @@ msgstr "COPYRIGHT"
 #: mime.types.man:111 notifier.man:39 ppdcfile.man:160 ppdc.man:101
 #: ppdhtml.man:46 ppdi.man:53 ppdmerge.man:49 ppdpo.man:53 printers.conf.man:31
 #: subscriptions.conf.man:31
-msgid "Copyright \\[co] 2007-2016 by Apple Inc."
-msgstr "Copyright \\[co] 2007-2016 by Apple Inc."
+msgid "Copyright \\[co] 2007-2017 by Apple Inc."
+msgstr "Copyright \\[co] 2007-2017 by Apple Inc."
 
 #. type: TH
 #: cancel.man:13

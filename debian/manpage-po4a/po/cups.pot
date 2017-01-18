@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2016-12-11 08:58+0100\n"
+"POT-Creation-Date: 2017-01-18 12:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -523,7 +523,7 @@ msgstr ""
 
 #. type: Plain text
 #: backend.man:200 cancel.man:94 classes.conf.man:31 client.conf.man.in:100 cupsaccept.man:89 cupsaddsmb.man.in:126 cups-config.man:111 cupsctl.man:101 cupsd.conf.man.in:880 cupsd-helper.man:89 cupsd-logs.man:236 cupsd.man.in:129 cupsenable.man:100 cups-files.conf.man.in:231 cupsfilter.man:138 cups-lpd.man.in:119 cups.man:142 cups-snmp.conf.man:64 cups-snmp.man.in:56 cupstestdsc.man:46 cupstestppd.man:146 filter.man:220 ipptoolfile.man:620 ipptool.man:243 lpadmin.man:213 lpc.man:59 lpinfo.man:124 lp.man:265 lpmove.man:77 lpoptions.man.in:136 lpq.man:67 lpr.man:217 lprm.man:85 lpstat.man:147 mailto.conf.man:47 mime.convs.man:61 mime.types.man:111 notifier.man:39 ppdcfile.man:160 ppdc.man:101 ppdhtml.man:46 ppdi.man:53 ppdmerge.man:49 ppdpo.man:53 printers.conf.man:31 subscriptions.conf.man:31
-msgid "Copyright \\[co] 2007-2016 by Apple Inc."
+msgid "Copyright \\[co] 2007-2017 by Apple Inc."
 msgstr ""
 
 #. type: TH

@@ -1,4 +1,4 @@
-README - CUPS v2.2.1 - 2016-10-03
+README - CUPS v2.2.2 - 2017-01-17
 ---------------------------------
 
 Looking for compile instructions?  Read the file "INSTALL.txt" instead...
@@ -44,7 +44,7 @@ GETTING SUPPORT AND OTHER RESOURCES
     If you have problems, READ THE DOCUMENTATION FIRST!  We also provide two
     mailing lists which are available at:
 
-	http://www.cups.org/lists.php
+	http://lists.cups.org/mailman/listinfo
 
     See the CUPS web site at "http://www.cups.org/" for other resources.
 
@@ -111,6 +111,11 @@ SETTING UP PRINTER QUEUES FROM THE COMMAND-LINE
     The sample drivers provide basic printing capabilities, but generally do not
     exercise the full potential of the printers or CUPS.
 
+    CUPS also supports IPP Everywhere printers using the "everywhere" model,
+    for example:
+
+        lpadmin -p printername -E -v ipp://11.22.33.44/ipp/print -m everywhere
+
 
 PRINTING FILES
 
@@ -140,7 +145,7 @@ PRINTING FILES
 
 LEGAL STUFF
 
-    CUPS is Copyright 2007-2016 by Apple Inc.  CUPS and the CUPS logo are
+    CUPS is Copyright 2007-2017 by Apple Inc.  CUPS and the CUPS logo are
     trademarks of Apple Inc.
 
     The MD5 Digest code is Copyright 1999 Aladdin Enterprises.

@@ -1,4 +1,4 @@
-From 3bf694ef13c0ecc4a442258d76744e273af4df72 Mon Sep 17 00:00:00 2001
+From ba60214ac00cd83f0f1996f3f34501623d1c7ab3 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:24 +0200
 Subject: Move cupsd.conf.default from SERVERROOT to DATADIR
@@ -15,7 +15,7 @@ Patch-Name: move-cupsd-conf-default-to-share.patch
  2 files changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/cgi-bin/admin.c b/cgi-bin/admin.c
-index c44a42706..018e6f122 100644
+index 576fac0bc..eb64ede63 100644
 --- a/cgi-bin/admin.c
 +++ b/cgi-bin/admin.c
 @@ -1921,6 +1921,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
@@ -39,7 +39,7 @@ index c44a42706..018e6f122 100644
      if (!stat(filename, &info) && info.st_size < (1024 * 1024) &&
          (cupsd = cupsFileOpen(filename, "r")) != NULL)
 diff --git a/conf/Makefile b/conf/Makefile
-index bc1f3f944..3e88bdcb5 100644
+index e8f88ec88..4302ebac9 100644
 --- a/conf/Makefile
 +++ b/conf/Makefile
 @@ -74,7 +74,7 @@ install-data:

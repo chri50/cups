@@ -1,3 +1,12 @@
+cups (2.2.2-1) experimental; urgency=medium
+
+  * New 2.2.2 upstream release
+  * Refresh manpage translations
+  * dpkg-source: update extend-diff-ignore to cope with the difference between
+    upstream's VCS and tarball
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 18 Jan 2017 13:48:47 +0100
+
 cups (2.2.1-56-ga2f30a72f-1) experimental; urgency=medium
 
   * New 2.2.1+ upstream snapshot
