@@ -55,6 +55,7 @@ static void	cups_read_client_conf(cups_file_t *fp,
 				      const char *cups_expiredcerts,
 				      int ssl_options);
 
+static void	cups_set_default_ipp_port(_cups_globals_t *cg);
 
 /*
  * 'cupsEncryption()' - Get the current encryption settings.
@@ -360,6 +361,9 @@ cupsSetServer(const char *server)	/* I - Server name */
       cg->ipp_port = atoi(port);
     }
 
+    if (!cg->ipp_port)
+        cups_set_default_ipp_port(cg);
+
     if (cg->server[0] == '/')
       strlcpy(cg->servername, "localhost", sizeof(cg->servername));
     else
@@ -370,6 +374,7 @@ cupsSetServer(const char *server)	/* I - Server name */
     cg->server[0]      = '\0';
     cg->servername[0]  = '\0';
     cg->server_version = 20;
+    cg->ipp_port       = 0;
   }
 
   if (cg->http)
@@ -1119,17 +1124,7 @@ cups_read_client_conf(
   }
 
   if (!cg->ipp_port)
-  {
-    const char	*ipp_port;		/* IPP_PORT environment variable */
-
-    if ((ipp_port = getenv("IPP_PORT")) != NULL)
-    {
-      if ((cg->ipp_port = atoi(ipp_port)) <= 0)
-        cg->ipp_port = CUPS_DEFAULT_IPP_PORT;
-    }
-    else
-      cg->ipp_port = CUPS_DEFAULT_IPP_PORT;
-  }
+    cups_set_default_ipp_port(cg);
 
   if (!cg->user[0])
   {
@@ -1198,6 +1193,24 @@ cups_read_client_conf(
 			!_cups_strcasecmp(cups_expiredcerts, "true");
 }
 
+/*
+ * 'cups_set_default_ipp_port()' - Set the default IPP port value.
+ */
+
+static void
+cups_set_default_ipp_port(
+    _cups_globals_t *cg)		/* I - Global data */
+{
+  const char	*ipp_port;		/* IPP_PORT environment variable */
+
+  if ((ipp_port = getenv("IPP_PORT")) != NULL)
+  {
+    if ((cg->ipp_port = atoi(ipp_port)) <= 0)
+      cg->ipp_port = CUPS_DEFAULT_IPP_PORT;
+  }
+  else
+    cg->ipp_port = CUPS_DEFAULT_IPP_PORT;
+}
 
 /*
  * End of "$Id: usersys.c 11689 2014-03-05 21:22:12Z msweet $".
