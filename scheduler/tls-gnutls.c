@@ -114,7 +114,15 @@ cupsdStartTLS(cupsd_client_t *con)	/* I - Client connection */
 				       ServerKey, GNUTLS_X509_FMT_PEM);
 
   gnutls_init(&con->http.tls, GNUTLS_SERVER);
-  gnutls_set_default_priority(con->http.tls);
+  if (!SSLOptions)
+    gnutls_priority_set_direct(con->http.tls, "NORMAL:-ARCFOUR-128:-VERS-SSL3.0", NULL);
+  else if ((SSLOptions & CUPSD_SSL_ALLOW_SSL3) &&
+	   (SSLOptions & CUPSD_SSL_ALLOW_RC4))
+    gnutls_priority_set_direct(con->http.tls, "NORMAL", NULL);
+  else if (SSLOptions & CUPSD_SSL_ALLOW_SSL3)
+    gnutls_priority_set_direct(con->http.tls, "NORMAL:-ARCFOUR-128", NULL);
+  else
+    gnutls_priority_set_direct(con->http.tls, "NORMAL:-VERS-SSL3.0", NULL);
 
   gnutls_credentials_set(con->http.tls, GNUTLS_CRD_CERTIFICATE, *credentials);
   gnutls_transport_set_ptr(con->http.tls, (gnutls_transport_ptr)HTTP(con));

@@ -147,6 +147,10 @@ extern "C" {
 #define _HTTP_RESOLVE_FQDN	2	/* Resolve to a FQDN */
 #define _HTTP_RESOLVE_FAXOUT	4	/* Resolve FaxOut service? */
 
+/* care - these should be the same values as the CUPSD_SSL_* equivalents */
+#define _HTTP_TLS_ALLOW_RC4	2
+#define _HTTP_TLS_ALLOW_SSL3	4
+
 
 /*
  * Types and functions for SSL support...
@@ -424,6 +428,8 @@ extern const char	*_httpResolveURI(const char *uri, char *resolved_uri,
 					 void *context);
 extern int		_httpUpdate(http_t *http, http_status_t *status);
 extern int		_httpWait(http_t *http, int msec, int usessl);
+
+extern void		_httpTLSSetOptions(int options);
 
 
 /*
