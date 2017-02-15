@@ -1,3 +1,9 @@
+cups (1.7.2-0ubuntu1.8) trusty; urgency=medium
+
+  * Fixed processing of server overrides without port numbers. (LP: #1665018)
+
+ -- Dariusz Gadomski <dariusz.gadomski@canonical.com>  Wed, 15 Feb 2017 15:55:27 +0100
+
 cups (1.7.2-0ubuntu1.7) trusty-security; urgency=medium
 
   * Disable SSLv3 with option to turn back on.
