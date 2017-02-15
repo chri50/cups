@@ -974,6 +974,10 @@ add_class(cupsd_client_t  *con,		/* I - Client connection */
                                IPP_TAG_TEXT)) != NULL)
     cupsdSetString(&pclass->info, attr->values[0].string.text);
 
+  if ((attr = ippFindAttribute(con->request, "ppd-timestamp",
+                               IPP_TAG_TEXT)) != NULL)
+    cupsdSetString(&pclass->ppd_timestamp, attr->values[0].string.text);
+
   if ((attr = ippFindAttribute(con->request, "printer-is-accepting-jobs",
                                IPP_TAG_BOOLEAN)) != NULL &&
       attr->values[0].boolean != pclass->accepting)
@@ -999,6 +1003,13 @@ add_class(cupsd_client_t  *con,		/* I - Client connection */
                     pclass->name, attr->values[0].boolean, pclass->shared);
 
     pclass->shared = attr->values[0].boolean;
+  }
+
+  if ((attr = ippFindAttribute(con->request, "printer-is-colormanaged",
+                               IPP_TAG_BOOLEAN)) != NULL)
+  {
+    if (pclass->color_managed && !attr->values[0].boolean)
+        pclass->color_managed = attr->values[0].boolean;
   }
 
   if ((attr = ippFindAttribute(con->request, "printer-state",
@@ -2332,6 +2343,10 @@ add_printer(cupsd_client_t  *con,	/* I - Client connection */
                                IPP_TAG_TEXT)) != NULL)
     cupsdSetString(&printer->info, attr->values[0].string.text);
 
+  if ((attr = ippFindAttribute(con->request, "ppd-timestamp",
+                               IPP_TAG_TEXT)) != NULL)
+    cupsdSetString(&printer->ppd_timestamp, attr->values[0].string.text);
+
   set_device_uri = 0;
 
   if ((attr = ippFindAttribute(con->request, "device-uri",
@@ -2489,6 +2504,12 @@ add_printer(cupsd_client_t  *con,	/* I - Client connection */
     cupsdAddEvent(CUPSD_EVENT_PRINTER_STATE, printer, NULL,
                   "%s accepting jobs.",
 		  printer->accepting ? "Now" : "No longer");
+  }
+
+if ((attr = ippFindAttribute(con->request, "printer-is-colormanaged",
+                               IPP_TAG_BOOLEAN)) != NULL)
+  {
+    printer->color_managed = attr->values[0].boolean;
   }
 
   if ((attr = ippFindAttribute(con->request, "printer-is-shared",
@@ -4905,6 +4926,10 @@ copy_printer_attrs(
     ippAddBoolean(con->response, IPP_TAG_PRINTER, "printer-is-shared",
                   printer->shared);
 
+  if (!ra || cupsArrayFind(ra, "printer-is-colormanaged"))
+    ippAddBoolean(con->response, IPP_TAG_PRINTER, "printer-is-colormanaged",
+                  printer->color_managed);
+
   if (!ra || cupsArrayFind(ra, "printer-more-info"))
   {
     httpAssembleURIf(HTTP_URI_CODING_ALL, printer_uri, sizeof(printer_uri),
@@ -4952,6 +4977,9 @@ copy_printer_attrs(
 
     if (!printer->shared)
       type |= CUPS_PRINTER_NOT_SHARED;
+
+    if (!printer->color_managed)
+      type |= CUPS_CM_OFF;
 
     ippAddInteger(con->response, IPP_TAG_PRINTER, IPP_TAG_ENUM, "printer-type",
 		  type);
