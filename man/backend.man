@@ -152,7 +152,7 @@ The print file was not successfully transmitted because it cannot be printed at 
 The print file was not successfully transmitted because one or more attributes are not supported or the job was canceled at the printer. The scheduler will respond to this by canceling the job.
 .TP 5
 .B CUPS_BACKEND_RETRY
-The print file was not successfully transmitted because of a temporary issue. The scheduler will retry the job at a future time - other jobs may print before this one.
+The print file was not successfully transmitted because of a temporary issue. The scheduler will retry the job at a future time \- other jobs may print before this one.
 .TP 5
 .B CUPS_BACKEND_RETRY_CURRENT
 The print file was not successfully transmitted because of a temporary issue. The scheduler will retry the job immediately without allowing intervening jobs.
@@ -182,7 +182,7 @@ or
 .BR lpr (1)
 programs to send print jobs or
 .BR lpinfo (8)
-to query for available printers using the backend. The one exception is the SNMP backend - see
+to query for available printers using the backend. The one exception is the SNMP backend \- see
 .BR cups-snmp (8)
 for more information.
 .SH SEE ALSO

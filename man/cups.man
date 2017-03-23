@@ -41,7 +41,7 @@ The easiest way to start is by using the web interface to configure your printer
 .LP
 When you are asked for a username and password, enter your login username and password or the "root" username and password.
 .LP
-After the printer is added you will be asked to set the default printer options (paper size, output mode, etc.) for the printer. Make any changes as needed and then click/press on the Set Default Options button to save them. Some printers also support auto-configuration - click/press on the Query Printer for Default Options button to update the options automatically.
+After the printer is added you will be asked to set the default printer options (paper size, output mode, etc.) for the printer. Make any changes as needed and then click/press on the Set Default Options button to save them. Some printers also support auto-configuration \- click/press on the Query Printer for Default Options button to update the options automatically.
 .LP
 Once you have added the printer, you can print to it from any application. You can also choose Print Test Page from the maintenance menu to print a simple test page and verify that everything is working properly.
 .LP
