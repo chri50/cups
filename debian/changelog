@@ -1,3 +1,15 @@
+cups (2.2.2-1ubuntu1) zesty; urgency=medium
+
+  * debian/local/apparmor-profile:
+    - allow cupsd and cups-pdf to communicate via Unix sockets (LP: #1675503)
+    - adjust cups-pdf log location
+    - allow cups-pdf to read /etc/cups/ppd/*.ppd
+    - silence noisy denials for cupsd occasionally trying to send signals to
+      unconfined
+    - allow capability wake_alarm (seen in LP: 1641985)
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Thu, 23 Mar 2017 17:55:49 +0000
+
 cups (2.2.2-1) experimental; urgency=medium
 
   * New 2.2.2 upstream release
