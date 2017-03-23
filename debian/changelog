@@ -1,3 +1,37 @@
+cups (2.2.2-2) experimental; urgency=medium
+
+  * Use /run instead of /var/run everywhere meaningful
+    (Closes: #858341)
+    * /run/cups:
+      - in debian/rules; pass --with-rundir=/run/cups
+      - update cups.init
+    * /run/cups/cupsd.pid:
+      - update cups.init
+      - update pidfile.patch
+    * /run/cups/printcap:
+      - in debian/rules; update --with-printcap
+      - update cups-daemon postinst
+    * /run/cups/cups.sock:
+      - update cups postinst and postrm for the lpadmin calls
+      - update the autopkgtest for the lpadmin call
+      - update the libcups2 example script
+      - update the upstart script
+    * /run/cups/certs:
+      - update cups.init
+      - update the upstart script
+    Thanks-To: Russell Coker <russell@coker.com.au>
+
+   [ Jamie Strandboge ]
+   * Update debian/local/apparmor-profile (Closes: #858571)
+      - allow cupsd and cups-pdf to communicate via Unix sockets (LP: #1675503)
+      - adjust cups-pdf log location
+      - allow cups-pdf to read /etc/cups/ppd/*.ppd
+      - silence noisy denials for cupsd occasionally trying to send signals to
+        unconfined
+      - allow capability wake_alarm (seen in LP: 1641985)
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 23 Mar 2017 22:32:26 +0100
+
 cups (2.2.2-1) experimental; urgency=medium
 
   * New 2.2.2 upstream release
