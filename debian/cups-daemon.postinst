@@ -63,7 +63,7 @@ if [ "$1" = configure ]; then
 
 	printcap_file=`egrep '^Printcap ' /etc/cups/cupsd.conf | awk '{print $2}' | tail -n 1`
 	if [ -z "$printcap_file" ]; then
-	    printcap_file=/var/run/cups/printcap
+	    printcap_file=/run/cups/printcap
 	fi
 	if [ ! -e /etc/printcap -a -e $printcap_file ]; then
 	    ln -s $printcap_file /etc/printcap

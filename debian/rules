@@ -54,7 +54,8 @@ endif
 		--disable-launchd \
 		--with-cups-group=lp \
 		--with-system-groups=lpadmin \
-		--with-printcap=/var/run/cups/printcap \
+		--with-rundir=/run/cups \
+		--with-printcap=/run/cups/printcap \
 		--with-log-file-perm=0640 \
 		--with-local_protocols='dnssd' \
 		--with-systemd=/lib/systemd/system \
@@ -96,8 +97,9 @@ ifneq (,$(filter cups-server-common,$(shell dh_listpackages)))
 	done
 endif
 
-	# Ensure that we don't ship anything in /var/run
+	# Ensure that we don't ship anything in /var/run or /run
 	rm -rf debian/cups*/var/run
+	rm -rf debian/cups*/run
 
 ifneq (,$(filter cups,$(shell dh_listpackages)))
 	# Make the usb backend run as root, since /dev/bus/usb/* are

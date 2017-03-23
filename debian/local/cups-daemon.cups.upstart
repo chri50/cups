@@ -24,7 +24,7 @@ pre-start script
 	modprobe -q -b parport_pc || true
     fi
     
-    mkdir -p /var/run/cups/certs
+    mkdir -p /run/cups/certs
     if [ -x /lib/init/apparmor-profile-load ]; then
 	/lib/init/apparmor-profile-load usr.sbin.cupsd
     fi
@@ -35,11 +35,11 @@ exec /usr/sbin/cupsd -f
 post-start script
     # wait until daemon is ready
     timeout=60
-    while [ ! -e /var/run/cups/cups.sock ]; do 
+    while [ ! -e /run/cups/cups.sock ]; do
         sleep 0.5
 	timeout=$((timeout-1))
 	if [ "$timeout" -eq 0 ]; then
-	    echo "cupsd failed to create /var/run/cups/cups.sock, skipping automatic printer configuration" >&2
+	    echo "cupsd failed to create /run/cups/cups.sock, skipping automatic printer configuration" >&2
 	    exit 0
 	fi
     done

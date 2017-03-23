@@ -8,7 +8,7 @@ case "$1" in
     purge)
 	rm -rf /var/lib/cups
 	rm -rf /var/log/cups
-	rm -rf /var/run/cups
+	rm -rf /run/cups
 	rm -rf /var/cache/cups
 	rm -rf /var/spool/cups
 	rm -f /etc/cups/ssl/server.crt

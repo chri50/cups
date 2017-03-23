@@ -1,7 +1,7 @@
-From 8916028ea0deaf149077ddd5c7af34d158701847 Mon Sep 17 00:00:00 2001
+From cf22c260f8c5979db2c21d9a85d4be6b14a59993 Mon Sep 17 00:00:00 2001
 From: Martin Pitt <mpitt@debian.org>
 Date: Tue, 9 Aug 2016 18:11:32 +0200
-Subject: Add support for creating pid files.
+Subject: Add support for creating pid files in /run
 
 Bug: http://www.cups.org/str.php?L2465
 
@@ -16,7 +16,7 @@ Patch-Name: pidfile.patch
  4 files changed, 45 insertions(+), 1 deletion(-)
 
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index 7946980ad..71fb10a91 100644
+index 7946980ad..465f6ded9 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -163,7 +163,8 @@ static const cupsd_var_t	cupsfiles_vars[] =
@@ -33,7 +33,7 @@ index 7946980ad..71fb10a91 100644
    cupsdSetStringf(&ServerHeader, "CUPS/%d.%d IPP/2.1", CUPS_VERSION_MAJOR,
                    CUPS_VERSION_MINOR);
    cupsdSetString(&StateDir, CUPS_STATEDIR);
-+  cupsdSetString(&PidFile, "/var/run/cups/cupsd.pid");
++  cupsdSetString(&PidFile, "/run/cups/cupsd.pid");
  
    if (!strcmp(CUPS_DEFAULT_PRINTCAP, "/etc/printers.conf"))
      PrintcapFormat = PRINTCAP_SOLARIS;
