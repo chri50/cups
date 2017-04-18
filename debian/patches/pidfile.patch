@@ -1,4 +1,4 @@
-From cf22c260f8c5979db2c21d9a85d4be6b14a59993 Mon Sep 17 00:00:00 2001
+From f39443b615c25a730fe1ec71c2cb3eda888262a0 Mon Sep 17 00:00:00 2001
 From: Martin Pitt <mpitt@debian.org>
 Date: Tue, 9 Aug 2016 18:11:32 +0200
 Subject: Add support for creating pid files in /run
@@ -16,7 +16,7 @@ Patch-Name: pidfile.patch
  4 files changed, 45 insertions(+), 1 deletion(-)
 
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index 7946980ad..465f6ded9 100644
+index aa209c4e6..a9bbb61be 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -163,7 +163,8 @@ static const cupsd_var_t	cupsfiles_vars[] =
@@ -37,7 +37,7 @@ index 7946980ad..465f6ded9 100644
  
    if (!strcmp(CUPS_DEFAULT_PRINTCAP, "/etc/printers.conf"))
      PrintcapFormat = PRINTCAP_SOLARIS;
-@@ -3429,6 +3431,7 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
+@@ -3425,6 +3427,7 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
               !_cups_strcasecmp(line, "SystemGroup") ||
               !_cups_strcasecmp(line, "SystemGroupAuthKey") ||
               !_cups_strcasecmp(line, "TempDir") ||
@@ -59,7 +59,7 @@ index 873c370e6..66e4f68a6 100644
  #ifdef HAVE_ONDEMAND
  VAR int			IdleExitTimeout		VALUE(60);
 diff --git a/scheduler/main.c b/scheduler/main.c
-index fce22d799..7a5e8b6b9 100644
+index 50821af5e..194c2c0c2 100644
 --- a/scheduler/main.c
 +++ b/scheduler/main.c
 @@ -73,6 +73,8 @@ static void		service_checkin(void);

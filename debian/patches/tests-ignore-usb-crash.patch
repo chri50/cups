@@ -1,4 +1,4 @@
-From 5a7ddcae57f168b126bcae3c04b965d2c137e82d Mon Sep 17 00:00:00 2001
+From 3a025351bd5bff5d5cd5d694cde80225013e5035 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:10 +0200
 Subject: Tests: ignore usb & dnssd backend unexpected exits
