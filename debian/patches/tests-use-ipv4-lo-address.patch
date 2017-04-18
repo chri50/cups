@@ -1,4 +1,4 @@
-From a2395e7fed73dca8e76a6737cd1af32ba91a38bb Mon Sep 17 00:00:00 2001
+From 7bb61d90f60317790f0299279d8146002232792b Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:21 +0200
 Subject: Use 127.0.0.1 instead of localhost in the test-suite. This should

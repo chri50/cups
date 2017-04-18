@@ -1,4 +1,4 @@
-From f160d83772cf3dfb9751334502dab9d269947497 Mon Sep 17 00:00:00 2001
+From 65f96cd0ada85ffdafce01b5f58ea8f790dd7e3c Mon Sep 17 00:00:00 2001
 From: Helmut Grohne <helmut@subdivi.de>
 Date: Thu, 15 Sep 2016 07:59:13 +0200
 Subject: Do not execute genstrings during build

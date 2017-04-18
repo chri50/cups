@@ -1,4 +1,4 @@
-From e2166ee1266fe27cd03818dd71ca7eb6b7cf6ad7 Mon Sep 17 00:00:00 2001
+From 139117da63bb8ebe23476b545259684d0c2d508b Mon Sep 17 00:00:00 2001
 From: Martin Pitt <mpitt@debian.org>
 Date: Tue, 9 Aug 2016 18:11:25 +0200
 Subject: Do not link libcups.so and libcupsimage.so against

@@ -1,4 +1,4 @@
-From cad2cc636a542954f6222b90ba3a09cb9a5d1ae8 Mon Sep 17 00:00:00 2001
+From bf927c182bfc7c07ab3cb8ef91cf7f0e6ca56c01 Mon Sep 17 00:00:00 2001
 From: Helmut Grohne <helmut@subdivi.de>
 Date: Tue, 9 Aug 2016 18:11:49 +0200
 Subject: Build mantohtml with the build architecture compiler
@@ -30,7 +30,7 @@ index 4ad90f6d7..6f4746e8b 100644
  CXX		=	@LIBTOOL@ @CXX@
  DSO		=	@DSO@
 diff --git a/configure.ac b/configure.ac
-index 7369e0f1a..bbe615b10 100644
+index ad3ec8e36..1473e832c 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -22,6 +22,15 @@ sinclude(config-scripts/cups-common.m4)
@@ -64,7 +64,7 @@ index 60f76c84f..ee825cd99 100644
 +mantohtml:	mantohtml.c
 +	$(CC_FOR_BUILD) -o $@ $<
 diff --git a/man/mantohtml.c b/man/mantohtml.c
-index 8632de0f1..d1cf298a9 100644
+index bf7ba5fe8..80acf5512 100644
 --- a/man/mantohtml.c
 +++ b/man/mantohtml.c
 @@ -15,8 +15,10 @@
@@ -100,7 +100,7 @@ index 8632de0f1..d1cf298a9 100644
          if ((size_t)(end - s) < sizeof(name))
            name[end - s] = '\0';
  
-@@ -1174,7 +1178,8 @@ html_fputs(const char *s,		/* I  - String */
+@@ -1177,7 +1181,8 @@ html_fputs(const char *s,		/* I  - String */
        if (end[-1] == ',' || end[-1] == '.' || end[-1] == ')')
          end --;
  

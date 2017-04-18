@@ -1,3 +1,4 @@
+0001-Fix-regression-in-job-file-preservation-Issue-4987.patch
 pwg-raster-attributes.patch
 manpage-hyphen-minus.patch
 rootbackends-worldreadable.patch
@@ -39,6 +40,6 @@ cupsd-set-default-for-SyncOnClose-to-Yes.patch
 cups-set-default-error-policy-retry-job.patch
 man-cups-lpd-drop-dangling-references.patch
 debianize_cups-config.patch
-0042-Build-mantohtml-with-the-build-architecture-compiler.patch
-0043-Do-not-execute-genstrings-during-build.patch
+0043-Build-mantohtml-with-the-build-architecture-compiler.patch
+0044-Do-not-execute-genstrings-during-build.patch
 manpage-translations.patch

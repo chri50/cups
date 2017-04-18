@@ -1,4 +1,4 @@
-From c95ad1d6e8137012fc206920cc96c7d9835a32fc Mon Sep 17 00:00:00 2001
+From cd2a61e208894d17bc9d02713b1d2b29e7e13c06 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:36:02 +0200
 Subject: Tests: ignore the failure to write uncompressed data

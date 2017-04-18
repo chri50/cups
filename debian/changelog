@@ -1,3 +1,10 @@
+cups (2.2.3-1) experimental; urgency=medium
+
+  * New 2.2.3 upstream release
+  * Cherry-pick upstream fix for regression in job file preservation
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 18 Apr 2017 21:24:32 +0200
+
 cups (2.2.2-2) experimental; urgency=medium
 
   * Use /run instead of /var/run everywhere meaningful

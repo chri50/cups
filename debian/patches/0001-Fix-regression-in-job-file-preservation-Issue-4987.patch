@@ -1,0 +1,22 @@
+From 5d022bd3674c3872ecb87dd3a142c6e129a0677f Mon Sep 17 00:00:00 2001
+From: Michael R Sweet <michaelrsweet@gmail.com>
+Date: Tue, 18 Apr 2017 14:15:39 -0400
+Subject: Fix regression in job file preservation (Issue #4987)
+
+---
+ scheduler/job.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scheduler/job.c b/scheduler/job.c
+index 782401555..a8ba54c33 100644
+--- a/scheduler/job.c
++++ b/scheduler/job.c
+@@ -2745,7 +2745,7 @@ cupsdSetJobState(
+ 	  job->dirty = 1;
+ 	  cupsdMarkDirty(CUPSD_DIRTY_JOBS);
+ 	}
+-	else if (!JobHistory && !job->printer)
++	else if (!job->printer)
+ 	{
+ 	 /*
+ 	  * Delete the job immediately if not actively printing...
