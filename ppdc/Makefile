@@ -221,8 +221,6 @@ genstrings:		genstrings.o libcupsppdc.so ../cups/$(LIBCUPSSTATIC) \
 	$(CXX) $(ARCHFLAGS) $(LDFLAGS) -o genstrings genstrings.o \
 		-lcupsppdc ../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) \
 		$(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
-	echo Generating localization strings...
-	LD_LIBRARY_PATH=.:../cups/ ./genstrings >sample.c
 
 
 #
