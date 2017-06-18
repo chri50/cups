@@ -1,3 +1,9 @@
+cups (2.2.3-2) unstable; urgency=low
+
+  * Migrate 2.2.3 to unstable
+
+ -- Didier Raboud <odyx@debian.org>  Sun, 18 Jun 2017 16:24:03 +0200
+
 cups (2.2.3-1) experimental; urgency=medium
 
   * New 2.2.3 upstream release
