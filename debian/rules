@@ -17,7 +17,7 @@ export DSOFLAGS = $(shell dpkg-buildflags --get LDFLAGS)
 DEB_HOST_ARCH_OS := $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
 
 %:
-	dh $@ --with systemd
+	dh $@ --with autotools_dev --without autoreconf --no-parallel
 
 ifeq ($(DEB_HOST_ARCH_OS),hurd)
 CONFIG_LIBUSB=--disable-libusb
@@ -196,7 +196,7 @@ ifneq (,$(filter cups-ipp-utils,$(shell dh_listpackages)))
 endif
 
 override_dh_installchangelogs:
-	dh_installchangelogs CHANGES.txt
+	dh_installchangelogs CHANGES.md
 
 override_dh_installinit:
 	dh_installinit --name=cups

@@ -1,4 +1,4 @@
-From cd2a61e208894d17bc9d02713b1d2b29e7e13c06 Mon Sep 17 00:00:00 2001
+From 323edfd2e2656ae86f1fbe1db252ed0833534730 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:36:02 +0200
 Subject: Tests: ignore the failure to write uncompressed data
@@ -14,10 +14,10 @@ Patch-Name: tests-ignore-kfreebsd-unable-to-write-uncompressed-print-data.pdf
  1 file changed, 1 insertion(+)
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index 9c970b27b..b081eb58e 100755
+index 933d4a6a0..93d8c16f9 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -989,6 +989,7 @@ count=`$GREP '^E ' $BASE/log/error_log | \
+@@ -1002,6 +1002,7 @@ count=`$GREP '^E ' $BASE/log/error_log | \
         $GREP -v 'loadFile failed: temp file: not a PDF file' | \
         $GREP -v 'Failed to connect to system bus' | \
         $GREP -v -E 'Unable to open listen socket for address .* Address family not supported by protocol.' | \

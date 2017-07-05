@@ -756,11 +756,6 @@ cupsdDeletePrinter(
     * Remove any old PPD or script files...
     */
 
-    snprintf(filename, sizeof(filename), "%s/interfaces/%s", ServerRoot, p->name);
-    unlink(filename);
-    snprintf(filename, sizeof(filename), "%s/interfaces/%s.O", ServerRoot, p->name);
-    unlink(filename);
-
     snprintf(filename, sizeof(filename), "%s/ppd/%s.ppd", ServerRoot, p->name);
     unlink(filename);
     snprintf(filename, sizeof(filename), "%s/ppd/%s.ppd.O", ServerRoot, p->name);
@@ -836,6 +831,32 @@ cupsdDeletePrinter(
   cupsArrayRestore(Printers);
 
   return (changed);
+}
+
+
+/*
+ * 'cupsdDeleteTemporaryPrinters()' - Delete unneeded temporary printers.
+ */
+
+void
+cupsdDeleteTemporaryPrinters(int force) /* I - Force deletion instead of auto? */
+{
+  cupsd_printer_t *p;                   /* Current printer */
+  time_t          unused_time;          /* Last time for printer state change */
+
+
+ /*
+  * Allow temporary printers to stick around for 60 seconds after the last job
+  * completes.
+  */
+
+  unused_time = time(NULL) - 60;
+
+  for (p = (cupsd_printer_t *)cupsArrayFirst(Printers); p; p = (cupsd_printer_t *)cupsArrayNext(Printers))
+  {
+    if (p->temporary && (force || p->state_time < unused_time))
+      cupsdDeletePrinter(p, 0);
+  }
 }
 
 
@@ -5054,31 +5075,6 @@ load_ppd(cupsd_printer_t *p)		/* I - Printer */
       */
 
       p->type |= CUPS_PRINTER_REMOTE;
-
-     /*
-      * Point the printer-uri-supported attribute to the
-      * remote printer...
-      */
-
-      if (strchr(p->device_uri, '?'))
-      {
-       /*
-	* Strip trailing "?options" from URI...
-	*/
-
-	char	resource[HTTP_MAX_URI],	/* New URI */
-		*ptr;			/* Pointer into URI */
-
-	strlcpy(resource, p->device_uri, sizeof(resource));
-	if ((ptr = strchr(resource, '?')) != NULL)
-	  *ptr = '\0';
-
-	ippAddString(p->attrs, IPP_TAG_PRINTER, IPP_TAG_URI,
-		     "printer-uri-supported", NULL, resource);
-      }
-      else
-	ippAddString(p->attrs, IPP_TAG_PRINTER, IPP_TAG_URI,
-		     "printer-uri-supported", NULL, p->device_uri);
 
      /*
       * Then set the make-and-model accordingly...

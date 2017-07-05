@@ -1,4 +1,4 @@
-From b67c03be5f68cbeb28d19334a8a9f436502c1ee2 Mon Sep 17 00:00:00 2001
+From 756f0d463d4b962c14d454b8f20d8ea92c2fc41d Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:49 +0200
 Subject: Use dpkg-architecture in cups-config to make it

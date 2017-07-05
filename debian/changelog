@@ -1,3 +1,21 @@
+cups (2.2.4-1) unstable; urgency=medium
+
+  * New 2.2.4 upstream release
+
+  * Cope with upstream documentation format change to markdown
+  * Migrate to debhelper compat 10
+  * Add two new libcups2 symbols
+  * Lintian overrides updates:
+    - Update cups' override for the non-standard-executable-perm usb
+      backend
+    - Add source override for the libcups{,image}2-dev circular
+      dependency
+  * Make libcupsimage2-dev Multi-Arch: same
+  * Bump Standards-Version to 4.0.0
+    - Make sure to update config.{sub,guess} at build time
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 05 Jul 2017 21:45:48 +0200
+
 cups (2.2.3-2) unstable; urgency=low
 
   * Migrate 2.2.3 to unstable
@@ -87,6 +105,22 @@ cups (2.2.1-41-g49c592936-1) experimental; urgency=medium
   * New 2.2.1+ upstream snapshot
 
  -- Didier Raboud <odyx@debian.org>  Fri, 09 Dec 2016 09:57:28 +0100
+
+cups (2.2.1-8) unstable; urgency=medium
+
+  [ JP Guillonneau ]
+  * French manpages translation update (Closes: #852662)
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 31 Jan 2017 08:00:49 +0100
+
+cups (2.2.1-6) unstable; urgency=medium
+
+  * Cherry-pick three more upstream fixes:
+    - Add a USB quirk rule for the Kyocera Ecosys P6026cdn (Issue #4900)
+    - Fix rastertopwg line offset bug (Issue #4942)
+    - Fix Russian localization bug (Issue #4946)
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 18 Jan 2017 14:06:44 +0100
 
 cups (2.2.1-5) unstable; urgency=medium
 

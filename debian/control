@@ -1,5 +1,5 @@
 Source: cups
-Standards-Version: 3.9.8
+Standards-Version: 4.0.0
 Priority: optional
 Section: net
 Maintainer: Debian Printing Team <debian-printing@lists.debian.org>
@@ -7,7 +7,7 @@ Uploaders:
  Didier Raboud <odyx@debian.org>,
  Till Kamppeter <till.kamppeter@gmail.com>,
 Build-Depends: 
- debhelper (>= 9.20160114),
+ debhelper (>= 10.2.5~),
  dh-apparmor,
  dh-exec,
  dh-systemd,
@@ -291,6 +291,7 @@ Description: Common UNIX Printing System(tm) - Development files CUPS library
 Package: libcupsimage2-dev
 Section: libdevel
 Architecture: any
+Multi-Arch: same
 Depends: ${shlibs:Depends}, ${misc:Depends}, 
  libcupsimage2 (= ${binary:Version}),
  libcups2-dev (= ${binary:Version}), 

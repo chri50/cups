@@ -1,7 +1,7 @@
 #
 # Man page makefile for CUPS.
 #
-# Copyright 2007-2015 by Apple Inc.
+# Copyright 2007-2017 by Apple Inc.
 # Copyright 1993-2006 by Easy Software Products.
 #
 # These coded instructions, statements, and computer programs are the
@@ -72,7 +72,7 @@ LANGUAGES=de fr
 # Make everything...
 #
 
-all:	$(MAN1) $(MAN5) $(MAN7) $(MAN8) html translations
+all:	$(MAN1) $(MAN5) $(MAN7) $(MAN8) translations
 
 translations:
 	# Update the translations and build the translated material
@@ -207,6 +207,13 @@ uninstall:
 	$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
 	-$(RMDIR) $(AMANDIR)/man$(MAN8DIR)
 	for lang in $(LANGUAGES); do $(MAKE) -C $$lang uninstall; done
+
+
+#
+# Local programs (not built when cross-compiling...)
+#
+
+local:	html
 
 
 #

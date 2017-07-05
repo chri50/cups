@@ -1,4 +1,4 @@
-From c18ad36cba32216b718ee39b10bae3a3b64ce6e8 Mon Sep 17 00:00:00 2001
+From eac43c0b76de756eba43b388c63d816689b63cad Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:05 +0200
 Subject: Fix hyphen-used-as-minus-sign manpage errors
@@ -20,10 +20,11 @@ Patch-Name: manpage-hyphen-minus.patch
  man/cupsaddsmb.man.in  |  2 +-
  man/cupsctl.man        |  6 +++---
  man/cupsd-logs.man     | 36 ++++++++++++++++++------------------
+ man/cupsd.conf.man.in  |  2 +-
  man/cupsfilter.man     |  2 +-
  man/filter.man         |  2 +-
  man/ippfind.man        |  6 +++---
- man/ipptoolfile.man    |  6 +++---
+ man/ipptoolfile.man    |  8 ++++----
  man/lp.man             | 14 +++++++-------
  man/lpadmin.man        |  6 +++---
  man/lpoptions.man.in   |  4 ++--
@@ -31,7 +32,7 @@ Patch-Name: manpage-hyphen-minus.patch
  man/mime.convs.man     |  6 +++---
  man/mime.types.man     |  4 ++--
  man/ppdc.man           |  2 +-
- 19 files changed, 62 insertions(+), 62 deletions(-)
+ 20 files changed, 64 insertions(+), 64 deletions(-)
 
 diff --git a/man/backend.man b/man/backend.man
 index 40f8f5439..e3941b291 100644
@@ -56,19 +57,19 @@ index 40f8f5439..e3941b291 100644
  for more information.
  .SH SEE ALSO
 diff --git a/man/client.conf.man.in b/man/client.conf.man.in
-index 15b2a8066..ab0f18f02 100644
+index fba9fe977..eb8bd5b40 100644
 --- a/man/client.conf.man.in
 +++ b/man/client.conf.man.in
-@@ -64,7 +64,7 @@ By default, CUPS only supports encryption using TLS v1.0 or higher using known s
- The \fIAllowDH\fR option enables cipher suites using plain Diffie-Hellman key negotiation.
+@@ -65,7 +65,7 @@ The \fIAllowDH\fR option enables cipher suites using plain Diffie-Hellman key ne
  The \fIAllowRC4\fR option enables the 128-bit RC4 cipher suites, which are required for some older clients that do not implement newer ones.
  The \fIAllowSSL3\fR option enables SSL v3.0, which is required for some older clients that do not support TLS v1.0.
+ The \fIDenyCBC\fR option disables all CBC cipher suites.
 -The \fIDenyTLS1.0\fR option disables TLS v1.0 support - this sets the minimum protocol version to TLS v1.1.
 +The \fIDenyTLS1.0\fR option disables TLS v1.0 support \- this sets the minimum protocol version to TLS v1.1.
  .TP 5
  \fBTrustOnFirstUse Yes\fR
  .TP 5
-@@ -87,7 +87,7 @@ Configuration settings can instead be viewed or changed using the
+@@ -88,7 +88,7 @@ Configuration settings can instead be viewed or changed using the
  command:
  .nf
  defaults write /Library/Preferences/org.cups.PrintingPrefs.plist Encryption Required
@@ -252,6 +253,19 @@ index d12fab35f..19db8a677 100644
  .SH SEE ALSO
  .BR cupsd (8),
  .BR cupsd.conf (5),
+diff --git a/man/cupsd.conf.man.in b/man/cupsd.conf.man.in
+index 7843360b4..40fea92e3 100644
+--- a/man/cupsd.conf.man.in
++++ b/man/cupsd.conf.man.in
+@@ -489,7 +489,7 @@ The \fIAllowDH\fR option enables cipher suites using plain Diffie-Hellman key ne
+ The \fIAllowRC4\fR option enables the 128-bit RC4 cipher suites, which are required for some older clients that do not implement newer ones.
+ The \fIAllowSSL3\fR option enables SSL v3.0, which is required for some older clients that do not support TLS v1.0.
+ The \fIDenyCBC\fR option disables all CBC cipher suites.
+-The \fIDenyTLS1.0\fR option disables TLS v1.0 support - this sets the minimum protocol version to TLS v1.1.
++The \fIDenyTLS1.0\fR option disables TLS v1.0 support \- this sets the minimum protocol version to TLS v1.1.
+ .\"#SSLPort
+ .TP 5
+ \fBSSLPort \fIport\fR
 diff --git a/man/cupsfilter.man b/man/cupsfilter.man
 index ae64b8b66..52d249978 100644
 --- a/man/cupsfilter.man
@@ -310,19 +324,21 @@ index 219c47db1..161b33c45 100644
  Expressions may also contain modifiers:
  .TP 5
 diff --git a/man/ipptoolfile.man b/man/ipptoolfile.man
-index 1f649e5a2..ad4b7ce01 100644
+index 35b050419..c10254f64 100644
 --- a/man/ipptoolfile.man
 +++ b/man/ipptoolfile.man
-@@ -140,7 +140,7 @@ Specifies the default IPP version number to use for the tests that follow.
- The following directives are understood within a \fItest\fR:
- .TP 5
+@@ -169,8 +169,8 @@ The following directives are understood within a \fItest\fR:
  \fBATTR \fItag attribute-name value(s)\fR
--Adds an attribute to the test request. Values are separated by the comma (",") character - escape commas using the "\" character. Common attributes and values are listed in the IANA IPP registry - see references below.
-+Adds an attribute to the test request. Values are separated by the comma (",") character \- escape commas using the "\" character. Common attributes and values are listed in the IANA IPP registry \- see references below.
+ Adds an attribute to the test request.
+ Out-of-band tags (admin-define, delete-attribute, no-value, not-settable, unknown, unsupported) have no value.
+-Values for other tags are separated by the comma (",") character - escape commas using the "\" character.
+-Common attributes and values are listed in the IANA IPP registry - see references below.
++Values for other tags are separated by the comma (",") character \- escape commas using the "\" character.
++Common attributes and values are listed in the IANA IPP registry \- see references below.
  .TP 5
  \fBATTR collection \fIattribute-name \fB{ MEMBER \fItag member-name value(s) ... \fB}\fR [ \fI... \fB,{ \fI... \fB} \fR]
- Adds a collection attribute to the test request. Member attributes follow the same syntax as regular attributes and can themselves be nested collections. Multiple collection values can be supplied as needed, separated by commas.
-@@ -164,7 +164,7 @@ test report.
+ Adds a collection attribute to the test request.
+@@ -197,7 +197,7 @@ test report.
  \fBEXPECT ?\fIattribute-name predicate(s)\fR
  .TP 5
  \fBEXPECT !\fIattribute-name\fR
@@ -331,7 +347,7 @@ index 1f649e5a2..ad4b7ce01 100644
  .TP 5
  \fBEXPECT-ALL \fIattribute-name \fR[ \fIpredicate(s) \fR]
  .TP 5
-@@ -216,7 +216,7 @@ Specifies whether
+@@ -249,7 +249,7 @@ Specifies whether
  will skip the current test if the previous test resulted in an error/failure.
  .TP 5
  \fBSTATUS \fIstatus-code \fR[ \fIpredicate\fR ]
