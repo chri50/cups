@@ -1,4 +1,4 @@
-From 71ab720f300b715deab0ea0aed135f7389cd6625 Mon Sep 17 00:00:00 2001
+From c5b6f39ada95048462a36307a31378a5ebfe6ee8 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:50 +0200
 Subject: po4a infrastructure and translations for manpages.
@@ -23,7 +23,7 @@ Patch-Name: manpage-translations.patch
  create mode 100644 man/fr/Makefile
 
 diff --git a/man/Makefile b/man/Makefile
-index ee825cd99..aa0739681 100644
+index 3c3270ade..410c892c7 100644
 --- a/man/Makefile
 +++ b/man/Makefile
 @@ -66,12 +66,18 @@ MAN8	=	cupsaccept.$(MAN8EXT) \
@@ -36,8 +36,8 @@ index ee825cd99..aa0739681 100644
  # Make everything...
  #
  
--all:	$(MAN1) $(MAN5) $(MAN7) $(MAN8) html
-+all:	$(MAN1) $(MAN5) $(MAN7) $(MAN8) html translations
+-all:	$(MAN1) $(MAN5) $(MAN7) $(MAN8)
++all:	$(MAN1) $(MAN5) $(MAN7) $(MAN8) translations
 +
 +translations:
 +	# Update the translations and build the translated material

@@ -1,4 +1,4 @@
-From 73cfe26bc14b9911ff2dc6ed1b27e08244a0dfea Mon Sep 17 00:00:00 2001
+From 114aec0cb19e1ee0821ada69776c6fee8a228131 Mon Sep 17 00:00:00 2001
 From: Till Kamppeter <till.kamppeter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:08 +0200
 Subject: CUPS Upstart socket activation
@@ -25,7 +25,7 @@ Patch-Name: cupsd-upstart-support.patch
  1 file changed, 109 insertions(+)
 
 diff --git a/scheduler/main.c b/scheduler/main.c
-index bdb27a6db..50821af5e 100644
+index 4a66cbcae..366f13d2b 100644
 --- a/scheduler/main.c
 +++ b/scheduler/main.c
 @@ -61,6 +61,7 @@
@@ -36,7 +36,7 @@ index bdb27a6db..50821af5e 100644
  static void		parent_handler(int sig);
  static void		process_children(void);
  static void		sigchld_handler(int sig);
-@@ -325,6 +326,14 @@ main(int  argc,				/* I - Number of command-line args */
+@@ -327,6 +328,14 @@ main(int  argc,				/* I - Number of command-line args */
        usage(1);
      }
  
@@ -51,7 +51,7 @@ index bdb27a6db..50821af5e 100644
    if (!ConfigurationFile)
      cupsdSetString(&ConfigurationFile, CUPS_SERVERROOT "/cupsd.conf");
  
-@@ -594,6 +603,11 @@ main(int  argc,				/* I - Number of command-line args */
+@@ -596,6 +605,11 @@ main(int  argc,				/* I - Number of command-line args */
  #endif /* HAVE_ONDEMAND */
  
   /*
@@ -63,7 +63,7 @@ index bdb27a6db..50821af5e 100644
    * Startup the server...
    */
  
-@@ -775,6 +789,13 @@ main(int  argc,				/* I - Number of command-line args */
+@@ -778,6 +792,13 @@ main(int  argc,				/* I - Number of command-line args */
  	}
  
         /*
@@ -77,7 +77,7 @@ index bdb27a6db..50821af5e 100644
          * Startup the server...
          */
  
-@@ -1583,6 +1604,94 @@ process_children(void)
+@@ -1599,6 +1620,94 @@ process_children(void)
  }
  
  
