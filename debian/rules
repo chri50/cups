@@ -2,9 +2,6 @@
 
 derives_from_ubuntu := $(shell (dpkg-vendor --derives-from Ubuntu && echo "yes") || echo "no")
 
-# work around libpng crash on our test PNGs with 8 bit colormaps (LP #710881)
-export NO_PNG_PKG_MANGLE=1
-
 # Enabling PIE globally doesn't work, but ./configure already enables PIE
 # where necessary.
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all,-pie
@@ -17,7 +14,7 @@ export DSOFLAGS = $(shell dpkg-buildflags --get LDFLAGS)
 DEB_HOST_ARCH_OS := $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
 
 %:
-	dh $@ --with autotools_dev --without autoreconf --no-parallel
+	dh $@ --with autotools_dev --without autoreconf
 
 ifeq ($(DEB_HOST_ARCH_OS),hurd)
 CONFIG_LIBUSB=--disable-libusb
@@ -72,11 +69,6 @@ MANPAGES_L10N_CUPS_BSD=man1/lpr.1 man1/lprm.1 man1/lpq.1 man8/lpc.8
 MANPAGES_L10N_CUPS_IPP_UTILS=man1/ippfind.1 man1/ippserver.1 man1/ipptool.1 man5/ipptoolfile.5
 
 override_dh_install:
-ifeq ($(derives_from_ubuntu),yes)
-	# Use upstart script on Ubuntu; we need to hide it away for Debian
-	# builds, as dh_installinit does not have a --sysvinit-only
-	cp debian/local/*.upstart debian
-endif
 	dh_install
 
 ifneq (,$(filter cups-server-common,$(shell dh_listpackages)))
@@ -231,7 +223,6 @@ override_dh_auto_clean:
 	rm -f man/client.conf.man packaging/cups.list
 	rm -f conf/mime.convs conf/snmp.conf init/org.cups.cups-lpd.plist
 	[ ! -f Makedefs ] || make distclean
-	rm -f debian/*.upstart # master copy is in debian/local
 
 override_dh_installdocs:
 	dh_installdocs -plibcupsimage2-dev --link-doc=libcupsimage2

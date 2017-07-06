@@ -1,3 +1,25 @@
+cups (2.2.4-2~exp0) experimental; urgency=medium
+
+  * Cleanup patch suite to come closer to upstream:
+    - Remove IPP backend from CUPS 1.4
+    - Remove cupsd upstart support
+    - Remove a test weakening for mips
+    - Remove libcupsppdc dynamic linking for mipsen
+  * Don't install the ipp14 backend
+  * Drop all postinst code managing versions before the current oldoldstable
+    (wheezy, 1.5.3-5)
+  * Drop all postinst code managing versions before the current oldstable
+    (jessie, 1.7.5-11)
+  * Drop the Ubuntu-specific upstart patches and files
+  * Drop Launchpad PNG_PKG_MANGLE workaround
+  * Drop two unused lintian overrides
+  * Allow parallel builds
+
+  [ Vangelis Skarmoutsos ]
+  * Add Greek translation for debconf templates (Closes: #867339)
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 06 Jul 2017 10:02:59 +0200
+
 cups (2.2.4-1) unstable; urgency=medium
 
   * New 2.2.4 upstream release

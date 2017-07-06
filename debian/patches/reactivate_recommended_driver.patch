@@ -1,8 +1,8 @@
-From 411e1bf1e8117dd8c5529d85593a2a77cd3adbcd Mon Sep 17 00:00:00 2001
+From 23cfa0a588b3e96c0d9068114a468d98d1ca6f93 Mon Sep 17 00:00:00 2001
 From: Till Kampetter <till.kampetter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:36 +0200
 Subject: CUPS removes the "(recommended)" comments of the NickNames of
- Foomatic PPDs when listing available PPDs. This patch removes this remocval
+ Foomatic PPDs when listing available PPDs. This patch removes this removal
  action.
 
 Last-Update: 2015-02-10
