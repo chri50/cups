@@ -3,7 +3,6 @@ var/
 etc/cups/cups-files.conf
 usr/lib/cups/backend/ipp
 usr/lib/cups/backend/ipps
-usr/lib/cups/backend/ipp14
 usr/lib/cups/backend/http
 usr/lib/cups/backend/https
 usr/lib/cups/daemon/cups-exec
