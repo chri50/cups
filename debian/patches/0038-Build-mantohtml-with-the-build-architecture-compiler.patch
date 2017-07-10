@@ -1,4 +1,4 @@
-From 83b551bfb8cf9a99159e9e184ecd8cd8d5100125 Mon Sep 17 00:00:00 2001
+From 56ca5558e8eb90ca5fbed43c6b3c64d30514cd31 Mon Sep 17 00:00:00 2001
 From: Helmut Grohne <helmut@subdivi.de>
 Date: Tue, 9 Aug 2016 18:11:49 +0200
 Subject: Build mantohtml with the build architecture compiler

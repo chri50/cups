@@ -1,4 +1,4 @@
-From 67c77555542e4c5db3d1155e677e8bcd21393509 Mon Sep 17 00:00:00 2001
+From 0f1c21f3369cc722107fb18ad6cbfa15793c0f8e Mon Sep 17 00:00:00 2001
 From: Martin Pitt <mpitt@debian.org>
 Date: Tue, 9 Aug 2016 18:11:32 +0200
 Subject: Add support for creating pid files in /run
@@ -59,10 +59,10 @@ index 873c370e6..66e4f68a6 100644
  #ifdef HAVE_ONDEMAND
  VAR int			IdleExitTimeout		VALUE(60);
 diff --git a/scheduler/main.c b/scheduler/main.c
-index 366f13d2b..ead540e53 100644
+index 4a66cbcae..3a51e7bea 100644
 --- a/scheduler/main.c
 +++ b/scheduler/main.c
-@@ -73,6 +73,8 @@ static void		service_checkin(void);
+@@ -72,6 +72,8 @@ static void		service_checkin(void);
  static void		service_checkout(void);
  #endif /* HAVE_ONDEMAND */
  static void		usage(int status) __attribute__((noreturn));
@@ -71,7 +71,7 @@ index 366f13d2b..ead540e53 100644
  
  
  /*
-@@ -690,6 +692,11 @@ main(int  argc,				/* I - Number of command-line args */
+@@ -676,6 +678,11 @@ main(int  argc,				/* I - Number of command-line args */
      cupsdStartSystemMonitor();
  #endif /* __APPLE__ */
  
@@ -83,7 +83,7 @@ index 366f13d2b..ead540e53 100644
   /*
    * Send server-started event...
    */
-@@ -1200,10 +1207,41 @@ main(int  argc,				/* I - Number of command-line args */
+@@ -1179,10 +1186,41 @@ main(int  argc,				/* I - Number of command-line args */
  
    cupsdStopSelect();
  
