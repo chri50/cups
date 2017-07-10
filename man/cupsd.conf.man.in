@@ -489,7 +489,7 @@ The \fIAllowDH\fR option enables cipher suites using plain Diffie-Hellman key ne
 The \fIAllowRC4\fR option enables the 128-bit RC4 cipher suites, which are required for some older clients that do not implement newer ones.
 The \fIAllowSSL3\fR option enables SSL v3.0, which is required for some older clients that do not support TLS v1.0.
 The \fIDenyCBC\fR option disables all CBC cipher suites.
-The \fIDenyTLS1.0\fR option disables TLS v1.0 support - this sets the minimum protocol version to TLS v1.1.
+The \fIDenyTLS1.0\fR option disables TLS v1.0 support \- this sets the minimum protocol version to TLS v1.1.
 .\"#SSLPort
 .TP 5
 \fBSSLPort \fIport\fR
