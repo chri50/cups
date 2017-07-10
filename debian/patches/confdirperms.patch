@@ -1,4 +1,4 @@
-From 46ec3605d193a994613f31905820479602db92d1 Mon Sep 17 00:00:00 2001
+From 5ec08a5df6c52f5fff901707cda8bb6937d920d2 Mon Sep 17 00:00:00 2001
 From: Martin Pitt <mpitt@debian.org>
 Date: Tue, 9 Aug 2016 18:11:41 +0200
 Subject: Do not mess with the permissions of cupsd.conf.
