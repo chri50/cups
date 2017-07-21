@@ -33,6 +33,7 @@ sinclude(config-scripts/cups-pam.m4)
 sinclude(config-scripts/cups-largefile.m4)
 sinclude(config-scripts/cups-dnssd.m4)
 sinclude(config-scripts/cups-launchd.m4)
+sinclude(config-scripts/cups-systemd.m4)
 sinclude(config-scripts/cups-defaults.m4)
 sinclude(config-scripts/cups-scripting.m4)
 
@@ -67,6 +68,9 @@ AC_OUTPUT(Makedefs
 	  conf/snmp.conf
 	  cups-config
 	  data/testprint
+	  data/cups.service
+	  data/cups.socket
+	  data/cups.path
 	  desktop/cups.desktop
 	  doc/help/ref-cups-files-conf.html
 	  doc/help/ref-cupsd-conf.html
