@@ -50,7 +50,16 @@ users to change their passwords. To enable this, the \fIlppasswd\fR command
 must be made setuid to root with the command:
 .br
 .nf
+.RS
 chmod u+s lppasswd
+.RE
+.fi
+This change will be overridden by further updates of the cups\-client package.
+The following command ensures that it will be preserved:
+.nf
+.RS
+dpkg-statoverride \-\-add root root 4755 /usr/bin/lppasswd
+.RE
 .fi
 .PP
 While every attempt has been made to make \fIlppasswd\fR secure against
