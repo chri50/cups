@@ -214,6 +214,11 @@ HostNameLookups Double
 .br
 Specifies whether or not to do reverse lookups on client addresses.
 .TP 5
+IdleExitTimeout seconds
+.br
+Specifies the number of seconds to wait before exiting on inactivity under
+systemd or upstart.
+.TP 5
 Include filename
 .br
 Includes the named file.
