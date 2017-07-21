@@ -1,3 +1,13 @@
+cups (1.7.5-11+deb8u2) jessie; urgency=high
+
+  * Disable SSLv3 and RC4 by default to address POODLE vulnerability
+    (Closes: #839226)
+    - Implement SSLOptions to permit the use of AllowSSL3 and AllowRC4
+      respectively
+  * Refresh patches
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 21 Jul 2017 14:09:44 +0200
+
 cups (1.7.5-11+deb8u1) jessie-security; urgency=high
 
   * Import 1.7 upstream fix for CERT VU#810572: Privilege escalation through

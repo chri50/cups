@@ -24,7 +24,7 @@ Last-Update: 2012-11-29
  
    if (!strcmp(CUPS_DEFAULT_PRINTCAP, "/etc/printers.conf"))
      PrintcapFormat = PRINTCAP_SOLARIS;
-@@ -3333,6 +3335,7 @@
+@@ -3370,6 +3372,7 @@
               !_cups_strcasecmp(line, "SystemGroup") ||
               !_cups_strcasecmp(line, "SystemGroupAuthKey") ||
               !_cups_strcasecmp(line, "TempDir") ||
@@ -34,7 +34,7 @@ Last-Update: 2012-11-29
        cupsdLogMessage(CUPSD_LOG_INFO,
 --- a/scheduler/conf.h
 +++ b/scheduler/conf.h
-@@ -245,6 +245,8 @@
+@@ -247,6 +247,8 @@
  VAR int			SSLOptions		VALUE(CUPSD_SSL_NONE);
  					/* SSL/TLS options */
  #endif /* HAVE_SSL */
