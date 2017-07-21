@@ -79,6 +79,8 @@ typedef enum
 
 #define CUPSD_SSL_NONE		0	/* No special options */
 #define CUPSD_SSL_NOEMPTY	1	/* Do not insert empty fragments */
+#define CUPSD_SSL_ALLOW_RC4	2	/* Allow RC4 cipher suites */
+#define CUPSD_SSL_ALLOW_SSL3	4	/* Allow SSL 3.0 */
 
 
 /*

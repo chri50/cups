@@ -101,7 +101,7 @@ Last-Update: 2014-10-23
  	  doc/help/ref-cupsd-conf.html
 --- a/cups/usersys.c
 +++ b/cups/usersys.c
-@@ -1028,7 +1028,7 @@
+@@ -1081,7 +1081,7 @@
      struct stat	sockinfo;		/* Domain socket information */
  
      if (!stat(CUPS_DEFAULT_DOMAINSOCKET, &sockinfo) &&
