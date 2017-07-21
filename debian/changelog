@@ -1,3 +1,10 @@
+cups (2.2.4-3) unstable; urgency=medium
+
+  [ Helge Kreutzmann ]
+  * Update German man page translations
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 21 Jul 2017 15:00:58 +0200
+
 cups (2.2.4-2) unstable; urgency=low
 
   * Cleanup patch suite to come closer to upstream:
