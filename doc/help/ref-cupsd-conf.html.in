@@ -2032,15 +2032,22 @@ to restrict access to specific interfaces or networks.</P>
 <PRE CLASS="command">
 SSLOptions None
 SSLOptions NoEmptyFragments
+SSLOptions AllowSSL3
+SSLOptions AllowRC4
 </PRE>
 
 <H3>Description</H3>
 
 <P>The <CODE>SSLOptions</CODE> directive specifies additional SSL/TLS
-protocol options to use for encrypted connected. Currently only two
-options are supported - <code>None</code> (the default) for the most
-secure mode and <code>NoEmptyFragments</code> to allow CUPS to work with
-Microsoft Windows with the FIPS conformance mode enabled.</p>
+protocol options to use for encrypted connected. By default, CUPS only
+supports encryption using TLS v1.0 or higher using known secure cipher
+suites. The <code>NoEmptyFragments</code> option allows CUPS to work
+with Microsoft Windows with the FIPS conformance mode
+enabled. The <code>AllowRC4</code> option enables the 128-bit RC4
+cipher suites, which are required for some older clients that do not
+implement newer ones. The <code>AllowSSL3</code> option enables SSL
+v3.0, which is required for some older clients that do not support TLS
+v1.0.</p>
 
 
 <H2 CLASS="title"><A NAME="SSLPort">SSLPort</A></H2>
