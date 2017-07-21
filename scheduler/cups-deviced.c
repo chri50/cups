@@ -282,7 +282,7 @@ main(int  argc,				/* I - Number of command-line args */
     */
 
     start_backend(dent->filename,
-                  !(dent->fileinfo.st_mode & (S_IRWXG | S_IRWXO)));
+                  !(dent->fileinfo.st_mode & (S_IWGRP | S_IXGRP | S_IWOTH | S_IXOTH)));
   }
 
   cupsDirClose(dir);
