@@ -442,8 +442,8 @@ SyncOnClose Yes
 
 <P>The <CODE>SyncOnClose</CODE> directive determines whether the scheduler
 flushes changes to configuration and state files to disk. The default is
-<CODE>No</CODE> which relies on the operating system to schedule a suitable
-time to write changes to disk.</P>
+<CODE>Yes</CODE>. The option <CODE>No</CODE> relies on the operating
+system to schedule a suitable time to write changes to disk.</P>
 
 <BLOCKQUOTE><B>Note:</B>
 
