@@ -1,0 +1,11 @@
+#! /bin/sh
+
+set -e
+
+if [ "$1" = "failed-upgrade" ]; then
+    # LP: #1642966 mitigate cups failing to stop/restart on upgrade
+    systemctl stop cups.socket
+    systemctl stop cups.path
+fi
+
+#DEBHELPER#
