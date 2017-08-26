@@ -78,6 +78,8 @@ _cupsConvertOptions(
   int		num_finishings = 0,	/* Number of finishing values */
 		finishings[10];		/* Finishing enum values */
   ppd_choice_t	*choice;		/* Marked choice */
+  int           finishings_copies = copies;
+                                        /* Number of copies for finishings */
 
 
  /*
@@ -366,13 +368,13 @@ _cupsConvertOptions(
   {
     ippAddIntegers(request, IPP_TAG_JOB, IPP_TAG_ENUM, "finishings", num_finishings, finishings);
 
-    if (copies > 1 && (keyword = cupsGetOption("job-impressions", num_options, options)) != NULL)
+    if (copies != finishings_copies && (keyword = cupsGetOption("job-impressions", num_options, options)) != NULL)
     {
      /*
       * Send job-pages-per-set attribute to apply finishings correctly...
       */
 
-      ippAddInteger(request, IPP_TAG_JOB, IPP_TAG_INTEGER, "job-pages-per-set", atoi(keyword) / copies);
+      ippAddInteger(request, IPP_TAG_JOB, IPP_TAG_INTEGER, "job-pages-per-set", atoi(keyword) / finishings_copies);
     }
   }
 
@@ -2084,9 +2086,14 @@ _ppdCacheGetFinishingValues(
 
   DEBUG_printf(("_ppdCacheGetFinishingValues(pc=%p, num_options=%d, options=%p, max_values=%d, values=%p)", pc, num_options, options, max_values, values));
 
-  if (!pc || !pc->finishings || num_options < 1 || max_values < 1 || !values)
+  if (!pc || max_values < 1 || !values)
   {
     DEBUG_puts("_ppdCacheGetFinishingValues: Bad arguments, returning 0.");
+    return (0);
+  }
+  else if (!pc->finishings)
+  {
+    DEBUG_puts("_ppdCacheGetFinishingValues: No finishings support, returning 0.");
     return (0);
   }
 
@@ -2114,13 +2121,24 @@ _ppdCacheGetFinishingValues(
 
     if (i == 0)
     {
-      DEBUG_printf(("_ppdCacheGetFinishingValues: Adding %d.", f->value));
+      DEBUG_printf(("_ppdCacheGetFinishingValues: Adding %d (%s)", f->value, ippEnumString("finishings", f->value)));
 
       values[num_values ++] = f->value;
 
       if (num_values >= max_values)
         break;
     }
+  }
+
+  if (num_values == 0)
+  {
+   /*
+    * Always have at least "finishings" = 'none'...
+    */
+
+    DEBUG_puts("_ppdCacheGetFinishingValues: Adding 3 (none).");
+    values[0] = IPP_FINISHINGS_NONE;
+    num_values ++;
   }
 
   DEBUG_printf(("_ppdCacheGetFinishingValues: Returning %d.", num_values));
@@ -3962,11 +3980,21 @@ _ppdCreateFromIPP(char   *buffer,	/* I - Filename buffer */
 
   quality = ippFindAttribute(response, "print-quality-supported", IPP_TAG_ENUM);
 
+  xres = 0;
+  yres = 0;
   if ((attr = ippFindAttribute(response, "pwg-raster-document-resolution-supported", IPP_TAG_RESOLUTION)) != NULL)
   {
     count = ippGetCount(attr);
-
     pwg_ppdize_resolution(attr, count / 2, &xres, &yres, ppdname, sizeof(ppdname));
+  }
+  if ((xres < 75 || yres < 75) &&
+      (attr = ippFindAttribute(response, "printer-resolution-supported", IPP_TAG_RESOLUTION)) != NULL)
+  {
+    count = ippGetCount(attr);
+    pwg_ppdize_resolution(attr, count / 2, &xres, &yres, ppdname, sizeof(ppdname));
+  }
+  if (xres >= 75 && yres >= 75)
+  {
     cupsFilePrintf(fp, "*DefaultResolution: %s\n", ppdname);
 
     cupsFilePrintf(fp, "*OpenUI *cupsPrintQuality/%s: PickOne\n"
@@ -4047,7 +4075,7 @@ _ppdCreateFromIPP(char   *buffer,	/* I - Filename buffer */
     {
       pwg_ppdize_resolution(attr, 0, &xres, &yres, ppdname, sizeof(ppdname));
     }
-    else
+    if (xres < 75 || yres < 75)
     {
       xres = yres = 300;
       strlcpy(ppdname, "300dpi", sizeof(ppdname));

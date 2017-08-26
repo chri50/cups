@@ -1,0 +1,58 @@
+From bd4cfc0733759d9ffa3e15fc0931dd18d7ac0b12 Mon Sep 17 00:00:00 2001
+From: Till Kamppeter <till.kamppeter@gmail.com>
+Date: Thu, 17 Aug 2017 15:15:52 -0300
+Subject: PPD Generator for driverless printing setup: Workaround for wrong
+ resolution.
+
+There are some PWG Raster printers with a firmware bug which report a
+wrong resolution as pwg-raster-document-resolution-supported IPP
+attribute. If this happens (horizontal and/or vertical resolution is <
+75 dpi) we try the printer-resolution-supported attribute and if this
+is also wrong fall back to 300 dpi.
+
+Passed over from cups-filters, which contains a copy of CUPS' PPD
+generator due to the fact that CUPS did not put it into its public
+API.
+
+Bug-Debian: https://bugs.debian.org/868360
+Patch-Name: pwg-raster-resolution-fallback.patch
+---
+ cups/ppd-cache.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/cups/ppd-cache.c b/cups/ppd-cache.c
+index 8ce02fc19..fffcd0489 100644
+--- a/cups/ppd-cache.c
++++ b/cups/ppd-cache.c
+@@ -3980,11 +3980,21 @@ _ppdCreateFromIPP(char   *buffer,	/* I - Filename buffer */
+ 
+   quality = ippFindAttribute(response, "print-quality-supported", IPP_TAG_ENUM);
+ 
++  xres = 0;
++  yres = 0;
+   if ((attr = ippFindAttribute(response, "pwg-raster-document-resolution-supported", IPP_TAG_RESOLUTION)) != NULL)
+   {
+     count = ippGetCount(attr);
+-
+     pwg_ppdize_resolution(attr, count / 2, &xres, &yres, ppdname, sizeof(ppdname));
++  }
++  if ((xres < 75 || yres < 75) &&
++      (attr = ippFindAttribute(response, "printer-resolution-supported", IPP_TAG_RESOLUTION)) != NULL)
++  {
++    count = ippGetCount(attr);
++    pwg_ppdize_resolution(attr, count / 2, &xres, &yres, ppdname, sizeof(ppdname));
++  }
++  if (xres >= 75 && yres >= 75)
++  {
+     cupsFilePrintf(fp, "*DefaultResolution: %s\n", ppdname);
+ 
+     cupsFilePrintf(fp, "*OpenUI *cupsPrintQuality/%s: PickOne\n"
+@@ -4065,7 +4075,7 @@ _ppdCreateFromIPP(char   *buffer,	/* I - Filename buffer */
+     {
+       pwg_ppdize_resolution(attr, 0, &xres, &yres, ppdname, sizeof(ppdname));
+     }
+-    else
++    if (xres < 75 || yres < 75)
+     {
+       xres = yres = 300;
+       strlcpy(ppdname, "300dpi", sizeof(ppdname));

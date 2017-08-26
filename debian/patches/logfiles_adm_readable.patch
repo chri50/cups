@@ -1,4 +1,4 @@
-From d603c9acf3babeab030d6e68bfd4d94d41b4ad60 Mon Sep 17 00:00:00 2001
+From aa849f8f4ed54cef3d0234b4a0d8e0b21f920141 Mon Sep 17 00:00:00 2001
 From: Martin Pitt <mpitt@debian.org>
 Date: Tue, 9 Aug 2016 18:11:38 +0200
 Subject: Make log files readable to group "adm", if present.
@@ -12,7 +12,7 @@ Patch-Name: logfiles_adm_readable.patch
  1 file changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/scheduler/log.c b/scheduler/log.c
-index 243742d17..bd328b872 100644
+index 3ffa1933d..fd00afbe9 100644
 --- a/scheduler/log.c
 +++ b/scheduler/log.c
 @@ -24,6 +24,7 @@
@@ -31,18 +31,18 @@ index 243742d17..bd328b872 100644
  
  
   /*
-@@ -133,6 +135,11 @@ cupsdCheckLogFile(cups_file_t **lf,	/* IO - Log file */
+@@ -132,6 +134,11 @@ cupsdCheckLogFile(cups_file_t **lf,	/* IO - Log file */
+     return (1);
    }
  
-  /*
++ /*
 +  * Use adm group if possible, fall back to Group
 +  */
 + loggrp = getgrnam("adm");
 +
-+ /*
+  /*
    * Format the filename as needed...
    */
- 
 @@ -244,7 +251,7 @@ cupsdCheckLogFile(cups_file_t **lf,	/* IO - Log file */
        * Change ownership and permissions of non-device logs...
        */

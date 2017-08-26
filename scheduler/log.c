@@ -1,7 +1,7 @@
 /*
  * Log file routines for the CUPS scheduler.
  *
- * Copyright 2007-2016 by Apple Inc.
+ * Copyright 2007-2017 by Apple Inc.
  * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  * These coded instructions, statements, and computer programs are the
@@ -710,7 +710,18 @@ cupsdLogMessage(int        level,	/* I - Log level */
   * See if we want to log this message...
   */
 
-  if ((TestConfigFile || !ErrorLog) && level <= CUPSD_LOG_WARN)
+  if (TestConfigFile && level <= CUPSD_LOG_WARN)
+  {
+    va_start(ap, message);
+
+    vfprintf(stderr, message, ap);
+    putc('\n', stderr);
+
+    va_end(ap);
+
+    return (1);
+  }
+  else if (!ErrorLog && level <= CUPSD_LOG_WARN)
   {
     va_start(ap, message);
 
@@ -729,12 +740,11 @@ cupsdLogMessage(int        level,	/* I - Log level */
 
     return (1);
   }
-
-  if (level > LogLevel || !ErrorLog)
+  else if (level > LogLevel || !ErrorLog)
     return (1);
 
 #ifdef HAVE_SYSTEMD_SD_JOURNAL_H
-  if (!strcmp(ErrorLog, "syslog"))
+  else if (!strcmp(ErrorLog, "syslog"))
   {
     va_start(ap, message);
     sd_journal_printv(log_levels[level], message, ap);
