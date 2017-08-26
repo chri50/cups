@@ -33,25 +33,25 @@ Each line is in an extended version of the so-called "Common Log Format" used by
 For example:
 .nf
 
-    10.0.1.2 - - [01/Dec/2005:21:50:28 +0000] "POST / HTTP/1.1" 200 317
+    10.0.1.2 \- \- [01/Dec/2005:21:50:28 +0000] "POST / HTTP/1.1" 200 317
       CUPS-Get-Printers successful-ok-ignored-or-substituted-attributes
-    localhost - - [01/Dec/2005:21:50:32 +0000] "GET /admin HTTP/1.1"
-      200 0 - -
-    localhost - - [01/Dec/2005:21:50:32 +0000] "POST / HTTP/1.1"
+    localhost \- \- [01/Dec/2005:21:50:32 +0000] "GET /admin HTTP/1.1"
+      200 0 \- \-
+    localhost \- \- [01/Dec/2005:21:50:32 +0000] "POST / HTTP/1.1"
       200 157 CUPS-Get-Printers
       successful-ok-ignored-or-substituted-attributes
-    localhost - - [01/Dec/2005:21:50:32 +0000] "POST / HTTP/1.1"
-      200 1411 CUPS-Get-Devices -
-    localhost - - [01/Dec/2005:21:50:32 +0000] "GET /admin HTTP/1.1"
-      200 6667 - -
+    localhost \- \- [01/Dec/2005:21:50:32 +0000] "POST / HTTP/1.1"
+      200 1411 CUPS-Get-Devices \-
+    localhost \- \- [01/Dec/2005:21:50:32 +0000] "GET /admin HTTP/1.1"
+      200 6667 \- \-
 
 .fi
 The \fIhost\fR field will normally only be an IP address unless you have enabled the HostNameLookups directive in the \fIcupsd.conf\fR file or if the IP address corresponds to your local machine.
 .LP
-The \fIgroup\fR field always contains "-".
+The \fIgroup\fR field always contains "\-".
 .LP
 The \fIuser\fR field is the authenticated username of the requesting user.
-If no username and password is supplied for the request then this field contains "-".
+If no username and password is supplied for the request then this field contains "\-".
 .LP
 The \fIdate-time\fR field is the date and time of the request in local time and is in the format "[DD/MON/YYYY:HH:MM:SS +ZZZZ]".
 .LP
@@ -101,7 +101,7 @@ Request too large; typically this means that a client tried to print a file larg
 Upgrading to TLS-encrypted connection.
 .TP 5
 500
-Server error; typically this happens when the server is unable to open/create a file - consult the error_log file for details.
+Server error; typically this happens when the server is unable to open/create a file \- consult the error_log file for details.
 .TP 5
 501
 The client requested encryption but encryption support is not enabled/compiled in.
@@ -113,11 +113,11 @@ HTTP version number not supported; typically this means that you have a maliciou
 The \fIbytes\fR field contains the number of bytes in the request.
 For POST requests the bytes field contains the number of bytes of non-IPP data that is received from the client.
 .LP
-The \fIipp-operation\fR field contains either "-" for non-IPP requests or the IPP operation name for POST requests containing an IPP request.
+The \fIipp-operation\fR field contains either "\-" for non-IPP requests or the IPP operation name for POST requests containing an IPP request.
 .LP
-The \fIipp-status\fR field contains either "-" for non-IPP requests or the IPP status code name for POST requests containing an IPP response.
+The \fIipp-status\fR field contains either "\-" for non-IPP requests or the IPP status code name for POST requests containing an IPP response.
 .SS ERROR LOG FILE FORMAT
-The \fIerror_log\fR file lists messages from the scheduler - errors, warnings, etc. The LogLevel directive in the
+The \fIerror_log\fR file lists messages from the scheduler \- errors, warnings, etc. The LogLevel directive in the
 .BR cupsd.conf (5)
 file controls which messages are logged:
 .nf
@@ -218,15 +218,15 @@ For printers that cannot produce copies on their own, the num-copies field will 
 .LP
 Lines containing the keyword "total" have a \fInum-impressions\fR field instead which provides the total number of impressions (sides) that have been printed on for the job.
 .LP
-The \fIjob-billing\fR field contains a copy of the job-billing or job-account-id attributes provided with the IPP Create-Job or Print-Job requests or "-" if neither was provided.
+The \fIjob-billing\fR field contains a copy of the job-billing or job-account-id attributes provided with the IPP Create-Job or Print-Job requests or "\-" if neither was provided.
 .LP
 The \fIjob-originating-host-name\fR field contains the hostname or IP address of the client that printed the job.
 .LP
-The \fIjob-name\fR field contains a copy of the job-name attribute provided with the IPP Create-Job or Print-Job requests or "-" if none was provided.
+The \fIjob-name\fR field contains a copy of the job-name attribute provided with the IPP Create-Job or Print-Job requests or "\-" if none was provided.
 .LP
-The \fImedia\fR field contains a copy of the media or media-col/media-size attribute provided with the IPP Create-Job or Print-Job requests or "-" if none was provided.
+The \fImedia\fR field contains a copy of the media or media-col/media-size attribute provided with the IPP Create-Job or Print-Job requests or "\-" if none was provided.
 .LP
-The \fIsides\fR field contains a copy of the sides attribute provided with the IPP Create-Job or Print-Job requests or "-" if none was provided.
+The \fIsides\fR field contains a copy of the sides attribute provided with the IPP Create-Job or Print-Job requests or "\-" if none was provided.
 .SH SEE ALSO
 .BR cupsd (8),
 .BR cupsd.conf (5),
