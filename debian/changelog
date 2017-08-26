@@ -1,3 +1,21 @@
+cups (2.2.4-62-g4f272af7b-1) experimental; urgency=low
+
+  * New 2.2.4-62-g4f272af7b upstream snapshot
+    - The scheduler now creates a PID file when not running on demand with a
+      modern service launcher (Issue #5080)
+  * Rebase patches
+    - Drop Debian-specific pidfile patch
+
+  * Refresh manpage translations
+  * Stop symlinking the ssl-cert snakeoil certificates, CUPS will generate them
+    on-demand (with a different name)
+
+  [ Till Kamppeter ]
+  * Patch PPD Generator for driverless printing setup: Workaround for wrong
+    resolution (Closes: #868360)
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 26 Aug 2017 23:08:27 +0200
+
 cups (2.2.4-3) unstable; urgency=medium
 
   [ Helge Kreutzmann ]

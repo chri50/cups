@@ -1,4 +1,4 @@
-From e4e9820740f714f6aaa8826aef77e80b4c35fa33 Mon Sep 17 00:00:00 2001
+From 0b58a14a724c72c062c2dbe18abb01a566001d1b Mon Sep 17 00:00:00 2001
 From: Till Kamppeter <till.kamppeter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:27 +0200
 Subject: Make CUPS reading all option settings in PostScript print
@@ -34,10 +34,11 @@ index 49a05a407..813df320e 100644
  
  
   /*
-@@ -8722,6 +8727,85 @@ read_job_ticket(cupsd_client_t *con)	/* I - Client connection */
+@@ -8721,6 +8726,85 @@ read_job_ticket(cupsd_client_t *con)	/* I - Client connection */
+     num_options = cupsParseOptions(line + 15, num_options, &options);
    }
  
-  /*
++ /*
 +  * Read option settings embedded in the file...
 +  */
 +
@@ -116,7 +117,6 @@ index 49a05a407..813df320e 100644
 +    }
 +  }
 +
-+ /*
+  /*
    * Done with the file; see if we have any options...
    */
- 

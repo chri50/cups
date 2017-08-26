@@ -11,7 +11,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 2.0.3-10\n"
-"POT-Creation-Date: 2017-07-12 17:22+0200\n"
+"POT-Creation-Date: 2017-08-26 22:26+0200\n"
 "PO-Revision-Date: 2017-07-14 16:37+0200\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
@@ -186,7 +186,7 @@ msgstr ""
 #: cupsenable.man:49 cups-files.conf.man.in:16 cupsfilter.man:57
 #: cups-lpd.man.in:26 cups.man:16 cups-snmp.conf.man:16 cups-snmp.man.in:26
 #: cupstestdsc.man:31 cupstestppd.man:54 filter.man:54 ippfind.man:35
-#: ../test/ippserver.man:62 ipptoolfile.man:15 ipptool.man:73 lpadmin.man:57
+#: ../test/ippserver.man:62 ipptoolfile.man:15 ipptool.man:75 lpadmin.man:57
 #: lpc.man:23 lpinfo.man:63 lp.man:87 lpmove.man:40 lpoptions.man.in:68
 #: lpq.man:34 lpr.man:56 lprm.man:34 lpstat.man:69 mailto.conf.man:16
 #: mime.convs.man:16 mime.types.man:16 notifier.man:22 ppdcfile.man:16
@@ -437,7 +437,7 @@ msgstr ""
 
 #. type: SH
 #: backend.man:130 cupsfilter.man:105 cupstestppd.man:113 ippfind.man:212
-#: ../test/ippserver.man:130 ipptool.man:181
+#: ../test/ippserver.man:130 ipptool.man:186
 #, no-wrap
 msgid "EXIT STATUS"
 msgstr "EXIT-STATUS"
@@ -619,7 +619,7 @@ msgstr "Die mit dem Drucker verbundene Geräte-URI."
 
 #. type: SH
 #: backend.man:170 cupsd-helper.man:59 cupsd.man.in:74 cupsfilter.man:113
-#: cups-lpd.man.in:57 cups.man:117 cups-snmp.man.in:43 ipptool.man:185
+#: cups-lpd.man.in:57 cups.man:117 cups-snmp.man.in:43 ipptool.man:190
 #: lpoptions.man.in:122 mime.convs.man:40 mime.types.man:90
 #, no-wrap
 msgid "FILES"
@@ -685,7 +685,7 @@ msgstr ""
 #: cupsfilter.man:130 cups-lpd.man.in:111 cups.man:125 cups-snmp.conf.man:60
 #: cups-snmp.man.in:49 cupstestdsc.man:41 cupstestppd.man:141 filter.man:211
 #: ippfind.man:253 ../test/ippserver.man:164 ipptoolfile.man:646
-#: ipptool.man:236 lpadmin.man:206 lpc.man:48 lpinfo.man:120 lp.man:255
+#: ipptool.man:241 lpadmin.man:206 lpc.man:48 lpinfo.man:120 lp.man:255
 #: lpmove.man:69 lpoptions.man.in:128 lpq.man:59 lpr.man:207 lprm.man:77
 #: lpstat.man:144 mailto.conf.man:43 mime.convs.man:53 mime.types.man:103
 #: notifier.man:34 ppdcfile.man:152 ppdc.man:93 ppdhtml.man:38 ppdi.man:45
@@ -717,7 +717,7 @@ msgstr "CUPS-Online-Hilfe (http://localhost:631/help)"
 #: cupsfilter.man:137 cups-lpd.man.in:118 cups.man:141 cups-snmp.conf.man:63
 #: cups-snmp.man.in:55 cupstestdsc.man:45 cupstestppd.man:145 filter.man:219
 #: ippfind.man:255 ../test/ippserver.man:166 ipptoolfile.man:651
-#: ipptool.man:241 lpadmin.man:212 lpc.man:58 lpinfo.man:123 lp.man:264
+#: ipptool.man:246 lpadmin.man:212 lpc.man:58 lpinfo.man:123 lp.man:264
 #: lpmove.man:76 lpoptions.man.in:135 lpq.man:66 lpr.man:216 lprm.man:84
 #: lpstat.man:151 mailto.conf.man:46 mime.convs.man:60 mime.types.man:110
 #: notifier.man:38 ppdcfile.man:159 ppdc.man:100 ppdhtml.man:45 ppdi.man:52
@@ -733,7 +733,7 @@ msgstr "COPYRIGHT"
 #: cupsd.man.in:129 cupsenable.man:100 cups-files.conf.man.in:231
 #: cupsfilter.man:138 cups-lpd.man.in:119 cups.man:142 cups-snmp.conf.man:64
 #: cups-snmp.man.in:56 cupstestdsc.man:46 cupstestppd.man:146 filter.man:220
-#: ipptoolfile.man:652 ipptool.man:242 lpadmin.man:213 lpc.man:59
+#: ipptoolfile.man:652 ipptool.man:247 lpadmin.man:213 lpc.man:59
 #: lpinfo.man:124 lp.man:265 lpmove.man:77 lpoptions.man.in:136 lpq.man:67
 #: lpr.man:217 lprm.man:85 lpstat.man:152 mailto.conf.man:47 mime.convs.man:61
 #: mime.types.man:111 notifier.man:39 ppdcfile.man:160 ppdc.man:101
@@ -785,7 +785,7 @@ msgstr ""
 #: cancel.man:43 cupsaccept.man:53 cupsaddsmb.man.in:99 cups-config.man:55
 #: cupsctl.man:43 cupsd.conf.man.in:525 cupsd.man.in:40 cupsenable.man:54
 #: cupsfilter.man:62 cups-lpd.man.in:35 cupstestppd.man:61 filter.man:63
-#: ippfind.man:189 ../test/ippserver.man:65 ipptool.man:86 lpadmin.man:76
+#: ippfind.man:189 ../test/ippserver.man:65 ipptool.man:88 lpadmin.man:76
 #: lpinfo.man:66 lp.man:97 lpmove.man:42 lpoptions.man.in:83 lpq.man:39
 #: lpr.man:67 lprm.man:39 lpstat.man:72 ppdc.man:51 ppdhtml.man:28 ppdi.man:33
 #: ppdmerge.man:31 ppdpo.man:31
@@ -815,7 +815,7 @@ msgstr ""
 
 #. type: TP
 #: cancel.man:49 cupsaccept.man:58 cupsctl.man:45 cupsenable.man:56
-#: ipptool.man:118 lpadmin.man:182 lpinfo.man:68 lp.man:102 lpmove.man:44
+#: ipptool.man:120 lpadmin.man:182 lpinfo.man:68 lp.man:102 lpmove.man:44
 #: lpoptions.man.in:85 lpq.man:41 lpr.man:69 lprm.man:43 lpstat.man:74
 #, no-wrap
 msgid "B<-E>"
@@ -878,7 +878,7 @@ msgstr "Löscht Auftragsdatendateien zusätzlich zum Abbruch."
 #. type: SH
 #: cancel.man:64 cupsaccept.man:70 cupsd.conf.man.in:851 cupsd.man.in:84
 #: cupsenable.man:80 cups-lpd.man.in:49 cups.man:122 cups-snmp.man.in:47
-#: filter.man:202 ../test/ippserver.man:137 ipptool.man:219 lpadmin.man:192
+#: filter.man:202 ../test/ippserver.man:137 ipptool.man:224 lpadmin.man:192
 #: lpinfo.man:100 lp.man:232 lpoptions.man.in:126 lprm.man:55 lpstat.man:137
 #, no-wrap
 msgid "CONFORMING TO"
@@ -898,7 +898,7 @@ msgstr ""
 #. type: SH
 #: cancel.man:66 cups-config.man:94 cupsctl.man:69 cupsd.conf.man.in:853
 #: cupsd.man.in:87 cupstestppd.man:128 ippfind.man:240
-#: ../test/ippserver.man:148 ipptool.man:223 lpinfo.man:102 lp.man:237
+#: ../test/ippserver.man:148 ipptool.man:228 lpinfo.man:102 lp.man:237
 #: lpmove.man:53 lpr.man:189 lprm.man:59 mime.convs.man:46 mime.types.man:92
 #, no-wrap
 msgid "EXAMPLES"
@@ -1220,9 +1220,9 @@ msgstr ""
 "älteren Clients benötigt werden, die keine neueren implementieren. Die "
 "Option I<AllowSSL3> aktiviert SSL v3.0, das für einige ältere Clients "
 "benötigt wird, die TLS v1.0 nicht unterstützen. Die Option I<DenyCBC> "
-"deaktiviert alle CBC-Algorithmen. Die Option I<DenyTLS1.0> "
-"deaktiviert die TLS-v1.0-Unterstützung - damit wird die minimale "
-"Protokollversion auf TLS v1.1 gesetzt."
+"deaktiviert alle CBC-Algorithmen. Die Option I<DenyTLS1.0> deaktiviert die "
+"TLS-v1.0-Unterstützung - damit wird die minimale Protokollversion auf TLS "
+"v1.1 gesetzt."
 
 #. type: TP
 #: client.conf.man.in:69
@@ -1700,7 +1700,7 @@ msgid "Specifies a different CUPS server to use."
 msgstr "Legt einen anderen zu verwendenden CUPS-Server fest."
 
 #. type: TP
-#: cupsaddsmb.man.in:115 cupstestppd.man:105 ipptool.man:177 ppdc.man:79
+#: cupsaddsmb.man.in:115 cupstestppd.man:105 ipptool.man:182 ppdc.man:79
 #, no-wrap
 msgid "B<-v>"
 msgstr "B<-v>"
@@ -1850,7 +1850,7 @@ msgid "Reports the default CUPS data directory."
 msgstr "Berichtet das Standard-CUPS-Datenverzeichnis."
 
 #. type: TP
-#: cups-config.man:69 ippfind.man:191 ipptool.man:89
+#: cups-config.man:69 ippfind.man:191 ipptool.man:91
 #, no-wrap
 msgid "B<--help>"
 msgstr "B<--help>"
@@ -1939,7 +1939,7 @@ msgstr ""
 "(Laufzeit-)Bibliotheken, wenn mit I<--libs> verwandt."
 
 #. type: TP
-#: cups-config.man:91 ippfind.man:194 ipptool.man:99
+#: cups-config.man:91 ippfind.man:194 ipptool.man:101
 #, no-wrap
 msgid "B<--version>"
 msgstr "B<--version>"
@@ -3637,9 +3637,9 @@ msgstr ""
 "älteren Clients benötigt werden, die keine neueren implementieren. Die "
 "Option I<AllowSSL3> aktiviert SSL v3.0, das für einige ältere Clients "
 "benötigt wird, die TLS v1.0 nicht unterstützen. Die Option I<DenyCBC> "
-"deaktiviert alle CBC-Algorithmen. Die Option I<DenyTLS1.0> "
-"deaktiviert die TLS-v1.0-Unterstützung - damit wird die minimale "
-"Protokollversion auf TLS v1.1 gesetzt."
+"deaktiviert alle CBC-Algorithmen. Die Option I<DenyTLS1.0> deaktiviert die "
+"TLS-v1.0-Unterstützung - damit wird die minimale Protokollversion auf TLS "
+"v1.1 gesetzt."
 
 #. type: TP
 #: cupsd.conf.man.in:494
@@ -5946,7 +5946,7 @@ msgstr ""
 "B<cupsd> von B<init>(8) aus auszuführen."
 
 #. type: TP
-#: cupsd.man.in:57 ../test/ippserver.man:89 lpr.man:91
+#: cupsd.man.in:57 ../test/ippserver.man:89 ipptool.man:158 lpr.man:91
 #, no-wrap
 msgid "B<-h>"
 msgstr "B<-h>"
@@ -5957,7 +5957,7 @@ msgid "Shows the program usage."
 msgstr "Zeigt die Programm-Verwendung."
 
 #. type: TP
-#: cupsd.man.in:60 ippfind.man:77 ipptool.man:162 lpinfo.man:74
+#: cupsd.man.in:60 ippfind.man:77 ipptool.man:167 lpinfo.man:74
 #: lpoptions.man.in:99 lpq.man:56 lpr.man:94 lpstat.man:107
 #, no-wrap
 msgid "B<-l>"
@@ -5984,7 +5984,7 @@ msgid "Uses the named cups-files.conf configuration file."
 msgstr "Verwendet die benannte cups-files.conf-Konfigurationsdatei."
 
 #. type: TP
-#: cupsd.man.in:71 ipptool.man:174 lpstat.man:125 ppdc.man:76
+#: cupsd.man.in:71 ipptool.man:179 lpstat.man:125 ppdc.man:76
 #, no-wrap
 msgid "B<-t>"
 msgstr "B<-t>"
@@ -6127,7 +6127,7 @@ msgid "Uses the specified username when connecting to the server."
 msgstr "Verwendet den angegebenen Benutzernamen bei Verbindungen zum Server."
 
 #. type: TP
-#: cupsenable.man:62 ipptool.man:147 lp.man:108
+#: cupsenable.man:62 ipptool.man:149 lp.man:108
 #, no-wrap
 msgid "B<-c>"
 msgstr "B<-c>"
@@ -8414,7 +8414,7 @@ msgid "Report all of the previous errors as errors."
 msgstr "Berichtet alle bisherigen Fehler als Fehler"
 
 #. type: TP
-#: cupstestppd.man:99 ippfind.man:105 ipptool.man:171 lpr.man:109
+#: cupstestppd.man:99 ippfind.man:105 ipptool.man:176 lpr.man:109
 #, no-wrap
 msgid "B<-q>"
 msgstr "B<-q>"
@@ -9898,7 +9898,7 @@ msgid "Show program version."
 msgstr "Zeigt die Programmversion."
 
 #. type: TP
-#: ippfind.man:197 ipptool.man:104
+#: ippfind.man:197 ipptool.man:106
 #, no-wrap
 msgid "B<-4>"
 msgstr "B<-4>"
@@ -9909,7 +9909,7 @@ msgid "Use IPv4 when listing."
 msgstr "IPv4 beim Warten auf Anfragen verwenden."
 
 #. type: TP
-#: ippfind.man:200 ipptool.man:109
+#: ippfind.man:200 ipptool.man:111
 #, no-wrap
 msgid "B<-6>"
 msgstr "B<-6>"
@@ -10193,7 +10193,7 @@ msgstr ""
 "Vorgabe ist »application/pdf,image/jpeg,image/pwg-raster«."
 
 #. type: Plain text
-#: ../test/ippserver.man:92 ipptool.man:92
+#: ../test/ippserver.man:92 ipptool.man:94
 msgid "Shows program help."
 msgstr "Zeigt die Programmhilfe."
 
@@ -10922,12 +10922,12 @@ msgid ""
 "escape commas using the \" Common attributes and values are listed in the "
 "IANA IPP registry - see references below."
 msgstr ""
-"Fügt ein Attribut zu der Testanfrage hinzu. Außerbandmarkierungen "
-"(admin-define, delete-attribute, no-value, not-settable, unknown, "
-"unsupported) haben keinen Wert. Werte für die anderen Markierungen werden "
-"durch Kommata (»,«) getrennt -- schützen Sie Kommata mittels des "
-"Anführungszeichens (»\"«). Gemeinsame Attribute und Werte sind in der »IANA "
-"IPP registry« aufgeführt, siehe Referenz unten."
+"Fügt ein Attribut zu der Testanfrage hinzu. Außerbandmarkierungen (admin-"
+"define, delete-attribute, no-value, not-settable, unknown, unsupported) "
+"haben keinen Wert. Werte für die anderen Markierungen werden durch Kommata "
+"(»,«) getrennt -- schützen Sie Kommata mittels des Anführungszeichens "
+"(»\"«). Gemeinsame Attribute und Werte sind in der »IANA IPP registry« "
+"aufgeführt, siehe Referenz unten."
 
 #. type: TP
 #: ipptoolfile.man:174
@@ -12420,10 +12420,9 @@ msgid ""
 "registrations), PWG Internet Printing Protocol Workgroup (http://www.pwg.org/"
 "ipp), RFC 8011 (http://tools.ietf.org/html/rfc8011)"
 msgstr ""
-"B<ipptool>(1), IANA IPP "
-"Registry (http://www.iana.org/assignments/ipp-registrations), PWG Internet "
-"Printing Protocol Workgroup (http://www.pwg.org/ipp), RFC 8011 (http://tools."
-"ietf.org/html/rfc8011)"
+"B<ipptool>(1), IANA IPP Registry (http://www.iana.org/assignments/ipp-"
+"registrations), PWG Internet Printing Protocol Workgroup (http://www.pwg.org/"
+"ipp), RFC 8011 (http://tools.ietf.org/html/rfc8011)"
 
 #. type: TH
 #: ipptool.man:12
@@ -12433,9 +12432,10 @@ msgstr "ipptool"
 
 #. type: TH
 #: ipptool.man:12
-#, no-wrap
-msgid "13 June 2017"
-msgstr "13. Juni 2017"
+#, fuzzy, no-wrap
+#| msgid "4 August 2008"
+msgid "4 August 2017"
+msgstr "4. August 2008"
 
 #. type: Plain text
 #: ipptool.man:15
@@ -12443,13 +12443,21 @@ msgid "ipptool - perform internet printing protocol requests"
 msgstr "ipptool - Internet-Printing-Protocol-Abfragen durchführen"
 
 #. type: Plain text
-#: ipptool.man:73
+#: ipptool.man:75
+#, fuzzy
+#| msgid ""
+#| "B<ipptool> [ B<--help> ] [ B<--stop-after-include-error> ] [ B<--"
+#| "version> ] [ B<-4> ] [ B<-6> ] [ B<-C> ] [ B<-E> ] [ B<-I> ] [ B<-L> ] "
+#| "[ B<-P> I<filename.plist> ] [ B<-S> ] [ B<-T> I<seconds> ] [ B<-V> "
+#| "I<version> ] [ B<-X> ] [ B<-c> ] [ B<-d> I<name=value> ] [ B<-f> "
+#| "I<filename> ] [ B<-i> I<seconds> ] [ B<-n> I<repeat-count> ] [ B<-q> ] "
+#| "[ B<-t> ] [ B<-v ]> I<printer-uri> I<testfile> [ ...  I<testfile> ]"
 msgid ""
 "B<ipptool> [ B<--help> ] [ B<--stop-after-include-error> ] [ B<--version> ] "
 "[ B<-4> ] [ B<-6> ] [ B<-C> ] [ B<-E> ] [ B<-I> ] [ B<-L> ] [ B<-P> "
 "I<filename.plist> ] [ B<-S> ] [ B<-T> I<seconds> ] [ B<-V> I<version> ] [ B<-"
-"X> ] [ B<-c> ] [ B<-d> I<name=value> ] [ B<-f> I<filename> ] [ B<-i> "
-"I<seconds> ] [ B<-n> I<repeat-count> ] [ B<-q> ] [ B<-t> ] [ B<-v ]> "
+"X> ] [ B<-c> ] [ B<-d> I<name=value> ] [ B<-f> I<filename> ] [ B<-h> ] [ B<-"
+"i> I<seconds> ] [ B<-n> I<repeat-count> ] [ B<-q> ] [ B<-t> ] [ B<-v ]> "
 "I<printer-uri> I<testfile> [ ...  I<testfile> ]"
 msgstr ""
 "B<ipptool> [ B<--help> ] [ B<--stop-after-include-error> ] [ B<--version> ] "
@@ -12460,7 +12468,7 @@ msgstr ""
 "v ]> I<Drucker-URI> I<Testdatei> [ …  I<Testdatei> ]"
 
 #. type: Plain text
-#: ipptool.man:86
+#: ipptool.man:88
 msgid ""
 "B<ipptool> sends IPP requests to the specified I<printer-uri> and tests and/"
 "or displays the results.  Each named I<testfile> defines one or more "
@@ -12479,18 +12487,18 @@ msgstr ""
 "beschrieben."
 
 #. type: Plain text
-#: ipptool.man:89
+#: ipptool.man:91
 msgid "The following options are recognized by B<ipptool:>"
 msgstr "Die folgenden Optionen werden von B<ipptool> erkannt:"
 
 #. type: TP
-#: ipptool.man:92
+#: ipptool.man:94
 #, no-wrap
 msgid "B<--stop-after-include-error>"
 msgstr "B<--stop-after-include-error>"
 
 #. type: Plain text
-#: ipptool.man:99
+#: ipptool.man:101
 msgid ""
 "Tells B<ipptool> to stop if an error occurs in an included file. Normally "
 "B<ipptool> will continue with subsequent tests after the INCLUDE directive."
@@ -12500,12 +12508,12 @@ msgstr ""
 "INCLUDE-Direktive fortfahren."
 
 #. type: Plain text
-#: ipptool.man:104
+#: ipptool.man:106
 msgid "Shows the version of B<ipptool> being used."
 msgstr "Zeigt die verwendete Version von B<ipptool> an."
 
 #. type: Plain text
-#: ipptool.man:109
+#: ipptool.man:111
 msgid ""
 "Specifies that B<ipptool> must connect to the printer or server using IPv4."
 msgstr ""
@@ -12513,7 +12521,7 @@ msgstr ""
 "verbinden muss."
 
 #. type: Plain text
-#: ipptool.man:114
+#: ipptool.man:116
 msgid ""
 "Specifies that B<ipptool> must connect to the printer or server using IPv6."
 msgstr ""
@@ -12521,13 +12529,13 @@ msgstr ""
 "verbinden muss."
 
 #. type: TP
-#: ipptool.man:114
+#: ipptool.man:116
 #, no-wrap
 msgid "B<-C>"
 msgstr "B<-C>"
 
 #. type: Plain text
-#: ipptool.man:118
+#: ipptool.man:120
 msgid ""
 "Specifies that requests should be sent using the HTTP/1.1 \"Transfer-"
 "Encoding: chunked\" header, which is required for conformance by all "
@@ -12542,7 +12550,7 @@ msgstr ""
 "Dateien verwandt."
 
 #. type: Plain text
-#: ipptool.man:121
+#: ipptool.man:123
 msgid ""
 "Forces TLS encryption when connecting to the server using the HTTP \"Upgrade"
 "\" header."
@@ -12551,24 +12559,24 @@ msgstr ""
 "»Upgrade«."
 
 #. type: TP
-#: ipptool.man:121
+#: ipptool.man:123
 #, no-wrap
 msgid "B<-I>"
 msgstr "B<-I>"
 
 #. type: Plain text
-#: ipptool.man:126
+#: ipptool.man:128
 msgid "Specifies that B<ipptool> will continue past errors."
 msgstr "Legt fest, dass B<ipptool> bei Fehlern fortfahren soll."
 
 #. type: TP
-#: ipptool.man:126
+#: ipptool.man:128
 #, no-wrap
 msgid "B<-L>"
 msgstr "B<-L>"
 
 #. type: Plain text
-#: ipptool.man:130
+#: ipptool.man:132
 msgid ""
 "Specifies that requests should be sent using the HTTP/1.0 \"Content-Length:"
 "\" header, which is required for conformance by all versions of IPP.  The "
@@ -12581,13 +12589,13 @@ msgstr ""
 "Dateien und »Content-Length:« für Anfragen ohne anhängende Dateien verwandt."
 
 #. type: TP
-#: ipptool.man:130
+#: ipptool.man:132
 #, no-wrap
 msgid "B<-P>I<\\ filename.plist>"
 msgstr "B<-P>I<\\ Dateiname.plist>"
 
 #. type: Plain text
-#: ipptool.man:134
+#: ipptool.man:136
 msgid ""
 "Specifies that the test results should be written to the named XML (Apple "
 "plist) file in addition to the regular test report (B<-t>).  This option is "
@@ -12599,35 +12607,35 @@ msgstr ""
 "(Intervall) und B<-n> (Anzahl-Wiederholungen)."
 
 #. type: TP
-#: ipptool.man:134
+#: ipptool.man:136
 #, no-wrap
 msgid "B<-S>"
 msgstr "B<-S>"
 
 #. type: Plain text
-#: ipptool.man:137
+#: ipptool.man:139
 msgid "Forces (dedicated) TLS encryption when connecting to the server."
 msgstr "Erzwingt (dedizierte) TLS-Verschlüsselung bei Verbindungen zum Server."
 
 #. type: TP
-#: ipptool.man:137
+#: ipptool.man:139
 #, no-wrap
 msgid "B<-T>I<\\ seconds>"
 msgstr "B<-T>I<\\ Sekunden>"
 
 #. type: Plain text
-#: ipptool.man:140
+#: ipptool.man:142
 msgid "Specifies a timeout for IPP requests in seconds."
 msgstr "Legt eine Zeitüberschreitung in Sekunden für IPP-Anfragen fest."
 
 #. type: TP
-#: ipptool.man:140
+#: ipptool.man:142
 #, no-wrap
 msgid "B<-V>I<\\ version>"
 msgstr "B<-V>I<\\ Version>"
 
 #. type: Plain text
-#: ipptool.man:143
+#: ipptool.man:145
 msgid ""
 "Specifies the default IPP version to use: 1.0, 1.1, 2.0, 2.1, or 2.2. If not "
 "specified, version 1.1 is used."
@@ -12636,13 +12644,13 @@ msgstr ""
 "2.2. Falls nicht angegeben, wird Version 1.1 verwandt."
 
 #. type: TP
-#: ipptool.man:143
+#: ipptool.man:145
 #, no-wrap
 msgid "B<-X>"
 msgstr "B<-X>"
 
 #. type: Plain text
-#: ipptool.man:147
+#: ipptool.man:149
 msgid ""
 "Specifies that XML (Apple plist) output is desired instead of the plain text "
 "report.  This option is incompatible with the B<-i> (interval) and B<-n> "
@@ -12653,7 +12661,7 @@ msgstr ""
 "(Intervall) und B<-n> (Anzahl-Wiederholungen)."
 
 #. type: Plain text
-#: ipptool.man:150
+#: ipptool.man:152
 msgid ""
 "Specifies that CSV (comma-separated values) output is desired instead of the "
 "plain text output."
@@ -12662,35 +12670,40 @@ msgstr ""
 "Textberichts erwünscht ist."
 
 #. type: TP
-#: ipptool.man:150
+#: ipptool.man:152
 #, no-wrap
 msgid "B<-d>I<\\ name=value>"
 msgstr "B<-d>I<\\ Name=Wert>"
 
 #. type: Plain text
-#: ipptool.man:153
+#: ipptool.man:155
 msgid "Defines the named variable."
 msgstr "Definiert die genannte Variable."
 
 #. type: TP
-#: ipptool.man:153
+#: ipptool.man:155
 #, no-wrap
 msgid "B<-f>I<\\ filename>"
 msgstr "B<-f>I<\\ Dateiname>"
 
 #. type: Plain text
-#: ipptool.man:156
+#: ipptool.man:158
 msgid "Defines the default request filename for tests."
 msgstr "Definiert den Standardanfragedateinamen für Tests."
 
+#. type: Plain text
+#: ipptool.man:161
+msgid "Validate HTTP response headers."
+msgstr ""
+
 #. type: TP
-#: ipptool.man:156
+#: ipptool.man:161
 #, no-wrap
 msgid "B<-i>I<\\ seconds>"
 msgstr "B<-i>I<\\ Sekunden>"
 
 #. type: Plain text
-#: ipptool.man:162
+#: ipptool.man:167
 msgid ""
 "Specifies that the (last)  I<testfile> should be repeated at the specified "
 "interval.  This option is incompatible with the B<-X> (XML plist output) "
@@ -12701,18 +12714,18 @@ msgstr ""
 "(XML-Plist-Ausgabe)."
 
 #. type: Plain text
-#: ipptool.man:165
+#: ipptool.man:170
 msgid "Specifies that plain text output is desired."
 msgstr "Legt fest, dass die Ausgabe als einfacher Text erwünscht ist."
 
 #. type: TP
-#: ipptool.man:165
+#: ipptool.man:170
 #, no-wrap
 msgid "B<-n>I<\\ repeat-count>"
 msgstr "B<-n>I<\\ Anzahl-Wiederholungen>"
 
 #. type: Plain text
-#: ipptool.man:171
+#: ipptool.man:176
 msgid ""
 "Specifies that the (last)  I<testfile> should be repeated the specified "
 "number of times.  This option is incompatible with the I<-X> (XML plist "
@@ -12723,12 +12736,12 @@ msgstr ""
 "(XML-Plist-Ausgabe)."
 
 #. type: Plain text
-#: ipptool.man:174
+#: ipptool.man:179
 msgid "Be quiet and produce no output."
 msgstr "Still sein und keine Ausgabe erzeugen."
 
 #. type: Plain text
-#: ipptool.man:177
+#: ipptool.man:182
 msgid ""
 "Specifies that CUPS test report output is desired instead of the plain text "
 "output."
@@ -12737,7 +12750,7 @@ msgstr ""
 "ist."
 
 #. type: Plain text
-#: ipptool.man:181
+#: ipptool.man:186
 msgid ""
 "Specifies that all request and response attributes should be output in CUPS "
 "test mode (B<-t>).  This is the default for XML output."
@@ -12746,7 +12759,7 @@ msgstr ""
 "t>) ausgegeben werden sollen. Dies ist die Vorgabe für XML-Ausgabe."
 
 #. type: Plain text
-#: ipptool.man:185
+#: ipptool.man:190
 msgid ""
 "The B<ipptool> program returns 0 if all tests were successful and 1 "
 "otherwise."
@@ -12755,12 +12768,12 @@ msgstr ""
 "und ansonsten 1."
 
 #. type: Plain text
-#: ipptool.man:187
+#: ipptool.man:192
 msgid "The following standard files are available:"
 msgstr "Die folgenden Standarddateien sind verfügbar:"
 
 #. type: Plain text
-#: ipptool.man:218
+#: ipptool.man:223
 #, no-wrap
 msgid ""
 "I<color.jpg>\n"
@@ -12826,7 +12839,7 @@ msgstr ""
 "I<validate-job.test>\n"
 
 #. type: Plain text
-#: ipptool.man:223
+#: ipptool.man:228
 msgid ""
 "The B<ipptool> program is unique to CUPS and conforms to the Internet "
 "Printing Protocol up to version 2.2."
@@ -12835,18 +12848,18 @@ msgstr ""
 "Spezifikation »Internet Printing Protocol« bis zu Version 2.2."
 
 #. type: Plain text
-#: ipptool.man:225
+#: ipptool.man:230
 msgid "Get a list of completed jobs for \"myprinter\":"
 msgstr "Eine Liste von abgeschlossenen Aufträgen für »MeinDrucker« ermitteln:"
 
 #. type: Plain text
-#: ipptool.man:228
+#: ipptool.man:233
 #, no-wrap
 msgid "    ipptool ipp://localhost/printers/myprinter get-completed-jobs.test\n"
 msgstr "    ipptool ipp://localhost/printers/MeinDrucker get-completed-jobs.test\n"
 
 #. type: Plain text
-#: ipptool.man:231
+#: ipptool.man:236
 msgid ""
 "Send email notifications to \"user@example.com\" when \"myprinter\" changes:"
 msgstr ""
@@ -12854,7 +12867,7 @@ msgstr ""
 "»MeinDrucker« ändert:"
 
 #. type: Plain text
-#: ipptool.man:235
+#: ipptool.man:240
 #, no-wrap
 msgid ""
 "    ipptool -d recipient=mailto:user@example.com \\e\n"
@@ -12864,16 +12877,15 @@ msgstr ""
 "        ipp://localhost/printers/myprinter create-printer-subscription.test\n"
 
 #. type: Plain text
-#: ipptool.man:241
+#: ipptool.man:246
 msgid ""
 "B<ipptoolfile>(5), IANA IPP Registry (http://www.iana.org/assignments/ipp-"
 "registrations), PWG Internet Printing Protocol Workgroup (http://www.pwg.org/"
 "ipp)  RFC 8011 (http://tools.ietf.org/html/rfc8011),"
 msgstr ""
-"B<ipptoolfile>(5), IANA IPP "
-"Registry (http://www.iana.org/assignments/ipp-registrations), PWG Internet "
-"Printing Protocol Workgroup (http://www.pwg.org/ipp)  RFC 8011 (http://tools."
-"ietf.org/html/rfc8011),"
+"B<ipptoolfile>(5), IANA IPP Registry (http://www.iana.org/assignments/ipp-"
+"registrations), PWG Internet Printing Protocol Workgroup (http://www.pwg.org/"
+"ipp)  RFC 8011 (http://tools.ietf.org/html/rfc8011),"
 
 #. type: TH
 #: lpadmin.man:13
@@ -15033,9 +15045,9 @@ msgid ""
 msgstr ""
 "B<lpstat> [ B<-E> ] [ B<-H> ] [ B<-U> I<Benutzername> ] [ B<-h "
 ">I<Rechnername>[B<:>I<Port>] ] [ B<-l> ] [ B<-W> I<welche-Druckaufträge> ] "
-"[ B<-a> [ I<Ziel(e)> ] ] [ B<-c> [ I<Klasse(n)> ] ] [ B<-d> ] [ B<-e> ] [ B<-o> "
-"[ I<Ziel(e)> ] ] [ B<-p> [ I<Drucker> ] ] [ B<-r> ] [ B<-R> ] [ B<-s> ] [ B<-"
-"t> ] [ B<-u> [ I<Benutzer> ] ] [ B<-v> [ I<Drucker> ] ]"
+"[ B<-a> [ I<Ziel(e)> ] ] [ B<-c> [ I<Klasse(n)> ] ] [ B<-d> ] [ B<-e> ] [ B<-"
+"o> [ I<Ziel(e)> ] ] [ B<-p> [ I<Drucker> ] ] [ B<-r> ] [ B<-R> ] [ B<-s> ] "
+"[ B<-t> ] [ B<-u> [ I<Benutzer> ] ] [ B<-v> [ I<Drucker> ] ]"
 
 #. type: Plain text
 #: lpstat.man:72
@@ -15250,7 +15262,8 @@ msgstr ""
 #: lpstat.man:142
 msgid "The I<-h>, I<-e>, I<-E>, I<-U>, and I<-W> options are unique to CUPS."
 msgstr ""
-"Die Optionen I<-h>, I<-e>, I<-E>, I<-U> und I<-W> sind eine Besonderheit von CUPS."
+"Die Optionen I<-h>, I<-e>, I<-E>, I<-U> und I<-W> sind eine Besonderheit von "
+"CUPS."
 
 #. type: Plain text
 #: lpstat.man:144
@@ -16860,6 +16873,9 @@ msgstr ""
 "B<classes.conf>(5), B<cupsd>(8), B<cupsd.conf>(5), B<mime.convs>(5), B<mime."
 "types>(5), B<printers.conf>(5), CUPS Online Help (http://localhost:631/help)"
 
+#~ msgid "13 June 2017"
+#~ msgstr "13. Juni 2017"
+
 #~ msgid "21 June 2016"
 #~ msgstr "21. Juni 2016"
 
@@ -18406,9 +18422,6 @@ msgstr ""
 
 #~ msgid "6 January 2011"
 #~ msgstr "6. Januar 2011"
-
-#~ msgid "4 August 2008"
-#~ msgstr "4. August 2008"
 
 #~ msgid "9 November 2010"
 #~ msgstr "9. November 2010"

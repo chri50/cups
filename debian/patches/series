@@ -20,7 +20,6 @@ cups-deviced-allow-device-ids-with-newline.patch
 airprint-support.patch
 cups-snmp-oids-device-id-hp-ricoh.patch
 no-conffile-timestamp.patch
-pidfile.patch
 removecvstag.patch
 rename-systemd-units.patch
 do-not-broadcast-with-hostnames.patch
@@ -35,6 +34,6 @@ cupsd-set-default-for-SyncOnClose-to-Yes.patch
 cups-set-default-error-policy-retry-job.patch
 man-cups-lpd-drop-dangling-references.patch
 debianize_cups-config.patch
-0038-Build-mantohtml-with-the-build-architecture-compiler.patch
-0039-The-cupsGetDests-function-incorrectly-returned-an-em.patch
+0037-Build-mantohtml-with-the-build-architecture-compiler.patch
+pwg-raster-resolution-fallback.patch
 manpage-translations.patch
