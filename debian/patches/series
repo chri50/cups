@@ -37,4 +37,6 @@ man-cups-lpd-drop-dangling-references.patch
 debianize_cups-config.patch
 0038-Build-mantohtml-with-the-build-architecture-compiler.patch
 0039-The-cupsGetDests-function-incorrectly-returned-an-em.patch
+pwg-raster-resolution-fallback.patch
+scheduler-fix-avahi-crashes.patch
 manpage-translations.patch

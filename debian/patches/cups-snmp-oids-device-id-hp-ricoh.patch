@@ -30,13 +30,14 @@ index e66edc980..a13562680 100644
  static const int	XeroxProductOID[] = { 1,3,6,1,4,1,128,2,1,3,1,2,0,-1 };
  static cups_array_t	*DeviceURIs = NULL;
  static int		HostNameLookups = 0;
-@@ -975,8 +977,14 @@ read_snmp_response(int fd)		/* I - SNMP socket file descriptor */
+@@ -974,9 +976,15 @@ read_snmp_response(int fd)		/* I - SNMP socket file descriptor */
+ 	_cupsSNMPWrite(fd, &(packet.address), CUPS_SNMP_VERSION_1,
  	               packet.community, CUPS_ASN1_GET_REQUEST,
  		       DEVICE_ID, LexmarkDeviceIdOID);
- 	_cupsSNMPWrite(fd, &(packet.address), CUPS_SNMP_VERSION_1,
++	_cupsSNMPWrite(fd, &(packet.address), CUPS_SNMP_VERSION_1,
 +		       packet.community, CUPS_ASN1_GET_REQUEST,
 +		       DEVICE_ID, RicohDeviceIdOID);
-+	_cupsSNMPWrite(fd, &(packet.address), CUPS_SNMP_VERSION_1,
+ 	_cupsSNMPWrite(fd, &(packet.address), CUPS_SNMP_VERSION_1,
  	               packet.community, CUPS_ASN1_GET_REQUEST,
  		       DEVICE_PRODUCT, XeroxProductOID);
 +	_cupsSNMPWrite(fd, &(packet.address), CUPS_SNMP_VERSION_1,

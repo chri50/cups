@@ -34,10 +34,11 @@ index 49a05a407..813df320e 100644
  
  
   /*
-@@ -8722,6 +8727,85 @@ read_job_ticket(cupsd_client_t *con)	/* I - Client connection */
+@@ -8721,6 +8726,85 @@ read_job_ticket(cupsd_client_t *con)	/* I - Client connection */
+     num_options = cupsParseOptions(line + 15, num_options, &options);
    }
  
-  /*
++ /*
 +  * Read option settings embedded in the file...
 +  */
 +
@@ -116,7 +117,6 @@ index 49a05a407..813df320e 100644
 +    }
 +  }
 +
-+ /*
+  /*
    * Done with the file; see if we have any options...
    */
- 
