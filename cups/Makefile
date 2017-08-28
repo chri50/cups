@@ -518,7 +518,7 @@ testlang:	testlang.o $(LIBCUPSSTATIC)
 	$(LD_CC) $(ARCHFLAGS) $(LDFLAGS) -o $@ testlang.o $(LIBCUPSSTATIC) \
 		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
 	echo Running language API tests...
-	./testlang
+	./testlang fr_CH
 
 
 #
