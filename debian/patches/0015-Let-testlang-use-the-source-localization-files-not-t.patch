@@ -1,0 +1,101 @@
+From e3136bcf4952280c200ae420cf3aa925b628e875 Mon Sep 17 00:00:00 2001
+From: Didier Raboud <odyx@debian.org>
+Date: Mon, 28 Aug 2017 09:25:00 +0200
+Subject: Let testlang use the source localization files, not the system ones
+
+---
+ cups/Makefile   |  2 +-
+ cups/testlang.c | 53 ++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 53 insertions(+), 2 deletions(-)
+
+diff --git a/cups/Makefile b/cups/Makefile
+index 96dd12672..660047f40 100644
+--- a/cups/Makefile
++++ b/cups/Makefile
+@@ -518,7 +518,7 @@ testlang:	testlang.o $(LIBCUPSSTATIC)
+ 	$(LD_CC) $(ARCHFLAGS) $(LDFLAGS) -o $@ testlang.o $(LIBCUPSSTATIC) \
+ 		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+ 	echo Running language API tests...
+-	./testlang
++	./testlang fr_CH
+ 
+ 
+ #
+diff --git a/cups/testlang.c b/cups/testlang.c
+index e205711e6..b7ae676f8 100644
+--- a/cups/testlang.c
++++ b/cups/testlang.c
+@@ -19,6 +19,13 @@
+ 
+ #include "cups-private.h"
+ #include "ppd-private.h"
++#include <sys/stat.h>
++#ifdef WIN32
++#  include <io.h>
++#else
++#  include <unistd.h>
++#  include <fcntl.h>
++#endif /* WIN32 */
+ #ifdef __APPLE__
+ #  include <CoreFoundation/CoreFoundation.h>
+ #endif /* __APPLE__ */
+@@ -39,7 +46,10 @@ main(int  argc,				/* I - Number of command-line arguments */
+   struct lconv		*loc;		/* Locale data */
+   const char            *msgid,         /* String identifier */
+                         *msgstr;        /* Localized string */
+-  char			buffer[1024];	/* String buffer */
++  char			buffer[1024],	/* String buffers */
++                        localedir[1024],/* Directory for language locale file */
++                        realfilename[1024],/* Filename for language locale file */
++                        filepath[1024];	/* Filename for language locale file */
+   double		number;		/* Number */
+   static const char * const tests[] =	/* Test strings */
+   {
+@@ -64,6 +74,47 @@ main(int  argc,				/* I - Number of command-line arguments */
+     setenv("SOFTWARE", "CUPS/" CUPS_SVERSION, 1);
+   }
+ 
++  /*
++  * Setup directories for locale stuff...
++  */
++
++  if (access("locale", 0))
++  {
++    mkdir("locale", 0777);
++
++    snprintf(realfilename, sizeof(realfilename), "../locale/cups_%s.po", language->language);
++    snprintf(filepath, sizeof(filepath), "../../../locale/cups_%s.po", language->language);
++    snprintf(localedir, sizeof(localedir), "locale/%s", language->language);
++    snprintf(buffer, sizeof(buffer), "locale/%s/cups_%s.po", language->language, language->language);
++
++    if (strchr(language->language, '_') && access(realfilename, 0))
++    {
++      /*
++      * Country localization not available, look for generic localization...
++      */
++
++      snprintf(realfilename, sizeof(realfilename), "../locale/cups_%.2s.po", language->language);
++      snprintf(filepath, sizeof(filepath), "../../../locale/cups_%.2s.po", language->language);
++      snprintf(localedir, sizeof(localedir), "locale/%.2s", language->language);
++      snprintf(buffer, sizeof(buffer), "locale/%.2s/cups_%.2s.po", language->language, language->language);
++
++      if (access(realfilename, 0))
++      {
++          /*
++          * No generic localization, so use POSIX...
++          */
++          snprintf(filepath, sizeof(filepath), "../../../locale/cups_C.po");
++          snprintf(localedir, sizeof(localedir), "locale/C");
++          snprintf(buffer, sizeof(buffer), "locale/C/cups_C.po");
++        }
++    }
++
++    mkdir(localedir, 0777);
++    symlink(filepath, buffer);
++  }
++
++  putenv("LOCALEDIR=locale");
++
+   _cupsSetLocale(argv);
+ 
+   if (language != language2)
