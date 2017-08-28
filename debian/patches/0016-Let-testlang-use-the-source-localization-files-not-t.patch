@@ -1,4 +1,4 @@
-From e3136bcf4952280c200ae420cf3aa925b628e875 Mon Sep 17 00:00:00 2001
+From f45816e461fe3954b83eea1f72deb4809a333004 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Mon, 28 Aug 2017 09:25:00 +0200
 Subject: Let testlang use the source localization files, not the system ones

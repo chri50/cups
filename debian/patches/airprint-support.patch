@@ -1,4 +1,4 @@
-From fef0239b049862585e3e565d234c6823b6dd5e45 Mon Sep 17 00:00:00 2001
+From d642ddeaef5764a95e29c3dc1a418851470ef96f Mon Sep 17 00:00:00 2001
 From: Till Kamppeter <till.kamppeter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:29 +0200
 Subject: Patch to support Apple AirPrint (printing from iPhone, iPad, iPod

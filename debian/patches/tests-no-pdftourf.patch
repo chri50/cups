@@ -1,4 +1,4 @@
-From a3bcb7dbe9f894e8716b70cd78924f990b0702df Mon Sep 17 00:00:00 2001
+From e336a57e5a4cfd0fe51514c1ee62af4d172e236e Mon Sep 17 00:00:00 2001
 From: Michael Sweet <michael.r.sweet@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:23 +0200
 Subject: revert commit 830cfed95a5349b008999eebd34f5233bc35829c
@@ -18,7 +18,7 @@ Patch-Name: tests-no-pdftourf.patch
  delete mode 100644 test/test.types
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index 989507126..0dd860289 100755
+index e4bd006a9..410b1cb49 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
 @@ -276,7 +276,7 @@ case "$usedebugprintfs" in

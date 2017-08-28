@@ -6,13 +6,14 @@ tests-ignore-warnings.patch
 tests-ignore-usb-crash.patch
 tests-ignore-kfreebsd-amd64-not-a-pdf.patch
 tests-ignore-ipv6-address-family-not-supported.patch
-tests-ignore-kfreebsd-unable-to-write-uncompressed-print-data.pdf
+tests-ignore-kfreebsd-unable-to-write-uncompressed-print-data.patch
+tests-ignore-unknown-default-SystemGroup.patch
 test-i18n-nonlinux.patch
 tests-wait-on-unfinished-jobs-everytime.patch
 tests-fix-ppdLocalize-on-unclean-env.patch
 tests-use-ipv4-lo-address.patch
 tests-make-lpstat-call-reproducible.patch
-0015-Let-testlang-use-the-source-localization-files-not-t.patch
+0016-Let-testlang-use-the-source-localization-files-not-t.patch
 tests-no-pdftourf.patch
 move-cupsd-conf-default-to-share.patch
 drop_unnecessary_dependencies.patch
@@ -34,5 +35,5 @@ cupsd-set-default-for-SyncOnClose-to-Yes.patch
 cups-set-default-error-policy-retry-job.patch
 man-cups-lpd-drop-dangling-references.patch
 debianize_cups-config.patch
-0037-Build-mantohtml-with-the-build-architecture-compiler.patch
+0038-Build-mantohtml-with-the-build-architecture-compiler.patch
 manpage-translations.patch

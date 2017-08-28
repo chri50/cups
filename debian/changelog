@@ -1,3 +1,9 @@
+cups (2.2.4-65-ge9b2d701d-2) experimental; urgency=medium
+
+  * Add patch to fix another regression from upstream in error lines counting
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 28 Aug 2017 16:16:12 +0200
+
 cups (2.2.4-65-ge9b2d701d-1) experimental; urgency=medium
 
   * New 2.2.4-65-ge9b2d701d upstream snapshot
