@@ -31,18 +31,18 @@ index 243742d17..bd328b872 100644
  
  
   /*
-@@ -133,6 +135,11 @@ cupsdCheckLogFile(cups_file_t **lf,	/* IO - Log file */
+@@ -132,6 +134,11 @@ cupsdCheckLogFile(cups_file_t **lf,	/* IO - Log file */
+     return (1);
    }
  
-  /*
++ /*
 +  * Use adm group if possible, fall back to Group
 +  */
 + loggrp = getgrnam("adm");
 +
-+ /*
+  /*
    * Format the filename as needed...
    */
- 
 @@ -244,7 +251,7 @@ cupsdCheckLogFile(cups_file_t **lf,	/* IO - Log file */
        * Change ownership and permissions of non-device logs...
        */

@@ -1,3 +1,14 @@
+cups (2.2.4-4) unstable; urgency=low
+
+  * Backport two upstream patches, thanks to Till Kamppeter
+    - The IPP Everywhere PPD generator now sorts the supported resolutions
+      before choosing them for draft, normal, and best quality modes
+      (Issue #5091)
+    - Fix an Avahi-related crash bug in the scheduler
+      (Issues #5085 & #5086)
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 28 Aug 2017 19:32:14 +0200
+
 cups (2.2.4-3) unstable; urgency=medium
 
   [ Helge Kreutzmann ]
