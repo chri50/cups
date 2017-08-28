@@ -235,7 +235,7 @@ gziptoany:	gziptoany.o ../Makedefs ../cups/$(LIBCUPS)
 libcupsimage.so.2 libcupsimage.sl.2:	$(IMAGEOBJS)
 	echo Linking $@...
 	$(DSO) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(IMAGEOBJS) $(DSOLIBS) \
-		-L../cups $(LINKCUPS)
+		-L../cups $(LINKCUPS) -lpthread
 	$(RM) `basename $@ .2`
 	$(LN) $@ `basename $@ .2`
 
