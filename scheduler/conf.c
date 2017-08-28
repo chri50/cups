@@ -163,8 +163,7 @@ static const cupsd_var_t	cupsfiles_vars[] =
 #ifdef HAVE_AUTHORIZATION_H
   { "SystemGroupAuthKey",	&SystemGroupAuthKey,	CUPSD_VARTYPE_STRING },
 #endif /* HAVE_AUTHORIZATION_H */
-  { "TempDir",			&TempDir,		CUPSD_VARTYPE_PATHNAME },
-  { "PidFile",			&PidFile,		CUPSD_VARTYPE_STRING }
+  { "TempDir",			&TempDir,		CUPSD_VARTYPE_PATHNAME }
 };
 
 static int		default_auth_type = CUPSD_AUTH_AUTO;
@@ -191,7 +190,7 @@ static void		mime_error_cb(void *ctx, const char *message);
 static int		parse_aaa(cupsd_location_t *loc, char *line,
 			          char *value, int linenum);
 static int		parse_fatal_errors(const char *s);
-static int		parse_groups(const char *s);
+static int		parse_groups(const char *s, int linenum);
 static int		parse_protocols(const char *s);
 static int		parse_variable(const char *filename, int linenum,
 			               const char *line, const char *value,
@@ -593,7 +592,6 @@ cupsdReadConfiguration(void)
   cupsdSetStringf(&ServerHeader, "CUPS/%d.%d IPP/2.1", CUPS_VERSION_MAJOR,
                   CUPS_VERSION_MINOR);
   cupsdSetString(&StateDir, CUPS_STATEDIR);
-  cupsdSetString(&PidFile, "/run/cups/cupsd.pid");
 
   if (!strcmp(CUPS_DEFAULT_PRINTCAP, "/etc/printers.conf"))
     PrintcapFormat = PRINTCAP_SOLARIS;
@@ -880,6 +878,7 @@ cupsdReadConfiguration(void)
     if (!ServerAlias)
       ServerAlias = cupsArrayNew(NULL, NULL);
 
+    cupsdAddAlias(ServerAlias, ServerName);
     cupsdLogMessage(CUPSD_LOG_DEBUG, "Added auto ServerAlias %s", ServerName);
   }
   else
@@ -955,7 +954,7 @@ cupsdReadConfiguration(void)
 
   if (NumSystemGroups == 0)
   {
-    if (!parse_groups(CUPS_DEFAULT_SYSTEM_GROUPS))
+    if (!parse_groups(CUPS_DEFAULT_SYSTEM_GROUPS, 0))
     {
      /*
       * Find the group associated with GID 0...
@@ -2498,7 +2497,8 @@ parse_fatal_errors(const char *s)	/* I - FatalErrors string */
  */
 
 static int				/* O - 1 on success, 0 on failure */
-parse_groups(const char *s)		/* I - Space-delimited groups */
+parse_groups(const char *s,		/* I - Space-delimited groups */
+             int        linenum)        /* I - Line number in cups-files.conf */
 {
   int		status;			/* Return status */
   char		value[1024],		/* Value string */
@@ -2554,7 +2554,14 @@ parse_groups(const char *s)		/* I - Space-delimited groups */
       NumSystemGroups ++;
     }
     else
+    {
+      if (linenum)
+        cupsdLogMessage(CUPSD_LOG_ERROR, "Unknown SystemGroup \"%s\" on line %d of %s.", valstart, linenum, CupsFilesFile);
+      else
+        cupsdLogMessage(CUPSD_LOG_ERROR, "Unknown default SystemGroup \"%s\".", valstart);
+
       status = 0;
+    }
 
     endgrent();
 
@@ -3326,7 +3333,7 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
 	cupsdSetStringf(&ServerHeader, CUPS_MINIMAL " (%s %s; %s) IPP/2.1",
 	                plat.sysname, plat.release, plat.machine);
       else if (!_cups_strcasecmp(value, "None"))
-	cupsdClearString(&ServerHeader);
+	cupsdSetString(&ServerHeader, "");
       else
 	cupsdLogMessage(CUPSD_LOG_WARN, "Unknown ServerTokens %s on line %d of %s.",
                         value, linenum, ConfigurationFile);
@@ -3435,7 +3442,6 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
              !_cups_strcasecmp(line, "SystemGroup") ||
              !_cups_strcasecmp(line, "SystemGroupAuthKey") ||
              !_cups_strcasecmp(line, "TempDir") ||
-             !_cups_strcasecmp(line, "PidFile") ||
 	     !_cups_strcasecmp(line, "User"))
     {
       cupsdLogMessage(CUPSD_LOG_INFO,
@@ -3552,11 +3558,8 @@ read_cups_files_conf(cups_file_t *fp)	/* I - File to read from */
       * SystemGroup (admin) group(s)...
       */
 
-      if (!parse_groups(value))
+      if (!parse_groups(value, linenum))
       {
-	cupsdLogMessage(CUPSD_LOG_ERROR,
-	                "Unknown SystemGroup \"%s\" on line %d of %s.", value,
-	                linenum, CupsFilesFile);
         if (FatalErrors & CUPSD_FATAL_CONFIG)
           return (0);
       }

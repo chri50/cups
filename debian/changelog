@@ -1,3 +1,19 @@
+cups (2.2.4-65-ge9b2d701d-1) experimental; urgency=medium
+
+  * New 2.2.4-65-ge9b2d701d upstream snapshot
+    - The scheduler now creates a PID file when not running on demand with a
+      modern service launcher (Issue #5080)
+  * Patches rework:
+    - Drop Debian-specific pidfile patch
+    - Patch the testlang unittest to use locale files from the source
+      paths; test french, not C
+
+  * Refresh manpage translations
+  * Stop symlinking the ssl-cert snakeoil certificates, CUPS will generate them
+    on-demand (with a different name)
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 28 Aug 2017 15:00:03 +0200
+
 cups (2.2.4-3) unstable; urgency=medium
 
   [ Helge Kreutzmann ]
