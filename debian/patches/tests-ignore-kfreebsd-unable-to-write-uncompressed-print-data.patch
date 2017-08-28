@@ -1,4 +1,4 @@
-From 2804645399875efacb6626fa619d53d6eea44a58 Mon Sep 17 00:00:00 2001
+From 9652521d7070437674c5967b8f393a118de8fbff Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:36:02 +0200
 Subject: Tests: ignore the failure to write uncompressed data
@@ -8,7 +8,7 @@ sometimes breaks the errorlines counting on kfreebsd for some reason.
 Origin: vendor
 Last-Update: 2016-08-09
 
-Patch-Name: tests-ignore-kfreebsd-unable-to-write-uncompressed-print-data.pdf
+Patch-Name: tests-ignore-kfreebsd-unable-to-write-uncompressed-print-data.patch
 ---
  test/run-stp-tests.sh | 1 +
  1 file changed, 1 insertion(+)

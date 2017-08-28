@@ -1,0 +1,26 @@
+From 40d9023ed0d32d366c75177f890c1b2470bcde86 Mon Sep 17 00:00:00 2001
+From: Didier Raboud <odyx@debian.org>
+Date: Mon, 28 Aug 2017 16:06:03 +0200
+Subject: Tests: ignore unknown default SystemGroup
+
+This regression was introduced by the fix for https://github.com/apple/cups/issues/5041
+
+Origin: vendor
+
+Patch-Name: tests-ignore-unknown-default-SystemGroup.patch
+---
+ test/run-stp-tests.sh | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
+index 93d8c16f9..107c062df 100755
+--- a/test/run-stp-tests.sh
++++ b/test/run-stp-tests.sh
+@@ -1003,6 +1003,7 @@ count=`$GREP '^E ' $BASE/log/error_log | \
+        $GREP -v 'Failed to connect to system bus' | \
+        $GREP -v -E 'Unable to open listen socket for address .* Address family not supported by protocol.' | \
+        $GREP -v 'Unable to write uncompressed print data: Broken pipe' | \
++       $GREP -v 'Unknown default SystemGroup' | \
+        wc -l | awk '{print $1}'`
+ if test $count != 33; then
+ 	echo "FAIL: $count error messages, expected 33."
