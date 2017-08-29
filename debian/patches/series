@@ -39,4 +39,5 @@ debianize_cups-config.patch
 0039-The-cupsGetDests-function-incorrectly-returned-an-em.patch
 pwg-raster-resolution-fallback.patch
 scheduler-fix-avahi-crashes.patch
+0042-The-CUPS-library-did-not-reuse-domain-sockets-Issue-.patch
 manpage-translations.patch
