@@ -1,4 +1,4 @@
-From eac43c0b76de756eba43b388c63d816689b63cad Mon Sep 17 00:00:00 2001
+From f1cd9ec94aef7d8b2326f21df78bd31454a2f9a2 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:05 +0200
 Subject: Fix hyphen-used-as-minus-sign manpage errors
@@ -254,10 +254,10 @@ index d12fab35f..19db8a677 100644
  .BR cupsd (8),
  .BR cupsd.conf (5),
 diff --git a/man/cupsd.conf.man.in b/man/cupsd.conf.man.in
-index 7843360b4..40fea92e3 100644
+index 918bbee7a..85639af54 100644
 --- a/man/cupsd.conf.man.in
 +++ b/man/cupsd.conf.man.in
-@@ -489,7 +489,7 @@ The \fIAllowDH\fR option enables cipher suites using plain Diffie-Hellman key ne
+@@ -449,7 +449,7 @@ The \fIAllowDH\fR option enables cipher suites using plain Diffie-Hellman key ne
  The \fIAllowRC4\fR option enables the 128-bit RC4 cipher suites, which are required for some older clients that do not implement newer ones.
  The \fIAllowSSL3\fR option enables SSL v3.0, which is required for some older clients that do not support TLS v1.0.
  The \fIDenyCBC\fR option disables all CBC cipher suites.

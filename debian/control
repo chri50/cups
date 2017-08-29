@@ -1,5 +1,5 @@
 Source: cups
-Standards-Version: 4.0.0
+Standards-Version: 4.0.1
 Priority: optional
 Section: net
 Maintainer: Debian Printing Team <debian-printing@lists.debian.org>
@@ -16,7 +16,6 @@ Build-Depends:
  autoconf, 
  automake, 
  libtool,
- autotools-dev,
  pkg-config,
  ghostscript (>= 9.02~),
  libavahi-client-dev,

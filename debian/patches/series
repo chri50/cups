@@ -6,7 +6,8 @@ tests-ignore-warnings.patch
 tests-ignore-usb-crash.patch
 tests-ignore-kfreebsd-amd64-not-a-pdf.patch
 tests-ignore-ipv6-address-family-not-supported.patch
-tests-ignore-kfreebsd-unable-to-write-uncompressed-print-data.pdf
+tests-ignore-kfreebsd-unable-to-write-uncompressed-print-data.patch
+tests-ignore-unknown-default-SystemGroup.patch
 test-i18n-nonlinux.patch
 tests-wait-on-unfinished-jobs-everytime.patch
 tests-fix-ppdLocalize-on-unclean-env.patch
@@ -18,9 +19,7 @@ drop_unnecessary_dependencies.patch
 read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.patch
 cups-deviced-allow-device-ids-with-newline.patch
 airprint-support.patch
-cups-snmp-oids-device-id-hp-ricoh.patch
 no-conffile-timestamp.patch
-pidfile.patch
 removecvstag.patch
 rename-systemd-units.patch
 do-not-broadcast-with-hostnames.patch
@@ -35,6 +34,5 @@ cupsd-set-default-for-SyncOnClose-to-Yes.patch
 cups-set-default-error-policy-retry-job.patch
 man-cups-lpd-drop-dangling-references.patch
 debianize_cups-config.patch
-0038-Build-mantohtml-with-the-build-architecture-compiler.patch
-0039-The-cupsGetDests-function-incorrectly-returned-an-em.patch
+0037-Build-mantohtml-with-the-build-architecture-compiler.patch
 manpage-translations.patch
