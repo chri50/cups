@@ -1,4 +1,4 @@
-From 7903a8213ca42daa223d24ffe48d80d805f5cc78 Mon Sep 17 00:00:00 2001
+From 5cc7db42ce3adcebfa2d930d879bb350e9951c6f Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:22 +0200
 Subject: Force LC_ALL=C environment variable when grepping the output of
@@ -13,7 +13,7 @@ Patch-Name: tests-make-lpstat-call-reproducible.patch
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index dbe442e06..989507126 100755
+index 9fb9dc629..e4bd006a9 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
 @@ -725,7 +725,7 @@ fi
