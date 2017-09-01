@@ -315,7 +315,9 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
  cups-client (= ${binary:Version}),
  debconf | debconf-2.0,
  cups-common (>= ${source:Version})
-Suggests: cups, update-inetd
+Suggests: cups,
+ inetutils-inetd | inet-superserver,
+ update-inetd
 Conflicts: lpr, lprng
 Replaces: lpr
 Provides: lpr

@@ -1,4 +1,4 @@
-From b51045a570f6cec0fb4b03bc3edd980656b2d83c Mon Sep 17 00:00:00 2001
+From 29d59572e018db127a251082f7810e4d34ecc96d Mon Sep 17 00:00:00 2001
 From: Martin Pitt <mpitt@debian.org>
 Date: Tue, 9 Aug 2016 18:11:25 +0200
 Subject: Do not link libcups.so and libcupsimage.so against
@@ -52,10 +52,10 @@ index 9a220c851..53bd47e55 100644
  	$(LN) $@ libcups.dylib
  
 diff --git a/filter/Makefile b/filter/Makefile
-index fc53f85c6..e00cddd6f 100644
+index 02aab14d8..467373c3c 100644
 --- a/filter/Makefile
 +++ b/filter/Makefile
-@@ -235,7 +235,7 @@ gziptoany:	gziptoany.o ../Makedefs ../cups/$(LIBCUPS)
+@@ -236,7 +236,7 @@ gziptoany:	gziptoany.o ../Makedefs ../cups/$(LIBCUPS)
  libcupsimage.so.2 libcupsimage.sl.2:	$(IMAGEOBJS)
  	echo Linking $@...
  	$(DSO) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(IMAGEOBJS) $(DSOLIBS) \
