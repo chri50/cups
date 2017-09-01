@@ -1,4 +1,4 @@
-From 5312ab4ec337a5f59f99520edf4f0aca94fa922a Mon Sep 17 00:00:00 2001
+From cd37b424140c75ce1359f37219b08d1768f99df2 Mon Sep 17 00:00:00 2001
 From: Tim Waugh <twaugh@redhat.com>
 Date: Tue, 9 Aug 2016 18:11:07 +0200
 Subject: Fix jobs with multiple files or multiple formats
