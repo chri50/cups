@@ -1,3 +1,11 @@
+cups (2.2.4-6) unstable; urgency=medium
+
+  [ intrigeri ]
+  * AppArmor: allow dac_read_search, now needed on top of dac_override
+    (Closes: #872817)
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 04 Sep 2017 09:22:26 +0200
+
 cups (2.2.4-5) unstable; urgency=medium
 
   * Backport one upstream patch, thanks to Christoph Pleger

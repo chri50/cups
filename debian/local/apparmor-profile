@@ -32,6 +32,7 @@
   # lot of files to 'lp' which it cannot read/write afterwards any
   # more
   capability dac_override,
+  capability dac_read_search,
 
   # the bluetooth backend needs this
   network bluetooth,
