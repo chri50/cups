@@ -1,3 +1,17 @@
+cups (2.2.4-7) unstable; urgency=medium
+
+  [ Till Kamppeter ]
+  * Backport upstream fixes:
+    - Fix the interactions between the "print-quality" and "cupsPrintQuality"
+      options (Issue #5090)
+    - Fix mapping and defaulting of print-quality/cupsPrintQuality (Issue #5090)
+    - Fix for resolution list sorting in the PPD generator which caused
+      segfaults when generating PPDs for driverless printing
+    - The scheduler (incorrectly) woke up once per second to remove stale
+      temporary queues (Issue #5100)
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 13 Sep 2017 18:53:20 +0200
+
 cups (2.2.4-6) unstable; urgency=medium
 
   [ intrigeri ]
