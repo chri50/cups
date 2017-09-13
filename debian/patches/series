@@ -41,3 +41,7 @@ pwg-raster-resolution-fallback.patch
 scheduler-fix-avahi-crashes.patch
 0042-The-CUPS-library-did-not-reuse-domain-sockets-Issue-.patch
 manpage-translations.patch
+0044-Fix-the-interactions-between-the-print-quality-and-c.patch
+0045-Fix-mapping-and-defaulting-of-print-quality-cupsPrin.patch
+0046-Fix-sorting-bug.patch
+0047-The-scheduler-incorrectly-woke-up-once-per-second-to.patch
