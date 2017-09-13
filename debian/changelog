@@ -1,3 +1,15 @@
+cups (2.2.4-6ubuntu1) artful; urgency=medium
+
+  * Backport upstream fix fr the scheduler waking up once a second to remove
+    stale temporary print queues (Issue #5100).
+  * Backport upstream fix for resolution list sorting in the PPD generator.
+    This caused segfaults when generating PPDs for driverless printing.
+  * Backport upstream patches to fix the cupsPrintQuality and
+    print-quality options/arguments for driverless printing with
+    auto-generated PPD files (Issue #5090)
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 13 Sep 2017 11:10:01 -0300
+
 cups (2.2.4-6) unstable; urgency=medium
 
   [ intrigeri ]

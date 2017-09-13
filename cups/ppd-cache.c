@@ -4028,7 +4028,7 @@ _ppdCreateFromIPP(char   *buffer,	/* I - Filename buffer */
 
     for (i = 0; i < (count - 1); i ++)
     {
-      for (j = i + 1; j < count; i ++)
+      for (j = i + 1; j < count; j ++)
       {
         int       ix, iy,               /* First X and Y resolution */
                   jx, jy,               /* Second X and Y resolution */
