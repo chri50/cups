@@ -1,3 +1,9 @@
+cups (2.2.4-91-g2cb1fda9f-1) experimental; urgency=medium
+
+  * New 2.2.4-91-g2cb1fda9f upstream snapshot
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 14 Sep 2017 09:07:05 +0200
+
 cups (2.2.4-83-gbefbadcef-2) experimental; urgency=medium
 
   [ intrigeri ]
