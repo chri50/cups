@@ -1,3 +1,11 @@
+cups (2.2.4-7ubuntu1) artful; urgency=medium
+
+  * test-drivers script of autopkgtest: Skip gen-brf.ppd as it is a
+    test/debug PPD for Braille embossers which does not accept PDF as
+    input format. This broke the test with cups-filters 1.17.6 and later.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon, 25 Sep 2017 16:08:01 -0400
+
 cups (2.2.4-7) unstable; urgency=medium
 
   [ Till Kamppeter ]
