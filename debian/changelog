@@ -1,3 +1,17 @@
+cups (2.2.4-8) unstable; urgency=medium
+
+  [ Didier Raboud ]
+  * Drop superfluous dh-systemd Build-Depend
+  * Drop --with autotools_dev and autotools-dev B-D, as these are in the
+    default dh sequence in compat 10
+
+  [ Till Kamppeter ]
+  * test-drivers script of autopkgtest for breakage with cups-filters 1.17.6
+    and later: skip gen-brf.ppd and gen-ubrl.ppd as these are test/debug PPD
+    for Braille embossers which do not accept PDF as input format
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 10 Oct 2017 13:21:37 +0200
+
 cups (2.2.4-7) unstable; urgency=medium
 
   [ Till Kamppeter ]
