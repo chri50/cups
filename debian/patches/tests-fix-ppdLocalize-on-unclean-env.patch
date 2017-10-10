@@ -1,4 +1,4 @@
-From e6620e1f20db3d5f9db91d5a8ff93b748397ef25 Mon Sep 17 00:00:00 2001
+From b8f4e5a3de6374a85efd8ce904dd225c8adc1a00 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:18 +0200
 Subject: Tests: Force LC_* environment variables when testing (non)

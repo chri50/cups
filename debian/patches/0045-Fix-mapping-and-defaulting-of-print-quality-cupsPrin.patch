@@ -1,0 +1,464 @@
+From 58f41733823220cc723e0e3729f4a98915f9b1a1 Mon Sep 17 00:00:00 2001
+From: Michael Sweet <michael.r.sweet@gmail.com>
+Date: Mon, 11 Sep 2017 16:22:45 -0400
+Subject: Fix mapping and defaulting of print-quality/cupsPrintQuality (Issue
+ #5090)
+
+- cups/dest.c: Don't include empty default media or print-quality in dest
+  options.
+- cups/options.c: When setting cupsPrintQuality, clear print-quality and vise-
+  versa.
+- cups/testipp.c: Use current API to show attribute values.
+- scheduler/ipp.c: Log request attributes, defaults.
+- scheduler/job.c: Add/map print-quality/cupsPrintQuality, log mapped options.
+
+Fixes: #5090
+---
+ cups/dest.c     |  18 +++----
+ cups/options.c  |   5 ++
+ cups/testipp.c  | 160 ++------------------------------------------------------
+ scheduler/ipp.c |  31 +++++++++--
+ scheduler/job.c |  57 ++++++++++++++++----
+ 5 files changed, 92 insertions(+), 179 deletions(-)
+
+diff --git a/cups/dest.c b/cups/dest.c
+index 614b4aecb..2fb2ed30b 100644
+--- a/cups/dest.c
++++ b/cups/dest.c
+@@ -1780,6 +1780,7 @@ _cupsGetDests(http_t       *http,	/* I  - Connection to server or
+   */
+ 
+   appleGetPaperSize(media_default, sizeof(media_default));
++  DEBUG_printf(("1_cupsGetDests: Default media is '%s'.", media_default));
+ #endif /* __APPLE__ */
+ 
+  /*
+@@ -1888,7 +1889,7 @@ _cupsGetDests(http_t       *http,	/* I  - Connection to server or
+ 				      num_options, &options);
+ 	}
+ #ifdef __APPLE__
+-	else if (!strcmp(attr->name, "media-supported"))
++	else if (!strcmp(attr->name, "media-supported") && media_default[0])
+ 	{
+ 	 /*
+ 	  * See if we can set a default media size...
+@@ -1899,8 +1900,8 @@ _cupsGetDests(http_t       *http,	/* I  - Connection to server or
+ 	  for (i = 0; i < attr->num_values; i ++)
+ 	    if (!_cups_strcasecmp(media_default, attr->values[i].string.text))
+ 	    {
+-	      num_options = cupsAddOption("media", media_default, num_options,
+-	                                  &options);
++              DEBUG_printf(("1_cupsGetDests: Setting media to '%s'.", media_default));
++	      num_options = cupsAddOption("media", media_default, num_options, &options);
+               break;
+ 	    }
+ 	}
+@@ -1909,7 +1910,8 @@ _cupsGetDests(http_t       *http,	/* I  - Connection to server or
+ 	         attr->value_tag == IPP_TAG_NAME)
+ 	  printer_name = attr->values[0].string.text;
+         else if (strncmp(attr->name, "notify-", 7) &&
+-	         (attr->value_tag == IPP_TAG_BOOLEAN ||
++                 strncmp(attr->name, "print-quality-", 14) &&
++                 (attr->value_tag == IPP_TAG_BOOLEAN ||
+ 		  attr->value_tag == IPP_TAG_ENUM ||
+ 		  attr->value_tag == IPP_TAG_INTEGER ||
+ 		  attr->value_tag == IPP_TAG_KEYWORD ||
+@@ -1924,12 +1926,8 @@ _cupsGetDests(http_t       *http,	/* I  - Connection to server or
+           strlcpy(optname, attr->name, sizeof(optname));
+ 	  optname[ptr - attr->name] = '\0';
+ 
+-	  if (_cups_strcasecmp(optname, "media") ||
+-	      !cupsGetOption("media", num_options, options))
+-	    num_options = cupsAddOption(optname,
+-					cups_make_string(attr, value,
+-							 sizeof(value)),
+-					num_options, &options);
++	  if (_cups_strcasecmp(optname, "media") || !cupsGetOption("media", num_options, options))
++	    num_options = cupsAddOption(optname, cups_make_string(attr, value, sizeof(value)), num_options, &options);
+ 	}
+       }
+ 
+diff --git a/cups/options.c b/cups/options.c
+index 9aa20f895..db14bec7f 100644
+--- a/cups/options.c
++++ b/cups/options.c
+@@ -80,6 +80,11 @@ cupsAddOption(const char    *name,	/* I  - Name of option */
+     return (num_options);
+   }
+ 
++  if (!_cups_strcasecmp(name, "cupsPrintQuality"))
++    num_options = cupsRemoveOption("print-quality", num_options, options);
++  else if (!_cups_strcasecmp(name, "print-quality"))
++    num_options = cupsRemoveOption("cupsPrintQuality", num_options, options);
++
+  /*
+   * Look for an existing option with the same name...
+   */
+diff --git a/cups/testipp.c b/cups/testipp.c
+index 017ee9d6f..ea8f9d78c 100644
+--- a/cups/testipp.c
++++ b/cups/testipp.c
+@@ -1,7 +1,7 @@
+ /*
+  * IPP test program for CUPS.
+  *
+- * Copyright 2007-2014 by Apple Inc.
++ * Copyright 2007-2017 by Apple Inc.
+  * Copyright 1997-2005 by Easy Software Products.
+  *
+  * These coded instructions, statements, and computer programs are the
+@@ -810,88 +810,9 @@ void
+ print_attributes(ipp_t *ipp,		/* I - IPP request */
+                  int   indent)		/* I - Indentation */
+ {
+-  int			i;		/* Looping var */
+   ipp_tag_t		group;		/* Current group */
+   ipp_attribute_t	*attr;		/* Current attribute */
+-  _ipp_value_t		*val;		/* Current value */
+-  static const char * const tags[] =	/* Value/group tag strings */
+-			{
+-			  "reserved-00",
+-			  "operation-attributes-tag",
+-			  "job-attributes-tag",
+-			  "end-of-attributes-tag",
+-			  "printer-attributes-tag",
+-			  "unsupported-attributes-tag",
+-			  "subscription-attributes-tag",
+-			  "event-attributes-tag",
+-			  "reserved-08",
+-			  "reserved-09",
+-			  "reserved-0A",
+-			  "reserved-0B",
+-			  "reserved-0C",
+-			  "reserved-0D",
+-			  "reserved-0E",
+-			  "reserved-0F",
+-			  "unsupported",
+-			  "default",
+-			  "unknown",
+-			  "no-value",
+-			  "reserved-14",
+-			  "not-settable",
+-			  "delete-attr",
+-			  "admin-define",
+-			  "reserved-18",
+-			  "reserved-19",
+-			  "reserved-1A",
+-			  "reserved-1B",
+-			  "reserved-1C",
+-			  "reserved-1D",
+-			  "reserved-1E",
+-			  "reserved-1F",
+-			  "reserved-20",
+-			  "integer",
+-			  "boolean",
+-			  "enum",
+-			  "reserved-24",
+-			  "reserved-25",
+-			  "reserved-26",
+-			  "reserved-27",
+-			  "reserved-28",
+-			  "reserved-29",
+-			  "reserved-2a",
+-			  "reserved-2b",
+-			  "reserved-2c",
+-			  "reserved-2d",
+-			  "reserved-2e",
+-			  "reserved-2f",
+-			  "octetString",
+-			  "dateTime",
+-			  "resolution",
+-			  "rangeOfInteger",
+-			  "begCollection",
+-			  "textWithLanguage",
+-			  "nameWithLanguage",
+-			  "endCollection",
+-			  "reserved-38",
+-			  "reserved-39",
+-			  "reserved-3a",
+-			  "reserved-3b",
+-			  "reserved-3c",
+-			  "reserved-3d",
+-			  "reserved-3e",
+-			  "reserved-3f",
+-			  "reserved-40",
+-			  "textWithoutLanguage",
+-			  "nameWithoutLanguage",
+-			  "reserved-43",
+-			  "keyword",
+-			  "uri",
+-			  "uriScheme",
+-			  "charset",
+-			  "naturalLanguage",
+-			  "mimeMediaType",
+-			  "memberName"
+-			};
++  char                  buffer[2048];   /* Value string */
+ 
+ 
+   for (group = IPP_TAG_ZERO, attr = ipp->attrs; attr; attr = attr->next)
+@@ -907,83 +828,12 @@ print_attributes(ipp_t *ipp,		/* I - IPP request */
+     {
+       group = attr->group_tag;
+ 
+-      printf("\n%*s%s:\n\n", indent - 4, "", tags[group]);
++      printf("\n%*s%s:\n\n", indent - 4, "", ippTagString(group));
+     }
+ 
+-    printf("%*s%s (", indent, "", attr->name ? attr->name : "(null)");
+-    if (attr->num_values > 1)
+-      printf("1setOf ");
+-    printf("%s):", tags[attr->value_tag]);
++    ippAttributeString(attr, buffer, sizeof(buffer));
+ 
+-    switch (attr->value_tag)
+-    {
+-      case IPP_TAG_ENUM :
+-      case IPP_TAG_INTEGER :
+-          for (i = 0, val = attr->values; i < attr->num_values; i ++, val ++)
+-	    printf(" %d", val->integer);
+-          putchar('\n');
+-          break;
+-
+-      case IPP_TAG_BOOLEAN :
+-          for (i = 0, val = attr->values; i < attr->num_values; i ++, val ++)
+-	    printf(" %s", val->boolean ? "true" : "false");
+-          putchar('\n');
+-          break;
+-
+-      case IPP_TAG_RANGE :
+-          for (i = 0, val = attr->values; i < attr->num_values; i ++, val ++)
+-	    printf(" %d-%d", val->range.lower, val->range.upper);
+-          putchar('\n');
+-          break;
+-
+-      case IPP_TAG_DATE :
+-          {
+-	    char	vstring[256];	/* Formatted time */
+-
+-	    for (i = 0, val = attr->values; i < attr->num_values; i ++, val ++)
+-	      printf(" (%s)", _cupsStrDate(vstring, sizeof(vstring), ippDateToTime(val->date)));
+-          }
+-          putchar('\n');
+-          break;
+-
+-      case IPP_TAG_RESOLUTION :
+-          for (i = 0, val = attr->values; i < attr->num_values; i ++, val ++)
+-	    printf(" %dx%d%s", val->resolution.xres, val->resolution.yres,
+-	           val->resolution.units == IPP_RES_PER_INCH ? "dpi" : "dpcm");
+-          putchar('\n');
+-          break;
+-
+-      case IPP_TAG_STRING :
+-      case IPP_TAG_TEXTLANG :
+-      case IPP_TAG_NAMELANG :
+-      case IPP_TAG_TEXT :
+-      case IPP_TAG_NAME :
+-      case IPP_TAG_KEYWORD :
+-      case IPP_TAG_URI :
+-      case IPP_TAG_URISCHEME :
+-      case IPP_TAG_CHARSET :
+-      case IPP_TAG_LANGUAGE :
+-      case IPP_TAG_MIMETYPE :
+-          for (i = 0, val = attr->values; i < attr->num_values; i ++, val ++)
+-	    printf(" \"%s\"", val->string.text);
+-          putchar('\n');
+-          break;
+-
+-      case IPP_TAG_BEGIN_COLLECTION :
+-          putchar('\n');
+-
+-          for (i = 0, val = attr->values; i < attr->num_values; i ++, val ++)
+-	  {
+-	    if (i)
+-	      putchar('\n');
+-	    print_attributes(val->collection, indent + 4);
+-	  }
+-          break;
+-
+-      default :
+-          printf("UNKNOWN (%d values)\n", attr->num_values);
+-          break;
+-    }
++    printf("%*s%s (%s%s): %s\n", indent, "", attr->name ? attr->name : "(null)", attr->num_values > 1 ? "1setOf " : "", ippTagString(attr->value_tag), buffer);
+   }
+ }
+ 
+diff --git a/scheduler/ipp.c b/scheduler/ipp.c
+index 53432ea3e..96d92219c 100644
+--- a/scheduler/ipp.c
++++ b/scheduler/ipp.c
+@@ -152,9 +152,30 @@ cupsdProcessIPPRequest(
+   int			sub_id;		/* Subscription ID */
+ 
+ 
+-  cupsdLogMessage(CUPSD_LOG_DEBUG2,
+-                  "cupsdProcessIPPRequest(%p[%d]): operation_id = %04x",
+-                  con, con->number, con->request->request.op.operation_id);
++  cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdProcessIPPRequest(%p[%d]): operation_id=%04x(%s)", con, con->number, con->request->request.op.operation_id, ippOpString(con->request->request.op.operation_id));
++
++  if (LogLevel >= CUPSD_LOG_DEBUG2)
++  {
++    for (group = IPP_TAG_ZERO, attr = ippFirstAttribute(con->request); attr; attr = ippNextAttribute(con->request))
++    {
++      const char  *name;                /* Attribute name */
++      char        value[1024];          /* Attribute value */
++
++      if (group != ippGetGroupTag(attr))
++      {
++        group = ippGetGroupTag(attr);
++        if (group != IPP_TAG_ZERO)
++          cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdProcessIPPRequest: %s", ippTagString(group));
++      }
++
++      if ((name = ippGetName(attr)) == NULL)
++        continue;
++
++      ippAttributeString(attr, value, sizeof(value));
++
++      cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdProcessIPPRequest: %s %s%s '%s'", name, ippGetCount(attr) > 1 ? "1setOf " : "", ippTagString(ippGetValueTag(attr)), value);
++    }
++  }
+ 
+  /*
+   * First build an empty response message for this request...
+@@ -2913,6 +2934,8 @@ apply_printer_defaults(
+ 		*option;		/* Current option */
+ 
+ 
++  cupsdLogJob(job, CUPSD_LOG_DEBUG, "Applying default options...");
++
+  /*
+   * Collect all of the default options and add the missing ones to the
+   * job object...
+@@ -2927,6 +2950,8 @@ apply_printer_defaults(
+       if (!strcmp(option->name, "print-quality") && ippFindAttribute(job->attrs, "cupsPrintQuality", IPP_TAG_NAME))
+         continue;                     /* Don't override cupsPrintQuality */
+ 
++      cupsdLogJob(job, CUPSD_LOG_DEBUG, "Adding default %s=%s", option->name, option->value);
++
+       num_options = cupsAddOption(option->name, option->value, num_options, &options);
+     }
+ 
+diff --git a/scheduler/job.c b/scheduler/job.c
+index 9a8773ded..558cfd9cb 100644
+--- a/scheduler/job.c
++++ b/scheduler/job.c
+@@ -3658,6 +3658,12 @@ get_options(cupsd_job_t *job,		/* I - Job */
+         print_quality = _PWG_PRINT_QUALITY_HIGH;
+       else
+         print_quality = _PWG_PRINT_QUALITY_NORMAL;
++
++      if (!ippFindAttribute(job->attrs, "print-quality", IPP_TAG_ENUM))
++      {
++        cupsdLogJob(job, CUPSD_LOG_DEBUG2, "Mapping cupsPrintQuality=%s to print-quality=%d", pq, print_quality + IPP_QUALITY_DRAFT);
++        num_pwgppds = cupsAddIntegerOption("print-quality", print_quality + IPP_QUALITY_DRAFT, num_pwgppds, &pwgppds);
++      }
+     }
+     else
+     {
+@@ -3695,8 +3701,11 @@ get_options(cupsd_job_t *job,		/* I - Job */
+ 	   i --, preset ++)
+       {
+         if (!ippFindAttribute(job->attrs, preset->name, IPP_TAG_ZERO))
+-	  num_pwgppds = cupsAddOption(preset->name, preset->value, num_pwgppds,
+-	                              &pwgppds);
++        {
++          cupsdLogJob(job, CUPSD_LOG_DEBUG2, "Adding preset option %s=%s", preset->name, preset->value);
++
++	  num_pwgppds = cupsAddOption(preset->name, preset->value, num_pwgppds, &pwgppds);
++        }
+       }
+     }
+   }
+@@ -3709,7 +3718,11 @@ get_options(cupsd_job_t *job,		/* I - Job */
+       static const char * const pqs[] = { "Draft", "Normal", "High" };
+ 
+       if (pq >= IPP_QUALITY_DRAFT && pq <= IPP_QUALITY_HIGH)
++      {
++        cupsdLogJob(job, CUPSD_LOG_DEBUG2, "Mapping print-quality=%d to cupsPrintQuality=%s", pq, pqs[pq - IPP_QUALITY_DRAFT]);
++
+         num_pwgppds = cupsAddOption("cupsPrintQuality", pqs[pq - IPP_QUALITY_DRAFT], num_pwgppds, &pwgppds);
++      }
+     }
+ 
+     if (!ippFindAttribute(job->attrs, "InputSlot", IPP_TAG_ZERO) &&
+@@ -3721,16 +3734,26 @@ get_options(cupsd_job_t *job,		/* I - Job */
+     }
+     if (!ippFindAttribute(job->attrs, "MediaType", IPP_TAG_ZERO) &&
+ 	(ppd = _ppdCacheGetMediaType(pc, job->attrs, NULL)) != NULL)
++    {
++      cupsdLogJob(job, CUPSD_LOG_DEBUG2, "Mapping media to MediaType=%s", ppd);
++
+       num_pwgppds = cupsAddOption("MediaType", ppd, num_pwgppds, &pwgppds);
++    }
+ 
+     if (!ippFindAttribute(job->attrs, "PageRegion", IPP_TAG_ZERO) &&
+ 	!ippFindAttribute(job->attrs, "PageSize", IPP_TAG_ZERO) &&
+ 	(ppd = _ppdCacheGetPageSize(pc, job->attrs, NULL, &exact)) != NULL)
+     {
++      cupsdLogJob(job, CUPSD_LOG_DEBUG2, "Mapping media to Pagesize=%s", ppd);
++
+       num_pwgppds = cupsAddOption("PageSize", ppd, num_pwgppds, &pwgppds);
+ 
+       if (!ippFindAttribute(job->attrs, "media", IPP_TAG_ZERO))
++      {
++        cupsdLogJob(job, CUPSD_LOG_DEBUG2, "Adding media=%s", ppd);
++
+         num_pwgppds = cupsAddOption("media", ppd, num_pwgppds, &pwgppds);
++      }
+     }
+ 
+     if (!ippFindAttribute(job->attrs, "OutputBin", IPP_TAG_ZERO) &&
+@@ -3744,6 +3767,8 @@ get_options(cupsd_job_t *job,		/* I - Job */
+       * Map output-bin to OutputBin option...
+       */
+ 
++      cupsdLogJob(job, CUPSD_LOG_DEBUG2, "Mapping output-bin to OutputBin=%s", ppd);
++
+       num_pwgppds = cupsAddOption("OutputBin", ppd, num_pwgppds, &pwgppds);
+     }
+ 
+@@ -3756,23 +3781,33 @@ get_options(cupsd_job_t *job,		/* I - Job */
+       */
+ 
+       if (!strcmp(attr->values[0].string.text, "one-sided"))
+-        num_pwgppds = cupsAddOption(pc->sides_option, pc->sides_1sided,
+-				    num_pwgppds, &pwgppds);
++      {
++        cupsdLogJob(job, CUPSD_LOG_DEBUG2, "Mapping sizes to Duplex=%s", pc->sides_1sided);
++
++        num_pwgppds = cupsAddOption(pc->sides_option, pc->sides_1sided, num_pwgppds, &pwgppds);
++      }
+       else if (!strcmp(attr->values[0].string.text, "two-sided-long-edge"))
+-        num_pwgppds = cupsAddOption(pc->sides_option, pc->sides_2sided_long,
+-				    num_pwgppds, &pwgppds);
++      {
++        cupsdLogJob(job, CUPSD_LOG_DEBUG2, "Mapping sizes to Duplex=%s", pc->sides_2sided_long);
++
++        num_pwgppds = cupsAddOption(pc->sides_option, pc->sides_2sided_long, num_pwgppds, &pwgppds);
++      }
+       else if (!strcmp(attr->values[0].string.text, "two-sided-short-edge"))
+-        num_pwgppds = cupsAddOption(pc->sides_option, pc->sides_2sided_short,
+-				    num_pwgppds, &pwgppds);
++      {
++        cupsdLogJob(job, CUPSD_LOG_DEBUG2, "Mapping sizes to Duplex=%s", pc->sides_2sided_short);
++
++        num_pwgppds = cupsAddOption(pc->sides_option, pc->sides_2sided_short, num_pwgppds, &pwgppds);
++      }
+     }
+ 
+    /*
+     * Map finishings values...
+     */
+ 
+-    num_pwgppds = _ppdCacheGetFinishingOptions(pc, job->attrs,
+-                                               IPP_FINISHINGS_NONE, num_pwgppds,
+-                                               &pwgppds);
++    num_pwgppds = _ppdCacheGetFinishingOptions(pc, job->attrs, IPP_FINISHINGS_NONE, num_pwgppds, &pwgppds);
++
++    for (i = num_pwgppds, pwgppd = pwgppds; i > 0; i --, pwgppd ++)
++      cupsdLogJob(job, CUPSD_LOG_DEBUG2, "After mapping finishings %s=%s", pwgppd->name, pwgppd->value);
+   }
+ 
+  /*

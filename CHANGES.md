@@ -1,4 +1,4 @@
-CHANGES - 2.2.5 - 2017-08-31
+CHANGES - 2.2.5 - 2017-10-02
 ============================
 
 CHANGES IN CUPS V2.2.5
@@ -40,6 +40,11 @@ CHANGES IN CUPS V2.2.5
 - The scheduler woke up once per second to remove old temporary queues
   (Issue #5100)
 - Added USB quirk rule for Kyocera printer (Issue #5102, Issue #5103)
+- Re-documented the limits of `file:///...` device URIs and moved the FileDevice
+  directive in `cups-files.conf` to the list of deprecated configuration
+  directives (Issue #5117)
+- Added USB quirk rule for HP LaserJet 1160 printer (Issue #5121)
+- The network backends now retry on more error conditions (Issue #5123)
 - `httpAddrConnect` leaked sockets in certain circumstances, causing some
   printers to hang (rdar://31965686)
 - Fixed an issue with Chinese localizations on macOS (rdar://32419311)
@@ -55,7 +60,9 @@ CHANGES IN CUPS V2.2.5
 - The `ippCopyAttribute` function did not copy out-of-band values correctly
   (rdar://33688003)
 - Fixed the localization fallback code on macOS (rdar://33583699)
-- The `ipptool` program now offers an option to validate response headers.
+- The scheduler did not run with a high enough priority, causing problems on
+  busy systems (rdar://33789342)
+- Added support for Japanese Kaku 1 envelope size (rdar://34774110)
 - The `ipptool` program's `-P` option did not work correctly.
 - The `ipptool` program did not compare URI scheme or hostname components
   correctly for the WITH-ALL-HOSTNAMES, WITH-ALL-SCHEMES, WITH-HOSTNAME, or

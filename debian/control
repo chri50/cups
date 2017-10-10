@@ -1,5 +1,5 @@
 Source: cups
-Standards-Version: 4.0.1
+Standards-Version: 4.1.1
 Priority: optional
 Section: net
 Maintainer: Debian Printing Team <debian-printing@lists.debian.org>
@@ -10,7 +10,6 @@ Build-Depends:
  debhelper (>= 10.2.5~),
  dh-apparmor,
  dh-exec,
- dh-systemd,
  dpkg-dev (>= 1.16.1~),
  patch,
  autoconf, 

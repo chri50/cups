@@ -1,0 +1,26 @@
+From 3ed45800308564c8cc6706ca4f3c3d8846d451ae Mon Sep 17 00:00:00 2001
+From: Michael Sweet <michael.r.sweet@gmail.com>
+Date: Mon, 28 Aug 2017 17:59:13 -0400
+Subject: The CUPS library did not reuse domain sockets (Issue #5098)
+
+Bug-Debian: #868316
+---
+ cups/request.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/cups/request.c b/cups/request.c
+index 39cbe6ccd..9f8d9f918 100644
+--- a/cups/request.c
++++ b/cups/request.c
+@@ -996,7 +996,11 @@ _cupsConnect(void)
+     */
+ 
+     if (strcmp(cg->http->hostname, cg->server) ||
++#ifdef AF_LOCAL
++        (httpAddrFamily(cg->http->hostaddr) != AF_LOCAL && cg->ipp_port != httpAddrPort(cg->http->hostaddr)) ||
++#else
+         cg->ipp_port != httpAddrPort(cg->http->hostaddr) ||
++#endif /* AF_LOCAL */
+         (cg->http->encryption != cg->encryption &&
+ 	 cg->http->encryption == HTTP_ENCRYPTION_NEVER))
+     {
