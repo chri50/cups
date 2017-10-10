@@ -1,3 +1,10 @@
+cups (2.2.4-106-g4cf66fef4-1) experimental; urgency=medium
+
+  * New 2.2.4-106-g4cf66fef4 upstream snapshot
+  * Merge 2.2.4-8 changes from unstable
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 10 Oct 2017 13:46:18 +0200
+
 cups (2.2.4-91-g2cb1fda9f-1) experimental; urgency=medium
 
   * New 2.2.4-91-g2cb1fda9f upstream snapshot
@@ -37,6 +44,61 @@ cups (2.2.4-72-g9449dd948-1) experimental; urgency=medium
   * Drop superfluous autotools-dev B-D
 
  -- Didier Raboud <odyx@debian.org>  Tue, 29 Aug 2017 08:57:28 +0200
+
+cups (2.2.4-8) unstable; urgency=medium
+
+  [ Didier Raboud ]
+  * Drop superfluous dh-systemd Build-Depend
+  * Drop --with autotools_dev and autotools-dev B-D, as these are in the
+    default dh sequence in compat 10
+
+  [ Till Kamppeter ]
+  * test-drivers script of autopkgtest for breakage with cups-filters 1.17.6
+    and later: skip gen-brf.ppd and gen-ubrl.ppd as these are test/debug PPD
+    for Braille embossers which do not accept PDF as input format
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 10 Oct 2017 13:21:37 +0200
+
+cups (2.2.4-7) unstable; urgency=medium
+
+  [ Till Kamppeter ]
+  * Backport upstream fixes:
+    - Fix the interactions between the "print-quality" and "cupsPrintQuality"
+      options (Issue #5090)
+    - Fix mapping and defaulting of print-quality/cupsPrintQuality (Issue #5090)
+    - Fix for resolution list sorting in the PPD generator which caused
+      segfaults when generating PPDs for driverless printing
+    - The scheduler (incorrectly) woke up once per second to remove stale
+      temporary queues (Issue #5100)
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 13 Sep 2017 18:53:20 +0200
+
+cups (2.2.4-6) unstable; urgency=medium
+
+  [ intrigeri ]
+  * AppArmor: allow dac_read_search, now needed on top of dac_override
+    (Closes: #872817)
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 04 Sep 2017 09:22:26 +0200
+
+cups (2.2.4-5) unstable; urgency=medium
+
+  * Backport one upstream patch, thanks to Christoph Pleger
+    - The CUPS library did not reuse domain sockets
+      (Issue #5098, Closes: #868316)
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 29 Aug 2017 09:21:15 +0200
+
+cups (2.2.4-4) unstable; urgency=low
+
+  * Backport two upstream patches, thanks to Till Kamppeter
+    - The IPP Everywhere PPD generator now sorts the supported resolutions
+      before choosing them for draft, normal, and best quality modes
+      (Issue #5091)
+    - Fix an Avahi-related crash bug in the scheduler
+      (Issues #5085 & #5086)
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 28 Aug 2017 19:32:14 +0200
 
 cups (2.2.4-3) unstable; urgency=medium
 
