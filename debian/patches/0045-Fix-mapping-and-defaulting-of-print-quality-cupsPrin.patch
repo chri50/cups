@@ -1,4 +1,4 @@
-From 58f41733823220cc723e0e3729f4a98915f9b1a1 Mon Sep 17 00:00:00 2001
+From 91570a5a45e42fbbe8536361041591d973b47849 Mon Sep 17 00:00:00 2001
 From: Michael Sweet <michael.r.sweet@gmail.com>
 Date: Mon, 11 Sep 2017 16:22:45 -0400
 Subject: Fix mapping and defaulting of print-quality/cupsPrintQuality (Issue
