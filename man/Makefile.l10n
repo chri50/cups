@@ -1,16 +1,14 @@
 #
-# "$Id: $"
-#
 # Man page makefile for CUPS.
 #
-# Copyright 2007-2014 by Apple Inc.
+# Copyright 2007-2017 by Apple Inc.
 # Copyright 1993-2006 by Easy Software Products.
 #
 # These coded instructions, statements, and computer programs are the
 # property of Apple Inc. and are protected by Federal copyright
 # law.  Distribution and use rights are outlined in the file "LICENSE.txt"
 # which should have been included with this file.  If this file is
-# file is missing or damaged, see the license at "http://www.cups.org/".
+# missing or damaged, see the license at "http://www.cups.org/".
 #
 
 include ../../Makedefs
@@ -68,7 +66,6 @@ MAN8	=	cupsaccept.$(MAN8EXT) \
 		lpmove.$(MAN8EXT) \
 		lpc.$(MAN8EXT)
 
-
 #
 # Make everything...
 #
@@ -89,6 +86,7 @@ manpages.gz-stamp:
 #
 
 clean:
+	$(RM) mantohtml mantohtml.o
 	$(RM) $(MAN1) $(MAN5) $(MAN7) $(MAN8)
 	for file in $(MAN1); do \
 		$(RM) ../../doc/help/man-`basename $$file .$(MAN1EXT)`.$(LANGUAGE).html; \
@@ -234,6 +232,9 @@ html:	manpages.gz $(MANTOHTML)
 		$(MANTOHTML) `basename $$file .$(MAN8EXT)`.man >../../doc/help/man-`basename $$file .$(MAN8EXT)`.$(LANGUAGE).html; \
 	done
 
+$(MANTOHTML): $(MANTOHTML).c
+	$(CC_FOR_BUILD) -o $@ $<
+
 .SUFFIXES: .man.in .man
 # Keep the generated .man because they are needed for the html rule
 .PRECIOUS: %.man
@@ -243,6 +244,3 @@ html:	manpages.gz $(MANTOHTML)
 	    -e 's:@CUPS_SERVERROOT@:$(SERVERROOT):' \
 	    -e 's:@CUPS_SERVERBIN@:$(SERVERBIN):' $< > $@
 
-#
-# End of "$Id: $".
-#
