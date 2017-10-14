@@ -245,8 +245,6 @@ VAR int			CreateSelfSignedCerts	VALUE(TRUE);
 VAR char		*ServerKeychain		VALUE(NULL);
 					/* Keychain holding cert + key */
 #endif /* HAVE_SSL */
-VAR char		*PidFile		VALUE(NULL);
-					/* Debian CUPS pid file */
 
 #ifdef HAVE_ONDEMAND
 VAR int			IdleExitTimeout		VALUE(60);

@@ -1,4 +1,4 @@
-From d5da0624b8d0bb7db41ad4fb19ce2b92aabe737d Mon Sep 17 00:00:00 2001
+From 5626a15d3b52004e94d0b14d5384c7055f56565f Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:10 +0200
 Subject: Tests: ignore usb & dnssd backend unexpected exits
@@ -17,15 +17,15 @@ Patch-Name: tests-ignore-usb-crash.patch
  1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index 29572d135..77984fabc 100755
+index ab16a10e9..2187f5890 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
 @@ -996,7 +996,10 @@ else
  fi
  
  # Error log messages
--count=`$GREP '^E ' $BASE/log/error_log | wc -l | awk '{print $1}'`
-+count=`$GREP '^E ' $BASE/log/error_log | \
+-count=`$GREP '^E ' $BASE/log/error_log | $GREP -v 'Unknown default SystemGroup' | wc -l | awk '{print $1}'`
++count=`$GREP '^E ' $BASE/log/error_log | $GREP -v 'Unknown default SystemGroup' | \
 +       $GREP -v '(usb) crashed on signal 11' | \
 +       $GREP -v '(dnssd) stopped with status 1' | \
 +       wc -l | awk '{print $1}'`

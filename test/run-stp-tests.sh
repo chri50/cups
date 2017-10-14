@@ -525,7 +525,6 @@ FontPath $BASE/share/fonts
 DocumentRoot $root/doc
 RequestRoot $BASE/spool
 TempDir $BASE/spool/temp
-PidFile $BASE/cupsd.pid
 AccessLog $BASE/log/access_log
 ErrorLog $BASE/log/error_log
 PageLog $BASE/log/page_log
@@ -1000,7 +999,7 @@ else
 fi
 
 # Error log messages
-count=`$GREP '^E ' $BASE/log/error_log | \
+count=`$GREP '^E ' $BASE/log/error_log | $GREP -v 'Unknown default SystemGroup' | \
        $GREP -v '(usb) crashed on signal 11' | \
        $GREP -v '(dnssd) stopped with status 1' | \
        $GREP -v 'loadFile failed: temp file: not a PDF file' | \

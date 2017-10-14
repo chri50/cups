@@ -308,13 +308,15 @@ Description: Common UNIX Printing System(tm) - Development files CUPS image libr
  that use the CUPS raster image format.
 
 Package: cups-bsd
-Priority: extra
+Priority: optional
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, 
  cups-client (= ${binary:Version}),
  debconf | debconf-2.0,
  cups-common (>= ${source:Version})
-Suggests: cups, update-inetd
+Suggests: cups,
+ inetutils-inetd | inet-superserver,
+ update-inetd
 Conflicts: lpr, lprng
 Replaces: lpr
 Provides: lpr
