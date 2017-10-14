@@ -45,6 +45,7 @@ AC_PATH_PROG(CHMOD,chmod)
 AC_PATH_PROG(GZIP,gzip)
 AC_PATH_PROG(LD,ld)
 AC_PATH_PROG(LN,ln)
+AC_PATH_PROG(MKDIR,mkdir)
 AC_PATH_PROG(MV,mv)
 AC_PATH_PROG(RM,rm)
 AC_PATH_PROG(RMDIR,rmdir)
@@ -305,7 +306,7 @@ fi
 LIBS="$SAVELIBS"
 
 dnl Check for DBUS support
-AC_ARG_ENABLE(dbus, [  --disable-dbus           build without DBUS support])
+AC_ARG_ENABLE(dbus, [  --disable-dbus          build without DBUS support])
 AC_ARG_WITH(dbusdir, [  --with-dbusdir          set DBUS configuration directory ],
 	DBUSDIR="$withval")
 
@@ -388,20 +389,15 @@ case $host_os_name in
 			if test "x$default_adminkey" != xdefault; then
 				CUPS_SYSTEM_AUTHKEY="SystemGroupAuthKey $default_adminkey"
 				CUPS_DEFAULT_SYSTEM_AUTHKEY="$default_adminkey"
-			elif grep -q system.print.operator /etc/authorization; then
+			else
 				CUPS_SYSTEM_AUTHKEY="SystemGroupAuthKey system.print.admin"
 				CUPS_DEFAULT_SYSTEM_AUTHKEY="system.print.admin"
-			else
-				CUPS_SYSTEM_AUTHKEY="SystemGroupAuthKey system.preferences"
-				CUPS_DEFAULT_SYSTEM_AUTHKEY="system.preferences"
 			fi
 
 			if test "x$default_operkey" != xdefault; then
 				CUPS_DEFAULT_PRINTOPERATOR_AUTH="@AUTHKEY($default_operkey) @admin @lpadmin"
-			elif grep -q system.print.operator /etc/authorization; then
-				CUPS_DEFAULT_PRINTOPERATOR_AUTH="@AUTHKEY(system.print.operator) @admin @lpadmin"
 			else
-				CUPS_DEFAULT_PRINTOPERATOR_AUTH="@AUTHKEY(system.print.admin) @admin @lpadmin"
+				CUPS_DEFAULT_PRINTOPERATOR_AUTH="@AUTHKEY(system.print.operator) @admin @lpadmin"
 			fi])
 		AC_CHECK_HEADER(Security/SecBasePriv.h,AC_DEFINE(HAVE_SECBASEPRIV_H))
 

@@ -1,5 +1,77 @@
-CHANGES - 2.2.4 - 2017-06-30
+CHANGES - 2.2.5 - 2017-10-12
 ============================
+
+CHANGES IN CUPS V2.2.5
+----------------------
+
+- The scheduler's `-t` option did not force all errors to the standard error
+  file, making debugging of configuration problems hard (Issue #5041)
+- Fixed a typo in the CUPS Programming Manual (Issue #5042)
+- Fixed RPM packaging issue (Issue #5043, Issue #5044)
+- The `cupsGetDests` function incorrectly returned an empty list of printers if
+  there was no default printer (Issue #5046)
+- The `cupsGetDests` function waited too long for network printers (Issue #5049)
+- Libtool support was completely broken with current libtool versions that use
+  an incompatible command-line syntax (Issue #5050)
+- Fixed a build issue with `--enable-mallinfo` (Issue #5051)
+- The ippserver test program contained a deadlock issue (Issue #5054)
+- The `cupsLocalizeDest*` functions did not provide base localizations for
+  all registered IPP attributes and values (Issue #5056)
+- The --enable-libtool configure option requires a path to the libtool program,
+  but doesn't document or check for it (Issue #5062)
+- Fixed the `SSLOptions DenyCBC` option when using GNU TLS (Issue #5065)
+- Fixed the `ServerTokens None` option (Issue #5065)
+- Fixed the default `ServerAlias` value from `ServerName` (Issue #5072)
+- Fixed the adminurl field in the TXT record for fully-qualified `ServerName`
+  values (Issue #5074)
+- The scheduler now creates a PID file when not running on demand with a modern
+  service launcher (Issue #5080)
+- The web interface did not support newer language identifiers used by Microsoft
+  web browsers (Issue #5803)
+- Updated the cups-files.conf and cupsd.conf file documentation for missing
+  directives (Issue #5084)
+- Fixed an Avahi-related crash bug in the scheduler (Issue #5085, Issue #5086)
+- Fixed the interactions between the "print-quality" and "cupsPrintQuality"
+  options (Issue #5090)
+- The IPP Everywhere PPD generator now sorts the supported resolutions before
+  choosing them for draft, normal, and best quality modes (Issue #5091)
+- Fixed the localization unit test on Linux (Issue #5097)
+- The CUPS library did not reuse domain sockets (Issue #5098)
+- Fixed the "make check" target for some environments (Issue #5099)
+- The scheduler woke up once per second to remove old temporary queues
+  (Issue #5100)
+- Added USB quirk rule for Kyocera printer (Issue #5102, Issue #5103)
+- Re-documented the limits of `file:///...` device URIs and moved the FileDevice
+  directive in `cups-files.conf` to the list of deprecated configuration
+  directives (Issue #5117)
+- Added USB quirk rule for HP LaserJet 1160 printer (Issue #5121)
+- Fixed the script interpreter detection in the configure script (Issue #5122)
+- The network backends now retry on more error conditions (Issue #5123)
+- Added a French translation of the web interface (Issue #5134)
+- `cupsGetDests2` was not using the supplied HTTP connection (Issue #5135)
+- `httpAddrConnect` leaked sockets in certain circumstances, causing some
+  printers to hang (rdar://31965686)
+- Fixed an issue with Chinese localizations on macOS (rdar://32419311)
+- The IPP backend now always sends the "finishings" attribute for printers that
+  support it because otherwise the client cannot override printer defaults
+  (rdar://33169732)
+- The `cupsGetNamedDest` function did not use the local default printer
+  (rdar://33228500)
+- The IPP backend incorrectly sent the "job-pages-per-set" attribute to PDF
+  printers (rdar://33250434)
+- Fixed the `cups.strings` file that is used on macOS (rdar://33287650)
+- CUPS now sends the `Date` HTTP header in IPP requests (rdar://33302034)
+- The `ippCopyAttribute` function did not copy out-of-band values correctly
+  (rdar://33688003)
+- Fixed the localization fallback code on macOS (rdar://33583699)
+- The scheduler did not run with a high enough priority, causing problems on
+  busy systems (rdar://33789342)
+- Added support for Japanese Kaku 1 envelope size (rdar://34774110)
+- The `ipptool` program's `-P` option did not work correctly.
+- The `ipptool` program did not compare URI scheme or hostname components
+  correctly for the WITH-ALL-HOSTNAMES, WITH-ALL-SCHEMES, WITH-HOSTNAME, or
+  WITH-SCHEME predicates.
+
 
 CHANGES IN CUPS V2.2.4
 ----------------------

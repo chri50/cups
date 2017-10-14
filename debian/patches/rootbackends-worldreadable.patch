@@ -1,4 +1,4 @@
-From ceb2d5a6bdc80976527a1080e567b29e012a441d Mon Sep 17 00:00:00 2001
+From 6e50e9bd7c0cf305c6ae318573a92b0c3fa4c2bb Mon Sep 17 00:00:00 2001
 From: Martin Pitt <mpitt@debian.org>
 Date: Tue, 9 Aug 2016 18:11:06 +0200
 Subject: Install root backends world-readable.
@@ -20,7 +20,7 @@ Patch-Name: rootbackends-worldreadable.patch
  3 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/backend/Makefile b/backend/Makefile
-index 4c6a11b4d..82b97c50c 100644
+index aeb33d846..cfea19178 100644
 --- a/backend/Makefile
 +++ b/backend/Makefile
 @@ -19,7 +19,7 @@ include ../Makedefs
@@ -55,7 +55,7 @@ index 13efa54ff..9a1b8d3e1 100644
  
    cupsDirClose(dir);
 diff --git a/scheduler/job.c b/scheduler/job.c
-index a8ba54c33..4d07a1097 100644
+index 86e75e65c..fb599bf8f 100644
 --- a/scheduler/job.c
 +++ b/scheduler/job.c
 @@ -1250,7 +1250,7 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */

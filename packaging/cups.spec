@@ -43,12 +43,12 @@
 
 Summary: CUPS
 Name: cups
-Version: 2.2.4
+Version: 2.2.5
 Release: 0
 Epoch: 1
 License: GPL
 Group: System Environment/Daemons
-Source: https://github.com/apple/cups/releases/download/v2.2.4/cups-2.2.4-source.tar.gz
+Source: https://github.com/apple/cups/releases/download/v2.2.5/cups-2.2.5-source.tar.gz
 Url: http://www.cups.org
 Packager: Anonymous <anonymous@example.com>
 Vendor: Example Corp
@@ -326,6 +326,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/locale/pt_BR/cups_pt_BR.po
 %dir /usr/share/locale/ru
 /usr/share/locale/ru/cups_ru.po
+%dir /usr/share/locale/zh_CN
+/usr/share/locale/zh_CN/cups_zh_CN.po
 
 %dir /usr/share/man/man1
 /usr/share/man/man1/cancel.1.gz

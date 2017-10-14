@@ -1,3 +1,44 @@
+cups (2.2.5-1) unstable; urgency=medium
+
+  * New 2.2.5 upstream release
+    - The scheduler now creates a PID file when not running on demand with a
+      modern service launcher (Issue #5080)
+    - The CUPS library did not reuse domain sockets
+      (Issue #5098, Closes: #868316)
+
+  [ Didier Raboud ]
+  * Patches rework:
+    - Drop Debian-specific pidfile patch
+    - Drop the 8 patches which were backported from upstream:
+      - The `cupsGetDests` function incorrectly returned an empty list of
+        printers if there was no default printer (Issue #5046)
+      - Workaround for wrong resolution in PPD Generator for driverless
+        printing setup
+      - Fix an Avahi-related crash bug in the scheduler (Issues #5085 & #5086)
+      - The CUPS library did not reuse domain sockets (Issue #5098)
+      - Fix the interactions between the "print-quality" and "cupsPrintQuality"
+        options (Issue #5090)
+      - Fix mapping and defaulting of print-quality/cupsPrintQuality
+        (Issue #5090)
+      - Fix for resolution list sorting in the PPD generator which caused
+        segfaults when generating PPDs for driverless printing.
+      - The scheduler (incorrectly) woke up once per second to remove stale
+        temporary queues (Issue #5100)
+
+  * Stop symlinking the ssl-cert snakeoil certificates, CUPS will generate them
+    on-demand (with a different name)
+  * Drop superfluous autotools-dev B-D
+  * Let cups-bsd suggest one compatible inet server: inetutils-inetd
+    (Closes: #676472)
+  * Refresh manpage translations
+  * Make cups-bsd priority optional, as 'extra' is deprecated
+
+  [ intrigeri ]
+  * AppArmor: allow dac_read_search, now needed on top of dac_override
+    (Closes: #872817)
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 14 Oct 2017 13:38:50 +0200
+
 cups (2.2.4-9) unstable; urgency=medium
 
   [ Helmut Grohne ]
