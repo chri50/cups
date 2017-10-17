@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 2.0.3-10\n"
 "POT-Creation-Date: 2017-10-14 13:16+0200\n"
-"PO-Revision-Date: 2017-07-14 16:37+0200\n"
+"PO-Revision-Date: 2017-10-15 06:22+0200\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
 "Language: de\n"
@@ -2190,10 +2190,9 @@ msgstr "cupsd.conf"
 
 #. type: TH
 #: cupsd.conf.man.in:13
-#, fuzzy, no-wrap
-#| msgid "28 August 2014"
+#, no-wrap
 msgid "28 August 2017"
-msgstr "28. August 2014"
+msgstr "28. August 2017"
 
 #. type: Plain text
 #: cupsd.conf.man.in:16
@@ -4816,24 +4815,19 @@ msgstr ""
 
 #. type: SS
 #: cupsd.conf.man.in:811 cups-files.conf.man.in:223
-#, fuzzy, no-wrap
-#| msgid "TEST DIRECTIVES"
+#, no-wrap
 msgid "DEPRECATED DIRECTIVES"
-msgstr "TESTDIREKTIVEN"
+msgstr "VERALTETE DIREKTIVEN"
 
 #. #Classification
 #. type: Plain text
 #: cupsd.conf.man.in:814
-#, fuzzy
-#| msgid ""
-#| "I<This program is deprecated and will be removed in a future release of "
-#| "CUPS.>"
 msgid ""
 "The following directives are deprecated and will be removed in a future "
 "release of CUPS:"
 msgstr ""
-"I<Dieses Programm ist veraltet und wird in zukünftigen Versionen von CUPS "
-"entfernt werden.>"
+"I<Die nachfolgenden Direktiven sind veraltet und werden in einer zukünftigen "
+"Veröffentlichung von CUPS entfernt werden>:"
 
 #. type: TP
 #: cupsd.conf.man.in:814
@@ -6266,10 +6260,9 @@ msgstr "cups-files.conf"
 
 #. type: TH
 #: cups-files.conf.man.in:13
-#, fuzzy, no-wrap
-#| msgid "19 September 2016"
+#, no-wrap
 msgid "21 September 2017"
-msgstr "19. September 2016"
+msgstr "21. September 2017"
 
 #. type: Plain text
 #: cups-files.conf.man.in:16
@@ -6349,28 +6342,21 @@ msgstr "Die Vorgabe ist »/var/log/cups/access_log«."
 
 #. type: TP
 #: cups-files.conf.man.in:49
-#, fuzzy, no-wrap
-#| msgid "B<TempDir >I<directory>"
+#, no-wrap
 msgid "B<CacheDir >I<directory>"
-msgstr "B<TempDir >I<Verzeichnis>"
+msgstr "B<CacheDir >I<Verzeichnis>"
 
 #. #ConfigFilePerm
 #. type: Plain text
 #: cups-files.conf.man.in:54
-#, fuzzy
-#| msgid ""
-#| "Specifies the directory containing the backends, CGI programs, filters, "
-#| "helper programs, notifiers, and port monitors.  The default is \"/usr/lib/"
-#| "cups\" or \"/usr/libexec/cups\" depending on the platform."
 msgid ""
 "Specifies the directory to use for long-lived temporary (cache) files.  The "
 "default is \"/var/spool/cups/cache\" or \"/var/cache/cups\" depending on the "
 "platform."
 msgstr ""
-"Legt das Verzeichnis, das die Backends, CGI-Programme, Filter, "
-"Helferprogramme, Benachrichtiger und Port-Monitore enthält, fest. Die "
-"Vorgabe ist »/usr/lib/cups« oder »/usr/libexec/cups«, abhängig von der "
-"Plattform."
+"Legt das für langlebige temporäre (Zwischenspeicher-)Dateien zu verwendene "
+"Verzeichnis fest. Die Vorgabe ist »/var/spool/cups/cache« oder »/var/cache/"
+"cups«, abhängig von der Plattform."
 
 #. type: TP
 #: cups-files.conf.man.in:54
@@ -6835,26 +6821,19 @@ msgstr ""
 
 #. type: TP
 #: cups-files.conf.man.in:195
-#, fuzzy, no-wrap
-#| msgid "B<TempDir >I<directory>"
+#, no-wrap
 msgid "B<StateDir >I<directory>"
-msgstr "B<TempDir >I<Verzeichnis>"
+msgstr "B<StateDir >I<Verzeichnis>"
 
 #. #SyncOnClose
 #. type: Plain text
 #: cups-files.conf.man.in:200
-#, fuzzy
-#| msgid ""
-#| "Specifies the directory containing the backends, CGI programs, filters, "
-#| "helper programs, notifiers, and port monitors.  The default is \"/usr/lib/"
-#| "cups\" or \"/usr/libexec/cups\" depending on the platform."
 msgid ""
 "Specifies the directory to use for PID and local certificate files.  The "
 "default is \"/var/run/cups\" or \"/etc/cups\" depending on the platform."
 msgstr ""
-"Legt das Verzeichnis, das die Backends, CGI-Programme, Filter, "
-"Helferprogramme, Benachrichtiger und Port-Monitore enthält, fest. Die "
-"Vorgabe ist »/usr/lib/cups« oder »/usr/libexec/cups«, abhängig von der "
+"Legt das für PID- und lokale Zertifikatdateien zu verwendene Verzeichnis "
+"fest. Die Vorgabe ist »/var/run/cups« oder »/etc/cups«, abhängig von der "
 "Plattform."
 
 #. type: TP
@@ -6906,15 +6885,11 @@ msgstr "B<TempDir >I<Verzeichnis>"
 #. #User
 #. type: Plain text
 #: cups-files.conf.man.in:219
-#, fuzzy
-#| msgid ""
-#| "Specifies the directory where temporary files are stored.  The default is "
-#| "\"/var/spool/cups/tmp\"."
 msgid ""
 "Specifies the directory where short-term temporary files are stored.  The "
 "default is \"/var/spool/cups/tmp\"."
 msgstr ""
-"Legt das Verzeichnis, in dem temporäre Dateien gespeichert werden, fest. Die "
+"Legt das Verzeichnis, in dem kurzlebige temporäre Dateien gespeichert werden, fest. Die "
 "Vorgabe ist »/var/spool/cups/tmp«."
 
 #. type: TP
@@ -6935,16 +6910,12 @@ msgstr ""
 #. #FileDevice
 #. type: Plain text
 #: cups-files.conf.man.in:226
-#, fuzzy
-#| msgid ""
-#| "I<This program is deprecated and will be removed in a future release of "
-#| "CUPS.>"
 msgid ""
 "The following directives are deprecated and will be removed from a future "
 "version of CUPS:"
 msgstr ""
-"I<Dieses Programm ist veraltet und wird in zukünftigen Versionen von CUPS "
-"entfernt werden.>"
+"I<Die nachfolgenden Direktiven sind veraltet und werden in einer zukünftigen "
+"Version von CUPS entfernt werden>:"
 
 #. type: TP
 #: cups-files.conf.man.in:226
@@ -6968,13 +6939,17 @@ msgid ""
 "specified file is overwritten for every print job.  Writing to directories "
 "is not supported."
 msgstr ""
+"gibt an, ob die Datei-Pseudo-Geräte für neue Druckerwarteschlangen verwandt "
+"werden können. Die URI »file:///dev/null« ist immer erlaubt. Datei-Geräte "
+"können nicht mit »rohen« Warteschlangen verwandt werden - eine PPD-Datei ist "
+"notwendig. Die angegebene Datei wird für jeden Druckauftrag überschrieben. "
+"Schreiben in Verzeichnisse wird nicht unterstützt."
 
 #. type: TP
 #: cups-files.conf.man.in:236
-#, fuzzy, no-wrap
-#| msgid "FontPath directory[:directory:...]"
+#, no-wrap
 msgid "B<FontPath >I<directory[:...:directoryN]>"
-msgstr "FontPath Verzeichnis[:Verzeichnis:…]"
+msgstr "B<FontPath >I<Verzeichnis[:…:VerzeichnisN]>"
 
 #. #LPDConfigFile
 #. type: Plain text
@@ -6984,62 +6959,54 @@ msgid ""
 "On Linux the B<font-config>(1)  mechanism is used instead.  On macOS the "
 "Font Book application manages system-installed fonts."
 msgstr ""
+"gibt eine Doppelpunkt-getrennte Liste von Verzeichnissen an, in denen "
+"Schriften gefunden werden können. Unter Linux wird stattdessen der "
+"Mechanismus B<font-config>(1) verwandt. Unter macOS verwaltet die Anwendung "
+"Font Book die systemweit installierten Schriften."
 
 #. type: TP
 #: cups-files.conf.man.in:244
-#, fuzzy, no-wrap
-#| msgid "B<ConfigFilePerm >I<mode>"
+#, no-wrap
 msgid " B<LPDConfigFile >I<filename>"
-msgstr "B<ConfigFilePerm >I<Modus>"
+msgstr " B<LPDConfigFile >I<Dateiname>"
 
-# type: Plain text
 #. #Printcap
 #. type: Plain text
 #: cups-files.conf.man.in:248
-#, fuzzy
-#| msgid "Specifies the SSL certificate authority file to use."
 msgid "Specifies the LPD service configuration file to update."
-msgstr "Gibt die SSL-Zertifizierungsautorität an, die benutzt werden soll."
+msgstr "Gibt die zu aktualisierende LPD-Dienstekonfigurationsdatei an."
 
-# type: TP
 #. type: TP
 #: cups-files.conf.man.in:248
-#, fuzzy, no-wrap
-#| msgid "Printcap filename"
+#, no-wrap
 msgid "B<Printcap >I<filename>"
-msgstr "Printcap Dateiname"
+msgstr "B<Printcap >I<Dateiname>"
 
 #. #PrintcapFormat
 #. type: Plain text
 #: cups-files.conf.man.in:252
-#, fuzzy
-#| msgid "Specifies the name of the user for print requests."
 msgid "Specifies a file that is filled with a list of local print queues."
-msgstr "Legt den Benutzernamen für Druckanfragen fest."
+msgstr ""
+"Gibt eine Datei an, die mit einer Liste von lokalen Druckerwarteschlangen "
+"gefüllt werden soll."
 
-# type: TP
 #. type: TP
 #: cups-files.conf.man.in:252
-#, fuzzy, no-wrap
-#| msgid "PrintcapFormat bsd"
+#, no-wrap
 msgid "B<PrintcapFormat bsd>"
-msgstr "PrintcapFormat bsd"
+msgstr "B<PrintcapFormat bsd>"
 
-# type: TP
 #. type: TP
 #: cups-files.conf.man.in:254
-#, fuzzy, no-wrap
-#| msgid "PrintcapFormat solaris"
+#, no-wrap
 msgid "B<PrintcapFormat plist>"
-msgstr "PrintcapFormat solaris"
+msgstr "B<PrintcapFormat plist>"
 
-# type: TP
 #. type: TP
 #: cups-files.conf.man.in:256
-#, fuzzy, no-wrap
-#| msgid "PrintcapFormat solaris"
+#, no-wrap
 msgid "B<PrintcapFormat solaris>"
-msgstr "PrintcapFormat solaris"
+msgstr "B<PrintcapFormat solaris>"
 
 #. #SMBConfigFile
 #. type: Plain text
@@ -7049,21 +7016,20 @@ msgid ""
 "historical LPD printcap file format.  \"plist\" is the Apple plist file "
 "format.  \"solaris\" is the historical Solaris LPD printcap file format."
 msgstr ""
+"Gibt das für die Printcap-Datei zu verwendende Format an. »bsd« ist das "
+"historische LPD-Printcap-Dateiformat. »plist« ist das Apple-Plist-"
+"Dateiformat. »solaris« ist das historische Solaris-LPD-Printcap-Dateiformat."
 
 #. type: TP
 #: cups-files.conf.man.in:263
-#, fuzzy, no-wrap
-#| msgid "B<ConfigFilePerm >I<mode>"
+#, no-wrap
 msgid "B<SMBConfigFile >I<filename>"
-msgstr "B<ConfigFilePerm >I<Modus>"
+msgstr "B<SMBConfigFile >I<Dateiname>"
 
-# type: Plain text
 #. type: Plain text
 #: cups-files.conf.man.in:266
-#, fuzzy
-#| msgid "Specifies the SSL certificate authority file to use."
 msgid "Specifies the SMB service configuration file to update."
-msgstr "Gibt die SSL-Zertifizierungsautorität an, die benutzt werden soll."
+msgstr "Gibt die zu aktualisierende SMB-Dienstekonfigurationsdatei an."
 
 #. type: Plain text
 #: cups-files.conf.man.in:276
@@ -8373,8 +8339,8 @@ msgid ""
 "I<This program is deprecated and will be removed in a future release of CUPS."
 ">"
 msgstr ""
-"I<Dieses Programm ist veraltet und wird in zukünftigen Versionen von CUPS "
-"entfernt werden.>"
+"I<Dieses Programm ist veraltet und wird in einer zukünftigen Veröffentlichung von "
+"CUPS entfernt werden.>"
 
 #. type: Plain text
 #: cupstestdsc.man:41
@@ -11016,7 +10982,7 @@ msgid ""
 "on the B<ipptool>(8)  command-line. Support for chunked requests is required "
 "for conformance with all versions of IPP."
 msgstr ""
-"Legt fest, dass die Tests standardmäßig den HTTP/1.1-Header »Transfer-"
+"Legt fest, dass die Tests standardmäßig die HTTP/1.1-Kopfzeile »Transfer-"
 "Encoding: chunked« verwenden. Dies ist die Vorgabe und äquivalent zur Angabe "
 "von I<-c> auf der Befehlszeile von B<ipptool>(8). Die Unterstützung für "
 "blockweise Abfragen wird für die Konformität mit allen Versionen von IPP "
@@ -11036,7 +11002,7 @@ msgid ""
 "line. Support for content length requests is required for conformance with "
 "all versions of IPP."
 msgstr ""
-"Legt fest, dass die Tests standardmäßig den HTTP/1.0-Header »Content-Length« "
+"Legt fest, dass die Tests standardmäßig die HTTP/1.0-Kopfzeile »Content-Length« "
 "verwenden. Dies ist die Vorgabe und äquivalent zur Angabe von I<-l> auf der "
 "Befehlszeile von B<ipptool>(8). Die Unterstützung für Inhaltslängen-Abfragen "
 "wird für die Konformität mit allen Versionen von IPP benötigt."
@@ -11440,7 +11406,7 @@ msgid ""
 "Specifies that this test will use the HTTP/1.1 \"Transfer-Encoding: chunked"
 "\" header."
 msgstr ""
-"Legt fest, dass dieser Test den HTTP/1.1-Header »Transfer-Encoding: chunked« "
+"Legt fest, dass dieser Test die HTTP/1.1-Kopfzeile »Transfer-Encoding: chunked« "
 "verwenden wird."
 
 #. type: Plain text
@@ -11448,7 +11414,7 @@ msgstr ""
 msgid ""
 "Specifies that this test will use the HTTP/1.0 \"Content-Length:\" header."
 msgstr ""
-"Legt fest, dass dieser Test den HTTP/1.0-Header »Content-Length:« verwenden "
+"Legt fest, dass dieser Test die HTTP/1.0-Kopfzeile »Content-Length:« verwenden "
 "wird."
 
 #. type: Plain text
@@ -12624,10 +12590,9 @@ msgstr "ipptool"
 
 #. type: TH
 #: ipptool.man:12
-#, fuzzy, no-wrap
-#| msgid "4 August 2008"
+#, no-wrap
 msgid "4 August 2017"
-msgstr "4. August 2008"
+msgstr "4. August 2017"
 
 #. type: Plain text
 #: ipptool.man:15
@@ -12636,14 +12601,6 @@ msgstr "ipptool - Internet-Printing-Protocol-Abfragen durchführen"
 
 #. type: Plain text
 #: ipptool.man:75
-#, fuzzy
-#| msgid ""
-#| "B<ipptool> [ B<--help> ] [ B<--stop-after-include-error> ] [ B<--"
-#| "version> ] [ B<-4> ] [ B<-6> ] [ B<-C> ] [ B<-E> ] [ B<-I> ] [ B<-L> ] "
-#| "[ B<-P> I<filename.plist> ] [ B<-S> ] [ B<-T> I<seconds> ] [ B<-V> "
-#| "I<version> ] [ B<-X> ] [ B<-c> ] [ B<-d> I<name=value> ] [ B<-f> "
-#| "I<filename> ] [ B<-i> I<seconds> ] [ B<-n> I<repeat-count> ] [ B<-q> ] "
-#| "[ B<-t> ] [ B<-v ]> I<printer-uri> I<testfile> [ ...  I<testfile> ]"
 msgid ""
 "B<ipptool> [ B<--help> ] [ B<--stop-after-include-error> ] [ B<--version> ] "
 "[ B<-4> ] [ B<-6> ] [ B<-C> ] [ B<-E> ] [ B<-I> ] [ B<-L> ] [ B<-P> "
@@ -12655,7 +12612,7 @@ msgstr ""
 "B<ipptool> [ B<--help> ] [ B<--stop-after-include-error> ] [ B<--version> ] "
 "[ B<-4> ] [ B<-6> ] [ B<-C> ] [ B<-E> ] [ B<-I> ] [ B<-L> ] [ B<-P> "
 "I<Dateiname.plist> ] [ B<-S> ] [ B<-T> I<Sekunden> ] [ B<-V> I<Version> ] "
-"[ B<-X> ] [ B<-c> ] [ B<-d> I<Name=Wert> ] [ B<-f> I<Dateiname> ] [ B<-i> "
+"[ B<-X> ] [ B<-c> ] [ B<-d> I<Name=Wert> ] [ B<-f> I<Dateiname> ] [ B<-h> ] [ B<-i> "
 "I<Sekunden> ] [ B<-n> I<Anzahl-Wiederholungen> ] [ B<-q> ] [ B<-t> ] [ B<-"
 "v ]> I<Drucker-URI> I<Testdatei> [ …  I<Testdatei> ]"
 
@@ -12735,7 +12692,7 @@ msgid ""
 "requests with attached files and \"Content-Length:\" for requests without "
 "attached files."
 msgstr ""
-"Legt fest, dass Anfragen mit dem HTTP/1.1-Header »Transfer-Encoding: "
+"Legt fest, dass Anfragen mit der HTTP/1.1-Kopfzeile »Transfer-Encoding: "
 "chunked« gesendet werden sollen, der für Konformität von allen IPP-Versionen "
 "verlangt wird. Standardmäßig wird »Transfer-Encoding: chunked« für Anfragen "
 "mit anhängenden Dateien und »Content-Length:« für Anfragen ohne anhängende "
@@ -12747,7 +12704,7 @@ msgid ""
 "Forces TLS encryption when connecting to the server using the HTTP \"Upgrade"
 "\" header."
 msgstr ""
-"Erzwingt TLS-Verschlüsselung bei Verbindungen zum Server mit dem HTTP-Header "
+"Erzwingt TLS-Verschlüsselung bei Verbindungen zum Server mit der HTTP-Kopfzeile "
 "»Upgrade«."
 
 #. type: TP
@@ -12775,7 +12732,7 @@ msgid ""
 "default is to use \"Transfer-Encoding: chunked\" for requests with attached "
 "files and \"Content-Length:\" for requests without attached files."
 msgstr ""
-"Legt fest, dass Anfragen mit dem HTTP/1.0-Header »Content-Length:« gesendet "
+"Legt fest, dass Anfragen mit der HTTP/1.0-Kopfzeile »Content-Length:« gesendet "
 "werden sollen, der für Konformität von allen IPP-Versionen verlangt wird. "
 "Standardmäßig wird »Transfer-Encoding: chunked« für Anfragen mit anhängenden "
 "Dateien und »Content-Length:« für Anfragen ohne anhängende Dateien verwandt."
@@ -12886,7 +12843,7 @@ msgstr "Definiert den Standardanfragedateinamen für Tests."
 #. type: Plain text
 #: ipptool.man:161
 msgid "Validate HTTP response headers."
-msgstr ""
+msgstr "Validiert HTTP-Antwort-Kopfzeilen."
 
 #. type: TP
 #: ipptool.man:161
@@ -16824,7 +16781,7 @@ msgstr ""
 "Quelldatei. Mehrere Sprachen der gleichen PPD-Datei werden in eine einzige "
 "Druckerdefinition zusammengeführt, um genaue Änderungen für alle "
 "Sprachanpassungen zu unterstützen. B<Dieses Programm ist veraltet und wird "
-"in zukünftigen Veröffentlichungen von CUPS entfernt werden.>"
+"in einer zukünftigen Veröffentlichungen von CUPS entfernt werden.>"
 
 #. type: Plain text
 #: ppdi.man:35
@@ -16888,8 +16845,8 @@ msgid ""
 "of CUPS.>"
 msgstr ""
 "B<ppdmerge> fügt zwei oder mehr PPD-Dateien in eine einzige, mehrsprachige "
-"PPD-Datei zusammen. B<Dieses Programm ist veraltet und wird in zukünftigen "
-"Veröffentlichungen von CUPS entfernt werden.>"
+"PPD-Datei zusammen. B<Dieses Programm ist veraltet und wird in einer "
+"zukünftigen Veröffentlichungen von CUPS entfernt werden.>"
 
 #. type: Plain text
 #: ppdmerge.man:33
@@ -17627,7 +17584,7 @@ msgstr ""
 #~ "Specifies what information is included in the Server header of HTTP "
 #~ "responses."
 #~ msgstr ""
-#~ "Legt fest, welche Informationen im Server-Header von HTTP-Antworten "
+#~ "Legt fest, welche Informationen in den Server-Kopfzeilen von HTTP-Antworten "
 #~ "enthalten sein sollen."
 
 #~ msgid "SSLListen"
