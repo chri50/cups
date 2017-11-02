@@ -1,4 +1,4 @@
-From 012194ca0266a817fee03e1ab9bdbb20809facd9 Mon Sep 17 00:00:00 2001
+From fa7beb65f80d2270de493213c07b38627684bf5f Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:30:48 +0200
 Subject: Tests: ignore loadFile failures

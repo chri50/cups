@@ -1,3 +1,16 @@
+cups (2.2.6-1) unstable; urgency=medium
+
+  * New 2.2.6 upstream release
+    - DBUS notifications could crash the scheduler (Issue #5143)
+    - Added USB quirks rules for Canon MP540 and Samsung ML-2160 (Issue #5148)
+    - Localization updates (Issue #5152)
+
+  * Update manpage translations
+  * Fix DEB_HOST_ARCH_OS dpkg-architecture variable setting
+  * Move source local-options to options
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 02 Nov 2017 17:54:53 +0100
+
 cups (2.2.5-2) unstable; urgency=medium
 
   [ Helge Kreutzmann ]

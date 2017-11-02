@@ -1,4 +1,4 @@
-From 09c82f74a5b4a8bab1e86e3d6adfd165b31c6f6a Mon Sep 17 00:00:00 2001
+From a839fbf54e5504132471b97c248ad0c72856c829 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:33:56 +0200
 Subject: Tests: ignore errors triggered on ipv6-deprived hosts
