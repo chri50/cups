@@ -11,7 +11,7 @@ export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 # Add LDFLAGS to enable (hardening) build flags.
 export DSOFLAGS = $(shell dpkg-buildflags --get LDFLAGS)
 
-DEB_HOST_ARCH_OS := $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
+DEB_HOST_ARCH_OS ?= $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
 
 %:
 	dh $@ --without autoreconf

@@ -1,4 +1,4 @@
-From 51317717e36c2b30b112aab3911580aad1217477 Mon Sep 17 00:00:00 2001
+From fe2bda0d1beb7462b28c3042dc341230e7df4b49 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:34 +0200
 Subject: Rename the systemd service file from org.cups.cups.* to cups.*
