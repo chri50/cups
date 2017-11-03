@@ -1,3 +1,13 @@
+cups (2.2.6-2) unstable; urgency=medium
+
+  * Backport upstream patch from the 2.3 branch:
+    - The `lp` and `lpr` commands now provide better error messages when the
+      default printer cannot be found (Issue #5096, Closes: #870463)
+  * On the repository: reduce the diff to the upstream tarball to zero to
+    allow uploads with dgit.
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 03 Nov 2017 12:55:53 +0100
+
 cups (2.2.6-1) unstable; urgency=medium
 
   * New 2.2.6 upstream release
