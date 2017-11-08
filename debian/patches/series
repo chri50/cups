@@ -45,3 +45,4 @@ manpage-translations.patch
 0045-Fix-mapping-and-defaulting-of-print-quality-cupsPrin.patch
 0046-Fix-sorting-bug.patch
 0047-The-scheduler-incorrectly-woke-up-once-per-second-to.patch
+cupsGetNamedDest-use-local-default.patch
