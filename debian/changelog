@@ -1,3 +1,10 @@
+cups (2.2.4-7ubuntu3) artful; urgency=medium
+
+  * Fixes cupsGetNamedDest not using local default printer
+    (LP: #1729910)
+
+ -- Dariusz Gadomski <dariusz.gadomski@canonical.com>  Wed, 08 Nov 2017 11:31:52 +0100
+
 cups (2.2.4-7ubuntu2) artful; urgency=medium
 
   * test-drivers script of autopkgtest: Skip also gen-ubrl.ppd as it is also a
