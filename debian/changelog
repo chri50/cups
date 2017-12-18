@@ -1,3 +1,15 @@
+cups (2.2.6-3) unstable; urgency=medium
+
+  [ Helge Kreutzmann ]
+  * Update German man page translations
+
+  [ Didier Raboud ]
+  * Bump S-V to 4.1.2 without changes needed
+  * Remove trailing whitespace in d/control and d/changelog
+  * Drop duplicate priority field for cups-bsd
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 18 Dec 2017 21:52:25 +0100
+
 cups (2.2.6-2) unstable; urgency=medium
 
   * Backport upstream patch from the 2.3 branch:
@@ -780,7 +792,7 @@ cups (2.0.3-5) unstable; urgency=low
 cups (2.0.3-4) unstable; urgency=medium
 
   * Upload to unstable
-  
+
   [ Helge Kreutzmann ]
   * Update German man page (1366t464f280u)
 
@@ -2965,7 +2977,7 @@ cups (1.5.0-11) unstable; urgency=low
     of printer drivers to "printer-driver-<driver>".
 
   [ Martin-Éric Racine ]
-  * debian/control: 
+  * debian/control:
     + Added the Homepage field.
     + Cleaned up duplicate Build-Depends.
   * Removed |libheimdal-dev alternative from Build-Depends (Closes: #648105)
@@ -3669,7 +3681,7 @@ cups (1.4.4-7) unstable; urgency=low
     dependencies any more.
   * drop_unnecessary_dependencies.dpatch: Drop hunk for reduced krb5/gssapi
     linkage. With gcc 4.5, we now need -lkrb5.
-  
+
   [ Marc Deslauriers ]
   * Add CVE-2010-2941.dpatch: Fix denial of service and possible code execution
     via invalid free. Skip over and reserve unused tags in cups/ipp.{c,h}.
@@ -3954,7 +3966,7 @@ cups (1.4.2-5) unstable; urgency=low
     debian/local/filters/pdf-filters/pdftopdf/P2PPattern.cxx: Synced
     the PDF CUPS filters with upstream. This introduces a change by Koji Otani
     to also support Poppler 0.12.2 and newer with a change in its API/ABI.
-    This version compiles with both the new and the old Poppler, but it 
+    This version compiles with both the new and the old Poppler, but it
     runs only with the Poppler with which it got compiled. This allows to
     build this package with both Ubuntu which ships the unchanged upstream
     version of Poppler 0.12.2 and Debian where the ABI changes got reverted
@@ -4001,8 +4013,8 @@ cups (1.4.2-1) unstable; urgency=low
     debug logging of failed jobs (without need of "LogLevel debug") practically
     unlimited by raising the default limit from 200 to 99999 lines.
   * debian/local/filters/pdf-filters/pdftopdf/pdftopdf.cxx: pdftopdf did
-    note collate for printers when they have "Collate" and 
-    "cupsManualCopies:True" in the PPD. Thanks to Koji Otani from BBR Japan 
+    note collate for printers when they have "Collate" and
+    "cupsManualCopies:True" in the PPD. Thanks to Koji Otani from BBR Japan
     for the fix.
   * debian/local/filters/cpdftocps: Fixed turning off duplex via command line
     (http://bugs.linux-foundation.org/show_bug.cgi?id=397).
@@ -4113,7 +4125,7 @@ cups (1.4.1-2) unstable; urgency=low
     since that has a recent enough udev. Still keep it for Debian.
   * debian/cups-ppdc.install: Update path for Martin-Éric's section change of
     drv manpage.
- 
+
   [ Martin-Éric Racine ]
   * Add manual-section-for-drv.dpatch: Fix incorrect man section 7 -> 1 as
     reported by Lintian.
@@ -4139,7 +4151,7 @@ cups (1.4.1-1) unstable; urgency=low
     Drop cleanup from debian/cups.prerm. (Closes: #545298)
   * debian/control: Add udev dependency, since the init script calls udevadm.
     (LP: #429880)
-  * debian/cups.postinst, debian/cups.init.d: Call client tools with 
+  * debian/cups.postinst, debian/cups.init.d: Call client tools with
     "-h /var/run/cups/cups.sock" instead of "-h localhost", just in case the
     server isn't configured to listen on a TCP port.
   * dnssd-avahi.dpatch: Update to latest Fedora version, which fixes the dnssd
@@ -4590,7 +4602,7 @@ cups (1.3.10-4) unstable; urgency=low
   * Add ghostscript-cups dependency. (LP: #385606)
   * debian/control: Add back dropped comma, which led to the ssl-cert
     dependency being dropped. (Closes: #532845)
-  * debian/local/apparmor-profile: Allow reading /proc/sys/crypto/**. 
+  * debian/local/apparmor-profile: Allow reading /proc/sys/crypto/**.
     (LP: #335898)
   * debian/local/apparmor-profile: Allow dac_override to cups-pdf. This is
     unfortunate, but required with some $HOME permissions; the profile is very
@@ -4686,7 +4698,7 @@ cups (1.3.10-2) unstable; urgency=low
     W: debhelper-but-no-misc-depends
     W: dbg-package-missing-depends
     (cups)
-    E: dir-or-file-in-var-run 
+    E: dir-or-file-in-var-run
     (cups-common)
     W: symlink-should-be-relative
   * Added Lintian overrides:
@@ -4820,7 +4832,7 @@ cups (1.3.9-13) unstable; urgency=low
     copies was used (LP: #309314).
   * debian/local/filters/pdf-filters/pdftopdf/pdftopdf.cxx: Do not preceed the
     PDF output with a newline (LP: #303691). Only impose the page size from
-    the PPD file to all pages if the "fitplot" or the "fit-to-page" option is 
+    the PPD file to all pages if the "fitplot" or the "fit-to-page" option is
     set. This prevented from automatic paper tray switching to the correct paper
     sizes when a multiple-page-size document is printed (partial fix for
     LP: #310575).
@@ -4918,7 +4930,7 @@ cups (1.3.9-8) experimental; urgency=low
     filter on mipsel and makes the test suite, and thus the build, succeed
     again. (Closes: #500305)
   * debian/filters/pstopdf: Do not supply the margins from the PPD to the
-    ps2pdf process, as this breaks full-bleed printing and is also disturbs 
+    ps2pdf process, as this breaks full-bleed printing and is also disturbs
     the printing if PPDs have too conservative margin definitions (LP: #282186).
 
  -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 26 Nov 2008 15:14:57 +0100
@@ -4973,8 +4985,8 @@ cups (1.3.9-4) experimental; urgency=low
     debian/local/filters/pdf-filters/filter/pdftoraster.cxx,
     debian/local/filters/pdf-filters/README,
     debian/local/filters/pdf-filters/addtocups,
-    debian/local/filters/pdf-filters/removefromcups, debian/rules, 
-    debian/copyright: Removed Poppler-based pdftoraster filter. It will be 
+    debian/local/filters/pdf-filters/removefromcups, debian/rules,
+    debian/copyright: Removed Poppler-based pdftoraster filter. It will be
     replaced by a Ghostscript-based pdftoraster filter filter provided by the
     Ghostscript package, requested via Debian bug #505282 (fixes LP: #290395).
 
@@ -5048,7 +5060,7 @@ cups (1.3.8-13) experimental; urgency=low
     debian/local/filters/pdf-filters/pdftopdf/pdftopdf.cxx:
     When N-up printing and selection of only the even or odd pages
     (for manual duplex) was used together the pages were selected
-    the wrong way (number-up=2 page-set=even with an 8-page document gave 
+    the wrong way (number-up=2 page-set=even with an 8-page document gave
     2+4, 6+8 and should give 3+4, 7+8). This is fixed now. The behavior
     of pdftopdf is now exactly the same as of pstops.
 
@@ -5183,7 +5195,7 @@ cups (1.3.8-6) experimental; urgency=low
       normalize such PostScript using ps2ps before conversion.
 
   [ Martin Pitt ]
-  * Add alternative dependency "gsfonts-x11" for ttf-freefonts. 
+  * Add alternative dependency "gsfonts-x11" for ttf-freefonts.
     (Closes: #495598)
   * debian/patches/: Update the status of patches, add some upstream
     references, update status in 00list.
@@ -5303,9 +5315,9 @@ cups (1.3.8-2) experimental; urgency=low
     all *.types files and the all *.convs files (instead of all in
     /usr/share/cups/mime and then all in /etc/cups). This way
     /usr/share/cups/mime can contain conversion rules based on file types
-    defined by files in /etc/cups (CUPS STR #2719, CUPS SVN revs #7670 and 
+    defined by files in /etc/cups (CUPS STR #2719, CUPS SVN revs #7670 and
     #7694).
-    
+
   [ Martin Pitt ]
   * Add missing CVE and more verbose descriptions to security fixes to 1.3.6-1
     changelog.
@@ -6045,7 +6057,7 @@ cupsys (1.2.7-3) unstable; urgency=high
 
   [ Kenshi Muto ]
   * removed STR2137 patch. This patch corruted some
-    Postscript files. (closes: #403703) This was a release 
+    Postscript files. (closes: #403703) This was a release
     critical bug.
   * Provides /usr/local/share/ppd and /opt/share/ppd
     to satisfy LSB 3.2. (closes: #408154)
@@ -6283,7 +6295,7 @@ cupsys (1.2.1-4) unstable; urgency=medium
   * Split locale files to new package "cupsys-common". (closes: #378659)
     This package is used by cupsys and cupsys-client/cupsys-bsd.
   * removed 26_modprobe: because parallel backend executes with user 'lp'
-    permission, modprobe can't work. We CUPS team believe it's better 
+    permission, modprobe can't work. We CUPS team believe it's better
     that lp module is loaded by discover or any other hardware detection
     programs instead of CUPS. We provide a module loader by init script
     for user's convenience at this time.
@@ -6313,7 +6325,7 @@ cupsys (1.2.1-3) unstable; urgency=low
     stage.
   * Update debconf translations:
     - Danish (closes: #371170)
-    - French (closes: #372714) 
+    - French (closes: #372714)
     - Italian (closes: #372198)
 
  -- Kenshi Muto <kmuto@debian.org>  Sun, 11 Jun 2006 11:51:01 +0000
@@ -6621,8 +6633,8 @@ cupsys (1.1.23-14) unstable; urgency=high
       (closes: #343251, #343279, ##343285, #343292)
   * Added NEWS to explain how to fix this for 1.1.23-13 users:
     Tweaking cupsd.conf via postinst is a bad idea, so I gave up
-    trying to correct this automatically. Instead, comment out the 
-    Port/Listen/Browsing lines in /etc/cups/cupsd.conf if you had 
+    trying to correct this automatically. Instead, comment out the
+    Port/Listen/Browsing lines in /etc/cups/cupsd.conf if you had
     already replaced this file by the one from 1.1.23-13.
   * Updated Swedish debconf translation. (closes: #343397)
   * Set seen false flag when ports configuration is failed.
@@ -7287,7 +7299,7 @@ cupsys (1.1.19final-3) unstable; urgency=low
 cupsys (1.1.19final-2) unstable; urgency=low
 
   * lpadmin group included root user, but I didn't understand why it needs.
-    This may cause security problem, so I remove this process and 
+    This may cause security problem, so I remove this process and
     remove root from lpadmin group. (closes: Bug#214746)
   * Support large file. (closes: Bug#215568)
   * Support log rotation. (closes: Bug#200704)
@@ -7391,7 +7403,7 @@ cupsys (1.1.19candidate1-2) unstable; urgency=low
 cupsys (1.1.19candidate1-1) unstable; urgency=low
 
   * New upstream version.  I will try to follow upstream's new
-    release policy by uploading release candidate versions to 
+    release policy by uploading release candidate versions to
     unstable.
   * Wrote a new GNU TLS patch, which was accepted by upstream.
     Re-enable SSL support based on this.
@@ -7569,7 +7581,7 @@ cupsys (1.1.14-3) unstable; urgency=low
   * Changed adduser dep so that the proper adduser (that does root) is
     available for the postinst.  Closes: #133709.
   * Removed spaces from init script output.  Closes: #133262.
-  * Set TZ in init script to REALLY fix timezone problem.  
+  * Set TZ in init script to REALLY fix timezone problem.
     Closes: #130676.
 
  -- Jeff Licquia <licquia@debian.org>  Sat,  9 Mar 2002 23:48:41 -0500
@@ -7687,7 +7699,7 @@ cupsys (1.1.10-4) unstable; urgency=low
   * Per policy, make sure we build with -D_REENTRANT.
   * Don't remove /var/spool/cups in the cupsys postrm when purging.
   * Added German description to template.  Closes: #113604.
-  * Added Portuguese description to cupsys-bsd template.  
+  * Added Portuguese description to cupsys-bsd template.
     Closes: #106131.
 
  -- Jeff Licquia <licquia@debian.org>  Thu, 18 Oct 2001 23:07:34 -0500
@@ -7982,9 +7994,9 @@ cupsys (1.0.1-3) unstable; urgency=low
 
 cupsys (1.0.1-2) unstable; urgency=low
 
-  * cupsys-bsd should conflict with lpr, not "lpd" (whatever that is) 
+  * cupsys-bsd should conflict with lpr, not "lpd" (whatever that is)
   (closes #50047)
-  
+
   * Changed priority to "extra".
 
  -- Jeff Licquia <licquia@debian.org>  Fri, 12 Nov 1999 22:24:15 -0600
