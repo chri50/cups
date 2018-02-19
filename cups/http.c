@@ -87,6 +87,8 @@ static int		http_write_ssl(http_t *http, const char *buf, int len);
  * Local globals...
  */
 
+static int		tls_options = 0; /* Options for TLS connections */
+
 static const char * const http_fields[] =
 			{
 			  "Accept-Language",
@@ -5094,6 +5096,10 @@ http_setup_ssl(http_t *http)		/* I - Connection to server */
   context = SSL_CTX_new(SSLv23_client_method());
 
   SSL_CTX_set_options(context, SSL_OP_NO_SSLv2); /* Only use SSLv3 or TLS */
+  if (!(tls_options & _HTTP_TLS_ALLOW_SSL3))
+    SSL_CTX_set_options(context, SSL_OP_NO_SSLv3); /* Don't use SSLv3 */
+  if (!(tls_options & _HTTP_TLS_ALLOW_RC4))
+    SSL_CTX_set_cipher_list(context, "DEFAULT:-RC4");
 
   bio = BIO_new(_httpBIOMethods());
   BIO_ctrl(bio, BIO_C_SET_FILE_PTR, 0, (char *)http);
@@ -5151,7 +5157,16 @@ http_setup_ssl(http_t *http)		/* I - Connection to server */
   gnutls_certificate_allocate_credentials(credentials);
 
   gnutls_init(&http->tls, GNUTLS_CLIENT);
-  gnutls_set_default_priority(http->tls);
+  if (!tls_options)
+    gnutls_priority_set_direct(http->tls, "NORMAL:-ARCFOUR-128:-VERS-SSL3.0", NULL);
+  else if ((tls_options & _HTTP_TLS_ALLOW_SSL3) &&
+	   (tls_options & _HTTP_TLS_ALLOW_RC4))
+    gnutls_priority_set_direct(http->tls, "NORMAL", NULL);
+  else if (tls_options & _HTTP_TLS_ALLOW_SSL3)
+    gnutls_priority_set_direct(http->tls, "NORMAL:-ARCFOUR-128", NULL);
+  else
+    gnutls_priority_set_direct(http->tls, "NORMAL:-VERS-SSL3.0", NULL);
+
   gnutls_server_name_set(http->tls, GNUTLS_NAME_DNS, hostname,
                          strlen(hostname));
   gnutls_credentials_set(http->tls, GNUTLS_CRD_CERTIFICATE, *credentials);
@@ -5903,6 +5918,16 @@ http_write_ssl(http_t     *http,	/* I - Connection to server */
   return ((int)result);
 }
 #endif /* HAVE_SSL */
+
+/*
+ * '_httpTLSSetOptions()' - Set TLS/SSL options.
+ */
+
+void
+_httpTLSSetOptions(int options)
+{
+  tls_options = options;
+}
 
 
 /*
