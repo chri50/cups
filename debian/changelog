@@ -1,3 +1,12 @@
+cups (1.7.2-0ubuntu1.9) trusty-security; urgency=medium
+
+  * SECURITY UPDATE: Incorrect whitelist permits DNS rebinding attacks
+    - debian/patches/CVE-2017-18190.patch: Don't treat "localhost.localdomain"
+      as an allowed replacement for localhost, since it isn't
+    - CVE-2017-18190
+
+ -- Chris Coulson <chris.coulson@canonical.com>  Mon, 19 Feb 2018 17:45:40 +0000
+
 cups (1.7.2-0ubuntu1.8) trusty; urgency=medium
 
   * Fixed processing of server overrides without port numbers. (LP: #1665018)
