@@ -60,3 +60,4 @@ CVE-2014-9679.patch
 str4609.patch
 disable-sslv3.patch
 initialize-ipp-port.patch
+CVE-2017-18190.patch
