@@ -1,3 +1,12 @@
+cups (2.1.3-4ubuntu0.4) xenial-security; urgency=medium
+
+  * SECURITY UPDATE: Incorrect whitelist permits DNS rebinding attacks
+    - debian/patches/CVE-2017-18190.patch: Don't treat "localhost.localdomain"
+      as an allowed replacement for localhost, since it isn't
+    - CVE-2017-18190
+
+ -- Chris Coulson <chris.coulson@canonical.com>  Mon, 19 Feb 2018 17:37:01 +0000
+
 cups (2.1.3-4ubuntu0.3) xenial; urgency=high
 
   * Adding maintainer script debian/cups-daemon.prerm to deal with situations
