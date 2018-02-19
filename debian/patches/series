@@ -56,3 +56,4 @@ debianize_cups-config.patch
 # queue to catch all Debian-specific changes
 manpage-translations.patch
 systemd-path-partof.patch
+CVE-2017-18190.patch
