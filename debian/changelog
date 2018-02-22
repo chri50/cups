@@ -1,3 +1,12 @@
+cups (2.2.1-8+deb9u1) stretch; urgency=low
+
+  * CVE-2017-18190: Prevent an issue where remote attackers could execute
+    arbitrary IPP commands by sending POST requests to the CUPS daemon in
+    conjunction with DNS rebinding. This was caused by a whitelisted
+    "localhost.localdomain" entry.
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 22 Feb 2018 17:51:44 +0100
+
 cups (2.2.1-8) unstable; urgency=medium
 
   [ JP Guillonneau ]
