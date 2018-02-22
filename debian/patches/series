@@ -45,3 +45,4 @@ debianize_cups-config.patch
 0045-Build-mantohtml-with-the-build-architecture-compiler.patch
 0046-Do-not-execute-genstrings-during-build.patch
 manpage-translations.patch
+0048-Don-t-treat-localhost.localdomain-as-an-allowed-repl.patch
