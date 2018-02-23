@@ -8,6 +8,7 @@ libcups.so.2 libcups2 #MINVER#
  (optional=GnuTLS)_httpReadGNUTLS@Base 1.4.4-3~
  (optional=GnuTLS)_httpWriteGNUTLS@Base 1.4.4-3~
  cupsAddDest@Base 1.4.0
+ cupsAddDestMediaOptions@Base 2.3~b1
  cupsAddIntegerOption@Base 2.2.4
  cupsAddOption@Base 1.4.0
  cupsAdminCreateWindowsPPD@Base 1.4.0
@@ -129,6 +130,7 @@ libcups.so.2 libcups2 #MINVER#
  cupsGetPrinters@Base 1.4.0
  cupsGetResponse@Base 1.4.0
  cupsHashData@Base 2.2~b2
+ cupsHashString@Base 2.3~b1
  cupsGetServerPPD@Base 1.4.0
  cupsLangDefault@Base 1.4.0
  cupsLangEncoding@Base 1.4.0

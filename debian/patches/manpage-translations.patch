@@ -1,4 +1,4 @@
-From 264046b0602911442960134fb9d2a88aaec7261f Mon Sep 17 00:00:00 2001
+From 955a05ec87e281cb75ecbd6436ff59481c49779c Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:50 +0200
 Subject: po4a infrastructure and translations for manpages.
@@ -22,10 +22,10 @@ Patch-Name: manpage-translations.patch
  create mode 100644 man/fr/Makefile
 
 diff --git a/man/Makefile b/man/Makefile
-index 3c3270ade..410c892c7 100644
+index d2c3932c3..98fe135cc 100644
 --- a/man/Makefile
 +++ b/man/Makefile
-@@ -66,12 +66,18 @@ MAN8	=	cupsaccept.$(MAN8EXT) \
+@@ -62,12 +62,18 @@ MAN8	=	cupsaccept.$(MAN8EXT) \
  		lpmove.$(MAN8EXT) \
  		lpc.$(MAN8EXT)
  
@@ -45,7 +45,7 @@ index 3c3270ade..410c892c7 100644
  
  
  #
-@@ -95,6 +101,11 @@ unittests:
+@@ -91,6 +97,11 @@ unittests:
  clean:
  	$(RM) mantohtml mantohtml.o
  	$(RM) $(MAN1) $(MAN5) $(MAN7) $(MAN8)
@@ -57,7 +57,7 @@ index 3c3270ade..410c892c7 100644
  
  
  #
-@@ -146,6 +157,7 @@ install-data: all
+@@ -142,6 +153,7 @@ install-data: all
  		$(RM) $(AMANDIR)/man$(MAN8DIR)/$$file.$(MAN8EXT); \
  		$(LN) cupsd-helper.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/$$file.$(MAN8EXT); \
  	done
@@ -65,7 +65,7 @@ index 3c3270ade..410c892c7 100644
  
  
  #
-@@ -194,6 +206,7 @@ uninstall:
+@@ -190,6 +202,7 @@ uninstall:
  	$(RM) $(AMANDIR)/man$(MAN8DIR)/reject.$(MAN8EXT)
  	$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
  	-$(RMDIR) $(AMANDIR)/man$(MAN8DIR)

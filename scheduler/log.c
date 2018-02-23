@@ -4,11 +4,7 @@
  * Copyright 2007-2017 by Apple Inc.
  * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
  */
 
 /*
@@ -967,7 +963,7 @@ cupsdLogPage(cupsd_job_t *job,		/* I - Job being printed */
   *bufptr = '\0';
 
 #ifdef HAVE_SYSTEMD_SD_JOURNAL_H
-  if (!strcmp(ErrorLog, "syslog"))
+  if (!strcmp(PageLog, "syslog"))
   {
     static const char * const job_states[] =
     {					/* job-state strings */
@@ -1164,7 +1160,7 @@ cupsdLogRequest(cupsd_client_t *con,	/* I - Request to log */
   }
 
 #ifdef HAVE_SYSTEMD_SD_JOURNAL_H
-  if (!strcmp(ErrorLog, "syslog"))
+  if (!strcmp(AccessLog, "syslog"))
   {
     sd_journal_print(LOG_INFO, "REQUEST %s - %s \"%s %s HTTP/%d.%d\" %d " CUPS_LLFMT " %s %s", con->http->hostname, con->username[0] != '\0' ? con->username : "-", states[con->operation], _httpEncodeURI(temp, con->uri, sizeof(temp)), con->http->version / 100, con->http->version % 100, code, CUPS_LLCAST con->bytes, con->request ? ippOpString(con->request->request.op.operation_id) : "-", con->response ? ippErrorString(con->response->request.status.status_code) : "-");
     return (1);

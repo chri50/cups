@@ -4,13 +4,7 @@
  * Copyright 2007-2017 by Apple Inc.
  * Copyright 1997-2006 by Easy Software Products.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
- *
- * This file is subject to the Apple OS-Developed Software exception.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
  */
 
 /*
@@ -54,6 +48,8 @@ main(int  argc,				/* I - Number of command-line arguments */
   int		af = AF_UNSPEC,		/* Address family */
 		tls_options = _HTTP_TLS_NONE,
 					/* TLS options */
+		tls_min_version = _HTTP_TLS_1_0,
+		tls_max_version = _HTTP_TLS_MAX,
 		verbose = 0;		/* Verbosity */
   ipp_t		*request,		/* IPP Get-Printer-Attributes request */
 		*response;		/* IPP Get-Printer-Attributes response */
@@ -88,11 +84,12 @@ main(int  argc,				/* I - Number of command-line arguments */
     }
     else if (!strcmp(argv[i], "--no-tls10"))
     {
-      tls_options |= _HTTP_TLS_DENY_TLS10;
+      tls_min_version = _HTTP_TLS_1_1;
     }
     else if (!strcmp(argv[i], "--tls10"))
     {
-      tls_options |= _HTTP_TLS_ONLY_TLS10;
+      tls_min_version = _HTTP_TLS_1_0;
+      tls_max_version = _HTTP_TLS_1_0;
     }
     else if (!strcmp(argv[i], "--rc4"))
     {
@@ -148,7 +145,7 @@ main(int  argc,				/* I - Number of command-line arguments */
   if (!port)
     port = 631;
 
-  _httpTLSSetOptions(tls_options);
+  _httpTLSSetOptions(tls_options, tls_min_version, tls_max_version);
 
   http = httpConnect2(server, port, NULL, af, HTTP_ENCRYPTION_ALWAYS, 1, 30000, NULL);
   if (!http)

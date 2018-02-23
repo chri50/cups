@@ -4,11 +4,7 @@
  * Copyright 2007-2017 by Apple Inc.
  * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
  */
 
 /*
@@ -83,6 +79,9 @@ static const cupsd_var_t	cupsd_vars[] =
   { "DefaultPolicy",		&DefaultPolicy,		CUPSD_VARTYPE_STRING },
   { "DefaultShared",		&DefaultShared,		CUPSD_VARTYPE_BOOLEAN },
   { "DirtyCleanInterval",	&DirtyCleanInterval,	CUPSD_VARTYPE_TIME },
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
+  { "DNSSDHostName",		&DNSSDHostName,		CUPSD_VARTYPE_STRING },
+#endif /* HAVE_DNSSD || HAVE_AVAHI */
   { "ErrorPolicy",		&ErrorPolicy,		CUPSD_VARTYPE_STRING },
   { "FilterLimit",		&FilterLimit,		CUPSD_VARTYPE_INTEGER },
   { "FilterNice",		&FilterNice,		CUPSD_VARTYPE_INTEGER },
@@ -617,7 +616,7 @@ cupsdReadConfiguration(void)
   cupsdSetString(&ServerKeychain, "/Library/Keychains/System.keychain");
 #  endif /* HAVE_GNUTLS */
 
-  _httpTLSSetOptions(0);
+  _httpTLSSetOptions(_HTTP_TLS_NONE, _HTTP_TLS_1_0, _HTTP_TLS_MAX);
 #endif /* HAVE_SSL */
 
   language = cupsLangDefault();
@@ -746,6 +745,7 @@ cupsdReadConfiguration(void)
 
 #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
   cupsdSetString(&DNSSDSubTypes, "_cups,_print,_universal");
+  cupsdClearString(&DNSSDHostName);
 #endif /* HAVE_DNSSD || HAVE_AVAHI */
 
   cupsdSetString(&LPDConfigFile, CUPS_DEFAULT_LPD_CONFIG_FILE);
@@ -3001,7 +3001,9 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
       * SSLOptions [AllowRC4] [AllowSSL3] [AllowDH] [DenyCBC] [DenyTLS1.0] [None]
       */
 
-      int	options = 0;		/* SSL/TLS options */
+      int	options = _HTTP_TLS_NONE,/* SSL/TLS options */
+		min_version = _HTTP_TLS_1_0,
+		max_version = _HTTP_TLS_MAX;
 
       if (value)
       {
@@ -3025,24 +3027,40 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
 	  * Compare...
 	  */
 
-          if (!_cups_strcasecmp(start, "AllowRC4"))
+	  if (!_cups_strcasecmp(start, "AllowRC4"))
 	    options |= _HTTP_TLS_ALLOW_RC4;
-          else if (!_cups_strcasecmp(start, "AllowSSL3"))
-	    options |= _HTTP_TLS_ALLOW_SSL3;
+	  else if (!_cups_strcasecmp(start, "AllowSSL3"))
+	    min_version = _HTTP_TLS_SSL3;
 	  else if (!_cups_strcasecmp(start, "AllowDH"))
 	    options |= _HTTP_TLS_ALLOW_DH;
 	  else if (!_cups_strcasecmp(start, "DenyCBC"))
 	    options |= _HTTP_TLS_DENY_CBC;
 	  else if (!_cups_strcasecmp(start, "DenyTLS1.0"))
-	    options |= _HTTP_TLS_DENY_TLS10;
-          else if (!_cups_strcasecmp(start, "None"))
-	    options = 0;
+	    min_version = _HTTP_TLS_1_1;
+	  else if (!_cups_strcasecmp(start, "MaxTLS1.0"))
+	    max_version = _HTTP_TLS_1_0;
+	  else if (!_cups_strcasecmp(start, "MaxTLS1.1"))
+	    max_version = _HTTP_TLS_1_1;
+	  else if (!_cups_strcasecmp(start, "MaxTLS1.2"))
+	    max_version = _HTTP_TLS_1_2;
+	  else if (!_cups_strcasecmp(start, "MaxTLS1.3"))
+	    max_version = _HTTP_TLS_1_3;
+	  else if (!_cups_strcasecmp(start, "MinTLS1.0"))
+	    min_version = _HTTP_TLS_1_0;
+	  else if (!_cups_strcasecmp(start, "MinTLS1.1"))
+	    min_version = _HTTP_TLS_1_1;
+	  else if (!_cups_strcasecmp(start, "MinTLS1.2"))
+	    min_version = _HTTP_TLS_1_2;
+	  else if (!_cups_strcasecmp(start, "MinTLS1.3"))
+	    min_version = _HTTP_TLS_1_3;
+	  else if (!_cups_strcasecmp(start, "None"))
+	    options = _HTTP_TLS_NONE;
 	  else if (_cups_strcasecmp(start, "NoEmptyFragments"))
 	    cupsdLogMessage(CUPSD_LOG_WARN, "Unknown SSL option %s at line %d.", start, linenum);
         }
       }
 
-      _httpTLSSetOptions(options);
+      _httpTLSSetOptions(options, min_version, max_version);
     }
 #endif /* HAVE_SSL */
     else if ((!_cups_strcasecmp(line, "Port") || !_cups_strcasecmp(line, "Listen")
