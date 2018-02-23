@@ -1,4 +1,4 @@
-From dfe7b39a625e556d996ac9532eb8359ddcf0309e Mon Sep 17 00:00:00 2001
+From 32f48f43efbbf8936f670e9934d35b6595be101f Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Bastien=20ROUCARI=C3=88S?= <bastien.roucaries@u-cergy.fr>
 Date: Tue, 9 Aug 2016 18:11:48 +0200
 Subject: Drop dangling references from cups-lpd.man
@@ -11,10 +11,10 @@ Patch-Name: man-cups-lpd-drop-dangling-references.patch
  1 file changed, 2 deletions(-)
 
 diff --git a/man/cups-lpd.man.in b/man/cups-lpd.man.in
-index ceb4ef4f4..c550a0872 100644
+index 0696b8451..34d693007 100644
 --- a/man/cups-lpd.man.in
 +++ b/man/cups-lpd.man.in
-@@ -109,9 +109,7 @@ Simply enable the
+@@ -105,9 +105,7 @@ Simply enable the
  .B cups-lpd
  service using the corresponding control program.
  .SH SEE ALSO

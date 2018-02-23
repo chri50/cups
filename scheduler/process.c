@@ -4,11 +4,7 @@
  * Copyright 2007-2017 by Apple Inc.
  * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
  */
 
 /*
@@ -23,13 +19,16 @@
 #ifdef HAVE_POSIX_SPAWN
 #  include <spawn.h>
 extern char **environ;
-#endif /* HAVE_POSIX_SPAWN */
-#ifdef HAVE_POSIX_SPAWN
-#  if !defined(__OpenBSD__) || OpenBSD >= 201505
-#    define USE_POSIX_SPAWN 1
-#  else
+/* Don't use posix_spawn on systems with bugs in their implementations... */
+#  if defined(OpenBSD) && OpenBSD < 201505
 #    define USE_POSIX_SPAWN 0
-#  endif /* !__OpenBSD__ || */
+#  elif defined(__UCLIBC__) && __UCLIBC_MAJOR__ == 1 && __UCLIBC_MINOR__ == 0 && __UCLIBC_SUBLEVEL__ < 27
+#    define USE_POSIX_SPAWN 0
+#  elif defined(__UCLIBC__) && __UCLIBC_MAJOR__ < 1
+#    define USE_POSIX_SPAWN 0
+#  else /* All other platforms */
+#    define USE_POSIX_SPAWN 1
+#  endif /* ... */
 #else
 #  define USE_POSIX_SPAWN 0
 #endif /* HAVE_POSIX_SPAWN */

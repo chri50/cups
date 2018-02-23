@@ -1,265 +1,96 @@
-CHANGES - 2.2.6 - 2017-11-01
+CHANGES - 2.3b3 - 2018-02-01
 ============================
 
-
-Changes in CUPS v2.2.6
+Changes in CUPS v2.3b3
 ----------------------
 
-- DBUS notifications could crash the scheduler (Issue #5143)
-- Added USB quirks rules for Canon MP540 and Samsung ML-2160 (Issue #5148)
-- Fixed TLS cipher suite selection with GNU TLS (Issue #5145, Issue #5150)
-- Localization updates (Issue #5152)
+- More fixes for printing to old CUPS servers (Issue #5211)
+- The IPP Everywhere PPD generator did not support deep grayscale or 8-bit per
+  component AdobeRGB (Issue #5227)
+- Additional changes for the scheduler to substitute default values for invalid
+  job attributes when running in "relaxed conformance" mode (Issue #5229)
+- Localization changes (Issue #5232, rdar://37068158)
+- The `cupsCopyDestInfo` function did not work with all print queues
+  (Issue #5235)
 
 
-Changes in CUPS v2.2.5
+Changes in CUPS v2.3b2
 ----------------------
 
-- The scheduler's `-t` option did not force all errors to the standard error
-  file, making debugging of configuration problems hard (Issue #5041)
-- Fixed a typo in the CUPS Programming Manual (Issue #5042)
-- Fixed RPM packaging issue (Issue #5043, Issue #5044)
-- The `cupsGetDests` function incorrectly returned an empty list of printers if
-  there was no default printer (Issue #5046)
-- The `cupsGetDests` function waited too long for network printers (Issue #5049)
-- Libtool support was completely broken with current libtool versions that use
-  an incompatible command-line syntax (Issue #5050)
-- Fixed a build issue with `--enable-mallinfo` (Issue #5051)
-- The ippserver test program contained a deadlock issue (Issue #5054)
-- The `cupsLocalizeDest*` functions did not provide base localizations for
-  all registered IPP attributes and values (Issue #5056)
-- The --enable-libtool configure option requires a path to the libtool program,
-  but doesn't document or check for it (Issue #5062)
-- Fixed the `SSLOptions DenyCBC` option when using GNU TLS (Issue #5065)
-- Fixed the `ServerTokens None` option (Issue #5065)
-- Fixed the default `ServerAlias` value from `ServerName` (Issue #5072)
-- Fixed the adminurl field in the TXT record for fully-qualified `ServerName`
-  values (Issue #5074)
-- The scheduler now creates a PID file when not running on demand with a modern
-  service launcher (Issue #5080)
-- The web interface did not support newer language identifiers used by Microsoft
-  web browsers (Issue #5803)
-- Updated the cups-files.conf and cupsd.conf file documentation for missing
-  directives (Issue #5084)
-- Fixed an Avahi-related crash bug in the scheduler (Issue #5085, Issue #5086)
-- Fixed the interactions between the "print-quality" and "cupsPrintQuality"
-  options (Issue #5090)
-- The IPP Everywhere PPD generator now sorts the supported resolutions before
-  choosing them for draft, normal, and best quality modes (Issue #5091)
-- Fixed the localization unit test on Linux (Issue #5097)
-- The CUPS library did not reuse domain sockets (Issue #5098)
-- Fixed the "make check" target for some environments (Issue #5099)
-- The scheduler woke up once per second to remove old temporary queues
-  (Issue #5100)
-- Added USB quirk rule for Kyocera printer (Issue #5102, Issue #5103)
-- Re-documented the limits of `file:///...` device URIs and moved the FileDevice
-  directive in `cups-files.conf` to the list of deprecated configuration
-  directives (Issue #5117)
-- Added USB quirk rule for HP LaserJet 1160 printer (Issue #5121)
-- Fixed the script interpreter detection in the configure script (Issue #5122)
-- The network backends now retry on more error conditions (Issue #5123)
-- Added a French translation of the web interface (Issue #5134)
-- `cupsGetDests2` was not using the supplied HTTP connection (Issue #5135)
-- `httpAddrConnect` leaked sockets in certain circumstances, causing some
-  printers to hang (rdar://31965686)
-- Fixed an issue with Chinese localizations on macOS (rdar://32419311)
-- The IPP backend now always sends the "finishings" attribute for printers that
-  support it because otherwise the client cannot override printer defaults
-  (rdar://33169732)
-- The `cupsGetNamedDest` function did not use the local default printer
-  (rdar://33228500)
-- The IPP backend incorrectly sent the "job-pages-per-set" attribute to PDF
-  printers (rdar://33250434)
-- Fixed the `cups.strings` file that is used on macOS (rdar://33287650)
-- CUPS now sends the `Date` HTTP header in IPP requests (rdar://33302034)
-- The `ippCopyAttribute` function did not copy out-of-band values correctly
-  (rdar://33688003)
-- Fixed the localization fallback code on macOS (rdar://33583699)
-- The scheduler did not run with a high enough priority, causing problems on
-  busy systems (rdar://33789342)
-- Added support for Japanese Kaku 1 envelope size (rdar://34774110)
-- The `ipptool` program's `-P` option did not work correctly.
-- The `ipptool` program did not compare URI scheme or hostname components
-  correctly for the WITH-ALL-HOSTNAMES, WITH-ALL-SCHEMES, WITH-HOSTNAME, or
-  WITH-SCHEME predicates.
+- Localization changes (Issue #5210)
+- Build fixes (Issue #5217)
+- IPP Everywhere PPDs were not localized to English (Issue #5205)
+- The `cupsGetDests` and `cupsEnumDests` functions no longer filter out local
+  print services like IPP USB devices (Issue #5206)
+- The `cupsCopyDest` function now correctly copies the `is_default` value
+  (Issue #5208)
+- Printing to old CUPS servers has been fixed (Issue #5211)
+- The `ppdInstallableConflict` tested too many constraints (Issue #5213)
+- All HTTP field values can now be longer than `HTTP_MAX_VALUE` bytes
+  (Issue #5216)
+- Added a USB quirk rule for Canon MP280 series printers (Issue #5221)
+- The `cupsRasterWritePixels` function did not correctly swap bytes for some
+  formats (Issue #5225)
+- Fixed an issue with mapping finishing options (rdar://34250727)
+- The `ppdLocalizeIPPReason` function incorrectly returned a localized version
+  of "none" (rdar://36566269)
+- The scheduler did not add ".local" to the default DNS-SD host name when
+  needed.
 
 
-Changes in CUPS v2.2.4
+Changes in CUPS v2.3b1
 ----------------------
 
-- The scheduler did not remove old job files (Issue #4987)
-- cupsEnumDests did not return early when all printers had been discovered
-  (Issue #4989)
-- The CUPS build system now supports cross-compilation (Issue #4897)
-- Added a new CUPS Programming Manual to replace the aging API documentation.
-- Added the `cupsAddIntegerOption` and `cupsGetIntegerOption` functions
-  (Issue #4992)
-- The `cupsGetDests` and `cupsCreateJob` functions now support Bonjour printers
-  (Issue #4993)
-- Added a USB quirk rule for Lexmark E260dn printers (Issue #4994)
-- Fixed a potential buffer overflow in the `cupstestppd` utility (Issue #4996)
-- IPP Everywhere improvements (Issue #4998)
-- Fixed the "cancel all jobs" function in the web interface for several
-  languages (Issue #4999)
-- Fixed issues with local queues (Issue #5003, Issue #5008, Issue #5009)
-- The `lpstat` command now supports a `-e` option to enumerate local printers
-  (either previously added or on the network) that can be accessed
-  (Issue #5005)
-- The `lp` and `lpr` commands now support printing to network printers that
-  haven't yet been added (Issue #5006)
-- Fixed a typo in the mime.types file.
-- Fixed a bug in the Spanish web interface template (Issue #5016)
-- The `cupsEnumDests*` and `cupsGetDest*` functions now report the value of the
-  "printer-is-temporary" Printer Status attribute (Issue #5028)
-- Added Chinese localization (Issue #5029)
-- The `cupsCheckDestSupported` function did not support `NULL` values
-  (Issue #5031)
-- Fixed some issues in the RPM spec file (Issue #5032)
-- The `cupsConnectDest` function now supports the `CUPS_DEST_FLAGS_DEVICE` flag
-  for explicitly connecting to the device (printer) associated with the
-  destination.
-- The `SSLOptions` directive in "client.conf" and "cupsd.conf" now supports
-  `DenyCBC` and `DenyTLS1.0` options (Issue #5037)
-
-
-Changes in CUPS v2.2.3
-----------------------
-
-- The IPP backend could get into an infinite loop for certain errors, causing a
-  hung queue (<rdar://problem/28008717>)
-- The scheduler could pause responding to client requests in order to save state
-  changes to disk (<rdar://problem/28690656>)
-- Added support for PPD finishing keywords (Issue #4960, Issue #4961,
-  Issue #4962)
-- The IPP backend did not send a media-col attribute for just the source or type
-  (Issue #4963)
-- IPP Everywhere print queues did not always support all print qualities
-  supported by the printer (Issue #4953)
-- IPP Everywhere print queues did not always support all media types supported
-  by the printer (Issue #4953)
-- The IPP Everywhere PPD generator did not return useful error messages
-  (Issue #4954)
-- The IPP Everywhere finishings support did not work correctly with common UI or
-  command-line options (Issue #4976)
-- Fixed an error handling issue for the network backends (Issue #4979)
-- The default cupsd.conf file did not work on systems compiled without Kerberos
-  support (Issue #4947)
-- The "reprint job" option was not available for some canceled jobs
-  (Issue #4915)
-- Updated the job listing in the web interface (Issue #4978)
-- Fixed some localization issues on macOS (<rdar://problem/27245567>)
-
-
-Changes in CUPS v2.2.2
-----------------------
-
-- Fixed some issues with the Zebra ZPL printer driver (Issue #4898)
-- Fixed some issues with IPP Everywhere printer support (Issue #4893,
-  Issue #4909, Issue #4916, Issue #4921, Issue #4923, Issue #4932, Issue #4933,
-  Issue #4938)
-- The rastertopwg filter could crash with certain input (Issue #4942)
-- Optimized connection usage in the IPP backend (<rdar://problem/29547323>)
-- The scheduler did not detect when an encrypted connection was closed by the
-  client on Linux (Issue #4901)
-- The cups-lpd program did not catch all legacy usage of ISO-8859-1
-  (Issue #4899)
-- Fixed builds on systems without a working poll() implementation (Issue #4905)
-- Added a USB quirk rule for the Kyocera Ecosys P6026cdn (Issue #4900)
-- The scheduler no longer creates log files on startup
-  (<rdar://problem/28332470>)
-- The ippContainsString function now uses case-insensitive comparisons for
-  mimeMediaType, name, and text values in conformance with RFC 2911.
-- The network backends now log the addresses that were found for a printer
-  (<rdar://problem/29268474>)
-- Let's Encrypt certificates did not work when the hostname contained uppercase
-  letters (Issue #4919)
-- Fixed reporting of printed pages in the web interface (Issue #4924)
-- Updated systemd config files (Issue #4935)
-- Updated documentation (PR #4896)
-- Updated localizations (PR #4894, PR #4895, PR #4904, PR #4908, Issue #4946)
-- Updated packaging files (Issue #4940)
-
-
-Changes in CUPS v2.2.1
-----------------------
-
-- Added "CreateSelfSignedCerts" directive for cups-files.conf to control whether
-  the scheduler automatically creates its own self-signed X.509 certificates for
-  TLS connections (Issue #4876)
-- http*Connect did not handle partial failures (Issue #4870)
-- Addressed some build warnings on Linux (Issue #4881)
-- cupsHashData did not use the correct hashing algorithm
-  (<rdar://problem/28209220>)
-- Updated man pages (PR #4885)
-- Updated localizations (PR #4877, PR #4886)
-
-
-Changes in CUPS v2.2.0
-----------------------
-
-- Normalized the TLS certificate validation code and added additional error
-  messages to aid troubleshooting.
-- The httpConnect functions did not work on Linux when cupsd was not running
-  (Issue #4870)
-- The --no-remote-any option of cupsctl had no effect (Issue #4866)
-- http*Connect did not return early when all addresses failed (Issue #4870)
-
-
-Changes in CUPS v2.2rc1
------------------------
-
-- Updated the list of supported IPP Everywhere media types.
-- The IPP backend did not validate TLS credentials properly.
-- The printer-state-message attribute was not cleared after a print job with no
-  errors (Issue #4851)
-- The CUPS-Add-Modify-Class and CUPS-Add-Modify-Printer operations did not
-  always return an error for failed adds (Issue #4854)
-- PPD files with names longer than 127 bytes did not work (Issue #4860)
-- Updated localizations (Issue #4846, PR #4858)
-
-
-Changes in CUPS v2.2b2
-----------------------
-
-- Added Upstart support (PR #4825)
-- CUPS now supports Let's Encrypt certificates on Linux.
-
-
-Changes in CUPS v2.2b1
-----------------------
-
-- All CUPS commands now support POSIX options (Issue #4813)
-- The scheduler now restarts faster (Issue #4760)
-- Improved performance of web interface with large numbers of jobs (Issue #3819)
-- Encrypted printing can now be limited to only trusted printers and servers
-  (<rdar://problem/25711658>)
-- The scheduler now advertises PWG Raster attributes for IPP Everywhere clients
-  (Issue #4428)
-- The scheduler now logs informational messages for jobs at LogLevel "info"
-  (Issue #4815)
-- The scheduler now uses the getgrouplist function when available (Issue #4611)
-- The IPP backend no longer enables compression by default except for certain
-  raster formats that generally benefit from it (<rdar://problem/25166952>)
-- The scheduler did not handle out-of-disk situations gracefully (Issue #4742)
-- The LPD mini-daemon now detects invalid UTF-8 sequences in job, document, and
-  user names (Issue #4748)
-- The IPP backend now continues on to the next job when the remote server/
-  printer puts the job on hold (<rdar://problem/24858548>)
-- The scheduler did not cancel multi-document jobs immediately
-  (<rdar://problem/24854834>)
-- The scheduler did not return non-shared printers to local clients unless they
-  connected to the domain socket (<rdar://problem/24566996>)
-- The scheduler now reads the spool directory if one or more job cache entries
-  point to deleted jobs (<rdar://problem/24048846>)
-- Added support for disc media sizes (<rdar://problem/20219536>)
-- The httpAddrConnect and httpConnect* APIs now try connecting to multiple
-  addresses in parallel (<rdar://problem/20643153>)
-- The cupsd domain socket is no longer world-accessible on macOS
-  (<rdar://problem/7542560>)
-- Interface scripts are no longer supported for security reasons
-  (<rdar://problem/23135640>)
-- Added a new cupsHashData API and support for hashed job passwords
-  (<rdar://problem/20221502>)
-- Localization fixes (<rdar://problem/25292403>, <rdar://problem/25461517>,
-  Issue #4041, Issue #4796)
-- Documentation changes (Issue #4624, Issue #4781)
-- Packaging fixes (PR #4832)
+- CUPS is now provided under the Apache License, Version 2.0.
+- Documentation updates (Issue #4580, Issue #5177, Issue #5192)
+- The `cupsCopyDestConflicts` function now handles collection attribute
+  ("media-col", "finishings-col", etc.) constraints (Issue #4096)
+- The `lpoptions` command incorrectly saved default options (Issue #4717)
+- The `lpstat` command now reports when new jobs are being held (Issue #4761)
+- The `ippfind` command now supports finding printers whose name starts with an
+  underscore (Issue #4833)
+- The CUPS library now supports the latest HTTP Digest authentication
+  specification including support for SHA-256 (Issue #4862)
+- The scheduler now supports the "printer-id" attribute (Issue #4868)
+- No longer support backslash, question mark, or quotes in printer names
+  (Issue #4966)
+- The scheduler no longer logs pages as they are printed, instead just logging
+  a total of the pages printed at job completion (Issue #4991)
+- Dropped RSS subscription management from the web interface (Issue #5012)
+- Bonjour printer sharing now uses the DNS-SD hostname (or ServerName value if
+  none is defined) when registering shared printers on the network (Issue #5071)
+- The `ipptool` command now supports writing `ippserver` attributes files
+  (Issue #5093)
+- The `lp` and `lpr` commands now provide better error messages when the default
+  printer cannot be found (Issue #5096)
+- The `lpadmin` command now provides a better error message when an unsupported
+  System V interface script is used (Issue #5111)
+- The scheduler did not write out dirty configuration and state files if there
+  were open client connections (Issue #5118)
+- The `SSLOptions` directive now supports `MinTLS` and `MaxTLS` options to
+  control the minimum and maximum TLS versions that will be allowed,
+  respectively (Issue #5119)
+- Dropped hard-coded CGI scripting language support (Issue #5124)
+- The `cupsEnumDests` function did not include options from the lpoptions
+  files (Issue #5144)
+- Fixed the `ippserver` sample code when threading is disabled or unavailable
+  (Issue #5154)
+- Added label markup to checkbox and radio button controls in the web interface
+  templates (Issue #5161)
+- Fixed group validation on OpenBSD (Issue #5166)
+- Improved IPP Everywhere media support, including a new
+  `cupsAddDestMediaOptions` function (Issue #5167)
+- IPP Everywhere PPDs now include localizations of printer-specific media types,
+  when available (Issue #5168)
+- The cups-driverd program incorrectly stopped scanning PPDs as soon as a loop
+  was seen (Issue #5170)
+- IPP Everywhere PPDs now support IPP job presets (Issue #5179)
+- IPP Everywhere PPDs now support finishing templates (Issue #5180)
+- Fixed a journald support bug in the scheduler (Issue #5181)
+- Fixed PAM module detection and added support for the common PAM definitions
+  (Issue #5185)
+- The scheduler now substitutes default values for invalid job attributes when
+  running in "relaxed conformance" mode (Issue #5186)
+- The scheduler did not work with older versions of uClibc (Issue #5188)
+- The scheduler now generates a strings file for localizing PPD options
+  (Issue #5194)

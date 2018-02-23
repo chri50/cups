@@ -4,11 +4,7 @@
  * Copyright 2007-2017 by Apple Inc.
  * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
  */
 
 /*
@@ -1850,6 +1846,8 @@ cupsdLoadJob(cupsd_job_t *job)		/* I - Job */
 
   if (!job->impressions)
     job->impressions = ippAddInteger(job->attrs, IPP_TAG_JOB, IPP_TAG_INTEGER, "job-impressions-completed", 0);
+  if (!job->sheets)
+    job->sheets = ippAddInteger(job->attrs, IPP_TAG_JOB, IPP_TAG_INTEGER, "job-media-sheets-completed", 0);
 
   if (!job->priority)
   {
@@ -3153,6 +3151,13 @@ finalize_job(cupsd_job_t *job,		/* I - Job */
   cupsdClosePipe(job->status_pipes);
   cupsdStatBufDelete(job->status_buffer);
   job->status_buffer = NULL;
+
+ /*
+  * Log the final impression (page) count...
+  */
+
+  snprintf(buffer, sizeof(buffer), "total %d", ippGetInteger(job->impressions, 0));
+  cupsdLogPage(job, buffer);
 
  /*
   * Process the exit status...
@@ -4953,7 +4958,6 @@ void
 update_job(cupsd_job_t *job)		/* I - Job to check */
 {
   int		i;			/* Looping var */
-  int		copies;			/* Number of copies printed */
   char		message[CUPSD_SB_BUFFER_SIZE],
 					/* Message text */
 		*ptr;			/* Pointer update... */
@@ -4991,6 +4995,10 @@ update_job(cupsd_job_t *job)		/* I - Job to check */
 
     if (loglevel == CUPSD_LOG_PAGE)
     {
+      int	impressions = ippGetInteger(job->impressions, 0);
+				/* Number of impressions printed */
+      int	delta;		/* Number of impressions added */
+
      /*
       * Page message; send the message to the page_log file and update the
       * job sheet count...
@@ -4998,51 +5006,57 @@ update_job(cupsd_job_t *job)		/* I - Job to check */
 
       cupsdLogJob(job, CUPSD_LOG_DEBUG, "PAGE: %s", message);
 
+      if (!_cups_strncasecmp(message, "total ", 6))
+      {
+       /*
+	* Got a total count of pages from a backend or filter...
+	*/
+
+	int total = atoi(message + 6);	/* Total impressions */
+
+	if (total > impressions)
+	{
+	  delta       = total - impressions;
+	  impressions = total;
+	}
+	else
+	  delta = 0;
+      }
+      else
+      {
+       /*
+        * Add the number of copies to the impression count...
+        */
+
+	int copies;			/* Number of copies */
+
+	if (!sscanf(message, "%*d%d", &copies) || copies <= 0)
+	  copies = 1;
+
+        delta = copies;
+	impressions += copies;
+      }
+
       if (job->impressions)
-      {
-        if (!_cups_strncasecmp(message, "total ", 6))
-	{
-	 /*
-	  * Got a total count of pages from a backend or filter...
-	  */
-
-	  copies = atoi(message + 6);
-	  copies -= ippGetInteger(job->impressions, 0); /* Just track the delta */
-	}
-	else if (!sscanf(message, "%*d%d", &copies))
-	  copies = 1;
-
-        ippSetInteger(job->attrs, &job->impressions, 0, ippGetInteger(job->impressions, 0) + copies);
-        job->dirty = 1;
-	cupsdMarkDirty(CUPSD_DIRTY_JOBS);
-      }
+        ippSetInteger(job->attrs, &job->impressions, 0, impressions);
 
       if (job->sheets)
       {
-        if (!_cups_strncasecmp(message, "total ", 6))
-	{
-	 /*
-	  * Got a total count of pages from a backend or filter...
-	  */
+	const char *sides = ippGetString(ippFindAttribute(job->attrs, "sides", IPP_TAG_KEYWORD), 0, NULL);
 
-	  copies = atoi(message + 6);
-	  copies -= ippGetInteger(job->sheets, 0); /* Just track the delta */
-	}
-	else if (!sscanf(message, "%*d%d", &copies))
-	  copies = 1;
+        if (sides && strcmp(sides, "one-sided"))
+          ippSetInteger(job->attrs, &job->sheets, 0, impressions / 2);
+	else
+          ippSetInteger(job->attrs, &job->sheets, 0, impressions);
 
-        ippSetInteger(job->attrs, &job->sheets, 0, ippGetInteger(job->sheets, 0) + copies);
-        job->dirty = 1;
-	cupsdMarkDirty(CUPSD_DIRTY_JOBS);
-
-	if (job->printer->page_limit)
-	  cupsdUpdateQuota(job->printer, job->username, copies, 0);
-      }
-
-      cupsdLogPage(job, message);
-
-      if (job->sheets)
 	cupsdAddEvent(CUPSD_EVENT_JOB_PROGRESS, job->printer, job, "Printed %d page(s).", ippGetInteger(job->sheets, 0));
+      }
+
+      job->dirty = 1;
+      cupsdMarkDirty(CUPSD_DIRTY_JOBS);
+
+      if (job->printer->page_limit)
+	cupsdUpdateQuota(job->printer, job->username, delta, 0);
     }
     else if (loglevel == CUPSD_LOG_JOBSTATE)
     {

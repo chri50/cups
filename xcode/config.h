@@ -4,11 +4,7 @@
  * Copyright 2007-2017 by Apple Inc.
  * Copyright 1997-2007 by Easy Software Products.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
  */
 
 #ifndef _CUPS_CONFIG_H_
@@ -22,8 +18,8 @@
  * Version of software...
  */
 
-#define CUPS_SVERSION "CUPS v2.2.6"
-#define CUPS_MINIMAL "CUPS/2.2.6"
+#define CUPS_SVERSION "CUPS v2.3.0"
+#define CUPS_MINIMAL "CUPS/2.3.0"
 
 
 /*
@@ -514,22 +510,6 @@
  */
 
 /* #undef HAVE_UPSTART */
-
-
-/*
- * Various scripting languages...
- */
-
-#if !TARGET_OS_IOS
-#  define HAVE_JAVA 1
-#  define CUPS_JAVA "/usr/bin/java"
-#  define HAVE_PERL 1
-#  define CUPS_PERL "/usr/bin/perl"
-#  define HAVE_PHP 1
-#  define CUPS_PHP "/usr/bin/php"
-#  define HAVE_PYTHON 1
-#  define CUPS_PYTHON "/usr/bin/python"
-#endif /* !TARGET_OS_IOS */
 
 
 /*

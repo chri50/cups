@@ -1,4 +1,4 @@
-From 7b74523adfdcc6b5ec722726fe1344bd209739b3 Mon Sep 17 00:00:00 2001
+From 1c4867517aaa18819a12477ed5c5967ec240a9db Mon Sep 17 00:00:00 2001
 From: Martin Pitt <mpitt@debian.org>
 Date: Tue, 9 Aug 2016 18:11:38 +0200
 Subject: Make log files readable to group "adm", if present.
@@ -12,10 +12,10 @@ Patch-Name: logfiles_adm_readable.patch
  1 file changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/scheduler/log.c b/scheduler/log.c
-index 3ffa1933d..fd00afbe9 100644
+index 74790dc35..46a5efacd 100644
 --- a/scheduler/log.c
 +++ b/scheduler/log.c
-@@ -24,6 +24,7 @@
+@@ -20,6 +20,7 @@
  #  include <systemd/sd-journal.h>
  #endif /* HAVE_ASL_H */
  #include <syslog.h>
@@ -23,7 +23,7 @@ index 3ffa1933d..fd00afbe9 100644
  
  
  /*
-@@ -113,6 +114,7 @@ cupsdCheckLogFile(cups_file_t **lf,	/* IO - Log file */
+@@ -109,6 +110,7 @@ cupsdCheckLogFile(cups_file_t **lf,	/* IO - Log file */
  		filename[1024],		/* Formatted log filename */
  		*ptr;			/* Pointer into filename */
    const char	*logptr;		/* Pointer into log filename */
@@ -31,7 +31,7 @@ index 3ffa1933d..fd00afbe9 100644
  
  
   /*
-@@ -132,6 +134,11 @@ cupsdCheckLogFile(cups_file_t **lf,	/* IO - Log file */
+@@ -128,6 +130,11 @@ cupsdCheckLogFile(cups_file_t **lf,	/* IO - Log file */
      return (1);
    }
  
@@ -43,7 +43,7 @@ index 3ffa1933d..fd00afbe9 100644
   /*
    * Format the filename as needed...
    */
-@@ -244,7 +251,7 @@ cupsdCheckLogFile(cups_file_t **lf,	/* IO - Log file */
+@@ -240,7 +247,7 @@ cupsdCheckLogFile(cups_file_t **lf,	/* IO - Log file */
        * Change ownership and permissions of non-device logs...
        */
  
@@ -52,7 +52,7 @@ index 3ffa1933d..fd00afbe9 100644
        fchmod(cupsFileNumber(*lf), LogFilePerm);
      }
    }
-@@ -287,7 +294,7 @@ cupsdCheckLogFile(cups_file_t **lf,	/* IO - Log file */
+@@ -283,7 +290,7 @@ cupsdCheckLogFile(cups_file_t **lf,	/* IO - Log file */
      * Change ownership and permissions of non-device logs...
      */
  
