@@ -1,4 +1,4 @@
-From 7bcaea43a42e208ef0ab117248d9d1c92bf5dd2e Mon Sep 17 00:00:00 2001
+From 65a3fa1bd4df72dc1e29dd448de4a3cb29992e03 Mon Sep 17 00:00:00 2001
 From: Martin Pitt <martin.pitt@ubuntu.com>
 Date: Tue, 9 Aug 2016 18:11:47 +0200
 Subject: Set default job error policy to "retry-job", since it is less
@@ -18,7 +18,7 @@ Patch-Name: cups-set-default-error-policy-retry-job.patch
  3 files changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/doc/help/man-cupsd.conf.html b/doc/help/man-cupsd.conf.html
-index 908234855..7d22aaa82 100644
+index fe4902df7..36e35d237 100644
 --- a/doc/help/man-cupsd.conf.html
 +++ b/doc/help/man-cupsd.conf.html
 @@ -89,11 +89,11 @@ The default value is "30".
@@ -56,7 +56,7 @@ index a313f4b02..6971b8b33 100644
  .TP 5
  \fBFilterLimit \fIlimit\fR
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index bd1bac436..727a2230c 100644
+index 7503131d4..0787bec49 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -751,7 +751,7 @@ cupsdReadConfiguration(void)

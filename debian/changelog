@@ -1,3 +1,19 @@
+cups (2.2.7-1) unstable; urgency=medium
+
+  * New 2.2.7 upstream release
+    - NOTICE: Raw print queues are now deprecated (Issue #5269)
+    - Fixed an Avahi crash bug in the scheduler (Issue #5268, LP: #1725749)
+    - Systemd did not restart cupsd when configuration changes were made that
+      required a restart (Issue #5263. Closes: #861470)
+    - The scheduler could crash while adding an IPP Everywhere printer (Issue
+      #5258, LP: #1750514)
+    - The `lp` and `lpr` commands now provide better error messages when the
+      default printer cannot be found (Issue #5096, Closes: #870463)
+   * Add cupsHashString@Base 2.2.7 symbol
+   * Add lintian override for cups.service WantedBy=printer.target
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 27 Mar 2018 19:45:49 +0200
+
 cups (2.2.6-5) unstable; urgency=medium
 
   * Bump S-V to 4.1.3 without changes needed

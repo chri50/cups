@@ -1,4 +1,4 @@
-From 7b74523adfdcc6b5ec722726fe1344bd209739b3 Mon Sep 17 00:00:00 2001
+From cd4261295ce07152072d1da2f67a3e9a80f2be77 Mon Sep 17 00:00:00 2001
 From: Martin Pitt <mpitt@debian.org>
 Date: Tue, 9 Aug 2016 18:11:38 +0200
 Subject: Make log files readable to group "adm", if present.
@@ -12,7 +12,7 @@ Patch-Name: logfiles_adm_readable.patch
  1 file changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/scheduler/log.c b/scheduler/log.c
-index 3ffa1933d..fd00afbe9 100644
+index 5dbb0ba7e..abc1dd865 100644
 --- a/scheduler/log.c
 +++ b/scheduler/log.c
 @@ -24,6 +24,7 @@

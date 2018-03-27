@@ -1,4 +1,4 @@
-From 429490efd74d93b28eeadc7f45131fe150908fc4 Mon Sep 17 00:00:00 2001
+From d4e27e4207aab06473a751893a6761a5b0dfaec9 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:05 +0200
 Subject: Fix hyphen-used-as-minus-sign manpage errors
@@ -420,10 +420,10 @@ index b4cb55ef8..4207ad218 100644
  .SH SEE ALSO
  .BR cancel (1),
 diff --git a/man/lpadmin.man b/man/lpadmin.man
-index 17607287c..3275ed914 100644
+index c4f01ecfa..bcb91a1d0 100644
 --- a/man/lpadmin.man
 +++ b/man/lpadmin.man
-@@ -127,7 +127,7 @@ command.
+@@ -128,7 +128,7 @@ command.
  .TP 5
  \fB\-o \fIname\fB-default=\fIvalue\fR
  Sets a default server-side option for the destination.
@@ -432,7 +432,7 @@ index 17607287c..3275ed914 100644
  .TP 5
  \fB\-o port\-monitor=\fIname\fR
  Sets the binary communications program to use when printing, "none", "bcp", or "tbcp".
-@@ -169,7 +169,7 @@ If the resulting class becomes empty it is removed.
+@@ -170,7 +170,7 @@ If the resulting class becomes empty it is removed.
  Sets user-level access control on a destination.
  Names starting with "@" are interpreted as UNIX groups.
  The latter two forms turn user-level access control off.
@@ -441,7 +441,7 @@ index 17607287c..3275ed914 100644
  .TP 5
  \fB\-v "\fIdevice-uri\fB"\fR
  Sets the \fIdevice-uri\fR attribute of the printer queue.
-@@ -200,7 +200,7 @@ The CUPS version of \fBlpadmin\fR does not support all of the System V or Solari
+@@ -201,7 +201,7 @@ The CUPS version of \fBlpadmin\fR does not support all of the System V or Solari
  Create an IPP Everywhere print queue:
  .nf
  

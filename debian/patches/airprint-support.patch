@@ -1,4 +1,4 @@
-From 5c2fc4302d18dd1dd7b15d177c65ee04a2292ad1 Mon Sep 17 00:00:00 2001
+From c7b57a32ed596e024ac303ed03a6ce121144760c Mon Sep 17 00:00:00 2001
 From: Till Kamppeter <till.kamppeter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:29 +0200
 Subject: Patch to support Apple AirPrint (printing from iPhone, iPad, iPod
@@ -48,7 +48,7 @@ index fa5371486..84cb0fffe 100644
  #
  # Text files...
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index bc52d2add..ea3175217 100644
+index 8c2694f74..a22187bda 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -745,7 +745,7 @@ cupsdReadConfiguration(void)
@@ -61,7 +61,7 @@ index bc52d2add..ea3175217 100644
  
    cupsdSetString(&LPDConfigFile, CUPS_DEFAULT_LPD_CONFIG_FILE);
 diff --git a/scheduler/dirsvc.c b/scheduler/dirsvc.c
-index 2308e0538..6a1da9810 100644
+index 3dab90ca9..f21942af3 100644
 --- a/scheduler/dirsvc.c
 +++ b/scheduler/dirsvc.c
 @@ -443,6 +443,12 @@ dnssdBuildTxtRecord(
