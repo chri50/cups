@@ -1,7 +1,7 @@
 /*
  * PPD cache implementation for CUPS.
  *
- * Copyright 2010-2017 by Apple Inc.
+ * Copyright © 2010-2018 by Apple Inc.
  *
  * These coded instructions, statements, and computer programs are the
  * property of Apple Inc. and are protected by Federal copyright
@@ -3118,6 +3118,41 @@ _ppdCreateFromIPP(char   *buffer,	/* I - Filename buffer */
   cupsFilePuts(fp, "*cupsLanguages: \"en\"\n");
 
  /*
+  * Password/PIN printing...
+  */
+
+  if ((attr = ippFindAttribute(response, "job-password-supported", IPP_TAG_INTEGER)) != NULL)
+  {
+    char	pattern[33];		/* Password pattern */
+    int		maxlen = ippGetInteger(attr, 0);
+					/* Maximum length */
+    const char	*repertoire = ippGetString(ippFindAttribute(response, "job-password-repertoire-configured", IPP_TAG_KEYWORD), 0, NULL);
+					/* Type of password */
+
+    if (maxlen > (int)(sizeof(pattern) - 1))
+      maxlen = sizeof(pattern) - 1;
+
+    if (!repertoire || !strcmp(repertoire, "iana_us-ascii_digits"))
+      memset(pattern, '1', maxlen);
+    else if (!strcmp(repertoire, "iana_us-ascii_letters"))
+      memset(pattern, 'A', maxlen);
+    else if (!strcmp(repertoire, "iana_us-ascii_complex"))
+      memset(pattern, 'C', maxlen);
+    else if (!strcmp(repertoire, "iana_us-ascii_any"))
+      memset(pattern, '.', maxlen);
+    else if (!strcmp(repertoire, "iana_utf-8_digits"))
+      memset(pattern, 'N', maxlen);
+    else if (!strcmp(repertoire, "iana_utf-8_letters"))
+      memset(pattern, 'U', maxlen);
+    else
+      memset(pattern, '*', maxlen);
+
+    pattern[maxlen] = '\0';
+
+    cupsFilePrintf(fp, "*cupsPassword: \"%s\"\n", pattern);
+  }
+
+ /*
   * Filters...
   */
 
@@ -3125,24 +3160,18 @@ _ppdCreateFromIPP(char   *buffer,	/* I - Filename buffer */
   {
     is_apple = ippContainsString(attr, "image/urf");
     is_pdf   = ippContainsString(attr, "application/pdf");
-    is_pwg   = ippContainsString(attr, "image/pwg-raster");
+    is_pwg   = ippContainsString(attr, "image/pwg-raster") && !is_apple;
 
-    for (i = 0, count = ippGetCount(attr); i < count; i ++)
-    {
-      const char *format = ippGetString(attr, i, NULL);
-					/* PDL */
-
-     /*
-      * Write cupsFilter2 lines for supported formats...
-      */
-
-      if (!_cups_strcasecmp(format, "application/pdf"))
-        cupsFilePuts(fp, "*cupsFilter2: \"application/vnd.cups-pdf application/pdf 10 -\"\n");
-      else if (!_cups_strcasecmp(format, "image/jpeg") || !_cups_strcasecmp(format, "image/png"))
-        cupsFilePrintf(fp, "*cupsFilter2: \"%s %s 0 -\"\n", format, format);
-      else if (!_cups_strcasecmp(format, "image/pwg-raster") || !_cups_strcasecmp(format, "image/urf"))
-        cupsFilePrintf(fp, "*cupsFilter2: \"%s %s 100 -\"\n", format, format);
-    }
+    if (ippContainsString(attr, "image/jpeg"))
+      cupsFilePuts(fp, "*cupsFilter2: \"image/jpeg image/jpeg 0 -\"\n");
+    if (ippContainsString(attr, "image/png"))
+      cupsFilePuts(fp, "*cupsFilter2: \"image/png image/png 0 -\"\n");
+    if (is_pdf)
+      cupsFilePuts(fp, "*cupsFilter2: \"application/vnd.cups-pdf application/pdf 10 -\"\n");
+    if (is_apple)
+      cupsFilePuts(fp, "*cupsFilter2: \"image/urf image/urf 100 -\"\n");
+    if (is_pwg)
+      cupsFilePuts(fp, "*cupsFilter2: \"image/pwg-raster image/pwg-raster 100 -\"\n");
   }
 
   if (!is_apple && !is_pdf && !is_pwg)

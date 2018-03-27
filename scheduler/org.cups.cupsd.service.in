@@ -5,6 +5,7 @@ Documentation=man:cupsd(8)
 [Service]
 ExecStart=@sbindir@/cupsd -l
 Type=simple
+Restart=always
 
 [Install]
 Also=cups.socket cups.path
