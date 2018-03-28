@@ -1,5 +1,44 @@
-CHANGES - 2.3b3 - 2018-02-01
+CHANGES - 2.3b4 - 2018-03-23
 ============================
+
+Changes in CUPS v2.3b4
+----------------------
+
+- NOTICE: Printer drivers are now deprecated (Issue #5270)
+- Kerberized printing to another CUPS server did not work correctly
+  (Issue #5233)
+- Fixed printing to some IPP Everywhere printers (Issue #5238)
+- Fixed installation of filters (Issue #5247)
+- The scheduler now supports using temporary print queues for older IPP/1.1
+  print queues like those shared by CUPS 1.3 and earlier (Issue #5241)
+- Star Micronics printers need the "unidir" USB quirk rule (Issue #5251)
+- Documentation fixes (Issue #5252)
+- Fixed a compile issue when PAM is not available (Issue #5253)
+- Label printers supported by the rastertolabel driver don't support SNMP, so
+  don't delay printing to test it (Issue #5256)
+- The scheduler could crash while adding an IPP Everywhere printer (Issue #5258)
+- The Lexmark Optra E310 printer needs the "no-reattach" USB quirk rule
+  (Issue #5259)
+- Systemd did not restart cupsd when configuration changes were made that
+  required a restart (Issue #5263)
+- The IPP Everywhere PPD generator did not include the `cupsJobPassword`
+  keyword, when supported (Issue #5265)
+- Fixed an Avahi crash bug in the scheduler (Issue #5268)
+- Raw print queues are now deprecated (Issue #5269)
+- Fixed an RPM packaging problem (Issue #5276)
+- The IPP backend did not properly detect failed PDF prints (rdar://34055474)
+- TLS connections now properly timeout (rdar://34938533)
+- Temp files could not be created in some sandboxed applications
+  (rdar://37789645)
+- The ipptool `--ippserver` option did not encode out-of-band attributes
+  correctly.
+- Added public `cupsEncodeOption` API for encoding a single option as an IPP
+  attribute.
+- Removed support for the `-D_PPD_DEPRECATED=""` developer cheat - the PPD API
+  should no longer be used.
+- Removed support for `-D_IPP_PRIVATE_STRUCTURES=1` developer cheat - the IPP
+  accessor functions should be used instead.
+
 
 Changes in CUPS v2.3b3
 ----------------------

@@ -1,4 +1,4 @@
-From f5b0772eee47a7fc4b651a778056ee08578d37d4 Mon Sep 17 00:00:00 2001
+From 90bb4c7dd4730b04496f104dbd39a9273821766c Mon Sep 17 00:00:00 2001
 From: Tim Waugh <twaugh@redhat.com>
 Date: Tue, 9 Aug 2016 18:11:07 +0200
 Subject: Fix jobs with multiple files or multiple formats
@@ -12,7 +12,7 @@ Patch-Name: fixes-for-jobs-with-multiple-files-and-multiple-formats.patch
  1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/backend/ipp.c b/backend/ipp.c
-index f2f676de3..fb4d8bd92 100644
+index 5a86eff81..c83d5cbf1 100644
 --- a/backend/ipp.c
 +++ b/backend/ipp.c
 @@ -1776,7 +1776,10 @@ main(int  argc,				/* I - Number of command-line args */

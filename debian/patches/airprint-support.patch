@@ -1,4 +1,4 @@
-From 0134f378970c74fcc0e5ac0a92ae2edc725aa889 Mon Sep 17 00:00:00 2001
+From 4f630d3db38b14dac04399c9b14e4bf2e074b6d9 Mon Sep 17 00:00:00 2001
 From: Till Kamppeter <till.kamppeter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:29 +0200
 Subject: Patch to support Apple AirPrint (printing from iPhone, iPad, iPod
@@ -20,10 +20,10 @@ Patch-Name: airprint-support.patch
  5 files changed, 16 insertions(+), 2 deletions(-)
 
 diff --git a/conf/mime.convs.in b/conf/mime.convs.in
-index bffd04f84..33ce812e3 100644
+index 57b459d73..e042e0129 100644
 --- a/conf/mime.convs.in
 +++ b/conf/mime.convs.in
-@@ -47,6 +47,9 @@ application/postscript		application/vnd.cups-postscript	66	pstops
+@@ -44,6 +44,9 @@ application/postscript		application/vnd.cups-postscript	66	pstops
  application/vnd.cups-raster	image/pwg-raster		100	rastertopwg
  application/vnd.cups-raster	image/urf			100	rastertopwg
  
@@ -34,10 +34,10 @@ index bffd04f84..33ce812e3 100644
  #
  # Raw filter...
 diff --git a/conf/mime.types b/conf/mime.types
-index fa5371486..84cb0fffe 100644
+index fcd6b6eff..ebb05257e 100644
 --- a/conf/mime.types
 +++ b/conf/mime.types
-@@ -111,6 +111,9 @@ image/x-alias			pix short(8,8) short(8,24)
+@@ -108,6 +108,9 @@ image/x-alias			pix short(8,8) short(8,24)
  image/x-bitmap			bmp string(0,BM) + !printable(2,14)
  image/x-icon			ico
  
@@ -61,10 +61,10 @@ index f90bcfae9..0726f7c31 100644
  #endif /* HAVE_DNSSD || HAVE_AVAHI */
  
 diff --git a/scheduler/dirsvc.c b/scheduler/dirsvc.c
-index d01170fc7..396b766fc 100644
+index ddd3701e0..fb2a30526 100644
 --- a/scheduler/dirsvc.c
 +++ b/scheduler/dirsvc.c
-@@ -439,6 +439,12 @@ dnssdBuildTxtRecord(
+@@ -440,6 +440,12 @@ dnssdBuildTxtRecord(
      keyvalue[count  ][0] = "pdl";
      keyvalue[count++][1] = p->pdl ? p->pdl : "application/postscript";
  
