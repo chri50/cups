@@ -1,4 +1,4 @@
-From 11cdc06b453d06981686243fae2a84441cfaf044 Mon Sep 17 00:00:00 2001
+From 9030f320e3cb19beac696167c23647421e140508 Mon Sep 17 00:00:00 2001
 From: Martin Pitt <martin.pitt@ubuntu.com>
 Date: Tue, 9 Aug 2016 18:11:47 +0200
 Subject: Set default job error policy to "retry-job", since it is less
@@ -18,7 +18,7 @@ Patch-Name: cups-set-default-error-policy-retry-job.patch
  3 files changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/doc/help/man-cupsd.conf.html b/doc/help/man-cupsd.conf.html
-index f4e744833..8cb1d262e 100644
+index 77428bdb6..6804b604b 100644
 --- a/doc/help/man-cupsd.conf.html
 +++ b/doc/help/man-cupsd.conf.html
 @@ -96,11 +96,11 @@ The default is typically the server's ".local" hostname.

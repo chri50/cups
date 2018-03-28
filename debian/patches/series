@@ -35,5 +35,4 @@ cups-set-default-error-policy-retry-job.patch
 man-cups-lpd-drop-dangling-references.patch
 debianize_cups-config.patch
 0037-Build-mantohtml-with-the-build-architecture-compiler.patch
-0038-Fix-installation-of-filters-Issue-5247.patch
 manpage-translations.patch

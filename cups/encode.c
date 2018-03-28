@@ -1,10 +1,11 @@
 /*
  * Option encoding routines for CUPS.
  *
- * Copyright 2007-2017 by Apple Inc.
- * Copyright 1997-2007 by Easy Software Products.
+ * Copyright © 2007-2018 by Apple Inc.
+ * Copyright © 1997-2007 by Easy Software Products.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+ * information.
  */
 
 /*
@@ -281,10 +282,17 @@ static const _ipp_option_t ipp_options[] =
   { 0, "print-quality",		IPP_TAG_ENUM,		IPP_TAG_JOB,
 							IPP_TAG_DOCUMENT },
   { 0, "print-quality-default",	IPP_TAG_ENUM,		IPP_TAG_PRINTER },
+  { 1, "printer-alert",		IPP_TAG_STRING,		IPP_TAG_PRINTER },
+  { 1, "printer-alert-description", IPP_TAG_TEXT,	IPP_TAG_PRINTER },
   { 1, "printer-commands",	IPP_TAG_KEYWORD,	IPP_TAG_PRINTER },
   { 0, "printer-error-policy",	IPP_TAG_NAME,		IPP_TAG_PRINTER },
+  { 1, "printer-finisher",	IPP_TAG_STRING,		IPP_TAG_PRINTER },
+  { 1, "printer-finisher-description", IPP_TAG_TEXT,	IPP_TAG_PRINTER },
+  { 1, "printer-finisher-supplies", IPP_TAG_STRING,	IPP_TAG_PRINTER },
+  { 1, "printer-finisher-supplies-description", IPP_TAG_TEXT, IPP_TAG_PRINTER },
   { 0, "printer-geo-location",	IPP_TAG_URI,		IPP_TAG_PRINTER },
   { 0, "printer-info",		IPP_TAG_TEXT,		IPP_TAG_PRINTER },
+  { 1, "printer-input-tray",	IPP_TAG_STRING,		IPP_TAG_PRINTER },
   { 0, "printer-is-accepting-jobs", IPP_TAG_BOOLEAN,	IPP_TAG_PRINTER },
   { 0, "printer-is-shared",	IPP_TAG_BOOLEAN,	IPP_TAG_PRINTER },
   { 0, "printer-is-temporary",	IPP_TAG_BOOLEAN,	IPP_TAG_PRINTER },
@@ -292,11 +300,14 @@ static const _ipp_option_t ipp_options[] =
   { 0, "printer-make-and-model", IPP_TAG_TEXT,		IPP_TAG_PRINTER },
   { 0, "printer-more-info",	IPP_TAG_URI,		IPP_TAG_PRINTER },
   { 0, "printer-op-policy",	IPP_TAG_NAME,		IPP_TAG_PRINTER },
+  { 1, "printer-output-tray",	IPP_TAG_STRING,		IPP_TAG_PRINTER },
   { 0, "printer-resolution",	IPP_TAG_RESOLUTION,	IPP_TAG_JOB,
 							IPP_TAG_DOCUMENT },
   { 0, "printer-state",		IPP_TAG_ENUM,		IPP_TAG_PRINTER },
   { 0, "printer-state-change-time", IPP_TAG_INTEGER,	IPP_TAG_PRINTER },
   { 1, "printer-state-reasons",	IPP_TAG_KEYWORD,	IPP_TAG_PRINTER },
+  { 1, "printer-supply",	IPP_TAG_STRING,		IPP_TAG_PRINTER },
+  { 1, "printer-supply-description", IPP_TAG_TEXT,	IPP_TAG_PRINTER },
   { 0, "printer-type",		IPP_TAG_ENUM,		IPP_TAG_PRINTER },
   { 0, "printer-uri",		IPP_TAG_URI,		IPP_TAG_OPERATION },
   { 1, "printer-uri-supported",	IPP_TAG_URI,		IPP_TAG_PRINTER },
@@ -337,7 +348,7 @@ static int	compare_ipp_options(_ipp_option_t *a, _ipp_option_t *b);
  * '_cupsEncodeOption()' - Encode a single option as an IPP attribute.
  */
 
-void
+ipp_attribute_t *			/* O - New attribute or @code NULL@ on error */
 _cupsEncodeOption(
     ipp_t         *ipp,			/* I - IPP request/response/collection */
     ipp_tag_t     group_tag,		/* I - Group tag */
@@ -417,7 +428,7 @@ _cupsEncodeOption(
     */
 
     DEBUG_puts("1_cupsEncodeOption: Ran out of memory for attributes.");
-    return;
+    return (NULL);
   }
 
   if (count > 1)
@@ -434,7 +445,7 @@ _cupsEncodeOption(
 
       DEBUG_puts("1_cupsEncodeOption: Ran out of memory for value copy.");
       ippDeleteAttribute(ipp, attr);
-      return;
+      return (NULL);
     }
 
     val = copy;
@@ -605,7 +616,7 @@ _cupsEncodeOption(
 	      free(copy);
 
 	    ippDeleteAttribute(ipp, attr);
-	    return;
+	    return (NULL);
 	  }
 
 	  ippSetCollection(ipp, &attr, i, collection);
@@ -621,6 +632,24 @@ _cupsEncodeOption(
 
   if (copy)
     free(copy);
+
+  return (attr);
+}
+
+
+/*
+ * 'cupsEncodeOption()' - Encode a single option into an IPP attribute.
+ *
+ * @since CUPS 2.3@
+ */
+
+ipp_attribute_t	*			/* O - New attribute or @code NULL@ on error */
+cupsEncodeOption(ipp_t      *ipp,	/* I - IPP request/response */
+                 ipp_tag_t  group_tag,	/* I - Attribute group */
+                 const char *name,	/* I - Option name */
+                 const char *value)	/* I - Option string value */
+{
+  return (_cupsEncodeOption(ipp, group_tag, _ippFindOption(name), name, value));
 }
 
 
@@ -633,7 +662,7 @@ _cupsEncodeOption(
  */
 
 void
-cupsEncodeOptions(ipp_t         *ipp,		/* I - Request to add to */
+cupsEncodeOptions(ipp_t         *ipp,		/* I - IPP request/response */
         	  int           num_options,	/* I - Number of options */
 		  cups_option_t *options)	/* I - Options */
 {
@@ -661,7 +690,7 @@ cupsEncodeOptions(ipp_t         *ipp,		/* I - Request to add to */
 
 void
 cupsEncodeOptions2(
-    ipp_t         *ipp,			/* I - Request to add to */
+    ipp_t         *ipp,			/* I - IPP request/response */
     int           num_options,		/* I - Number of options */
     cups_option_t *options,		/* I - Options */
     ipp_tag_t     group_tag)		/* I - Group to encode */
@@ -688,7 +717,7 @@ cupsEncodeOptions2(
 
   op = ippGetOperation(ipp);
 
-  if (group_tag == IPP_TAG_OPERATION && (op == IPP_OP_PRINT_JOB || op == IPP_OP_PRINT_URI ||  op == IPP_OP_SEND_DOCUMENT || op == IPP_OP_SEND_URI))
+  if (group_tag == IPP_TAG_OPERATION && (op == IPP_OP_PRINT_JOB || op == IPP_OP_PRINT_URI || op == IPP_OP_SEND_DOCUMENT || op == IPP_OP_SEND_URI))
   {
    /*
     * Handle the document format stuff first...

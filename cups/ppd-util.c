@@ -1,8 +1,8 @@
 /*
  * PPD utilities for CUPS.
  *
- * Copyright 2007-2015 by Apple Inc.
- * Copyright 1997-2006 by Easy Software Products.
+ * Copyright © 2007-2018 by Apple Inc.
+ * Copyright © 1997-2006 by Easy Software Products.
  *
  * Licensed under Apache License v2.0.  See the file "LICENSE" for more
  * information.
@@ -150,18 +150,21 @@ cupsGetPPD3(http_t     *http,		/* I  - HTTP connection or @code CUPS_HTTP_DEFAUL
 
   if (!name)
   {
+    DEBUG_puts("2cupsGetPPD3: No printer name, returning NULL.");
     _cupsSetError(IPP_STATUS_ERROR_INTERNAL, _("No printer name"), 1);
     return (HTTP_STATUS_NOT_ACCEPTABLE);
   }
 
   if (!modtime)
   {
+    DEBUG_puts("2cupsGetPPD3: No modtime, returning NULL.");
     _cupsSetError(IPP_STATUS_ERROR_INTERNAL, _("No modification time"), 1);
     return (HTTP_STATUS_NOT_ACCEPTABLE);
   }
 
   if (!buffer || bufsize <= 1)
   {
+    DEBUG_puts("2cupsGetPPD3: No filename buffer, returning NULL.");
     _cupsSetError(IPP_STATUS_ERROR_INTERNAL, _("Bad filename buffer"), 1);
     return (HTTP_STATUS_NOT_ACCEPTABLE);
   }
@@ -196,6 +199,8 @@ cupsGetPPD3(http_t     *http,		/* I  - HTTP connection or @code CUPS_HTTP_DEFAUL
 
       if (buffer[0])
       {
+        DEBUG_printf(("2cupsGetPPD3: Using filename \"%s\".", buffer));
+
         unlink(buffer);
 
 	if (symlink(ppdname, buffer) && errno != EEXIST)
@@ -211,6 +216,28 @@ cupsGetPPD3(http_t     *http,		/* I  - HTTP connection or @code CUPS_HTTP_DEFAUL
         const char	*tmpdir;	/* TMPDIR environment variable */
 	struct timeval	curtime;	/* Current time */
 
+
+#ifdef __APPLE__
+       /*
+	* On macOS and iOS, the TMPDIR environment variable is not always the
+	* best location to place temporary files due to sandboxing.  Instead,
+	* the confstr function should be called to get the proper per-user,
+	* per-process TMPDIR value.
+	*/
+
+        char		tmppath[1024];	/* Temporary directory */
+
+	if ((tmpdir = getenv("TMPDIR")) != NULL && access(tmpdir, W_OK))
+	  tmpdir = NULL;
+
+	if (!tmpdir)
+	{
+	  if (confstr(_CS_DARWIN_USER_TEMP_DIR, tmppath, sizeof(tmppath)))
+	    tmpdir = tmppath;
+	  else
+	    tmpdir = "/private/tmp";		/* This should never happen */
+	}
+#else
        /*
 	* Previously we put root temporary files in the default CUPS temporary
 	* directory under /var/spool/cups.  However, since the scheduler cleans
@@ -219,11 +246,10 @@ cupsGetPPD3(http_t     *http,		/* I  - HTTP connection or @code CUPS_HTTP_DEFAUL
 	*/
 
 	if ((tmpdir = getenv("TMPDIR")) == NULL)
-#  ifdef __APPLE__
-	  tmpdir = "/private/tmp";	/* /tmp is a symlink to /private/tmp */
-#  else
-          tmpdir = "/tmp";
-#  endif /* __APPLE__ */
+	  tmpdir = "/tmp";
+#endif /* __APPLE__ */
+
+        DEBUG_printf(("2cupsGetPPD3: tmpdir=\"%s\".", tmpdir));
 
        /*
 	* Make the temporary name using the specified directory...
@@ -254,12 +280,16 @@ cupsGetPPD3(http_t     *http,		/* I  - HTTP connection or @code CUPS_HTTP_DEFAUL
 	  if (!symlink(ppdname, buffer))
 	    break;
 
+	  DEBUG_printf(("2cupsGetPPD3: Symlink \"%s\" to \"%s\" failed: %s", ppdname, buffer, strerror(errno)));
+
 	  tries ++;
 	}
 	while (tries < 1000);
 
         if (tries >= 1000)
 	{
+	  DEBUG_puts("2cupsGetPPD3: Unable to symlink after 1000 tries, returning error.");
+
           _cupsSetError(IPP_STATUS_ERROR_INTERNAL, NULL, 0);
 
 	  return (HTTP_STATUS_SERVER_ERROR);
@@ -267,9 +297,13 @@ cupsGetPPD3(http_t     *http,		/* I  - HTTP connection or @code CUPS_HTTP_DEFAUL
       }
 
       if (*modtime >= ppdinfo.st_mtime)
+      {
+        DEBUG_printf(("2cupsGetPPD3: Returning not-modified, filename=\"%s\".", buffer));
         return (HTTP_STATUS_NOT_MODIFIED);
+      }
       else
       {
+        DEBUG_printf(("2cupsGetPPD3: Returning ok, filename=\"%s\", modtime=%ld.", buffer, (long)ppdinfo.st_mtime));
         *modtime = ppdinfo.st_mtime;
 	return (HTTP_STATUS_OK);
       }
@@ -281,16 +315,24 @@ cupsGetPPD3(http_t     *http,		/* I  - HTTP connection or @code CUPS_HTTP_DEFAUL
   * Try finding a printer URI for this printer...
   */
 
+  DEBUG_puts("2cupsGetPPD3: Unable to access local file, copying...");
+
   if (!http)
+  {
     if ((http = _cupsConnect()) == NULL)
+    {
+      DEBUG_puts("2cupsGetPPD3: Unable to connect to scheduler.");
       return (HTTP_STATUS_SERVICE_UNAVAILABLE);
+    }
+  }
 
-  if (!cups_get_printer_uri(http, name, hostname, sizeof(hostname), &port,
-                            resource, sizeof(resource), 0))
+  if (!cups_get_printer_uri(http, name, hostname, sizeof(hostname), &port, resource, sizeof(resource), 0))
+  {
+    DEBUG_puts("2cupsGetPPD3: Unable to get printer URI.");
     return (HTTP_STATUS_NOT_FOUND);
+  }
 
-  DEBUG_printf(("2cupsGetPPD3: Printer hostname=\"%s\", port=%d", hostname,
-                port));
+  DEBUG_printf(("2cupsGetPPD3: Printer hostname=\"%s\", port=%d", hostname, port));
 
   if (cupsServer()[0] == '/' && !_cups_strcasecmp(hostname, "localhost") && port == ippPort())
   {
@@ -334,7 +376,7 @@ cupsGetPPD3(http_t     *http,		/* I  - HTTP connection or @code CUPS_HTTP_DEFAUL
   else if ((http2 = httpConnect2(hostname, port, NULL, AF_UNSPEC,
 				 cupsEncryption(), 1, 30000, NULL)) == NULL)
   {
-    DEBUG_puts("1cupsGetPPD3: Unable to connect to server");
+    DEBUG_puts("2cupsGetPPD3: Unable to connect to server");
 
     return (HTTP_STATUS_SERVICE_UNAVAILABLE);
   }
@@ -406,7 +448,7 @@ cupsGetPPD3(http_t     *http,		/* I  - HTTP connection or @code CUPS_HTTP_DEFAUL
   * Return the PPD file...
   */
 
-  DEBUG_printf(("1cupsGetPPD3: Returning status %d", status));
+  DEBUG_printf(("2cupsGetPPD3: Returning status %d", status));
 
   return (status);
 }
@@ -506,23 +548,16 @@ cups_get_printer_uri(
     int        depth)			/* I - Depth of query */
 {
   int		i;			/* Looping var */
-  int		http_port;		/* Port number */
-  http_t	*http2;			/* Alternate HTTP connection */
   ipp_t		*request,		/* IPP request */
 		*response;		/* IPP response */
   ipp_attribute_t *attr;		/* Current attribute */
   char		uri[HTTP_MAX_URI],	/* printer-uri attribute */
 		scheme[HTTP_MAX_URI],	/* Scheme name */
-		username[HTTP_MAX_URI],	/* Username:password */
-		classname[255],		/* Temporary class name */
-		http_hostname[HTTP_MAX_HOST];
-					/* Hostname associated with connection */
+		username[HTTP_MAX_URI];	/* Username:password */
   static const char * const requested_attrs[] =
 		{			/* Requested attributes */
-		  "device-uri",
 		  "member-uris",
-		  "printer-uri-supported",
-		  "printer-type"
+		  "printer-uri-supported"
 		};
 
 
@@ -543,15 +578,6 @@ cups_get_printer_uri(
   }
 
   DEBUG_printf(("5cups_get_printer_uri: printer-uri=\"%s\"", uri));
-
- /*
-  * Get the hostname and port number we are connected to...
-  */
-
-  httpGetHostname(http, http_hostname, sizeof(http_hostname));
-  http_port = httpAddrPort(http->hostaddr);
-
-  DEBUG_printf(("5cups_get_printer_uri: http_hostname=\"%s\"", http_hostname));
 
  /*
   * Build an IPP_GET_PRINTER_ATTRIBUTES request, which requires the following
@@ -577,31 +603,7 @@ cups_get_printer_uri(
 
   if ((response = cupsDoRequest(http, request, resource)) != NULL)
   {
-    const char *device_uri = NULL;	/* device-uri value */
-
-    if ((attr = ippFindAttribute(response, "device-uri", IPP_TAG_URI)) != NULL)
-    {
-      device_uri = attr->values[0].string.text;
-      DEBUG_printf(("5cups_get_printer_uri: device-uri=\"%s\"", device_uri));
-    }
-
-    if (device_uri &&
-        (((!strncmp(device_uri, "ipp://", 6) || !strncmp(device_uri, "ipps://", 7)) &&
-	  (strstr(device_uri, "/printers/") != NULL || strstr(device_uri, "/classes/") != NULL)) ||
-         ((strstr(device_uri, "._ipp.") != NULL || strstr(device_uri, "._ipps.") != NULL) &&
-          !strcmp(device_uri + strlen(device_uri) - 5, "/cups"))))
-    {
-     /*
-      * Statically-configured shared printer.
-      */
-
-      httpSeparateURI(HTTP_URI_CODING_ALL, _httpResolveURI(device_uri, uri, sizeof(uri), _HTTP_RESOLVE_DEFAULT, NULL, NULL), scheme, sizeof(scheme), username, sizeof(username), host, hostsize, port, resource, resourcesize);
-      ippDelete(response);
-
-      DEBUG_printf(("5cups_get_printer_uri: Resolved to host=\"%s\", port=%d, resource=\"%s\"", host, *port, resource));
-      return (1);
-    }
-    else if ((attr = ippFindAttribute(response, "member-uris", IPP_TAG_URI)) != NULL)
+    if ((attr = ippFindAttribute(response, "member-uris", IPP_TAG_URI)) != NULL)
     {
      /*
       * Get the first actual printer name in the class...
@@ -624,55 +626,6 @@ cups_get_printer_uri(
 
 	  DEBUG_printf(("5cups_get_printer_uri: Found printer member with host=\"%s\", port=%d, resource=\"%s\"", host, *port, resource));
 	  return (1);
-	}
-      }
-
-     /*
-      * No printers in this class - try recursively looking for a printer,
-      * but not more than 3 levels deep...
-      */
-
-      if (depth < 3)
-      {
-	for (i = 0; i < attr->num_values; i ++)
-	{
-	  httpSeparateURI(HTTP_URI_CODING_ALL, attr->values[i].string.text,
-	                  scheme, sizeof(scheme), username, sizeof(username),
-			  host, hostsize, port, resource, resourcesize);
-	  if (!strncmp(resource, "/classes/", 9))
-	  {
-	   /*
-	    * Found a class!  Connect to the right server...
-	    */
-
-	    if (!_cups_strcasecmp(http_hostname, host) && *port == http_port)
-	      http2 = http;
-	    else if ((http2 = httpConnect2(host, *port, NULL, AF_UNSPEC, cupsEncryption(), 1, 30000, NULL)) == NULL)
-	    {
-	      DEBUG_puts("8cups_get_printer_uri: Unable to connect to server");
-
-	      continue;
-	    }
-
-           /*
-	    * Look up printers on that server...
-	    */
-
-            strlcpy(classname, resource + 9, sizeof(classname));
-
-            cups_get_printer_uri(http2, classname, host, hostsize, port,
-	                         resource, resourcesize, depth + 1);
-
-           /*
-	    * Close the connection as needed...
-	    */
-
-	    if (http2 != http)
-	      httpClose(http2);
-
-            if (*host)
-	      return (1);
-	  }
 	}
       }
     }

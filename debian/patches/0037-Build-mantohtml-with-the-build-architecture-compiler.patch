@@ -1,4 +1,4 @@
-From 38e9aee3aa76c7eb6311ad8a70527bc11aeae12e Mon Sep 17 00:00:00 2001
+From 1715b05b964e2fc3e76dd3bfdb45b89d86120fe0 Mon Sep 17 00:00:00 2001
 From: Helmut Grohne <helmut@subdivi.de>
 Date: Tue, 9 Aug 2016 18:11:49 +0200
 Subject: Build mantohtml with the build architecture compiler
@@ -30,7 +30,7 @@ index bf633c758..dccef53f2 100644
  CXX		=	@LIBTOOL_CXX@ @CXX@
  DSO		=	@DSO@
 diff --git a/configure.ac b/configure.ac
-index da67c22f1..44f6e7399 100644
+index c502d6471..2a123a6f5 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -19,6 +19,15 @@ sinclude(config-scripts/cups-common.m4)

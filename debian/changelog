@@ -1,3 +1,13 @@
+cups (2.3~b4-1) experimental; urgency=medium
+
+  * New 2.3~b4 upstream pre-release
+    - NOTICE: Printer drivers are now deprecated (Issue #5270)
+
+  * Add cupsEncodeOption@Base 2.3~b4 symbol in libcups2
+  * Refresh manpage translations
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 28 Mar 2018 09:14:49 +0200
+
 cups (2.3~b3-1) experimental; urgency=medium
 
   * New 2.3~b3 upstream pre-release
@@ -19,6 +29,22 @@ cups (2.3~b3-1) experimental; urgency=medium
   * Bump debhelper compat to 11
 
  -- Didier Raboud <odyx@debian.org>  Fri, 23 Feb 2018 20:49:53 +0100
+
+cups (2.2.7-1) unstable; urgency=medium
+
+  * New 2.2.7 upstream release
+    - NOTICE: Raw print queues are now deprecated (Issue #5269)
+    - Fixed an Avahi crash bug in the scheduler (Issue #5268, LP: #1725749)
+    - Systemd did not restart cupsd when configuration changes were made that
+      required a restart (Issue #5263. Closes: #861470)
+    - The scheduler could crash while adding an IPP Everywhere printer (Issue
+      #5258, LP: #1750514)
+    - The `lp` and `lpr` commands now provide better error messages when the
+      default printer cannot be found (Issue #5096, Closes: #870463)
+   * Add cupsHashString@Base 2.2.7 symbol
+   * Add lintian override for cups.service WantedBy=printer.target
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 27 Mar 2018 19:45:49 +0200
 
 cups (2.2.6-5) unstable; urgency=medium
 

@@ -12,7 +12,6 @@
  * Include necessary headers...
  */
 
-#define _IPP_PRIVATE_STRUCTURES 0	/* Disable private IPP stuff */
 #include <cups/cups-private.h>
 #include <cups/file-private.h>
 #include <regex.h>
@@ -239,7 +238,7 @@ main(int  argc,				/* I - Number of command-line args */
 
   init_data(&data);
 
-  _ippVarsInit(&vars);
+  _ippVarsInit(&vars, NULL, (_ipp_ferror_cb_t)error_cb, (_ipp_ftoken_cb_t)token_cb);
 
  /*
   * We need at least:
@@ -1343,6 +1342,8 @@ do_test(_ipp_file_t      *f,		/* I - IPP data file */
 
       for (i = data->num_expects, expect = data->expects; i > 0; i --, expect ++)
       {
+	ipp_attribute_t *group_found;	/* Found parent attribute for group tests */
+
 	if (expect->if_defined && !_ippVarsGet(vars, expect->if_defined))
 	  continue;
 
@@ -1354,11 +1355,24 @@ do_test(_ipp_file_t      *f,		/* I - IPP data file */
 
 	do
 	{
+	  group_found = found;
+
+          if (expect->in_group && strchr(expect->name, '/'))
+          {
+            char	group_name[256],/* Parent attribute name */
+			*group_ptr;	/* Pointer into parent attribute name */
+
+	    strlcpy(group_name, expect->name, sizeof(group_name));
+	    if ((group_ptr = strchr(group_name, '/')) != NULL)
+	      *group_ptr = '\0';
+
+	    group_found = ippFindAttribute(response, group_name, IPP_TAG_ZERO);
+	  }
+
 	  if ((found && expect->not_expect) ||
 	      (!found && !(expect->not_expect || expect->optional)) ||
 	      (found && !expect_matches(expect, ippGetValueTag(found))) ||
-	      (found && expect->in_group &&
-	       ippGetGroupTag(found) != expect->in_group))
+	      (group_found && expect->in_group && ippGetGroupTag(group_found) != expect->in_group))
 	  {
 	    if (expect->define_no_match)
 	      _ippVarsSet(vars, expect->define_no_match, "1");
@@ -1375,10 +1389,10 @@ do_test(_ipp_file_t      *f,		/* I - IPP data file */
 			      expect->name, expect->of_type,
 			      ippTagString(ippGetValueTag(found)));
 
-		if (expect->in_group && ippGetGroupTag(found) != expect->in_group)
+		if (expect->in_group && ippGetGroupTag(group_found) != expect->in_group)
 		  add_stringf(data->errors, "EXPECTED: %s IN-GROUP %s (got %s).",
 			      expect->name, ippTagString(expect->in_group),
-			      ippTagString(ippGetGroupTag(found)));
+			      ippTagString(ippGetGroupTag(group_found)));
 	      }
 	    }
 
@@ -1819,7 +1833,7 @@ do_tests(const char       *testfile,	/* I - Test file to use */
   * Run tests...
   */
 
-  _ippFileParse(vars, testfile, (_ipp_ftoken_cb_t)token_cb, (_ipp_ferror_cb_t)error_cb, (void *)data);
+  _ippFileParse(vars, testfile, (void *)data);
 
  /*
   * Close connection and return...
@@ -2579,7 +2593,7 @@ print_ippserver_attr(
 	break;
 
     default :
-	cupsFilePuts(data->outfile, " \"\"");
+        /* Out-of-band value */
 	break;
   }
 
@@ -4317,7 +4331,7 @@ with_value(_cups_testdata_t *data,	/* I - Test data */
   {
     case IPP_TAG_INTEGER :
     case IPP_TAG_ENUM :
-        for (i = 0; i < ippGetCount(attr); i ++)
+        for (i = 0; i < count; i ++)
         {
 	  char	op,			/* Comparison operator */
 	  	*nextptr;		/* Next pointer */
@@ -4377,13 +4391,13 @@ with_value(_cups_testdata_t *data,	/* I - Test data */
 
         if (!match && errors)
 	{
-	  for (i = 0; i < ippGetCount(attr); i ++)
+	  for (i = 0; i < count; i ++)
 	    add_stringf(data->errors, "GOT: %s=%d", name, ippGetInteger(attr, i));
 	}
 	break;
 
     case IPP_TAG_RANGE :
-        for (i = 0; i < ippGetCount(attr); i ++)
+        for (i = 0; i < count; i ++)
         {
 	  char	op,			/* Comparison operator */
 	  	*nextptr;		/* Next pointer */
@@ -4444,7 +4458,7 @@ with_value(_cups_testdata_t *data,	/* I - Test data */
 
         if (!match && errors)
 	{
-	  for (i = 0; i < ippGetCount(attr); i ++)
+	  for (i = 0; i < count; i ++)
 	  {
 	    int lower, upper;		/* Range values */
 
@@ -4455,7 +4469,7 @@ with_value(_cups_testdata_t *data,	/* I - Test data */
 	break;
 
     case IPP_TAG_BOOLEAN :
-	for (i = 0; i < ippGetCount(attr); i ++)
+	for (i = 0; i < count; i ++)
 	{
           if ((!strcmp(value, "true")) == ippGetBoolean(attr, i))
           {
@@ -4477,13 +4491,13 @@ with_value(_cups_testdata_t *data,	/* I - Test data */
 
 	if (!match && errors)
 	{
-	  for (i = 0; i < ippGetCount(attr); i ++)
+	  for (i = 0; i < count; i ++)
 	    add_stringf(data->errors, "GOT: %s=%s", name, ippGetBoolean(attr, i) ? "true" : "false");
 	}
 	break;
 
     case IPP_TAG_RESOLUTION :
-	for (i = 0; i < ippGetCount(attr); i ++)
+	for (i = 0; i < count; i ++)
 	{
 	  int		xres, yres;	/* Resolution values */
 	  ipp_res_t	units;		/* Resolution units */
@@ -4514,7 +4528,7 @@ with_value(_cups_testdata_t *data,	/* I - Test data */
 
 	if (!match && errors)
 	{
-	  for (i = 0; i < ippGetCount(attr); i ++)
+	  for (i = 0; i < count; i ++)
 	  {
 	    int		xres, yres;	/* Resolution values */
 	    ipp_res_t	units;		/* Resolution units */
@@ -4565,7 +4579,7 @@ with_value(_cups_testdata_t *data,	/* I - Test data */
 	  * See if ALL of the values match the given regular expression.
 	  */
 
-	  for (i = 0; i < ippGetCount(attr); i ++)
+	  for (i = 0; i < count; i ++)
 	  {
 	    if (!regexec(&re, get_string(attr, i, flags, temp, sizeof(temp)),
 	                 0, NULL, 0))
@@ -4594,7 +4608,7 @@ with_value(_cups_testdata_t *data,	/* I - Test data */
 	  * Value is a literal URI string, see if the value(s) match...
 	  */
 
-	  for (i = 0; i < ippGetCount(attr); i ++)
+	  for (i = 0; i < count; i ++)
 	  {
 	    if (!compare_uris(value, get_string(attr, i, flags, temp, sizeof(temp))))
 	    {
@@ -4620,7 +4634,7 @@ with_value(_cups_testdata_t *data,	/* I - Test data */
 	  * Value is a literal string, see if the value(s) match...
 	  */
 
-	  for (i = 0; i < ippGetCount(attr); i ++)
+	  for (i = 0; i < count; i ++)
 	  {
 	    int result;
 
@@ -4682,7 +4696,7 @@ with_value(_cups_testdata_t *data,	/* I - Test data */
 
         if (!match && errors)
         {
-	  for (i = 0; i < ippGetCount(attr); i ++)
+	  for (i = 0; i < count; i ++)
 	    add_stringf(data->errors, "GOT: %s=\"%s\"", name, ippGetString(attr, i, NULL));
         }
 	break;

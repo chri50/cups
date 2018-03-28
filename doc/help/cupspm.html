@@ -7,8 +7,8 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <meta name="creator" content="Mini-XML v2.11">
     <meta name="author" content="Michael R Sweet">
-    <meta name="copyright" content="Copyright &#xa9; 2007-2017 by Apple Inc. All Rights Reserved.">
-    <meta name="version" content="2.2.5">
+    <meta name="copyright" content="Copyright &#xa9; 2007-2018 by Apple Inc. All Rights Reserved.">
+    <meta name="version" content="2.3.0">
     <style type="text/css"><!--
 body, p, h1, h2, h3, h4 {
   font-family: sans-serif;
@@ -174,7 +174,7 @@ h3.title {
   <body>
     <h1 class="title">CUPS Programming Manual</h1>
     <p>Michael R Sweet</p>
-    <p>Copyright &#xa9; 2007-2017 by Apple Inc. All Rights Reserved.</p>
+    <p>Copyright &#xa9; 2007-2018 by Apple Inc. All Rights Reserved.</p>
     <div class="contents">
       <h2 class="title">Contents</h2>
       <ul class="contents">
@@ -210,6 +210,7 @@ h3.title {
           <li><a href="#cupsCopyDestInfo">cupsCopyDestInfo</a></li>
           <li><a href="#cupsCreateDestJob">cupsCreateDestJob</a></li>
           <li><a href="#cupsDoAuthentication">cupsDoAuthentication</a></li>
+          <li><a href="#cupsEncodeOption">cupsEncodeOption</a></li>
           <li><a href="#cupsEncodeOptions">cupsEncodeOptions</a></li>
           <li><a href="#cupsEncodeOptions2">cupsEncodeOptions2</a></li>
           <li><a href="#cupsEncryption">cupsEncryption</a></li>
@@ -1308,7 +1309,7 @@ on success.
 
 </p>
 <h3 class="function"><span class="info">&#160;CUPS 1.6/macOS 10.8&#160;</span><a id="cupsConnectDest">cupsConnectDest</a></h3>
-        <p class="description">Open a conection to the destination.</p>
+        <p class="description">Open a connection to the destination.</p>
 <p class="code">
 <a href="#http_t">http_t</a> *cupsConnectDest(<a href="#cups_dest_t">cups_dest_t</a> *dest, unsigned flags, int msec, int *cancel, char *resource, size_t resourcesize, <a href="#cups_dest_cb_t">cups_dest_cb_t</a> cb, void *user_data);</p>
 <h4 class="parameters">Parameters</h4>
@@ -1340,7 +1341,7 @@ pointed to by &quot;cancel&quot; is non-zero, or the callback function (or block
 returns 0.  The caller is responsible for calling <a href="#httpClose"><code>httpClose</code></a> on the
 returned connection.<br>
 <br>
-Starting with CUPS 2.2.4, the caller can pass  <code>CUPS_DEST_FLAGS_DEVICE</code>
+Starting with CUPS 2.2.4, the caller can pass <code>CUPS_DEST_FLAGS_DEVICE</code>
 for the &quot;flags&quot; argument to connect directly to the device associated with
 the destination.  Otherwise, the connection is made to the CUPS scheduler
 associated with the destination.
@@ -1483,6 +1484,23 @@ int cupsDoAuthentication(<a href="#http_t">http_t</a> *http, const char *method,
 status, prior to resubmitting your request.
 
 </p>
+<h3 class="function"><span class="info">&#160;CUPS 2.3&#160;</span><a id="cupsEncodeOption">cupsEncodeOption</a></h3>
+        <p class="description">Encode a single option into an IPP attribute.</p>
+<p class="code">
+<a href="#ipp_attribute_t">ipp_attribute_t</a> *cupsEncodeOption(<a href="#ipp_t">ipp_t</a> *ipp, ipp_tag_t group_tag, const char *name, const char *value);</p>
+<h4 class="parameters">Parameters</h4>
+<table class="list"><tbody>
+<tr><th>ipp</th>
+        <td class="description">IPP request/response</td></tr>
+<tr><th>group_tag</th>
+        <td class="description">Attribute group</td></tr>
+<tr><th>name</th>
+        <td class="description">Option name</td></tr>
+<tr><th>value</th>
+        <td class="description">Option string value</td></tr>
+</tbody></table>
+<h4 class="returnvalue">Return Value</h4>
+        <p class="description">New attribute or <code>NULL</code> on error</p>
 <h3 class="function"><a id="cupsEncodeOptions">cupsEncodeOptions</a></h3>
         <p class="description">Encode printer options into IPP attributes.</p>
 <p class="code">
@@ -1490,7 +1508,7 @@ void cupsEncodeOptions(<a href="#ipp_t">ipp_t</a> *ipp, int num_options, <a href
 <h4 class="parameters">Parameters</h4>
 <table class="list"><tbody>
 <tr><th>ipp</th>
-        <td class="description">Request to add to</td></tr>
+        <td class="description">IPP request/response</td></tr>
 <tr><th>num_options</th>
         <td class="description">Number of options</td></tr>
 <tr><th>options</th>
@@ -1507,7 +1525,7 @@ void cupsEncodeOptions2(<a href="#ipp_t">ipp_t</a> *ipp, int num_options, <a hre
 <h4 class="parameters">Parameters</h4>
 <table class="list"><tbody>
 <tr><th>ipp</th>
-        <td class="description">Request to add to</td></tr>
+        <td class="description">IPP request/response</td></tr>
 <tr><th>num_options</th>
         <td class="description">Number of options</td></tr>
 <tr><th>options</th>
@@ -6149,12 +6167,12 @@ are server-oriented...</p>
         <tr><th>HTTP_STATUS_ERROR </th>        <td class="description">An error response from httpXxxx()</td></tr>
         <tr><th>HTTP_STATUS_EXPECTATION_FAILED </th>        <td class="description">The expectation given in an Expect header field was not met</td></tr>
         <tr><th>HTTP_STATUS_FORBIDDEN </th>        <td class="description">Forbidden to access this URI</td></tr>
+        <tr><th>HTTP_STATUS_FOUND </th>        <td class="description">Document was found at a different URI</td></tr>
         <tr><th>HTTP_STATUS_GATEWAY_TIMEOUT </th>        <td class="description">Gateway connection timed out</td></tr>
         <tr><th>HTTP_STATUS_GONE </th>        <td class="description">Server has gone away</td></tr>
         <tr><th>HTTP_STATUS_LENGTH_REQUIRED </th>        <td class="description">A content length or encoding is required</td></tr>
         <tr><th>HTTP_STATUS_METHOD_NOT_ALLOWED </th>        <td class="description">Method is not allowed</td></tr>
         <tr><th>HTTP_STATUS_MOVED_PERMANENTLY </th>        <td class="description">Document has moved permanently</td></tr>
-        <tr><th>HTTP_STATUS_MOVED_TEMPORARILY </th>        <td class="description">Document has moved temporarily</td></tr>
         <tr><th>HTTP_STATUS_MULTIPLE_CHOICES </th>        <td class="description">Multiple files match request</td></tr>
         <tr><th>HTTP_STATUS_NONE <span class="info">&#160;CUPS 1.7/macOS 10.9&#160;</span></th>        <td class="description">No Expect value </td></tr>
         <tr><th>HTTP_STATUS_NOT_ACCEPTABLE </th>        <td class="description">Not Acceptable</td></tr>
@@ -6173,10 +6191,11 @@ are server-oriented...</p>
         <tr><th>HTTP_STATUS_REQUEST_TIMEOUT </th>        <td class="description">Request timed out</td></tr>
         <tr><th>HTTP_STATUS_REQUEST_TOO_LARGE </th>        <td class="description">Request entity too large</td></tr>
         <tr><th>HTTP_STATUS_RESET_CONTENT </th>        <td class="description">Content was reset/recreated</td></tr>
-        <tr><th>HTTP_STATUS_SEE_OTHER </th>        <td class="description">See this other link...</td></tr>
+        <tr><th>HTTP_STATUS_SEE_OTHER </th>        <td class="description">See this other link</td></tr>
         <tr><th>HTTP_STATUS_SERVER_ERROR </th>        <td class="description">Internal server error</td></tr>
         <tr><th>HTTP_STATUS_SERVICE_UNAVAILABLE </th>        <td class="description">Service is unavailable</td></tr>
         <tr><th>HTTP_STATUS_SWITCHING_PROTOCOLS </th>        <td class="description">HTTP upgrade to TLS/SSL</td></tr>
+        <tr><th>HTTP_STATUS_TEMPORARY_REDIRECT </th>        <td class="description">Temporary redirection</td></tr>
         <tr><th>HTTP_STATUS_UNAUTHORIZED </th>        <td class="description">Unauthorized to access host</td></tr>
         <tr><th>HTTP_STATUS_UNSUPPORTED_MEDIATYPE </th>        <td class="description">The requested media type is unsupported</td></tr>
         <tr><th>HTTP_STATUS_UPGRADE_REQUIRED </th>        <td class="description">Upgrade to SSL/TLS required</td></tr>

@@ -1,4 +1,4 @@
-From b21c6e91a11a8feba9d3ebf4fe56c5c953f6e276 Mon Sep 17 00:00:00 2001
+From dc866749d26c956e0dcf37275d3fc338b453b069 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:05 +0200
 Subject: Fix hyphen-used-as-minus-sign manpage errors
@@ -307,10 +307,10 @@ index 9bbc49770..8e2721da9 100644
  .TP 5
  \fBWARNING:\fI message\fR
 diff --git a/man/ippfind.man b/man/ippfind.man
-index 737e43593..57464955e 100644
+index 65f7c8ea3..cbd409c3d 100644
 --- a/man/ippfind.man
 +++ b/man/ippfind.man
-@@ -74,7 +74,7 @@ True is the hostname matches the given regular expression.
+@@ -75,7 +75,7 @@ True is the hostname matches the given regular expression.
  .B \-l
  .TP 5
  .B \-\-ls
@@ -319,7 +319,7 @@ index 737e43593..57464955e 100644
  The result is true if the URI is accessible, false otherwise.
  .TP 5
  .B \-\-local
-@@ -102,7 +102,7 @@ The result is always true.
+@@ -108,7 +108,7 @@ The result is always true.
  .B \-q
  .TP 5
  .B \-\-quiet
@@ -328,7 +328,7 @@ index 737e43593..57464955e 100644
  .TP 5
  .B \-r
  .TP 5
-@@ -135,7 +135,7 @@ True if the URI matches the given regular expression.
+@@ -141,7 +141,7 @@ True if the URI matches the given regular expression.
  .TP 5
  \fB\-\-exec \fIutility \fR[ \fIargument \fR... ] \fB;\fR
  Executes the specified program if the current result is true.
@@ -434,10 +434,10 @@ index d6bba8833..c5fc29de5 100644
  .SH SEE ALSO
  .BR cancel (1),
 diff --git a/man/lpadmin.man b/man/lpadmin.man
-index ad73545d7..6a706b0c7 100644
+index 63a5e7ded..bafe14bd7 100644
 --- a/man/lpadmin.man
 +++ b/man/lpadmin.man
-@@ -121,7 +121,7 @@ command.
+@@ -119,7 +119,7 @@ command.
  .TP 5
  \fB\-o \fIname\fB-default=\fIvalue\fR
  Sets a default server-side option for the destination.
@@ -446,7 +446,7 @@ index ad73545d7..6a706b0c7 100644
  .TP 5
  \fB\-o port\-monitor=\fIname\fR
  Sets the binary communications program to use when printing, "none", "bcp", or "tbcp".
-@@ -163,7 +163,7 @@ If the resulting class becomes empty it is removed.
+@@ -161,7 +161,7 @@ If the resulting class becomes empty it is removed.
  Sets user-level access control on a destination.
  Names starting with "@" are interpreted as UNIX groups.
  The latter two forms turn user-level access control off.
@@ -455,7 +455,7 @@ index ad73545d7..6a706b0c7 100644
  .TP 5
  \fB\-v "\fIdevice-uri\fB"\fR
  Sets the \fIdevice-uri\fR attribute of the printer queue.
-@@ -201,7 +201,7 @@ Interface scripts are not supported for security reasons.
+@@ -204,7 +204,7 @@ Interface scripts are not supported for security reasons.
  Create an IPP Everywhere print queue:
  .nf
  

@@ -61,6 +61,7 @@ libcups.so.2 libcups2 #MINVER#
  cupsDoFileRequest@Base 1.4.0
  cupsDoIORequest@Base 1.4.0
  cupsDoRequest@Base 1.4.0
+ cupsEncodeOption@Base 2.3~b4
  cupsEncodeOptions2@Base 1.4.0
  cupsEncodeOptions@Base 1.4.0
  cupsEncryption@Base 1.4.0
@@ -130,7 +131,7 @@ libcups.so.2 libcups2 #MINVER#
  cupsGetPrinters@Base 1.4.0
  cupsGetResponse@Base 1.4.0
  cupsHashData@Base 2.2~b2
- cupsHashString@Base 2.3~b1
+ cupsHashString@Base 2.2.7
  cupsGetServerPPD@Base 1.4.0
  cupsLangDefault@Base 1.4.0
  cupsLangEncoding@Base 1.4.0
