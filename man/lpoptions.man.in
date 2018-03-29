@@ -120,9 +120,9 @@ Destinations can only be removed using the
 .BR lpadmin (8)
 command.
 .SH FILES
-\fI~/.cups/lpoptions\fR - user defaults and instances created by non-root users.
+\fI~/.cups/lpoptions\fR \- user defaults and instances created by non-root users.
 .br
-\fI/etc/cups/lpoptions\fR - system-wide defaults and instances created by the root user.
+\fI/etc/cups/lpoptions\fR \- system-wide defaults and instances created by the root user.
 .SH CONFORMING TO
 The \fBlpoptions\fR command is unique to CUPS.
 .SH SEE ALSO
