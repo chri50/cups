@@ -1,3 +1,12 @@
+cups (2.2.7-1ubuntu1) bionic; urgency=medium
+
+  * Reverted the upstrem changes for deprecation of raw queues
+    - This changes the behavior of CUPS (warnings, error_log entries) and
+      is not a bug fix, so not adequate for Bionic in this stage.
+    - It breaks the autopkgtest of the CUPS package.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Thu, 29 Mar 2018 15:13:01 +0200
+
 cups (2.2.7-1) unstable; urgency=medium
 
   * New 2.2.7 upstream release

@@ -37,3 +37,4 @@ debianize_cups-config.patch
 0037-Build-mantohtml-with-the-build-architecture-compiler.patch
 manpage-translations.patch
 0039-The-lp-and-lpr-commands-now-provide-better-error-mes.patch
+revert-deprecate-raw-queues.patch

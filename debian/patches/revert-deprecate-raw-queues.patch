@@ -1,0 +1,1875 @@
+--- a/cups/ppd-util.c
++++ b/cups/ppd-util.c
+@@ -529,16 +529,23 @@
+     int        depth)			/* I - Depth of query */
+ {
+   int		i;			/* Looping var */
++  int		http_port;		/* Port number */
++  http_t	*http2;			/* Alternate HTTP connection */
+   ipp_t		*request,		/* IPP request */
+ 		*response;		/* IPP response */
+   ipp_attribute_t *attr;		/* Current attribute */
+   char		uri[HTTP_MAX_URI],	/* printer-uri attribute */
+ 		scheme[HTTP_MAX_URI],	/* Scheme name */
+-		username[HTTP_MAX_URI];	/* Username:password */
++		username[HTTP_MAX_URI],	/* Username:password */
++		classname[255],		/* Temporary class name */
++		http_hostname[HTTP_MAX_HOST];
++					/* Hostname associated with connection */
+   static const char * const requested_attrs[] =
+ 		{			/* Requested attributes */
++		  "device-uri",
+ 		  "member-uris",
+-		  "printer-uri-supported"
++		  "printer-uri-supported",
++		  "printer-type"
+ 		};
+ 
+ 
+@@ -561,6 +568,15 @@
+   DEBUG_printf(("5cups_get_printer_uri: printer-uri=\"%s\"", uri));
+ 
+  /*
++  * Get the hostname and port number we are connected to...
++  */
++
++  httpGetHostname(http, http_hostname, sizeof(http_hostname));
++  http_port = httpAddrPort(http->hostaddr);
++
++  DEBUG_printf(("5cups_get_printer_uri: http_hostname=\"%s\"", http_hostname));
++
++ /*
+   * Build an IPP_GET_PRINTER_ATTRIBUTES request, which requires the following
+   * attributes:
+   *
+@@ -584,7 +600,31 @@
+ 
+   if ((response = cupsDoRequest(http, request, resource)) != NULL)
+   {
+-    if ((attr = ippFindAttribute(response, "member-uris", IPP_TAG_URI)) != NULL)
++    const char *device_uri = NULL;	/* device-uri value */
++
++    if ((attr = ippFindAttribute(response, "device-uri", IPP_TAG_URI)) != NULL)
++    {
++      device_uri = attr->values[0].string.text;
++      DEBUG_printf(("5cups_get_printer_uri: device-uri=\"%s\"", device_uri));
++    }
++
++    if (device_uri &&
++        (((!strncmp(device_uri, "ipp://", 6) || !strncmp(device_uri, "ipps://", 7)) &&
++	  (strstr(device_uri, "/printers/") != NULL || strstr(device_uri, "/classes/") != NULL)) ||
++         ((strstr(device_uri, "._ipp.") != NULL || strstr(device_uri, "._ipps.") != NULL) &&
++          !strcmp(device_uri + strlen(device_uri) - 5, "/cups"))))
++    {
++     /*
++      * Statically-configured shared printer.
++      */
++
++      httpSeparateURI(HTTP_URI_CODING_ALL, _httpResolveURI(device_uri, uri, sizeof(uri), _HTTP_RESOLVE_DEFAULT, NULL, NULL), scheme, sizeof(scheme), username, sizeof(username), host, hostsize, port, resource, resourcesize);
++      ippDelete(response);
++
++      DEBUG_printf(("5cups_get_printer_uri: Resolved to host=\"%s\", port=%d, resource=\"%s\"", host, *port, resource));
++      return (1);
++    }
++    else if ((attr = ippFindAttribute(response, "member-uris", IPP_TAG_URI)) != NULL)
+     {
+      /*
+       * Get the first actual printer name in the class...
+@@ -609,6 +649,55 @@
+ 	  return (1);
+ 	}
+       }
++
++     /*
++      * No printers in this class - try recursively looking for a printer,
++      * but not more than 3 levels deep...
++      */
++
++      if (depth < 3)
++      {
++	for (i = 0; i < attr->num_values; i ++)
++	{
++	  httpSeparateURI(HTTP_URI_CODING_ALL, attr->values[i].string.text,
++	                  scheme, sizeof(scheme), username, sizeof(username),
++			  host, hostsize, port, resource, resourcesize);
++	  if (!strncmp(resource, "/classes/", 9))
++	  {
++	   /*
++	    * Found a class!  Connect to the right server...
++	    */
++
++	    if (!_cups_strcasecmp(http_hostname, host) && *port == http_port)
++	      http2 = http;
++	    else if ((http2 = httpConnect2(host, *port, NULL, AF_UNSPEC, cupsEncryption(), 1, 30000, NULL)) == NULL)
++	    {
++	      DEBUG_puts("8cups_get_printer_uri: Unable to connect to server");
++
++	      continue;
++	    }
++
++           /*
++	    * Look up printers on that server...
++	    */
++
++            strlcpy(classname, resource + 9, sizeof(classname));
++
++            cups_get_printer_uri(http2, classname, host, hostsize, port,
++	                         resource, resourcesize, depth + 1);
++
++           /*
++	    * Close the connection as needed...
++	    */
++
++	    if (http2 != http)
++	      httpClose(http2);
++
++            if (*host)
++	      return (1);
++	  }
++	}
++      }
+     }
+     else if ((attr = ippFindAttribute(response, "printer-uri-supported", IPP_TAG_URI)) != NULL)
+     {
+--- a/man/lpadmin.man
++++ b/man/lpadmin.man
+@@ -1,8 +1,8 @@
+ .\"
+ .\" lpadmin man page for CUPS.
+ .\"
+-.\" Copyright © 2007-2018 by Apple Inc.
+-.\" Copyright © 1997-2006 by Easy Software Products.
++.\" Copyright 2007-2016 by Apple Inc.
++.\" Copyright 1997-2006 by Easy Software Products.
+ .\"
+ .\" These coded instructions, statements, and computer programs are the
+ .\" property of Apple Inc. and are protected by Federal copyright
+@@ -10,7 +10,7 @@
+ .\" which should have been included with this file.  If this file is
+ .\" file is missing or damaged, see the license at "http://www.cups.org/".
+ .\"
+-.TH lpadmin 8 "CUPS" "19 March 2018" "Apple Inc."
++.TH lpadmin 8 "CUPS" "29 March 2016" "Apple Inc."
+ .SH NAME
+ lpadmin \- configure cups printers and classes
+ .SH SYNOPSIS
+@@ -91,7 +91,6 @@
+ .BR lpinfo (8)
+ command to get a list of supported models.
+ The model "raw" clears any existing PPD file and the model "everywhere" queries the printer referred to by the specified IPP \fIdevice-uri\fR.
+-Note: The "raw" model is deprecated and will not be supported in a future version of CUPS.
+ .TP 5
+ \fB\-o cupsIPPSupplies=true\fR
+ .TP 5
+--- a/systemv/lpadmin.c
++++ b/systemv/lpadmin.c
+@@ -1,8 +1,8 @@
+ /*
+  * "lpadmin" command for CUPS.
+  *
+- * Copyright © 2007-2018 by Apple Inc.
+- * Copyright © 1997-2006 by Easy Software Products.
++ * Copyright 2007-2017 by Apple Inc.
++ * Copyright 1997-2006 by Easy Software Products.
+  *
+  * These coded instructions, statements, and computer programs are the
+  * property of Apple Inc. and are protected by Federal copyright
+@@ -46,22 +46,23 @@
+  * 'main()' - Parse options and configure the scheduler.
+  */
+ 
+-int					/* O - Exit status */
+-main(int  argc,				/* I - Number of command-line arguments */
+-     char *argv[])			/* I - Command-line arguments */
++int
++main(int  argc,			/* I - Number of command-line arguments */
++     char *argv[])		/* I - Command-line arguments */
+ {
+-  int		i;			/* Looping var */
+-  http_t	*http;			/* Connection to server */
+-  char		*printer,		/* Destination printer */
+-		*pclass,		/* Printer class name */
+-		*opt,			/* Option pointer */
+-		*val;			/* Pointer to allow/deny value */
+-  int		num_options;		/* Number of options */
+-  cups_option_t	*options;		/* Options */
+-  char		*file,			/* New PPD file */
+-		evefile[1024] = "";	/* IPP Everywhere PPD */
+-  const char	*ppd_name,		/* ppd-name value */
+-		*device_uri;		/* device-uri value */
++  int		i;		/* Looping var */
++  http_t	*http;		/* Connection to server */
++  char		*printer,	/* Destination printer */
++		*pclass,	/* Printer class name */
++		*opt,		/* Option pointer */
++		*val;		/* Pointer to allow/deny value */
++  int		num_options;	/* Number of options */
++  cups_option_t	*options;	/* Options */
++  char		*file,		/* New PPD file */
++		evefile[1024] = "";
++				/* IPP Everywhere PPD */
++  const char	*ppd_name,	/* ppd-name value */
++		*device_uri;	/* device-uri value */
+ 
+ 
+   _cupsSetLocale(argv);
+@@ -609,17 +610,7 @@
+   * Set options as needed...
+   */
+ 
+-  ppd_name   = cupsGetOption("ppd-name", num_options, options);
+-  device_uri = cupsGetOption("device-uri", num_options, options);
+-
+-  if (ppd_name && !strcmp(ppd_name, "raw"))
+-  {
+-    _cupsLangPuts(stderr, _("lpadmin: Raw queues are deprecated and will stop working in a future version of CUPS."));
+-
+-    if (device_uri && (!strncmp(device_uri, "ipp://", 6) || !strncmp(device_uri, "ipps://", 7)) && strstr(device_uri, "/printers/"))
+-      _cupsLangPuts(stderr, _("lpadmin: Use the 'everywhere' model for shared printers."));
+-  }
+-  else if (ppd_name && !strcmp(ppd_name, "everywhere") && device_uri)
++  if ((ppd_name = cupsGetOption("ppd-name", num_options, options)) != NULL && !strcmp(ppd_name, "everywhere") && (device_uri = cupsGetOption("device-uri", num_options, options)) != NULL)
+   {
+     if ((file = get_printer_ppd(device_uri, evefile, sizeof(evefile), &num_options, &options)) == NULL)
+       return (1);
+--- a/xcode/CUPS.xcodeproj/project.pbxproj
++++ b/xcode/CUPS.xcodeproj/project.pbxproj
+@@ -7215,7 +7215,7 @@
+ 		72BF96371333042100B1EAD7 /* Project object */ = {
+ 			isa = PBXProject;
+ 			attributes = {
+-				LastUpgradeCheck = 0930;
++				LastUpgradeCheck = 0900;
+ 				ORGANIZATIONNAME = "Apple Inc.";
+ 				TargetAttributes = {
+ 					270695FD1CADF3E200FFE5FB = {
+@@ -9407,7 +9407,6 @@
+ 		270696581CADF3E200FFE5FB /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				CODE_SIGN_IDENTITY = "iPhone Developer";
+ 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+ 				COMBINE_HIDPI_IMAGES = YES;
+@@ -9427,7 +9426,6 @@
+ 		270696591CADF3E200FFE5FB /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				CODE_SIGN_IDENTITY = "iPhone Developer";
+ 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+ 				COMBINE_HIDPI_IMAGES = YES;
+@@ -9447,7 +9445,6 @@
+ 		270CCDAD135E3C9E00007BE2 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -9455,7 +9452,6 @@
+ 		270CCDAE135E3C9E00007BE2 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -9463,7 +9459,6 @@
+ 		270D02221D707E0200EA9403 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -9471,7 +9466,6 @@
+ 		270D02231D707E0200EA9403 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -9479,7 +9473,6 @@
+ 		271284EA1CC1261900E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9488,7 +9481,6 @@
+ 		271284EB1CC1261900E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9497,7 +9489,6 @@
+ 		271284F71CC1264B00E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/sbin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9506,7 +9497,6 @@
+ 		271284F81CC1264B00E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/sbin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9515,7 +9505,6 @@
+ 		271285041CC1265D00E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9524,7 +9513,6 @@
+ 		271285051CC1265D00E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9533,7 +9521,6 @@
+ 		271285111CC1267A00E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9542,7 +9529,6 @@
+ 		271285121CC1267A00E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9551,7 +9537,6 @@
+ 		2712851E1CC1269700E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/sbin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9560,7 +9545,6 @@
+ 		2712851F1CC1269700E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/sbin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9569,7 +9553,6 @@
+ 		2712852B1CC126AA00E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/sbin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9578,7 +9561,6 @@
+ 		2712852C1CC126AA00E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/sbin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9587,7 +9569,6 @@
+ 		271285381CC1270B00E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9596,7 +9577,6 @@
+ 		271285391CC1270B00E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9605,7 +9585,6 @@
+ 		271285451CC1271E00E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9614,7 +9593,6 @@
+ 		271285461CC1271E00E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9623,7 +9601,6 @@
+ 		271285521CC1272D00E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9632,7 +9609,6 @@
+ 		271285531CC1272D00E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9641,7 +9617,6 @@
+ 		2712855F1CC1274300E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9650,7 +9625,6 @@
+ 		271285601CC1274300E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9659,7 +9633,6 @@
+ 		2712856C1CC1275200E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9668,7 +9641,6 @@
+ 		2712856D1CC1275200E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9677,7 +9649,6 @@
+ 		271285791CC1276400E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9686,7 +9657,6 @@
+ 		2712857A1CC1276400E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9695,7 +9665,6 @@
+ 		2712859E1CC12D1300E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = "/usr/libexec/cups/cgi-bin";
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9704,7 +9673,6 @@
+ 		2712859F1CC12D1300E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = "/usr/libexec/cups/cgi-bin";
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9713,7 +9681,6 @@
+ 		271285AD1CC12D3A00E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = "/usr/libexec/cups/cgi-bin";
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9722,7 +9689,6 @@
+ 		271285AE1CC12D3A00E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = "/usr/libexec/cups/cgi-bin";
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9731,7 +9697,6 @@
+ 		271285BB1CC12D4E00E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = "/usr/libexec/cups/cgi-bin";
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9740,7 +9705,6 @@
+ 		271285BC1CC12D4E00E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = "/usr/libexec/cups/cgi-bin";
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9749,7 +9713,6 @@
+ 		271285C91CC12D5E00E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = "/usr/libexec/cups/cgi-bin";
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9758,7 +9721,6 @@
+ 		271285CA1CC12D5E00E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = "/usr/libexec/cups/cgi-bin";
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9767,7 +9729,6 @@
+ 		271285D61CC12DBF00E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/filter;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9776,7 +9737,6 @@
+ 		271285D71CC12DBF00E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/filter;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9785,7 +9745,6 @@
+ 		271285E31CC12DDF00E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/filter;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9794,7 +9753,6 @@
+ 		271285E41CC12DDF00E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/filter;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9803,7 +9761,6 @@
+ 		271285F01CC12E2D00E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/filter;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9812,7 +9769,6 @@
+ 		271285F11CC12E2D00E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/filter;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9821,7 +9777,6 @@
+ 		271285FE1CC12EEB00E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/filter;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9830,7 +9785,6 @@
+ 		271285FF1CC12EEB00E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/filter;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9839,7 +9793,6 @@
+ 		271286111CC12F0B00E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/filter;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9848,7 +9801,6 @@
+ 		271286121CC12F0B00E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/filter;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9857,7 +9809,6 @@
+ 		271286211CC12F1A00E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/filter;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9866,7 +9817,6 @@
+ 		271286221CC12F1A00E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/filter;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9875,7 +9825,6 @@
+ 		271286651CC1309000E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -9883,7 +9832,6 @@
+ 		271286661CC1309000E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -9891,7 +9839,6 @@
+ 		2712867B1CC1310E00E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -9899,7 +9846,6 @@
+ 		2712867C1CC1310E00E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -9907,7 +9853,6 @@
+ 		271286941CC13DC000E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -9915,7 +9860,6 @@
+ 		271286951CC13DC000E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -9923,7 +9867,6 @@
+ 		271286A51CC13DF100E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -9931,7 +9874,6 @@
+ 		271286A61CC13DF100E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -9939,7 +9881,6 @@
+ 		271286B61CC13DFF00E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -9947,7 +9888,6 @@
+ 		271286B71CC13DFF00E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -9955,7 +9895,6 @@
+ 		271286C71CC13E2100E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/monitor;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9964,7 +9903,6 @@
+ 		271286C81CC13E2100E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/monitor;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9973,7 +9911,6 @@
+ 		271286D71CC13E5B00E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/monitor;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9982,7 +9919,6 @@
+ 		271286D81CC13E5B00E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/monitor;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -9991,7 +9927,6 @@
+ 		271286F11CC13F2000E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/notifier;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10000,7 +9935,6 @@
+ 		271286F21CC13F2000E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/notifier;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10009,7 +9943,6 @@
+ 		271287011CC13F3F00E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/notifier;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10018,7 +9951,6 @@
+ 		271287021CC13F3F00E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/notifier;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10027,7 +9959,6 @@
+ 		271287161CC13FAB00E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -10035,7 +9966,6 @@
+ 		271287171CC13FAB00E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -10043,7 +9973,6 @@
+ 		2712872A1CC140BE00E517C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10052,7 +9981,6 @@
+ 		2712872B1CC140BE00E517C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10061,7 +9989,6 @@
+ 		273BF6C41333B5000022CAAB /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -10069,7 +9996,6 @@
+ 		273BF6C51333B5000022CAAB /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -10077,7 +10003,6 @@
+ 		273BF6DB1333B6270022CAAB /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -10085,7 +10010,6 @@
+ 		273BF6DC1333B6270022CAAB /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -10093,7 +10017,6 @@
+ 		274FF5D313332B1F00317ECB /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/daemon;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10102,7 +10025,6 @@
+ 		274FF5D413332B1F00317ECB /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/daemon;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10111,7 +10033,6 @@
+ 		274FF5E013332D3100317ECB /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 				SDKROOT = macosx;
+ 			};
+@@ -10120,7 +10041,6 @@
+ 		274FF5E113332D3100317ECB /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 				SDKROOT = macosx;
+ 			};
+@@ -10129,7 +10049,6 @@
+ 		274FF5F0133330C800317ECB /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				COMBINE_HIDPI_IMAGES = YES;
+ 				EXECUTABLE_PREFIX = "";
+ 				INSTALL_PATH = /usr/lib;
+@@ -10142,7 +10061,6 @@
+ 		274FF5F1133330C800317ECB /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				COMBINE_HIDPI_IMAGES = YES;
+ 				EXECUTABLE_PREFIX = "";
+ 				INSTALL_PATH = /usr/lib;
+@@ -10155,7 +10073,6 @@
+ 		274FF6301333333600317ECB /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/daemon;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10164,7 +10081,6 @@
+ 		274FF6311333333600317ECB /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/daemon;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10173,7 +10089,6 @@
+ 		274FF6451333358C00317ECB /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/daemon;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10182,7 +10097,6 @@
+ 		274FF6461333358C00317ECB /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/daemon;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10191,7 +10105,6 @@
+ 		274FF656133339C400317ECB /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/daemon;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10200,7 +10113,6 @@
+ 		274FF657133339C400317ECB /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/daemon;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10209,7 +10121,6 @@
+ 		274FF67F13333B2F00317ECB /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10218,7 +10129,6 @@
+ 		274FF68013333B2F00317ECB /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10227,7 +10137,6 @@
+ 		274FF6DE1333B1C400317ECB /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				COMBINE_HIDPI_IMAGES = YES;
+ 				EXECUTABLE_EXTENSION = a;
+ 				EXECUTABLE_PREFIX = "";
+@@ -10242,7 +10151,6 @@
+ 		274FF6DF1333B1C400317ECB /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				COMBINE_HIDPI_IMAGES = YES;
+ 				EXECUTABLE_EXTENSION = a;
+ 				EXECUTABLE_PREFIX = "";
+@@ -10257,7 +10165,6 @@
+ 		276683631337A9B6000D33D0 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/sbin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10266,7 +10173,6 @@
+ 		276683641337A9B6000D33D0 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/sbin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10275,7 +10181,6 @@
+ 		276683771337AC79000D33D0 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10284,7 +10189,6 @@
+ 		276683781337AC79000D33D0 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10293,7 +10197,6 @@
+ 		276683841337AC8C000D33D0 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10302,7 +10205,6 @@
+ 		276683851337AC8C000D33D0 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10311,7 +10213,6 @@
+ 		276683911337AC97000D33D0 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10320,7 +10221,6 @@
+ 		276683921337AC97000D33D0 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10329,7 +10229,6 @@
+ 		2766839E1337ACA2000D33D0 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10338,7 +10237,6 @@
+ 		2766839F1337ACA2000D33D0 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10347,7 +10245,6 @@
+ 		276683AB1337ACAB000D33D0 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10356,7 +10253,6 @@
+ 		276683AC1337ACAB000D33D0 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10365,7 +10261,6 @@
+ 		276683F71337F78F000D33D0 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10374,7 +10269,6 @@
+ 		276683F81337F78F000D33D0 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10383,7 +10277,6 @@
+ 		2766840B1337FA1E000D33D0 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/sbin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10392,7 +10285,6 @@
+ 		2766840C1337FA1E000D33D0 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/sbin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10401,7 +10293,6 @@
+ 		2767FC4E19266A0D000F61D3 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = testdest;
+ 			};
+ 			name = Debug;
+@@ -10409,7 +10300,6 @@
+ 		2767FC4F19266A0D000F61D3 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = testdest;
+ 			};
+ 			name = Release;
+@@ -10417,7 +10307,6 @@
+ 		278C58D1136B640300836530 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -10425,7 +10314,6 @@
+ 		278C58D2136B640300836530 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -10438,7 +10326,6 @@
+ 				CLANG_CXX_LIBRARY = "libc++";
+ 				CLANG_ENABLE_MODULES = YES;
+ 				CLANG_ENABLE_OBJC_ARC = YES;
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				CLANG_WARN_BOOL_CONVERSION = YES;
+ 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+ 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+@@ -10476,7 +10363,6 @@
+ 				CLANG_CXX_LIBRARY = "libc++";
+ 				CLANG_ENABLE_MODULES = YES;
+ 				CLANG_ENABLE_OBJC_ARC = YES;
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				CLANG_WARN_BOOL_CONVERSION = YES;
+ 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+ 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+@@ -10503,7 +10389,6 @@
+ 		720DD6C91358FD5F0064AA82 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/backend;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10512,7 +10397,6 @@
+ 		720DD6CA1358FD5F0064AA82 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/backend;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10521,7 +10405,6 @@
+ 		72220EB01333047D00FCA411 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				COMBINE_HIDPI_IMAGES = YES;
+ 				DYLIB_COMPATIBILITY_VERSION = 2.0.0;
+ 				DYLIB_CURRENT_VERSION = 2.12.0;
+@@ -10536,7 +10419,6 @@
+ 		72220EB11333047D00FCA411 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				COMBINE_HIDPI_IMAGES = YES;
+ 				DYLIB_COMPATIBILITY_VERSION = 2.0.0;
+ 				DYLIB_CURRENT_VERSION = 2.12.0;
+@@ -10551,7 +10433,6 @@
+ 		72220F6213330A5A00FCA411 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/sbin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10560,7 +10441,6 @@
+ 		72220F6313330A5A00FCA411 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/sbin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10569,7 +10449,6 @@
+ 		72220FAE13330B2300FCA411 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				COMBINE_HIDPI_IMAGES = YES;
+ 				EXECUTABLE_PREFIX = "";
+ 				INSTALL_PATH = /usr/lib;
+@@ -10580,7 +10459,6 @@
+ 		72220FAF13330B2300FCA411 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				COMBINE_HIDPI_IMAGES = YES;
+ 				EXECUTABLE_PREFIX = "";
+ 				INSTALL_PATH = /usr/lib;
+@@ -10591,7 +10469,6 @@
+ 		724379041333E43E009631B9 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_MODE_FLAG = "u+rwX,go-rwX";
+ 				INSTALL_PATH = /usr/libexec/cups/backend;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+@@ -10601,7 +10478,6 @@
+ 		724379051333E43E009631B9 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_MODE_FLAG = "u+rwX,go-rwX";
+ 				INSTALL_PATH = /usr/libexec/cups/backend;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+@@ -10611,7 +10487,6 @@
+ 		7243791F1333E532009631B9 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/backend;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10620,7 +10495,6 @@
+ 		724379201333E532009631B9 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/backend;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10629,7 +10503,6 @@
+ 		724379371333FB85009631B9 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/backend;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10638,7 +10511,6 @@
+ 		724379381333FB85009631B9 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/backend;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10647,7 +10519,6 @@
+ 		7243794E1333FEA9009631B9 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/backend;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10656,7 +10527,6 @@
+ 		7243794F1333FEA9009631B9 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/backend;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10665,7 +10535,6 @@
+ 		724379621333FF1D009631B9 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/backend;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10674,7 +10543,6 @@
+ 		724379631333FF1D009631B9 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/backend;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -10683,7 +10551,6 @@
+ 		724FA5331CC0370C0092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -10691,7 +10558,6 @@
+ 		724FA5341CC0370C0092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -10699,7 +10565,6 @@
+ 		724FA5461CC037370092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -10707,7 +10572,6 @@
+ 		724FA5471CC037370092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -10715,7 +10579,6 @@
+ 		724FA5591CC037500092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -10723,7 +10586,6 @@
+ 		724FA55A1CC037500092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -10731,7 +10593,6 @@
+ 		724FA56C1CC037670092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -10739,7 +10600,6 @@
+ 		724FA56D1CC037670092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -10747,7 +10607,6 @@
+ 		724FA57F1CC037810092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -10755,7 +10614,6 @@
+ 		724FA5801CC037810092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -10763,7 +10621,6 @@
+ 		724FA5921CC037980092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -10771,7 +10628,6 @@
+ 		724FA5931CC037980092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -10779,7 +10635,6 @@
+ 		724FA5A51CC037AA0092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -10787,7 +10642,6 @@
+ 		724FA5A61CC037AA0092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -10795,7 +10649,6 @@
+ 		724FA5B81CC037C60092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -10803,7 +10656,6 @@
+ 		724FA5B91CC037C60092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -10811,7 +10663,6 @@
+ 		724FA5CB1CC037D90092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -10819,7 +10670,6 @@
+ 		724FA5CC1CC037D90092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -10827,7 +10677,6 @@
+ 		724FA5DF1CC037F00092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -10835,7 +10684,6 @@
+ 		724FA5E01CC037F00092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -10843,7 +10691,6 @@
+ 		724FA5F31CC038040092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -10851,7 +10698,6 @@
+ 		724FA5F41CC038040092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -10859,7 +10705,6 @@
+ 		724FA6071CC038190092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -10867,7 +10712,6 @@
+ 		724FA6081CC038190092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -10875,7 +10719,6 @@
+ 		724FA61B1CC0382B0092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -10883,7 +10726,6 @@
+ 		724FA61C1CC0382B0092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -10891,7 +10733,6 @@
+ 		724FA62F1CC038410092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -10899,7 +10740,6 @@
+ 		724FA6301CC038410092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -10907,7 +10747,6 @@
+ 		724FA6431CC038560092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -10915,7 +10754,6 @@
+ 		724FA6441CC038560092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -10923,7 +10761,6 @@
+ 		724FA6571CC0386E0092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -10931,7 +10768,6 @@
+ 		724FA6581CC0386E0092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -10939,7 +10775,6 @@
+ 		724FA66E1CC038A50092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -10947,7 +10782,6 @@
+ 		724FA66F1CC038A50092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -10955,7 +10789,6 @@
+ 		724FA6811CC038BD0092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -10963,7 +10796,6 @@
+ 		724FA6821CC038BD0092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -10971,7 +10803,6 @@
+ 		724FA6951CC038D90092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -10979,7 +10810,6 @@
+ 		724FA6961CC038D90092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -10987,7 +10817,6 @@
+ 		724FA6A81CC039200092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -10995,7 +10824,6 @@
+ 		724FA6A91CC039200092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -11003,7 +10831,6 @@
+ 		724FA6BB1CC0393E0092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -11011,7 +10838,6 @@
+ 		724FA6BC1CC0393E0092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -11019,7 +10845,6 @@
+ 		724FA6CF1CC0395A0092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -11027,7 +10852,6 @@
+ 		724FA6D01CC0395A0092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -11035,7 +10859,6 @@
+ 		724FA6E81CC039DE0092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -11043,7 +10866,6 @@
+ 		724FA6E91CC039DE0092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -11051,7 +10873,6 @@
+ 		724FA6FD1CC03A210092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -11059,7 +10880,6 @@
+ 		724FA6FE1CC03A210092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -11067,7 +10887,6 @@
+ 		724FA70D1CC03A490092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				COMBINE_HIDPI_IMAGES = YES;
+ 				EXECUTABLE_EXTENSION = a;
+ 				EXECUTABLE_PREFIX = "";
+@@ -11080,7 +10899,6 @@
+ 		724FA70E1CC03A490092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				COMBINE_HIDPI_IMAGES = YES;
+ 				EXECUTABLE_EXTENSION = a;
+ 				EXECUTABLE_PREFIX = "";
+@@ -11093,7 +10911,6 @@
+ 		724FA71D1CC03A990092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				COMBINE_HIDPI_IMAGES = YES;
+ 				EXECUTABLE_EXTENSION = a;
+ 				EXECUTABLE_PREFIX = "";
+@@ -11106,7 +10923,6 @@
+ 		724FA71E1CC03A990092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				COMBINE_HIDPI_IMAGES = YES;
+ 				EXECUTABLE_EXTENSION = a;
+ 				EXECUTABLE_PREFIX = "";
+@@ -11119,7 +10935,6 @@
+ 		724FA73E1CC03AAF0092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				COMBINE_HIDPI_IMAGES = YES;
+ 				EXECUTABLE_EXTENSION = a;
+ 				EXECUTABLE_PREFIX = "";
+@@ -11134,7 +10949,6 @@
+ 		724FA73F1CC03AAF0092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				COMBINE_HIDPI_IMAGES = YES;
+ 				EXECUTABLE_EXTENSION = a;
+ 				EXECUTABLE_PREFIX = "";
+@@ -11149,7 +10963,6 @@
+ 		724FA74D1CC03ACC0092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				COMBINE_HIDPI_IMAGES = YES;
+ 				EXECUTABLE_PREFIX = "";
+ 				INSTALL_PATH = /usr/lib;
+@@ -11160,7 +10973,6 @@
+ 		724FA74E1CC03ACC0092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				COMBINE_HIDPI_IMAGES = YES;
+ 				EXECUTABLE_PREFIX = "";
+ 				INSTALL_PATH = /usr/lib;
+@@ -11171,7 +10983,6 @@
+ 		724FA7691CC03AF60092477B /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				COMBINE_HIDPI_IMAGES = YES;
+ 				EXECUTABLE_EXTENSION = a;
+ 				EXECUTABLE_PREFIX = "";
+@@ -11184,7 +10995,6 @@
+ 		724FA76A1CC03AF60092477B /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				COMBINE_HIDPI_IMAGES = YES;
+ 				EXECUTABLE_EXTENSION = a;
+ 				EXECUTABLE_PREFIX = "";
+@@ -11197,7 +11007,6 @@
+ 		7258EAEA134594C4009286F1 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/filter;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -11206,7 +11015,6 @@
+ 		7258EAEB134594C4009286F1 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/libexec/cups/filter;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -11215,7 +11023,6 @@
+ 		726AD6FF135E88F1002C930D /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Debug;
+@@ -11223,7 +11030,6 @@
+ 		726AD700135E88F1002C930D /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+ 			name = Release;
+@@ -11233,14 +11039,10 @@
+ 			buildSettings = {
+ 				ASSETCATALOG_COMPRESSION = lossless;
+ 				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
+-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+-				CLANG_WARN_COMMA = YES;
+-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+ 				CLANG_WARN_EMPTY_BODY = YES;
+ 				CLANG_WARN_ENUM_CONVERSION = YES;
+ 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
+ 				CLANG_WARN_INFINITE_RECURSION = YES;
+-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+ 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+ 				CLANG_WARN_STRICT_PROTOTYPES = YES;
+ 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
+@@ -11282,14 +11084,10 @@
+ 			buildSettings = {
+ 				ASSETCATALOG_COMPRESSION = "respect-asset-catalog";
+ 				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
+-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+-				CLANG_WARN_COMMA = YES;
+-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+ 				CLANG_WARN_EMPTY_BODY = YES;
+ 				CLANG_WARN_ENUM_CONVERSION = YES;
+ 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
+ 				CLANG_WARN_INFINITE_RECURSION = YES;
+-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+ 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+ 				CLANG_WARN_STRICT_PROTOTYPES = YES;
+ 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
+@@ -11326,7 +11124,6 @@
+ 		72CF95EF18A19134000FCAE4 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "ipptool copy";
+ 			};
+@@ -11335,7 +11132,6 @@
+ 		72CF95F018A19134000FCAE4 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "ipptool copy";
+ 			};
+@@ -11344,7 +11140,6 @@
+ 		72F75A591336F951004BB496 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -11353,7 +11148,6 @@
+ 		72F75A5A1336F951004BB496 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				INSTALL_PATH = /usr/bin;
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
+ 			};
+@@ -11362,7 +11156,6 @@
+ 		72F75A631336F9A3004BB496 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				COMBINE_HIDPI_IMAGES = YES;
+ 				EXECUTABLE_PREFIX = "";
+ 				INSTALL_PATH = /usr/lib;
+@@ -11373,7 +11166,6 @@
+ 		72F75A641336F9A3004BB496 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
+-				CLANG_ENABLE_OBJC_WEAK = YES;
+ 				COMBINE_HIDPI_IMAGES = YES;
+ 				EXECUTABLE_PREFIX = "";
+ 				INSTALL_PATH = /usr/lib;
