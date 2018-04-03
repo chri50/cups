@@ -22,7 +22,7 @@ done
 if $LPINFO_RUN; then
   # textonly, gen-brf, gen-ubrl and indexv[3,4] can't print PDF
   # pdftoijs is currently buggy !?
-  DRIVERS_LIST=$(lpinfo -m | cut -f1 -d' ' | grep -v 'textonly' | grep -v 'brf' | grep -v 'gen-ubrl' | grep -v 'pdftoijs' | grep -v 'everywhere' | grep -v 'indexv[3,4]' | grep -E $DRIVER_REGEXP)
+  DRIVERS_LIST=$(lpinfo -m | cut -f1 -d' ' | grep -Ev 'brf|everywhere|gen-ubrl|indexv[3,4]|pdftoijs|raw|textonly' | grep -E $DRIVER_REGEXP)
 fi
 
 cleanup() {
