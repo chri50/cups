@@ -1,3 +1,10 @@
+cups (2.2.7-1ubuntu2) bionic; urgency=medium
+
+  * Fixed another crash when creating temporary queues for IPP printers
+    (Issue #5290, LP: #1762476).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon,  9 Apr 2018 21:44:01 +0200
+
 cups (2.2.7-1ubuntu1) bionic; urgency=medium
 
   * Reverted the upstrem changes for deprecation of raw queues

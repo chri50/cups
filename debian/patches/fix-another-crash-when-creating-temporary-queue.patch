@@ -1,0 +1,20 @@
+--- a/scheduler/ipp.c
++++ b/scheduler/ipp.c
+@@ -5365,6 +5365,8 @@
+ 
+   if (_ppdCreateFromIPP(fromppd, sizeof(fromppd), response))
+   {
++    _cupsRWLockWrite(&printer->lock);
++
+     if ((!printer->info || !*(printer->info)) && (attr = ippFindAttribute(response, "printer-info", IPP_TAG_TEXT)) != NULL)
+       cupsdSetString(&printer->info, ippGetString(attr, 0, NULL));
+ 
+@@ -5374,6 +5376,8 @@
+     if ((!printer->geo_location || !*(printer->geo_location)) && (attr = ippFindAttribute(response, "printer-geo-location", IPP_TAG_URI)) != NULL)
+       cupsdSetString(&printer->geo_location, ippGetString(attr, 0, NULL));
+ 
++    _cupsRWUnlock(&printer->lock);
++
+     if ((from = cupsFileOpen(fromppd, "r")) == NULL)
+     {
+       cupsdLogMessage(CUPSD_LOG_ERROR, "%s: Unable to read generated PPD: %s", printer->name, strerror(errno));
