@@ -1,3 +1,10 @@
+cups (2.2.7-3) unstable; urgency=medium
+
+  * Backport an upstream fix:
+    - Fix another CUPS-Create-Local-Printer crash (Issue #5290)
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 11 Apr 2018 17:05:27 +0200
+
 cups (2.2.7-2) unstable; urgency=medium
 
   * Autopkgtest: blacklist the now-deprecated 'raw' queues (Closes: #894643)
