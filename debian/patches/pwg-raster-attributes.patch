@@ -10,7 +10,7 @@ Bug-Upstream: https://www.cups.org/str.php?L4428
 Last-Update: 2015-02-10
 Patch-Name: pwg-raster-attributes.patch
 ---
- scheduler/printers.c | 77 +++++++++++++++++++++++++++++++++++++++++++++++++++-
+ scheduler/printers.c | 77 +++++++++++++++++++++++++++++++++++++++++++-
  1 file changed, 76 insertions(+), 1 deletion(-)
 
 diff --git a/scheduler/printers.c b/scheduler/printers.c

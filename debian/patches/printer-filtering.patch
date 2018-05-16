@@ -9,7 +9,7 @@ Last-Update: 2015-10-02
 === modified file 'cups-1.3.9/cups/ipp.c'
 Patch-Name: printer-filtering.patch
 ---
- cups/ipp.c | 116 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ cups/ipp.c | 116 +++++++++++++++++++++++++++++++++++++++++++++++++++++
  1 file changed, 116 insertions(+)
 
 diff --git a/cups/ipp.c b/cups/ipp.c
