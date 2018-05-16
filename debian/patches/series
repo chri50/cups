@@ -37,4 +37,5 @@ debianize_cups-config.patch
 0037-Build-mantohtml-with-the-build-architecture-compiler.patch
 0038-The-lp-and-lpr-commands-now-provide-better-error-mes.patch
 0039-Fix-another-CUPS-Create-Local-Printer-crash-Issue-52.patch
+0040-Allow-cupsd-daemon-to-exit-on-idle.patch
 manpage-translations.patch
