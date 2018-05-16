@@ -1,3 +1,13 @@
+cups (2.2.7-5) unstable; urgency=medium
+
+  [ Jean-Paul Guillonneau ]
+  * Update French man page (2185t2f) (Closes: #897406)
+
+  [ Didier Raboud ]
+  * Manpage refresh after 2.2.7
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 16 May 2018 23:32:28 +0200
+
 cups (2.2.7-4) unstable; urgency=medium
 
   [ Helge Kreutzmann ]
