@@ -1,3 +1,9 @@
+cups (2.3~b4-3) experimental; urgency=medium
+
+  * Merge 2.2.7-4, rebase patches
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 16 May 2018 21:38:01 +0200
+
 cups (2.3~b4-2) experimental; urgency=medium
 
   * Merge 2.2.7-2
@@ -36,6 +42,24 @@ cups (2.3~b3-1) experimental; urgency=medium
   * Bump debhelper compat to 11
 
  -- Didier Raboud <odyx@debian.org>  Fri, 23 Feb 2018 20:49:53 +0100
+
+cups (2.2.7-4) unstable; urgency=medium
+
+  [ Helge Kreutzmann ]
+  * Update German man page (2187t)
+
+  [ Didier Raboud ]
+  * Backport an upstream fix:
+    - Allow cupsd daemon to exit on idle (Closes: #898745)
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 16 May 2018 21:16:04 +0200
+
+cups (2.2.7-3) unstable; urgency=medium
+
+  * Backport an upstream fix:
+    - Fix another CUPS-Create-Local-Printer crash (Issue #5290)
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 11 Apr 2018 17:05:27 +0200
 
 cups (2.2.7-2) unstable; urgency=medium
 

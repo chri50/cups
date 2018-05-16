@@ -15,7 +15,7 @@ Last-Update: 2015-02-10
 
 Patch-Name: read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.patch
 ---
- scheduler/ipp.c | 84 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ scheduler/ipp.c | 84 +++++++++++++++++++++++++++++++++++++++++++++++++
  1 file changed, 84 insertions(+)
 
 diff --git a/scheduler/ipp.c b/scheduler/ipp.c

@@ -35,4 +35,5 @@ cups-set-default-error-policy-retry-job.patch
 man-cups-lpd-drop-dangling-references.patch
 debianize_cups-config.patch
 0037-Build-mantohtml-with-the-build-architecture-compiler.patch
+0038-Allow-cupsd-daemon-to-exit-on-idle.patch
 manpage-translations.patch
