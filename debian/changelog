@@ -1,3 +1,14 @@
+cups (2.2.7-4) unstable; urgency=medium
+
+  [ Helge Kreutzmann ]
+  * Update German man page (2187t)
+
+  [ Didier Raboud ]
+  * Backport an upstream fix:
+    - Allow cupsd daemon to exit on idle (Closes: #898745)
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 16 May 2018 21:16:04 +0200
+
 cups (2.2.7-3) unstable; urgency=medium
 
   * Backport an upstream fix:
