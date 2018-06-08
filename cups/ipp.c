@@ -1,10 +1,11 @@
 /*
  * Internet Printing Protocol functions for CUPS.
  *
- * Copyright 2007-2017 by Apple Inc.
- * Copyright 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright © 2007-2018 by Apple Inc.
+ * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+ * information.
  */
 
 /*
@@ -3083,6 +3084,13 @@ ippReadIO(void       *src,		/* I - Data source */
 	    ipp->state = IPP_STATE_DATA;
 	    break;
 	  }
+	  else if (tag == IPP_TAG_ZERO || (tag == IPP_TAG_OPERATION && ipp->curtag != IPP_TAG_ZERO))
+	  {
+	    _cupsSetError(IPP_STATUS_ERROR_INTERNAL, _("Invalid group tag."), 1);
+	    DEBUG_printf(("1ippReadIO: bad tag 0x%02x.", tag));
+	    _cupsBufferRelease((char *)buffer);
+	    return (IPP_STATE_ERROR);
+	  }
           else if (tag < IPP_TAG_UNSUPPORTED_VALUE)
 	  {
 	   /*
@@ -5017,9 +5025,16 @@ ippValidateAttribute(
 	    }
 	    else if (*ptr & 0x80)
 	      break;
+	    else if ((*ptr < ' ' && *ptr != '\n' && *ptr != '\r' && *ptr != '\t') || *ptr == 0x7f)
+	      break;
 	  }
 
-	  if (*ptr)
+	  if (*ptr < ' ' || *ptr == 0x7f)
+	  {
+	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad text value \"%s\" - bad control character (PWG 5100.14 section 8.3)."), attr->name, attr->values[i].string.text);
+	    return (0);
+	  }
+	  else if (*ptr)
 	  {
 	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad text value \"%s\" - bad UTF-8 sequence (RFC 8011 section 5.1.2)."), attr->name, attr->values[i].string.text);
 	    return (0);
@@ -5068,9 +5083,16 @@ ippValidateAttribute(
 	    }
 	    else if (*ptr & 0x80)
 	      break;
+	    else if (*ptr < ' ' || *ptr == 0x7f)
+	      break;
 	  }
 
-	  if (*ptr)
+	  if (*ptr < ' ' || *ptr == 0x7f)
+	  {
+	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad name value \"%s\" - bad control character (PWG 5100.14 section 8.1)."), attr->name, attr->values[i].string.text);
+	    return (0);
+	  }
+	  else if (*ptr)
 	  {
 	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad name value \"%s\" - bad UTF-8 sequence (RFC 8011 section 5.1.3)."), attr->name, attr->values[i].string.text);
 	    return (0);

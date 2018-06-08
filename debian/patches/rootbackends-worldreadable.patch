@@ -1,4 +1,4 @@
-From d9b6a2ba4d05d25dd0564dc2ad53bcfa4a0f1b59 Mon Sep 17 00:00:00 2001
+From cbf4960342e5343ae7f67be7827c8870d9c12032 Mon Sep 17 00:00:00 2001
 From: Martin Pitt <mpitt@debian.org>
 Date: Tue, 9 Aug 2016 18:11:06 +0200
 Subject: Install root backends world-readable
@@ -55,7 +55,7 @@ index 85ecda167..0d3ee0b89 100644
  
    cupsDirClose(dir);
 diff --git a/scheduler/job.c b/scheduler/job.c
-index 61cda44e2..7f4c554c9 100644
+index 5ced0b9d1..09cf34d29 100644
 --- a/scheduler/job.c
 +++ b/scheduler/job.c
 @@ -1246,7 +1246,7 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */

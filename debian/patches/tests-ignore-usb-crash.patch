@@ -1,4 +1,4 @@
-From b615789a35da50fb924d626068609ec33c01bd8d Mon Sep 17 00:00:00 2001
+From bf362a79dab7d8e9ea170d07df49f369cd0768be Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:10 +0200
 Subject: Tests: ignore usb & dnssd backend unexpected exits
@@ -17,10 +17,10 @@ Patch-Name: tests-ignore-usb-crash.patch
  1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index a7de72ba5..a4abb4113 100755
+index d125caf7c..a990cf80d 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -995,7 +995,10 @@ else
+@@ -996,7 +996,10 @@ else
  fi
  
  # Error log messages
