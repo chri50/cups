@@ -1,0 +1,358 @@
+From e140328970f39713cf9ad3aa9ddb069611605eb4 Mon Sep 17 00:00:00 2001
+From: Didier Raboud <odyx@debian.org>
+Date: Fri, 8 Jun 2018 14:39:21 +0200
+Subject: Revert "Generalize the input validation of some kinds of attributes."
+
+This reverts commit 4c37eb9f77910f6f856fc540fc9a94a5885af17c.
+
+Fixes FTBFS on 2.2.8, see https://github.com/apple/cups/issues/5322
+---
+ cups/ipp.c      |  54 +++++++++-------
+ cups/testhttp.c |   7 +--
+ scheduler/ipp.c | 164 ++++++++++++++++++++++++++----------------------
+ 3 files changed, 124 insertions(+), 101 deletions(-)
+
+diff --git a/cups/ipp.c b/cups/ipp.c
+index b33a3bc2e..a93e1e921 100644
+--- a/cups/ipp.c
++++ b/cups/ipp.c
+@@ -1,8 +1,8 @@
+ /*
+  * Internet Printing Protocol functions for CUPS.
+  *
+- * Copyright © 2007-2018 by Apple Inc.
+- * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
++ * Copyright 2007-2017 by Apple Inc.
++ * Copyright 1997-2007 by Easy Software Products, all rights reserved.
+  *
+  * These coded instructions, statements, and computer programs are the
+  * property of Apple Inc. and are protected by Federal copyright
+@@ -4819,6 +4819,21 @@ ippValidateAttribute(
+   ipp_attribute_t *colattr;		/* Collection attribute */
+   regex_t	re;			/* Regular expression */
+   ipp_uchar_t	*date;			/* Current date value */
++  static const char * const uri_status_strings[] =
++  {					/* URI status strings */
++    "URI too large",
++    "Bad arguments to function",
++    "Bad resource in URI",
++    "Bad port number in URI",
++    "Bad hostname/address in URI",
++    "Bad username in URI",
++    "Bad scheme in URI",
++    "Bad/empty URI",
++    "OK",
++    "Missing scheme in URI",
++    "Unknown scheme in URI",
++    "Missing resource in URI"
++  };
+ 
+ 
+  /*
+@@ -5093,18 +5108,14 @@ ippValidateAttribute(
+ 	    }
+ 	    else if (*ptr & 0x80)
+ 	      break;
+-	    else if ((*ptr < ' ' && *ptr != '\n' && *ptr != '\r' && *ptr != '\t') || *ptr == 0x7f)
+-	      break;
+ 	  }
+ 
+-	  if (*ptr < ' ' || *ptr == 0x7f)
+-	  {
+-	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad text value \"%s\" - bad control character (PWG 5100.14 section 8.3)."), attr->name, attr->values[i].string.text);
+-	    return (0);
+-	  }
+-	  else if (*ptr)
++	  if (*ptr)
+ 	  {
+-	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad text value \"%s\" - bad UTF-8 sequence (RFC 8011 section 5.1.2)."), attr->name, attr->values[i].string.text);
++	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST,
++			  _("\"%s\": Bad text value \"%s\" - bad UTF-8 "
++			    "sequence (RFC 8011 section 5.1.2)."), attr->name,
++			  attr->values[i].string.text);
+ 	    return (0);
+ 	  }
+ 
+@@ -5155,18 +5166,14 @@ ippValidateAttribute(
+ 	    }
+ 	    else if (*ptr & 0x80)
+ 	      break;
+-	    else if (*ptr < ' ' || *ptr == 0x7f)
+-	      break;
+ 	  }
+ 
+-	  if (*ptr < ' ' || *ptr == 0x7f)
++	  if (*ptr)
+ 	  {
+-	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad name value \"%s\" - bad control character (PWG 5100.14 section 8.1)."), attr->name, attr->values[i].string.text);
+-	    return (0);
+-	  }
+-	  else if (*ptr)
+-	  {
+-	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad name value \"%s\" - bad UTF-8 sequence (RFC 8011 section 5.1.3)."), attr->name, attr->values[i].string.text);
++	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST,
++			  _("\"%s\": Bad name value \"%s\" - bad UTF-8 "
++			    "sequence (RFC 8011 section 5.1.3)."), attr->name,
++			  attr->values[i].string.text);
+ 	    return (0);
+ 	  }
+ 
+@@ -5223,7 +5230,12 @@ ippValidateAttribute(
+ 
+ 	  if (uri_status < HTTP_URI_STATUS_OK)
+ 	  {
+-	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad URI value \"%s\" - %s (RFC 8011 section 5.1.6)."), attr->name, attr->values[i].string.text, httpURIStatusString(uri_status));
++	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST,
++			  _("\"%s\": Bad URI value \"%s\" - %s "
++			    "(RFC 8011 section 5.1.6)."), attr->name,
++			  attr->values[i].string.text,
++			  uri_status_strings[uri_status -
++					     HTTP_URI_STATUS_OVERFLOW]);
+ 	    return (0);
+ 	  }
+ 
+diff --git a/cups/testhttp.c b/cups/testhttp.c
+index fa8356c02..a2d890d06 100644
+--- a/cups/testhttp.c
++++ b/cups/testhttp.c
+@@ -1,8 +1,8 @@
+ /*
+  * HTTP test program for CUPS.
+  *
+- * Copyright © 2007-2018 by Apple Inc.
+- * Copyright © 1997-2006 by Easy Software Products.
++ * Copyright 2007-2014 by Apple Inc.
++ * Copyright 1997-2006 by Easy Software Products.
+  *
+  * These coded instructions, statements, and computer programs are the
+  * property of Apple Inc. and are protected by Federal copyright
+@@ -186,9 +186,6 @@ static uri_test_t	uri_tests[] =	/* URI test data */
+ 			    HTTP_URI_CODING_MOST  },
+ 
+ 			  /* Bad resource */
+-			  { HTTP_URI_STATUS_BAD_RESOURCE, "mailto:\r\nbla",
+-			    "mailto", "", "", "", 0, 0,
+-			    HTTP_URI_CODING_MOST  },
+ 			  { HTTP_URI_STATUS_BAD_RESOURCE, "http://server/index.html%",
+ 			    "http", "", "server", "", 80, 0,
+ 			    HTTP_URI_CODING_MOST  },
+diff --git a/scheduler/ipp.c b/scheduler/ipp.c
+index d1c6a89fb..d4e092d65 100644
+--- a/scheduler/ipp.c
++++ b/scheduler/ipp.c
+@@ -5873,26 +5873,7 @@ create_subscriptions(
+     }
+ 
+     if (recipient)
+-    {
+       cupsdLogMessage(CUPSD_LOG_DEBUG, "recipient=\"%s\"", recipient);
+-
+-
+-      if (!strncmp(recipient, "mailto:", 7) && user_data)
+-      {
+-        char	temp[64];		/* Temporary string */
+-
+-	memcpy(temp, user_data->values[0].unknown.data, user_data->values[0].unknown.length);
+-	temp[user_data->values[0].unknown.length] = '\0';
+-
+-	if (httpSeparateURI(HTTP_URI_CODING_ALL, temp, scheme, sizeof(scheme), userpass, sizeof(userpass), host, sizeof(host), &port, resource, sizeof(resource)) < HTTP_URI_OK)
+-	{
+-	  send_ipp_status(con, IPP_NOT_POSSIBLE, _("Bad notify-user-data \"%s\"."), temp);
+-	  ippAddInteger(con->response, IPP_TAG_SUBSCRIPTION, IPP_TAG_ENUM, "notify-status-code", IPP_STATUS_ERROR_ATTRIBUTES_OR_VALUES);
+-	  return;
+-	}
+-      }
+-    }
+-
+     if (pullmethod)
+       cupsdLogMessage(CUPSD_LOG_DEBUG, "pullmethod=\"%s\"", pullmethod);
+     cupsdLogMessage(CUPSD_LOG_DEBUG, "notify-lease-duration=%d", lease);
+@@ -7988,16 +7969,13 @@ hold_job(cupsd_client_t  *con,		/* I - Client connection */
+   * Hold the job and return...
+   */
+ 
+-  if ((attr = ippFindAttribute(con->request, "job-hold-until", IPP_TAG_ZERO)) != NULL)
+-  {
+-    if ((ippGetValueTag(attr) != IPP_TAG_KEYWORD && ippGetValueTag(attr) != IPP_TAG_NAME && ippGetValueTag(attr) != IPP_TAG_NAMELANG) || ippGetCount(attr) != 1 || !ippValidateAttribute(attr))
+-    {
+-      send_ipp_status(con, IPP_STATUS_ERROR_ATTRIBUTES_OR_VALUES, _("Unsupported 'job-hold-until' value."));
+-      ippCopyAttribute(con->response, attr, 0);
+-      return;
+-    }
++  if ((attr = ippFindAttribute(con->request, "job-hold-until",
++			       IPP_TAG_KEYWORD)) == NULL)
++    attr = ippFindAttribute(con->request, "job-hold-until", IPP_TAG_NAME);
+ 
+-    when = ippGetString(attr, 0, NULL);
++  if (attr)
++  {
++    when = attr->values[0].string.text;
+ 
+     cupsdAddEvent(CUPSD_EVENT_JOB_CONFIG_CHANGED, cupsdFindDest(job->dest), job,
+ 		  "Job job-hold-until value changed by user.");
+@@ -10361,39 +10339,7 @@ set_job_attrs(cupsd_client_t  *con,	/* I - Client connection */
+       continue;
+     }
+ 
+-    if (!ippValidateAttribute(attr))
+-    {
+-      send_ipp_status(con, IPP_STATUS_ERROR_ATTRIBUTES_OR_VALUES, _("Bad '%s' value."), attr->name);
+-      ippCopyAttribute(con->response, attr, 0);
+-      return;
+-    }
+-
+-    if (!strcmp(attr->name, "job-hold-until"))
+-    {
+-      const char *when = ippGetString(attr, 0, NULL);
+-					/* job-hold-until value */
+-
+-      if ((ippGetValueTag(attr) != IPP_TAG_KEYWORD && ippGetValueTag(attr) != IPP_TAG_NAME && ippGetValueTag(attr) != IPP_TAG_NAMELANG) || ippGetCount(attr) != 1)
+-      {
+-	send_ipp_status(con, IPP_STATUS_ERROR_ATTRIBUTES_OR_VALUES, _("Unsupported 'job-hold-until' value."));
+-	ippCopyAttribute(con->response, attr, 0);
+-	return;
+-      }
+-
+-      cupsdLogJob(job, CUPSD_LOG_DEBUG, "Setting job-hold-until to %s", when);
+-      cupsdSetJobHoldUntil(job, when, 0);
+-
+-      if (!strcmp(when, "no-hold"))
+-      {
+-	cupsdReleaseJob(job);
+-	check_jobs = 1;
+-      }
+-      else
+-	cupsdSetJobState(job, IPP_JOB_HELD, CUPSD_JOB_DEFAULT, "Job held by \"%s\".", username);
+-
+-      event |= CUPSD_EVENT_JOB_CONFIG_CHANGED | CUPSD_EVENT_JOB_STATE;
+-    }
+-    else if (!strcmp(attr->name, "job-priority"))
++    if (!strcmp(attr->name, "job-priority"))
+     {
+      /*
+       * Change the job priority...
+@@ -10513,6 +10459,28 @@ set_job_attrs(cupsd_client_t  *con,	/* I - Client connection */
+       */
+ 
+       ippCopyAttribute(job->attrs, attr, 0);
++
++     /*
++      * See if the job-name or job-hold-until is being changed.
++      */
++
++      if (!strcmp(attr->name, "job-hold-until"))
++      {
++        cupsdLogJob(job, CUPSD_LOG_DEBUG, "Setting job-hold-until to %s",
++		    attr->values[0].string.text);
++        cupsdSetJobHoldUntil(job, attr->values[0].string.text, 0);
++
++	if (!strcmp(attr->values[0].string.text, "no-hold"))
++	{
++	  cupsdReleaseJob(job);
++          check_jobs = 1;
++	}
++	else
++	  cupsdSetJobState(job, IPP_JOB_HELD, CUPSD_JOB_DEFAULT,
++	                   "Job held by \"%s\".", username);
++
++        event |= CUPSD_EVENT_JOB_CONFIG_CHANGED | CUPSD_EVENT_JOB_STATE;
++      }
+     }
+     else if (attr->value_tag == IPP_TAG_DELETEATTR)
+     {
+@@ -11330,35 +11298,81 @@ validate_job(cupsd_client_t  *con,	/* I - Client connection */
+     }
+   }
+ 
+- /*
+-  * Is the job-hold-until value valid?
+-  */
+-
+-  if ((attr = ippFindAttribute(con->request, "job-hold-until", IPP_TAG_ZERO)) != NULL && ((ippGetValueTag(attr) != IPP_TAG_KEYWORD && ippGetValueTag(attr) != IPP_TAG_NAME && ippGetValueTag(attr) != IPP_TAG_NAMELANG) || ippGetCount(attr) != 1 || !ippValidateAttribute(attr)))
+-  {
+-    send_ipp_status(con, IPP_STATUS_ERROR_ATTRIBUTES_OR_VALUES, _("Unsupported 'job-hold-until' value."));
+-    ippCopyAttribute(con->response, attr, 0);
+-    return;
+-  }
+-
+  /*
+   * Is the job-name valid?
+   */
+ 
+   if ((name = ippFindAttribute(con->request, "job-name", IPP_TAG_ZERO)) != NULL)
+   {
++    int bad_name = 0;			/* Is the job-name value bad? */
++
+     if ((name->value_tag != IPP_TAG_NAME && name->value_tag != IPP_TAG_NAMELANG) ||
+-        name->num_values != 1 || !ippValidateAttribute(name))
++        name->num_values != 1)
++    {
++      bad_name = 1;
++    }
++    else
++    {
++     /*
++      * Validate that job-name conforms to RFC 5198 (Network Unicode) and
++      * IPP Everywhere requirements for "name" values...
++      */
++
++      const unsigned char *nameptr;	/* Pointer into "job-name" attribute */
++
++      for (nameptr = (unsigned char *)name->values[0].string.text;
++           *nameptr;
++           nameptr ++)
++      {
++        if (*nameptr < ' ' && *nameptr != '\t')
++          break;
++        else if (*nameptr == 0x7f)
++          break;
++        else if ((*nameptr & 0xe0) == 0xc0)
++        {
++          if ((nameptr[1] & 0xc0) != 0x80)
++            break;
++
++          nameptr ++;
++        }
++        else if ((*nameptr & 0xf0) == 0xe0)
++        {
++          if ((nameptr[1] & 0xc0) != 0x80 ||
++              (nameptr[2] & 0xc0) != 0x80)
++	    break;
++
++	  nameptr += 2;
++	}
++        else if ((*nameptr & 0xf8) == 0xf0)
++        {
++          if ((nameptr[1] & 0xc0) != 0x80 ||
++	      (nameptr[2] & 0xc0) != 0x80 ||
++	      (nameptr[3] & 0xc0) != 0x80)
++	    break;
++
++	  nameptr += 3;
++	}
++        else if (*nameptr & 0x80)
++          break;
++      }
++
++      if (*nameptr)
++        bad_name = 1;
++    }
++
++    if (bad_name)
+     {
+       if (StrictConformance)
+       {
+-	send_ipp_status(con, IPP_STATUS_ERROR_ATTRIBUTES_OR_VALUES, _("Unsupported 'job-name' value."));
++	send_ipp_status(con, IPP_ATTRIBUTES,
++	                _("Unsupported 'job-name' value."));
+ 	ippCopyAttribute(con->response, name, 0);
+ 	return;
+       }
+       else
+       {
+-        cupsdLogMessage(CUPSD_LOG_WARN, "Unsupported 'job-name' value, deleting from request.");
++        cupsdLogMessage(CUPSD_LOG_WARN,
++                        "Unsupported 'job-name' value, deleting from request.");
+         ippDeleteAttribute(con->request, name);
+       }
+     }

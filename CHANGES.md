@@ -1,5 +1,38 @@
-CHANGES - 2.2.7 - 2018-03-22
+CHANGES - 2.2.8 - 2018-06-05
 ============================
+
+
+Changes in CUPS v2.2.8
+----------------------
+
+- Additional changes for the scheduler to substitute default values for invalid
+  job attributes when running in "relaxed conformance" mode (Issue #5229)
+- The `ipptool` program no longer checks for duplicate attributes when running
+  in list or CSV mode (Issue #5278)
+- Fixed builds without PAM (Issue #5283)
+- Fixed `lpoptions` man page (Issue #5286)
+- The `cupsCreateJob`, `cupsPrintFile2`, and `cupsPrintFiles2` APIs did not use
+  the supplied HTTP connection (Issue #5288)
+- Fixed another crash in the scheduler when adding an IPP Everywhere printer
+  (Issue #5290)
+- Added a workaround for certain web browsers that do not support multiple
+  authentication schemes in a single response header (Issue #5289)
+- Fixed policy limits containing the `All` operation (Issue #5296)
+- The scheduler was always restarted after idle-exit with systemd (Issue #5297)
+- Added a USB quirks rule for the HP LaserJet P1102 (Issue #5310)
+- The mailto notifier did not wait for the welcome message (Issue #5312)
+- Fixed a parsing bug in the pstops filter (Issue #5321)
+- Documentation updates (Issue #5299, Issue #5301, Issue #5306)
+- Localization updates (Issue #5317)
+- The scheduler allowed environment variables to be specified in the
+  `cupsd.conf` file (rdar://37836779, rdar://37836995, rdar://37837252,
+  rdar://37837581)
+- Fax queues did not support pause (p) or wait-for-dialtone (w) characters
+  (rdar://39212256)
+- The scheduler did not validate notify-recipient-uri values properly
+  (rdar://40068936)
+- The IPP parser allowed invalid group tags (rdar://40442124)
+- Fixed a parsing bug in the new authentication code.
 
 
 Changes in CUPS v2.2.7

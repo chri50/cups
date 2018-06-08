@@ -2785,7 +2785,7 @@ new_request(
 	char	phone[1024],		/* Phone number string */
 		*ptr,			/* Pointer into string */
 		tel_uri[1024];		/* tel: URI */
-        static const char * const allowed = "0123456789#*-+.()";
+        static const char * const allowed = "0123456789#*-+.()pw";
 					/* Allowed characters */
 
         destination = ippNew();
@@ -2798,7 +2798,9 @@ new_request(
         _httpDecodeURI(phone, keyword, sizeof(phone));
         for (ptr = phone; *ptr;)
 	{
-	  if (!strchr(allowed, *ptr))
+	  if (*ptr == ',')
+	    *ptr = 'p';
+	  else if (!strchr(allowed, *ptr))
 	    _cups_strcpy(ptr, ptr + 1);
 	  else
 	    ptr ++;

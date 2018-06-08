@@ -1,3 +1,19 @@
+cups (2.2.8-2) unstable; urgency=medium
+
+  * New upstream 2.2.8 release
+    - The scheduler allowed environment variables to be specified in the
+      `cupsd.conf` file
+
+  [ Didier Raboud ]
+  * Revert "Generalize the input validation of some kinds of attributes."
+    Fixes FTBFS on 2.2.8, see https://github.com/apple/cups/issues/5322
+  * Manpage refresh after 2.2.8
+
+  [ Helge Kreutzmann ]
+  * Update German man page (2193t)
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 08 Jun 2018 14:54:46 +0200
+
 cups (2.2.7-5) unstable; urgency=medium
 
   [ Jean-Paul Guillonneau ]
