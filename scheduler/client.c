@@ -1,8 +1,8 @@
 /*
  * Client routines for the CUPS scheduler.
  *
- * Copyright 2007-2017 by Apple Inc.
- * Copyright 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright © 2007-2018 by Apple Inc.
+ * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
  * This file contains Kerberos support code, copyright 2006 by
  * Jelmer Vernooij.
@@ -818,6 +818,18 @@ cupsdReadClient(cupsd_client_t *con)	/* I - Client to read from */
 
   if (status == HTTP_STATUS_OK)
   {
+   /*
+    * Record whether the client is a web browser.  "Mozilla" was the original
+    * and it seems that every web browser in existence now uses that as the
+    * prefix with additional information identifying *which* browser.
+    *
+    * Chrome (at least) has problems with multiple WWW-Authenticate values in
+    * a single header, so we only report Basic or Negotiate to web browsers and
+    * leave the multiple choices to the native CUPS client...
+    */
+
+    con->is_browser = !strncmp(httpGetField(con->http, HTTP_FIELD_USER_AGENT), "Mozilla/", 8);
+
     if (httpGetField(con->http, HTTP_FIELD_ACCEPT_LANGUAGE)[0])
     {
      /*
@@ -2350,18 +2362,20 @@ cupsdSendHeader(
     auth_str[0] = '\0';
 
     if (auth_type == CUPSD_AUTH_BASIC)
+    {
       strlcpy(auth_str, "Basic realm=\"CUPS\"", sizeof(auth_str));
+    }
     else if (auth_type == CUPSD_AUTH_NEGOTIATE)
     {
-#ifdef AF_LOCAL
+#if defined(SO_PEERCRED) && defined(AF_LOCAL)
       if (httpAddrFamily(httpGetAddress(con->http)) == AF_LOCAL)
-        strlcpy(auth_str, "Basic realm=\"CUPS\"", sizeof(auth_str));
+	strlcpy(auth_str, "PeerCred", sizeof(auth_str));
       else
-#endif /* AF_LOCAL */
+#endif /* SO_PEERCRED && AF_LOCAL */
       strlcpy(auth_str, "Negotiate", sizeof(auth_str));
     }
 
-    if (con->best && auth_type != CUPSD_AUTH_NEGOTIATE &&
+    if (con->best && auth_type != CUPSD_AUTH_NEGOTIATE && !con->is_browser &&
         !_cups_strcasecmp(httpGetHostname(con->http, NULL, 0), "localhost"))
     {
      /*

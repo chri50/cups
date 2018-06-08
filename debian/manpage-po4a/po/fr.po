@@ -10,7 +10,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups-2.0.3-6\n"
-"POT-Creation-Date: 2017-11-02 16:13+0100\n"
+"POT-Creation-Date: 2018-06-05 22:27+0200\n"
 "PO-Revision-Date: 2018-04-25 11:57+0200\n"
 "Last-Translator: Jean-Paul Guillonneau <guillonneau.jeanpaul@free.fr>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
@@ -195,7 +195,7 @@ msgstr ""
 #: cups-lpd.man.in:26 cups.man:16 cups-snmp.conf.man:16 cups-snmp.man.in:26
 #: cupstestdsc.man:31 cupstestppd.man:54 filter.man:54 ippfind.man:35
 #: ../test/ippserver.man:62 ipptoolfile.man:15 ipptool.man:75 lpadmin.man:57
-#: lpc.man:23 lpinfo.man:63 lp.man:87 lpmove.man:40 lpoptions.man.in:68
+#: lpc.man:23 lpinfo.man:63 lp.man:87 lpmove.man:40 lpoptions.man.in:56
 #: lpq.man:34 lpr.man:56 lprm.man:34 lpstat.man:69 mailto.conf.man:16
 #: mime.convs.man:16 mime.types.man:16 notifier.man:22 ppdcfile.man:16
 #: ppdc.man:48 ppdhtml.man:25 ppdi.man:29 ppdmerge.man:27 ppdpo.man:28
@@ -470,7 +470,7 @@ msgstr ""
 
 # type: SH
 #. type: SH
-#: backend.man:130 cupsfilter.man:105 cupstestppd.man:113 ippfind.man:212
+#: backend.man:130 cupsfilter.man:105 cupstestppd.man:113 ippfind.man:217
 #: ../test/ippserver.man:130 ipptool.man:186
 #, no-wrap
 msgid "EXIT STATUS"
@@ -643,7 +643,7 @@ msgstr "Tous les autres codes de retour sont réservés."
 # type: SH
 #. type: SH
 #: backend.man:161 cupsfilter.man:108 cups.man:63 cups-snmp.man.in:40
-#: ippfind.man:214 ../test/ippserver.man:141
+#: ippfind.man:219 ../test/ippserver.man:141
 #, no-wrap
 msgid "ENVIRONMENT"
 msgstr "ENVIRONNEMENT"
@@ -675,7 +675,7 @@ msgstr "L'URI du périphérique associé à l'imprimante."
 #. type: SH
 #: backend.man:170 cupsd-helper.man:59 cupsd.man.in:74 cupsfilter.man:113
 #: cups-lpd.man.in:57 cups.man:117 cups-snmp.man.in:43 ipptool.man:190
-#: lpoptions.man.in:122 mime.convs.man:40 mime.types.man:90
+#: lpoptions.man.in:107 mime.convs.man:40 mime.types.man:90
 #, no-wrap
 msgid "FILES"
 msgstr "FICHIERS"
@@ -690,7 +690,7 @@ msgstr "I</etc/cups/cups-files.conf>"
 #. type: SH
 #: backend.man:172 cancel.man:84 classes.conf.man:20 client.conf.man.in:86
 #: cupsfilter.man:120 cups-lpd.man.in:63 cupstestdsc.man:35 filter.man:204
-#: lpadmin.man:197 lpc.man:43 lpr.man:187 ppdmerge.man:38 printers.conf.man:20
+#: lpadmin.man:198 lpc.man:43 lpr.man:187 ppdmerge.man:38 printers.conf.man:20
 #: subscriptions.conf.man:20
 #, no-wrap
 msgid "NOTES"
@@ -742,13 +742,13 @@ msgstr ""
 #. type: SH
 #: backend.man:188 cancel.man:87 classes.conf.man:22 client.conf.man.in:98
 #: cupsaccept.man:80 cupsaddsmb.man.in:119 cups-config.man:107 cupsctl.man:95
-#: cupsd.conf.man.in:877 cupsd-helper.man:80 cupsd-logs.man:230
-#: cupsd.man.in:112 cupsenable.man:91 cups-files.conf.man.in:266
+#: cupsd.conf.man.in:869 cupsd-helper.man:80 cupsd-logs.man:230
+#: cupsd.man.in:112 cupsenable.man:91 cups-files.conf.man.in:276
 #: cupsfilter.man:130 cups-lpd.man.in:111 cups.man:125 cups-snmp.conf.man:60
 #: cups-snmp.man.in:49 cupstestdsc.man:41 cupstestppd.man:141 filter.man:211
-#: ippfind.man:253 ../test/ippserver.man:164 ipptoolfile.man:646
-#: ipptool.man:241 lpadmin.man:206 lpc.man:48 lpinfo.man:120 lp.man:255
-#: lpmove.man:69 lpoptions.man.in:128 lpq.man:59 lpr.man:207 lprm.man:77
+#: ippfind.man:258 ../test/ippserver.man:164 ipptoolfile.man:646
+#: ipptool.man:241 lpadmin.man:207 lpc.man:48 lpinfo.man:120 lp.man:255
+#: lpmove.man:69 lpoptions.man.in:113 lpq.man:59 lpr.man:207 lprm.man:77
 #: lpstat.man:144 mailto.conf.man:43 mime.convs.man:53 mime.types.man:103
 #: notifier.man:34 ppdcfile.man:152 ppdc.man:93 ppdhtml.man:38 ppdi.man:45
 #: ppdmerge.man:41 ppdpo.man:45 printers.conf.man:22 subscriptions.conf.man:22
@@ -777,13 +777,13 @@ msgstr "Aide en ligne de CUPS : E<lt>URL:I<http://localhost:631/help>E<gt>"
 #. type: SH
 #: backend.man:199 cancel.man:93 classes.conf.man:30 client.conf.man.in:102
 #: cupsaccept.man:88 cupsaddsmb.man.in:125 cups-config.man:110 cupsctl.man:100
-#: cupsd.conf.man.in:886 cupsd-helper.man:88 cupsd-logs.man:235
-#: cupsd.man.in:128 cupsenable.man:99 cups-files.conf.man.in:276
+#: cupsd.conf.man.in:878 cupsd-helper.man:88 cupsd-logs.man:235
+#: cupsd.man.in:128 cupsenable.man:99 cups-files.conf.man.in:286
 #: cupsfilter.man:137 cups-lpd.man.in:118 cups.man:141 cups-snmp.conf.man:63
 #: cups-snmp.man.in:55 cupstestdsc.man:45 cupstestppd.man:145 filter.man:219
-#: ippfind.man:255 ../test/ippserver.man:166 ipptoolfile.man:651
-#: ipptool.man:246 lpadmin.man:212 lpc.man:58 lpinfo.man:123 lp.man:264
-#: lpmove.man:76 lpoptions.man.in:135 lpq.man:66 lpr.man:216 lprm.man:84
+#: ippfind.man:260 ../test/ippserver.man:166 ipptoolfile.man:651
+#: ipptool.man:246 lpadmin.man:213 lpc.man:58 lpinfo.man:123 lp.man:264
+#: lpmove.man:76 lpoptions.man.in:120 lpq.man:66 lpr.man:216 lprm.man:84
 #: lpstat.man:151 mailto.conf.man:46 mime.convs.man:60 mime.types.man:110
 #: notifier.man:38 ppdcfile.man:159 ppdc.man:100 ppdhtml.man:45 ppdi.man:52
 #: ppdmerge.man:48 ppdpo.man:52 printers.conf.man:30 subscriptions.conf.man:30
@@ -795,16 +795,15 @@ msgstr "COPYRIGHT"
 #. type: Plain text
 #: backend.man:200 cancel.man:94 classes.conf.man:31 client.conf.man.in:103
 #: cupsaccept.man:89 cupsaddsmb.man.in:126 cups-config.man:111 cupsctl.man:101
-#: cupsd.conf.man.in:887 cupsd-helper.man:89 cupsd-logs.man:236
-#: cupsd.man.in:129 cupsenable.man:100 cups-files.conf.man.in:277
-#: cupsfilter.man:138 cups-lpd.man.in:119 cups.man:142 cups-snmp.conf.man:64
-#: cups-snmp.man.in:56 cupstestdsc.man:46 cupstestppd.man:146 filter.man:220
-#: ipptoolfile.man:652 ipptool.man:247 lpadmin.man:213 lpc.man:59
-#: lpinfo.man:124 lp.man:265 lpmove.man:77 lpoptions.man.in:136 lpq.man:67
-#: lpr.man:217 lprm.man:85 lpstat.man:152 mailto.conf.man:47 mime.convs.man:61
-#: mime.types.man:111 notifier.man:39 ppdcfile.man:160 ppdc.man:101
-#: ppdhtml.man:46 ppdi.man:53 ppdmerge.man:49 ppdpo.man:53 printers.conf.man:31
-#: subscriptions.conf.man:31
+#: cupsd-helper.man:89 cupsd-logs.man:236 cupsd.man.in:129 cupsenable.man:100
+#: cups-files.conf.man.in:287 cupsfilter.man:138 cups-lpd.man.in:119
+#: cups.man:142 cups-snmp.conf.man:64 cups-snmp.man.in:56 cupstestdsc.man:46
+#: cupstestppd.man:146 filter.man:220 ipptoolfile.man:652 ipptool.man:247
+#: lpadmin.man:214 lpc.man:59 lpinfo.man:124 lp.man:265 lpmove.man:77
+#: lpq.man:67 lpr.man:217 lprm.man:85 lpstat.man:152 mailto.conf.man:47
+#: mime.convs.man:61 mime.types.man:111 notifier.man:39 ppdcfile.man:160
+#: ppdc.man:101 ppdhtml.man:46 ppdi.man:53 ppdmerge.man:49 ppdpo.man:53
+#: printers.conf.man:31 subscriptions.conf.man:31
 msgid "Copyright \\[co] 2007-2017 by Apple Inc."
 msgstr "Copyright \\[co] 2007-2017 by Apple Inc."
 
@@ -854,10 +853,10 @@ msgstr ""
 # type: SH
 #. type: SH
 #: cancel.man:43 cupsaccept.man:53 cupsaddsmb.man.in:99 cups-config.man:55
-#: cupsctl.man:43 cupsd.conf.man.in:487 cupsd.man.in:40 cupsenable.man:54
+#: cupsctl.man:43 cupsd.conf.man.in:479 cupsd.man.in:40 cupsenable.man:54
 #: cupsfilter.man:62 cups-lpd.man.in:35 cupstestppd.man:61 filter.man:63
-#: ippfind.man:189 ../test/ippserver.man:65 ipptool.man:88 lpadmin.man:76
-#: lpinfo.man:66 lp.man:97 lpmove.man:42 lpoptions.man.in:83 lpq.man:39
+#: ippfind.man:194 ../test/ippserver.man:65 ipptool.man:88 lpadmin.man:76
+#: lpinfo.man:66 lp.man:97 lpmove.man:42 lpoptions.man.in:71 lpq.man:39
 #: lpr.man:67 lprm.man:39 lpstat.man:72 ppdc.man:51 ppdhtml.man:28 ppdi.man:33
 #: ppdmerge.man:31 ppdpo.man:31
 #, no-wrap
@@ -888,8 +887,8 @@ msgstr ""
 
 #. type: TP
 #: cancel.man:49 cupsaccept.man:58 cupsctl.man:45 cupsenable.man:56
-#: ipptool.man:120 lpadmin.man:182 lpinfo.man:68 lp.man:102 lpmove.man:44
-#: lpoptions.man.in:85 lpq.man:41 lpr.man:69 lprm.man:43 lpstat.man:74
+#: ipptool.man:120 lpadmin.man:183 lpinfo.man:68 lp.man:102 lpmove.man:44
+#: lpoptions.man.in:73 lpq.man:41 lpr.man:69 lprm.man:43 lpstat.man:74
 #, no-wrap
 msgid "B<-E>"
 msgstr "B<-E>"
@@ -917,8 +916,7 @@ msgstr "Indiquer un serveur alternatif."
 # type: TP
 #. type: TP
 #: cancel.man:55 cupsaccept.man:61 cupsctl.man:48 cupsenable.man:59 lp.man:105
-#: lpmove.man:47 lpoptions.man.in:88 lpq.man:47 lpr.man:85 lprm.man:49
-#: lpstat.man:83
+#: lpmove.man:47 lpq.man:47 lpr.man:85 lprm.man:49 lpstat.man:83
 #, no-wrap
 msgid "B<-U >I<username>"
 msgstr "B<-U> I<identifiant>"
@@ -954,10 +952,10 @@ msgid "Deletes job data files in addition to canceling."
 msgstr "Supprimer les fichiers de données des travaux en plus de l’annulation"
 
 #. type: SH
-#: cancel.man:64 cupsaccept.man:70 cupsd.conf.man.in:855 cupsd.man.in:84
+#: cancel.man:64 cupsaccept.man:70 cupsd.conf.man.in:847 cupsd.man.in:84
 #: cupsenable.man:80 cups-lpd.man.in:49 cups.man:122 cups-snmp.man.in:47
-#: filter.man:202 ../test/ippserver.man:137 ipptool.man:224 lpadmin.man:192
-#: lpinfo.man:100 lp.man:232 lpoptions.man.in:126 lprm.man:55 lpstat.man:137
+#: filter.man:202 ../test/ippserver.man:137 ipptool.man:224 lpadmin.man:193
+#: lpinfo.man:100 lp.man:232 lpoptions.man.in:111 lprm.man:55 lpstat.man:137
 #, no-wrap
 msgid "CONFORMING TO"
 msgstr "CONFORMITÉ"
@@ -977,8 +975,8 @@ msgstr ""
 
 # type: SH
 #. type: SH
-#: cancel.man:66 cups-config.man:94 cupsctl.man:69 cupsd.conf.man.in:857
-#: cupsd.man.in:87 cupstestppd.man:128 ippfind.man:240
+#: cancel.man:66 cups-config.man:94 cupsctl.man:69 cupsd.conf.man.in:849
+#: cupsd.man.in:87 cupstestppd.man:128 ippfind.man:245
 #: ../test/ippserver.man:148 ipptool.man:228 lpinfo.man:102 lp.man:237
 #: lpmove.man:53 lpr.man:189 lprm.man:59 mime.convs.man:46 mime.types.man:92
 #, no-wrap
@@ -1099,7 +1097,7 @@ msgstr "client.conf"
 
 # type: TH
 #. type: TH
-#: client.conf.man.in:13 cupsd.conf.man.in:13
+#: client.conf.man.in:13
 #, no-wrap
 msgid "19 October 2017"
 msgstr "19 octobre 2017"
@@ -1203,21 +1201,21 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: client.conf.man.in:38 cupsd.conf.man.in:730
+#: client.conf.man.in:38 cupsd.conf.man.in:722
 #, no-wrap
 msgid "B<Encryption IfRequested>"
 msgstr "B<Encryption> I<IfRequested>"
 
 # type: TP
 #. type: TP
-#: client.conf.man.in:40 cupsd.conf.man.in:732
+#: client.conf.man.in:40 cupsd.conf.man.in:724
 #, no-wrap
 msgid "B<Encryption Never>"
 msgstr "B<Encryption> I<Never>"
 
 # type: TP
 #. type: TP
-#: client.conf.man.in:42 cupsd.conf.man.in:734
+#: client.conf.man.in:42 cupsd.conf.man.in:726
 #, no-wrap
 msgid "B<Encryption Required>"
 msgstr "B<Encryption> I<Required>"
@@ -1289,13 +1287,13 @@ msgstr ""
 "serveur sous CUPS version 1.3.12 ou précédente."
 
 #. type: TP
-#: client.conf.man.in:58 cupsd.conf.man.in:442
+#: client.conf.man.in:58 cupsd.conf.man.in:434
 #, no-wrap
 msgid "B<SSLOptions >[I<AllowDH>] [I<AllowRC4>] [I<AllowSSL3>] [I<DenyCBC>] [I<DenyTLS1.0>]"
 msgstr "B<SSLOptions >[I<AllowDH>] [I<AllowRC4>] [I<AllowSSL3>] [I<DenyCBC>] [I<DenyTLS1.0>]"
 
 #. type: TP
-#: client.conf.man.in:60 cupsd.conf.man.in:444
+#: client.conf.man.in:60 cupsd.conf.man.in:436
 #, no-wrap
 msgid "B<SSLOptions None>"
 msgstr "B<SSLOptions> I<None>"
@@ -1586,7 +1584,7 @@ msgstr "cupsaddsmb"
 # type: TH
 #. type: TH
 #: cupsaddsmb.man.in:13 cupsd-logs.man:13 cupsenable.man:13 cupsfilter.man:12
-#: cupstestdsc.man:13 cupstestppd.man:13 ippfind.man:12 lpc.man:13
+#: cupstestdsc.man:13 cupstestppd.man:13 lpc.man:13
 #, no-wrap
 msgid "11 June 2014"
 msgstr "11 juin 2014"
@@ -2026,7 +2024,7 @@ msgstr "Afficher le répertoire de données par défaut de CUPS."
 
 # type: TP
 #. type: TP
-#: cups-config.man:69 ippfind.man:191 ipptool.man:91
+#: cups-config.man:69 ippfind.man:196 ipptool.man:91
 #, no-wrap
 msgid "B<--help>"
 msgstr "B<--help>"
@@ -2129,7 +2127,7 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-config.man:91 ippfind.man:194 ipptool.man:101
+#: cups-config.man:91 ippfind.man:199 ipptool.man:101
 #, no-wrap
 msgid "B<--version>"
 msgstr "B<--version>"
@@ -2249,7 +2247,7 @@ msgstr ""
 # type: TP
 #. type: TP
 #: cupsctl.man:51 cupsenable.man:65 lpinfo.man:71 lpmove.man:50
-#: lpoptions.man.in:96 lpq.man:53 lpstat.man:104
+#: lpoptions.man.in:81 lpq.man:53 lpstat.man:104
 #, no-wrap
 msgid "B<-h >I<server>[B<:>I<port>]"
 msgstr "B<-h> I<serveur>[B<:>I<port>]"
@@ -2411,6 +2409,14 @@ msgstr "B<cupsd.conf>(5), B<cupsd>(8)"
 #, no-wrap
 msgid "cupsd.conf"
 msgstr "cupsd.conf"
+
+# type: TH
+#. type: TH
+#: cupsd.conf.man.in:13
+#, fuzzy, no-wrap
+#| msgid "4 April 2014"
+msgid "24 April 2018"
+msgstr "4 avril 2014"
 
 # type: Plain text
 #. type: Plain text
@@ -2798,13 +2804,31 @@ msgstr ""
 # type: TP
 #. type: TP
 #: cupsd.conf.man.in:134
+#, fuzzy, no-wrap
+#| msgid "ErrorPolicy retry-current-job"
+msgid "B<ErrorPolicy retry-current-job>"
+msgstr "B<ErrorPolicy> I<retry-current-job>"
+
+# type: Plain text
+#. type: Plain text
+#: cupsd.conf.man.in:137
+msgid ""
+"Specifies that a failed print job should be retried immediately unless "
+"otherwise specified for the printer."
+msgstr ""
+"Indiquer qu’une tâche d’impression ayant échoué sera recommencée "
+"immédiatement à moins d’indication contraire pour l’imprimante."
+
+# type: TP
+#. type: TP
+#: cupsd.conf.man.in:137
 #, no-wrap
 msgid "B<ErrorPolicy retry-job>"
 msgstr "B<ErrorPolicy> I<retry-job>"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:137
+#: cupsd.conf.man.in:140
 msgid ""
 "Specifies that a failed print job should be retried at a later time unless "
 "otherwise specified for the printer. The 'retry-job' error policy is the "
@@ -2813,23 +2837,6 @@ msgstr ""
 "Indiquer qu’une tâche d’impression ayant échoué sera recommencée plus tard à "
 "moins d’indication contraire pour l’imprimante. Par défaut, « retry-job » "
 "est la politique d'erreur."
-
-# type: TP
-#. type: TP
-#: cupsd.conf.man.in:137
-#, no-wrap
-msgid "B<ErrorPolicy retry-this-job>"
-msgstr "B<ErrorPolicy> I<retry-this-job>"
-
-# type: Plain text
-#. type: Plain text
-#: cupsd.conf.man.in:140
-msgid ""
-"Specifies that a failed print job should be retried immediately unless "
-"otherwise specified for the printer."
-msgstr ""
-"Indiquer qu’une tâche d’impression ayant échoué sera recommencée "
-"immédiatement à moins d’indication contraire pour l’imprimante."
 
 # type: TP
 #. type: TP
@@ -3514,7 +3521,7 @@ msgid "B<MultipleOperationTimeout >I<seconds>"
 msgstr "B<MultipleOperationTimeout> I<secondes>"
 
 # type: Plain text
-#. #PassEnv
+#. #Policy
 #. type: Plain text
 #: cupsd.conf.man.in:346
 msgid ""
@@ -3528,33 +3535,19 @@ msgstr ""
 #. type: TP
 #: cupsd.conf.man.in:346
 #, no-wrap
-msgid "B<PassEnv >I<variable >[ ... I<variable >]"
-msgstr "B<PassEnv> I<variable> [... I<variable>]"
-
-# type: Plain text
-#. #Policy
-#. type: Plain text
-#: cupsd.conf.man.in:350
-msgid "Passes the specified environment variable(s) to child processes."
-msgstr "Passer les variables d'environnement indiquées aux processus fils."
-
-# type: TP
-#. type: TP
-#: cupsd.conf.man.in:350
-#, no-wrap
 msgid "B<E<lt>Policy >I<name>B<E<gt> >... B<E<lt>/PolicyE<gt>>"
 msgstr "B<E<lt>Policy >I<nom>B<E<gt> >... B<E<lt>/PolicyE<gt>>"
 
 # type: Plain text
 #. #Port
 #. type: Plain text
-#: cupsd.conf.man.in:354
+#: cupsd.conf.man.in:350
 msgid "Specifies access control for the named policy."
 msgstr "Définir les contrôles d'accès pour la politique donnée."
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:354
+#: cupsd.conf.man.in:350
 #, no-wrap
 msgid "B<Port >I<number>"
 msgstr "B<Port> I<nombre>"
@@ -3562,34 +3555,34 @@ msgstr "B<Port> I<nombre>"
 # type: Plain text
 #. #PreserveJobFiles
 #. type: Plain text
-#: cupsd.conf.man.in:358
+#: cupsd.conf.man.in:354
 msgid "Listens to the specified port number for connections."
 msgstr "Écouter sur le numéro de port indiqué pour des connexions."
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:358
+#: cupsd.conf.man.in:354
 #, no-wrap
 msgid "B<PreserveJobFiles Yes>"
 msgstr "B<PreserveJobFiles> I<Yes>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:360
+#: cupsd.conf.man.in:356
 #, no-wrap
 msgid "B<PreserveJobFiles No>"
 msgstr "B<PreserveJobFiles> I<No>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:362
+#: cupsd.conf.man.in:358
 #, no-wrap
 msgid "B<PreserveJobFiles >I<seconds>"
 msgstr "B<PreserveJobFiles> I<secondes>"
 
 #. #PreserveJobHistory
 #. type: Plain text
-#: cupsd.conf.man.in:368
+#: cupsd.conf.man.in:364
 msgid ""
 "Specifies whether job files (documents) are preserved after a job is "
 "printed.  If a numeric value is specified, job files are preserved for the "
@@ -3603,28 +3596,28 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:368
+#: cupsd.conf.man.in:364
 #, no-wrap
 msgid "B<PreserveJobHistory Yes>"
 msgstr "B<PreserveJobHistory> I<Yes>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:370
+#: cupsd.conf.man.in:366
 #, no-wrap
 msgid "B<PreserveJobHistory No>"
 msgstr "B<PreserveJobHistory> I<No>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:372
+#: cupsd.conf.man.in:368
 #, no-wrap
 msgid "B<PreserveJobHistory >I<seconds>"
 msgstr "B<PreserveJobHistory> I<secondes>"
 
 #. #ReloadTimeout
 #. type: Plain text
-#: cupsd.conf.man.in:379
+#: cupsd.conf.man.in:375
 msgid ""
 "Specifies whether the job history is preserved after a job is printed.  If a "
 "numeric value is specified, the job history is preserved for the indicated "
@@ -3639,7 +3632,7 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:379
+#: cupsd.conf.man.in:375
 #, no-wrap
 msgid "B<ReloadTimeout >I<seconds>"
 msgstr "B<ReloadTimeout> I<secondes>"
@@ -3647,7 +3640,7 @@ msgstr "B<ReloadTimeout> I<secondes>"
 # type: Plain text
 #. #ServerAdmin
 #. type: Plain text
-#: cupsd.conf.man.in:384
+#: cupsd.conf.man.in:380
 msgid ""
 "Specifies the amount of time to wait for job completion before restarting "
 "the scheduler.  The default is \"30\"."
@@ -3656,7 +3649,7 @@ msgstr ""
 "redémarrer l'ordonnanceur. Par défaut, B<30>."
 
 #. type: TP
-#: cupsd.conf.man.in:384
+#: cupsd.conf.man.in:380
 #, no-wrap
 msgid "B<ServerAdmin >I<email-address>"
 msgstr "B<ServerAdmin >I<adresse_courriel>"
@@ -3664,7 +3657,7 @@ msgstr "B<ServerAdmin >I<adresse_courriel>"
 # type: Plain text
 #. #ServerAlias
 #. type: Plain text
-#: cupsd.conf.man.in:389
+#: cupsd.conf.man.in:385
 msgid ""
 "Specifies the email address of the server administrator.  The default value "
 "is \"root@ServerName\"."
@@ -3674,20 +3667,20 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:389
+#: cupsd.conf.man.in:385
 #, no-wrap
 msgid "B<ServerAlias >I<hostname >[ ... I<hostname >]"
 msgstr "B<ServerAlias> I<nom_hôte> [... I<nom_hôte>]"
 
 #. type: TP
-#: cupsd.conf.man.in:391
+#: cupsd.conf.man.in:387
 #, no-wrap
 msgid "B<ServerAlias *>"
 msgstr "B<ServerAlias *>"
 
 #. #ServerName
 #. type: Plain text
-#: cupsd.conf.man.in:397
+#: cupsd.conf.man.in:393
 msgid ""
 "The ServerAlias directive is used for HTTP Host header validation when "
 "clients connect to the scheduler from external interfaces.  Using the "
@@ -3706,7 +3699,7 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:397
+#: cupsd.conf.man.in:393
 #, no-wrap
 msgid "B<ServerName >I<hostname>"
 msgstr "B<ServerName> I<nom_hôte>"
@@ -3714,7 +3707,7 @@ msgstr "B<ServerName> I<nom_hôte>"
 # type: Plain text
 #. #ServerTokens
 #. type: Plain text
-#: cupsd.conf.man.in:404
+#: cupsd.conf.man.in:400
 msgid ""
 "Specifies the fully-qualified hostname of the server.  The default is the "
 "value reported by the B<hostname>(1)  command."
@@ -3724,56 +3717,56 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:404
+#: cupsd.conf.man.in:400
 #, no-wrap
 msgid "B<ServerTokens None>"
 msgstr "B<ServerTokens> I<None>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:406
+#: cupsd.conf.man.in:402
 #, no-wrap
 msgid "B<ServerTokens ProductOnly>"
 msgstr "B<ServerTokens> I<ProductOnly>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:408
+#: cupsd.conf.man.in:404
 #, no-wrap
 msgid "B<ServerTokens Major>"
 msgstr "B<ServerTokens> I<Major>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:410
+#: cupsd.conf.man.in:406
 #, no-wrap
 msgid "B<ServerTokens Minor>"
 msgstr "B<ServerTokens> I<Minor>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:412
+#: cupsd.conf.man.in:408
 #, no-wrap
 msgid "B<ServerTokens Minimal>"
 msgstr "B<ServerTokens> I<Minimal>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:414
+#: cupsd.conf.man.in:410
 #, no-wrap
 msgid "B<ServerTokens OS>"
 msgstr "B<ServerTokens> I<OS>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:416
+#: cupsd.conf.man.in:412
 #, no-wrap
 msgid "B<ServerTokens Full>"
 msgstr "B<ServerTokens> I<Full>"
 
-#. #SetEnv
+#. #SSLListen
 #. type: Plain text
-#: cupsd.conf.man.in:430
+#: cupsd.conf.man.in:426
 msgid ""
 "Specifies what information is included in the Server header of HTTP "
 "responses.  \"None\" disables the Server header.  \"ProductOnly\" reports "
@@ -3791,35 +3784,21 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:430
-#, no-wrap
-msgid "B<SetEnv >I<variable value>"
-msgstr "B<SetEnv variable> I<valeur>"
-
-# type: Plain text
-#. #SSLListen
-#. type: Plain text
-#: cupsd.conf.man.in:434
-msgid "Set the specified environment variable to be passed to child processes."
-msgstr "Fixer les variables d'environnement à passer aux processus fils."
-
-# type: TP
-#. type: TP
-#: cupsd.conf.man.in:434
+#: cupsd.conf.man.in:426
 #, no-wrap
 msgid "B<SSLListen >I<ipv4-address>B<:>I<port>"
 msgstr "B<SSLListen> I<adresse_ipv4>B<:>I<port>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:436
+#: cupsd.conf.man.in:428
 #, no-wrap
 msgid "B<SSLListen [>I<ipv6-address>B<]:>I<port>"
 msgstr "B<SSListen> I<adresse_ipv6>B<:>I<port>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:438
+#: cupsd.conf.man.in:430
 #, no-wrap
 msgid "B<SSLListen *:>I<port>"
 msgstr "B<SSListen *:>I<port>"
@@ -3827,14 +3806,14 @@ msgstr "B<SSListen *:>I<port>"
 # type: Plain text
 #. #SSLOptions
 #. type: Plain text
-#: cupsd.conf.man.in:442
+#: cupsd.conf.man.in:434
 msgid "Listens on the specified address and port for encrypted connections."
 msgstr ""
 "Écouter à l'adresse et au port indiqués pour les connexions sécurisées."
 
 #. #SSLPort
 #. type: Plain text
-#: cupsd.conf.man.in:456
+#: cupsd.conf.man.in:448
 msgid ""
 "Sets encryption options.  By default, CUPS only supports encryption using "
 "TLS v1.0 or higher using known secure cipher suites.  Security is reduced "
@@ -3863,7 +3842,7 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:456
+#: cupsd.conf.man.in:448
 #, no-wrap
 msgid "B<SSLPort >I<port>"
 msgstr "B<SSLPort >I<port>"
@@ -3871,25 +3850,25 @@ msgstr "B<SSLPort >I<port>"
 # type: Plain text
 #. #StrictConformance
 #. type: Plain text
-#: cupsd.conf.man.in:460
+#: cupsd.conf.man.in:452
 msgid "Listens on the specified port for encrypted connections."
 msgstr "Écouter sur le port indiqué pour les connexions sécurisées."
 
 #. type: TP
-#: cupsd.conf.man.in:460
+#: cupsd.conf.man.in:452
 #, no-wrap
 msgid "B<StrictConformance Yes>"
 msgstr "B<StrictConformance> I<Yes>"
 
 #. type: TP
-#: cupsd.conf.man.in:462
+#: cupsd.conf.man.in:454
 #, no-wrap
 msgid "B<StrictConformance No>"
 msgstr "B<StrictConformance> I<No>"
 
 #. #Timeout
 #. type: Plain text
-#: cupsd.conf.man.in:467
+#: cupsd.conf.man.in:459
 msgid ""
 "Specifies whether the scheduler requires clients to strictly adhere to the "
 "IPP specifications.  The default is \"No\"."
@@ -3899,7 +3878,7 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:467
+#: cupsd.conf.man.in:459
 #, no-wrap
 msgid "B<Timeout >I<seconds>"
 msgstr "B<Timeout> I<secondes>"
@@ -3907,50 +3886,50 @@ msgstr "B<Timeout> I<secondes>"
 # type: Plain text
 #. #WebInterface
 #. type: Plain text
-#: cupsd.conf.man.in:472
+#: cupsd.conf.man.in:464
 msgid ""
 "Specifies the HTTP request timeout.  The default is \"300\" (5 minutes)."
 msgstr ""
 "Définir le délai d'attente des requêtes HTTP. Par défaut, B<300> (5 minutes)."
 
 #. type: TP
-#: cupsd.conf.man.in:472
+#: cupsd.conf.man.in:464
 #, no-wrap
 msgid "B<WebInterface yes>"
 msgstr "B<WebInterface> I<yes>"
 
 #. type: TP
-#: cupsd.conf.man.in:474
+#: cupsd.conf.man.in:466
 #, no-wrap
 msgid "B<WebInterface no>"
 msgstr "B<WebInterface> I<no>"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:478
+#: cupsd.conf.man.in:470
 msgid "Specifies whether the web interface is enabled.  The default is \"No\"."
 msgstr "Indiquer si l'interface web est activée. Par défaut, « No »."
 
 #. type: SS
-#: cupsd.conf.man.in:478
+#: cupsd.conf.man.in:470
 #, no-wrap
 msgid "HTTP METHOD NAMES"
 msgstr "NOMS DES MÉTHODES HTTP"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:481
+#: cupsd.conf.man.in:473
 msgid "The following HTTP methods are supported by B<cupsd>(8):"
 msgstr "Les méthodes suivantes sont reconnues par B<cupsd>(8) :"
 
 #. type: TP
-#: cupsd.conf.man.in:481
+#: cupsd.conf.man.in:473
 #, no-wrap
 msgid "GET"
 msgstr "GET"
 
 #. type: Plain text
-#: cupsd.conf.man.in:484
+#: cupsd.conf.man.in:476
 msgid ""
 "Used by a client to download icons and other printer resources and to access "
 "the CUPS web interface."
@@ -3959,13 +3938,13 @@ msgstr ""
 "et accession à l’interface web de CUPS."
 
 #. type: TP
-#: cupsd.conf.man.in:484
+#: cupsd.conf.man.in:476
 #, no-wrap
 msgid "HEAD"
 msgstr "HEAD"
 
 #. type: Plain text
-#: cupsd.conf.man.in:487
+#: cupsd.conf.man.in:479
 msgid ""
 "Used by a client to get the type, size, and modification date of resources."
 msgstr ""
@@ -3973,18 +3952,18 @@ msgstr ""
 "ressources."
 
 #. type: Plain text
-#: cupsd.conf.man.in:490
+#: cupsd.conf.man.in:482
 msgid "Used by a client to establish a secure (SSL/TLS) connection."
 msgstr "Établissement par un client d’une connexion sécurisée (SSL ou TLS)."
 
 #. type: TP
-#: cupsd.conf.man.in:490
+#: cupsd.conf.man.in:482
 #, no-wrap
 msgid "POST"
 msgstr "POST"
 
 #. type: Plain text
-#: cupsd.conf.man.in:493
+#: cupsd.conf.man.in:485
 msgid ""
 "Used by a client to submit IPP requests and HTML forms from the CUPS web "
 "interface."
@@ -3993,426 +3972,426 @@ msgstr ""
 "de l’interface web de CUPS."
 
 #. type: TP
-#: cupsd.conf.man.in:493
+#: cupsd.conf.man.in:485
 #, no-wrap
 msgid "PUT"
 msgstr "PUT"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:496
+#: cupsd.conf.man.in:488
 msgid "Used by a client to upload configuration files."
 msgstr "Téléversement par un client de fichiers de configuration."
 
 # type: SH
 #. type: SS
-#: cupsd.conf.man.in:496
+#: cupsd.conf.man.in:488
 #, no-wrap
 msgid "IPP OPERATION NAMES"
 msgstr "NOMS D’OPÉRATIONS IPP"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:499
+#: cupsd.conf.man.in:491
 msgid "The following IPP operations are supported by B<cupsd>(8):"
 msgstr "Les opérations IPP suivantes sont reconnues par B<cupsd>(8) :"
 
 #. type: TP
-#: cupsd.conf.man.in:499
+#: cupsd.conf.man.in:491
 #, no-wrap
 msgid "CUPS-Accept-Jobs"
 msgstr "CUPS-Accept-Jobs"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:502
+#: cupsd.conf.man.in:494
 msgid "Allows a printer to accept new jobs."
 msgstr "Permettre à l'imprimante d’accepter de nouveaux travaux d'impression."
 
 #. type: TP
-#: cupsd.conf.man.in:502
+#: cupsd.conf.man.in:494
 #, no-wrap
 msgid "CUPS-Add-Modify-Class"
 msgstr "CUPS-Add-Modify-Class"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:505
+#: cupsd.conf.man.in:497
 msgid "Adds or modifies a printer class."
 msgstr "Ajouter ou modifier une classe d'imprimantes."
 
 #. type: TP
-#: cupsd.conf.man.in:505
+#: cupsd.conf.man.in:497
 #, no-wrap
 msgid "CUPS-Add-Modify-Printer"
 msgstr "CUPS-Add-Modify-Printer"
 
 #. type: Plain text
-#: cupsd.conf.man.in:508
+#: cupsd.conf.man.in:500
 msgid "Adds or modifies a printer."
 msgstr "Ajouter ou modifier une imprimante."
 
 #. type: TP
-#: cupsd.conf.man.in:508
+#: cupsd.conf.man.in:500
 #, no-wrap
 msgid "CUPS-Authenticate-Job"
 msgstr "CUPS-Authenticate-Job"
 
 #. type: Plain text
-#: cupsd.conf.man.in:511
+#: cupsd.conf.man.in:503
 msgid "Releases a job that is held for authentication."
 msgstr "Valider un travail mis en attente pour authentification."
 
 #. type: TP
-#: cupsd.conf.man.in:511
+#: cupsd.conf.man.in:503
 #, no-wrap
 msgid "CUPS-Delete-Class"
 msgstr "CUPS-Delete-Class"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:514
+#: cupsd.conf.man.in:506
 msgid "Deletes a printer class."
 msgstr "Supprimer une classe d'imprimantes."
 
 #. type: TP
-#: cupsd.conf.man.in:514
+#: cupsd.conf.man.in:506
 #, no-wrap
 msgid "CUPS-Delete-Printer"
 msgstr "CUPS-Delete-Printer"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:517
+#: cupsd.conf.man.in:509
 msgid "Deletes a printer."
 msgstr "Supprimer une imprimante."
 
 #. type: TP
-#: cupsd.conf.man.in:517
+#: cupsd.conf.man.in:509
 #, no-wrap
 msgid "CUPS-Get-Classes"
 msgstr "CUPS-Get-Classes"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:520
+#: cupsd.conf.man.in:512
 msgid "Gets a list of printer classes."
 msgstr "Obtenir une liste de classes d'imprimantes."
 
 #. type: TP
-#: cupsd.conf.man.in:520
+#: cupsd.conf.man.in:512
 #, no-wrap
 msgid "CUPS-Get-Default"
 msgstr "CUPS-Get-Default"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:523
+#: cupsd.conf.man.in:515
 msgid "Gets the server default printer or printer class."
 msgstr "Obtenir l’imprimante ou la classe d’imprimantes par défaut du serveur."
 
 #. type: TP
-#: cupsd.conf.man.in:523
+#: cupsd.conf.man.in:515
 #, no-wrap
 msgid "CUPS-Get-Devices"
 msgstr "CUPS-Get-Devices"
 
 #. type: Plain text
-#: cupsd.conf.man.in:526
+#: cupsd.conf.man.in:518
 msgid "Gets a list of devices that are currently available."
 msgstr "Obtenir la liste des périphériques disponibles à ce moment."
 
 #. type: TP
-#: cupsd.conf.man.in:526
+#: cupsd.conf.man.in:518
 #, no-wrap
 msgid "CUPS-Get-Document"
 msgstr "CUPS-Get-Document"
 
 #. type: Plain text
-#: cupsd.conf.man.in:529
+#: cupsd.conf.man.in:521
 msgid "Gets a document file for a job."
 msgstr "Obtenir un fichier de document à imprimer."
 
 #. type: TP
-#: cupsd.conf.man.in:529
+#: cupsd.conf.man.in:521
 #, no-wrap
 msgid "CUPS-Get-PPD"
 msgstr "CUPS-Get-PPD"
 
 #. type: Plain text
-#: cupsd.conf.man.in:532
+#: cupsd.conf.man.in:524
 msgid "Gets a PPD file."
 msgstr "Obtenir un fichier PPD."
 
 #. type: TP
-#: cupsd.conf.man.in:532
+#: cupsd.conf.man.in:524
 #, no-wrap
 msgid "CUPS-Get-PPDs"
 msgstr "CUPS-Get-PPDs"
 
 #. type: Plain text
-#: cupsd.conf.man.in:535
+#: cupsd.conf.man.in:527
 msgid "Gets a list of installed PPD files."
 msgstr "Obtenir la liste des fichiers installés."
 
 #. type: TP
-#: cupsd.conf.man.in:535
+#: cupsd.conf.man.in:527
 #, no-wrap
 msgid "CUPS-Get-Printers"
 msgstr "CUPS-Get-Printers"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:538
+#: cupsd.conf.man.in:530
 msgid "Gets a list of printers."
 msgstr "Obtenir la liste des imprimantes."
 
 #. type: TP
-#: cupsd.conf.man.in:538
+#: cupsd.conf.man.in:530
 #, no-wrap
 msgid "CUPS-Move-Job"
 msgstr "CUPS-Move-Job"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:541
+#: cupsd.conf.man.in:533
 msgid "Moves a job."
 msgstr "Déplacer un travail."
 
 #. type: TP
-#: cupsd.conf.man.in:541
+#: cupsd.conf.man.in:533
 #, no-wrap
 msgid "CUPS-Reject-Jobs"
 msgstr "CUPS-Reject-Jobs"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:544
+#: cupsd.conf.man.in:536
 msgid "Prevents a printer from accepting new jobs."
 msgstr "Empêcher une imprimante d’accepter de nouveaux travaux."
 
 #. type: TP
-#: cupsd.conf.man.in:544
+#: cupsd.conf.man.in:536
 #, no-wrap
 msgid "CUPS-Set-Default"
 msgstr "CUPS-Set-Default"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:547
+#: cupsd.conf.man.in:539
 msgid "Sets the server default printer or printer class."
 msgstr "Définir l’imprimante ou la classe d’imprimantes par défaut du serveur."
 
 # type: TH
 #. type: TP
-#: cupsd.conf.man.in:547
+#: cupsd.conf.man.in:539
 #, no-wrap
 msgid "Cancel-Job"
 msgstr "Cancel-Job"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:550
+#: cupsd.conf.man.in:542
 msgid "Cancels a job."
 msgstr "Annuler un travail."
 
 #. type: TP
-#: cupsd.conf.man.in:550
+#: cupsd.conf.man.in:542
 #, no-wrap
 msgid "Cancel-Jobs"
 msgstr "Cancel-Jobs"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:553
+#: cupsd.conf.man.in:545
 msgid "Cancels one or more jobs."
 msgstr "Annuler un ou plusieurs travaux."
 
 #. type: TP
-#: cupsd.conf.man.in:553
+#: cupsd.conf.man.in:545
 #, no-wrap
 msgid "Cancel-My-Jobs"
 msgstr "Cancel-My-Jobs"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:556
+#: cupsd.conf.man.in:548
 msgid "Cancels one or more jobs creates by a user."
 msgstr "Annuler un ou plusieurs travaux d’un utilisateur."
 
 #. type: TP
-#: cupsd.conf.man.in:556
+#: cupsd.conf.man.in:548
 #, no-wrap
 msgid "Cancel-Subscription"
 msgstr "Cancel-Subscription"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:559
+#: cupsd.conf.man.in:551
 msgid "Cancels a subscription."
 msgstr "Annuler un abonnement."
 
 #. type: TP
-#: cupsd.conf.man.in:559
+#: cupsd.conf.man.in:551
 #, no-wrap
 msgid "Close-Job"
 msgstr "Close-Job"
 
 #. type: Plain text
-#: cupsd.conf.man.in:562
+#: cupsd.conf.man.in:554
 msgid "Closes a job that is waiting for more documents."
 msgstr "Arrêter un travail attendant plus de documents."
 
 #. type: TP
-#: cupsd.conf.man.in:562
+#: cupsd.conf.man.in:554
 #, no-wrap
 msgid "Create-Job"
 msgstr "Create-Job"
 
 #. type: Plain text
-#: cupsd.conf.man.in:565
+#: cupsd.conf.man.in:557
 msgid "Creates a new job with no documents."
 msgstr "Créer un nouveau travail sans document."
 
 #. type: TP
-#: cupsd.conf.man.in:565
+#: cupsd.conf.man.in:557
 #, no-wrap
 msgid "Create-Job-Subscriptions"
 msgstr "Create-Job-Subscriptions"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:568
+#: cupsd.conf.man.in:560
 msgid "Creates a subscription for job events."
 msgstr "Créer un abonnement pour les évènements concernant les travaux."
 
 #. type: TP
-#: cupsd.conf.man.in:568
+#: cupsd.conf.man.in:560
 #, no-wrap
 msgid "Create-Printer-Subscriptions"
 msgstr "Create-Printer-Subscriptions"
 
 #. type: Plain text
-#: cupsd.conf.man.in:571
+#: cupsd.conf.man.in:563
 msgid "Creates a subscription for printer events."
 msgstr "Créer un abonnement pour les évènements concernant les imprimantes."
 
 #. type: TP
-#: cupsd.conf.man.in:571
+#: cupsd.conf.man.in:563
 #, no-wrap
 msgid "Get-Job-Attributes"
 msgstr "Get-Job-Attributes"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:574
+#: cupsd.conf.man.in:566
 msgid "Gets information about a job."
 msgstr "Obtenir des informations concernant un travail."
 
 #. type: TP
-#: cupsd.conf.man.in:574
+#: cupsd.conf.man.in:566
 #, no-wrap
 msgid "Get-Jobs"
 msgstr "Get-Jobs"
 
 #. type: Plain text
-#: cupsd.conf.man.in:577
+#: cupsd.conf.man.in:569
 msgid "Gets a list of jobs."
 msgstr "Obtenir la liste des travaux."
 
 #. type: TP
-#: cupsd.conf.man.in:577
+#: cupsd.conf.man.in:569
 #, no-wrap
 msgid "Get-Notifications"
 msgstr "Get-Notifications"
 
 #. type: Plain text
-#: cupsd.conf.man.in:580
+#: cupsd.conf.man.in:572
 msgid "Gets a list of event notifications for a subscription."
 msgstr "Obtenir la liste des notifications d’évènement pour un abonnement."
 
 #. type: TP
-#: cupsd.conf.man.in:580
+#: cupsd.conf.man.in:572
 #, no-wrap
 msgid "Get-Printer-Attributes"
 msgstr "Get-Printer-Attributes"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:583
+#: cupsd.conf.man.in:575
 msgid "Gets information about a printer or printer class."
 msgstr "Obtenir des informations sur une imprimante ou une classe."
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:583
+#: cupsd.conf.man.in:575
 #, no-wrap
 msgid "Get-Subscription-Attributes"
 msgstr "Get-Subscription-Attributes"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:586
+#: cupsd.conf.man.in:578
 msgid "Gets information about a subscription."
 msgstr "Obtenir des informations à propos d’un abonnement."
 
 # type: TH
 #. type: TP
-#: cupsd.conf.man.in:586
+#: cupsd.conf.man.in:578
 #, no-wrap
 msgid "Get-Subscriptions"
 msgstr "Get-Subscriptions"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:589
+#: cupsd.conf.man.in:581
 msgid "Gets a list of subscriptions."
 msgstr "Obtenir une liste d’abonnements."
 
 #. type: TP
-#: cupsd.conf.man.in:589
+#: cupsd.conf.man.in:581
 #, no-wrap
 msgid "Hold-Job"
 msgstr "Hold-Job"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:592
+#: cupsd.conf.man.in:584
 msgid "Holds a job from printing."
 msgstr "Suspendre l'impression d'un travail."
 
 #. type: TP
-#: cupsd.conf.man.in:592
+#: cupsd.conf.man.in:584
 #, no-wrap
 msgid "Hold-New-Jobs"
 msgstr "Hold-New-Jobs"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:595
+#: cupsd.conf.man.in:587
 msgid "Holds all new jobs from printing."
 msgstr "Suspendre l'impression de tous les nouveaux travaux."
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:595
+#: cupsd.conf.man.in:587
 #, no-wrap
 msgid "Pause-Printer"
 msgstr "Pause-Printer"
 
 #. type: Plain text
-#: cupsd.conf.man.in:598
+#: cupsd.conf.man.in:590
 msgid "Stops processing of jobs by a printer or printer class."
 msgstr "Arrêter le déroulement des travaux pour une imprimante ou une classe."
 
 #. type: TP
-#: cupsd.conf.man.in:598
+#: cupsd.conf.man.in:590
 #, no-wrap
 msgid "Pause-Printer-After-Current-Job"
 msgstr "Pause-Printer-After-Current-Job"
 
 #. type: Plain text
-#: cupsd.conf.man.in:601
+#: cupsd.conf.man.in:593
 msgid ""
 "Stops processing of jobs by a printer or printer class after the current job "
 "is finished."
@@ -4422,156 +4401,156 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:601
+#: cupsd.conf.man.in:593
 #, no-wrap
 msgid "Print-Job"
 msgstr "Print-Job"
 
 #. type: Plain text
-#: cupsd.conf.man.in:604
+#: cupsd.conf.man.in:596
 msgid "Creates a new job with a single document."
 msgstr "Créer un nouveau travail avec un document unique."
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:604
+#: cupsd.conf.man.in:596
 #, no-wrap
 msgid "Purge-Jobs"
 msgstr "Purge-Jobs"
 
 #. type: Plain text
-#: cupsd.conf.man.in:607
+#: cupsd.conf.man.in:599
 msgid "Cancels one or more jobs and deletes the job history."
 msgstr "Annuler un ou plusieurs travaux et supprimer l’historique des travaux."
 
 #. type: TP
-#: cupsd.conf.man.in:607
+#: cupsd.conf.man.in:599
 #, no-wrap
 msgid "Release-Held-New-Jobs"
 msgstr "Release-Held-New-Jobs"
 
 #. type: Plain text
-#: cupsd.conf.man.in:610
+#: cupsd.conf.man.in:602
 msgid "Allows previously held jobs to print."
 msgstr "Autoriser des travaux précédemment suspendus."
 
 #. type: TP
-#: cupsd.conf.man.in:610
+#: cupsd.conf.man.in:602
 #, no-wrap
 msgid "Release-Job"
 msgstr "Release-Job"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:613
+#: cupsd.conf.man.in:605
 msgid "Allows a job to print."
 msgstr "Autoriser l’impression d’un travail."
 
 # type: Plain text
 #. type: TP
-#: cupsd.conf.man.in:613
+#: cupsd.conf.man.in:605
 #, no-wrap
 msgid "Renew-Subscription"
 msgstr "Renew-Subscription"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:616
+#: cupsd.conf.man.in:608
 msgid "Renews a subscription."
 msgstr "Renouveler un abonnement."
 
 #. type: TP
-#: cupsd.conf.man.in:616
+#: cupsd.conf.man.in:608
 #, no-wrap
 msgid "Restart-Job"
 msgstr "Restart-Job"
 
 #. type: Plain text
-#: cupsd.conf.man.in:619
+#: cupsd.conf.man.in:611
 msgid "Reprints a job, if possible."
 msgstr "Réimprimer un travail si possible."
 
 #. type: TP
-#: cupsd.conf.man.in:619
+#: cupsd.conf.man.in:611
 #, no-wrap
 msgid "Send-Document"
 msgstr "Send-Document"
 
 #. type: Plain text
-#: cupsd.conf.man.in:622
+#: cupsd.conf.man.in:614
 msgid "Adds a document to a job."
 msgstr "Ajouter un document au travail."
 
 #. type: TP
-#: cupsd.conf.man.in:622
+#: cupsd.conf.man.in:614
 #, no-wrap
 msgid "Set-Job-Attributes"
 msgstr "Set-Job-Attributes"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:625
+#: cupsd.conf.man.in:617
 msgid "Changes job information."
 msgstr "Modifier l’information sur le travail."
 
 #. type: TP
-#: cupsd.conf.man.in:625
+#: cupsd.conf.man.in:617
 #, no-wrap
 msgid "Set-Printer-Attributes"
 msgstr "Set-Printer-Attributes"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:628
+#: cupsd.conf.man.in:620
 msgid "Changes printer or printer class information."
 msgstr "Modifier l’information sur une imprimante ou une classe d’imprimantes."
 
 #. type: TP
-#: cupsd.conf.man.in:628
+#: cupsd.conf.man.in:620
 #, no-wrap
 msgid "Validate-Job"
 msgstr "Validate-Job"
 
 #. type: Plain text
-#: cupsd.conf.man.in:631
+#: cupsd.conf.man.in:623
 msgid "Validates options for a new job."
 msgstr "Valider les options pour un nouveau travail."
 
 #. type: SS
-#: cupsd.conf.man.in:631
+#: cupsd.conf.man.in:623
 #, no-wrap
 msgid "LOCATION PATHS"
 msgstr "CHEMINS D’ACCÈS"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:634
+#: cupsd.conf.man.in:626
 msgid "The following paths are commonly used when configuring B<cupsd>(8):"
 msgstr ""
 "Les chemins suivants sont couramment utilisés lors de la configuration de "
 "B<cupsd>(8) :"
 
 #. type: TP
-#: cupsd.conf.man.in:634
+#: cupsd.conf.man.in:626
 #, no-wrap
 msgid "/"
 msgstr "/"
 
 #. type: Plain text
-#: cupsd.conf.man.in:637
+#: cupsd.conf.man.in:629
 msgid "The path for all get operations (get-printers, get-jobs, etc.)"
 msgstr ""
 "Chemin pour toutes les opérations « get » (get-printers, get-jobs, etc.)"
 
 # type: TH
 #. type: TP
-#: cupsd.conf.man.in:637
+#: cupsd.conf.man.in:629
 #, no-wrap
 msgid "/admin"
 msgstr "/admin"
 
 #. type: Plain text
-#: cupsd.conf.man.in:640
+#: cupsd.conf.man.in:632
 msgid ""
 "The path for all administration operations (add-printer, delete-printer, "
 "start-printer, etc.)"
@@ -4580,13 +4559,13 @@ msgstr ""
 "printer, start-printer, etc.)"
 
 #. type: TP
-#: cupsd.conf.man.in:640
+#: cupsd.conf.man.in:632
 #, no-wrap
 msgid "/admin/conf"
 msgstr "/admin/conf"
 
 #. type: Plain text
-#: cupsd.conf.man.in:643
+#: cupsd.conf.man.in:635
 msgid ""
 "The path for access to the CUPS configuration files (cupsd.conf, client."
 "conf, etc.)"
@@ -4595,13 +4574,13 @@ msgstr ""
 "client.conf, etc.)"
 
 #. type: TP
-#: cupsd.conf.man.in:643
+#: cupsd.conf.man.in:635
 #, no-wrap
 msgid "/admin/log"
 msgstr "/admin/log"
 
 #. type: Plain text
-#: cupsd.conf.man.in:646
+#: cupsd.conf.man.in:638
 msgid ""
 "The path for access to the CUPS log files (access_log, error_log, page_log)"
 msgstr ""
@@ -4610,112 +4589,112 @@ msgstr ""
 
 # type: TH
 #. type: TP
-#: cupsd.conf.man.in:646
+#: cupsd.conf.man.in:638
 #, no-wrap
 msgid "/classes"
 msgstr "/classes"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:649
+#: cupsd.conf.man.in:641
 msgid "The path for all printer classes"
 msgstr "Chemin pour toutes les classes d’imprimantes."
 
 # type: TH
 #. type: TP
-#: cupsd.conf.man.in:649
+#: cupsd.conf.man.in:641
 #, no-wrap
 msgid "/classes/name"
 msgstr "/classes/nom"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:652
+#: cupsd.conf.man.in:644
 msgid "The resource for the named printer class"
 msgstr "Ressource pour la classe d’imprimantes nommée."
 
 #. type: TP
-#: cupsd.conf.man.in:652
+#: cupsd.conf.man.in:644
 #, no-wrap
 msgid "/jobs"
 msgstr "/jobs"
 
 #. type: Plain text
-#: cupsd.conf.man.in:655
+#: cupsd.conf.man.in:647
 msgid "The path for all jobs (hold-job, release-job, etc.)"
 msgstr "Chemin pour tous les travaux (hold-job, release-job, etc.)"
 
 #. type: TP
-#: cupsd.conf.man.in:655
+#: cupsd.conf.man.in:647
 #, no-wrap
 msgid "/jobs/id"
 msgstr "/jobs/id"
 
 #. type: Plain text
-#: cupsd.conf.man.in:658
+#: cupsd.conf.man.in:650
 msgid "The path for the specified job"
 msgstr "Chemin pour le travail indiqué"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:658
+#: cupsd.conf.man.in:650
 #, no-wrap
 msgid "/printers"
 msgstr "/printers"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:661
+#: cupsd.conf.man.in:653
 msgid "The path for all printers"
 msgstr "Chemin pour toutes les imprimantes."
 
 # type: TH
 #. type: TP
-#: cupsd.conf.man.in:661
+#: cupsd.conf.man.in:653
 #, no-wrap
 msgid "/printers/name"
 msgstr "/printers/nom"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:664
+#: cupsd.conf.man.in:656
 msgid "The path for the named printer"
 msgstr "Chemin pour l'imprimante nommée."
 
 # type: TH
 #. type: TP
-#: cupsd.conf.man.in:664
+#: cupsd.conf.man.in:656
 #, no-wrap
 msgid "/printers/name.png"
 msgstr "/printers/nom.png"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:667
+#: cupsd.conf.man.in:659
 msgid "The icon file path for the named printer"
 msgstr "Chemin du fichier de l’icône pour l'imprimante donnée."
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:667
+#: cupsd.conf.man.in:659
 #, no-wrap
 msgid "/printers/name.ppd"
 msgstr "/printers/nom.ppd"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:670
+#: cupsd.conf.man.in:662
 msgid "The PPD file path for the named printer"
 msgstr "Chemin du fichier PPD pour l'imprimante donnée."
 
 #. type: SS
-#: cupsd.conf.man.in:670
+#: cupsd.conf.man.in:662
 #, no-wrap
 msgid "DIRECTIVES VALID WITHIN LOCATION AND LIMIT SECTIONS"
 msgstr "DIRECTIVES VALABLES DANS LES SECTIONS CHEMINS ET LIMITES "
 
 #. type: Plain text
-#: cupsd.conf.man.in:672
+#: cupsd.conf.man.in:664
 msgid ""
 "The following directives may be placed inside Location and Limit sections in "
 "the B<cupsd.conf> file:"
@@ -4725,83 +4704,83 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:672
+#: cupsd.conf.man.in:664
 #, no-wrap
 msgid "B<Allow all>"
 msgstr "B<Allow> I<all>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:674
+#: cupsd.conf.man.in:666
 #, no-wrap
 msgid "B<Allow none>"
 msgstr "B<Allow> I<none>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:676
+#: cupsd.conf.man.in:668
 #, no-wrap
 msgid "B<Allow >I<host.domain.com>"
 msgstr "B<Allow> I<hôte.domaine.com>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:678
+#: cupsd.conf.man.in:670
 #, no-wrap
 msgid "B<Allow *.>I<domain.com>"
 msgstr "B<Allow *.>I<domaine.com>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:680
+#: cupsd.conf.man.in:672
 #, no-wrap
 msgid "B<Allow >I<ipv4-address>"
 msgstr "B<Allow> I<adresse_ipv4>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:682
+#: cupsd.conf.man.in:674
 #, no-wrap
 msgid "B<Allow >I<ipv4-address>B</>I<netmask>"
 msgstr "B<Allow> I<adresse_ipv4>B</>I<masque_sous_réseau>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:684
+#: cupsd.conf.man.in:676
 #, no-wrap
 msgid "B<Allow >I<ipv4-address>B</>I<mm>"
 msgstr "B<Allow> I<adresse_ipv4>B</>I<mm>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:686
+#: cupsd.conf.man.in:678
 #, no-wrap
 msgid "B<Allow [>I<ipv6-address>B<]>"
 msgstr "B<Allow [>I<adresse_ipv6>B<]>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:688
+#: cupsd.conf.man.in:680
 #, no-wrap
 msgid "B<Allow [>I<ipv6-address>B<]/>I<mm>"
 msgstr "B<Allow [>I<address_ipv6>B<]/>I<mm>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:690
+#: cupsd.conf.man.in:682
 #, no-wrap
 msgid "B<Allow @IF(>I<name>B<)>"
 msgstr "B<Allow @IF(>I<nom>B<)>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:692
+#: cupsd.conf.man.in:684
 #, no-wrap
 msgid "B<Allow @LOCAL>"
 msgstr "B<Allow @LOCAL>"
 
 #. type: Plain text
-#: cupsd.conf.man.in:696
+#: cupsd.conf.man.in:688
 msgid ""
 "Allows access from the named hosts, domains, addresses, or interfaces.  The "
 "Order directive controls whether Allow lines are evaluated before or after "
@@ -4813,34 +4792,34 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:696
+#: cupsd.conf.man.in:688
 #, no-wrap
 msgid "B<AuthType None>"
 msgstr "B<AuthType> I<None>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:698
+#: cupsd.conf.man.in:690
 #, no-wrap
 msgid "B<AuthType Basic>"
 msgstr "B<AuthType> I<Basic>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:700
+#: cupsd.conf.man.in:692
 #, no-wrap
 msgid "B<AuthType Default>"
 msgstr "B<AuthType> I<Digest>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:702
+#: cupsd.conf.man.in:694
 #, no-wrap
 msgid "B<AuthType Negotiate>"
 msgstr "B<AuthType> I<Negotiate>"
 
 #. type: Plain text
-#: cupsd.conf.man.in:706
+#: cupsd.conf.man.in:698
 msgid ""
 "Specifies the type of authentication required.  The value \"Default\" "
 "corresponds to the DefaultAuthType value."
@@ -4850,83 +4829,83 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:706
+#: cupsd.conf.man.in:698
 #, no-wrap
 msgid "B<Deny all>"
 msgstr "B<Deny> I<all>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:708
+#: cupsd.conf.man.in:700
 #, no-wrap
 msgid "B<Deny none>"
 msgstr "B<Deny> I<none>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:710
+#: cupsd.conf.man.in:702
 #, no-wrap
 msgid "B<Deny >I<host.domain.com>"
 msgstr "B<Deny> I<hôte.domaine.com>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:712
+#: cupsd.conf.man.in:704
 #, no-wrap
 msgid "B<Deny *.>I<domain.com>"
 msgstr "B<Deny *.>I<domaine.com>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:714
+#: cupsd.conf.man.in:706
 #, no-wrap
 msgid "B<Deny >I<ipv4-address>"
 msgstr "B<Deny> I<adresse_ipv4>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:716
+#: cupsd.conf.man.in:708
 #, no-wrap
 msgid "B<Deny >I<ipv4-address>B</>I<netmask>"
 msgstr "B<Deny> I<adresse_ipv4>B</>I<masque_réseau>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:718
+#: cupsd.conf.man.in:710
 #, no-wrap
 msgid "B<Deny >I<ipv4-address>B</>I<mm>"
 msgstr "B<Deny> I<adresse_ipv4>B</>I<mm>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:720
+#: cupsd.conf.man.in:712
 #, no-wrap
 msgid "B<Deny [>I<ipv6-address>B<]>"
 msgstr "B<Deny [>I<adresse_ipv6>B<]>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:722
+#: cupsd.conf.man.in:714
 #, no-wrap
 msgid "B<Deny [>I<ipv6-address>B<]/>I<mm>"
 msgstr "B<Deny> [I<adresse_ipv6>]B</>I<mm>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:724
+#: cupsd.conf.man.in:716
 #, no-wrap
 msgid "B<Deny @IF(>I<name>B<)>"
 msgstr "B<Deny @IF(>I<nom>B<)>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:726
+#: cupsd.conf.man.in:718
 #, no-wrap
 msgid "B<Deny @LOCAL>"
 msgstr "B<Deny @LOCAL>"
 
 #. type: Plain text
-#: cupsd.conf.man.in:730
+#: cupsd.conf.man.in:722
 msgid ""
 "Denies access from the named hosts, domains, addresses, or interfaces.  The "
 "Order directive controls whether Deny lines are evaluated before or after "
@@ -4938,7 +4917,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:738
+#: cupsd.conf.man.in:730
 msgid ""
 "Specifies the level of encryption that is required for a particular "
 "location.  The default value is \"IfRequested\"."
@@ -4948,13 +4927,13 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:738
+#: cupsd.conf.man.in:730
 #, no-wrap
 msgid "B<Order allow,deny>"
 msgstr "B<Order> I<allow,deny>"
 
 #. type: Plain text
-#: cupsd.conf.man.in:741
+#: cupsd.conf.man.in:733
 msgid ""
 "Specifies that access is denied by default. Allow lines are then processed "
 "followed by Deny lines to determine whether a client may access a particular "
@@ -4966,13 +4945,13 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:741
+#: cupsd.conf.man.in:733
 #, no-wrap
 msgid "B<Order deny,allow>"
 msgstr "B<Order> I<deny,allow>"
 
 #. type: Plain text
-#: cupsd.conf.man.in:744
+#: cupsd.conf.man.in:736
 msgid ""
 "Specifies that access is allowed by default. Deny lines are then processed "
 "followed by Allow lines to determine whether a client may access a "
@@ -4984,14 +4963,14 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:744
+#: cupsd.conf.man.in:736
 #, no-wrap
 msgid "B<Require group >I<group-name >[ I<group-name >... ]"
 msgstr "B<Require group> I<groupe> [I<groupe> ...]"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:747
+#: cupsd.conf.man.in:739
 msgid ""
 "Specifies that an authenticated user must be a member of one of the named "
 "groups."
@@ -5000,13 +4979,13 @@ msgstr ""
 "indiqués."
 
 #. type: TP
-#: cupsd.conf.man.in:747
+#: cupsd.conf.man.in:739
 #, no-wrap
 msgid "B<Require user {>I<user-name>|B<@>I<group-name>} ..."
 msgstr "B<Require user {>I<identifiant>|B<@>I<groupe>} ..."
 
 #. type: Plain text
-#: cupsd.conf.man.in:755
+#: cupsd.conf.man.in:747
 msgid ""
 "Specifies that an authenticated user must match one of the named users or be "
 "a member of one of the named groups.  The group name \"@SYSTEM\" corresponds "
@@ -5027,27 +5006,27 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:755
+#: cupsd.conf.man.in:747
 #, no-wrap
 msgid "B<Require valid-user>"
 msgstr "B<Require valid-user>"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:758
+#: cupsd.conf.man.in:750
 msgid "Specifies that any authenticated user is acceptable."
 msgstr "Indiquer que tout utilisateur authentifié est autorisé."
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:758
+#: cupsd.conf.man.in:750
 #, no-wrap
 msgid "B<Satisfy all>"
 msgstr "B<Satisfy> I<all>"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:761
+#: cupsd.conf.man.in:753
 msgid ""
 "Specifies that all Allow, AuthType, Deny, Order, and Require conditions must "
 "be satisfied to allow access."
@@ -5057,13 +5036,13 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:761
+#: cupsd.conf.man.in:753
 #, no-wrap
 msgid "B<Satisfy any>"
 msgstr "B<Satisfy> I<any>"
 
 #. type: Plain text
-#: cupsd.conf.man.in:765
+#: cupsd.conf.man.in:757
 msgid ""
 "Specifies that any a client may access a resource if either the "
 "authentication (AuthType/Require) or address (Allow/Deny/Order) conditions "
@@ -5076,13 +5055,13 @@ msgstr ""
 "l’authentification seulement pour les accès distants."
 
 #. type: SS
-#: cupsd.conf.man.in:765
+#: cupsd.conf.man.in:757
 #, no-wrap
 msgid "DIRECTIVES VALID WITHIN POLICY SECTIONS"
 msgstr "DIRECTIVES VALABLES À L’INTÉRIEUR DES SECTIONS DE POLITIQUE"
 
 #. type: Plain text
-#: cupsd.conf.man.in:767
+#: cupsd.conf.man.in:759
 msgid ""
 "The following directives may be placed inside Policy sections in the B<cupsd."
 "conf> file:"
@@ -5091,25 +5070,25 @@ msgstr ""
 "dans le fichier I<cupsd.conf> :"
 
 #. type: TP
-#: cupsd.conf.man.in:767
+#: cupsd.conf.man.in:759
 #, no-wrap
 msgid "B<JobPrivateAccess all>"
 msgstr "B<JobPrivateAccess> I<all>"
 
 #. type: TP
-#: cupsd.conf.man.in:769
+#: cupsd.conf.man.in:761
 #, no-wrap
 msgid "B<JobPrivateAccess default>"
 msgstr "B<JobPrivateAccess> I<défault>"
 
 #. type: TP
-#: cupsd.conf.man.in:771
+#: cupsd.conf.man.in:763
 #, no-wrap
 msgid "B<JobPrivateAccess >{I<user>|B<@>I<group>|B<@ACL>|B<@OWNER>|B<@SYSTEM>} ..."
 msgstr "B<JobPrivateAccess >{I<identifiant>|B<@>I<groupe>|B<@ACL>|B<@OWNER>|B<@SYSTEM>} ..."
 
 #. type: Plain text
-#: cupsd.conf.man.in:780
+#: cupsd.conf.man.in:772
 msgid ""
 "Specifies an access list for a job's private values.  The \"default\" access "
 "list is \"@OWNER @SYSTEM\".  \"@ACL\" maps to the printer's requesting-user-"
@@ -5125,31 +5104,31 @@ msgstr ""
 "I<cups-files.conf>."
 
 #. type: TP
-#: cupsd.conf.man.in:780
+#: cupsd.conf.man.in:772
 #, no-wrap
 msgid "B<JobPrivateValues all>"
 msgstr "B<JobPrivateValues> I<all>"
 
 #. type: TP
-#: cupsd.conf.man.in:782
+#: cupsd.conf.man.in:774
 #, no-wrap
 msgid "B<JobPrivateValues default>"
 msgstr "B<JobPrivateValues> I<défault>"
 
 #. type: TP
-#: cupsd.conf.man.in:784
+#: cupsd.conf.man.in:776
 #, no-wrap
 msgid "B<JobPrivateValues none>"
 msgstr "B<JobPrivateValues> I<none>"
 
 #. type: TP
-#: cupsd.conf.man.in:786
+#: cupsd.conf.man.in:778
 #, no-wrap
 msgid "B<JobPrivateValues >I<attribute-name >[ ... I<attribute-name >]"
 msgstr "B<JobPrivateValues> I<nom_attribut> [ ... I<nom_attribut> ]"
 
 #. type: Plain text
-#: cupsd.conf.man.in:790
+#: cupsd.conf.man.in:782
 msgid ""
 "Specifies the list of job values to make private.  The \"default\" values "
 "are \"job-name\", \"job-originating-host-name\", \"job-originating-user-name"
@@ -5160,25 +5139,25 @@ msgstr ""
 "tâche », et « nom d'utilisateur ayant créé la tâche » et « téléphone »."
 
 #. type: TP
-#: cupsd.conf.man.in:790
+#: cupsd.conf.man.in:782
 #, no-wrap
 msgid "B<SubscriptionPrivateAccess all>"
 msgstr "B<SubscriptionPrivateAccess> I<all>"
 
 #. type: TP
-#: cupsd.conf.man.in:792
+#: cupsd.conf.man.in:784
 #, no-wrap
 msgid "B<SubscriptionPrivateAccess default>"
 msgstr "B<SubscriptionPrivateAccess> I<default>"
 
 #. type: TP
-#: cupsd.conf.man.in:794
+#: cupsd.conf.man.in:786
 #, no-wrap
 msgid "B<SubscriptionPrivateAccess >{I<user>|B<@>I<group>|B<@ACL>|B<@OWNER>|B<@SYSTEM>} ..."
 msgstr "B<SubscriptionPrivateAccess >{I<identifiant>|B<@>I<groupe>|B<@ACL>|B<@OWNER>|B<@SYSTEM>} ..."
 
 #. type: Plain text
-#: cupsd.conf.man.in:803
+#: cupsd.conf.man.in:795
 msgid ""
 "Specifies an access list for a subscription's private values.  The \"default"
 "\" access list is \"@OWNER @SYSTEM\".  \"@ACL\" maps to the printer's "
@@ -5194,31 +5173,31 @@ msgstr ""
 "I<cups-files.conf>."
 
 #. type: TP
-#: cupsd.conf.man.in:803
+#: cupsd.conf.man.in:795
 #, no-wrap
 msgid "B<SubscriptionPrivateValues all>"
 msgstr "B<SubscriptionPrivateValues> I<all>"
 
 #. type: TP
-#: cupsd.conf.man.in:805
+#: cupsd.conf.man.in:797
 #, no-wrap
 msgid "B<SubscriptionPrivateValues default>"
 msgstr "B<SubscriptionPrivateValues> I<default>"
 
 #. type: TP
-#: cupsd.conf.man.in:807
+#: cupsd.conf.man.in:799
 #, no-wrap
 msgid "B<SubscriptionPrivateValues none>"
 msgstr "B<SubscriptionPrivateValues> I<none>"
 
 #. type: TP
-#: cupsd.conf.man.in:809
+#: cupsd.conf.man.in:801
 #, no-wrap
 msgid "B<SubscriptionPrivateValues >I<attribute-name >[ ... I<attribute-name >]"
 msgstr "B<SubscriptionPrivateValues> I<nom_attribut> [ ... I<nom_attribut> ]"
 
 #. type: Plain text
-#: cupsd.conf.man.in:813
+#: cupsd.conf.man.in:805
 msgid ""
 "Specifies the list of subscription values to make private.  The \"default\" "
 "values are \"notify-events\", \"notify-pull-method\", \"notify-recipient-uri"
@@ -5230,14 +5209,14 @@ msgstr ""
 
 # type: SH
 #. type: SS
-#: cupsd.conf.man.in:813 cups-files.conf.man.in:223
+#: cupsd.conf.man.in:805 cups-files.conf.man.in:233
 #, no-wrap
 msgid "DEPRECATED DIRECTIVES"
 msgstr "DIRECTIVES OBSOLÈTES"
 
 #. #Classification
 #. type: Plain text
-#: cupsd.conf.man.in:816
+#: cupsd.conf.man.in:808
 msgid ""
 "The following directives are deprecated and will be removed in a future "
 "release of CUPS:"
@@ -5248,14 +5227,14 @@ msgstr ""
 # NOTE: bannière à traduire ?
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:816
+#: cupsd.conf.man.in:808
 #, no-wrap
 msgid "B<Classification >I<banner>"
 msgstr "B<Classification> I<bannière>"
 
 #. #ClassifyOverride
 #. type: Plain text
-#: cupsd.conf.man.in:823
+#: cupsd.conf.man.in:815
 msgid ""
 "Specifies the security classification of the server.  Any valid banner name "
 "can be used, including \"classified\", \"confidential\", \"secret\", "
@@ -5270,14 +5249,14 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:823
+#: cupsd.conf.man.in:815
 #, no-wrap
 msgid "B<ClassifyOverride Yes>"
 msgstr "B<ClassifyOverride> I<Yes>"
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:825
+#: cupsd.conf.man.in:817
 #, no-wrap
 msgid "B<ClassifyOverride No>"
 msgstr "B<ClassifyOverride> I<No>"
@@ -5285,7 +5264,7 @@ msgstr "B<ClassifyOverride> I<No>"
 # type: Plain text
 #. #PageLogFormat
 #. type: Plain text
-#: cupsd.conf.man.in:831
+#: cupsd.conf.man.in:823
 msgid ""
 "Specifies whether users may override the classification (cover page) of "
 "individual print jobs using the \"job-sheets\" option.  The default is \"No"
@@ -5296,13 +5275,13 @@ msgstr ""
 "l’option « job-sheets ». Par défaut « No »."
 
 #. type: TP
-#: cupsd.conf.man.in:831
+#: cupsd.conf.man.in:823
 #, no-wrap
 msgid "B<PageLogFormat >I<format-string>"
 msgstr "B<PageLogFormat> I<format_chaîne>"
 
 #. type: Plain text
-#: cupsd.conf.man.in:836
+#: cupsd.conf.man.in:828
 msgid ""
 "Specifies the format of PageLog lines.  Sequences beginning with percent (%) "
 "characters are replaced with the corresponding information, while all other "
@@ -5315,7 +5294,7 @@ msgstr ""
 "avec pour cent suivantes sont reconnues :"
 
 #. type: Plain text
-#: cupsd.conf.man.in:846
+#: cupsd.conf.man.in:838
 #, no-wrap
 msgid ""
 "    \"%%\" inserts a single percent character.\n"
@@ -5338,7 +5317,7 @@ msgstr ""
 
 #. #RIPCache
 #. type: Plain text
-#: cupsd.conf.man.in:851
+#: cupsd.conf.man.in:843
 msgid ""
 "The default is the empty string, which disables page logging.  The string "
 "\"%p %u %j %T %P %C %{job-billing} %{job-originating-host-name} %{job-name} "
@@ -5351,14 +5330,14 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cupsd.conf.man.in:851
+#: cupsd.conf.man.in:843
 #, no-wrap
 msgid "B<RIPCache >I<size>"
 msgstr "B<RIPCache> I<taille>"
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:855
+#: cupsd.conf.man.in:847
 msgid ""
 "Specifies the maximum amount of memory to use when converting documents into "
 "bitmaps for a printer.  The default is \"128m\"."
@@ -5367,7 +5346,7 @@ msgstr ""
 "documents en fichiers bitmap pour une imprimante. Par défaut, B<30>."
 
 #. type: Plain text
-#: cupsd.conf.man.in:857
+#: cupsd.conf.man.in:849
 msgid ""
 "The B<cupsd.conf> file format is based on the Apache HTTP Server "
 "configuration file format."
@@ -5376,12 +5355,12 @@ msgstr ""
 "configuration du serveur HTTP Apache."
 
 #. type: Plain text
-#: cupsd.conf.man.in:859
+#: cupsd.conf.man.in:851
 msgid "Log everything with a maximum log file size of 32 megabytes:"
 msgstr "Tout journaliser dans un fichier de taille maximale de 32 Mo :"
 
 #. type: Plain text
-#: cupsd.conf.man.in:864
+#: cupsd.conf.man.in:856
 #, no-wrap
 msgid ""
 "    AccessLogLevel all\n"
@@ -5393,13 +5372,13 @@ msgstr ""
 "    MaxLogSize 32m\n"
 
 #. type: Plain text
-#: cupsd.conf.man.in:867
+#: cupsd.conf.man.in:859
 msgid "Require authentication for accesses from outside the 10. network:"
 msgstr ""
 "Demander l’authentification pour accéder au réseau 10… depuis l'extérieur :"
 
 #. type: Plain text
-#: cupsd.conf.man.in:876
+#: cupsd.conf.man.in:868
 #, no-wrap
 msgid ""
 "    E<lt>Location /E<gt>\n"
@@ -5420,7 +5399,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:886
+#: cupsd.conf.man.in:878
 msgid ""
 "B<classes.conf>(5), B<cups-files.conf>(5), B<cupsd>(8), B<mime.convs>(5), "
 "B<mime.types>(5), B<printers.conf>(5), B<subscriptions.conf>(5), CUPS Online "
@@ -5429,6 +5408,14 @@ msgstr ""
 "B<classes.conf>(5), B<cups-files.conf>(5), B<cupsd>(8), B<mime.convs>(5), "
 "B<mime.types>(5), B<printers.conf>(5), B<subscriptions.conf>(5), aide en "
 "ligne de CUPS E<lt>URL:I<http://localhost:631/help>E<gt>"
+
+# type: Plain text
+#. type: Plain text
+#: cupsd.conf.man.in:879 lpoptions.man.in:121
+#, fuzzy
+#| msgid "Copyright \\[co] 2007-2017 by Apple Inc."
+msgid "Copyright \\[co] 2007-2018 by Apple Inc."
+msgstr "Copyright \\[co] 2007-2017 by Apple Inc."
 
 # type: TH
 #. type: TH
@@ -6423,7 +6410,7 @@ msgstr "Afficher un message d'aide."
 
 #. type: TP
 #: cupsd.man.in:60 ippfind.man:77 ipptool.man:167 lpinfo.man:74
-#: lpoptions.man.in:99 lpq.man:56 lpr.man:94 lpstat.man:107
+#: lpoptions.man.in:84 lpq.man:56 lpr.man:94 lpstat.man:107
 #, no-wrap
 msgid "B<-l>"
 msgstr "B<-l>"
@@ -7205,7 +7192,7 @@ msgstr ""
 msgid "    PageLog /var/log/cups/%s-page_log\n"
 msgstr "    PageLog /var/log/cups/%s-page_log\n"
 
-#. #RemoteRoot
+#. #PassEnv
 #. type: Plain text
 #: cups-files.conf.man.in:161
 msgid "The default is \"/var/log/cups/page_log\"."
@@ -7215,13 +7202,29 @@ msgstr "Par défaut, I</var/log/cups/page_log>."
 #. type: TP
 #: cups-files.conf.man.in:161
 #, no-wrap
+msgid "B<PassEnv >I<variable >[ ... I<variable >]"
+msgstr "B<PassEnv> I<variable> [... I<variable>]"
+
+#. #RemoteRoot
+#. type: Plain text
+#: cups-files.conf.man.in:166
+msgid ""
+"Passes the specified environment variable(s) to child processes.  Note: the "
+"standard CUPS filter and backend environment variables cannot be overridden "
+"using this directive."
+msgstr ""
+
+# type: TP
+#. type: TP
+#: cups-files.conf.man.in:166
+#, no-wrap
 msgid "B<RemoteRoot >I<username>"
 msgstr "B<RemoteRoot> I<identifiant>"
 
 # type: Plain text
 #. #RequestRoot
 #. type: Plain text
-#: cups-files.conf.man.in:166
+#: cups-files.conf.man.in:171
 msgid ""
 "Specifies the username that is associated with unauthenticated accesses by "
 "clients claiming to be the root user.  The default is \"remroot\"."
@@ -7231,7 +7234,7 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:166
+#: cups-files.conf.man.in:171
 #, no-wrap
 msgid "B<RequestRoot >I<directory>"
 msgstr "B<RequestRoot> I<répertoire>"
@@ -7239,7 +7242,7 @@ msgstr "B<RequestRoot> I<répertoire>"
 # type: Plain text
 #. #Sandboxing
 #. type: Plain text
-#: cups-files.conf.man.in:171
+#: cups-files.conf.man.in:176
 msgid ""
 "Specifies the directory that contains print jobs and other HTTP request "
 "data.  The default is \"/var/spool/cups\"."
@@ -7248,20 +7251,20 @@ msgstr ""
 "requêtes HTTP. Par défaut, I</var/spool/cups>."
 
 #. type: TP
-#: cups-files.conf.man.in:171
+#: cups-files.conf.man.in:176
 #, no-wrap
 msgid "B<Sandboxing relaxed>"
 msgstr "B<Sandboxing> I<relaxed>"
 
 #. type: TP
-#: cups-files.conf.man.in:173
+#: cups-files.conf.man.in:178
 #, no-wrap
 msgid "B<Sandboxing strict>"
 msgstr "B<Sandboxing> I<strict>"
 
 #. #ServerBin
 #. type: Plain text
-#: cups-files.conf.man.in:179
+#: cups-files.conf.man.in:184
 msgid ""
 "Specifies the level of security sandboxing that is applied to print filters, "
 "backends, and other child processes of the scheduler.  The default is "
@@ -7274,14 +7277,14 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:179
+#: cups-files.conf.man.in:184
 #, no-wrap
 msgid "B<ServerBin >I<directory>"
 msgstr "B<ServerBin> I<répertoire>"
 
 #. #ServerKeychain
 #. type: Plain text
-#: cups-files.conf.man.in:184
+#: cups-files.conf.man.in:189
 msgid ""
 "Specifies the directory containing the backends, CGI programs, filters, "
 "helper programs, notifiers, and port monitors.  The default is \"/usr/lib/"
@@ -7293,14 +7296,14 @@ msgstr ""
 "usr/libexec/cups> en fonction de la plateforme."
 
 #. type: TP
-#: cups-files.conf.man.in:184
+#: cups-files.conf.man.in:189
 #, no-wrap
 msgid "B<ServerKeychain >I<path>"
 msgstr "B<ServerKeychain >I<chemin>"
 
 #. #ServerRoot
 #. type: Plain text
-#: cups-files.conf.man.in:190
+#: cups-files.conf.man.in:195
 msgid ""
 "Specifies the location of TLS certificates and private keys.  The default is "
 "\"/Library/Keychains/System.keychain\" on macOS and \"/etc/cups/ssl\" on all "
@@ -7318,15 +7321,15 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:190
+#: cups-files.conf.man.in:195
 #, no-wrap
 msgid "B<ServerRoot >I<directory>"
 msgstr "B<ServerRoot> I<répertoire>"
 
 # type: Plain text
-#. #StateDir
+#. #SetEnv
 #. type: Plain text
-#: cups-files.conf.man.in:195
+#: cups-files.conf.man.in:200
 msgid ""
 "Specifies the directory containing the server configuration files.  The "
 "default is \"/etc/cups\"."
@@ -7336,14 +7339,30 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:195
+#: cups-files.conf.man.in:200
+#, no-wrap
+msgid "B<SetEnv >I<variable value>"
+msgstr "B<SetEnv variable> I<valeur>"
+
+#. #StateDir
+#. type: Plain text
+#: cups-files.conf.man.in:205
+msgid ""
+"Set the specified environment variable to be passed to child processes.  "
+"Note: the standard CUPS filter and backend environment variables cannot be "
+"overridden using this directive."
+msgstr ""
+
+# type: TP
+#. type: TP
+#: cups-files.conf.man.in:205
 #, no-wrap
 msgid "B<StateDir >I<directory>"
 msgstr "B<StateDir> I<répertoire>"
 
 #. #SyncOnClose
 #. type: Plain text
-#: cups-files.conf.man.in:200
+#: cups-files.conf.man.in:210
 msgid ""
 "Specifies the directory to use for PID and local certificate files.  The "
 "default is \"/var/run/cups\" or \"/etc/cups\" depending on the platform."
@@ -7353,20 +7372,20 @@ msgstr ""
 "plateforme."
 
 #. type: TP
-#: cups-files.conf.man.in:200
+#: cups-files.conf.man.in:210
 #, no-wrap
 msgid "B<SyncOnClose Yes>"
 msgstr "B<SyncOnClose> I<Yes>"
 
 #. type: TP
-#: cups-files.conf.man.in:202
+#: cups-files.conf.man.in:212
 #, no-wrap
 msgid "B<SyncOnClose No>"
 msgstr "B<SyncOnClose> I<No>"
 
 #. #SystemGroup
 #. type: Plain text
-#: cups-files.conf.man.in:209
+#: cups-files.conf.man.in:219
 msgid ""
 "Specifies whether the scheduler calls B<fsync>(2)  after writing "
 "configuration or state files.  The default is \"Yes\"."
@@ -7376,14 +7395,14 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:209
+#: cups-files.conf.man.in:219
 #, no-wrap
 msgid "B<SystemGroup >I<group-name >[ ... I<group-name> ]"
 msgstr "B<SystemGroup> I<groupe> [ ... I<groupe>]"
 
 #. #TempDir
 #. type: Plain text
-#: cups-files.conf.man.in:214
+#: cups-files.conf.man.in:224
 msgid ""
 "Specifies the group(s) to use for I<@SYSTEM> group authentication.  The "
 "default contains \"admin\", \"lpadmin\", \"root\", \"sys\", and/or \"system"
@@ -7395,7 +7414,7 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:214
+#: cups-files.conf.man.in:224
 #, no-wrap
 msgid "B<TempDir >I<directory>"
 msgstr "B<TempDir> I<répertoire>"
@@ -7403,7 +7422,7 @@ msgstr "B<TempDir> I<répertoire>"
 # type: Plain text
 #. #User
 #. type: Plain text
-#: cups-files.conf.man.in:219
+#: cups-files.conf.man.in:229
 msgid ""
 "Specifies the directory where short-term temporary files are stored.  The "
 "default is \"/var/spool/cups/tmp\"."
@@ -7413,14 +7432,14 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:219
+#: cups-files.conf.man.in:229
 #, no-wrap
 msgid "B<User >I<username>"
 msgstr "B<-U> I<identifiant>"
 
 # type: Plain text
 #. type: Plain text
-#: cups-files.conf.man.in:223
+#: cups-files.conf.man.in:233
 msgid ""
 "Specifies the user name or ID that is used when running external programs.  "
 "The default is \"lp\"."
@@ -7430,7 +7449,7 @@ msgstr ""
 
 #. #FileDevice
 #. type: Plain text
-#: cups-files.conf.man.in:226
+#: cups-files.conf.man.in:236
 msgid ""
 "The following directives are deprecated and will be removed from a future "
 "version of CUPS:"
@@ -7440,21 +7459,21 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:226
+#: cups-files.conf.man.in:236
 #, no-wrap
 msgid "B<FileDevice Yes>"
 msgstr "B<FileDevice> I<Yes>"
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:228
+#: cups-files.conf.man.in:238
 #, no-wrap
 msgid "B<FileDevice No>"
 msgstr "B<FileDevice> I<No>"
 
 #. #FontPath
 #. type: Plain text
-#: cups-files.conf.man.in:236
+#: cups-files.conf.man.in:246
 msgid ""
 "Specifies whether the file pseudo-device can be used for new printer "
 "queues.  The URI \"file:///dev/null\" is always allowed.  File devices "
@@ -7471,14 +7490,14 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:236
+#: cups-files.conf.man.in:246
 #, no-wrap
 msgid "B<FontPath >I<directory[:...:directoryN]>"
 msgstr "B<FontPath> I<répertoire>[:...:I<répertoireN>]"
 
 #. #LPDConfigFile
 #. type: Plain text
-#: cups-files.conf.man.in:244
+#: cups-files.conf.man.in:254
 msgid ""
 "Specifies a colon separated list of directories where fonts can be found.  "
 "On Linux the B<font-config>(1)  mechanism is used instead.  On macOS the "
@@ -7491,7 +7510,7 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:244
+#: cups-files.conf.man.in:254
 #, no-wrap
 msgid " B<LPDConfigFile >I<filename>"
 msgstr " B<LPDConfigFile >I<nom-fichier>"
@@ -7499,13 +7518,13 @@ msgstr " B<LPDConfigFile >I<nom-fichier>"
 # type: Plain text
 #. #Printcap
 #. type: Plain text
-#: cups-files.conf.man.in:248
+#: cups-files.conf.man.in:258
 msgid "Specifies the LPD service configuration file to update."
 msgstr "Définir le fichier de configuration du service LPD à mettre à jour."
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:248
+#: cups-files.conf.man.in:258
 #, no-wrap
 msgid "B<Printcap >I<filename>"
 msgstr "B<Printcap> I<nom-fichier>"
@@ -7513,7 +7532,7 @@ msgstr "B<Printcap> I<nom-fichier>"
 # type: Plain text
 #. #PrintcapFormat
 #. type: Plain text
-#: cups-files.conf.man.in:252
+#: cups-files.conf.man.in:262
 msgid "Specifies a file that is filled with a list of local print queues."
 msgstr ""
 "Définir le fichier rempli par une liste de files d’attente d’impression "
@@ -7521,28 +7540,28 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:252
+#: cups-files.conf.man.in:262
 #, no-wrap
 msgid "B<PrintcapFormat bsd>"
 msgstr "B<PrintcapFormat> I<bsd>"
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:254
+#: cups-files.conf.man.in:264
 #, no-wrap
 msgid "B<PrintcapFormat plist>"
 msgstr "B<PrintcapFormat> I<plist>"
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:256
+#: cups-files.conf.man.in:266
 #, no-wrap
 msgid "B<PrintcapFormat solaris>"
 msgstr "B<PrintcapFormat> I<solaris>"
 
 #. #SMBConfigFile
 #. type: Plain text
-#: cups-files.conf.man.in:263
+#: cups-files.conf.man.in:273
 msgid ""
 "Specifies the format to use for the Printcap file.  \"bsd\" is the "
 "historical LPD printcap file format.  \"plist\" is the Apple plist file "
@@ -7555,20 +7574,20 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: cups-files.conf.man.in:263
+#: cups-files.conf.man.in:273
 #, no-wrap
 msgid "B<SMBConfigFile >I<filename>"
 msgstr "B<SMBConfigFile >I<nom-fichier>"
 
 # type: Plain text
 #. type: Plain text
-#: cups-files.conf.man.in:266
+#: cups-files.conf.man.in:276
 msgid "Specifies the SMB service configuration file to update."
 msgstr "Définir le fichier de configuration du service SMB à mettre à jour."
 
 # type: Plain text
 #. type: Plain text
-#: cups-files.conf.man.in:276
+#: cups-files.conf.man.in:286
 msgid ""
 "B<classes.conf>(5), B<cups>(1), B<cupsd>(8), B<cupsd.conf>(5), B<mime."
 "convs>(5), B<mime.types>(5), B<printers.conf>(5), B<subscriptions.conf>(5), "
@@ -7856,7 +7875,7 @@ msgstr ""
 
 # type: SH
 #. type: SH
-#: cupsfilter.man:124 cups-lpd.man.in:86 lpadmin.man:199
+#: cupsfilter.man:124 cups-lpd.man.in:86 lpadmin.man:200
 #, no-wrap
 msgid "EXAMPLE"
 msgstr "EXEMPLE"
@@ -9248,7 +9267,7 @@ msgid "Report all of the previous errors as errors."
 msgstr "Rapporter toutes les erreurs précédentes comme des erreurs."
 
 #. type: TP
-#: cupstestppd.man:99 ippfind.man:105 ipptool.man:176 lpr.man:109
+#: cupstestppd.man:99 ippfind.man:110 ipptool.man:176 lpr.man:109
 #, no-wrap
 msgid "B<-q>"
 msgstr "B<-q>"
@@ -9260,7 +9279,7 @@ msgid "Specifies that no information should be displayed."
 msgstr "Ne pas afficher d’information."
 
 #. type: TP
-#: cupstestppd.man:102 ippfind.man:110 lpr.man:112 lpstat.man:118
+#: cupstestppd.man:102 ippfind.man:115 lpr.man:112 lpstat.man:118
 #, no-wrap
 msgid "B<-r>"
 msgstr "B<-r>"
@@ -10221,6 +10240,14 @@ msgstr ""
 msgid "ippfind"
 msgstr "ippfind"
 
+# type: TH
+#. type: TH
+#: ippfind.man:12
+#, fuzzy, no-wrap
+#| msgid "4 February 2015"
+msgid "14 February 2018"
+msgstr "4 février 2015"
+
 #. type: Plain text
 #: ippfind.man:15
 msgid "ippfind - find internet printing protocol printers"
@@ -10447,20 +10474,24 @@ msgstr "Vrai si le service est local pour cette imprimante."
 # type: TP
 #. type: TP
 #: ippfind.man:86
-#, no-wrap
-msgid "B<-n >I<regex>"
-msgstr "B<-n >I<exp_rationnelle>"
+#, fuzzy, no-wrap
+#| msgid "B<-U >I<username>"
+msgid "B<-N >I<name>"
+msgstr "B<-U> I<identifiant>"
 
-# type: TP
 #. type: TP
 #: ippfind.man:88
-#, no-wrap
-msgid "B<--name >I<regex>"
-msgstr "B<--name >I<exp_rationnelle>"
+#, fuzzy, no-wrap
+#| msgid "B<--make-and-model >I<name>"
+msgid "B<--literal-name >I<name>"
+msgstr "B<--make-and-model> I<nom>"
 
 #. type: Plain text
 #: ippfind.man:91
-msgid "True if the service instance name matches the given regular expression."
+#, fuzzy
+#| msgid ""
+#| "True if the service instance name matches the given regular expression."
+msgid "True if the service instance name matches the given name."
 msgstr ""
 "Vrai si le nom d’instance du service correspond à l’expression rationnelle "
 "fournie."
@@ -10469,48 +10500,69 @@ msgstr ""
 #. type: TP
 #: ippfind.man:91
 #, no-wrap
+msgid "B<-n >I<regex>"
+msgstr "B<-n >I<exp_rationnelle>"
+
+# type: TP
+#. type: TP
+#: ippfind.man:93
+#, no-wrap
+msgid "B<--name >I<regex>"
+msgstr "B<--name >I<exp_rationnelle>"
+
+#. type: Plain text
+#: ippfind.man:96
+msgid "True if the service instance name matches the given regular expression."
+msgstr ""
+"Vrai si le nom d’instance du service correspond à l’expression rationnelle "
+"fournie."
+
+# type: TP
+#. type: TP
+#: ippfind.man:96
+#, no-wrap
 msgid "B<--path >I<regex>"
 msgstr "B<--path >I<exp_rationnelle>"
 
 #. type: Plain text
-#: ippfind.man:94
+#: ippfind.man:99
 msgid "True if the URI resource path matches the given regular expression."
 msgstr ""
 "Vrai si le chemin de la ressource de l’URI correspond à l’expression "
 "rationnelle fournie."
 
 #. type: TP
-#: ippfind.man:94
+#: ippfind.man:99
 #, no-wrap
 msgid "B<-P >I<number>[B<->I<number>]"
 msgstr "B<-P >I<numéro>[B<->I<numéro>]"
 
 #. type: TP
-#: ippfind.man:96
+#: ippfind.man:101
 #, no-wrap
 msgid "B<--port >I<number>[B<->I<number>]"
 msgstr "B<--port >I<numéro>[B<->I<numéro>]"
 
 #. type: Plain text
-#: ippfind.man:99
+#: ippfind.man:104
 msgid "True if the port matches the given number or range."
 msgstr "Vrai si le port correspond au numéro ou à l’intervalle."
 
 #. type: TP
-#: ippfind.man:99 lpr.man:105
+#: ippfind.man:104 lpr.man:105
 #, no-wrap
 msgid "B<-p>"
 msgstr "B<-p>"
 
 # type: TP
 #. type: TP
-#: ippfind.man:101
+#: ippfind.man:106
 #, no-wrap
 msgid "B<--print>"
 msgstr "B<--print>"
 
 #. type: Plain text
-#: ippfind.man:105
+#: ippfind.man:110
 msgid ""
 "Prints the URI if the result of previous expressions is true.  The result is "
 "always true."
@@ -10519,42 +10571,42 @@ msgstr ""
 "résultat est toujours vrai."
 
 #. type: TP
-#: ippfind.man:107
+#: ippfind.man:112
 #, no-wrap
 msgid "B<--quiet>"
 msgstr "B<--quiet>"
 
 #. type: Plain text
-#: ippfind.man:110
+#: ippfind.man:115
 msgid "Quiet mode - just returns the exit codes below."
 msgstr "Mode laconique — seuls les codes de retour sont renvoyés à la suite."
 
 #. type: TP
-#: ippfind.man:112
+#: ippfind.man:117
 #, no-wrap
 msgid "B<--remote>"
 msgstr "B<--remote>"
 
 #. type: Plain text
-#: ippfind.man:115
+#: ippfind.man:120
 msgid "True if the service is not local to this computer."
 msgstr "Vrai si le service n’est pas local à cette imprimante."
 
 #. type: TP
-#: ippfind.man:115 lp.man:135 lpstat.man:121
+#: ippfind.man:120 lp.man:135 lpstat.man:121
 #, no-wrap
 msgid "B<-s>"
 msgstr "B<-s>"
 
 # type: TP
 #. type: TP
-#: ippfind.man:117
+#: ippfind.man:122
 #, no-wrap
 msgid "B<--print-name>"
 msgstr "B<--print-name>"
 
 #. type: Plain text
-#: ippfind.man:121
+#: ippfind.man:126
 msgid ""
 "Prints the service instance name if the result of previous expressions is "
 "true.  The result is always true."
@@ -10564,44 +10616,44 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: ippfind.man:121
+#: ippfind.man:126
 #, no-wrap
 msgid "B<--true>"
 msgstr "B<--true>"
 
 #. type: Plain text
-#: ippfind.man:124
+#: ippfind.man:129
 msgid "Always true."
 msgstr "Toujours vrai"
 
 # type: TP
 #. type: TP
-#: ippfind.man:124
+#: ippfind.man:129
 #, no-wrap
 msgid "B<-t >I<key>"
 msgstr "B<-t >I<clef>"
 
 # type: TP
 #. type: TP
-#: ippfind.man:126
+#: ippfind.man:131
 #, no-wrap
 msgid "B<--txt >I<key>"
 msgstr "B<--txt >I<clef>"
 
 # type: Plain text
 #. type: Plain text
-#: ippfind.man:129
+#: ippfind.man:134
 msgid "True if the TXT record contains the named key."
 msgstr "Vrai si l’enregistrement TXT contient la clef citée."
 
 #. type: TP
-#: ippfind.man:129
+#: ippfind.man:134
 #, no-wrap
 msgid "B<--txt->I<key regex>"
 msgstr "B<--txt->I<clef exp_rationnelle>"
 
 #. type: Plain text
-#: ippfind.man:132
+#: ippfind.man:137
 msgid ""
 "True if the TXT record contains the named key and matches the given regular "
 "expression."
@@ -10611,37 +10663,37 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: ippfind.man:132
+#: ippfind.man:137
 #, no-wrap
 msgid "B<-u >I<regex>"
 msgstr "B<-u >I<exp_rationnelle>"
 
 # type: TP
 #. type: TP
-#: ippfind.man:134
+#: ippfind.man:139
 #, no-wrap
 msgid "B<--uri >I<regex>"
 msgstr "B<--uri >I<exp_rationnelle>"
 
 #. type: Plain text
-#: ippfind.man:137
+#: ippfind.man:142
 msgid "True if the URI matches the given regular expression."
 msgstr "Vrai si l’URI correspond à l’expression rationnelle fournie."
 
 #. type: TP
-#: ippfind.man:137
+#: ippfind.man:142
 #, no-wrap
 msgid "B<-x >I<utility >[ I<argument >... ] B<;>"
 msgstr "B<-x >I<utilitaire >[ I<argument >... ] B<;>"
 
 #. type: TP
-#: ippfind.man:139
+#: ippfind.man:144
 #, no-wrap
 msgid "B<--exec >I<utility >[ I<argument >... ] B<;>"
 msgstr "B<--exec >I<utilitaire >[ I<argument >... ] B<;>"
 
 #. type: Plain text
-#: ippfind.man:143
+#: ippfind.man:148
 msgid ""
 "Executes the specified program if the current result is true.  \"{foo}\" "
 "arguments are replaced with the corresponding value - see SUBSTITUTIONS "
@@ -10652,76 +10704,76 @@ msgstr ""
 "SUBSTITUTIONS ci-dessous."
 
 #. type: Plain text
-#: ippfind.man:145
+#: ippfind.man:150
 msgid "Expressions may also contain modifiers:"
 msgstr "Les expressions peuvent aussi contenir des modificateurs :"
 
 #. type: TP
-#: ippfind.man:145
+#: ippfind.man:150
 #, no-wrap
 msgid "B<( >I<expression >B<)>"
 msgstr "B<( >I<expression >B<)>"
 
 #. type: Plain text
-#: ippfind.man:148
+#: ippfind.man:153
 msgid "Group the result of expressions."
 msgstr "Classer le résultat des expressions."
 
 # type: TP
 #. type: TP
-#: ippfind.man:148
+#: ippfind.man:153
 #, no-wrap
 msgid "B<! >I<expression>"
 msgstr "B<! >I<expression>"
 
 # type: TP
 #. type: TP
-#: ippfind.man:150
+#: ippfind.man:155
 #, no-wrap
 msgid "B<--not >I<expression>"
 msgstr "B<--not >I<expression>"
 
 #. type: Plain text
-#: ippfind.man:153
+#: ippfind.man:158
 msgid "Unary NOT of the expression."
 msgstr "Opération logique NON sur l’expression."
 
 #. type: TP
-#: ippfind.man:153
+#: ippfind.man:158
 #, no-wrap
 msgid "I<expression expression>"
 msgstr "I<expression expression>"
 
 #. type: TP
-#: ippfind.man:155
+#: ippfind.man:160
 #, no-wrap
 msgid "I<expression >B<--and >I<expression>"
 msgstr "I<expression >B<--and >I<expression>"
 
 #. type: Plain text
-#: ippfind.man:158
+#: ippfind.man:163
 msgid "Logical AND of expressions."
 msgstr "Opération logique ET sur les expressions."
 
 #. type: TP
-#: ippfind.man:158
+#: ippfind.man:163
 #, no-wrap
 msgid "I<expression >B<--or >I<expression>"
 msgstr "I<expression >B<--or >I<expression>"
 
 #. type: Plain text
-#: ippfind.man:161
+#: ippfind.man:166
 msgid "Logical OR of expressions."
 msgstr "Opération logique OU sur les expressions."
 
 #. type: SS
-#: ippfind.man:161
+#: ippfind.man:166
 #, no-wrap
 msgid "SUBSTITUTIONS"
 msgstr "SUBSTITUTIONS"
 
 #. type: Plain text
-#: ippfind.man:163
+#: ippfind.man:168
 msgid "The substitutions for \"{foo}\" in I<-e> and I<--exec> are:"
 msgstr ""
 "Les substitutions pour « {toto} » dans B<-e> et B<--exec> sont les "
@@ -10729,24 +10781,24 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: ippfind.man:163
+#: ippfind.man:168
 #, no-wrap
 msgid "B<{service_domain}>"
 msgstr "B<{service_domain}>"
 
 #. type: Plain text
-#: ippfind.man:166 ippfind.man:219
+#: ippfind.man:171 ippfind.man:224
 msgid "Domain name, e.g., \"example.com.\", \"local.\", etc."
 msgstr "Nom de domaine, par exemple « example.com. », « local. », etc."
 
 #. type: TP
-#: ippfind.man:166
+#: ippfind.man:171
 #, no-wrap
 msgid "B<{service_hostname}>"
 msgstr "B<{service_hostname}>"
 
 #. type: Plain text
-#: ippfind.man:169 ippfind.man:222
+#: ippfind.man:174 ippfind.man:227
 msgid ""
 "Fully-qualified domain name, e.g., \"printer.example.com.\", \"printer.local."
 "\", etc."
@@ -10756,71 +10808,71 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: ippfind.man:169
+#: ippfind.man:174
 #, no-wrap
 msgid "B<{service_name}>"
 msgstr "B<{service_name}>"
 
 #. type: Plain text
-#: ippfind.man:172 ippfind.man:225
+#: ippfind.man:177 ippfind.man:230
 msgid "Service instance name, e.g., \"My Fine Printer\"."
 msgstr ""
 "Nom de l’instance du service, par exemple « Mon excellente imprimante »."
 
 # type: TP
 #. type: TP
-#: ippfind.man:172
+#: ippfind.man:177
 #, no-wrap
 msgid "B<{service_port}>"
 msgstr "B<{service_port}>"
 
 #. type: Plain text
-#: ippfind.man:175 ippfind.man:228
+#: ippfind.man:180 ippfind.man:233
 msgid "Port number for server, typically 631 for IPP and 80 for HTTP."
 msgstr ""
 "Numéro de port pour le serveur, habituellement B<631> pour IPP et B<80> pour "
 "HTTP."
 
 #. type: TP
-#: ippfind.man:175
+#: ippfind.man:180
 #, no-wrap
 msgid "B<{service_regtype}>"
 msgstr "B<{service_regtype}>"
 
 #. type: Plain text
-#: ippfind.man:178 ippfind.man:231
+#: ippfind.man:183 ippfind.man:236
 msgid "DNS-SD registration type, e.g., \"_ipp._tcp\", \"_http._tcp\", etc."
 msgstr ""
 "Type d’enregistrement DNS-SD, par exemple « _ipp._tcp », « _http._tcp », etc."
 
 #. type: TP
-#: ippfind.man:178
+#: ippfind.man:183
 #, no-wrap
 msgid "B<{service_scheme}>"
 msgstr "B<{service_scheme}>"
 
 #. type: Plain text
-#: ippfind.man:181 ippfind.man:234
+#: ippfind.man:186 ippfind.man:239
 msgid "URI scheme for DNS-SD registration type, e.g., \"ipp\", \"http\", etc."
 msgstr ""
 "Schéma d’URI pour le type d’enregistrement DNS-SD, par exemple « ipp », "
 "« http », etc."
 
 #. type: TP
-#: ippfind.man:181
+#: ippfind.man:186
 #, no-wrap
 msgid "B<{}>"
 msgstr "B<{}>"
 
 # type: TP
 #. type: TP
-#: ippfind.man:183
+#: ippfind.man:188
 #, no-wrap
 msgid "B<{service_uri}>"
 msgstr "B<{service_uri}>"
 
 #. type: Plain text
-#: ippfind.man:186 ippfind.man:237
+#: ippfind.man:191 ippfind.man:242
 msgid ""
 "URI for service, e.g., \"ipp://printer.local./ipp/print\", \"http://printer."
 "local./\", etc."
@@ -10829,65 +10881,65 @@ msgstr ""
 "« http://printer.local./ », etc."
 
 #. type: TP
-#: ippfind.man:186
+#: ippfind.man:191
 #, no-wrap
 msgid "B<{txt_>I<key>B<}>"
 msgstr "B<{txt_>I<clef>B<}>"
 
 #. type: Plain text
-#: ippfind.man:189
+#: ippfind.man:194
 msgid "Value of TXT record I<key> (lowercase)."
 msgstr "Valeur de l’enregistrement TXT I<clef> (minuscules)."
 
 # type: Plain text
 #. type: Plain text
-#: ippfind.man:191
+#: ippfind.man:196
 msgid "B<ippfind> supports the following options:"
 msgstr "B<ippfind> accepte les options suivantes :"
 
 # type: Plain text
 #. type: Plain text
-#: ippfind.man:194
+#: ippfind.man:199
 msgid "Show program help."
 msgstr "Afficher un message d'aide."
 
 # type: Plain text
 #. type: Plain text
-#: ippfind.man:197
+#: ippfind.man:202
 msgid "Show program version."
 msgstr "Afficher la version du programme."
 
 #. type: TP
-#: ippfind.man:197 ipptool.man:106
+#: ippfind.man:202 ipptool.man:106
 #, no-wrap
 msgid "B<-4>"
 msgstr "B<-4>"
 
 #. type: Plain text
-#: ippfind.man:200
+#: ippfind.man:205
 msgid "Use IPv4 when listing."
 msgstr "Utiliser IPv4 lors de l’écoute."
 
 #. type: TP
-#: ippfind.man:200 ipptool.man:111
+#: ippfind.man:205 ipptool.man:111
 #, no-wrap
 msgid "B<-6>"
 msgstr "B<-6>"
 
 #. type: Plain text
-#: ippfind.man:203
+#: ippfind.man:208
 msgid "Use IPv6 when listing."
 msgstr "Utiliser IPv6 lors de l’écoute."
 
 # type: TP
 #. type: TP
-#: ippfind.man:203
+#: ippfind.man:208
 #, no-wrap
 msgid "B<-T >I<seconds>"
 msgstr "B<-T >I<secondes>"
 
 #. type: Plain text
-#: ippfind.man:208
+#: ippfind.man:213
 msgid ""
 "Specify find timeout in seconds.  If 1 or less, B<ippfind> stops as soon as "
 "it thinks it has found everything.  The default timeout is 1 second."
@@ -10897,13 +10949,13 @@ msgstr ""
 "B<1> seconde."
 
 #. type: TP
-#: ippfind.man:208
+#: ippfind.man:213
 #, no-wrap
 msgid "B<-V >I<version>"
 msgstr "B<-V >I<version>"
 
 #. type: Plain text
-#: ippfind.man:212
+#: ippfind.man:217
 msgid ""
 "Specifies the IPP version when listing.  Supported values are \"1.1\", "
 "\"2.0\", \"2.1\", and \"2.2\"."
@@ -10912,7 +10964,7 @@ msgstr ""
 "« 1.1 », « 2.0 », « 2.1 » et « 2.2 »."
 
 #. type: Plain text
-#: ippfind.man:214
+#: ippfind.man:219
 msgid ""
 "B<ippfind> returns 0 if the result for all processed expressions is true, 1 "
 "if the result of any processed expression is false, 2 if browsing or any "
@@ -10926,7 +10978,7 @@ msgstr ""
 "dépassement de mémoire."
 
 #. type: Plain text
-#: ippfind.man:216
+#: ippfind.man:221
 msgid ""
 "When executing a program, B<ippfind> sets the following environment "
 "variables for the matching service registration:"
@@ -10935,75 +10987,75 @@ msgstr ""
 "d’environnement suivantes pour l’enregistrement de service correspondant :"
 
 #. type: TP
-#: ippfind.man:216
+#: ippfind.man:221
 #, no-wrap
 msgid "B<IPPFIND_SERVICE_DOMAIN>"
 msgstr "B<IPPFIND_SERVICE_DOMAIN>"
 
 #. type: TP
-#: ippfind.man:219
+#: ippfind.man:224
 #, no-wrap
 msgid "B<IPPFIND_SERVICE_HOSTNAME>"
 msgstr "B<IPPFIND_SERVICE_HOSTNAME>"
 
 #. type: TP
-#: ippfind.man:222
+#: ippfind.man:227
 #, no-wrap
 msgid "B<IPPFIND_SERVICE_NAME>"
 msgstr "B<IPPFIND_SERVICE_NAME>"
 
 # type: TP
 #. type: TP
-#: ippfind.man:225
+#: ippfind.man:230
 #, no-wrap
 msgid "B<IPPFIND_SERVICE_PORT>"
 msgstr "B<IPPFIND_SERVICE_PORT>"
 
 #. type: TP
-#: ippfind.man:228
+#: ippfind.man:233
 #, no-wrap
 msgid "B<IPPFIND_SERVICE_REGTYPE>"
 msgstr "B<IPPFIND_SERVICE_REGTYPE>"
 
 #. type: TP
-#: ippfind.man:231
+#: ippfind.man:236
 #, no-wrap
 msgid "B<IPPFIND_SERVICE_SCHEME>"
 msgstr "B<IPPFIND_SERVICE_SCHEME>"
 
 # type: TP
 #. type: TP
-#: ippfind.man:234
+#: ippfind.man:239
 #, no-wrap
 msgid "B<IPPFIND_SERVICE_URI>"
 msgstr "B<IPPFIND_SERVICE_URI>"
 
 #. type: TP
-#: ippfind.man:237
+#: ippfind.man:242
 #, no-wrap
 msgid "B<IPPFIND_TXT_>I<KEY>"
 msgstr "B<IPPFIND_TXT_>I<CLEF>"
 
 #. type: Plain text
-#: ippfind.man:240
+#: ippfind.man:245
 msgid "Values of TXT record I<KEY> (uppercase)."
 msgstr "Valeurs des enregistrements TXT I<CLEF> (majuscules)."
 
 #. type: Plain text
-#: ippfind.man:242
+#: ippfind.man:247
 msgid "To show the status of all registered IPP printers on your network, run:"
 msgstr ""
 "Pour afficher l’état de toutes les imprimantes IPP enregistrées, exécutez :"
 
 # type: TH
 #. type: Plain text
-#: ippfind.man:245
+#: ippfind.man:250
 #, no-wrap
 msgid "    ippfind --ls\n"
 msgstr "    ippfind --ls\n"
 
 #. type: Plain text
-#: ippfind.man:248
+#: ippfind.man:253
 msgid ""
 "Similarly, to send a PostScript test page to every PostScript printer, run:"
 msgstr ""
@@ -11011,7 +11063,7 @@ msgstr ""
 "PostScript, exécutez :"
 
 #. type: Plain text
-#: ippfind.man:252
+#: ippfind.man:257
 #, no-wrap
 msgid ""
 "    ippfind --txt-pdl application/postscript --exec ipptool\n"
@@ -11021,14 +11073,16 @@ msgstr ""
 "      -f onepage-letter.ps '{}' print-job.test \\e;\n"
 
 #. type: Plain text
-#: ippfind.man:255
+#: ippfind.man:260
 msgid "B<ipptool>(1)"
 msgstr "B<ipptool>(1)"
 
 # type: Plain text
 #. type: Plain text
-#: ippfind.man:256
-msgid "Copyright \\[co] 2013-2015 by Apple Inc."
+#: ippfind.man:261
+#, fuzzy
+#| msgid "Copyright \\[co] 2013-2015 by Apple Inc."
+msgid "Copyright \\[co] 2013-2018 by Apple Inc."
 msgstr "Copyright 2013-2015 par Apple Inc."
 
 #. type: TH
@@ -13977,9 +14031,9 @@ msgstr "lpadmin"
 #. type: TH
 #: lpadmin.man:13
 #, fuzzy, no-wrap
-#| msgid "5 March 2016"
-msgid "29 March 2016"
-msgstr "5 mars 2016"
+#| msgid "29 March 2016"
+msgid "19 March 2018"
+msgstr "29 mars 2016"
 
 # type: Plain text
 #. type: Plain text
@@ -14126,7 +14180,7 @@ msgstr ""
 "Description ») à utiliser avec cette imprimante."
 
 #. type: Plain text
-#: lpadmin.man:94
+#: lpadmin.man:95
 #, fuzzy
 #| msgid ""
 #| "Sets a standard PPD file for the printer from the I<model> directory or "
@@ -14139,7 +14193,8 @@ msgid ""
 "using one of the driver interfaces.  Use the I<-m> option with the "
 "B<lpinfo>(8)  command to get a list of supported models.  The model \"raw\" "
 "clears any existing PPD file and the model \"everywhere\" queries the "
-"printer referred to by the specified IPP I<device-uri>."
+"printer referred to by the specified IPP I<device-uri>.  Note: The \"raw\" "
+"model is deprecated and will not be supported in a future version of CUPS."
 msgstr ""
 "Définir un fichier PPD standard à partir du répertoire I<modèle> ou en "
 "utilisant une des interfaces de pilotes. Utilisez l'option B<-m> avec la "
@@ -14148,38 +14203,38 @@ msgstr ""
 "« everywhere » recherche l’imprimante désignée par l’I<uri_périphérique> IPP."
 
 #. type: TP
-#: lpadmin.man:94
+#: lpadmin.man:95
 #, no-wrap
 msgid "B<-o cupsIPPSupplies=true>"
 msgstr "B<-o cupsIPPSupplies=true>"
 
 #. type: TP
-#: lpadmin.man:96
+#: lpadmin.man:97
 #, no-wrap
 msgid "B<-o cupsIPPSupplies=false>"
 msgstr "B<-o cupsIPPSupplies=false>"
 
 # type: Plain text
 #. type: Plain text
-#: lpadmin.man:99
+#: lpadmin.man:100
 msgid "Specifies whether IPP supply level values should be reported."
 msgstr ""
 "Indiquer si les valeurs de niveau d’équipement IPP doivent être rapportées."
 
 #. type: TP
-#: lpadmin.man:99
+#: lpadmin.man:100
 #, no-wrap
 msgid "B<-o cupsSNMPSupplies=true>"
 msgstr "B<-o cupsSNMPSupplies=true>"
 
 #. type: TP
-#: lpadmin.man:101
+#: lpadmin.man:102
 #, no-wrap
 msgid "B<-o cupsSNMPSupplies=false>"
 msgstr "B<-o cupsSNMPSupplies=false>"
 
 #. type: Plain text
-#: lpadmin.man:104
+#: lpadmin.man:105
 msgid ""
 "Specifies whether SNMP supply level (RFC 3805) values should be reported."
 msgstr ""
@@ -14188,14 +14243,14 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: lpadmin.man:104
+#: lpadmin.man:105
 #, no-wrap
 msgid "B<-o job-k-limit=>I<value>"
 msgstr "B<-o job-k-limit=>I<valeur>"
 
 # type: Plain text
 #. type: Plain text
-#: lpadmin.man:108
+#: lpadmin.man:109
 msgid ""
 "Sets the kilobyte limit for per-user quotas.  The value is an integer number "
 "of kilobytes; one kilobyte is 1024 bytes."
@@ -14205,14 +14260,14 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: lpadmin.man:108
+#: lpadmin.man:109
 #, no-wrap
 msgid "B<-o job-page-limit=>I<value>"
 msgstr "B<-o job-page-limit=>I<valeur>"
 
 # type: Plain text
 #. type: Plain text
-#: lpadmin.man:112
+#: lpadmin.man:113
 msgid ""
 "Sets the page limit for per-user quotas.  The value is the integer number of "
 "pages that can be printed; double-sided pages are counted as two pages."
@@ -14223,14 +14278,14 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: lpadmin.man:112
+#: lpadmin.man:113
 #, no-wrap
 msgid "B<-o job-quota-period=>I<value>"
 msgstr "B<-o job-quota-period=>I<valeur>"
 
 # type: Plain text
 #. type: Plain text
-#: lpadmin.man:116
+#: lpadmin.man:117
 msgid ""
 "Sets the accounting period for per-user quotas.  The value is an integer "
 "number of seconds; 86,400 seconds are in one day."
@@ -14240,35 +14295,35 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: lpadmin.man:116
+#: lpadmin.man:117
 #, no-wrap
 msgid "B<-o job-sheets-default=>I<banner>"
 msgstr "B<-o job-sheets-default=>I<bannière>"
 
 # type: TP
 #. type: TP
-#: lpadmin.man:118
+#: lpadmin.man:119
 #, no-wrap
 msgid "B<-o job-sheets-default=>I<banner>B<,>I<banner>"
 msgstr "B<-o job-sheets-default=>I<bannière>B<,>I<bannière>"
 
 # type: Plain text
 #. type: Plain text
-#: lpadmin.man:121
+#: lpadmin.man:122
 msgid "Sets the default banner page(s) to use for print jobs."
 msgstr ""
 "Fixer la (les) page(s) de bannière par défaut pour les travaux d'impression."
 
 # type: TP
 #. type: TP
-#: lpadmin.man:121
+#: lpadmin.man:122
 #, no-wrap
 msgid "B<-o >I<name>B<=>I<value>"
 msgstr "B<-o >I<nom>B<=>I<valeur>"
 
 # type: Plain text
 #. type: Plain text
-#: lpadmin.man:127
+#: lpadmin.man:128
 msgid ""
 "Sets a PPD option for the printer.  PPD options can be listed using the I<-"
 "l> option with the B<lpoptions>(1)  command."
@@ -14278,14 +14333,14 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: lpadmin.man:127
+#: lpadmin.man:128
 #, no-wrap
 msgid "B<-o >I<name>B<-default=>I<value>"
 msgstr "B<-o >I<nom>B<-default=>I<valeur>"
 
 # type: Plain text
 #. type: Plain text
-#: lpadmin.man:131
+#: lpadmin.man:132
 msgid ""
 "Sets a default server-side option for the destination.  Any print-time "
 "option can be defaulted, e.g., \"-o number-up-default=2\" to set the default "
@@ -14298,14 +14353,14 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: lpadmin.man:131
+#: lpadmin.man:132
 #, no-wrap
 msgid "B<-o port-monitor=>I<name>"
 msgstr "B<-o port-monitor=>I<nom>"
 
 # type: Plain text
 #. type: Plain text
-#: lpadmin.man:136
+#: lpadmin.man:137
 msgid ""
 "Sets the binary communications program to use when printing, \"none\", \"bcp"
 "\", or \"tbcp\".  The default program is \"none\".  The specified port "
@@ -14318,14 +14373,14 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: lpadmin.man:136
+#: lpadmin.man:137
 #, no-wrap
 msgid "B<-o printer-error-policy=>I<name>"
 msgstr "B<-o printer-error-policy=>I<nom>"
 
 # type: Plain text
 #. type: Plain text
-#: lpadmin.man:142
+#: lpadmin.man:143
 msgid ""
 "Sets the error policy to be used when the printer backend is unable to send "
 "the job to the printer.  The name must be one of \"abort-job\", \"retry-job"
@@ -14342,21 +14397,21 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: lpadmin.man:142
+#: lpadmin.man:143
 #, no-wrap
 msgid "B<-o printer-is-shared=true>"
 msgstr "B<-o printer-is-shared=true>"
 
 # type: TP
 #. type: TP
-#: lpadmin.man:144
+#: lpadmin.man:145
 #, no-wrap
 msgid "B<-o printer-is-shared=false>"
 msgstr "B<-o printer-is-shared=false>"
 
 # type: Plain text
 #. type: Plain text
-#: lpadmin.man:149
+#: lpadmin.man:150
 msgid ""
 "Sets the destination to shared/published or unshared/unpublished.  Shared/"
 "published destinations are publicly announced by the server on the LAN based "
@@ -14371,14 +14426,14 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: lpadmin.man:149
+#: lpadmin.man:150
 #, no-wrap
 msgid "B<-o printer-op-policy=>I<name>"
 msgstr "B<-o printer-op-policy=>I<nom>"
 
 # type: Plain text
 #. type: Plain text
-#: lpadmin.man:154
+#: lpadmin.man:155
 msgid ""
 "Sets the IPP operation policy associated with the destination.  The name "
 "must be defined in the I<cupsd.conf> in a Policy section.  The default "
@@ -14390,27 +14445,27 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: lpadmin.man:154
+#: lpadmin.man:155
 #, no-wrap
 msgid "B<-R >I<name>B<-default>"
 msgstr "B<-R >I<nom>B<-default>"
 
 # type: Plain text
 #. type: Plain text
-#: lpadmin.man:157
+#: lpadmin.man:158
 msgid "Deletes the named option from I<printer>."
 msgstr "Supprimer les options données pour l'I<imprimante>."
 
 # type: TP
 #. type: TP
-#: lpadmin.man:157
+#: lpadmin.man:158
 #, no-wrap
 msgid "B<-r >I<class>"
 msgstr "B<-r >I<classe>"
 
 # type: Plain text
 #. type: Plain text
-#: lpadmin.man:161
+#: lpadmin.man:162
 msgid ""
 "Removes the named I<printer> from I<class>.  If the resulting class becomes "
 "empty it is removed."
@@ -14419,34 +14474,34 @@ msgstr ""
 "vide, celle-ci est supprimée."
 
 #. type: TP
-#: lpadmin.man:161
+#: lpadmin.man:162
 #, no-wrap
 msgid "B<-u allow:>{I<user>|B<@>I<group>}{B<,>I<user>|B<,@>I<group>}*"
 msgstr "B<-u allow:>{I<utilisateur>|B<@>I<groupe>}{B<,>I<utilisateur>|B<,@>I<groupe>}*"
 
 #. type: TP
-#: lpadmin.man:163
+#: lpadmin.man:164
 #, no-wrap
 msgid "B<-u deny:>{I<user>|B<@>I<group>}{B<,>I<user>|B<,@>I<group>}*"
 msgstr "B<-u deny:>{I<utilisateur>|B<@>I<groupe>}{B<,>I<utilisateur>|B<,@>I<groupe>}*"
 
 # type: TP
 #. type: TP
-#: lpadmin.man:165
+#: lpadmin.man:166
 #, no-wrap
 msgid "B<-u allow:all>"
 msgstr "B<-u> B<allow:>I<all>"
 
 # type: TP
 #. type: TP
-#: lpadmin.man:167
+#: lpadmin.man:168
 #, no-wrap
 msgid "B<-u deny:none>"
 msgstr "B<-u> B<deny:>I<none>"
 
 # type: Plain text
 #. type: Plain text
-#: lpadmin.man:173
+#: lpadmin.man:174
 msgid ""
 "Sets user-level access control on a destination.  Names starting with \"@\" "
 "are interpreted as UNIX groups.  The latter two forms turn user-level access "
@@ -14464,14 +14519,14 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: lpadmin.man:173
+#: lpadmin.man:174
 #, no-wrap
 msgid "B<-v \">I<device-uri>B<\">"
 msgstr "B<-v \">I<uri_périphérique>B<\">"
 
 # type: Plain text
 #. type: Plain text
-#: lpadmin.man:179
+#: lpadmin.man:180
 msgid ""
 "Sets the I<device-uri> attribute of the printer queue.  Use the I<-v> option "
 "with the B<lpinfo>(8)  command to get a list of supported device URIs and "
@@ -14483,20 +14538,20 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: lpadmin.man:179
+#: lpadmin.man:180
 #, no-wrap
 msgid "B<-D \">I<info>B<\">"
 msgstr "B<-D \">I<info>B<\">"
 
 # type: Plain text
 #. type: Plain text
-#: lpadmin.man:182
+#: lpadmin.man:183
 msgid "Provides a textual description of the destination."
 msgstr "Définir une description textuelle de la destination."
 
 # type: Plain text
 #. type: Plain text
-#: lpadmin.man:189
+#: lpadmin.man:190
 msgid ""
 "Enables the destination and accepts jobs; this is the same as running the "
 "B<cupsaccept>(8)  and B<cupsenable>(8)  programs on the destination."
@@ -14507,20 +14562,20 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: lpadmin.man:189
+#: lpadmin.man:190
 #, no-wrap
 msgid "B<-L \">I<location>B<\">"
 msgstr "B<-L \">I<emplacement>B<\">"
 
 # type: Plain text
 #. type: Plain text
-#: lpadmin.man:192
+#: lpadmin.man:193
 msgid "Provides a textual location of the destination."
 msgstr "Définir un emplacement textuel de l'imprimante."
 
 # type: Plain text
 #. type: Plain text
-#: lpadmin.man:197
+#: lpadmin.man:198
 msgid ""
 "Unlike the System V printing system, CUPS allows printer names to contain "
 "any printable character except SPACE, TAB, \"/\", or \"#\".  Also, printer "
@@ -14539,7 +14594,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: lpadmin.man:199
+#: lpadmin.man:200
 msgid ""
 "The CUPS version of B<lpadmin> does not support all of the System V or "
 "Solaris printing system configuration options."
@@ -14548,19 +14603,19 @@ msgstr ""
 "configuration disponibles dans les versions System V ou Solaris."
 
 #. type: Plain text
-#: lpadmin.man:201
+#: lpadmin.man:202
 msgid "Create an IPP Everywhere print queue:"
 msgstr "Créer une file d’impression IPP Everywhere :"
 
 #. type: Plain text
-#: lpadmin.man:204
+#: lpadmin.man:205
 #, no-wrap
 msgid "    lpadmin -p myprinter -E -v ipp://myprinter.local/ipp/print -m everywhere\n"
 msgstr "    lpadmin -p mon_imprimante -E -v ipp://mon_imprimante.local/ipp/print -m everywhere\n"
 
 # type: Plain text
 #. type: Plain text
-#: lpadmin.man:212
+#: lpadmin.man:213
 msgid ""
 "B<cupsaccept>(8), B<cupsenable>(8), B<lpinfo>(8), B<lpoptions>(1), CUPS "
 "Online Help (http://localhost:631/help)"
@@ -14715,9 +14770,9 @@ msgstr "lpinfo"
 
 # type: TH
 #. type: TH
-#: lpinfo.man:13 lpoptions.man.in:13 lpq.man:13 mailto.conf.man:13
-#: mime.types.man:13 notifier.man:13 ppdc.man:13 ppdhtml.man:13 ppdi.man:13
-#: ppdmerge.man:13 ppdpo.man:13
+#: lpinfo.man:13 lpq.man:13 mailto.conf.man:13 mime.types.man:13
+#: notifier.man:13 ppdc.man:13 ppdhtml.man:13 ppdi.man:13 ppdmerge.man:13
+#: ppdpo.man:13
 #, no-wrap
 msgid "12 June 2014"
 msgstr "12 juin 2014"
@@ -15715,6 +15770,14 @@ msgstr "B<cancel>(1), B<lp>(1), B<lpr>(1), B<lprm>(1),"
 msgid "lpoptions"
 msgstr "lpoptions"
 
+# type: TH
+#. type: TH
+#: lpoptions.man.in:13
+#, fuzzy, no-wrap
+#| msgid "15 April 2014"
+msgid "10 April 2018"
+msgstr "15 avril 2014"
+
 # type: Plain text
 #. type: Plain text
 #: lpoptions.man.in:16
@@ -15725,21 +15788,29 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: lpoptions.man.in:30
+#: lpoptions.man.in:27
+#, fuzzy
+#| msgid ""
+#| "B<lpoptions> [ B<-E> ] [ B<-U> I<username> ] [ B<-h >I<server>[B<:"
+#| ">I<port>] ] B<-d >I<destination>[B</>I<instance>] [ B<-l> ]"
 msgid ""
-"B<lpoptions> [ B<-E> ] [ B<-U> I<username> ] [ B<-h >I<server>[B<:"
-">I<port>] ] B<-d >I<destination>[B</>I<instance>] [ B<-l> ]"
+"B<lpoptions> [ B<-E> ] [ B<-h >I<server>[B<:>I<port>] ] B<-d "
+">I<destination>[B</>I<instance>] [ B<-l> ]"
 msgstr ""
 "B<lpoptions> [ B<-E> ] [ B<-U> I<identifiant> ] [ B<-h> I<serveur>[B<:"
 ">I<port>] ] [ B<-d> I<destination>[B</>I<instance>] [ B<-l> ]"
 
 # type: Plain text
 #. type: Plain text
-#: lpoptions.man.in:43
+#: lpoptions.man.in:37
+#, fuzzy
+#| msgid ""
+#| "B<lpoptions> [ B<-E> ] [ B<-U> I<username> ] [ B<-h >I<server>[B<:"
+#| ">I<port>] ] [ B<-p >I<destination>[B</>I<instance>] ] B<-o "
+#| ">I<option>[B<=>I<value>] ..."
 msgid ""
-"B<lpoptions> [ B<-E> ] [ B<-U> I<username> ] [ B<-h >I<server>[B<:"
-">I<port>] ] [ B<-p >I<destination>[B</>I<instance>] ] B<-o "
-">I<option>[B<=>I<value>] ..."
+"B<lpoptions> [ B<-E> ] [ B<-h >I<server>[B<:>I<port>] ] [ B<-p "
+">I<destination>[B</>I<instance>] ] B<-o >I<option>[B<=>I<value>] ..."
 msgstr ""
 "B<lpoptions> [ B<-E> ] [ B<-U> I<identifiant> ] [ B<-h> I<serveur>[B<:"
 ">I<port>] ] B<-p> I<destination>[B</>I<instance>] [ B<-o> "
@@ -15747,27 +15818,35 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: lpoptions.man.in:57
+#: lpoptions.man.in:48
+#, fuzzy
+#| msgid ""
+#| "B<lpoptions> [ B<-E> ] [ B<-U> I<username> ] [ B<-h >I<server>[B<:"
+#| ">I<port>] ] [ B<-p >I<destination>[B</>I<instance>] ] B<-r> I<option>"
 msgid ""
-"B<lpoptions> [ B<-E> ] [ B<-U> I<username> ] [ B<-h >I<server>[B<:"
-">I<port>] ] [ B<-p >I<destination>[B</>I<instance>] ] B<-r> I<option>"
+"B<lpoptions> [ B<-E> ] [ B<-h >I<server>[B<:>I<port>] ] [ B<-p "
+">I<destination>[B</>I<instance>] ] B<-r> I<option>"
 msgstr ""
 "B<lpoptions> [ B<-E> ] [ B<-U> I<identifiant> ] [ B<-h> I<serveur>[B<:"
 ">I<port>] ] [ B<-p> I<destination>[B</>I<instance>] ] B<-r> I<option>"
 
 # type: Plain text
 #. type: Plain text
-#: lpoptions.man.in:68
+#: lpoptions.man.in:56
+#, fuzzy
+#| msgid ""
+#| "B<lpoptions> [ B<-E> ] [ B<-U> I<username> ] [ B<-h >I<server>[B<:"
+#| ">I<port>] ] B<-x >I<destination>[B</>I<instance>]"
 msgid ""
-"B<lpoptions> [ B<-E> ] [ B<-U> I<username> ] [ B<-h >I<server>[B<:"
-">I<port>] ] B<-x >I<destination>[B</>I<instance>]"
+"B<lpoptions> [ B<-E> ] [ B<-h >I<server>[B<:>I<port>] ] B<-x "
+">I<destination>[B</>I<instance>]"
 msgstr ""
 "B<lpoptions> [ B<-E> ] [ B<-U> I<identifiant> ] [ B<-h> I<serveur>[B<:"
 ">I<port>] ] B<-x> I<destination>[B</>I<instance>]"
 
 # type: Plain text
 #. type: Plain text
-#: lpoptions.man.in:72
+#: lpoptions.man.in:60
 msgid ""
 "B<lpoptions> displays or sets printer options and defaults.  If no printer "
 "is specified using the I<-p> option, the default printer is used as "
@@ -15779,7 +15858,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: lpoptions.man.in:74
+#: lpoptions.man.in:62
 msgid ""
 "If no I<-l>, I<-o>, or I<-r> options are specified, the current options are "
 "reported on the standard output."
@@ -15789,7 +15868,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: lpoptions.man.in:80
+#: lpoptions.man.in:68
 msgid ""
 "Options set with the B<lpoptions> command are used by the B<lp>(1)  and "
 "B<lpr>(1)  commands when submitting jobs."
@@ -15799,7 +15878,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: lpoptions.man.in:83
+#: lpoptions.man.in:71
 msgid ""
 "When run by the root user, B<lpoptions> gets and sets default options and "
 "instances for all users in the I</etc/cups/lpoptions> file.  Otherwise, the "
@@ -15812,32 +15891,26 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: lpoptions.man.in:85
+#: lpoptions.man.in:73
 msgid "B<lpoptions> supports the following options:"
 msgstr "B<lpoptions> accepte les options suivantes :"
 
 # type: Plain text
 #. type: Plain text
-#: lpoptions.man.in:88
+#: lpoptions.man.in:76
 msgid "Enables encryption when communicating with the CUPS server."
 msgstr "Activer le chiffrement pour la communication avec le serveur CUPS."
 
-# type: Plain text
-#. type: Plain text
-#: lpoptions.man.in:91
-msgid "Uses an alternate username."
-msgstr "Utiliser un autre identifiant."
-
 # type: TP
 #. type: TP
-#: lpoptions.man.in:91
+#: lpoptions.man.in:76
 #, no-wrap
 msgid "B<-d >I<destination>[B</>I<instance>]"
 msgstr "B<-d> I<destination>[B</>I<instance>]"
 
 # type: Plain text
 #. type: Plain text
-#: lpoptions.man.in:96
+#: lpoptions.man.in:81
 msgid ""
 "Sets the user default printer to I<destination>.  If I<instance> is supplied "
 "then that particular instance is used.  This option overrides the system "
@@ -15850,39 +15923,39 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: lpoptions.man.in:99
+#: lpoptions.man.in:84
 msgid "Uses an alternate server."
 msgstr "Utiliser un autre serveur."
 
 # type: Plain text
 #. type: Plain text
-#: lpoptions.man.in:102
+#: lpoptions.man.in:87
 msgid "Lists the printer specific options and their current settings."
 msgstr "Afficher les options spécifiques d'une imprimante et leur valeur."
 
 # type: TP
 #. type: TP
-#: lpoptions.man.in:102 lpr.man:101
+#: lpoptions.man.in:87 lpr.man:101
 #, no-wrap
 msgid "B<-o >I<option>[B<=>I<value>]"
 msgstr "B<-o> I<option>[B<=>I<valeur>]"
 
 # type: Plain text
 #. type: Plain text
-#: lpoptions.man.in:105
+#: lpoptions.man.in:90
 msgid "Specifies a new option for the named destination."
 msgstr "Définir une nouvelle option pour la destination donnée."
 
 # type: TP
 #. type: TP
-#: lpoptions.man.in:105
+#: lpoptions.man.in:90
 #, no-wrap
 msgid "B<-p >I<destination>[B</>I<instance>]"
 msgstr "B<-p> I<destination>[B</>I<instance>]"
 
 # type: Plain text
 #. type: Plain text
-#: lpoptions.man.in:112
+#: lpoptions.man.in:97
 msgid ""
 "Sets the destination and instance, if specified, for any options that "
 "follow.  If the named instance does not exist then it is created.  "
@@ -15895,27 +15968,27 @@ msgstr ""
 
 # type: TP
 #. type: TP
-#: lpoptions.man.in:112
+#: lpoptions.man.in:97
 #, no-wrap
 msgid "B<-r >I<option>"
 msgstr "B<-r> I<option>"
 
 # type: Plain text
 #. type: Plain text
-#: lpoptions.man.in:115
+#: lpoptions.man.in:100
 msgid "Removes the specified option from the named destination."
 msgstr "Supprimer une option de la destination fournie en paramètre."
 
 # type: TP
 #. type: TP
-#: lpoptions.man.in:115
+#: lpoptions.man.in:100
 #, no-wrap
 msgid "B<-x >I<destination>[B</>I<instance>]"
 msgstr "B<-x> I<destination>[B</>I<instance>]"
 
 # type: Plain text
 #. type: Plain text
-#: lpoptions.man.in:122
+#: lpoptions.man.in:107
 msgid ""
 "Removes the options for the named destination and instance, if specified.  "
 "If the named instance does not exist then this does nothing.  Destinations "
@@ -15928,7 +16001,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: lpoptions.man.in:124
+#: lpoptions.man.in:109
 msgid ""
 "I<~/.cups/lpoptions> - user defaults and instances created by non-root users."
 msgstr ""
@@ -15937,7 +16010,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: lpoptions.man.in:126
+#: lpoptions.man.in:111
 msgid ""
 "I</etc/cups/lpoptions> - system-wide defaults and instances created by the "
 "root user."
@@ -15947,12 +16020,12 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: lpoptions.man.in:128
+#: lpoptions.man.in:113
 msgid "The B<lpoptions> command is unique to CUPS."
 msgstr "La commande B<lpoptions> est spécifique à CUPS."
 
 #. type: Plain text
-#: lpoptions.man.in:135
+#: lpoptions.man.in:120
 msgid ""
 "B<cancel>(1), B<lp>(1), B<lpadmin>(8), B<lpr>(1), B<lprm>(1), CUPS Online "
 "Help (http://localhost:631/help)"
@@ -18373,11 +18446,28 @@ msgstr ""
 "types>(5), B<printers.conf>(5), aide en ligne de CUPS E<lt>URL:I<http://"
 "localhost:631/help>E<gt>."
 
+# type: TP
+#~ msgid "B<ErrorPolicy retry-this-job>"
+#~ msgstr "B<ErrorPolicy> I<retry-this-job>"
+
+# type: Plain text
+#~ msgid "Passes the specified environment variable(s) to child processes."
+#~ msgstr "Passer les variables d'environnement indiquées aux processus fils."
+
+# type: Plain text
+#~ msgid ""
+#~ "Set the specified environment variable to be passed to child processes."
+#~ msgstr "Fixer les variables d'environnement à passer aux processus fils."
+
 # type: TH
 #, fuzzy
-#~| msgid "29 March 2016"
-#~ msgid "19 March 2018"
-#~ msgstr "29 mars 2016"
+#~| msgid "5 March 2016"
+#~ msgid "29 March 2016"
+#~ msgstr "5 mars 2016"
+
+# type: Plain text
+#~ msgid "Uses an alternate username."
+#~ msgstr "Utiliser un autre identifiant."
 
 # type: TH
 #, fuzzy
@@ -18421,10 +18511,6 @@ msgstr ""
 #~ "clients ne prenant pas en charge les suites les plus récentes. L’option "
 #~ "I<AllowSSL3> autorise SSL 3.0, nécessaire pour quelques anciens clients "
 #~ "ne prenant pas en charge TLS 1.0."
-
-# type: TH
-#~ msgid "4 February 2015"
-#~ msgstr "4 février 2015"
 
 #~ msgid ""
 #~ "Adds an attribute to the test request. Values are separated by the comma "
@@ -19961,10 +20047,6 @@ msgstr ""
 # type: Plain text
 #~ msgid "Specifies the device URI for a printer."
 #~ msgstr "Indiquer l'URI de périphérique d'une imprimante."
-
-# type: TP
-#~ msgid "ErrorPolicy retry-current-job"
-#~ msgstr "B<ErrorPolicy> I<retry-current-job>"
 
 # type: TP
 #~ msgid "PortMonitor monitor"

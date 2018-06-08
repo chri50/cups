@@ -1,4 +1,4 @@
-From b765848f470ca65e3ded89b3c5624e74218fde48 Mon Sep 17 00:00:00 2001
+From 97c108f0306b3e35bd704eec918e89e8f3c87de4 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:40 +0200
 Subject: Deactivate CUPS' own log rotating as the system already provides a
