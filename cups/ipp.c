@@ -1,8 +1,8 @@
 /*
  * Internet Printing Protocol functions for CUPS.
  *
- * Copyright © 2007-2018 by Apple Inc.
- * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright 2007-2017 by Apple Inc.
+ * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  * These coded instructions, statements, and computer programs are the
  * property of Apple Inc. and are protected by Federal copyright
@@ -4819,6 +4819,21 @@ ippValidateAttribute(
   ipp_attribute_t *colattr;		/* Collection attribute */
   regex_t	re;			/* Regular expression */
   ipp_uchar_t	*date;			/* Current date value */
+  static const char * const uri_status_strings[] =
+  {					/* URI status strings */
+    "URI too large",
+    "Bad arguments to function",
+    "Bad resource in URI",
+    "Bad port number in URI",
+    "Bad hostname/address in URI",
+    "Bad username in URI",
+    "Bad scheme in URI",
+    "Bad/empty URI",
+    "OK",
+    "Missing scheme in URI",
+    "Unknown scheme in URI",
+    "Missing resource in URI"
+  };
 
 
  /*
@@ -5093,18 +5108,14 @@ ippValidateAttribute(
 	    }
 	    else if (*ptr & 0x80)
 	      break;
-	    else if ((*ptr < ' ' && *ptr != '\n' && *ptr != '\r' && *ptr != '\t') || *ptr == 0x7f)
-	      break;
 	  }
 
-	  if (*ptr < ' ' || *ptr == 0x7f)
+	  if (*ptr)
 	  {
-	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad text value \"%s\" - bad control character (PWG 5100.14 section 8.3)."), attr->name, attr->values[i].string.text);
-	    return (0);
-	  }
-	  else if (*ptr)
-	  {
-	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad text value \"%s\" - bad UTF-8 sequence (RFC 8011 section 5.1.2)."), attr->name, attr->values[i].string.text);
+	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST,
+			  _("\"%s\": Bad text value \"%s\" - bad UTF-8 "
+			    "sequence (RFC 8011 section 5.1.2)."), attr->name,
+			  attr->values[i].string.text);
 	    return (0);
 	  }
 
@@ -5155,18 +5166,14 @@ ippValidateAttribute(
 	    }
 	    else if (*ptr & 0x80)
 	      break;
-	    else if (*ptr < ' ' || *ptr == 0x7f)
-	      break;
 	  }
 
-	  if (*ptr < ' ' || *ptr == 0x7f)
+	  if (*ptr)
 	  {
-	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad name value \"%s\" - bad control character (PWG 5100.14 section 8.1)."), attr->name, attr->values[i].string.text);
-	    return (0);
-	  }
-	  else if (*ptr)
-	  {
-	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad name value \"%s\" - bad UTF-8 sequence (RFC 8011 section 5.1.3)."), attr->name, attr->values[i].string.text);
+	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST,
+			  _("\"%s\": Bad name value \"%s\" - bad UTF-8 "
+			    "sequence (RFC 8011 section 5.1.3)."), attr->name,
+			  attr->values[i].string.text);
 	    return (0);
 	  }
 
@@ -5223,7 +5230,12 @@ ippValidateAttribute(
 
 	  if (uri_status < HTTP_URI_STATUS_OK)
 	  {
-	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad URI value \"%s\" - %s (RFC 8011 section 5.1.6)."), attr->name, attr->values[i].string.text, httpURIStatusString(uri_status));
+	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST,
+			  _("\"%s\": Bad URI value \"%s\" - %s "
+			    "(RFC 8011 section 5.1.6)."), attr->name,
+			  attr->values[i].string.text,
+			  uri_status_strings[uri_status -
+					     HTTP_URI_STATUS_OVERFLOW]);
 	    return (0);
 	  }
 
