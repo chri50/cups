@@ -1,4 +1,4 @@
-From dc866749d26c956e0dcf37275d3fc338b453b069 Mon Sep 17 00:00:00 2001
+From 563b8a1b7fedf0a61928f16188823ba6f355044f Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:05 +0200
 Subject: Fix hyphen-used-as-minus-sign manpage errors
@@ -80,10 +80,10 @@ index cb93160fc..b85648954 100644
  defaults read /Library/Preferences/org.cups.PrintingPrefs.plist Encryption
  .fi
 diff --git a/man/cups-files.conf.man.in b/man/cups-files.conf.man.in
-index 7b96d687d..82f39acf3 100644
+index baf3cb6af..ec4805dde 100644
 --- a/man/cups-files.conf.man.in
 +++ b/man/cups-files.conf.man.in
-@@ -225,7 +225,7 @@ The following directives are deprecated and will be removed from a future versio
+@@ -235,7 +235,7 @@ The following directives are deprecated and will be removed from a future versio
  \fBFileDevice No\fR
  Specifies whether the file pseudo-device can be used for new printer queues.
  The URI "file:///dev/null" is always allowed.
@@ -268,10 +268,10 @@ index f7e43a928..5d673a3fe 100644
  .BR cupsd (8),
  .BR cupsd.conf (5),
 diff --git a/man/cupsd.conf.man.in b/man/cupsd.conf.man.in
-index 4a7f9e50f..e35ad36ca 100644
+index 36c849398..56597bfeb 100644
 --- a/man/cupsd.conf.man.in
 +++ b/man/cupsd.conf.man.in
-@@ -459,7 +459,7 @@ The \fIAllowDH\fR option enables cipher suites using plain Diffie-Hellman key ne
+@@ -451,7 +451,7 @@ The \fIAllowDH\fR option enables cipher suites using plain Diffie-Hellman key ne
  The \fIAllowRC4\fR option enables the 128-bit RC4 cipher suites, which are required for some older clients.
  The \fIAllowSSL3\fR option enables SSL v3.0, which is required for some older clients that do not support TLS v1.0.
  The \fIDenyCBC\fR option disables all CBC cipher suites.
@@ -465,10 +465,10 @@ index 63a5e7ded..bafe14bd7 100644
  .fi
  .SH SEE ALSO
 diff --git a/man/lpoptions.man.in b/man/lpoptions.man.in
-index 4f43c64ad..5d7fbaf72 100644
+index b5d4a9daa..df1cf5500 100644
 --- a/man/lpoptions.man.in
 +++ b/man/lpoptions.man.in
-@@ -116,9 +116,9 @@ Destinations can only be removed using the
+@@ -101,9 +101,9 @@ Destinations can only be removed using the
  .BR lpadmin (8)
  command.
  .SH FILES

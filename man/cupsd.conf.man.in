@@ -6,7 +6,7 @@
 .\"
 .\" Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
 .\"
-.TH cupsd.conf 5 "CUPS" "9 November 2017" "Apple Inc."
+.TH cupsd.conf 5 "CUPS" "24 April 2018" "Apple Inc."
 .SH NAME
 cupsd.conf \- server configuration file for cups
 .SH DESCRIPTION
@@ -139,11 +139,11 @@ The default is typically the server's ".local" hostname.
 \fBErrorPolicy abort-job\fR
 Specifies that a failed print job should be aborted (discarded) unless otherwise specified for the printer.
 .TP 5
+\fBErrorPolicy retry-current-job\fR
+Specifies that a failed print job should be retried immediately unless otherwise specified for the printer.
+.TP 5
 \fBErrorPolicy retry-job\fR
 Specifies that a failed print job should be retried at a later time unless otherwise specified for the printer. The 'retry-job' error policy is the default.
-.TP 5
-\fBErrorPolicy retry-this-job\fR
-Specifies that a failed print job should be retried immediately unless otherwise specified for the printer.
 .TP 5
 \fBErrorPolicy stop-printer\fR
 Specifies that a failed print job should stop the printer unless otherwise specified for the printer.
@@ -349,10 +349,6 @@ The default is "1048576" (1MB).
 \fBMultipleOperationTimeout \fIseconds\fR
 Specifies the maximum amount of time to allow between files in a multiple file print job.
 The default is "300" (5 minutes).
-.\"#PassEnv
-.TP 5
-\fBPassEnv \fIvariable \fR[ ... \fIvariable \fR]
-Passes the specified environment variable(s) to child processes.
 .\"#Policy
 .TP 5
 \fB<Policy \fIname\fB> \fR... \fB</Policy>\fR
@@ -433,10 +429,6 @@ Specifies what information is included in the Server header of HTTP responses.
 command.
 "Full" reports "CUPS 2.0.0 (UNAME) IPP/2.0".
 The default is "Minimal".
-.\"#SetEnv
-.TP 5
-\fBSetEnv \fIvariable value\fR
-Set the specified environment variable to be passed to child processes.
 .\"#SSLListen
 .TP 5
 \fBSSLListen \fIipv4-address\fB:\fIport\fR

@@ -1,4 +1,4 @@
-From 3f9b583806416598fb58e86e1ad7bfeb59d2daf5 Mon Sep 17 00:00:00 2001
+From e4f75581f2c9c3f0d105ca16a0d797961ac49111 Mon Sep 17 00:00:00 2001
 From: Till Kampetter <till.kampetter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:45 +0200
 Subject: Make log debug history nearly unlimited
@@ -11,10 +11,10 @@ Patch-Name: log-debug-history-nearly-unlimited.patch
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index cb182ec71..3da29dbde 100644
+index 046daa379..4921d8ca4 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -720,7 +720,7 @@ cupsdReadConfiguration(void)
+@@ -721,7 +721,7 @@ cupsdReadConfiguration(void)
    KeepAlive                = TRUE;
    KeepAliveTimeout         = DEFAULT_KEEPALIVE;
    ListenBackLog            = SOMAXCONN;

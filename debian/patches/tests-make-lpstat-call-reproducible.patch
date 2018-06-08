@@ -1,4 +1,4 @@
-From 54cd30269da5b5155a33c16a358163eda27cbade Mon Sep 17 00:00:00 2001
+From ad7dfd10c0f58c178f946a6833e1f96d591818ca Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:22 +0200
 Subject: Force LC_ALL=C environment variable when grepping the output of
@@ -13,10 +13,10 @@ Patch-Name: tests-make-lpstat-call-reproducible.patch
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index e9ce0718c..085c105ee 100755
+index 22a653555..14c60ed0a 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -724,7 +724,7 @@ fi
+@@ -725,7 +725,7 @@ fi
  IPP_PORT=$port; export IPP_PORT
  
  while true; do
@@ -25,7 +25,7 @@ index e9ce0718c..085c105ee 100755
  	if test "x$running" = "xscheduler is running"; then
  		break
  	fi
-@@ -837,13 +837,13 @@ kill -HUP $cupsd
+@@ -838,13 +838,13 @@ kill -HUP $cupsd
  while true; do
  	sleep 10
  

@@ -1,4 +1,4 @@
-From b9d7c8c1e7a226c9b92f63bd253ec432f8fcbc2d Mon Sep 17 00:00:00 2001
+From 9a85af77aab6aa4f0a829444634869863301d9e6 Mon Sep 17 00:00:00 2001
 From: Tim Waugh <twaugh@redhat.com>
 Date: Tue, 9 Aug 2016 18:11:30 +0200
 Subject: Let the "snmp" backend also use manufacturer-specific MIBs
