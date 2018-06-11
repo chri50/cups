@@ -43,12 +43,12 @@
 
 Summary: CUPS
 Name: cups
-Version: 2.2.7
+Version: 2.2.8
 Release: 0
 Epoch: 1
 License: GPL
 Group: System Environment/Daemons
-Source: https://github.com/apple/cups/releases/download/v2.2.7/cups-2.2.7-source.tar.gz
+Source: https://github.com/apple/cups/releases/download/v2.2.8/cups-2.2.8-source.tar.gz
 Url: http://www.cups.org
 Packager: Anonymous <anonymous@example.com>
 Vendor: Example Corp
