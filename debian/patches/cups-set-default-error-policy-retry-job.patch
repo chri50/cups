@@ -1,4 +1,4 @@
-From 65a3fa1bd4df72dc1e29dd448de4a3cb29992e03 Mon Sep 17 00:00:00 2001
+From b279566faab9d507015d4b9f08eb81cc280dd861 Mon Sep 17 00:00:00 2001
 From: Martin Pitt <martin.pitt@ubuntu.com>
 Date: Tue, 9 Aug 2016 18:11:47 +0200
 Subject: Set default job error policy to "retry-job", since it is less
@@ -18,17 +18,15 @@ Patch-Name: cups-set-default-error-policy-retry-job.patch
  3 files changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/doc/help/man-cupsd.conf.html b/doc/help/man-cupsd.conf.html
-index fe4902df7..36e35d237 100644
+index 943895387..6046e907b 100644
 --- a/doc/help/man-cupsd.conf.html
 +++ b/doc/help/man-cupsd.conf.html
-@@ -89,11 +89,11 @@ The default value is "30".
- <dt><a name="ErrorPolicy"></a><b>ErrorPolicy abort-job</b>
- <dd style="margin-left: 5.0em">Specifies that a failed print job should be aborted (discarded) unless otherwise specified for the printer.
+@@ -91,9 +91,9 @@ The default value is "30".
+ <dt><b>ErrorPolicy retry-current-job</b>
+ <dd style="margin-left: 5.0em">Specifies that a failed print job should be retried immediately unless otherwise specified for the printer.
  <dt><b>ErrorPolicy retry-job</b>
 -<dd style="margin-left: 5.0em">Specifies that a failed print job should be retried at a later time unless otherwise specified for the printer.
 +<dd style="margin-left: 5.0em">Specifies that a failed print job should be retried at a later time unless otherwise specified for the printer. The 'retry-job' error policy is the default.
- <dt><b>ErrorPolicy retry-this-job</b>
- <dd style="margin-left: 5.0em">Specifies that a failed print job should be retried immediately unless otherwise specified for the printer.
  <dt><b>ErrorPolicy stop-printer</b>
 -<dd style="margin-left: 5.0em">Specifies that a failed print job should stop the printer unless otherwise specified for the printer. The 'stop-printer' error policy is the default.
 +<dd style="margin-left: 5.0em">Specifies that a failed print job should stop the printer unless otherwise specified for the printer.
@@ -36,18 +34,15 @@ index fe4902df7..36e35d237 100644
  <dd style="margin-left: 5.0em">Specifies the maximum cost of filters that are run concurrently, which can be used to minimize disk, memory, and CPU resource problems.
  A limit of 0 disables filter limiting.
 diff --git a/man/cupsd.conf.man.in b/man/cupsd.conf.man.in
-index a313f4b02..6971b8b33 100644
+index 6cec33969..df2b5bbd5 100644
 --- a/man/cupsd.conf.man.in
 +++ b/man/cupsd.conf.man.in
-@@ -133,13 +133,13 @@ The default value is "30".
- Specifies that a failed print job should be aborted (discarded) unless otherwise specified for the printer.
+@@ -136,10 +136,10 @@ Specifies that a failed print job should be aborted (discarded) unless otherwise
+ Specifies that a failed print job should be retried immediately unless otherwise specified for the printer.
  .TP 5
  \fBErrorPolicy retry-job\fR
 -Specifies that a failed print job should be retried at a later time unless otherwise specified for the printer.
 +Specifies that a failed print job should be retried at a later time unless otherwise specified for the printer. The 'retry-job' error policy is the default.
- .TP 5
- \fBErrorPolicy retry-this-job\fR
- Specifies that a failed print job should be retried immediately unless otherwise specified for the printer.
  .TP 5
  \fBErrorPolicy stop-printer\fR
 -Specifies that a failed print job should stop the printer unless otherwise specified for the printer. The 'stop-printer' error policy is the default.
@@ -56,7 +51,7 @@ index a313f4b02..6971b8b33 100644
  .TP 5
  \fBFilterLimit \fIlimit\fR
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index 7503131d4..0787bec49 100644
+index 755243170..aae7443de 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -751,7 +751,7 @@ cupsdReadConfiguration(void)

@@ -1,3 +1,27 @@
+cups (2.2.8-3) unstable; urgency=medium
+
+  * Renumber first 2.2.8 upload as 2.2.8-1; skip -2.
+  * Drop the "Generalize the input validation of some kinds of attributes."
+    revert in favour of "Fix regressions in ippValidateAttribute" from upstream
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 11 Jun 2018 19:34:03 +0200
+
+cups (2.2.8-1) unstable; urgency=medium
+
+  * New upstream 2.2.8 release
+    - The scheduler allowed environment variables to be specified in the
+      `cupsd.conf` file
+
+  [ Didier Raboud ]
+  * Revert "Generalize the input validation of some kinds of attributes."
+    Fixes FTBFS on 2.2.8, see https://github.com/apple/cups/issues/5322
+  * Manpage refresh after 2.2.8
+
+  [ Helge Kreutzmann ]
+  * Update German man page (2193t)
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 08 Jun 2018 14:54:46 +0200
+
 cups (2.2.7-5) unstable; urgency=medium
 
   [ Jean-Paul Guillonneau ]

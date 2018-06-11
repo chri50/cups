@@ -1,4 +1,4 @@
-From 7c7266ea0a58f9e08ec12ffcf172b738eac32153 Mon Sep 17 00:00:00 2001
+From 898476caa0e5f53616ed1faf1ac2b9b42b070860 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:21 +0200
 Subject: Use 127.0.0.1 instead of localhost in the test-suite. This should
@@ -30,7 +30,7 @@ index 07f1d5aa0..d715f330e 100644
  	echo "    FAILED"
  	exit 1
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index 1710811a6..e0ece645f 100755
+index e98fed762..35eabc879 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
 @@ -490,7 +490,7 @@ fi
@@ -40,9 +40,9 @@ index 1710811a6..e0ece645f 100755
 -Listen localhost:$port
 +Listen 127.0.0.1:$port
  Listen $BASE/sock
- PassEnv DYLD_LIBRARY_PATH
- PassEnv LD_LIBRARY_PATH
-@@ -632,7 +632,7 @@ fi
+ MaxSubscriptions 3
+ MaxLogSize 0
+@@ -633,7 +633,7 @@ fi
  export SHLIB_PATH
  
  CUPS_DISABLE_APPLE_DEFAULT=yes; export CUPS_DISABLE_APPLE_DEFAULT
@@ -51,7 +51,7 @@ index 1710811a6..e0ece645f 100755
  CUPS_SERVERROOT=$BASE; export CUPS_SERVERROOT
  CUPS_STATEDIR=$BASE; export CUPS_STATEDIR
  CUPS_DATADIR=$BASE/share; export CUPS_DATADIR
-@@ -766,10 +766,10 @@ for file in 4*.test ipp-2.1.test; do
+@@ -767,10 +767,10 @@ for file in 4*.test ipp-2.1.test; do
  	echo "" >>$strfile
  
  	if test $file = ipp-2.1.test; then
