@@ -1,3 +1,25 @@
+cups (2.1.3-4ubuntu0.5) xenial-security; urgency=medium
+
+  * SECURITY UPDATE: scheduler crash via DBUS notifications
+    - debian/patches/CVE-2017-18248.patch: validate requesting-user-name in
+      scheduler/ipp.c.
+    - CVE-2017-18248
+  * SECURITY UPDATE: privilege escalation in dnssd backend
+    - debian/patches/CVE-2018-418x.patch: don't allow PassEnv and SetEnv to
+      override standard variables in man/cups-files.conf.man.in,
+      man/cupsd.conf.man.in, scheduler/conf.c.
+    - CVE-2018-4180
+  * SECURITY UPDATE: local file read via Include directive
+    - debian/patches/CVE-2018-418x.patch: remove Include directive handling
+      in scheduler/conf.c.
+    - CVE-2018-4181
+  * SECURITY UPDATE: AppArmor sandbox bypass
+    - debian/local/apparmor-profile: also confine
+      /usr/lib/cups/backend/mdns.
+    - CVE-2018-6553
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 22 Jun 2018 13:45:28 -0400
+
 cups (2.1.3-4ubuntu0.4) xenial-security; urgency=medium
 
   * SECURITY UPDATE: Incorrect whitelist permits DNS rebinding attacks
