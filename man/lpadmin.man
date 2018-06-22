@@ -128,7 +128,7 @@ command.
 .TP 5
 \fB\-o \fIname\fB-default=\fIvalue\fR
 Sets a default server-side option for the destination.
-Any print-time option can be defaulted, e.g., "-o number-up-default=2" to set the default "number-up" option value to 2.
+Any print-time option can be defaulted, e.g., "\-o number-up-default=2" to set the default "number-up" option value to 2.
 .TP 5
 \fB\-o port\-monitor=\fIname\fR
 Sets the binary communications program to use when printing, "none", "bcp", or "tbcp".
