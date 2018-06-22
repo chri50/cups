@@ -22,13 +22,13 @@ lppasswd \- add, change, or delete digest passwords.
 ]
 .br
 .B lppasswd
--a [ -g
+\-a [ \-g
 .I groupname
 ]
 .I username
 .br
 .B lppasswd
--x
+\-x
 .I username
 .SH DESCRIPTION
 \fIlppasswd\fR adds, changes, or deletes passwords in the CUPS
@@ -41,7 +41,7 @@ file. Digest usernames do not have to match local UNIX usernames.
 .SH OPTIONS
 \fIlppasswd\fR supports the following options:
 .TP 5
--g groupname
+\-g groupname
 .br
 Specifies a group other than the default system group.
 .SH SECURITY ISSUES

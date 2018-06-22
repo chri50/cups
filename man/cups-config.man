@@ -17,38 +17,38 @@
 cups-config \- get cups api, compiler, directory, and link information.
 .SH SYNOPSIS
 .B cups-config
---api-version
+\--api-version
 .br
 .B cups-config
---build
+\--build
 .br
 .B cups-config
---cflags
+\--cflags
 .br
 .B cups-config
---datadir
+\--datadir
 .br
 .B cups-config
---help
+\--help
 .br
 .B cups-config
---ldflags
+\--ldflags
 .br
 .B cups-config
 [
-.I --image
+.I \--image
 ] [
-.I --static
-] --libs
+.I \--static
+] \--libs
 .br
 .B cups-config
---serverbin
+\--serverbin
 .br
 .B cups-config
---serverroot
+\--serverroot
 .br
 .B cups-config
---version
+\--version
 .br
 .SH DESCRIPTION
 \fBcups-config\fR is the CUPS program configuration utility. It should be
@@ -57,54 +57,54 @@ options for the compiler and linker, as well as determining installation
 directories for filters, configuration files, and drivers.
 .SH OPTIONS
 .TP 5
---api-version
+\--api-version
 .br
 Displays the current API version (major.minor).
 .TP 5
---build
+\--build
 .br
 Displays a system-specific build number.
 .TP 5
---cflags
+\--cflags
 .br
 Displays the necessary compiler options.
 .TP 5
---datadir
+\--datadir
 .br
 Displays the default CUPS data directory.
 .TP 5
---help
+\--help
 .br
 Displays the program usage message.
 .TP 5
---image
+\--image
 .br
 When used with \fI--libs\fR, adds the CUPS imaging library to the
 list of displayed libraries.
 .TP 5
---ldflags
+\--ldflags
 .br
 Displays the necessary linker options.
 .TP 5
---libs
+\--libs
 .br
 Displays the necessary librarys to link to.
 .TP 5
---serverbin
+\--serverbin
 .br
 Displays the default CUPS binary directory,
 where filters and backends are stored.
 .TP 5
---serverroot
+\--serverroot
 .br
 Displays the default CUPS configuration file directory.
 .TP 5
---static
+\--static
 .br
 When used with \fI--libs\fR, shows the static libraries instead
 of the default (shared) libraries.
 .TP 5
---version
+\--version
 .br
 Displays the full version number of the CUPS installation
 (major.minor.patch).

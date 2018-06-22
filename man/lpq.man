@@ -17,13 +17,13 @@
 lpq \- show printer queue status
 .SH SYNOPSIS
 .B lpq
-[ -E ] [ -U
+[ \-E ] [ \-U
 .I username
-] [ -h
+] [ \-h
 .I server[:port]
-] [ -P
+] [ \-P
 .I destination[/instance]
-] [ -a ] [ -l ] [
+] [ \-a ] [ \-l ] [
 .I +interval
 ]
 .SH DESCRIPTION
@@ -37,27 +37,27 @@ shown once every \fIinterval\fR seconds.
 .SH OPTIONS
 \fIlpq\fR supports the following options:
 .TP 5
--E
+\-E
 .br
 Forces encryption when connecting to the server.
 .TP 5
--P destination[/instance]
+\-P destination[/instance]
 .br
 Specifies an alternate printer or class name.
 .TP 5
--U username
+\-U username
 .br
 Specifies an alternate username.
 .TP 5
--a
+\-a
 .br
 Reports jobs on all printers.
 .TP 5
--h server[:port]
+\-h server[:port]
 .br
 Specifies an alternate server.
 .TP 5
--l
+\-l
 .br
 Requests a more verbose (long) reporting format.
 .SH SEE ALSO
