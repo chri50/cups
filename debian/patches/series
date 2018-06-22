@@ -46,3 +46,5 @@ manpage-translations.patch
 0046-Fix-sorting-bug.patch
 0047-The-scheduler-incorrectly-woke-up-once-per-second-to.patch
 cupsGetNamedDest-use-local-default.patch
+CVE-2017-18248.patch
+CVE-2018-418x.patch
