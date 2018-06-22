@@ -95,6 +95,10 @@ automatically with a list of available printers (needed for
 legacy applications); specifying Printcap with no filename
 disables printcap generation.
 .TP 5
+PassEnv variable [... variable]
+.br
+Passes the specified environment variable(s) to child processes.
+.TP 5
 RemoteRoot user-name
 .br
 Specifies the username that is associated with unauthenticated root
@@ -121,6 +125,10 @@ Specifies the encryption key to use.
 ServerRoot directory
 .br
 Specifies the directory where the server configuration files can be found.
+.TP 5
+SetEnv variable value
+.br
+Set the specified environment variable to be passed to child processes.
 .TP 5
 SyncOnClose Yes
 .TP 5
