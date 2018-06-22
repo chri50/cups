@@ -244,7 +244,10 @@ enum cups_ptype_e			/* Printer type/capability bit
   CUPS_PRINTER_SCANNER = 0x2000000,	/* Scanner-only device
 					 * @since CUPS 1.4/OS X 10.6@ */
   CUPS_PRINTER_MFP = 0x4000000,		/* Printer with scanning capabilities
-					 * @since CUPS 1.4/OS X 10.6@ */
+					 * @since CUPS 1.4/OS X
+10.5@ */
+  CUPS_CM_OFF = 0x800000,	       /* Printer is not color-managed
+					 * @since CUPS 1.2/OS X 10.6@ */
   CUPS_PRINTER_OPTIONS = 0x6fffc	/* ~(CLASS | REMOTE | IMPLICIT |
 					 * DEFAULT | FAX | REJECTING | DELETE |
 					 * NOT_SHARED | AUTHENTICATED |

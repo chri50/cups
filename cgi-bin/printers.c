@@ -27,7 +27,7 @@
 #include "cgi-private.h"
 #include <errno.h>
 
-
+    const cgi_file_t *file;
 /*
  * Local functions...
  */
@@ -58,7 +58,6 @@ main(int  argc,				/* I - Number of command-line arguments */
 		  "printer-name",
 		  "printer-uri-supported"
 		};
-
 
  /*
   * Get any form variables...
@@ -353,7 +352,7 @@ show_all_printers(http_t     *http,	/* I - Connection to server */
     ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_NAME,
         	 "requesting-user-name", NULL, user);
 
-  cgiGetAttributes(request, "printers.tmpl");
+    cgiGetAttributes(request, "printers.tmpl");
 
  /*
   * Do the request and get back a response...
