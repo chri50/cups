@@ -1,3 +1,21 @@
+cups (2.2.7-1ubuntu2.1) bionic-security; urgency=medium
+
+  * SECURITY UPDATE: privilege escalation in dnssd backend
+    - debian/patches/CVE-2018-418x.patch: don't allow PassEnv and SetEnv to
+      override standard variables in man/cups-files.conf.man.in,
+      man/cupsd.conf.man.in, scheduler/conf.c, test/run-stp-tests.sh.
+    - CVE-2018-4180
+  * SECURITY UPDATE: local file read via Include directive
+    - debian/patches/CVE-2018-418x.patch: remove Include directive handling
+      in scheduler/conf.c.
+    - CVE-2018-4181
+  * SECURITY UPDATE: AppArmor sandbox bypass
+    - debian/local/apparmor-profile: also confine
+      /usr/lib/cups/backend/mdns.
+    - CVE-2018-6553
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 22 Jun 2018 13:36:08 -0400
+
 cups (2.2.7-1ubuntu2) bionic; urgency=medium
 
   * Fixed another crash when creating temporary queues for IPP printers

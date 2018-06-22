@@ -39,3 +39,4 @@ manpage-translations.patch
 0039-The-lp-and-lpr-commands-now-provide-better-error-mes.patch
 revert-deprecate-raw-queues.patch
 fix-another-crash-when-creating-temporary-queue.patch
+CVE-2018-418x.patch
