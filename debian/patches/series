@@ -38,3 +38,4 @@ debianize_cups-config.patch
 0038-Build-mantohtml-with-the-build-architecture-compiler.patch
 0039-The-lp-and-lpr-commands-now-provide-better-error-mes.patch
 manpage-translations.patch
+0041-Fix-A4-crash-in-Epson-24-pin-driver.patch
