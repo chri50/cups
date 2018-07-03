@@ -1,3 +1,10 @@
+cups (2.2.8-4) unstable; urgency=medium
+
+  * Backport upstream patches:
+    - Fix A4 crash in Epson 24-pin driver (Closes: #901860)
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 03 Jul 2018 07:18:20 +0200
+
 cups (2.2.8-3) unstable; urgency=medium
 
   * Renumber first 2.2.8 upload as 2.2.8-1; skip -2.
