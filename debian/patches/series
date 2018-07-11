@@ -46,3 +46,6 @@ debianize_cups-config.patch
 0046-Do-not-execute-genstrings-during-build.patch
 manpage-translations.patch
 0048-Don-t-treat-localhost.localdomain-as-an-allowed-repl.patch
+0049-Tweak-the-PDL-priority-Issue-4932.patch
+0050-Only-list-supported-PDLs-Issue-4923.patch
+0051-Fix-local-privilege-escalation-to-root-and-sandbox-b.patch

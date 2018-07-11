@@ -1,0 +1,24 @@
+From 066831b21232bc6dd5117f5380175f80462976d4 Mon Sep 17 00:00:00 2001
+From: Michael Sweet <michael.r.sweet@gmail.com>
+Date: Wed, 14 Dec 2016 09:44:55 -0500
+Subject: Tweak the PDL priority (Issue #4932)
+
+---
+ cups/ppd-cache.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/cups/ppd-cache.c b/cups/ppd-cache.c
+index 9ce5cfc32..4b4af980c 100644
+--- a/cups/ppd-cache.c
++++ b/cups/ppd-cache.c
+@@ -3091,6 +3091,10 @@ _ppdCreateFromIPP(char   *buffer,	/* I - Filename buffer */
+ 
+       if (!_cups_strcasecmp(format, "application/pdf"))
+         cupsFilePuts(fp, "*cupsFilter2: \"application/vnd.cups-pdf application/pdf 10 -\"\n");
++      else if (!_cups_strcasecmp(format, "image/jpeg") || !_cups_strcasecmp(format, "image/png"))
++        cupsFilePrintf(fp, "*cupsFilter2: \"%s %s 0 -\"\n", format, format);
++      else if (!_cups_strcasecmp(format, "image/pwg-raster") || !_cups_strcasecmp(format, "image/urf"))
++        cupsFilePrintf(fp, "*cupsFilter2: \"%s %s 100 -\"\n", format, format);
+       else if (!_cups_strcasecmp(format, "application/postscript"))
+         cupsFilePuts(fp, "*cupsFilter2: \"application/vnd.cups-postscript application/postscript 10 -\"\n");
+       else if (_cups_strcasecmp(format, "application/octet-stream") && _cups_strcasecmp(format, "application/vnd.hp-pcl") && _cups_strcasecmp(format, "text/plain"))

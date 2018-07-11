@@ -1,0 +1,33 @@
+From 50ff49fb14516c3d4150d7c4154e38da0726f3ba Mon Sep 17 00:00:00 2001
+From: Michael Sweet <michael.r.sweet@gmail.com>
+Date: Wed, 14 Dec 2016 10:02:17 -0500
+Subject: Only list supported PDLs (Issue #4923)
+
+---
+ cups/ppd-cache.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/cups/ppd-cache.c b/cups/ppd-cache.c
+index 4b4af980c..ce42cd5c6 100644
+--- a/cups/ppd-cache.c
++++ b/cups/ppd-cache.c
+@@ -3089,6 +3089,10 @@ _ppdCreateFromIPP(char   *buffer,	/* I - Filename buffer */
+       const char *format = ippGetString(attr, i, NULL);
+ 					/* PDL */
+ 
++     /*
++      * Write cupsFilter2 lines for supported formats...
++      */
++
+       if (!_cups_strcasecmp(format, "application/pdf"))
+         cupsFilePuts(fp, "*cupsFilter2: \"application/vnd.cups-pdf application/pdf 10 -\"\n");
+       else if (!_cups_strcasecmp(format, "image/jpeg") || !_cups_strcasecmp(format, "image/png"))
+@@ -3097,8 +3101,6 @@ _ppdCreateFromIPP(char   *buffer,	/* I - Filename buffer */
+         cupsFilePrintf(fp, "*cupsFilter2: \"%s %s 100 -\"\n", format, format);
+       else if (!_cups_strcasecmp(format, "application/postscript"))
+         cupsFilePuts(fp, "*cupsFilter2: \"application/vnd.cups-postscript application/postscript 10 -\"\n");
+-      else if (_cups_strcasecmp(format, "application/octet-stream") && _cups_strcasecmp(format, "application/vnd.hp-pcl") && _cups_strcasecmp(format, "text/plain"))
+-        cupsFilePrintf(fp, "*cupsFilter2: \"%s %s 10 -\"\n", format, format);
+     }
+   }
+ 

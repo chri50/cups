@@ -1,0 +1,526 @@
+From ed0d3345b936ea9d88356965770ddf5eecba46be Mon Sep 17 00:00:00 2001
+From: Michael R Sweet <michael.r.sweet@gmail.com>
+Date: Tue, 8 May 2018 14:59:50 -0700
+Subject: =?UTF-8?q?Fix=20local=20privilege=20escalation=20to=20root=20and?=
+ =?UTF-8?q?=20sandbox=20bypasses=20in=20scheduler=0A(rdar://37836779,=20rd?=
+ =?UTF-8?q?ar://37836995,=20rdar://37837252,=20rdar://37837581)?=
+
+---
+ doc/help/man-cups-files.conf.html |   6 +
+ doc/help/man-cupsd.conf.html      |   4 -
+ man/cups-files.conf.man.in        |  10 ++
+ man/cupsd.conf.man.in             |   8 --
+ scheduler/conf.c                  | 201 +++++++++++++++++++-----------
+ scheduler/job.c                   |  12 ++
+ scheduler/process.c               |  16 ++-
+ scheduler/server.c                |  20 ++-
+ test/run-stp-tests.sh             |  11 +-
+ 9 files changed, 185 insertions(+), 103 deletions(-)
+
+diff --git a/doc/help/man-cups-files.conf.html b/doc/help/man-cups-files.conf.html
+index 0534def7a..50f946b6b 100644
+--- a/doc/help/man-cups-files.conf.html
++++ b/doc/help/man-cups-files.conf.html
+@@ -112,6 +112,9 @@ The server name may be included in filenames using the string "%s", for example:
+ 
+ </pre>
+ The default is "/var/log/cups/page_log".
++<dt><a name="PassEnv"></a><b>PassEnv </b><i>variable </i>[ ... <i>variable </i>]
++<dd style="margin-left: 5.0em">Passes the specified environment variable(s) to child processes.
++Note: the standard CUPS filter and backend environment variables cannot be overridden using this directive.
+ <dt><a name="RemoteRoot"></a><b>RemoteRoot </b><i>username</i>
+ <dd style="margin-left: 5.0em">Specifies the username that is associated with unauthenticated accesses by clients claiming to be the root user.
+ The default is "remroot".
+@@ -133,6 +136,9 @@ macOS uses its keychain database to store certificates and keys while other plat
+ <dt><a name="ServerRoot"></a><b>ServerRoot </b><i>directory</i>
+ <dd style="margin-left: 5.0em">Specifies the directory containing the server configuration files.
+ The default is "/etc/cups".
++<dt><a name="SetEnv"></a><b>SetEnv </b><i>variable value</i>
++<dd style="margin-left: 5.0em">Set the specified environment variable to be passed to child processes.
++Note: the standard CUPS filter and backend environment variables cannot be overridden using this directive.
+ <dt><a name="SyncOnClose"></a><b>SyncOnClose Yes</b>
+ <dd style="margin-left: 5.0em"><dt><b>SyncOnClose No</b>
+ <dd style="margin-left: 5.0em">Specifies whether the scheduler calls
+diff --git a/doc/help/man-cupsd.conf.html b/doc/help/man-cupsd.conf.html
+index 2cdcecbdc..897a2fa8f 100644
+--- a/doc/help/man-cupsd.conf.html
++++ b/doc/help/man-cupsd.conf.html
+@@ -248,8 +248,6 @@ The following percent sequences are recognized:
+ </pre>
+ The default is the empty string, which disables page logging.
+ The string "%p %u %j %T %P %C %{job-billing} %{job-originating-host-name} %{job-name} %{media} %{sides}" creates a page log with the standard items.
+-<dt><a name="PassEnv"></a><b>PassEnv </b><i>variable </i>[ ... <i>variable </i>]
+-<dd style="margin-left: 5.0em">Passes the specified environment variable(s) to child processes.
+ <dt><a name="Policy"></a><b>&lt;Policy </b><i>name</i><b>> </b>... <b>&lt;/Policy></b>
+ <dd style="margin-left: 5.0em">Specifies access control for the named policy.
+ <dt><a name="Port"></a><b>Port </b><i>number</i>
+@@ -304,8 +302,6 @@ command.
+ command.
+ "Full" reports "CUPS 2.0.0 (UNAME) IPP/2.0".
+ The default is "Minimal".
+-<dt><a name="SetEnv"></a><b>SetEnv </b><i>variable value</i>
+-<dd style="margin-left: 5.0em">Set the specified environment variable to be passed to child processes.
+ <dt><a name="SSLListen"></a><b>SSLListen </b><i>ipv4-address</i><b>:</b><i>port</i>
+ <dd style="margin-left: 5.0em"><dt><b>SSLListen [</b><i>ipv6-address</i><b>]:</b><i>port</i>
+ <dd style="margin-left: 5.0em"><dt><b>SSLListen *:</b><i>port</i>
+diff --git a/man/cups-files.conf.man.in b/man/cups-files.conf.man.in
+index f39af9bc1..3f1a5380e 100644
+--- a/man/cups-files.conf.man.in
++++ b/man/cups-files.conf.man.in
+@@ -159,6 +159,11 @@ The server name may be included in filenames using the string "%s", for example:
+ 
+ .fi
+ The default is "/var/log/cups/page_log".
++.\"#PassEnv
++.TP 5
++\fBPassEnv \fIvariable \fR[ ... \fIvariable \fR]
++Passes the specified environment variable(s) to child processes.
++Note: the standard CUPS filter and backend environment variables cannot be overridden using this directive.
+ .\"#RemoteRoot
+ .TP 5
+ \fBRemoteRoot \fIusername\fR
+@@ -193,6 +198,11 @@ macOS uses its keychain database to store certificates and keys while other plat
+ \fBServerRoot \fIdirectory\fR
+ Specifies the directory containing the server configuration files.
+ The default is "/etc/cups".
++.\"#SetEnv
++.TP 5
++\fBSetEnv \fIvariable value\fR
++Set the specified environment variable to be passed to child processes.
++Note: the standard CUPS filter and backend environment variables cannot be overridden using this directive.
+ .\"#SyncOnClose
+ .TP 5
+ \fBSyncOnClose Yes\fR
+diff --git a/man/cupsd.conf.man.in b/man/cupsd.conf.man.in
+index 92c97744c..fa5b70526 100644
+--- a/man/cupsd.conf.man.in
++++ b/man/cupsd.conf.man.in
+@@ -377,10 +377,6 @@ The following percent sequences are recognized:
+ .fi
+ The default is the empty string, which disables page logging.
+ The string "%p %u %j %T %P %C %{job-billing} %{job-originating-host-name} %{job-name} %{media} %{sides}" creates a page log with the standard items.
+-.\"#PassEnv
+-.TP 5
+-\fBPassEnv \fIvariable \fR[ ... \fIvariable \fR]
+-Passes the specified environment variable(s) to child processes.
+ .\"#Policy
+ .TP 5
+ \fB<Policy \fIname\fB> \fR... \fB</Policy>\fR
+@@ -466,10 +462,6 @@ Specifies what information is included in the Server header of HTTP responses.
+ command.
+ "Full" reports "CUPS 2.0.0 (UNAME) IPP/2.0".
+ The default is "Minimal".
+-.\"#SetEnv
+-.TP 5
+-\fBSetEnv \fIvariable value\fR
+-Set the specified environment variable to be passed to child processes.
+ .\"#SSLListen
+ .TP 5
+ \fBSSLListen \fIipv4-address\fB:\fIport\fR
+diff --git a/scheduler/conf.c b/scheduler/conf.c
+index f3c77630d..b005810d8 100644
+--- a/scheduler/conf.c
++++ b/scheduler/conf.c
+@@ -2993,13 +2993,10 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
+ 					/* Line from file */
+ 			temp[HTTP_MAX_BUFFER],
+ 					/* Temporary buffer for value */
+-			*value,		/* Pointer to value */
+-			*valueptr;	/* Pointer into value */
++			*value;		/* Pointer to value */
+   int			valuelen;	/* Length of value */
+   http_addrlist_t	*addrlist,	/* Address list */
+ 			*addr;		/* Current address */
+-  cups_file_t		*incfile;	/* Include file */
+-  char			incname[1024];	/* Include filename */
+ 
+ 
+  /*
+@@ -3014,28 +3011,7 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
+     * Decode the directive...
+     */
+ 
+-    if (!_cups_strcasecmp(line, "Include") && value)
+-    {
+-     /*
+-      * Include filename
+-      */
+-
+-      if (value[0] == '/')
+-        strlcpy(incname, value, sizeof(incname));
+-      else
+-        snprintf(incname, sizeof(incname), "%s/%s", ServerRoot, value);
+-
+-      if ((incfile = cupsFileOpen(incname, "rb")) == NULL)
+-        cupsdLogMessage(CUPSD_LOG_ERROR,
+-	                "Unable to include config file \"%s\" - %s",
+-	                incname, strerror(errno));
+-      else
+-      {
+-        read_cupsd_conf(incfile);
+-	cupsFileClose(incfile);
+-      }
+-    }
+-    else if (!_cups_strcasecmp(line, "<Location") && value)
++    if (!_cups_strcasecmp(line, "<Location") && value)
+     {
+      /*
+       * <Location path>
+@@ -3409,31 +3385,6 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
+ 	cupsdLogMessage(CUPSD_LOG_WARN, "Unknown ServerTokens %s on line %d of %s.",
+                         value, linenum, ConfigurationFile);
+     }
+-    else if (!_cups_strcasecmp(line, "PassEnv") && value)
+-    {
+-     /*
+-      * PassEnv variable [... variable]
+-      */
+-
+-      for (; *value;)
+-      {
+-        for (valuelen = 0; value[valuelen]; valuelen ++)
+-	  if (_cups_isspace(value[valuelen]) || value[valuelen] == ',')
+-	    break;
+-
+-        if (value[valuelen])
+-        {
+-	  value[valuelen] = '\0';
+-	  valuelen ++;
+-	}
+-
+-        cupsdSetEnv(value, NULL);
+-
+-        for (value += valuelen; *value; value ++)
+-	  if (!_cups_isspace(*value) || *value != ',')
+-	    break;
+-      }
+-    }
+     else if (!_cups_strcasecmp(line, "ServerAlias") && value)
+     {
+      /*
+@@ -3462,30 +3413,6 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
+ 	    break;
+       }
+     }
+-    else if (!_cups_strcasecmp(line, "SetEnv") && value)
+-    {
+-     /*
+-      * SetEnv variable value
+-      */
+-
+-      for (valueptr = value; *valueptr && !isspace(*valueptr & 255); valueptr ++);
+-
+-      if (*valueptr)
+-      {
+-       /*
+-        * Found a value...
+-	*/
+-
+-        while (isspace(*valueptr & 255))
+-	  *valueptr++ = '\0';
+-
+-        cupsdSetEnv(value, valueptr);
+-      }
+-      else
+-        cupsdLogMessage(CUPSD_LOG_ERROR,
+-	                "Missing value for SetEnv directive on line %d of %s.",
+-	                linenum, ConfigurationFile);
+-    }
+     else if (!_cups_strcasecmp(line, "AccessLog") ||
+              !_cups_strcasecmp(line, "CacheDir") ||
+              !_cups_strcasecmp(line, "ConfigFilePerm") ||
+@@ -3499,6 +3426,7 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
+              !_cups_strcasecmp(line, "LogFilePerm") ||
+              !_cups_strcasecmp(line, "LPDConfigFile") ||
+              !_cups_strcasecmp(line, "PageLog") ||
++             !_cups_strcasecmp(line, "PassEnv") ||
+              !_cups_strcasecmp(line, "Printcap") ||
+              !_cups_strcasecmp(line, "PrintcapFormat") ||
+              !_cups_strcasecmp(line, "RemoteRoot") ||
+@@ -3508,6 +3436,7 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
+              !_cups_strcasecmp(line, "ServerKey") ||
+              !_cups_strcasecmp(line, "ServerKeychain") ||
+              !_cups_strcasecmp(line, "ServerRoot") ||
++             !_cups_strcasecmp(line, "SetEnv") ||
+              !_cups_strcasecmp(line, "SMBConfigFile") ||
+              !_cups_strcasecmp(line, "StateDir") ||
+              !_cups_strcasecmp(line, "SystemGroup") ||
+@@ -3538,10 +3467,49 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
+ static int				/* O - 1 on success, 0 on failure */
+ read_cups_files_conf(cups_file_t *fp)	/* I - File to read from */
+ {
+-  int		linenum;		/* Current line number */
++  int		i,			/* Looping var */
++		linenum;		/* Current line number */
+   char		line[HTTP_MAX_BUFFER],	/* Line from file */
+ 		*value;			/* Value from line */
+   struct group	*group;			/* Group */
++  static const char * const prohibited_env[] =
++  {					/* Prohibited environment variables */
++    "APPLE_LANGUAGE",
++    "AUTH_DOMAIN",
++    "AUTH_INFO_REQUIRED",
++    "AUTH_NEGOTIATE",
++    "AUTH_PASSWORD",
++    "AUTH_UID",
++    "AUTH_USERNAME",
++    "CHARSET",
++    "CLASS",
++    "CLASSIFICATION",
++    "CONTENT_TYPE",
++    "CUPS_CACHEDIR",
++    "CUPS_DATADIR",
++    "CUPS_DOCROOT",
++    "CUPS_FILETYPE",
++    "CUPS_FONTPATH",
++    "CUPS_MAX_MESSAGE",
++    "CUPS_REQUESTROOT",
++    "CUPS_SERVERBIN",
++    "CUPS_SERVERROOT",
++    "CUPS_STATEDIR",
++    "DEVICE_URI",
++    "FINAL_CONTENT_TYPE",
++    "HOME",
++    "LANG",
++    "PPD",
++    "PRINTER",
++    "PRINTER_INFO",
++    "PRINTER_LOCATION",
++    "PRINTER_STATE_REASONS",
++    "RIP_CACHE",
++    "SERVER_ADMIN",
++    "SOFTWARE",
++    "TMPDIR",
++    "USER"
++  };
+ 
+ 
+  /*
+@@ -3579,6 +3547,47 @@ read_cups_files_conf(cups_file_t *fp)	/* I - File to read from */
+ 	}
+       }
+     }
++    else if (!_cups_strcasecmp(line, "PassEnv") && value)
++    {
++     /*
++      * PassEnv variable [... variable]
++      */
++
++      int valuelen;			/* Length of variable name */
++
++      for (; *value;)
++      {
++        for (valuelen = 0; value[valuelen]; valuelen ++)
++	  if (_cups_isspace(value[valuelen]) || value[valuelen] == ',')
++	    break;
++
++        if (value[valuelen])
++        {
++	  value[valuelen] = '\0';
++	  valuelen ++;
++	}
++
++        for (i = 0; i < (int)(sizeof(prohibited_env) / sizeof(prohibited_env[0])); i ++)
++        {
++          if (!strcmp(value, prohibited_env[i]))
++          {
++	    cupsdLogMessage(CUPSD_LOG_ERROR, "Environment variable \"%s\" cannot be passed through on line %d of %s.", value, linenum, CupsFilesFile);
++
++	    if (FatalErrors & CUPSD_FATAL_CONFIG)
++	      return (0);
++	    else
++	      break;
++          }
++	}
++
++        if (i >= (int)(sizeof(prohibited_env) / sizeof(prohibited_env[0])))
++          cupsdSetEnv(value, NULL);
++
++        for (value += valuelen; *value; value ++)
++	  if (!_cups_isspace(*value) || *value != ',')
++	    break;
++      }
++    }
+     else if (!_cups_strcasecmp(line, "PrintcapFormat") && value)
+     {
+      /*
+@@ -3624,6 +3633,46 @@ read_cups_files_conf(cups_file_t *fp)	/* I - File to read from */
+           return (0);
+       }
+     }
++    else if (!_cups_strcasecmp(line, "SetEnv") && value)
++    {
++     /*
++      * SetEnv variable value
++      */
++
++      char *valueptr;			/* Pointer to environment variable value */
++
++      for (valueptr = value; *valueptr && !isspace(*valueptr & 255); valueptr ++);
++
++      if (*valueptr)
++      {
++       /*
++        * Found a value...
++	*/
++
++        while (isspace(*valueptr & 255))
++	  *valueptr++ = '\0';
++
++        for (i = 0; i < (int)(sizeof(prohibited_env) / sizeof(prohibited_env[0])); i ++)
++        {
++          if (!strcmp(value, prohibited_env[i]))
++          {
++	    cupsdLogMessage(CUPSD_LOG_ERROR, "Environment variable \"%s\" cannot be set  on line %d of %s.", value, linenum, CupsFilesFile);
++
++	    if (FatalErrors & CUPSD_FATAL_CONFIG)
++	      return (0);
++	    else
++	      break;
++          }
++	}
++
++        if (i >= (int)(sizeof(prohibited_env) / sizeof(prohibited_env[0])))
++	  cupsdSetEnv(value, valueptr);
++      }
++      else
++        cupsdLogMessage(CUPSD_LOG_ERROR,
++	                "Missing value for SetEnv directive on line %d of %s.",
++	                linenum, ConfigurationFile);
++    }
+     else if (!_cups_strcasecmp(line, "SystemGroup") && value)
+     {
+      /*
+diff --git a/scheduler/job.c b/scheduler/job.c
+index 325625e55..ad3c2db51 100644
+--- a/scheduler/job.c
++++ b/scheduler/job.c
+@@ -4711,6 +4711,18 @@ start_job(cupsd_job_t     *job,		/* I - Job ID */
+   job->profile  = cupsdCreateProfile(job->id, 0);
+   job->bprofile = cupsdCreateProfile(job->id, 1);
+ 
++#ifdef HAVE_SANDBOX_H
++  if ((!job->profile || !job->bprofile) && UseSandboxing && Sandboxing != CUPSD_SANDBOXING_OFF)
++  {
++   /*
++    * Failure to create the sandbox profile means something really bad has
++    * happened and we need to shutdown immediately.
++    */
++
++    return;
++  }
++#endif /* HAVE_SANDBOX_H */
++
+  /*
+   * Create the status pipes and buffer...
+   */
+diff --git a/scheduler/process.c b/scheduler/process.c
+index aa1fe96c9..f51ac4c66 100644
+--- a/scheduler/process.c
++++ b/scheduler/process.c
+@@ -99,9 +99,13 @@ cupsdCreateProfile(int job_id,		/* I - Job ID or 0 for none */
+ 
+   if ((fp = cupsTempFile2(profile, sizeof(profile))) == NULL)
+   {
++   /*
++    * This should never happen, and is fatal when sandboxing is enabled.
++    */
++
+     cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdCreateProfile(job_id=%d, allow_networking=%d) = NULL", job_id, allow_networking);
+-    cupsdLogMessage(CUPSD_LOG_ERROR, "Unable to create security profile: %s",
+-                    strerror(errno));
++    cupsdLogMessage(CUPSD_LOG_EMERG, "Unable to create security profile: %s", strerror(errno));
++    kill(getpid(), SIGTERM);
+     return (NULL);
+   }
+ 
+@@ -197,10 +201,8 @@ cupsdCreateProfile(int job_id,		/* I - Job ID or 0 for none */
+ 		 " #\"^%s/\""		/* TempDir/... */
+ 		 " #\"^%s$\""		/* CacheDir */
+ 		 " #\"^%s/\""		/* CacheDir/... */
+-		 " #\"^%s$\""		/* StateDir */
+-		 " #\"^%s/\""		/* StateDir/... */
+ 		 "))\n",
+-		 temp, temp, cache, cache, state, state);
++		 temp, temp, cache, cache);
+   /* Read common folders */
+   cupsFilePrintf(fp,
+                  "(allow file-read-data file-read-metadata\n"
+@@ -242,8 +244,10 @@ cupsdCreateProfile(int job_id,		/* I - Job ID or 0 for none */
+ 		 " #\"^%s/\""		/* ServerBin/... */
+ 		 " #\"^%s$\""		/* ServerRoot */
+ 		 " #\"^%s/\""		/* ServerRoot/... */
++		 " #\"^%s$\""		/* StateDir */
++		 " #\"^%s/\""		/* StateDir/... */
+ 		 "))\n",
+-		 request, request, bin, bin, root, root);
++		 request, request, bin, bin, root, root, state, state);
+   if (Sandboxing == CUPSD_SANDBOXING_RELAXED)
+   {
+     /* Limited write access to /Library/Printers/... */
+diff --git a/scheduler/server.c b/scheduler/server.c
+index eb77dc96a..46aba47a9 100644
+--- a/scheduler/server.c
++++ b/scheduler/server.c
+@@ -38,16 +38,28 @@ void
+ cupsdStartServer(void)
+ {
+  /*
+-  * Start color management (as needed)...
++  * Create the default security profile...
+   */
+ 
+-  cupsdStartColor();
++  DefaultProfile = cupsdCreateProfile(0, 1);
++
++#ifdef HAVE_SANDBOX_H
++  if (!DefaultProfile && UseSandboxing && Sandboxing != CUPSD_SANDBOXING_OFF)
++  {
++   /*
++    * Failure to create the sandbox profile means something really bad has
++    * happened and we need to shutdown immediately.
++    */
++
++    return;
++  }
++#endif /* HAVE_SANDBOX_H */
+ 
+  /*
+-  * Create the default security profile...
++  * Start color management (as needed)...
+   */
+ 
+-  DefaultProfile = cupsdCreateProfile(0, 1);
++  cupsdStartColor();
+ 
+  /*
+   * Startup all the networking stuff...
+diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
+index 345e8752b..88ea38723 100755
+--- a/test/run-stp-tests.sh
++++ b/test/run-stp-tests.sh
+@@ -487,11 +487,6 @@ StrictConformance Yes
+ Browsing Off
+ Listen 127.0.0.1:$port
+ Listen $BASE/sock
+-PassEnv DYLD_LIBRARY_PATH
+-PassEnv LD_LIBRARY_PATH
+-PassEnv LD_PRELOAD
+-PassEnv LOCALEDIR
+-PassEnv SHLIB_PATH
+ MaxSubscriptions 3
+ MaxLogSize 0
+ AccessLogLevel actions
+@@ -528,6 +523,12 @@ PidFile $BASE/cupsd.pid
+ AccessLog $BASE/log/access_log
+ ErrorLog $BASE/log/error_log
+ PageLog $BASE/log/page_log
++
++PassEnv DYLD_LIBRARY_PATH
++PassEnv LD_LIBRARY_PATH
++PassEnv LD_PRELOAD
++PassEnv LOCALEDIR
++PassEnv SHLIB_PATH
+ EOF
+ 
+ if test $ssltype != 0 -a `uname` = Darwin; then
