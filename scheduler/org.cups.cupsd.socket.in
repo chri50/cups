@@ -1,5 +1,6 @@
 [Unit]
 Description=CUPS Scheduler
+PartOf=cups.service
 
 [Socket]
 ListenStream=@CUPS_DEFAULT_DOMAINSOCKET@
