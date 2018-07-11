@@ -1,3 +1,16 @@
+cups (2.2.1-8+deb9u2) stretch-security; urgency=low
+
+  * CVE-2018-6553: Fix AppArmor cupsd sandbox bypass due to use of hard links
+  * Backport upstream fixes for:
+    - CVE-2018-4180 Local Privilege Escalation to Root in dnssd Backend (CUPS_SERVERBIN)
+    - CVE-2018-4181 Limited Local File Reads as Root via cupsd.conf Include Directive
+    - CVE-2018-4182 cups-exec Sandbox Bypass Due to Insecure Error Handling
+    - CVE-2018-4183 cups-exec Sandbox Bypass Due to Profile Misconfiguration
+    - CVE-2017-15400: Restrict IPP Everywhere filters to only list supported PDLs
+      to fix CRLF and Code Injection in Printer Zeroconfig
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 11 Jul 2018 11:29:27 +0200
+
 cups (2.2.1-8+deb9u1) stretch; urgency=low
 
   * CVE-2017-18190: Prevent an issue where remote attackers could execute
