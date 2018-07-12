@@ -1,3 +1,17 @@
+cups (2.2.8-5) unstable; urgency=high
+
+  * CVE-2018-6553: Fix AppArmor cupsd sandbox bypass due to use of hard links
+    (Closes: #903605)
+  * All these were fixed in 2.2.8:
+    - CVE-2018-4180 Local Privilege Escalation to Root in dnssd Backend
+      (CUPS_SERVERBIN)
+    - CVE-2018-4181 Limited Local File Reads as Root via cupsd.conf Include
+      Directive
+    - CVE-2018-4182 cups-exec Sandbox Bypass Due to Insecure Error Handling
+    - CVE-2018-4183 cups-exec Sandbox Bypass Due to Profile Misconfiguration
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 12 Jul 2018 18:48:48 +0200
+
 cups (2.2.8-4) unstable; urgency=medium
 
   * Backport upstream patches:
