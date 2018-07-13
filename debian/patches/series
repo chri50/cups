@@ -13,7 +13,7 @@ tests-fix-ppdLocalize-on-unclean-env.patch
 tests-use-ipv4-lo-address.patch
 tests-make-lpstat-call-reproducible.patch
 tests-no-pdftourf.patch
-0016-Revert-Mirror-validation-changes-from-2.2-branch.patch
+0016-Fix-regressions-in-ippValidateAttribute-Issue-5322-I.patch
 move-cupsd-conf-default-to-share.patch
 drop_unnecessary_dependencies.patch
 read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.patch
@@ -37,3 +37,4 @@ man-cups-lpd-drop-dangling-references.patch
 debianize_cups-config.patch
 0038-Build-mantohtml-with-the-build-architecture-compiler.patch
 manpage-translations.patch
+0040-Fix-A4-crash-in-Epson-24-pin-driver.patch

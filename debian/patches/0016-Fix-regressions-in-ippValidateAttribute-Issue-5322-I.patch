@@ -1,0 +1,72 @@
+From a8213d508abbac5cf60bfaee0a7acfc44a81f6cf Mon Sep 17 00:00:00 2001
+From: Michael R Sweet <michael.r.sweet@gmail.com>
+Date: Mon, 11 Jun 2018 09:37:34 -0400
+Subject: Fix regressions in ippValidateAttribute (Issue #5322, Issue #5330)
+
+---
+ cups/ipp.c | 44 +++++++++++++++++++++++++-------------------
+ 1 file changed, 25 insertions(+), 19 deletions(-)
+
+diff --git a/cups/ipp.c b/cups/ipp.c
+index 714c2e522..d10e90508 100644
+--- a/cups/ipp.c
++++ b/cups/ipp.c
+@@ -5029,16 +5029,19 @@ ippValidateAttribute(
+ 	      break;
+ 	  }
+ 
+-	  if (*ptr < ' ' || *ptr == 0x7f)
+-	  {
+-	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad text value \"%s\" - bad control character (PWG 5100.14 section 8.3)."), attr->name, attr->values[i].string.text);
+-	    return (0);
+-	  }
+-	  else if (*ptr)
+-	  {
+-	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad text value \"%s\" - bad UTF-8 sequence (RFC 8011 section 5.1.2)."), attr->name, attr->values[i].string.text);
+-	    return (0);
+-	  }
++          if (*ptr)
++          {
++	    if (*ptr < ' ' || *ptr == 0x7f)
++	    {
++	      ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad text value \"%s\" - bad control character (PWG 5100.14 section 8.3)."), attr->name, attr->values[i].string.text);
++	      return (0);
++	    }
++	    else
++	    {
++	      ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad text value \"%s\" - bad UTF-8 sequence (RFC 8011 section 5.1.2)."), attr->name, attr->values[i].string.text);
++	      return (0);
++	    }
++          }
+ 
+ 	  if ((ptr - attr->values[i].string.text) > (IPP_MAX_TEXT - 1))
+ 	  {
+@@ -5087,16 +5090,19 @@ ippValidateAttribute(
+ 	      break;
+ 	  }
+ 
+-	  if (*ptr < ' ' || *ptr == 0x7f)
+-	  {
+-	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad name value \"%s\" - bad control character (PWG 5100.14 section 8.1)."), attr->name, attr->values[i].string.text);
+-	    return (0);
+-	  }
+-	  else if (*ptr)
++	  if (*ptr)
+ 	  {
+-	    ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad name value \"%s\" - bad UTF-8 sequence (RFC 8011 section 5.1.3)."), attr->name, attr->values[i].string.text);
+-	    return (0);
+-	  }
++	    if (*ptr < ' ' || *ptr == 0x7f)
++	    {
++	      ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad name value \"%s\" - bad control character (PWG 5100.14 section 8.1)."), attr->name, attr->values[i].string.text);
++	      return (0);
++	    }
++	    else
++	    {
++	      ipp_set_error(IPP_STATUS_ERROR_BAD_REQUEST, _("\"%s\": Bad name value \"%s\" - bad UTF-8 sequence (RFC 8011 section 5.1.3)."), attr->name, attr->values[i].string.text);
++	      return (0);
++	    }
++          }
+ 
+ 	  if ((ptr - attr->values[i].string.text) > (IPP_MAX_NAME - 1))
+ 	  {
