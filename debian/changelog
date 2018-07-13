@@ -1,3 +1,9 @@
+cups (2.3~b5-2) experimental; urgency=medium
+
+  * Merge 2.2.8-5, rebase patches
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 13 Jul 2018 10:54:59 +0200
+
 cups (2.3~b5-1) experimental; urgency=medium
 
   * New 2.3~b5 upstream release
@@ -50,7 +56,36 @@ cups (2.3~b3-1) experimental; urgency=medium
 
  -- Didier Raboud <odyx@debian.org>  Fri, 23 Feb 2018 20:49:53 +0100
 
-cups (2.2.8-2) unstable; urgency=medium
+cups (2.2.8-5) unstable; urgency=high
+
+  * CVE-2018-6553: Fix AppArmor cupsd sandbox bypass due to use of hard links
+    (Closes: #903605)
+  * All these were fixed in 2.2.8:
+    - CVE-2018-4180 Local Privilege Escalation to Root in dnssd Backend
+      (CUPS_SERVERBIN)
+    - CVE-2018-4181 Limited Local File Reads as Root via cupsd.conf Include
+      Directive
+    - CVE-2018-4182 cups-exec Sandbox Bypass Due to Insecure Error Handling
+    - CVE-2018-4183 cups-exec Sandbox Bypass Due to Profile Misconfiguration
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 12 Jul 2018 18:48:48 +0200
+
+cups (2.2.8-4) unstable; urgency=medium
+
+  * Backport upstream patches:
+    - Fix A4 crash in Epson 24-pin driver (Closes: #901860)
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 03 Jul 2018 07:18:20 +0200
+
+cups (2.2.8-3) unstable; urgency=medium
+
+  * Renumber first 2.2.8 upload as 2.2.8-1; skip -2.
+  * Drop the "Generalize the input validation of some kinds of attributes."
+    revert in favour of "Fix regressions in ippValidateAttribute" from upstream
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 11 Jun 2018 19:34:03 +0200
+
+cups (2.2.8-1) unstable; urgency=medium
 
   * New upstream 2.2.8 release
     - The scheduler allowed environment variables to be specified in the

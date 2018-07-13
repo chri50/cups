@@ -1,4 +1,4 @@
-From 26b164635989c9de18114ba0393d1e179d15307c Mon Sep 17 00:00:00 2001
+From 2b091ed9e7506a5a65c2aa6d7f9939e4d5c5e888 Mon Sep 17 00:00:00 2001
 From: Till Kampetter <till.kampetter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:35 +0200
 Subject: Do not use host names for broadcasting print queues and
