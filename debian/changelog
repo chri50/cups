@@ -1,3 +1,11 @@
+cups (2.2.8-5ubuntu1) cosmic; urgency=high
+
+  * do-not-locally-filter-printing-to-remote-cups-queue.patch: Avoid duplicate
+    application of pdftopdf filter (locally and remotely) when printing on auto-
+    discovered remote CUPS printer.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Sun, 19 Aug 2018 20:36:01 +0200
+
 cups (2.2.8-5) unstable; urgency=high
 
   * CVE-2018-6553: Fix AppArmor cupsd sandbox bypass due to use of hard links

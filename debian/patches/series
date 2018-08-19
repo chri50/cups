@@ -39,3 +39,4 @@ debianize_cups-config.patch
 0039-The-lp-and-lpr-commands-now-provide-better-error-mes.patch
 manpage-translations.patch
 0041-Fix-A4-crash-in-Epson-24-pin-driver.patch
+do-not-locally-filter-printing-to-remote-cups-queue.patch
