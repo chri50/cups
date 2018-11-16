@@ -78,55 +78,6 @@ Description: Common UNIX Printing System(tm) - Raster image library
  This package provides the image libraries for handling the CUPS
  raster format.
 
-Package: libcupscgi1
-Section: libs
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends},
- libcups2 (= ${binary:Version}),
-Pre-Depends: ${misc:Pre-Depends}
-Multi-Arch: same
-Description: Common UNIX Printing System(tm) - CGI library
- The Common UNIX Printing System (or CUPS(tm)) is a printing system and
- general replacement for lpd and the like.  It supports the Internet
- Printing Protocol (IPP), and has its own filtering driver model for
- handling various document types.
- .
- This package provides a shared library for CGI programs in the
- CUPS web interface
-
-Package: libcupsmime1
-Section: libs
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends},
- libcups2 (= ${binary:Version}),
-Breaks: cups (<< 1.5.0)
-Pre-Depends: ${misc:Pre-Depends}
-Multi-Arch: same
-Description: Common UNIX Printing System(tm) - MIME library
- The Common UNIX Printing System (or CUPS(tm)) is a printing system and
- general replacement for lpd and the like.  It supports the Internet
- Printing Protocol (IPP), and has its own filtering driver model for
- handling various document types.
- .
- This package provides a shared library for file type detection and
- file conversion filter chain building.
-
-Package: libcupsppdc1
-Section: libs
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends},
- libcups2 (= ${binary:Version}),
-Pre-Depends: ${misc:Pre-Depends}
-Multi-Arch: same
-Description: Common UNIX Printing System(tm) - PPD manipulation library
- The Common UNIX Printing System (or CUPS(tm)) is a printing system and
- general replacement for lpd and the like.  It supports the Internet
- Printing Protocol (IPP), and has its own filtering driver model for
- handling various document types.
- .
- This package provides the base shared library for generating and
- manipulating PPD files.
-
 Package: cups
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends}

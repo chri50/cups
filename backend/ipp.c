@@ -1,7 +1,7 @@
 /*
  * IPP backend for CUPS.
  *
- * Copyright 2007-2017 by Apple Inc.
+ * Copyright 2007-2018 by Apple Inc.
  * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  * These coded instructions, statements, and computer programs are the
@@ -426,9 +426,9 @@ main(int  argc,				/* I - Number of command-line args */
     port = IPP_PORT;			/* Default to port 631 */
 
   if (!strcmp(scheme, "https") || !strcmp(scheme, "ipps"))
-    cupsSetEncryption(HTTP_ENCRYPT_ALWAYS);
+    cupsSetEncryption(HTTP_ENCRYPTION_ALWAYS);
   else
-    cupsSetEncryption(HTTP_ENCRYPT_IF_REQUESTED);
+    cupsSetEncryption(HTTP_ENCRYPTION_IF_REQUESTED);
 
  /*
   * See if there are any options...
@@ -515,13 +515,13 @@ main(int  argc,				/* I - Number of command-line args */
 	*/
 
         if (!_cups_strcasecmp(value, "always"))
-	  cupsSetEncryption(HTTP_ENCRYPT_ALWAYS);
+	  cupsSetEncryption(HTTP_ENCRYPTION_ALWAYS);
         else if (!_cups_strcasecmp(value, "required"))
-	  cupsSetEncryption(HTTP_ENCRYPT_REQUIRED);
+	  cupsSetEncryption(HTTP_ENCRYPTION_REQUIRED);
         else if (!_cups_strcasecmp(value, "never"))
-	  cupsSetEncryption(HTTP_ENCRYPT_NEVER);
+	  cupsSetEncryption(HTTP_ENCRYPTION_NEVER);
         else if (!_cups_strcasecmp(value, "ifrequested"))
-	  cupsSetEncryption(HTTP_ENCRYPT_IF_REQUESTED);
+	  cupsSetEncryption(HTTP_ENCRYPTION_IF_REQUESTED);
 	else
 	{
 	  _cupsLangPrintFilter(stderr, "ERROR",
@@ -709,11 +709,11 @@ main(int  argc,				/* I - Number of command-line args */
     fprintf(stderr, "DEBUG: Connecting to %s:%d\n", hostname, port);
     _cupsLangPrintFilter(stderr, "INFO", _("Connecting to printer."));
 
-    if (httpReconnect(http))
+    if (httpReconnect2(http, 30000, NULL))
     {
       int error = errno;		/* Connection error */
 
-      if (http->status == HTTP_PKI_ERROR)
+      if (http->status == HTTP_STATUS_CUPS_PKI_ERROR)
 	update_reasons(NULL, "+cups-certificate-error");
 
       if (job_canceled)
@@ -916,7 +916,7 @@ main(int  argc,				/* I - Number of command-line args */
     * Build the IPP request...
     */
 
-    request = ippNewRequest(IPP_GET_PRINTER_ATTRIBUTES);
+    request = ippNewRequest(IPP_OP_GET_PRINTER_ATTRIBUTES);
     ippSetVersion(request, version / 10, version % 10);
     ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri",
         	 NULL, uri);
@@ -931,7 +931,7 @@ main(int  argc,				/* I - Number of command-line args */
 
     fputs("DEBUG: Getting supported attributes...\n", stderr);
 
-    if (http->version < HTTP_1_1)
+    if (http->version < HTTP_VERSION_1_1)
     {
       fprintf(stderr, "DEBUG: Printer responded with HTTP version %d.%d.\n",
               http->version / 100, http->version % 100);
@@ -945,15 +945,15 @@ main(int  argc,				/* I - Number of command-line args */
     fprintf(stderr, "DEBUG: Get-Printer-Attributes: %s (%s)\n",
             ippErrorString(ipp_status), cupsLastErrorString());
 
-    if (ipp_status <= IPP_OK_CONFLICT)
+    if (ipp_status <= IPP_STATUS_OK_CONFLICTING)
       password_tries = 0;
     else
     {
       fprintf(stderr, "DEBUG: Get-Printer-Attributes returned %s.\n",
               ippErrorString(ipp_status));
 
-      if (ipp_status == IPP_PRINTER_BUSY ||
-	  ipp_status == IPP_SERVICE_UNAVAILABLE)
+      if (ipp_status == IPP_STATUS_ERROR_BUSY ||
+	  ipp_status == IPP_STATUS_ERROR_SERVICE_UNAVAILABLE)
       {
         if (contimeout && (time(NULL) - start_time) > contimeout)
 	{
@@ -970,8 +970,8 @@ main(int  argc,				/* I - Number of command-line args */
 
         delay = _cupsNextDelay(delay, &prev_delay);
       }
-      else if ((ipp_status == IPP_BAD_REQUEST ||
-	        ipp_status == IPP_VERSION_NOT_SUPPORTED) && version > 10)
+      else if ((ipp_status == IPP_STATUS_ERROR_BAD_REQUEST ||
+	        ipp_status == IPP_STATUS_ERROR_VERSION_NOT_SUPPORTED) && version > 10)
       {
        /*
 	* Switch to IPP/1.1 or IPP/1.0...
@@ -994,9 +994,9 @@ main(int  argc,				/* I - Number of command-line args */
 	  version = 10;
         }
 
-	httpReconnect(http);
+	httpReconnect2(http, 30000, NULL);
       }
-      else if (ipp_status == IPP_NOT_FOUND)
+      else if (ipp_status == IPP_STATUS_ERROR_NOT_FOUND)
       {
         _cupsLangPrintFilter(stderr, "ERROR",
 			     _("The printer configuration is incorrect or the "
@@ -1006,8 +1006,8 @@ main(int  argc,				/* I - Number of command-line args */
 
 	return (CUPS_BACKEND_STOP);
       }
-      else if (ipp_status == IPP_FORBIDDEN ||
-               ipp_status == IPP_AUTHENTICATION_CANCELED)
+      else if (ipp_status == IPP_STATUS_ERROR_FORBIDDEN ||
+               ipp_status == IPP_STATUS_ERROR_CUPS_AUTHENTICATION_CANCELED)
       {
         const char *www_auth = httpGetField(http, HTTP_FIELD_WWW_AUTHENTICATE);
         				/* WWW-Authenticate field value */
@@ -1020,13 +1020,13 @@ main(int  argc,				/* I - Number of command-line args */
 	fprintf(stderr, "ATTR: auth-info-required=%s\n", auth_info_required);
 	return (CUPS_BACKEND_AUTH_REQUIRED);
       }
-      else if (ipp_status != IPP_NOT_AUTHORIZED)
+      else if (ipp_status != IPP_STATUS_ERROR_NOT_AUTHORIZED)
       {
 	_cupsLangPrintFilter(stderr, "ERROR",
 	                     _("Unable to get printer status."));
         sleep(10);
 
-	httpReconnect(http);
+	httpReconnect2(http, 30000, NULL);
       }
 
       ippDelete(supported);
@@ -1140,7 +1140,14 @@ main(int  argc,				/* I - Number of command-line args */
 	copies_sup = NULL; /* No */
     }
 
-    cups_version = ippFindAttribute(supported, "cups-version", IPP_TAG_TEXT);
+    if ((cups_version = ippFindAttribute(supported, "cups-version", IPP_TAG_TEXT)) != NULL)
+    {
+      const char *version = ippGetString(cups_version, 0, NULL);
+
+      fprintf(stderr, "DEBUG: cups-version = \"%s\"\n", version);
+      if (!strcmp(version, "cups-version"))
+        cups_version = NULL;		/* Bogus cups-version value returned by buggy printers! */
+    }
 
     encryption_sup = ippFindAttribute(supported, "job-password-encryption-supported", IPP_TAG_KEYWORD);
 
@@ -1176,7 +1183,7 @@ main(int  argc,				/* I - Number of command-line args */
                 ippOpString(operations_sup->values[i].integer));
 
       for (i = 0; i < operations_sup->num_values; i ++)
-        if (operations_sup->values[i].integer == IPP_PRINT_JOB)
+        if (operations_sup->values[i].integer == IPP_OP_PRINT_JOB)
 	  break;
 
       if (i >= operations_sup->num_values)
@@ -1184,7 +1191,7 @@ main(int  argc,				/* I - Number of command-line args */
 			     "cups-ipp-missing-print-job");
 
       for (i = 0; i < operations_sup->num_values; i ++)
-        if (operations_sup->values[i].integer == IPP_CANCEL_JOB)
+        if (operations_sup->values[i].integer == IPP_OP_CANCEL_JOB)
 	  break;
 
       if (i >= operations_sup->num_values)
@@ -1192,7 +1199,7 @@ main(int  argc,				/* I - Number of command-line args */
 			     "cups-ipp-missing-cancel-job");
 
       for (i = 0; i < operations_sup->num_values; i ++)
-        if (operations_sup->values[i].integer == IPP_GET_JOB_ATTRIBUTES)
+        if (operations_sup->values[i].integer == IPP_OP_GET_JOB_ATTRIBUTES)
 	  break;
 
       if (i >= operations_sup->num_values)
@@ -1200,7 +1207,7 @@ main(int  argc,				/* I - Number of command-line args */
                              "cups-ipp-missing-get-job-attributes");
 
       for (i = 0; i < operations_sup->num_values; i ++)
-        if (operations_sup->values[i].integer == IPP_GET_PRINTER_ATTRIBUTES)
+        if (operations_sup->values[i].integer == IPP_OP_GET_PRINTER_ATTRIBUTES)
 	  break;
 
       if (i >= operations_sup->num_values)
@@ -1209,13 +1216,13 @@ main(int  argc,				/* I - Number of command-line args */
 
       for (i = 0; i < operations_sup->num_values; i ++)
       {
-        if (operations_sup->values[i].integer == IPP_VALIDATE_JOB)
+        if (operations_sup->values[i].integer == IPP_OP_VALIDATE_JOB)
 	  validate_job = 1;
-        else if (operations_sup->values[i].integer == IPP_CREATE_JOB)
+        else if (operations_sup->values[i].integer == IPP_OP_CREATE_JOB)
 	  create_job = 1;
-        else if (operations_sup->values[i].integer == IPP_SEND_DOCUMENT)
+        else if (operations_sup->values[i].integer == IPP_OP_SEND_DOCUMENT)
 	  send_document = 1;
-        else if (operations_sup->values[i].integer == IPP_GET_JOB_ATTRIBUTES)
+        else if (operations_sup->values[i].integer == IPP_OP_GET_JOB_ATTRIBUTES)
 	  get_job_attrs = 1;
       }
 
@@ -1243,7 +1250,7 @@ main(int  argc,				/* I - Number of command-line args */
 
     report_printer_state(supported);
   }
-  while (!job_canceled && ipp_status > IPP_OK_CONFLICT);
+  while (!job_canceled && ipp_status > IPP_STATUS_OK_CONFLICTING);
 
   if (job_canceled)
     return (CUPS_BACKEND_OK);
@@ -1261,7 +1268,7 @@ main(int  argc,				/* I - Number of command-line args */
                                 	 IPP_TAG_BOOLEAN);
 
     if (printer_state == NULL ||
-	(printer_state->values[0].integer > IPP_PRINTER_PROCESSING &&
+	(printer_state->values[0].integer > IPP_PSTATE_PROCESSING &&
 	 waitprinter) ||
 	printer_accepting == NULL ||
 	!printer_accepting->values[0].boolean)
@@ -1387,7 +1394,7 @@ main(int  argc,				/* I - Number of command-line args */
   * (I hate compatibility hacks!)
   */
 
-  if (http->version < HTTP_1_1 && num_files == 0)
+  if (http->version < HTTP_VERSION_1_1 && num_files == 0)
   {
     if ((fd = cupsTempFd(tmpfilename, sizeof(tmpfilename))) < 0)
     {
@@ -1415,7 +1422,7 @@ main(int  argc,				/* I - Number of command-line args */
     files      = &compatfile;
     num_files  = 1;
   }
-  else if (http->version < HTTP_1_1 && num_files == 1)
+  else if (http->version < HTTP_VERSION_1_1 && num_files == 1)
   {
     struct stat	fileinfo;		/* File information */
 
@@ -1448,8 +1455,8 @@ main(int  argc,				/* I - Number of command-line args */
   monitor.create_job    = create_job;
   monitor.get_job_attrs = get_job_attrs;
   monitor.encryption    = cupsEncryption();
-  monitor.job_state     = IPP_JOB_PENDING;
-  monitor.printer_state = IPP_PRINTER_IDLE;
+  monitor.job_state     = IPP_JSTATE_PENDING;
+  monitor.printer_state = IPP_PSTATE_IDLE;
   monitor.retryable     = argc == 6 && document_format && strcmp(document_format, "image/pwg-raster") && strcmp(document_format, "image/urf");
 
   if (create_job)
@@ -1532,10 +1539,10 @@ main(int  argc,				/* I - Number of command-line args */
 			   "cups-ipp-missing-validate-job");
       break;
     }
-    else if (ipp_status < IPP_REDIRECTION_OTHER_SITE ||
-             ipp_status == IPP_BAD_REQUEST)
+    else if (ipp_status < IPP_STATUS_REDIRECTION_OTHER_SITE ||
+             ipp_status == IPP_STATUS_ERROR_BAD_REQUEST)
       break;
-    else if (job_auth == NULL && ipp_status > IPP_BAD_REQUEST)
+    else if (job_auth == NULL && ipp_status > IPP_STATUS_ERROR_BAD_REQUEST)
       goto cleanup;
   }
 
@@ -1560,8 +1567,8 @@ main(int  argc,				/* I - Number of command-line args */
     if (job_canceled)
       break;
 
-    request = new_request((num_files > 1 || create_job) ? IPP_CREATE_JOB :
-                                                          IPP_PRINT_JOB,
+    request = new_request((num_files > 1 || create_job) ? IPP_OP_CREATE_JOB :
+                                                          IPP_OP_PRINT_JOB,
 			  version, uri, argv[2], monitor.job_name, num_options,
 			  options, compression, copies_sup ? copies : 1,
 			  document_format, pc, ppd, media_col_sup,
@@ -1586,7 +1593,7 @@ main(int  argc,				/* I - Number of command-line args */
         fputs("DEBUG: Sending file using HTTP/1.1 chunking...\n", stderr);
 
       http_status = cupsSendRequest(http, request, resource, length);
-      if (http_status == HTTP_CONTINUE && request->state == IPP_DATA)
+      if (http_status == HTTP_STATUS_CONTINUE && request->state == IPP_STATE_DATA)
       {
 	if (compression && strcmp(compression, "none"))
 	  httpSetField(http, HTTP_FIELD_CONTENT_ENCODING, compression);
@@ -1605,7 +1612,7 @@ main(int  argc,				/* I - Number of command-line args */
 	  http_status = cupsWriteRequestData(http, buffer, (size_t)bytes);
         }
 
-        while (http_status == HTTP_CONTINUE &&
+        while (http_status == HTTP_STATUS_CONTINUE &&
                (!job_canceled || compatsize > 0))
 	{
 	 /*
@@ -1630,7 +1637,7 @@ main(int  argc,				/* I - Number of command-line args */
 	      fprintf(stderr, "DEBUG: Read %d bytes...\n", (int)bytes);
 
 	      if ((http_status = cupsWriteRequestData(http, buffer, (size_t)bytes))
-	              != HTTP_CONTINUE)
+	              != HTTP_STATUS_CONTINUE)
 		break;
 	    }
 	    else if (bytes == 0 || (errno != EINTR && errno != EAGAIN))
@@ -1638,7 +1645,7 @@ main(int  argc,				/* I - Number of command-line args */
 	  }
 	}
 
-	if (http_status == HTTP_ERROR)
+	if (http_status == HTTP_STATUS_ERROR)
 	  fprintf(stderr, "DEBUG: Error writing document data for "
 			  "Print-Job: %s\n", strerror(httpError(http)));
 
@@ -1657,7 +1664,7 @@ main(int  argc,				/* I - Number of command-line args */
             ippErrorString(ipp_status), cupsLastErrorString());
     debug_attributes(response);
 
-    if (ipp_status > IPP_OK_CONFLICT)
+    if (ipp_status > IPP_STATUS_OK_CONFLICTING)
     {
       job_id = 0;
 
@@ -1709,7 +1716,7 @@ main(int  argc,				/* I - Number of command-line args */
 	  else if (www_auth[0])
 	    auth_info_required = "username,password";
 	}
-	else if (ipp_status == IPP_REQUEST_VALUE)
+	else if (ipp_status == IPP_STATUS_ERROR_REQUEST_VALUE)
 	{
 	 /*
 	  * Print file is too large, abort this job...
@@ -1765,7 +1772,7 @@ main(int  argc,				/* I - Number of command-line args */
         * Send the next file in the job...
 	*/
 
-	request = ippNewRequest(IPP_SEND_DOCUMENT);
+	request = ippNewRequest(IPP_OP_SEND_DOCUMENT);
 	ippSetVersion(request, version / 10, version % 10);
 
 	ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri",
@@ -1797,7 +1804,7 @@ main(int  argc,				/* I - Number of command-line args */
 	debug_attributes(request);
 
 	http_status = cupsSendRequest(http, request, resource, 0);
-	if (http_status == HTTP_CONTINUE && request->state == IPP_DATA)
+	if (http_status == HTTP_STATUS_CONTINUE && request->state == IPP_STATE_DATA)
 	{
 	  if (compression && strcmp(compression, "none"))
 	    httpSetField(http, HTTP_FIELD_CONTENT_ENCODING, compression);
@@ -1821,11 +1828,11 @@ main(int  argc,				/* I - Number of command-line args */
 
 	if (fd >= 0)
 	{
-	  while (!job_canceled && http_status == HTTP_CONTINUE &&
+	  while (!job_canceled && http_status == HTTP_STATUS_CONTINUE &&
 	         (bytes = read(fd, buffer, sizeof(buffer))) > 0)
 	  {
 	    if ((http_status = cupsWriteRequestData(http, buffer, (size_t)bytes))
-	            != HTTP_CONTINUE)
+	            != HTTP_STATUS_CONTINUE)
 	      break;
 	    else
 	    {
@@ -1841,7 +1848,7 @@ main(int  argc,				/* I - Number of command-line args */
 	    close(fd);
 	}
 
-        if (http_status == HTTP_ERROR)
+        if (http_status == HTTP_STATUS_ERROR)
           fprintf(stderr, "DEBUG: Error writing document data for "
                           "Send-Document: %s\n", strerror(httpError(http)));
 
@@ -1853,7 +1860,7 @@ main(int  argc,				/* I - Number of command-line args */
         debug_attributes(response);
         ippDelete(response);
 
-	if (cupsLastError() > IPP_OK_CONFLICT && !job_canceled)
+	if (cupsLastError() > IPP_STATUS_OK_CONFLICTING && !job_canceled)
 	{
 	  ipp_status = cupsLastError();
 
@@ -1874,12 +1881,12 @@ main(int  argc,				/* I - Number of command-line args */
     if (job_canceled)
       break;
 
-    if (ipp_status <= IPP_OK_CONFLICT && argc > 6)
+    if (ipp_status <= IPP_STATUS_OK_CONFLICTING && argc > 6)
     {
       fprintf(stderr, "PAGE: 1 %d\n", copies_sup ? atoi(argv[4]) : 1);
       copies_remaining --;
     }
-    else if ((ipp_status == IPP_STATUS_ERROR_DOCUMENT_FORMAT_ERROR || ipp_status == IPP_STATUS_ERROR_DOCUMENT_UNPRINTABLE) &&
+    else if ((ipp_status == IPP_STATUS_ERROR_DOCUMENT_FORMAT_NOT_SUPPORTED || ipp_status == IPP_STATUS_ERROR_DOCUMENT_UNPRINTABLE) &&
              argc == 6 &&
              document_format && strcmp(document_format, "image/pwg-raster") && strcmp(document_format, "image/urf"))
     {
@@ -1893,9 +1900,9 @@ main(int  argc,				/* I - Number of command-line args */
 
       goto cleanup;
     }
-    else if (ipp_status == IPP_SERVICE_UNAVAILABLE ||
-             ipp_status == IPP_NOT_POSSIBLE ||
-	     ipp_status == IPP_PRINTER_BUSY)
+    else if (ipp_status == IPP_STATUS_ERROR_SERVICE_UNAVAILABLE ||
+             ipp_status == IPP_STATUS_ERROR_NOT_POSSIBLE ||
+	     ipp_status == IPP_STATUS_ERROR_BUSY)
     {
       if (argc == 6)
       {
@@ -1911,14 +1918,14 @@ main(int  argc,				/* I - Number of command-line args */
       }
       continue;
     }
-    else if (ipp_status == IPP_REQUEST_VALUE ||
-             ipp_status == IPP_ERROR_JOB_CANCELED ||
-             ipp_status == IPP_NOT_AUTHORIZED ||
+    else if (ipp_status == IPP_STATUS_ERROR_REQUEST_VALUE ||
+             ipp_status == IPP_STATUS_ERROR_JOB_CANCELED ||
+             ipp_status == IPP_STATUS_ERROR_NOT_AUTHORIZED ||
              ipp_status == IPP_STATUS_ERROR_CUPS_ACCOUNT_INFO_NEEDED ||
              ipp_status == IPP_STATUS_ERROR_CUPS_ACCOUNT_CLOSED ||
              ipp_status == IPP_STATUS_ERROR_CUPS_ACCOUNT_LIMIT_REACHED ||
              ipp_status == IPP_STATUS_ERROR_CUPS_ACCOUNT_AUTHORIZATION_FAILED ||
-             ipp_status == IPP_INTERNAL_ERROR)
+             ipp_status == IPP_STATUS_ERROR_INTERNAL)
     {
      /*
       * Print file is too large, job was canceled, we need new
@@ -1948,7 +1955,7 @@ main(int  argc,				/* I - Number of command-line args */
 
       goto cleanup;
     }
-    else if (ipp_status == IPP_NOT_FOUND)
+    else if (ipp_status == IPP_STATUS_ERROR_NOT_FOUND)
     {
      /*
       * Printer does not actually implement support for Create-Job/
@@ -1962,7 +1969,7 @@ main(int  argc,				/* I - Number of command-line args */
       update_reasons(NULL, "+cups-ipp-conformance-failure-report,"
 			   "cups-ipp-missing-send-document");
 
-      ipp_status = IPP_INTERNAL_ERROR;	/* Force queue to stop */
+      ipp_status = IPP_STATUS_ERROR_INTERNAL;	/* Force queue to stop */
 
       goto cleanup;
     }
@@ -1994,14 +2001,14 @@ main(int  argc,				/* I - Number of command-line args */
 
       check_printer_state(http, uri, resource, argv[2], version);
 
-      if (cupsLastError() <= IPP_OK_CONFLICT)
+      if (cupsLastError() <= IPP_STATUS_OK_CONFLICTING)
         password_tries = 0;
 
      /*
-      * Build an IPP_GET_JOB_ATTRIBUTES request...
+      * Build an IPP_OP_GET_JOB_ATTRIBUTES request...
       */
 
-      request = ippNewRequest(IPP_GET_JOB_ATTRIBUTES);
+      request = ippNewRequest(IPP_OP_GET_JOB_ATTRIBUTES);
       ippSetVersion(request, version / 10, version % 10);
 
       ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri",
@@ -2025,11 +2032,11 @@ main(int  argc,				/* I - Number of command-line args */
       * Do the request...
       */
 
-      httpReconnect(http);
+      httpReconnect2(http, 30000, NULL);
       response   = cupsDoRequest(http, request, resource);
       ipp_status = cupsLastError();
 
-      if (ipp_status == IPP_NOT_FOUND || ipp_status == IPP_NOT_POSSIBLE)
+      if (ipp_status == IPP_STATUS_ERROR_NOT_FOUND || ipp_status == IPP_STATUS_ERROR_NOT_POSSIBLE)
       {
        /*
         * Job has gone away and/or the server has no job history...
@@ -2039,7 +2046,7 @@ main(int  argc,				/* I - Number of command-line args */
 			     "cups-ipp-missing-job-history");
         ippDelete(response);
 
-	ipp_status = IPP_OK;
+	ipp_status = IPP_STATUS_OK;
         break;
       }
 
@@ -2047,25 +2054,25 @@ main(int  argc,				/* I - Number of command-line args */
 	      ippErrorString(ipp_status), cupsLastErrorString());
       debug_attributes(response);
 
-      if (ipp_status <= IPP_OK_CONFLICT)
+      if (ipp_status <= IPP_STATUS_OK_CONFLICTING)
 	password_tries = 0;
       else
       {
-	if (ipp_status != IPP_SERVICE_UNAVAILABLE &&
-	    ipp_status != IPP_PRINTER_BUSY)
+	if (ipp_status != IPP_STATUS_ERROR_SERVICE_UNAVAILABLE &&
+	    ipp_status != IPP_STATUS_ERROR_BUSY)
 	{
 	  ippDelete(response);
-          ipp_status = IPP_OK;
+          ipp_status = IPP_STATUS_OK;
           break;
 	}
-	else if (ipp_status == IPP_INTERNAL_ERROR)
+	else if (ipp_status == IPP_STATUS_ERROR_INTERNAL)
 	{
 	  waitjob_tries ++;
 
 	  if (waitjob_tries > 4)
 	  {
 	    ippDelete(response);
-	    ipp_status = IPP_OK;
+	    ipp_status = IPP_STATUS_OK;
 	    break;
 	  }
 	}
@@ -2081,11 +2088,11 @@ main(int  argc,				/* I - Number of command-line args */
 	  */
 
 	  if (cups_version &&
-	      job_state->values[0].integer >= IPP_JOB_PENDING &&
-	      job_state->values[0].integer <= IPP_JOB_COMPLETED)
+	      job_state->values[0].integer >= IPP_JSTATE_PENDING &&
+	      job_state->values[0].integer <= IPP_JSTATE_COMPLETED)
 	    update_reasons(NULL,
 	                   remote_job_states[job_state->values[0].integer -
-			                     IPP_JOB_PENDING]);
+			                     IPP_JSTATE_PENDING]);
 
 	  if ((job_sheets = ippFindAttribute(response, "job-impressions-completed", IPP_TAG_INTEGER)) == NULL)
 	    job_sheets = ippFindAttribute(response, "job-media-sheets-completed", IPP_TAG_INTEGER);
@@ -2105,9 +2112,9 @@ main(int  argc,				/* I - Number of command-line args */
 	    break;
 	  }
 	}
-	else if (ipp_status != IPP_SERVICE_UNAVAILABLE &&
-		 ipp_status != IPP_NOT_POSSIBLE &&
-		 ipp_status != IPP_PRINTER_BUSY)
+	else if (ipp_status != IPP_STATUS_ERROR_SERVICE_UNAVAILABLE &&
+		 ipp_status != IPP_STATUS_ERROR_NOT_POSSIBLE &&
+		 ipp_status != IPP_STATUS_ERROR_BUSY)
 	{
 	 /*
 	  * If the printer does not return a job-state attribute, it does not
@@ -2117,7 +2124,7 @@ main(int  argc,				/* I - Number of command-line args */
 
 	  update_reasons(NULL, "+cups-ipp-conformance-failure-report,"
 			       "cups-ipp-missing-job-state");
-	  ipp_status = IPP_INTERNAL_ERROR;
+	  ipp_status = IPP_STATUS_ERROR_INTERNAL;
 	  break;
 	}
       }
@@ -2142,7 +2149,7 @@ main(int  argc,				/* I - Number of command-line args */
   {
     cancel_job(http, uri, job_id, resource, argv[2], version);
 
-    if (cupsLastError() > IPP_OK_CONFLICT)
+    if (cupsLastError() > IPP_STATUS_OK_CONFLICTING)
       _cupsLangPrintFilter(stderr, "ERROR", _("Unable to cancel print job."));
   }
 
@@ -2152,7 +2159,7 @@ main(int  argc,				/* I - Number of command-line args */
 
   check_printer_state(http, uri, resource, argv[2], version);
 
-  if (cupsLastError() <= IPP_OK_CONFLICT)
+  if (cupsLastError() <= IPP_STATUS_OK_CONFLICTING)
     password_tries = 0;
 
  /*
@@ -2199,9 +2206,9 @@ main(int  argc,				/* I - Number of command-line args */
   * Return the queue status...
   */
 
-  if (ipp_status == IPP_NOT_AUTHORIZED || ipp_status == IPP_FORBIDDEN ||
-      ipp_status == IPP_AUTHENTICATION_CANCELED ||
-      ipp_status <= IPP_OK_CONFLICT)
+  if (ipp_status == IPP_STATUS_ERROR_NOT_AUTHORIZED || ipp_status == IPP_STATUS_ERROR_FORBIDDEN ||
+      ipp_status == IPP_STATUS_ERROR_CUPS_AUTHENTICATION_CANCELED ||
+      ipp_status <= IPP_STATUS_OK_CONFLICTING)
     fprintf(stderr, "ATTR: auth-info-required=%s\n", auth_info_required);
 
   if (ipp_status == IPP_STATUS_ERROR_CUPS_ACCOUNT_INFO_NEEDED)
@@ -2213,25 +2220,25 @@ main(int  argc,				/* I - Number of command-line args */
   else if (ipp_status == IPP_STATUS_ERROR_CUPS_ACCOUNT_AUTHORIZATION_FAILED)
     fputs("JOBSTATE: account-authorization-failed\n", stderr);
 
-  if (ipp_status == IPP_NOT_AUTHORIZED || ipp_status == IPP_FORBIDDEN ||
-      ipp_status == IPP_AUTHENTICATION_CANCELED)
+  if (ipp_status == IPP_STATUS_ERROR_NOT_AUTHORIZED || ipp_status == IPP_STATUS_ERROR_FORBIDDEN ||
+      ipp_status == IPP_STATUS_ERROR_CUPS_AUTHENTICATION_CANCELED)
     return (CUPS_BACKEND_AUTH_REQUIRED);
   else if (ipp_status == IPP_STATUS_ERROR_CUPS_ACCOUNT_LIMIT_REACHED ||
 	   ipp_status == IPP_STATUS_ERROR_CUPS_ACCOUNT_INFO_NEEDED ||
 	   ipp_status == IPP_STATUS_ERROR_CUPS_ACCOUNT_CLOSED ||
 	   ipp_status == IPP_STATUS_ERROR_CUPS_ACCOUNT_AUTHORIZATION_FAILED)
     return (CUPS_BACKEND_HOLD);
-  else if (ipp_status == IPP_INTERNAL_ERROR)
+  else if (ipp_status == IPP_STATUS_ERROR_INTERNAL)
     return (CUPS_BACKEND_STOP);
-  else if (ipp_status == IPP_CONFLICT || ipp_status == IPP_STATUS_ERROR_REQUEST_ENTITY || ipp_status == IPP_STATUS_ERROR_REQUEST_VALUE)
+  else if (ipp_status == IPP_STATUS_ERROR_CONFLICTING || ipp_status == IPP_STATUS_ERROR_REQUEST_ENTITY || ipp_status == IPP_STATUS_ERROR_REQUEST_VALUE)
     return (CUPS_BACKEND_FAILED);
-  else if (ipp_status == IPP_REQUEST_VALUE ||
+  else if (ipp_status == IPP_STATUS_ERROR_REQUEST_VALUE ||
 	   ipp_status == IPP_STATUS_ERROR_ATTRIBUTES_OR_VALUES ||
-           ipp_status == IPP_DOCUMENT_FORMAT || job_canceled < 0)
+           ipp_status == IPP_STATUS_ERROR_DOCUMENT_FORMAT_NOT_SUPPORTED || job_canceled < 0)
   {
-    if (ipp_status == IPP_REQUEST_VALUE)
+    if (ipp_status == IPP_STATUS_ERROR_REQUEST_VALUE)
       _cupsLangPrintFilter(stderr, "ERROR", _("Print job too large."));
-    else if (ipp_status == IPP_DOCUMENT_FORMAT)
+    else if (ipp_status == IPP_STATUS_ERROR_DOCUMENT_FORMAT_NOT_SUPPORTED)
       _cupsLangPrintFilter(stderr, "ERROR",
                            _("Printer cannot print supplied content."));
     else if (ipp_status == IPP_STATUS_ERROR_ATTRIBUTES_OR_VALUES)
@@ -2242,7 +2249,7 @@ main(int  argc,				/* I - Number of command-line args */
 
     return (CUPS_BACKEND_CANCEL);
   }
-  else if (ipp_status > IPP_OK_CONFLICT && ipp_status != IPP_ERROR_JOB_CANCELED)
+  else if (ipp_status > IPP_STATUS_OK_CONFLICTING && ipp_status != IPP_STATUS_ERROR_JOB_CANCELED)
     return (CUPS_BACKEND_RETRY_CURRENT);
   else
     return (CUPS_BACKEND_OK);
@@ -2266,7 +2273,7 @@ cancel_job(http_t     *http,		/* I - HTTP connection */
 
   _cupsLangPrintFilter(stderr, "INFO", _("Canceling print job."));
 
-  request = ippNewRequest(IPP_CANCEL_JOB);
+  request = ippNewRequest(IPP_OP_CANCEL_JOB);
   ippSetVersion(request, version / 10, version % 10);
 
   ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri",
@@ -2300,7 +2307,7 @@ check_printer_state(
   ipp_t		*request,		/* IPP request */
 		*response;		/* IPP response */
   ipp_attribute_t *attr;		/* Attribute in response */
-  ipp_pstate_t	printer_state = IPP_PRINTER_STOPPED;
+  ipp_pstate_t	printer_state = IPP_PSTATE_STOPPED;
 					/* Current printer-state */
 
 
@@ -2308,7 +2315,7 @@ check_printer_state(
   * Send a Get-Printer-Attributes request and log the results...
   */
 
-  request = ippNewRequest(IPP_GET_PRINTER_ATTRIBUTES);
+  request = ippNewRequest(IPP_OP_GET_PRINTER_ATTRIBUTES);
   ippSetVersion(request, version / 10, version % 10);
 
   ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri",
@@ -2434,14 +2441,14 @@ monitor_printer(
 
   monitor->job_reasons = 0;
 
-  while (monitor->job_state < IPP_JOB_CANCELED && !job_canceled)
+  while (monitor->job_state < IPP_JSTATE_CANCELED && !job_canceled)
   {
    /*
     * Reconnect to the printer as needed...
     */
 
     if (httpGetFd(http) < 0)
-      httpReconnect(http);
+      httpReconnect2(http, 30000, NULL);
 
     if (httpGetFd(http) >= 0)
     {
@@ -2453,7 +2460,7 @@ monitor_printer(
                                                    monitor->resource,
 						   monitor->user,
 						   monitor->version);
-      if (cupsLastError() <= IPP_OK_CONFLICT)
+      if (cupsLastError() <= IPP_STATUS_OK_CONFLICTING)
         password_tries = 0;
 
       if (monitor->job_id == 0 && monitor->create_job)
@@ -2470,13 +2477,13 @@ monitor_printer(
       */
 
       job_op  = (monitor->job_id > 0 && monitor->get_job_attrs) ?
-                    IPP_GET_JOB_ATTRIBUTES : IPP_GET_JOBS;
+                    IPP_OP_GET_JOB_ATTRIBUTES : IPP_OP_GET_JOBS;
       request = ippNewRequest(job_op);
       ippSetVersion(request, monitor->version / 10, monitor->version % 10);
 
       ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri",
 		   NULL, monitor->uri);
-      if (job_op == IPP_GET_JOB_ATTRIBUTES)
+      if (job_op == IPP_OP_GET_JOB_ATTRIBUTES)
 	ippAddInteger(request, IPP_TAG_OPERATION, IPP_TAG_INTEGER, "job-id",
 		      monitor->job_id);
 
@@ -2497,16 +2504,16 @@ monitor_printer(
       fprintf(stderr, "DEBUG: (monitor) %s: %s (%s)\n", ippOpString(job_op),
 	      ippErrorString(cupsLastError()), cupsLastErrorString());
 
-      if (cupsLastError() <= IPP_OK_CONFLICT)
+      if (cupsLastError() <= IPP_STATUS_OK_CONFLICTING)
         password_tries = 0;
 
-      if (job_op == IPP_GET_JOB_ATTRIBUTES)
+      if (job_op == IPP_OP_GET_JOB_ATTRIBUTES)
       {
 	if ((attr = ippFindAttribute(response, "job-state",
 				     IPP_TAG_ENUM)) != NULL)
 	  monitor->job_state = (ipp_jstate_t)attr->values[0].integer;
 	else
-	  monitor->job_state = IPP_JOB_COMPLETED;
+	  monitor->job_state = IPP_JSTATE_COMPLETED;
       }
       else if (response)
       {
@@ -2514,7 +2521,7 @@ monitor_printer(
         {
           job_id    = 0;
           job_name  = NULL;
-          job_state = IPP_JOB_PENDING;
+          job_state = IPP_JSTATE_PENDING;
           job_user  = NULL;
 
           while (attr && attr->group_tag != IPP_TAG_JOB)
@@ -2560,8 +2567,8 @@ monitor_printer(
               ippEnumString("job-state", monitor->job_state));
 
       if (!job_canceled &&
-          (monitor->job_state == IPP_JOB_CANCELED ||
-	   monitor->job_state == IPP_JOB_ABORTED))
+          (monitor->job_state == IPP_JSTATE_CANCELED ||
+	   monitor->job_state == IPP_JSTATE_ABORTED))
       {
 	job_canceled = -1;
 	fprintf(stderr, "DEBUG: (monitor) job_canceled = -1\n");
@@ -2642,8 +2649,8 @@ monitor_printer(
               ippEnumString("job-state", monitor->job_state));
 
       if (!job_canceled &&
-          (monitor->job_state == IPP_JOB_CANCELED ||
-	   monitor->job_state == IPP_JOB_ABORTED))
+          (monitor->job_state == IPP_JSTATE_CANCELED ||
+	   monitor->job_state == IPP_JSTATE_ABORTED))
 	job_canceled = -1;
     }
 
@@ -2665,14 +2672,14 @@ monitor_printer(
   if (job_canceled > 0 && monitor->job_id > 0)
   {
     if (httpGetFd(http) < 0)
-      httpReconnect(http);
+      httpReconnect2(http, 30000, NULL);
 
     if (httpGetFd(http) >= 0)
     {
       cancel_job(http, monitor->uri, monitor->job_id, monitor->resource,
                  monitor->user, monitor->version);
 
-      if (cupsLastError() > IPP_OK_CONFLICT)
+      if (cupsLastError() > IPP_STATUS_OK_CONFLICTING)
       {
 	fprintf(stderr, "DEBUG: (monitor) cancel_job() = %s\n", cupsLastErrorString());
 	_cupsLangPrintFilter(stderr, "ERROR", _("Unable to cancel print job."));
@@ -2748,7 +2755,7 @@ new_request(
     fprintf(stderr, "DEBUG: job-name=\"%s\"\n", title);
   }
 
-  if (format && op != IPP_CREATE_JOB)
+  if (format && op != IPP_OP_CREATE_JOB)
   {
     ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_MIMETYPE, "document-format", NULL, format);
     fprintf(stderr, "DEBUG: document-format=\"%s\"\n", format);
@@ -3588,6 +3595,8 @@ update_reasons(ipp_attribute_t *attr,	/* I - printer-state-reasons or NULL */
       }
     }
   }
+
+  cupsArrayDelete(new_reasons);
 
   _cupsMutexUnlock(&report_mutex);
 

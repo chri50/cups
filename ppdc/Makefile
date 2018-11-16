@@ -1,7 +1,7 @@
 #
 # Makefile for the CUPS PPD Compiler.
 #
-# Copyright 2007-2017 by Apple Inc.
+# Copyright 2007-2018 by Apple Inc.
 # Copyright 2002-2006 by Easy Software Products.
 #
 # These coded instructions, statements, and computer programs are the
@@ -52,7 +52,6 @@ OBJS =		\
 		ppdpo.o \
 		testcatalog.o
 LIBTARGETS =	\
-		$(LIBCUPSPPDC) \
 		libcupsppdc.a
 UNITTARGETS =	\
 		ppdc-static \
@@ -102,7 +101,6 @@ clean:
 	$(RM) $(TARGETS) $(UNITTARGETS) genstrings
 	$(RM) -r ppd ppd2
 	$(RM) sample-import.drv sample.c test.drv
-	$(RM) libcupsppdc.so libcupsppdc.dylib
 
 
 #
@@ -153,40 +151,13 @@ install-exec:
 #
 
 install-headers:
-	if test "x$(privateinclude)" != x; then \
-		echo Installing private header files into $(PRIVATEINCLUDE)...; \
-		$(INSTALL_DIR) -m 755 $(PRIVATEINCLUDE); \
-		$(INSTALL_DATA) ppdc.h $(PRIVATEINCLUDE); \
-	fi
 
 
 #
 # Install libraries...
 #
 
-install-libs: $(INSTALLSTATIC)
-	echo Installing libraries in $(LIBDIR)...
-	$(INSTALL_DIR) -m 755 $(LIBDIR)
-	$(INSTALL_LIB) $(LIBCUPSPPDC) $(LIBDIR)
-	if test $(LIBCUPSPPDC) = "libcupsppdc.so.1"; then \
-		$(RM) $(LIBDIR)/`basename $(LIBCUPSPPDC) .1`; \
-		$(LN) $(LIBCUPSPPDC) $(LIBDIR)/`basename $(LIBCUPSPPDC) .1`; \
-	fi
-	if test $(LIBCUPSPPDC) = "libcupsppdc.1.dylib"; then \
-		$(RM) $(LIBDIR)/libcupsppdc.dylib; \
-		$(LN) $(LIBCUPSPPDC) $(LIBDIR)/libcupsppdc.dylib; \
-	fi
-	if test "x$(SYMROOT)" != "x"; then \
-		$(INSTALL_DIR) $(SYMROOT); \
-		cp $(LIBCUPSPPDC) $(SYMROOT); \
-		dsymutil $(SYMROOT)/$(LIBCUPSPPDC); \
-	fi
-
-installstatic:
-	$(INSTALL_DIR) -m 755 $(LIBDIR)
-	$(INSTALL_LIB) -m 755 libcupsppdc.a $(LIBDIR)
-	$(RANLIB) $(LIBDIR)/libcupsppdc.a
-	$(CHMOD) 555 $(LIBDIR)/libcupsppdc.a
+install-libs:
 
 
 #
@@ -199,16 +170,6 @@ uninstall:
 	done
 	$(RM) $(DATADIR)/drv/sample.drv
 	$(RMDIR) $(DATADIR)/drv
-	$(RM) $(LIBDIR)/libcupsppdc.1.dylib
-	$(RM) $(LIBDIR)/libcupsppdc.a
-	$(RM) $(LIBDIR)/libcupsppdc.dylib
-	$(RM) $(LIBDIR)/libcupsppdc.so
-	$(RM) $(LIBDIR)/libcupsppdc.so.1
-	-$(RMDIR) $(LIBDIR)
-	-if test "x$(privateinclude)" != x; then \
-		$(RM) $(PRIVATEINCLUDE)/ppdc.h; \
-		$(RMDIR) $(PRIVATEINCLUDE); \
-	fi
 
 
 #
@@ -236,9 +197,10 @@ genstrings:		genstrings.o libcupsppdc.a ../cups/$(LIBCUPSSTATIC) \
 # ppdc, the PPD compiler.
 #
 
-ppdc:			ppdc.o $(LIBCUPSPPDC) ../cups/$(LIBCUPS)
+ppdc:			ppdc.o libcupsppdc.a ../cups/$(LIBCUPS)
 	echo Linking $@...
-	$(LD_CXX) $(LDFLAGS) -o $@ ppdc.o -L. -lcupsppdc $(LIBS)
+	$(LD_CXX) $(LDFLAGS) -o $@ ppdc.o libcupsppdc.a $(LIBS)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
 ppdc-static:		ppdc.o libcupsppdc.a ../cups/$(LIBCUPSSTATIC) foo.drv foo-fr.po
@@ -246,6 +208,7 @@ ppdc-static:		ppdc.o libcupsppdc.a ../cups/$(LIBCUPSSTATIC) foo.drv foo-fr.po
 	$(LD_CXX) $(ARCHFLAGS) $(LDFLAGS) -o ppdc-static ppdc.o libcupsppdc.a \
 		../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
 		$(COMMONLIBS) $(LIBZ)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 	echo Testing PPD compiler...
 	./ppdc-static -l en,fr -I ../data foo.drv
 	./ppdc-static -l en,fr -z -I ../data foo.drv
@@ -255,18 +218,20 @@ ppdc-static:		ppdc.o libcupsppdc.a ../cups/$(LIBCUPSSTATIC) foo.drv foo-fr.po
 # ppdhtml, the PPD to HTML utility.
 #
 
-ppdhtml:			ppdhtml.o $(LIBCUPSPPDC) ../cups/$(LIBCUPS)
+ppdhtml:			ppdhtml.o libcupsppdc.a ../cups/$(LIBCUPS)
 	echo Linking $@...
-	$(LD_CXX) $(LDFLAGS) -o $@ ppdhtml.o -L. -lcupsppdc $(LIBS)
+	$(LD_CXX) $(LDFLAGS) -o $@ ppdhtml.o libcupsppdc.a $(LIBS)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
 #
 # ppdi, import PPD files.
 #
 
-ppdi:			ppdi.o $(LIBCUPSPPDC) ../cups/$(LIBCUPS)
+ppdi:			ppdi.o libcupsppdc.a ../cups/$(LIBCUPS)
 	echo Linking $@...
-	$(LD_CXX) $(LDFLAGS) -o $@ ppdi.o -L. -lcupsppdc $(LIBS)
+	$(LD_CXX) $(LDFLAGS) -o $@ ppdi.o libcupsppdc.a $(LIBS)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
 ppdi-static:		ppdc-static ppdi.o libcupsppdc.a  ../cups/$(LIBCUPSSTATIC)
@@ -274,6 +239,7 @@ ppdi-static:		ppdc-static ppdi.o libcupsppdc.a  ../cups/$(LIBCUPSSTATIC)
 	$(LD_CXX) $(ARCHFLAGS) $(LDFLAGS) -o ppdi-static ppdi.o libcupsppdc.a \
 		../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
 		$(COMMONLIBS) $(LIBZ)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 	echo Testing PPD importer...
 	$(RM) -r ppd ppd2 sample-import.drv
 	./ppdc-static -l en -I ../data sample.drv
@@ -294,15 +260,17 @@ ppdi-static:		ppdc-static ppdi.o libcupsppdc.a  ../cups/$(LIBCUPSSTATIC)
 ppdmerge:			ppdmerge.o ../cups/$(LIBCUPS)
 	echo Linking $@...
 	$(LD_CXX) $(LDFLAGS) -o $@ ppdmerge.o $(LIBS)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
 #
 # ppdpo, create message catalog files.
 #
 
-ppdpo:			ppdpo.o $(LIBCUPSPPDC) ../cups/$(LIBCUPS)
+ppdpo:			ppdpo.o libcupsppdc.a ../cups/$(LIBCUPS)
 	echo Linking $@...
-	$(LD_CXX) $(LDFLAGS) -o $@ ppdpo.o -L. -lcupsppdc $(LIBS)
+	$(LD_CXX) $(LDFLAGS) -o $@ ppdpo.o libcupsppdc.a $(LIBS)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
 #
@@ -314,45 +282,7 @@ testcatalog:		testcatalog.o libcupsppdc.a ../cups/$(LIBCUPSSTATIC)
 	$(LD_CXX) $(LDFLAGS) -o $@ testcatalog.o libcupsppdc.a \
 		../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
 		$(COMMONLIBS) $(LIBZ)
-
-
-#
-# libcupsppdc.so.1
-#
-
-libcupsppdc.so.1:	$(LIBOBJS) ../cups/$(LIBCUPS)
-	echo Linking $@...
-	$(DSOXX) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(LIBOBJS) $(LINKCUPS)
-	$(RM) `basename $@ .1`
-	$(LN) $@ `basename $@ .1`
-
-
-#
-# libcupsppdc.1.dylib
-#
-
-libcupsppdc.1.dylib:	$(LIBOBJS) ../cups/$(LIBCUPS)
-	echo Creating export list for $@...
-	nm -gm $(LIBOBJS) | grep "__text" | grep -v weak | awk '{print $$NF}' | sort >t.exp
-	echo Linking $@...
-	$(DSOXX) $(ARCHFLAGS) $(DSOFLAGS) -o $@ \
-		-install_name $(libdir)/$@ \
-		-current_version 1.0.0 \
-		-compatibility_version 1.0.0 \
-		-exported_symbols_list t.exp \
-		$(LIBOBJS) $(LINKCUPS) $(COMMONLIBS)
-	$(RM) libcupsppdc.dylib t.exp
-	$(LN) $@ libcupsppdc.dylib
-
-
-#
-# libcupsppdc.la
-#
-
-libcupsppdc.la:    $(LIBOBJS) ../cups/$(LIBCUPS)
-	echo Linking $@...
-	$(LD_CC) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(LIBOBJS:.o=.lo) -rpath $(LIBDIR) \
-		-version-info 1:0 $(LINKCUPS)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
 #

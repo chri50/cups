@@ -1,4 +1,4 @@
-From c9a2daec588d1b83d007491b718a3043288bda27 Mon Sep 17 00:00:00 2001
+From f584af3e5a1cd1e33dedbd09f329404ac2dd9330 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:22 +0200
 Subject: Force LC_ALL=C environment variable when grepping the output of
@@ -13,31 +13,31 @@ Patch-Name: tests-make-lpstat-call-reproducible.patch
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index 35eabc879..050ab7ee9 100755
+index dae0d50dd..36d8d2435 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -728,7 +728,7 @@ fi
- IPP_PORT=$port; export IPP_PORT
+@@ -695,7 +695,7 @@ else
+ fi
  
  while true; do
--	running=`../systemv/lpstat -r 2>/dev/null`
-+	running=`LC_ALL=C ../systemv/lpstat -r 2>/dev/null`
+-	running=`$runcups ../systemv/lpstat -r 2>/dev/null`
++	running=`LC_ALL=C $runcups ../systemv/lpstat -r 2>/dev/null`
  	if test "x$running" = "xscheduler is running"; then
  		break
  	fi
-@@ -841,13 +841,13 @@ kill -HUP $cupsd
+@@ -809,13 +809,13 @@ kill -HUP $cupsd
  while true; do
  	sleep 10
  
--	running=`../systemv/lpstat -r 2>/dev/null`
-+	running=`LC_ALL=C ../systemv/lpstat -r 2>/dev/null`
+-	running=`$runcups ../systemv/lpstat -r 2>/dev/null`
++	running=`LC_ALL=C $runcups ../systemv/lpstat -r 2>/dev/null`
  	if test "x$running" = "xscheduler is running"; then
  		break
  	fi
  done
  
--description="`../systemv/lpstat -l -p Test1 | grep Description | sed -e '1,$s/^[^:]*: //g'`"
-+description="`LC_ALL=C ../systemv/lpstat -l -p Test1 | grep Description | sed -e '1,$s/^[^:]*: //g'`"
+-description="`$runcups ../systemv/lpstat -l -p Test1 | grep Description | sed -e '1,$s/^[^:]*: //g'`"
++description="`LC_ALL=C $runcups ../systemv/lpstat -l -p Test1 | grep Description | sed -e '1,$s/^[^:]*: //g'`"
  if test "x$description" != "xTest Printer 1"; then
  	echo "Failed, printer-info for Test1 is '$description', expected 'Test Printer 1'." >>$strfile
  	echo "FAIL (got '$description', expected 'Test Printer 1')"
