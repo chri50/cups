@@ -17,31 +17,31 @@
 lpadmin \- configure cups printers and classes
 .SH SYNOPSIS
 .B lpadmin
-[ -E ] [-U
+[ \-E ] [\-U
 .I username
-] [ -h
+] [ \-h
 .I server[:port]
-] -d
+] \-d
 .I destination
 .br
 .B lpadmin
-[ -E ] [-U
+[ \-E ] [\-U
 .I username
-] [ -h
+] [ \-h
 .I server[:port]
-] -p
+] \-p
 .I destination
-[ -R
+[ \-R
 .I name-default
 ]
 .I option(s)
 .br
 .B lpadmin
-[ -E ] [-U
+[ \-E ] [\-U
 .I username
-] [ -h
+] [ \-h
 .I server[:port]
-] -x
+] \-x
 .I destination
 .SH DESCRIPTION
 \fIlpadmin\fR configures printer and class queues provided by
@@ -69,75 +69,75 @@ will be aborted.
 The following options are recognized when configuring a printer
 queue:
 .TP 5
--c class
+\-c class
 .br
 Adds the named \fIprinter\fR to \fIclass\fR.  If \fIclass\fR does
 not exist it is created automatically.
 .TP 5
--i interface
+\-i interface
 .br
 Sets a System V style interface script for the printer. This
 option cannot be specified with the \fI-P\fR option (PPD file)
 and is intended for providing support for legacy printer drivers.
 .TP 5
--m model
+\-m model
 .br
 Sets a standard System V interface script or PPD file for the printer from the
 \fImodel\fR directory or using one of the driver interfaces. Use the \fI-m\fR
 option with the \fIlpinfo(8)\fR command to get a list of supported models.
 .TP 5
--o cupsIPPSupplies=true
+\-o cupsIPPSupplies=true
 .TP 5
--o cupsIPPSupplies=false
+\-o cupsIPPSupplies=false
 .br
 Specifies whether IPP supply level values should be reported.
 .TP 5
--o cupsSNMPSupplies=true
+\-o cupsSNMPSupplies=true
 .TP 5
--o cupsSNMPSupplies=false
+\-o cupsSNMPSupplies=false
 .br
 Specifies whether SNMP supply level (RFC 3805) values should be reported.
 .TP 5
--o job-k-limit=value
+\-o job-k-limit=value
 .br
 Sets the kilobyte limit for per-user quotas. The value is an
 integer number of kilobytes; one kilobyte is 1024 bytes.
 .TP 5
--o job-page-limit=value
+\-o job-page-limit=value
 .br
 Sets the page limit for per-user quotas. The value is the integer
 number of pages that can be printed; double-sided pages are
 counted as two pages.
 .TP 5
--o job-quota-period=value
+\-o job-quota-period=value
 .br
 Sets the accounting period for per-user quotas. The value is an
 integer number of seconds; 86,400 seconds are in one day.
 .TP 5
--o job-sheets-default=banner
+\-o job-sheets-default=banner
 .TP 5
--o job-sheets-default=banner,banner
+\-o job-sheets-default=banner,banner
 .br
 Sets the default banner page(s) to use for print jobs.
 .TP 5
--o name=value
+\-o name=value
 .br
 Sets a PPD option for the printer. PPD options can be listed using the \fI-l\fR
 option with the \fIlpoptions(1)\fR command.
 .TP 5
--o name-default=value
+\-o name-default=value
 .br
 Sets a default server-side option for the destination. Any print-time
-option can be defaulted, e.g. "-o cpi-default=17" to set the default
+option can be defaulted, e.g. "\-o cpi-default=17" to set the default
 "cpi" option value to 17.
 .TP 5
--o port-monitor=name
+\-o port-monitor=name
 .br
 Sets the binary communications program to use when printing,
 "none", "bcp", or "tbcp". The default program is "none". The
 specified port monitor must be listed in the printer's PPD file.
 .TP 5
--o printer-error-policy=name
+\-o printer-error-policy=name
 .br
 Sets the error policy to be used when the printer backend is
 unable to send the job to the printer. The name must be one of
@@ -145,7 +145,7 @@ unable to send the job to the printer. The name must be one of
 error policy is "stop-printer" for printers and "retry-current-job" for
 classes.
 .TP 5
--o printer-is-shared=true/false
+\-o printer-is-shared=true/false
 .br
 Sets the destination to shared/published or unshared/unpublished.
 Shared/published destinations are publicly announced by the server
@@ -153,53 +153,53 @@ on the LAN based on the browsing configuration in
 \fBcupsd.conf\fR, while unshared/unpublished destinations are not
 announced. The default value is "true".
 .TP 5
--o printer-op-policy=name
+\-o printer-op-policy=name
 .br
 Sets the IPP operation policy associated with the destination. The
 name must be defined in the \fBcupsd.conf\fR in a Policy section.
 The default operation policy is "default".
 .TP 5
--R name-default
+\-R name-default
 .br
 Deletes the named option from \fIprinter\fR.
 .TP 5
--r class
+\-r class
 .br
 Removes the named \fIprinter\fR from \fIclass\fR.  If the
 resulting class becomes empty it is removed.
 .TP 5
--u allow:user,user,@group
+\-u allow:user,user,@group
 .TP 5
--u deny:user,user,@group
+\-u deny:user,user,@group
 .TP 5
--u allow:all
+\-u allow:all
 .TP 5
--u deny:none
+\-u deny:none
 .br
 Sets user-level access control on a destination. Names starting with
 "@" are interpreted as UNIX groups. The latter two forms turn
 user-level access control off.
 .TP 5
--v "device-uri"
+\-v "device-uri"
 .br
 Sets the \fIdevice-uri\fR attribute of the printer queue. Use the \fI-v\fR
 option with the \fIlpinfo(8)\fR command to get a list of supported device URIs
 and schemes.
 .TP 5
--D "info"
+\-D "info"
 .br
 Provides a textual description of the destination.
 .TP 5
--E
+\-E
 .br
 Enables the destination and accepts jobs; this is the same as running the
 \fIcupsaccept(8)\fR and \fIcupsenable(8)\fR programs on the destination.
 .TP 5
--L "location"
+\-L "location"
 .br
 Provides a textual location of the destination.
 .TP 5
--P ppd-file
+\-P ppd-file
 .br
 Specifies a PostScript Printer Description file to use with the
 printer. If specified, this option overrides the \fI-i\fR option
