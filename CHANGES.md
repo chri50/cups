@@ -1,5 +1,45 @@
-CHANGES - 2.2.8 - 2018-06-05
+CHANGES - 2.2.9 - 2018-11-09
 ============================
+
+
+Changes in CUPS v2.2.9
+----------------------
+
+- Localization changes (Issue #5348, Issue #5362, Issue #5408)
+- Documentation updates (Issue #5369)
+- The lpadmin command would create a non-working printer in some error cases
+  (Issue #5305)
+- The scheduler would crash if an empty `AccessLog` directive was specified
+  (Issue #5309)
+- Fixed a regression in the changes to ippValidateAttribute (Issue #5322,
+  Issue #5330)
+- Fixed a crash bug in the Epson dot matrix driver (Issue #5323)
+- Automatic debug logging of job errors did not work with systemd (Issue #5337)
+- The web interface did not list the IPP Everywhere "driver" (Issue #5338)
+- The IPP Everywhere "driver" now properly supports face-up printers
+  (Issue #5345)
+- Fixed some typos in the label printer drivers (Issue #5350)
+- Multi-file jobs could get stuck if the backend failed (Issue #5359,
+  Issue #5413)
+- The IPP Everywhere "driver" no longer does local filtering when printing to
+  a shared CUPS printer (Issue #5361)
+- The lpadmin command now correctly reports IPP errors when configuring an
+  IPP Everywhere printer (Issue #5370)
+- Fixed some memory leaks discovered by Coverity (Issue #5375)
+- The PPD compiler incorrectly terminated JCL options (Issue #5379)
+- The cupstestppd utility did not generate errors for missing/mismatched
+  CloseUI/JCLCloseUI keywords (Issue #5381)
+- The scheduler now reports the actual location of the log file (Issue #5398)
+- Added a USB quirk rule (Issue #5420)
+- The scheduler was being backgrounded on macOS, causing applications to spin
+  (rdar://40436080)
+- The scheduler did not validate that required initial request attributes were
+  in the operation group (rdar://41098178)
+- Authentication in the web interface did not work on macOS (rdar://41444473)
+- Fixed an issue with HTTP Digest authentication (rdar://41709086)
+- The scheduler could crash when job history was purged (rdar://42198057)
+- Dropped non-working RSS subscriptions UI from web interface templates.
+- Fixed a memory leak for some IPP (extension) syntaxes.
 
 
 Changes in CUPS v2.2.8

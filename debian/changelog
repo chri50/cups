@@ -1,3 +1,11 @@
+cups (2.2.9-1) unstable; urgency=medium
+
+  * New 2.2.9 upstream release
+    - Remove libcups{cgi1,mime1,ppdc1} packages as they are not built
+      anymore upstream
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 16 Nov 2018 21:35:17 +0100
+
 cups (2.2.8-5) unstable; urgency=high
 
   * CVE-2018-6553: Fix AppArmor cupsd sandbox bypass due to use of hard links

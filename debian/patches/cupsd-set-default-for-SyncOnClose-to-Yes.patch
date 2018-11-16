@@ -1,4 +1,4 @@
-From 9059ef12c34a6e243ddae116f3cd14236ae73d84 Mon Sep 17 00:00:00 2001
+From 68633ee87ec052189ea2a0861edd30482c56f051 Mon Sep 17 00:00:00 2001
 From: Tim Waugh <twaugh@redhat.com>
 Date: Tue, 9 Aug 2016 18:11:46 +0200
 Subject: Set the default for SyncOnClose to Yes
@@ -27,10 +27,10 @@ index 4a78ba615..a3d088da5 100644
  # Default user and group for filters/backends/helper programs; this cannot be
  # any user or group that resolves to ID 0 for security reasons...
 diff --git a/doc/help/man-cups-files.conf.html b/doc/help/man-cups-files.conf.html
-index 6dd442ef4..90816b8f3 100644
+index 6144a165c..b82117c77 100644
 --- a/doc/help/man-cups-files.conf.html
 +++ b/doc/help/man-cups-files.conf.html
-@@ -144,7 +144,7 @@ The default is "/var/run/cups" or "/etc/cups" depending on the platform.
+@@ -150,7 +150,7 @@ The default is "/var/run/cups" or "/etc/cups" depending on the platform.
  <dd style="margin-left: 5.0em">Specifies whether the scheduler calls
  <b>fsync</b>(2)
  after writing configuration or state files.
@@ -40,7 +40,7 @@ index 6dd442ef4..90816b8f3 100644
  <dd style="margin-left: 5.0em">Specifies the group(s) to use for <i>@SYSTEM</i> group authentication.
  The default contains "admin", "lpadmin", "root", "sys", and/or "system".
 diff --git a/man/cups-files.conf.man.in b/man/cups-files.conf.man.in
-index 6ac4e72d3..ce4bc8c45 100644
+index f5e6a9f39..c3d8eeb2b 100644
 --- a/man/cups-files.conf.man.in
 +++ b/man/cups-files.conf.man.in
 @@ -214,7 +214,7 @@ The default is "/var/run/cups" or "/etc/cups" depending on the platform.

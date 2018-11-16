@@ -118,9 +118,7 @@ static void	save_auth_info(cupsd_client_t *con, cupsd_job_t *job,
 static void	send_document(cupsd_client_t *con, ipp_attribute_t *uri);
 static void	send_http_error(cupsd_client_t *con, http_status_t status,
 		                cupsd_printer_t *printer);
-static void	send_ipp_status(cupsd_client_t *con, ipp_status_t status,
-		                const char *message, ...)
-		__attribute__((__format__(__printf__, 3, 4)));
+static void	send_ipp_status(cupsd_client_t *con, ipp_status_t status, const char *message, ...) _CUPS_FORMAT(3, 4);
 static void	set_default(cupsd_client_t *con, ipp_attribute_t *uri);
 static void	set_job_attrs(cupsd_client_t *con, ipp_attribute_t *uri);
 static void	set_printer_attrs(cupsd_client_t *con, ipp_attribute_t *uri);
@@ -253,7 +251,7 @@ cupsdProcessIPPRequest(
       */
 
       attr = con->request->attrs;
-      if (attr && attr->name && !strcmp(attr->name, "attributes-charset") && (attr->value_tag & IPP_TAG_MASK) == IPP_TAG_CHARSET)
+      if (attr && attr->name && !strcmp(attr->name, "attributes-charset") && (attr->value_tag & IPP_TAG_MASK) == IPP_TAG_CHARSET && attr->group_tag == IPP_TAG_OPERATION)
 	charset = attr;
       else
 	charset = NULL;
@@ -261,7 +259,7 @@ cupsdProcessIPPRequest(
       if (attr)
         attr = attr->next;
 
-      if (attr && attr->name && !strcmp(attr->name, "attributes-natural-language") && (attr->value_tag & IPP_TAG_MASK) == IPP_TAG_LANGUAGE)
+      if (attr && attr->name && !strcmp(attr->name, "attributes-natural-language") && (attr->value_tag & IPP_TAG_MASK) == IPP_TAG_LANGUAGE && attr->group_tag == IPP_TAG_OPERATION)
       {
 	language = attr;
 
@@ -279,12 +277,12 @@ cupsdProcessIPPRequest(
       else
 	language = NULL;
 
-      if ((attr = ippFindAttribute(con->request, "printer-uri", IPP_TAG_URI)) != NULL)
+      if ((attr = ippFindAttribute(con->request, "printer-uri", IPP_TAG_URI)) != NULL && attr->group_tag == IPP_TAG_OPERATION)
 	uri = attr;
-      else if ((attr = ippFindAttribute(con->request, "job-uri", IPP_TAG_URI)) != NULL)
+      else if ((attr = ippFindAttribute(con->request, "job-uri", IPP_TAG_URI)) != NULL && attr->group_tag == IPP_TAG_OPERATION)
 	uri = attr;
-      else if (con->request->request.op.operation_id == CUPS_GET_PPD)
-        uri = ippFindAttribute(con->request, "ppd-name", IPP_TAG_NAME);
+      else if (con->request->request.op.operation_id == CUPS_GET_PPD && (attr = ippFindAttribute(con->request, "ppd-name", IPP_TAG_NAME)) != NULL && attr->group_tag == IPP_TAG_OPERATION)
+        uri = attr;
       else
 	uri = NULL;
 
@@ -4809,10 +4807,10 @@ copy_job_attrs(cupsd_client_t *con,	/* I - Client connection */
       ippAddInteger(con->response, IPP_TAG_JOB, IPP_TAG_INTEGER, "job-k-octets", job->koctets);
 
     if (job->name && (!ra || cupsArrayFind(ra, "job-name")))
-      ippAddString(con->response, IPP_TAG_JOB, IPP_CONST_TAG(IPP_TAG_NAME), "job-name", NULL, job->name);
+      ippAddString(con->response, IPP_TAG_JOB, IPP_TAG_NAME, "job-name", NULL, job->name);
 
     if (job->username && (!ra || cupsArrayFind(ra, "job-originating-user-name")))
-      ippAddString(con->response, IPP_TAG_JOB, IPP_CONST_TAG(IPP_TAG_NAME), "job-originating-user-name", NULL, job->username);
+      ippAddString(con->response, IPP_TAG_JOB, IPP_TAG_NAME, "job-originating-user-name", NULL, job->username);
 
     if (!ra || cupsArrayFind(ra, "job-state"))
       ippAddInteger(con->response, IPP_TAG_JOB, IPP_TAG_ENUM, "job-state", (int)job->state_value);
@@ -4957,12 +4955,9 @@ copy_printer_attrs(
 		  };
 
     if (printer->type & CUPS_PRINTER_CLASS)
-      ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_NAME | IPP_TAG_COPY,
-                   "printer-error-policy-supported", NULL, "retry-current-job");
+      ippAddString(con->response, IPP_TAG_PRINTER, IPP_CONST_TAG(IPP_TAG_NAME), "printer-error-policy-supported", NULL, "retry-current-job");
     else
-      ippAddStrings(con->response, IPP_TAG_PRINTER, IPP_TAG_NAME | IPP_TAG_COPY,
-		    "printer-error-policy-supported",
-		    sizeof(errors) / sizeof(errors[0]), NULL, errors);
+      ippAddStrings(con->response, IPP_TAG_PRINTER, IPP_CONST_TAG(IPP_TAG_NAME), "printer-error-policy-supported", sizeof(errors) / sizeof(errors[0]), NULL, errors);
   }
 
   if (!ra || cupsArrayFind(ra, "printer-icons"))
@@ -5107,9 +5102,7 @@ copy_subscription_attrs(
 	* Simple event list...
 	*/
 
-	ippAddString(con->response, IPP_TAG_SUBSCRIPTION,
-		     (ipp_tag_t)(IPP_TAG_KEYWORD | IPP_TAG_COPY),
-		     "notify-events", NULL, name);
+	ippAddString(con->response, IPP_TAG_SUBSCRIPTION, IPP_CONST_TAG(IPP_TAG_KEYWORD), "notify-events", NULL, name);
       }
       else
       {
@@ -5121,15 +5114,12 @@ copy_subscription_attrs(
 	  if (sub->mask & mask)
 	    count ++;
 
-	attr = ippAddStrings(con->response, IPP_TAG_SUBSCRIPTION,
-			     (ipp_tag_t)(IPP_TAG_KEYWORD | IPP_TAG_COPY),
-			     "notify-events", count, NULL, NULL);
+	attr = ippAddStrings(con->response, IPP_TAG_SUBSCRIPTION, IPP_CONST_TAG(IPP_TAG_KEYWORD), "notify-events", count, NULL, NULL);
 
 	for (mask = 1, count = 0; mask < CUPSD_EVENT_ALL; mask <<= 1)
 	  if (sub->mask & mask)
 	  {
-	    attr->values[count].string.text =
-		(char *)cupsdEventName((cupsd_eventmask_t)mask);
+	    attr->values[count].string.text = (char *)cupsdEventName((cupsd_eventmask_t)mask);
 
 	    count ++;
 	  }
@@ -5881,7 +5871,7 @@ create_subscriptions(
       {
         char	temp[64];		/* Temporary string */
 
-	memcpy(temp, user_data->values[0].unknown.data, user_data->values[0].unknown.length);
+	memcpy(temp, user_data->values[0].unknown.data, (size_t)user_data->values[0].unknown.length);
 	temp[user_data->values[0].unknown.length] = '\0';
 
 	if (httpSeparateURI(HTTP_URI_CODING_ALL, temp, scheme, sizeof(scheme), userpass, sizeof(userpass), host, sizeof(host), &port, resource, sizeof(resource)) < HTTP_URI_OK)

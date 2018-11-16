@@ -1,4 +1,4 @@
-From 886abcbfe720ea64e968dbe970bbcf6405fa1df0 Mon Sep 17 00:00:00 2001
+From bd9c25e0d4bc1a78ddfba99485ac68a681ebd247 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:18 +0200
 Subject: Tests: Force LC_* environment variables when testing (non)
@@ -13,7 +13,7 @@ Patch-Name: tests-fix-ppdLocalize-on-unclean-env.patch
  1 file changed, 8 insertions(+)
 
 diff --git a/cups/testppd.c b/cups/testppd.c
-index c7187c212..b3d35fd30 100644
+index a127a7947..e6cdea5ed 100644
 --- a/cups/testppd.c
 +++ b/cups/testppd.c
 @@ -503,6 +503,14 @@ main(int  argc,				/* I - Number of command-line arguments */

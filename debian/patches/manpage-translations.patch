@@ -1,4 +1,4 @@
-From d8ce1e7f130c773f37fd63f33cf85a8847d90177 Mon Sep 17 00:00:00 2001
+From eb30fc494fc279375c45da1acf2a8eefb017e1dd Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:50 +0200
 Subject: po4a infrastructure and translations for manpages.

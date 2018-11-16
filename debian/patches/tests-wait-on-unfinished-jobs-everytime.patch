@@ -1,4 +1,4 @@
-From 47e72d41d8396b0233f073a434a0df0220276016 Mon Sep 17 00:00:00 2001
+From d50a1151192572721d95447514daab37d1f8173d Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:17 +0200
 Subject: Tests: Make sure that all scheduled jobs are finished before
@@ -14,10 +14,10 @@ Patch-Name: tests-wait-on-unfinished-jobs-everytime.patch
  1 file changed, 5 insertions(+)
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index d462fa972..e98fed762 100755
+index 70e21bdfe..eb972cb8e 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -800,6 +800,11 @@ echo "    $date by $user on `hostname`." >>$strfile
+@@ -768,6 +768,11 @@ echo "    $date by $user on `hostname`." >>$strfile
  echo "    <pre>" >>$strfile
  
  for file in 5*.sh; do
@@ -28,4 +28,4 @@ index d462fa972..e98fed762 100755
 +
  	echo $ac_n "Performing $file: $ac_c"
  	echo "" >>$strfile
- 	echo "\"$file\":" >>$strfile
+         echo "`date '+[%d/%b/%Y:%H:%M:%S %z]'` \"$file\":" >>$strfile

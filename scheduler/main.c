@@ -1,7 +1,7 @@
 /*
  * Main loop for the CUPS scheduler.
  *
- * Copyright 2007-2017 by Apple Inc.
+ * Copyright 2007-2018 by Apple Inc.
  * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  * These coded instructions, statements, and computer programs are the
@@ -18,6 +18,9 @@
 #define _MAIN_C_
 #include "cupsd.h"
 #include <sys/resource.h>
+#ifdef __APPLE__
+#  include <xpc/xpc.h>
+#endif /* __APPLE__ */
 #ifdef HAVE_ASL_H
 #  include <asl.h>
 #elif defined(HAVE_SYSTEMD_SD_JOURNAL_H)
@@ -69,7 +72,7 @@ static void		sigterm_handler(int sig);
 static long		select_timeout(int fds);
 static void		service_checkin(void);
 static void		service_checkout(int shutdown);
-static void		usage(int status) __attribute__((noreturn));
+static void		usage(int status) _CUPS_NORETURN;
 
 
 /*
@@ -150,16 +153,6 @@ main(int  argc,				/* I - Number of command-line args */
   */
 
   fg = 0;
-
-#ifdef HAVE_LAUNCHD
-  if (getenv("CUPSD_LAUNCHD"))
-  {
-    OnDemand   = 1;
-    fg         = 1;
-    close_all  = 0;
-    disconnect = 0;
-  }
-#endif /* HAVE_LAUNCHD */
 
   for (i = 1; i < argc; i ++)
     if (argv[i][0] == '-')
@@ -1470,9 +1463,16 @@ process_children(void)
               (!job->filters[i] && WIFEXITED(old_status)))
           {				/* Backend and filter didn't crash */
 	    if (job->filters[i])
+	    {
 	      job->status = status;	/* Filter failed */
+	    }
 	    else
+	    {
 	      job->status = -status;	/* Backend failed */
+
+	      if (job->current_file < job->num_files)
+	        cupsdSetJobState(job, IPP_JOB_ABORTED, CUPSD_JOB_FORCE, "Canceling multi-file job due to backend failure.");
+	    }
           }
 
 	  if (job->state_value == IPP_JOB_PROCESSING &&
@@ -1946,6 +1946,10 @@ service_checkin(void)
       service_add_listener(ld_sockets[i], (int)i);
 
     free(ld_sockets);
+
+#  ifdef __APPLE__
+    xpc_transaction_begin();
+#  endif /* __APPLE__ */
   }
 
 #elif defined(HAVE_SYSTEMD)
@@ -2084,6 +2088,11 @@ service_checkout(int shutdown)          /* I - Shutting down? */
     else
       cupsdLogMessage(CUPSD_LOG_ERROR, "Unable to create KeepAlive/PID file \"%s\": %s", pidfile, strerror(errno));
   }
+
+#  ifdef __APPLE__
+  if (OnDemand && shutdown)
+    xpc_transaction_end();
+#  endif /* __APPLE__ */
 }
 
 

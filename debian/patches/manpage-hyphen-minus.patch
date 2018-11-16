@@ -1,4 +1,4 @@
-From 94d270ccc01d415427f9b49b7f49a448da0b0335 Mon Sep 17 00:00:00 2001
+From da0b1175fac79a61240ccb9983faeb48dcda2918 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:05 +0200
 Subject: Fix hyphen-used-as-minus-sign manpage errors
@@ -420,7 +420,7 @@ index b4cb55ef8..4207ad218 100644
  .SH SEE ALSO
  .BR cancel (1),
 diff --git a/man/lpadmin.man b/man/lpadmin.man
-index c4f01ecfa..bcb91a1d0 100644
+index 4ef709056..3683e506f 100644
 --- a/man/lpadmin.man
 +++ b/man/lpadmin.man
 @@ -128,7 +128,7 @@ command.
@@ -441,7 +441,7 @@ index c4f01ecfa..bcb91a1d0 100644
  .TP 5
  \fB\-v "\fIdevice-uri\fB"\fR
  Sets the \fIdevice-uri\fR attribute of the printer queue.
-@@ -201,7 +201,7 @@ The CUPS version of \fBlpadmin\fR does not support all of the System V or Solari
+@@ -204,7 +204,7 @@ The double meaning of the \fB\-E\fR option is an unfortunate historical oddity.
  Create an IPP Everywhere print queue:
  .nf
  

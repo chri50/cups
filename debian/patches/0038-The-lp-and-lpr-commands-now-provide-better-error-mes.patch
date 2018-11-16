@@ -1,4 +1,4 @@
-From c8f1653d737433faae13fa070f8b2a2ed30528e0 Mon Sep 17 00:00:00 2001
+From 9f45485d7a16442d2fb632b62066bcfe022d1799 Mon Sep 17 00:00:00 2001
 From: Michael R Sweet <michaelrsweet@gmail.com>
 Date: Wed, 1 Nov 2017 15:45:50 -0400
 Subject: =?UTF-8?q?The=20`lp`=20and=20`lpr`=20commands=20now=20provide=20b?=
@@ -15,7 +15,7 @@ Bug-Debian: #870463
  1 file changed, 37 insertions(+), 1 deletion(-)
 
 diff --git a/cups/dest.c b/cups/dest.c
-index 57a8dc95c..e91917ed2 100644
+index 7ef85a1b9..d92d23d8e 100644
 --- a/cups/dest.c
 +++ b/cups/dest.c
 @@ -1883,6 +1883,9 @@ cupsGetNamedDest(http_t     *http,	/* I - Connection to server or @code CUPS_HTT
