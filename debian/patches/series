@@ -40,3 +40,4 @@ debianize_cups-config.patch
 manpage-translations.patch
 0041-Fix-A4-crash-in-Epson-24-pin-driver.patch
 do-not-locally-filter-printing-to-remote-cups-queue.patch
+CVE-2018-4700.patch

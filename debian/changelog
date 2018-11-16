@@ -1,3 +1,11 @@
+cups (2.2.8-5ubuntu1.1) cosmic-security; urgency=medium
+
+  * SECURITY UPDATE: predictable session cookies
+    - debian/patches/CVE-2018-4700.patch: use better seed in cgi-bin/var.c.
+    - CVE-2018-4700
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 16 Nov 2018 14:03:27 -0500
+
 cups (2.2.8-5ubuntu1) cosmic; urgency=high
 
   * do-not-locally-filter-printing-to-remote-cups-queue.patch: Avoid duplicate
