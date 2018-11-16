@@ -40,3 +40,4 @@ manpage-translations.patch
 revert-deprecate-raw-queues.patch
 fix-another-crash-when-creating-temporary-queue.patch
 CVE-2018-418x.patch
+CVE-2018-4700.patch

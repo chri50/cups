@@ -1,3 +1,11 @@
+cups (2.2.7-1ubuntu2.2) bionic-security; urgency=medium
+
+  * SECURITY UPDATE: predictable session cookies
+    - debian/patches/CVE-2018-4700.patch: use better seed in cgi-bin/var.c.
+    - CVE-2018-4700
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 16 Nov 2018 14:05:42 -0500
+
 cups (2.2.7-1ubuntu2.1) bionic-security; urgency=medium
 
   * SECURITY UPDATE: privilege escalation in dnssd backend
