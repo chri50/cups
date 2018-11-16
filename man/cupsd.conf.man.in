@@ -368,10 +368,6 @@ PageLogFormat format string
 .br
 Specifies the format of page log lines.
 .TP 5
-PassEnv variable [... variable]
-.br
-Passes the specified environment variable(s) to child processes.
-.TP 5
 <Policy name> ... </Policy>
 .br
 Specifies access control for the named policy.
@@ -457,10 +453,6 @@ ServerTokens ProductOnly
 .br
 Specifies what information is included in the Server header of HTTP
 responses.
-.TP 5
-SetEnv variable value
-.br
-Set the specified environment variable to be passed to child processes.
 .TP 5
 SSLListen
 .br
