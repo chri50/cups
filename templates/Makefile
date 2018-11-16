@@ -79,6 +79,7 @@ FILES	=	\
 		printer-stop.tmpl \
 		printers.tmpl \
 		printers-header.tmpl \
+		replace-ppd.tmpl \
 		restart.tmpl \
 		samba-export.tmpl \
 		samba-exported.tmpl \
