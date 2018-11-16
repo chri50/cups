@@ -1,3 +1,11 @@
+cups (1.7.2-0ubuntu1.11) trusty-security; urgency=medium
+
+  * SECURITY UPDATE: predictable session cookies
+    - debian/patches/CVE-2018-4700.patch: use better seed in cgi-bin/var.c.
+    - CVE-2018-4700
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 16 Nov 2018 14:07:12 -0500
+
 cups (1.7.2-0ubuntu1.10) trusty-security; urgency=medium
 
   * SECURITY UPDATE: scheduler crash via DBUS notifications
