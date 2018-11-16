@@ -1,3 +1,11 @@
+cups (2.1.3-4ubuntu0.6) xenial-security; urgency=medium
+
+  * SECURITY UPDATE: predictable session cookies
+    - debian/patches/CVE-2018-4700.patch: use better seed in cgi-bin/var.c.
+    - CVE-2018-4700
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 16 Nov 2018 14:06:39 -0500
+
 cups (2.1.3-4ubuntu0.5) xenial-security; urgency=medium
 
   * SECURITY UPDATE: scheduler crash via DBUS notifications
