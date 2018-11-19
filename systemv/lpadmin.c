@@ -1127,33 +1127,33 @@ enable_printer(http_t *http,		/* I - Server connection */
   DEBUG_printf(("enable_printer(%p, \"%s\")\n", http, printer));
 
  /*
-  * Send IPP_OP_ENABLE_PRINTER and IPP_OP_RESUME_PRINTER requests, which
+  * Build a IPP_OP_CUPS_ADD_MODIFY_PRINTER or IPP_OP_CUPS_ADD_MODIFY_CLASS request, which
   * require the following attributes:
   *
   *    attributes-charset
   *    attributes-natural-language
   *    printer-uri
   *    requesting-user-name
+  *    printer-state
+  *    printer-is-accepting-jobs
   */
 
-  request = ippNewRequest(IPP_OP_ENABLE_PRINTER);
+  if (get_printer_type(http, printer, uri, sizeof(uri)) & CUPS_PRINTER_CLASS)
+    request = ippNewRequest(IPP_OP_CUPS_ADD_MODIFY_CLASS);
+  else
+    request = ippNewRequest(IPP_OP_CUPS_ADD_MODIFY_PRINTER);
 
-  ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri", NULL, uri);
-  ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_NAME, "requesting-user-name", NULL, cupsUser());
+  ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI,
+               "printer-uri", NULL, uri);
+  ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_NAME,
+               "requesting-user-name", NULL, cupsUser());
+  ippAddInteger(request, IPP_TAG_PRINTER, IPP_TAG_ENUM, "printer-state",
+                IPP_PSTATE_IDLE);
+  ippAddBoolean(request, IPP_TAG_PRINTER, "printer-is-accepting-jobs", 1);
 
-  ippDelete(cupsDoRequest(http, request, "/admin/"));
-
-  if (cupsLastError() > IPP_STATUS_OK_CONFLICTING)
-  {
-    _cupsLangPrintf(stderr, _("%s: %s"), "lpadmin", cupsLastErrorString());
-
-    return (1);
-  }
-
-  request = ippNewRequest(IPP_OP_RESUME_PRINTER);
-
-  ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri", NULL, uri);
-  ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_NAME, "requesting-user-name", NULL, cupsUser());
+ /*
+  * Do the request and get back a response...
+  */
 
   ippDelete(cupsDoRequest(http, request, "/admin/"));
 
@@ -1163,8 +1163,8 @@ enable_printer(http_t *http,		/* I - Server connection */
 
     return (1);
   }
-
-  return (0);
+  else
+    return (0);
 }
 
 
