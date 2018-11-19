@@ -37,3 +37,5 @@ debianize_cups-config.patch
 0037-Build-mantohtml-with-the-build-architecture-compiler.patch
 0038-The-lp-and-lpr-commands-now-provide-better-error-mes.patch
 manpage-translations.patch
+0040-Revert-Fix-regression-in-lpadmin-fix-Issue-5305.patch
+0041-Revert-Use-Enable-Printer-and-Resume-Printer-operati.patch
