@@ -38,7 +38,7 @@ static cups_ptype_t	get_printer_type(http_t *http, char *printer, char *uri,
 			                 size_t urisize);
 static int		set_printer_options(http_t *http, char *printer,
 			                    int num_options, cups_option_t *options,
-					    char *file, int enable);
+					    char *file);
 static int		validate_name(const char *name);
 
 
@@ -56,7 +56,6 @@ main(int  argc,				/* I - Number of command-line arguments */
 		*pclass,		/* Printer class name */
 		*opt,			/* Option pointer */
 		*val;			/* Pointer to allow/deny value */
-  int		enable = 0;		/* Enable/resume printer? */
   int		num_options;		/* Number of options */
   cups_option_t	*options;		/* Options */
   char		*file,			/* New PPD file */
@@ -266,7 +265,8 @@ main(int  argc,				/* I - Number of command-line arguments */
 		}
 	      }
 
-              enable = 1;
+	      if (enable_printer(http, printer))
+		return (1);
 	      break;
 
 	  case 'm' : /* Use the specified standard script/PPD file */
@@ -649,11 +649,9 @@ main(int  argc,				/* I - Number of command-line arguments */
       }
     }
 
-    if (set_printer_options(http, printer, num_options, options, file, enable))
+    if (set_printer_options(http, printer, num_options, options, file))
       return (1);
   }
-  else if (enable && enable_printer(http, printer))
-    return (1);
 
   if (evefile[0])
     unlink(evefile);
@@ -1340,8 +1338,7 @@ set_printer_options(
     char          *printer,		/* I - Printer */
     int           num_options,		/* I - Number of options */
     cups_option_t *options,		/* I - Options */
-    char          *file,		/* I - PPD file */
-    int           enable)		/* I - Enable printer? */
+    char          *file)		/* I - PPD file/interface script */
 {
   ipp_t		*request;		/* IPP Request */
   const char	*ppdfile;		/* PPD filename */
@@ -1386,12 +1383,6 @@ set_printer_options(
 
   ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri", NULL, uri);
   ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_NAME, "requesting-user-name", NULL, cupsUser());
-
-  if (enable)
-  {
-    ippAddInteger(request, IPP_TAG_PRINTER, IPP_TAG_ENUM, "printer-state", IPP_PSTATE_IDLE);
-    ippAddBoolean(request, IPP_TAG_PRINTER, "printer-is-accepting-jobs", 1);
-  }
 
  /*
   * Add the options...
