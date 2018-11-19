@@ -164,7 +164,7 @@ VAR cupsd_accesslog_t	AccessLogLevel		VALUE(CUPSD_ACCESSLOG_ACTIONS);
 					/* Access log level */
 VAR int			ClassifyOverride	VALUE(0),
 					/* Allow overrides? */
-			LogDebugHistory		VALUE(200),
+			LogDebugHistory		VALUE(99999),
 					/* Amount of automatic debug history */
 			FatalErrors		VALUE(CUPSD_FATAL_CONFIG),
 					/* Which errors are fatal? */
