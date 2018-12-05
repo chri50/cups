@@ -1,3 +1,15 @@
+cups (2.2.9-3) unstable; urgency=medium
+
+  * debian/control cleanup:
+    - Refresh thanks to `cme fix dpkg-control`
+    - Drop xpp suggest
+    - Bump S-V to 4.2.1 without changes needed
+
+  * Replace revert with upstream patch to fix `lpadmin -E` regression
+    (Issue #5440)
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 05 Dec 2018 22:45:00 +0100
+
 cups (2.2.9-2) unstable; urgency=medium
 
   * Revert 2.2.9 lpadmin fixes to circumvent 2.2.9 regression revealed
