@@ -1,3 +1,11 @@
+cups (2.2.9-4) unstable; urgency=medium
+
+  * Cherry-pick from upstream:
+    - Fix handling of MaxJobTime 0
+      (Issue #5438, LP: #1804576, Closes: #915724)
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 06 Dec 2018 19:05:22 +0100
+
 cups (2.2.9-3) unstable; urgency=medium
 
   * debian/control cleanup:
