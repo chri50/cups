@@ -37,4 +37,5 @@ debianize_cups-config.patch
 0037-Build-mantohtml-with-the-build-architecture-compiler.patch
 0038-The-lp-and-lpr-commands-now-provide-better-error-mes.patch
 0039-Fix-E-option-Issue-5440.patch
+0040-Fix-handling-of-MaxJobTime-0-Issue-5438.patch
 manpage-translations.patch
