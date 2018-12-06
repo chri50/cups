@@ -1,5 +1,6 @@
 Source: cups
-Maintainer: Debian Printing Team <debian-printing@lists.debian.org>
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: Debian Printing Team <debian-printing@lists.debian.org>
 Uploaders: Didier Raboud <odyx@debian.org>,
            Till Kamppeter <till.kamppeter@gmail.com>
 Section: net
