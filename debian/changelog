@@ -1,3 +1,10 @@
+cups (2.2.9-3ubuntu1) disco; urgency=medium
+
+  [ Dariusz Gadomski ]
+  * Fix handling of MaxJobTime 0 (LP: #1804576)
+
+ -- Dan Streetman <ddstreet@canonical.com>  Thu, 06 Dec 2018 09:14:58 +0100
+
 cups (2.2.9-3) unstable; urgency=medium
 
   * debian/control cleanup:

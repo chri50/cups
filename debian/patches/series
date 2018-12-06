@@ -38,3 +38,4 @@ debianize_cups-config.patch
 0038-The-lp-and-lpr-commands-now-provide-better-error-mes.patch
 0039-Fix-E-option-Issue-5440.patch
 manpage-translations.patch
+fix-handling-of-MaxJobTime.patch
