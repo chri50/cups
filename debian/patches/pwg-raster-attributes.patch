@@ -1,4 +1,4 @@
-From 699b7c5f2fd504fb454467c8526037ba0c669520 Mon Sep 17 00:00:00 2001
+From b19b9601ea12d001c2ae7f2ef3bdfe43eaca2a9f Mon Sep 17 00:00:00 2001
 From: Till Kamppeter <till.kamppeter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:04 +0200
 Subject: For PWG Raster, add required IPP attributes
@@ -14,7 +14,7 @@ Patch-Name: pwg-raster-attributes.patch
  1 file changed, 76 insertions(+), 1 deletion(-)
 
 diff --git a/scheduler/printers.c b/scheduler/printers.c
-index bb99907ad..a0ebcbd3e 100644
+index 68239d85d..865e3693b 100644
 --- a/scheduler/printers.c
 +++ b/scheduler/printers.c
 @@ -2199,9 +2199,10 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */

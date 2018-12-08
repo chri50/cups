@@ -1,5 +1,22 @@
-CHANGES - 2.2.9 - 2018-11-09
-============================
+CHANGES - 2.2.10 - 2018-12-07
+=============================
+
+
+Changes in CUPS v2.2.10
+-----------------------
+
+- CVE-2018-4700: Linux session cookies used a predictable random number seed.
+- The `lpoptions` command now works with IPP Everywhere printers that have not
+  yet been added as local queues (Issue #5045)
+- Added USB quirk rules (Issue #5395, Issue #5443)
+- The generated PPD files for IPP Everywhere printers did not contain the
+  cupsManualCopies keyword (Issue #5433)
+- Kerberos credentials might be truncated (Issue #5435)
+- The handling of `MaxJobTime 0` did not match the documentation (Issue #5438)
+- Incorporated the page accounting changes from CUPS 2.3 (Issue #5439)
+- Fixed a bug adding a queue with the `-E` option (Issue #5440)
+- Fixed a crash bug when mapping PPD duplex options to IPP attributes
+  (rdar://46183976)
 
 
 Changes in CUPS v2.2.9

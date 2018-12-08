@@ -1,4 +1,4 @@
-From da0b1175fac79a61240ccb9983faeb48dcda2918 Mon Sep 17 00:00:00 2001
+From 4d804d883eed3c12719fd830bb24a8e9bc638105 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:05 +0200
 Subject: Fix hyphen-used-as-minus-sign manpage errors
@@ -170,7 +170,7 @@ index bdd47ebd4..3b31c7ca5 100644
  .SH KNOWN ISSUES
  You cannot set the Listen or Port directives using \fBcupsctl\fR.
 diff --git a/man/cupsd-logs.man b/man/cupsd-logs.man
-index d12fab35f..19db8a677 100644
+index 8672afa09..04ba12d35 100644
 --- a/man/cupsd-logs.man
 +++ b/man/cupsd-logs.man
 @@ -33,25 +33,25 @@ Each line is in an extended version of the so-called "Common Log Format" used by
@@ -233,9 +233,9 @@ index d12fab35f..19db8a677 100644
  .BR cupsd.conf (5)
  file controls which messages are logged:
  .nf
-@@ -218,15 +218,15 @@ For printers that cannot produce copies on their own, the num-copies field will
+@@ -207,15 +207,15 @@ The format of this field is identical to the data-time field in the \fIaccess_lo
  .LP
- Lines containing the keyword "total" have a \fInum-impressions\fR field instead which provides the total number of impressions (sides) that have been printed on for the job.
+ The \fInum-sheets\fR field provides the total number of pages (sheets) that have been printed on for the job.
  .LP
 -The \fIjob-billing\fR field contains a copy of the job-billing or job-account-id attributes provided with the IPP Create-Job or Print-Job requests or "-" if neither was provided.
 +The \fIjob-billing\fR field contains a copy of the job-billing or job-account-id attributes provided with the IPP Create-Job or Print-Job requests or "\-" if neither was provided.

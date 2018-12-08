@@ -1,3 +1,13 @@
+cups (2.2.10-1) unstable; urgency=medium
+
+  * New 2.2.10 upstream release
+    - CVE-2018-4700: Linux session cookies used a predictable random number
+      seed (Closes: #915909)
+  * Manpage translations refresh
+  * Drop superfluous dpkg-dev B-D
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 08 Dec 2018 12:58:43 +0100
+
 cups (2.2.9-4) unstable; urgency=medium
 
   * Cherry-pick from upstream:

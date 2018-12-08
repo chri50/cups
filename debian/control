@@ -7,7 +7,6 @@ Priority: optional
 Build-Depends: debhelper (>= 10.2.5~),
                dh-apparmor,
                dh-exec,
-               dpkg-dev,
                patch,
                autoconf,
                automake,
