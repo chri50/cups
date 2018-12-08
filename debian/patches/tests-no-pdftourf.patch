@@ -1,4 +1,4 @@
-From 02b21d58bef0c7cfa8104b0d6443a16c753b635f Mon Sep 17 00:00:00 2001
+From 6a354c3169ea6469bb71e51fc6d7d23e62f7fcaa Mon Sep 17 00:00:00 2001
 From: Michael Sweet <michael.r.sweet@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:23 +0200
 Subject: Revert pdftourf filter addition in tests
@@ -18,7 +18,7 @@ Patch-Name: tests-no-pdftourf.patch
  delete mode 100644 test/test.types
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index 36d8d2435..1176ded56 100755
+index 1c7cc27e7..7fd69652c 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
 @@ -271,7 +271,7 @@ case "$usedebugprintfs" in

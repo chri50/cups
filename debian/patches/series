@@ -1,6 +1,6 @@
 pwg-raster-attributes.patch
 manpage-hyphen-minus.patch
-rootbackends-worldreadable.patch
+0003-Install-root-backends-world-readable.patch
 fixes-for-jobs-with-multiple-files-and-multiple-formats.patch
 tests-ignore-warnings.patch
 tests-ignore-usb-crash.patch
@@ -18,7 +18,7 @@ drop_unnecessary_dependencies.patch
 read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.patch
 cups-deviced-allow-device-ids-with-newline.patch
 airprint-support.patch
-cups-snmp-oids-device-id-hp-ricoh.patch
+0021-Let-snmp-backend-also-use-manufacturer-specific-MIBs.patch
 no-conffile-timestamp.patch
 removecvstag.patch
 rename-systemd-units.patch
@@ -36,6 +36,4 @@ man-cups-lpd-drop-dangling-references.patch
 debianize_cups-config.patch
 0037-Build-mantohtml-with-the-build-architecture-compiler.patch
 0038-The-lp-and-lpr-commands-now-provide-better-error-mes.patch
-0039-Fix-E-option-Issue-5440.patch
-0040-Fix-handling-of-MaxJobTime-0-Issue-5438.patch
 manpage-translations.patch

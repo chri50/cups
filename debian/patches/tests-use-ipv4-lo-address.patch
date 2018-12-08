@@ -1,4 +1,4 @@
-From c14219cb451bb7bfec20b353f2210b43ef544a7b Mon Sep 17 00:00:00 2001
+From 1697ce7557145b73c55f1c82aec6b70f45228432 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:21 +0200
 Subject: Use 127.0.0.1 instead of localhost in the test-suite. This should
@@ -30,7 +30,7 @@ index 7efc39892..08b8c508f 100644
  	echo "    FAILED"
  	exit 1
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index eb972cb8e..dae0d50dd 100755
+index 411689141..bcdfd5efe 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
 @@ -485,7 +485,7 @@ fi

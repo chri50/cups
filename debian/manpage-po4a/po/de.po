@@ -11,7 +11,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 2.2.7-5\n"
-"POT-Creation-Date: 2018-06-05 22:27+0200\n"
+"POT-Creation-Date: 2018-12-08 12:54+0100\n"
 "PO-Revision-Date: 2018-06-06 19:40+0200\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
@@ -633,7 +633,7 @@ msgstr "I</etc/cups/cups-files.conf>"
 #. type: SH
 #: backend.man:172 cancel.man:84 classes.conf.man:20 client.conf.man.in:86
 #: cupsfilter.man:120 cups-lpd.man.in:63 cupstestdsc.man:35 filter.man:204
-#: lpadmin.man:198 lpc.man:43 lpr.man:187 ppdmerge.man:38 printers.conf.man:20
+#: lpadmin.man:199 lpc.man:43 lpr.man:187 ppdmerge.man:38 printers.conf.man:20
 #: subscriptions.conf.man:20
 #, no-wrap
 msgid "NOTES"
@@ -680,12 +680,12 @@ msgstr ""
 #. type: SH
 #: backend.man:188 cancel.man:87 classes.conf.man:22 client.conf.man.in:98
 #: cupsaccept.man:80 cupsaddsmb.man.in:119 cups-config.man:107 cupsctl.man:95
-#: cupsd.conf.man.in:869 cupsd-helper.man:80 cupsd-logs.man:230
+#: cupsd.conf.man.in:869 cupsd-helper.man:80 cupsd-logs.man:219
 #: cupsd.man.in:112 cupsenable.man:91 cups-files.conf.man.in:276
 #: cupsfilter.man:130 cups-lpd.man.in:111 cups.man:125 cups-snmp.conf.man:60
 #: cups-snmp.man.in:49 cupstestdsc.man:41 cupstestppd.man:141 filter.man:211
 #: ippfind.man:258 ../test/ippserver.man:164 ipptoolfile.man:646
-#: ipptool.man:241 lpadmin.man:207 lpc.man:48 lpinfo.man:120 lp.man:255
+#: ipptool.man:241 lpadmin.man:210 lpc.man:48 lpinfo.man:120 lp.man:255
 #: lpmove.man:69 lpoptions.man.in:113 lpq.man:59 lpr.man:207 lprm.man:77
 #: lpstat.man:144 mailto.conf.man:43 mime.convs.man:53 mime.types.man:103
 #: notifier.man:34 ppdcfile.man:152 ppdc.man:93 ppdhtml.man:38 ppdi.man:45
@@ -712,12 +712,12 @@ msgstr "CUPS-Online-Hilfe (http://localhost:631/help)"
 #. type: SH
 #: backend.man:199 cancel.man:93 classes.conf.man:30 client.conf.man.in:102
 #: cupsaccept.man:88 cupsaddsmb.man.in:125 cups-config.man:110 cupsctl.man:100
-#: cupsd.conf.man.in:878 cupsd-helper.man:88 cupsd-logs.man:235
+#: cupsd.conf.man.in:878 cupsd-helper.man:88 cupsd-logs.man:224
 #: cupsd.man.in:128 cupsenable.man:99 cups-files.conf.man.in:286
 #: cupsfilter.man:137 cups-lpd.man.in:118 cups.man:141 cups-snmp.conf.man:63
 #: cups-snmp.man.in:55 cupstestdsc.man:45 cupstestppd.man:145 filter.man:219
 #: ippfind.man:260 ../test/ippserver.man:166 ipptoolfile.man:651
-#: ipptool.man:246 lpadmin.man:213 lpc.man:58 lpinfo.man:123 lp.man:264
+#: ipptool.man:246 lpadmin.man:216 lpc.man:58 lpinfo.man:123 lp.man:264
 #: lpmove.man:76 lpoptions.man.in:120 lpq.man:66 lpr.man:216 lprm.man:84
 #: lpstat.man:151 mailto.conf.man:46 mime.convs.man:60 mime.types.man:110
 #: notifier.man:38 ppdcfile.man:159 ppdc.man:100 ppdhtml.man:45 ppdi.man:52
@@ -729,11 +729,10 @@ msgstr "COPYRIGHT"
 #. type: Plain text
 #: backend.man:200 cancel.man:94 classes.conf.man:31 client.conf.man.in:103
 #: cupsaccept.man:89 cupsaddsmb.man.in:126 cups-config.man:111 cupsctl.man:101
-#: cupsd-helper.man:89 cupsd-logs.man:236 cupsd.man.in:129 cupsenable.man:100
-#: cups-files.conf.man.in:287 cupsfilter.man:138 cups-lpd.man.in:119
-#: cups.man:142 cups-snmp.conf.man:64 cups-snmp.man.in:56 cupstestdsc.man:46
-#: cupstestppd.man:146 filter.man:220 ipptoolfile.man:652 ipptool.man:247
-#: lpadmin.man:214 lpc.man:59 lpinfo.man:124 lp.man:265 lpmove.man:77
+#: cupsd-helper.man:89 cupsd.man.in:129 cupsenable.man:100 cupsfilter.man:138
+#: cups-lpd.man.in:119 cups.man:142 cups-snmp.conf.man:64 cups-snmp.man.in:56
+#: cupstestdsc.man:46 cupstestppd.man:146 filter.man:220 ipptoolfile.man:652
+#: ipptool.man:247 lpc.man:59 lpinfo.man:124 lp.man:265 lpmove.man:77
 #: lpq.man:67 lpr.man:217 lprm.man:85 lpstat.man:152 mailto.conf.man:47
 #: mime.convs.man:61 mime.types.man:111 notifier.man:39 ppdcfile.man:160
 #: ppdc.man:101 ppdhtml.man:46 ppdi.man:53 ppdmerge.man:49 ppdpo.man:53
@@ -876,7 +875,7 @@ msgstr "Löscht Auftragsdatendateien zusätzlich zum Abbruch."
 #. type: SH
 #: cancel.man:64 cupsaccept.man:70 cupsd.conf.man.in:847 cupsd.man.in:84
 #: cupsenable.man:80 cups-lpd.man.in:49 cups.man:122 cups-snmp.man.in:47
-#: filter.man:202 ../test/ippserver.man:137 ipptool.man:224 lpadmin.man:193
+#: filter.man:202 ../test/ippserver.man:137 ipptool.man:224 lpadmin.man:194
 #: lpinfo.man:100 lp.man:232 lpoptions.man.in:111 lprm.man:55 lpstat.man:137
 #, no-wrap
 msgid "CONFORMING TO"
@@ -1455,8 +1454,8 @@ msgid "cupsaddsmb"
 msgstr "cupsaddsmb"
 
 #. type: TH
-#: cupsaddsmb.man.in:13 cupsd-logs.man:13 cupsenable.man:13 cupsfilter.man:12
-#: cupstestdsc.man:13 cupstestppd.man:13 lpc.man:13
+#: cupsaddsmb.man.in:13 cupsenable.man:13 cupsfilter.man:12 cupstestdsc.man:13
+#: cupstestppd.man:13 lpc.man:13
 #, no-wrap
 msgid "11 June 2014"
 msgstr "11. Juni 2014"
@@ -4989,7 +4988,8 @@ msgstr ""
 "Hilfe (http://localhost:631/help)"
 
 #. type: Plain text
-#: cupsd.conf.man.in:879 lpoptions.man.in:121
+#: cupsd.conf.man.in:879 cupsd-logs.man:225 cups-files.conf.man.in:287
+#: lpadmin.man:217 lpoptions.man.in:121
 msgid "Copyright \\[co] 2007-2018 by Apple Inc."
 msgstr "Copyright \\[co] 2007-2018 by Apple Inc."
 
@@ -5123,6 +5123,13 @@ msgstr ""
 #, no-wrap
 msgid "cupsd-logs"
 msgstr "cupsd-logs"
+
+#. type: TH
+#: cupsd-logs.man:13
+#, fuzzy, no-wrap
+#| msgid "9 November 2010"
+msgid "8 November 2017"
+msgstr "9. November 2010"
 
 #. type: Plain text
 #: cupsd-logs.man:16
@@ -5675,9 +5682,13 @@ msgstr "SEITENPROTOKOLL-DATEIFORMAT"
 
 #. type: Plain text
 #: cupsd-logs.man:181
+#, fuzzy
+#| msgid ""
+#| "The I<page_log> file lists each page or group of pages that are sent to a "
+#| "printer.  By default, each line contains the following information:"
 msgid ""
-"The I<page_log> file lists each page or group of pages that are sent to a "
-"printer.  By default, each line contains the following information:"
+"The I<page_log> file lists the total number of pages (sheets) that are "
+"printed.  By default, each line contains the following information:"
 msgstr ""
 "Die Datei I<page_log> listet jede Seite oder Gruppe von Seiten auf, die an "
 "den Drucker gesandt werden. Standardmäßig enthält jede Zeile die folgenden "
@@ -5685,59 +5696,41 @@ msgstr ""
 
 #. type: Plain text
 #: cupsd-logs.man:185
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "    I<printer user job-id date-time >B<total >I<num-impressions job-billing\n"
+#| "      job-originating-host-name job-name media sides>\n"
 msgid ""
-"    I<printer user job-id date-time page-number num-copies job-billing\n"
-"      job-originating-host-name job-name media sides>\n"
-msgstr ""
-"    I<Drucker Benutzer Auftrags-ID Datum-Uhrzeit Seitennummer Anzahl-Kopien\n"
-"      Auftrags-Abrechnung Auftrags-erstellender-Rechnername Auftragsname\n"
-"      Medium Seiten>\n"
-
-#. type: Plain text
-#: cupsd-logs.man:188
-#, no-wrap
-msgid ""
-"    I<printer user job-id date-time >B<total >I<num-impressions job-billing\n"
+"    I<printer user job-id date-time >B<total >I<num-sheets job-billing\n"
 "      job-originating-host-name job-name media sides>\n"
 msgstr ""
 "    I<Drucker Benutzer Auftrags-ID Datum-Uhrzeit >B<total >I<Anzahl-Abdrucke\n"
 "      Auftrags-Abrechnung Auftrags-erstellender-Rechnername Auftragsname Medium Seiten>\n"
 
 #. type: Plain text
-#: cupsd-logs.man:191
+#: cupsd-logs.man:188
+#, fuzzy
+#| msgid ""
+#| "For example the entries for a two page job called \"myjob\" might look "
+#| "like:"
 msgid ""
-"For example the entries for a two page job called \"myjob\" might look like:"
+"For example the entry for a two page job called \"myjob\" might look like:"
 msgstr ""
 "Beispielsweise könnten die Einträge für einen zweiseitigen Auftrag namens "
 "»meinAuftrag« wie folgt aussehen:"
 
 #. type: Plain text
+#: cupsd-logs.man:192
+#, no-wrap
+msgid ""
+"    DeskJet root 1 [20/May/1999:19:21:06 +0000] total 2 acme-123\n"
+"      localhost myjob na_letter_8.5x11in one-sided\n"
+msgstr ""
+"    DeskJet root 1 [20/May/1999:19:21:06 +0000] total 2 acme-123\n"
+"      localhost meinAuftrag na_letter_8.5x11in one-sided\n"
+
+#. type: Plain text
 #: cupsd-logs.man:197
-#, no-wrap
-msgid ""
-"    DeskJet root 1 [20/May/1999:19:21:05 +0000] 1 1 acme-123\n"
-"      localhost myjob na_letter_8.5x11in one-sided\n"
-"    DeskJet root 1 [20/May/1999:19:21:05 +0000] 2 1 acme-123\n"
-"      localhost myjob na_letter_8.5x11in one-sided\n"
-msgstr ""
-"    DeskJet root 1 [20/May/1999:19:21:05 +0000] 1 1 acme-123\n"
-"      localhost meinAuftrag na_letter_8.5x11in one-sided\n"
-"    DeskJet root 1 [20/May/1999:19:21:05 +0000] 2 1 acme-123\n"
-"      localhost meinAuftrag na_letter_8.5x11in one-sided\n"
-
-#. type: Plain text
-#: cupsd-logs.man:200
-#, no-wrap
-msgid ""
-"    DeskJet root 1 [20/May/1999:19:21:06 +0000] total 2 acme-123\n"
-"      localhost myjob na_letter_8.5x11in one-sided\n"
-msgstr ""
-"    DeskJet root 1 [20/May/1999:19:21:06 +0000] total 2 acme-123\n"
-"      localhost meinAuftrag na_letter_8.5x11in one-sided\n"
-
-#. type: Plain text
-#: cupsd-logs.man:205
 msgid ""
 "The PageLogFormat directive in the B<cupsd.conf>(5)  file can be used to "
 "change this information."
@@ -5746,7 +5739,7 @@ msgstr ""
 "der Information verwandt werden."
 
 #. type: Plain text
-#: cupsd-logs.man:208
+#: cupsd-logs.man:200
 msgid ""
 "The I<printer> field contains the name of the printer that printed the "
 "page.  If you send a job to a printer class, this field will contain the "
@@ -5758,7 +5751,7 @@ msgstr ""
 "wurde."
 
 #. type: Plain text
-#: cupsd-logs.man:210
+#: cupsd-logs.man:202
 msgid ""
 "The I<user> field contains the name of the user (the IPP requesting-user-"
 "name attribute) that submitted this file for printing."
@@ -5767,14 +5760,14 @@ msgstr ""
 "requesting-user-name), der diesen Auftrag zum Druck eingereicht hat."
 
 #. type: Plain text
-#: cupsd-logs.man:212
+#: cupsd-logs.man:204
 msgid "The I<job-id> field contains the job number of the page being printed."
 msgstr ""
 "Das Feld I<Auftrags-ID> enthält die Auftragsnummer der im Druck befindlichen "
 "Seite."
 
 #. type: Plain text
-#: cupsd-logs.man:215
+#: cupsd-logs.man:207
 msgid ""
 "The I<date-time> field contains the date and time of when the page started "
 "printing.  The format of this field is identical to the data-time field in "
@@ -5785,30 +5778,22 @@ msgstr ""
 "dem Datum-Uhrzeit-Feld in der Datei I<access_log>."
 
 #. type: Plain text
-#: cupsd-logs.man:218
+#: cupsd-logs.man:209
+#, fuzzy
+#| msgid ""
+#| "Lines containing the keyword \"total\" have a I<num-impressions> field "
+#| "instead which provides the total number of impressions (sides) that have "
+#| "been printed on for the job."
 msgid ""
-"The I<page-number> and I<num-copies> fields contain the page number and "
-"number of copies being printed of that page.  For printers that cannot "
-"produce copies on their own, the num-copies field will always be 1."
-msgstr ""
-"Die Felder I<Seitennummer> und I<Anzahl-Kopien> enthalten die Seitennummer "
-"und die Anzahl der Kopien, die von dieser Seite gedruckt werden. Für "
-"Drucker, die selbst keine Kopien erzeugen können, wird das Feld »Anzahl-"
-"Kopien« immer 1 sein."
-
-#. type: Plain text
-#: cupsd-logs.man:220
-msgid ""
-"Lines containing the keyword \"total\" have a I<num-impressions> field "
-"instead which provides the total number of impressions (sides) that have "
-"been printed on for the job."
+"The I<num-sheets> field provides the total number of pages (sheets) that "
+"have been printed on for the job."
 msgstr ""
 "Zeilen, die das Schlüsselwort »total« enthalten, haben stattdessen ein Feld "
 "I<Anzahl-Abdrucke>, das die Gesamtanzahl der Abdrucke (Seiten) angibt, auf "
 "die für den Auftrag gedruckt wurde."
 
 #. type: Plain text
-#: cupsd-logs.man:222
+#: cupsd-logs.man:211
 msgid ""
 "The I<job-billing> field contains a copy of the job-billing or job-account-"
 "id attributes provided with the IPP Create-Job or Print-Job requests or \"-"
@@ -5819,7 +5804,7 @@ msgstr ""
 "»job-account-id« oder »-«, falls keines der beiden bereitgestellt wurde."
 
 #. type: Plain text
-#: cupsd-logs.man:224
+#: cupsd-logs.man:213
 msgid ""
 "The I<job-originating-host-name> field contains the hostname or IP address "
 "of the client that printed the job."
@@ -5828,7 +5813,7 @@ msgstr ""
 "die IP-Adresse des Clients, der den Auftrag gedruckt hat."
 
 #. type: Plain text
-#: cupsd-logs.man:226
+#: cupsd-logs.man:215
 msgid ""
 "The I<job-name> field contains a copy of the job-name attribute provided "
 "with the IPP Create-Job or Print-Job requests or \"-\" if none was provided."
@@ -5838,7 +5823,7 @@ msgstr ""
 "keines bereitgestellt wurde."
 
 #. type: Plain text
-#: cupsd-logs.man:228
+#: cupsd-logs.man:217
 msgid ""
 "The I<media> field contains a copy of the media or media-col/media-size "
 "attribute provided with the IPP Create-Job or Print-Job requests or \"-\" if "
@@ -5849,7 +5834,7 @@ msgstr ""
 "size« oder »-«, falls keines der beiden bereitgestellt wurde."
 
 #. type: Plain text
-#: cupsd-logs.man:230
+#: cupsd-logs.man:219
 msgid ""
 "The I<sides> field contains a copy of the sides attribute provided with the "
 "IPP Create-Job or Print-Job requests or \"-\" if none was provided."
@@ -5859,7 +5844,7 @@ msgstr ""
 "bereitgestellt wurde."
 
 #. type: Plain text
-#: cupsd-logs.man:235
+#: cupsd-logs.man:224
 msgid ""
 "B<cupsd>(8), B<cupsd.conf>(5), B<cups-files.conf>(5), CUPS Online Help "
 "(http://localhost:631/help)"
@@ -6246,9 +6231,10 @@ msgstr "cups-files.conf"
 
 #. type: TH
 #: cups-files.conf.man.in:13
-#, no-wrap
-msgid "21 September 2017"
-msgstr "21. September 2017"
+#, fuzzy, no-wrap
+#| msgid "14 February 2018"
+msgid "25 February 2018 "
+msgstr "14. Februar 2018"
 
 #. type: Plain text
 #: cups-files.conf.man.in:16
@@ -7318,7 +7304,7 @@ msgstr ""
 "zu anderer Ausgabe oder unerwartetem Verhalten führen."
 
 #. type: SH
-#: cupsfilter.man:124 cups-lpd.man.in:86 lpadmin.man:200
+#: cupsfilter.man:124 cups-lpd.man.in:86 lpadmin.man:203
 #, no-wrap
 msgid "EXAMPLE"
 msgstr "BEISPIEL"
@@ -9715,8 +9701,7 @@ msgstr "B<--literal-name >I<Name>"
 #: ippfind.man:91
 msgid "True if the service instance name matches the given name."
 msgstr ""
-"Wahr, falls der Name der Instanz des Dienstes auf den angegebenen Namen"
-"passt."
+"Wahr, falls der Name der Instanz des Dienstes auf den angegebenen Namenpasst."
 
 #. type: TP
 #: ippfind.man:91
@@ -13093,9 +13078,10 @@ msgstr "lpadmin"
 
 #. type: TH
 #: lpadmin.man:13
-#, no-wrap
-msgid "19 March 2018"
-msgstr "19. März 2018"
+#, fuzzy, no-wrap
+#| msgid "29 August 2014"
+msgid "19 August 2018"
+msgstr "29. August 2014"
 
 #. type: Plain text
 #: lpadmin.man:16
@@ -13548,27 +13534,33 @@ msgid "Provides a textual description of the destination."
 msgstr "Stellt eine textuelle Beschreibung des Ziels bereit."
 
 #. type: Plain text
-#: lpadmin.man:190
+#: lpadmin.man:191
+#, fuzzy
+#| msgid ""
+#| "Enables the destination and accepts jobs; this is the same as running the "
+#| "B<cupsaccept>(8)  and B<cupsenable>(8)  programs on the destination."
 msgid ""
-"Enables the destination and accepts jobs; this is the same as running the "
+"When specified before the B<-d>, B<-p>, or B<-x> options, forces the use of "
+"TLS encryption on the connection to the scheduler.  Otherwise, enables the "
+"destination and accepts jobs; this is the same as running the "
 "B<cupsaccept>(8)  and B<cupsenable>(8)  programs on the destination."
 msgstr ""
 "Aktiviert das Ziel und akzeptiert Aufträge. Dies ist identisch zur "
 "Ausführung der Programme B<cupsaccept>(8) und B<cupsenable>(8) für das Ziel."
 
 #. type: TP
-#: lpadmin.man:190
+#: lpadmin.man:191
 #, no-wrap
 msgid "B<-L \">I<location>B<\">"
 msgstr "B<-L \">I<Ort>B<\">"
 
 #. type: Plain text
-#: lpadmin.man:193
+#: lpadmin.man:194
 msgid "Provides a textual location of the destination."
 msgstr "Stellt den Ort des Ziels textuell bereit."
 
 #. type: Plain text
-#: lpadmin.man:198
+#: lpadmin.man:199
 msgid ""
 "Unlike the System V printing system, CUPS allows printer names to contain "
 "any printable character except SPACE, TAB, \"/\", or \"#\".  Also, printer "
@@ -13586,7 +13578,7 @@ msgstr ""
 "zur Ausführung dieses Befehls den Root-Benutzer benötigt."
 
 #. type: Plain text
-#: lpadmin.man:200
+#: lpadmin.man:201
 msgid ""
 "The CUPS version of B<lpadmin> does not support all of the System V or "
 "Solaris printing system configuration options."
@@ -13595,18 +13587,24 @@ msgstr ""
 "V- oder Solaris-Drucksystemkonfiguration."
 
 #. type: Plain text
-#: lpadmin.man:202
+#: lpadmin.man:203
+msgid ""
+"The double meaning of the B<-E> option is an unfortunate historical oddity."
+msgstr ""
+
+#. type: Plain text
+#: lpadmin.man:205
 msgid "Create an IPP Everywhere print queue:"
 msgstr "Eine IPP-Überall-Warteschlange erstellen:"
 
 #. type: Plain text
-#: lpadmin.man:205
+#: lpadmin.man:208
 #, no-wrap
 msgid "    lpadmin -p myprinter -E -v ipp://myprinter.local/ipp/print -m everywhere\n"
 msgstr "    lpadmin -p meinDrucker -E -v ipp://meinDrucker.local/ipp/print -m ueberall\n"
 
 #. type: Plain text
-#: lpadmin.man:213
+#: lpadmin.man:216
 msgid ""
 "B<cupsaccept>(8), B<cupsenable>(8), B<lpinfo>(8), B<lpoptions>(1), CUPS "
 "Online Help (http://localhost:631/help)"
@@ -14666,8 +14664,8 @@ msgid ""
 "B<lpoptions> [ B<-E> ] [ B<-h >I<server>[B<:>I<port>] ] B<-d "
 ">I<destination>[B</>I<instance>] [ B<-l> ]"
 msgstr ""
-"B<lpoptions> [ B<-E> ] [ B<-h >I<Server>[B<:>I<Port>] ] B<-d "
-">I<Ziel>[B</>I</Instanz>] [ B<-l> ]"
+"B<lpoptions> [ B<-E> ] [ B<-h >I<Server>[B<:>I<Port>] ] B<-d >I<Ziel>[B</>I</"
+"Instanz>] [ B<-l> ]"
 
 #. type: Plain text
 #: lpoptions.man.in:37
@@ -14675,8 +14673,8 @@ msgid ""
 "B<lpoptions> [ B<-E> ] [ B<-h >I<server>[B<:>I<port>] ] [ B<-p "
 ">I<destination>[B</>I<instance>] ] B<-o >I<option>[B<=>I<value>] ..."
 msgstr ""
-"B<lpoptions> [ B<-E> ] [ B<-h >I<Server>[B<:>I<Port>] ] [ B<-p "
-">I<Ziel>[B</>I</Instanz>] ] B<-o >I<Option>[B<=>I<Wert>] …"
+"B<lpoptions> [ B<-E> ] [ B<-h >I<Server>[B<:>I<Port>] ] [ B<-p >I<Ziel>[B</"
+">I</Instanz>] ] B<-o >I<Option>[B<=>I<Wert>] …"
 
 #. type: Plain text
 #: lpoptions.man.in:48
@@ -14684,8 +14682,8 @@ msgid ""
 "B<lpoptions> [ B<-E> ] [ B<-h >I<server>[B<:>I<port>] ] [ B<-p "
 ">I<destination>[B</>I<instance>] ] B<-r> I<option>"
 msgstr ""
-"B<lpoptions> [ B<-E> ] [ B<-h >I<Server>[B<:>I<Port>] ] [ B<-p "
-">I<Ziel>[B</>I</Instanz>] ] B<-r> I<Option>"
+"B<lpoptions> [ B<-E> ] [ B<-h >I<Server>[B<:>I<Port>] ] [ B<-p >I<Ziel>[B</"
+">I</Instanz>] ] B<-r> I<Option>"
 
 #. type: Plain text
 #: lpoptions.man.in:56
@@ -14693,8 +14691,8 @@ msgid ""
 "B<lpoptions> [ B<-E> ] [ B<-h >I<server>[B<:>I<port>] ] B<-x "
 ">I<destination>[B</>I<instance>]"
 msgstr ""
-"B<lpoptions> [ B<-E> ] [ B<-h >I<Server>[B<:>I<Port>] ] B<-x "
-">I<Ziel>[B</>I</Instanz>]"
+"B<lpoptions> [ B<-E> ] [ B<-h >I<Server>[B<:>I<Port>] ] B<-x >I<Ziel>[B</>I</"
+"Instanz>]"
 
 #. type: Plain text
 #: lpoptions.man.in:60
@@ -17073,6 +17071,41 @@ msgstr ""
 "B<classes.conf>(5), B<cupsd>(8), B<cupsd.conf>(5), B<mime.convs>(5), B<mime."
 "types>(5), B<printers.conf>(5), CUPS Online Help (http://localhost:631/help)"
 
+#~ msgid ""
+#~ "    I<printer user job-id date-time page-number num-copies job-billing\n"
+#~ "      job-originating-host-name job-name media sides>\n"
+#~ msgstr ""
+#~ "    I<Drucker Benutzer Auftrags-ID Datum-Uhrzeit Seitennummer Anzahl-Kopien\n"
+#~ "      Auftrags-Abrechnung Auftrags-erstellender-Rechnername Auftragsname\n"
+#~ "      Medium Seiten>\n"
+
+#~ msgid ""
+#~ "    DeskJet root 1 [20/May/1999:19:21:05 +0000] 1 1 acme-123\n"
+#~ "      localhost myjob na_letter_8.5x11in one-sided\n"
+#~ "    DeskJet root 1 [20/May/1999:19:21:05 +0000] 2 1 acme-123\n"
+#~ "      localhost myjob na_letter_8.5x11in one-sided\n"
+#~ msgstr ""
+#~ "    DeskJet root 1 [20/May/1999:19:21:05 +0000] 1 1 acme-123\n"
+#~ "      localhost meinAuftrag na_letter_8.5x11in one-sided\n"
+#~ "    DeskJet root 1 [20/May/1999:19:21:05 +0000] 2 1 acme-123\n"
+#~ "      localhost meinAuftrag na_letter_8.5x11in one-sided\n"
+
+#~ msgid ""
+#~ "The I<page-number> and I<num-copies> fields contain the page number and "
+#~ "number of copies being printed of that page.  For printers that cannot "
+#~ "produce copies on their own, the num-copies field will always be 1."
+#~ msgstr ""
+#~ "Die Felder I<Seitennummer> und I<Anzahl-Kopien> enthalten die "
+#~ "Seitennummer und die Anzahl der Kopien, die von dieser Seite gedruckt "
+#~ "werden. Für Drucker, die selbst keine Kopien erzeugen können, wird das "
+#~ "Feld »Anzahl-Kopien« immer 1 sein."
+
+#~ msgid "21 September 2017"
+#~ msgstr "21. September 2017"
+
+#~ msgid "19 March 2018"
+#~ msgstr "19. März 2018"
+
 #~ msgid "B<ErrorPolicy retry-this-job>"
 #~ msgstr "B<ErrorPolicy retry-this-job>"
 
@@ -17224,9 +17257,6 @@ msgstr ""
 
 #~ msgid "B<Sandboxing off>"
 #~ msgstr "B<Sandboxing off>"
-
-#~ msgid "29 August 2014"
-#~ msgstr "29. August 2014"
 
 # type: TP
 #~ msgid "-U username"
@@ -18631,9 +18661,6 @@ msgstr ""
 
 #~ msgid "6 January 2011"
 #~ msgstr "6. Januar 2011"
-
-#~ msgid "9 November 2010"
-#~ msgstr "9. November 2010"
 
 #~ msgid "10 January 2013"
 #~ msgstr "10. Januar 2013"
