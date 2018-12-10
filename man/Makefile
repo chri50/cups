@@ -1,7 +1,7 @@
 #
 # Man page makefile for CUPS.
 #
-# Copyright 2007-2017 by Apple Inc.
+# Copyright 2007-2018 by Apple Inc.
 # Copyright 1993-2006 by Easy Software Products.
 #
 # Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
@@ -17,7 +17,6 @@ include ../Makedefs
 MAN1	=	cancel.$(MAN1EXT) \
 		cups.$(MAN1EXT) \
 		cups-config.$(MAN1EXT) \
-		cupstestdsc.$(MAN1EXT) \
 		cupstestppd.$(MAN1EXT) \
 		$(IPPFIND_MAN) \
 		ipptool.$(MAN1EXT) \
@@ -49,7 +48,6 @@ MAN7	=	backend.$(MAN7EXT) \
 		filter.$(MAN7EXT) \
 		notifier.$(MAN7EXT)
 MAN8	=	cupsaccept.$(MAN8EXT) \
-		cupsaddsmb.$(MAN8EXT) \
 		cupsctl.$(MAN8EXT) \
 		cupsfilter.$(MAN8EXT) \
 		cups-lpd.$(MAN8EXT) \

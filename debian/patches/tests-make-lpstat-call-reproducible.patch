@@ -1,4 +1,4 @@
-From ad7dfd10c0f58c178f946a6833e1f96d591818ca Mon Sep 17 00:00:00 2001
+From 01636706e18e626aef755239ef01aeaae1b9afa9 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:22 +0200
 Subject: Force LC_ALL=C environment variable when grepping the output of
@@ -9,35 +9,18 @@ Origin: vendor
 Last-Update: 2016-07-11
 Patch-Name: tests-make-lpstat-call-reproducible.patch
 ---
- test/run-stp-tests.sh | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ test/run-stp-tests.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index 22a653555..14c60ed0a 100755
+index 1b62797ba..0fccd08f9 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -725,7 +725,7 @@ fi
- IPP_PORT=$port; export IPP_PORT
- 
- while true; do
--	running=`../systemv/lpstat -r 2>/dev/null`
-+	running=`LC_ALL=C ../systemv/lpstat -r 2>/dev/null`
- 	if test "x$running" = "xscheduler is running"; then
- 		break
- 	fi
-@@ -838,13 +838,13 @@ kill -HUP $cupsd
- while true; do
- 	sleep 10
- 
--	running=`../systemv/lpstat -r 2>/dev/null`
-+	running=`LC_ALL=C ../systemv/lpstat -r 2>/dev/null`
- 	if test "x$running" = "xscheduler is running"; then
- 		break
- 	fi
- done
- 
--description="`../systemv/lpstat -l -p Test1 | grep Description | sed -e '1,$s/^[^:]*: //g'`"
-+description="`LC_ALL=C ../systemv/lpstat -l -p Test1 | grep Description | sed -e '1,$s/^[^:]*: //g'`"
- if test "x$description" != "xTest Printer 1"; then
- 	echo "Failed, printer-info for Test1 is '$description', expected 'Test Printer 1'." >>$strfile
- 	echo "FAIL (got '$description', expected 'Test Printer 1')"
+@@ -634,6 +634,7 @@ echo "DYLD_LIBRARY_PATH=\"$DYLD_LIBRARY_PATH\"; export DYLD_LIBRARY_PATH" >>$run
+ echo "LD_LIBRARY_PATH=\"$LD_LIBRARY_PATH\"; export LD_LIBRARY_PATH" >>$runcups
+ echo "LD_PRELOAD=\"$LD_PRELOAD\"; export LD_PRELOAD" >>$runcups
+ echo "LOCALEDIR=\"$LOCALEDIR\"; export LOCALEDIR" >>$runcups
++echo "LC_ALL=\"C\"; export LC_ALL" >>$runcups
+ if test "x$CUPS_DEBUG_LEVEL" != x; then
+ 	echo "CUPS_DEBUG_FILTER='$CUPS_DEBUG_FILTER'; export CUPS_DEBUG_FILTER" >>$runcups
+ 	echo "CUPS_DEBUG_LEVEL=$CUPS_DEBUG_LEVEL; export CUPS_DEBUG_LEVEL" >>$runcups

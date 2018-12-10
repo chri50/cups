@@ -1,4 +1,4 @@
-From 9e7315aca4e7d592685043e01b35636ece43c668 Mon Sep 17 00:00:00 2001
+From 62b053eacca61a4b873f37bf54efaba60d9a4b9a Mon Sep 17 00:00:00 2001
 From: Till Kamppeter <till.kamppeter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:04 +0200
 Subject: For PWG Raster, add required IPP attributes
@@ -14,10 +14,10 @@ Patch-Name: pwg-raster-attributes.patch
  1 file changed, 76 insertions(+), 1 deletion(-)
 
 diff --git a/scheduler/printers.c b/scheduler/printers.c
-index c4a009d3d..62e4ec195 100644
+index ff381cdd5..7b7e68367 100644
 --- a/scheduler/printers.c
 +++ b/scheduler/printers.c
-@@ -2217,9 +2217,10 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */
+@@ -2255,9 +2255,10 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */
    cupsd_location_t *auth;		/* Pointer to authentication element */
    const char	*auth_supported;	/* Authentication supported */
    ipp_t		*oldattrs;		/* Old printer attributes */
@@ -28,10 +28,10 @@ index c4a009d3d..62e4ec195 100644
 +  mime_type_t   *type;
  
  
-   DEBUG_printf(("cupsdSetPrinterAttrs: entering name = %s, type = %x\n", p->name,
-@@ -2558,6 +2559,80 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */
-   DEBUG_printf(("cupsdSetPrinterAttrs: leaving name = %s, type = %x\n", p->name,
-                 p->type));
+  /*
+@@ -2590,6 +2591,80 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */
+ 
+   add_printer_formats(p);
  
 +  /* 
 +   * Add "pwg-raster-document-xxx-supported" attributes if PWG Raster input

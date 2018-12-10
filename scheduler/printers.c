@@ -1,10 +1,11 @@
 /*
  * Printer routines for the CUPS scheduler.
  *
- * Copyright 2007-2017 by Apple Inc.
- * Copyright 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright © 2007-2018 by Apple Inc.
+ * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+ * information.
  */
 
 /*
@@ -148,8 +149,32 @@ cupsdCreateCommonData(void)
   struct statfs		spoolinfo;	/* FS info for spool directory */
   double		spoolsize;	/* FS size */
 #endif /* HAVE_STATVFS */
-  static const int nups[] =		/* number-up-supported values */
+  static const char * const page_delivery[] =
+		{			/* page-delivery-supported values */
+		  "reverse-order",
+		  "same-order"
+		};
+  static const char * const print_scaling[] =
+		{			/* print-scaling-supported values */
+		  "auto",
+		  "auto-fit",
+		  "fill",
+		  "fit",
+		  "none"
+		};
+  static const int number_up[] =		/* number-up-supported values */
 		{ 1, 2, 4, 6, 9, 16 };
+  static const char * const number_up_layout[] =
+		{			/* number-up-layout-supported values */
+		  "btlr",
+		  "btrl",
+		  "lrbt",
+		  "lrtb",
+		  "rlbt",
+		  "rltb",
+		  "tblr",
+		  "tbrl"
+		};
   static const int orients[4] =/* orientation-requested-supported values */
 		{
 		  IPP_PORTRAIT,
@@ -290,6 +315,7 @@ cupsdCreateCommonData(void)
 		{			/* job-creation-attributes-supported */
 		  "copies",
 		  "finishings",
+		  "finishings-col",
 		  "ipp-attribute-fidelity",
 		  "job-hold-until",
 		  "job-name",
@@ -299,11 +325,14 @@ cupsdCreateCommonData(void)
 		  "media-col",
 		  "multiple-document-handling",
 		  "number-up",
-		  "output-bin",
+		  "number-up-layout",
 		  "orientation-requested",
+		  "output-bin",
+		  "page-delivery",
 		  "page-ranges",
 		  "print-color-mode",
 		  "print-quality",
+		  "print-scaling",
 		  "printer-resolution",
 		  "sides"
 		};
@@ -601,7 +630,10 @@ cupsdCreateCommonData(void)
 
   /* number-up-supported */
   ippAddIntegers(CommonData, IPP_TAG_PRINTER, IPP_TAG_INTEGER,
-                 "number-up-supported", sizeof(nups) / sizeof(nups[0]), nups);
+                 "number-up-supported", sizeof(number_up) / sizeof(number_up[0]), number_up);
+
+  /* number-up-layout-supported */
+  ippAddStrings(CommonData, IPP_TAG_PRINTER, IPP_CONST_TAG(IPP_TAG_KEYWORD), "number-up-layout-supported", sizeof(number_up_layout) / sizeof(number_up_layout[0]), NULL, number_up_layout);
 
   /* operations-supported */
   ippAddIntegers(CommonData, IPP_TAG_PRINTER, IPP_TAG_ENUM,
@@ -610,6 +642,9 @@ cupsdCreateCommonData(void)
   /* orientation-requested-supported */
   ippAddIntegers(CommonData, IPP_TAG_PRINTER, IPP_TAG_ENUM,
                  "orientation-requested-supported", 4, orients);
+
+  /* page-delivery-supported */
+  ippAddStrings(CommonData, IPP_TAG_PRINTER, IPP_CONST_TAG(IPP_TAG_KEYWORD), "page-delivery-supported", sizeof(page_delivery) / sizeof(page_delivery[0]), NULL, page_delivery);
 
   /* page-ranges-supported */
   ippAddBoolean(CommonData, IPP_TAG_PRINTER, "page-ranges-supported", 1);
@@ -627,6 +662,9 @@ cupsdCreateCommonData(void)
   /* pdl-override-supported */
   ippAddString(CommonData, IPP_TAG_PRINTER, IPP_TAG_KEYWORD | IPP_TAG_COPY,
                "pdl-override-supported", NULL, "attempted");
+
+  /* print-scaling-supported */
+  ippAddStrings(CommonData, IPP_TAG_PRINTER, IPP_CONST_TAG(IPP_TAG_KEYWORD), "print-scaling-supported", sizeof(print_scaling) / sizeof(print_scaling[0]), NULL, print_scaling);
 
   /* printer-get-attributes-supported */
   ippAddString(CommonData, IPP_TAG_PRINTER, IPP_CONST_TAG(IPP_TAG_KEYWORD), "printer-get-attributes-supported", NULL, "document-format");
@@ -2223,9 +2261,6 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */
   mime_type_t   *type;
 
 
-  DEBUG_printf(("cupsdSetPrinterAttrs: entering name = %s, type = %x\n", p->name,
-                p->type));
-
  /*
   * Make sure that we have the common attributes defined...
   */
@@ -2555,9 +2590,6 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */
   */
 
   add_printer_formats(p);
-
-  DEBUG_printf(("cupsdSetPrinterAttrs: leaving name = %s, type = %x\n", p->name,
-                p->type));
 
   /* 
    * Add "pwg-raster-document-xxx-supported" attributes if PWG Raster input
@@ -3074,9 +3106,6 @@ cupsdValidateDest(
   int			port;		/* Port portion of URI */
 
 
-  DEBUG_printf(("cupsdValidateDest(uri=\"%s\", dtype=%p, printer=%p)\n", uri,
-                dtype, printer));
-
  /*
   * Initialize return values...
   */
@@ -3179,8 +3208,6 @@ cupsdValidateDest(
       }
     }
   }
-
-  DEBUG_printf(("localized hostname is \"%s\"...\n", localname));
 
  /*
   * Find a matching printer or class...
@@ -3465,7 +3492,7 @@ add_printer_defaults(cupsd_printer_t *p)/* I - Printer */
         	 "document-format-default", NULL, "application/octet-stream");
 
   if (!cupsGetOption("job-cancel-after", p->num_options, p->options))
-    ippAddInteger(p->attrs, IPP_TAG_PRINTER, IPP_TAG_INTEGER,
+    ippAddInteger(p->attrs, IPP_TAG_PRINTER, MaxJobTime > 0 ? IPP_TAG_INTEGER : IPP_TAG_NOVALUE,
 		  "job-cancel-after-default", MaxJobTime);
 
   if (!cupsGetOption("job-hold-until", p->num_options, p->options))

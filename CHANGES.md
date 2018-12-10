@@ -1,8 +1,70 @@
-CHANGES - 2.3b5 - 2018-06-05
+CHANGES - 2.3b6 - 2018-12-07
 ============================
 
+Changes in CUPS v2.3b6
+----------------------
+
+- Localization update (Issue #5339, Issue #5348, Issue #5362, Issue #5408,
+  Issue #5410)
+- Documentation updates (Issue #5369, Issue #5402, Issue #5403, Issue #5404)
+- CVE-2018-4700: Linux session cookies used a predictable random number seed.
+- All user commands now support the `--help` option (Issue #5326)
+- The `lpoptions` command now works with IPP Everywhere printers that have not
+  yet been added as local queues (Issue #5045)
+- The lpadmin command would create a non-working printer in some error cases
+  (Issue #5305)
+- The scheduler would crash if an empty `AccessLog` directive was specified
+  (Issue #5309)
+- The scheduler did not idle-exit on some Linux distributions (Issue #5319)
+- Fixed a regression in the changes to ippValidateAttribute (Issue #5322,
+  Issue #5330)
+- Fixed a crash bug in the Epson dot matrix driver (Issue #5323)
+- Automatic debug logging of job errors did not work with systemd (Issue #5337)
+- The web interface did not list the IPP Everywhere "driver" (Issue #5338)
+- The scheduler did not report all of the supported job options and values
+  (Issue #5340)
+- The IPP Everywhere "driver" now properly supports face-up printers
+  (Issue #5345)
+- Fixed some typos in the label printer drivers (Issue #5350)
+- Setting the `Community` name to the empty string in `snmp.conf` now disables
+  SNMP supply level monitoring by all the standard network backends
+  (Issue #5354)
+- Multi-file jobs could get stuck if the backend failed (Issue #5359,
+  Issue #5413)
+- The IPP Everywhere "driver" no longer does local filtering when printing to
+  a shared CUPS printer (Issue #5361)
+- The lpadmin command now correctly reports IPP errors when configuring an
+  IPP Everywhere printer (Issue #5370)
+- Fixed some memory leaks discovered by Coverity (Issue #5375)
+- The PPD compiler incorrectly terminated JCL options (Issue #5379)
+- The cupstestppd utility did not generate errors for missing/mismatched
+  CloseUI/JCLCloseUI keywords (Issue #5381)
+- The scheduler now reports the actual location of the log file (Issue #5398)
+- Added USB quirk rules (Issue #5395, Issue #5420, Issue #5443)
+- The generated PPD files for IPP Everywhere printers did not contain the
+  cupsManualCopies keyword (Issue #5433)
+- Kerberos credentials might be truncated (Issue #5435)
+- The handling of `MaxJobTime 0` did not match the documentation (Issue #5438)
+- Fixed a bug adding a queue with the `-E` option (Issue #5440)
+- The `cupsaddsmb` program has been removed (Issue #5449)
+- The `cupstestdsc` program has been removed (Issue #5450)
+- The scheduler was being backgrounded on macOS, causing applications to spin
+  (rdar://40436080)
+- The scheduler did not validate that required initial request attributes were
+  in the operation group (rdar://41098178)
+- Authentication in the web interface did not work on macOS (rdar://41444473)
+- Fixed an issue with HTTP Digest authentication (rdar://41709086)
+- The scheduler could crash when job history was purged (rdar://42198057)
+- Fixed a crash bug when mapping PPD duplex options to IPP attributes
+  (rdar://46183976)
+- Fixed a memory leak for some IPP (extension) syntaxes.
+- The `cupscgi`, `cupsmime`, and `cupsppdc` support libraries are no longer
+  installed as shared libraries.
+- The `snmp` backend is now deprecated.
+
+
 Changes in CUPS v2.3b5
------------------------
+----------------------
 
 - The `ipptool` program no longer checks for duplicate attributes when running
   in list or CSV mode (Issue #5278)

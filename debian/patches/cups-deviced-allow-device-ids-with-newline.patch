@@ -1,4 +1,4 @@
-From 0b676eee5f638ba9beefb21ecaf1e2f05491e7fb Mon Sep 17 00:00:00 2001
+From b6bbdd4e1812c11c1438ec4cc89f3bddc2aeb05a Mon Sep 17 00:00:00 2001
 From: Till Kamppeter <till.kamppeter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:28 +0200
 Subject: Some printers have broken device IDs with newline
@@ -16,10 +16,10 @@ Patch-Name: cups-deviced-allow-device-ids-with-newline.patch
  1 file changed, 19 insertions(+), 4 deletions(-)
 
 diff --git a/scheduler/cups-deviced.c b/scheduler/cups-deviced.c
-index 0d3ee0b89..5fcc5b1cd 100644
+index 14478fd99..e45f058a5 100644
 --- a/scheduler/cups-deviced.c
 +++ b/scheduler/cups-deviced.c
-@@ -558,15 +558,30 @@ get_device(cupsd_backend_t *backend)	/* I - Backend to read from */
+@@ -559,15 +559,30 @@ get_device(cupsd_backend_t *backend)	/* I - Backend to read from */
  
      if (*ptr == '\"')
      {

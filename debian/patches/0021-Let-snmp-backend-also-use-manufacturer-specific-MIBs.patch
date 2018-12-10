@@ -1,21 +1,18 @@
-From d90908bc36e7ae2b719a3c3a2ce0cd2af8ff348d Mon Sep 17 00:00:00 2001
+From 6168f0f69586f74a762a013ce17621a4fe665cf3 Mon Sep 17 00:00:00 2001
 From: Tim Waugh <twaugh@redhat.com>
 Date: Tue, 9 Aug 2016 18:11:30 +0200
-Subject: Let the "snmp" backend also use manufacturer-specific MIBs
+Subject: Let snmp backend also use manufacturer-specific MIBs
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
  … of HP and Ricoh to obtain the device IDs of network-connected
  printers. This way we get more reliable information about make and model
- and in addition the supported page description languages, which allow one to
+ and in addition the supported page description languages, which allows one to
  identify whether an optional PostScript add-on is installed or for an
  unsupported printer which generic PPD is the best choice (requested by
  Ricoh).
 Bug: https://www.cups.org/str.php?L3552
-Last-Update: 2015-02-10
-
-Patch-Name: cups-snmp-oids-device-id-hp-ricoh.patch
 ---
  backend/snmp.c | 8 ++++++++
  1 file changed, 8 insertions(+)

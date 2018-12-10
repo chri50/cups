@@ -1,4 +1,4 @@
-From 83646f529a156c0cdae89a5aa3f4ca093e6817a1 Mon Sep 17 00:00:00 2001
+From 3f98ba2830600a81186604ac26262315339f4f6f Mon Sep 17 00:00:00 2001
 From: Till Kampetter <till.kampetter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:36 +0200
 Subject: CUPS removes the "(recommended)" comments of the NickNames of
@@ -13,7 +13,7 @@ Patch-Name: reactivate_recommended_driver.patch
  1 file changed, 10 deletions(-)
 
 diff --git a/scheduler/cups-driverd.cxx b/scheduler/cups-driverd.cxx
-index 657eee0a0..f9a142fb9 100644
+index b518a9325..3f51e2a0e 100644
 --- a/scheduler/cups-driverd.cxx
 +++ b/scheduler/cups-driverd.cxx
 @@ -242,7 +242,6 @@ add_ppd(const char *filename,		/* I - PPD filename */

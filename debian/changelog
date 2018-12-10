@@ -1,3 +1,23 @@
+cups (2.3~b6-1) experimental; urgency=medium
+
+  * New 2.3~b6 upstream pre-release
+    - CVE-2018-4700: Linux session cookies used a predictable random number
+      seed (Closes: #915909)
+    - The `cupsaddsmb` program has been removed (Issue #5449)
+    - The `cupstestdsc` program has been removed (Issue #5450)
+    - Rebase patches
+
+  * Merge 2.2.10-1
+  * Manpage translations update
+  * Add patch to fix FTBFS due to wrong `usage(int)` usage
+  * Update libcups2 symbols: +12 cupsRaster*
+  * Cope with cupsaddsmb and cupstestdsc removals:
+    - Remove from cups-client installed files
+    - Remove from manpage translation infrastructure
+    - Remove from libcups2's README.Debian
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 10 Dec 2018 10:18:41 +0100
+
 cups (2.3~b5-2) experimental; urgency=medium
 
   * Merge 2.2.8-5, rebase patches
@@ -55,6 +75,51 @@ cups (2.3~b3-1) experimental; urgency=medium
   * Bump debhelper compat to 11
 
  -- Didier Raboud <odyx@debian.org>  Fri, 23 Feb 2018 20:49:53 +0100
+
+cups (2.2.10-1) unstable; urgency=medium
+
+  * New 2.2.10 upstream release
+    - CVE-2018-4700: Linux session cookies used a predictable random number
+      seed (Closes: #915909)
+  * Manpage translations refresh
+  * Drop superfluous dpkg-dev B-D
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 08 Dec 2018 12:58:43 +0100
+
+cups (2.2.9-4) unstable; urgency=medium
+
+  * Cherry-pick from upstream:
+    - Fix handling of MaxJobTime 0
+      (Issue #5438, LP: #1804576, Closes: #915724)
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 06 Dec 2018 19:05:22 +0100
+
+cups (2.2.9-3) unstable; urgency=medium
+
+  * debian/control cleanup:
+    - Refresh thanks to `cme fix dpkg-control`
+    - Drop xpp suggest
+    - Bump S-V to 4.2.1 without changes needed
+
+  * Replace revert with upstream patch to fix `lpadmin -E` regression
+    (Issue #5440)
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 05 Dec 2018 22:45:00 +0100
+
+cups (2.2.9-2) unstable; urgency=medium
+
+  * Revert 2.2.9 lpadmin fixes to circumvent 2.2.9 regression revealed
+    by autopkgtest, see https://github.com/apple/cups/issues/5440
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 19 Nov 2018 21:53:01 +0100
+
+cups (2.2.9-1) unstable; urgency=medium
+
+  * New 2.2.9 upstream release
+    - Remove libcups{cgi1,mime1,ppdc1} packages as they are not built
+      anymore upstream
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 16 Nov 2018 21:35:17 +0100
 
 cups (2.2.8-5) unstable; urgency=high
 

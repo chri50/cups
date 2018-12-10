@@ -1,4 +1,4 @@
-From aa521f867562a81806d74194c88ec5d12aa67bd3 Mon Sep 17 00:00:00 2001
+From 7477e87c930e61476098303bd3f43ff89136a938 Mon Sep 17 00:00:00 2001
 From: Helmut Grohne <helmut@subdivi.de>
 Date: Tue, 9 Aug 2016 18:11:49 +0200
 Subject: Build mantohtml with the build architecture compiler
@@ -13,15 +13,15 @@ Bug-Debian: https://bugs.debian.org/837936
 ---
  Makedefs.in     |  1 +
  configure.ac    |  9 +++++++++
- man/Makefile    |  6 ++----
+ man/Makefile    |  7 ++-----
  man/mantohtml.c | 15 ++++++++++-----
- 4 files changed, 22 insertions(+), 9 deletions(-)
+ 4 files changed, 22 insertions(+), 10 deletions(-)
 
 diff --git a/Makedefs.in b/Makedefs.in
-index bf633c758..dccef53f2 100644
+index e4d828b50..85390d67a 100644
 --- a/Makedefs.in
 +++ b/Makedefs.in
-@@ -21,6 +21,7 @@ CUPS_VERSION    =       @CUPS_VERSION@
+@@ -22,6 +22,7 @@ CUPS_VERSION    =       @CUPS_VERSION@
  AR		=	@AR@
  AWK		=	@AWK@
  CC		=	@LIBTOOL_CC@ @CC@
@@ -30,7 +30,7 @@ index bf633c758..dccef53f2 100644
  CXX		=	@LIBTOOL_CXX@ @CXX@
  DSO		=	@DSO@
 diff --git a/configure.ac b/configure.ac
-index d3423e7e1..21ad326a8 100644
+index b79bc3c5d..b7c2f985e 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -19,6 +19,15 @@ sinclude(config-scripts/cups-common.m4)
@@ -50,10 +50,10 @@ index d3423e7e1..21ad326a8 100644
  sinclude(config-scripts/cups-libtool.m4)
  sinclude(config-scripts/cups-compiler.m4)
 diff --git a/man/Makefile b/man/Makefile
-index 6911cbab0..d2c3932c3 100644
+index 1335d7d2b..5d5d0ee4f 100644
 --- a/man/Makefile
 +++ b/man/Makefile
-@@ -222,7 +222,5 @@ html:	$(MAN1) $(MAN5) $(MAN7) $(MAN8) mantohtml
+@@ -220,8 +220,5 @@ html:	$(MAN1) $(MAN5) $(MAN7) $(MAN8) mantohtml
  		./mantohtml `basename $$file .$(MAN8EXT)`.man >../doc/help/man-`basename $$file .$(MAN8EXT)`.html; \
  	done
  
@@ -61,6 +61,7 @@ index 6911cbab0..d2c3932c3 100644
 -	$(LD_CC) $(ARCHFLAGS) $(LDFLAGS) -o $@ mantohtml.o \
 -		../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) \
 -		$(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+-	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 +mantohtml:	mantohtml.c
 +	$(CC_FOR_BUILD) -o $@ $<
 diff --git a/man/mantohtml.c b/man/mantohtml.c
