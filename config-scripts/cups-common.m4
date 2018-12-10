@@ -1,10 +1,11 @@
 dnl
 dnl Common configuration stuff for CUPS.
 dnl
-dnl Copyright 2007-2017 by Apple Inc.
-dnl Copyright 1997-2007 by Easy Software Products, all rights reserved.
+dnl Copyright © 2007-2018 by Apple Inc.
+dnl Copyright © 1997-2007 by Easy Software Products, all rights reserved.
 dnl
-dnl Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+dnl Licensed under Apache License v2.0.  See the file "LICENSE" for more
+dnl information.
 dnl
 
 dnl Set the name of the config header file...
@@ -432,16 +433,31 @@ COMPONENTS="all"
 
 AC_ARG_WITH(components, [  --with-components       set components to build:
 			    - "all" (default) builds everything
-			    - "core" builds libcups and ipptool],
+			    - "core" builds libcups and ipptool
+			    - "libcups" builds just libcups
+			    - "libcupslite" builds just libcups without driver support],
 	COMPONENTS="$withval")
 
+cupsimagebase="cupsimage"
+LIBCUPSOBJS="\$(COREOBJS) \$(DRIVEROBJS)"
 case "$COMPONENTS" in
 	all)
-		BUILDDIRS="filter backend berkeley cgi-bin monitor notifier ppdc scheduler systemv conf data desktop locale man doc examples templates"
+		BUILDDIRS="test filter backend berkeley cgi-bin monitor notifier ppdc scheduler systemv conf data desktop locale man doc examples templates"
 		;;
 
 	core)
-		BUILDDIRS="data locale"
+		BUILDDIRS="test locale"
+		;;
+
+	libcups)
+		BUILDDIRS="locale"
+		cupsimagebase=""
+		;;
+
+	libcupslite)
+		BUILDDIRS="locale"
+		cupsimagebase=""
+		LIBCUPSOBJS="\$(COREOBJS)"
 		;;
 
 	*)
@@ -450,3 +466,4 @@ case "$COMPONENTS" in
 esac
 
 AC_SUBST(BUILDDIRS)
+AC_SUBST(LIBCUPSOBJS)

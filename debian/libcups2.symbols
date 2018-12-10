@@ -1,10 +1,10 @@
 libcups.so.2 libcups2 #MINVER#
 # Keep these at the latest upstream release
- (optional|regex)"^_pwg.*@Base$" 1.6.2
- (optional|regex)"^_cups.*@Base$" 1.6.2
- (optional|regex)"^_http.*@Base$" 1.6.2
- (optional|regex)"^_ipp.*@Base$" 1.6.2
- (optional|regex)"^_ppd.*@Base$" 1.6.2
+ (optional|regex)"^_pwg.*@Base$" 2.3~b6
+ (optional|regex)"^_cups.*@Base$" 2.3~b6
+ (optional|regex)"^_http.*@Base$" 2.3~b6
+ (optional|regex)"^_ipp.*@Base$" 2.3~b6
+ (optional|regex)"^_ppd.*@Base$" 2.3~b6
  (optional=GnuTLS)_httpReadGNUTLS@Base 1.4.4-3~
  (optional=GnuTLS)_httpWriteGNUTLS@Base 1.4.4-3~
  cupsAddDest@Base 1.4.0
@@ -154,6 +154,18 @@ libcups.so.2 libcups2 #MINVER#
  cupsPrintFiles@Base 1.4.0
  cupsPutFd@Base 1.4.0
  cupsPutFile@Base 1.4.0
+ cupsRasterClose@Base 2.3~b6
+ cupsRasterErrorString@Base 2.3~b6
+ cupsRasterInitPWGHeader@Base 2.3~b6
+ cupsRasterInterpretPPD@Base 2.3~b6
+ cupsRasterOpen@Base 2.3~b6
+ cupsRasterOpenIO@Base 2.3~b6
+ cupsRasterReadHeader2@Base 2.3~b6
+ cupsRasterReadHeader@Base 2.3~b6
+ cupsRasterReadPixels@Base 2.3~b6
+ cupsRasterWriteHeader2@Base 2.3~b6
+ cupsRasterWriteHeader@Base 2.3~b6
+ cupsRasterWritePixels@Base 2.3~b6
  cupsReadResponseData@Base 1.4.0
  cupsRemoveDest@Base 1.4.0
  cupsRemoveOption@Base 1.4.0

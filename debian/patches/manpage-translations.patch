@@ -1,4 +1,4 @@
-From 5b2e16576b1565d7265cfae4c22b307f25489058 Mon Sep 17 00:00:00 2001
+From 6723bebdaecc55d645aa0fd404c2e71a8d027f36 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:50 +0200
 Subject: po4a infrastructure and translations for manpages.
@@ -13,19 +13,19 @@ Bug-Debian: http://bugs.debian.org/478597
 Patch-Name: manpage-translations.patch
 ---
  man/Makefile      |  15 ++-
- man/Makefile.l10n | 246 ++++++++++++++++++++++++++++++++++++++++++++++
+ man/Makefile.l10n | 244 ++++++++++++++++++++++++++++++++++++++++++++++
  man/de/Makefile   |   7 ++
  man/fr/Makefile   |   7 ++
- 4 files changed, 274 insertions(+), 1 deletion(-)
+ 4 files changed, 272 insertions(+), 1 deletion(-)
  create mode 100644 man/Makefile.l10n
  create mode 100644 man/de/Makefile
  create mode 100644 man/fr/Makefile
 
 diff --git a/man/Makefile b/man/Makefile
-index d2c3932c3..98fe135cc 100644
+index 5d5d0ee4f..d85660691 100644
 --- a/man/Makefile
 +++ b/man/Makefile
-@@ -62,12 +62,18 @@ MAN8	=	cupsaccept.$(MAN8EXT) \
+@@ -60,12 +60,18 @@ MAN8	=	cupsaccept.$(MAN8EXT) \
  		lpmove.$(MAN8EXT) \
  		lpc.$(MAN8EXT)
  
@@ -45,7 +45,7 @@ index d2c3932c3..98fe135cc 100644
  
  
  #
-@@ -91,6 +97,11 @@ unittests:
+@@ -89,6 +95,11 @@ unittests:
  clean:
  	$(RM) mantohtml mantohtml.o
  	$(RM) $(MAN1) $(MAN5) $(MAN7) $(MAN8)
@@ -57,7 +57,7 @@ index d2c3932c3..98fe135cc 100644
  
  
  #
-@@ -142,6 +153,7 @@ install-data: all
+@@ -140,6 +151,7 @@ install-data: all
  		$(RM) $(AMANDIR)/man$(MAN8DIR)/$$file.$(MAN8EXT); \
  		$(LN) cupsd-helper.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/$$file.$(MAN8EXT); \
  	done
@@ -65,7 +65,7 @@ index d2c3932c3..98fe135cc 100644
  
  
  #
-@@ -190,6 +202,7 @@ uninstall:
+@@ -188,6 +200,7 @@ uninstall:
  	$(RM) $(AMANDIR)/man$(MAN8DIR)/reject.$(MAN8EXT)
  	$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
  	-$(RMDIR) $(AMANDIR)/man$(MAN8DIR)
@@ -75,10 +75,10 @@ index d2c3932c3..98fe135cc 100644
  #
 diff --git a/man/Makefile.l10n b/man/Makefile.l10n
 new file mode 100644
-index 000000000..db18e023a
+index 000000000..d6ec6006c
 --- /dev/null
 +++ b/man/Makefile.l10n
-@@ -0,0 +1,246 @@
+@@ -0,0 +1,244 @@
 +#
 +# Man page makefile for CUPS.
 +#
@@ -102,7 +102,6 @@ index 000000000..db18e023a
 +MAN1	=	cancel.$(MAN1EXT) \
 +		cups.$(MAN1EXT) \
 +		cups-config.$(MAN1EXT) \
-+		cupstestdsc.$(MAN1EXT) \
 +		cupstestppd.$(MAN1EXT) \
 +		$(IPPFIND_MAN) \
 +		ipptool.$(MAN1EXT) \
@@ -134,7 +133,6 @@ index 000000000..db18e023a
 +		filter.$(MAN7EXT) \
 +		notifier.$(MAN7EXT)
 +MAN8	=	cupsaccept.$(MAN8EXT) \
-+		cupsaddsmb.$(MAN8EXT) \
 +		cupsctl.$(MAN8EXT) \
 +		cupsfilter.$(MAN8EXT) \
 +		cups-lpd.$(MAN8EXT) \

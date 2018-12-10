@@ -1,4 +1,4 @@
-From 82771132b4cd432903424aaefadab03150623960 Mon Sep 17 00:00:00 2001
+From 3d6cf1170d7b5a89d8e5127cdefb3e1ef2373f27 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:16 +0200
 Subject: Tests: Do not run the CUPS_EUC_JP test case on BSD/Hurd either, as

@@ -1,10 +1,11 @@
 /*
  * Search routines for CUPS.
  *
- * Copyright 2007-2014 by Apple Inc.
+ * Copyright 2007-2018 by Apple Inc.
  * Copyright 1997-2006 by Easy Software Products.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+ * information.
  */
 
 /*
@@ -34,8 +35,6 @@ cgiCompileSearch(const char *query)	/* I - Query string */
   size_t	wlen;			/* Word length */
   char		*lword;			/* Last word in query */
 
-
-  DEBUG_printf(("cgiCompileSearch(query=\"%s\")\n", query));
 
  /*
   * Range check input...
@@ -292,8 +291,6 @@ cgiCompileSearch(const char *query)	/* I - Query string */
   * Compile the regular expression...
   */
 
-  DEBUG_printf(("    s=\"%s\"\n", s));
-
   if (regcomp(re, s, REG_EXTENDED | REG_ICASE))
   {
     free(re);
@@ -361,4 +358,5 @@ void
 cgiFreeSearch(void *search)		/* I - Search context */
 {
   regfree((regex_t *)search);
+  free(search);
 }
