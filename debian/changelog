@@ -1,3 +1,10 @@
+cups (2.2.8-5ubuntu1.2) cosmic; urgency=medium
+
+  * fix-handling-of-MaxJobTime.patch: Fix handling of MaxJobTime 0
+    (LP: #1804576)
+
+ -- Dariusz Gadomski <dariusz.gadomski@canonical.com>  Wed, 12 Dec 2018 08:27:17 +0100
+
 cups (2.2.8-5ubuntu1.1) cosmic-security; urgency=medium
 
   * SECURITY UPDATE: predictable session cookies
