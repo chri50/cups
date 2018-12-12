@@ -1,0 +1,38 @@
+Description: Fix handling of MaxJobTime 0
+ Setting MaxJobTime to 0 resulted in immediate job cancellation
+ instead of disabling timeout-based cancelation (as per documentation).
+ .
+ cups (2.2.7-1ubuntu2.3) bionic; urgency=medium
+ .
+   * fix-handling-of-MaxJobTime.patch: Fix handling of MaxJobTime 0
+     (LP: #1804576)
+Origin: upstream, https://github.com/apple/cups/commit/8c7143551ab03423990c62923209363d760f925f
+Bug: https://github.com/apple/cups/issues/5438
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/1804576
+Last-Update: 2018-12-12
+
+--- cups-2.2.7.orig/scheduler/job.c
++++ cups-2.2.7/scheduler/job.c
+@@ -5102,8 +5102,10 @@ update_job(cupsd_job_t *job)		/* I - Job
+ 
+             if (cancel_after)
+ 	      job->cancel_time = time(NULL) + ippGetInteger(cancel_after, 0);
+-	    else
++	    else if (MaxJobTime > 0)
+ 	      job->cancel_time = time(NULL) + MaxJobTime;
++	    else
++	      job->cancel_time = 0;
+ 	  }
+         }
+       }
+--- cups-2.2.7.orig/scheduler/printers.c
++++ cups-2.2.7/scheduler/printers.c
+@@ -3445,7 +3445,7 @@ add_printer_defaults(cupsd_printer_t *p)
+         	 "document-format-default", NULL, "application/octet-stream");
+ 
+   if (!cupsGetOption("job-cancel-after", p->num_options, p->options))
+-    ippAddInteger(p->attrs, IPP_TAG_PRINTER, IPP_TAG_INTEGER,
++    ippAddInteger(p->attrs, IPP_TAG_PRINTER, MaxJobTime > 0 ? IPP_TAG_INTEGER : IPP_TAG_NOVALUE,
+ 		  "job-cancel-after-default", MaxJobTime);
+ 
+   if (!cupsGetOption("job-hold-until", p->num_options, p->options))
