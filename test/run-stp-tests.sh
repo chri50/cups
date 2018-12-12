@@ -541,6 +541,7 @@ FontPath $BASE/share/fonts
 DocumentRoot $root/doc
 RequestRoot $BASE/spool
 TempDir $BASE/spool/temp
+PidFile $BASE/cupsd.pid
 AccessLog $BASE/log/access_log
 ErrorLog $BASE/log/error_log
 PageLog $BASE/log/page_log
