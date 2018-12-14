@@ -1,0 +1,42 @@
+From f083e69ad83bd9445c1c3bfdf6878096ceb54113 Mon Sep 17 00:00:00 2001
+From: Michael Sweet <michael.r.sweet@gmail.com>
+Date: Mon, 23 Oct 2017 16:23:43 -0400
+Subject: DBUS notifications could crash the scheduler (Issue #5143)
+
+- scheduler/ipp.c: Make sure requesting-user-name string is valid UTF-8.
+
+Fixes: CVE-2017-18248
+---
+ scheduler/ipp.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/scheduler/ipp.c b/scheduler/ipp.c
+index dde976c72..50f5004b7 100644
+--- a/scheduler/ipp.c
++++ b/scheduler/ipp.c
+@@ -1576,6 +1576,16 @@ add_job(cupsd_client_t  *con,		/* I - Client connection */
+     return (NULL);
+   }
+ 
++  attr = ippFindAttribute(con->request, "requesting-user-name", IPP_TAG_NAME);
++
++  if (attr && !ippValidateAttribute(attr))
++  {
++    send_ipp_status(con, IPP_ATTRIBUTES, _("Bad requesting-user-name value: %s"), cupsLastErrorString());
++    if ((attr = ippCopyAttribute(con->response, attr, 0)) != NULL)
++      attr->group_tag = IPP_TAG_UNSUPPORTED_GROUP;
++    return (NULL);
++  }
++
+   if ((job = cupsdAddJob(priority, printer->name)) == NULL)
+   {
+     send_ipp_status(con, IPP_INTERNAL_ERROR,
+@@ -1594,8 +1604,6 @@ add_job(cupsd_client_t  *con,		/* I - Client connection */
+   add_job_uuid(job);
+   apply_printer_defaults(printer, job);
+ 
+-  attr = ippFindAttribute(job->attrs, "requesting-user-name", IPP_TAG_NAME);
+-
+   if (con->username[0])
+   {
+     cupsdSetString(&job->username, con->username);

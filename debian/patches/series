@@ -49,3 +49,5 @@ manpage-translations.patch
 0049-Tweak-the-PDL-priority-Issue-4932.patch
 0050-Only-list-supported-PDLs-Issue-4923.patch
 0051-Fix-local-privilege-escalation-to-root-and-sandbox-b.patch
+0052-DBUS-notifications-could-crash-the-scheduler-Issue-5.patch
+0053-CVE-2018-4700-Linux-session-cookies-used-a-predictab.patch

@@ -1,3 +1,12 @@
+cups (2.2.1-8+deb9u3) stretch; urgency=low
+
+  * Backport upstream fixes for:
+    - CVE-2017-18248: DBUS notifications could crash the scheduler
+    - CVE-2018-4700: Linux session cookies used a predictable random
+      number seed (Closes: #915909)
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 14 Dec 2018 13:58:47 +0100
+
 cups (2.2.1-8+deb9u2) stretch-security; urgency=low
 
   * CVE-2018-6553: Fix AppArmor cupsd sandbox bypass due to use of hard links
