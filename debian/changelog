@@ -1,3 +1,21 @@
+cups (2.2.10-3) unstable; urgency=medium
+
+  * reprotest errors; cleanup patches:
+    - Remove culprit patches refused for upstream integration:
+     - patch to implement PRINTER_LIST printer filtering (see #3092)
+     - patch to read embedded options from postcript (see #4344)
+     - patch to cope with newline in device IDs (see #4345)
+    - Update no-conffile-timestamp.patch for syntax bug
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 14 Dec 2018 12:53:56 +0100
+
+cups (2.2.10-2) unstable; urgency=medium
+
+  [ Helge Kreutzmann ]
+  * Update German man page (2192t)
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 14 Dec 2018 11:46:51 +0100
+
 cups (2.2.10-1) unstable; urgency=medium
 
   * New 2.2.10 upstream release

@@ -334,7 +334,6 @@ libcups.so.2 libcups2 #MINVER#
  ippEnumValue@Base 1.6.0
  ippErrorString@Base 1.4.0
  ippErrorValue@Base 1.4.0
- ippFilterPrinters@Base 1.4.0
  ippFindAttribute@Base 1.4.0
  ippFindNextAttribute@Base 1.4.0
  ippFirstAttribute@Base 1.6.0
