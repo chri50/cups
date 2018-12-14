@@ -3089,6 +3089,10 @@ _ppdCreateFromIPP(char   *buffer,	/* I - Filename buffer */
       const char *format = ippGetString(attr, i, NULL);
 					/* PDL */
 
+     /*
+      * Write cupsFilter2 lines for supported formats...
+      */
+
       if (!_cups_strcasecmp(format, "application/pdf"))
         cupsFilePuts(fp, "*cupsFilter2: \"application/vnd.cups-pdf application/pdf 10 -\"\n");
       else if (!_cups_strcasecmp(format, "image/jpeg") || !_cups_strcasecmp(format, "image/png"))
@@ -3097,8 +3101,6 @@ _ppdCreateFromIPP(char   *buffer,	/* I - Filename buffer */
         cupsFilePrintf(fp, "*cupsFilter2: \"%s %s 100 -\"\n", format, format);
       else if (!_cups_strcasecmp(format, "application/postscript"))
         cupsFilePuts(fp, "*cupsFilter2: \"application/vnd.cups-postscript application/postscript 10 -\"\n");
-      else if (_cups_strcasecmp(format, "application/octet-stream") && _cups_strcasecmp(format, "application/vnd.hp-pcl") && _cups_strcasecmp(format, "text/plain"))
-        cupsFilePrintf(fp, "*cupsFilter2: \"%s %s 10 -\"\n", format, format);
     }
   }
 
