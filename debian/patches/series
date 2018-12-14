@@ -15,10 +15,8 @@ tests-make-lpstat-call-reproducible.patch
 tests-no-pdftourf.patch
 move-cupsd-conf-default-to-share.patch
 drop_unnecessary_dependencies.patch
-read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.patch
-cups-deviced-allow-device-ids-with-newline.patch
 airprint-support.patch
-0021-Let-snmp-backend-also-use-manufacturer-specific-MIBs.patch
+0019-Let-snmp-backend-also-use-manufacturer-specific-MIBs.patch
 no-conffile-timestamp.patch
 removecvstag.patch
 rename-systemd-units.patch
@@ -27,13 +25,12 @@ reactivate_recommended_driver.patch
 logfiles_adm_readable.patch
 default_log_settings.patch
 confdirperms.patch
-printer-filtering.patch
 show-compile-command-lines.patch
 log-debug-history-nearly-unlimited.patch
 cupsd-set-default-for-SyncOnClose-to-Yes.patch
 cups-set-default-error-policy-retry-job.patch
 man-cups-lpd-drop-dangling-references.patch
 debianize_cups-config.patch
-0037-Build-mantohtml-with-the-build-architecture-compiler.patch
-0038-The-lp-and-lpr-commands-now-provide-better-error-mes.patch
+0034-Build-mantohtml-with-the-build-architecture-compiler.patch
+0035-The-lp-and-lpr-commands-now-provide-better-error-mes.patch
 manpage-translations.patch

@@ -2205,7 +2205,7 @@ cupsdSaveAllJobs(void)
   strftime(temp, sizeof(temp) - 1, "%Y-%m-%d %H:%M", curdate);
 
   cupsFilePuts(fp, "# Job cache file for " CUPS_SVERSION "\n");
-  cupsFilePrintf(fp, "# Written by cupsd\n", temp);
+  cupsFilePrintf(fp, "# Written by cupsd\n");
   cupsFilePrintf(fp, "NextJobId %d\n", NextJobId);
 
  /*

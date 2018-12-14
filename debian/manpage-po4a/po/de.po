@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 2.2.7-5\n"
 "POT-Creation-Date: 2018-12-08 12:54+0100\n"
-"PO-Revision-Date: 2018-06-06 19:40+0200\n"
+"PO-Revision-Date: 2018-12-09 06:47+0100\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
 "Language: de\n"
@@ -5126,10 +5126,9 @@ msgstr "cupsd-logs"
 
 #. type: TH
 #: cupsd-logs.man:13
-#, fuzzy, no-wrap
-#| msgid "9 November 2010"
+#, no-wrap
 msgid "8 November 2017"
-msgstr "9. November 2010"
+msgstr "8. November 2017"
 
 #. type: Plain text
 #: cupsd-logs.man:16
@@ -5682,41 +5681,29 @@ msgstr "SEITENPROTOKOLL-DATEIFORMAT"
 
 #. type: Plain text
 #: cupsd-logs.man:181
-#, fuzzy
-#| msgid ""
-#| "The I<page_log> file lists each page or group of pages that are sent to a "
-#| "printer.  By default, each line contains the following information:"
 msgid ""
 "The I<page_log> file lists the total number of pages (sheets) that are "
 "printed.  By default, each line contains the following information:"
 msgstr ""
-"Die Datei I<page_log> listet jede Seite oder Gruppe von Seiten auf, die an "
-"den Drucker gesandt werden. Standardmäßig enthält jede Zeile die folgenden "
-"Informationen:"
+"Die Datei I<page_log> listet die Gesamtzahl an gedruckten Seiten (Blättern) "
+"auf. Standardmäßig enthält jede Zeile die folgenden Informationen:"
 
 #. type: Plain text
 #: cupsd-logs.man:185
-#, fuzzy, no-wrap
-#| msgid ""
-#| "    I<printer user job-id date-time >B<total >I<num-impressions job-billing\n"
-#| "      job-originating-host-name job-name media sides>\n"
+#, no-wrap
 msgid ""
 "    I<printer user job-id date-time >B<total >I<num-sheets job-billing\n"
 "      job-originating-host-name job-name media sides>\n"
 msgstr ""
-"    I<Drucker Benutzer Auftrags-ID Datum-Uhrzeit >B<total >I<Anzahl-Abdrucke\n"
+"    I<Drucker Benutzer Auftrags-ID Datum-Uhrzeit >B<total >I<Anzahl-Blätter\n"
 "      Auftrags-Abrechnung Auftrags-erstellender-Rechnername Auftragsname Medium Seiten>\n"
 
 #. type: Plain text
 #: cupsd-logs.man:188
-#, fuzzy
-#| msgid ""
-#| "For example the entries for a two page job called \"myjob\" might look "
-#| "like:"
 msgid ""
 "For example the entry for a two page job called \"myjob\" might look like:"
 msgstr ""
-"Beispielsweise könnten die Einträge für einen zweiseitigen Auftrag namens "
+"Beispielsweise könnte der Eintrag für einen zweiseitigen Auftrag namens "
 "»meinAuftrag« wie folgt aussehen:"
 
 #. type: Plain text
@@ -5779,17 +5766,11 @@ msgstr ""
 
 #. type: Plain text
 #: cupsd-logs.man:209
-#, fuzzy
-#| msgid ""
-#| "Lines containing the keyword \"total\" have a I<num-impressions> field "
-#| "instead which provides the total number of impressions (sides) that have "
-#| "been printed on for the job."
 msgid ""
 "The I<num-sheets> field provides the total number of pages (sheets) that "
 "have been printed on for the job."
 msgstr ""
-"Zeilen, die das Schlüsselwort »total« enthalten, haben stattdessen ein Feld "
-"I<Anzahl-Abdrucke>, das die Gesamtanzahl der Abdrucke (Seiten) angibt, auf "
+"Das Feld I<Anzahl-Blätter> stellt die Gesamtzahl an Seiten (Blättern) bereit, auf "
 "die für den Auftrag gedruckt wurde."
 
 #. type: Plain text
@@ -6231,10 +6212,9 @@ msgstr "cups-files.conf"
 
 #. type: TH
 #: cups-files.conf.man.in:13
-#, fuzzy, no-wrap
-#| msgid "14 February 2018"
+#, no-wrap
 msgid "25 February 2018 "
-msgstr "14. Februar 2018"
+msgstr "25. Februar 2018"
 
 #. type: Plain text
 #: cups-files.conf.man.in:16
@@ -13078,10 +13058,9 @@ msgstr "lpadmin"
 
 #. type: TH
 #: lpadmin.man:13
-#, fuzzy, no-wrap
-#| msgid "29 August 2014"
+#, no-wrap
 msgid "19 August 2018"
-msgstr "29. August 2014"
+msgstr "19. August 2018"
 
 #. type: Plain text
 #: lpadmin.man:16
@@ -13535,17 +13514,16 @@ msgstr "Stellt eine textuelle Beschreibung des Ziels bereit."
 
 #. type: Plain text
 #: lpadmin.man:191
-#, fuzzy
-#| msgid ""
-#| "Enables the destination and accepts jobs; this is the same as running the "
-#| "B<cupsaccept>(8)  and B<cupsenable>(8)  programs on the destination."
 msgid ""
 "When specified before the B<-d>, B<-p>, or B<-x> options, forces the use of "
 "TLS encryption on the connection to the scheduler.  Otherwise, enables the "
 "destination and accepts jobs; this is the same as running the "
 "B<cupsaccept>(8)  and B<cupsenable>(8)  programs on the destination."
 msgstr ""
-"Aktiviert das Ziel und akzeptiert Aufträge. Dies ist identisch zur "
+"Erzwingt die Verwendung von TLS-Verschlüsselung bei der Verbindung zum "
+"Auftragsplaner, wenn vor den Optionen B<-d>, B<-p> oder B<-x> angegeben "
+"wurde. Aktiviert andernfalls das Ziel und akzeptiert Aufträge. Dies ist "
+"identisch zur "
 "Ausführung der Programme B<cupsaccept>(8) und B<cupsenable>(8) für das Ziel."
 
 #. type: TP
@@ -13591,6 +13569,8 @@ msgstr ""
 msgid ""
 "The double meaning of the B<-E> option is an unfortunate historical oddity."
 msgstr ""
+"Die doppelte Bedeutung der Option B<-E> ist eine unglückliche historische "
+"Kuriosität."
 
 #. type: Plain text
 #: lpadmin.man:205
