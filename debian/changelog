@@ -1,3 +1,18 @@
+cups (2.3~b7-1) experimental; urgency=medium
+
+  * New 2.3~b7 upstream release
+    - Drop two patches now included upstream
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 14 Dec 2018 17:08:55 +0100
+
+cups (2.3~b6-2) experimental; urgency=medium
+
+  * Merge 2.2.10-3
+  * Add patch to allow building with -Werror=maybe-uninitialized
+  * Drop now-superflous --dbgsym-migration dh_strip argument
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 14 Dec 2018 16:02:37 +0100
+
 cups (2.3~b6-1) experimental; urgency=medium
 
   * New 2.3~b6 upstream pre-release
@@ -75,6 +90,24 @@ cups (2.3~b3-1) experimental; urgency=medium
   * Bump debhelper compat to 11
 
  -- Didier Raboud <odyx@debian.org>  Fri, 23 Feb 2018 20:49:53 +0100
+
+cups (2.2.10-3) unstable; urgency=medium
+
+  * reprotest errors; cleanup patches:
+    - Remove culprit patches refused for upstream integration:
+     - patch to implement PRINTER_LIST printer filtering (see #3092)
+     - patch to read embedded options from postcript (see #4344)
+     - patch to cope with newline in device IDs (see #4345)
+    - Update no-conffile-timestamp.patch for syntax bug
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 14 Dec 2018 12:53:56 +0100
+
+cups (2.2.10-2) unstable; urgency=medium
+
+  [ Helge Kreutzmann ]
+  * Update German man page (2192t)
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 14 Dec 2018 11:46:51 +0100
 
 cups (2.2.10-1) unstable; urgency=medium
 
