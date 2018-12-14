@@ -1,4 +1,4 @@
-From 6f02ec18a0ebd8fe9a62f4680bc9cdd434cbf7d3 Mon Sep 17 00:00:00 2001
+From 25b0df63b43c152623013661fd314992300864a9 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Bastien=20ROUCARI=C3=88S?= <bastien.roucaries@u-cergy.fr>
 Date: Tue, 9 Aug 2016 18:11:48 +0200
 Subject: Drop dangling references from cups-lpd.man

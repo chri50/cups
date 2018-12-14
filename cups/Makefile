@@ -356,7 +356,7 @@ uninstall:
 libcups.so.2:	$(LIBOBJS)
 	echo Linking $@...
 	$(DSO) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(LIBOBJS) \
-		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) -lpthread $(LIBZ) -lm
+		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
 	$(RM) `basename $@ .2`
 	$(LN) $@ `basename $@ .2`
 
@@ -372,7 +372,7 @@ libcups.2.dylib:	$(LIBOBJS)
 		-current_version 2.14.0 \
 		-compatibility_version 2.0.0 \
 		$(LIBOBJS) \
-		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) -lpthread $(LIBZ)
+		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 	$(RM) libcups.dylib
 	$(LN) $@ libcups.dylib
@@ -423,7 +423,7 @@ libcups2.def: $(LIBOBJS) $(IMAGEOBJS) Makefile
 
 libcupsimage.so.2:	$(IMAGEOBJS) libcups.so.2
 	echo Linking $@...
-	$(DSO) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(IMAGEOBJS) $(DSOLIBS) $(LINKCUPS) -lpthread
+	$(DSO) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(IMAGEOBJS) $(DSOLIBS) $(LINKCUPS)
 	$(RM) `basename $@ .2`
 	$(LN) $@ `basename $@ .2`
 

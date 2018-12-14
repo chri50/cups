@@ -1,4 +1,4 @@
-From b4da9302370e7375237c65637f7f84e34f3d1892 Mon Sep 17 00:00:00 2001
+From 97b417c21ae265edd382cdf106956f17e662b729 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:05 +0200
 Subject: Fix hyphen-used-as-minus-sign manpage errors
