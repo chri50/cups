@@ -1,3 +1,17 @@
+cups (2.2.10-4) unstable; urgency=low
+
+  * Backport patches from upstream's 2.2 "stable" branch:
+    - Protect against continuing to read from a file at EOF (Issue #5473)
+    - Use the same requested-attributes values for all IPP Everywhere setup
+      requests (Issue #5484)
+    - Add a USB quirk rule for the Lexmark E120n (Issue #5478)
+    - Updated the USB quirks rule for Zebra label printers (Issue #5395)
+    - Fix compile error on Linux (Issue #5483)
+    - Stop parsing the Emulators keywords in PPD files (Issue #5475)
+    - Fix potential unaligned accesses in the string pool (Issue #5474)
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 16 Feb 2019 14:48:42 +0100
+
 cups (2.2.10-3) unstable; urgency=medium
 
   * reprotest errors; cleanup patches:

@@ -33,4 +33,11 @@ man-cups-lpd-drop-dangling-references.patch
 debianize_cups-config.patch
 0034-Build-mantohtml-with-the-build-architecture-compiler.patch
 0035-The-lp-and-lpr-commands-now-provide-better-error-mes.patch
+0036-Protect-against-continuing-to-read-from-a-file-at-EO.patch
+0037-Use-the-same-requested-attributes-values-for-all-IPP.patch
+0038-Add-a-USB-quirk-rule-for-the-Lexmark-E120n-Issue-547.patch
+0039-Updated-the-USB-quirks-rule-for-Zebra-label-printers.patch
+0040-Fix-compile-error-on-Linux-Issue-5483.patch
+0041-Stop-parsing-the-Emulators-keywords-in-PPD-files-Iss.patch
+0042-Fix-potential-unaligned-accesses-in-the-string-pool-.patch
 manpage-translations.patch
