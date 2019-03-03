@@ -1,0 +1,15 @@
+From: Michael R Sweet <michael.r.sweet@gmail.com>
+Date: Wed, 11 Apr 2018 22:03:57 -0400
+Subject: [PATCH] Fix cups_auth_find for schemes without parameters.
+https://bugs.launchpad.net/ubuntu/+source/cups/+bug/1783298
+--- a/cups/auth.c
++++ b/cups/auth.c
+@@ -620,7 +620,7 @@
+     * See if this is "Scheme" followed by whitespace or the end of the string.
+     */
+ 
+-    if (!strncmp(www_authenticate, scheme, schemelen) && (isspace(www_authenticate[schemelen] & 255) || !www_authenticate[schemelen]))
++    if (!strncmp(www_authenticate, scheme, schemelen) && (isspace(www_authenticate[schemelen] & 255) || www_authenticate[schemelen] == ',' || !www_authenticate[schemelen]))
+     {
+      /*
+       * Yes, this is the start of the scheme-specific information...

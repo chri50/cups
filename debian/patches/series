@@ -42,3 +42,5 @@ fix-another-crash-when-creating-temporary-queue.patch
 CVE-2018-418x.patch
 CVE-2018-4700.patch
 fix-handling-of-MaxJobTime.patch
+fix-a-parsing-bug-in-the-new-authentication-code.patch
+fix-cups-auth-find-for-schemes-without-parameters.patch

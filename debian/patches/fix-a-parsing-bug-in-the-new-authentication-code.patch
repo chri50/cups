@@ -1,0 +1,24 @@
+From: Michael R Sweet <michael.r.sweet@gmail.com>
+Date: Wed, 11 Apr 2018 13:10:51 -0400
+Subject: [PATCH] Fix a parsing bug in the new authentication code.
+Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/cups/+bug/1783298
+--- a/cups/auth.c
++++ b/cups/auth.c
+@@ -218,7 +218,7 @@
+       if (!cg->lang_default)
+ 	cg->lang_default = cupsLangDefault();
+ 
+-      if (cups_auth_param(scheme, "username", default_username, sizeof(default_username)))
++      if (cups_auth_param(schemedata, "username", default_username, sizeof(default_username)))
+ 	cupsSetUser(default_username);
+ 
+       snprintf(prompt, sizeof(prompt), _cupsLangString(cg->lang_default, _("Password for %s on %s? ")), cupsUser(), http->hostname[0] == '/' ? "localhost" : http->hostname);
+@@ -801,7 +801,7 @@
+     * Parse the scheme name or param="value" string...
+     */
+ 
+-    for (sptr = scheme, start = www_authenticate, param = 0; *www_authenticate && !isspace(*www_authenticate & 255); www_authenticate ++)
++    for (sptr = scheme, start = www_authenticate, param = 0; *www_authenticate && *www_authenticate != ',' && !isspace(*www_authenticate & 255); www_authenticate ++)
+     {
+       if (*www_authenticate == '=')
+         param = 1;
