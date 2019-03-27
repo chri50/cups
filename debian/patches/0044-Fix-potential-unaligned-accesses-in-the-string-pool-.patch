@@ -1,4 +1,4 @@
-From 285ff5788b33ae73ebf73656ceb9a6a912e0d0c9 Mon Sep 17 00:00:00 2001
+From ffbb46708544f6408bc72f200aa7365ba1222f97 Mon Sep 17 00:00:00 2001
 From: Michael R Sweet <michael.r.sweet@gmail.com>
 Date: Mon, 21 Jan 2019 14:21:57 -0500
 Subject: Fix potential unaligned accesses in the string pool (Issue #5474)
