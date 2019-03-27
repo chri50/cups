@@ -37,7 +37,9 @@ debianize_cups-config.patch
 0037-Use-the-same-requested-attributes-values-for-all-IPP.patch
 0038-Add-a-USB-quirk-rule-for-the-Lexmark-E120n-Issue-547.patch
 0039-Updated-the-USB-quirks-rule-for-Zebra-label-printers.patch
-0040-Fix-compile-error-on-Linux-Issue-5483.patch
-0041-Stop-parsing-the-Emulators-keywords-in-PPD-files-Iss.patch
-0042-Fix-potential-unaligned-accesses-in-the-string-pool-.patch
+0040-Add-USB-quirks-rule-for-Xerox-printers-Issue-5523.patch
+0041-Add-a-USB-quirks-rule-for-the-DYMO-450-Turbo-Issue-5.patch
+0042-Fix-compile-error-on-Linux-Issue-5483.patch
+0043-Stop-parsing-the-Emulators-keywords-in-PPD-files-Iss.patch
+0044-Fix-potential-unaligned-accesses-in-the-string-pool-.patch
 manpage-translations.patch

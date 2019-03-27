@@ -1,4 +1,4 @@
-From 6a6ba891dfe51dcfda58bfebf71f3bbbcb014583 Mon Sep 17 00:00:00 2001
+From 6f2402e51d47e9cebe27eec5bfdb0e5543127e2a Mon Sep 17 00:00:00 2001
 From: Michael R Sweet <michael.r.sweet@gmail.com>
 Date: Mon, 21 Jan 2019 11:54:58 -0500
 Subject: Fix compile error on Linux (Issue #5483)
