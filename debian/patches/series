@@ -42,4 +42,5 @@ debianize_cups-config.patch
 0042-Fix-compile-error-on-Linux-Issue-5483.patch
 0043-Stop-parsing-the-Emulators-keywords-in-PPD-files-Iss.patch
 0044-Fix-potential-unaligned-accesses-in-the-string-pool-.patch
+0045-Fix-an-issue-with-PreserveJobHistory-and-time-values.patch
 manpage-translations.patch
