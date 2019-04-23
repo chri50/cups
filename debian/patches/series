@@ -61,3 +61,4 @@ CVE-2017-18248.patch
 CVE-2018-418x.patch
 CVE-2018-4700.patch
 fix-handling-of-MaxJobTime.patch
+systemd-service-for-cupsd-after-sssd.patch
