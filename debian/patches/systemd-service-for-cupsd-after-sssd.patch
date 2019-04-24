@@ -1,0 +1,16 @@
+Description: Make cupsd.service start after sssd.service to avoid a race
+ condition when SystemGroup is set to a remote group. LP: #1822062
+Author: Victor Tapia <victor.tapia@canonical.com>
+Origin: https://github.com/apple/cups/commit/4d0f1959a3f46973caec2cd41828c59674fe195d
+Bug: https://github.com/apple/cups/pull/5551
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/1822062
+--- a/scheduler/org.cups.cupsd.service.in
++++ b/scheduler/org.cups.cupsd.service.in
+@@ -1,6 +1,7 @@
+ [Unit]
+ Description=CUPS Scheduler
+ Documentation=man:cupsd(8)
++After=sssd.service
+ 
+ [Service]
+ ExecStart=@sbindir@/cupsd -l

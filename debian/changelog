@@ -1,3 +1,10 @@
+cups (2.2.8-5ubuntu1.3) cosmic; urgency=medium
+
+  * d/p/systemd-service-for-cupsd-after-sssd.patch: Start cupsd after sssd if
+    installed (LP: #1822062)
+
+ -- Victor Tapia <victor.tapia@canonical.com>  Wed, 24 Apr 2019 17:21:13 +0200
+
 cups (2.2.8-5ubuntu1.2) cosmic; urgency=medium
 
   * fix-handling-of-MaxJobTime.patch: Fix handling of MaxJobTime 0
