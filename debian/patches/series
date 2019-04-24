@@ -44,3 +44,4 @@ debianize_cups-config.patch
 0044-Fix-potential-unaligned-accesses-in-the-string-pool-.patch
 0045-Fix-an-issue-with-PreserveJobHistory-and-time-values.patch
 manpage-translations.patch
+systemd-service-for-cupsd-after-sssd.patch
