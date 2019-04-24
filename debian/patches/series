@@ -44,3 +44,4 @@ CVE-2018-4700.patch
 fix-handling-of-MaxJobTime.patch
 fix-a-parsing-bug-in-the-new-authentication-code.patch
 fix-cups-auth-find-for-schemes-without-parameters.patch
+systemd-service-for-cupsd-after-sssd.patch
