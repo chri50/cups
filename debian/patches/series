@@ -41,3 +41,4 @@ debianize_cups-config.patch
 0041-Stop-parsing-the-Emulators-keywords-in-PPD-files-Iss.patch
 0042-Fix-potential-unaligned-accesses-in-the-string-pool-.patch
 manpage-translations.patch
+systemd-service-for-cupsd-after-sssd.patch
