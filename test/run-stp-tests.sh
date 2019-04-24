@@ -970,6 +970,8 @@ fi
 count=`$GREP '^E ' $BASE/log/error_log | $GREP -v 'Unknown default SystemGroup' | \
        $GREP -v '(usb) crashed on signal 11' | \
        $GREP -v '(dnssd) stopped with status 1' | \
+       $GREP -v 'loadFile failed: temp file: not a PDF file' | \
+       $GREP -v 'Failed to connect to system bus' | \
        wc -l | awk '{print $1}'`
 if test $count != 33; then
 	echo "FAIL: $count error messages, expected 33."
