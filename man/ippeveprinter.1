@@ -122,8 +122,8 @@ If "command" is not an absolute path ("/path/to/command"),
 looks for the command in the "ippeveprinter" subdirectory of the CUPS binary directory, typically /usr/lib/cups/ippeveprinter or /usr/libexec/cups/ippeveprinter.
 The
 .BR cups-config (1)
-command can be used to discover the correct binary directory ("cups-config --serverbin").
-In addition, the CUPS_SERVERBIN environment variable can be used to override the default location of this directory - see the
+command can be used to discover the correct binary directory ("cups-config \--serverbin").
+In addition, the CUPS_SERVERBIN environment variable can be used to override the default location of this directory \- see the
 .BR cups (1)
 man page for more details.
 .TP 5
@@ -220,7 +220,7 @@ Logs an informational/progress message if \-v has been specified and copies the 
 \fBSTATE: \fIkeyword[,keyword,...]\fR
 Sets the printer's "printer-state-reasons" attribute to the listed keywords.
 .TP 5
-\fBSTATE: -\fIkeyword[,keyword,...]\fR
+\fBSTATE: \-\fIkeyword[,keyword,...]\fR
 Removes the listed keywords from the printer's "printer-state-reasons" attribute.
 .TP 5
 \fBSTATE: +\fIkeyword[,keyword,...]\fR
