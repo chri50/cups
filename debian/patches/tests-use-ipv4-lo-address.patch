@@ -1,13 +1,13 @@
-From 17be6e0260c807b5ce2c5bb5857275c744fef556 Mon Sep 17 00:00:00 2001
+From f9a39c292ab9d66fcc586c9935c0ea31b310722a Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:21 +0200
-Subject: Use 127.0.0.1 instead of localhost in the test-suite. This should
+Subject: Tests: Use 127.0.0.1 instead of localhost to help pbuilder
 
- make the test-suite work in pbuilder. It apparently also fixes an ipp backend
- problem in the test-suite.
+This should make the test-suite work in pbuilder. It apparently also fixes an
+ipp backend problem in the test-suite.
+
 Origin: vendor
 Last-Update: 2016-08-05
-
 Patch-Name: tests-use-ipv4-lo-address.patch
 ---
  test/5.1-lpadmin.sh   | 4 ++--
@@ -30,10 +30,10 @@ index 7efc39892..08b8c508f 100644
  	echo "    FAILED"
  	exit 1
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index e59363ec5..1b62797ba 100755
+index 492982005..3f0becde9 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -482,7 +482,7 @@ fi
+@@ -490,7 +490,7 @@ fi
  cat >$BASE/cupsd.conf <<EOF
  StrictConformance Yes
  Browsing Off
@@ -42,7 +42,7 @@ index e59363ec5..1b62797ba 100755
  Listen $BASE/sock
  MaxSubscriptions 3
  MaxLogSize 0
-@@ -609,7 +609,7 @@ fi
+@@ -617,7 +617,7 @@ fi
  
  # These get exported because they don't have side-effects...
  CUPS_DISABLE_APPLE_DEFAULT=yes; export CUPS_DISABLE_APPLE_DEFAULT
@@ -51,10 +51,10 @@ index e59363ec5..1b62797ba 100755
  CUPS_SERVERROOT=$BASE; export CUPS_SERVERROOT
  CUPS_STATEDIR=$BASE; export CUPS_STATEDIR
  CUPS_DATADIR=$BASE/share; export CUPS_DATADIR
-@@ -735,10 +735,10 @@ for file in 4*.test ipp-2.1.test; do
+@@ -743,10 +743,10 @@ for file in 4*.test ../examples/ipp-2.1.test; do
          echo $ac_n "`date '+[%d/%b/%Y:%H:%M:%S %z]'` $ac_c" >>$strfile
  
- 	if test $file = ipp-2.1.test; then
+ 	if test $file = ../examples/ipp-2.1.test; then
 -		uri="ipp://localhost:$port/printers/Test1"
 +		uri="ipp://127.0.0.1:$port/printers/Test1"
  		options="-V 2.1 -d NOPRINT=1 -f testfile.ps"
@@ -63,4 +63,4 @@ index e59363ec5..1b62797ba 100755
 +		uri="ipp://127.0.0.1:$port/printers"
  		options=""
  	fi
- 	$runcups $VALGRIND ./ipptool -tI $options $uri $file >> $strfile
+ 	$runcups $VALGRIND ../tools/ipptool -tI $options $uri $file >> $strfile

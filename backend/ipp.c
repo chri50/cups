@@ -1,7 +1,7 @@
 /*
  * IPP backend for CUPS.
  *
- * Copyright © 2007-2018 by Apple Inc.
+ * Copyright © 2007-2019 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
  * Licensed under Apache License v2.0.  See the file "LICENSE" for more
@@ -23,12 +23,8 @@
 #  define kPMPrintUIToolAgent	"com.apple.printuitool.agent"
 #  define kPMStartJob		100
 #  define kPMWaitForJob		101
-#  ifdef HAVE_XPC_PRIVATE_H
-#    include <xpc/private.h>
-#  else
 extern void	xpc_connection_set_target_uid(xpc_connection_t connection,
 		                              uid_t uid);
-#  endif /* HAVE_XPC_PRIVATE_H */
 #endif /* HAVE_GSSAPI && HAVE_XPC */
 
 
@@ -2239,8 +2235,9 @@ main(int  argc,				/* I - Number of command-line args */
   else if (ipp_status == IPP_STATUS_ERROR_CUPS_ACCOUNT_AUTHORIZATION_FAILED)
     fputs("JOBSTATE: account-authorization-failed\n", stderr);
 
-  if (ipp_status == IPP_STATUS_ERROR_NOT_AUTHORIZED || ipp_status == IPP_STATUS_ERROR_FORBIDDEN ||
-      ipp_status == IPP_STATUS_ERROR_CUPS_AUTHENTICATION_CANCELED)
+  if (job_canceled)
+    return (CUPS_BACKEND_OK);
+  else if (ipp_status == IPP_STATUS_ERROR_NOT_AUTHORIZED || ipp_status == IPP_STATUS_ERROR_FORBIDDEN || ipp_status == IPP_STATUS_ERROR_CUPS_AUTHENTICATION_CANCELED)
     return (CUPS_BACKEND_AUTH_REQUIRED);
   else if (ipp_status == IPP_STATUS_ERROR_CUPS_ACCOUNT_LIMIT_REACHED ||
 	   ipp_status == IPP_STATUS_ERROR_CUPS_ACCOUNT_INFO_NEEDED ||
@@ -2582,8 +2579,7 @@ monitor_printer(
         }
       }
 
-      fprintf(stderr, "DEBUG: (monitor) job-state = %s\n",
-              ippEnumString("job-state", monitor->job_state));
+      fprintf(stderr, "DEBUG: (monitor) job-state = %s\n", ippEnumString("job-state", (int)monitor->job_state));
 
       if (!job_canceled &&
           (monitor->job_state == IPP_JSTATE_CANCELED ||
@@ -2664,8 +2660,7 @@ monitor_printer(
 
       ippDelete(response);
 
-      fprintf(stderr, "DEBUG: (monitor) job-state = %s\n",
-              ippEnumString("job-state", monitor->job_state));
+      fprintf(stderr, "DEBUG: (monitor) job-state = %s\n", ippEnumString("job-state", (int)monitor->job_state));
 
       if (!job_canceled &&
           (monitor->job_state == IPP_JSTATE_CANCELED ||

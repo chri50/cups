@@ -1,4 +1,4 @@
-From 4b2c249f95612fe54deceb76e1fbe1d0813b20dd Mon Sep 17 00:00:00 2001
+From ea4f9320dfa51cb939e3a8c24ee0a182e2720817 Mon Sep 17 00:00:00 2001
 From: Tim Waugh <twaugh@redhat.com>
 Date: Tue, 9 Aug 2016 18:11:46 +0200
 Subject: Set the default for SyncOnClose to Yes
@@ -9,7 +9,7 @@ Patch-Name: cupsd-set-default-for-SyncOnClose-to-Yes.patch
 ---
  conf/cups-files.conf.in           | 2 +-
  doc/help/man-cups-files.conf.html | 2 +-
- man/cups-files.conf.man.in        | 2 +-
+ man/cups-files.conf.5             | 2 +-
  scheduler/conf.c                  | 2 +-
  4 files changed, 4 insertions(+), 4 deletions(-)
 
@@ -27,7 +27,7 @@ index 4a78ba615..a3d088da5 100644
  # Default user and group for filters/backends/helper programs; this cannot be
  # any user or group that resolves to ID 0 for security reasons...
 diff --git a/doc/help/man-cups-files.conf.html b/doc/help/man-cups-files.conf.html
-index bc2900777..5ad464ba1 100644
+index 27a1b60da..d7995cbbe 100644
 --- a/doc/help/man-cups-files.conf.html
 +++ b/doc/help/man-cups-files.conf.html
 @@ -150,7 +150,7 @@ The default is "/var/run/cups" or "/etc/cups" depending on the platform.
@@ -39,10 +39,10 @@ index bc2900777..5ad464ba1 100644
  <dt><a name="SystemGroup"></a><b>SystemGroup </b><i>group-name </i>[ ... <i>group-name</i> ]
  <dd style="margin-left: 5.0em">Specifies the group(s) to use for <i>@SYSTEM</i> group authentication.
  The default contains "admin", "lpadmin", "root", "sys", and/or "system".
-diff --git a/man/cups-files.conf.man.in b/man/cups-files.conf.man.in
-index fe2d7aa52..bd61c96cc 100644
---- a/man/cups-files.conf.man.in
-+++ b/man/cups-files.conf.man.in
+diff --git a/man/cups-files.conf.5 b/man/cups-files.conf.5
+index 72494065c..955f47b55 100644
+--- a/man/cups-files.conf.5
++++ b/man/cups-files.conf.5
 @@ -211,7 +211,7 @@ The default is "/var/run/cups" or "/etc/cups" depending on the platform.
  Specifies whether the scheduler calls
  .BR fsync (2)
@@ -53,7 +53,7 @@ index fe2d7aa52..bd61c96cc 100644
  .TP 5
  \fBSystemGroup \fIgroup-name \fR[ ... \fIgroup-name\fR ]
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index c66e35322..59238e0ae 100644
+index 850d8cb59..d90f41d7b 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -735,7 +735,7 @@ cupsdReadConfiguration(void)
@@ -62,6 +62,6 @@ index c66e35322..59238e0ae 100644
    StrictConformance        = FALSE;
 -  SyncOnClose              = FALSE;
 +  SyncOnClose              = TRUE;
-   Timeout                  = DEFAULT_TIMEOUT;
+   Timeout                  = 900;
    WebInterface             = CUPS_DEFAULT_WEBIF;
  

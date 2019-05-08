@@ -1,4 +1,4 @@
-From c8878cdcffcdb682deca0f8f7b30ba94bc43de7a Mon Sep 17 00:00:00 2001
+From 6cc04d7742256d489756d0abdb9960d9a2d0130a Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:33:56 +0200
 Subject: Tests: ignore errors triggered on ipv6-deprived hosts
@@ -13,10 +13,10 @@ Patch-Name: tests-ignore-ipv6-address-family-not-supported.patch
  1 file changed, 1 insertion(+)
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index 120fe3c32..d99b3dd0d 100755
+index f5a98dd64..f3a432155 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -964,6 +964,7 @@ count=`$GREP '^E ' $BASE/log/error_log | $GREP -v 'Unknown default SystemGroup'
+@@ -1030,6 +1030,7 @@ count=`$GREP '^E ' $BASE/log/error_log | $GREP -v 'Unknown default SystemGroup'
         $GREP -v '(dnssd) stopped with status 1' | \
         $GREP -v 'loadFile failed: temp file: not a PDF file' | \
         $GREP -v 'Failed to connect to system bus' | \

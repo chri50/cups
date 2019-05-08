@@ -1,7 +1,7 @@
 dnl
 dnl Configuration script for CUPS.
 dnl
-dnl Copyright © 2007-2018 by Apple Inc.
+dnl Copyright © 2007-2019 by Apple Inc.
 dnl Copyright © 1997-2007 by Easy Software Products, all rights reserved.
 dnl
 dnl Licensed under Apache License v2.0.  See the file "LICENSE" for more
@@ -12,7 +12,7 @@ dnl We need at least autoconf 2.60...
 AC_PREREQ(2.60)
 
 dnl Package name and version...
-AC_INIT([CUPS], [2.3b7], [https://github.com/apple/cups/issues], [cups], [https://www.cups.org/])
+AC_INIT([CUPS], [2.3b8], [https://github.com/apple/cups/issues], [cups], [https://www.cups.org/])
 
 sinclude(config-scripts/cups-opsys.m4)
 sinclude(config-scripts/cups-common.m4)
@@ -75,13 +75,6 @@ AC_OUTPUT(Makedefs
 	  cups-config
 	  desktop/cups.desktop
 	  doc/index.html
-	  man/client.conf.man
-	  man/cups-files.conf.man
-	  man/cups-lpd.man
-	  man/cups-snmp.man
-	  man/cupsd.conf.man
-	  man/cupsd.man
-	  man/lpoptions.man
 	  scheduler/cups-lpd.xinetd
 	  scheduler/cups.sh
 	  scheduler/cups.xml
