@@ -1,4 +1,4 @@
-From 6031680a3f8dc038da4a7c96da252ffd25d76135 Mon Sep 17 00:00:00 2001
+From 5b651b291af01d37ccae44a8f470c8b9c74f08bd Mon Sep 17 00:00:00 2001
 From: Till Kampetter <till.kampetter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:43 +0200
 Subject: Show compile command lines
@@ -9,10 +9,10 @@ Patch-Name: show-compile-command-lines.patch
  1 file changed, 1 deletion(-)
 
 diff --git a/Makedefs.in b/Makedefs.in
-index f96a5e9bf..367f73c81 100644
+index e345e2fd1..92850dbcc 100644
 --- a/Makedefs.in
 +++ b/Makedefs.in
-@@ -262,7 +262,6 @@ USBQUIRKS	=	@USBQUIRKS@
+@@ -264,7 +264,6 @@ USBQUIRKS	=	@USBQUIRKS@
  # Rules...
  #
  

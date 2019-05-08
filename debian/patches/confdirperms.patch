@@ -1,4 +1,4 @@
-From e81b709d97fe38fc2c4815df04acff8355c8a5d3 Mon Sep 17 00:00:00 2001
+From a170a5718c91a51dfc2ae122d9be8a8e61e06784 Mon Sep 17 00:00:00 2001
 From: Martin Pitt <mpitt@debian.org>
 Date: Tue, 9 Aug 2016 18:11:41 +0200
 Subject: Do not mess with the permissions of cupsd.conf.
@@ -11,7 +11,7 @@ Patch-Name: confdirperms.patch
  1 file changed, 2 insertions(+)
 
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index 6bcbb262b..a1d9e44eb 100644
+index b73d33f93..31eedbf71 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -1135,10 +1135,12 @@ cupsdReadConfiguration(void)

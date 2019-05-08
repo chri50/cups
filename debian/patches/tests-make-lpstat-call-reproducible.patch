@@ -1,10 +1,10 @@
-From 77d2490f40b6056bf140cda37fe7d8b7f5acafc7 Mon Sep 17 00:00:00 2001
+From 72ff06eb3de1f2205f2e0210e86cdb8fccdb84dc Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:22 +0200
-Subject: Force LC_ALL=C environment variable when grepping the output of
- lpstat.
+Subject: Tests: Force LC_ALL=C environment variable when grepping the output
+ of lpstat
 
- Permits testing in non-"C" environments.
+Permits testing in non-"C" environments.
 Origin: vendor
 Last-Update: 2016-07-11
 Patch-Name: tests-make-lpstat-call-reproducible.patch
@@ -13,10 +13,10 @@ Patch-Name: tests-make-lpstat-call-reproducible.patch
  1 file changed, 1 insertion(+)
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index 1b62797ba..0fccd08f9 100755
+index 3f0becde9..baebdeec9 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -634,6 +634,7 @@ echo "DYLD_LIBRARY_PATH=\"$DYLD_LIBRARY_PATH\"; export DYLD_LIBRARY_PATH" >>$run
+@@ -642,6 +642,7 @@ echo "DYLD_LIBRARY_PATH=\"$DYLD_LIBRARY_PATH\"; export DYLD_LIBRARY_PATH" >>$run
  echo "LD_LIBRARY_PATH=\"$LD_LIBRARY_PATH\"; export LD_LIBRARY_PATH" >>$runcups
  echo "LD_PRELOAD=\"$LD_PRELOAD\"; export LD_PRELOAD" >>$runcups
  echo "LOCALEDIR=\"$LOCALEDIR\"; export LOCALEDIR" >>$runcups

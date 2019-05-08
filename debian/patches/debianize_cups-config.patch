@@ -1,4 +1,4 @@
-From a29e45d362f54d695f420d8a673d75d5d3ab2338 Mon Sep 17 00:00:00 2001
+From e6b6427e190e1adebbd01991ef7f4f5813ee83a5 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:49 +0200
 Subject: Use dpkg-architecture in cups-config to make it
@@ -14,25 +14,23 @@ Bug-Debian: https://bugs.debian.org/751157
 Last-Update: 2014-06-11
 Patch-Name: debianize_cups-config.patch
 ---
- cups-config.in | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ cups-config.in | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/cups-config.in b/cups-config.in
-index a73a70fcb..048554ad5 100755
+index 64c893c0d..ce3b6f187 100755
 --- a/cups-config.in
 +++ b/cups-config.in
-@@ -17,8 +17,8 @@ prefix=@prefix@
+@@ -17,7 +17,7 @@ prefix=@prefix@
  exec_prefix=@exec_prefix@
  bindir=@bindir@
  includedir=@includedir@
 -libdir=@libdir@
--imagelibdir=@libdir@
 +libdir=${prefix}/lib/$(dpkg-architecture -qDEB_HOST_MULTIARCH)
-+imagelibdir=${prefix}/lib/$(dpkg-architecture -qDEB_HOST_MULTIARCH)
  datarootdir=@datadir@
  datadir=@datadir@
  sysconfdir=@sysconfdir@
-@@ -30,7 +30,8 @@ INSTALLSTATIC=@INSTALLSTATIC@
+@@ -29,7 +29,8 @@ INSTALLSTATIC=@INSTALLSTATIC@
  # flags for C++ compiler:
  CFLAGS=""
  LDFLAGS="@EXPORT_LDFLAGS@"
@@ -42,7 +40,7 @@ index a73a70fcb..048554ad5 100755
  
  # Check for local invocation...
  selfdir=`dirname $0`
-@@ -45,7 +46,7 @@ else
+@@ -43,7 +44,7 @@ else
  	CFLAGS="$CFLAGS -I$includedir"
      fi
  
@@ -51,12 +49,12 @@ index a73a70fcb..048554ad5 100755
  	LDFLAGS="$LDFLAGS -L$libdir"
      fi
  fi
-@@ -100,7 +101,7 @@ while test $# -gt 0; do
+@@ -98,7 +99,7 @@ while test $# -gt 0; do
  	    ;;
  	--libs)
  	    if test $static = no; then
 -	        libs="@EXTLINKCUPS@ $LIBS";
 +	        libs="@EXTLINKCUPS@";
-  	        if test $image = yes; then
-  	            libs="@EXTLINKCUPSIMAGE@ $libs"
- 		fi
+ 	    else
+ 	        libs="$libdir/libcups.a $LIBS";
+ 	    fi

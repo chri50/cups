@@ -3,7 +3,7 @@
 #
 # Original version by Jason McMullan <jmcc@ontv.com>.
 #
-# Copyright © 2007-2018 by Apple Inc.
+# Copyright © 2007-2019 by Apple Inc.
 # Copyright © 1999-2007 by Easy Software Products, all rights reserved.
 #
 # Licensed under Apache License v2.0.  See the file "LICENSE" for more
@@ -40,12 +40,12 @@
 
 Summary: CUPS
 Name: cups
-Version: 2.3b7
+Version: 2.3b8
 Release: 0
 Epoch: 1
 License: GPL
 Group: System Environment/Daemons
-Source: https://github.com/apple/cups/releases/download/v2.3b7/cups-2.3b7-source.tar.gz
+Source: https://github.com/apple/cups/releases/download/v2.3b8/cups-2.3b8-source.tar.gz
 Url: http://www.cups.org
 Packager: Anonymous <anonymous@example.com>
 Vendor: Example Corp
@@ -216,6 +216,7 @@ rm -rf $RPM_BUILD_ROOT
 
 /usr/bin/cancel
 /usr/bin/cupstestppd
+/usr/bin/ippeveprinter
 /usr/bin/ipptool
 /usr/bin/lp*
 %dir /usr/lib/cups
@@ -242,6 +243,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir /usr/lib/cups/driver
 %dir /usr/lib/cups/filter
 /usr/lib/cups/filter/*
+%dir /usr/lib/cups/ippeveprinter
+/usr/lib/cups/ippeveprinter/*
 %dir /usr/lib/cups/monitor
 /usr/lib/cups/monitor/*
 %dir /usr/lib/cups/notifier
@@ -333,6 +336,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/man/man1/cancel.1.gz
 /usr/share/man/man1/cups.1.gz
 /usr/share/man/man1/cupstestppd.1.gz
+/usr/share/man/man1/ippeveprinter.1.gz
 %if %{?_with_dnssd:1}%{!?_with_dnssd:0}
 # DNS-SD
 /usr/share/man/man1/ippfind.1.gz
@@ -349,8 +353,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/man/man5/cupsd-logs.5.gz
 /usr/share/man/man5/ipptoolfile.5.gz
 /usr/share/man/man5/mime.*.5.gz
+%dir /usr/share/man/man7
+/usr/share/man/man7/ippevepcl.7.gz
+/usr/share/man/man7/ippeveps.7.gz
 %dir /usr/share/man/man8
-/usr/share/man/man8/accept.8.gz
 /usr/share/man/man8/cups-deviced.8.gz
 /usr/share/man/man8/cups-driverd.8.gz
 /usr/share/man/man8/cups-exec.8.gz
@@ -367,7 +373,6 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/man/man8/lpc.8.gz
 /usr/share/man/man8/lpinfo.8.gz
 /usr/share/man/man8/lpmove.8.gz
-/usr/share/man/man8/reject.8.gz
 
 %dir /var/cache/cups
 %attr(0775,root,sys) %dir /var/cache/cups/rss
@@ -406,7 +411,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %dir /usr/share/doc/cups/help
 /usr/share/doc/cups/help/api*.html
-/usr/share/doc/cups/help/cupspm.html
+/usr/share/doc/cups/help/cupspm.*
 /usr/share/doc/cups/help/postscript-driver.html
 /usr/share/doc/cups/help/ppd-compiler.html
 /usr/share/doc/cups/help/raster-driver.html

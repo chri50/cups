@@ -1,5 +1,10 @@
-README - CUPS v2.3b7 - 2018-12-14
+README - CUPS v2.3b8 - 2019-05-02
 =================================
+
+> **Note:** CUPS v2.3b8 is not production code.  Do not use on production
+> systems.  For a production version of CUPS, please see the CUPS 2.2.x
+> releases.  **Do not use CUPS v2.3b8 on production systems.**
+
 
 Looking for compile instructions?  Read the file `INSTALL.md` instead...
 
@@ -148,7 +153,7 @@ This will prevent the filters from misinterpreting your print file.
 LEGAL STUFF
 -----------
 
-Copyright © 2007-2018 by Apple Inc.
+Copyright © 2007-2019 by Apple Inc.
 Copyright © 1997-2007 by Easy Software Products.
 
 CUPS is provided under the terms of the Apache License, Version 2.0.  A copy of

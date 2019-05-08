@@ -1,3 +1,13 @@
+cups (2.3~b8-1) experimental; urgency=medium
+
+  * New 2.3~b8 upstream release
+    - Add patch to fix tests' failure
+
+  * Redo manpage po4a translation infrastructure and installation
+  * Merge 2.2.10-6 from unstable
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 08 May 2019 15:26:40 +0200
+
 cups (2.3~b7-1) experimental; urgency=medium
 
   * New 2.3~b7 upstream release
@@ -90,6 +100,40 @@ cups (2.3~b3-1) experimental; urgency=medium
   * Bump debhelper compat to 11
 
  -- Didier Raboud <odyx@debian.org>  Fri, 23 Feb 2018 20:49:53 +0100
+
+cups (2.2.10-6) unstable; urgency=medium
+
+  * Backport patch from upstream's 2.2 "stable" branch:
+    - Fix an issue with `PreserveJobHistory` and time values (Issue #5538)
+      (Closes: #921741)
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 23 Apr 2019 08:33:01 +0200
+
+cups (2.2.10-5) unstable; urgency=medium
+
+  [ Helge Kreutzmann ]
+  * Correct error in german manpage translation
+
+  [ Didier Raboud ]
+  * Backport patches from upstream's 2.2 "stable" branch:
+    - Add USB quirks rule for Xerox printers (Issue #5523)
+    - Add a USB quirks rule for the DYMO 450 Turbo (Issue #5521)
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 27 Mar 2019 17:13:07 +0100
+
+cups (2.2.10-4) unstable; urgency=low
+
+  * Backport patches from upstream's 2.2 "stable" branch:
+    - Protect against continuing to read from a file at EOF (Issue #5473)
+    - Use the same requested-attributes values for all IPP Everywhere setup
+      requests (Issue #5484)
+    - Add a USB quirk rule for the Lexmark E120n (Issue #5478)
+    - Updated the USB quirks rule for Zebra label printers (Issue #5395)
+    - Fix compile error on Linux (Issue #5483)
+    - Stop parsing the Emulators keywords in PPD files (Issue #5475)
+    - Fix potential unaligned accesses in the string pool (Issue #5474)
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 16 Feb 2019 14:48:42 +0100
 
 cups (2.2.10-3) unstable; urgency=medium
 
