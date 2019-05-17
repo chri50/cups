@@ -1,4 +1,3 @@
-From 18bcd33f91dff64d4c4d0b3f91d002cf05128226 Mon Sep 17 00:00:00 2001
 From: Michael Sweet <michael.r.sweet@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:23 +0200
 Subject: revert commit 830cfed95a5349b008999eebd34f5233bc35829c
@@ -18,7 +17,7 @@ Patch-Name: tests-no-pdftourf.patch
  delete mode 100644 test/test.types
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index baebdeec9..001e2f61f 100755
+index baebdee..001e2f6 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
 @@ -268,7 +268,7 @@ case "$usedebugprintfs" in
@@ -46,7 +45,7 @@ index baebdeec9..001e2f61f 100755
  	instfilter pstocupsraster pstoraster raster
  else
 diff --git a/test/test.convs b/test/test.convs
-index 77a9ce01e..57540aac4 100644
+index 77a9ce0..57540aa 100644
 --- a/test/test.convs
 +++ b/test/test.convs
 @@ -2,7 +2,6 @@
@@ -59,7 +58,7 @@ index 77a9ce01e..57540aac4 100644
  text/plain application/pdf 100 texttopdf
 diff --git a/test/test.types b/test/test.types
 deleted file mode 100644
-index 914081c7f..000000000
+index 914081c..0000000
 --- a/test/test.types
 +++ /dev/null
 @@ -1,2 +0,0 @@

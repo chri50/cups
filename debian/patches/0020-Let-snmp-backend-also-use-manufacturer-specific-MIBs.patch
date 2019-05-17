@@ -1,9 +1,8 @@
-From c7d2479482048b92d177c28c53fc80749fe94c6e Mon Sep 17 00:00:00 2001
 From: Tim Waugh <twaugh@redhat.com>
 Date: Tue, 9 Aug 2016 18:11:30 +0200
 Subject: Let snmp backend also use manufacturer-specific MIBs
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
  … of HP and Ricoh to obtain the device IDs of network-connected
@@ -18,7 +17,7 @@ Bug: https://www.cups.org/str.php?L3552
  1 file changed, 8 insertions(+)
 
 diff --git a/backend/snmp.c b/backend/snmp.c
-index 66ac884c6..9572822a8 100644
+index 66ac884..9572822 100644
 --- a/backend/snmp.c
 +++ b/backend/snmp.c
 @@ -154,6 +154,8 @@ static const int	UriOID[] = { CUPS_OID_ppmPortServiceNameOrURI, 1, 1, -1 };

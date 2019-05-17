@@ -1,4 +1,3 @@
-From 4d79affc4527969a2e3c06d4c307c2ab9d5802d0 Mon Sep 17 00:00:00 2001
 From: Martin Pitt <mpitt@debian.org>
 Date: Tue, 9 Aug 2016 18:11:06 +0200
 Subject: Install root backends world-readable
@@ -17,7 +16,7 @@ Bug-Debian: http://bugs.debian.org/410171
  3 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/backend/Makefile b/backend/Makefile
-index 85fda17a9..3addf5d61 100644
+index 85fda17..3addf5d 100644
 --- a/backend/Makefile
 +++ b/backend/Makefile
 @@ -13,7 +13,7 @@ include ../Makedefs
@@ -39,7 +38,7 @@ index 85fda17a9..3addf5d61 100644
  	for file in $(UBACKENDS); do \
  		$(INSTALL_BIN) $$file $(SERVERBIN)/backend; \
 diff --git a/scheduler/cups-deviced.c b/scheduler/cups-deviced.c
-index 77703b983..14478fd99 100644
+index 77703b9..14478fd 100644
 --- a/scheduler/cups-deviced.c
 +++ b/scheduler/cups-deviced.c
 @@ -265,7 +265,7 @@ main(int  argc,				/* I - Number of command-line args */
@@ -52,7 +51,7 @@ index 77703b983..14478fd99 100644
  
    cupsDirClose(dir);
 diff --git a/scheduler/job.c b/scheduler/job.c
-index 33ad7025b..81acecdfa 100644
+index 33ad702..81acecd 100644
 --- a/scheduler/job.c
 +++ b/scheduler/job.c
 @@ -1247,7 +1247,7 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */

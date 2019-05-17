@@ -1,4 +1,3 @@
-From a7228d7f1b880cca9d170c04d87e49b852811de0 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:05 +0200
 Subject: Fix hyphen-used-as-minus-sign manpage errors
@@ -36,7 +35,7 @@ Patch-Name: manpage-hyphen-minus.patch
  21 files changed, 65 insertions(+), 65 deletions(-)
 
 diff --git a/man/backend.7 b/man/backend.7
-index 5a7032650..3c426310c 100644
+index 5a70326..3c42631 100644
 --- a/man/backend.7
 +++ b/man/backend.7
 @@ -163,7 +163,7 @@ The scheduler will respond to this by canceling the job.
@@ -58,7 +57,7 @@ index 5a7032650..3c426310c 100644
  for more information.
  .SH NOTES
 diff --git a/man/client.conf.5 b/man/client.conf.5
-index 8805561db..92f1d9575 100644
+index 8805561..92f1d95 100644
 --- a/man/client.conf.5
 +++ b/man/client.conf.5
 @@ -64,7 +64,7 @@ The \fIAllowDH\fR option enables cipher suites using plain Diffie-Hellman key ne
@@ -80,7 +79,7 @@ index 8805561db..92f1d9575 100644
  defaults read /Library/Preferences/org.cups.PrintingPrefs.plist Encryption
  .fi
 diff --git a/man/cups-files.conf.5 b/man/cups-files.conf.5
-index b451e2f92..72494065c 100644
+index b451e2f..7249406 100644
 --- a/man/cups-files.conf.5
 +++ b/man/cups-files.conf.5
 @@ -236,7 +236,7 @@ The following directives are deprecated and will be removed from a future versio
@@ -93,7 +92,7 @@ index b451e2f92..72494065c 100644
  Writing to directories is not supported.
  .\"#FontPath
 diff --git a/man/cups-lpd.8 b/man/cups-lpd.8
-index e8ce3251f..344d2af2b 100644
+index e8ce325..344d2af 100644
 --- a/man/cups-lpd.8
 +++ b/man/cups-lpd.8
 @@ -15,9 +15,9 @@ cups-lpd \- receive print jobs and report printer status to lpd clients (depreca
@@ -118,7 +117,7 @@ index e8ce3251f..344d2af2b 100644
  .B cups-lpd
  will try to discover the hostname of the client via a reverse DNS lookup.
 diff --git a/man/cups-snmp.conf.5 b/man/cups-snmp.conf.5
-index 4ca20f24f..bb77c7342 100644
+index 4ca20f2..bb77c73 100644
 --- a/man/cups-snmp.conf.5
 +++ b/man/cups-snmp.conf.5
 @@ -16,7 +16,7 @@ The
@@ -131,7 +130,7 @@ index 4ca20f24f..bb77c7342 100644
  .SH DIRECTIVES
  The following directives are understood by the CUPS network backends:
 diff --git a/man/cups.1 b/man/cups.1
-index 706620d7c..b0c51a738 100644
+index 706620d..b0c51a7 100644
 --- a/man/cups.1
 +++ b/man/cups.1
 @@ -38,7 +38,7 @@ The easiest way to start is by using the web interface to configure your printer
@@ -144,7 +143,7 @@ index 706620d7c..b0c51a738 100644
  Once you have added the printer, you can print to it from any application. You can also choose Print Test Page from the maintenance menu to print a simple test page and verify that everything is working properly.
  .LP
 diff --git a/man/cupsctl.8 b/man/cupsctl.8
-index 791954c19..c88eb22ec 100644
+index 791954c..c88eb22 100644
 --- a/man/cupsctl.8
 +++ b/man/cupsctl.8
 @@ -73,19 +73,19 @@ Display the current settings:
@@ -171,7 +170,7 @@ index 791954c19..c88eb22ec 100644
  .SH KNOWN ISSUES
  You cannot set the Listen or Port directives using \fBcupsctl\fR.
 diff --git a/man/cupsd-logs.5 b/man/cupsd-logs.5
-index 2070be9a5..a912c4693 100644
+index 2070be9..a912c46 100644
 --- a/man/cupsd-logs.5
 +++ b/man/cupsd-logs.5
 @@ -30,25 +30,25 @@ Each line is in an extended version of the so-called "Common Log Format" used by
@@ -255,7 +254,7 @@ index 2070be9a5..a912c4693 100644
  .BR cupsd (8),
  .BR cupsd.conf (5),
 diff --git a/man/cupsd.conf.5 b/man/cupsd.conf.5
-index 75d060279..5788265fa 100644
+index 75d0602..5788265 100644
 --- a/man/cupsd.conf.5
 +++ b/man/cupsd.conf.5
 @@ -446,7 +446,7 @@ The \fIAllowDH\fR option enables cipher suites using plain Diffie-Hellman key ne
@@ -268,7 +267,7 @@ index 75d060279..5788265fa 100644
  The \fIMaxTLS\fR options set the maximum TLS version to support.
  Not all operating systems support TLS 1.3 at this time.
 diff --git a/man/cupsfilter.8 b/man/cupsfilter.8
-index c655c21c0..fe4c5a2cf 100644
+index c655c21..fe4c5a2 100644
 --- a/man/cupsfilter.8
 +++ b/man/cupsfilter.8
 @@ -126,7 +126,7 @@ command use the current user and security session. This may result in different
@@ -281,7 +280,7 @@ index c655c21c0..fe4c5a2cf 100644
  .SH SEE ALSO
  .BR cups (1),
 diff --git a/man/filter.7 b/man/filter.7
-index dbc3150c8..8cb79bbf9 100644
+index dbc3150..8cb79bb 100644
 --- a/man/filter.7
 +++ b/man/filter.7
 @@ -136,7 +136,7 @@ Sets the named keywords in the printer's PPD file. This is typically used to upd
@@ -294,7 +293,7 @@ index dbc3150c8..8cb79bbf9 100644
  .TP 5
  \fBWARNING:\fI message\fR
 diff --git a/man/ippeveprinter.1 b/man/ippeveprinter.1
-index 0fb4c2416..6a4b7e11e 100644
+index 0fb4c24..6a4b7e1 100644
 --- a/man/ippeveprinter.1
 +++ b/man/ippeveprinter.1
 @@ -122,8 +122,8 @@ If "command" is not an absolute path ("/path/to/command"),
@@ -318,7 +317,7 @@ index 0fb4c2416..6a4b7e11e 100644
  .TP 5
  \fBSTATE: +\fIkeyword[,keyword,...]\fR
 diff --git a/man/ippfind.1 b/man/ippfind.1
-index 32f2e6f8b..d77ef75cc 100644
+index 32f2e6f..d77ef75 100644
 --- a/man/ippfind.1
 +++ b/man/ippfind.1
 @@ -75,7 +75,7 @@ True is the hostname matches the given regular expression.
@@ -349,7 +348,7 @@ index 32f2e6f8b..d77ef75cc 100644
  Expressions may also contain modifiers:
  .TP 5
 diff --git a/man/ipptoolfile.5 b/man/ipptoolfile.5
-index fd2aec332..e1a710865 100644
+index fd2aec3..e1a7108 100644
 --- a/man/ipptoolfile.5
 +++ b/man/ipptoolfile.5
 @@ -166,8 +166,8 @@ The following directives are understood within a \fItest\fR:
@@ -382,7 +381,7 @@ index fd2aec332..e1a710865 100644
  \fBTEST\-ID "\fIidentifier\fR"
  Specifies an identifier string for the current test.
 diff --git a/man/lp.1 b/man/lp.1
-index cbea3b840..839a48278 100644
+index cbea3b8..839a482 100644
 --- a/man/lp.1
 +++ b/man/lp.1
 @@ -83,7 +83,7 @@ lp \- print files
@@ -436,7 +435,7 @@ index cbea3b840..839a48278 100644
  .SH SEE ALSO
  .BR cancel (1),
 diff --git a/man/lpadmin.8 b/man/lpadmin.8
-index 1b8c91ba4..ce6a698ff 100644
+index 1b8c91b..ce6a698 100644
 --- a/man/lpadmin.8
 +++ b/man/lpadmin.8
 @@ -120,7 +120,7 @@ command.
@@ -467,7 +466,7 @@ index 1b8c91ba4..ce6a698ff 100644
  .fi
  .SH SEE ALSO
 diff --git a/man/lpoptions.1 b/man/lpoptions.1
-index a34fd01dc..7550d9afb 100644
+index a34fd01..7550d9a 100644
 --- a/man/lpoptions.1
 +++ b/man/lpoptions.1
 @@ -102,9 +102,9 @@ Destinations can only be removed using the
@@ -483,7 +482,7 @@ index a34fd01dc..7550d9afb 100644
  The \fBlpoptions\fR command is unique to CUPS.
  .SH SEE ALSO
 diff --git a/man/lpr.1 b/man/lpr.1
-index f367cd97c..635d126d6 100644
+index f367cd9..635d126 100644
 --- a/man/lpr.1
 +++ b/man/lpr.1
 @@ -138,7 +138,7 @@ Prints the job in reverse portrait (rotated 180 degrees).
@@ -519,7 +518,7 @@ index f367cd97c..635d126d6 100644
  .SH SEE ALSO
  .BR cancel (1),
 diff --git a/man/mime.convs.5 b/man/mime.convs.5
-index 25a6f7653..04ba39494 100644
+index 25a6f76..04ba394 100644
 --- a/man/mime.convs.5
 +++ b/man/mime.convs.5
 @@ -35,11 +35,11 @@ A value of 100 means that the filter uses a large amount of resources while a va
@@ -538,7 +537,7 @@ index 25a6f7653..04ba39494 100644
  Define a filter that converts PostScript documents to CUPS Raster format:
  .nf
 diff --git a/man/mime.types.5 b/man/mime.types.5
-index 7e83de16a..3572726f5 100644
+index 7e83de1..3572726 100644
 --- a/man/mime.types.5
 +++ b/man/mime.types.5
 @@ -35,7 +35,7 @@ See the "TYPE MATCHING AND PRIORITY" section for more information.
@@ -560,7 +559,7 @@ index 7e83de16a..3572726f5 100644
  Define two MIME media types for raster data, with one being a subset with higher priority:
  .nf
 diff --git a/man/ppdc.1 b/man/ppdc.1
-index 44e9d2448..38e266978 100644
+index 44e9d24..38e2669 100644
 --- a/man/ppdc.1
 +++ b/man/ppdc.1
 @@ -85,7 +85,7 @@ The default is to generate uncompressed PPD files.

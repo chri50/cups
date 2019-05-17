@@ -1,4 +1,3 @@
-From ea4f9320dfa51cb939e3a8c24ee0a182e2720817 Mon Sep 17 00:00:00 2001
 From: Tim Waugh <twaugh@redhat.com>
 Date: Tue, 9 Aug 2016 18:11:46 +0200
 Subject: Set the default for SyncOnClose to Yes
@@ -14,7 +13,7 @@ Patch-Name: cupsd-set-default-for-SyncOnClose-to-Yes.patch
  4 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/conf/cups-files.conf.in b/conf/cups-files.conf.in
-index 4a78ba615..a3d088da5 100644
+index 4a78ba6..a3d088d 100644
 --- a/conf/cups-files.conf.in
 +++ b/conf/cups-files.conf.in
 @@ -7,7 +7,7 @@
@@ -27,7 +26,7 @@ index 4a78ba615..a3d088da5 100644
  # Default user and group for filters/backends/helper programs; this cannot be
  # any user or group that resolves to ID 0 for security reasons...
 diff --git a/doc/help/man-cups-files.conf.html b/doc/help/man-cups-files.conf.html
-index 27a1b60da..d7995cbbe 100644
+index 27a1b60..d7995cb 100644
 --- a/doc/help/man-cups-files.conf.html
 +++ b/doc/help/man-cups-files.conf.html
 @@ -150,7 +150,7 @@ The default is "/var/run/cups" or "/etc/cups" depending on the platform.
@@ -40,7 +39,7 @@ index 27a1b60da..d7995cbbe 100644
  <dd style="margin-left: 5.0em">Specifies the group(s) to use for <i>@SYSTEM</i> group authentication.
  The default contains "admin", "lpadmin", "root", "sys", and/or "system".
 diff --git a/man/cups-files.conf.5 b/man/cups-files.conf.5
-index 72494065c..955f47b55 100644
+index 7249406..955f47b 100644
 --- a/man/cups-files.conf.5
 +++ b/man/cups-files.conf.5
 @@ -211,7 +211,7 @@ The default is "/var/run/cups" or "/etc/cups" depending on the platform.
@@ -53,7 +52,7 @@ index 72494065c..955f47b55 100644
  .TP 5
  \fBSystemGroup \fIgroup-name \fR[ ... \fIgroup-name\fR ]
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index 850d8cb59..d90f41d7b 100644
+index 850d8cb..d90f41d 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -735,7 +735,7 @@ cupsdReadConfiguration(void)

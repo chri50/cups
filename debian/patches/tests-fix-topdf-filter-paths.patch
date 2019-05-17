@@ -1,4 +1,3 @@
-From 7142734671f89e1fb278e8ac6e52b8d93cc93360 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Wed, 8 May 2019 14:42:00 +0200
 Subject: Tests: Fix *topdf filter to find the test files in their right paths
@@ -11,7 +10,7 @@ Patch-Name: tests-fix-topdf-filter-paths.patch
  1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index 64322d68c..2f9630f52 100755
+index 64322d6..2f9630f 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
 @@ -396,10 +396,10 @@ trap "" PIPE
