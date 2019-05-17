@@ -1,4 +1,3 @@
-From 79eed617a879d047f7f8a6ae9bbecd28bbdbc6cd Mon Sep 17 00:00:00 2001
 From: Till Kampetter <till.kampetter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:45 +0200
 Subject: Make log debug history nearly unlimited
@@ -11,7 +10,7 @@ Patch-Name: log-debug-history-nearly-unlimited.patch
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index 31eedbf71..850d8cb59 100644
+index 31eedbf..850d8cb 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -721,7 +721,7 @@ cupsdReadConfiguration(void)
@@ -24,7 +23,7 @@ index 31eedbf71..850d8cb59 100644
    LogLevel                 = CUPSD_LOG_WARN;
    LogTimeFormat            = CUPSD_TIME_STANDARD;
 diff --git a/scheduler/conf.h b/scheduler/conf.h
-index b4e14eed9..c15226d10 100644
+index b4e14ee..c15226d 100644
 --- a/scheduler/conf.h
 +++ b/scheduler/conf.h
 @@ -161,7 +161,7 @@ VAR cupsd_accesslog_t	AccessLogLevel		VALUE(CUPSD_ACCESSLOG_ACTIONS);

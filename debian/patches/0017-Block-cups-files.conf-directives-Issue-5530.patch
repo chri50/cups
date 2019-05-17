@@ -1,0 +1,95 @@
+From: Michael R Sweet <michael.r.sweet@gmail.com>
+Date: Wed, 15 May 2019 10:30:24 -0400
+Subject: Block cups-files.conf directives (Issue #5530)
+
+Origin: vendor
+Bug-Upstream: https://github.com/apple/cups/issues/5530
+Bug-Debian: https://bugs.debian.org/923115
+---
+ systemv/cupsctl.c | 55 ++++++++++++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 48 insertions(+), 7 deletions(-)
+
+diff --git a/systemv/cupsctl.c b/systemv/cupsctl.c
+index efbd4ba..3b5b4c5 100644
+--- a/systemv/cupsctl.c
++++ b/systemv/cupsctl.c
+@@ -1,7 +1,7 @@
+ /*
+  * Scheduler control program for CUPS.
+  *
+- * Copyright © 2007-2018 by Apple Inc.
++ * Copyright © 2007-2019 by Apple Inc.
+  * Copyright © 2006-2007 by Easy Software Products.
+  *
+  * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+@@ -31,11 +31,47 @@ int					/* O - Exit status */
+ main(int  argc,				/* I - Number of command-line args */
+      char *argv[])			/* I - Command-line arguments */
+ {
+-  int		i,			/* Looping var */
++  int		i, j,			/* Looping vars */
+ 		num_settings;		/* Number of settings */
+-  cups_option_t	*settings;		/* Settings */
++  cups_option_t	*settings,		/* Settings */
++		*setting;		/* Current setting */
+   const char	*opt;			/* Current option character */
+   http_t	*http;			/* Connection to server */
++  static const char * const disallowed[] =
++  {					/* List of disallowed directives for cupsd.conf */
++    "AccessLog",
++    "CacheDir",
++    "ConfigFilePerm",
++    "DataDir",
++    "DocumentRoot",
++    "ErrorLog",
++    "FatalErrors",
++    "FileDevice",
++    "FontPath",
++    "Group",
++    "Listen",
++    "LogFilePerm",
++    "LPDConfigFile",
++    "PageLog",
++    "PassEnv",
++    "Port",
++    "Printcap",
++    "PrintcapFormat",
++    "RemoteRoot",
++    "RequestRoot",
++    "ServerBin",
++    "ServerCertificate",
++    "ServerKey",
++    "ServerKeychain",
++    "ServerRoot",
++    "SetEnv",
++    "SMBConfigFile",
++    "StateDir",
++    "SystemGroup",
++    "SystemGroupAuthKey",
++    "TempDir",
++    "User"
++  };
+ 
+ 
+  /*
+@@ -125,11 +161,16 @@ main(int  argc,				/* I - Number of command-line args */
+       usage(argv[i]);
+   }
+ 
+-  if (cupsGetOption("Listen", num_settings, settings) ||
+-      cupsGetOption("Port", num_settings, settings))
++  for (i = num_settings, setting = settings; i > 0; i --, setting ++)
+   {
+-    _cupsLangPuts(stderr, _("cupsctl: Cannot set Listen or Port directly."));
+-    return (1);
++    for (j = 0; j < (int)(sizeof(disallowed) / sizeof(disallowed[0])); j ++)
++    {
++      if (!_cups_strcasecmp(setting->name, disallowed[j]))
++      {
++	_cupsLangPrintf(stderr, _("cupsctl: Cannot set %s directly."), disallowed[j]);
++	return (1);
++      }
++    }
+   }
+ 
+  /*

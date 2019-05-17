@@ -1,4 +1,3 @@
-From e2010932abe1c3274148abebbf428ff351817e5e Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:36:02 +0200
 Subject: Tests: ignore the failure to write uncompressed data
@@ -14,7 +13,7 @@ Patch-Name: tests-ignore-kfreebsd-unable-to-write-uncompressed-print-data.patch
  1 file changed, 1 insertion(+)
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index f3a432155..c072ad88d 100755
+index f3a4321..c072ad8 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
 @@ -1031,6 +1031,7 @@ count=`$GREP '^E ' $BASE/log/error_log | $GREP -v 'Unknown default SystemGroup'

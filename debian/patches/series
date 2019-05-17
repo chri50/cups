@@ -14,9 +14,10 @@ tests-fix-ppdLocalize-on-unclean-env.patch
 tests-use-ipv4-lo-address.patch
 tests-make-lpstat-call-reproducible.patch
 tests-no-pdftourf.patch
+0017-Block-cups-files.conf-directives-Issue-5530.patch
 move-cupsd-conf-default-to-share.patch
 airprint-support.patch
-0019-Let-snmp-backend-also-use-manufacturer-specific-MIBs.patch
+0020-Let-snmp-backend-also-use-manufacturer-specific-MIBs.patch
 no-conffile-timestamp.patch
 removecvstag.patch
 rename-systemd-units.patch
@@ -31,5 +32,5 @@ cupsd-set-default-for-SyncOnClose-to-Yes.patch
 cups-set-default-error-policy-retry-job.patch
 man-cups-lpd-drop-dangling-references.patch
 debianize_cups-config.patch
-0034-Build-mantohtml-with-the-build-architecture-compiler.patch
+0035-Build-mantohtml-with-the-build-architecture-compiler.patch
 manpage-translations.patch

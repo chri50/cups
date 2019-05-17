@@ -1,8 +1,7 @@
-From 76762601727cf67a7ba90b5d6f8c98c0403fed81 Mon Sep 17 00:00:00 2001
 From: Joey Hess <joeyh@debian.org>
 Date: Tue, 9 Aug 2016 18:11:31 +0200
-Subject: Disable time stamps in conffiles, to avoid ever-changing files in
- /etc.
+Subject: Disable time stamps in conffiles,
+ to avoid ever-changing files in /etc.
 
 Bug: https://github.com/apple/cups/issues/3067
 Bug-Debian: https://bugs.debian.org/549673
@@ -16,7 +15,7 @@ Patch-Name: no-conffile-timestamp.patch
  4 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/scheduler/classes.c b/scheduler/classes.c
-index 776e79a91..ec6357ffe 100644
+index 776e79a..ec6357f 100644
 --- a/scheduler/classes.c
 +++ b/scheduler/classes.c
 @@ -688,7 +688,7 @@ cupsdSaveAllClasses(void)
@@ -29,7 +28,7 @@ index 776e79a91..ec6357ffe 100644
  
   /*
 diff --git a/scheduler/job.c b/scheduler/job.c
-index 81acecdfa..c39bd09d3 100644
+index 81acecd..c39bd09 100644
 --- a/scheduler/job.c
 +++ b/scheduler/job.c
 @@ -2201,7 +2201,7 @@ cupsdSaveAllJobs(void)
@@ -42,7 +41,7 @@ index 81acecdfa..c39bd09d3 100644
  
   /*
 diff --git a/scheduler/printers.c b/scheduler/printers.c
-index 2578aa76b..149eaac7e 100644
+index 2578aa7..149eaac 100644
 --- a/scheduler/printers.c
 +++ b/scheduler/printers.c
 @@ -1508,7 +1508,7 @@ cupsdSaveAllPrinters(void)
@@ -55,7 +54,7 @@ index 2578aa76b..149eaac7e 100644
  
    cupsFilePrintf(fp, "NextPrinterId %d\n", NextPrinterId);
 diff --git a/scheduler/subscriptions.c b/scheduler/subscriptions.c
-index 0908f3c0c..71892c7f4 100644
+index 0908f3c..71892c7 100644
 --- a/scheduler/subscriptions.c
 +++ b/scheduler/subscriptions.c
 @@ -1084,7 +1084,7 @@ cupsdSaveAllSubscriptions(void)

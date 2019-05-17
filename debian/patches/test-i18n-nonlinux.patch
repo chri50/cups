@@ -1,8 +1,7 @@
-From 5bc6801651370bc1b5ae09df4e9ec6531f514bf2 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:16 +0200
-Subject: Tests: Do not run the CUPS_EUC_JP test case on BSD/Hurd either, as
- glibc's iconv behavior is different than what the test expects.
+Subject: Tests: Do not run the CUPS_EUC_JP test case on BSD/Hurd either,
+ as glibc's iconv behavior is different than what the test expects.
 
 Bug-Debian: http://bugs.debian.org/662996
 
@@ -13,7 +12,7 @@ Patch-Name: test-i18n-nonlinux.patch
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/cups/testi18n.c b/cups/testi18n.c
-index 45e1cab35..449670c44 100644
+index 45e1cab..449670c 100644
 --- a/cups/testi18n.c
 +++ b/cups/testi18n.c
 @@ -410,7 +410,7 @@ main(int  argc,				/* I - Argument Count */
