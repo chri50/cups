@@ -43,3 +43,4 @@ do-not-locally-filter-printing-to-remote-cups-queue.patch
 CVE-2018-4700.patch
 fix-handling-of-MaxJobTime.patch
 systemd-service-for-cupsd-after-sssd.patch
+0045-Fix-an-issue-with-PreserveJobHistory-and-time-values.patch
