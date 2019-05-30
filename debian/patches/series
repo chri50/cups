@@ -45,3 +45,4 @@ fix-handling-of-MaxJobTime.patch
 fix-a-parsing-bug-in-the-new-authentication-code.patch
 fix-cups-auth-find-for-schemes-without-parameters.patch
 systemd-service-for-cupsd-after-sssd.patch
+0045-Fix-an-issue-with-PreserveJobHistory-and-time-values.patch
