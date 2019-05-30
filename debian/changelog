@@ -1,3 +1,11 @@
+cups (2.2.10-4ubuntu2) disco; urgency=medium
+
+  * d/p/0045-Fix-an-issue-with-PreserveJobHistory-and-time-values.patch
+    Fix an issue with `PreserveJobHistory` and time values
+    (Issue #5538, Closes: #921741, LP: #1747765)
+
+ -- Dariusz Gadomski <dariusz.gadomski@canonical.com>  Thu, 30 May 2019 09:51:37 +0200
+
 cups (2.2.10-4ubuntu1) disco; urgency=medium
 
   * d/p/systemd-service-for-cupsd-after-sssd.patch: Start cupsd after sssd if
