@@ -245,6 +245,8 @@ VAR const char		**MimeTypes		VALUE(NULL);
 VAR char		*ServerKeychain		VALUE(NULL);
 					/* Keychain holding cert + key */
 #endif /* HAVE_SSL */
+VAR char		*PidFile		VALUE(NULL);
+					/* Debian CUPS pid file */
 
 #if defined(HAVE_LAUNCHD) || defined(HAVE_SYSTEMD)
 VAR int			IdleExitTimeout		VALUE(60);
