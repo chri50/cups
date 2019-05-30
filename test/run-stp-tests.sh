@@ -973,6 +973,7 @@ count=`$GREP '^E ' $BASE/log/error_log | $GREP -v 'Unknown default SystemGroup' 
        $GREP -v 'loadFile failed: temp file: not a PDF file' | \
        $GREP -v 'Failed to connect to system bus' | \
        $GREP -v -E 'Unable to open listen socket for address .* Address family not supported by protocol.' | \
+       $GREP -v 'Unable to write uncompressed print data: Broken pipe' | \
        wc -l | awk '{print $1}'`
 if test $count != 33; then
 	echo "FAIL: $count error messages, expected 33."
