@@ -29,6 +29,7 @@ include ../Makedefs
 # See http://www.cups.org/documentation.php/api-filter.html for more info...
 RBACKENDS =	\
 		ipp \
+		ipp14 \
 		lpd \
 		$(DNSSD_BACKEND)
 UBACKENDS =	\
@@ -52,6 +53,7 @@ LIBOBJS	=	\
 		snmp-supplies.o
 OBJS	=	\
 		ipp.o \
+		ipp14.o \
 		lpd.o \
 		dnssd.o \
 		snmp.o \
@@ -267,6 +269,17 @@ ipp:	ipp.o ../cups/$(LIBCUPS) libbackend.a
 	$(CC) $(LDFLAGS) -o ipp ipp.o libbackend.a $(LIBS)
 	$(RM) http
 	$(LN) ipp http
+
+
+#
+# ipp14
+#
+
+ipp14:	ipp14.o ../cups/$(LIBCUPS) libbackend.a
+	echo Linking $@...
+	$(CC) $(LDFLAGS) -o ipp14 ipp14.o libbackend.a $(LIBS)
+	#$(RM) http
+	#$(LN) ipp14 http
 
 
 #
