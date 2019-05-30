@@ -1,0 +1,105 @@
+From 917e6f4ff70eed933c80d21eed4c6bfeb2cb68b7 Mon Sep 17 00:00:00 2001
+From: Michael R Sweet <michael.r.sweet@gmail.com>
+Date: Mon, 11 Mar 2019 13:54:46 -0400
+Subject: Fix an issue with `PreserveJobHistory` and time values (Issue #5538)
+
+Closes: #921741
+
+--- cups-2.1.3.orig/scheduler/job.c
++++ cups-2.1.3/scheduler/job.c
+@@ -421,10 +421,20 @@ cupsdCleanJobs(void)
+   curtime          = time(NULL);
+   JobHistoryUpdate = 0;
+ 
++  cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdCleanJobs: curtime=%d", (int)curtime);
++
+   for (job = (cupsd_job_t *)cupsArrayFirst(Jobs);
+        job;
+        job = (cupsd_job_t *)cupsArrayNext(Jobs))
+   {
++    cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdCleanJobs: Job %d, state=%d, printer=%p, history_time=%d, file_time=%d", job->id, (int)job->state_value, (void *)job->printer, (int)job->history_time, (int)job->file_time);
++
++    if (job->history_time && (job->history_time < JobHistoryUpdate) || !JobHistoryUpdate)
++      JobHistoryUpdate = job->history_time;
++
++    if ((job->file_time && job->file_time < JobHistoryUpdate) || !JobHistoryUpdate)
++      JobHistoryUpdate = job->file_time;
++
+     if (job->state_value >= IPP_JOB_CANCELED && !job->printer)
+     {
+      /*
+@@ -443,17 +453,6 @@ cupsdCleanJobs(void)
+         remove_job_files(job);
+ 
+         cupsdMarkDirty(CUPSD_DIRTY_JOBS);
+-
+-        if (job->history_time < JobHistoryUpdate || !JobHistoryUpdate)
+-	  JobHistoryUpdate = job->history_time;
+-      }
+-      else
+-      {
+-        if (job->history_time < JobHistoryUpdate || !JobHistoryUpdate)
+-	  JobHistoryUpdate = job->history_time;
+-
+-	if (job->file_time < JobHistoryUpdate || !JobHistoryUpdate)
+-	  JobHistoryUpdate = job->file_time;
+       }
+     }
+   }
+@@ -1712,7 +1711,7 @@ cupsdLoadJob(cupsd_job_t *job)		/* I - J
+     job->completed_time = attr->values[0].integer;
+ 
+     if (JobHistory < INT_MAX)
+-      job->history_time = attr->values[0].integer + JobHistory;
++      job->history_time = job->completed_time + JobHistory;
+     else
+       job->history_time = INT_MAX;
+ 
+@@ -1723,7 +1722,7 @@ cupsdLoadJob(cupsd_job_t *job)		/* I - J
+       JobHistoryUpdate = job->history_time;
+ 
+     if (JobFiles < INT_MAX)
+-      job->file_time = attr->values[0].integer + JobFiles;
++      job->file_time = job->completed_time + JobFiles;
+     else
+       job->file_time = INT_MAX;
+ 
+@@ -2821,8 +2820,10 @@ cupsdUpdateJobs(void)
+       * Update history/file expiration times...
+       */
+ 
++      job->completed_time = attr->values[0].integer;
++
+       if (JobHistory < INT_MAX)
+-	job->history_time = attr->values[0].integer + JobHistory;
++	job->history_time = job->completed_time + JobHistory;
+       else
+ 	job->history_time = INT_MAX;
+ 
+@@ -2836,7 +2837,7 @@ cupsdUpdateJobs(void)
+ 	JobHistoryUpdate = job->history_time;
+ 
+       if (JobFiles < INT_MAX)
+-	job->file_time = attr->values[0].integer + JobFiles;
++	job->file_time = job->completed_time + JobFiles;
+       else
+ 	job->file_time = INT_MAX;
+ 
+@@ -4542,7 +4543,7 @@ set_time(cupsd_job_t *job,		/* I - Job t
+     job->completed_time = curtime;
+ 
+     if (JobHistory < INT_MAX && attr)
+-      job->history_time = attr->values[0].integer + JobHistory;
++      job->history_time = job->completed_time + JobHistory;
+     else
+       job->history_time = INT_MAX;
+ 
+@@ -4550,7 +4551,7 @@ set_time(cupsd_job_t *job,		/* I - Job t
+       JobHistoryUpdate = job->history_time;
+ 
+     if (JobFiles < INT_MAX && attr)
+-      job->file_time = attr->values[0].integer + JobFiles;
++      job->file_time = job->completed_time + JobFiles;
+     else
+       job->file_time = INT_MAX;
+ 
