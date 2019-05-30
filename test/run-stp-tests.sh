@@ -799,6 +799,11 @@ echo "    $date by $user on `hostname`." >>$strfile
 echo "    <pre>" >>$strfile
 
 for file in 5*.sh; do
+	#
+	# Make sure the past jobs are done before going on.
+	#
+	./waitjobs.sh 1800
+
 	echo $ac_n "Performing $file: $ac_c"
 	echo "" >>$strfile
 	echo "\"$file\":" >>$strfile
