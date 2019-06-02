@@ -52,7 +52,7 @@ index 7249406..955f47b 100644
  .TP 5
  \fBSystemGroup \fIgroup-name \fR[ ... \fIgroup-name\fR ]
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index 850d8cb..d90f41d 100644
+index 31eedbf..f2924f8 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -735,7 +735,7 @@ cupsdReadConfiguration(void)
