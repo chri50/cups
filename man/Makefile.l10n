@@ -8,7 +8,7 @@
 # information.
 #
 
-include ../Makedefs
+include ../../Makedefs
 
 
 #
@@ -63,18 +63,13 @@ MAN8	=	cupsaccept.8 \
 		lpmove.8 \
 		lpc.8
 
-LANGUAGES=de fr
 
 #
 # Make everything...
 #
 
-all:	$(MAN1) $(MAN5) $(MAN7) $(MAN8) translations
-
-translations:
-	# Update the translations and build the translated material
-	po4a --previous ../debian/manpage-po4a/cups.cfg
-	for lang in $(LANGUAGES); do $(MAKE) -C $$lang; done
+# Debian-specific patch: Just assume all files are here.
+all:
 
 
 #
@@ -97,12 +92,6 @@ unittests:
 
 clean:
 	$(RM) mantohtml mantohtml.o
-	$(RM) $(MAN1) $(MAN5) $(MAN7) $(MAN8)
-	for lang in $(LANGUAGES); do $(MAKE) -C $$lang clean; done
-	# Make sure the PO files are updated and remove generated
-	# translations.
-	po4a --previous --rm-translations ../debian/manpage-po4a/cups.cfg
-	$(RM) ../debian/manpage-po4a/po/cups.pot
 
 
 #
@@ -116,6 +105,9 @@ depend:
 # Install all targets...
 #
 
+# Debian-specific patch: directory-based language namespace
+MANDIR := $(MANDIR)/$(LANGUAGE)
+
 install:	all install-data install-headers install-libs install-exec
 
 
@@ -123,20 +115,24 @@ install:	all install-data install-headers install-libs install-exec
 # Install data files...
 #
 
+# Debian-specific patch: skip if doesn't exist
 install-data: all
 	echo Installing man pages in $(MANDIR)/man1...
 	$(INSTALL_DIR) -m 755 $(MANDIR)/man1
 	for file in $(MAN1); do \
+		[ ! -r $$file ] || \
 		$(INSTALL_MAN) $$file $(MANDIR)/man1; \
 	done
 	echo Installing man pages in $(MANDIR)/man5...
 	$(INSTALL_DIR) -m 755 $(MANDIR)/man5
 	for file in $(MAN5); do \
+		[ ! -r $$file ] || \
 		$(INSTALL_MAN) $$file $(MANDIR)/man5; \
 	done
 	echo Installing man pages in $(MANDIR)/man7...
 	$(INSTALL_DIR) -m 755 $(MANDIR)/man7
 	for file in $(MAN7); do \
+		[ ! -r $$file ] || \
 		$(INSTALL_MAN) $$file $(MANDIR)/man7; \
 	done
 	$(RM) $(MANDIR)/man7/ippeveps.7
@@ -144,6 +140,7 @@ install-data: all
 	echo Installing man pages in $(MANDIR)/man8...
 	$(INSTALL_DIR) -m 755 $(MANDIR)/man8
 	for file in $(MAN8); do \
+		[ ! -r $$file ] || \
 		$(INSTALL_MAN) $$file $(MANDIR)/man8; \
 	done
 	$(RM) $(MANDIR)/man8/cupsdisable.8
@@ -154,7 +151,6 @@ install-data: all
 		$(RM) $(MANDIR)/man8/$$file; \
 		$(LN) cupsd-helper.8 $(MANDIR)/man8/$$file; \
 	done
-	for lang in $(LANGUAGES); do $(MAKE) -C $$lang install; done
 
 
 #
@@ -202,7 +198,7 @@ uninstall:
 	for file in $(MAN8) cupsenable.8 cupsreject.8 cups-deviced.8 cups-driverd.8 cups-exec.8; do \
 		$(RM) $(MANDIR)/man8/$$file; \
 	done
-	-$(RMDIR) $(AMANDIR)/man$(MAN8DIR)
+	-$(RMDIR) $(MANDIR)/man8
 
 
 #
