@@ -27,7 +27,6 @@ logfiles_adm_readable.patch
 default_log_settings.patch
 confdirperms.patch
 show-compile-command-lines.patch
-log-debug-history-nearly-unlimited.patch
 cupsd-set-default-for-SyncOnClose-to-Yes.patch
 cups-set-default-error-policy-retry-job.patch
 man-cups-lpd-drop-dangling-references.patch
