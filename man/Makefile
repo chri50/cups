@@ -222,8 +222,5 @@ html:	$(MAN1) $(MAN5) $(MAN7) $(MAN8) mantohtml
 		./mantohtml $$file >../doc/help/man-`basename $$file .8`.html; \
 	done
 
-mantohtml:	mantohtml.o ../cups/$(LIBCUPSSTATIC)
-	$(LD_CC) $(ARCHFLAGS) $(ALL_LDFLAGS) -o $@ mantohtml.o \
-		../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) \
-		$(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
-	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
+mantohtml:	mantohtml.c
+	$(CC_FOR_BUILD) -o $@ $<
