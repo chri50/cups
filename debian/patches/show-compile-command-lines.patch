@@ -4,18 +4,20 @@ Subject: Show compile command lines
 
 Patch-Name: show-compile-command-lines.patch
 ---
- Makedefs.in | 1 -
- 1 file changed, 1 deletion(-)
+ Makedefs.in | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/Makedefs.in b/Makedefs.in
-index e345e2f..92850db 100644
+index 65ae345..c71e813 100644
 --- a/Makedefs.in
 +++ b/Makedefs.in
-@@ -264,7 +264,6 @@ USBQUIRKS	=	@USBQUIRKS@
+@@ -263,8 +263,7 @@ USBQUIRKS	=	@USBQUIRKS@
  # Rules...
  #
  
 -.SILENT:
- .SUFFIXES:	.1 .1.gz .1m .1m.gz .3 .3.gz .5 .5.gz .7 .7.gz .8 .8.gz .a .c .cxx .h .man .o .gz
+-.SUFFIXES:	.a .c .cxx .h .o
++.SUFFIXES:	.1 .1.gz .1m .1m.gz .3 .3.gz .5 .5.gz .7 .7.gz .8 .8.gz .a .c .cxx .h .man .o .gz
  
  .c.o:
+ 	echo Compiling $<...

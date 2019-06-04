@@ -16,7 +16,7 @@ Bug-Debian: http://bugs.debian.org/410171
  3 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/backend/Makefile b/backend/Makefile
-index 85fda17..3addf5d 100644
+index e3ce49b..b734458 100644
 --- a/backend/Makefile
 +++ b/backend/Makefile
 @@ -13,7 +13,7 @@ include ../Makedefs

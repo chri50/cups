@@ -1,5 +1,26 @@
-CHANGES - 2.3b8 - 2019-05-02
-============================
+CHANGES - 2.3rc1 - 2019-05-21
+=============================
+
+
+Changes in CUPS v2.3rc1
+-----------------------
+
+- The `cups-config` script no longer adds extra libraries when linking against
+  shared libraries (Issue #5261)
+- The supplied example print documents have been optimized for size
+  (Issue #5529)
+- The `cupsctl` command now prevents setting "cups-files.conf" directives
+  (Issue #5530)
+- The "forbidden" message in the web interface is now explained (Issue #5547)
+- The footer in the web interface covered some content on small displays
+  (Issue #5574)
+- The libusb-based USB backend now enforces read limits, improving print speed
+  in many cases (Issue #5583)
+- The `ippeveprinter` command now looks for print commands in the "command"
+  subdirectory.
+- The `ipptool` command now supports `$date-current` and `$date-start` variables
+  to insert the current and starting date and time values, as well as ISO-8601
+  relative time values such as "PT30S" for 30 seconds in the future.
 
 
 Changes in CUPS v2.3b8

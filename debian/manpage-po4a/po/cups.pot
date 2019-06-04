@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-05-06 15:35+0200\n"
+"POT-Creation-Date: 2019-06-03 21:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,7 @@ msgid "CUPS"
 msgstr ""
 
 #. type: TH
-#: backend.7:10 cancel.1:10 classes.conf.5:10 client.conf.5:10 cups.1:10 cupsaccept.8:10 cups-config.1:10 cupsctl.8:10 cupsd.8:10 cupsd-helper.8:10 cupsd-logs.5:10 cupsenable.8:10 cups-files.conf.5:10 cupsfilter.8:9 cups-lpd.8:10 cups-snmp.8:9 cups-snmp.conf.5:10 cupstestppd.1:10 filter.7:10 ippfind.1:9 ipptool.1:9 ipptoolfile.5:9 lp.1:10 lpadmin.8:10 lpc.8:10 lpinfo.8:10 lpmove.8:10 lpoptions.1:10 lpq.1:10 lpr.1:10 lprm.1:10 lpstat.1:9 mailto.conf.5:10 mime.convs.5:10 mime.types.5:10 notifier.7:10 ppdc.1:10 ppdcfile.5:10 ppdhtml.1:10 ppdi.1:10 ppdmerge.1:10 ppdpo.1:10 printers.conf.5:9 subscriptions.conf.5:10
+#: backend.7:10 cancel.1:10 classes.conf.5:10 client.conf.5:10 cups.1:10 cupsaccept.8:10 cups-config.1:10 cupsctl.8:10 cupsd.8:10 cupsd-helper.8:10 cupsd-logs.5:10 cupsenable.8:10 cups-files.conf.5:10 cupsfilter.8:9 cups-lpd.8:10 cups-snmp.8:9 cups-snmp.conf.5:10 cupstestppd.1:10 filter.7:10 ippfind.1:9 ipptool.1:9 lp.1:10 lpadmin.8:10 lpc.8:10 lpinfo.8:10 lpmove.8:10 lpoptions.1:10 lpq.1:10 lpr.1:10 lprm.1:10 lpstat.1:9 mailto.conf.5:10 mime.convs.5:10 mime.types.5:10 notifier.7:10 ppdc.1:10 ppdcfile.5:10 ppdhtml.1:10 ppdi.1:10 ppdmerge.1:10 ppdpo.1:10 printers.conf.5:9 subscriptions.conf.5:10
 #, no-wrap
 msgid "26 April 2019"
 msgstr ""
@@ -119,7 +119,7 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: backend.7:49 cancel.1:37 classes.conf.5:13 client.conf.5:13 cups.1:13 cupsaccept.8:40 cups-config.1:49 cupsctl.8:36 cupsd.8:32 cupsd.conf.5:13 cupsd-helper.8:46 cupsd-logs.5:13 cupsenable.8:46 cups-files.conf.5:13 cupsfilter.8:54 cups-lpd.8:23 cups-snmp.8:23 cups-snmp.conf.5:13 cupstestppd.1:51 filter.7:51 ippevepcl.7:22 ippeveprinter.1:76 ippfind.1:32 ipptool.1:75 ipptoolfile.5:12 lp.1:84 lpadmin.8:54 lpc.8:20 lpinfo.8:60 lpmove.8:37 lpoptions.1:53 lpq.1:31 lpr.1:53 lprm.1:31 lpstat.1:65 mailto.conf.5:13 mime.convs.5:13 mime.types.5:13 notifier.7:19 ppdc.1:45 ppdcfile.5:13 ppdhtml.1:22 ppdi.1:26 ppdmerge.1:24 ppdpo.1:25 printers.conf.5:12 subscriptions.conf.5:13
+#: backend.7:49 cancel.1:37 classes.conf.5:13 client.conf.5:13 cups.1:13 cupsaccept.8:40 cups-config.1:49 cupsctl.8:36 cupsd.8:32 cupsd.conf.5:13 cupsd-helper.8:46 cupsd-logs.5:13 cupsenable.8:46 cups-files.conf.5:13 cupsfilter.8:54 cups-lpd.8:23 cups-snmp.8:23 cups-snmp.conf.5:13 cupstestppd.1:51 filter.7:51 ippevepcl.7:22 ippeveprinter.1:79 ippfind.1:32 ipptool.1:75 ipptoolfile.5:12 lp.1:84 lpadmin.8:54 lpc.8:20 lpinfo.8:60 lpmove.8:37 lpoptions.1:53 lpq.1:31 lpr.1:53 lprm.1:31 lpstat.1:65 mailto.conf.5:13 mime.convs.5:13 mime.types.5:13 notifier.7:19 ppdc.1:45 ppdcfile.5:13 ppdhtml.1:22 ppdi.1:26 ppdmerge.1:24 ppdpo.1:25 printers.conf.5:12 subscriptions.conf.5:13
 #, no-wrap
 msgid "DESCRIPTION"
 msgstr ""
@@ -309,7 +309,7 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: backend.7:135 cupsfilter.8:102 cupstestppd.1:110 ippevepcl.7:39 ippeveprinter.1:176 ippfind.1:214 ipptool.1:191
+#: backend.7:135 cupsfilter.8:102 cupstestppd.1:110 ippevepcl.7:39 ippeveprinter.1:183 ippfind.1:214 ipptool.1:191
 #, no-wrap
 msgid "EXIT STATUS"
 msgstr ""
@@ -434,7 +434,7 @@ msgid "All other exit code values are reserved."
 msgstr ""
 
 #. type: SH
-#: backend.7:173 cups.1:60 cupsfilter.8:105 cups-snmp.8:37 ippevepcl.7:41 ippeveprinter.1:187 ippfind.1:216
+#: backend.7:173 cups.1:60 cupsfilter.8:105 cups-snmp.8:37 ippevepcl.7:41 ippeveprinter.1:194 ippfind.1:216
 #, no-wrap
 msgid "ENVIRONMENT"
 msgstr ""
@@ -506,7 +506,7 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: backend.7:208 cancel.1:84 classes.conf.5:21 client.conf.5:122 cups.1:126 cupsaccept.8:77 cups-config.1:105 cupsctl.8:92 cupsd.8:109 cupsd.conf.5:887 cupsd-helper.8:81 cupsd-logs.5:216 cupsenable.8:88 cups-files.conf.5:280 cupsfilter.8:131 cups-lpd.8:111 cups-snmp.8:49 cups-snmp.conf.5:62 cupstestppd.1:142 filter.7:212 ippevepcl.7:45 ippeveprinter.1:244 ippfind.1:255 ipptool.1:246 ipptoolfile.5:643 lp.1:219 lpadmin.8:224 lpc.8:47 lpinfo.8:121 lpmove.8:66 lpoptions.1:110 lpq.1:56 lpr.1:171 lprm.1:74 lpstat.1:140 mailto.conf.5:40 mime.convs.5:54 mime.types.5:100 notifier.7:31 ppdc.1:94 ppdcfile.5:153 ppdhtml.1:39 ppdi.1:46 ppdmerge.1:42 ppdpo.1:46 printers.conf.5:18 subscriptions.conf.5:21
+#: backend.7:208 cancel.1:84 classes.conf.5:21 client.conf.5:122 cups.1:126 cupsaccept.8:77 cups-config.1:105 cupsctl.8:92 cupsd.8:109 cupsd.conf.5:887 cupsd-helper.8:81 cupsd-logs.5:216 cupsenable.8:88 cups-files.conf.5:280 cupsfilter.8:131 cups-lpd.8:111 cups-snmp.8:49 cups-snmp.conf.5:62 cupstestppd.1:142 filter.7:212 ippevepcl.7:45 ippeveprinter.1:251 ippfind.1:255 ipptool.1:246 ipptoolfile.5:649 lp.1:219 lpadmin.8:224 lpc.8:47 lpinfo.8:121 lpmove.8:66 lpoptions.1:110 lpq.1:56 lpr.1:171 lprm.1:74 lpstat.1:140 mailto.conf.5:40 mime.convs.5:54 mime.types.5:100 notifier.7:31 ppdc.1:94 ppdcfile.5:153 ppdhtml.1:39 ppdi.1:46 ppdmerge.1:42 ppdpo.1:46 printers.conf.5:18 subscriptions.conf.5:21
 #, no-wrap
 msgid "SEE ALSO"
 msgstr ""
@@ -524,13 +524,13 @@ msgid "CUPS Online Help (http://localhost:631/help)"
 msgstr ""
 
 #. type: SH
-#: backend.7:219 cancel.1:90 classes.conf.5:29 client.conf.5:126 cups.1:142 cupsaccept.8:85 cups-config.1:108 cupsctl.8:97 cupsd.8:125 cupsd.conf.5:896 cupsd-helper.8:89 cupsd-logs.5:221 cupsenable.8:96 cups-files.conf.5:290 cupsfilter.8:138 cups-lpd.8:118 cups-snmp.8:55 cups-snmp.conf.5:65 cupstestppd.1:146 filter.7:220 ippevepcl.7:47 ippeveprinter.1:246 ippfind.1:257 ipptool.1:251 ipptoolfile.5:648 lp.1:228 lpadmin.8:230 lpc.8:57 lpinfo.8:124 lpmove.8:73 lpoptions.1:117 lpq.1:63 lpr.1:180 lprm.1:81 lpstat.1:147 mailto.conf.5:43 mime.convs.5:61 mime.types.5:107 notifier.7:35 ppdc.1:101 ppdcfile.5:160 ppdhtml.1:46 ppdi.1:53 ppdmerge.1:49 ppdpo.1:53 printers.conf.5:27 subscriptions.conf.5:30
+#: backend.7:219 cancel.1:90 classes.conf.5:29 client.conf.5:126 cups.1:142 cupsaccept.8:85 cups-config.1:108 cupsctl.8:97 cupsd.8:125 cupsd.conf.5:896 cupsd-helper.8:89 cupsd-logs.5:221 cupsenable.8:96 cups-files.conf.5:290 cupsfilter.8:138 cups-lpd.8:118 cups-snmp.8:55 cups-snmp.conf.5:65 cupstestppd.1:146 filter.7:220 ippevepcl.7:47 ippeveprinter.1:255 ippfind.1:257 ipptool.1:251 ipptoolfile.5:654 lp.1:228 lpadmin.8:230 lpc.8:57 lpinfo.8:124 lpmove.8:73 lpoptions.1:117 lpq.1:63 lpr.1:180 lprm.1:81 lpstat.1:147 mailto.conf.5:43 mime.convs.5:61 mime.types.5:107 notifier.7:35 ppdc.1:101 ppdcfile.5:160 ppdhtml.1:46 ppdi.1:53 ppdmerge.1:49 ppdpo.1:53 printers.conf.5:27 subscriptions.conf.5:30
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr ""
 
 #. type: Plain text
-#: backend.7:220 cancel.1:91 classes.conf.5:30 client.conf.5:127 cups.1:143 cupsaccept.8:86 cups-config.1:109 cupsctl.8:98 cupsd.8:126 cupsd.conf.5:897 cupsd-helper.8:90 cupsd-logs.5:222 cupsenable.8:97 cups-files.conf.5:291 cupsfilter.8:139 cups-lpd.8:119 cups-snmp.8:56 cups-snmp.conf.5:66 cupstestppd.1:147 filter.7:221 ippeveprinter.1:247 ipptool.1:252 ipptoolfile.5:649 lp.1:229 lpadmin.8:231 lpc.8:58 lpinfo.8:125 lpmove.8:74 lpoptions.1:118 lpq.1:64 lpr.1:181 lprm.1:82 lpstat.1:148 mailto.conf.5:44 mime.convs.5:62 mime.types.5:108 notifier.7:36 ppdc.1:102 ppdcfile.5:161 ppdhtml.1:47 ppdi.1:54 ppdmerge.1:50 ppdpo.1:54 printers.conf.5:28 subscriptions.conf.5:31
+#: backend.7:220 cancel.1:91 classes.conf.5:30 client.conf.5:127 cups.1:143 cupsaccept.8:86 cups-config.1:109 cupsctl.8:98 cupsd.8:126 cupsd.conf.5:897 cupsd-helper.8:90 cupsd-logs.5:222 cupsenable.8:97 cups-files.conf.5:291 cupsfilter.8:139 cups-lpd.8:119 cups-snmp.8:56 cups-snmp.conf.5:66 cupstestppd.1:147 filter.7:221 ippeveprinter.1:256 ipptool.1:252 ipptoolfile.5:655 lp.1:229 lpadmin.8:231 lpc.8:58 lpinfo.8:125 lpmove.8:74 lpoptions.1:118 lpq.1:64 lpr.1:181 lprm.1:82 lpstat.1:148 mailto.conf.5:44 mime.convs.5:62 mime.types.5:108 notifier.7:36 ppdc.1:102 ppdcfile.5:161 ppdhtml.1:47 ppdi.1:54 ppdmerge.1:50 ppdpo.1:54 printers.conf.5:28 subscriptions.conf.5:31
 msgid "Copyright \\[co] 2007-2019 by Apple Inc."
 msgstr ""
 
@@ -562,7 +562,7 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: cancel.1:40 cupsaccept.8:50 cups-config.1:52 cupsctl.8:40 cupsd.8:37 cupsd.conf.5:485 cupsenable.8:51 cupsfilter.8:59 cups-lpd.8:32 cupstestppd.1:58 filter.7:60 ippeveprinter.1:79 ippfind.1:191 ipptool.1:88 lp.1:94 lpadmin.8:73 lpinfo.8:63 lpmove.8:39 lpoptions.1:68 lpq.1:36 lpr.1:64 lprm.1:36 lpstat.1:68 ppdc.1:48 ppdhtml.1:25 ppdi.1:30 ppdmerge.1:28 ppdpo.1:28
+#: cancel.1:40 cupsaccept.8:50 cups-config.1:52 cupsctl.8:40 cupsd.8:37 cupsd.conf.5:485 cupsenable.8:51 cupsfilter.8:59 cups-lpd.8:32 cupstestppd.1:58 filter.7:60 ippeveprinter.1:82 ippfind.1:191 ipptool.1:88 lp.1:94 lpadmin.8:73 lpinfo.8:63 lpmove.8:39 lpoptions.1:68 lpq.1:36 lpr.1:64 lprm.1:36 lpstat.1:68 ppdc.1:48 ppdhtml.1:25 ppdi.1:30 ppdmerge.1:28 ppdpo.1:28
 #, no-wrap
 msgid "OPTIONS"
 msgstr ""
@@ -641,7 +641,7 @@ msgid "Deletes job data files in addition to canceling."
 msgstr ""
 
 #. type: SH
-#: cancel.1:61 cups.1:119 cupsaccept.8:67 cupsd.8:81 cupsd.conf.5:865 cupsenable.8:77 cups-lpd.8:46 cups-snmp.8:47 filter.7:199 ippeveprinter.1:183 ipptool.1:229 lp.1:196 lpadmin.8:197 lpinfo.8:97 lpoptions.1:108 lprm.1:52 lpstat.1:133
+#: cancel.1:61 cups.1:119 cupsaccept.8:67 cupsd.8:81 cupsd.conf.5:865 cupsenable.8:77 cups-lpd.8:46 cups-snmp.8:47 filter.7:199 ippeveprinter.1:190 ipptool.1:229 lp.1:196 lpadmin.8:197 lpinfo.8:97 lpoptions.1:108 lprm.1:52 lpstat.1:133
 #, no-wrap
 msgid "CONFORMING TO"
 msgstr ""
@@ -655,7 +655,7 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: cancel.1:63 cups-config.1:87 cupsctl.8:66 cupsd.8:84 cupsd.conf.5:867 cupstestppd.1:125 ippeveprinter.1:228 ippfind.1:242 ipptool.1:233 lp.1:201 lpinfo.8:99 lpmove.8:50 lpr.1:153 lprm.1:56 mime.convs.5:43 mime.types.5:89
+#: cancel.1:63 cups-config.1:87 cupsctl.8:66 cupsd.8:84 cupsd.conf.5:867 cupstestppd.1:125 ippeveprinter.1:235 ippfind.1:242 ipptool.1:233 lp.1:201 lpinfo.8:99 lpmove.8:50 lpr.1:153 lprm.1:56 mime.convs.5:43 mime.types.5:89
 #, no-wrap
 msgid "EXAMPLES"
 msgstr ""
@@ -1654,7 +1654,7 @@ msgid "Reports the default CUPS data directory."
 msgstr ""
 
 #. type: TP
-#: cups-config.1:66 ippeveprinter.1:82 ippfind.1:193 ipptool.1:91
+#: cups-config.1:66 ippeveprinter.1:85 ippfind.1:193 ipptool.1:91
 #, no-wrap
 msgid "B<--help>"
 msgstr ""
@@ -1724,7 +1724,7 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cups-config.1:84 ippeveprinter.1:88 ippfind.1:196 ipptool.1:106
+#: cups-config.1:84 ippeveprinter.1:91 ippfind.1:196 ipptool.1:106
 #, no-wrap
 msgid "B<--version>"
 msgstr ""
@@ -7796,7 +7796,7 @@ msgid "ippevepcl/ps"
 msgstr ""
 
 #. type: TH
-#: ippevepcl.7:9 ippeveprinter.1:9
+#: ippevepcl.7:9
 #, no-wrap
 msgid "24 April 2019"
 msgstr ""
@@ -7874,26 +7874,32 @@ msgstr ""
 msgid "ippeveprinter"
 msgstr ""
 
+#. type: TH
+#: ippeveprinter.1:9
+#, no-wrap
+msgid "17 May 2019"
+msgstr ""
+
 #. type: Plain text
 #: ippeveprinter.1:12
 msgid "ippeveprinter - an ipp everywhere printer application for cups"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:76
+#: ippeveprinter.1:79
 msgid ""
 "B<ippeveprinter> [ B<--help> ] [ B<--no-web-forms> ] [ B<--version> ] [ "
-"B<-2> ] [ B<-D> I<device-uri> ] [ B<-K> I<keypath> ] [ B<-M> I<manufacturer> "
-"] [ B<-P> I<filename.ppd> ] [ B<-V> I<ipp-version> ] [ B<-a> "
-"I<filename.conf> ] [ B<-c> I<command> ] [ B<-d> I<spool-directory> ] [ B<-f> "
-"I<type/subtype[,...]> ] [ B<-i> I<iconfile.png> ] [ B<-k> ] [ B<-l> "
-"I<location> ] [ B<-m> I<model> ] [ B<-n> I<hostname> ] [ B<-p> I<port> ] [ "
-"B<-r> I<subtype[,subtype]> ] [ B<-s> I<speed[,color-speed]> ] [ B<-v[vvv]> ] "
-"I<service-name>"
+"B<-2> ] [ B<-D> I<device-uri> ] [ B<-F> I<output-type/subtype> ] [ B<-K> "
+"I<keypath> ] [ B<-M> I<manufacturer> ] [ B<-P> I<filename.ppd> ] [ B<-V> "
+"I<ipp-version> ] [ B<-a> I<filename.conf> ] [ B<-c> I<command> ] [ B<-d> "
+"I<spool-directory> ] [ B<-f> I<type/subtype[,...]> ] [ B<-i> I<iconfile.png> "
+"] [ B<-k> ] [ B<-l> I<location> ] [ B<-m> I<model> ] [ B<-n> I<hostname> ] [ "
+"B<-p> I<port> ] [ B<-r> I<subtype[,subtype]> ] [ B<-s> "
+"I<speed[,color-speed]> ] [ B<-v[vvv]> ] I<service-name>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:79
+#: ippeveprinter.1:82
 msgid ""
 "B<ippeveprinter> is a simple Internet Printing Protocol (IPP) server "
 "conforming to the IPP Everywhere (PWG 5100.14) specification. It can be used "
@@ -7902,50 +7908,50 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:82
+#: ippeveprinter.1:85
 msgid "The following options are recognized by B<ippeveprinter:>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:85
+#: ippeveprinter.1:88
 msgid "Show program usage."
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:85
+#: ippeveprinter.1:88
 #, no-wrap
 msgid "B<--no-web-forms>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:88
+#: ippeveprinter.1:91
 msgid "Disable the web interface forms used to update the media and supply levels."
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:91
+#: ippeveprinter.1:94
 msgid "Show the CUPS version."
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:91
+#: ippeveprinter.1:94
 #, no-wrap
 msgid "B<-2>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:94
+#: ippeveprinter.1:97
 msgid "Report support for two-sided (duplex) printing."
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:94
+#: ippeveprinter.1:97
 #, no-wrap
 msgid "B<-D >I<device-uri>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:101
+#: ippeveprinter.1:104
 msgid ""
 "Set the device URI for print output.  The URI can be a filename, directory, "
 "or a network socket URI of the form \"socket://ADDRESS[:PORT]\" (where the "
@@ -7954,24 +7960,37 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:101
+#: ippeveprinter.1:104
+#, no-wrap
+msgid "B<-F >I<output-type/subtype[,...]>"
+msgstr ""
+
+#. type: Plain text
+#: ippeveprinter.1:108
+msgid ""
+"Specifies the output MIME media type.  The default is "
+"\"application/postscript\" when the B<-P> option is specified."
+msgstr ""
+
+#. type: TP
+#: ippeveprinter.1:108
 #, no-wrap
 msgid "B<-M >I<manufacturer>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:105
+#: ippeveprinter.1:112
 msgid "Set the manufacturer of the printer.  The default is \"Example\"."
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:105
+#: ippeveprinter.1:112
 #, no-wrap
 msgid "B<-P >I<filename.ppd>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:111
+#: ippeveprinter.1:118
 msgid ""
 "Load printer attributes from the specified PPD file.  This option is "
 "typically used in conjunction with the B<ippeveps>(7)  printer command (\"-c "
@@ -7979,163 +7998,162 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:111
+#: ippeveprinter.1:118
 #, no-wrap
 msgid "B<-V 1.1>"
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:113
+#: ippeveprinter.1:120
 #, no-wrap
 msgid "B<-V 2.0>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:117
+#: ippeveprinter.1:124
 msgid "Specifies the maximum IPP version to report.  2.0 is the default."
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:117
+#: ippeveprinter.1:124
 #, no-wrap
 msgid "B<-c >I<command>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:129
+#: ippeveprinter.1:136
 msgid ""
 "Run the specified command for each document that is printed.  If \"command\" "
 "is not an absolute path (\"/path/to/command\"), B<ippeveprinter> looks for "
-"the command in the \"ippeveprinter\" subdirectory of the CUPS binary "
-"directory, typically /usr/lib/cups/ippeveprinter or "
-"/usr/libexec/cups/ippeveprinter.  The B<cups-config>(1)  command can be used "
-"to discover the correct binary directory (\"cups-config --serverbin\").  In "
-"addition, the CUPS_SERVERBIN environment variable can be used to override "
-"the default location of this directory - see the B<cups>(1)  man page for "
-"more details."
+"the command in the \"command\" subdirectory of the CUPS binary directory, "
+"typically /usr/lib/cups/command or /usr/libexec/cups/command.  The "
+"B<cups-config>(1)  command can be used to discover the correct binary "
+"directory (\"cups-config --serverbin\").  In addition, the CUPS_SERVERBIN "
+"environment variable can be used to override the default location of this "
+"directory - see the B<cups>(1)  man page for more details."
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:129
+#: ippeveprinter.1:136
 #, no-wrap
 msgid "B<-d >I<spool-directory>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:133
+#: ippeveprinter.1:140
 msgid ""
 "Specifies the directory that will hold the print files.  The default is a "
 "directory under the user's current temporary directory."
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:133
+#: ippeveprinter.1:140
 #, no-wrap
 msgid "B<-f >I<type/subtype[,...]>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:137
+#: ippeveprinter.1:144
 msgid ""
 "Specifies a list of MIME media types that the server will accept.  The "
 "default depends on the type of printer created."
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:137
+#: ippeveprinter.1:144
 #, no-wrap
 msgid "B<-i >I<iconfile.png>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:142
+#: ippeveprinter.1:149
 msgid ""
 "Specifies the printer icon file for the server.  The file must be a PNG "
 "format image.  The default is an internally-provided PNG image."
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:142
+#: ippeveprinter.1:149
 #, no-wrap
 msgid "B<-k>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:145
+#: ippeveprinter.1:152
 msgid "Keeps the print documents in the spool directory rather than deleting them."
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:145
+#: ippeveprinter.1:152
 #, no-wrap
 msgid "B<-l >I<location>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:149
+#: ippeveprinter.1:156
 msgid ""
 "Specifies the human-readable location string that is reported by the "
 "server.  The default is the empty string."
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:149 lpadmin.8:79
+#: ippeveprinter.1:156 lpadmin.8:79
 #, no-wrap
 msgid "B<-m >I<model>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:153
+#: ippeveprinter.1:160
 msgid "Specifies the model name of the printer.  The default is \"Printer\"."
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:153
+#: ippeveprinter.1:160
 #, no-wrap
 msgid "B<-n >I<hostname>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:159
+#: ippeveprinter.1:166
 msgid ""
 "Specifies the hostname that is reported by the server.  The default is the "
 "name returned by the B<hostname>(1)  command."
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:159
+#: ippeveprinter.1:166
 #, no-wrap
 msgid "B<-p >I<port>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:163
+#: ippeveprinter.1:170
 msgid ""
 "Specifies the port number to listen on.  The default is a user-specific "
 "number from 8000 to 8999."
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:163
+#: ippeveprinter.1:170
 #, no-wrap
 msgid "B<-r >I<subtype[,subtype]>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:168
+#: ippeveprinter.1:175
 msgid ""
 "Specifies the DNS-SD subtype(s) to advertise.  Separate multiple subtypes "
 "with a comma.  The default is \"_print\"."
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:168
+#: ippeveprinter.1:175
 #, no-wrap
 msgid "B<-s >I<speed[,color-speed]>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:173
+#: ippeveprinter.1:180
 msgid ""
 "Specifies the printer speed in pages per minute.  If two numbers are "
 "specified and the second number is greater than zero, the server will report "
@@ -8143,18 +8161,18 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:173
+#: ippeveprinter.1:180
 #, no-wrap
 msgid "B<-v[vvv]>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:176
+#: ippeveprinter.1:183
 msgid "Be (very) verbose when logging activity to standard error."
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:183
+#: ippeveprinter.1:190
 msgid ""
 "The B<ippeveprinter> program returns 1 if it is unable to process the "
 "command-line arguments or register the IPP service.  Otherwise "
@@ -8162,14 +8180,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:187
+#: ippeveprinter.1:194
 msgid ""
 "The B<ippeveprinter> program is unique to CUPS and conforms to the IPP "
 "Everywhere (PWG 5100.14) specification."
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:191
+#: ippeveprinter.1:198
 msgid ""
 "B<ippeveprinter> adds environment variables starting with \"IPP_\" for all "
 "IPP Job attributes in the print request.  For example, when executing a "
@@ -8179,16 +8197,16 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:194
+#: ippeveprinter.1:201
 msgid ""
-"In addition, all IPP \"xxx-default\" Printer Description attributes are "
-"added to the environment.  For example, the \"IPP_MEDIA_DEFAULT\" "
-"environment variable will be set to the default value for the \"media\" Job "
-"Template attribute."
+"In addition, all IPP \"xxx-default\" and \"pwg-xxx\" Printer Description "
+"attributes are added to the environment.  For example, the "
+"\"IPP_MEDIA_DEFAULT\" environment variable will be set to the default value "
+"for the \"media\" Job Template attribute."
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:198
+#: ippeveprinter.1:205
 msgid ""
 "Enumerated values are converted to their keyword equivalents.  For example, "
 "a \"print-quality\" Job Template attribute with a enum value of 3 will "
@@ -8199,43 +8217,44 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:200
+#: ippeveprinter.1:207
 msgid ""
 "Finally, the \"CONTENT_TYPE\" environment variable contains the MIME media "
 "type of the document being printed, the \"DEVICE_URI\" environment variable "
-"contains the device URI as specified with the \"-D\" option, and the \"PPD\" "
-"environment variable contains the PPD filename as specified with the \"-P\" "
-"option."
+"contains the device URI as specified with the \"-D\" option, the "
+"\"OUTPUT_FORMAT\" environment variable contains the output MIME media type, "
+"and the \"PPD\" environment variable contains the PPD filename as specified "
+"with the \"-P\" option."
 msgstr ""
 
 #. type: SH
-#: ippeveprinter.1:200
+#: ippeveprinter.1:207
 #, no-wrap
 msgid "COMMAND OUTPUT"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:202
+#: ippeveprinter.1:209
 msgid ""
 "Unless they communicate directly with a printer, print commands send "
 "printer-ready data to the standard output."
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:206
+#: ippeveprinter.1:213
 msgid ""
 "Print commands can send messages back to B<ippeveprinter> on the standard "
 "error with one of the following prefixes:"
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:206
+#: ippeveprinter.1:213
 #, no-wrap
 msgid "B<ATTR: >I<attribute=value[ attribute=value]>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:210
+#: ippeveprinter.1:217
 msgid ""
 "Sets the named attribute(s) to the given values.  Currently only the "
 "\"job-impressions\" and \"job-impressions-completed\" Job Status attributes "
@@ -8245,37 +8264,37 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:210
+#: ippeveprinter.1:217
 #, no-wrap
 msgid "B<DEBUG: >I<Debugging message>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:213
+#: ippeveprinter.1:220
 msgid "Logs a debugging message if at least two -v's have been specified."
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:213
+#: ippeveprinter.1:220
 #, no-wrap
 msgid "B<ERROR: >I<Error message>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:216
+#: ippeveprinter.1:223
 msgid ""
 "Logs an error message and copies the message to the \"job-state-message\" "
 "attribute."
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:216
+#: ippeveprinter.1:223
 #, no-wrap
 msgid "B<INFO: >I<Informational message>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:219
+#: ippeveprinter.1:226
 msgid ""
 "Logs an informational/progress message if -v has been specified and copies "
 "the message to the \"job-state-message\" attribute unless an error has been "
@@ -8283,69 +8302,71 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:219
+#: ippeveprinter.1:226
 #, no-wrap
 msgid "B<STATE: >I<keyword[,keyword,...]>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:222
+#: ippeveprinter.1:229
 msgid ""
 "Sets the printer's \"printer-state-reasons\" attribute to the listed "
 "keywords."
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:222
+#: ippeveprinter.1:229
 #, no-wrap
 msgid "B<STATE: ->I<keyword[,keyword,...]>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:225
+#: ippeveprinter.1:232
 msgid ""
 "Removes the listed keywords from the printer's \"printer-state-reasons\" "
 "attribute."
 msgstr ""
 
 #. type: TP
-#: ippeveprinter.1:225
+#: ippeveprinter.1:232
 #, no-wrap
 msgid "B<STATE: +>I<keyword[,keyword,...]>"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:228
+#: ippeveprinter.1:235
 msgid ""
 "Adds the listed keywords to the printer's \"printer-state-reasons\" "
 "attribute."
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:232
+#: ippeveprinter.1:239
 msgid "Run B<ippeveprinter> with a service name of My Cool Printer:"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:235
+#: ippeveprinter.1:242
 #, no-wrap
 msgid "    ippeveprinter \"My Cool Printer\"\n"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:240
+#: ippeveprinter.1:247
 msgid "Run the B<file>(1)  command whenever a job is sent to the server:"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:243
+#: ippeveprinter.1:250
 #, no-wrap
 msgid "    ippeveprinter -c /usr/bin/file \"My Cool Printer\"\n"
 msgstr ""
 
 #. type: Plain text
-#: ippeveprinter.1:246
-msgid "PWG Internet Printing Protocol Workgroup (http://www.pwg.org/ipp)"
+#: ippeveprinter.1:255
+msgid ""
+"B<ippevepcl>(7), B<ippeveps>(7), PWG Internet Printing Protocol Workgroup "
+"(http://www.pwg.org/ipp)"
 msgstr ""
 
 #. type: TH
@@ -9464,6 +9485,12 @@ msgstr ""
 #: ipptoolfile.5:9
 #, no-wrap
 msgid "ipptoolfile"
+msgstr ""
+
+#. type: TH
+#: ipptoolfile.5:9
+#, no-wrap
+msgid "13 May 2019"
 msgstr ""
 
 #. type: Plain text
@@ -10915,145 +10942,171 @@ msgstr ""
 #. type: TP
 #: ipptoolfile.5:596
 #, no-wrap
+msgid "B<$date-current>"
+msgstr ""
+
+#. type: Plain text
+#: ipptoolfile.5:599
+msgid ""
+"Inserts the current date and time using the ISO-8601 format "
+"(\"yyyy-mm-ddThh:mm:ssZ\")."
+msgstr ""
+
+#. type: TP
+#: ipptoolfile.5:599
+#, no-wrap
+msgid "B<$date-start>"
+msgstr ""
+
+#. type: Plain text
+#: ipptoolfile.5:602
+msgid ""
+"Inserts the starting date and time using the ISO-8601 format "
+"(\"yyyy-mm-ddThh:mm:ssZ\")."
+msgstr ""
+
+#. type: TP
+#: ipptoolfile.5:602
+#, no-wrap
 msgid "B<$filename>"
 msgstr ""
 
 #. type: Plain text
-#: ipptoolfile.5:601
+#: ipptoolfile.5:607
 msgid "Inserts the filename provided to B<ipptool>(8)  with the I<-f> option."
 msgstr ""
 
 #. type: TP
-#: ipptoolfile.5:601
+#: ipptoolfile.5:607
 #, no-wrap
 msgid "B<$filetype>"
 msgstr ""
 
 #. type: Plain text
-#: ipptoolfile.5:606
+#: ipptoolfile.5:612
 msgid ""
 "Inserts the MIME media type for the filename provided to B<ipptool>(8)  with "
 "the I<-f> option."
 msgstr ""
 
 #. type: TP
-#: ipptoolfile.5:606
+#: ipptoolfile.5:612
 #, no-wrap
 msgid "B<$hostname>"
 msgstr ""
 
 #. type: Plain text
-#: ipptoolfile.5:610
+#: ipptoolfile.5:616
 msgid "Inserts the hostname from the URI provided to B<ipptool>(8)."
 msgstr ""
 
 #. type: TP
-#: ipptoolfile.5:610
+#: ipptoolfile.5:616
 #, no-wrap
 msgid "B<$job-id>"
 msgstr ""
 
 #. type: Plain text
-#: ipptoolfile.5:613
+#: ipptoolfile.5:619
 msgid ""
 "Inserts the last \"job-id\" attribute value returned in a test response or 0 "
 "if no \"job-id\" attribute has been seen."
 msgstr ""
 
 #. type: TP
-#: ipptoolfile.5:613
+#: ipptoolfile.5:619
 #, no-wrap
 msgid "B<$job-uri>"
 msgstr ""
 
 #. type: Plain text
-#: ipptoolfile.5:616
+#: ipptoolfile.5:622
 msgid ""
 "Inserts the last \"job-uri\" attribute value returned in a test response or "
 "an empty string if no \"job-uri\" attribute has been seen."
 msgstr ""
 
 #. type: TP
-#: ipptoolfile.5:616
+#: ipptoolfile.5:622
 #, no-wrap
 msgid "B<$notify-subscription-id>"
 msgstr ""
 
 #. type: Plain text
-#: ipptoolfile.5:619
+#: ipptoolfile.5:625
 msgid ""
 "Inserts the last \"notify-subscription-id\" attribute value returned in a "
 "test response or 0 if no \"notify-subscription-id\" attribute has been seen."
 msgstr ""
 
 #. type: TP
-#: ipptoolfile.5:619
+#: ipptoolfile.5:625
 #, no-wrap
 msgid "B<$port>"
 msgstr ""
 
 #. type: Plain text
-#: ipptoolfile.5:623
+#: ipptoolfile.5:629
 msgid "Inserts the port number from the URI provided to B<ipptool>(8)."
 msgstr ""
 
 #. type: TP
-#: ipptoolfile.5:623
+#: ipptoolfile.5:629
 #, no-wrap
 msgid "B<$resource>"
 msgstr ""
 
 #. type: Plain text
-#: ipptoolfile.5:627
+#: ipptoolfile.5:633
 msgid "Inserts the resource path from the URI provided to B<ipptool>(8)."
 msgstr ""
 
 #. type: TP
-#: ipptoolfile.5:627
+#: ipptoolfile.5:633
 #, no-wrap
 msgid "B<$scheme>"
 msgstr ""
 
 #. type: Plain text
-#: ipptoolfile.5:631
+#: ipptoolfile.5:637
 msgid "Inserts the scheme from the URI provided to B<ipptool>(8)."
 msgstr ""
 
 #. type: TP
-#: ipptoolfile.5:631
+#: ipptoolfile.5:637
 #, no-wrap
 msgid "B<$uri>"
 msgstr ""
 
 #. type: Plain text
-#: ipptoolfile.5:635
+#: ipptoolfile.5:641
 msgid "Inserts the URI provided to B<ipptool>(8)."
 msgstr ""
 
 #. type: TP
-#: ipptoolfile.5:635
+#: ipptoolfile.5:641
 #, no-wrap
 msgid "B<$uriuser>"
 msgstr ""
 
 #. type: Plain text
-#: ipptoolfile.5:640
+#: ipptoolfile.5:646
 msgid "Inserts the username from the URI provided to B<ipptool>(8), if any."
 msgstr ""
 
 #. type: TP
-#: ipptoolfile.5:640
+#: ipptoolfile.5:646
 #, no-wrap
 msgid "B<$user>"
 msgstr ""
 
 #. type: Plain text
-#: ipptoolfile.5:643
+#: ipptoolfile.5:649
 msgid "Inserts the current user's login name."
 msgstr ""
 
 #. type: Plain text
-#: ipptoolfile.5:648
+#: ipptoolfile.5:654
 msgid ""
 "B<ipptool>(1), IANA IPP Registry "
 "(http://www.iana.org/assignments/ipp-registrations), PWG Internet Printing "

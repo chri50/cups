@@ -2,7 +2,6 @@ pwg-raster-attributes.patch
 manpage-hyphen-minus.patch
 0003-Install-root-backends-world-readable.patch
 fixes-for-jobs-with-multiple-files-and-multiple-formats.patch
-tests-fix-topdf-filter-paths.patch
 tests-ignore-warnings.patch
 tests-ignore-usb-crash.patch
 tests-ignore-kfreebsd-amd64-not-a-pdf.patch
@@ -14,7 +13,6 @@ tests-fix-ppdLocalize-on-unclean-env.patch
 tests-use-ipv4-lo-address.patch
 tests-make-lpstat-call-reproducible.patch
 tests-no-pdftourf.patch
-0017-Block-cups-files.conf-directives-Issue-5530.patch
 move-cupsd-conf-default-to-share.patch
 airprint-support.patch
 0020-Let-snmp-backend-also-use-manufacturer-specific-MIBs.patch
