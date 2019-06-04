@@ -12,12 +12,12 @@ Bug-Debian: https://bugs.debian.org/837936
 ---
  Makedefs.in     |  1 +
  configure.ac    |  9 +++++++++
- man/Makefile    |  7 ++-----
+ man/Makefile    |  5 ++---
  man/mantohtml.c | 15 ++++++++++-----
- 4 files changed, 22 insertions(+), 10 deletions(-)
+ 4 files changed, 22 insertions(+), 8 deletions(-)
 
 diff --git a/Makedefs.in b/Makedefs.in
-index 92850db..b8784ce 100644
+index c71e813..7b99dab 100644
 --- a/Makedefs.in
 +++ b/Makedefs.in
 @@ -22,6 +22,7 @@ CUPS_VERSION    =       @CUPS_VERSION@
@@ -29,7 +29,7 @@ index 92850db..b8784ce 100644
  CXX		=	@LIBTOOL_CXX@ @CXX@
  DSO		=	@DSO@
 diff --git a/configure.ac b/configure.ac
-index 190e78d..974f98d 100644
+index c7f58b6..8ca5393 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -19,6 +19,15 @@ sinclude(config-scripts/cups-common.m4)
@@ -49,17 +49,15 @@ index 190e78d..974f98d 100644
  sinclude(config-scripts/cups-libtool.m4)
  sinclude(config-scripts/cups-compiler.m4)
 diff --git a/man/Makefile b/man/Makefile
-index efd9ca3..e01591a 100644
+index 621fe60..e01591a 100644
 --- a/man/Makefile
 +++ b/man/Makefile
-@@ -222,8 +222,5 @@ html:	$(MAN1) $(MAN5) $(MAN7) $(MAN8) mantohtml
+@@ -222,6 +222,5 @@ html:	$(MAN1) $(MAN5) $(MAN7) $(MAN8) mantohtml
  		./mantohtml $$file >../doc/help/man-`basename $$file .8`.html; \
  	done
  
 -mantohtml:	mantohtml.o ../cups/$(LIBCUPSSTATIC)
--	$(LD_CC) $(ARCHFLAGS) $(ALL_LDFLAGS) -o $@ mantohtml.o \
--		../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) \
--		$(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+-	$(LD_CC) $(ARCHFLAGS) $(ALL_LDFLAGS) -o $@ mantohtml.o $(LINKCUPSSTATIC)
 -	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 +mantohtml:	mantohtml.c
 +	$(CC_FOR_BUILD) -o $@ $<

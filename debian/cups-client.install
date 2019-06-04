@@ -6,8 +6,6 @@ usr/bin/lpstat
 usr/sbin/lpadmin
 usr/sbin/lpinfo
 usr/sbin/lpmove
-usr/sbin/accept
-usr/sbin/reject
 usr/sbin/cupsaccept
 usr/sbin/cupsreject
 usr/sbin/cupsdisable

@@ -26,7 +26,7 @@ index 4a78ba6..a3d088d 100644
  # Default user and group for filters/backends/helper programs; this cannot be
  # any user or group that resolves to ID 0 for security reasons...
 diff --git a/doc/help/man-cups-files.conf.html b/doc/help/man-cups-files.conf.html
-index 27a1b60..d7995cb 100644
+index c567cbb..f2f6802 100644
 --- a/doc/help/man-cups-files.conf.html
 +++ b/doc/help/man-cups-files.conf.html
 @@ -150,7 +150,7 @@ The default is "/var/run/cups" or "/etc/cups" depending on the platform.

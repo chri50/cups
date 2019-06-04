@@ -293,11 +293,11 @@ index dbc3150..8cb79bb 100644
  .TP 5
  \fBWARNING:\fI message\fR
 diff --git a/man/ippeveprinter.1 b/man/ippeveprinter.1
-index 0fb4c24..6a4b7e1 100644
+index 5753c69..2fcda8b 100644
 --- a/man/ippeveprinter.1
 +++ b/man/ippeveprinter.1
-@@ -122,8 +122,8 @@ If "command" is not an absolute path ("/path/to/command"),
- looks for the command in the "ippeveprinter" subdirectory of the CUPS binary directory, typically /usr/lib/cups/ippeveprinter or /usr/libexec/cups/ippeveprinter.
+@@ -129,8 +129,8 @@ If "command" is not an absolute path ("/path/to/command"),
+ looks for the command in the "command" subdirectory of the CUPS binary directory, typically /usr/lib/cups/command or /usr/libexec/cups/command.
  The
  .BR cups-config (1)
 -command can be used to discover the correct binary directory ("cups-config --serverbin").
@@ -307,7 +307,7 @@ index 0fb4c24..6a4b7e1 100644
  .BR cups (1)
  man page for more details.
  .TP 5
-@@ -220,7 +220,7 @@ Logs an informational/progress message if \-v has been specified and copies the
+@@ -227,7 +227,7 @@ Logs an informational/progress message if \-v has been specified and copies the
  \fBSTATE: \fIkeyword[,keyword,...]\fR
  Sets the printer's "printer-state-reasons" attribute to the listed keywords.
  .TP 5
@@ -348,7 +348,7 @@ index 32f2e6f..d77ef75 100644
  Expressions may also contain modifiers:
  .TP 5
 diff --git a/man/ipptoolfile.5 b/man/ipptoolfile.5
-index fd2aec3..e1a7108 100644
+index 5ef6219..9cd6403 100644
 --- a/man/ipptoolfile.5
 +++ b/man/ipptoolfile.5
 @@ -166,8 +166,8 @@ The following directives are understood within a \fItest\fR:

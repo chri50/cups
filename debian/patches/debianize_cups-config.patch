@@ -13,11 +13,11 @@ Bug-Debian: https://bugs.debian.org/751157
 Last-Update: 2014-06-11
 Patch-Name: debianize_cups-config.patch
 ---
- cups-config.in | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ cups-config.in | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/cups-config.in b/cups-config.in
-index 64c893c..ce3b6f1 100755
+index 9dd094d..b073a07 100755
 --- a/cups-config.in
 +++ b/cups-config.in
 @@ -17,7 +17,7 @@ prefix=@prefix@
@@ -30,12 +30,12 @@ index 64c893c..ce3b6f1 100755
  datadir=@datadir@
  sysconfdir=@sysconfdir@
 @@ -29,7 +29,8 @@ INSTALLSTATIC=@INSTALLSTATIC@
- # flags for C++ compiler:
+ # flags for compiler and linker...
  CFLAGS=""
  LDFLAGS="@EXPORT_LDFLAGS@"
--LIBS="@LIBGSSAPI@ @EXPORT_SSLLIBS@ @LIBZ@ @LIBS@"
+-LIBS="@LIBGSSAPI@ @DNSSDLIBS@ @EXPORT_SSLLIBS@ @LIBZ@ @LIBS@"
 +LIBGSSAPI=`[ ! -x /usr/bin/krb5-config ] || /usr/bin/krb5-config --libs`
-+LIBS="$LIBGSSAPI @EXPORT_SSLLIBS@ @LIBZ@ @LIBS@"
++LIBS="$LIBGSSAPI @DNSSDLIBS@ @EXPORT_SSLLIBS@ @LIBZ@ @LIBS@"
  
  # Check for local invocation...
  selfdir=`dirname $0`
@@ -48,12 +48,3 @@ index 64c893c..ce3b6f1 100755
  	LDFLAGS="$LDFLAGS -L$libdir"
      fi
  fi
-@@ -98,7 +99,7 @@ while test $# -gt 0; do
- 	    ;;
- 	--libs)
- 	    if test $static = no; then
--	        libs="@EXTLINKCUPS@ $LIBS";
-+	        libs="@EXTLINKCUPS@";
- 	    else
- 	        libs="$libdir/libcups.a $LIBS";
- 	    fi

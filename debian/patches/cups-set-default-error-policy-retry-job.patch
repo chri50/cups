@@ -17,7 +17,7 @@ Patch-Name: cups-set-default-error-policy-retry-job.patch
  3 files changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/doc/help/man-cupsd.conf.html b/doc/help/man-cupsd.conf.html
-index f889b86..862d92e 100644
+index 10101db..9889166 100644
 --- a/doc/help/man-cupsd.conf.html
 +++ b/doc/help/man-cupsd.conf.html
 @@ -95,9 +95,9 @@ The default is typically the server's ".local" hostname.

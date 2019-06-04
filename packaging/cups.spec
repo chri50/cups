@@ -40,12 +40,12 @@
 
 Summary: CUPS
 Name: cups
-Version: 2.3b8
+Version: 2.3rc1
 Release: 0
 Epoch: 1
 License: GPL
 Group: System Environment/Daemons
-Source: https://github.com/apple/cups/releases/download/v2.3b8/cups-2.3b8-source.tar.gz
+Source: https://github.com/apple/cups/releases/download/v2.3rc1/cups-2.3rc1-source.tar.gz
 Url: http://www.cups.org
 Packager: Anonymous <anonymous@example.com>
 Vendor: Example Corp
@@ -236,6 +236,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/lib/cups/backend/usb
 %dir /usr/lib/cups/cgi-bin
 /usr/lib/cups/cgi-bin/*
+%dir /usr/lib/cups/command
+/usr/lib/cups/command/*
 %dir /usr/lib/cups/daemon
 /usr/lib/cups/daemon/cups-deviced
 /usr/lib/cups/daemon/cups-driverd
@@ -243,8 +245,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir /usr/lib/cups/driver
 %dir /usr/lib/cups/filter
 /usr/lib/cups/filter/*
-%dir /usr/lib/cups/ippeveprinter
-/usr/lib/cups/ippeveprinter/*
 %dir /usr/lib/cups/monitor
 /usr/lib/cups/monitor/*
 %dir /usr/lib/cups/notifier
