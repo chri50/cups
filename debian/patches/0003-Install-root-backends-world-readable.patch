@@ -16,11 +16,9 @@ Bug-Debian: http://bugs.debian.org/410171
  scheduler/job.c          | 2 +-
  3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/backend/Makefile b/backend/Makefile
-index 48a1c669c..0497cbf8d 100644
 --- a/backend/Makefile
 +++ b/backend/Makefile
-@@ -19,7 +19,7 @@ include ../Makedefs
+@@ -19,7 +19,7 @@
  # Object files...
  #
  
@@ -29,7 +27,7 @@ index 48a1c669c..0497cbf8d 100644
  #
  # UBACKENDS and ULBACKENDS are installed mode 0755 so cupsd will run them as
  # an unprivileged user...
-@@ -124,7 +124,7 @@ install-exec:	$(INSTALLXPC)
+@@ -124,7 +124,7 @@
  	echo Installing backends in $(SERVERBIN)/backend
  	$(INSTALL_DIR) -m 755 $(SERVERBIN)/backend
  	for file in $(RBACKENDS); do \
@@ -38,11 +36,9 @@ index 48a1c669c..0497cbf8d 100644
  	done
  	for file in $(UBACKENDS); do \
  		$(INSTALL_BIN) $$file $(SERVERBIN)/backend; \
-diff --git a/scheduler/cups-deviced.c b/scheduler/cups-deviced.c
-index 42eaa59ff..3bdb48302 100644
 --- a/scheduler/cups-deviced.c
 +++ b/scheduler/cups-deviced.c
-@@ -268,7 +268,7 @@ main(int  argc,				/* I - Number of command-line args */
+@@ -268,7 +268,7 @@
      * all others run as the unprivileged user...
      */
  
@@ -51,11 +47,9 @@ index 42eaa59ff..3bdb48302 100644
    }
  
    cupsDirClose(dir);
-diff --git a/scheduler/job.c b/scheduler/job.c
-index 638f256db..bbef60c64 100644
 --- a/scheduler/job.c
 +++ b/scheduler/job.c
-@@ -1250,7 +1250,7 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
+@@ -1248,7 +1248,7 @@
        else if (stat(command, &backinfo))
  	backroot = 0;
        else

@@ -13,11 +13,9 @@ Patch-Name: pwg-raster-attributes.patch
  scheduler/printers.c | 77 +++++++++++++++++++++++++++++++++++++++++++-
  1 file changed, 76 insertions(+), 1 deletion(-)
 
-diff --git a/scheduler/printers.c b/scheduler/printers.c
-index 68239d85d..865e3693b 100644
 --- a/scheduler/printers.c
 +++ b/scheduler/printers.c
-@@ -2199,9 +2199,10 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */
+@@ -2198,9 +2198,10 @@
    cupsd_location_t *auth;		/* Pointer to authentication element */
    const char	*auth_supported;	/* Authentication supported */
    ipp_t		*oldattrs;		/* Old printer attributes */
@@ -29,7 +27,7 @@ index 68239d85d..865e3693b 100644
  
  
    DEBUG_printf(("cupsdSetPrinterAttrs: entering name = %s, type = %x\n", p->name,
-@@ -2538,6 +2539,80 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */
+@@ -2537,6 +2538,80 @@
    DEBUG_printf(("cupsdSetPrinterAttrs: leaving name = %s, type = %x\n", p->name,
                  p->type));
  

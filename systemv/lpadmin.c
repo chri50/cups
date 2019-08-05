@@ -1140,6 +1140,7 @@ enable_printer(http_t *http,		/* I - Server connection */
 
   request = ippNewRequest(IPP_OP_ENABLE_PRINTER);
 
+  httpAssembleURIf(HTTP_URI_CODING_ALL, uri, sizeof(uri), "ipp", NULL, "localhost", ippPort(), "/printers/%s", printer);
   ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri", NULL, uri);
   ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_NAME, "requesting-user-name", NULL, cupsUser());
 
@@ -1449,6 +1450,7 @@ set_printer_options(
 					/* Status code */
 
       _cupsLangPrintf(stderr, _("lpadmin: Unable to open PPD \"%s\": %s on line %d."), ppdfile, ppdErrorString(status), linenum);
+      return (1);
     }
 
     ppdMarkDefaults(ppd);

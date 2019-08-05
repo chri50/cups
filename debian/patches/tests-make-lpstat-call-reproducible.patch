@@ -12,11 +12,9 @@ Patch-Name: tests-make-lpstat-call-reproducible.patch
  test/run-stp-tests.sh | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index bcdfd5efe..1c7cc27e7 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
-@@ -695,7 +695,7 @@ else
+@@ -703,7 +703,7 @@
  fi
  
  while true; do
@@ -25,7 +23,7 @@ index bcdfd5efe..1c7cc27e7 100755
  	if test "x$running" = "xscheduler is running"; then
  		break
  	fi
-@@ -809,13 +809,13 @@ kill -HUP $cupsd
+@@ -817,13 +817,13 @@
  while true; do
  	sleep 10
  

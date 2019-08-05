@@ -19,11 +19,9 @@ Patch-Name: airprint-support.patch
  scheduler/printers.c | 4 +++-
  5 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/conf/mime.convs.in b/conf/mime.convs.in
-index bffd04f84..33ce812e3 100644
 --- a/conf/mime.convs.in
 +++ b/conf/mime.convs.in
-@@ -47,6 +47,9 @@ application/postscript		application/vnd.cups-postscript	66	pstops
+@@ -47,6 +47,9 @@
  application/vnd.cups-raster	image/pwg-raster		100	rastertopwg
  application/vnd.cups-raster	image/urf			100	rastertopwg
  
@@ -33,11 +31,9 @@ index bffd04f84..33ce812e3 100644
  ########################################################################
  #
  # Raw filter...
-diff --git a/conf/mime.types b/conf/mime.types
-index fa5371486..84cb0fffe 100644
 --- a/conf/mime.types
 +++ b/conf/mime.types
-@@ -111,6 +111,9 @@ image/x-alias			pix short(8,8) short(8,24)
+@@ -111,6 +111,9 @@
  image/x-bitmap			bmp string(0,BM) + !printable(2,14)
  image/x-icon			ico
  
@@ -47,11 +43,9 @@ index fa5371486..84cb0fffe 100644
  ########################################################################
  #
  # Text files...
-diff --git a/scheduler/conf.c b/scheduler/conf.c
-index 9c1be7089..52f2a6d35 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -745,7 +745,7 @@ cupsdReadConfiguration(void)
+@@ -745,7 +745,7 @@
    DefaultShared            = CUPS_DEFAULT_DEFAULT_SHARED;
  
  #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
@@ -60,11 +54,9 @@ index 9c1be7089..52f2a6d35 100644
  #endif /* HAVE_DNSSD || HAVE_AVAHI */
  
    cupsdSetString(&LPDConfigFile, CUPS_DEFAULT_LPD_CONFIG_FILE);
-diff --git a/scheduler/dirsvc.c b/scheduler/dirsvc.c
-index 3dab90ca9..f21942af3 100644
 --- a/scheduler/dirsvc.c
 +++ b/scheduler/dirsvc.c
-@@ -443,6 +443,12 @@ dnssdBuildTxtRecord(
+@@ -443,6 +443,12 @@
      keyvalue[count  ][0] = "pdl";
      keyvalue[count++][1] = p->pdl ? p->pdl : "application/postscript";
  
@@ -77,11 +69,9 @@ index 3dab90ca9..f21942af3 100644
      if (get_auth_info_required(p, air_str, sizeof(air_str)))
      {
        keyvalue[count  ][0] = "air";
-diff --git a/scheduler/printers.c b/scheduler/printers.c
-index 865e3693b..968005059 100644
 --- a/scheduler/printers.c
 +++ b/scheduler/printers.c
-@@ -3765,7 +3765,9 @@ add_printer_formats(cupsd_printer_t *p)	/* I - Printer */
+@@ -3764,7 +3764,9 @@
        }
        else if (!_cups_strcasecmp(type->super, "image"))
        {

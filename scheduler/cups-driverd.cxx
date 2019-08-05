@@ -5,8 +5,8 @@
  * created from driver information files, and dynamically generated PPD files
  * using driver helper programs.
  *
- * Copyright 2007-2018 by Apple Inc.
- * Copyright 1997-2007 by Easy Software Products.
+ * Copyright Â 2007-2019 by Apple Inc.
+ * Copyright Â 1997-2007 by Easy Software Products.
  *
  * These coded instructions, statements, and computer programs are the
  * property of Apple Inc. and are protected by Federal copyright
@@ -31,7 +31,7 @@
  * Constants...
  */
 
-#define PPD_SYNC	0x50504439	/* Sync word for ppds.dat (PPD9) */
+#define PPD_SYNC	0x50504441	/* Sync word for ppds.dat (PPDA) */
 #define PPD_MAX_LANG	32		/* Maximum languages */
 #define PPD_MAX_PROD	32		/* Maximum products */
 #define PPD_MAX_VERS	32		/* Maximum versions */
@@ -40,12 +40,9 @@
 #define PPD_TYPE_PDF		1	/* PDF PPD */
 #define PPD_TYPE_RASTER		2	/* CUPS raster PPD */
 #define PPD_TYPE_FAX		3	/* Facsimile/MFD PPD */
-#define PPD_TYPE_OBJECT_ANY	4	/* 3D (AMF/STL/g-code) PPD */
-#define PPD_TYPE_OBJECT_DIRECT	5	/* 3D (AMF/STL/g-code) PPD over any connection */
-#define PPD_TYPE_OBJECT_STORAGE	6	/* 3D (AMF/STL/g-code) PPD for storage to SD card, etc. */
-#define PPD_TYPE_UNKNOWN	7	/* Other/hybrid PPD */
-#define PPD_TYPE_DRV		8	/* Driver info file */
-#define PPD_TYPE_ARCHIVE	9	/* Archive file */
+#define PPD_TYPE_UNKNOWN	4	/* Other/hybrid PPD */
+#define PPD_TYPE_DRV		5	/* Driver info file */
+#define PPD_TYPE_ARCHIVE	6	/* Archive file */
 
 #define TAR_BLOCK	512		/* Number of bytes in a block */
 #define TAR_BLOCKS	10		/* Blocking factor */
@@ -362,8 +359,7 @@ cat_drv(const char *name,		/* I - PPD name */
     ppdcCatalog	*catalog;		// Message catalog in .drv file
 
 
-    fprintf(stderr, "DEBUG2: [cups-driverd] %d locales defined in \"%s\"...\n",
-            src->po_files->count, filename);
+    fprintf(stderr, "DEBUG2: [cups-driverd] %u locales defined in \"%s\"...\n", (unsigned)src->po_files->count, filename);
 
     locales = new ppdcArray();
     for (catalog = (ppdcCatalog *)src->po_files->first();
@@ -1517,8 +1513,20 @@ list_ppds(int        request_id,	/* I - Request ID */
       }
 
       if (send_type)
-	cupsdSendIPPString(IPP_TAG_KEYWORD, "ppd-type",
-			   PPDTypes[ppd->record.type]);
+      {
+        if (ppd->record.type < PPD_TYPE_POSTSCRIPT || ppd->record.type > PPD_TYPE_ARCHIVE)
+        {
+         /*
+          * This cache file is corrupted, remove it!
+          */
+
+          unlink(filename);
+
+	  cupsdSendIPPString(IPP_TAG_KEYWORD, "ppd-type", PPDTypes[PPD_TYPE_UNKNOWN]);
+        }
+        else
+	  cupsdSendIPPString(IPP_TAG_KEYWORD, "ppd-type", PPDTypes[ppd->record.type]);
+      }
 
       if (send_model_number)
 	cupsdSendIPPInteger(IPP_TAG_INTEGER, "ppd-model-number",
@@ -2101,22 +2109,6 @@ load_ppd(const char  *filename,		/* I - Real filename */
 	type = PPD_TYPE_RASTER;
       else if (strstr(line + 12, "application/vnd.cups-pdf"))
 	type = PPD_TYPE_PDF;
-      else if (strstr(line + 12, "application/amf") ||
-               strstr(line + 12, "application/g-code") ||
-               strstr(line + 12, "application/sla"))
-	type = PPD_TYPE_OBJECT_ANY;
-    }
-    else if (!strncmp(line, "*cups3DWorkflows:", 17))
-    {
-      int is_direct = strstr(line + 17, "direct") != NULL;
-      int is_storage = strstr(line + 17, "storage") != NULL;
-
-      if (is_direct && !is_storage)
-        type = PPD_TYPE_OBJECT_DIRECT;
-      else if (!is_direct && is_storage)
-        type = PPD_TYPE_OBJECT_STORAGE;
-      else
-        type = PPD_TYPE_OBJECT_ANY;
     }
     else if (!strncmp(line, "*cupsModelNumber:", 17))
       sscanf(line, "*cupsModelNumber:%d", &model_number);
