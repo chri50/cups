@@ -709,7 +709,7 @@ cupsdReadConfiguration(void)
   CreateSelfSignedCerts    = TRUE;
   DefaultEncryption        = HTTP_ENCRYPT_REQUIRED;
 #endif /* HAVE_SSL */
-  DirtyCleanInterval       = DEFAULT_KEEPALIVE;
+  DirtyCleanInterval       = 0;
   JobKillDelay             = DEFAULT_TIMEOUT;
   JobRetryLimit            = 5;
   JobRetryInterval         = 300;
