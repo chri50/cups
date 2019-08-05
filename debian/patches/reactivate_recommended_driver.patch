@@ -12,11 +12,9 @@ Patch-Name: reactivate_recommended_driver.patch
  scheduler/cups-driverd.cxx | 10 ----------
  1 file changed, 10 deletions(-)
 
-diff --git a/scheduler/cups-driverd.cxx b/scheduler/cups-driverd.cxx
-index e6684a139..1d4291a73 100644
 --- a/scheduler/cups-driverd.cxx
 +++ b/scheduler/cups-driverd.cxx
-@@ -246,7 +246,6 @@ add_ppd(const char *filename,		/* I - PPD filename */
+@@ -243,7 +243,6 @@
  	const char *scheme)		/* I - PPD scheme */
  {
    ppd_info_t	*ppd;			/* PPD */
@@ -24,11 +22,10 @@ index e6684a139..1d4291a73 100644
  
  
   /*
-@@ -284,15 +283,6 @@ add_ppd(const char *filename,		/* I - PPD filename */
-   strlcpy(ppd->record.device_id, device_id, sizeof(ppd->record.device_id));
+@@ -282,15 +281,6 @@
    strlcpy(ppd->record.scheme, scheme, sizeof(ppd->record.scheme));
  
-- /*
+  /*
 -  * Strip confusing (and often wrong) "recommended" suffix added by
 -  * Foomatic drivers...
 -  */
@@ -37,6 +34,7 @@ index e6684a139..1d4291a73 100644
 -                            " (recommended)")) != NULL)
 -    *recommended = '\0';
 -
-  /*
+- /*
    * Add the PPD to the PPD arrays...
    */
+ 

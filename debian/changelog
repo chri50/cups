@@ -1,3 +1,15 @@
+cups (2.2.11-0ubuntu1) eoan; urgency=medium
+
+  * New upstream release
+  * Removed 10 patches taken from upstream.
+  * Refreshed 13 patches with quilt.
+  * Removed patch to set "LogDebugHistory 99999" as it causes high
+    system load when there are very many jobs (LP: #1831021).
+  * Set "DirtyCleanInterval 0" in CUPS configuration to avoid losses of
+    jobs when cupsd gets killed (LP: #1830022).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon, 05 Aug 2019 11:40:10 +0200
+
 cups (2.2.10-6ubuntu1) eoan; urgency=medium
 
   * d/p/systemd-service-for-cupsd-after-sssd.patch: Start cupsd after sssd if
