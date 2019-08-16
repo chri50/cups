@@ -1,10 +1,14 @@
-CHANGES - 2.2.7 - 2018-03-22
+CHANGES - 2.2.7 - 2019-08-16
 ============================
 
 
 Changes in CUPS v2.2.7
 ----------------------
 
+- CVE-2019-8696 and CVE-2019-8675: Fixed SNMP buffer overflows (rdar://51685251)
+- Fixed IPP buffer overflow (rdar://50035411)
+- Fixed memory disclosure issue in the scheduler (rdar://51373853)
+- Fixed DoS issues in the scheduler (rdar://51373929)
 - NOTICE: Raw print queues are now deprecated (Issue #5269)
 - Fixed an Avahi crash bug in the scheduler (Issue #5268)
 - The IPP Everywhere PPD generator did not include the `cupsJobPassword`

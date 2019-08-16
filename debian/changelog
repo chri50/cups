@@ -1,3 +1,20 @@
+cups (2.2.7-1ubuntu2.7) bionic-security; urgency=medium
+
+  * SECURITY UPDATE: Stack buffer overflow in SNMP ASN.1 decoder
+    - debian/patches/CVE-2019-86xx.patch: update cups/snmp.c to check for
+      buffer overflow when decoding various ASN.1 elements.
+    - CVE-2019-8675
+    - CVE-2019-8696
+  * SECURITY UPDATE: Buffer overflow in IPP
+    - debian/patches/CVE-2019-86xx.patch: update cups/ipp.c to avoid
+      buffer overflow due to tag type confusion
+  * SECURITY UPDATE: Denial of service and memory disclosure in scheduler
+    - debian/patches/CVE-2019-86xx.patch: update scheduler/client.c to
+      avoid a denial of service and possible memory disclosure if the
+      client unexpectedly closes the connection
+
+ -- Alex Murray <alex.murray@canonical.com>  Fri, 16 Aug 2019 16:42:45 +0930
+
 cups (2.2.7-1ubuntu2.6) bionic; urgency=medium
 
   * d/p/0045-Fix-an-issue-with-PreserveJobHistory-and-time-values.patch
