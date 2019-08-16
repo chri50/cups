@@ -27,9 +27,9 @@ cupsd \- cups scheduler
 ] [
 .B \-h
 ] [
-.B -l
+.B \-l
 ] [
-.B -t
+.B \-t
 ]
 .SH DESCRIPTION
 .B cupsd
