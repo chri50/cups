@@ -1,10 +1,14 @@
-CHANGES - 2.2.10 - 2018-12-07
+CHANGES - 2.2.10 - 2019-08-16
 =============================
 
 
 Changes in CUPS v2.2.10
 -----------------------
 
+- CVE-2019-8696 and CVE-2019-8675: Fixed SNMP buffer overflows (rdar://51685251)
+- Fixed IPP buffer overflow (rdar://50035411)
+- Fixed memory disclosure issue in the scheduler (rdar://51373853)
+- Fixed DoS issues in the scheduler (rdar://51373929)
 - CVE-2018-4700: Linux session cookies used a predictable random number seed.
 - The `lpoptions` command now works with IPP Everywhere printers that have not
   yet been added as local queues (Issue #5045)
