@@ -1,4 +1,4 @@
-From 93864a81b630172c7d8162394c0fc9d2a2cb7f78 Mon Sep 17 00:00:00 2001
+From cd67c9b31e932eaa8cbbb4755b75cea4ef1ff4eb Mon Sep 17 00:00:00 2001
 From: Till Kamppeter <till.kamppeter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:29 +0200
 Subject: Patch to support Apple AirPrint (printing from iPhone, iPad, iPod
@@ -48,7 +48,7 @@ index fa5371486..84cb0fffe 100644
  #
  # Text files...
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index 9c1be7089..52f2a6d35 100644
+index 11c94d2e4..2d02af752 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -745,7 +745,7 @@ cupsdReadConfiguration(void)
@@ -78,10 +78,10 @@ index 3dab90ca9..f21942af3 100644
      {
        keyvalue[count  ][0] = "air";
 diff --git a/scheduler/printers.c b/scheduler/printers.c
-index 865e3693b..968005059 100644
+index 6f04711f1..1135b133f 100644
 --- a/scheduler/printers.c
 +++ b/scheduler/printers.c
-@@ -3765,7 +3765,9 @@ add_printer_formats(cupsd_printer_t *p)	/* I - Printer */
+@@ -3759,7 +3759,9 @@ add_printer_formats(cupsd_printer_t *p)	/* I - Printer */
        }
        else if (!_cups_strcasecmp(type->super, "image"))
        {

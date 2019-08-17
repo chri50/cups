@@ -94,8 +94,8 @@ typedef unsigned long useconds_t;
  * Version of software...
  */
 
-#define CUPS_SVERSION "CUPS v2.2.10"
-#define CUPS_MINIMAL "CUPS/2.2.10"
+#define CUPS_SVERSION "CUPS v2.2.12"
+#define CUPS_MINIMAL "CUPS/2.2.12"
 
 
 /*
@@ -377,6 +377,13 @@ typedef unsigned long useconds_t;
 /* #undef HAVE_GNUTLS */
 #define HAVE_SSPISSL 1
 #define HAVE_SSL 1
+
+
+/*
+ * Do we have the gnutls_fips140_set_mode function?
+ */
+
+/* #undef HAVE_GNUTLS_FIPS140_SET_MODE */
 
 
 /*

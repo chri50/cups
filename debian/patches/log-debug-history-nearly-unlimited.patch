@@ -1,4 +1,4 @@
-From 833d317f0520b037c79ad4b1ceeca31529797641 Mon Sep 17 00:00:00 2001
+From 8d4d092df601951637c199a190666b1c11d7be43 Mon Sep 17 00:00:00 2001
 From: Till Kampetter <till.kampetter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:45 +0200
 Subject: Make log debug history nearly unlimited
@@ -11,7 +11,7 @@ Patch-Name: log-debug-history-nearly-unlimited.patch
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index 86e37582b..b12bda1f6 100644
+index 6892085a4..898b84f3e 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -721,7 +721,7 @@ cupsdReadConfiguration(void)

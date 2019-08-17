@@ -1,7 +1,7 @@
 /*
  * Configuration routines for the CUPS scheduler.
  *
- * Copyright © 2007-2018 by Apple Inc.
+ * Copyright © 2007-2019 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
  * These coded instructions, statements, and computer programs are the
@@ -729,14 +729,14 @@ cupsdReadConfiguration(void)
   MaxClientsPerHost        = 0;
   MaxLogSize               = 1024 * 1024;
   MaxRequestSize           = 0;
-  MultipleOperationTimeout = DEFAULT_TIMEOUT;
+  MultipleOperationTimeout = 900;
   NumSystemGroups          = 0;
   ReloadTimeout	           = DEFAULT_KEEPALIVE;
   RootCertDuration         = 300;
   Sandboxing               = CUPSD_SANDBOXING_STRICT;
   StrictConformance        = FALSE;
   SyncOnClose              = TRUE;
-  Timeout                  = DEFAULT_TIMEOUT;
+  Timeout                  = 900;
   WebInterface             = CUPS_DEFAULT_WEBIF;
 
   BrowseLocalProtocols     = parse_protocols(CUPS_DEFAULT_BROWSE_LOCAL_PROTOCOLS);

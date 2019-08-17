@@ -1,4 +1,4 @@
-From de6d00cd1b3c7a447281e09f7496f25efe5f0957 Mon Sep 17 00:00:00 2001
+From 6edfb5edc10c8fb5b8ade6db14c0efc642092fdb Mon Sep 17 00:00:00 2001
 From: Martin Pitt <martin.pitt@ubuntu.com>
 Date: Tue, 9 Aug 2016 18:11:47 +0200
 Subject: Set default job error policy to "retry-job", since it is less
@@ -18,7 +18,7 @@ Patch-Name: cups-set-default-error-policy-retry-job.patch
  3 files changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/doc/help/man-cupsd.conf.html b/doc/help/man-cupsd.conf.html
-index 4ba6ecf8f..7f7126475 100644
+index 8850f3523..e5a2d3dd4 100644
 --- a/doc/help/man-cupsd.conf.html
 +++ b/doc/help/man-cupsd.conf.html
 @@ -91,9 +91,9 @@ The default value is "30".
@@ -34,7 +34,7 @@ index 4ba6ecf8f..7f7126475 100644
  <dd style="margin-left: 5.0em">Specifies the maximum cost of filters that are run concurrently, which can be used to minimize disk, memory, and CPU resource problems.
  A limit of 0 disables filter limiting.
 diff --git a/man/cupsd.conf.man.in b/man/cupsd.conf.man.in
-index 6cec33969..df2b5bbd5 100644
+index 2d6c5b89e..a870ff91d 100644
 --- a/man/cupsd.conf.man.in
 +++ b/man/cupsd.conf.man.in
 @@ -136,10 +136,10 @@ Specifies that a failed print job should be aborted (discarded) unless otherwise
@@ -51,7 +51,7 @@ index 6cec33969..df2b5bbd5 100644
  .TP 5
  \fBFilterLimit \fIlimit\fR
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index 755243170..aae7443de 100644
+index 743f64cab..1b70afc94 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -751,7 +751,7 @@ cupsdReadConfiguration(void)

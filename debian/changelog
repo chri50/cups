@@ -1,3 +1,17 @@
+cups (2.2.12-1) unstable; urgency=medium
+
+  * New 2.2.12 upstream release
+    - CVE-2019-8696 and CVE-2019-8675: Fixed SNMP buffer overflows
+      (Closes: #934957)
+
+  * Remove 11 backported patches
+  * Fix CVE-2018-4{7,8}00 typo retrospectively in d/changelog
+    (Closes: #933985)
+  * Refresh debian/gitlab-ci.yml
+  * Refresh manpage translations
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 17 Aug 2019 15:51:30 +0200
+
 cups (2.2.10-6) unstable; urgency=medium
 
   * Backport patch from upstream's 2.2 "stable" branch:
@@ -53,7 +67,7 @@ cups (2.2.10-2) unstable; urgency=medium
 cups (2.2.10-1) unstable; urgency=medium
 
   * New 2.2.10 upstream release
-    - CVE-2018-4700: Linux session cookies used a predictable random number
+    - CVE-2018-4800: Linux session cookies used a predictable random number
       seed (Closes: #915909)
   * Manpage translations refresh
   * Drop superfluous dpkg-dev B-D

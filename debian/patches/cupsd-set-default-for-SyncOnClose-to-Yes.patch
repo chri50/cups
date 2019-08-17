@@ -1,4 +1,4 @@
-From e7fd9b04ab5847dc694607543ed8bbd4655044dd Mon Sep 17 00:00:00 2001
+From 71646b0c6c2caf1bb758dc3e500e53f76d2e243c Mon Sep 17 00:00:00 2001
 From: Tim Waugh <twaugh@redhat.com>
 Date: Tue, 9 Aug 2016 18:11:46 +0200
 Subject: Set the default for SyncOnClose to Yes
@@ -53,7 +53,7 @@ index f5e6a9f39..c3d8eeb2b 100644
  .TP 5
  \fBSystemGroup \fIgroup-name \fR[ ... \fIgroup-name\fR ]
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index b12bda1f6..755243170 100644
+index 898b84f3e..743f64cab 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -735,7 +735,7 @@ cupsdReadConfiguration(void)
@@ -62,6 +62,6 @@ index b12bda1f6..755243170 100644
    StrictConformance        = FALSE;
 -  SyncOnClose              = FALSE;
 +  SyncOnClose              = TRUE;
-   Timeout                  = DEFAULT_TIMEOUT;
+   Timeout                  = 900;
    WebInterface             = CUPS_DEFAULT_WEBIF;
  

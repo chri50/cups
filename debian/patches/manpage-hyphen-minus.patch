@@ -1,4 +1,4 @@
-From 4d804d883eed3c12719fd830bb24a8e9bc638105 Mon Sep 17 00:00:00 2001
+From ca4c0f32fb4b03e8f1be9feb64abdfe367aac7a3 Mon Sep 17 00:00:00 2001
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:05 +0200
 Subject: Fix hyphen-used-as-minus-sign manpage errors
@@ -254,7 +254,7 @@ index 8672afa09..04ba12d35 100644
  .BR cupsd (8),
  .BR cupsd.conf (5),
 diff --git a/man/cupsd.conf.man.in b/man/cupsd.conf.man.in
-index 15a5fa9e6..6cec33969 100644
+index 97bf87917..2d6c5b89e 100644
 --- a/man/cupsd.conf.man.in
 +++ b/man/cupsd.conf.man.in
 @@ -443,7 +443,7 @@ The \fIAllowDH\fR option enables cipher suites using plain Diffie-Hellman key ne
@@ -324,7 +324,7 @@ index 253e05799..ce26c50ca 100644
  Expressions may also contain modifiers:
  .TP 5
 diff --git a/man/ipptoolfile.man b/man/ipptoolfile.man
-index 35b050419..c10254f64 100644
+index 5e8384b69..b7c594a0f 100644
 --- a/man/ipptoolfile.man
 +++ b/man/ipptoolfile.man
 @@ -169,8 +169,8 @@ The following directives are understood within a \fItest\fR:

@@ -716,6 +716,8 @@ _ppdOpen(
 	   strncmp(ll, keyword, ll_len)))
       {
 	DEBUG_printf(("2_ppdOpen: Ignoring localization: \"%s\"\n", keyword));
+	free(string);
+	string = NULL;
 	continue;
       }
       else if (localization == _PPD_LOCALIZATION_ICC_PROFILES)
@@ -735,6 +737,8 @@ _ppdOpen(
 	if (i >= (int)(sizeof(color_keywords) / sizeof(color_keywords[0])))
 	{
 	  DEBUG_printf(("2_ppdOpen: Ignoring localization: \"%s\"\n", keyword));
+	  free(string);
+	  string = NULL;
 	  continue;
 	}
       }
@@ -999,6 +1003,13 @@ _ppdOpen(
 	goto error;
       }
 
+      if (cparam->type != PPD_CUSTOM_UNKNOWN)
+      {
+        pg->ppd_status = PPD_BAD_CUSTOM_PARAM;
+
+        goto error;
+      }
+
      /*
       * Get the parameter data...
       */
@@ -1181,6 +1192,24 @@ _ppdOpen(
         ppd->landscape = -90;
       else if (!strcmp(string, "Plus90"))
         ppd->landscape = 90;
+    }
+    else if (!strcmp(keyword, "Emulators") && string && ppd->num_emulations == 0)
+    {
+     /*
+      * Issue #5562: Samsung printer drivers incorrectly use Emulators keyword
+      *              to configure themselves
+      *
+      * The Emulators keyword was loaded but never used by anything in CUPS,
+      * and has no valid purpose in CUPS.  The old code was removed due to a
+      * memory leak (Issue #5475), so the following (new) code supports a single
+      * name for the Emulators keyword, allowing these drivers to work until we
+      * remove PPD and driver support entirely in a future version of CUPS.
+      */
+
+      ppd->num_emulations = 1;
+      ppd->emulations     = calloc(1, sizeof(ppd_emul_t));
+
+      strlcpy(ppd->emulations[0].name, string, sizeof(ppd->emulations[0].name));
     }
     else if (!strcmp(keyword, "JobPatchFile"))
     {
@@ -1854,6 +1883,13 @@ _ppdOpen(
     }
     else if (!strcmp(keyword, "PaperDimension"))
     {
+      if (!_cups_strcasecmp(name, "custom") || !_cups_strncasecmp(name, "custom.", 7))
+      {
+        pg->ppd_status = PPD_ILLEGAL_OPTION_KEYWORD;
+
+        goto error;
+      }
+
       if ((size = ppdPageSize(ppd, name)) == NULL)
 	size = ppd_add_size(ppd, name);
 
@@ -1876,6 +1912,13 @@ _ppdOpen(
     }
     else if (!strcmp(keyword, "ImageableArea"))
     {
+      if (!_cups_strcasecmp(name, "custom") || !_cups_strncasecmp(name, "custom.", 7))
+      {
+        pg->ppd_status = PPD_ILLEGAL_OPTION_KEYWORD;
+
+        goto error;
+      }
+
       if ((size = ppdPageSize(ppd, name)) == NULL)
 	size = ppd_add_size(ppd, name);
 
@@ -1904,6 +1947,13 @@ _ppdOpen(
 	     !strcmp(keyword, option->keyword))
     {
       DEBUG_printf(("2_ppdOpen: group=%p, subgroup=%p", group, subgroup));
+
+      if (!_cups_strcasecmp(name, "custom") || !_cups_strncasecmp(name, "custom.", 7))
+      {
+        pg->ppd_status = PPD_ILLEGAL_OPTION_KEYWORD;
+
+        goto error;
+      }
 
       if (!strcmp(keyword, "PageSize"))
       {
@@ -2629,6 +2679,7 @@ ppd_get_cparam(ppd_coption_t *opt,	/* I - PPD file */
   if ((cparam = calloc(1, sizeof(ppd_cparam_t))) == NULL)
     return (NULL);
 
+  cparam->type = PPD_CUSTOM_UNKNOWN;
   strlcpy(cparam->name, param, sizeof(cparam->name));
   strlcpy(cparam->text, text[0] ? text : param, sizeof(cparam->text));
 
