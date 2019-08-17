@@ -5,8 +5,8 @@
  * -D_PPD_DEPRECATED="" TO YOUR COMPILE OPTIONS.  THIS HEADER AND THESE
  * FUNCTIONS WILL BE REMOVED IN A FUTURE RELEASE OF CUPS.
  *
- * Copyright 2007-2015 by Apple Inc.
- * Copyright 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright © 2007-2019 by Apple Inc.
+ * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
  * These coded instructions, statements, and computer programs are the
  * property of Apple Inc. and are protected by Federal copyright
@@ -235,6 +235,7 @@ typedef struct ppd_profile_s		/**** sRGB Color Profiles ****/
 /**** New in CUPS 1.2/macOS 10.5 ****/
 typedef enum ppd_cptype_e		/**** Custom Parameter Type @since CUPS 1.2/macOS 10.5@ ****/
 {
+  PPD_CUSTOM_UNKNOWN = -1,		/* Unknown type (error) */
   PPD_CUSTOM_CURVE,			/* Curve value for f(x) = x^value */
   PPD_CUSTOM_INT,			/* Integer number value */
   PPD_CUSTOM_INVCURVE,			/* Curve value for f(x) = x^(1/value) */
@@ -304,8 +305,8 @@ typedef struct ppd_file_s		/**** PPD File ****/
   int		throughput;		/* Pages per minute */
   ppd_cs_t	colorspace;		/* Default colorspace */
   char		*patches;		/* Patch commands to be sent to printer */
-  int		num_emulations;		/* Number of emulations supported */
-  ppd_emul_t	*emulations;		/* Emulations and the code to invoke them */
+  int		num_emulations;		/* Number of emulations supported (no longer supported) @private@ */
+  ppd_emul_t	*emulations;		/* Emulations and the code to invoke them (no longer supported) @private@ */
   char		*jcl_begin;		/* Start JCL commands */
   char		*jcl_ps;		/* Enter PostScript interpreter */
   char		*jcl_end;		/* End JCL commands */

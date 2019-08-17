@@ -1,4 +1,4 @@
-From 04481c8139358649196c570bff2fb32132d408a2 Mon Sep 17 00:00:00 2001
+From d4f20a4097f2dda79d35df9a87935d8d74021f50 Mon Sep 17 00:00:00 2001
 From: Till Kampetter <till.kampetter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:36 +0200
 Subject: CUPS removes the "(recommended)" comments of the NickNames of
@@ -13,10 +13,10 @@ Patch-Name: reactivate_recommended_driver.patch
  1 file changed, 10 deletions(-)
 
 diff --git a/scheduler/cups-driverd.cxx b/scheduler/cups-driverd.cxx
-index e6684a139..1d4291a73 100644
+index 81c447ad8..d48c75165 100644
 --- a/scheduler/cups-driverd.cxx
 +++ b/scheduler/cups-driverd.cxx
-@@ -246,7 +246,6 @@ add_ppd(const char *filename,		/* I - PPD filename */
+@@ -243,7 +243,6 @@ add_ppd(const char *filename,		/* I - PPD filename */
  	const char *scheme)		/* I - PPD scheme */
  {
    ppd_info_t	*ppd;			/* PPD */
@@ -24,7 +24,7 @@ index e6684a139..1d4291a73 100644
  
  
   /*
-@@ -284,15 +283,6 @@ add_ppd(const char *filename,		/* I - PPD filename */
+@@ -281,15 +280,6 @@ add_ppd(const char *filename,		/* I - PPD filename */
    strlcpy(ppd->record.device_id, device_id, sizeof(ppd->record.device_id));
    strlcpy(ppd->record.scheme, scheme, sizeof(ppd->record.scheme));
  

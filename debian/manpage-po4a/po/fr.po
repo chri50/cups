@@ -10,7 +10,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups-2.0.3-6\n"
-"POT-Creation-Date: 2018-12-08 12:54+0100\n"
+"POT-Creation-Date: 2019-08-17 15:33+0200\n"
 "PO-Revision-Date: 2018-04-25 11:57+0200\n"
 "Last-Translator: Jean-Paul Guillonneau <guillonneau.jeanpaul@free.fr>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
@@ -797,14 +797,14 @@ msgstr "COPYRIGHT"
 #: cupsaccept.man:89 cupsaddsmb.man.in:126 cups-config.man:111 cupsctl.man:101
 #: cupsd-helper.man:89 cupsd.man.in:129 cupsenable.man:100 cupsfilter.man:138
 #: cups-lpd.man.in:119 cups.man:142 cups-snmp.conf.man:64 cups-snmp.man.in:56
-#: cupstestdsc.man:46 cupstestppd.man:146 filter.man:220 ipptoolfile.man:652
-#: ipptool.man:247 lpc.man:59 lpinfo.man:124 lp.man:265 lpmove.man:77
-#: lpq.man:67 lpr.man:217 lprm.man:85 lpstat.man:152 mailto.conf.man:47
-#: mime.convs.man:61 mime.types.man:111 notifier.man:39 ppdcfile.man:160
-#: ppdc.man:101 ppdhtml.man:46 ppdi.man:53 ppdmerge.man:49 ppdpo.man:53
-#: printers.conf.man:31 subscriptions.conf.man:31
+#: cupstestdsc.man:46 cupstestppd.man:146 filter.man:220 ipptool.man:247
+#: lpc.man:59 lpinfo.man:124 lp.man:265 lpmove.man:77 lpq.man:67 lpr.man:217
+#: lprm.man:85 lpstat.man:152 mailto.conf.man:47 mime.convs.man:61
+#: mime.types.man:111 notifier.man:39 ppdcfile.man:160 ppdc.man:101
+#: ppdhtml.man:46 ppdi.man:53 ppdmerge.man:49 ppdpo.man:53 printers.conf.man:31
+#: subscriptions.conf.man:31
 msgid "Copyright \\[co] 2007-2017 by Apple Inc."
-msgstr "Copyright \\[co] 2007-2017 by Apple Inc."
+msgstr "Copyright 2007-2017 par Apple Inc."
 
 # type: TH
 #. type: TH
@@ -2412,10 +2412,9 @@ msgstr "cupsd.conf"
 # type: TH
 #. type: TH
 #: cupsd.conf.man.in:13
-#, fuzzy, no-wrap
-#| msgid "4 April 2014"
-msgid "24 April 2018"
-msgstr "4 avril 2014"
+#, no-wrap
+msgid "2 May 2019"
+msgstr "2 mai 2019"
 
 # type: Plain text
 #. type: Plain text
@@ -2803,10 +2802,9 @@ msgstr ""
 # type: TP
 #. type: TP
 #: cupsd.conf.man.in:134
-#, fuzzy, no-wrap
-#| msgid "ErrorPolicy retry-current-job"
+#, no-wrap
 msgid "B<ErrorPolicy retry-current-job>"
-msgstr "B<ErrorPolicy> I<retry-current-job>"
+msgstr "B<ErrorPolicy retry-current-job>"
 
 # type: Plain text
 #. type: Plain text
@@ -3523,9 +3521,13 @@ msgstr "B<MultipleOperationTimeout> I<secondes>"
 #. #Policy
 #. type: Plain text
 #: cupsd.conf.man.in:346
+#, fuzzy
+#| msgid ""
+#| "Specifies the maximum amount of time to allow between files in a multiple "
+#| "file print job.  The default is \"300\" (5 minutes)."
 msgid ""
 "Specifies the maximum amount of time to allow between files in a multiple "
-"file print job.  The default is \"300\" (5 minutes)."
+"file print job.  The default is \"900\" (15 minutes)."
 msgstr ""
 "Indiquer le temps maximal à allouer entre les fichiers dans une tâche "
 "d'impression de fichiers multiples. Par défaut, B<300> (5 minutes)."
@@ -3886,8 +3888,11 @@ msgstr "B<Timeout> I<secondes>"
 #. #WebInterface
 #. type: Plain text
 #: cupsd.conf.man.in:464
+#, fuzzy
+#| msgid ""
+#| "Specifies the HTTP request timeout.  The default is \"300\" (5 minutes)."
 msgid ""
-"Specifies the HTTP request timeout.  The default is \"300\" (5 minutes)."
+"Specifies the HTTP request timeout.  The default is \"900\" (15 minutes)."
 msgstr ""
 "Définir le délai d'attente des requêtes HTTP. Par défaut, B<300> (5 minutes)."
 
@@ -5410,12 +5415,9 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: cupsd.conf.man.in:879 cupsd-logs.man:225 cups-files.conf.man.in:287
-#: lpadmin.man:217 lpoptions.man.in:121
-#, fuzzy
-#| msgid "Copyright \\[co] 2007-2017 by Apple Inc."
-msgid "Copyright \\[co] 2007-2018 by Apple Inc."
-msgstr "Copyright \\[co] 2007-2017 by Apple Inc."
+#: cupsd.conf.man.in:879 ipptoolfile.man:652
+msgid "Copyright \\[co] 2007-2019 by Apple Inc."
+msgstr "Copyright 2007-2019 par Apple Inc."
 
 # type: TH
 #. type: TH
@@ -5559,10 +5561,9 @@ msgstr "cupsd-logs"
 # type: TH
 #. type: TH
 #: cupsd-logs.man:13
-#, fuzzy, no-wrap
-#| msgid "9 November 2010"
+#, no-wrap
 msgid "8 November 2017"
-msgstr "9 novembre 2010"
+msgstr "8 novembre 2017"
 
 #. type: Plain text
 #: cupsd-logs.man:16
@@ -6290,6 +6291,13 @@ msgstr ""
 "B<cupsd>(8), B<cupsd.conf>(5), B<cups-files.conf>(5), aide en ligne de CUPS "
 "E<lt>URL:I<http://localhost:631/help>E<gt>"
 
+# type: Plain text
+#. type: Plain text
+#: cupsd-logs.man:225 cups-files.conf.man.in:287 lpadmin.man:217
+#: lpoptions.man.in:121
+msgid "Copyright \\[co] 2007-2018 by Apple Inc."
+msgstr "Copyright 2007-2018 par Apple Inc."
+
 # type: TH
 #. type: TH
 #: cupsd.man.in:13
@@ -6714,10 +6722,9 @@ msgstr "cups-files.conf"
 # type: TH
 #. type: TH
 #: cups-files.conf.man.in:13
-#, fuzzy, no-wrap
-#| msgid "4 February 2015"
+#, no-wrap
 msgid "25 February 2018 "
-msgstr "4 février 2015"
+msgstr "25 février 2018"
 
 # type: Plain text
 #. type: Plain text
@@ -10232,10 +10239,9 @@ msgstr "ippfind"
 # type: TH
 #. type: TH
 #: ippfind.man:12
-#, fuzzy, no-wrap
-#| msgid "4 February 2015"
+#, no-wrap
 msgid "14 February 2018"
-msgstr "4 février 2015"
+msgstr "14 février 2018"
 
 #. type: Plain text
 #: ippfind.man:15
@@ -11069,10 +11075,8 @@ msgstr "B<ipptool>(1)"
 # type: Plain text
 #. type: Plain text
 #: ippfind.man:261
-#, fuzzy
-#| msgid "Copyright \\[co] 2013-2015 by Apple Inc."
 msgid "Copyright \\[co] 2013-2018 by Apple Inc."
-msgstr "Copyright 2013-2015 par Apple Inc."
+msgstr "Copyright 2013-2018 par Apple Inc."
 
 #. type: TH
 #: ../test/ippserver.man:12
@@ -11442,12 +11446,11 @@ msgstr "Copyright 2007-2014 par Apple Inc."
 msgid "ipptoolfile"
 msgstr "ipptoolfile"
 
-# type: TH
 #. type: TH
 #: ipptoolfile.man:12
 #, no-wrap
-msgid "15 June 2017"
-msgstr "15 juin 2017"
+msgid "5 August 2019"
+msgstr "5 août 2019"
 
 #. type: Plain text
 #: ipptoolfile.man:15
@@ -12425,8 +12428,9 @@ msgstr ""
 
 #. type: TP
 #: ipptoolfile.man:299
-#, no-wrap
-msgid "B<OF-TYPE >I<tag[,tag,...]>"
+#, fuzzy, no-wrap
+#| msgid "B<OF-TYPE >I<tag[,tag,...]>"
+msgid "B<OF-TYPE >I<tag[|tag,...]>"
 msgstr "B<OF-TYPE >I<étiquette[,étiquette,...]>"
 
 #. type: Plain text
@@ -14018,10 +14022,9 @@ msgstr "lpadmin"
 
 #. type: TH
 #: lpadmin.man:13
-#, fuzzy, no-wrap
-#| msgid "29 August 2014"
+#, no-wrap
 msgid "19 August 2018"
-msgstr "29 août 2014"
+msgstr "19 août 2018"
 
 # type: Plain text
 #. type: Plain text
@@ -18445,6 +18448,16 @@ msgstr ""
 "B<classes.conf>(5), B<cupsd>(8), B<cupsd.conf>(5), B<mime.convs>(5), B<mime."
 "types>(5), B<printers.conf>(5), aide en ligne de CUPS E<lt>URL:I<http://"
 "localhost:631/help>E<gt>."
+
+# type: TH
+#, fuzzy
+#~| msgid "4 April 2014"
+#~ msgid "24 April 2018"
+#~ msgstr "4 avril 2014"
+
+# type: TH
+#~ msgid "15 June 2017"
+#~ msgstr "15 juin 2017"
 
 #~ msgid ""
 #~ "    I<printer user job-id date-time page-number num-copies job-billing\n"

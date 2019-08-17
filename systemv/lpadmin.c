@@ -1,7 +1,7 @@
 /*
  * "lpadmin" command for CUPS.
  *
- * Copyright © 2007-2018 by Apple Inc.
+ * Copyright © 2007-2019 by Apple Inc.
  * Copyright © 1997-2006 by Easy Software Products.
  *
  * These coded instructions, statements, and computer programs are the
@@ -1140,6 +1140,7 @@ enable_printer(http_t *http,		/* I - Server connection */
 
   request = ippNewRequest(IPP_OP_ENABLE_PRINTER);
 
+  httpAssembleURIf(HTTP_URI_CODING_ALL, uri, sizeof(uri), "ipp", NULL, "localhost", ippPort(), "/printers/%s", printer);
   ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri", NULL, uri);
   ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_NAME, "requesting-user-name", NULL, cupsUser());
 
@@ -1194,9 +1195,7 @@ get_printer_ppd(
   int		port;			/* Port number */
   static const char * const pattrs[] =	/* Attributes to use */
   {
-    "job-template",
-    "printer-defaults",
-    "printer-description",
+    "all",
     "media-col-database"
   };
 
@@ -1451,6 +1450,7 @@ set_printer_options(
 					/* Status code */
 
       _cupsLangPrintf(stderr, _("lpadmin: Unable to open PPD \"%s\": %s on line %d."), ppdfile, ppdErrorString(status), linenum);
+      return (1);
     }
 
     ppdMarkDefaults(ppd);
@@ -1488,6 +1488,7 @@ set_printer_options(
 	  (boolval = cupsGetOption("cupsIPPSupplies", num_options,
 	                           options)) != NULL)
       {
+        ppdchanged         = 1;
         wrote_ipp_supplies = 1;
         cupsFilePrintf(out, "*cupsIPPSupplies: %s\n",
 	               (!_cups_strcasecmp(boolval, "true") ||
@@ -1498,6 +1499,7 @@ set_printer_options(
 	       (boolval = cupsGetOption("cupsSNMPSupplies", num_options,
 	                                options)) != NULL)
       {
+        ppdchanged          = 1;
         wrote_snmp_supplies = 1;
         cupsFilePrintf(out, "*cupsSNMPSupplies: %s\n",
 	               (!_cups_strcasecmp(boolval, "true") ||
@@ -1558,6 +1560,8 @@ set_printer_options(
 	(boolval = cupsGetOption("cupsIPPSupplies", num_options,
 				 options)) != NULL)
     {
+      ppdchanged = 1;
+
       cupsFilePrintf(out, "*cupsIPPSupplies: %s\n",
 		     (!_cups_strcasecmp(boolval, "true") ||
 		      !_cups_strcasecmp(boolval, "yes") ||
@@ -1568,6 +1572,8 @@ set_printer_options(
         (boolval = cupsGetOption("cupsSNMPSupplies", num_options,
 			         options)) != NULL)
     {
+      ppdchanged = 1;
+
       cupsFilePrintf(out, "*cupsSNMPSupplies: %s\n",
 		     (!_cups_strcasecmp(boolval, "true") ||
 		      !_cups_strcasecmp(boolval, "yes") ||
@@ -1582,8 +1588,7 @@ set_printer_options(
     * Do the request...
     */
 
-    ippDelete(cupsDoFileRequest(http, request, "/admin/",
-                                ppdchanged ? tempfile : file));
+    ippDelete(cupsDoFileRequest(http, request, "/admin/", ppdchanged ? tempfile : file));
 
    /*
     * Clean up temp files... (TODO: catch signals in case we CTRL-C during

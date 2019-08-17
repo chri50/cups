@@ -11,7 +11,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 2.2.7-5\n"
-"POT-Creation-Date: 2018-12-08 12:54+0100\n"
+"POT-Creation-Date: 2019-08-17 15:33+0200\n"
 "PO-Revision-Date: 2019-03-03 07:38+0100\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
@@ -731,12 +731,12 @@ msgstr "COPYRIGHT"
 #: cupsaccept.man:89 cupsaddsmb.man.in:126 cups-config.man:111 cupsctl.man:101
 #: cupsd-helper.man:89 cupsd.man.in:129 cupsenable.man:100 cupsfilter.man:138
 #: cups-lpd.man.in:119 cups.man:142 cups-snmp.conf.man:64 cups-snmp.man.in:56
-#: cupstestdsc.man:46 cupstestppd.man:146 filter.man:220 ipptoolfile.man:652
-#: ipptool.man:247 lpc.man:59 lpinfo.man:124 lp.man:265 lpmove.man:77
-#: lpq.man:67 lpr.man:217 lprm.man:85 lpstat.man:152 mailto.conf.man:47
-#: mime.convs.man:61 mime.types.man:111 notifier.man:39 ppdcfile.man:160
-#: ppdc.man:101 ppdhtml.man:46 ppdi.man:53 ppdmerge.man:49 ppdpo.man:53
-#: printers.conf.man:31 subscriptions.conf.man:31
+#: cupstestdsc.man:46 cupstestppd.man:146 filter.man:220 ipptool.man:247
+#: lpc.man:59 lpinfo.man:124 lp.man:265 lpmove.man:77 lpq.man:67 lpr.man:217
+#: lprm.man:85 lpstat.man:152 mailto.conf.man:47 mime.convs.man:61
+#: mime.types.man:111 notifier.man:39 ppdcfile.man:160 ppdc.man:101
+#: ppdhtml.man:46 ppdi.man:53 ppdmerge.man:49 ppdpo.man:53 printers.conf.man:31
+#: subscriptions.conf.man:31
 msgid "Copyright \\[co] 2007-2017 by Apple Inc."
 msgstr "Copyright \\[co] 2007-2017 by Apple Inc."
 
@@ -2190,9 +2190,10 @@ msgstr "cupsd.conf"
 
 #. type: TH
 #: cupsd.conf.man.in:13
-#, no-wrap
-msgid "24 April 2018"
-msgstr "24. April 2018"
+#, fuzzy, no-wrap
+#| msgid "2 May 2016"
+msgid "2 May 2019"
+msgstr "2. Mai 2016"
 
 #. type: Plain text
 #: cupsd.conf.man.in:16
@@ -2210,10 +2211,11 @@ msgid ""
 msgstr ""
 "Die Datei I<cupsd.conf> konfiguriert den CUPS-Auftragsplaner (Scheduler), "
 "B<cupsd>(8). Sie befindet sich normalerweise in dem Verzeichnis I</etc/"
-"cups>. B<Hinweis:> Datei-, Verzeichnis- und Benutzerkonfigurationsdirektiven, "
-"die früher in der Datei B<cupsd.conf> erlaubt wurden, werden jetzt "
-"stattdessen in der Datei B<cups-files.conf>(5) gespeichert, um bestimmte "
-"Arten von Angriffen zur Rechteerweiterung zu vermeiden."
+"cups>. B<Hinweis:> Datei-, Verzeichnis- und "
+"Benutzerkonfigurationsdirektiven, die früher in der Datei B<cupsd.conf> "
+"erlaubt wurden, werden jetzt stattdessen in der Datei B<cups-files.conf>(5) "
+"gespeichert, um bestimmte Arten von Angriffen zur Rechteerweiterung zu "
+"vermeiden."
 
 #. type: Plain text
 #: cupsd.conf.man.in:32 cups-files.conf.man.in:25 mailto.conf.man:23
@@ -3219,9 +3221,13 @@ msgstr "B<MultipleOperationTimeout >I<Sekunden>"
 #. #Policy
 #. type: Plain text
 #: cupsd.conf.man.in:346
+#, fuzzy
+#| msgid ""
+#| "Specifies the maximum amount of time to allow between files in a multiple "
+#| "file print job.  The default is \"300\" (5 minutes)."
 msgid ""
 "Specifies the maximum amount of time to allow between files in a multiple "
-"file print job.  The default is \"300\" (5 minutes)."
+"file print job.  The default is \"900\" (15 minutes)."
 msgstr ""
 "Legt die maximal erlaubte Zeit zwischen Dateien in einem Druckauftrag aus "
 "mehreren Dateien fest. Die Vorgabe ist »300« (5 Minuten)."
@@ -3555,8 +3561,11 @@ msgstr "B<Timeout >I<Sekunden>"
 #. #WebInterface
 #. type: Plain text
 #: cupsd.conf.man.in:464
+#, fuzzy
+#| msgid ""
+#| "Specifies the HTTP request timeout.  The default is \"300\" (5 minutes)."
 msgid ""
-"Specifies the HTTP request timeout.  The default is \"300\" (5 minutes)."
+"Specifies the HTTP request timeout.  The default is \"900\" (15 minutes)."
 msgstr ""
 "Legt die HTTP-Zeitüberschreitung fest. Die Vorgabe ist »300« (5 Minuten)."
 
@@ -4988,10 +4997,11 @@ msgstr ""
 "Hilfe (http://localhost:631/help)"
 
 #. type: Plain text
-#: cupsd.conf.man.in:879 cupsd-logs.man:225 cups-files.conf.man.in:287
-#: lpadmin.man:217 lpoptions.man.in:121
-msgid "Copyright \\[co] 2007-2018 by Apple Inc."
-msgstr "Copyright \\[co] 2007-2018 by Apple Inc."
+#: cupsd.conf.man.in:879 ipptoolfile.man:652
+#, fuzzy
+#| msgid "Copyright \\[co] 2007-2017 by Apple Inc."
+msgid "Copyright \\[co] 2007-2019 by Apple Inc."
+msgstr "Copyright \\[co] 2007-2017 by Apple Inc."
 
 #. type: TH
 #: cupsd-helper.man:13
@@ -5770,8 +5780,8 @@ msgid ""
 "The I<num-sheets> field provides the total number of pages (sheets) that "
 "have been printed on for the job."
 msgstr ""
-"Das Feld I<Anzahl-Blätter> stellt die Gesamtzahl an Seiten (Blättern) bereit, auf "
-"die für den Auftrag gedruckt wurde."
+"Das Feld I<Anzahl-Blätter> stellt die Gesamtzahl an Seiten (Blättern) "
+"bereit, auf die für den Auftrag gedruckt wurde."
 
 #. type: Plain text
 #: cupsd-logs.man:211
@@ -5832,6 +5842,12 @@ msgid ""
 msgstr ""
 "B<cupsd>(8), B<cupsd.conf>(5), B<cups-files.conf>(5), CUPS-Online-Hilfe "
 "(http://localhost:631/help)"
+
+#. type: Plain text
+#: cupsd-logs.man:225 cups-files.conf.man.in:287 lpadmin.man:217
+#: lpoptions.man.in:121
+msgid "Copyright \\[co] 2007-2018 by Apple Inc."
+msgstr "Copyright \\[co] 2007-2018 by Apple Inc."
 
 #. type: TH
 #: cupsd.man.in:13
@@ -10586,9 +10602,10 @@ msgstr "ipptoolfile"
 
 #. type: TH
 #: ipptoolfile.man:12
-#, no-wrap
-msgid "15 June 2017"
-msgstr "15. Juni 2017"
+#, fuzzy, no-wrap
+#| msgid "4 August 2017"
+msgid "5 August 2019"
+msgstr "4. August 2017"
 
 #. type: Plain text
 #: ipptoolfile.man:15
@@ -11558,8 +11575,9 @@ msgstr ""
 
 #. type: TP
 #: ipptoolfile.man:299
-#, no-wrap
-msgid "B<OF-TYPE >I<tag[,tag,...]>"
+#, fuzzy, no-wrap
+#| msgid "B<OF-TYPE >I<tag[,tag,...]>"
+msgid "B<OF-TYPE >I<tag[|tag,...]>"
 msgstr "B<OF-TYPE >I<Markierung[,Markierung,…]>"
 
 #. type: Plain text
@@ -13523,8 +13541,8 @@ msgstr ""
 "Erzwingt die Verwendung von TLS-Verschlüsselung bei der Verbindung zum "
 "Auftragsplaner, wenn vor den Optionen B<-d>, B<-p> oder B<-x> angegeben "
 "wurde. Aktiviert andernfalls das Ziel und akzeptiert Aufträge. Dies ist "
-"identisch zur "
-"Ausführung der Programme B<cupsaccept>(8) und B<cupsenable>(8) für das Ziel."
+"identisch zur Ausführung der Programme B<cupsaccept>(8) und B<cupsenable>(8) "
+"für das Ziel."
 
 #. type: TP
 #: lpadmin.man:191
@@ -17051,11 +17069,18 @@ msgstr ""
 "B<classes.conf>(5), B<cupsd>(8), B<cupsd.conf>(5), B<mime.convs>(5), B<mime."
 "types>(5), B<printers.conf>(5), CUPS Online Help (http://localhost:631/help)"
 
+#~ msgid "24 April 2018"
+#~ msgstr "24. April 2018"
+
+#~ msgid "15 June 2017"
+#~ msgstr "15. Juni 2017"
+
 #~ msgid ""
 #~ "    I<printer user job-id date-time page-number num-copies job-billing\n"
 #~ "      job-originating-host-name job-name media sides>\n"
 #~ msgstr ""
-#~ "    I<Drucker Benutzer Auftrags-ID Datum-Uhrzeit Seitennummer Anzahl-Kopien\n"
+#~ "    I<Drucker Benutzer Auftrags-ID Datum-Uhrzeit Seitennummer Anzahl-"
+#~ "Kopien\n"
 #~ "      Auftrags-Abrechnung Auftrags-erstellender-Rechnername Auftragsname\n"
 #~ "      Medium Seiten>\n"
 

@@ -140,8 +140,8 @@
 # Samsung ML-2160 Series (https://bugzilla.redhat.com/show_bug.cgi?id=873123)
 0x04e8 0x330f unidir
 
-# All Zebra devices (https://bugs.launchpad.net/bugs/1001028)
-0x0a5f unidir
+# All Zebra devices (https://bugs.launchpad.net/bugs/1001028) (Issue #5395)
+0x0a5f unidir no-reattach
 
 # Canon CP-10
 0x04a9 0x304a blacklist
@@ -242,6 +242,9 @@
 # All Intermec devices (Issue #4553)
 0x067e no-reattach
 
+# HP LaserJet 1015 (Issue #5617)
+0x03f0 0x0e17 delay-close
+
 # HP LaserJet 1150 (Issue #4549)
 0x03f0 0x0f17 delay-close
 
@@ -291,5 +294,11 @@
 # Star TSP743 (Issue #5443)
 0x0519 0x0001 delay-close
 
-# Zebra ZD420 (Issue #5395)
-0x0a5f 0x0120 unidir no-reattach
+# Lexmark E120n (Issue #5478)
+0x043d 0x00cc no-reattach
+
+# All Xerox printers (Issue #5523)
+0x0924 no-reattach
+
+# Dymo 450 Turbo (Issue #5521)
+0x0922 0x0021 unidir

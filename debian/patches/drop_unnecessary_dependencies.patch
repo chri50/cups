@@ -1,4 +1,4 @@
-From f5a40c519699d77a7265fbe7993df890ab4c00c0 Mon Sep 17 00:00:00 2001
+From c9157cfdf76f24d00775745d9651716112972937 Mon Sep 17 00:00:00 2001
 From: Martin Pitt <mpitt@debian.org>
 Date: Tue, 9 Aug 2016 18:11:25 +0200
 Subject: Do not link libcups.so and libcupsimage.so unnecessarily
@@ -16,7 +16,7 @@ Patch-Name: drop_unnecessary_dependencies.patch
  3 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/Makedefs.in b/Makedefs.in
-index f614c0c1d..431d14019 100644
+index 8541b4976..dd86cde4b 100644
 --- a/Makedefs.in
 +++ b/Makedefs.in
 @@ -156,7 +156,7 @@ DBUS_NOTIFIER	=	@DBUS_NOTIFIER@
