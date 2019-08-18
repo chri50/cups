@@ -1,3 +1,12 @@
+cups (2.3~rc1-2) experimental; urgency=medium
+
+  * Merge 2.2.12-1 from unstable
+  * Add missing colon in closes line.
+  * Set upstream metadata fields: Contact, Name.
+  * Bump debhelper from old 11 to 12.
+
+ -- Didier Raboud <odyx@debian.org>  Sun, 18 Aug 2019 16:58:09 +0200
+
 cups (2.3~rc1-1) experimental; urgency=medium
 
   * New 2.3~rc1 upstream release:
@@ -128,6 +137,20 @@ cups (2.3~b3-1) experimental; urgency=medium
   * Bump debhelper compat to 11
 
  -- Didier Raboud <odyx@debian.org>  Fri, 23 Feb 2018 20:49:53 +0100
+
+cups (2.2.12-1) unstable; urgency=medium
+
+  * New 2.2.12 upstream release
+    - CVE-2019-8696 and CVE-2019-8675: Fixed SNMP buffer overflows
+      (Closes: #934957)
+
+  * Remove 11 backported patches
+  * Fix CVE-2018-4{7,8}00 typo retrospectively in d/changelog
+    (Closes: #933985)
+  * Refresh debian/gitlab-ci.yml
+  * Refresh manpage translations
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 17 Aug 2019 15:51:30 +0200
 
 cups (2.2.10-6) unstable; urgency=medium
 
@@ -8331,7 +8354,7 @@ cupsys (1.0.1-3) unstable; urgency=low
 cupsys (1.0.1-2) unstable; urgency=low
 
   * cupsys-bsd should conflict with lpr, not "lpd" (whatever that is)
-  (closes #50047)
+  (closes: #50047)
 
   * Changed priority to "extra".
 
