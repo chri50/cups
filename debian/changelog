@@ -1,3 +1,13 @@
+cups (2.2.10-6+deb10u1) buster; urgency=medium
+
+  * Fix multiple security/disclosure issues (Closes: #934957)
+    - CVE-2019-8696 and CVE-2019-8675: Fixed SNMP buffer overflows
+    - Fixed IPP buffer overflow
+    - Fixed memory disclosure issue in the scheduler
+    - Fixed DoS issues in the scheduler
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 21 Aug 2019 09:43:13 +0200
+
 cups (2.2.10-6) unstable; urgency=medium
 
   * Backport patch from upstream's 2.2 "stable" branch:
