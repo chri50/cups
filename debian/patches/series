@@ -51,3 +51,4 @@ manpage-translations.patch
 0051-Fix-local-privilege-escalation-to-root-and-sandbox-b.patch
 0052-DBUS-notifications-could-crash-the-scheduler-Issue-5.patch
 0053-CVE-2018-4700-Linux-session-cookies-used-a-predictab.patch
+0054-Fix-multiple-security-disclosure-issues.patch
