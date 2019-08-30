@@ -1,5 +1,5 @@
 # Translation of cups man pages to German
-# Copyright (C) Helge Kreutzmann <debian@helgefjell.de>, 2008-2018
+# Copyright (C) Helge Kreutzmann <debian@helgefjell.de>, 2008-2019
 # Chris Leick <c.leick@vollbio.de>, 2009.
 # This file is distributed under the same license as the cups package.
 #
@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 2.2.7-5\n"
 "POT-Creation-Date: 2019-08-17 15:33+0200\n"
-"PO-Revision-Date: 2019-03-03 07:38+0100\n"
+"PO-Revision-Date: 2019-08-18 07:40+0200\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
 "Language: de\n"
@@ -2190,10 +2190,9 @@ msgstr "cupsd.conf"
 
 #. type: TH
 #: cupsd.conf.man.in:13
-#, fuzzy, no-wrap
-#| msgid "2 May 2016"
+#, no-wrap
 msgid "2 May 2019"
-msgstr "2. Mai 2016"
+msgstr "2. Mai 2019"
 
 #. type: Plain text
 #: cupsd.conf.man.in:16
@@ -3221,16 +3220,12 @@ msgstr "B<MultipleOperationTimeout >I<Sekunden>"
 #. #Policy
 #. type: Plain text
 #: cupsd.conf.man.in:346
-#, fuzzy
-#| msgid ""
-#| "Specifies the maximum amount of time to allow between files in a multiple "
-#| "file print job.  The default is \"300\" (5 minutes)."
 msgid ""
 "Specifies the maximum amount of time to allow between files in a multiple "
 "file print job.  The default is \"900\" (15 minutes)."
 msgstr ""
 "Legt die maximal erlaubte Zeit zwischen Dateien in einem Druckauftrag aus "
-"mehreren Dateien fest. Die Vorgabe ist »300« (5 Minuten)."
+"mehreren Dateien fest. Die Vorgabe ist »900« (15 Minuten)."
 
 #. type: TP
 #: cupsd.conf.man.in:346
@@ -3561,13 +3556,10 @@ msgstr "B<Timeout >I<Sekunden>"
 #. #WebInterface
 #. type: Plain text
 #: cupsd.conf.man.in:464
-#, fuzzy
-#| msgid ""
-#| "Specifies the HTTP request timeout.  The default is \"300\" (5 minutes)."
 msgid ""
 "Specifies the HTTP request timeout.  The default is \"900\" (15 minutes)."
 msgstr ""
-"Legt die HTTP-Zeitüberschreitung fest. Die Vorgabe ist »300« (5 Minuten)."
+"Legt die HTTP-Zeitüberschreitung fest. Die Vorgabe ist »900« (15 Minuten)."
 
 #. type: TP
 #: cupsd.conf.man.in:464
@@ -4998,10 +4990,8 @@ msgstr ""
 
 #. type: Plain text
 #: cupsd.conf.man.in:879 ipptoolfile.man:652
-#, fuzzy
-#| msgid "Copyright \\[co] 2007-2017 by Apple Inc."
 msgid "Copyright \\[co] 2007-2019 by Apple Inc."
-msgstr "Copyright \\[co] 2007-2017 by Apple Inc."
+msgstr "Copyright \\[co] 2007-2019 by Apple Inc."
 
 #. type: TH
 #: cupsd-helper.man:13
@@ -10602,10 +10592,9 @@ msgstr "ipptoolfile"
 
 #. type: TH
 #: ipptoolfile.man:12
-#, fuzzy, no-wrap
-#| msgid "4 August 2017"
+#, no-wrap
 msgid "5 August 2019"
-msgstr "4. August 2017"
+msgstr "5. August 2019"
 
 #. type: Plain text
 #: ipptoolfile.man:15
@@ -11575,10 +11564,9 @@ msgstr ""
 
 #. type: TP
 #: ipptoolfile.man:299
-#, fuzzy, no-wrap
-#| msgid "B<OF-TYPE >I<tag[,tag,...]>"
+#, no-wrap
 msgid "B<OF-TYPE >I<tag[|tag,...]>"
-msgstr "B<OF-TYPE >I<Markierung[,Markierung,…]>"
+msgstr "B<OF-TYPE >I<Markierung[|Markierung,…]>"
 
 #. type: Plain text
 #: ipptoolfile.man:302
