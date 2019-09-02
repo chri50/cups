@@ -67,8 +67,6 @@ static void		free_authmask(cupsd_authmask_t *am, void *data);
 #if HAVE_LIBPAM
 static int		pam_func(int, const struct pam_message **,
 			         struct pam_response **, void *);
-#else
-static void		to64(char *s, unsigned long v, int n);
 #endif /* HAVE_LIBPAM */
 
 
@@ -1168,7 +1166,23 @@ cupsdCheckGroup(
 
     groupid = group->gr_gid;
 
+    for (i = 0; group->gr_mem[i]; i ++)
+    {
+     /*
+      * User appears in the group membership...
+      */
+
+      if (!_cups_strcasecmp(username, group->gr_mem[i]))
+	return (1);
+    }
+
 #ifdef HAVE_GETGROUPLIST
+   /*
+    * If the user isn't in the group membership list, try the results from
+    * getgrouplist() which is supposed to return the full list of groups a user
+    * belongs to...
+    */
+
     if (user)
     {
       int	ngroups;		/* Number of groups */
@@ -1188,13 +1202,6 @@ cupsdCheckGroup(
       for (i = 0; i < ngroups; i ++)
         if ((int)groupid == (int)groups[i])
 	  return (1);
-    }
-
-#else
-    for (i = 0; group->gr_mem[i]; i ++)
-    {
-      if (!_cups_strcasecmp(username, group->gr_mem[i]))
-	return (1);
     }
 #endif /* HAVE_GETGROUPLIST */
   }
@@ -2067,25 +2074,5 @@ pam_func(
   *resp = replies;
 
   return (PAM_SUCCESS);
-}
-#else
-
-
-/*
- * 'to64()' - Base64-encode an integer value...
- */
-
-static void
-to64(char          *s,			/* O - Output string */
-     unsigned long v,			/* I - Value to encode */
-     int           n)			/* I - Number of digits */
-{
-  const char	*itoa64 = "./0123456789"
-                          "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                          "abcdefghijklmnopqrstuvwxyz";
-
-
-  for (; n > 0; n --, v >>= 6)
-    *s++ = itoa64[v & 0x3f];
 }
 #endif /* HAVE_LIBPAM */

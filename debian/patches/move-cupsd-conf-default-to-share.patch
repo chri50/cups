@@ -14,7 +14,7 @@ Patch-Name: move-cupsd-conf-default-to-share.patch
  2 files changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/cgi-bin/admin.c b/cgi-bin/admin.c
-index f8c5763..fa4d82c 100644
+index f087809..6e9a64a 100644
 --- a/cgi-bin/admin.c
 +++ b/cgi-bin/admin.c
 @@ -1629,6 +1629,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */

@@ -1072,8 +1072,7 @@ cupsdLoadAllPrinters(void)
     }
     else if (!_cups_strcasecmp(line, "Info"))
     {
-      if (value)
-	cupsdSetString(&p->info, value);
+      cupsdSetString(&p->info, value ? value : "");
     }
     else if (!_cups_strcasecmp(line, "MakeModel"))
     {
@@ -1082,23 +1081,19 @@ cupsdLoadAllPrinters(void)
     }
     else if (!_cups_strcasecmp(line, "Location"))
     {
-      if (value)
-	cupsdSetString(&p->location, value);
+      cupsdSetString(&p->location, value ? value : "");
     }
     else if (!_cups_strcasecmp(line, "GeoLocation"))
     {
-      if (value)
-        cupsdSetString(&p->geo_location, value);
+      cupsdSetString(&p->geo_location, value ? value : "");
     }
     else if (!_cups_strcasecmp(line, "Organization"))
     {
-      if (value)
-	cupsdSetString(&p->organization, value);
+      cupsdSetString(&p->organization, value ? value : "");
     }
     else if (!_cups_strcasecmp(line, "OrganizationalUnit"))
     {
-      if (value)
-	cupsdSetString(&p->organizational_unit, value);
+      cupsdSetString(&p->organizational_unit, value ? value : "");
     }
     else if (!_cups_strcasecmp(line, "DeviceURI"))
     {
@@ -4586,7 +4581,7 @@ load_ppd(cupsd_printer_t *p)		/* I - Printer */
       for (fin = (_pwg_finishings_t *)cupsArrayFirst(p->pc->finishings); fin; fin = (_pwg_finishings_t *)cupsArrayNext(p->pc->finishings))
       {
         if (num_finishings < (int)(sizeof(finishings) / sizeof(finishings[0])))
-          finishings[num_finishings++] = fin->value;
+          finishings[num_finishings++] = (int)fin->value;
 
         switch (fin->value)
         {

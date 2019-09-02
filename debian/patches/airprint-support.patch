@@ -77,10 +77,10 @@ index ddd3701..fb2a305 100644
      {
        keyvalue[count  ][0] = "air";
 diff --git a/scheduler/printers.c b/scheduler/printers.c
-index 1984a65..2578aa7 100644
+index 5425237..b366bf5 100644
 --- a/scheduler/printers.c
 +++ b/scheduler/printers.c
-@@ -3811,7 +3811,9 @@ add_printer_formats(cupsd_printer_t *p)	/* I - Printer */
+@@ -3806,7 +3806,9 @@ add_printer_formats(cupsd_printer_t *p)	/* I - Printer */
        }
        else if (!_cups_strcasecmp(type->super, "image"))
        {

@@ -8,7 +8,7 @@ Patch-Name: show-compile-command-lines.patch
  1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/Makedefs.in b/Makedefs.in
-index 65ae345..c71e813 100644
+index 9ee7585..511fbf8 100644
 --- a/Makedefs.in
 +++ b/Makedefs.in
 @@ -263,8 +263,7 @@ USBQUIRKS	=	@USBQUIRKS@

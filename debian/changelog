@@ -1,3 +1,19 @@
+cups (2.3.0-1) unstable; urgency=low
+
+  * New 2.3.0 upstream release, to unstable
+    - CVE-2019-8696 and CVE-2019-8675: Fixed SNMP buffer overflows
+    - Fixed IPP buffer overflow
+    - Fixed memory disclosure and DoS issues in the scheduler
+    - CUPS is now provided under the Apache License, Version 2.0, with a
+      GPL2/LGPL2 exception
+  * Rewrite debian/copyright with the above license change, install the
+    NOTICE file
+  * Refresh manpage translations
+  * Refresh upstream metadata
+  * Bump S-V to 4.4 without changes needed
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 02 Sep 2019 13:19:18 +0200
+
 cups (2.3~rc1-2) experimental; urgency=medium
 
   * Merge 2.2.12-1 from unstable
@@ -137,6 +153,13 @@ cups (2.3~b3-1) experimental; urgency=medium
   * Bump debhelper compat to 11
 
  -- Didier Raboud <odyx@debian.org>  Fri, 23 Feb 2018 20:49:53 +0100
+
+cups (2.2.12-2) unstable; urgency=medium
+
+  [ Helge Kreutzmann ]
+  * Update German man page (2193t)
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 30 Aug 2019 18:19:57 +0200
 
 cups (2.2.12-1) unstable; urgency=medium
 
