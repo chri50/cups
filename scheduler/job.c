@@ -444,7 +444,7 @@ cupsdCleanJobs(void)
   {
     cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdCleanJobs: Job %d, state=%d, printer=%p, history_time=%d, file_time=%d", job->id, (int)job->state_value, (void *)job->printer, (int)job->history_time, (int)job->file_time);
 
-    if ((job->history_time && job->history_time) < JobHistoryUpdate || !JobHistoryUpdate)
+    if ((job->history_time && job->history_time < JobHistoryUpdate) || !JobHistoryUpdate)
       JobHistoryUpdate = job->history_time;
 
     if ((job->file_time && job->file_time < JobHistoryUpdate) || !JobHistoryUpdate)
@@ -462,7 +462,7 @@ cupsdCleanJobs(void)
         cupsdLogJob(job, CUPSD_LOG_DEBUG, "Removing from history.");
 	cupsdDeleteJob(job, CUPSD_JOB_PURGE);
       }
-      else if (job->file_time && job->file_time <= curtime)
+      else if (job->file_time && job->file_time <= curtime && job->num_files > 0)
       {
         cupsdLogJob(job, CUPSD_LOG_DEBUG, "Removing document files.");
         remove_job_files(job);
@@ -2577,7 +2577,7 @@ cupsdSetJobState(
   job->state_value = newstate;
 
   if (job->state)
-    job->state->values[0].integer = newstate;
+    job->state->values[0].integer = (int)newstate;
 
   switch (newstate)
   {
@@ -2625,7 +2625,7 @@ cupsdSetJobState(
     else
       cupsdAddEvent(CUPSD_EVENT_JOB_STATE, job->printer, job, "%s", buffer);
 
-    if (newstate == IPP_JOB_STOPPED || newstate == IPP_JOB_ABORTED)
+    if (newstate == IPP_JOB_STOPPED || newstate == IPP_JOB_ABORTED || newstate == IPP_JOB_HELD)
       cupsdLogJob(job, CUPSD_LOG_ERROR, "%s", buffer);
     else
       cupsdLogJob(job, CUPSD_LOG_INFO, "%s", buffer);

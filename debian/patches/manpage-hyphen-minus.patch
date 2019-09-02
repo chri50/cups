@@ -254,7 +254,7 @@ index 2070be9..a912c46 100644
  .BR cupsd (8),
  .BR cupsd.conf (5),
 diff --git a/man/cupsd.conf.5 b/man/cupsd.conf.5
-index 75d0602..5788265 100644
+index 00b1a22..49fdb06 100644
 --- a/man/cupsd.conf.5
 +++ b/man/cupsd.conf.5
 @@ -446,7 +446,7 @@ The \fIAllowDH\fR option enables cipher suites using plain Diffie-Hellman key ne
@@ -348,16 +348,16 @@ index 32f2e6f..d77ef75 100644
  Expressions may also contain modifiers:
  .TP 5
 diff --git a/man/ipptoolfile.5 b/man/ipptoolfile.5
-index 5ef6219..9cd6403 100644
+index 7001017..5763232 100644
 --- a/man/ipptoolfile.5
 +++ b/man/ipptoolfile.5
 @@ -166,8 +166,8 @@ The following directives are understood within a \fItest\fR:
  \fBATTR \fItag attribute-name value(s)\fR
  Adds an attribute to the test request.
  Out-of-band tags (admin-define, delete-attribute, no-value, not-settable, unknown, unsupported) have no value.
--Values for other tags are separated by the comma (",") character - escape commas using the "\" character.
+-Values for other tags are delimited by the comma (",") character - escape commas using the "\\" character.
 -Common attributes and values are listed in the IANA IPP registry - see references below.
-+Values for other tags are separated by the comma (",") character \- escape commas using the "\" character.
++Values for other tags are delimited by the comma (",") character \- escape commas using the "\\" character.
 +Common attributes and values are listed in the IANA IPP registry \- see references below.
  .TP 5
  \fBATTR collection \fIattribute-name \fB{ MEMBER \fItag member-name value(s) ... \fB}\fR [ \fI... \fB,{ \fI... \fB} \fR]

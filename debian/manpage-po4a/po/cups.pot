@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-06-03 21:02+0200\n"
+"POT-Creation-Date: 2019-09-02 10:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -469,7 +469,7 @@ msgid "I</etc/cups/cups-files.conf>"
 msgstr ""
 
 #. type: SH
-#: backend.7:184 backend.7:204 cancel.1:81 classes.conf.5:19 client.conf.5:110 cups.1:122 cupsd.conf.5:854 cupsd-helper.8:77 cups-files.conf.5:273 cupsfilter.8:117 cups-lpd.8:60 cups-snmp.8:44 cups-snmp.conf.5:58 cupstestppd.1:138 filter.7:201 lpadmin.8:203 lpc.8:40 lpinfo.8:117 lpr.1:151 mime.convs.5:50 ppdc.1:90 ppdcfile.5:149 ppdhtml.1:35 ppdi.1:42 ppdmerge.1:35 ppdpo.1:42 printers.conf.5:16 subscriptions.conf.5:19
+#: backend.7:184 backend.7:204 cancel.1:81 classes.conf.5:19 client.conf.5:110 cups.1:122 cupsd.conf.5:858 cupsd-helper.8:77 cups-files.conf.5:273 cupsfilter.8:117 cups-lpd.8:60 cups-snmp.8:44 cups-snmp.conf.5:58 cupstestppd.1:138 filter.7:201 lpadmin.8:203 lpc.8:40 lpinfo.8:117 lpr.1:151 mime.convs.5:50 ppdc.1:90 ppdcfile.5:149 ppdhtml.1:35 ppdi.1:42 ppdmerge.1:35 ppdpo.1:42 printers.conf.5:16 subscriptions.conf.5:19
 #, no-wrap
 msgid "NOTES"
 msgstr ""
@@ -506,7 +506,7 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: backend.7:208 cancel.1:84 classes.conf.5:21 client.conf.5:122 cups.1:126 cupsaccept.8:77 cups-config.1:105 cupsctl.8:92 cupsd.8:109 cupsd.conf.5:887 cupsd-helper.8:81 cupsd-logs.5:216 cupsenable.8:88 cups-files.conf.5:280 cupsfilter.8:131 cups-lpd.8:111 cups-snmp.8:49 cups-snmp.conf.5:62 cupstestppd.1:142 filter.7:212 ippevepcl.7:45 ippeveprinter.1:251 ippfind.1:255 ipptool.1:246 ipptoolfile.5:649 lp.1:219 lpadmin.8:224 lpc.8:47 lpinfo.8:121 lpmove.8:66 lpoptions.1:110 lpq.1:56 lpr.1:171 lprm.1:74 lpstat.1:140 mailto.conf.5:40 mime.convs.5:54 mime.types.5:100 notifier.7:31 ppdc.1:94 ppdcfile.5:153 ppdhtml.1:39 ppdi.1:46 ppdmerge.1:42 ppdpo.1:46 printers.conf.5:18 subscriptions.conf.5:21
+#: backend.7:208 cancel.1:84 classes.conf.5:21 client.conf.5:122 cups.1:126 cupsaccept.8:77 cups-config.1:105 cupsctl.8:92 cupsd.8:109 cupsd.conf.5:895 cupsd-helper.8:81 cupsd-logs.5:216 cupsenable.8:88 cups-files.conf.5:280 cupsfilter.8:131 cups-lpd.8:111 cups-snmp.8:49 cups-snmp.conf.5:62 cupstestppd.1:142 filter.7:212 ippevepcl.7:45 ippeveprinter.1:251 ippfind.1:255 ipptool.1:246 ipptoolfile.5:649 lp.1:219 lpadmin.8:224 lpc.8:47 lpinfo.8:121 lpmove.8:66 lpoptions.1:110 lpq.1:56 lpr.1:171 lprm.1:74 lpstat.1:140 mailto.conf.5:40 mime.convs.5:54 mime.types.5:100 notifier.7:31 ppdc.1:94 ppdcfile.5:153 ppdhtml.1:39 ppdi.1:46 ppdmerge.1:42 ppdpo.1:46 printers.conf.5:18 subscriptions.conf.5:21
 #, no-wrap
 msgid "SEE ALSO"
 msgstr ""
@@ -524,13 +524,13 @@ msgid "CUPS Online Help (http://localhost:631/help)"
 msgstr ""
 
 #. type: SH
-#: backend.7:219 cancel.1:90 classes.conf.5:29 client.conf.5:126 cups.1:142 cupsaccept.8:85 cups-config.1:108 cupsctl.8:97 cupsd.8:125 cupsd.conf.5:896 cupsd-helper.8:89 cupsd-logs.5:221 cupsenable.8:96 cups-files.conf.5:290 cupsfilter.8:138 cups-lpd.8:118 cups-snmp.8:55 cups-snmp.conf.5:65 cupstestppd.1:146 filter.7:220 ippevepcl.7:47 ippeveprinter.1:255 ippfind.1:257 ipptool.1:251 ipptoolfile.5:654 lp.1:228 lpadmin.8:230 lpc.8:57 lpinfo.8:124 lpmove.8:73 lpoptions.1:117 lpq.1:63 lpr.1:180 lprm.1:81 lpstat.1:147 mailto.conf.5:43 mime.convs.5:61 mime.types.5:107 notifier.7:35 ppdc.1:101 ppdcfile.5:160 ppdhtml.1:46 ppdi.1:53 ppdmerge.1:49 ppdpo.1:53 printers.conf.5:27 subscriptions.conf.5:30
+#: backend.7:219 cancel.1:90 classes.conf.5:29 client.conf.5:126 cups.1:142 cupsaccept.8:85 cups-config.1:108 cupsctl.8:97 cupsd.8:125 cupsd.conf.5:904 cupsd-helper.8:89 cupsd-logs.5:221 cupsenable.8:96 cups-files.conf.5:290 cupsfilter.8:138 cups-lpd.8:118 cups-snmp.8:55 cups-snmp.conf.5:65 cupstestppd.1:146 filter.7:220 ippevepcl.7:47 ippeveprinter.1:255 ippfind.1:257 ipptool.1:251 ipptoolfile.5:654 lp.1:228 lpadmin.8:230 lpc.8:57 lpinfo.8:124 lpmove.8:73 lpoptions.1:117 lpq.1:63 lpr.1:180 lprm.1:81 lpstat.1:147 mailto.conf.5:43 mime.convs.5:61 mime.types.5:107 notifier.7:35 ppdc.1:101 ppdcfile.5:160 ppdhtml.1:46 ppdi.1:53 ppdmerge.1:49 ppdpo.1:53 printers.conf.5:27 subscriptions.conf.5:30
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr ""
 
 #. type: Plain text
-#: backend.7:220 cancel.1:91 classes.conf.5:30 client.conf.5:127 cups.1:143 cupsaccept.8:86 cups-config.1:109 cupsctl.8:98 cupsd.8:126 cupsd.conf.5:897 cupsd-helper.8:90 cupsd-logs.5:222 cupsenable.8:97 cups-files.conf.5:291 cupsfilter.8:139 cups-lpd.8:119 cups-snmp.8:56 cups-snmp.conf.5:66 cupstestppd.1:147 filter.7:221 ippeveprinter.1:256 ipptool.1:252 ipptoolfile.5:655 lp.1:229 lpadmin.8:231 lpc.8:58 lpinfo.8:125 lpmove.8:74 lpoptions.1:118 lpq.1:64 lpr.1:181 lprm.1:82 lpstat.1:148 mailto.conf.5:44 mime.convs.5:62 mime.types.5:108 notifier.7:36 ppdc.1:102 ppdcfile.5:161 ppdhtml.1:47 ppdi.1:54 ppdmerge.1:50 ppdpo.1:54 printers.conf.5:28 subscriptions.conf.5:31
+#: backend.7:220 cancel.1:91 classes.conf.5:30 client.conf.5:127 cups.1:143 cupsaccept.8:86 cups-config.1:109 cupsctl.8:98 cupsd.8:126 cupsd.conf.5:905 cupsd-helper.8:90 cupsd-logs.5:222 cupsenable.8:97 cups-files.conf.5:291 cupsfilter.8:139 cups-lpd.8:119 cups-snmp.8:56 cups-snmp.conf.5:66 cupstestppd.1:147 filter.7:221 ippeveprinter.1:256 ipptool.1:252 ipptoolfile.5:655 lp.1:229 lpadmin.8:231 lpc.8:58 lpinfo.8:125 lpmove.8:74 lpoptions.1:118 lpq.1:64 lpr.1:181 lprm.1:82 lpstat.1:148 mailto.conf.5:44 mime.convs.5:62 mime.types.5:108 notifier.7:36 ppdc.1:102 ppdcfile.5:161 ppdhtml.1:47 ppdi.1:54 ppdmerge.1:50 ppdpo.1:54 printers.conf.5:28 subscriptions.conf.5:31
 msgid "Copyright \\[co] 2007-2019 by Apple Inc."
 msgstr ""
 
@@ -641,7 +641,7 @@ msgid "Deletes job data files in addition to canceling."
 msgstr ""
 
 #. type: SH
-#: cancel.1:61 cups.1:119 cupsaccept.8:67 cupsd.8:81 cupsd.conf.5:865 cupsenable.8:77 cups-lpd.8:46 cups-snmp.8:47 filter.7:199 ippeveprinter.1:190 ipptool.1:229 lp.1:196 lpadmin.8:197 lpinfo.8:97 lpoptions.1:108 lprm.1:52 lpstat.1:133
+#: cancel.1:61 cups.1:119 cupsaccept.8:67 cupsd.8:81 cupsd.conf.5:873 cupsenable.8:77 cups-lpd.8:46 cups-snmp.8:47 filter.7:199 ippeveprinter.1:190 ipptool.1:229 lp.1:196 lpadmin.8:197 lpinfo.8:97 lpoptions.1:108 lprm.1:52 lpstat.1:133
 #, no-wrap
 msgid "CONFORMING TO"
 msgstr ""
@@ -655,7 +655,7 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: cancel.1:63 cups-config.1:87 cupsctl.8:66 cupsd.8:84 cupsd.conf.5:867 cupstestppd.1:125 ippeveprinter.1:235 ippfind.1:242 ipptool.1:233 lp.1:201 lpinfo.8:99 lpmove.8:50 lpr.1:153 lprm.1:56 mime.convs.5:43 mime.types.5:89
+#: cancel.1:63 cups-config.1:87 cupsctl.8:66 cupsd.8:84 cupsd.conf.5:875 cupstestppd.1:125 ippeveprinter.1:235 ippfind.1:242 ipptool.1:233 lp.1:201 lpinfo.8:99 lpmove.8:50 lpr.1:153 lprm.1:56 mime.convs.5:43 mime.types.5:89
 #, no-wrap
 msgid "EXAMPLES"
 msgstr ""
@@ -826,19 +826,19 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: client.conf.5:35 cupsd.conf.5:728
+#: client.conf.5:35 cupsd.conf.5:732
 #, no-wrap
 msgid "B<Encryption IfRequested>"
 msgstr ""
 
 #. type: TP
-#: client.conf.5:37 cupsd.conf.5:730
+#: client.conf.5:37 cupsd.conf.5:734
 #, no-wrap
 msgid "B<Encryption Never>"
 msgstr ""
 
 #. type: TP
-#: client.conf.5:39 cupsd.conf.5:732
+#: client.conf.5:39 cupsd.conf.5:736
 #, no-wrap
 msgid "B<Encryption Required>"
 msgstr ""
@@ -2147,7 +2147,7 @@ msgstr ""
 #. type: TH
 #: cupsd.conf.5:10
 #, no-wrap
-msgid "2 May 2019"
+msgid "16 July 2019"
 msgstr ""
 
 #. type: Plain text
@@ -4120,133 +4120,139 @@ msgid "B<Allow @LOCAL>"
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:694
+#: cupsd.conf.5:696
 msgid ""
 "Allows access from the named hosts, domains, addresses, or interfaces.  The "
-"Order directive controls whether Allow lines are evaluated before or after "
-"Deny lines."
-msgstr ""
-
-#. type: TP
-#: cupsd.conf.5:694
-#, no-wrap
-msgid "B<AuthType None>"
+"@IF(name) form uses the current subnets configured for the named interface.  "
+"The @LOCAL form uses the current subnets configured for all interfaces that "
+"are not point-to-point, for example Ethernet and Wi-Fi interfaces are used "
+"but DSL and VPN interfaces are not.  The Order directive controls whether "
+"Allow lines are evaluated before or after Deny lines."
 msgstr ""
 
 #. type: TP
 #: cupsd.conf.5:696
 #, no-wrap
-msgid "B<AuthType Basic>"
+msgid "B<AuthType None>"
 msgstr ""
 
 #. type: TP
 #: cupsd.conf.5:698
 #, no-wrap
-msgid "B<AuthType Default>"
+msgid "B<AuthType Basic>"
 msgstr ""
 
 #. type: TP
 #: cupsd.conf.5:700
 #, no-wrap
+msgid "B<AuthType Default>"
+msgstr ""
+
+#. type: TP
+#: cupsd.conf.5:702
+#, no-wrap
 msgid "B<AuthType Negotiate>"
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:704
+#: cupsd.conf.5:706
 msgid ""
 "Specifies the type of authentication required.  The value \"Default\" "
 "corresponds to the DefaultAuthType value."
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:704
+#: cupsd.conf.5:706
 #, no-wrap
 msgid "B<Deny all>"
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:706
+#: cupsd.conf.5:708
 #, no-wrap
 msgid "B<Deny none>"
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:708
+#: cupsd.conf.5:710
 #, no-wrap
 msgid "B<Deny >I<host.domain.com>"
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:710
+#: cupsd.conf.5:712
 #, no-wrap
 msgid "B<Deny *.>I<domain.com>"
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:712
+#: cupsd.conf.5:714
 #, no-wrap
 msgid "B<Deny >I<ipv4-address>"
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:714
+#: cupsd.conf.5:716
 #, no-wrap
 msgid "B<Deny >I<ipv4-address>B</>I<netmask>"
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:716
+#: cupsd.conf.5:718
 #, no-wrap
 msgid "B<Deny >I<ipv4-address>B</>I<mm>"
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:718
+#: cupsd.conf.5:720
 #, no-wrap
 msgid "B<Deny [>I<ipv6-address>B<]>"
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:720
+#: cupsd.conf.5:722
 #, no-wrap
 msgid "B<Deny [>I<ipv6-address>B<]/>I<mm>"
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:722
+#: cupsd.conf.5:724
 #, no-wrap
 msgid "B<Deny @IF(>I<name>B<)>"
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:724
+#: cupsd.conf.5:726
 #, no-wrap
 msgid "B<Deny @LOCAL>"
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:728
+#: cupsd.conf.5:732
 msgid ""
 "Denies access from the named hosts, domains, addresses, or interfaces.  The "
-"Order directive controls whether Deny lines are evaluated before or after "
-"Allow lines."
+"@IF(name) form uses the current subnets configured for the named interface.  "
+"The @LOCAL form uses the current subnets configured for all interfaces that "
+"are not point-to-point, for example Ethernet and Wi-Fi interfaces are used "
+"but DSL and VPN interfaces are not.  The Order directive controls whether "
+"Deny lines are evaluated before or after Allow lines."
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:736
+#: cupsd.conf.5:740
 msgid ""
 "Specifies the level of encryption that is required for a particular "
 "location.  The default value is \"IfRequested\"."
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:736
+#: cupsd.conf.5:740
 #, no-wrap
 msgid "B<Order allow,deny>"
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:739
+#: cupsd.conf.5:743
 msgid ""
 "Specifies that access is denied by default. Allow lines are then processed "
 "followed by Deny lines to determine whether a client may access a particular "
@@ -4254,13 +4260,13 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:739
+#: cupsd.conf.5:743
 #, no-wrap
 msgid "B<Order deny,allow>"
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:742
+#: cupsd.conf.5:746
 msgid ""
 "Specifies that access is allowed by default. Deny lines are then processed "
 "followed by Allow lines to determine whether a client may access a "
@@ -4268,26 +4274,26 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:742
+#: cupsd.conf.5:746
 #, no-wrap
 msgid "B<Require group >I<group-name >[ I<group-name >... ]"
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:745
+#: cupsd.conf.5:749
 msgid ""
 "Specifies that an authenticated user must be a member of one of the named "
 "groups."
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:745
+#: cupsd.conf.5:749
 #, no-wrap
 msgid "B<Require user {>I<user-name>|B<@>I<group-name>} ..."
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:753
+#: cupsd.conf.5:757
 msgid ""
 "Specifies that an authenticated user must match one of the named users or be "
 "a member of one of the named groups.  The group name \"@SYSTEM\" corresponds "
@@ -4299,37 +4305,37 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:753
+#: cupsd.conf.5:757
 #, no-wrap
 msgid "B<Require valid-user>"
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:756
+#: cupsd.conf.5:760
 msgid "Specifies that any authenticated user is acceptable."
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:756
+#: cupsd.conf.5:760
 #, no-wrap
 msgid "B<Satisfy all>"
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:759
+#: cupsd.conf.5:763
 msgid ""
 "Specifies that all Allow, AuthType, Deny, Order, and Require conditions must "
 "be satisfied to allow access."
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:759
+#: cupsd.conf.5:763
 #, no-wrap
 msgid "B<Satisfy any>"
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:763
+#: cupsd.conf.5:767
 msgid ""
 "Specifies that any a client may access a resource if either the "
 "authentication (AuthType/Require) or address (Allow/Deny/Order) conditions "
@@ -4338,38 +4344,38 @@ msgid ""
 msgstr ""
 
 #. type: SS
-#: cupsd.conf.5:763
+#: cupsd.conf.5:767
 #, no-wrap
 msgid "DIRECTIVES VALID WITHIN POLICY SECTIONS"
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:765
+#: cupsd.conf.5:769
 msgid ""
 "The following directives may be placed inside Policy sections in the "
 "B<cupsd.conf> file:"
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:765
+#: cupsd.conf.5:769
 #, no-wrap
 msgid "B<JobPrivateAccess all>"
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:767
+#: cupsd.conf.5:771
 #, no-wrap
 msgid "B<JobPrivateAccess default>"
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:769
+#: cupsd.conf.5:773
 #, no-wrap
 msgid "B<JobPrivateAccess >{I<user>|B<@>I<group>|B<@ACL>|B<@OWNER>|B<@SYSTEM>} ..."
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:778
+#: cupsd.conf.5:782
 msgid ""
 "Specifies an access list for a job's private values.  The \"default\" access "
 "list is \"@OWNER @SYSTEM\".  \"@ACL\" maps to the printer's "
@@ -4379,31 +4385,31 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:778
+#: cupsd.conf.5:782
 #, no-wrap
 msgid "B<JobPrivateValues all>"
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:780
+#: cupsd.conf.5:784
 #, no-wrap
 msgid "B<JobPrivateValues default>"
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:782
+#: cupsd.conf.5:786
 #, no-wrap
 msgid "B<JobPrivateValues none>"
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:784
+#: cupsd.conf.5:788
 #, no-wrap
 msgid "B<JobPrivateValues >I<attribute-name >[ ... I<attribute-name >]"
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:788
+#: cupsd.conf.5:792
 msgid ""
 "Specifies the list of job values to make private.  The \"default\" values "
 "are \"job-name\", \"job-originating-host-name\", "
@@ -4411,19 +4417,19 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:788
+#: cupsd.conf.5:792
 #, no-wrap
 msgid "B<SubscriptionPrivateAccess all>"
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:790
+#: cupsd.conf.5:794
 #, no-wrap
 msgid "B<SubscriptionPrivateAccess default>"
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:792
+#: cupsd.conf.5:796
 #, no-wrap
 msgid ""
 "B<SubscriptionPrivateAccess "
@@ -4431,7 +4437,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:801
+#: cupsd.conf.5:805
 msgid ""
 "Specifies an access list for a subscription's private values.  The "
 "\"default\" access list is \"@OWNER @SYSTEM\".  \"@ACL\" maps to the "
@@ -4441,31 +4447,31 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:801
+#: cupsd.conf.5:805
 #, no-wrap
 msgid "B<SubscriptionPrivateValues all>"
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:803
+#: cupsd.conf.5:807
 #, no-wrap
 msgid "B<SubscriptionPrivateValues default>"
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:805
+#: cupsd.conf.5:809
 #, no-wrap
 msgid "B<SubscriptionPrivateValues none>"
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:807
+#: cupsd.conf.5:811
 #, no-wrap
 msgid "B<SubscriptionPrivateValues >I<attribute-name >[ ... I<attribute-name >]"
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:811
+#: cupsd.conf.5:815
 msgid ""
 "Specifies the list of subscription values to make private.  The \"default\" "
 "values are \"notify-events\", \"notify-pull-method\", "
@@ -4474,28 +4480,28 @@ msgid ""
 msgstr ""
 
 #. type: SS
-#: cupsd.conf.5:811 cups-files.conf.5:230
+#: cupsd.conf.5:815 cups-files.conf.5:230
 #, no-wrap
 msgid "DEPRECATED DIRECTIVES"
 msgstr ""
 
 #. #Classification
 #. type: Plain text
-#: cupsd.conf.5:814
+#: cupsd.conf.5:818
 msgid ""
 "The following directives are deprecated and will be removed in a future "
 "release of CUPS:"
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:814
+#: cupsd.conf.5:818
 #, no-wrap
 msgid "B<Classification >I<banner>"
 msgstr ""
 
 #. #ClassifyOverride
 #. type: Plain text
-#: cupsd.conf.5:821
+#: cupsd.conf.5:825
 msgid ""
 "Specifies the security classification of the server.  Any valid banner name "
 "can be used, including \"classified\", \"confidential\", \"secret\", "
@@ -4504,20 +4510,20 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:821
+#: cupsd.conf.5:825
 #, no-wrap
 msgid "B<ClassifyOverride Yes>"
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:823
+#: cupsd.conf.5:827
 #, no-wrap
 msgid "B<ClassifyOverride No>"
 msgstr ""
 
 #. #PageLogFormat
 #. type: Plain text
-#: cupsd.conf.5:829
+#: cupsd.conf.5:833
 msgid ""
 "Specifies whether users may override the classification (cover page) of "
 "individual print jobs using the \"job-sheets\" option.  The default is "
@@ -4525,13 +4531,13 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:829
+#: cupsd.conf.5:833
 #, no-wrap
 msgid "B<PageLogFormat >I<format-string>"
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:834
+#: cupsd.conf.5:838
 msgid ""
 "Specifies the format of PageLog lines.  Sequences beginning with percent (%) "
 "characters are replaced with the corresponding information, while all other "
@@ -4540,7 +4546,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:844
+#: cupsd.conf.5:848
 #, no-wrap
 msgid ""
 "    \"%%\" inserts a single percent character.\n"
@@ -4555,7 +4561,7 @@ msgstr ""
 
 #. #RIPCache
 #. type: Plain text
-#: cupsd.conf.5:850
+#: cupsd.conf.5:854
 msgid ""
 "The default is the empty string, which disables page logging.  The string "
 "\"%p %u %j %T %P %C %{job-billing} %{job-originating-host-name} %{job-name} "
@@ -4566,20 +4572,20 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cupsd.conf.5:850
+#: cupsd.conf.5:854
 #, no-wrap
 msgid "B<RIPCache >I<size>"
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:854
+#: cupsd.conf.5:858
 msgid ""
 "Specifies the maximum amount of memory to use when converting documents into "
 "bitmaps for a printer.  The default is \"128m\"."
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:858
+#: cupsd.conf.5:862
 msgid ""
 "File, directory, and user configuration directives that used to be allowed "
 "in the B<cupsd.conf> file are now stored in the B<cups-files.conf>(5)  file "
@@ -4587,7 +4593,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:865
+#: cupsd.conf.5:869
 msgid ""
 "The scheduler MUST be restarted manually after making changes to the "
 "B<cupsd.conf> file.  On Linux this is typically done using the "
@@ -4596,19 +4602,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:867
+#: cupsd.conf.5:873
+msgid ""
+"The @LOCAL macro name can be confusing since the system running B<cupsd> "
+"often belongs to a different set of subnets from its clients."
+msgstr ""
+
+#. type: Plain text
+#: cupsd.conf.5:875
 msgid ""
 "The B<cupsd.conf> file format is based on the Apache HTTP Server "
 "configuration file format."
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:869
+#: cupsd.conf.5:877
 msgid "Log everything with a maximum log file size of 32 megabytes:"
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:874
+#: cupsd.conf.5:882
 #, no-wrap
 msgid ""
 "    AccessLogLevel all\n"
@@ -4617,12 +4630,12 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:877
+#: cupsd.conf.5:885
 msgid "Require authentication for accesses from outside the 10. network:"
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:886
+#: cupsd.conf.5:894
 #, no-wrap
 msgid ""
 "    E<lt>Location /E<gt>\n"
@@ -4635,7 +4648,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: cupsd.conf.5:896
+#: cupsd.conf.5:904
 msgid ""
 "B<classes.conf>(5), B<cups-files.conf>(5), B<cupsd>(8), B<mime.convs>(5), "
 "B<mime.types>(5), B<printers.conf>(5), B<subscriptions.conf>(5), CUPS Online "
@@ -9490,7 +9503,7 @@ msgstr ""
 #. type: TH
 #: ipptoolfile.5:9
 #, no-wrap
-msgid "13 May 2019"
+msgid "15 August 2019"
 msgstr ""
 
 #. type: Plain text
@@ -9889,15 +9902,14 @@ msgstr ""
 msgid "B<ATTR >I<tag attribute-name value(s)>"
 msgstr ""
 
-#.  character.
 #. type: Plain text
 #: ipptoolfile.5:171
 msgid ""
 "Adds an attribute to the test request.  Out-of-band tags (admin-define, "
 "delete-attribute, no-value, not-settable, unknown, unsupported) have no "
-"value.  Values for other tags are separated by the comma (\",\") character - "
-"escape commas using the \" Common attributes and values are listed in the "
-"IANA IPP registry - see references below."
+"value.  Values for other tags are delimited by the comma (\",\") character - "
+"escape commas using the \"\\e\" character.  Common attributes and values are "
+"listed in the IANA IPP registry - see references below."
 msgstr ""
 
 #. type: TP
@@ -10294,7 +10306,7 @@ msgstr ""
 #. type: TP
 #: ipptoolfile.5:296
 #, no-wrap
-msgid "B<OF-TYPE >I<tag[,tag,...]>"
+msgid "B<OF-TYPE >I<tag[|tag,...]>"
 msgstr ""
 
 #. type: Plain text

@@ -17,7 +17,7 @@ Bug-Debian: https://bugs.debian.org/837936
  4 files changed, 22 insertions(+), 8 deletions(-)
 
 diff --git a/Makedefs.in b/Makedefs.in
-index c71e813..7b99dab 100644
+index 511fbf8..fbd16fb 100644
 --- a/Makedefs.in
 +++ b/Makedefs.in
 @@ -22,6 +22,7 @@ CUPS_VERSION    =       @CUPS_VERSION@
@@ -29,7 +29,7 @@ index c71e813..7b99dab 100644
  CXX		=	@LIBTOOL_CXX@ @CXX@
  DSO		=	@DSO@
 diff --git a/configure.ac b/configure.ac
-index c7f58b6..8ca5393 100644
+index 7eca9e3..2dfdbb9 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -19,6 +19,15 @@ sinclude(config-scripts/cups-common.m4)

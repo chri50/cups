@@ -13,10 +13,10 @@ Patch-Name: pwg-raster-attributes.patch
  1 file changed, 76 insertions(+), 1 deletion(-)
 
 diff --git a/scheduler/printers.c b/scheduler/printers.c
-index e4841c0..1984a65 100644
+index 75ef4c0..5425237 100644
 --- a/scheduler/printers.c
 +++ b/scheduler/printers.c
-@@ -2254,9 +2254,10 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */
+@@ -2249,9 +2249,10 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */
    cupsd_location_t *auth;		/* Pointer to authentication element */
    const char	*auth_supported;	/* Authentication supported */
    ipp_t		*oldattrs;		/* Old printer attributes */
@@ -28,7 +28,7 @@ index e4841c0..1984a65 100644
  
  
   /*
-@@ -2589,6 +2590,80 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */
+@@ -2584,6 +2585,80 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */
  
    add_printer_formats(p);
  
