@@ -20,8 +20,8 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 bindir=@bindir@
 includedir=@includedir@
-libdir=@libdir@
-imagelibdir=@libdir@
+libdir=${prefix}/lib/$(dpkg-architecture -qDEB_HOST_MULTIARCH)
+imagelibdir=${prefix}/lib/$(dpkg-architecture -qDEB_HOST_MULTIARCH)
 datarootdir=@datadir@
 datadir=@datadir@
 sysconfdir=@sysconfdir@
@@ -33,7 +33,8 @@ INSTALLSTATIC=@INSTALLSTATIC@
 # flags for C++ compiler:
 CFLAGS=""
 LDFLAGS="@EXPORT_LDFLAGS@"
-LIBS="@LIBGSSAPI@ @EXPORT_SSLLIBS@ @LIBZ@ @LIBS@"
+LIBGSSAPI=`[ ! -x /usr/bin/krb5-config ] || /usr/bin/krb5-config --libs`
+LIBS="$LIBGSSAPI @EXPORT_SSLLIBS@ @LIBZ@ @LIBS@"
 
 # Check for local invocation...
 selfdir=`dirname $0`
@@ -48,7 +49,7 @@ else
 	CFLAGS="$CFLAGS -I$includedir"
     fi
 
-    if test $libdir != /usr/lib -a $libdir != /usr/lib32 -a $libdir != /usr/lib64; then
+    if test $libdir != /usr/lib -a $libdir != /usr/lib32 -a $libdir != /usr/lib64 -a $libdir != /usr/lib/$(dpkg-architecture -qDEB_HOST_MULTIARCH); then
 	LDFLAGS="$LDFLAGS -L$libdir"
     fi
 fi
@@ -103,7 +104,7 @@ while test $# -gt 0; do
 	    ;;
 	--libs)
 	    if test $static = no; then
-	        libs="@EXTLINKCUPS@ $LIBS";
+	        libs="@EXTLINKCUPS@";
  	        if test $image = yes; then
  	            libs="@EXTLINKCUPSIMAGE@ $libs"
 		fi
