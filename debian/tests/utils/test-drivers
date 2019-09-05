@@ -40,7 +40,20 @@ for driver in $DRIVERS_LIST; do
 
     echo -n " - Create test printer:"
     # Create dummy printer
-    /usr/sbin/lpadmin -p $DUMMY_PRINTER_NAME -E -m $driver -v file:///dev/null
+    # Filter out the deprecation messages
+    # So put &1 into 3, (stdout to 3)
+    #        &2 into 1  (stderr to stdout)
+    #        &3 into 2  (3=stdout to stderr)
+    # Now stdout goes to stderr
+    #     stderr goes to stdout
+    # Both messages from systemv/lpadmin.c
+    ( \
+        /usr/sbin/lpadmin -p $DUMMY_PRINTER_NAME -E -m $driver -v file:///dev/null \
+        3>&1 1>&2 2>&3 | \
+        grep -v "lpadmin: Raw queues are deprecated and will stop working in a future version of CUPS." | \
+        grep -v "lpadmin: Printer drivers are deprecated and will stop working in a future version of CUPS." \
+        # Then swap the outputs back
+    ) 3>&1 1>&2 2>&3
     echo " done."
     
     for file in $(find $PDFS_PATH -name '*.pdf') ; do
