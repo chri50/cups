@@ -1,3 +1,10 @@
+cups (2.2.12-2ubuntu1) eoan; urgency=medium
+
+  * Add workaround for systemd's lack of true launch-on-demand
+    support (Upstream issue #5640).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri,  5 Sep 2019 19:03:01 +0200
+
 cups (2.2.12-2) unstable; urgency=medium
 
   [ Helge Kreutzmann ]
