@@ -27,12 +27,15 @@ fi
 
 cleanup() {
     # Delete it
-    echo -n "Interrupted, delete test printer:"
-    /usr/sbin/lpadmin -x $DUMMY_PRINTER_NAME 2>/dev/null || :
+    echo -n " - Interrupted (or finished), delete test printer:"
+    rm -f ${DUMMY_PRINTER_STDERR_FILE}
+    /usr/sbin/lpadmin -x $DUMMY_PRINTER_NAME 2>/dev/null
     echo " done."
 }
 
 trap cleanup EXIT INT
+
+DUMMY_PRINTER_STDERR_FILE=`mktemp`
 
 for driver in $DRIVERS_LIST; do
 
@@ -40,21 +43,15 @@ for driver in $DRIVERS_LIST; do
 
     echo -n " - Create test printer:"
     # Create dummy printer
-    # Filter out the deprecation messages
-    # So put &1 into 3, (stdout to 3)
-    #        &2 into 1  (stderr to stdout)
-    #        &3 into 2  (3=stdout to stderr)
-    # Now stdout goes to stderr
-    #     stderr goes to stdout
-    # Both messages from systemv/lpadmin.c
-    ( \
-        /usr/sbin/lpadmin -p $DUMMY_PRINTER_NAME -E -m $driver -v file:///dev/null \
-        3>&1 1>&2 2>&3 | \
-        grep -v "lpadmin: Raw queues are deprecated and will stop working in a future version of CUPS." | \
-        grep -v "lpadmin: Printer drivers are deprecated and will stop working in a future version of CUPS." \
-        # Then swap the outputs back
-    ) 3>&1 1>&2 2>&3
+    /usr/sbin/lpadmin -p $DUMMY_PRINTER_NAME -E -m $driver -v file:///dev/null 2> $DUMMY_PRINTER_STDERR_FILE
     echo " done."
+    # Tell stderr whether some unknown lines have been seen
+    # Filter out the deprecation messages
+    # Both messages from systemv/lpadmin.c
+    cat "${DUMMY_PRINTER_STDERR_FILE}" | \
+        grep -v -E "lpadmin: (Raw queues|Printer drivers) are deprecated and will stop working in a future version of CUPS." \
+        || true \
+        1>&2
     
     for file in $(find $PDFS_PATH -name '*.pdf') ; do
         echo -n " - Print test job with $file: "
