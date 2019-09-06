@@ -1,3 +1,9 @@
+cups (2.3.0-3) unstable; urgency=low
+
+  * Fix autopkgtests for real; refactor lpadmin stderr filtering
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 06 Sep 2019 09:32:07 +0200
+
 cups (2.3.0-2) unstable; urgency=low
 
   [ Helge Kreutzmann ]
