@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 2.2.7-5\n"
 "POT-Creation-Date: 2019-09-02 10:31+0200\n"
-"PO-Revision-Date: 2019-09-04 18:12+0200\n"
+"PO-Revision-Date: 2019-09-13 21:42+0200\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
 "Language: de\n"
@@ -219,7 +219,6 @@ msgstr ""
 
 #. type: Plain text
 #: backend.7:64
-#, fuzzy
 msgid ""
 "The command name (I<argv[0]>) is set to the device URI of the destination "
 "printer.  Authentication information in I<argv[0]> is removed, so backend "
@@ -265,7 +264,6 @@ msgstr "GERÄTE-ERMITTLUNG"
 
 #. type: Plain text
 #: backend.7:77
-#, fuzzy
 msgid ""
 "When run with no arguments, the backend should list the devices and schemes "
 "it supports or is advertising to the standard output.  The output consists "
@@ -354,7 +352,6 @@ msgstr "B<serial>"
 
 #. type: Plain text
 #: backend.7:106
-#, fuzzy
 msgid ""
 "The device-uri refers to a serial device with configurable baud rate and "
 "other options.  If the device-uri contains a baud value, it represents the "
@@ -367,7 +364,6 @@ msgstr ""
 
 #. type: Plain text
 #: backend.7:114
-#, fuzzy
 msgid ""
 "The I<scheme> field provides the URI scheme that is supported by the "
 "backend.  Backends should use this form only when the backend supports any "
@@ -375,13 +371,12 @@ msgid ""
 "use when communicating with the device."
 msgstr ""
 "Das Feld I<scheme> stellt das vom Backend unterstützte URI-Schema bereit. "
-"Backends sollten diese Form nur verwenden, wenn das Backend jede dem Schema "
+"Backends sollten diese Form nur verwenden, wenn das Backend irgendeine dem Schema "
 "folgende URI unterstützt. Das Feld I<device-uri> legt die komplette URI, die "
 "bei der Kommunikation mit dem Gerät verwandt werden soll, fest."
 
 #. type: Plain text
 #: backend.7:119
-#, fuzzy
 msgid ""
 "The I<device-make-and-model> field specifies the make and model of the "
 "device, e.g. \"Example Foojet 2000\".  If the make and model is not known, "
@@ -393,7 +388,6 @@ msgstr ""
 
 #. type: Plain text
 #: backend.7:124
-#, fuzzy
 msgid ""
 "The I<device-info> field specifies additional information about the device.  "
 "Typically this includes the make and model along with the port number or "
@@ -431,7 +425,6 @@ msgstr "RECHTE"
 
 #. type: Plain text
 #: backend.7:135
-#, fuzzy
 msgid ""
 "Backends without world read and execute permissions are run as the root "
 "user.  Otherwise, the backend is run using an unprivileged user account, "
@@ -464,7 +457,7 @@ msgstr "B<CUPS_BACKEND_OK>"
 msgid ""
 "The print file was successfully transmitted to the device or remote server."
 msgstr ""
-"Die Druckdatei wurde erfolgreich an das Gerät oder den entfernten Server "
+"Die Druckdatei wurde erfolgreich an das Gerät oder den fernen Server "
 "übertragen."
 
 #. type: TP
@@ -475,14 +468,13 @@ msgstr "B<CUPS_BACKEND_FAILED>"
 
 #. type: Plain text
 #: backend.7:147
-#, fuzzy
 msgid ""
 "The print file was not successfully transmitted to the device or remote "
 "server.  The scheduler will respond to this by canceling the job, retrying "
 "the job, or stopping the queue depending on the state of the I<printer-error-"
 "policy> attribute."
 msgstr ""
-"Die Druckdatei wurde nicht erfolgreich zum Gerät oder entfernten Server "
+"Die Druckdatei wurde nicht erfolgreich zum Gerät oder fernen Server "
 "übertragen. Der Auftragsplaner (Scheduler) wird daraufhin den Auftrag "
 "abbrechen, den Auftrag erneut versuchen oder die Warteschlange anhalten, "
 "abhängig vom Zustand des Attributs I<printer-error-policy>."
@@ -495,7 +487,6 @@ msgstr "B<CUPS_BACKEND_AUTH_REQUIRED>"
 
 #. type: Plain text
 #: backend.7:151
-#, fuzzy
 msgid ""
 "The print file was not successfully transmitted because valid authentication "
 "information is required.  The scheduler will respond to this by holding the "
@@ -516,7 +507,6 @@ msgstr "B<CUPS_BACKEND_HOLD>"
 
 #. type: Plain text
 #: backend.7:155
-#, fuzzy
 msgid ""
 "The print file was not successfully transmitted because it cannot be printed "
 "at this time.  The scheduler will respond to this by holding the job."
@@ -533,7 +523,6 @@ msgstr "B<CUPS_BACKEND_STOP>"
 
 #. type: Plain text
 #: backend.7:159
-#, fuzzy
 msgid ""
 "The print file was not successfully transmitted because it cannot be printed "
 "at this time.  The scheduler will respond to this by stopping the queue."
@@ -550,7 +539,6 @@ msgstr "B<CUPS_BACKEND_CANCEL>"
 
 #. type: Plain text
 #: backend.7:163
-#, fuzzy
 msgid ""
 "The print file was not successfully transmitted because one or more "
 "attributes are not supported or the job was canceled at the printer.  The "
@@ -568,7 +556,6 @@ msgstr "B<CUPS_BACKEND_RETRY>"
 
 #. type: Plain text
 #: backend.7:167
-#, fuzzy
 msgid ""
 "The print file was not successfully transmitted because of a temporary "
 "issue.  The scheduler will retry the job at a future time - other jobs may "
@@ -587,7 +574,6 @@ msgstr "B<CUPS_BACKEND_RETRY_CURRENT>"
 
 #. type: Plain text
 #: backend.7:171
-#, fuzzy
 msgid ""
 "The print file was not successfully transmitted because of a temporary "
 "issue.  The scheduler will retry the job immediately without allowing "
@@ -656,7 +642,6 @@ msgstr "HINWEISE"
 
 #. type: Plain text
 #: backend.7:192
-#, fuzzy
 msgid ""
 "CUPS backends are not generally designed to be run directly by the user.  "
 "Aside from the device URI issue ( I<argv[0]> and B<DEVICE_URI> environment "
@@ -679,7 +664,6 @@ msgstr ""
 
 #. type: Plain text
 #: backend.7:204
-#, fuzzy
 msgid ""
 "Unless you are a developer and know what you are doing, please do not run "
 "backends directly.  Instead, use the B<lp>(1)  or B<lpr>(1)  programs to "
@@ -701,6 +685,10 @@ msgid ""
 "supported in a future feature release of CUPS.  Printers that do not support "
 "IPP can be supported using applications such as B<ippeveprinter>(1)."
 msgstr ""
+"CUPS-Druckertreiber und -Backends sind veraltet und werden in einer "
+"zukünftigen Funktionsveröffentlichung von CUPS nicht mehr unterstützt. "
+"Drucker, die IPP nicht unterstützen, können mittels Anwendungen wie "
+"B<ippeveprinter>(1) unterstützt werden."
 
 #. type: SH
 #: backend.7:208 cancel.1:84 classes.conf.5:21 client.conf.5:122 cups.1:126
@@ -978,7 +966,6 @@ msgstr "classes.conf - Klassenkonfigurationsdatei für CUPS"
 
 #. type: Plain text
 #: classes.conf.5:19
-#, fuzzy
 msgid ""
 "The B<classes.conf> file defines the local printer classes that are "
 "available.  It is normally located in the I</etc/cups> directory and is "
@@ -987,7 +974,7 @@ msgid ""
 msgstr ""
 "Die Datei B<classes.conf> definiert lokal verfügbare Druckerklassen. Sie "
 "befindet sich normalerweise im Verzeichnis I</etc/cups> und wird vom "
-"Programm I<cupsd(8)> verwaltet. Diese Datei ist nicht dazu gedacht, per Hand "
+"Programm I<cupsd>(8) verwaltet. Diese Datei ist nicht dazu gedacht, per Hand "
 "bearbeitet oder verwaltet zu werden."
 
 #. type: Plain text
@@ -1019,9 +1006,8 @@ msgstr "client.conf"
 
 #. type: Plain text
 #: client.conf.5:13
-#, fuzzy
 msgid "client.conf - client configuration file for cups (deprecated on macos)"
-msgstr "client.conf - Client-Konfigurationsdatei für CUPS"
+msgstr "client.conf - Client-Konfigurationsdatei für CUPS (auf MacOS veraltet)"
 
 #. type: Plain text
 #: client.conf.5:16
@@ -1204,7 +1190,6 @@ msgstr "B<SSLOptions None>"
 #. #SSLPort
 #. type: Plain text
 #: client.conf.5:71 cupsd.conf.5:454
-#, fuzzy
 msgid ""
 "Sets encryption options (only in /etc/cups/client.conf).  By default, CUPS "
 "only supports encryption using TLS v1.0 or higher using known secure cipher "
@@ -1227,12 +1212,14 @@ msgstr ""
 "die Sicherheit verbessert. Die Option I<AllowDH> aktiviert Algorithmen, die "
 "den einfachen Diffie-Hellman-Schlüsselaustausch verwenden (für Systeme, die "
 "GNU TLS verwenden, wird dies nicht unterstützt). Die Option I<AllowRC4> "
-"aktiviert die 128-bit-RC4-Algorithmen, die für einige älteren Clients "
+"aktiviert die 128-Bit-RC4-Algorithmen, die für einige ältere Clients "
 "benötigt werden. Die Option I<AllowSSL3> aktiviert SSL v3.0, das für einige "
 "ältere Clients benötigt wird, die TLS v1.0 nicht unterstützen. Die Option "
 "I<DenyCBC> deaktiviert alle CBC-Algorithmen. Die Option I<DenyTLS1.0> "
 "deaktiviert die TLS-v1.0-Unterstützung - damit wird die minimale "
-"Protokollversion auf TLS v1.1 gesetzt."
+"Protokollversion auf TLS v1.1 gesetzt. Die Option I<MinTLS> setzt die "
+"minimal zu unterstützende TLS-Version. Derzeit unterstützen nicht alle "
+"Betriebssysteme TLS 1.3."
 
 #. type: TP
 #: client.conf.5:71
@@ -1311,7 +1298,6 @@ msgstr "B<UserAgentTokens Full>"
 
 #. type: Plain text
 #: client.conf.5:104
-#, fuzzy
 msgid ""
 "Specifies what information is included in the User-Agent header of HTTP "
 "requests.  \"None\" disables the User-Agent header.  \"ProductOnly\" reports "
@@ -1321,11 +1307,13 @@ msgid ""
 "IPP/2.1\".  \"Full\" reports \"CUPS/major.minor.path (osname osversion; "
 "architecture) IPP/2.1\".  The default is \"Minimal\"."
 msgstr ""
-"Legt fest, welche Informationen in die Server-Kopfzeilen von HTTP-Antworten "
-"aufgenommen werden. »None« deaktiviert die Server-Kopfzeilen. »ProductOnly« "
-"meldet »CUPS«. »Major« berichtet »CUPS 2.0«. »Minimal« berichtet »CUPS "
-"2.0.0«. »OS« berichtet »CUPS 2.0.0 (UNAME)«, wobei UNAME die Ausgabe des "
-"Befehls B<uname>(1) ist. »Full« berichtet »CUPS 2.0.0 (UNAME) IPP/2.0«. Die "
+"Legt fest, welche Informationen in die Kopfzeilen »User-Agent« von HTTP-Anfragen "
+"aufgenommen werden. »None« deaktiviert die »User-Agent«-Kopfzeilen. »ProductOnly« "
+"meldet »CUPS«. »Major« berichtet »CUPS/major IPP/2«. »Minor« berichtet »CUPS/"
+"major.minor IPP/2.1«. »Minimal« berichtet »CUPS/major.minor.patch "
+"IPP/2.1«. »OS« berichtet »CUPS/major.minor.path (osname osversion) IPP/2.1«. "
+"»Full« berichtet »CUPS/major.minor.path (osname osversion; "
+"architecture) IPP/2.1«. Die "
 "Vorgabe ist »Minimal«."
 
 #. type: TP
@@ -1828,6 +1816,10 @@ msgid ""
 "not support IPP can be supported using applications such as "
 "B<ippeveprinter>(1)."
 msgstr ""
+"CUPS-Druckertreiber, -Backends und -PPD-Dateien sind veraltet und werden in "
+"einer zukünftigen Funktionalitätsveröffentlichung von CUPS nicht mehr "
+"unterstützt werden. Drucker, die IPP nicht unterstützen, können mit "
+"Anwendungen wie B<ippeveprinter>(1) unterstützt werden."
 
 #. type: Plain text
 #: cups.1:142
@@ -2226,11 +2218,10 @@ msgstr "B<--image>"
 
 #. type: Plain text
 #: cups-config.1:105
-#, fuzzy
 msgid "Formerly used to add the CUPS imaging library to the list of libraries."
 msgstr ""
-"Wird dies mit I<--libs> verwandt, wird die CUPS Imaging-Bibliothek zu der "
-"Liste der Bibliotheken hinzugefügt."
+"Früher zum Hinzufügen der CUPS-Imaging-Bibliothek zu der Liste der "
+"Bibliotheken verwandt."
 
 #. type: Plain text
 #: cups-config.1:108
@@ -2656,7 +2647,6 @@ msgstr "cupsd.conf - Server-Konfigurationsdatei für CUPS"
 
 #. type: Plain text
 #: cupsd.conf.5:25
-#, fuzzy
 msgid ""
 "The I<cupsd.conf> file configures the CUPS scheduler, B<cupsd>(8).  It is "
 "normally located in the I</etc/cups> directory.  Each line in the file can "
@@ -2665,9 +2655,11 @@ msgid ""
 "whitespace.  The configuration directive name and values are case-"
 "insensitive.  Comment lines start with the # character."
 msgstr ""
+"Die Datei I<cupsd.conf> konfiguriert den CUPS-Auftragsplaner B<cupsd>(8). "
+"Sie befindet sich normalerweise im Verzeichnis I</etc/cups>. "
 "Jede Zeile in der Datei kann eine Konfigurationsdirektive, eine leere Zeile "
 "oder ein Kommentar sein. Konfigurationsdirektiven bestehen typischerweise "
-"aus einem Namen und keinem oder mehren, durch Leerzeichen getrennten Werten. "
+"aus einem Namen und keinem oder mehren, durch Leerraum getrennten Werten. "
 "Die Groß- und Kleinschreibung der Namen und Werte der "
 "Konfigurationsdirektiven ist nicht relevant. Kommentarzeilen beginnen mit "
 "dem Zeichen »#«. "
@@ -2761,6 +2753,12 @@ msgid ""
 "\"_cups\" which is necessary for printer sharing to work between systems "
 "using CUPS."
 msgstr ""
+"Legt eine Liste von Bonjour-Untertypen fest, die für jeden gemeinsam "
+"benutzten Drucker bekanntgemacht werden soll. Beispielsweise informiert "
+"»BrowseDNSSDSubTypes _cups,_print« die Netzwerk-Clients, dass sowohl das "
+"gemeinsame Benutzen mit CUPS als auch »IPP Everywhere« unterstützt werden. "
+"Die Vorgabe ist »_cups«, was für das gemeinsame Benutzen von Druckern unter "
+"Systemen notwendig ist."
 
 #. type: TP
 #: cupsd.conf.5:55
@@ -2998,13 +2996,13 @@ msgstr "B<DNSSDHostName>I<Rechnername.example.com>"
 #. #ErrorPolicy
 #. type: Plain text
 #: cupsd.conf.5:135
-#, fuzzy
 msgid ""
 "Specifies the fully-qualified domain name for the server that is used for "
 "Bonjour sharing.  The default is typically the server's \".local\" hostname."
 msgstr ""
-"Legt den vollqualifizierten Rechnernamen des Servers fest. Die Vorgabe ist "
-"der Wert, der von dem Befehl B<hostname>(1) berichtet wird."
+"Legt den vollqualifizierten Rechnernamen des Servers fest, der für die "
+"gemeinsame Benutzung mit Bonjour verwandt wird. Die Vorgabe ist "
+"typischerweise der ».local«-Rechnername des Servers."
 
 #. type: TP
 #: cupsd.conf.5:135
@@ -3917,7 +3915,6 @@ msgstr "B<ServerTokens Full>"
 #. #SSLListen
 #. type: Plain text
 #: cupsd.conf.5:428
-#, fuzzy
 msgid ""
 "Specifies what information is included in the Server header of HTTP "
 "responses.  \"None\" disables the Server header.  \"ProductOnly\" reports "
@@ -3929,9 +3926,12 @@ msgid ""
 msgstr ""
 "Legt fest, welche Informationen in die Server-Kopfzeilen von HTTP-Antworten "
 "aufgenommen werden. »None« deaktiviert die Server-Kopfzeilen. »ProductOnly« "
-"meldet »CUPS«. »Major« berichtet »CUPS 2.0«. »Minimal« berichtet »CUPS "
-"2.0.0«. »OS« berichtet »CUPS 2.0.0 (UNAME)«, wobei UNAME die Ausgabe des "
-"Befehls B<uname>(1) ist. »Full« berichtet »CUPS 2.0.0 (UNAME) IPP/2.0«. Die "
+"meldet »CUPS«. »Major« berichtet »CUPS/major IPP/2«. »Minor« berichtet »CUPS/"
+"major.minor IPP/2.1«. »Minimal« berichtet »CUPS/"
+"CUPS/major.minor.patch "
+"IPP/2.1«. »OS« berichtet »CUPS/major.minor.path (osname osversion) "
+"IPP/2.1«. »Full« berichtet »CUPS/major.minor.path (osname osversion; "
+"architecture) IPP/2.1«. Die "
 "Vorgabe ist »Minimal«."
 
 #. type: TP
@@ -4848,6 +4848,13 @@ msgid ""
 "but DSL and VPN interfaces are not.  The Order directive controls whether "
 "Allow lines are evaluated before or after Deny lines."
 msgstr ""
+"Erlaubt Zugriff von benannten Rechnern, Domains, Adressen oder "
+"Schnittstellen. Die Form @IF(name) verwendet die für die benannte "
+"Schnittstelle derzeit konfigurierten Unternetze. Die Form @LOCAL verwendet "
+"für alle Schnittstellen, die nicht Punkt-zu-Punkt sind, die derzeit "
+"konfigurierten Unternetze, beispielsweise werden die Schnittstellen Ethernet "
+"und Wi-Fi verwandt, aber DSL und VPN nicht. Die »Order«-Direktive steuert, "
+"ob »Allow«-Zeilen vor oder nach »Deny«-Zeilen ausgewertet werden."
 
 #. type: TP
 #: cupsd.conf.5:696
@@ -4958,6 +4965,13 @@ msgid ""
 "but DSL and VPN interfaces are not.  The Order directive controls whether "
 "Deny lines are evaluated before or after Allow lines."
 msgstr ""
+"Verbietet Zugriff von benannten Rechnern, Domains, Adressen oder "
+"Schnittstellen. Die Form @IF(name) verwendet die für die benannte "
+"Schnittstelle derzeit konfigurierten Unternetze. Die Form @LOCAL verwendet "
+"für alle Schnittstellen, die nicht Punkt-zu-Punkt sind, die derzeit "
+"konfigurierten Unternetze, beispielsweise werden die Schnittstellen Ethernet "
+"und Wi-Fi verwandt, aber DSL und VPN nicht. Die »Order«-Direktive steuert, "
+"ob »Allow«-Zeilen vor oder nach »Deny«-Zeilen ausgewertet werden."
 
 #. type: Plain text
 #: cupsd.conf.5:740
@@ -5346,7 +5360,6 @@ msgstr ""
 #. #RIPCache
 #. type: Plain text
 #: cupsd.conf.5:854
-#, fuzzy
 msgid ""
 "The default is the empty string, which disables page logging.  The string "
 "\"%p %u %j %T %P %C %{job-billing} %{job-originating-host-name} %{job-name} "
@@ -5358,7 +5371,9 @@ msgstr ""
 "Die Vorgabe ist die leere Zeichenkette, womit das Protokollieren der Seiten "
 "deaktiviert wird. Die Zeichenkette »%p %u %j %T %P %C %{job-billing} %{job-"
 "originating-host-name} %{job-name} %{media} %{sides}« erstellt ein "
-"Seitenprotokoll mit den Standardeinträgen."
+"Seitenprotokoll mit den Standardeinträgen. Verwenden Sie »%{job-impressions-"
+"completed}«, um die Anzahl der gedruckten Seiten (Blattseiten) oder »%{job-"
+"media-sheets-completed}«, um die Anzahl der gedruckten Blätter einzufügen."
 
 #. type: TP
 #: cupsd.conf.5:854
@@ -5377,15 +5392,12 @@ msgstr ""
 
 #. type: Plain text
 #: cupsd.conf.5:862
-#, fuzzy
 msgid ""
 "File, directory, and user configuration directives that used to be allowed "
 "in the B<cupsd.conf> file are now stored in the B<cups-files.conf>(5)  file "
 "instead in order to prevent certain types of privilege escalation attacks."
 msgstr ""
-"Die Datei I<cupsd.conf> konfiguriert den CUPS-Auftragsplaner (Scheduler), "
-"B<cupsd>(8). Sie befindet sich normalerweise in dem Verzeichnis I</etc/"
-"cups>. B<Hinweis:> Datei-, Verzeichnis- und "
+"Datei-, Verzeichnis- und "
 "Benutzerkonfigurationsdirektiven, die früher in der Datei B<cupsd.conf> "
 "erlaubt wurden, werden jetzt stattdessen in der Datei B<cups-files.conf>(5) "
 "gespeichert, um bestimmte Arten von Angriffen zur Rechteerweiterung zu "
@@ -5398,6 +5410,10 @@ msgid ""
 "conf> file.  On Linux this is typically done using the B<systemctl>(8)  "
 "command, while on macOS the B<launchctl>(8)  command is used instead."
 msgstr ""
+"Nachdem Änderungen an der Datei B<cupsd.conf> vorgenommen wurden, MUSS der "
+"Auftragsplaner manuell neu gestartet werden. Unter Linux erfolgt dies "
+"typischerweise mit dem Befehl B<systemctl>(8), während unter MacOS der "
+"Befehl B<launchctl>(8) verwandt wird."
 
 #. type: Plain text
 #: cupsd.conf.5:873
@@ -5405,6 +5421,9 @@ msgid ""
 "The @LOCAL macro name can be confusing since the system running B<cupsd> "
 "often belongs to a different set of subnets from its clients."
 msgstr ""
+"Der Makro-Name @LOCAL kann verwirrend sein, da ein System, das B<cupsd> "
+"ausführt, oft zu einer anderen Gruppe von Unternetzen gehört als seine "
+"Clients."
 
 #. type: Plain text
 #: cupsd.conf.5:875
@@ -6494,7 +6513,7 @@ msgid ""
 msgstr ""
 "Jede Zeile in der Datei kann eine Konfigurationsdirektive, eine leere Zeile "
 "oder ein Kommentar sein. Konfigurationsdirektiven bestehen typischerweise "
-"aus einem Namen und keinem oder mehren, durch Leerzeichen getrennten Werten. "
+"aus einem Namen und keinem oder mehren, durch Leerraum getrennten Werten. "
 "Die Groß- und Kleinschreibung der Namen und Werte der "
 "Konfigurationsdirektiven ist nicht relevant. Kommentarzeilen beginnen mit "
 "dem Zeichen »#«. "
@@ -7295,6 +7314,10 @@ msgid ""
 "B<systemctl>(8)  command, while on macOS the B<launchctl>(8)  command is "
 "used instead."
 msgstr ""
+"Nachdem Änderungen an der Datei B<cups-files.conf> vorgenommen wurden, MUSS "
+"der Auftragsplaner manuell neu gestartet werden. Unter Linux erfolgt dies "
+"typischerweise mit dem Befehl B<systemctl>(8), während unter MacOS der "
+"Befehl B<launchctl>(8) verwandt wird."
 
 #. type: Plain text
 #: cups-files.conf.5:290
@@ -7558,6 +7581,10 @@ msgid ""
 "not support IPP can be supported using applications such as "
 "B<ippeveprinter>(1)."
 msgstr ""
+"CUPS-Druckertreiber, -filter und -Backends sind veraltet und werden in einer "
+"zukünftigen Funktionsveröffentlichung von CUPS nicht weiter unterstützt. "
+"Drucker, die IPP nicht unterstützen, können mit Anwendungen wie "
+"B<ippeveprinter>(1) unterstützt werden."
 
 #. type: Plain text
 #: cupsfilter.8:125
@@ -7733,13 +7760,12 @@ msgstr ""
 
 #. type: Plain text
 #: cups-lpd.8:64
-#, fuzzy
 msgid ""
 "The B<cups-lpd> program is deprecated and will no longer be supported in a "
 "future feature release of CUPS."
 msgstr ""
-"I<Dieses Programm ist veraltet und wird in einer zukünftigen "
-"Veröffentlichung von CUPS entfernt werden.>"
+"Das Programm Programm B<cups-lpd> ist veraltet und wird in einer zukünftigen "
+"Veröffentlichung von CUPS nicht mehr unterstützt werden."
 
 #. type: SS
 #: cups-lpd.8:64
@@ -7884,7 +7910,6 @@ msgstr "B<lpinfo> B<-v> B<--include-schemes> snmp"
 
 #. type: Plain text
 #: cups-snmp.8:27
-#, fuzzy
 msgid ""
 "The B<DEPRECATED> CUPS SNMP backend provides legacy discovery and "
 "identification of network printers using SNMPv1.  When used for discovery "
@@ -7894,7 +7919,7 @@ msgid ""
 "correct device URI, make and model, and other information needed for "
 "printing."
 msgstr ""
-"Das CUPS-SNMP-Backend stellt eine alte Erkennungs- und "
+"Das B<VERALTETE> CUPS-SNMP-Backend stellt eine alte Erkennungs- und "
 "Identifikationsmethode für Netzdrucker mittels SNMPv1 bereit. Wenn dies zur "
 "Erkennung durch den Auftragsplaner genutzt wird, wird das Backend alle "
 "Drucker, die sich auf eine verteilte SNMPv1-Abfrage mit dem "
@@ -7953,13 +7978,12 @@ msgstr ""
 
 #. type: Plain text
 #: cups-snmp.8:47
-#, fuzzy
 msgid ""
 "The CUPS SNMP backend is deprecated and will no longer be supported in a "
 "future version of CUPS."
 msgstr ""
-"I<Dieses Programm ist veraltet und wird in einer zukünftigen "
-"Veröffentlichung von CUPS entfernt werden.>"
+"Das CUPS-SNMP-Backend ist veraltet und wird in einer zukünftigen "
+"Veröffentlichung von CUPS nicht mehr unterstützt werden."
 
 #. type: Plain text
 #: cups-snmp.8:49
@@ -8059,14 +8083,14 @@ msgstr "B<Community >I<Name>"
 
 #. type: Plain text
 #: cups-snmp.conf.5:37
-#, fuzzy
 msgid ""
 "Specifies the community name to use.  Only a single community name may be "
 "specified.  The default community name is \"public\".  If no name is "
 "specified, all SNMP functions are disabled."
 msgstr ""
 "Legt den zu verwendenden Gemeinschaftsnamen fest. Es darf nur ein einziger "
-"Gemeinschaftsname angegeben werden. Die Vorgabegemeinschaft ist »public«."
+"Gemeinschaftsname angegeben werden. Die Vorgabegemeinschaft ist »public«. "
+"Falls kein Name festgelegt ist, werden sämtliche SNMP-Funktionen deaktiviert."
 
 #. type: TP
 #: cups-snmp.conf.5:37
@@ -8149,6 +8173,10 @@ msgid ""
 "feature release of CUPS.  Printers that do not support IPP can be supported "
 "using applications such as B<ippeveprinter>(1)."
 msgstr ""
+"CUPS-Backends sind veraltet und werden in einer zukünftigen "
+"Funktionsveröffentlichung von CUPS nicht mehr unterstützt. Drucker, die IPP "
+"nicht unterstützen, können mittels Anwendungen wie B<ippeveprinter>(1) "
+"unterstützt werden."
 
 #. type: Plain text
 #: cups-snmp.conf.5:65
@@ -8378,7 +8406,7 @@ msgid ""
 "Relaxes the PPD conformance requirements so that common whitespace, control "
 "character, and formatting problems are not treated as hard errors."
 msgstr ""
-"Weicht die PPD-Konformitätsanforderungen auf, so dass typische Leerzeichen-, "
+"Weicht die PPD-Konformitätsanforderungen auf, so dass typische Leerraumzeichen-, "
 "Steuerzeichen und Formatierungsprobleme nicht als schwere Fehler behandelt "
 "werden."
 
@@ -8517,6 +8545,10 @@ msgid ""
 "release of CUPS.  Printers that do not support IPP can be supported using "
 "applications such as B<ippeveprinter>(1)."
 msgstr ""
+"PPD-Dateien sind veraltet und werden in einer zukuünftigen "
+"Funktionsveröffentlichung von CUPS nicht mehr unterstützt. Drucker, die IPP "
+"nicht unterstützen, können mittels Anwendungen wie B<ippeveprinter>(1) "
+"unterstützt werden."
 
 #. type: Plain text
 #: cupstestppd.1:146
@@ -9283,6 +9315,11 @@ msgid ""
 "standard output.  Status and progress messages are sent to the standard "
 "error."
 msgstr ""
+"B<ippevepcl> und B<ippeveps> sind Druckbefehle für B<ippeveprinter>(1). Wie "
+"bei allen Druckbefehlen lesen diese Befehle entweder den auf der "
+"Befehlszeile festgelegten Dateinamen oder aus der Standardeingabe. Die "
+"Ausgabe wird in die Standardausgabe gesandt. Status- und "
+"Fortschrittsnachrichten werden in die Standardfehlerausgabe gesandt."
 
 #. type: Plain text
 #: ippevepcl.7:34
@@ -9291,6 +9328,9 @@ msgid ""
 "PCL (application/vnd.hp-pcl), PWG Raster (image/pwg-raster), and Apple "
 "Raster (image/urf) print files."
 msgstr ""
+"B<ippevepcl> druckt auf S&W-HP-PCL-Laserdruckern und unterstützt das Drucken "
+"von HP-PCL- (application/vnd.hp-pcl), PWG-Raster- (image/pwg-raster) und "
+"Apple-Raster- (image/urf) Druckdateien."
 
 #. type: Plain text
 #: ippevepcl.7:39
@@ -9303,18 +9343,29 @@ msgid ""
 "PostScript printer are used instead to specify duplex printing and media "
 "size."
 msgstr ""
+"B<ippeveps> druckt auf Adobe-PostScript-Druckern und unterstützt das Drucken "
+"von PDF- (application/pdf), PostScript- (application/postscript), JPEG- "
+"(image/jpeg), PWG-Raster- (image/pwg-raster) und Apple-Raster- (image/urf) "
+"Druckdateien. Druckerspezifische Befehle werden aus der übergebenen PPD-"
+"Datei gelesen. Falls keine PPD-Datei festgelegt ist, werden allgemeine "
+"Befehle, die für alle PostScript-Drucker der Stufe 2 oder Stufe 3 geeignet "
+"sind, stattdessen verwandt, um doppelseitiges Drucken und Mediengröße "
+"festzulegen."
 
 #. type: Plain text
 #: ippevepcl.7:41
 msgid "These programs return 1 on error and 0 on success."
-msgstr ""
+msgstr "Diese Programme liefern im Fehlerfall 1 und 0 bei Erfolg zurück."
 
+# FIXME program → programms
 #. type: Plain text
 #: ippevepcl.7:45
 msgid ""
 "These program inherit the environment provided by the B<ippeveprinter> "
 "program."
 msgstr ""
+"Diese Programme erben die durch das Programm B<ippeveprinter> "
+"bereitgestellte Umgebung."
 
 #. type: Plain text
 #: ippevepcl.7:47
@@ -9341,11 +9392,10 @@ msgstr "17. Mai 2019"
 #. type: Plain text
 #: ippeveprinter.1:12
 msgid "ippeveprinter - an ipp everywhere printer application for cups"
-msgstr ""
+msgstr "ippeveprinter - eine IPP-Everywhere-Druckeranwendung für CUPS"
 
 #. type: Plain text
 #: ippeveprinter.1:79
-#, fuzzy
 msgid ""
 "B<ippeveprinter> [ B<--help> ] [ B<--no-web-forms> ] [ B<--version> ] "
 "[ B<-2> ] [ B<-D> I<device-uri> ] [ B<-F> I<output-type/subtype> ] [ B<-K> "
@@ -9356,22 +9406,24 @@ msgid ""
 "I<hostname> ] [ B<-p> I<port> ] [ B<-r> I<subtype[,subtype]> ] [ B<-s> "
 "I<speed[,color-speed]> ] [ B<-v[vvv]> ] I<service-name>"
 msgstr ""
-"B<ippserver> [ B<-2> ] [ B<-M> I<Hersteller> ] [ B<-P> ] [ B<-c> I<Befehl> ] "
-"[ B<-d> I<Spool-Verzeichnis> ] [ B<-f> I<Typ/Untertyp[,… ]> [ B<-h> ] [ B<-"
-"i> I<icondatei.png> ] [ B<-k> ] [ B<-l> I<Ort> ] [ B<-m> I<Modell> ] [ B<-n> "
-"I<Rechnername> ] [ B<-p> I<Port> ] [ B<-r> I<Untertyp> ] [ B<-s> "
+"B<ippeveprinter> [ B<--help> ] [ B<--no-web-forms> ] [ B<--version> ] "
+"[ B<-2> ] [ B<-D> I<Geräte-URI> ] [ B<-F> I<Ausgabetyp/-untertyp> ] [ B<-K> "
+"I<Schlüsselpfad> ] [ B<-M> I<Hersteller> ] [ B<-P> I<Dateiname.ppd> ] [ B<-V> "
+"I<IPP-Version> ] [ B<-a> I<Dateiname.conf> ] [ B<-c> I<Befehl> ] [ B<-d> "
+"I<Spool-Verzeichnis> ] [ B<-f> I<Typ/Untertyp[,…]> ] [ B<-i> I<Icon-Datei."
+"png> ] [ B<-k> ] [ B<-l> I<Ort> ] [ B<-m> I<Modell> ] [ B<-n> "
+"I<Rechnername> ] [ B<-p> I<Port> ] [ B<-r> I<Untertyp[,Untertyp]> ] [ B<-s> "
 "I<Geschwindigkeit[,Farbgeschwindigkeit]> ] [ B<-v[vvv]> ] I<Dienstename>"
 
 #. type: Plain text
 #: ippeveprinter.1:82
-#, fuzzy
 msgid ""
 "B<ippeveprinter> is a simple Internet Printing Protocol (IPP) server "
 "conforming to the IPP Everywhere (PWG 5100.14) specification. It can be used "
 "to test client software or act as a very basic print server that runs a "
 "command for every job that is printed."
 msgstr ""
-"B<ippserver> ist ein einfacher Internet Printing Protocol (IPP)-Server, der "
+"B<ippeveprinter> ist ein einfacher Internet Printing Protocol (IPP)-Server, der "
 "der Spezifikation »IPP Everywhere (PWG 5100.14)« folgt. Er kann zum Testen "
 "von Client-Software dienen oder als sehr rudimentärer Server, der für jeden "
 "Druckauftrag einen Befehl ausführt, verwandt werden."
@@ -9397,12 +9449,13 @@ msgstr "B<--no-web-forms>"
 msgid ""
 "Disable the web interface forms used to update the media and supply levels."
 msgstr ""
+"Deaktiviert die zur Aktualisierung der Medien- und Bereitstellungsstufen "
+"verwandte Webschnittstellenformulare."
 
 #. type: Plain text
 #: ippeveprinter.1:94
-#, fuzzy
 msgid "Show the CUPS version."
-msgstr "Zeigt, ob der CUPS-Server läuft."
+msgstr "Zeigt die CUPS-Version an."
 
 #. type: TP
 #: ippeveprinter.1:94
@@ -9429,6 +9482,11 @@ msgid ""
 "default port number is 9100).  When specifying a directory, B<ippeveprinter> "
 "will create an output file using the job ID and name."
 msgstr ""
+"Setzt die Geräte-URI für Druckausgabe. Die URI kann ein Dateiname, ein "
+"Verzeichnis oder eine Netzwerk-Socket-URI der Form »Socket://ADRESSE[:PORT]« "
+"sein (wobei die Vorgabe-Portnummer 9100 ist). Wird ein Verzeichnis "
+"angegeben, wird B<ippeveprinter> eine Ausgabedatei mittels der "
+"Auftragskennung und dem Namen erzeugen."
 
 #. type: TP
 #: ippeveprinter.1:104
@@ -9442,6 +9500,8 @@ msgid ""
 "Specifies the output MIME media type.  The default is \"application/"
 "postscript\" when the B<-P> option is specified."
 msgstr ""
+"Legt den Ausgabe-MIME-Medientyp fest. Die Vorgabe ist »application/"
+"postscript«, wenn die Option B<-P> festgelegt ist."
 
 #. type: TP
 #: ippeveprinter.1:108
@@ -9451,9 +9511,8 @@ msgstr "B<-M >I<Hersteller>"
 
 #. type: Plain text
 #: ippeveprinter.1:112
-#, fuzzy
 msgid "Set the manufacturer of the printer.  The default is \"Example\"."
-msgstr "Setzt den Hersteller des Druckers. Die Vorgabe ist »Test«."
+msgstr "Setzt den Hersteller des Druckers. Die Vorgabe ist »Example«."
 
 #. type: TP
 #: ippeveprinter.1:112
@@ -9468,6 +9527,9 @@ msgid ""
 "typically used in conjunction with the B<ippeveps>(7)  printer command (\"-c "
 "ippeveps\")."
 msgstr ""
+"Druckerattribute aus der festgelegten PPD-Datei laden. Diese Option wird "
+"typischerweise in Zusammenhang mit dem Druckerbefehl B<ippeveps>(7)(\"-c "
+"ippeveps\") verwandt."
 
 #. type: TP
 #: ippeveprinter.1:118
@@ -9483,9 +9545,8 @@ msgstr "B<-V 2.0>"
 
 #. type: Plain text
 #: ippeveprinter.1:124
-#, fuzzy
 msgid "Specifies the maximum IPP version to report.  2.0 is the default."
-msgstr "Legt die für diesen Test zu verwendende IPP-Versionsnummer fest."
+msgstr "Legt die maximal zu berichtende IPP-Version fest. 2.0 ist die Vorgabe."
 
 #. type: TP
 #: ippeveprinter.1:124
@@ -9505,6 +9566,15 @@ msgid ""
 "variable can be used to override the default location of this directory - "
 "see the B<cups>(1)  man page for more details."
 msgstr ""
+"Führt den festgelegten Befehl für jedes ausgedruckte Dokument aus. Falls "
+"»Befehl« kein absoluter Pfad ist (»/Pfad/zu/Befehl«), sucht B<ippeveprinter> "
+"nach dem Befehl im Unterverzeichnis »Befehl« des CUPS-"
+"Programmverzeichnisses, typischerweise /usr/lib/cups/Befehl oder /usr/"
+"libexec/cups/Befehl. Der Befehl B<cups-config>(1) kann zum Erkennen des "
+"korrekten Programmpfades verwandt werden (»cups-config --serverbin«). "
+"Zusätzlich kann die Umgebungsvariable CUPS_SERVERBIN zum Außerkraftsetzen "
+"des Standardortes dieses Verzeichnisses verwandt werden - siehe die "
+"Handbuchseite B<cups>(1) für weitere Details."
 
 #. type: TP
 #: ippeveprinter.1:136
@@ -9530,29 +9600,27 @@ msgstr "B<-f >I<Typ/Untertyp[,…]>"
 
 #. type: Plain text
 #: ippeveprinter.1:144
-#, fuzzy
 msgid ""
 "Specifies a list of MIME media types that the server will accept.  The "
 "default depends on the type of printer created."
 msgstr ""
 "Legt eine Liste von MIME-Medientypen fest, die der Server akzeptiert. Die "
-"Vorgabe ist »application/pdf,image/jpeg,image/pwg-raster«."
+"Vorgabe hängt vom Typ des erstellten Druckers ab."
 
 #. type: TP
 #: ippeveprinter.1:144
 #, no-wrap
 msgid "B<-i >I<iconfile.png>"
-msgstr "B<-i >I<icondatei.png>"
+msgstr "B<-i >I<Icon-Datei.png>"
 
 #. type: Plain text
 #: ippeveprinter.1:149
-#, fuzzy
 msgid ""
 "Specifies the printer icon file for the server.  The file must be a PNG "
 "format image.  The default is an internally-provided PNG image."
 msgstr ""
-"Legt die Drucker-Icon-Datei für den Server fest. Die Vorgabe ist »printer."
-"png«."
+"Legt die Drucker-Icon-Datei für den Server fest. Die Datei muss ein Bild im "
+"Format PNG sein. Die Vorgabe ist ein intern bereitgestelltes PNG-Bild."
 
 #. type: TP
 #: ippeveprinter.1:149
@@ -9630,12 +9698,11 @@ msgstr "B<-r >I<Untertyp[,Untertyp]>"
 
 #. type: Plain text
 #: ippeveprinter.1:175
-#, fuzzy
 msgid ""
 "Specifies the DNS-SD subtype(s) to advertise.  Separate multiple subtypes "
 "with a comma.  The default is \"_print\"."
 msgstr ""
-"Legt den/die Bonjour-Untertyp(en) fest, die bekanntgegeben werden sollen. "
+"Legt den/die DNS-SD-Untertyp(en) fest, die bekanntgegeben werden sollen. "
 "Mehrere Untertypen werden mit Kommata getrennt. Die Vorgabe ist »_print«."
 
 #. type: TP
@@ -9663,37 +9730,33 @@ msgstr "B<-v[vvv]>"
 
 #. type: Plain text
 #: ippeveprinter.1:183
-#, fuzzy
 msgid "Be (very) verbose when logging activity to standard error."
 msgstr ""
-"Das Protokollieren der Aktivitäten auf die Standardausgabe erfolgt (sehr) "
+"Das Protokollieren der Aktivitäten auf die Standardfehlerausgabe erfolgt (sehr) "
 "ausführlich."
 
 #. type: Plain text
 #: ippeveprinter.1:190
-#, fuzzy
 msgid ""
 "The B<ippeveprinter> program returns 1 if it is unable to process the "
 "command-line arguments or register the IPP service.  Otherwise "
 "B<ippeveprinter> will run continuously until terminated."
 msgstr ""
-"Das Programm B<ippserver> liefert 1 zurück, falls es nicht in der Lage ist, "
+"Das Programm B<ippeveprinter> liefert 1 zurück, falls es nicht in der Lage ist, "
 "die Befehlszeilenargumente zu verarbeiten oder den IPP-Dienst zu "
-"registrieren. Andernfalls läuft B<ippserver> dauerhaft, bis er beendet wird."
+"registrieren. Andernfalls läuft B<ippeveprinter> dauerhaft, bis er beendet wird."
 
 #. type: Plain text
 #: ippeveprinter.1:194
-#, fuzzy
 msgid ""
 "The B<ippeveprinter> program is unique to CUPS and conforms to the IPP "
 "Everywhere (PWG 5100.14) specification."
 msgstr ""
-"Das Programm B<ippserver> ist eine Besonderheit von CUPS und konform zu der "
+"Das Programm B<ippeveprinter> ist eine Besonderheit von CUPS und konform zu der "
 "Spezifikation »IPP Everywhere (PWG 5100.14)«."
 
 #. type: Plain text
 #: ippeveprinter.1:198
-#, fuzzy
 msgid ""
 "B<ippeveprinter> adds environment variables starting with \"IPP_\" for all "
 "IPP Job attributes in the print request.  For example, when executing a "
@@ -9701,7 +9764,7 @@ msgid ""
 "\"IPP_MEDIA\" environment variable will be set to the value of that "
 "attribute."
 msgstr ""
-"B<ippserver> fügt für alle IPP-Auftragsattribute in der Druckwarteschlange "
+"B<ippeveprinter> fügt für alle IPP-Auftragsattribute in der Druckanfrage "
 "Umgebungsvariablen hinzu, die mit »IPP_« beginnen. Wird beispielsweise ein "
 "Befehl für einen IPP-Auftrag ausgeführt, der das Attribut »media« des »Job "
 "Template« enthält, wird die Umgebungsvariable »IPP_MEDIA« auf den Wert des "
@@ -9715,10 +9778,13 @@ msgid ""
 "\"IPP_MEDIA_DEFAULT\" environment variable will be set to the default value "
 "for the \"media\" Job Template attribute."
 msgstr ""
+"Zusätzlich werden alle IPP-»xxx-default« und »pwg-xxx«-"
+"Druckerbeschreibungsattribute zu der Umgebung hinzugefügt. Beispielsweise "
+"wird die Umgebungsvariable »IPP_MEDIA_DEFAULT« auf den Vorgabewert für das "
+"Auftragsvorlagenattribut »media« gesetzt."
 
 #. type: Plain text
 #: ippeveprinter.1:205
-#, fuzzy
 msgid ""
 "Enumerated values are converted to their keyword equivalents.  For example, "
 "a \"print-quality\" Job Template attribute with a enum value of 3 will "
@@ -9730,7 +9796,9 @@ msgstr ""
 "Aufgezählte Werte werden in ihre Schlüsselwort-Äquivalente umgewandelt. "
 "Beispielsweise wird ein Auftrags-Attribut »print-quality« mit dem "
 "aufgezählten Wert 3 die Umgebungsvariablen »IPP_PRINT_QUALITY« mit dem Wert "
-"»draft« werden."
+"»draft« werden. Die Zeichenkettenumwandlung erfolgt nur für standardmäßige "
+"»Job Template«-Attribute, derzeit »finishings«, »orientation-requested« und "
+"»print-quality«."
 
 #. type: Plain text
 #: ippeveprinter.1:207
@@ -9742,6 +9810,11 @@ msgid ""
 "and the \"PPD\" environment variable contains the PPD filename as specified "
 "with the \"-P\" option."
 msgstr ""
+"Schließlich enthält die Umgebungsvariable »CONTENT_TYPE« den MIME-Medientyp "
+"des auszudruckenden Dokuments, die Umgebungsvariable »DEVICE_URI« enthält "
+"die Geräte-URI, wie mit der Option »-D« angegeben, die Umgebungsvariable "
+"»OUTPUT_FORMAT« enhält den Ausgabe-MIME-Medientyp und die Umgebungsvariable "
+"»PPD« enthält den PPD-Dateinamen, wie mit der Option »-P« angegeben."
 
 #. type: SH
 #: ippeveprinter.1:207
@@ -9755,6 +9828,8 @@ msgid ""
 "Unless they communicate directly with a printer, print commands send printer-"
 "ready data to the standard output."
 msgstr ""
+"Druckbefehle schicken druckbereite Daten in die Standardausgabe, außer sie "
+"kommunizieren direkt mit einem Drucker."
 
 #. type: Plain text
 #: ippeveprinter.1:213
@@ -9762,6 +9837,8 @@ msgid ""
 "Print commands can send messages back to B<ippeveprinter> on the standard "
 "error with one of the following prefixes:"
 msgstr ""
+"Druckbefehle können auf der Standardfehlerausgabe Nachrichten an "
+"B<ippeveprinter> mit den folgenden Präfixen zurückschicken:"
 
 #. type: TP
 #: ippeveprinter.1:213
@@ -9778,17 +9855,24 @@ msgid ""
 "\"printer-supply\", and \"printer-supply-description\" Printer Status "
 "attributes can be set."
 msgstr ""
+"Setzt das/die benannten Attribut(e) auf den gegebenen Wert. Derzeit können "
+"die Auftragsattribute »job-impressions« und »job-impressions-completed« und "
+"die Druckerstatusattribute »marker-xxx«, »printer-alert«, »printer-alert-"
+"description«, »printer-supply« und »printer-supply-description« gesetzt "
+"werden."
 
 #. type: TP
 #: ippeveprinter.1:217
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "B<DEBUG: >I<Debugging message>"
-msgstr "B<DEBUG: >I<Nachricht>"
+msgstr "B<DEBUG: >I<Fehlersuchnachricht>"
 
 #. type: Plain text
 #: ippeveprinter.1:220
 msgid "Logs a debugging message if at least two -v's have been specified."
 msgstr ""
+"Protokolliert eine Fehlersuchnachricht, falls mindestens zwei »-v« angegeben "
+"wurden."
 
 #. type: TP
 #: ippeveprinter.1:220
@@ -9802,6 +9886,8 @@ msgid ""
 "Logs an error message and copies the message to the \"job-state-message\" "
 "attribute."
 msgstr ""
+"Protokolliert eine Fehlernachricht und kopiert die Nachricht in das Attribut "
+"»job-state-message«."
 
 #. type: TP
 #: ippeveprinter.1:223
@@ -9816,6 +9902,9 @@ msgid ""
 "the message to the \"job-state-message\" attribute unless an error has been "
 "reported."
 msgstr ""
+"Protokolliert eine informative/Fortschrittsnachricht, falls ein »-v« "
+"angegeben wurde und kopiert die Nachricht in das Attribut »job-state-"
+"message«, falls kein Fehler berichtet wurde."
 
 #. type: TP
 #: ippeveprinter.1:226
@@ -9829,6 +9918,8 @@ msgid ""
 "Sets the printer's \"printer-state-reasons\" attribute to the listed "
 "keywords."
 msgstr ""
+"Setzt das Attribut »printer-state-reasons« des Druckers auf die aufgeführten "
+"Schlüsselwörter."
 
 #. type: TP
 #: ippeveprinter.1:229
@@ -9842,6 +9933,8 @@ msgid ""
 "Removes the listed keywords from the printer's \"printer-state-reasons\" "
 "attribute."
 msgstr ""
+"Entfernt die aufgeführten Schlüsselwörter aus dem Attribut »printer-state-"
+"reasons« des Druckers."
 
 #. type: TP
 #: ippeveprinter.1:232
@@ -9855,12 +9948,13 @@ msgid ""
 "Adds the listed keywords to the printer's \"printer-state-reasons\" "
 "attribute."
 msgstr ""
+"Fügt das aufgeführte Schlüsselwort zu dem Attribut »printer-state-reasons« "
+"des Druckers hinzu."
 
 #. type: Plain text
 #: ippeveprinter.1:239
-#, fuzzy
 msgid "Run B<ippeveprinter> with a service name of My Cool Printer:"
-msgstr "B<ippserver> mit dem Dienstnamen »Mein Toller Drucker« ausführen:"
+msgstr "B<ippeveprinter> mit dem Dienstnamen »Mein Toller Drucker« ausführen:"
 
 #. type: Plain text
 #: ippeveprinter.1:242
@@ -9883,11 +9977,12 @@ msgstr "    ippeveprinter -c /usr/bin/file \"Mein Toller Drucker\"\n"
 
 #. type: Plain text
 #: ippeveprinter.1:255
-#, fuzzy
 msgid ""
 "B<ippevepcl>(7), B<ippeveps>(7), PWG Internet Printing Protocol Workgroup "
 "(http://www.pwg.org/ipp)"
-msgstr "PWG Internet Printing Protocol Workgroup (http://www.pwg.org/ipp)"
+msgstr ""
+"B<ippevepcl>(7), B<ippeveps>(7), PWG Internet Printing Protocol Workgroup "
+"(http://www.pwg.org/ipp)"
 
 #. type: TH
 #: ippfind.1:9
@@ -10697,7 +10792,6 @@ msgstr "ipptool - Internet-Printing-Protocol-Abfragen durchführen"
 
 #. type: Plain text
 #: ipptool.1:75
-#, fuzzy
 msgid ""
 "B<ipptool> [ B<--help> ] [ B<--ippserver> I<filename> ] [ B<--stop-after-"
 "include-error> ] [ B<--version> ] [ B<-4> ] [ B<-6> ] [ B<-C> ] [ B<-E> ] "
@@ -10707,12 +10801,13 @@ msgid ""
 "I<repeat-count> ] [ B<-q> ] [ B<-t> ] [ B<-v ]> I<printer-uri> I<testfile> "
 "[ ...  I<testfile> ]"
 msgstr ""
-"B<ipptool> [ B<--help> ] [ B<--stop-after-include-error> ] [ B<--version> ] "
-"[ B<-4> ] [ B<-6> ] [ B<-C> ] [ B<-E> ] [ B<-I> ] [ B<-L> ] [ B<-P> "
-"I<Dateiname.plist> ] [ B<-S> ] [ B<-T> I<Sekunden> ] [ B<-V> I<Version> ] "
-"[ B<-X> ] [ B<-c> ] [ B<-d> I<Name=Wert> ] [ B<-f> I<Dateiname> ] [ B<-h> ] "
-"[ B<-i> I<Sekunden> ] [ B<-n> I<Anzahl-Wiederholungen> ] [ B<-q> ] [ B<-t> ] "
-"[ B<-v ]> I<Drucker-URI> I<Testdatei> [ …  I<Testdatei> ]"
+"B<ipptool> [ B<--help> ] [ B<--ippserver> I<Dateiname> ] [ B<--stop-after-"
+"include-error> ] [ B<--version> ] [ B<-4> ] [ B<-6> ] [ B<-C> ] [ B<-E> ] "
+"[ B<-I> ] [ B<-L> ] [ B<-P> I<Dateiname.plist> ] [ B<-S> ] [ B<-T> "
+"I<Sekunden> ] [ B<-V> I<Version> ] [ B<-X> ] [ B<-c> ] [ B<-d> "
+"I<Name=Wert> ] [ B<-f> I<Dateiname> ] [ B<-h> ] [ B<-i> I<Sekunden> ] [ B<-n> "
+"I<Wiederholungszähler> ] [ B<-q> ] [ B<-t> ] [ B<-v ]> I<Drucker-URI> I<Testdatei> "
+"[ …  I<Testdatei> ]"
 
 #. type: Plain text
 #: ipptool.1:88
@@ -10751,13 +10846,12 @@ msgstr "B<--ippserver >I<Dateiname>"
 
 #. type: Plain text
 #: ipptool.1:99
-#, fuzzy
 msgid ""
 "Specifies that the test results should be written to the named B<ippserver> "
 "attributes file."
 msgstr ""
-"Legt fest, dass der aktuelle Test übersprungen werden soll, wenn die "
-"Variable (nicht) definiert ist."
+"Legt fest, dass die Testergebnisse in die benannte Attributedatei von "
+"B<ippserver> geschrieben werden sollen."
 
 #. type: TP
 #: ipptool.1:99
@@ -11660,16 +11754,8 @@ msgstr "B<ATTR >I<Außerbandmarkierung Attributname>"
 msgid "B<ATTR >I<tag attribute-name value(s)>"
 msgstr "B<ATTR >I<Markierung Attributname Wert(e)>"
 
-# FIXME: Broken string
 #. type: Plain text
 #: ipptoolfile.5:171
-#, fuzzy
-#| msgid ""
-#| "Adds an attribute to the test request.  Out-of-band tags (admin-define, "
-#| "delete-attribute, no-value, not-settable, unknown, unsupported) have no "
-#| "value.  Values for other tags are separated by the comma (\",\") "
-#| "character - escape commas using the \" Common attributes and values are "
-#| "listed in the IANA IPP registry - see references below."
 msgid ""
 "Adds an attribute to the test request.  Out-of-band tags (admin-define, "
 "delete-attribute, no-value, not-settable, unknown, unsupported) have no "
@@ -11681,7 +11767,7 @@ msgstr ""
 "define, delete-attribute, no-value, not-settable, unknown, unsupported) "
 "haben keinen Wert. Werte für die anderen Markierungen werden durch Kommata "
 "(»,«) getrennt -- schützen Sie Kommata mittels des Anführungszeichens "
-"(»\"«). Gemeinsame Attribute und Werte sind in der »IANA IPP registry« "
+"(»\"«). Häufige Attribute und Werte sind in der »IANA IPP registry« "
 "aufgeführt, siehe Referenz unten."
 
 #. type: TP
@@ -13026,6 +13112,8 @@ msgid ""
 "Inserts the current date and time using the ISO-8601 format (\"yyyy-mm-ddThh:"
 "mm:ssZ\")."
 msgstr ""
+"Fügt das aktuelle Datum und die aktuelle Zeit im ISO-8601-Format (»yyyy-mm-"
+"ddThh:mm:ssZ«) ein."
 
 #. type: TP
 #: ipptoolfile.5:599
@@ -13039,6 +13127,8 @@ msgid ""
 "Inserts the starting date and time using the ISO-8601 format (\"yyyy-mm-"
 "ddThh:mm:ssZ\")."
 msgstr ""
+"Fügt das Startdatum und die Startzeit im ISO-8601-Format (»yyyy-mm-ddThh:mm:"
+"ssZ«) ein."
 
 #. type: TP
 #: ipptoolfile.5:602
@@ -13575,6 +13665,7 @@ msgstr "B<-o print-quality=5>"
 #: lp.1:187 lpr.1:142
 msgid "Specifies the output quality - draft (3), normal (4), or best (5)."
 msgstr ""
+"Legt die Ausgabequalität fest - Entwurf (3), normal (4) oder beste (5)."
 
 #. type: TP
 #: lp.1:187 lpr.1:142
@@ -13647,11 +13738,10 @@ msgstr "    lp -d foo -o media=legal -o sides=two-sided-long-edge Dateiname\n"
 
 #. type: Plain text
 #: lp.1:215
-#, fuzzy
 msgid "Print a presentation document 2-up to a printer called \"bar\":"
 msgstr ""
 "Druckt ein Präsentations-Dokument zweifach pro Seite auf dem Drucker mit "
-"Namen »foo«:"
+"Namen »bar«:"
 
 #. type: Plain text
 #: lp.1:218
@@ -13782,7 +13872,6 @@ msgstr ""
 
 #. type: Plain text
 #: lpadmin.8:87
-#, fuzzy
 msgid ""
 "Sets a standard PPD file for the printer from the I<model> directory or "
 "using one of the driver interfaces.  Use the I<-m> option with the "
@@ -13792,12 +13881,12 @@ msgid ""
 "than \"everywhere\" are deprecated and will not be supported in a future "
 "version of CUPS."
 msgstr ""
-"Setzt eine Standard-PPD-Datei für den Drucker aus dem Verzeichnis I<Model> "
-"oder verwendet eine der Druckerschnittstellen. Verwenden Sie die Option I<-"
+"Legt eine Standard-PPD-Datei für den Drucker aus dem Verzeichnis I<Model> "
+"oder mittels einer der Druckerschnittstellen fest. Verwenden Sie die Option I<-"
 "m> mit dem Befehl B<lpinfo>(8), um eine Liste der unterstützten Modelle zu "
 "erhalten. Das Modell »raw« bereinigt jede PPD-Datei und das Modell "
-"»everywhere« fragt die von der angegebenen IPP-I<Geräte-URI> referenzierten "
-"Drucker ab. Hinweis: Das Model »raw« ist veraltet und wird in einer "
+"»everywhere« fragt den von der angegebenen IPP-I<Geräte-URI> referenzierten "
+"Drucker ab. Hinweis: Alle Modelle außer »everywhere« sind veraltet und werden in einer "
 "zukünftigen Version von CUPS nicht mehr unterstützt."
 
 #. type: TP
@@ -13956,7 +14045,6 @@ msgstr "B<-o printer-error-policy=>I<Name>"
 
 #. type: Plain text
 #: lpadmin.8:135
-#, fuzzy
 msgid ""
 "Sets the policy for errors such as printers that cannot be found or "
 "accessed, don't support the format being printed, fail during submission of "
@@ -13966,9 +14054,14 @@ msgid ""
 "\"stop-printer\" (stop the printer on error).  The default error policy is "
 "\"stop-printer\" for printers and \"retry-current-job\" for classes."
 msgstr ""
-"Setzt die Fehlerrichtlinie, die benutzt wird, wenn das Drucker-Backend den "
-"Druckauftrag nicht an den Drucker senden kann. Der Name muss entweder »abort-"
-"job«, »retry-job«, »retry-current-job« oder »stop-printer« sein. Die "
+"Setzt die Richtlinie für Fehler, wie Drucker, die nicht gefunden oder auf "
+"die nicht zugegriffen werden können, die das zu druckende Format nicht "
+"drucken können, während der Übergabe der Druckdaten fehlschlagen oder zum "
+"Absturz von einem oder mehreren Filtern führen. Der Name muss entweder "
+"»abort-job« (den aktuellen Auftrag bei Fehlern abbrechen), »retry-job« (den "
+"Auftrag in der Zukunft erneut versuchen), »retry-current-job« (den Auftrag "
+"sofort erneut versuchen) oder »stop-printer« (den Drucker bei Fehlern "
+"anhalten) sein. Die "
 "Standardfehlerrichtlinie ist »stop-printer« für Drucker und »retry-current-"
 "job« für Klassen."
 
@@ -14136,9 +14229,8 @@ msgstr "Stellt den Ort des Ziels textuell bereit."
 
 #. type: Plain text
 #: lpadmin.8:188
-#, fuzzy
 msgid "The following B<lpadmin> options are deprecated:"
-msgstr "Die folgenden Optionen werden erkannt:"
+msgstr "Die folgenden B<lpadmin>-Optionen sind veraltet:"
 
 #. type: TP
 #: lpadmin.8:188
@@ -14148,16 +14240,17 @@ msgstr "B<-i >I<filename>"
 
 #. type: Plain text
 #: lpadmin.8:193
-#, fuzzy
 msgid ""
 "This option historically has been used to provide either a System V "
 "interface script or (as an implementation side-effect) a PPD file.  Note: "
 "Interface scripts are not supported by CUPS.  PPD files and printer drivers "
 "are deprecated and will not be supported in a future version of CUPS."
 msgstr ""
-"Legt eine PostScript-Printer-Description-Datei für die Verwendung mit dem "
-"Drucker fest. Falls angegeben überschreibt diese Option die Option I<-i> "
-"(Schnittstellenskript)."
+"Diese Option wurde historisch zur Bereitstellung entweder eines System-V-"
+"Schnittstellenskriptes oder (als ein Seiteneffekt der Implementierung) einer "
+"PPD-Datei verwandt. Beachten Sie: Schnittstellenskripte werden von CUPS "
+"nicht unterstützt. PPD-Dateien und Druckertreiber sind veraltet und werden "
+"in einer zukünftigen Version von CUPS nicht unterstützt."
 
 #. type: TP
 #: lpadmin.8:193
@@ -14167,25 +14260,23 @@ msgstr "B<-P >I<PPD-Datei>"
 
 #. type: Plain text
 #: lpadmin.8:197
-#, fuzzy
 msgid ""
 "Specifies a PostScript Printer Description (PPD) file to use with the "
 "printer.  Note: PPD files and printer drivers are deprecated and will not be "
 "supported in a future version of CUPS."
 msgstr ""
-"Legt eine PostScript-Printer-Description-Datei für die Verwendung mit dem "
-"Drucker fest. Falls angegeben überschreibt diese Option die Option I<-i> "
-"(Schnittstellenskript)."
+"Legt eine PostScript-Printer-Description-Datei (PPD) für die Verwendung mit dem "
+"Drucker fest. Hinweis: PPD-Dateien und Druckertreiber sind veraltet und "
+"werden in einer zukünftigen Version von CUPS nicht mehr unterstützt."
 
 #. type: Plain text
 #: lpadmin.8:203
-#, fuzzy
 msgid ""
 "Finally, the CUPS version of B<lpadmin> may ask the user for an access "
 "password depending on the printing system configuration.  This differs from "
 "the System V version which requires the root user to execute this command."
 msgstr ""
-"Die CUPS-Versionen von B<disable> und B<enable> könnten den Benutzer, "
+"Die CUPS-Versionen von B<lpadmin> könnten den Benutzer schließlich, "
 "abhängig von der Konfiguration des Drucksystems, nach einem Zugriffspasswort "
 "fragen. Dies unterscheidet sich von der System-V-Version, die verlangt, dass "
 "der Benutzer »root« diese Befehle ausführt."
@@ -14202,7 +14293,7 @@ msgstr ""
 #. type: Plain text
 #: lpadmin.8:211
 msgid "Interface scripts are not supported for security reasons."
-msgstr ""
+msgstr "Aus Sicherheitsgründen werden Schnittstellenskripte nicht unterstützt."
 
 #. type: Plain text
 #: lpadmin.8:213
@@ -14221,6 +14312,12 @@ msgid ""
 "I<classes.conf>.  These files should not be edited directly and are an "
 "implementation detail of CUPS that is subject to change at any time."
 msgstr ""
+"Der Befehl B<lpadmin> kommuniziert mit dem Auftragsplaner (B<cupsd>), um "
+"Änderungen an der Drucksystemkonfiguration vorzunehmen. Die "
+"Konfigurationsinformationen werden in verschiedenen Dateien, einschließlich "
+"I<printers.conf> und I<classes.conf>, gespeichert. Diese Dateien sollten "
+"nicht direkt bearbeitet werden und sind ein Implementierungsdetail von CUPS, "
+"das sich jederzeit ändern kann."
 
 #. type: Plain text
 #: lpadmin.8:219
@@ -14341,13 +14438,12 @@ msgstr ""
 
 #. type: Plain text
 #: lpc.8:42
-#, fuzzy
 msgid ""
 "This program is deprecated and will be removed in a future feature release "
 "of CUPS."
 msgstr ""
-"I<Dieses Programm ist veraltet und wird in einer zukünftigen "
-"Veröffentlichung von CUPS entfernt werden.>"
+"Dieses Programm ist veraltet und wird in einer zukünftigen "
+"Funktionalitäts-Veröffentlichung von CUPS entfernt werden."
 
 #. type: Plain text
 #: lpc.8:47
@@ -15720,6 +15816,10 @@ msgid ""
 "feature release of CUPS.  Printers that do not support IPP can be supported "
 "using applications such as B<ippeveprinter>(1)."
 msgstr ""
+"CUPS-Filter sind veraltet und werden in einer zukünftigen "
+"Funktionsveröffentlichung von CUPS nicht mehr unterstützt. Drucker, die IPP "
+"nicht unterstützen, können mittels Anwendungen wie B<ippeveprinter>(1) "
+"unterstützt werden."
 
 #. type: Plain text
 #: mime.convs.5:61
@@ -15814,7 +15914,7 @@ msgid ""
 "\"."
 msgstr ""
 "Die Regeln könnten durch Benutzung von Klammern gruppiert werden, zum "
-"Aneinanderhängen wird »+« für ein logisches UND und »,« oder Leerzeichen für "
+"Aneinanderhängen wird »+« für ein logisches UND und »,« oder Leerraumzeichen für "
 "ein logisches ODER und »!« für Negation benutzt."
 
 #. type: SS
@@ -15999,7 +16099,7 @@ msgid ""
 "containing whitespace and angle brackets (E<lt>E<gt>) for hexadecimal "
 "strings."
 msgstr ""
-"Zeichenkettenkonstanten können für Zeichenketten, die Leerzeichen und spitze "
+"Zeichenkettenkonstanten können für Zeichenketten, die Leerraumzeichen und spitze "
 "Klammern (E<lt>E<gt>) für hexadezimale Zeichenketten enthalten, innerhalb "
 "von Anführungszeichen (\"\") angegeben werden."
 
@@ -17066,7 +17166,6 @@ msgstr "subscriptions.conf - Abonnement-Konfigurationsdatei für CUPS"
 
 #. type: Plain text
 #: subscriptions.conf.5:19
-#, fuzzy
 msgid ""
 "The B<subscriptions.conf> file defines the local event notification "
 "subscriptions that are active.  It is normally located in the I</etc/cups> "
@@ -17088,18 +17187,6 @@ msgstr ""
 "B<classes.conf>(5), B<cups-files.conf>(5), B<cupsd>(8), B<cupsd.conf>(5), "
 "B<mime.convs>(5), B<mime.types>(5), B<printers.conf>(5), CUPS-Online-Hilfe "
 "(http://localhost:631/help)"
-
-#~ msgid "4 April 2014"
-#~ msgstr "4. April 2014"
-
-#~ msgid "Copyright \\[co] 2007-2017 by Apple Inc."
-#~ msgstr "Copyright \\[co] 2007-2017 by Apple Inc."
-
-#~ msgid "15 April 2014"
-#~ msgstr "15. April 2014"
-
-#~ msgid "19 October 2017"
-#~ msgstr "19. Oktober 2017"
 
 #~ msgid "client.conf - client configuration file for cups"
 #~ msgstr "classes.conf - Client-konfigurationsdatei für CUPS"
@@ -17134,15 +17221,6 @@ msgstr ""
 #~ "alle CBC-Algorithmen. Die Option I<DenyTLS1.0> deaktiviert die TLS-v1.0-"
 #~ "Unterstützung - damit wird die minimale Protokollversion auf TLS v1.1 "
 #~ "gesetzt."
-
-#~ msgid "10 June 2014"
-#~ msgstr "10. Juni 2014"
-
-#~ msgid "cupsaddsmb"
-#~ msgstr "cupsaddsmb"
-
-#~ msgid "11 June 2014"
-#~ msgstr "11. Juni 2014"
 
 #~ msgid "cupsaddsmb - export printers to samba for windows clients"
 #~ msgstr "cupsaddsmb - exportiere Drucker an Samba für Windows-Clients"
@@ -17857,9 +17935,6 @@ msgstr ""
 #~ msgid "Uses the named configuration file."
 #~ msgstr "Verwende die benannte Konfigurationsdatei."
 
-#~ msgid "20 October 2014"
-#~ msgstr "20. Oktober 2014"
-
 #~ msgid "B<Sandboxing off>"
 #~ msgstr "B<Sandboxing off>"
 
@@ -17869,9 +17944,6 @@ msgstr ""
 
 #~ msgid "COMPATIBILITY"
 #~ msgstr "KOMPATIBILITÄT"
-
-#~ msgid "WARNING"
-#~ msgstr "WARNING"
 
 #~ msgid "EXIT CODES"
 #~ msgstr "EXIT-CODES"
@@ -17895,14 +17967,8 @@ msgstr ""
 #~ "I<cancel> bricht alle existierenden Druckaufträge ab. Die Option I<-a> "
 #~ "entfernt alle Druckaufträge von dem angegebenen Ziel."
 
-#~ msgid "-a"
-#~ msgstr "-a"
-
 #~ msgid "-u username"
 #~ msgstr "-u Benutzername"
-
-#~ msgid "-x"
-#~ msgstr "-x"
 
 #~ msgid "I<lp(1)>, I<lpmove(8)>, I<lpstat(1)>,"
 #~ msgstr "I<lp(1)>, I<lpmove(8)>, I<lpstat(1)>,"
@@ -19611,14 +19677,6 @@ msgstr ""
 #~ "Legt fest, dass Druckerinformationspakete von einem Rechner oder Netz zu "
 #~ "einem anderen weitergeleitet werden sollen."
 
-# type: TP
-#~ msgid "BrowseShortNames Yes"
-#~ msgstr "BrowseShortNames Yes"
-
-# type: TP
-#~ msgid "BrowseShortNames No"
-#~ msgstr "BrowseShortNames No"
-
 # type: Plain text
 #~ msgid ""
 #~ "Specifies whether remote printers will use short names (\"printer\") or "
@@ -19642,25 +19700,9 @@ msgstr ""
 #~ "bevor Drucker in der Ferne aus der Liste der verfügbaren Drucker entfernt "
 #~ "werden, fest."
 
-# type: TP
-#~ msgid "HideImplicitMembers Yes"
-#~ msgstr "HideImplicitMembers Yes"
-
-# type: TP
-#~ msgid "HideImplicitMembers No"
-#~ msgstr "HideImplicitMembers No"
-
 # type: Plain text
 #~ msgid "Specifies whether to hide members of implicit classes."
 #~ msgstr "Legt fest, ob Mitglieder impliziter Klassen versteckt werden."
-
-# type: TP
-#~ msgid "ImplicitAnyClasses Yes"
-#~ msgstr "ImplicitAnyClasses Yes"
-
-# type: TP
-#~ msgid "ImplicitAnyClasses No"
-#~ msgstr "ImplicitAnyClasses No"
 
 # type: Plain text
 #~ msgid ""
@@ -19671,14 +19713,6 @@ msgstr ""
 #~ "Legt fest, ob implizite Klassen für lokale und nicht-lokale Drucker "
 #~ "erstellt werden sollen oder nicht, z.B. »AnyPrinter« aus »Printer«, "
 #~ "»Printer@server1 und »Printer@server2«."
-
-# type: TP
-#~ msgid "ImplicitClasses Yes"
-#~ msgstr "ImplicitClasses Yes"
-
-# type: TP
-#~ msgid "ImplicitClasses No"
-#~ msgstr "ImplicitClasses No"
 
 # type: Plain text
 #~ msgid ""
@@ -19696,14 +19730,6 @@ msgstr ""
 #~ "I<cupsfilter> verwendet derzeit die in der PPD-Datei definierten Filter "
 #~ "nicht. Dies wird in zukünftigen Veröffentlichungen von CUPS "
 #~ "berücksichtigt."
-
-# type: Plain text
-#~ msgid "Copyright 2007-2010 by Apple Inc."
-#~ msgstr "Copyright 2007-2010 by Apple Inc."
-
-# type: TH
-#~ msgid "cups-polld"
-#~ msgstr "cups-polld"
 
 # type: Plain text
 #~ msgid "cups-polld - cups printer polling daemon"

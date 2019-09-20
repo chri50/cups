@@ -1,3 +1,10 @@
+cups (2.3.0-4) unstable; urgency=medium
+
+  [ Helge Kreutzmann ]
+  * Update German man page (2197t)
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 20 Sep 2019 15:03:47 +0200
+
 cups (2.3.0-3) unstable; urgency=low
 
   * Fix autopkgtests for real; refactor lpadmin stderr filtering
