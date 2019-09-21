@@ -1,3 +1,10 @@
+cups (2.3.0-5) unstable; urgency=medium
+
+  * Let the test-drivers script stop waiting when a filter is allegedly
+    failed, and give context
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 21 Sep 2019 09:41:44 +0200
+
 cups (2.3.0-4) unstable; urgency=medium
 
   [ Helge Kreutzmann ]
