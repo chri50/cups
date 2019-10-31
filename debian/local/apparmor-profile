@@ -200,8 +200,6 @@
   /etc/papersize r,
   /etc/cups/cups-pdf.conf r,
   /etc/cups/ppd/*.ppd r,
-  @{HOME}/PDF/ rw,
-  @{HOME}/PDF/* rw,
   /usr/bin/gs ixr,
   /usr/lib/cups/backend/cups-pdf mr,
   /usr/lib/ghostscript/** mr,
@@ -209,4 +207,11 @@
   /var/log/cups/cups-pdf*_log w,
   /var/spool/cups/** r,
   /var/spool/cups-pdf/** rw,
+
+  # allow read and write on almost anything in @{HOME} (lenient, but
+  # private-files-strict is in effect), to support customized "Out"
+  # setting in cups-pdf.conf (Debian#940578)
+  #include <abstractions/private-files-strict>
+  @{HOME}/[^.]*/{,**/} rw,
+  @{HOME}/[^.]*/**     rw,
 }

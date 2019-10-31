@@ -1,3 +1,14 @@
+cups (2.3.0-6) unstable; urgency=medium
+
+  [ Didier Raboud ]
+  * Tests-drivers: Cleanup output
+
+  [ intrigeri ]
+  * AppArmor: support cups-pdf "Out" directory pointing to almost anywhere
+    below $HOME (Closes: #940578)
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 31 Oct 2019 08:44:29 +0100
+
 cups (2.3.0-5) unstable; urgency=medium
 
   * Let the test-drivers script stop waiting when a filter is allegedly
