@@ -11,7 +11,7 @@ export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 # Add LDFLAGS to enable (hardening) build flags.
 export DSOFLAGS = $(shell dpkg-buildflags --get LDFLAGS)
 
-DEB_HOST_ARCH_OS ?= $(shell dpkg-architecture -qDEB_HOST_ARCH_OS)
+include /usr/share/dpkg/architecture.mk
 
 %:
 	dh $@ --without autoreconf
@@ -158,6 +158,10 @@ endif
 
 
 override_dh_install:
+	# Rename the systemd service units to cups.* instead of org.cups.cupsd.*
+	set -e; for type in socket path service; do \
+	    mv debian/tmp/lib/systemd/system/org.cups.cupsd.$$type debian/tmp/lib/systemd/system/cups.$$type ;\
+	done
 	dh_install
 
 ifneq (,$(filter cups-server-common,$(shell dh_listpackages)))

@@ -1,4 +1,3 @@
-#! /usr/bin/dh-exec --with=install
 var/
 etc/cups/cups-files.conf
 usr/lib/cups/backend/ipp
@@ -12,6 +11,6 @@ usr/share/cups/cupsd.conf.default
 usr/share/cups/cups-files.conf.default
 usr/share/cups/snmp.conf.default
 usr/sbin/cupsd
-lib/systemd/system/org.cups.cupsd.socket  => lib/systemd/system/cups.socket
-lib/systemd/system/org.cups.cupsd.path    => lib/systemd/system/cups.path
-lib/systemd/system/org.cups.cupsd.service => lib/systemd/system/cups.service
+lib/systemd/system/cups.socket
+lib/systemd/system/cups.path
+lib/systemd/system/cups.service
