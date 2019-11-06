@@ -1,3 +1,14 @@
+cups (2.3.0-7) unstable; urgency=medium
+
+  * Packaging cleanup:
+    - Set upstream metadata fields: Repository
+    - Rely on pre-initialized dpkg-architecture variables
+    - Fix day-of-week for changelog entries 1.0.1-1
+    - Bump Standards-Version to 4.4.1 without changes needed
+    - Replace dh-exec usage with manual renaming in debian/rules
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 06 Nov 2019 08:57:40 +0100
+
 cups (2.3.0-6) unstable; urgency=medium
 
   [ Didier Raboud ]
@@ -8428,4 +8439,4 @@ cupsys (1.0.1-1) unstable; urgency=low
 
   * Initial Release.
 
- -- Jeff Licquia <licquia@debian.org>  Sun,  6 Nov 1999 20:58:02 -0500
+ -- Jeff Licquia <licquia@debian.org>  Sat, 06 Nov 1999 20:58:02 -0500
