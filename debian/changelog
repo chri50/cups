@@ -1,3 +1,9 @@
+cups (2.3.0-7ubuntu1) focal; urgency=medium
+
+  * Omit cups and cups-core-drivers packages on i386.
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Sun, 22 Dec 2019 11:10:53 -0600
+
 cups (2.3.0-7) unstable; urgency=medium
 
   * Packaging cleanup:
