@@ -15,11 +15,11 @@ Patch-Name: no-conffile-timestamp.patch
  4 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/scheduler/classes.c b/scheduler/classes.c
-index 776e79a..ec6357f 100644
+index 14d2558..35d0eb7 100644
 --- a/scheduler/classes.c
 +++ b/scheduler/classes.c
 @@ -688,7 +688,7 @@ cupsdSaveAllClasses(void)
-   strftime(temp, sizeof(temp) - 1, "%Y-%m-%d %H:%M", curdate);
+   strftime(temp, sizeof(temp) - 1, "%Y-%m-%d %H:%M", &curdate);
  
    cupsFilePuts(fp, "# Class configuration file for " CUPS_SVERSION "\n");
 -  cupsFilePrintf(fp, "# Written by cupsd on %s\n", temp);
@@ -28,11 +28,11 @@ index 776e79a..ec6357f 100644
  
   /*
 diff --git a/scheduler/job.c b/scheduler/job.c
-index 515fc8b..9c197ef 100644
+index eb99b3e..760e30f 100644
 --- a/scheduler/job.c
 +++ b/scheduler/job.c
 @@ -2201,7 +2201,7 @@ cupsdSaveAllJobs(void)
-   strftime(temp, sizeof(temp) - 1, "%Y-%m-%d %H:%M", curdate);
+   strftime(temp, sizeof(temp) - 1, "%Y-%m-%d %H:%M", &curdate);
  
    cupsFilePuts(fp, "# Job cache file for " CUPS_SVERSION "\n");
 -  cupsFilePrintf(fp, "# Written by cupsd on %s\n", temp);
@@ -41,11 +41,11 @@ index 515fc8b..9c197ef 100644
  
   /*
 diff --git a/scheduler/printers.c b/scheduler/printers.c
-index b366bf5..10ae912 100644
+index 6223ef7..53bc62a 100644
 --- a/scheduler/printers.c
 +++ b/scheduler/printers.c
 @@ -1503,7 +1503,7 @@ cupsdSaveAllPrinters(void)
-   strftime(temp, sizeof(temp) - 1, "%Y-%m-%d %H:%M", curdate);
+   strftime(temp, sizeof(temp) - 1, "%Y-%m-%d %H:%M", &curdate);
  
    cupsFilePuts(fp, "# Printer configuration file for " CUPS_SVERSION "\n");
 -  cupsFilePrintf(fp, "# Written by cupsd on %s\n", temp);
@@ -54,11 +54,11 @@ index b366bf5..10ae912 100644
  
    cupsFilePrintf(fp, "NextPrinterId %d\n", NextPrinterId);
 diff --git a/scheduler/subscriptions.c b/scheduler/subscriptions.c
-index 3267a2f..2542ab1 100644
+index 15acedc..eca0bfa 100644
 --- a/scheduler/subscriptions.c
 +++ b/scheduler/subscriptions.c
 @@ -1051,7 +1051,7 @@ cupsdSaveAllSubscriptions(void)
-   strftime(temp, sizeof(temp) - 1, "%Y-%m-%d %H:%M", curdate);
+   strftime(temp, sizeof(temp) - 1, "%Y-%m-%d %H:%M", &curdate);
  
    cupsFilePuts(fp, "# Subscription configuration file for " CUPS_SVERSION "\n");
 -  cupsFilePrintf(fp, "# Written by cupsd on %s\n", temp);

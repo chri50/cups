@@ -51,7 +51,7 @@ index 77703b9..14478fd 100644
  
    cupsDirClose(dir);
 diff --git a/scheduler/job.c b/scheduler/job.c
-index 2cfb1b0..515fc8b 100644
+index e20e7c5..eb99b3e 100644
 --- a/scheduler/job.c
 +++ b/scheduler/job.c
 @@ -1247,7 +1247,7 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */

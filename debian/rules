@@ -7,6 +7,10 @@ derives_from_ubuntu := $(shell (dpkg-vendor --derives-from Ubuntu && echo "yes")
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all,-pie
 export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 
+ifeq ($(shell dpkg-vendor --is Ubuntu && echo yes) $(DEB_HOST_ARCH), yes i386)
+   skip_packages = -Ncups -Ncups-core-drivers
+endif
+
 # The build system uses only DSOFLAGS but not LDFLAGS to build some libraries.
 # Add LDFLAGS to enable (hardening) build flags.
 export DSOFLAGS = $(shell dpkg-buildflags --get LDFLAGS)
@@ -247,3 +251,9 @@ override_dh_installdocs:
 override_dh_installpam:
 	dh_installpam -pcups-daemon --name=cups
 	dh_installpam --remaining-packages
+
+override_dh_builddeb:
+	dh_builddeb ${skip_packages}
+
+override_dh_gencontrol:
+	dh_gencontrol ${skip_packages}

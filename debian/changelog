@@ -1,3 +1,15 @@
+cups (2.3.1-1) unstable; urgency=medium
+
+  [ Didier Raboud ]
+  * New 2.3.1 upstream release:
+    - CVE-2019-2228: The `ippSetValuetag` function did not validate the
+      default language value
+
+  [ Helge Kreutzmann ]
+  * Update German man page (2207t)
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 24 Dec 2019 13:02:06 +0100
+
 cups (2.3.0-7) unstable; urgency=medium
 
   * Packaging cleanup:
