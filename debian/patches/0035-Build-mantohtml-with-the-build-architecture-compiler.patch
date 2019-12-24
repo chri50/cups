@@ -29,7 +29,7 @@ index 511fbf8..fbd16fb 100644
  CXX		=	@LIBTOOL_CXX@ @CXX@
  DSO		=	@DSO@
 diff --git a/configure.ac b/configure.ac
-index 7eca9e3..2dfdbb9 100644
+index 23abe87..04ac4ff 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -19,6 +19,15 @@ sinclude(config-scripts/cups-common.m4)

@@ -18,8 +18,8 @@
  * Version of software...
  */
 
-#define CUPS_SVERSION "CUPS v2.3.0"
-#define CUPS_MINIMAL "CUPS/2.3.0"
+#define CUPS_SVERSION "CUPS v2.3.1"
+#define CUPS_MINIMAL "CUPS/2.3.1"
 
 
 /*
@@ -303,13 +303,6 @@
 /* #undef HAVE_GNUTLS */
 /* #undef HAVE_SSPISSL */
 #define HAVE_SSL 1
-
-
-/*
- * Do we have the gnutls_fips140_set_mode function?
- */
-
-/* #undef HAVE_GNUTLS_FIPS140_SET_MODE */
 
 
 /*

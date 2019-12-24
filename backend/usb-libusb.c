@@ -826,8 +826,7 @@ find_device(usb_cb_t   cb,		/* I - Callback function */
   err = libusb_init(NULL);
   if (err)
   {
-    fprintf(stderr, "DEBUG: Unable to initialize USB access via libusb, "
-                    "libusb error %i\n", (int)err);
+    fprintf(stderr, "ERROR: Unable to initialize USB access via libusb, libusb error %i (%s)\n", (int)err, libusb_strerror((int)err));
     return (NULL);
   }
 
@@ -879,7 +878,7 @@ find_device(usb_cb_t   cb,		/* I - Callback function */
           protocol   = 0;
 
 	  for (altset = 0, altptr = ifaceptr->altsetting;
-	       altset < ifaceptr->num_altsetting;
+	       altset < ifaceptr->num_altsetting; // lgtm [cpp/comparison-with-wider-type]
 	       altset ++, altptr ++)
           {
 	   /*
