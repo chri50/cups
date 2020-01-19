@@ -76,19 +76,19 @@ Display the current settings:
 Enable debug logging:
 .nf
 
-    cupsctl --debug-logging
+    cupsctl \--debug-logging
 
 .fi
 Get the current debug logging state:
 .nf
 
-    cupsctl | grep '^_debug_logging' | awk -F= '{print $2}'
+    cupsctl | grep '^_debug_logging' | awk \-F= '{print $2}'
 
 .fi
 Disable printer sharing:
 .nf
 
-    cupsctl --no-share-printers
+    cupsctl \--no-share-printers
 .fi
 .SH KNOWN ISSUES
 You cannot set the Listen or Port directives using \fBcupsctl\fR.
