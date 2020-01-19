@@ -3091,6 +3091,10 @@ _ppdCreateFromIPP(char   *buffer,	/* I - Filename buffer */
 
       if (!_cups_strcasecmp(format, "application/pdf"))
         cupsFilePuts(fp, "*cupsFilter2: \"application/vnd.cups-pdf application/pdf 10 -\"\n");
+      else if (!_cups_strcasecmp(format, "image/jpeg") || !_cups_strcasecmp(format, "image/png"))
+        cupsFilePrintf(fp, "*cupsFilter2: \"%s %s 0 -\"\n", format, format);
+      else if (!_cups_strcasecmp(format, "image/pwg-raster") || !_cups_strcasecmp(format, "image/urf"))
+        cupsFilePrintf(fp, "*cupsFilter2: \"%s %s 100 -\"\n", format, format);
       else if (!_cups_strcasecmp(format, "application/postscript"))
         cupsFilePuts(fp, "*cupsFilter2: \"application/vnd.cups-postscript application/postscript 10 -\"\n");
       else if (_cups_strcasecmp(format, "application/octet-stream") && _cups_strcasecmp(format, "application/vnd.hp-pcl") && _cups_strcasecmp(format, "text/plain"))
