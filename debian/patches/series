@@ -45,3 +45,5 @@ debianize_cups-config.patch
 0045-Fix-an-issue-with-PreserveJobHistory-and-time-values.patch
 manpage-translations.patch
 0047-Fix-multiple-security-disclosure-issues.patch
+0048-Fix-memory-leak-in-ppdOpen.patch
+0049-CVE-2019-2228-Fix-ippSetValueTag-validation-of-defau.patch

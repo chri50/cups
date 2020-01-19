@@ -1,3 +1,12 @@
+cups (2.2.10-6+deb10u2) buster; urgency=medium
+
+  * Backport upstream security fixes:
+    - Fix memory leak in ppdOpen (Closes: #946941)
+    - CVE-2019-2228: The `ippSetValuetag` function did not validate the
+      default language value (Closes: #946782)
+
+ -- Didier Raboud <odyx@debian.org>  Sun, 19 Jan 2020 09:36:31 +0100
+
 cups (2.2.10-6+deb10u1) buster; urgency=medium
 
   * Fix multiple security/disclosure issues (Closes: #934957)
