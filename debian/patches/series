@@ -1,4 +1,3 @@
-pwg-raster-attributes.patch
 manpage-hyphen-minus.patch
 0003-Install-root-backends-world-readable.patch
 fixes-for-jobs-with-multiple-files-and-multiple-formats.patch
