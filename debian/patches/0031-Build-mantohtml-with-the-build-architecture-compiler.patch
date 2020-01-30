@@ -7,8 +7,8 @@ architecture compiler (or execution fails). The obvious part is switching to
 CC_FOR_BUILD. That also depends on it not requiring any other cups components.
 In particular, removing uses of strlcpy and replacing host architecture-
 specific includes is thus needed.
-
 Bug-Debian: https://bugs.debian.org/837936
+Patch-Name Build-mantohtml-with-the-build-architecture-compiler.patch
 ---
  Makedefs.in     |  1 +
  configure.ac    |  9 +++++++++

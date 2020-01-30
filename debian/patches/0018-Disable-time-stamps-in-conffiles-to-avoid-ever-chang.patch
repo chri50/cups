@@ -5,7 +5,6 @@ Subject: Disable time stamps in conffiles,
 
 Bug: https://github.com/apple/cups/issues/3067
 Bug-Debian: https://bugs.debian.org/549673
-
 Patch-Name: no-conffile-timestamp.patch
 ---
  scheduler/classes.c       | 2 +-

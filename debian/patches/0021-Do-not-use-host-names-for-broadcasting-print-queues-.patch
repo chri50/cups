@@ -5,7 +5,6 @@ Subject: Do not use host names for broadcasting print queues and
  managing print queues broadcasted from other servers by default. Many
  networks do not have valid host names for all machines.
 Bug-Ubuntu: https://bugs.launchpad.net/bugs/449586
-
 Patch-Name: do-not-broadcast-with-hostnames.patch
 ---
  scheduler/conf.c | 2 +-

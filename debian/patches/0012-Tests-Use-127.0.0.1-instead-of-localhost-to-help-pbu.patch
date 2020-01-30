@@ -6,7 +6,6 @@ This should make the test-suite work in pbuilder. It apparently also fixes an
 ipp backend problem in the test-suite.
 
 Origin: vendor
-Last-Update: 2016-08-05
 Patch-Name: tests-use-ipv4-lo-address.patch
 ---
  test/5.1-lpadmin.sh   | 4 ++--

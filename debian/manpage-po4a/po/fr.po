@@ -19888,12 +19888,6 @@ msgstr ""
 #~ msgid "SSLPort"
 #~ msgstr "B<SSLPort>"
 
-#~ msgid "SystemdIdleExit No"
-#~ msgstr "SystemdIdleExit No"
-
-#~ msgid "SystemdIdleExit Yes"
-#~ msgstr "SystemdIdleExit Yes"
-
 # type: Plain text
 #~ msgid "Specifies whether to exit on inactivity when launched by systemd."
 #~ msgstr ""

@@ -4,9 +4,7 @@ Subject: Tests: Make sure that all scheduled jobs are finished before
 
  running a new test. Fixes failures on slow architectures like armel and
  mipsel.
-Bug-Debian: http://bugs.debian.org/670878
-Last-Update: 2015-02-10
-
+Bug-Debian: https://bugs.debian.org/670878
 Patch-Name: tests-wait-on-unfinished-jobs-everytime.patch
 ---
  test/run-stp-tests.sh | 5 +++++

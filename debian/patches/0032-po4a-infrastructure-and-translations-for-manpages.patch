@@ -1,14 +1,13 @@
 From: Didier Raboud <odyx@debian.org>
 Date: Tue, 9 Aug 2016 18:11:50 +0200
-Subject: po4a infrastructure and translations for manpages.
+Subject: po4a infrastructure and translations for manpages
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 Author: Nicolas François <nicolas.francois@centraliens.net>, Helge Kreutzmann <debian@helgefjell.de>
 Origin: vendor
-Bug-Debian: http://bugs.debian.org/478597
-
+Bug-Debian: https://bugs.debian.org/478597
 Patch-Name: manpage-translations.patch
 ---
  man/Makefile      |  17 +++-

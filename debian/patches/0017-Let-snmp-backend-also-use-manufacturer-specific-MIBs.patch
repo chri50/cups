@@ -11,7 +11,8 @@ Content-Transfer-Encoding: 8bit
  identify whether an optional PostScript add-on is installed or for an
  unsupported printer which generic PPD is the best choice (requested by
  Ricoh).
-Bug: https://www.cups.org/str.php?L3552
+Bug: https://github.com/apple/cups/issues/3552
+Patch-Name: Let-snmp-backend-also-use-manufacturer-specific-MIBs.patch
 ---
  backend/snmp.c | 8 ++++++++
  1 file changed, 8 insertions(+)

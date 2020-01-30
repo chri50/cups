@@ -5,7 +5,6 @@ Subject: Tests: ignore loadFile failures
 Ignore the 'loadFile failed: temp file: not a PDF file' error that sometimes
 breaks the errorlines counting on kfreebsd-amd64 for some reason
 Origin: vendor
-Last-Update: 2015-02-10
 Patch-Name: tests-ignore-kfreebsd-amd64-not-a-pdf.patch
 ---
  test/run-stp-tests.sh | 2 ++

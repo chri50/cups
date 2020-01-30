@@ -18446,12 +18446,6 @@ msgstr ""
 #~ msgid "SSLPort"
 #~ msgstr "SSLPort"
 
-#~ msgid "SystemdIdleExit No"
-#~ msgstr "SystemdIdleExit No"
-
-#~ msgid "SystemdIdleExit Yes"
-#~ msgstr "SystemdIdleExit Yes"
-
 #~ msgid "Specifies whether to exit on inactivity when launched by systemd."
 #~ msgstr ""
 #~ "Legt fest, ob beim Start durch Systemd im Falle von Inaktivität beendet "

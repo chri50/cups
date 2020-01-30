@@ -3,8 +3,6 @@ Date: Tue, 9 Aug 2016 18:11:38 +0200
 Subject: Make log files readable to group "adm", if present.
 
 Bug-Ubuntu: https://launchpad.net/bugs/345953
-
-Last-Update: 2015-02-10
 Patch-Name: logfiles_adm_readable.patch
 ---
  scheduler/log.c | 11 +++++++++--

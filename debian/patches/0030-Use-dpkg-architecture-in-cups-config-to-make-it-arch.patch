@@ -10,7 +10,6 @@ Bug-Debian: https://bugs.debian.org/741519
 Bug-Debian: https://bugs.debian.org/727058
 Bug-Debian: https://bugs.debian.org/730838
 Bug-Debian: https://bugs.debian.org/751157
-Last-Update: 2014-06-11
 Patch-Name: debianize_cups-config.patch
 ---
  cups-config.in | 7 ++++---
