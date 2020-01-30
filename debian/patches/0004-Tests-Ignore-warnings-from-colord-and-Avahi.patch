@@ -4,8 +4,6 @@ Subject: Tests: Ignore warnings from colord and Avahi
 
 These warnings change the expected number of warnings
 
-Last-Update: 2015-08-05
-
 Patch-Name: tests-ignore-warnings.patch
 ---
  test/run-stp-tests.sh | 6 +++++-

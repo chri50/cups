@@ -5,7 +5,6 @@ Subject: Tests: Force LC_* environment variables when testing (non)
 
  Permits building in non-"C" environments.
 Origin: vendor
-Last-Update: 2015-02-10
 Patch-Name: tests-fix-ppdLocalize-on-unclean-env.patch
 ---
  cups/testppd.c | 8 ++++++++

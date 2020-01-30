@@ -3,8 +3,7 @@ Date: Tue, 9 Aug 2016 18:11:07 +0200
 Subject: Fix jobs with multiple files or multiple formats
 
 Bug-Redhat: https://bugzilla.redhat.com/show_bug.cgi?id=972242
-Bug: https://www.cups.org/str.php?L4348
-Last-Updated: 2015-02-10
+Bug: https://github.com/apple/cups/issues/4348
 Patch-Name: fixes-for-jobs-with-multiple-files-and-multiple-formats.patch
 ---
  backend/ipp.c | 5 ++++-

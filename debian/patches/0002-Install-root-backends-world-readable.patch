@@ -7,8 +7,9 @@ This is needed:
  - because it is both nonsensical to not do so
  - it also breaks system checkers, bug reporting, etc
 
-Bug: http://www.cups.org/str.php?L2935
-Bug-Debian: http://bugs.debian.org/410171
+Bug: https://github.com/apple/cups/issues/2935
+Bug-Debian: https://bugs.debian.org/410171
+Patch-Name install-root-backends-world-readable.patch
 ---
  backend/Makefile         | 4 ++--
  scheduler/cups-deviced.c | 2 +-

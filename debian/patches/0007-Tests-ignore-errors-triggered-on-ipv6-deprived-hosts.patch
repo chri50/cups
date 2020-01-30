@@ -5,7 +5,6 @@ Subject: Tests: ignore errors triggered on ipv6-deprived hosts
 Ignore the 'Address family not supported by protocol' error that breaks the
 errorlines counting on buildds without a working IPv6 stack.
 Origin: vendor
-Last-Update: 2015-02-10
 Patch-Name: tests-ignore-ipv6-address-family-not-supported.patch
 ---
  test/run-stp-tests.sh | 1 +

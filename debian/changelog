@@ -1,3 +1,10 @@
+cups (2.3.1-4) unstable; urgency=medium
+
+  * Cleanup patch queue for cups' bts URLs and patch names
+  * Update README.Debian to remove leftover SystemdIdleExit references
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 30 Jan 2020 20:35:47 +0100
+
 cups (2.3.1-2) unstable; urgency=medium
 
   * Drop pwg-raster-attributes.patch

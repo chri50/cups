@@ -5,8 +5,6 @@ Subject: Tests: ignore the failure to write uncompressed data
 Ignore the 'Unable to write uncompressed print data: Broken pipe'  error that
 sometimes breaks the errorlines counting on kfreebsd for some reason.
 Origin: vendor
-Last-Update: 2016-08-09
-
 Patch-Name: tests-ignore-kfreebsd-unable-to-write-uncompressed-print-data.patch
 ---
  test/run-stp-tests.sh | 1 +

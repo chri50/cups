@@ -140,9 +140,8 @@ needs to be configured to listen to the correct IPs and aports by dropping
 configuration files in the /etc/systemd/system/cups.socket.d/ directory.
 
 When launched by socket-activation, CUPS can additionally exit itself after
-being idle for some time (30 seconds by default) by using 'SystemdIdleExit on'
-in /etc/cups/cupsd.conf'. The delay before exiting on idle can be configured
-using 'IdleExitTimeout' in that same file.
+being idle for some time (60 seconds by default) by setting 'IdleExitTimeout'
+in /etc/cups/cupsd.conf'.
 
 Printing without using a local cups daemon
 ==========================================

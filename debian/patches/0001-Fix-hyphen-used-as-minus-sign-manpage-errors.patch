@@ -6,9 +6,7 @@ Automatically generated using sed -i -s 's/^-/\\-/g;s/ -/ \\-/g;s/"-/"\\-/g' man
 Also fix a missing backslash escape
 
 Origin: vendor
-Bug-Upstream: https://cups.org/str.php?L4299
-Last-Update: 2015-02-10
-
+Bug-Upstream: https://github.com/apple/cups/issues/4299
 Patch-Name: manpage-hyphen-minus.patch
 ---
  man/backend.7         |  4 ++--

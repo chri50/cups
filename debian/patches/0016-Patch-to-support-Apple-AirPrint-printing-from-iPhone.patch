@@ -5,10 +5,8 @@ Subject: Patch to support Apple AirPrint (printing from iPhone, iPad,
 
 Bug-Ubuntu: https://bugs.launchpad.net/bugs/711779
 Bug-Ubuntu: https://bugs.launchpad.net/bugs/1054495
-Bug-Debian: http://bugs.debian.org/700961
-Bug: https://cups.org/str.php?L4341
-Last-Update: 2015-02-10
-
+Bug-Debian: https://bugs.debian.org/700961
+Bug: https://github.com/apple/cups/issues/4341
 Patch-Name: airprint-support.patch
 ---
  conf/mime.convs.in   | 3 +++

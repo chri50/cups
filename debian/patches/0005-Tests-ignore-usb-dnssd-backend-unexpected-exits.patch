@@ -8,8 +8,6 @@ Ignore the following errors:
 
  They seem to regularly happen on Debian/Ubuntu buildds and break error lines
  counting.
-Last-Update: 2015-02-10
-
 Patch-Name: tests-ignore-usb-crash.patch
 ---
  test/run-stp-tests.sh | 5 ++++-

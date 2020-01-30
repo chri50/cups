@@ -3,9 +3,7 @@ Date: Tue, 9 Aug 2016 18:11:16 +0200
 Subject: Tests: Do not run the CUPS_EUC_JP test case on BSD/Hurd either,
  as glibc's iconv behavior is different than what the test expects.
 
-Bug-Debian: http://bugs.debian.org/662996
-
-Last-Update: 2015-10-02
+Bug-Debian: https://bugs.debian.org/662996
 Patch-Name: test-i18n-nonlinux.patch
 ---
  cups/testi18n.c | 2 +-
