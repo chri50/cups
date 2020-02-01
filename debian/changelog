@@ -1,3 +1,12 @@
+cups (2.3.1-4+exp0) experimental; urgency=medium
+
+  * Move towards driverless-centered installation:
+    - Drop all printer-driver-* and hplip recommends/suggests
+  * Cleanup all versions from pre- Debian stable
+  * Bump S-V to 4.5.0 without changes needed
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 01 Feb 2020 13:50:33 +0100
+
 cups (2.3.1-4) unstable; urgency=medium
 
   * Cleanup patch queue for cups' bts URLs and patch names
