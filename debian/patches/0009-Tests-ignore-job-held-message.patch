@@ -1,0 +1,21 @@
+From: Didier Raboud <odyx@debian.org>
+Date: Sat, 8 Feb 2020 11:49:07 +0100
+Subject: Tests: ignore 'job held' message
+
+Origin: vendor
+---
+ test/run-stp-tests.sh | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
+index c072ad8..dfa7f6a 100755
+--- a/test/run-stp-tests.sh
++++ b/test/run-stp-tests.sh
+@@ -1032,6 +1032,7 @@ count=`$GREP '^E ' $BASE/log/error_log | $GREP -v 'Unknown default SystemGroup'
+        $GREP -v 'Failed to connect to system bus' | \
+        $GREP -v -E 'Unable to open listen socket for address .* Address family not supported by protocol.' | \
+        $GREP -v 'Unable to write uncompressed print data: Broken pipe' | \
++       $GREP -v 'Job held by' | \
+        wc -l | awk '{print $1}'`
+ if test $count != 33; then
+ 	echo "FAIL: $count error messages, expected 33."
