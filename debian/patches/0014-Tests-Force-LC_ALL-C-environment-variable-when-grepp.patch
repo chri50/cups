@@ -11,7 +11,7 @@ Patch-Name: tests-make-lpstat-call-reproducible.patch
  1 file changed, 1 insertion(+)
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index 3f0becd..baebdee 100755
+index 88bafb1..d9b3985 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
 @@ -642,6 +642,7 @@ echo "DYLD_LIBRARY_PATH=\"$DYLD_LIBRARY_PATH\"; export DYLD_LIBRARY_PATH" >>$run

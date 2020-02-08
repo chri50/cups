@@ -1,3 +1,10 @@
+cups (2.3.1-6) unstable; urgency=medium
+
+  * Patch test suite to also ignore 'Job held' lines in error_log line
+    counting
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 08 Feb 2020 11:52:44 +0100
+
 cups (2.3.1-5) unstable; urgency=medium
 
   * Move towards driverless-centered installation:
