@@ -1,3 +1,13 @@
+cups (2.3.1-7) unstable; urgency=medium
+
+  * Add patch to fix conversion of PPD InputSlot choice names; this should fix
+    printers ignoring the paper tray selection (Issue: #5740, Closes: #949315)
+  * lintian-brush:
+    - Set upstream metadata fields: Bug-Database, Repository, Repository-Browse
+    - Rewrap some d/changelog entries
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 17 Feb 2020 09:19:56 +0100
+
 cups (2.3.1-6) unstable; urgency=medium
 
   * Patch test suite to also ignore 'Job held' lines in error_log line
@@ -3018,8 +3028,7 @@ cups (1.5.3-1) unstable; urgency=low
   * debian/patches/cups-avahi.patch: Manually regenerated to adapt to upstream
     changes.
   * debian/patches/ppd-poll-with-client-conf.patch,
-    debian/patches/colord-support.patch,
-    debian/patches/airprint-support.patch,
+    debian/patches/colord-support.patch, debian/patches/airprint-support.patch,
     debian/patches/no-conffile-timestamp.patch,
     debian/patches/drop_unnecessary_dependencies.patch,
     debian/patches/read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.patch,
@@ -3251,8 +3260,7 @@ cups (1.5.2-1) unstable; urgency=low
     Manually regenerated to adapt to upstream changes.
   * debian/patches/pidfile.patch,
     debian/patches/rootbackends-worldreadable.patch,
-    debian/patches/colord-support.patch,
-    debian/patches/airprint-support.patch,
+    debian/patches/colord-support.patch, debian/patches/airprint-support.patch,
     debian/patches/no-conffile-timestamp.patch,
     debian/patches/read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.patch,
     debian/patches/do-not-broadcast-with-hostnames.patch,
@@ -3260,14 +3268,13 @@ cups (1.5.2-1) unstable; urgency=low
     debian/patches/confdirperms.patch,
     debian/patches/show-compile-command-lines.patch,
     debian/patches/log-debug-history-nearly-unlimited.patch,
-    debian/patches/dnssd-reg-array-linear-search.patch:
-    Refreshed using quilt.
+    debian/patches/dnssd-reg-array-linear-search.patch: Refreshed using quilt.
   * debian/patches/fix-supply-level-computation-for-percent-supply-unit.patch,
     debian/patches/fix-supply-levels-for-enumerated-prtmarkersupplieslevel.patch,
-    debian/patches/fix-status-reports-when-supply-levels-grow.patch:
-    The printer supply levels reported via SNMP, according to the printer MIB
-    were not correctly interpreted (LP: #925086, CUPS STR #4016, thanks to
-    Peter Hurley, peter at hurleysoftware dot com, for the patches).
+    debian/patches/fix-status-reports-when-supply-levels-grow.patch: The printer
+    supply levels reported via SNMP, according to the printer MIB were not
+    correctly interpreted (LP: #925086, CUPS STR #4016, thanks to Peter Hurley,
+    peter at hurleysoftware dot com, for the patches).
   * debian/patches/add-status-reports-for-full-waste-trays-and-cleaner-unit-eol.patch:
     Added status reports for waste tray status and cleaner unit end-of-life
     (LP: #925086, CUPS STR #4017, thanks to Peter Hurley, peter at
@@ -3353,10 +3360,10 @@ cups (1.5.0-15) unstable; urgency=low
   * debian/patches/series,
     debian/patches/usb-backend-gracefully-fail-on-more-cases-of-bad-device-id.patch,
     debian/patches/usb-backend-libusb-1.0.patch,
-    debian/patches/usb-backend-skip-set-configuration-set-interface.patch:
-    Added references to the upstream bugs under which these patches got
-    submitted upstream as header comments. Also moved the entries in the series
-    file to the section of patches submitted upstream.
+    debian/patches/usb-backend-skip-set-configuration-set-interface.patch: Added
+    references to the upstream bugs under which these patches got submitted
+    upstream as header comments. Also moved the entries in the series file to
+    the section of patches submitted upstream.
   * debian/patches/usb-backend-libusb-1.0.patch: Updated the patch to correctly
     generate the make/model string if no device ID could be found. Before,
     arbitrary memory content was picked up, not only giving an ugly listing
@@ -3483,8 +3490,8 @@ cups (1.5.0-9) unstable; urgency=low
   * debian/patches/do-not-suppress-inputslot-setting-with-empty-ap-d-inputslot.patch:
     CUPS adds the option setting "AP_D_InputSlot=" to every job. This overrides
     the InputSlot option and so the InputSlot setting and even the default
-    setting for InputSlot in the PPD get never used, rendering InputSlot
-    useless (LP: #872527).
+    setting for InputSlot in the PPD get never used, rendering InputSlot useless
+    (LP: #872527).
   * debian/patches/cups-avahi.patch: Updated patch from upstream (Red Hat)
     to fix crashes of the CUPS daemon when using the timeout function call
     functionality (LP: #860691, LP: #860498).
@@ -3660,11 +3667,10 @@ cups (1.5.0-1) experimental; urgency=low
     debian/patches/cups-snmp-oids-device-id-hp-ricoh.patch,
     debian/patches/configure-default-browse-protocols.patch,
     debian/patches/logfiles_adm_readable.patch,
-    debian/patches/confdirperms.patch,
-    debian/patches/printer-filtering.patch,
+    debian/patches/confdirperms.patch, debian/patches/printer-filtering.patch,
     debian/patches/show-compile-command-lines.patch,
-    debian/patches/log-debug-history-nearly-unlimited.patch:
-    Refreshed using quilt.
+    debian/patches/log-debug-history-nearly-unlimited.patch: Refreshed using
+    quilt.
   * debian/patches/default-ripcache-size-auto.patch: Dropped, as once,
     Ghostscript 9.04 is ignoring the cache size value as it crashes easily
     otherwise (Ghostscript upstream bug #691586) and second, CUPS defaults to
@@ -4030,12 +4036,11 @@ cups (1.4.5-3) unstable; urgency=low
     debian/local/filters/pdf-filters/addtocups
     debian/local/filters/pdf-filters/conf/HP-PhotoSmart_Pro_B8300-hpijs-pdftoijs.ppd,
     debian/local/filters/pdf-filters/config-scripts/cups-pdf-filters.m4,
-    debian/local/filters/pdf-filters/removefromcups: Upstream changes of
-    the PDF filter add-on package:
-     o Added the Poppler-based pdftoraster filter. This filter is much faster
-       than the Ghostscript-based filter (LP: #668800).
-     o Cleaned up the sample PPD file for pdftoijs (does not go into the
-       Debian/Ubuntu package of CUPS).
+    debian/local/filters/pdf-filters/removefromcups: Upstream changes of the PDF
+    filter add-on package:  o Added the Poppler-based pdftoraster filter. This
+    filter is much faster    than the Ghostscript-based filter (LP: #668800).  o
+    Cleaned up the sample PPD file for pdftoijs (does not go into the
+    Debian/Ubuntu package of CUPS).
   * debian/rules: Rename the newly added Poppler-based pdftoraster filter
     to pdftoraster-poppler to not conflict with Ghostscript's pdftoraster
     and lower its cost factor so that it is prioritized against Ghostscript's
@@ -5041,9 +5046,9 @@ cups (1.3.11-1) unstable; urgency=low
     the PDF output with a blank line. This made some filters misbehave.
   * debian/patches/read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.dpatch:
     Make CUPS read the number of copies out of Windows print jobs reliably by
-    also considering lines like "%%BeginNonPPDFeature: NumCopies 2". Thanks
-    to Dan Sheridan from Adelard (djs at adelard dot com) for this improvement
-    of the patch.
+    also considering lines like "%%BeginNonPPDFeature: NumCopies 2". Thanks to
+    Dan Sheridan from Adelard (djs at adelard dot com) for this improvement of
+    the patch.
 
   [ Stéphane Graber ]
   * Add printer-filtering.dpatch: Add support for printer filtering.
@@ -5062,12 +5067,12 @@ cups (1.3.11-1) unstable; urgency=low
 cups (1.3.10-5) unstable; urgency=low
 
   * debian/patches/read-embedded-options-from-incoming-postscript-and-add-to-ipp-attrs.dpatch:
-    Make CUPS reading all option settings in PostScript print jobs and add
-    the option settings to the filter command line before starting the filter
-    chain. This fixes the problem that in the PDF printing workflow (where
-    incoming PostScript gets converted to PDF by pstopdf) option settings
-    embedded in the incoming PostScript code do not get obeyed. Especially
-    the options of jobs from Windows clients get ignored.
+    Make CUPS reading all option settings in PostScript print jobs and add the
+    option settings to the filter command line before starting the filter chain.
+    This fixes the problem that in the PDF printing workflow (where incoming
+    PostScript gets converted to PDF by pstopdf) option settings embedded in the
+    incoming PostScript code do not get obeyed. Especially the options of jobs
+    from Windows clients get ignored.
   * debian/filters/pstopdf: Do not let Ghostscript generate multiple copies
     of the job if the filter command line from CUPS already supplies the
     correct number of copies.
@@ -5664,8 +5669,8 @@ cups (1.3.8-6) experimental; urgency=low
     debian/local/filters/pdf-filters/addtocups,
     debian/local/filters/pdf-filters/config-scripts/cups-pdf-filters.m4,
     debian/local/filters/pdf-filters/removefromcups,
-    debian/local/filters/pdf-filters/README,
-    debian/control, debian/rules: Added pdftoijs filter.
+    debian/local/filters/pdf-filters/README, debian/control, debian/rules: Added
+    pdftoijs filter.
 
   [ Johan Kiviniemi ]
   * debian/filters/pstopdf:
@@ -6104,10 +6109,10 @@ cupsys (1.3.5-1) unstable; urgency=high
     via symlink attack. (CVE-2007-6358, closes: #456960)
 
   [ Till Kamppeter ]
-  * debian/patches/fix_regression_reactivate_net_ifaces_changes_detection.dpatch :
-    Fix a regression in upstream code that has removed the network interface
-    update poll (CUPS STR #2631, LP: #177075). Thanks to Hugues Fournier
-    (hugues dot fournier at gmail dot com) for the patch.
+  * debian/patches/fix_regression_reactivate_net_ifaces_changes_detection.dpatch
+    : Fix a regression in upstream code that has removed the network interface
+    update poll (CUPS STR #2631, LP: #177075). Thanks to Hugues Fournier (hugues
+    dot fournier at gmail dot com) for the patch.
 
  -- Kenshi Muto <kmuto@debian.org>  Wed, 19 Dec 2007 17:07:05 +0900
 
@@ -6127,8 +6132,8 @@ cupsys (1.3.4-3) unstable; urgency=high
 
   [ Till Kamppeter ]
   * debian/patches/cups-stops-broadcasting-on-HUP-with-explicit-BrowseAddress.dpatch:
-    CUPS stopped broadcasting on a HUP signal when using a fixed
-    BrowseAddress (CUPS STR #2618, Ubuntu LP: #173470).
+    CUPS stopped broadcasting on a HUP signal when using a fixed BrowseAddress
+    (CUPS STR #2618, Ubuntu LP: #173470).
   * debian/local/backends/dnssd: Updated dnssd to support Mac OS X servers
     which broadcast their print queues only via DNS-SD and require clients
     to create raw IPP queues pointing to the server's queues manually.
@@ -7222,17 +7227,19 @@ cupsys (1.1.23-8) unstable; urgency=medium
   * Included Spanish man pages.
   * 43_filtercost: Applied a patch for wrong computation of cost
     (closes: #304205)
-  * Applied many part of ubuntu patch, http://people.ubuntu.com/~scott/patches/cupsys/cupsys_1.1.23-7ubuntu1.patch.
+  * Applied many part of ubuntu patch,
+    http://people.ubuntu.com/~scott/patches/cupsys/cupsys_1.1.23-7ubuntu1.patch.
     (User 'cupsys' feature and Browsing feature aren't applied at this time.
-     They are post-Sarge things)
+    They are post-Sarge things)
   * Applied improved dvifilter patch. (Although you need to modify
     /etc/cups/mime.convs and some other files to use it) (closes: #198100)
   * Provides /var/run/cups/cupsd.pid. (closes: #301804)
   * Added cupsys documentation to doc-base structure. (closes: #171396, #304333)
   * Included filter for PostScript from Windows PostScript driver, created by
-    Matt Swift <swift@alum.mit.edu>.
-    If you want to use, put /usr/share/doc/cupsys/examples/filters/samba-postscript.* to /etc/cups,
-    and put /usr/share/doc/cupsys/examples/filters/samba-ps-to-ps to /usr/lib/cups/filter. (closes: #246577)
+    Matt Swift <swift@alum.mit.edu>. If you want to use, put
+    /usr/share/doc/cupsys/examples/filters/samba-postscript.* to /etc/cups, and
+    put /usr/share/doc/cupsys/examples/filters/samba-ps-to-ps to
+    /usr/lib/cups/filter. (closes: #246577)
 
  -- Kenshi Muto <kmuto@debian.org>  Wed, 16 Mar 2005 10:01:57 +0900
 
@@ -7722,7 +7729,8 @@ cupsys (1.1.20candidate6-6) unstable; urgency=low
 
 cupsys (1.1.20candidate6-5) unstable; urgency=high
 
-  * I'm sorry but openssl license conflicts. I use libgnutls (closes: Bug#220902).
+  * I'm sorry but openssl license conflicts. I use libgnutls (closes:
+    Bug#220902).
   * Add euc-jp text.
 
  -- Kenshi Muto <kmuto@debian.org>  Sat, 15 Nov 2003 23:55:06 +0900
@@ -8277,7 +8285,8 @@ cupsys (1.1.6-0.1) unstable; urgency=low
 
   * Non-maintainer upload
   * New upstream release, fixing multiple vulnerabilities (Closes: Bug#88932)
-  * cupsys removes only its own configuration files upon purge (Closes: Bug#84341)
+  * cupsys removes only its own configuration files upon purge (Closes:
+    Bug#84341)
   * fixed postinst, so it does not fail when the lpadmin group
   already exists (Closes: Bug#84443)
   * added a helpful URL to README.Debian (Closes: Bug#63590)
