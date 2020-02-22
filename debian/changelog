@@ -1,3 +1,10 @@
+cups (2.3.1-9) unstable; urgency=medium
+
+  * CI Tests: Ensure the job files are non-empty; should detect more
+    regressions
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 22 Feb 2020 17:19:46 +0100
+
 cups (2.3.1-8) unstable; urgency=medium
 
   * Add patch to fix cupsctl when loading cupsd.conf (Issue: #5744)
