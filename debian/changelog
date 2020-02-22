@@ -1,3 +1,9 @@
+cups (2.3.1-8) unstable; urgency=medium
+
+  * Add patch to fix cupsctl when loading cupsd.conf (Issue: #5744)
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 22 Feb 2020 14:34:48 +0100
+
 cups (2.3.1-7) unstable; urgency=medium
 
   * Add patch to fix conversion of PPD InputSlot choice names; this should fix
