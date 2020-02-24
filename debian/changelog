@@ -1,3 +1,14 @@
+cups (2.3.1-10) unstable; urgency=medium
+
+  * Add Requires=cups.socket to cups.service, to make sure they start in
+    the right order
+  * CI Tests: Add a test for all CUPS' basic commands, thanks to RedHat
+  * Add Pre-Depends: ${misc:Pre-Depends} to cups-daemon to fix
+    skip-systemd-native-flag-missing-pre-depends lintian flag
+  * Add patch proposal from RedHat to fix leakage of ppd (Issue: #5738)
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 24 Feb 2020 12:25:39 +0100
+
 cups (2.3.1-9) unstable; urgency=medium
 
   * CI Tests: Ensure the job files are non-empty; should detect more
