@@ -2,6 +2,13 @@
 
 set -e -u
 
+filter_stderr_from_file() {
+    cat $1 | \
+        grep -v -E "lpadmin: (Raw queues|Printer drivers) are deprecated and will stop working in a future version of CUPS." \
+        || true \
+        1>&2
+}
+
 # What follows is widely taken from https://src.fedoraproject.org/rpms/cups/blob/master/f/tests/basic-commands/runtest.sh , with small adaptations for Debian
 # runtest.sh - basic commands
 # Author: Yulia Kopkova <ykopkova@redhat.com>
@@ -31,23 +38,25 @@ TIMEOUT=30
 TPRN1="test-printer1"
 TPRN2="test-printer2"
 ML="drv:///sample.drv/deskjet.ppd"
+STDERR_FILE=`mktemp`
 
 cleanup() {
     # Delete it
     echo -n " - Interrupted (or finished), delete test printers:"
     lpadmin -x $TPRN1 2>/dev/null || :
     lpadmin -x $TPRN2 2>/dev/null || :
+    rm -f $STDERR_FILE
     echo " done."
 }
 
 trap cleanup EXIT INT
 
 echo " - Create printer $TPRN1"
-lpadmin -p $TPRN1 -v file:/dev/null -E -m $ML 
+lpadmin -p $TPRN1 -v file:/dev/null -E -m $ML 2> $STDERR_FILE; filter_stderr_from_file $STDERR_FILE
 echo " - Set $TPRN1 default"
 lpadmin -d $TPRN1 
 echo " - Create printer $TPRN2"
-lpadmin -p $TPRN2 -v file:/dev/null -E -m $ML 
+lpadmin -p $TPRN2 -v file:/dev/null -E -m $ML 2> $STDERR_FILE; filter_stderr_from_file $STDERR_FILE
 echo " - Print $FILEPDF with lp and default printer"
 lp $FILEPDF 
 echo " - Print $FILEJPG with lp and $TPRN2"
@@ -90,7 +99,7 @@ for ((i=$TIMEOUT; i>0 ; i-=5)); do
     [ "x$jobs" = "x" ] && break
     sleep 5
 done
-job_id=$(lp -d $TPRN1 -o job-hold-until=indefinite $FILEJPG | awk "{ match(\$0, /$TPRN1-([0-9]+)/, arr); print arr[1] }")
+job_id=$(lp -d $TPRN1 -o job-hold-until=indefinite $FILEJPG | sed "s/^.*$TPRN1-\([[:digit:]]*\).*/\1/g")
 echo " - Cancel $TPRN1-$job_id job"
 cancel $TPRN1-$job_id 
 echo " - Hold job on $TPRN1"

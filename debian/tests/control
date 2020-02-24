@@ -8,4 +8,4 @@ Depends: cups, cups-client
 
 Tests: cups-basiccommands
 Restrictions: needs-root
-Depends: cups, cups-client
+Depends: cups, cups-client, cups-bsd
