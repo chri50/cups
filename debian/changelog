@@ -1,3 +1,12 @@
+cups (2.3.1-11) unstable; urgency=medium
+
+  * CI Tests: fix cups-basiccommands:
+    - swap awk with sed;
+    - filter stderr away from known errors
+    - add missing cups-bsd depends to test lpr commands
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 24 Feb 2020 19:40:39 +0100
+
 cups (2.3.1-10) unstable; urgency=medium
 
   * Add Requires=cups.socket to cups.service, to make sure they start in
