@@ -1,0 +1,21 @@
+From: Didier Raboud <odyx@debian.org>
+Date: Mon, 24 Feb 2020 11:46:49 +0100
+Subject: Add Requires=cups.socket to cups.service,
+ to make sure they start in the right order
+
+---
+ scheduler/org.cups.cupsd.service.in | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/scheduler/org.cups.cupsd.service.in b/scheduler/org.cups.cupsd.service.in
+index cd23343..79d2c40 100644
+--- a/scheduler/org.cups.cupsd.service.in
++++ b/scheduler/org.cups.cupsd.service.in
+@@ -2,6 +2,7 @@
+ Description=CUPS Scheduler
+ Documentation=man:cupsd(8)
+ After=sssd.service
++Requires=cups.socket
+ 
+ [Service]
+ ExecStart=@sbindir@/cupsd -l

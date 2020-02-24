@@ -1,3 +1,13 @@
+cups (2.3.1-9ubuntu1) focal; urgency=medium
+
+  * Revert all the CI test changes
+  * Add the bug fixes (not CI test changes of 2.3.1-10:
+    - Add Requires=cups.socket to cups.service, to make sure they start in
+      the right order
+    - Add patch proposal from RedHat to fix leakage of ppd (Issue: #5738)
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon, 24 Feb 2020 16:45:01 +0100
+
 cups (2.3.1-9) unstable; urgency=medium
 
   * CI Tests: Ensure the job files are non-empty; should detect more
