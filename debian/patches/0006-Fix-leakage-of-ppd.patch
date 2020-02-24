@@ -1,0 +1,21 @@
+From: Zdenek Dohnal <zdohnal@redhat.com>
+Date: Fri, 14 Feb 2020 16:48:49 +0100
+Subject: Fix leakage of ppd
+
+---
+ ppdc/ppdc-import.cxx | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/ppdc/ppdc-import.cxx b/ppdc/ppdc-import.cxx
+index 04b587d..b4a8341 100644
+--- a/ppdc/ppdc-import.cxx
++++ b/ppdc/ppdc-import.cxx
+@@ -323,5 +323,8 @@ ppdcSource::import_ppd(const char *f)	// I - Filename
+     }
+   }
+ 
++  if (ppd)
++    ppdClose(ppd);
++
+   return (1);
+ }

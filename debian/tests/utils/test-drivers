@@ -29,19 +29,13 @@ cleanup() {
     # Delete it
     echo -n " - Interrupted (or finished), delete test printer:"
     rm -f ${DUMMY_PRINTER_STDERR_FILE}
-    rm -f ${DUMMY_PRINTER_PRINT_FILE}
     /usr/sbin/lpadmin -x $DUMMY_PRINTER_NAME 2>/dev/null || :
     echo " done."
 }
 
 trap cleanup EXIT INT
 
-# Configure the running CUPS server to set FileDevice to Yes
-sed -e 's/^#.*FileDevice.*$/FileDevice Yes/g' -i /etc/cups/cups-files.conf
-service cups restart
-
 DUMMY_PRINTER_STDERR_FILE=`mktemp`
-DUMMY_PRINTER_PRINT_FILE=`mktemp`
 
 for driver in $DRIVERS_LIST; do
 
@@ -49,7 +43,7 @@ for driver in $DRIVERS_LIST; do
 
     echo -n " - Create test printer:"
     # Create dummy printer
-    /usr/sbin/lpadmin -p $DUMMY_PRINTER_NAME -E -m $driver -v file://${DUMMY_PRINTER_PRINT_FILE} 2> $DUMMY_PRINTER_STDERR_FILE
+    /usr/sbin/lpadmin -p $DUMMY_PRINTER_NAME -E -m $driver -v file:///dev/null 2> $DUMMY_PRINTER_STDERR_FILE
     echo " done."
     # Tell stderr whether some unknown lines have been seen
     # Filter out the deprecation messages
@@ -60,7 +54,7 @@ for driver in $DRIVERS_LIST; do
         1>&2
     
     for file in $(find $PDFS_PATH -name '*.pdf') ; do
-        echo -n " - Print $file: "
+        echo -n " - Print test job with $file: "
         # Print the default testprint to it, get request id
         rid=$(/usr/bin/lp -d $DUMMY_PRINTER_NAME $file | sed -e 's/^.*request id is \(.*\) (.*)$/\1/g')
     
@@ -80,12 +74,6 @@ for driver in $DRIVERS_LIST; do
             /bin/sleep 1s
             echo -n "."
         done
-        # Make sure the resulting data is not empty
-        if [ ! -s "${DUMMY_PRINTER_PRINT_FILE}" ]; then
-            echo " Filter succeeded but resulting file is empty; aborting!"
-            false
-        fi
-        rm -f ${DUMMY_PRINTER_PRINT_FILE}
         echo " done."
     done
 
