@@ -1,3 +1,16 @@
+cups (2.2.7-1ubuntu2.8) bionic-security; urgency=medium
+
+  * SECURITY UPDATE: information disclosure via OOB read
+    - debian/patches/CVE-2019-2228.patch: fix ippSetValueTag validation of
+      default language in cups/ipp.c.
+    - CVE-2019-2228
+  * SECURITY UPDATE: heap-based buffer overflow
+    - debian/patches/CVE-2020-3898.patch: properly handle invalid
+      resolution names in cups/ppd.c, ppdc/ppdc-source.cxx.
+    - CVE-2020-3898
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 24 Apr 2020 10:42:08 -0400
+
 cups (2.2.7-1ubuntu2.7) bionic-security; urgency=medium
 
   * SECURITY UPDATE: Stack buffer overflow in SNMP ASN.1 decoder
