@@ -35,3 +35,4 @@
 0005-Fix-scheduler-cupsd.conf-load.patch
 0006-Fix-leakage-of-ppd.patch
 0025-Add-Requires-cups.socket-to-cups.service-to-make-sur.patch
+CVE-2020-3898.patch
