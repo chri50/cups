@@ -898,7 +898,7 @@ cupsdReadConfiguration(void)
     cupsdAddAlias(ServerAlias, temp);
     cupsdLogMessage(CUPSD_LOG_DEBUG, "Added auto ServerAlias %s", temp);
 
-    if (HostNameLookups || RemotePort)
+    if (HostNameLookups)
     {
       struct hostent	*host;		/* Host entry to get FQDN */
 
