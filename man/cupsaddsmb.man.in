@@ -97,7 +97,7 @@ Copy the 32-bit drivers to the \fI/usr/share/cups/drivers\fR directory and the 6
     pscript5.dll
 
 .fi
-\fBNote:\fR Unlike Windows, case is significant - make sure that you use the lowercase filenames shown above, otherwise \fBcupsaddsmb\fR will fail to export the drivers.
+\fBNote:\fR Unlike Windows, case is significant \- make sure that you use the lowercase filenames shown above, otherwise \fBcupsaddsmb\fR will fail to export the drivers.
 .SH OPTIONS
 \fBcupsaddsmb\fR supports the following options:
 .TP 5
