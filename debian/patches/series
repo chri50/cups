@@ -47,3 +47,5 @@ fix-cups-auth-find-for-schemes-without-parameters.patch
 systemd-service-for-cupsd-after-sssd.patch
 0045-Fix-an-issue-with-PreserveJobHistory-and-time-values.patch
 CVE-2019-86xx.patch
+CVE-2019-2228.patch
+CVE-2020-3898.patch
