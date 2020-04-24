@@ -1,3 +1,12 @@
+cups (2.3.1-9ubuntu1.1) focal-security; urgency=medium
+
+  * SECURITY UPDATE: heap-based buffer overflow
+    - debian/patches/CVE-2020-3898.patch: properly handle invalid
+      resolution names in cups/ppd.c, ppdc/ppdc-source.cxx.
+    - CVE-2020-3898
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 24 Apr 2020 10:37:14 -0400
+
 cups (2.3.1-9ubuntu1) focal; urgency=medium
 
   * Revert all the CI test changes
