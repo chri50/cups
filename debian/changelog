@@ -1,3 +1,13 @@
+cups (2.3.1-12) unstable; urgency=medium
+
+  * Backport two security patches
+    - CVE-2020-3898: heap-buffer-overflow in libcups’s ppdFindOption()
+      function in ppd-mark.c
+    - CVE-2019-8842: The `ippReadIO` function may under-read an extension
+      field
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 25 Apr 2020 16:13:13 +0200
+
 cups (2.3.1-11) unstable; urgency=medium
 
   * CI Tests: fix cups-basiccommands:
