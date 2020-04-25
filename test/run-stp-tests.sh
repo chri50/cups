@@ -485,7 +485,7 @@ fi
 cat >$BASE/cupsd.conf <<EOF
 StrictConformance Yes
 Browsing Off
-Listen localhost:$port
+Listen 127.0.0.1:$port
 Listen $BASE/sock
 MaxSubscriptions 3
 MaxLogSize 0
@@ -599,7 +599,7 @@ fi
 
 # These get exported because they don't have side-effects...
 CUPS_DISABLE_APPLE_DEFAULT=yes; export CUPS_DISABLE_APPLE_DEFAULT
-CUPS_SERVER=localhost:$port; export CUPS_SERVER
+CUPS_SERVER=127.0.0.1:$port; export CUPS_SERVER
 CUPS_SERVERROOT=$BASE; export CUPS_SERVERROOT
 CUPS_STATEDIR=$BASE; export CUPS_STATEDIR
 CUPS_DATADIR=$BASE/share; export CUPS_DATADIR
@@ -735,10 +735,10 @@ for file in 4*.test ipp-2.1.test; do
         echo $ac_n "`date '+[%d/%b/%Y:%H:%M:%S %z]'` $ac_c" >>$strfile
 
 	if test $file = ipp-2.1.test; then
-		uri="ipp://localhost:$port/printers/Test1"
+		uri="ipp://127.0.0.1:$port/printers/Test1"
 		options="-V 2.1 -d NOPRINT=1 -f testfile.ps"
 	else
-		uri="ipp://localhost:$port/printers"
+		uri="ipp://127.0.0.1:$port/printers"
 		options=""
 	fi
 	$runcups $VALGRIND ./ipptool -tI $options $uri $file >> $strfile
