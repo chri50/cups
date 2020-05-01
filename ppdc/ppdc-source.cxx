@@ -1745,7 +1745,7 @@ ppdcSource::get_resolution(ppdcFile *fp)// I - File to read
   {
     case 1 :
         ydpi = xdpi;
-	break;
+        break;
     case 2 :
         break;
     default :
