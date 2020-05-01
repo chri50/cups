@@ -1,3 +1,9 @@
+cups (2.3.3-1) unstable; urgency=medium
+
+  * New 2.3.3 upstream release, with the two -12 security patches
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 01 May 2020 15:28:22 +0200
+
 cups (2.3.1-12) unstable; urgency=medium
 
   * Backport two security patches

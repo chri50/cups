@@ -40,7 +40,7 @@ index eb99b3e..760e30f 100644
  
   /*
 diff --git a/scheduler/printers.c b/scheduler/printers.c
-index 2fff84b..a729475 100644
+index 545e0de..f28c64a 100644
 --- a/scheduler/printers.c
 +++ b/scheduler/printers.c
 @@ -1503,7 +1503,7 @@ cupsdSaveAllPrinters(void)
