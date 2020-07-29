@@ -6,6 +6,7 @@ Section: net
 Priority: optional
 Build-Depends: debhelper-compat (= 12),
                dh-apparmor,
+               dh-strip-nondeterminism,
                patch,
                autoconf,
                automake,
@@ -147,7 +148,8 @@ Depends: ${shlibs:Depends},
          bc
 Recommends: colord,
             cups-browsed,
-            avahi-daemon
+            avahi-daemon,
+            ipp-usb,
 Suggests: cups,
           cups-bsd,
           cups-common (>= ${source:Version}),
