@@ -1,3 +1,17 @@
+cups (2.3.3-2ubuntu1) groovy; urgency=medium
+
+  * Added extra checking when administrative requests (create queue,
+    remove someone else's job, ...) rach cupsd. If the client is a Snap,
+    it has to plug the cups-control interface to be allowed to do the
+    task. Added libapparmor-dev and libsnapd-glib-dev to the build
+    dependencies. Also added needed permissions to AppArmor profile.
+  * Resolve DNS-SD-service-name-based URIs correctly also if they are from
+    a service from localhost (like IPP-over-USB, Printer Application, ...)
+  * Make lpoptions list a printer's options correctly also when CUPS is
+    running on an alternative port.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Tue, 25 Aug 2020 21:34:00 +0200
+
 cups (2.3.3-2) unstable; urgency=medium
 
   * Add missing dh-strip-nondeterminism B-D

@@ -47,6 +47,13 @@
   network econet dgram,
   network ash dgram,
 
+  # To allow cupsd to determine whether a client is snapped using
+  # libapparmor
+  @{PROC}/*/attr/current r,
+  # To allow cupsd to determine which interfaces a snapped client
+  # is plugging
+  /{,var/}run/snapd/snapd.socket rw,
+
   /{usr/,}bin/bash ixr,
   /{usr/,}bin/dash ixr,
   /{usr/,}bin/hostname ixr,
