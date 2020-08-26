@@ -38,3 +38,4 @@
 9000-cupsd-extra-check-for-admin-tasks-snap-cups-control.patch
 9001-libcups-resolve-dnssd-uri-from-localhost.patch
 9002-cups-lpoptions-list-options-when-port-is-non-standard.patch
+9003-get-fax-number-from-custom-ppd-option.patch
