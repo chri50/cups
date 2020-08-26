@@ -645,6 +645,13 @@
 #undef HAVE_SYS_STATVFS_H
 #undef HAVE_SYS_VFS_H
 
+/*
+ * Do we have the libraries needed for Snap packaging support?
+ */
+
+#undef HAVE_APPARMOR
+#undef HAVE_SNAPDGLIB
+#undef BUILD_SNAP
 
 /*
  * Location of macOS localization bundle, if any.
