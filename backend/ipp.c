@@ -2833,7 +2833,10 @@ new_request(
 	/* Weed out "Custom." in the beginning, this allows to put the
 	   "phone" option as custom string option into the PPD so that
 	   print dialogs not supporting fax display the option and
-	   allow entering the phone number. */
+	   allow entering the phone number. Print dialogs also send "None"
+	   if no phone number got entered, filter this, too. */
+	if (!_cups_strcasecmp(phone, "None"))
+	  *ptr = '\0';
 	if (!_cups_strncasecmp(phone, "Custom.", 7))
 	  _cups_strcpy(ptr, ptr + 7);
 
@@ -2863,6 +2866,8 @@ new_request(
 
 	    _httpDecodeURI(predial, keyword, sizeof(predial));
 	    ptr = predial;
+	    if (!_cups_strcasecmp(ptr, "None"))
+	      *ptr = '\0';
 	    if (!_cups_strncasecmp(ptr, "Custom.", 7))
 	      ptr += 7;
 	    if (strlen(ptr) > 0)
@@ -2872,12 +2877,16 @@ new_request(
 	      fprintf(stderr, "DEBUG: Pre-dialing %s; pre-dial-string: %s\n",
 		      ptr, ptr);
 	    }
+	    else
+	      fprintf(stderr, "WARNING: Pre-dial number for fax not valid! Sending fax without pre-dial number.\n");
 	  }
 
 	  ippAddCollection(request, IPP_TAG_JOB, "destination-uris",
 			   destination);
 	  ippDelete(destination);
 	}
+	else
+	  fprintf(stderr, "ERROR: Phone number for fax not valid! Fax cannot be sent.\n");
       }
     }
     else
