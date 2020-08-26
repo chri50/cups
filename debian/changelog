@@ -1,3 +1,10 @@
+cups (2.3.3-2ubuntu3) groovy; urgency=medium
+
+  * Do not choke if the GTK dialog sends "None" as phone number or pre-dial
+    prefix.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 26 Aug 2020 22:33:00 +0200
+
 cups (2.3.3-2ubuntu2) groovy; urgency=medium
 
   * Fix fax numbers supplied via GTK print dialog, removing a "Custom."
