@@ -43,6 +43,7 @@
 #  include <sys/ucred.h>
 typedef struct xucred cupsd_ucred_t;
 #  define CUPSD_UCRED_UID(c) (c).cr_uid
+#  define CUPSD_UCRED_PID(c) (c).cr_pid
 #else
 #  ifndef __OpenBSD__
 typedef struct ucred cupsd_ucred_t;
@@ -50,7 +51,13 @@ typedef struct ucred cupsd_ucred_t;
 typedef struct sockpeercred cupsd_ucred_t;
 #  endif
 #  define CUPSD_UCRED_UID(c) (c).uid
+#  define CUPSD_UCRED_PID(c) (c).pid
 #endif /* HAVE_SYS_UCRED_H */
+#ifdef BUILD_SNAP
+#  include <sys/apparmor.h>
+#  include <glib.h>
+#  include <snapd-glib/snapd-glib.h>
+#endif /* BUILD_SNAP */
 
 
 /*
@@ -1521,6 +1528,189 @@ cupsdFreeLocation(cupsd_location_t *loc)/* I - Location to free */
 
 
 /*
+ * 'cupsdCheckAdminTask()' - Do additional checks on administrative tasks
+ */
+
+int                                      /* O - 1 if admin task authorized */
+cupsdCheckAdminTask(cupsd_client_t *con) /* I - Connection */
+{
+  int ret = 1; /* Return value */
+
+  cupsdLogMessage(CUPSD_LOG_DEBUG,
+		  "cupsdCheckAdminTask: Administrative task");
+
+#if defined(SO_PEERCRED) && defined(AF_LOCAL)
+ /*
+  * Get the client's PID if it accesses locally via domain socket
+  */
+
+  if (httpAddrFamily(con->http->hostaddr) == AF_LOCAL)
+  {
+    cupsd_ucred_t	peercred;	/* Peer credentials */
+    socklen_t		peersize;	/* Size of peer credentials */
+    int                 client_pid;     /* PID of client */
+
+    peersize = sizeof(peercred);
+
+#  ifdef __APPLE__
+    if (getsockopt(httpGetFd(con->http), 0, LOCAL_PEERCRED, &peercred,
+		   &peersize))
+#  else
+    if (getsockopt(httpGetFd(con->http), SOL_SOCKET, SO_PEERCRED, &peercred,
+		   &peersize))
+#  endif /* __APPLE__ */
+    {
+      cupsdLogMessage(CUPSD_LOG_ERROR,
+		      "cupsdCheckAdminTask: Unable to get peer credentials of client connecting via domain socket - Error: %s",
+		      strerror(errno));
+    }
+    else
+    {
+      cupsdLogMessage(CUPSD_LOG_DEBUG2,
+		      "cupsdCheckAdminTask: Client UID %d PID %d",
+		      CUPSD_UCRED_UID(peercred),
+		      CUPSD_UCRED_PID(peercred));
+      client_pid = CUPSD_UCRED_PID(peercred);
+
+      /* Examine client process here */
+      cupsdLogMessage(CUPSD_LOG_DEBUG,
+		      "cupsdCheckAdminTask: Clent connecting via domain socket, examining client process %d ...",
+		      client_pid);
+#  ifdef BUILD_SNAP
+      cupsdLogMessage(CUPSD_LOG_DEBUG,
+		      "cupsdCheckAdminTask: Checking whether client process is from a Snap ...");
+
+#define SNAP_LABEL_PREFIX           "snap."
+#define SNAP_LABEL_PREFIX_LENGTH    5
+
+      char *context = NULL;
+      char *snap_name = NULL;
+      char *dot;
+      SnapdClient *snapd = NULL;
+      SnapdSnap *snap = NULL;
+      GPtrArray *plugs = NULL;
+      GError *error = NULL;
+
+      /* If AppArmor is not enabled, then we can't identify the client */
+      if (!aa_is_enabled())
+      {
+	cupsdLogMessage(CUPSD_LOG_DEBUG,
+			"cupsdCheckAdminTask: No AppArmor in use");
+	goto snap_check_done;
+      }
+
+      if (aa_gettaskcon(client_pid, &context, NULL) < 0)
+      {
+	cupsdLogMessage(CUPSD_LOG_DEBUG,
+			"cupsdCheckAdminTask: AppArmor profile could not be retrieved for client process - Error: %s",
+			strerror(errno));
+	goto snap_check_done;
+      } else
+	cupsdLogMessage(CUPSD_LOG_DEBUG2,
+			"cupsdCheckAdminTask: AppArmor profile of client process: %s",
+			context);
+
+      /* If the AppArmor context does not begin with "snap.", then this
+       * is not a snap */
+      if (strncmp(context, SNAP_LABEL_PREFIX, SNAP_LABEL_PREFIX_LENGTH) != 0)
+      {
+	cupsdLogMessage(CUPSD_LOG_DEBUG,
+			"cupsdCheckAdminTask: AppArmor context not from a Snap");
+        goto snap_check_done;
+      }
+
+      dot = strchr(context + SNAP_LABEL_PREFIX_LENGTH, '.');
+      if (dot == NULL)
+      {
+        cupsdLogMessage(CUPSD_LOG_DEBUG,
+			"cupsdCheckAdminTask: Malformed snapd AppArmor profile name: %s",
+			context);
+        goto snap_check_done;
+      }
+      snap_name = strndup(context + SNAP_LABEL_PREFIX_LENGTH,
+			  (size_t)(dot - context - SNAP_LABEL_PREFIX_LENGTH));
+      cupsdLogMessage(CUPSD_LOG_DEBUG,
+		      "cupsdCheckAdminTask: Client is the Snap %s",
+		      snap_name);
+
+      /* Connect to snapd */
+      snapd = snapd_client_new();
+      if (!snapd)
+      {
+	cupsdLogMessage(CUPSD_LOG_DEBUG,
+			"cupsdCheckAdminTask: Could not connect to snapd, permission denied");
+	ret = 0;
+	goto snap_check_done;
+      }
+
+      /* Check whether the client Snap is under classic confinement */
+      snap = snapd_client_get_snap_sync(snapd, snap_name, NULL, &error);
+      if (!snap)
+      {
+        cupsdLogMessage(CUPSD_LOG_DEBUG,
+			"cupsdCheckAdminTask: Could not obtain Snap data: \"%s\", permission denied",
+			error->message);
+	ret = 0;
+	goto snap_check_done;
+      }
+
+      /* Snaps using classic confinement are granted access */
+      if (snapd_snap_get_confinement(snap) == SNAPD_CONFINEMENT_CLASSIC)
+      {
+        cupsdLogMessage(CUPSD_LOG_DEBUG,
+			"cupsdCheckAdminTask: Client Snap under classic confinement, access granted");
+        goto snap_check_done;
+      }
+
+      /* Get list of interfaces to which the client Snap is plugging */
+      if (!snapd_client_get_connections2_sync(snapd,
+					      SNAPD_GET_CONNECTIONS_FLAGS_NONE,
+					      snap_name, "cups-control", NULL,
+					      NULL, &plugs, NULL, NULL, &error))
+      {
+        cupsdLogMessage(CUPSD_LOG_DEBUG,
+			"cupsdCheckAdminTask: Could not obtain the Snap's interface connections: \"%s\", permission denied",
+			error->message);
+	ret = 0;
+	goto snap_check_done;
+      }
+
+      if (plugs->len <= 0)
+      {
+	cupsdLogMessage(CUPSD_LOG_DEBUG,
+			"cupsdCheckAdminTask: Snap does not connect via \"cups-control\" interface, permission denied");
+	ret = 0;
+	goto snap_check_done;
+      }
+
+      cupsdLogMessage(CUPSD_LOG_DEBUG,
+		      "cupsdCheckAdminTask: Snap connecting via \"cups-control\" interface, access granted");
+
+    snap_check_done:
+      if (context)
+	free(context);
+      if (snap_name)
+	free(snap_name);
+      if (snapd)
+	g_clear_object(&snapd);
+      if (snap)
+	g_clear_object(&snap);
+      if (plugs)
+	g_clear_object(&plugs);
+#  endif /* BUILD_SNAP */
+    }
+  }
+#endif /* SO_PEERCRED && AF_LOCAL */
+
+  cupsdLogMessage(CUPSD_LOG_DEBUG,
+		  "cupsdCheckAdminTask: Access %s",
+		  ret == 1 ? "granted" : "denied");
+
+  return ret;
+}
+
+
+/*
  * 'cupsdIsAuthorized()' - Check to see if the user is authorized...
  */
 
@@ -1714,11 +1904,8 @@ cupsdIsAuthorized(cupsd_client_t *con,	/* I - Connection */
 
  /*
   * OK, got a username.  See if we need normal user access, or group
-  * access... (root always matches)
+  * access...
   */
-
-  if (!strcmp(username, "root"))
-    return (HTTP_OK);
 
  /*
   * Strip any @domain or @KDC from the username and owner...
@@ -1748,6 +1935,21 @@ cupsdIsAuthorized(cupsd_client_t *con,	/* I - Connection */
   }
   else
     pw = NULL;
+
+ /*
+  * For matching user and group memberships below we will first go
+  * through all names except @SYSTEM to authorize the task as
+  * non-administrative, like printing or deleting one's own job, if this
+  * fails we will check whether we can authorize via the special name
+  * @SYSTEM, as an administrative task, like creating a print queue or
+  * deleting someone else's job.
+  * Note that tasks are considered as administrative by the policies
+  * in cupsd.conf, when they require the user or group @SYSTEM.
+  * We do this separation because if the client is a Snap connecting via
+  * domain socket, we need to additionally check whether it plugs to us
+  * through the "cups-control" interface which allows administration and
+  * not through the "cups" interface which allows only printing.
+  */
 
   if (best->level == CUPSD_AUTH_USER)
   {
@@ -1779,8 +1981,15 @@ cupsdIsAuthorized(cupsd_client_t *con,	/* I - Connection */
       {
 	if (!_cups_strncasecmp(name, "@AUTHKEY(", 9) && check_authref(con, name + 9))
 	  return (HTTP_OK);
-	else if (!_cups_strcasecmp(name, "@SYSTEM") && SystemGroupAuthKey &&
-		 check_authref(con, SystemGroupAuthKey))
+      }
+
+      for (name = (char *)cupsArrayFirst(best->names);
+           name;
+	   name = (char *)cupsArrayNext(best->names))
+      {
+	if (!_cups_strcasecmp(name, "@SYSTEM") && SystemGroupAuthKey &&
+	    check_authref(con, SystemGroupAuthKey) &&
+	    cupsdCheckAdminTask(con))
 	  return (HTTP_OK);
       }
 
@@ -1797,9 +2006,8 @@ cupsdIsAuthorized(cupsd_client_t *con,	/* I - Connection */
 	return (HTTP_OK);
       else if (!_cups_strcasecmp(name, "@SYSTEM"))
       {
-        for (i = 0; i < NumSystemGroups; i ++)
-	  if (cupsdCheckGroup(username, pw, SystemGroups[i]))
-	    return (HTTP_OK);
+	/* Do @SYSTEM later, when every other entry fails */
+	continue;
       }
       else if (name[0] == '@')
       {
@@ -1808,6 +2016,19 @@ cupsdIsAuthorized(cupsd_client_t *con,	/* I - Connection */
       }
       else if (!_cups_strcasecmp(username, name))
         return (HTTP_OK);
+    }
+
+    for (name = (char *)cupsArrayFirst(best->names);
+	 name;
+	 name = (char *)cupsArrayNext(best->names))
+    {
+      if (!_cups_strcasecmp(name, "@SYSTEM"))
+      {
+        for (i = 0; i < NumSystemGroups; i ++)
+	  if (cupsdCheckGroup(username, pw, SystemGroups[i]) &&
+	      cupsdCheckAdminTask(con))
+	    return (HTTP_OK);
+      }
     }
 
     return (con->username[0] ? HTTP_FORBIDDEN : HTTP_UNAUTHORIZED);
@@ -1827,16 +2048,31 @@ cupsdIsAuthorized(cupsd_client_t *con,	/* I - Connection */
        name;
        name = (char *)cupsArrayNext(best->names))
   {
-    cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdIsAuthorized: Checking group \"%s\" membership...", name);
-
     if (!_cups_strcasecmp(name, "@SYSTEM"))
     {
+      /* Do @SYSTEM later, when every other entry fails */
+      continue;
+    }
+
+    cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdIsAuthorized: Checking group \"%s\" membership...", name);
+
+    if (cupsdCheckGroup(username, pw, name))
+      return (HTTP_OK);
+  }
+
+  for (name = (char *)cupsArrayFirst(best->names);
+       name;
+       name = (char *)cupsArrayNext(best->names))
+  {
+    if (!_cups_strcasecmp(name, "@SYSTEM"))
+    {
+      cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdIsAuthorized: Checking group \"%s\" membership...", name);
+
       for (i = 0; i < NumSystemGroups; i ++)
-	if (cupsdCheckGroup(username, pw, SystemGroups[i]))
+	if (cupsdCheckGroup(username, pw, SystemGroups[i]) &&
+	    cupsdCheckAdminTask(con))
 	  return (HTTP_OK);
     }
-    else if (cupsdCheckGroup(username, pw, name))
-      return (HTTP_OK);
   }
 
  /*
