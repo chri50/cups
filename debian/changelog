@@ -1,3 +1,10 @@
+cups (2.3.3-2ubuntu4) groovy; urgency=medium
+
+  * Let the rastertopwg filter check rounding errors when calculating the
+    page geometry.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 27 Aug 2020 10:22:00 +0200
+
 cups (2.3.3-2ubuntu3) groovy; urgency=medium
 
   * Do not choke if the GTK dialog sends "None" as phone number or pre-dial
