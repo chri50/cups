@@ -36,8 +36,12 @@ cleanup() {
 
 trap cleanup EXIT INT
 
+# Configure the running CUPS server to do debug2 logging
+sed -e 's/^.*LogLevel.*$/LogLevel debug2/g' -i /etc/cups/cupsd.conf
 # Configure the running CUPS server to set FileDevice to Yes
-sed -e 's/^#.*FileDevice.*$/FileDevice Yes/g' -i /etc/cups/cups-files.conf
+sed -e 's/^.*FileDevice.*$/FileDevice Yes/g' -i /etc/cups/cups-files.conf
+# Configure the running CUPS server to allow root to do administrative tasks
+sed -e 's/^.*SystemGroup.*$/SystemGroup lpadmin root/g' -i /etc/cups/cups-files.conf
 service cups restart
 
 DUMMY_PRINTER_STDERR_FILE=`mktemp`

@@ -51,6 +51,17 @@ cleanup() {
 
 trap cleanup EXIT INT
 
+
+# Configure the running CUPS server to do debug2 logging
+echo " - Setting CUPS into debug2 mode"
+sed -e 's/^.*LogLevel.*$/LogLevel debug2/g' -i /etc/cups/cupsd.conf
+# Configure the running CUPS server to allow root to do administrative tasks
+echo " - Setting CUPS to allow root to do administrative tasks"
+sed -e 's/^.*SystemGroup.*$/SystemGroup lpadmin root/g' -i /etc/cups/cups-files.conf
+# Restart CUPS
+echo " - Restarting CUPS to apply configuration changes"
+service cups restart
+
 echo " - Create printer $TPRN1"
 lpadmin -p $TPRN1 -v file:/dev/null -E -m $ML 2> $STDERR_FILE; filter_stderr_from_file $STDERR_FILE
 echo " - Set $TPRN1 default"
