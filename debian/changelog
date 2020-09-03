@@ -1,9 +1,29 @@
+cups (2.3.3-3) unstable; urgency=medium
+
+  [ Didier Raboud ]
+  * Set lintian overrides for non-changeable upstream choices
+  * Add missing Build-Depends-Package in symbols' files
+
+  [ Till Kamppeter ]
+  * Resolve DNS-SD-service-name-based URIs correctly also if they are
+    from a service from localhost (like IPP-over-USB, Printer
+    Application, ...)
+  * Make lpoptions list a printer's options correctly also when CUPS is
+    running on an alternative port
+  * Fix fax numbers supplied via GTK print dialog, removing a "Custom."
+    prefix; do not choke if the GTK dialog sends "None" as phone number
+    or pre-dial prefix
+  * Let the rastertopwg filter check rounding errors when calculating
+    the page geometry
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 03 Sep 2020 09:27:04 +0200
+
 cups (2.3.3-2) unstable; urgency=medium
 
   * Add missing dh-strip-nondeterminism B-D
   * cups-daemon: Add ipp-usb Recommends
 
- -- Didier Raboud <odyx@debian.org>  Wed, 29 Jul 2020 09:20:56 +0200
+ -- Didier Raboud <odyx@debian.org>  Thu, 03 Sep 2020 08:54:55 +0200
 
 cups (2.3.3-1) unstable; urgency=medium
 

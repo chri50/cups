@@ -35,3 +35,7 @@
 0035-Use-dpkg-architecture-in-cups-config-to-make-it-arch.patch
 0036-Build-mantohtml-with-the-build-architecture-compiler.patch
 0037-po4a-infrastructure-and-translations-for-manpages.patch
+0038-Resolve-DNS-SD-service-name-based-URIs-correctly-als.patch
+0039-Make-lpoptions-list-a-printer-s-options-correctly-al.patch
+0040-Fix-fax-numbers-supplied-via-GTK-print-dialog-removi.patch
+0041-Let-the-rastertopwg-filter-check-rounding-errors-whe.patch
