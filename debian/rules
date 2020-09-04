@@ -60,6 +60,7 @@ endif
 		--with-log-file-perm=0640 \
 		--with-local_protocols='dnssd' \
 		--with-systemd=/lib/systemd/system \
+		--with-system-groups='lpadmin root' \
 		$(CONFIG_LIBUSB)
 
 override_dh_auto_install:

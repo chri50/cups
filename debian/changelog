@@ -1,3 +1,18 @@
+cups (2.3.3-3ubuntu1) groovy; urgency=medium
+
+  * Merged with Debian unstable. Remaining changes:
+    - Added extra checking when administrative requests (create queue,
+      remove someone else's job, ...) rach cupsd. If the client is a Snap,
+      it has to plug the cups-control interface to be allowed to do the
+      task. Added libapparmor-dev and libsnapd-glib-dev to the build
+      dependencies. Also added needed permissions to AppArmor profile.
+  * Build CUPS with "SystemGroup lpadmin root" in cups-files.conf by
+    defualt, as CUPS always worked this way but the new patch for
+    supporting the "cups-control" interface of Snaps does not allow
+    implicit permission to everything for root any more.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri,  4 Sep 2020 19:00:00 +0200
+
 cups (2.3.3-3) unstable; urgency=medium
 
   [ Didier Raboud ]
@@ -18,12 +33,57 @@ cups (2.3.3-3) unstable; urgency=medium
 
  -- Didier Raboud <odyx@debian.org>  Thu, 03 Sep 2020 09:27:04 +0200
 
+cups (2.3.3-2ubuntu5) groovy; urgency=medium
+
+  * In all autopkgtests modify set "LogLevel debug2" in cupsd.conf and
+    "SystemGroup lpadmin root" in cups-files.conf and restart cupsd,
+    the former change to more easily find out what failed and the latter
+    as the default configuration did not allow root to create queues,
+    making all tests fail.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Thu, 27 Aug 2020 23:18:00 +0200
+
+cups (2.3.3-2ubuntu4) groovy; urgency=medium
+
+  * Let the rastertopwg filter check rounding errors when calculating the
+    page geometry.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 27 Aug 2020 10:22:00 +0200
+
+cups (2.3.3-2ubuntu3) groovy; urgency=medium
+
+  * Do not choke if the GTK dialog sends "None" as phone number or pre-dial
+    prefix.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 26 Aug 2020 22:33:00 +0200
+
+cups (2.3.3-2ubuntu2) groovy; urgency=medium
+
+  * Fix fax numbers supplied via GTK print dialog, removing a "Custom."
+    prefix.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 26 Aug 2020 13:03:00 +0200
+
+cups (2.3.3-2ubuntu1) groovy; urgency=medium
+
+  * Added extra checking when administrative requests (create queue,
+    remove someone else's job, ...) rach cupsd. If the client is a Snap,
+    it has to plug the cups-control interface to be allowed to do the
+    task. Added libapparmor-dev and libsnapd-glib-dev to the build
+    dependencies. Also added needed permissions to AppArmor profile.
+  * Resolve DNS-SD-service-name-based URIs correctly also if they are from
+    a service from localhost (like IPP-over-USB, Printer Application, ...)
+  * Make lpoptions list a printer's options correctly also when CUPS is
+    running on an alternative port.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Tue, 25 Aug 2020 21:34:00 +0200
+
 cups (2.3.3-2) unstable; urgency=medium
 
   * Add missing dh-strip-nondeterminism B-D
   * cups-daemon: Add ipp-usb Recommends
 
- -- Didier Raboud <odyx@debian.org>  Thu, 03 Sep 2020 08:54:55 +0200
+ -- Didier Raboud <odyx@debian.org>  Wed, 29 Jul 2020 09:20:56 +0200
 
 cups (2.3.3-1) unstable; urgency=medium
 
