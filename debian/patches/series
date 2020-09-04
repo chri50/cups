@@ -39,3 +39,4 @@
 0039-Make-lpoptions-list-a-printer-s-options-correctly-al.patch
 0040-Fix-fax-numbers-supplied-via-GTK-print-dialog-removi.patch
 0041-Let-the-rastertopwg-filter-check-rounding-errors-whe.patch
+9000-cupsd-extra-check-for-admin-tasks-snap-cups-control.patch
