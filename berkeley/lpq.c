@@ -1,5 +1,5 @@
 /*
- * "$Id: lpq.c 8407 2009-03-05 18:44:14Z mike $"
+ * "$Id: lpq.c 8406 2009-03-05 18:42:58Z mike $"
  *
  *   "lpq" command for the Common UNIX Printing System (CUPS).
  *
@@ -355,8 +355,8 @@ show_jobs(const char *command,		/* I - Command name */
 		};
 
 
-  DEBUG_printf(("show_jobs(%08x, %08x, %08x, %d, %d)\n", http, dest, user, id,
-                longstatus));
+  DEBUG_printf(("show_jobs(http=%p, dest=%p, user=%p, id=%d, longstatus%d)\n",
+                http, dest, user, id, longstatus));
 
   if (http == NULL)
     return (0);
@@ -666,5 +666,5 @@ usage(void)
 
 
 /*
- * End of "$Id: lpq.c 8407 2009-03-05 18:44:14Z mike $".
+ * End of "$Id: lpq.c 8406 2009-03-05 18:42:58Z mike $".
  */

@@ -1,5 +1,5 @@
 /*
- * "$Id: snprintf.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: snprintf.c 8179 2008-12-10 05:03:11Z mike $"
  *
  *   snprintf functions for the Common UNIX Printing System (CUPS).
  *
@@ -359,6 +359,6 @@ _cups_snprintf(char       *buffer,	/* O - Output buffer */
 
 
 /*
- * End of "$Id: snprintf.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: snprintf.c 8179 2008-12-10 05:03:11Z mike $".
  */
 

@@ -1,5 +1,5 @@
 /*
- * "$Id: network.c 8513 2009-04-16 19:32:04Z mike $"
+ * "$Id: network.c 8566 2009-04-28 00:23:38Z mike $"
  *
  *   Network interface functions for the Common UNIX Printing System
  *   (CUPS) scheduler.
@@ -155,7 +155,7 @@ cupsdNetIFUpdate(void)
     * Try looking up the hostname for the address as needed...
     */
 
-    if (HostNameLookups || RemoteAccessEnabled)
+    if (HostNameLookups || RemotePort)
       httpAddrLookup((http_addr_t *)(addr->ifa_addr), hostname,
                      sizeof(hostname));
     else
@@ -302,5 +302,5 @@ compare_netif(cupsd_netif_t *a,		/* I - First network interface */
 
 
 /*
- * End of "$Id: network.c 8513 2009-04-16 19:32:04Z mike $".
+ * End of "$Id: network.c 8566 2009-04-28 00:23:38Z mike $".
  */

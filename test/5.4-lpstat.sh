@@ -1,10 +1,10 @@
 #!/bin/sh
 #
-# "$Id: 5.4-lpstat.sh 6649 2007-07-11 21:46:42Z mike $"
+# "$Id: 5.4-lpstat.sh 8498 2009-04-13 17:03:15Z mike $"
 #
 #   Test the lpstat command.
 #
-#   Copyright 2007 by Apple Inc.
+#   Copyright 2007-2009 by Apple Inc.
 #   Copyright 1997-2005 by Easy Software Products, all rights reserved.
 #
 #   These coded instructions, statements, and computer programs are the
@@ -26,6 +26,18 @@ else
 fi
 echo ""
 
+echo "LPSTAT Test"
+echo ""
+echo "    lpstat -H"
+server="`../systemv/lpstat -H 2>&1`"
+if test $? != 0 -o "x$server" != xlocalhost:8631; then
+	echo "    FAILED ($server)"
+	exit 1
+else
+	echo "    PASSED ($server)"
+fi
+echo ""
+
 #
-# End of "$Id: 5.4-lpstat.sh 6649 2007-07-11 21:46:42Z mike $".
+# End of "$Id: 5.4-lpstat.sh 8498 2009-04-13 17:03:15Z mike $".
 #

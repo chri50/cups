@@ -1,5 +1,5 @@
 /*
- * "$Id: quotas.c 8296 2009-01-28 16:49:56Z mike $"
+ * "$Id: quotas.c 8383 2009-02-23 01:06:14Z mike $"
  *
  *   Quota routines for the Common UNIX Printing System (CUPS).
  *
@@ -178,24 +178,14 @@ cupsdUpdateQuota(
         attr = ippFindAttribute(job->attrs, "time-at-creation",
                                 IPP_TAG_INTEGER);
 
-    if (!attr)
-    {
-     /*
-      * This should never happen since cupsdLoadJob() checks for
-      * time-at-creation, but if it does just ignore this job...
-      */
-
-      continue;
-    }
-
     if (attr->values[0].integer < curtime)
     {
      /*
       * This job is too old to count towards the quota, ignore it...
       */
 
-      if (JobAutoPurge)
-        cupsdCancelJob(job, 1, IPP_JOB_CANCELED);
+      if (JobAutoPurge && !job->printer && job->state_value > IPP_JOB_STOPPED)
+        cupsdDeleteJob(job, CUPSD_JOB_PURGE);
 
       continue;
     }
@@ -263,5 +253,5 @@ compare_quotas(const cupsd_quota_t *q1,	/* I - First quota record */
 
 
 /*
- * End of "$Id: quotas.c 8296 2009-01-28 16:49:56Z mike $".
+ * End of "$Id: quotas.c 8383 2009-02-23 01:06:14Z mike $".
  */

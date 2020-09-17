@@ -1,5 +1,5 @@
 /*
- * "$Id: custom.c 6649 2007-07-11 21:46:42Z mike $"
+ * "$Id: custom.c 8179 2008-12-10 05:03:11Z mike $"
  *
  *   PPD custom option routines for the Common UNIX Printing System (CUPS).
  *
@@ -42,7 +42,7 @@
 /*
  * 'ppdFindCustomOption()' - Find a custom option.
  *
- * @since CUPS 1.2@
+ * @since CUPS 1.2/Mac OS X 10.5@
  */
 
 ppd_coption_t *				/* O - Custom option or NULL */
@@ -63,7 +63,7 @@ ppdFindCustomOption(ppd_file_t *ppd,	/* I - PPD file */
 /*
  * 'ppdFindCustomParam()' - Find a parameter for a custom option.
  *
- * @since CUPS 1.2@
+ * @since CUPS 1.2/Mac OS X 10.5@
  */
 
 ppd_cparam_t *				/* O - Custom parameter or NULL */
@@ -84,7 +84,7 @@ ppdFindCustomParam(ppd_coption_t *opt,	/* I - Custom option */
 /*
  * 'ppdFirstCustomParam()' - Return the first parameter for a custom option.
  *
- * @since CUPS 1.2@
+ * @since CUPS 1.2/Mac OS X 10.5@
  */
 
 ppd_cparam_t *				/* O - Custom parameter or NULL */
@@ -100,7 +100,7 @@ ppdFirstCustomParam(ppd_coption_t *opt)	/* I - Custom option */
 /*
  * 'ppdNextCustomParam()' - Return the next parameter for a custom option.
  *
- * @since CUPS 1.2@
+ * @since CUPS 1.2/Mac OS X 10.5@
  */
 
 ppd_cparam_t *				/* O - Custom parameter or NULL */
@@ -114,5 +114,5 @@ ppdNextCustomParam(ppd_coption_t *opt)	/* I - Custom option */
 
 
 /*
- * End of "$Id: custom.c 6649 2007-07-11 21:46:42Z mike $".
+ * End of "$Id: custom.c 8179 2008-12-10 05:03:11Z mike $".
  */

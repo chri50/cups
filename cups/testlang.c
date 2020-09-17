@@ -1,9 +1,9 @@
 /*
- * "$Id: testlang.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: testlang.c 8669 2009-05-21 22:17:54Z mike $"
  *
  *   Localization test program for the Common UNIX Printing System (CUPS).
  *
- *   Copyright 2007 by Apple Inc.
+ *   Copyright 2007-2009 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -112,5 +112,5 @@ main(int  argc,				/* I - Number of command-line arguments */
 
 
 /*
- * End of "$Id: testlang.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: testlang.c 8669 2009-05-21 22:17:54Z mike $".
  */
