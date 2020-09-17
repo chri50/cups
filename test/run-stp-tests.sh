@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# "$Id: run-stp-tests.sh 9423 2011-01-06 22:21:05Z mike $"
+# "$Id: run-stp-tests.sh 9445 2011-01-08 00:03:51Z mike $"
 #
 #   Perform the complete set of IPP compliance tests specified in the
 #   CUPS Software Test Plan.
@@ -463,6 +463,9 @@ export HOME
 LANG=C
 export LANG
 
+LC_MESSAGES=C
+export LC_MESSAGES
+
 #
 # Start the server; run as foreground daemon in the background...
 #
@@ -862,5 +865,5 @@ if test $fail != 0; then
 fi
 
 #
-# End of "$Id: run-stp-tests.sh 9423 2011-01-06 22:21:05Z mike $"
+# End of "$Id: run-stp-tests.sh 9445 2011-01-08 00:03:51Z mike $"
 #

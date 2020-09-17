@@ -1,9 +1,9 @@
 /*
- * "$Id: http-addrlist.c 8532 2009-04-20 21:37:14Z mike $"
+ * "$Id: http-addrlist.c 9609 2011-03-16 02:53:49Z mike $"
  *
- *   HTTP address list routines for the Common UNIX Printing System (CUPS).
+ *   HTTP address list routines for CUPS.
  *
- *   Copyright 2007-2009 by Apple Inc.
+ *   Copyright 2007-2011 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -271,7 +271,7 @@ httpAddrGetList(const char *hostname,	/* I - Hostname, IP address, or NULL for p
     struct addrinfo	hints,		/* Address lookup hints */
 			*results,	/* Address lookup results */
 			*current;	/* Current result */
-    char		ipv6[1024],	/* IPv6 address */
+    char		ipv6[64],	/* IPv6 address */
 			*ipv6zone;	/* Pointer to zone separator */
     int			ipv6len;	/* Length of IPv6 address */
     int			error;		/* getaddrinfo() error */
@@ -657,5 +657,5 @@ httpAddrGetList(const char *hostname,	/* I - Hostname, IP address, or NULL for p
 
 
 /*
- * End of "$Id: http-addrlist.c 8532 2009-04-20 21:37:14Z mike $".
+ * End of "$Id: http-addrlist.c 9609 2011-03-16 02:53:49Z mike $".
  */

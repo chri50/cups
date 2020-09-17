@@ -1,10 +1,10 @@
 /*
- * "$Id: adminutil.c 9376 2010-11-17 19:58:22Z mike $"
+ * "$Id: adminutil.c 9445 2011-01-08 00:03:51Z mike $"
  *
  *   Administration utility API definitions for the Common UNIX Printing
  *   System (CUPS).
  *
- *   Copyright 2007-2010 by Apple Inc.
+ *   Copyright 2007-2011 by Apple Inc.
  *   Copyright 2001-2007 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -2037,6 +2037,8 @@ cupsAdminSetServerSettings(
 
   for (i = num_settings, setting = settings; i > 0; i --, setting ++)
     if (setting->name[0] != '_' &&
+        strcasecmp(setting->name, "Listen") &&
+	strcasecmp(setting->name, "Port") &&
         !cupsGetOption(setting->name, cupsd_num_settings, cupsd_settings))
     {
      /*
@@ -2455,5 +2457,5 @@ write_option(cups_file_t     *dstfp,	/* I - PPD file */
 
 
 /*
- * End of "$Id: adminutil.c 9376 2010-11-17 19:58:22Z mike $".
+ * End of "$Id: adminutil.c 9445 2011-01-08 00:03:51Z mike $".
  */

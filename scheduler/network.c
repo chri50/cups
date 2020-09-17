@@ -1,5 +1,5 @@
 /*
- * "$Id: network.c 9098 2010-04-09 22:42:09Z mike $"
+ * "$Id: network.c 9445 2011-01-08 00:03:51Z mike $"
  *
  *   Network interface functions for the CUPS scheduler.
  *
@@ -154,11 +154,7 @@ cupsdNetIFUpdate(void)
     * Try looking up the hostname for the address as needed...
     */
 
-#ifdef __APPLE__
     if (HostNameLookups)
-#else
-    if (HostNameLookups || RemotePort)
-#endif /* __APPLE__ */
       httpAddrLookup((http_addr_t *)(addr->ifa_addr), hostname,
                      sizeof(hostname));
     else
@@ -166,7 +162,7 @@ cupsdNetIFUpdate(void)
      /*
       * Map the default server address and localhost to the server name
       * and localhost, respectively; for all other addresses, use the
-      * dotted notation...
+      * numeric address...
       */
 
       if (httpAddrLocalhost((http_addr_t *)(addr->ifa_addr)))
@@ -305,5 +301,5 @@ compare_netif(cupsd_netif_t *a,		/* I - First network interface */
 
 
 /*
- * End of "$Id: network.c 9098 2010-04-09 22:42:09Z mike $".
+ * End of "$Id: network.c 9445 2011-01-08 00:03:51Z mike $".
  */

@@ -4,7 +4,7 @@
 <head>
 <title>CUPS API</title>
 <meta name="keywords" content="Programming">
-<meta name="creator" content="Mini-XML v2.6">
+<meta name="creator" content="Mini-XML v2.7">
 <style type="text/css"><!--
 BODY {
   font-family: lucida grande, geneva, helvetica, arial, sans-serif;
@@ -338,7 +338,7 @@ div.contents ul.subcontents li {
 <body>
 <div class='body'>
 <!--
-  "$Id: api-cups.html 9121 2010-04-23 18:57:00Z mike $"
+  "$Id: api-cups.html 9728 2011-04-28 21:21:24Z mike $"
 
   CUPS API header for the Common UNIX Printing System (CUPS).
 
@@ -475,11 +475,11 @@ specified server.">cupsPrintFiles2</a></li>
 	<li><a href="#cups_ptype_e" title="Printer type/capability bit constants">cups_ptype_e</a></li>
 </ul></li>
 <!--
-  "$Id: api-cups.html 9121 2010-04-23 18:57:00Z mike $"
+  "$Id: api-cups.html 9728 2011-04-28 21:21:24Z mike $"
 
-  CUPS API introduction for the Common UNIX Printing System (CUPS).
+  API introduction for CUPS.
 
-  Copyright 2007-2010 by Apple Inc.
+  Copyright 2007-2011 by Apple Inc.
   Copyright 1997-2006 by Easy Software Products, all rights reserved.
 
   These coded instructions, statements, and computer programs are the
@@ -526,7 +526,7 @@ specific destination for printing:</p>
 int num_dests = <a href='#cupsGetDests'>cupsGetDests</a>(&amp;dests);
 <a href='#cups_dest_t'>cups_dest_t</a> *dest = <a href='#cupsGetDest'>cupsGetDest</a>("name", NULL, num_dests, dests);
 
-/* do something wiith dest */
+/* do something with dest */
 
 <a href='#cupsFreeDests'>cupsFreeDests</a>(num_dests, dests);
 </pre>
