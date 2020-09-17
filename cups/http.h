@@ -1,5 +1,5 @@
 /*
- * "$Id: http.h 8724 2009-06-22 20:40:28Z mike $"
+ * "$Id: http.h 9157 2010-06-16 05:27:41Z mike $"
  *
  *   Hyper-Text Transport Protocol definitions for the Common UNIX Printing
  *   System (CUPS).
@@ -250,7 +250,7 @@ typedef enum http_status_e		/**** HTTP status codes ****/
   HTTP_GATEWAY_TIMEOUT,			/* Gateway connection timed out */
   HTTP_NOT_SUPPORTED,			/* HTTP version not supported */
 
-  HTTP_AUTHORIZATION_CANCELED = 1000	/* User cancelled authorization */
+  HTTP_AUTHORIZATION_CANCELED = 1000	/* User canceled authorization */
 
 } http_status_t;
 
@@ -450,5 +450,5 @@ extern void		httpSetAuthString(http_t *http, const char *scheme,
 #endif /* !_CUPS_HTTP_H_ */
 
 /*
- * End of "$Id: http.h 8724 2009-06-22 20:40:28Z mike $".
+ * End of "$Id: http.h 9157 2010-06-16 05:27:41Z mike $".
  */

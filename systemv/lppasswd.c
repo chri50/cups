@@ -1,5 +1,5 @@
 /*
- * "$Id: lppasswd.c 9059 2010-03-30 20:38:48Z mike $"
+ * "$Id: lppasswd.c 9061 2010-03-30 22:07:33Z mike $"
  *
  *   MD5 password program for the Common UNIX Printing System (CUPS).
  *
@@ -86,12 +86,14 @@ main(int  argc,				/* I - Number of command-line arguments */
   int		fd;			/* Password file descriptor */
   int		error;			/* Write error */
   _cups_globals_t *cg = _cupsGlobals();	/* Global data */
+  cups_lang_t	*lang;			/* Language info */
 #if defined(HAVE_SIGACTION) && !defined(HAVE_SIGSET)
   struct sigaction action;		/* Signal action */
 #endif /* HAVE_SIGACTION && !HAVE_SIGSET*/
 
 
   _cupsSetLocale(argv);
+  lang = cupsLangDefault();
 
  /*
   * Check to see if stdin, stdout, and stderr are still open...
@@ -211,7 +213,8 @@ main(int  argc,				/* I - Number of command-line arguments */
 
   if (op != DELETE)
   {
-    if ((passwd = cupsGetPassword(_("Enter password:"))) == NULL)
+    if ((passwd = cupsGetPassword(
+            _cupsLangString(lang, _("Enter password:")))) == NULL)
       return (1);
 
     if ((newpass = strdup(passwd)) == NULL)
@@ -222,7 +225,8 @@ main(int  argc,				/* I - Number of command-line arguments */
       return (1);
     }
 
-    if ((passwd = cupsGetPassword(_("Enter password again:"))) == NULL)
+    if ((passwd = cupsGetPassword(
+            _cupsLangString(lang, _("Enter password again:")))) == NULL)
       return (1);
 
     if (strcmp(passwd, newpass) != 0)
@@ -493,5 +497,5 @@ usage(FILE *fp)		/* I - File to send usage to */
 
 
 /*
- * End of "$Id: lppasswd.c 9059 2010-03-30 20:38:48Z mike $".
+ * End of "$Id: lppasswd.c 9061 2010-03-30 22:07:33Z mike $".
  */

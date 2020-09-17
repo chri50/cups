@@ -1,9 +1,9 @@
 /*
- * "$Id: getdevices.c 8627 2009-05-13 21:39:17Z mike $"
+ * "$Id: getdevices.c 9061 2010-03-30 22:07:33Z mike $"
  *
  *   cupsGetDevices implementation for the Common UNIX Printing System (CUPS).
  *
- *   Copyright 2008-2009 by Apple Inc.
+ *   Copyright 2008-2010 by Apple Inc.
  *
  *   These coded instructions, statements, and computer programs are the
  *   property of Apple Inc. and are protected by Federal copyright
@@ -258,7 +258,7 @@ cupsGetDevices(
   httpBlocking(http, blocking);
   httpFlush(http);
 
-  if (status == IPP_ERROR)
+  if (status == HTTP_ERROR)
     _cupsSetError(IPP_ERROR, NULL, 0);
   else
   {
@@ -280,5 +280,5 @@ cupsGetDevices(
 
 
 /*
- * End of "$Id: getdevices.c 8627 2009-05-13 21:39:17Z mike $".
+ * End of "$Id: getdevices.c 9061 2010-03-30 22:07:33Z mike $".
  */

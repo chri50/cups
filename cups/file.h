@@ -1,5 +1,5 @@
 /*
- * "$Id: file.h 8397 2009-03-01 14:54:08Z mike $"
+ * "$Id: file.h 9120 2010-04-23 18:56:34Z mike $"
  *
  *   Public file definitions for the Common UNIX Printing System (CUPS).
  *
@@ -27,6 +27,7 @@
  */
 
 #  include "versioning.h"
+#  include <stddef.h>
 #  include <sys/types.h>
 #  if defined(WIN32) && !defined(__CUPS_SSIZE_T_DEFINED)
 #    define __CUPS_SSIZE_T_DEFINED
@@ -107,5 +108,5 @@ extern ssize_t		cupsFileWrite(cups_file_t *fp, const char *buf, size_t bytes) _C
 #endif /* !_CUPS_FILE_H_ */
 
 /*
- * End of "$Id: file.h 8397 2009-03-01 14:54:08Z mike $".
+ * End of "$Id: file.h 9120 2010-04-23 18:56:34Z mike $".
  */

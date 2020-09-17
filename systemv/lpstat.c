@@ -1,5 +1,5 @@
 /*
- * "$Id: lpstat.c 8929 2009-12-15 22:40:37Z mike $"
+ * "$Id: lpstat.c 9135 2010-05-05 15:58:39Z mike $"
  *
  *   "lpstat" command for the Common UNIX Printing System (CUPS).
  *
@@ -1423,7 +1423,7 @@ show_jobs(const char *dests,		/* I - Destinations */
 
       rank ++;
 
-      if (match_list(dests, dest) || match_list(users, username))
+      if (match_list(dests, dest) && match_list(users, username))
       {
         jobdate = localtime(&jobtime);
         snprintf(temp, sizeof(temp), "%s-%d", dest, jobid);
@@ -2010,5 +2010,5 @@ show_scheduler(void)
 
 
 /*
- * End of "$Id: lpstat.c 8929 2009-12-15 22:40:37Z mike $".
+ * End of "$Id: lpstat.c 9135 2010-05-05 15:58:39Z mike $".
  */

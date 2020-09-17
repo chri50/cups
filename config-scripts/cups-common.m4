@@ -1,9 +1,9 @@
 dnl
-dnl "$Id: cups-common.m4 8938 2009-12-18 23:52:01Z mike $"
+dnl "$Id: cups-common.m4 9160 2010-06-16 20:25:12Z mike $"
 dnl
-dnl   Common configuration stuff for the Common UNIX Printing System (CUPS).
+dnl   Common configuration stuff for CUPS.
 dnl
-dnl   Copyright 2007-2009 by Apple Inc.
+dnl   Copyright 2007-2010 by Apple Inc.
 dnl   Copyright 1997-2007 by Easy Software Products, all rights reserved.
 dnl
 dnl   These coded instructions, statements, and computer programs are the
@@ -20,7 +20,7 @@ dnl Set the name of the config header file...
 AC_CONFIG_HEADER(config.h)
 
 dnl Version number information...
-CUPS_VERSION=1.4.3
+CUPS_VERSION=1.4.4
 CUPS_REVISION=
 #if test -z "$CUPS_REVISION" -a -d .svn; then
 #	CUPS_REVISION="-r`svnversion . | awk -F: '{print $NF}' | sed -e '1,$s/[[a-zA-Z]]*//g'`"
@@ -174,6 +174,14 @@ AC_TRY_COMPILE([#include <time.h>],[struct tm t;
 	AC_DEFINE(HAVE_TM_GMTOFF),
 	AC_MSG_RESULT(no))
 
+dnl See if the stat structure has the st_gen member...
+AC_MSG_CHECKING(for st_gen member in stat structure)
+AC_TRY_COMPILE([#include <sys/stat.h>],[struct stat t;
+	int o = t.st_gen;],
+	AC_MSG_RESULT(yes)
+	AC_DEFINE(HAVE_ST_GEN),
+	AC_MSG_RESULT(no))
+
 dnl See if we have the removefile(3) function for securely removing files
 AC_CHECK_FUNCS(removefile)
 
@@ -289,12 +297,15 @@ case $uname in
 		LEGACY_BACKENDS=""
                 BACKLIBS="$BACKLIBS -framework IOKit"
                 CUPSDLIBS="$CUPSDLIBS -sectorder __TEXT __text cupsd.order -e start -framework IOKit -framework SystemConfiguration -weak_framework ApplicationServices"
-                LIBS="-framework SystemConfiguration -framework CoreFoundation $LIBS"
+                LIBS="-framework SystemConfiguration -framework CoreFoundation -framework Security $LIBS"
 
 		dnl Check for framework headers...
 		AC_CHECK_HEADER(CoreFoundation/CoreFoundation.h,AC_DEFINE(HAVE_COREFOUNDATION_H))
 		AC_CHECK_HEADER(CoreFoundation/CFPriv.h,AC_DEFINE(HAVE_CFPRIV_H))
 		AC_CHECK_HEADER(CoreFoundation/CFBundlePriv.h,AC_DEFINE(HAVE_CFBUNDLEPRIV_H))
+
+		dnl Check for dynamic store function...
+		AC_CHECK_FUNCS(SCDynamicStoreCopyComputerName)
 
 		dnl Check for the new membership functions in MacOSX 10.4...
 		AC_CHECK_HEADER(membership.h,AC_DEFINE(HAVE_MEMBERSHIP_H))
@@ -351,5 +362,5 @@ AC_SUBST(FONTS)
 AC_SUBST(LEGACY_BACKENDS)
 
 dnl
-dnl End of "$Id: cups-common.m4 8938 2009-12-18 23:52:01Z mike $".
+dnl End of "$Id: cups-common.m4 9160 2010-06-16 20:25:12Z mike $".
 dnl

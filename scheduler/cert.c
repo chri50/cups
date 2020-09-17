@@ -1,8 +1,7 @@
 /*
- * "$Id: cert.c 8959 2010-01-18 22:10:29Z mike $"
+ * "$Id: cert.c 9120 2010-04-23 18:56:34Z mike $"
  *
- *   Authentication certificate routines for the Common UNIX
- *   Printing System (CUPS).
+ *   Authentication certificate routines for CUPS.
  *
  *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products.
@@ -427,7 +426,7 @@ cupsdInitCerts(void)
 
     cupsFileClose(fp);
   }
-#endif /* !HVE_ARC4RANDOM */
+#endif /* !HAVE_ARC4RANDOM */
 
  /*
   * Create a root certificate and return...
@@ -439,5 +438,5 @@ cupsdInitCerts(void)
 
 
 /*
- * End of "$Id: cert.c 8959 2010-01-18 22:10:29Z mike $".
+ * End of "$Id: cert.c 9120 2010-04-23 18:56:34Z mike $".
  */

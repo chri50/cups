@@ -1,9 +1,9 @@
 /*
- * "$Id: log.c 8614 2009-05-11 22:46:01Z mike $"
+ * "$Id: log.c 9061 2010-03-30 22:07:33Z mike $"
  *
  *   Log file routines for the Common UNIX Printing System (CUPS).
  *
- *   Copyright 2007-2009 by Apple Inc.
+ *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -560,7 +560,7 @@ cupsdLogRequest(cupsd_client_t *con,	/* I - Request to log */
   if (AccessLogLevel < CUPSD_ACCESSLOG_ALL)
   {
    /*
-    * Eliminate simple GET requests...
+    * Eliminate simple GET, POST, and PUT requests...
     */
 
     if ((con->operation == HTTP_GET &&
@@ -568,7 +568,8 @@ cupsdLogRequest(cupsd_client_t *con,	/* I - Request to log */
 	 strncmp(con->uri, "/admin/log", 10)) ||
 	(con->operation == HTTP_POST && !con->request &&
 	 strncmp(con->uri, "/admin", 6)) ||
-	(con->operation != HTTP_POST && con->operation != HTTP_PUT))
+	(con->operation != HTTP_GET && con->operation != HTTP_POST &&
+	 con->operation != HTTP_PUT))
       return (1);
 
     if (con->request && con->response &&
@@ -1026,5 +1027,5 @@ format_log_line(const char *message,	/* I - Printf-style format string */
 
 
 /*
- * End of "$Id: log.c 8614 2009-05-11 22:46:01Z mike $".
+ * End of "$Id: log.c 9061 2010-03-30 22:07:33Z mike $".
  */

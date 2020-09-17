@@ -1,9 +1,9 @@
 /*
- * "$Id: config.h.in 8938 2009-12-18 23:52:01Z mike $"
+ * "$Id: config.h.in 9160 2010-06-16 20:25:12Z mike $"
  *
- *   Configuration file for the Common UNIX Printing System (CUPS).
+ *   Configuration file for CUPS.
  *
- *   Copyright 2007-2009 by Apple Inc.
+ *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -343,6 +343,13 @@
 
 
 /*
+ * Does the "stat" structure contain the "st_gen" member?
+ */
+
+#undef HAVE_ST_GEN
+
+
+/*
  * Does the "tm" structure contain the "tm_gmtoff" member?
  */
 
@@ -432,7 +439,6 @@
 
 #undef HAVE_LAUNCH_H
 #undef HAVE_LAUNCHD
-#define CUPS_DEFAULT_LAUNCHD_CONF ""
 
 
 /*
@@ -483,7 +489,14 @@
 
 
 /*
- * Do we have MacOSX 10.4's mbr_XXX functions()?
+ * Do we have the SCDynamicStoreCopyComputerName function?
+ */
+
+#undef HAVE_SCDYNAMICSTORECOPYCOMPUTERNAME
+
+
+/*
+ * Do we have MacOSX 10.4's mbr_XXX functions?
  */
 
 #undef HAVE_MEMBERSHIP_H
@@ -492,7 +505,7 @@
 
 
 /*
- * Do we have Darwin's notify_post() header and function?
+ * Do we have Darwin's notify_post header and function?
  */
 
 #undef HAVE_NOTIFY_H
@@ -629,5 +642,5 @@
 #endif /* !_CUPS_CONFIG_H_ */
 
 /*
- * End of "$Id: config.h.in 8938 2009-12-18 23:52:01Z mike $".
+ * End of "$Id: config.h.in 9160 2010-06-16 20:25:12Z mike $".
  */

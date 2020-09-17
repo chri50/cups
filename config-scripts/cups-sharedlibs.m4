@@ -1,5 +1,5 @@
 dnl
-dnl "$Id: cups-sharedlibs.m4 8344 2009-02-10 17:05:35Z mike $"
+dnl "$Id: cups-sharedlibs.m4 9154 2010-06-16 00:49:01Z mike $"
 dnl
 dnl   Shared library support for the Common UNIX Printing System (CUPS).
 dnl
@@ -158,16 +158,31 @@ AC_SUBST(LIBCUPSPPDC)
 if test x$enable_shared = xno; then
 	LINKCUPS="../cups/libcups.a"
 	LINKCUPSIMAGE="../filter/libcupsimage.a"
+
+	EXTLINKCUPS="-lcups"
+	EXTLINKCUPSDRIVER="-lcupsdriver"
+	EXTLINKCUPSIMAGE="-lcupsimage"
 else
 	if test $uname = AIX; then
 		LINKCUPS="-lcups_s"
 		LINKCUPSIMAGE="-lcupsimage_s"
+
+		EXTLINKCUPS="-lcups_s"
+		EXTLINKCUPSDRIVER="-lcupsdriver_s"
+		EXTLINKCUPSIMAGE="-lcupsimage_s"
 	else
 		LINKCUPS="-lcups"
 		LINKCUPSIMAGE="-lcupsimage"
+
+		EXTLINKCUPS="-lcups"
+		EXTLINKCUPSDRIVER="-lcupsdriver"
+		EXTLINKCUPSIMAGE="-lcupsimage"
 	fi
 fi
 
+AC_SUBST(EXTLINKCUPS)
+AC_SUBST(EXTLINKCUPSDRIVER)
+AC_SUBST(EXTLINKCUPSIMAGE)
 AC_SUBST(LINKCUPS)
 AC_SUBST(LINKCUPSIMAGE)
 
@@ -244,5 +259,5 @@ AC_SUBST(IMGLIBS)
 AC_SUBST(EXPORT_LDFLAGS)
 
 dnl
-dnl End of "$Id: cups-sharedlibs.m4 8344 2009-02-10 17:05:35Z mike $".
+dnl End of "$Id: cups-sharedlibs.m4 9154 2010-06-16 00:49:01Z mike $".
 dnl

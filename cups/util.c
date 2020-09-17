@@ -1,9 +1,9 @@
 /*
- * "$Id: util.c 8929 2009-12-15 22:40:37Z mike $"
+ * "$Id: util.c 9120 2010-04-23 18:56:34Z mike $"
  *
- *   Printing utilities for the Common UNIX Printing System (CUPS).
+ *   Printing utilities for CUPS.
  *
- *   Copyright 2007-2009 by Apple Inc.
+ *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -18,7 +18,7 @@
  *
  *   cupsCancelJob()        - Cancel a print job on the default server.
  *   cupsCancelJob2()       - Cancel or purge a print job.
- *   cupsCreateJob()        - Create an empty job.
+ *   cupsCreateJob()        - Create an empty job for streaming.
  *   cupsFinishDocument()   - Finish sending a document.
  *   cupsFreeJobs()         - Free memory used by job data.
  *   cupsGetClasses()       - Get a list of printer classes from the default
@@ -1514,36 +1514,12 @@ cupsPrintFiles2(
       goto cancel_job;
     }
 
-    do
-    {
-      cupsFileRewind(fp);
+    status = cupsStartDocument(http, name, job_id, docname, format,
+			       i == (num_files - 1));
 
-      status = cupsStartDocument(http, name, job_id, docname, format,
-			         i == (num_files - 1));
-
-      while (status == HTTP_CONTINUE &&
-	     (bytes = cupsFileRead(fp, buffer, sizeof(buffer))) > 0)
-        status = cupsWriteRequestData(http, buffer, bytes);
-
-      if (status == HTTP_UNAUTHORIZED)
-      {
-        char	resource[1024];		/* Printer resource */
-
-        snprintf(resource, sizeof(resource), "/printers/%s", name);
-
-        if (!cupsDoAuthentication(http, "POST", resource))
-        {
-	  if (httpReconnect(http))
-	  {
-	    _cupsSetError(IPP_SERVICE_UNAVAILABLE, NULL, 0);
-	    return (0);
-	  }
-        }
-	else
-	  status = HTTP_AUTHORIZATION_CANCELED;
-      }
-    }
-    while (status == HTTP_UNAUTHORIZED);
+    while (status == HTTP_CONTINUE &&
+	   (bytes = cupsFileRead(fp, buffer, sizeof(buffer))) > 0)
+      status = cupsWriteRequestData(http, buffer, bytes);
 
     cupsFileClose(fp);
 
@@ -1910,5 +1886,5 @@ cups_get_printer_uri(
 
 
 /*
- * End of "$Id: util.c 8929 2009-12-15 22:40:37Z mike $".
+ * End of "$Id: util.c 9120 2010-04-23 18:56:34Z mike $".
  */

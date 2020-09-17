@@ -1,5 +1,5 @@
 /*
- * "$Id: mime.h 7694 2008-06-26 00:23:20Z mike $"
+ * "$Id: mime.h 9133 2010-05-05 00:44:55Z mike $"
  *
  *   MIME type/conversion database definitions for the Common UNIX Printing System (CUPS).
  *
@@ -77,9 +77,9 @@ typedef struct _mime_magic_s		/**** MIME Magic Data ****/
     char	matchv[64];		/* Match value */
     char	localev[64];		/* Locale value */
     char	stringv[64];		/* String value */
-    char	charv;			/* Byte value */
-    short	shortv;			/* Short value */
-    int		intv;			/* Integer value */
+    unsigned char charv;		/* Byte value */
+    unsigned short shortv;		/* Short value */
+    unsigned	intv;			/* Integer value */
   }		value;
 } mime_magic_t;
 
@@ -147,5 +147,5 @@ extern int		mimeNumFilters(mime_t *mime);
 #endif /* !_CUPS_MIME_H_ */
 
 /*
- * End of "$Id: mime.h 7694 2008-06-26 00:23:20Z mike $".
+ * End of "$Id: mime.h 9133 2010-05-05 00:44:55Z mike $".
  */
