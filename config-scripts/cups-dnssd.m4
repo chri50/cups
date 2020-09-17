@@ -1,5 +1,5 @@
 dnl
-dnl "$Id: cups-dnssd.m4 8344 2009-02-10 17:05:35Z mike $"
+dnl "$Id: cups-dnssd.m4 8789 2009-08-28 22:54:34Z mike $"
 dnl
 dnl   DNS Service Discovery (aka Bonjour) stuff for the Common UNIX Printing System (CUPS).
 dnl
@@ -43,7 +43,7 @@ if test x$enable_dnssd != xno; then
 				AC_MSG_CHECKING(for current version of dns_sd library)
 				SAVELIBS="$LIBS"
 				LIBS="$LIBS -ldns_sd"
-				AC_TRY_COMPILE([#include <dns_sd.h],
+				AC_TRY_COMPILE([#include <dns_sd.h>],
 					[int constant = kDNSServiceFlagsShareConnection;
 					unsigned char txtRecord[100];
 					uint8_t valueLen;
@@ -64,5 +64,5 @@ AC_SUBST(DNSSDLIBS)
 AC_SUBST(DNSSD_BACKEND)
 
 dnl
-dnl End of "$Id: cups-dnssd.m4 8344 2009-02-10 17:05:35Z mike $".
+dnl End of "$Id: cups-dnssd.m4 8789 2009-08-28 22:54:34Z mike $".
 dnl

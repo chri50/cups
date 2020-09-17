@@ -1,5 +1,5 @@
 /*
- * "$Id: ipp.c 8754 2009-07-14 23:17:24Z mike $"
+ * "$Id: ipp.c 8801 2009-08-29 06:05:14Z mike $"
  *
  *   IPP routines for the Common UNIX Printing System (CUPS) scheduler.
  *
@@ -6556,7 +6556,7 @@ get_devices(cupsd_client_t *con)	/* I - Client connection */
            "%d+%d+%d+%d+%s%s%s%s%s",
            con->request->request.op.request_id,
            limit ? limit->values[0].integer : 0,
-	   timeout ? timeout->values[0].integer : 10,
+	   timeout ? timeout->values[0].integer : 15,
 	   (int)User,
 	   requested_str,
 	   exclude_str[0] ? "%20" : "", exclude_str,
@@ -11433,5 +11433,5 @@ validate_user(cupsd_job_t    *job,	/* I - Job */
 
 
 /*
- * End of "$Id: ipp.c 8754 2009-07-14 23:17:24Z mike $".
+ * End of "$Id: ipp.c 8801 2009-08-29 06:05:14Z mike $".
  */

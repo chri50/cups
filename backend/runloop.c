@@ -1,5 +1,5 @@
 /*
- * "$Id: runloop.c 8731 2009-06-26 18:26:36Z mike $"
+ * "$Id: runloop.c 8807 2009-08-31 18:45:43Z mike $"
  *
  *   Common run loop APIs for the Common UNIX Printing System (CUPS).
  *
@@ -147,7 +147,7 @@ backendRunLoop(
     int         snmp_fd,		/* I - SNMP socket or -1 if none */
     http_addr_t *addr,			/* I - Address of device */
     int         use_bc,			/* I - Use back-channel? */
-    void        (*side_cb)(int, int, int, http_addr_t *, int))
+    int         (*side_cb)(int, int, int, http_addr_t *, int))
 					/* I - Side-channel callback */
 {
   int		nfds;			/* Maximum file descriptor value + 1 */
@@ -274,7 +274,8 @@ backendRunLoop(
       * loop since it may have read from print_fd...
       */
 
-      (*side_cb)(print_fd, device_fd, snmp_fd, addr, use_bc);
+      if ((*side_cb)(print_fd, device_fd, snmp_fd, addr, use_bc))
+        side_cb = NULL;
       continue;
     }
 
@@ -418,5 +419,5 @@ backendRunLoop(
 
 
 /*
- * End of "$Id: runloop.c 8731 2009-06-26 18:26:36Z mike $".
+ * End of "$Id: runloop.c 8807 2009-08-31 18:45:43Z mike $".
  */

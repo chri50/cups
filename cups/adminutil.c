@@ -1,5 +1,5 @@
 /*
- * "$Id: adminutil.c 8700 2009-06-05 21:38:52Z mike $"
+ * "$Id: adminutil.c 8801 2009-08-29 06:05:14Z mike $"
  *
  *   Administration utility API definitions for the Common UNIX Printing
  *   System (CUPS).
@@ -1553,7 +1553,7 @@ _cupsAdminSetServerSettings(
 	  const char *remotep = cupsGetOption("BrowseRemoteProtocols",
 					      num_settings, settings);
 
-          if (!localp)
+          if (!localp || !localp[0])
 	    localp = cupsGetOption("BrowseLocalProtocols", cupsd_num_settings,
 	                           cupsd_settings);
 
@@ -2452,5 +2452,5 @@ write_option(cups_file_t     *dstfp,	/* I - PPD file */
 
 
 /*
- * End of "$Id: adminutil.c 8700 2009-06-05 21:38:52Z mike $".
+ * End of "$Id: adminutil.c 8801 2009-08-29 06:05:14Z mike $".
  */

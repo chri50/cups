@@ -1,9 +1,8 @@
 #
-# "$Id: cupsd.conf.in 8367 2009-02-18 22:15:36Z mike $"
+# "$Id: cupsd.conf.in 8805 2009-08-31 16:34:06Z mike $"
 #
-#   Sample configuration file for the Common UNIX Printing System (CUPS)
-#   scheduler.  See "man cupsd.conf" for a complete description of this
-#   file.
+# Sample configuration file for the CUPS scheduler.  See "man cupsd.conf" for a
+# complete description of this file.
 #
 
 # Log general information in error_log - change "@CUPS_LOG_LEVEL@" to "debug"
@@ -118,5 +117,5 @@ DefaultAuthType Basic
 </Policy>
 
 #
-# End of "$Id: cupsd.conf.in 8367 2009-02-18 22:15:36Z mike $".
+# End of "$Id: cupsd.conf.in 8805 2009-08-31 16:34:06Z mike $".
 #

@@ -1,5 +1,5 @@
 /*
- * "$Id: admin.c 8721 2009-06-18 21:41:05Z mike $"
+ * "$Id: admin.c 8801 2009-08-29 06:05:14Z mike $"
  *
  *   Administration CGI for the Common UNIX Printing System (CUPS).
  *
@@ -634,6 +634,15 @@ do_am_class(http_t *http,		/* I - HTTP connection */
     return;
   }
 
+  if (!name)
+  {
+    cgiStartHTML(title);
+    cgiSetVariable("ERROR", cgiText(_("Missing form variable!")));
+    cgiCopyTemplateLang("error.tmpl");
+    cgiEndHTML();
+    return;
+  }
+
   for (ptr = name; *ptr; ptr ++)
     if ((*ptr >= 0 && *ptr <= ' ') || *ptr == 127 || *ptr == '/' || *ptr == '#')
       break;
@@ -668,8 +677,7 @@ do_am_class(http_t *http,		/* I - HTTP connection */
   request = ippNewRequest(CUPS_ADD_CLASS);
 
   httpAssembleURIf(HTTP_URI_CODING_ALL, uri, sizeof(uri), "ipp", NULL,
-                   "localhost", 0, "/classes/%s",
-		   cgiGetVariable("PRINTER_NAME"));
+                   "localhost", 0, "/classes/%s", name);
   ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri",
                NULL, uri);
 
@@ -4202,5 +4210,5 @@ get_points(double     number,		/* I - Original number */
 
 
 /*
- * End of "$Id: admin.c 8721 2009-06-18 21:41:05Z mike $".
+ * End of "$Id: admin.c 8801 2009-08-29 06:05:14Z mike $".
  */

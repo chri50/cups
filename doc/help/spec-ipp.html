@@ -8,7 +8,7 @@
 </head>
 <body>
 <!--
-  "$Id: spec-ipp.html 8680 2009-05-22 23:53:11Z mike $"
+  "$Id: spec-ipp.html 8801 2009-08-29 06:05:14Z mike $"
 
   CUPS IPP specification for the Common UNIX Printing System (CUPS).
 
@@ -1603,8 +1603,8 @@ CUPS-Get-Devices request:
 
 	<dt>"timeout" (integer (1:MAX)) :<span class='info'>CUPS 1.4/Mac OS X 10.6</span>
 
-	<dd>The client OPTIONALLY supplies this attribute limiting the number of
-	devices that are returned.
+	<dd>The client OPTIONALLY supplies this attribute to limit the duration
+	of the lookup. The default timeout is 15 seconds.
 
 </dl>
 
