@@ -1,5 +1,5 @@
 dnl
-dnl "$Id: cups-compiler.m4 7353 2008-02-28 00:54:04Z mike $"
+dnl "$Id: cups-compiler.m4 7648 2008-06-16 17:41:11Z mike $"
 dnl
 dnl   Compiler stuff for the Common UNIX Printing System (CUPS).
 dnl
@@ -521,6 +521,12 @@ case $uname in
 		OPTIM="$OPTIM -D_HPUX_SOURCE"
 		;;
 
+	Linux*)
+		# glibc 2.8 and higher breaks peer credentials unless you
+		# define _GNU_SOURCE...
+		OPTIM="$OPTIM -D_GNU_SOURCE"
+		;;
+
 	OSF*)
 		# Tru64 UNIX aka Digital UNIX aka OSF/1 need to be told
 		# to be POSIX-compliant...
@@ -529,5 +535,5 @@ case $uname in
 esac
 
 dnl
-dnl End of "$Id: cups-compiler.m4 7353 2008-02-28 00:54:04Z mike $".
+dnl End of "$Id: cups-compiler.m4 7648 2008-06-16 17:41:11Z mike $".
 dnl

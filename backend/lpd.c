@@ -1,9 +1,9 @@
 /*
- * "$Id: lpd.c 7067 2007-11-09 19:54:09Z mike $"
+ * "$Id: lpd.c 7721 2008-07-11 22:48:49Z mike $"
  *
  *   Line Printer Daemon backend for the Common UNIX Printing System (CUPS).
  *
- *   Copyright 2007 by Apple Inc.
+ *   Copyright 2007-2008 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -445,8 +445,6 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
 	unlink(tmpfilename);
 	return (CUPS_BACKEND_FAILED);
       }
-
-    filename = tmpfilename;
   }
   else if (argc == 6)
   {
@@ -1318,5 +1316,5 @@ sigterm_handler(int sig)		/* I - Signal */
 
 
 /*
- * End of "$Id: lpd.c 7067 2007-11-09 19:54:09Z mike $".
+ * End of "$Id: lpd.c 7721 2008-07-11 22:48:49Z mike $".
  */

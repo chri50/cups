@@ -1,5 +1,5 @@
 dnl
-dnl "$Id: cups-common.m4 7329 2008-02-20 00:32:58Z mike $"
+dnl "$Id: cups-common.m4 7735 2008-07-14 21:25:26Z mike $"
 dnl
 dnl   Common configuration stuff for the Common UNIX Printing System (CUPS).
 dnl
@@ -20,7 +20,7 @@ dnl Set the name of the config header file...
 AC_CONFIG_HEADER(config.h)
 
 dnl Version number information...
-CUPS_VERSION=1.3.7
+CUPS_VERSION=1.3.8
 CUPS_REVISION=
 
 AC_SUBST(CUPS_VERSION)
@@ -258,10 +258,31 @@ case $uname in
 		AC_CHECK_FUNCS(notify_post)
 
 		dnl Check for Authorization Services support
+		AC_ARG_WITH(adminkey, [  --with-adminkey         set the default SystemAuthKey value],
+			default_adminkey="$withval",
+			default_adminkey="default")
+ 		AC_ARG_WITH(operkey, [  --with-operkey          set the default operator @AUTHKEY value],
+			default_operkey="$withval",
+			default_operkey="default")
+ 
 		AC_CHECK_HEADER(Security/Authorization.h, [
 			AC_DEFINE(HAVE_AUTHORIZATION_H)
-			CUPS_DEFAULT_PRINTADMIN_AUTH="@AUTHKEY(system.print.admin) @admin @lpadmin"
-			CUPS_SYSTEM_AUTHKEY="SystemGroupAuthKey system.preferences"])
+
+			if test "x$default_adminkey" != xdefault; then
+				CUPS_SYSTEM_AUTHKEY="SystemGroupAuthKey $default_adminkey"
+			elif grep -q system.print.operator /etc/authorization; then
+				CUPS_SYSTEM_AUTHKEY="SystemGroupAuthKey system.print.admin"
+			else
+				CUPS_SYSTEM_AUTHKEY="SystemGroupAuthKey system.preferences"
+			fi
+
+			if test "x$default_operkey" != xdefault; then
+				CUPS_DEFAULT_PRINTADMIN_AUTH="@AUTHKEY($default_operkey) @admin @lpadmin"
+			elif grep -q system.print.operator /etc/authorization; then
+				CUPS_DEFAULT_PRINTADMIN_AUTH="@AUTHKEY(system.print.operator) @admin @lpadmin"
+			else
+				CUPS_DEFAULT_PRINTADMIN_AUTH="@AUTHKEY(system.print.admin) @admin @lpadmin"
+			fi])
 		AC_CHECK_HEADER(Security/SecBasePriv.h,AC_DEFINE(HAVE_SECBASEPRIV_H))
                 ;;
 esac
@@ -273,5 +294,5 @@ AC_SUBST(FONTS)
 AC_SUBST(LEGACY_BACKENDS)
 
 dnl
-dnl End of "$Id: cups-common.m4 7329 2008-02-20 00:32:58Z mike $".
+dnl End of "$Id: cups-common.m4 7735 2008-07-14 21:25:26Z mike $".
 dnl

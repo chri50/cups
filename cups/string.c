@@ -1,5 +1,5 @@
 /*
- * "$Id: string.c 7084 2007-11-30 03:37:11Z mike $"
+ * "$Id: string.c 7721 2008-07-11 22:48:49Z mike $"
  *
  *   String functions for the Common UNIX Printing System (CUPS).
  *
@@ -734,5 +734,5 @@ compare_sp_items(_cups_sp_item_t *a,	/* I - First item */
 
 
 /*
- * End of "$Id: string.c 7084 2007-11-30 03:37:11Z mike $".
+ * End of "$Id: string.c 7721 2008-07-11 22:48:49Z mike $".
  */
