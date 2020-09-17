@@ -1,5 +1,5 @@
 /*
- * "$Id: options.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: options.c 7820 2008-08-01 00:28:44Z mike $"
  *
  *   Option routines for the Common UNIX Printing System (CUPS).
  *
@@ -527,7 +527,22 @@ cupsParseOptions(
     return (num_options);
   }
 
-  ptr = copyarg;
+  if (*copyarg == '{')
+  {
+   /*
+    * Remove surrounding {} so we can parse "{name=value ... name=value}"...
+    */
+
+    if ((ptr = copyarg + strlen(copyarg) - 1) > copyarg && *ptr == '}')
+    {
+      *ptr = '\0';
+      ptr  = copyarg + 1;
+    }
+    else
+      ptr = copyarg;
+  }
+  else
+    ptr = copyarg;
 
  /*
   * Skip leading spaces...
@@ -855,5 +870,5 @@ ppd_mark_choices(ppd_file_t *ppd,	/* I - PPD file */
 
 
 /*
- * End of "$Id: options.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: options.c 7820 2008-08-01 00:28:44Z mike $".
  */

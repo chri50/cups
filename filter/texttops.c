@@ -1,5 +1,5 @@
 /*
- * "$Id: texttops.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: texttops.c 8039 2008-10-09 20:12:03Z mike $"
  *
  *   Text to PostScript filter for the Common UNIX Printing System (CUPS).
  *
@@ -173,6 +173,14 @@ WriteProlog(const char *title,		/* I - Title of job */
   SizeColumns = (PageRight - PageLeft) / 72.0 * CharsPerInch;
   SizeLines   = (PageTop - PageBottom) / 72.0 * LinesPerInch;
 
+  if (SizeColumns <= 0 || SizeColumns > 32767 ||
+      SizeLines <= 0 || SizeLines > 32767)
+  {
+    _cupsLangPrintf(stderr, _("ERROR: Unable to print %dx%d text page!\n"),
+                    SizeColumns, SizeLines);
+    exit(1);
+  }
+
   Page    = calloc(sizeof(lchar_t *), SizeLines);
   Page[0] = calloc(sizeof(lchar_t), SizeColumns * SizeLines);
   for (i = 1; i < SizeLines; i ++)
@@ -186,6 +194,13 @@ WriteProlog(const char *title,		/* I - Title of job */
   }
   else
     ColumnWidth = SizeColumns;
+
+  if (ColumnWidth <= 0)
+  {
+    _cupsLangPrintf(stderr, _("ERROR: Unable to print %d text columns!\n"),
+                    PageColumns);
+    exit(1);
+  }
 
  /*
   * Output the DSC header...
@@ -1299,5 +1314,5 @@ write_text(const char *s)	/* I - String to write */
 
 
 /*
- * End of "$Id: texttops.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: texttops.c 8039 2008-10-09 20:12:03Z mike $".
  */

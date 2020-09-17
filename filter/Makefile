@@ -1,5 +1,5 @@
 #
-# "$Id: Makefile 6696 2007-07-19 23:27:49Z mike $"
+# "$Id: Makefile 7911 2008-09-06 00:30:39Z mike $"
 #
 #   Filter makefile for the Common UNIX Printing System (CUPS).
 #
@@ -70,8 +70,8 @@ depend:
 	makedepend -Y -I.. -fDependencies.tmp $(OBJS:.o=.c) >/dev/null 2>&1
 	$(RM) Dependencies
 	cp Dependencies.tmp Dependencies
-	sed -r -e '1,$$s/^([^.]+)\.o:/\1\.32.o: \1\.c /' Dependencies.tmp >>Dependencies
-	sed -r -e '1,$$s/^([^.]+)\.o:/\1\.64.o: \1\.c /' Dependencies.tmp >>Dependencies
+	sed -E -e '1,$$s/^([^.]+)\.o:/\1\.32.o: \1\.c /' Dependencies.tmp >>Dependencies
+	sed -E -e '1,$$s/^([^.]+)\.o:/\1\.64.o: \1\.c /' Dependencies.tmp >>Dependencies
 	$(RM) Dependencies.tmp
 
 
@@ -387,5 +387,5 @@ include Dependencies
 
 
 #
-# End of "$Id: Makefile 6696 2007-07-19 23:27:49Z mike $".
+# End of "$Id: Makefile 7911 2008-09-06 00:30:39Z mike $".
 #
