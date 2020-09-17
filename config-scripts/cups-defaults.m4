@@ -1,5 +1,5 @@
 dnl
-dnl "$Id: cups-defaults.m4 8344 2009-02-10 17:05:35Z mike $"
+dnl "$Id: cups-defaults.m4 8841 2009-10-07 16:24:25Z mike $"
 dnl
 dnl   Default cupsd configuration settings for the Common UNIX Printing System
 dnl   (CUPS).
@@ -325,8 +325,8 @@ if test x$default_lpdconfigfile != xno; then
 				CUPS_DEFAULT_LPD_CONFIG_FILE="launchd:///System/Library/LaunchDaemons/org.cups.cups-lpd.plist"
 				;;
 			*)
-				if test -d /etc/xinetd.d; then
-					CUPS_DEFAULT_LPD_CONFIG_FILE="xinetd:///etc/xinetd.d/cups-lpd"
+				if test "x$XINETD" != x; then
+					CUPS_DEFAULT_LPD_CONFIG_FILE="xinetd://$XINETD/cups-lpd"
 				else
 					CUPS_DEFAULT_LPD_CONFIG_FILE=""
 				fi
@@ -435,5 +435,5 @@ AC_SUBST(BANNERTOPS)
 AC_SUBST(TEXTTOPS)
 
 dnl
-dnl End of "$Id: cups-defaults.m4 8344 2009-02-10 17:05:35Z mike $".
+dnl End of "$Id: cups-defaults.m4 8841 2009-10-07 16:24:25Z mike $".
 dnl

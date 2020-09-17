@@ -1,5 +1,5 @@
 /*
- * "$Id: printers.c 8138 2008-11-17 16:46:23Z mike $"
+ * "$Id: printers.c 8859 2009-11-09 23:01:17Z mike $"
  *
  *   Printer status CGI for the Common UNIX Printing System (CUPS).
  *
@@ -73,6 +73,7 @@ main(int  argc,				/* I - Number of command-line arguments */
   */
 
   cgiSetVariable("SECTION", "printers");
+  cgiSetVariable("REFRESH_PAGE", "");
 
  /*
   * See if we are displaying a printer or all printers...
@@ -559,5 +560,5 @@ show_printer(http_t     *http,		/* I - Connection to server */
 
 
 /*
- * End of "$Id: printers.c 8138 2008-11-17 16:46:23Z mike $".
+ * End of "$Id: printers.c 8859 2009-11-09 23:01:17Z mike $".
  */

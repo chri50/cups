@@ -1,5 +1,5 @@
 /*
- * "$Id: classes.c 8138 2008-11-17 16:46:23Z mike $"
+ * "$Id: classes.c 8859 2009-11-09 23:01:17Z mike $"
  *
  *   Class status CGI for the Common UNIX Printing System (CUPS).
  *
@@ -72,6 +72,7 @@ main(int  argc,				/* I - Number of command-line arguments */
   */
 
   cgiSetVariable("SECTION", "classes");
+  cgiSetVariable("REFRESH_PAGE", "");
 
  /*
   * See if we are displaying a printer or all classes...
@@ -539,5 +540,5 @@ show_class(http_t     *http,		/* I - Connection to server */
 
 
 /*
- * End of "$Id: classes.c 8138 2008-11-17 16:46:23Z mike $".
+ * End of "$Id: classes.c 8859 2009-11-09 23:01:17Z mike $".
  */

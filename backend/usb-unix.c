@@ -1,5 +1,5 @@
 /*
- * "$Id: usb-unix.c 8807 2009-08-31 18:45:43Z mike $"
+ * "$Id: usb-unix.c 8819 2009-09-22 18:47:36Z mike $"
  *
  *   USB port backend for the Common UNIX Printing System (CUPS).
  *
@@ -560,7 +560,7 @@ open_device(const char *uri,		/* I - Device URI */
  * 'side_cb()' - Handle side-channel requests...
  */
 
-static void
+static int				/* O - 0 on success, -1 on error */
 side_cb(int         print_fd,		/* I - Print file */
         int         device_fd,		/* I - Device file */
         int         snmp_fd,		/* I - SNMP socket (unused) */
@@ -627,5 +627,5 @@ side_cb(int         print_fd,		/* I - Print file */
 
 
 /*
- * End of "$Id: usb-unix.c 8807 2009-08-31 18:45:43Z mike $".
+ * End of "$Id: usb-unix.c 8819 2009-09-22 18:47:36Z mike $".
  */

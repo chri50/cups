@@ -1,5 +1,5 @@
 /*
- * "$Id: hpgl-input.c 7219 2008-01-14 22:00:02Z mike $"
+ * "$Id: hpgl-input.c 8823 2009-09-22 21:31:07Z mike $"
  *
  *   HP-GL/2 input processing for the Common UNIX Printing System (CUPS).
  *
@@ -144,7 +144,7 @@ ParseCommand(FILE    *fp,	/* I - File to read from */
   if (!strcasecmp(name, "LB"))
   {
     bufptr = buf;
-    while ((ch = getc(fp)) != StringTerminator)
+    while ((ch = getc(fp)) != StringTerminator && ch != EOF)
       if (bufptr < (buf + sizeof(buf) - 1))
         *bufptr++ = ch;
     *bufptr = '\0';
@@ -268,5 +268,5 @@ FreeParameters(int     num_params,	/* I - Number of parameters */
 
 
 /*
- * End of "$Id: hpgl-input.c 7219 2008-01-14 22:00:02Z mike $".
+ * End of "$Id: hpgl-input.c 8823 2009-09-22 21:31:07Z mike $".
  */
