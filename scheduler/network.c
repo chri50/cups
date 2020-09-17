@@ -1,5 +1,5 @@
 /*
- * "$Id: network.c 7864 2008-08-26 03:43:28Z mike $"
+ * "$Id: network.c 6649 2007-07-11 21:46:42Z mike $"
  *
  *   Network interface functions for the Common UNIX Printing System
  *   (CUPS) scheduler.
@@ -245,29 +245,24 @@ cupsdNetIFUpdate(void)
       else if (addr->ifa_addr->sa_family == AF_INET &&
                lis->address.addr.sa_family == AF_INET &&
                (lis->address.ipv4.sin_addr.s_addr &
-	        temp->mask.ipv4.sin_addr.s_addr) ==
-	           (temp->address.ipv4.sin_addr.s_addr &
-		    temp->mask.ipv4.sin_addr.s_addr))
+	           temp->mask.ipv4.sin_addr.s_addr) ==
+	               temp->address.ipv4.sin_addr.s_addr)
         match = 1;
 #ifdef AF_INET6
       else if (addr->ifa_addr->sa_family == AF_INET6 &&
                lis->address.addr.sa_family == AF_INET6 &&
                (lis->address.ipv6.sin6_addr.s6_addr[0] &
-	        temp->mask.ipv6.sin6_addr.s6_addr[0]) ==
-		   (temp->address.ipv6.sin6_addr.s6_addr[0] &
-		    temp->mask.ipv6.sin6_addr.s6_addr[0]) &&
+	           temp->mask.ipv6.sin6_addr.s6_addr[0]) ==
+	               temp->address.ipv6.sin6_addr.s6_addr[0] &&
                (lis->address.ipv6.sin6_addr.s6_addr[1] &
-	        temp->mask.ipv6.sin6_addr.s6_addr[1]) ==
-		   (temp->address.ipv6.sin6_addr.s6_addr[1] &
-		    temp->mask.ipv6.sin6_addr.s6_addr[1]) &&
+	           temp->mask.ipv6.sin6_addr.s6_addr[1]) ==
+	               temp->address.ipv6.sin6_addr.s6_addr[1] &&
                (lis->address.ipv6.sin6_addr.s6_addr[2] &
-	        temp->mask.ipv6.sin6_addr.s6_addr[2]) ==
-		   (temp->address.ipv6.sin6_addr.s6_addr[2] &
-		    temp->mask.ipv6.sin6_addr.s6_addr[2]) &&
+	           temp->mask.ipv6.sin6_addr.s6_addr[2]) ==
+	               temp->address.ipv6.sin6_addr.s6_addr[2] &&
                (lis->address.ipv6.sin6_addr.s6_addr[3] &
-	        temp->mask.ipv6.sin6_addr.s6_addr[3]) ==
-		   (temp->address.ipv6.sin6_addr.s6_addr[3] &
-		    temp->mask.ipv6.sin6_addr.s6_addr[3]))
+	           temp->mask.ipv6.sin6_addr.s6_addr[3]) ==
+	               temp->address.ipv6.sin6_addr.s6_addr[3])
         match = 1;
 #endif /* AF_INET6 */
 
@@ -289,8 +284,8 @@ cupsdNetIFUpdate(void)
 
     cupsArrayAdd(NetIFList, temp);
 
-    cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdNetIFUpdate: \"%s\" = %s:%d",
-                    temp->name, temp->hostname, temp->port);
+    cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdNetIFUpdate: \"%s\" = %s...",
+                    temp->name, temp->hostname);
   }
 
   freeifaddrs(addrs);
@@ -310,5 +305,5 @@ compare_netif(cupsd_netif_t *a,		/* I - First network interface */
 
 
 /*
- * End of "$Id: network.c 7864 2008-08-26 03:43:28Z mike $".
+ * End of "$Id: network.c 6649 2007-07-11 21:46:42Z mike $".
  */

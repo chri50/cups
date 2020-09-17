@@ -1,5 +1,5 @@
 #
-# "$Id: Makefile 7939 2008-09-11 23:54:21Z mike $"
+# "$Id: Makefile 6649 2007-07-11 21:46:42Z mike $"
 #
 #   Configuration file makefile for the Common UNIX Printing System (CUPS).
 #
@@ -49,6 +49,7 @@ depend:
 #
 
 install:	all
+	$(INSTALL_DIR) -m 755 $(SERVERROOT)
 	for file in $(KEEP); do \
 		if test -r $(SERVERROOT)/$$file ; then \
 			$(INSTALL_CONFIG) $$file $(SERVERROOT)/$$file.N ; \
@@ -92,5 +93,5 @@ uninstall:
 
 
 #
-# End of "$Id: Makefile 7939 2008-09-11 23:54:21Z mike $".
+# End of "$Id: Makefile 6649 2007-07-11 21:46:42Z mike $".
 #

@@ -1,5 +1,5 @@
 /*
-* "$Id: usb-darwin.c 7974 2008-09-23 20:07:01Z mike $"
+* "$Id: usb-darwin.c 7721 2008-07-11 22:48:49Z mike $"
 *
 * Copyright 2005-2008 Apple Inc. All rights reserved.
 *
@@ -1018,13 +1018,11 @@ static Boolean list_device_cb(void *refcon,
 
       modelstr[0] = '/';
 
-      if (!make ||
-          !CFStringGetCString(make, makestr, sizeof(makestr),
+      if (!CFStringGetCString(make, makestr, sizeof(makestr),
 			      kCFStringEncodingUTF8))
         strcpy(makestr, "Unknown");
 
-      if (!model ||
-          !CFStringGetCString(model, &modelstr[1], sizeof(modelstr)-1,
+      if (!CFStringGetCString(model, &modelstr[1], sizeof(modelstr)-1,
 			      kCFStringEncodingUTF8))
         strcpy(modelstr + 1, "Printer");
 
@@ -1177,10 +1175,18 @@ static void copy_deviceinfo(CFStringRef deviceIDString,
   CFStringRef serialKeys[] = { CFSTR("SN:"),  CFSTR("SERN:"), NULL };
 
   if (make != NULL)
-    *make = copy_value_for_key(deviceIDString, makeKeys);
+  {
+    if ((*make = copy_value_for_key(deviceIDString, makeKeys)) == NULL)
+      *make = CFStringCreateWithCString(kCFAllocatorDefault, "Unknown",
+                                        kCFStringEncodingUTF8);
+  }
 
   if (model != NULL)
-    *model = copy_value_for_key(deviceIDString, modelKeys);
+  {
+    if ((*model = copy_value_for_key(deviceIDString, modelKeys)) == NULL)
+      *model = CFStringCreateWithCString(kCFAllocatorDefault, "Printer",
+                                         kCFStringEncodingUTF8);
+  }
 
   if (serial != NULL)
     *serial = copy_value_for_key(deviceIDString, serialKeys);
@@ -2030,5 +2036,5 @@ static void get_device_id(cups_sc_status_t *status,
 
 
 /*
- * End of "$Id: usb-darwin.c 7974 2008-09-23 20:07:01Z mike $".
+ * End of "$Id: usb-darwin.c 7721 2008-07-11 22:48:49Z mike $".
  */
