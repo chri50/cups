@@ -1,5 +1,5 @@
 /*
- * "$Id: config.h.in 9160 2010-06-16 20:25:12Z mike $"
+ * "$Id: config.h.in 9259 2010-08-13 04:11:46Z mike $"
  *
  *   Configuration file for CUPS.
  *
@@ -289,6 +289,7 @@
  */
 
 #undef HAVE_AUTHORIZATION_H
+#undef HAVE_SECITEMPRIV_H
 #undef HAVE_SECPOLICY_H
 #undef HAVE_SECPOLICYPRIV_H
 #undef HAVE_SECBASEPRIV_H
@@ -300,6 +301,13 @@
  */
 
 #undef HAVE_SECIDENTITYSEARCHCREATEWITHPOLICY
+
+
+/*
+ * Do we have the SecPolicyCreateSSL function?
+ */
+
+#undef HAVE_SECPOLICYCREATESSL
 
 
 /*
@@ -489,6 +497,13 @@
 
 
 /*
+ * Do we have ApplicationServices public headers?
+ */
+
+#undef HAVE_APPLICATIONSERVICES_H
+
+
+/*
  * Do we have the SCDynamicStoreCopyComputerName function?
  */
 
@@ -639,8 +654,20 @@
 #undef HAVE_TCPD_H
 
 
+/*
+ * Do we have statfs or statvfs and one of the corresponding headers?
+ */
+
+#undef HAVE_STATFS
+#undef HAVE_STATVFS
+#undef HAVE_SYS_MOUNT_H
+#undef HAVE_SYS_STATFS_H
+#undef HAVE_SYS_STATVFS_H
+#undef HAVE_SYS_VFS_H
+
+
 #endif /* !_CUPS_CONFIG_H_ */
 
 /*
- * End of "$Id: config.h.in 9160 2010-06-16 20:25:12Z mike $".
+ * End of "$Id: config.h.in 9259 2010-08-13 04:11:46Z mike $".
  */

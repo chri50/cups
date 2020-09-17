@@ -1,5 +1,5 @@
 /*
- * "$Id: http-support.c 8705 2009-06-12 00:21:58Z mike $"
+ * "$Id: http-support.c 9322 2010-10-01 22:40:38Z mike $"
  *
  *   HTTP support routines for the Common UNIX Printing System (CUPS) scheduler.
  *
@@ -917,7 +917,9 @@ httpSeparateURI(
 
     for (ptr = scheme, end = scheme + schemelen - 1;
          *uri && *uri != ':' && ptr < end;)
-      if (isalnum(*uri & 255) || *uri == '-' || *uri == '+' || *uri == '.')
+      if (strchr("ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                 "abcdefghijklmnopqrstuvwxyz"
+		 "0123456789-+.", *uri) != NULL)
         *ptr++ = *uri++;
       else
         break;
@@ -1353,7 +1355,8 @@ _httpResolveURI(
     DNSServiceRef	ref,		/* DNS-SD master service reference */
 			domainref,	/* DNS-SD service reference for domain */
 			localref;	/* DNS-SD service reference for .local */
-    int			domainsent = 0;	/* Send the domain resolve? */
+    int			domainsent = 0,	/* Send the domain resolve? */
+			offline = 0;	/* offline-report state set? */
     char		*regtype,	/* Pointer to type in hostname */
 			*domain;	/* Pointer to domain in hostname */
     _http_uribuf_t	uribuf;		/* URI buffer */
@@ -1467,6 +1470,17 @@ _httpResolveURI(
 				    &uribuf) == kDNSServiceErr_NoError)
 		domainsent = 1;
 	    }
+
+	   /*
+	    * If it hasn't resolved within 5 seconds set the offline-report
+	    * printer-state-reason...
+	    */
+
+	    if (logit && offline == 0 && time(NULL) > (start_time + 5))
+	    {
+	      fputs("STATE: +offline-report\n", stderr);
+	      offline = 1;
+	    }
 	  }
 	  else
 	  {
@@ -1494,7 +1508,7 @@ _httpResolveURI(
       else
         fputs("DEBUG: Unable to resolve URI!\n", stderr);
 
-      fputs("STATE: -connecting-to-device\n", stderr);
+      fputs("STATE: -connecting-to-device,offline-report\n", stderr);
     }
 
 #else
@@ -1710,5 +1724,5 @@ resolve_callback(
 
 
 /*
- * End of "$Id: http-support.c 8705 2009-06-12 00:21:58Z mike $".
+ * End of "$Id: http-support.c 9322 2010-10-01 22:40:38Z mike $".
  */

@@ -1,5 +1,5 @@
 /*
- * "$Id: encode.c 8532 2009-04-20 21:37:14Z mike $"
+ * "$Id: encode.c 9258 2010-08-13 01:34:04Z mike $"
  *
  *   Option encoding routines for the Common UNIX Printing System (CUPS).
  *
@@ -125,6 +125,7 @@ static const _ipp_option_t ipp_options[] =
   { 0, "penwidth",		IPP_TAG_INTEGER,	IPP_TAG_JOB },
   { 0, "penwidth-default",	IPP_TAG_INTEGER,	IPP_TAG_PRINTER },
   { 0, "port-monitor",		IPP_TAG_NAME,		IPP_TAG_PRINTER },
+  { 0, "ppd-name",		IPP_TAG_NAME,		IPP_TAG_PRINTER },
   { 0, "ppi",			IPP_TAG_INTEGER,	IPP_TAG_JOB },
   { 0, "ppi-default",		IPP_TAG_INTEGER,	IPP_TAG_PRINTER },
   { 0, "prettyprint",		IPP_TAG_BOOLEAN,	IPP_TAG_JOB },
@@ -636,5 +637,5 @@ compare_ipp_options(_ipp_option_t *a,	/* I - First option */
 
 
 /*
- * End of "$Id: encode.c 8532 2009-04-20 21:37:14Z mike $".
+ * End of "$Id: encode.c 9258 2010-08-13 01:34:04Z mike $".
  */

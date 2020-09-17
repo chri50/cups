@@ -1,5 +1,5 @@
 /*
- * "$Id: config.h 9120 2010-04-23 18:56:34Z mike $"
+ * "$Id: config.h 9233 2010-08-10 06:15:55Z mike $"
  *
  *   Configuration file for CUPS.
  *
@@ -24,7 +24,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
-#include <ctype.h>
 #include <io.h>
 
 
@@ -702,5 +701,5 @@
 #endif /* !_CUPS_CONFIG_H_ */
 
 /*
- * End of "$Id: config.h 9120 2010-04-23 18:56:34Z mike $".
+ * End of "$Id: config.h 9233 2010-08-10 06:15:55Z mike $".
  */

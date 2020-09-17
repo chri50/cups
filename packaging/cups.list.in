@@ -1,5 +1,5 @@
 #
-# "$Id: cups.list.in 9120 2010-04-23 18:56:34Z mike $"
+# "$Id: cups.list.in 9181 2010-06-22 21:42:44Z mike $"
 #
 #   ESP Package Manager (EPM) file list for CUPS.
 #
@@ -707,8 +707,6 @@ f 0444 root sys $MANDIR/man5/mime.convs.$MAN5EXT man/mime.convs.$MAN5EXT
 f 0444 root sys $MANDIR/man5/mime.types.$MAN5EXT man/mime.types.$MAN5EXT
 f 0444 root sys $MANDIR/man5/printers.conf.$MAN5EXT man/printers.conf.$MAN5EXT
 
-f 0444 root sys $MANDIR/man7/drv.$MAN7EXT man/drv.$MAN7EXT
-
 l 0644 root sys $AMANDIR/man$MAN8DIR/accept.$MAN8EXT cupsaccept.$MAN8EXT
 f 0444 root sys $AMANDIR/man$MAN8DIR/cupsaccept.$MAN8EXT man/cupsaccept.$MAN8EXT
 l 0644 root sys $AMANDIR/man$MAN8DIR/cupsreject.$MAN8EXT cupsaccept.$MAN8EXT
@@ -777,5 +775,5 @@ f 0444 root sys $XINETD/cups-lpd init/cups-lpd
 %subpackage
 
 #
-# End of "$Id: cups.list.in 9120 2010-04-23 18:56:34Z mike $".
+# End of "$Id: cups.list.in 9181 2010-06-22 21:42:44Z mike $".
 #

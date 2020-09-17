@@ -1,5 +1,5 @@
 /*
- * "$Id: mailto.c 7460 2008-04-16 02:19:54Z mike $"
+ * "$Id: mailto.c 9198 2010-07-08 17:24:14Z mike $"
  *
  *   "mailto" notifier for the Common UNIX Printing System (CUPS).
  *
@@ -369,8 +369,10 @@ email_message(const char *to,		/* I - Recipient of message */
     fputs("DEBUG: QUIT\n", stderr);
 
     if (!cupsFileGets(fp, response, sizeof(response)) || atoi(response) >= 500)
-      goto smtp_error;
-    fprintf(stderr, "DEBUG: <<< %s\n", response);
+      fprintf(stderr, "ERROR: Got \"%s\" trying to QUIT connection.\n",
+              response);
+    else
+      fprintf(stderr, "DEBUG: <<< %s\n", response);
 
     cupsFileClose(fp);
 
@@ -786,5 +788,5 @@ print_attributes(ipp_t *ipp,		/* I - IPP request */
 
 
 /*
- * End of "$Id: mailto.c 7460 2008-04-16 02:19:54Z mike $".
+ * End of "$Id: mailto.c 9198 2010-07-08 17:24:14Z mike $".
  */

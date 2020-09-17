@@ -1,5 +1,5 @@
 /*
- * "$Id: ipp-var.c 8912 2009-12-08 02:13:42Z mike $"
+ * "$Id: ipp-var.c 9181 2010-06-22 21:42:44Z mike $"
  *
  *   CGI <-> IPP variable routines for the Common UNIX Printing System (CUPS).
  *
@@ -285,10 +285,14 @@ cgiMoveJobs(http_t     *http,		/* I - Connection to server */
 
 
  /*
-  * See who is logged in...
+  * Make sure we have a username...
   */
 
-  user = getenv("REMOTE_USER");
+  if ((user = getenv("REMOTE_USER")) == NULL)
+  {
+    puts("Status: 401\n");
+    exit(0);
+  }
 
  /*
   * See if the user has already selected a new destination...
@@ -1584,5 +1588,5 @@ cgiText(const char *message)		/* I - Message */
 
 
 /*
- * End of "$Id: ipp-var.c 8912 2009-12-08 02:13:42Z mike $".
+ * End of "$Id: ipp-var.c 9181 2010-06-22 21:42:44Z mike $".
  */

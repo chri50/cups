@@ -1,5 +1,5 @@
 /*
- * "$Id: http.c 9157 2010-06-16 05:27:41Z mike $"
+ * "$Id: http.c 9233 2010-08-10 06:15:55Z mike $"
  *
  *   HTTP routines for CUPS.
  *
@@ -910,7 +910,7 @@ httpGetSubField2(http_t       *http,	/* I - Connection to server */
     * Skip leading whitespace...
     */
 
-    while (isspace(*fptr & 255))
+    while (_cups_isspace(*fptr))
       fptr ++;
 
     if (*fptr == ',')
@@ -924,7 +924,7 @@ httpGetSubField2(http_t       *http,	/* I - Connection to server */
     */
 
     for (ptr = temp;
-         *fptr && *fptr != '=' && !isspace(*fptr & 255) &&
+         *fptr && *fptr != '=' && !_cups_isspace(*fptr) &&
 	     ptr < (temp + sizeof(temp) - 1);
          *ptr++ = *fptr++);
 
@@ -936,7 +936,7 @@ httpGetSubField2(http_t       *http,	/* I - Connection to server */
     * Skip trailing chars up to the '='...
     */
 
-    while (isspace(*fptr & 255))
+    while (_cups_isspace(*fptr))
       fptr ++;
 
     if (!*fptr)
@@ -951,7 +951,7 @@ httpGetSubField2(http_t       *http,	/* I - Connection to server */
 
     fptr ++;
 
-    while (isspace(*fptr & 255))
+    while (_cups_isspace(*fptr))
       fptr ++;
 
     if (*fptr == '\"')
@@ -979,12 +979,12 @@ httpGetSubField2(http_t       *http,	/* I - Connection to server */
       */
 
       for (ptr = value;
-           *fptr && !isspace(*fptr & 255) && *fptr != ',' && ptr < end;
+           *fptr && !_cups_isspace(*fptr) && *fptr != ',' && ptr < end;
 	   *ptr++ = *fptr++);
 
       *ptr = '\0';
 
-      while (*fptr && !isspace(*fptr & 255) && *fptr != ',')
+      while (*fptr && !_cups_isspace(*fptr) && *fptr != ',')
         fptr ++;
     }
 
@@ -2129,7 +2129,7 @@ httpUpdate(http_t *http)		/* I - Connection to server */
       */
 
       *value++ = '\0';
-      while (isspace(*value & 255))
+      while (_cups_isspace(*value))
         value ++;
 
      /*
@@ -3511,5 +3511,5 @@ http_write_ssl(http_t     *http,	/* I - Connection to server */
 
 
 /*
- * End of "$Id: http.c 9157 2010-06-16 05:27:41Z mike $".
+ * End of "$Id: http.c 9233 2010-08-10 06:15:55Z mike $".
  */

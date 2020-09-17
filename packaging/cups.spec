@@ -1,5 +1,5 @@
 #
-# "$Id: cups.spec.in 9120 2010-04-23 18:56:34Z mike $"
+# "$Id: cups.spec.in 9359 2010-11-11 19:09:24Z mike $"
 #
 #   RPM "spec" file for CUPS.
 #
@@ -34,12 +34,12 @@
 
 Summary: CUPS
 Name: cups
-Version: 1.4.4
+Version: 1.4.5
 Release: 1
 Epoch: 1
 License: GPL
 Group: System Environment/Daemons
-Source: http://ftp.easysw.com/pub/cups/1.4.4/cups-1.4.4-source.tar.gz
+Source: http://ftp.easysw.com/pub/cups/1.4.5/cups-1.4.5-source.tar.gz
 Url: http://www.cups.org
 Packager: Anonymous <anonymous@foo.com>
 Vendor: Apple Inc.
@@ -285,8 +285,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir /usr/share/man/man5
 /usr/share/man/man5/*.conf.5.gz
 /usr/share/man/man5/mime.*.5.gz
-%dir /usr/share/man/man7
-/usr/share/man/man7/drv*
 %dir /usr/share/man/man8
 /usr/share/man/man8/accept.8.gz
 /usr/share/man/man8/cupsaddsmb.8.gz
@@ -369,5 +367,5 @@ rm -rf $RPM_BUILD_ROOT
 
 
 #
-# End of "$Id: cups.spec.in 9120 2010-04-23 18:56:34Z mike $".
+# End of "$Id: cups.spec.in 9359 2010-11-11 19:09:24Z mike $".
 #

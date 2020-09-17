@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# "$Id: run-stp-tests.sh 9165 2010-06-17 18:20:39Z mike $"
+# "$Id: run-stp-tests.sh 9258 2010-08-13 01:34:04Z mike $"
 #
 #   Perform the complete set of IPP compliance tests specified in the
 #   CUPS Software Test Plan.
@@ -651,7 +651,7 @@ fi
 
 # Requests logged
 count=`wc -l /tmp/cups-$user/log/access_log | awk '{print $1}'`
-expected=`expr 39 + 18 + $pjobs \* 8 + $pprinters \* $pjobs \* 4`
+expected=`expr 37 + 18 + $pjobs \* 8 + $pprinters \* $pjobs \* 4`
 if test $count != $expected; then
 	echo "FAIL: $count requests logged, expected $expected."
 	echo "<P>FAIL: $count requests logged, expected $expected.</P>" >>$strfile
@@ -852,5 +852,5 @@ if test $fail != 0; then
 fi
 
 #
-# End of "$Id: run-stp-tests.sh 9165 2010-06-17 18:20:39Z mike $"
+# End of "$Id: run-stp-tests.sh 9258 2010-08-13 01:34:04Z mike $"
 #

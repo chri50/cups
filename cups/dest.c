@@ -1,5 +1,5 @@
 /*
- * "$Id: dest.c 9061 2010-03-30 22:07:33Z mike $"
+ * "$Id: dest.c 9258 2010-08-13 01:34:04Z mike $"
  *
  *   User-defined destination (and option) support for the Common UNIX
  *   Printing System (CUPS).
@@ -509,7 +509,19 @@ cupsGetNamedDest(http_t     *http,	/* I - Connection to server or @code CUPS_HTT
     set_as_default = 1;
     name           = _cupsUserDefault(defname, sizeof(defname));
 
-    if (!name && home)
+    if (name)
+    {
+      char	*ptr;			/* Temporary pointer... */
+
+      if ((ptr = strchr(defname, '/')) != NULL)
+      {
+        *ptr++   = '\0';
+	instance = ptr;
+      }
+      else
+        instance = NULL;
+    }
+    else if (home)
     {
      /*
       * No default in the environment, try the user's lpoptions files...
@@ -1234,7 +1246,8 @@ appleSetDefault(const char *name)	/* I - Default printer/class name */
         CFArrayRemoveValueAtIndex(newlocations, locindex);
     }
     else
-      newlocations = CFArrayCreateMutable(kCFAllocatorDefault, 0, NULL);
+      newlocations = CFArrayCreateMutable(kCFAllocatorDefault, 0,
+					  &kCFTypeArrayCallBacks);
 
     newlocation = CFDictionaryCreateMutable(kCFAllocatorDefault, 0,
 					    &kCFTypeDictionaryKeyCallBacks,
@@ -2060,5 +2073,5 @@ cups_make_string(
 
 
 /*
- * End of "$Id: dest.c 9061 2010-03-30 22:07:33Z mike $".
+ * End of "$Id: dest.c 9258 2010-08-13 01:34:04Z mike $".
  */

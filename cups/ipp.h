@@ -1,5 +1,5 @@
 /*
- * "$Id: ipp.h 9120 2010-04-23 18:56:34Z mike $"
+ * "$Id: ipp.h 9357 2010-11-11 17:40:35Z mike $"
  *
  *   Internet Printing Protocol definitions for CUPS.
  *
@@ -93,7 +93,8 @@ typedef enum ipp_tag_e			/**** Format tags for attributes ****/
   IPP_TAG_END_COLLECTION,		/* End of collection value */
   IPP_TAG_TEXT = 0x41,			/* Text value */
   IPP_TAG_NAME,				/* Name value */
-  IPP_TAG_KEYWORD = 0x44,		/* Keyword value */
+  IPP_TAG_RESERVED_STRING,		/* Reserved for future string value @private@ */
+  IPP_TAG_KEYWORD,			/* Keyword value */
   IPP_TAG_URI,				/* URI value */
   IPP_TAG_URISCHEME,			/* URI scheme value */
   IPP_TAG_CHARSET,			/* Character set value */
@@ -500,5 +501,5 @@ extern ipp_tag_t	ippTagValue(const char *name) _CUPS_API_1_4;
 #endif /* !_CUPS_IPP_H_ */
 
 /*
- * End of "$Id: ipp.h 9120 2010-04-23 18:56:34Z mike $".
+ * End of "$Id: ipp.h 9357 2010-11-11 17:40:35Z mike $".
  */

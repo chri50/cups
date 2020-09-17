@@ -1,9 +1,9 @@
 /*
- * "$Id: runloop.c 8896 2009-11-20 01:27:57Z mike $"
+ * "$Id: runloop.c 9258 2010-08-13 01:34:04Z mike $"
  *
- *   Common run loop APIs for the Common UNIX Printing System (CUPS).
+ *   Common run loop APIs for CUPS.
  *
- *   Copyright 2007-2008 by Apple Inc.
+ *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 2006-2007 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -299,6 +299,8 @@ backendRunLoop(
 	        strerror(errno));
 	use_bc = 0;
       }
+      else if (bc_bytes == 0)
+        use_bc = 0;
     }
 
    /*
@@ -420,5 +422,5 @@ backendRunLoop(
 
 
 /*
- * End of "$Id: runloop.c 8896 2009-11-20 01:27:57Z mike $".
+ * End of "$Id: runloop.c 9258 2010-08-13 01:34:04Z mike $".
  */
