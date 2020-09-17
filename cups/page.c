@@ -1,9 +1,9 @@
 /*
- * "$Id: page.c 8664 2009-05-20 21:21:50Z mike $"
+ * "$Id: page.c 8959 2010-01-18 22:10:29Z mike $"
  *
  *   Page size functions for the Common UNIX Printing System (CUPS).
  *
- *   Copyright 2007-2009 by Apple Inc.
+ *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -250,6 +250,9 @@ ppdPageSizeLimits(ppd_file_t *ppd,	/* I - PPD file record */
   * Figure out the current minimum width and length...
   */
 
+  width  = ppd->custom_min[0];
+  length = ppd->custom_min[1];
+
   if (qualifier2)
   {
    /*
@@ -277,17 +280,12 @@ ppdPageSizeLimits(ppd_file_t *ppd,	/* I - PPD file record */
       attr = ppdFindAttr(ppd, "cupsMinSize", spec);
     }
 
-    if (!attr ||
-        (attr->value && sscanf(attr->value, "%f%f", &width, &length) != 2))
+    if ((attr && attr->value &&
+         sscanf(attr->value, "%f%f", &width, &length) != 2) || !attr)
     {
       width  = ppd->custom_min[0];
       length = ppd->custom_min[1];
     }
-  }
-  else
-  {
-    width  = ppd->custom_min[0];
-    length = ppd->custom_min[1];
   }
 
   minimum->width  = width;
@@ -300,6 +298,9 @@ ppdPageSizeLimits(ppd_file_t *ppd,	/* I - PPD file record */
  /*
   * Figure out the current maximum width and length...
   */
+
+  width  = ppd->custom_max[0];
+  length = ppd->custom_max[1];
 
   if (qualifier2)
   {
@@ -334,11 +335,6 @@ ppdPageSizeLimits(ppd_file_t *ppd,	/* I - PPD file record */
       width  = ppd->custom_max[0];
       length = ppd->custom_max[1];
     }
-  }
-  else
-  {
-    width  = ppd->custom_max[0];
-    length = ppd->custom_max[1];
   }
 
   maximum->width  = width;
@@ -395,5 +391,5 @@ ppdPageLength(ppd_file_t *ppd,	/* I - PPD file */
 
 
 /*
- * End of "$Id: page.c 8664 2009-05-20 21:21:50Z mike $".
+ * End of "$Id: page.c 8959 2010-01-18 22:10:29Z mike $".
  */

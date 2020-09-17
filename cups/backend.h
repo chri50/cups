@@ -1,5 +1,5 @@
 /*
- * "$Id: backend.h 7810 2008-07-29 01:11:15Z mike $"
+ * "$Id: backend.h 8884 2009-11-17 21:57:54Z mike $"
  *
  *   Backend definitions for the Common UNIX Printing System (CUPS).
  *
@@ -25,6 +25,14 @@
 
 #  include "versioning.h"
 
+
+/*
+ * C++ magic...
+ */
+
+#  ifdef __cplusplus
+extern "C" {
+#  endif /* __cplusplus */
 
 /*
  * Constants...
@@ -57,8 +65,12 @@ extern void		cupsBackendReport(const char *device_scheme,
 					  _CUPS_API_1_4;
 			                  
 
+#  ifdef __cplusplus
+}
+#  endif /* __cplusplus */
+
 #endif /* !_CUPS_BACKEND_H_ */
 
 /*
- * End of "$Id: backend.h 7810 2008-07-29 01:11:15Z mike $".
+ * End of "$Id: backend.h 8884 2009-11-17 21:57:54Z mike $".
  */

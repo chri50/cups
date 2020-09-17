@@ -1,5 +1,5 @@
 /*
- * "$Id: emit.c 8610 2009-05-11 21:18:24Z mike $"
+ * "$Id: emit.c 8938 2009-12-18 23:52:01Z mike $"
  *
  *   PPD code emission routines for the Common UNIX Printing System (CUPS).
  *
@@ -772,6 +772,7 @@ ppdEmitString(ppd_file_t    *ppd,	/* I - PPD file record */
     if (section == PPD_ORDER_JCL)
     {
       if (!strcasecmp(choices[i]->choice, "Custom") &&
+	  choices[i]->code &&
           (coption = ppdFindCustomOption(ppd, choices[i]->option->keyword))
 	      != NULL)
       {
@@ -1205,5 +1206,5 @@ ppd_handle_media(ppd_file_t *ppd)	/* I - PPD file */
 
 
 /*
- * End of "$Id: emit.c 8610 2009-05-11 21:18:24Z mike $".
+ * End of "$Id: emit.c 8938 2009-12-18 23:52:01Z mike $".
  */

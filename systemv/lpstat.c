@@ -1,5 +1,5 @@
 /*
- * "$Id: lpstat.c 8333 2009-02-04 22:54:22Z mike $"
+ * "$Id: lpstat.c 8929 2009-12-15 22:40:37Z mike $"
  *
  *   "lpstat" command for the Common UNIX Printing System (CUPS).
  *
@@ -1287,10 +1287,10 @@ show_jobs(const char *dests,		/* I - Destinations */
 		  "job-id",
 		  "job-k-octets",
 		  "job-name",
-		  "time-at-creation",
-		  "job-printer-uri",
 		  "job-originating-user-name",
-		  "job-state-reasons"
+		  "job-printer-uri",
+		  "job-state-reasons",
+		  "time-at-creation"
 		};
 
 
@@ -2010,5 +2010,5 @@ show_scheduler(void)
 
 
 /*
- * End of "$Id: lpstat.c 8333 2009-02-04 22:54:22Z mike $".
+ * End of "$Id: lpstat.c 8929 2009-12-15 22:40:37Z mike $".
  */

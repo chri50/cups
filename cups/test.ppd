@@ -1,6 +1,6 @@
 *PPD-Adobe: "4.3"
 *%
-*% "$Id: test.ppd 8578 2009-04-29 19:03:27Z mike $"
+*% "$Id: test.ppd 8900 2009-11-20 17:06:25Z mike $"
 *%
 *% Test PPD file for the Common UNIX Printing System (CUPS).
 *%
@@ -39,7 +39,7 @@
 *Throughput:	"1"
 *LandscapeOrientation: Plus90
 *TTRasterizer:	Type42
-*cupsFilter: "application/vnd.cups-raster - 0"
+*cupsFilter: "application/vnd.cups-raster 0 -"
 *RequiresPageRegion All: True
 
 *% These constraints are used to test ppdConflicts() and cupsResolveConflicts()
@@ -233,5 +233,5 @@ help:anchor='foo'%20bookID=Vendor%20Help
 *Font ZapfChancery-MediumItalic: Standard "(001.007S)" Standard ROM
 *Font ZapfDingbats: Special "(001.004S)" Standard ROM
 *%
-*% End of "$Id: test.ppd 8578 2009-04-29 19:03:27Z mike $".
+*% End of "$Id: test.ppd 8900 2009-11-20 17:06:25Z mike $".
 *%

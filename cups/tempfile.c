@@ -1,5 +1,5 @@
 /*
- * "$Id: tempfile.c 8179 2008-12-10 05:03:11Z mike $"
+ * "$Id: tempfile.c 8957 2010-01-18 18:47:12Z mike $"
  *
  *   Temp file utilities for the Common UNIX Printing System (CUPS).
  *
@@ -118,8 +118,8 @@ cupsTempFd(char *filename,		/* I - Pointer to buffer */
     * Format a string using the hex time values...
     */
 
-    snprintf(filename, len - 1, "%s/%08lx%05lx", tmpdir,
-             (unsigned long)curtime.tv_sec, (unsigned long)curtime.tv_usec);
+    snprintf(filename, len - 1, "%s/%05x%08x", tmpdir, (unsigned)getpid(),
+             (unsigned)(curtime.tv_sec + curtime.tv_usec + tries));
 #endif /* WIN32 */
 
    /*
@@ -231,5 +231,5 @@ cupsTempFile2(char *filename,		/* I - Pointer to buffer */
 
 
 /*
- * End of "$Id: tempfile.c 8179 2008-12-10 05:03:11Z mike $".
+ * End of "$Id: tempfile.c 8957 2010-01-18 18:47:12Z mike $".
  */

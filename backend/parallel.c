@@ -1,5 +1,5 @@
 /*
- * "$Id: parallel.c 8807 2009-08-31 18:45:43Z mike $"
+ * "$Id: parallel.c 8896 2009-11-20 01:27:57Z mike $"
  *
  *   Parallel port backend for the Common UNIX Printing System (CUPS).
  *
@@ -284,7 +284,7 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
       lseek(print_fd, 0, SEEK_SET);
     }
 
-    tbytes = backendRunLoop(print_fd, device_fd, -1, NULL, use_bc, side_cb);
+    tbytes = backendRunLoop(print_fd, device_fd, -1, NULL, use_bc, 1, side_cb);
 
     if (print_fd != 0 && tbytes >= 0)
       _cupsLangPrintf(stderr,
@@ -682,5 +682,5 @@ side_cb(int         print_fd,		/* I - Print file */
 
 
 /*
- * End of "$Id: parallel.c 8807 2009-08-31 18:45:43Z mike $".
+ * End of "$Id: parallel.c 8896 2009-11-20 01:27:57Z mike $".
  */

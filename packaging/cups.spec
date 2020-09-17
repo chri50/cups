@@ -34,12 +34,12 @@
 
 Summary: CUPS
 Name: cups
-Version: 1.4.2
+Version: 1.4.3
 Release: 1
 Epoch: 1
 License: GPL
 Group: System Environment/Daemons
-Source: ftp://ftp.easysw.com/pub/cups/1.4.2/cups-1.4.2-source.tar.gz
+Source: ftp://ftp.easysw.com/pub/cups/1.4.3/cups-1.4.3-source.tar.gz
 Url: http://www.cups.org
 Packager: Anonymous <anonymous@foo.com>
 Vendor: Apple Inc.

@@ -1,5 +1,5 @@
 dnl
-dnl "$Id: cups-common.m4 8841 2009-10-07 16:24:25Z mike $"
+dnl "$Id: cups-common.m4 8938 2009-12-18 23:52:01Z mike $"
 dnl
 dnl   Common configuration stuff for the Common UNIX Printing System (CUPS).
 dnl
@@ -20,7 +20,7 @@ dnl Set the name of the config header file...
 AC_CONFIG_HEADER(config.h)
 
 dnl Version number information...
-CUPS_VERSION=1.4.2
+CUPS_VERSION=1.4.3
 CUPS_REVISION=
 #if test -z "$CUPS_REVISION" -a -d .svn; then
 #	CUPS_REVISION="-r`svnversion . | awk -F: '{print $NF}' | sed -e '1,$s/[[a-zA-Z]]*//g'`"
@@ -142,7 +142,7 @@ else
 fi
 
 dnl Check for random number functions...
-AC_CHECK_FUNCS(random mrand48 lrand48)
+AC_CHECK_FUNCS(random lrand48 arc4random)
 
 dnl Check for geteuid function.
 AC_CHECK_FUNCS(geteuid)
@@ -262,6 +262,8 @@ if test "x$enable_dbus" != xno; then
 			AC_DEFINE(HAVE_DBUS)
 			CFLAGS="$CFLAGS `$PKGCONFIG --cflags dbus-1` -DDBUS_API_SUBJECT_TO_CHANGE"
 			CUPSDLIBS="$CUPSDLIBS `$PKGCONFIG --libs dbus-1`"
+			DBUS_NOTIFIER="dbus"
+			DBUS_NOTIFIERLIBS="`$PKGCONFIG --libs dbus-1`"
 			AC_CHECK_LIB(dbus-1,
 				dbus_message_iter_init_append,
 				AC_DEFINE(HAVE_DBUS_MESSAGE_ITER_INIT_APPEND),,
@@ -349,5 +351,5 @@ AC_SUBST(FONTS)
 AC_SUBST(LEGACY_BACKENDS)
 
 dnl
-dnl End of "$Id: cups-common.m4 8841 2009-10-07 16:24:25Z mike $".
+dnl End of "$Id: cups-common.m4 8938 2009-12-18 23:52:01Z mike $".
 dnl

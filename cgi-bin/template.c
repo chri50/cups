@@ -1,9 +1,9 @@
 /*
- * "$Id: template.c 8859 2009-11-09 23:01:17Z mike $"
+ * "$Id: template.c 8980 2010-02-08 17:33:31Z mike $"
  *
  *   CGI template function.
  *
- *   Copyright 2007-2008 by Apple Inc.
+ *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -119,7 +119,7 @@ cgiCopyTemplateLang(const char *tmpl)	/* I - Base filename */
       *locptr = '\0';			/* Strip charset */
   }
 
-  fprintf(stderr, "DEBUG: lang=\"%s\", locale=\"%s\"...\n",
+  fprintf(stderr, "DEBUG2: lang=\"%s\", locale=\"%s\"...\n",
           lang ? lang : "(null)", locale);
 
  /*
@@ -437,7 +437,14 @@ cgi_copy(FILE *out,			/* I - Output file */
         * Test for existance...
 	*/
 
-        result     = cgiGetArray(name, element) != NULL && outptr[0];
+        if (name[0] == '?')
+	  result = cgiGetArray(name + 1, element) != NULL;
+	else if (name[0] == '#')
+	  result = cgiGetVariable(name + 1) != NULL;
+        else
+          result = cgiGetArray(name, element) != NULL;
+
+	result     = result && outptr[0];
 	compare[0] = '\0';
       }
       else
@@ -708,5 +715,5 @@ cgi_puturi(const char *s,		/* I - String to output */
 
 
 /*
- * End of "$Id: template.c 8859 2009-11-09 23:01:17Z mike $".
+ * End of "$Id: template.c 8980 2010-02-08 17:33:31Z mike $".
  */
