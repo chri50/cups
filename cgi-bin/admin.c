@@ -1,5 +1,5 @@
 /*
- * "$Id: admin.c 7984 2008-09-26 15:30:29Z mike $"
+ * "$Id: admin.c 8722 2009-06-18 21:42:45Z mike $"
  *
  *   Administration CGI for the Common UNIX Printing System (CUPS).
  *
@@ -439,6 +439,12 @@ do_am_class(http_t *http,		/* I - HTTP connection */
     */
 
     request = ippNewRequest(CUPS_GET_PRINTERS);
+
+    ippAddInteger(request, IPP_TAG_OPERATION, IPP_TAG_ENUM, "printer-type",
+		  CUPS_PRINTER_LOCAL);
+    ippAddInteger(request, IPP_TAG_OPERATION, IPP_TAG_ENUM, "printer-type-mask",
+		  CUPS_PRINTER_CLASS | CUPS_PRINTER_REMOTE |
+		      CUPS_PRINTER_IMPLICIT);
 
    /*
     * Do the request and get back a response...
@@ -3451,5 +3457,5 @@ match_string(const char *a,		/* I - First string */
 
     
 /*
- * End of "$Id: admin.c 7984 2008-09-26 15:30:29Z mike $".
+ * End of "$Id: admin.c 8722 2009-06-18 21:42:45Z mike $".
  */

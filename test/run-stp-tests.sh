@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# "$Id: run-stp-tests.sh 8146 2008-11-19 19:50:56Z mike $"
+# "$Id: run-stp-tests.sh 8527 2009-04-20 15:45:19Z mike $"
 #
 #   Perform the complete set of IPP compliance tests specified in the
 #   CUPS Software Test Plan.
@@ -277,7 +277,7 @@ if test `uname` = Darwin; then
 else
 	ln -s $root/filter/imagetops /tmp/cups-$user/bin/filter
 	ln -s $root/filter/imagetoraster /tmp/cups-$user/bin/filter
-	ln -s $root/pdftops/pdftops /tmp/cups-$user/bin/filter
+	ln -s $root/filter/pdftops /tmp/cups-$user/bin/filter
 fi
 
 #
@@ -752,5 +752,5 @@ if test $fail != 0; then
 fi
 
 #
-# End of "$Id: run-stp-tests.sh 8146 2008-11-19 19:50:56Z mike $"
+# End of "$Id: run-stp-tests.sh 8527 2009-04-20 15:45:19Z mike $"
 #

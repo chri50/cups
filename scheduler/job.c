@@ -1,5 +1,5 @@
 /*
- * "$Id: job.c 8513 2009-04-16 19:32:04Z mike $"
+ * "$Id: job.c 8720 2009-06-18 21:27:55Z mike $"
  *
  *   Job management routines for the Common UNIX Printing System (CUPS).
  *
@@ -1331,7 +1331,12 @@ cupsdMoveJob(cupsd_job_t     *job,	/* I - Job */
   */
 
   if (job->state_value == IPP_JOB_PROCESSING)
+  {
     cupsdStopJob(job, 0);
+
+    job->state_value              = IPP_JOB_PENDING;
+    job->state->values[0].integer = IPP_JOB_PENDING;
+  }
   else
     cupsdLoadJob(job);
 
@@ -3909,5 +3914,5 @@ update_job_attrs(cupsd_job_t *job)	/* I - Job to update */
 
 
 /*
- * End of "$Id: job.c 8513 2009-04-16 19:32:04Z mike $".
+ * End of "$Id: job.c 8720 2009-06-18 21:27:55Z mike $".
  */

@@ -1,9 +1,9 @@
 /*
- * "$Id: type.c 8241 2009-01-13 21:02:16Z mike $"
+ * "$Id: type.c 8601 2009-05-08 05:17:47Z mike $"
  *
  *   MIME typing routines for the Common UNIX Printing System (CUPS).
  *
- *   Copyright 2007 by Apple Inc.
+ *   Copyright 2007-2009 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -440,6 +440,8 @@ mimeAddTypeRule(mime_type_t *mt,	/* I - Type to add to */
 	  return (-1);
 
 	temp->child->parent = temp;
+	temp->child->invert = temp->invert;
+	temp->invert        = 0;
 
 	temp  = temp->child;
         logic = MIME_MAGIC_OR;
@@ -1149,5 +1151,5 @@ patmatch(const char *s,		/* I - String to match against */
 
 
 /*
- * End of "$Id: type.c 8241 2009-01-13 21:02:16Z mike $".
+ * End of "$Id: type.c 8601 2009-05-08 05:17:47Z mike $".
  */

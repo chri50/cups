@@ -1,5 +1,5 @@
 /*
- * "$Id: printers.c 8114 2008-11-12 00:18:36Z mike $"
+ * "$Id: printers.c 8719 2009-06-18 21:22:52Z mike $"
  *
  *   Printer routines for the Common UNIX Printing System (CUPS).
  *
@@ -2869,6 +2869,7 @@ cupsdStopPrinter(cupsd_printer_t *p,	/* I - Printer to stop */
 
     job->state->values[0].integer = IPP_JOB_PENDING;
     job->state_value              = IPP_JOB_PENDING;
+	job->current_file             = 0;
 
     cupsdSaveJob(job);
 
@@ -3922,5 +3923,5 @@ write_irix_state(cupsd_printer_t *p)	/* I - Printer to update */
 
 
 /*
- * End of "$Id: printers.c 8114 2008-11-12 00:18:36Z mike $".
+ * End of "$Id: printers.c 8719 2009-06-18 21:22:52Z mike $".
  */

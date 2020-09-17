@@ -1,5 +1,5 @@
 /*
-* "$Id: usb-darwin.c 8207 2009-01-07 17:51:00Z mike $"
+* "$Id: usb-darwin.c 8741 2009-07-01 21:16:04Z mike $"
 *
 * Copyright 2005-2008 Apple Inc. All rights reserved.
 *
@@ -1036,7 +1036,7 @@ static Boolean list_device_cb(void *refcon,
 	snprintf(optionsstr, sizeof(optionsstr), "?location=%x", (unsigned)deviceLocation);
 
       httpAssembleURI(HTTP_URI_CODING_ALL, uristr, sizeof(uristr), "usb", NULL, makestr, 0, modelstr);
-      strncat(uristr, optionsstr, sizeof(uristr));
+      strlcat(uristr, optionsstr, sizeof(uristr));
 
       printf("direct %s \"%s\" \"%s USB\" \"%s\"\n", uristr, make_modelstr,
              make_modelstr, idstr);
@@ -2011,12 +2011,11 @@ static void get_device_id(cups_sc_status_t *status,
 			  char *data,
 			  int *datalen)
 {
-  UInt32 deviceLocation = 0;
-  UInt8	interfaceNum = 0;
   CFStringRef deviceIDString = NULL;
 
   /* GetDeviceID */
-  copy_devicestring(g.printer_obj, &deviceIDString, &deviceLocation, &interfaceNum);
+  copy_deviceid(g.classdriver, &deviceIDString);
+
   if (deviceIDString)
   {
     CFStringGetCString(deviceIDString, data, *datalen, kCFStringEncodingUTF8);
@@ -2028,5 +2027,5 @@ static void get_device_id(cups_sc_status_t *status,
 
 
 /*
- * End of "$Id: usb-darwin.c 8207 2009-01-07 17:51:00Z mike $".
+ * End of "$Id: usb-darwin.c 8741 2009-07-01 21:16:04Z mike $".
  */

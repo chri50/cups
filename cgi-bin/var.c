@@ -1,5 +1,5 @@
 /*
- * "$Id: var.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: var.c 8600 2009-05-08 04:56:54Z mike $"
  *
  *   CGI form variable and array functions.
  *
@@ -815,6 +815,18 @@ cgi_initialize_post(void)
       else
         nbytes = 0;
     }
+    else if (nbytes == 0)
+    {
+     /*
+      * CUPS STR #3176: OpenBSD: Early end-of-file on POST data causes 100% CPU
+      *
+      * This should never happen, but does on OpenBSD.  If we see early end-of-
+      * file, treat this as an error and process no data.
+      */
+
+      free(data);
+      return (0);
+    }
 
   data[length] = '\0';
 
@@ -1044,5 +1056,5 @@ cgi_unlink_file(void)
 
 
 /*
- * End of "$Id: var.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: var.c 8600 2009-05-08 04:56:54Z mike $".
  */

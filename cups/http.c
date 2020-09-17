@@ -1,5 +1,5 @@
 /*
- * "$Id: http.c 8513 2009-04-16 19:32:04Z mike $"
+ * "$Id: http.c 8734 2009-07-01 01:45:18Z mike $"
  *
  *   HTTP routines for the Common UNIX Printing System (CUPS).
  *
@@ -1833,18 +1833,39 @@ httpSetField(http_t       *http,	/* I - HTTP connection */
   else if (field == HTTP_FIELD_HOST)
   {
    /*
-    * Special-case for Host: as we don't want a trailing "." on the hostname.
+    * Special-case for Host: as we don't want a trailing "." on the hostname and
+    * need to bracket IPv6 numeric addresses.
     */
 
-    char *ptr = http->fields[HTTP_FIELD_HOST];
-					/* Pointer into Host: field */
+    char *ptr = strchr(value, ':');
 
-    if (*ptr)
+    if (value[0] != '[' && ptr && strchr(ptr + 1, ':'))
     {
-      ptr += strlen(ptr) - 1;
+     /*
+      * Bracket IPv6 numeric addresses...
+      *
+      * This is slightly inefficient (basically copying twice), but is an edge
+      * case and not worth optimizing...
+      */
 
-      if (*ptr == '.')
-        *ptr = '\0';
+      snprintf(http->fields[HTTP_FIELD_HOST],
+               sizeof(http->fields[HTTP_FIELD_HOST]), "[%s]", value);
+    }
+    else
+    {
+     /*
+      * Check for a trailing dot on the hostname...
+      */
+
+      ptr = http->fields[HTTP_FIELD_HOST];
+
+      if (*ptr)
+      {
+	ptr += strlen(ptr) - 1;
+
+	if (*ptr == '.')
+	  *ptr = '\0';
+      }
     }
   }
 }
@@ -2766,6 +2787,11 @@ http_setup_ssl(http_t *http)		/* I - HTTP connection */
     http->error  = errno;
     http->status = HTTP_ERROR;
 
+    gnutls_deinit(conn->session);
+    gnutls_certificate_free_credentials(*credentials);
+    free(credentials);
+    free(conn);
+
     return (-1);
   }
 
@@ -3241,5 +3267,5 @@ http_write_ssl(http_t     *http,	/* I - HTTP connection */
 
 
 /*
- * End of "$Id: http.c 8513 2009-04-16 19:32:04Z mike $".
+ * End of "$Id: http.c 8734 2009-07-01 01:45:18Z mike $".
  */

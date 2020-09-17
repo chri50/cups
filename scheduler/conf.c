@@ -1,5 +1,5 @@
 /*
- * "$Id: conf.c 8513 2009-04-16 19:32:04Z mike $"
+ * "$Id: conf.c 8732 2009-06-29 22:23:49Z mike $"
  *
  *   Configuration routines for the Common UNIX Printing System (CUPS).
  *
@@ -643,7 +643,13 @@ cupsdReadConfiguration(void)
   * See if the ServerName is an IP address...
   */
 
-  if (!ServerName)
+  if (ServerName)
+  {
+    add_alias(ServerName);
+
+    cupsdLogMessage(CUPSD_LOG_DEBUG, "Added auto ServerAlias %s", ServerName);
+  }
+  else
   {
     if (gethostname(temp, sizeof(temp)))
     {
@@ -3484,5 +3490,5 @@ read_policy(cups_file_t *fp,		/* I - Configuration file */
 
 
 /*
- * End of "$Id: conf.c 8513 2009-04-16 19:32:04Z mike $".
+ * End of "$Id: conf.c 8732 2009-06-29 22:23:49Z mike $".
  */

@@ -1,5 +1,5 @@
 /*
- * "$Id: auth.c 8342 2009-02-07 05:06:11Z mike $"
+ * "$Id: auth.c 8604 2009-05-08 06:40:25Z mike $"
  *
  *   Authorization routines for the Common UNIX Printing System (CUPS).
  *
@@ -492,7 +492,11 @@ cupsdAuthorize(cupsd_client_t *con)	/* I - Client connection */
 
     peersize = sizeof(peercred);
 
+#  ifdef __APPLE__
+    if (getsockopt(con->http.fd, 0, LOCAL_PEERCRED, &peercred, &peersize))
+#  else
     if (getsockopt(con->http.fd, SOL_SOCKET, SO_PEERCRED, &peercred, &peersize))
+#  endif /* __APPLE__ */
     {
       cupsdLogMessage(CUPSD_LOG_ERROR, "Unable to get peer credentials - %s",
                       strerror(errno));
@@ -2683,5 +2687,5 @@ to64(char          *s,			/* O - Output string */
 
 
 /*
- * End of "$Id: auth.c 8342 2009-02-07 05:06:11Z mike $".
+ * End of "$Id: auth.c 8604 2009-05-08 06:40:25Z mike $".
  */
