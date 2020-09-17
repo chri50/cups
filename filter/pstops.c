@@ -1,5 +1,5 @@
 /*
- * "$Id: pstops.c 9286 2010-08-31 18:36:08Z mike $"
+ * "$Id: pstops.c 9376 2010-11-17 19:58:22Z mike $"
  *
  *   PostScript filter for the Common UNIX Printing System (CUPS).
  *
@@ -2421,18 +2421,6 @@ set_pstops_options(
   doc->new_bounding_box[3] = INT_MIN;
 
  /*
-  * See what the source content type is.  When printing PostScript content we
-  * want to do scaling and orientation, but otherwise we don't want to change
-  * anything...
-  */
-
-  if ((content_type = getenv("CONTENT_TYPE")) == NULL)
-    content_type = "application/postscript";
-
-  if (!strcasecmp(content_type, "application/postscript"))
-    Orientation = 0;
-
- /*
   * AP_FIRSTPAGE_* and the corresponding non-first-page options.
   */
 
@@ -2525,6 +2513,9 @@ set_pstops_options(
   *
   * (Only for original PostScript content)
   */
+
+  if ((content_type = getenv("CONTENT_TYPE")) == NULL)
+    content_type = "application/postscript";
 
   if (!strcasecmp(content_type, "application/postscript"))
   {
@@ -3532,5 +3523,5 @@ write_options(
 
 
 /*
- * End of "$Id: pstops.c 9286 2010-08-31 18:36:08Z mike $".
+ * End of "$Id: pstops.c 9376 2010-11-17 19:58:22Z mike $".
  */

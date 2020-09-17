@@ -1,5 +1,5 @@
 /*
- * "$Id: job.c 9337 2010-10-17 04:13:56Z mike $"
+ * "$Id: job.c 9393 2010-11-30 22:35:02Z mike $"
  *
  *   Job management routines for the CUPS scheduler.
  *
@@ -294,6 +294,9 @@ cupsdCheckJobs(void)
 
     if (job->kill_time && job->kill_time <= curtime)
     {
+      cupsdLogMessage(CUPSD_LOG_ERROR, "[Job %d] Stopping unresponsive job!", 
+		      job->id);
+
       stop_job(job, CUPSD_JOB_FORCE);
       continue;
     }
@@ -2723,6 +2726,12 @@ finalize_job(cupsd_job_t *job,		/* I - Job */
   job->profile = NULL;
 
  /*
+  * Clear the unresponsive job watchdog timer...
+  */
+
+  job->kill_time = 0;
+
+ /*
   * Close pipes and status buffer...
   */
 
@@ -4637,5 +4646,5 @@ update_job_attrs(cupsd_job_t *job,	/* I - Job to update */
 
 
 /*
- * End of "$Id: job.c 9337 2010-10-17 04:13:56Z mike $".
+ * End of "$Id: job.c 9393 2010-11-30 22:35:02Z mike $".
  */
