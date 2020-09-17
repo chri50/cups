@@ -1,5 +1,5 @@
 /*
- * "$Id: ipp-var.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: ipp-var.c 8407 2009-03-05 18:44:14Z mike $"
  *
  *   CGI <-> IPP variable routines for the Common UNIX Printing System (CUPS).
  *
@@ -632,7 +632,7 @@ cgiRewriteURL(const char *uri,		/* I - Current URI */
 	      int        urlsize,	/* I - Size of URL buffer */
 	      const char *newresource)	/* I - Replacement resource */
 {
-  char			method[HTTP_MAX_URI],
+  char			scheme[HTTP_MAX_URI],
 			userpass[HTTP_MAX_URI],
 			hostname[HTTP_MAX_URI],
 			rawresource[HTTP_MAX_URI],
@@ -679,13 +679,13 @@ cgiRewriteURL(const char *uri,		/* I - Current URI */
   * Convert the URI to a URL...
   */
 
-  httpSeparateURI(HTTP_URI_CODING_ALL, uri, method, sizeof(method), userpass,
+  httpSeparateURI(HTTP_URI_CODING_ALL, uri, scheme, sizeof(scheme), userpass,
                   sizeof(userpass), hostname, sizeof(hostname), &port,
 		  rawresource, sizeof(rawresource));
 
-  if (!strcmp(method, "ipp") ||
-      !strcmp(method, "http") ||
-      !strcmp(method, "https"))
+  if (!strcmp(scheme, "ipp") ||
+      !strcmp(scheme, "http") ||
+      !strcmp(scheme, "https"))
   {
     if (newresource)
     {
@@ -724,7 +724,9 @@ cgiRewriteURL(const char *uri,		/* I - Current URI */
     * Map local access to a local URI...
     */
 
-    if (!strcasecmp(hostname, "localhost") ||
+    if (!strcasecmp(hostname, "127.0.0.1") ||
+	!strcasecmp(hostname, "[::1]") ||
+	!strcasecmp(hostname, "localhost") ||
 	!strncasecmp(hostname, "localhost.", 10) ||
 	!strcasecmp(hostname, server) ||
 	!strcasecmp(hostname, servername))
@@ -1244,8 +1246,8 @@ cgiShowJobs(http_t     *http,		/* I - Connection to server */
                  NULL, url);
   }
   else
-    ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "job-uri", NULL,
-        	 "ipp://localhost/jobs");
+    ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri", NULL,
+        	 "ipp://localhost/");
 
   if ((which_jobs = cgiGetVariable("which_jobs")) != NULL)
     ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_KEYWORD, "which-jobs",
@@ -1422,5 +1424,5 @@ cgiText(const char *message)		/* I - Message */
 
 
 /*
- * End of "$Id: ipp-var.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: ipp-var.c 8407 2009-03-05 18:44:14Z mike $".
  */

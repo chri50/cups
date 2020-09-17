@@ -1,5 +1,5 @@
 /*
-* "$Id: usb-darwin.c 7974 2008-09-23 20:07:01Z mike $"
+* "$Id: usb-darwin.c 8207 2009-01-07 17:51:00Z mike $"
 *
 * Copyright 2005-2008 Apple Inc. All rights reserved.
 *
@@ -633,14 +633,12 @@ print_device(const char *uri,		/* I - Device URI */
 	status = (*g.classdriver)->WritePipe(g.classdriver, (UInt8*)print_ptr, &bytes, 0);
 
        /*
-	* Ignore timeout errors...
+	* Ignore timeout errors, but retain the number of bytes written to
+	* avoid sending duplicate data (<rdar://problem/6254911>)...
 	*/
 
 	if (status == kIOUSBTransactionTimeout)
-	{
 	  status = 0;
-	  bytes = 0;
-	}
 
 	if (status || bytes < 0)
 	{
@@ -2030,5 +2028,5 @@ static void get_device_id(cups_sc_status_t *status,
 
 
 /*
- * End of "$Id: usb-darwin.c 7974 2008-09-23 20:07:01Z mike $".
+ * End of "$Id: usb-darwin.c 8207 2009-01-07 17:51:00Z mike $".
  */

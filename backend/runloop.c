@@ -1,5 +1,5 @@
 /*
- * "$Id: runloop.c 7648 2008-06-16 17:41:11Z mike $"
+ * "$Id: runloop.c 8132 2008-11-14 21:02:37Z mike $"
  *
  *   Common run loop APIs for the Common UNIX Printing System (CUPS).
  *
@@ -273,6 +273,12 @@ backendRunLoop(
 	        CUPS_LLCAST bc_bytes);
         cupsBackChannelWrite(bc_buffer, bc_bytes, 1.0);
       }
+      else if (bc_bytes < 0 && errno != EAGAIN && errno != EINTR)
+      {
+        fprintf(stderr, "DEBUG: Error reading back-channel data: %s\n",
+	        strerror(errno));
+	use_bc = 0;
+      }
     }
 
    /*
@@ -382,5 +388,5 @@ backendRunLoop(
 
 
 /*
- * End of "$Id: runloop.c 7648 2008-06-16 17:41:11Z mike $".
+ * End of "$Id: runloop.c 8132 2008-11-14 21:02:37Z mike $".
  */

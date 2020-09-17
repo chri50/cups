@@ -1,5 +1,5 @@
 /*
- * "$Id: localize.c 7667 2008-06-17 21:28:59Z mike $"
+ * "$Id: localize.c 8374 2009-02-20 16:42:13Z mike $"
  *
  *   PPD custom option routines for the Common UNIX Printing System (CUPS).
  *
@@ -113,7 +113,8 @@ ppdLocalize(ppd_file_t *ppd)		/* I - PPD file */
            k > 0;
 	   k --, choice ++)
       {
-        if (strcmp(choice->choice, "Custom"))
+        if (strcmp(choice->choice, "Custom") ||
+	    !ppdFindCustomOption(ppd, option->keyword))
 	  locattr = ppd_localized_attr(ppd, option->keyword, choice->choice,
 	                               ll_CC, ll);
 	else
@@ -513,5 +514,5 @@ ppd_localized_attr(ppd_file_t *ppd,	/* I - PPD file */
 
 
 /*
- * End of "$Id: localize.c 7667 2008-06-17 21:28:59Z mike $".
+ * End of "$Id: localize.c 8374 2009-02-20 16:42:13Z mike $".
  */

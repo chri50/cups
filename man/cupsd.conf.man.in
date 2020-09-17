@@ -1,9 +1,9 @@
 .\"
-.\" "$Id: cupsd.conf.man.in 7648 2008-06-16 17:41:11Z mike $"
+.\" "$Id: cupsd.conf.man.in 8513 2009-04-16 19:32:04Z mike $"
 .\"
 .\"   cupsd.conf man page for the Common UNIX Printing System (CUPS).
 .\"
-.\"   Copyright 2007-2008 by Apple Inc.
+.\"   Copyright 2007-2009 by Apple Inc.
 .\"   Copyright 1997-2006 by Easy Software Products.
 .\"
 .\"   These coded instructions, statements, and computer programs are the
@@ -12,7 +12,7 @@
 .\"   which should have been included with this file.  If this file is
 .\"   file is missing or damaged, see the license at "http://www.cups.org/".
 .\"
-.TH cupsd.conf 5 "Common UNIX Printing System" "16 June 2008" "Apple Inc."
+.TH cupsd.conf 5 "Common UNIX Printing System" "1 April 2009" "Apple Inc."
 .SH NAME
 cupsd.conf \- server configuration file for cups
 .SH DESCRIPTION
@@ -540,6 +540,11 @@ ServerAdmin user@domain.com
 .br
 Specifies the email address of the server administrator.
 .TP 5
+ServerAlias hostname
+.br
+Specifies an alternate name that the server is known by. The special name "*"
+allows any name to be used.
+.TP 5
 ServerBin directory
 .br
 Specifies the directory where backends, CGIs, daemons, and filters may
@@ -612,7 +617,7 @@ Specifies the user name or ID that is used when running external programs.
 .br
 http://localhost:631/help
 .SH COPYRIGHT
-Copyright 2007-2008 by Apple Inc.
+Copyright 2007-2009 by Apple Inc.
 .\"
-.\" End of "$Id: cupsd.conf.man.in 7648 2008-06-16 17:41:11Z mike $".
+.\" End of "$Id: cupsd.conf.man.in 8513 2009-04-16 19:32:04Z mike $".
 .\"

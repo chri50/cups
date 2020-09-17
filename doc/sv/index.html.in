@@ -109,8 +109,9 @@ och PostScript Printer Description-baserade ("PPD") utskriftsalternativ för att
 WIDTH="15" HEIGHT="15" ALT=""></TD>
 <TD COLSPAN="2" WIDTH="100%" STYLE="padding: 5;">
 
-<P><SMALL>The Common UNIX Printing System, CUPS, och CUPS-logotypen är  varumärken för <A HREF="http://www.apple.com">Apple Inc.</A>
-CUPS är copyright 2007 Apple Inc, Alla rättigheter reserverade.</SMALL></P>
+<P><SMALL>CUPS and the CUPS logo are trademarks of
+<A HREF="http://www.apple.com">Apple Inc.</A> CUPS is copyright 2007-2009
+Apple Inc. All rights reserved.</SMALL></P>
 
 </TD>
 

@@ -1,9 +1,9 @@
 /*
- * "$Id: testhttp.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: testhttp.c 8292 2009-01-27 20:24:32Z mike $"
  *
  *   HTTP test program for the Common UNIX Printing System (CUPS).
  *
- *   Copyright 2007 by Apple Inc.
+ *   Copyright 2007-2009 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -450,6 +450,25 @@ main(int  argc,				/* I - Number of command-line arguments */
 
     return (failures);
   }
+  else if (!strcmp(argv[1], "-u") && argc == 3)
+  {
+   /*
+    * Test URI separation...
+    */
+
+    uri_status = httpSeparateURI(HTTP_URI_CODING_ALL, argv[2], scheme,
+                                 sizeof(scheme), username, sizeof(username),
+				 hostname, sizeof(hostname), &port,
+				 resource, sizeof(resource));
+    printf("uri_status = %s\n", uri_status_strings[uri_status + 8]);
+    printf("scheme     = \"%s\"\n", scheme);
+    printf("username   = \"%s\"\n", username);
+    printf("hostname   = \"%s\"\n", hostname);
+    printf("port       = %d\n", port);
+    printf("resource   = \"%s\"\n", resource);
+
+    return (0);
+  }
 
  /*
   * Test HTTP GET requests...
@@ -524,5 +543,5 @@ main(int  argc,				/* I - Number of command-line arguments */
 
 
 /*
- * End of "$Id: testhttp.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: testhttp.c 8292 2009-01-27 20:24:32Z mike $".
  */

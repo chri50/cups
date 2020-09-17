@@ -1,5 +1,5 @@
 #
-# "$Id: Makefile 7015 2007-10-10 22:00:43Z mike $"
+# "$Id: Makefile 8118 2008-11-12 19:35:30Z mike $"
 #
 #   Datafile makefile for the Common UNIX Printing System (CUPS).
 #
@@ -47,6 +47,7 @@ CHARMAPS =	\
 		iso-8859-7.txt \
 		iso-8859-8.txt \
 		iso-8859-9.txt \
+		jis-x0213.txt \
 		koi8-r.txt \
 		koi8-u.txt \
 		mac-roman.txt \
@@ -146,5 +147,5 @@ uninstall:
 
 
 #
-# End of "$Id: Makefile 7015 2007-10-10 22:00:43Z mike $".
+# End of "$Id: Makefile 8118 2008-11-12 19:35:30Z mike $".
 #

@@ -1,10 +1,10 @@
 /*
- * "$Id: network.c 7864 2008-08-26 03:43:28Z mike $"
+ * "$Id: network.c 8513 2009-04-16 19:32:04Z mike $"
  *
  *   Network interface functions for the Common UNIX Printing System
  *   (CUPS) scheduler.
  *
- *   Copyright 2007 by Apple Inc.
+ *   Copyright 2007-2009 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -100,8 +100,8 @@ cupsdNetIFUpdate(void)
   cupsd_netif_t		*temp;		/* New interface */
   struct ifaddrs	*addrs,		/* Interface address list */
 			*addr;		/* Current interface address */
-  http_addrlist_t	*saddr;		/* Current server address */
   char			hostname[1024];	/* Hostname for address */
+  size_t		hostlen;	/* Length of hostname */
 
 
  /*
@@ -155,7 +155,7 @@ cupsdNetIFUpdate(void)
     * Try looking up the hostname for the address as needed...
     */
 
-    if (HostNameLookups)
+    if (HostNameLookups || RemoteAccessEnabled)
       httpAddrLookup((http_addr_t *)(addr->ifa_addr), hostname,
                      sizeof(hostname));
     else
@@ -169,25 +169,16 @@ cupsdNetIFUpdate(void)
       if (httpAddrLocalhost((http_addr_t *)(addr->ifa_addr)))
         strcpy(hostname, "localhost");
       else
-      {
-        for (saddr = ServerAddrs; saddr; saddr = saddr->next)
-	  if (httpAddrEqual((http_addr_t *)(addr->ifa_addr), &(saddr->addr)))
-	    break;
-
-	if (saddr)
-          strlcpy(hostname, ServerName, sizeof(hostname));
-	else
-          httpAddrString((http_addr_t *)(addr->ifa_addr), hostname,
-	        	 sizeof(hostname));
-      }
+	httpAddrString((http_addr_t *)(addr->ifa_addr), hostname,
+		       sizeof(hostname));
     }
 
    /*
     * Create a new address element...
     */
 
-    if ((temp = calloc(1, sizeof(cupsd_netif_t) +
-                          strlen(hostname))) == NULL)
+    hostlen = strlen(hostname);
+    if ((temp = calloc(1, sizeof(cupsd_netif_t) + hostlen)) == NULL)
       break;
 
    /*
@@ -195,6 +186,7 @@ cupsdNetIFUpdate(void)
     */
 
     strlcpy(temp->name, addr->ifa_name, sizeof(temp->name));
+    temp->hostlen = hostlen;
     strcpy(temp->hostname, hostname);	/* Safe because hostname is allocated */
 
     if (addr->ifa_addr->sa_family == AF_INET)
@@ -310,5 +302,5 @@ compare_netif(cupsd_netif_t *a,		/* I - First network interface */
 
 
 /*
- * End of "$Id: network.c 7864 2008-08-26 03:43:28Z mike $".
+ * End of "$Id: network.c 8513 2009-04-16 19:32:04Z mike $".
  */

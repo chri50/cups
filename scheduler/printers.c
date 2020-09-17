@@ -1,5 +1,5 @@
 /*
- * "$Id: printers.c 7905 2008-09-03 19:25:11Z mike $"
+ * "$Id: printers.c 8114 2008-11-12 00:18:36Z mike $"
  *
  *   Printer routines for the Common UNIX Printing System (CUPS).
  *
@@ -1681,6 +1681,16 @@ cupsdSetPrinterAttr(
   char			*ptr;		/* Pointer into value */
   ipp_tag_t		value_tag;	/* Value tag for this attribute */
 
+
+ /*
+  * Don't allow empty values...
+  */
+
+  if (!*value)
+  {
+    cupsdLogMessage(CUPSD_LOG_ERROR, "Ignoring empty \"%s\" attribute", name);
+    return;
+  }
 
  /*
   * Count the number of values...
@@ -3912,5 +3922,5 @@ write_irix_state(cupsd_printer_t *p)	/* I - Printer to update */
 
 
 /*
- * End of "$Id: printers.c 7905 2008-09-03 19:25:11Z mike $".
+ * End of "$Id: printers.c 8114 2008-11-12 00:18:36Z mike $".
  */

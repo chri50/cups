@@ -1,5 +1,5 @@
 /*
- * "$Id: ipp.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: ipp.c 8275 2009-01-21 23:43:53Z mike $"
  *
  *   Internet Printing Protocol support functions for the Common UNIX
  *   Printing System (CUPS).
@@ -2834,7 +2834,18 @@ ipp_read_http(http_t      *http,	/* I - Client connection */
 	}
       }
 
-      if ((bytes = httpRead2(http, (char *)buffer, length - tbytes)) <= 0)
+      if ((bytes = httpRead2(http, (char *)buffer, length - tbytes)) < 0)
+      {
+#ifdef WIN32
+        break;
+#else
+        if (errno != EAGAIN && errno != EINTR)
+	  break;
+
+	bytes = 0;
+#endif /* WIN32 */
+      }
+      else if (bytes == 0)
         break;
     }
   }
@@ -2910,5 +2921,5 @@ _ipp_free_attr(ipp_attribute_t *attr)	/* I - Attribute to free */
 
 
 /*
- * End of "$Id: ipp.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: ipp.c 8275 2009-01-21 23:43:53Z mike $".
  */

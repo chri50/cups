@@ -1,9 +1,9 @@
 /*
- * "$Id: http-addr.c 7911 2008-09-06 00:30:39Z mike $"
+ * "$Id: http-addr.c 8513 2009-04-16 19:32:04Z mike $"
  *
  *   HTTP address routines for the Common UNIX Printing System (CUPS).
  *
- *   Copyright 2007 by Apple Inc.
+ *   Copyright 2007-2009 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -153,7 +153,7 @@ httpAddrLocalhost(
 #endif /* AF_LOCAL */
 
   if (addr->addr.sa_family == AF_INET &&
-      ntohl(addr->ipv4.sin_addr.s_addr) == 0x7f000001)
+      (ntohl(addr->ipv4.sin_addr.s_addr) & 0xff000000) == 0x7f000000)
     return (1);
 
   return (0);
@@ -205,6 +205,16 @@ httpAddrLookup(
     return (name);
   }
 #endif /* AF_LOCAL */
+
+ /*
+  * Optimize lookups for localhost/loopback addresses...
+  */
+
+  if (httpAddrLocalhost(addr))
+  {
+    strlcpy(name, "localhost", namelen);
+    return (name);
+  }
 
 #ifdef HAVE_RES_INIT
  /*
@@ -593,5 +603,5 @@ httpGetHostname(http_t *http,		/* I - HTTP connection or NULL */
 
 
 /*
- * End of "$Id: http-addr.c 7911 2008-09-06 00:30:39Z mike $".
+ * End of "$Id: http-addr.c 8513 2009-04-16 19:32:04Z mike $".
  */

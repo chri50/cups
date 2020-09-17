@@ -1,5 +1,5 @@
 /*
- * "$Id: usb-unix.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: usb-unix.c 8170 2008-12-08 21:08:49Z mike $"
  *
  *   USB port backend for the Common UNIX Printing System (CUPS).
  *
@@ -76,6 +76,14 @@ print_device(const char *uri,		/* I - Device URI */
     * *BSD's ulpt driver currently does not support the
     * back-channel, incorrectly returns data ready on a select(),
     * and locks up on read()...
+    */
+
+    use_bc = 0;
+
+#elif defined(__sun)
+   /*
+    * CUPS STR #3028: Solaris' usbprn driver apparently does not support
+    * select() or poll(), so we can't support backchannel...
     */
 
     use_bc = 0;
@@ -173,7 +181,17 @@ print_device(const char *uri,		/* I - Device URI */
       lseek(print_fd, 0, SEEK_SET);
     }
 
+#ifdef __sun
+   /*
+    * CUPS STR #3028: Solaris' usbprn driver apparently does not support
+    * select() or poll(), so we can't support the sidechannel either...
+    */
+
+    tbytes = backendRunLoop(print_fd, device_fd, use_bc, NULL);
+
+#else
     tbytes = backendRunLoop(print_fd, device_fd, use_bc, side_cb);
+#endif /* __sun */
 
     if (print_fd != 0 && tbytes >= 0)
       _cupsLangPrintf(stderr,
@@ -574,6 +592,7 @@ side_cb(int print_fd,			/* I - Print file */
         break;
 
     case CUPS_SC_CMD_GET_BIDI :
+	status  = CUPS_SC_STATUS_OK;
         data[0] = use_bc;
         datalen = 1;
         break;
@@ -605,5 +624,5 @@ side_cb(int print_fd,			/* I - Print file */
 
 
 /*
- * End of "$Id: usb-unix.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: usb-unix.c 8170 2008-12-08 21:08:49Z mike $".
  */

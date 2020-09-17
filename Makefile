@@ -1,9 +1,9 @@
 #
-# "$Id: Makefile 7955 2008-09-17 14:38:31Z mike $"
+# "$Id: Makefile 8429 2009-03-12 21:34:21Z mike $"
 #
 #   Top-level Makefile for the Common UNIX Printing System (CUPS).
 #
-#   Copyright 2007-2008 by Apple Inc.
+#   Copyright 2007-2009 by Apple Inc.
 #   Copyright 1997-2007 by Easy Software Products, all rights reserved.
 #
 #   These coded instructions, statements, and computer programs are the
@@ -20,7 +20,7 @@ include Makedefs
 #
 
 DIRS	=	cups backend berkeley cgi-bin filter locale man monitor \
-		notifier $(PDFTOPS) scheduler systemv test \
+		notifier scheduler systemv test \
 		$(PHPDIR) \
 		conf data doc $(FONTS) ppd templates
 
@@ -296,5 +296,5 @@ dist:	all
 
 
 #
-# End of "$Id: Makefile 7955 2008-09-17 14:38:31Z mike $".
+# End of "$Id: Makefile 8429 2009-03-12 21:34:21Z mike $".
 #

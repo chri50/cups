@@ -1,5 +1,5 @@
 /*
- * "$Id: ipptest.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: ipptest.c 8146 2008-11-19 19:50:56Z mike $"
  *
  *   IPP test command for the Common UNIX Printing System (CUPS).
  *
@@ -217,7 +217,7 @@ do_tests(const char *uri,		/* I - URI to connect on */
   int		linenum;		/* Current line number */
   int		version;		/* IPP version number to use */
   http_t	*http;			/* HTTP connection to server */
-  char		method[HTTP_MAX_URI],	/* URI method */
+  char		scheme[HTTP_MAX_URI],	/* URI scheme */
 		userpass[HTTP_MAX_URI],	/* username:password */
 		server[HTTP_MAX_URI],	/* Server */
 		resource[HTTP_MAX_URI];	/* Resource path */
@@ -261,7 +261,7 @@ do_tests(const char *uri,		/* I - URI to connect on */
   * Connect to the server...
   */
 
-  httpSeparateURI(HTTP_URI_CODING_ALL, uri, method, sizeof(method), userpass,
+  httpSeparateURI(HTTP_URI_CODING_ALL, uri, scheme, sizeof(scheme), userpass,
                   sizeof(userpass), server, sizeof(server), &port, resource,
 		  sizeof(resource));
   if ((http = httpConnect(server, port)) == NULL)
@@ -301,7 +301,7 @@ do_tests(const char *uri,		/* I - URI to connect on */
     * Initialize things...
     */
 
-    httpSeparateURI(HTTP_URI_CODING_ALL, uri, method, sizeof(method), userpass,
+    httpSeparateURI(HTTP_URI_CODING_ALL, uri, scheme, sizeof(scheme), userpass,
                     sizeof(userpass), server, sizeof(server), &port, resource,
 		    sizeof(resource));
 
@@ -411,9 +411,10 @@ do_tests(const char *uri,		/* I - URI to connect on */
 	      strlcpy(tokenptr, uri, sizeof(token) - (tokenptr - token));
 	      tempptr += 4;
 	    }
-	    else if (!strncasecmp(tempptr + 1, "method", 6))
+	    else if (!strncasecmp(tempptr + 1, "scheme", 6) ||
+	             !strncasecmp(tempptr + 1, "method", 6))
 	    {
-	      strlcpy(tokenptr, method, sizeof(token) - (tokenptr - token));
+	      strlcpy(tokenptr, scheme, sizeof(token) - (tokenptr - token));
 	      tempptr += 7;
 	    }
 	    else if (!strncasecmp(tempptr + 1, "username", 8))
@@ -944,5 +945,5 @@ usage(const char *option)		/* I - Option string or NULL */
 
 
 /*
- * End of "$Id: ipptest.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: ipptest.c 8146 2008-11-19 19:50:56Z mike $".
  */

@@ -1,5 +1,5 @@
 dnl
-dnl "$Id: cups-directories.m4 6976 2007-09-18 20:39:31Z mike $"
+dnl "$Id: cups-directories.m4 8077 2008-10-23 15:40:14Z mike $"
 dnl
 dnl   Directory stuff for the Common UNIX Printing System (CUPS).
 dnl
@@ -201,7 +201,7 @@ if test x$rcdir = x; then
 			;;
 
 	esac
-else
+elif test "x$rcdir" != xno; then
 	if test "x$rclevels" = x; then
 		INITDDIR="$rcdir"
 	else
@@ -225,6 +225,8 @@ if test "x$XINETD" = x -a ! -x /sbin/launchd; then
 			break
 		fi
 	done
+elif test "x$XINETD" = xno; then
+	XINETD=""
 fi
 
 AC_SUBST(XINETD)
@@ -367,5 +369,5 @@ AC_DEFINE_UNQUOTED(CUPS_STATEDIR, "$localstatedir/run/cups")
 AC_SUBST(CUPS_STATEDIR)
 
 dnl
-dnl End of "$Id: cups-directories.m4 6976 2007-09-18 20:39:31Z mike $".
+dnl End of "$Id: cups-directories.m4 8077 2008-10-23 15:40:14Z mike $".
 dnl

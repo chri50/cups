@@ -1,9 +1,9 @@
 /*
- * "$Id: hpgl-vector.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: hpgl-vector.c 8124 2008-11-13 06:32:59Z mike $"
  *
  *   HP-GL/2 vector routines for the Common UNIX Printing System (CUPS).
  *
- *   Copyright 2007 by Apple Inc.
+ *   Copyright 2007-2008 by Apple Inc.
  *   Copyright 1993-2007 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -393,13 +393,20 @@ PE_polyline_encoded(int     num_params,	/* I - Number of parameters */
           break;
       case ':' :	/* Select pen */
           s ++;
-          PenNumber = (int)decode_number(&s, base_bits, 1.0);
+          temp = (int)decode_number(&s, base_bits, 1.0) - 1;
+	  if (temp < 0 || temp >= PenCount)
+	  {
+	    fprintf(stderr, "DEBUG: Bad pen number %d in PE\n", temp + 1);
+	    return;
+	  }
+
+          PenNumber = temp;
 
 #ifdef DEBUG
-          fprintf(stderr, "DEBUG:     set pen #%d\n", PenNumber);
+          fprintf(stderr, "DEBUG:     set pen #%d\n", PenNumber + 1);
 #endif /* DEBUG */
 
-          Outputf("%% PE: set pen #%d\n", PenNumber);
+          Outputf("%% PE: set pen #%d\n", PenNumber + 1);
 
 	  if (PageDirty)
 	    printf("%.3f %.3f %.3f %.2f SP\n", Pens[PenNumber].rgb[0],
@@ -762,5 +769,5 @@ plot_points(int     num_params,	/* I - Number of parameters */
 
 
 /*
- * End of "$Id: hpgl-vector.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: hpgl-vector.c 8124 2008-11-13 06:32:59Z mike $".
  */

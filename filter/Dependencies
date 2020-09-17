@@ -106,6 +106,9 @@ imagetoraster.o: ../cups/i18n.h ../cups/transcode.h
 common.o: common.h ../cups/cups.h ../cups/ipp.h ../cups/http.h ../cups/ppd.h
 common.o: ../cups/array.h ../cups/file.h ../cups/language.h
 common.o: ../cups/language.h ../cups/string.h ../config.h
+pdftops.o: ../cups/cups.h ../cups/ipp.h ../cups/http.h ../cups/ppd.h
+pdftops.o: ../cups/array.h ../cups/file.h ../cups/language.h ../cups/string.h
+pdftops.o: ../config.h ../cups/i18n.h ../cups/transcode.h
 pstops.o: common.h ../cups/cups.h ../cups/ipp.h ../cups/http.h ../cups/ppd.h
 pstops.o: ../cups/array.h ../cups/file.h ../cups/language.h
 pstops.o: ../cups/language.h ../cups/string.h ../config.h ../cups/file.h
@@ -246,6 +249,9 @@ imagetoraster.32.o: imagetoraster.c  ../cups/i18n.h ../cups/transcode.h
 common.32.o: common.c  common.h ../cups/cups.h ../cups/ipp.h ../cups/http.h ../cups/ppd.h
 common.32.o: common.c  ../cups/array.h ../cups/file.h ../cups/language.h
 common.32.o: common.c  ../cups/language.h ../cups/string.h ../config.h
+pdftops.32.o: pdftops.c  ../cups/cups.h ../cups/ipp.h ../cups/http.h ../cups/ppd.h
+pdftops.32.o: pdftops.c  ../cups/array.h ../cups/file.h ../cups/language.h ../cups/string.h
+pdftops.32.o: pdftops.c  ../config.h ../cups/i18n.h ../cups/transcode.h
 pstops.32.o: pstops.c  common.h ../cups/cups.h ../cups/ipp.h ../cups/http.h ../cups/ppd.h
 pstops.32.o: pstops.c  ../cups/array.h ../cups/file.h ../cups/language.h
 pstops.32.o: pstops.c  ../cups/language.h ../cups/string.h ../config.h ../cups/file.h
@@ -386,6 +392,9 @@ imagetoraster.64.o: imagetoraster.c  ../cups/i18n.h ../cups/transcode.h
 common.64.o: common.c  common.h ../cups/cups.h ../cups/ipp.h ../cups/http.h ../cups/ppd.h
 common.64.o: common.c  ../cups/array.h ../cups/file.h ../cups/language.h
 common.64.o: common.c  ../cups/language.h ../cups/string.h ../config.h
+pdftops.64.o: pdftops.c  ../cups/cups.h ../cups/ipp.h ../cups/http.h ../cups/ppd.h
+pdftops.64.o: pdftops.c  ../cups/array.h ../cups/file.h ../cups/language.h ../cups/string.h
+pdftops.64.o: pdftops.c  ../config.h ../cups/i18n.h ../cups/transcode.h
 pstops.64.o: pstops.c  common.h ../cups/cups.h ../cups/ipp.h ../cups/http.h ../cups/ppd.h
 pstops.64.o: pstops.c  ../cups/array.h ../cups/file.h ../cups/language.h
 pstops.64.o: pstops.c  ../cups/language.h ../cups/string.h ../config.h ../cups/file.h
