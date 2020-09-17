@@ -1,9 +1,9 @@
 /*
- * "$Id: textcommon.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: textcommon.c 8039 2008-10-09 20:12:03Z mike $"
  *
  *   Common text filter routines for the Common UNIX Printing System (CUPS).
  *
- *   Copyright 2007 by Apple Inc.
+ *   Copyright 2007-2008 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -605,13 +605,37 @@ TextMain(const char *name,	/* I - Name of filter */
                 !strcasecmp(val, "yes");
 
   if ((val = cupsGetOption("columns", num_options, options)) != NULL)
+  {
     PageColumns = atoi(val);
 
+    if (PageColumns < 1)
+    {
+      _cupsLangPrintf(stderr, _("ERROR: Bad columns value %d!\n"), PageColumns);
+      return (1);
+    }
+  }
+
   if ((val = cupsGetOption("cpi", num_options, options)) != NULL)
+  {
     CharsPerInch = atof(val);
 
+    if (CharsPerInch <= 0.0)
+    {
+      _cupsLangPrintf(stderr, _("ERROR: Bad cpi value %f!\n"), CharsPerInch);
+      return (1);
+    }
+  }
+
   if ((val = cupsGetOption("lpi", num_options, options)) != NULL)
+  {
     LinesPerInch = atof(val);
+
+    if (LinesPerInch <= 0.0)
+    {
+      _cupsLangPrintf(stderr, _("ERROR: Bad lpi value %f!\n"), LinesPerInch);
+      return (1);
+    }
+  }
 
   if (PrettyPrint)
     PageTop -= 216.0f / LinesPerInch;
@@ -1183,5 +1207,5 @@ getutf8(FILE *fp)	/* I - File to read from */
 
 
 /*
- * End of "$Id: textcommon.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: textcommon.c 8039 2008-10-09 20:12:03Z mike $".
  */

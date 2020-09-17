@@ -1,5 +1,5 @@
 /*
- * "$Id: cupsfilter.c 7222 2008-01-16 22:20:33Z mike $"
+ * "$Id: cupsfilter.c 7864 2008-08-26 03:43:28Z mike $"
  *
  *   CUPS filtering program for the Common UNIX Printing System (CUPS).
  *
@@ -928,7 +928,7 @@ read_cupsd_conf(const char *filename)	/* I - File to read */
   }
 
   snprintf(line, sizeof(line),
-           "%s/filter:" CUPS_BINDIR ":" CUPS_SBINDIR ":/bin/usr/bin",
+           "%s/filter:" CUPS_BINDIR ":" CUPS_SBINDIR ":/bin:/usr/bin",
 	   ServerBin);
   set_string(&Path, line);
 
@@ -996,5 +996,5 @@ usage(const char *command,		/* I - Command name */
 
 
 /*
- * End of "$Id: cupsfilter.c 7222 2008-01-16 22:20:33Z mike $".
+ * End of "$Id: cupsfilter.c 7864 2008-08-26 03:43:28Z mike $".
  */

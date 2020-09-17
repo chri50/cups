@@ -1,5 +1,5 @@
 /*
- * "$Id: http.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: http.c 7822 2008-08-01 18:33:16Z mike $"
  *
  *   HTTP routines for the Common UNIX Printing System (CUPS).
  *
@@ -2991,7 +2991,8 @@ http_wait(http_t *http,			/* I - HTTP connection */
 #  elif defined(HAVE_CDSASSL)
     size_t bytes;			/* Bytes that are available */
 
-    if (!SSLGetBufferedReadSize(((http_tls_t *)http->tls)->session, &bytes) && bytes > 0)
+    if (!SSLGetBufferedReadSize(((http_tls_t *)(http->tls))->session, &bytes) &&
+        bytes > 0)
       return (1);
 #  endif /* HAVE_LIBSSL */
   }
@@ -3223,5 +3224,5 @@ http_write_ssl(http_t     *http,	/* I - HTTP connection */
 
 
 /*
- * End of "$Id: http.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: http.c 7822 2008-08-01 18:33:16Z mike $".
  */

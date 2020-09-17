@@ -1,5 +1,5 @@
 /*
- * "$Id: http-addr.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: http-addr.c 7911 2008-09-06 00:30:39Z mike $"
  *
  *   HTTP address routines for the Common UNIX Printing System (CUPS).
  *
@@ -28,10 +28,14 @@
  * Include necessary headers...
  */
 
+#include "http-private.h"
 #include "globals.h"
 #include "debug.h"
 #include <stdlib.h>
 #include <stddef.h>
+#ifdef HAVE_RESOLV_H
+#  include <resolv.h>
+#endif /* HAVE_RESOLV_H */
 
 
 /*
@@ -175,6 +179,10 @@ httpAddrLookup(
     char              *name,		/* I - Host name buffer */
     int               namelen)		/* I - Size of name buffer */
 {
+  _cups_globals_t	*cg = _cupsGlobals();
+					/* Global data */
+
+
   DEBUG_printf(("httpAddrLookup(addr=%p, name=%p, namelen=%d)\n",
                 addr, name, namelen));
 
@@ -192,9 +200,33 @@ httpAddrLookup(
 
 #ifdef AF_LOCAL
   if (addr->addr.sa_family == AF_LOCAL)
+  {
     strlcpy(name, addr->un.sun_path, namelen);
-  else
+    return (name);
+  }
 #endif /* AF_LOCAL */
+
+#ifdef HAVE_RES_INIT
+ /*
+  * STR #2920: Initialize resolver after failure in cups-polld
+  *
+  * If the previous lookup failed, re-initialize the resolver to prevent
+  * temporary network errors from persisting.  This *should* be handled by
+  * the resolver libraries, but apparently the glibc folks do not agree.
+  *
+  * We set a flag at the end of this function if we encounter an error that
+  * requires reinitialization of the resolver functions.  We then call
+  * res_init() if the flag is set on the next call here or in httpAddrLookup().
+  */
+
+  if (cg->need_res_init)
+  {
+    res_init();
+
+    cg->need_res_init = 0;
+  }
+#endif /* HAVE_RES_INIT */
+
 #ifdef HAVE_GETNAMEINFO
   {
    /*
@@ -205,9 +237,16 @@ httpAddrLookup(
     * do...
     */
 
-    if (getnameinfo(&addr->addr, httpAddrLength(addr), name, namelen,
-		    NULL, 0, 0))
+    int error = getnameinfo(&addr->addr, httpAddrLength(addr), name, namelen,
+		            NULL, 0, 0);
+
+    if (error)
+    {
+      if (error == EAI_FAIL)
+        cg->need_res_init = 1;
+
       return (httpAddrString(addr, name, namelen));
+    }
   }
 #else
   {
@@ -229,8 +268,10 @@ httpAddrLookup(
       * No hostname, so return the raw address...
       */
 
-      httpAddrString(addr, name, namelen);
-      return (NULL);
+      if (h_errno == NO_RECOVERY)
+        cg->need_res_init = 1;
+
+      return (httpAddrString(addr, name, namelen));
     }
 
     strlcpy(name, host->h_name, namelen);
@@ -552,5 +593,5 @@ httpGetHostname(http_t *http,		/* I - HTTP connection or NULL */
 
 
 /*
- * End of "$Id: http-addr.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: http-addr.c 7911 2008-09-06 00:30:39Z mike $".
  */

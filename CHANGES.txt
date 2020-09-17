@@ -1,5 +1,67 @@
-CHANGES.txt - 2008-07-21
+CHANGES.txt - 2008-10-09
 ------------------------
+
+CHANGES IN CUPS V1.3.9
+
+	- SECURITY: The HP-GL/2 filter did not range check pen numbers
+	  (STR #2911)
+	- SECURITY: The SGI image file reader did not range check
+	  16-bit run lengths (STR #2918)
+	- SECURITY: The text filter did not range check cpi, lpi, or
+	  column values (STR #2919)
+	- Documentation updates (STR #2904, STR #2944)
+	- The French web admin page was never updated (STR #2963)
+	- The IPP backend did not retry print jobs when the printer
+	  reported itself as busy or unavailable (STR #2951)
+	- The "Set Allowed Users" web interface did not handle trailing
+	  whitespace correctly (STR #2956)
+	- The PostScript filter did not work with Adobe applications
+	  using custom page sizes (STR #2968)
+	- The Mac OS X USB backend did not work with some printers
+	  that reported a bad 1284 device ID.
+	- The scheduler incorrectly resolved the client connection
+	  address when HostNameLookups was set to Off (STR #2946)
+	- The IPP backend incorrectly stopped the local queue if
+	  the remote server reported the "paused" state.
+	- The cupsGetDests() function did not catch all types of
+	  request errors.
+	- The scheduler did not always log "job queued" messages
+	  (STR #2943)
+	- The scheduler did not support destination filtering using
+	  the printer-location attribute properly (STR #2945)
+	- The scheduler did not send the server-started,
+	  server-restarted, or server-stopped events (STR #2927)
+	- The scheduler no longer enforces configuration file
+	  permissions on symlinked files (STR #2937)
+	- CUPS now reinitializes the DNS resolver on failures
+	  (STR #2920)
+	- The CUPS desktop menu item was broken (STR #2924)
+	- The PPD parser was too strict about missing keyword
+	  values in "relaxed" mode.
+	- The PostScript filter incorrectly mirrored landscape
+	  documents.
+	- The scheduler did not correctly update the
+	  auth-info-required value(s) if the AuthType was Default.
+	- The scheduler required Kerberos authentication for
+	  all operations on remote Kerberized printers instead
+	  of just for the operations that needed it.
+	- The socket backend could wait indefinitely for back-
+	  channel data with some devices.
+	- PJL panel messages were not reset correctly on older
+	  printers (STR #2909)
+	- cupsfilter used the wrong default path (STR #2908)
+	- Fixed address matching for "BrowseAddress @IF(name)"
+	  (STR #2910)
+	- Fixed compiles on AIX.
+	- Firefox 3 did not work with the CUPS web interface in SSL
+	  mode (STR #2892)
+	- Custom options with multiple parameters were not emitted
+	  correctly.
+	- Refined the cupstestppd utility.
+	- ppdEmit*() did not support custom JCL options (STR #2889)
+	- The cupstestppd utility incorrectly reported missing
+	  "en" base translations (STR #2887)
+
 
 CHANGES IN CUPS V1.3.8
 

@@ -1,5 +1,5 @@
 /*
- * "$Id: ipp.c 7735 2008-07-14 21:25:26Z mike $"
+ * "$Id: ipp.c 7987 2008-09-26 21:59:39Z mike $"
  *
  *   IPP backend for the Common UNIX Printing System (CUPS).
  *
@@ -1061,7 +1061,7 @@ main(int  argc,				/* I - Number of command-line args */
     }
     else if (ipp_status == IPP_SERVICE_UNAVAILABLE ||
 	     ipp_status == IPP_PRINTER_BUSY)
-      break;
+      continue;
     else
       copies_remaining --;
 
@@ -1557,7 +1557,7 @@ report_printer_state(ipp_t *ipp,	/* I - IPP response */
   {
     reason = reasons->values[i].string.text;
 
-    if (job_id == 0 || strcmp(reason, "paused"))
+    if (strcmp(reason, "paused"))
     {
       strlcat(state, prefix, sizeof(state));
       strlcat(state, reason, sizeof(state));
@@ -1868,5 +1868,5 @@ sigterm_handler(int sig)		/* I - Signal */
 
 
 /*
- * End of "$Id: ipp.c 7735 2008-07-14 21:25:26Z mike $".
+ * End of "$Id: ipp.c 7987 2008-09-26 21:59:39Z mike $".
  */

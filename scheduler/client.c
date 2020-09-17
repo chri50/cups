@@ -1,5 +1,5 @@
 /*
- * "$Id: client.c 7721 2008-07-11 22:48:49Z mike $"
+ * "$Id: client.c 7951 2008-09-17 00:42:56Z mike $"
  *
  *   Client routines for the Common UNIX Printing System (CUPS) scheduler.
  *
@@ -28,6 +28,7 @@
  *   cupsdUpdateCGI()        - Read status messages from CGI scripts and programs.
  *   cupsdWriteClient()      - Write data to a client as needed.
  *   check_if_modified()     - Decode an "If-Modified-Since" line.
+ *   data_ready()            - Check whether data is available from a client.
  *   encrypt_client()        - Enable encryption for the client...
  *   get_cdsa_certificate()  - Convert a keychain name into the CFArrayRef
  *			       required by SSLSetCertificate.
@@ -83,6 +84,7 @@ extern const char *cssmErrorString(int error);
 
 static int		check_if_modified(cupsd_client_t *con,
 			                  struct stat *filestats);
+static int		data_ready(cupsd_client_t *con);
 #ifdef HAVE_SSL
 static int		encrypt_client(cupsd_client_t *con);
 #endif /* HAVE_SSL */
@@ -384,14 +386,22 @@ cupsdAcceptClient(cupsd_listener_t *lis)/* I - Listener socket */
 #ifdef AF_INET6
     if (temp.addr.sa_family == AF_INET6)
     {
-      httpAddrLookup(&temp, con->servername, sizeof(con->servername));
+      if (HostNameLookups)
+        httpAddrLookup(&temp, con->servername, sizeof(con->servername));
+      else
+        httpAddrString(&temp, con->servername, sizeof(con->servername));
+
       con->serverport = ntohs(lis->address.ipv6.sin6_port);
     }
     else
 #endif /* AF_INET6 */
     if (temp.addr.sa_family == AF_INET)
     {
-      httpAddrLookup(&temp, con->servername, sizeof(con->servername));
+      if (HostNameLookups)
+        httpAddrLookup(&temp, con->servername, sizeof(con->servername));
+      else
+        httpAddrString(&temp, con->servername, sizeof(con->servername));
+
       con->serverport = ntohs(lis->address.ipv4.sin_port);
     }
     else
@@ -989,8 +999,7 @@ cupsdReadClient(cupsd_client_t *con)	/* I - Client to read from */
 	*/
 
         while ((status = httpUpdate(HTTP(con))) == HTTP_CONTINUE)
-	  if (con->http.used == 0 ||
-	      !memchr(con->http.buffer, '\n', con->http.used))
+	  if (!data_ready(con))
 	    break;
 
 	if (status != HTTP_OK && status != HTTP_CONTINUE)
@@ -1889,7 +1898,7 @@ cupsdReadClient(cupsd_client_t *con)	/* I - Client to read from */
 	    }
 	  }
         }
-	while (con->http.state == HTTP_PUT_RECV && con->http.used > 0);
+	while (con->http.state == HTTP_PUT_RECV && data_ready(con));
 
         if (con->http.state == HTTP_WAITING)
 	{
@@ -2064,7 +2073,7 @@ cupsdReadClient(cupsd_client_t *con)	/* I - Client to read from */
 	    }
 	  }
         }
-	while (con->http.state == HTTP_POST_RECV && con->http.used > 0);
+	while (con->http.state == HTTP_POST_RECV && data_ready(con));
 
 	if (con->http.state == HTTP_POST_SEND)
 	{
@@ -2911,6 +2920,38 @@ check_if_modified(
   return ((size != filestats->st_size && size != 0) ||
           (date < filestats->st_mtime && date != 0) ||
 	  (size == 0 && date == 0));
+}
+
+
+/*
+ * 'data_ready()' - Check whether data is available from a client.
+ */
+
+static int				/* O - 1 if data is ready, 0 otherwise */
+data_ready(cupsd_client_t *con)		/* I - Client */
+{
+  if (con->http.used > 0)
+    return (1);
+#ifdef HAVE_SSL
+  else if (con->http.tls)
+  {
+#  ifdef HAVE_LIBSSL
+    if (SSL_pending((SSL *)(con->http.tls)))
+      return (1);
+#  elif defined(HAVE_GNUTLS)
+    if (gnutls_record_check_pending(((http_tls_t *)(con->http.tls))->session))
+      return (1);
+#  elif defined(HAVE_CDSASSL)
+    size_t bytes;			/* Bytes that are available */
+
+    if (!SSLGetBufferedReadSize(((http_tls_t *)(con->http.tls))->session,
+                                &bytes) && bytes > 0)
+      return (1);
+#  endif /* HAVE_LIBSSL */
+  }
+#endif /* HAVE_SSL */
+
+  return (0);
 }
 
 
@@ -4834,5 +4875,5 @@ write_pipe(cupsd_client_t *con)		/* I - Client connection */
 
 
 /*
- * End of "$Id: client.c 7721 2008-07-11 22:48:49Z mike $".
+ * End of "$Id: client.c 7951 2008-09-17 00:42:56Z mike $".
  */
