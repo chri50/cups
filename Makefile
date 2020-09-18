@@ -1,14 +1,11 @@
 #
 # Top-level Makefile for CUPS.
 #
-# Copyright 2007-2018 by Apple Inc.
-# Copyright 1997-2007 by Easy Software Products, all rights reserved.
+# Copyright © 2007-2018 by Apple Inc.
+# Copyright © 1997-2007 by Easy Software Products, all rights reserved.
 #
-# These coded instructions, statements, and computer programs are the
-# property of Apple Inc. and are protected by Federal copyright
-# law.  Distribution and use rights are outlined in the file "LICENSE.txt"
-# which should have been included with this file.  If this file is
-# missing or damaged, see the license at "http://www.cups.org/".
+# Licensed under Apache License v2.0.  See the file "LICENSE" for more
+# information.
 #
 
 include Makedefs
@@ -18,7 +15,7 @@ include Makedefs
 # Directories to make...
 #
 
-DIRS	=	cups test $(BUILDDIRS)
+DIRS	=	cups $(BUILDDIRS)
 
 
 #
@@ -270,6 +267,32 @@ apihelp:
 		echo Generating API help in $$dir... ;\
 		(cd $$dir; $(MAKE) $(MFLAGS) apihelp) || exit 1;\
 	done
+
+
+#
+# Create an Xcode docset using Mini-XML's mxmldoc (http://www.msweet.org/)...
+#
+
+docset:	apihelp
+	echo Generating docset directory tree...
+	$(RM) -r org.cups.docset
+	mkdir -p org.cups.docset/Contents/Resources/Documentation/help
+	mkdir -p org.cups.docset/Contents/Resources/Documentation/images
+	cd man; $(MAKE) $(MFLAGS) html
+	cd doc; $(MAKE) $(MFLAGS) docset
+	cd cgi-bin; $(MAKE) $(MFLAGS) makedocset
+	cgi-bin/makedocset org.cups.docset \
+		`svnversion . | sed -e '1,$$s/[a-zA-Z]//g'` \
+		doc/help/api-*.tokens
+	$(RM) doc/help/api-*.tokens
+	echo Indexing docset...
+	/Applications/Xcode.app/Contents/Developer/usr/bin/docsetutil index org.cups.docset
+	echo Generating docset archive and feed...
+	$(RM) org.cups.docset.atom
+	/Applications/Xcode.app/Contents/Developer/usr/bin/docsetutil package --output org.cups.docset.xar \
+		--atom org.cups.docset.atom \
+		--download-url http://www.cups.org/org.cups.docset.xar \
+		org.cups.docset
 
 
 #

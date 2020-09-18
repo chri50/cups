@@ -1,14 +1,11 @@
 #
 # Makefile for the CUPS PPD Compiler.
 #
-# Copyright 2007-2018 by Apple Inc.
-# Copyright 2002-2006 by Easy Software Products.
+# Copyright © 2007-2018 by Apple Inc.
+# Copyright © 2002-2006 by Easy Software Products.
 #
-# These coded instructions, statements, and computer programs are the
-# property of Apple Inc. and are protected by Federal copyright
-# law.  Distribution and use rights are outlined in the file "LICENSE.txt"
-# which should have been included with this file.  If this file is
-# missing or damaged, see the license at "http://www.cups.org/".
+# Licensed under Apache License v2.0.  See the file "LICENSE" for more
+# information.
 #
 
 #
@@ -81,7 +78,7 @@ all:		$(TARGETS)
 # Make library targets...
 #
 
-libs:		$(LIBTARGETS)
+libs:
 
 
 #
@@ -189,6 +186,7 @@ genstrings:		genstrings.o libcupsppdc.a ../cups/$(LIBCUPSSTATIC) \
 	$(LD_CXX) $(ARCHFLAGS) $(LDFLAGS) -o genstrings genstrings.o \
 		libcupsppdc.a ../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) \
 		$(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 	echo Generating localization strings...
 	./genstrings >sample.c
 
@@ -234,7 +232,7 @@ ppdi:			ppdi.o libcupsppdc.a ../cups/$(LIBCUPS)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
-ppdi-static:		ppdc-static ppdi.o libcupsppdc.a  ../cups/$(LIBCUPSSTATIC)
+ppdi-static:		ppdc-static ppdi.o libcupsppdc.a ../cups/$(LIBCUPSSTATIC)
 	echo Linking $@...
 	$(LD_CXX) $(ARCHFLAGS) $(LDFLAGS) -o ppdi-static ppdi.o libcupsppdc.a \
 		../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \

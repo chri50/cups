@@ -4,13 +4,8 @@
  * Copyright © 2007-2018 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
- *
- * This file is subject to the Apple OS-Developed Software exception.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+ * information.
  */
 
 /**** This file is included from tls.c ****/
@@ -645,22 +640,31 @@ httpCredentialsString(
   if ((first = (http_credential_t *)cupsArrayFirst(credentials)) != NULL &&
       (cert = http_gnutls_create_credential(first)) != NULL)
   {
-    char		name[256];	/* Common name associated with cert */
-    size_t		namelen;	/* Length of name */
+    char		name[256],	/* Common name associated with cert */
+			issuer[256];	/* Issuer associated with cert */
+    size_t		len;		/* Length of string */
     time_t		expiration;	/* Expiration date of cert */
+    int 		sigalg;         /* Signature algorithm */
     unsigned char	md5_digest[16];	/* MD5 result */
 
-    namelen = sizeof(name) - 1;
-    if (gnutls_x509_crt_get_dn_by_oid(cert, GNUTLS_OID_X520_COMMON_NAME, 0, 0, name, &namelen) >= 0)
-      name[namelen] = '\0';
+    len = sizeof(name) - 1;
+    if (gnutls_x509_crt_get_dn_by_oid(cert, GNUTLS_OID_X520_COMMON_NAME, 0, 0, name, &len) >= 0)
+      name[len] = '\0';
     else
       strlcpy(name, "unknown", sizeof(name));
 
+    len = sizeof(issuer) - 1;
+    if (gnutls_x509_crt_get_issuer_dn_by_oid(cert, GNUTLS_OID_X520_ORGANIZATION_NAME, 0, 0, issuer, &len) >= 0)
+      issuer[len] = '\0';
+    else
+      strlcpy(issuer, "unknown", sizeof(issuer));
+
     expiration = gnutls_x509_crt_get_expiration_time(cert);
+    sigalg     = gnutls_x509_crt_get_signature_algorithm(cert);
 
     cupsHashData("md5", first->data, first->datalen, md5_digest, sizeof(md5_digest));
 
-    snprintf(buffer, bufsize, "%s / %s / %02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X", name, httpGetDateString(expiration), md5_digest[0], md5_digest[1], md5_digest[2], md5_digest[3], md5_digest[4], md5_digest[5], md5_digest[6], md5_digest[7], md5_digest[8], md5_digest[9], md5_digest[10], md5_digest[11], md5_digest[12], md5_digest[13], md5_digest[14], md5_digest[15]);
+    snprintf(buffer, bufsize, "%s (issued by %s) / %s / %s / %02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X", name, issuer, httpGetDateString(expiration), gnutls_sign_get_name(sigalg), md5_digest[0], md5_digest[1], md5_digest[2], md5_digest[3], md5_digest[4], md5_digest[5], md5_digest[6], md5_digest[7], md5_digest[8], md5_digest[9], md5_digest[10], md5_digest[11], md5_digest[12], md5_digest[13], md5_digest[14], md5_digest[15]);
 
     gnutls_x509_crt_deinit(cert);
   }
@@ -1206,19 +1210,6 @@ _httpTLSRead(http_t *http,		/* I - Connection to server */
 
 
 /*
- * '_httpTLSSetCredentials()' - Set the TLS credentials.
- */
-
-int					/* O - Status of connection */
-_httpTLSSetCredentials(http_t *http)	/* I - Connection to server */
-{
-  (void)http;
-
-  return (0);
-}
-
-
-/*
  * '_httpTLSSetOptions()' - Set TLS protocol and cipher suite options.
  */
 
@@ -1352,7 +1343,7 @@ _httpTLSStart(http_t *http)		/* I - Connection to server */
 		keyfile[1024];		/* Private key file */
     int		have_creds = 0;		/* Have credentials? */
 
-    if (http->fields[HTTP_FIELD_HOST][0])
+    if (http->fields[HTTP_FIELD_HOST])
     {
      /*
       * Use hostname for TLS upgrade...

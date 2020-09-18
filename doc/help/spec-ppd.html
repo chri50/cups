@@ -27,9 +27,19 @@ PRE {
   font-family: monaco, courier, monospace;
 }
 
-PRE.command {
-  border: dotted thin #7f7f7f;
-  margin-left: 36pt;
+BLOCKQUOTE {
+  border-left: solid 2px #777;
+  margin: 1em 0;
+  padding: 10px;
+}
+
+BLOCKQUOTE OL LI {
+  margin-left: -1em;
+}
+
+PRE.command, PRE.example {
+  background: #eee;
+  margin: 0 36pt;
   padding: 10px;
 }
 
@@ -54,13 +64,6 @@ PRE.man {
   margin: 0;
 }
 
-PRE.example {
-  background: #eeeeee;
-  border: dotted thin #999999;
-  margin-left: 36pt;
-  padding: 10pt;
-}
-
 PRE.command EM, PRE.example EM {
   font-family: lucida grande, geneva, helvetica, arial, sans-serif;
 }
@@ -73,12 +76,6 @@ P.command {
 P.formula {
   font-style: italic;
   margin-left: 36pt;
-}
-
-BLOCKQUOTE {
-  background: #eeeeee;
-  border: solid thin #999999;
-  padding: 10pt;
 }
 
 A IMG {
@@ -136,7 +133,7 @@ DIV.table CAPTION {
 
 DIV.table TABLE TD {
   border: solid thin #cccccc;
-  padding-top: 5pt;
+  padding: 5pt 10pt 0;
 }
 
 DIV.table TABLE TH {
@@ -284,26 +281,120 @@ DIV.summary TABLE THEAD TH {
 
 /* API documentation styles... */
 div.body h1 {
+  font-size: 250%;
+  font-weight: bold;
   margin: 0;
 }
 div.body h2 {
+  font-size: 250%;
   margin-top: 1.5em;
 }
-div.body h3, div.body h4, div.body h5 {
+div.body h3 {
+  font-size: 150%;
   margin-bottom: 0.5em;
   margin-top: 1.5em;
 }
-.class, .enumeration, .function, .struct, .typedef, .union {
-  border-bottom: solid thin #999999;
-  margin-bottom: 0;
-  margin-top: 2em;
+div.body h4 {
+  font-size: 110%;
+  margin-bottom: 0.5em;
+  margin-top: 1.5em;
+}
+div.body h5 {
+  font-size: 100%;
+  margin-bottom: 0.5em;
+  margin-top: 1.5em;
+}
+div.contents {
+  background: #e8e8e8;
+  border: solid thin black;
+  padding: 10px;
+}
+div.contents h1 {
+  font-size: 110%;
+}
+div.contents h2 {
+  font-size: 100%;
+}
+div.contents ul.contents {
+  font-size: 80%;
+}
+.class {
+  border-bottom: solid 2px gray;
+}
+.constants {
 }
 .description {
   margin-top: 0.5em;
 }
-code, p.code, pre, ul.code li {
-  font-family: monaco, courier, monospace;
+.discussion {
+}
+.enumeration {
+  border-bottom: solid 2px gray;
+}
+.function {
+  border-bottom: solid 2px gray;
+  margin-bottom: 0;
+}
+.members {
+}
+.method {
+}
+.parameters {
+}
+.returnvalue {
+}
+.struct {
+  border-bottom: solid 2px gray;
+}
+.typedef {
+  border-bottom: solid 2px gray;
+}
+.union {
+  border-bottom: solid 2px gray;
+}
+.variable {
+}
+h1, h2, h3, h4, h5, h6 {
+  page-break-inside: avoid;
+}
+blockquote {
+  border: solid thin gray;
+  box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
+  padding: 0px 10px;
+  page-break-inside: avoid;
+}
+p code, li code, p.code, pre, ul.code li {
+  background: rgba(127,127,127,0.1);
+  border: thin dotted gray;
+  font-family: monospace;
   font-size: 90%;
+  hyphens: manual;
+  -webkit-hyphens: manual;
+  page-break-inside: avoid;
+}
+p.code, pre, ul.code li {
+  padding: 10px;
+}
+p code, li code {
+  padding: 2px 5px;
+}
+a:link, a:visited {
+  text-decoration: none;
+}
+span.info {
+  background: black;
+  border: solid thin black;
+  color: white;
+  font-size: 80%;
+  font-style: italic;
+  font-weight: bold;
+  white-space: nowrap;
+}
+h3 span.info, h4 span.info {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  float: right;
+  padding: 3px 6px;
 }
 ul.code, ul.contents, ul.subcontents {
   list-style-type: none;
@@ -319,37 +410,31 @@ ul.contents > li {
 ul.contents li ul.code, ul.contents li ul.subcontents {
   padding-left: 2em;
 }
-div.body dl {
-  margin-left: 0;
-  margin-top: 0;
+table.list {
+  border-collapse: collapse;
+  width: 100%;
 }
-div.body dt {
-  font-style: italic;
-  margin-left: 0;
-  margin-top: 0;
+table.list tr:nth-child(even) {
+  background: rgba(127,127,127,0.1);]n}
+table.list th {
+  border-right: 2px solid gray;
+  font-family: monospace;
+  padding: 5px 10px 5px 2px;
+  text-align: right;
+  vertical-align: top;
 }
-div.body dd {
-  margin-bottom: 0.5em;
+table.list td {
+  padding: 5px 2px 5px 10px;
+  text-align: left;
+  vertical-align: top;
 }
-
-/* This is just for the HTML files generated with the framedhelp target */
-div.contents {
-  background: #e8e8e8;
-  border: solid thin black;
-  padding: 10px;
+h1.title {
 }
-div.contents h1 {
-  font-size: 110%;
+h2.title {
+  border-bottom: solid 2px black;
 }
-div.contents h2 {
-  font-size: 100%;
-}
-div.contents ul.contents {
-  font-size: 80%;
-}
-div.contents ul.subcontents li {
-  margin-left: 1em;
-  text-indent: -1em;
+h3.title {
+  border-bottom: solid 2px black;
 }
 --></style>
   </head>
@@ -357,14 +442,11 @@ div.contents ul.subcontents li {
 <!--
   PPD extension documentation for CUPS.
 
-  Copyright 2007-2011 by Apple Inc.
-  Copyright 1997-2007 by Easy Software Products.
+  Copyright © 2007-2011 by Apple Inc.
+  Copyright © 1997-2007 by Easy Software Products.
 
-  These coded instructions, statements, and computer programs are the
-  property of Apple Inc. and are protected by Federal copyright
-  law.  Distribution and use rights are outlined in the file "LICENSE.txt"
-  which should have been included with this file.  If this file is
-  file is missing or damaged, see the license at "http://www.cups.org/".
+  Licensed under Apache License v2.0.  See the file "LICENSE" for more
+  information.
 -->
 
 <H1 CLASS="title">CUPS PPD Extensions</H1>
@@ -419,6 +501,7 @@ div.contents ul.subcontents li {
           <li><a href="#cupsFax">cupsFax</a></li>
           <li><a href="#cupsFilter">cupsFilter</a></li>
           <li><a href="#cupsFilter2">cupsFilter2</a></li>
+          <li><a href="#cupsFinishingTemplate">cupsFinishingTemplate</a></li>
           <li><a href="#cupsFlipDuplex">cupsFlipDuplex</a></li>
           <li><a href="#cupsIPPFinishings">cupsIPPFinishings</a></li>
           <li><a href="#cupsIPPReason">cupsIPPReason</a></li>
@@ -491,6 +574,7 @@ LINE-END = CR / LF / CR LF
 
 <p>CUPS supports several methods of auto-configuration via PPD keywords.</p>
 
+
 <h3><span class='info'>macOS 10.5</span><a name='APAutoSetupTool'>APAutoSetupTool</a></h3>
 
 <p class='summary'>*APAutoSetupTool: "/LibraryPrinters/vendor/filename"</p>
@@ -505,6 +589,7 @@ LINE-END = CR / LF / CR LF
 *% Use our setup tool when adding a printer
 *APAutoSetupTool: "/Library/Printers/vendor/Tools/autosetuptool"
 </pre>
+
 
 <h3><span class='info'>macOS 10.2/CUPS 1.4</span><a name='QUERYKEYWORD'>?MainKeyword</a></h3>
 
@@ -534,6 +619,7 @@ LINE-END = CR / LF / CR LF
 *End
 *CloseUI: OptionDuplex
 </pre>
+
 
 <h3><span class='info'>macOS 10.4/CUPS 1.5</span><a name='OID'>OIDMainKeyword</a></h3>
 
@@ -565,6 +651,7 @@ LINE-END = CR / LF / CR LF
 <p>At this time, none of the CUPS raster filters support ICC profiles. This will be addressed as time and resources permit.</p>
 
 </blockquote>
+
 
 <h3><span class='info'>Deprecated</span><a name='cupsColorProfile'>cupsColorProfile</a></h3>
 
@@ -641,6 +728,7 @@ f(x) = density * x <sup style='font-size: 100%'>gamma</sup>
 *cupsICCQualifier2: MediaType
 *cupsICCQualifier3: Resolution
 </pre>
+
 
 <h3><span class='info'>macOS 10.4</span><a name='APCustom'>Custom Color Matching Support</a></h3>
 
@@ -743,6 +831,7 @@ f(x) = density * x <sup style='font-size: 100%'>gamma</sup>
 
 </blockquote>
 
+
 <h3><span class='info'>CUPS 1.4/macOS 10.6</span><a name='cupsUIConstraints'>cupsUIConstraints</a></h3>
 
 <p class='summary'>*cupsUIConstraints resolver: "*Keyword1 *Keyword2 ..."<br>
@@ -772,6 +861,7 @@ f(x) = density * x <sup style='font-size: 100%'>gamma</sup>
 *cupsUIConstraints photo: "*OutputMode Photo *MediaType Plain *Resolution 1200dpi"
 *cupsUIConstraints photo: "*OutputMode Photo *MediaType Transparency *Resolution 1200dpi"
 </pre>
+
 
 <h3><span class='info'>CUPS 1.4/macOS 10.6</span><a name='cupsUIResolver'>cupsUIResolver</a></h3>
 
@@ -990,6 +1080,7 @@ option value is "1234" then CUPS will output the string "@PJL SET PASSCODE=1234"
 
 <p>The resulting dictionary sets the page device attributes that are sent to your raster driver in the page header.</p>
 
+
 <h3>Custom Page Size Code</h3>
 
 <p>There are many possible implementations of the <tt>CustomPageSize</tt> code. For CUPS raster drivers, the following code is recommended:</p>
@@ -1002,6 +1093,7 @@ option value is "1234" then CUPS will output the string "@PJL SET PASSCODE=1234"
 *ParamCustomPageSize Orientation:  5 int 0 0
 *CustomPageSize True: "pop pop pop &lt;&lt;/PageSize[5 -2 roll]/ImagingBBox null&gt;&gt;setpagedevice"
 </pre>
+
 
 <h3>Supported PostScript Operators</h3>
 
@@ -1061,6 +1153,7 @@ PRE B {
 </pre>
 
 </blockquote>
+
 
 <h3>Supported Page Device Attributes</h3>
 
@@ -1333,6 +1426,7 @@ PRE B {
 <p>The CUPS media keywords allow drivers to specify alternate custom page
 size limits based on up to two options.</p>
 
+
 <h3><span class='info'>CUPS 1.4/macOS 10.6</span><a name='cupsMediaQualifier2'>cupsMediaQualifier2</a></h3>
 
 <p class='summary'>*cupsMediaQualifier2: MainKeyword</p>
@@ -1352,6 +1446,7 @@ custom page size limits.</p>
 *cupsMinSize ..Photo: "300 300"
 </pre>
 
+
 <h3><span class='info'>CUPS 1.4/macOS 10.6</span><a name='cupsMediaQualifier3'>cupsMediaQualifier3</a></h3>
 
 <p class='summary'>*cupsMediaQualifier3: MainKeyword</p>
@@ -1370,6 +1465,7 @@ custom page size limits.</p>
 *cupsMinSize .Manual.Photo: "200 200"
 *cupsMinSize ..Photo: "300 300"
 </pre>
+
 
 <h3><span class='info'>CUPS 1.4/macOS 10.6</span><a name='cupsMinSize'>cupsMinSize</a></h3>
 
@@ -1393,6 +1489,7 @@ are used to identify options to use for matching.</p>
 *cupsMinSize .Manual.Photo: "200 200"
 *cupsMinSize ..Photo: "300 300"
 </pre>
+
 
 <h3><span class='info'>CUPS 1.4/macOS 10.6</span><a name='cupsMaxSize'>cupsMaxSize</a></h3>
 
@@ -1531,6 +1628,7 @@ will be ignored.</p>
 <p>Also see the related <a href='#APDuplexRequiresFlippedMargin'><tt>APDuplexRequiresFlippedMargin</tt></a>
 keyword.</p>
 
+
 <h3><span class='info'>CUPS 1.4/macOS 10.6</span><a name='cupsCommands'>cupsCommands</a></h3>
 
 <p class='summary'>*cupsCommands: "name name2 ... nameN"</p>
@@ -1562,6 +1660,7 @@ printing is selected. The default value is <code>false</code>.</p>
 *cupsEvenDuplex: true
 </pre>
 
+
 <h3><a name='cupsFax'>cupsFax</a></h3>
 
 <p class='summary'>*cupsFax: boolean</p>
@@ -1573,6 +1672,7 @@ printing is selected. The default value is <code>false</code>.</p>
 <pre class='command'>
 *cupsFax: true
 </pre>
+
 
 <h3><a name='cupsFilter'>cupsFilter</a></h3>
 
@@ -1595,6 +1695,7 @@ the special filter program "-" may be specified.</p>
 <em>*% Pass-through filter for PostScript printers</em>
 *cupsFilter: "application/vnd.cups-postscript 0 -"
 </pre>
+
 
 <h3><span class='info'>CUPS 1.5</span><a name='cupsFilter2'>cupsFilter2</a></h3>
 
@@ -1620,6 +1721,26 @@ the special filter program "-" may be specified.</p>
 <em>*% Pass-through filter for PostScript printers</em>
 *cupsFilter2: "application/vnd.cups-postscript application/postscript 0 -"
 </pre>
+
+
+<h3><span class='info'>CUPS 2.3</span><a name='cupsFinishingTemplate'>cupsFinishingTemplate</a></h3>
+
+<p class='summary'>*cupsFinishingTemplate name/text: ""</p>
+
+<p>This option keyword specifies a finishing template (preset) that applies zero or more finishing processes to a job. Unlike <a href="#cupsIPPFinishings"><tt>cupsIPPFinishings</tt></a>, only one template can be selected by the user. PPD files also generally apply a constraint between this option and other finishing options like <tt>Booklet</tt>, <tt>FoldType</tt>, <tt>PunchMedia</tt>, and <tt>StapleWhen</tt>.</p>
+
+<p>Examples:</p>
+
+<pre class='command'>
+*cupsFinishingTemplate none/None: ""
+*cupsFinishingTemplate fold/Letter Fold: ""
+*cupsFinishingTemplate punch/2/3-Hole Punch: ""
+*cupsFinishingTemplate staple/Corner Staple: ""
+*cupsFinishingTemplate staple-dual/Double Staple: ""
+*cupsFinishingTemplate staple-and-fold/Corner Staple and Letter Fold: ""
+*cupsFinishingTemplate staple-and-punch/Corner Staple and 2/3-Hole Punch: ""
+</pre>
+
 
 <h3><span class='info'>Deprecated</span><a name='cupsFlipDuplex'>cupsFlipDuplex</a></h3>
 
@@ -1656,6 +1777,7 @@ Ghostscript can use:</p>
 *cupsFlipDuplex: true
 </pre></blockquote>
 
+
 <h3><span class='info'>CUPS 1.3/macOS 10.5</span><a name='cupsIPPFinishings'>cupsIPPFinishings</a></h3>
 
 <p class='summary'>*cupsIPPFinishings number/text: "*Option Choice ..."</p>
@@ -1671,6 +1793,7 @@ values to PPD options and choices.</p>
 *cupsIPPFinishings 20/staple-top-left: "*StapleLocation SinglePortrait"
 *cupsIPPFinishings 21/staple-bottom-left: "*StapleLocation SingleLandscape"
 </pre>
+
 
 <h3><span class='info'>CUPS 1.3/macOS 10.5</span><a name='cupsIPPReason'>cupsIPPReason</a></h3>
 
@@ -1711,6 +1834,7 @@ help:anchor='com.vendor-error'%20bookID=Vendor%20Help
 http://www.vendor.com/help"
 *End
 </pre>
+
 
 <h3><span class='info'>CUPS 1.5</span><a name='cupsIPPSupplies'>cupsIPPSupplies</a></h3>
 
@@ -1826,6 +1950,7 @@ hardware. The default value is <code>false</code>.</p>
 *cupsManualCopies: true
 </pre>
 
+
 <h3><span class='info'>CUPS 1.4/macOS 10.6</span><a name='cupsMarkerName'>cupsMarkerName</a></h3>
 
 <p class='summary'>*cupsMarkerName/Name Text: ""</p>
@@ -1839,6 +1964,7 @@ generated by the driver to human readable text.</p>
 <em>*% Map cyanToner to "Cyan Toner"</em>
 *cupsMarkerName cyanToner/Cyan Toner: ""
 </pre>
+
 
 <h3><span class='info'>CUPS 1.4/macOS 10.6</span><a name='cupsMarkerNotice'>cupsMarkerNotice</a></h3>
 
@@ -1854,6 +1980,7 @@ are approximate".</p>
 *cupsMarkerNotice: "Supply levels are approximate."
 </pre>
 
+
 <h3><span class='info'>CUPS 1.6/macOS 10.8</span><a name='cupsMaxCopies'>cupsMaxCopies</a></h3>
 
 <p class='summary'>*cupsMaxCopies: integer</p>
@@ -1866,6 +1993,7 @@ are approximate".</p>
 <em>*% Tell the RIP filters we can do up to 99 copies</em>
 *cupsMaxCopies: 99
 </pre>
+
 
 <h3><a name='cupsModelNumber'>cupsModelNumber</a></h3>
 
@@ -1898,6 +2026,7 @@ assumed.</p>
 *cupsPJLCharset: "UTF-8"
 </pre>
 
+
 <h3><span class='info'>CUPS 1.4/macOS 10.6</span><a name='cupsPJLDisplay'>cupsPJLDisplay</a></h3>
 
 <p class='summary'>*cupsPJLDisplay: "what"</p>
@@ -1916,6 +2045,7 @@ to use "@PJL RDYMSG DISPLAY". The default is "job".</p>
 <em>*% Display job information display</em>
 *cupsPJLDisplay: "none"
 </pre>
+
 
 <h3><span class='info'>CUPS 1.2/macOS 10.5</span><a name='cupsPortMonitor'>cupsPortMonitor</a></h3>
 
@@ -1948,6 +2078,7 @@ to disable the port monitor for the given URI scheme.</p>
 <em>*% Specify a printer-specific port monitor for an Epson USB printer</em>
 *cupsPortMonitor usb/USB Status Monitor: "epson-usb"
 </pre>
+
 
 <h3><span class='info'>CUPS 1.3/macOS 10.5</span><a name='cupsPreFilter'>cupsPreFilter</a></h3>
 
@@ -1992,6 +2123,7 @@ before the filter that accepts the given MIME type.</p>
 *CloseUI: *cupsPrintQuality
 </pre>
 
+
 <h3><span class='info'>CUPS 1.5</span><a name='cupsSingleFile'>cupsSingleFile</a></h3>
 
 <p class='summary'>*cupsSingleFile: Boolean</p>
@@ -2008,6 +2140,7 @@ before the filter that accepts the given MIME type.</p>
 *cupsSingleFile: True
 </pre>
 
+
 <h3><span class='info'>CUPS 1.4/macOS 10.6</span><a name='cupsSNMPSupplies'>cupsSNMPSupplies</a></h3>
 
 <p class='summary'>*cupsSNMPSupplies: boolean</p>
@@ -2022,6 +2155,7 @@ the standard SNMP Printer MIB OIDs for supply levels. The default value is
 <em>*% Do not use SNMP queries to report supply levels</em>
 *cupsSNMPSupplies: False
 </pre>
+
 
 <h3><a name='cupsVersion'>cupsVersion</a></h3>
 
@@ -2084,6 +2218,7 @@ AirPrint moving forward.</p>
 *APDialogExtension: "/Library/Printers/vendor/finishing.plugin"
 *APDialogExtension: "/Library/Printers/vendor/options.plugin"
 </pre>
+
 
 <h3><span class='info'>macOS 10.4</span><a name='APDuplexRequiresFlippedMargin'>APDuplexRequiresFlippedMargin</a></h3>
 
@@ -2167,6 +2302,7 @@ and the <tt>Tumble</tt> page attribute.</p>
 <p>Also see the related <a href='#cupsBackSide'><tt>cupsBackSide</tt></a>
 keyword.</p>
 
+
 <h3><a name='APHelpBook'>APHelpBook</a></h3>
 
 <p class='summary'>*APHelpBook: "bundle URL"</p>
@@ -2182,6 +2318,7 @@ looking up IPP reason codes for this printer driver. The
 *APHelpBook: "file:///Library/Printers/vendor/Help.bundle"
 </pre>
 
+
 <h3><span class='info'>macOS 10.6</span><a name='APICADriver'>APICADriver</a></h3>
 
 <p class='summary'>*APICADriver: boolean</p>
@@ -2196,6 +2333,7 @@ Architecture (ICA) driver for scanning. The default is <tt>False</tt>.</p>
 *APScanAppBundleID: "com.apple.ImageCaptureApp"
 </pre>
 
+
 <h3><span class='info'>macOS 10.3</span><a name='APPrinterIconPath'>APPrinterIconPath</a></h3>
 
 <p class='summary'>*APPrinterIconPath: "/Library/Printers/vendor/filename.icns"</p>
@@ -2209,6 +2347,7 @@ displaying the printer. The file must be in the Apple icon format.</p>
 *% Apple icon file
 *APPrinterIconPath: "/Library/Printers/vendor/Icons/filename.icns"
 </pre>
+
 
 <h3><span class='info'>macOS 10.4</span><a name='APPrinterLowInkTool'>APPrinterLowInkTool</a></h3>
 
@@ -2226,6 +2365,7 @@ Technical Note TN2144</a> for more information.</p>
 *% Use a vendor monitoring program
 *APPrinterLowInkTool: "/Library/Printers/vendor/Tools/lowinktool"
 </pre>
+
 
 <h3><span class='info'>macOS 10.5</span><a name='APPrinterPreset'>APPrinterPreset</a></h3>
 
@@ -2297,6 +2437,7 @@ choice (*MainKeyword OptionKeyword) or a preset identifier and value
 *fr.APPrinterPreset Photo_on_Photo_Paper/Photo sur papier photographique: ""
 </pre>
 
+
 <h3><span class='info'>macOS 10.3</span><a name='APPrinterUtilityPath'>APPrinterUtilityPath</a></h3>
 
 <p class='summary'>*APPrinterPrinterUtilityPath: "/Library/Printers/vendor/filename.app"</p>
@@ -2312,6 +2453,7 @@ information.</p>
 *APPrinterPrinterUtilityPath: "/Library/Printers/vendor/Tools/utility.app"
 </pre>
 
+
 <h3><span class='info'>macOS 10.6</span><a name='APScannerOnly'>APScannerOnly</a></h3>
 
 <p class='summary'>*APScannerOnly: boolean</p>
@@ -2325,6 +2467,7 @@ capabilities. The default is <tt>False</tt>.</p>
 *APICADriver: True
 *APScannerOnly: True
 </pre>
+
 
 <h3><span class='info'>macOS 10.3</span><a name='APScanAppBundleID'>APScanAppBundleID</a></h3>
 
@@ -2342,6 +2485,15 @@ the device.</p>
 
 
 <h2 class='title'><a name='HISTORY'>Change History</a></h2>
+
+<h3>Changes in CUPS 2.3</h3>
+
+<ul>
+
+	<li>Added <a href="#cupsFinishingTemplate"><tt>cupsFinishingTemplate</tt></a> option.</li>
+
+</ul>
+
 
 <h3>Changes in CUPS 1.7</h3>
 
@@ -2459,6 +2611,7 @@ the device.</p>
 
 </ul>
 
+
 <h3>Changes in CUPS 1.2.8</h3>
 
 <ul>
@@ -2467,6 +2620,7 @@ the device.</p>
 	drivers</li>
 
 </ul>
+
 
 <h3>Changes in CUPS 1.2</h3>
 
@@ -2492,6 +2646,7 @@ the device.</p>
 	<li>Removed <tt>cupsProtocol</tt> keyword</li>
 
 </ul>
+
 
 <h3>Changes in CUPS 1.1</h3>
 

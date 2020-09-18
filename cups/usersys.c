@@ -4,13 +4,7 @@
  * Copyright 2007-2017 by Apple Inc.
  * Copyright 1997-2006 by Easy Software Products.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
- *
- * This file is subject to the Apple OS-Developed Software exception.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
  */
 
 /*
@@ -18,6 +12,7 @@
  */
 
 #include "cups-private.h"
+#include "debug-internal.h"
 #include <stdlib.h>
 #include <sys/stat.h>
 #ifdef _WIN32
@@ -492,7 +487,7 @@ cupsSetUserAgent(const char *user_agent)/* I - User-Agent string or @code NULL@ 
 					/* Thread globals */
 #ifdef _WIN32
   SYSTEM_INFO		sysinfo;	/* System information */
-  OSVERSIONINFO		version;	/* OS version info */
+  OSVERSIONINFOA	version;	/* OS version info */
 #else
   struct utsname	name;		/* uname info */
 #endif /* _WIN32 */
@@ -506,7 +501,7 @@ cupsSetUserAgent(const char *user_agent)/* I - User-Agent string or @code NULL@ 
 
 #ifdef _WIN32
   version.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-  GetVersionEx(&version);
+  GetVersionExA(&version);
   GetNativeSystemInfo(&sysinfo);
 
   snprintf(cg->user_agent, sizeof(cg->user_agent),
@@ -1109,7 +1104,7 @@ cups_finalize_client_conf(
     DWORD	size;			/* Size of string */
 
     size = sizeof(cc->user);
-    if (!GetUserName(cc->user, &size))
+    if (!GetUserNameA(cc->user, &size))
 #else
    /*
     * Try the USER environment variable as the default username...

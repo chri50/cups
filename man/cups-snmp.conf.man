@@ -1,16 +1,13 @@
 .\"
 .\" snmp.conf man page for CUPS.
 .\"
-.\" Copyright 2007-2014 by Apple Inc.
-.\" Copyright 2006 by Easy Software Products.
+.\" Copyright © 2007-2018 by Apple Inc.
+.\" Copyright © 2006 by Easy Software Products.
 .\"
-.\" These coded instructions, statements, and computer programs are the
-.\" property of Apple Inc. and are protected by Federal copyright
-.\" law.  Distribution and use rights are outlined in the file "LICENSE.txt"
-.\" which should have been included with this file.  If this file is
-.\" file is missing or damaged, see the license at "http://www.cups.org/".
+.\" Licensed under Apache License v2.0.  See the file "LICENSE" for more
+.\" information.
 .\"
-.TH snmp.conf 5 "CUPS" "10 June 2014" "Apple Inc."
+.TH snmp.conf 5 "CUPS" "8 November 2018" "Apple Inc."
 .SH NAME
 snmp.conf \- snmp configuration file for cups
 .SH DESCRIPTION
@@ -36,6 +33,7 @@ There is no default for the broadcast address.
 Specifies the community name to use.
 Only a single community name may be specified.
 The default community name is "public".
+If no name is specified, all SNMP functions are disabled.
 .TP 5
 \fBDebugLevel \fInumber\fR
 Specifies the logging level from 0 (none) to 3 (everything).
@@ -61,4 +59,4 @@ The default is 120 seconds (2 minutes).
 .BR cups-snmp (8),
 CUPS Online Help (http://localhost:631/help)
 .SH COPYRIGHT
-Copyright \[co] 2007-2017 by Apple Inc.
+Copyright \[co] 2007-2018 by Apple Inc.

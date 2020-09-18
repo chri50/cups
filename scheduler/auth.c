@@ -2,16 +2,13 @@
  * Authorization routines for the CUPS scheduler.
  *
  * Copyright © 2007-2018 by Apple Inc.
- * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
  * This file contains Kerberos support code, copyright 2006 by
  * Jelmer Vernooij.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+ * information.
  */
 
 /*
@@ -2038,45 +2035,33 @@ pam_func(
   * Answer all of the messages...
   */
 
-  DEBUG_printf(("pam_func: appdata_ptr = %p\n", appdata_ptr));
-
   data = (cupsd_authdata_t *)appdata_ptr;
 
   for (i = 0; i < num_msg; i ++)
   {
-    DEBUG_printf(("pam_func: Message = \"%s\"\n", msg[i]->msg));
-
     switch (msg[i]->msg_style)
     {
       case PAM_PROMPT_ECHO_ON:
-          DEBUG_printf(("pam_func: PAM_PROMPT_ECHO_ON, returning \"%s\"...\n",
-	                data->username));
           replies[i].resp_retcode = PAM_SUCCESS;
           replies[i].resp         = strdup(data->username);
           break;
 
       case PAM_PROMPT_ECHO_OFF:
-          DEBUG_printf(("pam_func: PAM_PROMPT_ECHO_OFF, returning \"%s\"...\n",
-	                data->password));
           replies[i].resp_retcode = PAM_SUCCESS;
           replies[i].resp         = strdup(data->password);
           break;
 
       case PAM_TEXT_INFO:
-          DEBUG_puts("pam_func: PAM_TEXT_INFO...");
           replies[i].resp_retcode = PAM_SUCCESS;
           replies[i].resp         = NULL;
           break;
 
       case PAM_ERROR_MSG:
-          DEBUG_puts("pam_func: PAM_ERROR_MSG...");
           replies[i].resp_retcode = PAM_SUCCESS;
           replies[i].resp         = NULL;
           break;
 
       default:
-          DEBUG_printf(("pam_func: Unknown PAM message %d...\n",
-	                msg[i]->msg_style));
           free(replies);
           return (PAM_CONV_ERR);
     }

@@ -3,14 +3,11 @@
 #
 # Original version by Jason McMullan <jmcc@ontv.com>.
 #
-# Copyright 2007-2017 by Apple Inc.
-# Copyright 1999-2007 by Easy Software Products, all rights reserved.
+# Copyright © 2007-2018 by Apple Inc.
+# Copyright © 1999-2007 by Easy Software Products, all rights reserved.
 #
-# These coded instructions, statements, and computer programs are the
-# property of Apple Inc. and are protected by Federal copyright
-# law.  Distribution and use rights are outlined in the file "LICENSE.txt"
-# which should have been included with this file.  If this file is
-# file is missing or damaged, see the license at "http://www.cups.org/".
+# Licensed under Apache License v2.0.  See the file "LICENSE" for more
+# information.
 #
 
 # Conditional build options (--with name/--without name):
@@ -43,12 +40,12 @@
 
 Summary: CUPS
 Name: cups
-Version: 2.2.10
+Version: 2.3b6
 Release: 0
 Epoch: 1
 License: GPL
 Group: System Environment/Daemons
-Source: https://github.com/apple/cups/releases/download/v2.2.10/cups-2.2.10-source.tar.gz
+Source: https://github.com/apple/cups/releases/download/v2.3b6/cups-2.3b6-source.tar.gz
 Url: http://www.cups.org
 Packager: Anonymous <anonymous@example.com>
 Vendor: Example Corp
@@ -218,7 +215,6 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 /usr/bin/cancel
-/usr/bin/cupstestdsc
 /usr/bin/cupstestppd
 /usr/bin/ipptool
 /usr/bin/lp*
@@ -274,8 +270,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/doc/cups/*.*
 %dir /usr/share/doc/cups/help
 /usr/share/doc/cups/help/accounting.html
+/usr/share/doc/cups/help/admin.html
 /usr/share/doc/cups/help/cgi.html
 /usr/share/doc/cups/help/encryption.html
+/usr/share/doc/cups/help/firewalls.html
 /usr/share/doc/cups/help/glossary.html
 /usr/share/doc/cups/help/kerberos.html
 /usr/share/doc/cups/help/license.html
@@ -314,6 +312,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/locale/cs/cups_cs.po
 %dir /usr/share/locale/de
 /usr/share/locale/de/cups_de.po
+%dir /usr/share/locale/en
+/usr/share/locale/en/cups_en.po
 %dir /usr/share/locale/es
 /usr/share/locale/es/cups_es.po
 %dir /usr/share/locale/fr
@@ -332,7 +332,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir /usr/share/man/man1
 /usr/share/man/man1/cancel.1.gz
 /usr/share/man/man1/cups.1.gz
-/usr/share/man/man1/cupstestdsc.1.gz
 /usr/share/man/man1/cupstestppd.1.gz
 %if %{?_with_dnssd:1}%{!?_with_dnssd:0}
 # DNS-SD
@@ -356,7 +355,6 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/man/man8/cups-driverd.8.gz
 /usr/share/man/man8/cups-exec.8.gz
 /usr/share/man/man8/cups-snmp.8.gz
-/usr/share/man/man8/cupsaddsmb.8.gz
 /usr/share/man/man8/cupsaccept.8.gz
 /usr/share/man/man8/cupsctl.8.gz
 /usr/share/man/man8/cupsfilter.8.gz

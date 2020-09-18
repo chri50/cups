@@ -4,11 +4,7 @@
 # Copyright 2007-2018 by Apple Inc.
 # Copyright 1997-2007 by Easy Software Products.
 #
-# These coded instructions, statements, and computer programs are the
-# property of Apple Inc. and are protected by Federal copyright
-# law.  Distribution and use rights are outlined in the file "LICENSE.txt"
-# which should have been included with this file.  If this file is
-# missing or damaged, see the license at "http://www.cups.org/".
+# Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
 #
 
 include ../Makedefs
@@ -44,6 +40,7 @@ HELPIMAGES	=	\
 			images/smiley.jpg
 HELPFILES	=	\
 			help/accounting.html \
+			help/admin.html \
 			help/api-admin.html \
 			help/api-filter.html \
 			help/api-ppd.html \
@@ -51,6 +48,7 @@ HELPFILES	=	\
 			help/cgi.html \
 			help/cupspm.html \
 			help/encryption.html \
+			help/firewalls.html \
 			help/glossary.html \
 			help/kerberos.html \
 			help/license.html \
@@ -64,13 +62,11 @@ HELPFILES	=	\
 			help/man-cups-lpd.html \
 			help/man-cups-snmp.html \
 			help/man-cupsaccept.html \
-			help/man-cupsaddsmb.html \
 			help/man-cupsd.conf.html \
 			help/man-cupsd.html \
 			help/man-cupsd-helper.html \
 			help/man-cupsd-logs.html \
 			help/man-cupsenable.html \
-			help/man-cupstestdsc.html \
 			help/man-cupstestppd.html \
 			help/man-filter.html \
 			help/man-ipptool.html \
@@ -109,8 +105,6 @@ HELPFILES	=	\
 			help/spec-command.html \
 			help/spec-design.html \
 			help/spec-ipp.html \
-			help/spec-pdf.html \
-			help/spec-postscript.html \
 			help/spec-ppd.html \
 			help/spec-raster.html \
 			help/spec-stp.html \
@@ -236,3 +230,13 @@ uninstall-languages:
 	done
 
 install-langbundle:
+
+
+#
+# Install the docset bits locally...
+#
+
+docset:
+	cp $(HELPFILES) ../org.cups.docset/Contents/Resources/Documentation/help
+	cp cups-printable.css ../org.cups.docset/Contents/Resources/Documentation
+	cp $(HELPIMAGES) ../org.cups.docset/Contents/Resources/Documentation/images

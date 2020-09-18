@@ -1,14 +1,10 @@
 /*
  * Configuration file for CUPS and Xcode.
  *
- * Copyright © 2007-2018 by Apple Inc.
- * Copyright © 1997-2007 by Easy Software Products.
+ * Copyright 2007-2017 by Apple Inc.
+ * Copyright 1997-2007 by Easy Software Products.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
  */
 
 #ifndef _CUPS_CONFIG_H_
@@ -22,8 +18,8 @@
  * Version of software...
  */
 
-#define CUPS_SVERSION "CUPS v2.2.10"
-#define CUPS_MINIMAL "CUPS/2.2.10"
+#define CUPS_SVERSION "CUPS v2.3.0"
+#define CUPS_MINIMAL "CUPS/2.3.0"
 
 
 /*
@@ -517,22 +513,6 @@
 
 
 /*
- * Various scripting languages...
- */
-
-#if !TARGET_OS_IOS
-#  define HAVE_JAVA 1
-#  define CUPS_JAVA "/usr/bin/java"
-#  define HAVE_PERL 1
-#  define CUPS_PERL "/usr/bin/perl"
-#  define HAVE_PHP 1
-#  define CUPS_PHP "/usr/bin/php"
-#  define HAVE_PYTHON 1
-#  define CUPS_PYTHON "/usr/bin/python"
-#endif /* !TARGET_OS_IOS */
-
-
-/*
  * Do we have CoreFoundation public and private headers?
  */
 
@@ -715,12 +695,14 @@
 
 
 /*
- * Location of macOS localization bundle, if any.
+ * Location of localization bundle, if any.
  */
 
-#if !TARGET_OS_IOS
+#if TARGET_OS_IOS
+#  define CUPS_BUNDLEDIR "/System/Library/PrivateFrameworks/PrintKit.framework/Versions/A"
+#else
 #  define CUPS_BUNDLEDIR "/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/PrintCore.framework/Versions/A"
-#endif /* !TARGET_OS_IOS */
+#endif /* TARGET_OS_IOS */
 
 
 /*

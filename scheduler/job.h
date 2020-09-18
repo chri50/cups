@@ -1,14 +1,10 @@
 /*
  * Print job definitions for the CUPS scheduler.
  *
- * Copyright 2007-2018 by Apple Inc.
+ * Copyright 2007-2015 by Apple Inc.
  * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
  */
 
 /*
@@ -164,7 +160,12 @@ extern void		cupsdSaveJob(cupsd_job_t *job);
 extern void		cupsdSetJobHoldUntil(cupsd_job_t *job,
 			                     const char *when, int update);
 extern void		cupsdSetJobPriority(cupsd_job_t *job, int priority);
-extern void		cupsdSetJobState(cupsd_job_t *job, ipp_jstate_t newstate, cupsd_jobaction_t action, const char *message, ...) _CUPS_FORMAT(4, 5);
+extern void		cupsdSetJobState(cupsd_job_t *job,
+			                 ipp_jstate_t newstate,
+					 cupsd_jobaction_t action,
+					 const char *message, ...)
+					__attribute__((__format__(__printf__,
+					                          4, 5)));
 extern void		cupsdStopAllJobs(cupsd_jobaction_t action,
 			                 int kill_delay);
 extern int		cupsdTimeoutJob(cupsd_job_t *job);

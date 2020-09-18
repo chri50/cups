@@ -6,11 +6,8 @@
 # Copyright © 2007-2018 by Apple Inc.
 # Copyright © 1997-2007 by Easy Software Products, all rights reserved.
 #
-# These coded instructions, statements, and computer programs are the
-# property of Apple Inc. and are protected by Federal copyright
-# law.  Distribution and use rights are outlined in the file "LICENSE.txt"
-# which should have been included with this file.  If this file is
-# file is missing or damaged, see the license at "http://www.cups.org/".
+# Licensed under Apache License v2.0.  See the file "LICENSE" for more
+# information.
 #
 
 argcount=$#
@@ -528,7 +525,9 @@ PassEnv DYLD_LIBRARY_PATH
 PassEnv LD_LIBRARY_PATH
 PassEnv LD_PRELOAD
 PassEnv LOCALEDIR
-PassEnv SHLIB_PATH
+PassEnv ASAN_OPTIONS
+
+Sandboxing Off
 EOF
 
 if test $ssltype != 0 -a `uname` = Darwin; then
@@ -572,29 +571,40 @@ fi
 
 echo "Setting up environment variables for test..."
 
-if test "x$LD_LIBRARY_PATH" = x; then
-	LD_LIBRARY_PATH="$root/cups:$root/filter"
-else
-	LD_LIBRARY_PATH="$root/cups:$root/filter:$LD_LIBRARY_PATH"
+if test "x$ASAN_OPTIONS" = x; then
+	# AddressSanitizer on Linux reports memory leaks from the main function
+	# which is basically useless - in general, programs do not need to free
+	# every object before exit since the OS will recover the process's
+	# memory.
+	ASAN_OPTIONS="detect_leaks=false"
+	export ASAN_OPTIONS
 fi
 
-LD_PRELOAD="$root/cups/libcups.so.2:$root/filter/libcupsimage.so.2"
-if test `uname` = SunOS -a -r /usr/lib/libCrun.so.1; then
-	LD_PRELOAD="/usr/lib/libCrun.so.1:$LD_PRELOAD"
+if test -f "$root/cups/libcups.so.2"; then
+	if test "x$LD_LIBRARY_PATH" = x; then
+		LD_LIBRARY_PATH="$root/cups"
+	else
+		LD_LIBRARY_PATH="$root/cups:$LD_LIBRARY_PATH"
+	fi
+
+	LD_PRELOAD="$root/cups/libcups.so.2:$root/cups/libcupsimage.so.2"
+	if test `uname` = SunOS -a -r /usr/lib/libCrun.so.1; then
+		LD_PRELOAD="/usr/lib/libCrun.so.1:$LD_PRELOAD"
+	fi
 fi
 
-if test -f $root/cups/libcups.2.dylib; then
-        if test "x$DYLD_INSERT_LIBRARIES" = x; then
-                DYLD_INSERT_LIBRARIES="$root/cups/libcups.2.dylib:$root/filter/libcupsimage.2.dylib"
-        else
-                DYLD_INSERT_LIBRARIES="$root/cups/libcups.2.dylib:$root/filter/libcupsimage.2.dylib:$DYLD_INSERT_LIBRARIES"
-        fi
-fi
+if test -f "$root/cups/libcups.2.dylib"; then
+	if test "x$DYLD_INSERT_LIBRARIES" = x; then
+		DYLD_INSERT_LIBRARIES="$root/cups/libcups.2.dylib:$root/cups/libcupsimage.2.dylib"
+	else
+		DYLD_INSERT_LIBRARIES="$root/cups/libcups.2.dylib:$root/cups/libcupsimage.2.dylib:$DYLD_INSERT_LIBRARIES"
+	fi
 
-if test "x$DYLD_LIBRARY_PATH" = x; then
-	DYLD_LIBRARY_PATH="$root/cups:$root/filter"
-else
-	DYLD_LIBRARY_PATH="$root/cups:$root/filter:$DYLD_LIBRARY_PATH"
+	if test "x$DYLD_LIBRARY_PATH" = x; then
+		DYLD_LIBRARY_PATH="$root/cups"
+	else
+		DYLD_LIBRARY_PATH="$root/cups:$DYLD_LIBRARY_PATH"
+	fi
 fi
 
 # These get exported because they don't have side-effects...
@@ -660,17 +670,7 @@ echo "Starting scheduler:"
 echo "    $runcups $VALGRIND ../scheduler/cupsd -c $BASE/cupsd.conf -f >$BASE/log/debug_log 2>&1 &"
 echo ""
 
-if test `uname` = Darwin -a "x$VALGRIND" = x; then
-        if test "x$DYLD_INSERT_LIBRARIES" = x; then
-                insert="/usr/lib/libgmalloc.dylib"
-        else
-                insert="/usr/lib/libgmalloc.dylib:$DYLD_INSERT_LIBRARIES"
-        fi
-
-	DYLD_INSERT_LIBRARIES="$insert" MallocStackLogging=1 $runcups ../scheduler/cupsd -c $BASE/cupsd.conf -f >$BASE/log/debug_log 2>&1 &
-else
-	$runcups $VALGRIND ../scheduler/cupsd -c $BASE/cupsd.conf -f >$BASE/log/debug_log 2>&1 &
-fi
+$runcups $VALGRIND ../scheduler/cupsd -c $BASE/cupsd.conf -f >$BASE/log/debug_log 2>&1 &
 
 cupsd=$!
 
@@ -782,14 +782,6 @@ for file in 5*.sh; do
 		echo PASS
 	fi
 done
-
-#
-# Log all allocations made by the scheduler...
-#
-
-if test `uname` = Darwin -a "x$VALGRIND" = x; then
-	malloc_history $cupsd -callTree -showContent >$BASE/log/malloc_log 2>&1
-fi
 
 #
 # Restart the server...

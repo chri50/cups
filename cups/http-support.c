@@ -4,13 +4,8 @@
  * Copyright 2007-2018 by Apple Inc.
  * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
- *
- * This file is subject to the Apple OS-Developed Software exception.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+ * information.
  */
 
 /*
@@ -18,6 +13,7 @@
  */
 
 #include "cups-private.h"
+#include "debug-internal.h"
 #ifdef HAVE_DNSSD
 #  include <dns_sd.h>
 #  ifdef _WIN32
@@ -1327,7 +1323,7 @@ _httpSetDigestAuthString(
   size_t	hashsize;		/* Size of hash */
 
 
-  DEBUG_printf(("2_httpSetDigestAuthString(http=%p, nonce=\"%s\", method=\"%s\", resource=\"%s\")", http, nonce, method, resource));
+  DEBUG_printf(("2_httpSetDigestAuthString(http=%p, nonce=\"%s\", method=\"%s\", resource=\"%s\")", (void *)http, nonce, method, resource));
 
   if (nonce && *nonce && strcmp(nonce, http->nonce))
   {

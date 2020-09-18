@@ -4,11 +4,8 @@ dnl
 dnl Copyright 2007-2018 by Apple Inc.
 dnl Copyright 1997-2006 by Easy Software Products, all rights reserved.
 dnl
-dnl These coded instructions, statements, and computer programs are the
-dnl property of Apple Inc. and are protected by Federal copyright
-dnl law.  Distribution and use rights are outlined in the file "LICENSE.txt"
-dnl which should have been included with this file.  If this file is
-dnl missing or damaged, see the license at "http://www.cups.org/".
+dnl Licensed under Apache License v2.0.  See the file "LICENSE" for more
+dnl information.
 dnl
 
 dnl Get the build and host platforms and split the host_os value
@@ -25,6 +22,8 @@ fi
 if test "$host_os_name" = darwin -a $host_os_version -lt 120; then
         AC_MSG_ERROR([Sorry, this version of CUPS requires macOS 10.8 or higher.])
 fi
+
+echo host_os_version=$host_os_version
 
 dnl Determine whether we are cross-compiling...
 if test "$build" = "$host"; then

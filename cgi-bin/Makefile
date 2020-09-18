@@ -1,14 +1,11 @@
 #
 # CGI makefile for CUPS.
 #
-# Copyright 2007-2018 by Apple Inc.
-# Copyright 1997-2006 by Easy Software Products.
+# Copyright © 2007-2018 by Apple Inc.
+# Copyright © 1997-2006 by Easy Software Products.
 #
-# These coded instructions, statements, and computer programs are the
-# property of Apple Inc. and are protected by Federal copyright
-# law.  Distribution and use rights are outlined in the file "LICENSE.txt"
-# which should have been included with this file.  If this file is
-# missing or damaged, see the license at "http://www.cups.org/".
+# Licensed under Apache License v2.0.  See the file "LICENSE" for more
+# information.
 #
 
 include ../Makedefs
@@ -26,6 +23,7 @@ OBJS	=	\
 		classes.o \
 		help.o \
 		jobs.o \
+		makedocset.o \
 		printers.o \
 		testcgi.o \
 		testhi.o \
@@ -60,7 +58,7 @@ all:	$(TARGETS)
 # Make library targets...
 #
 
-libs:		$(LIBTARGETS) $(UNITTESTS)
+libs:
 
 
 #
@@ -75,7 +73,7 @@ unittests:	$(UNITTARGETS)
 #
 
 clean:
-	$(RM) $(OBJS) $(TARGETS) $(UNITTARGETS)
+	$(RM) $(OBJS) $(TARGETS) $(UNITTARGETS) makedocset
 
 
 #
@@ -200,7 +198,7 @@ jobs.cgi:	jobs.o ../Makedefs ../cups/$(LIBCUPS) libcupscgi.a
 
 printers.cgi:	printers.o ../Makedefs ../cups/$(LIBCUPS) libcupscgi.a
 	echo Linking $@...
-	$(LD_CC) $(LDFLAGS) -o $@ printers.o -L. libcupscgi.a $(LIBS)
+	$(LD_CC) $(LDFLAGS) -o $@ printers.o libcupscgi.a $(LIBS)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 

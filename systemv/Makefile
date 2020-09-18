@@ -1,21 +1,18 @@
 #
 # System V commands makefile for CUPS.
 #
-# Copyright 2007-2014 by Apple Inc.
-# Copyright 1997-2006 by Easy Software Products, all rights reserved.
+# Copyright © 2007-2018 by Apple Inc.
+# Copyright © 1997-2006 by Easy Software Products, all rights reserved.
 #
-# These coded instructions, statements, and computer programs are the
-# property of Apple Inc. and are protected by Federal copyright
-# law.  Distribution and use rights are outlined in the file "LICENSE.txt"
-# which should have been included with this file.  If this file is
-# missing or damaged, see the license at "http://www.cups.org/".
+# Licensed under Apache License v2.0.  See the file "LICENSE" for more
+# information.
 #
 
 include ../Makedefs
 
-TARGETS	=	cancel cupsaccept cupsaddsmb cupsctl cupstestdsc cupstestppd \
+TARGETS	=	cancel cupsaccept cupsctl cupstestppd \
 		lp lpadmin lpinfo lpmove lpoptions lpstat
-OBJS	=	cancel.o cupsaccept.o cupsaddsmb.o cupsctl.o cupstestdsc.o \
+OBJS	=	cancel.o cupsaccept.o cupsctl.o \
 		cupstestppd.o lp.o lpadmin.o lpinfo.o lpmove.o lpoptions.o \
 		lpstat.o
 
@@ -80,7 +77,6 @@ install-exec:
 	echo Installing System V admin printing commands in $(SBINDIR)
 	$(INSTALL_DIR) -m 755 $(SBINDIR)
 	$(INSTALL_BIN) cupsaccept $(SBINDIR)
-	$(INSTALL_BIN) cupsaddsmb $(SBINDIR)
 	$(INSTALL_BIN) cupsctl $(SBINDIR)
 	$(INSTALL_BIN) lpadmin $(SBINDIR)
 	$(INSTALL_BIN) lpinfo $(SBINDIR)
@@ -98,7 +94,6 @@ install-exec:
 	echo Installing System V user printing commands in $(BINDIR)
 	$(INSTALL_DIR) -m 755 $(BINDIR)
 	$(INSTALL_BIN) cancel $(BINDIR)
-	$(INSTALL_BIN) cupstestdsc $(BINDIR)
 	$(INSTALL_BIN) cupstestppd $(BINDIR)
 	$(INSTALL_BIN) lp $(BINDIR)
 	$(INSTALL_BIN) lpoptions $(BINDIR)
@@ -132,7 +127,6 @@ install-libs:
 
 uninstall:
 	$(RM) $(BINDIR)/cancel
-	$(RM) $(BINDIR)/cupstestdsc
 	$(RM) $(BINDIR)/cupstestppd
 	$(RM) $(BINDIR)/lp
 	$(RM) $(BINDIR)/lpoptions
@@ -140,7 +134,6 @@ uninstall:
 	-$(RMDIR) $(BINDIR)
 	$(RM) $(SBINDIR)/accept
 	$(RM) $(SBINDIR)/cupsaccept
-	$(RM) $(SBINDIR)/cupsaddsmb
 	$(RM) $(SBINDIR)/cupsaccept
 	$(RM) $(SBINDIR)/cupsdisable
 	$(RM) $(SBINDIR)/cupsenable
@@ -177,16 +170,6 @@ cupsaccept:	cupsaccept.o ../cups/$(LIBCUPS)
 
 
 #
-# cupsaddsmb
-#
-
-cupsaddsmb:	cupsaddsmb.o ../cups/$(LIBCUPS)
-	echo Linking $@...
-	$(LD_CC) $(LDFLAGS) -o cupsaddsmb cupsaddsmb.o $(LIBS)
-	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
-
-
-#
 # cupsctl
 #
 
@@ -197,27 +180,17 @@ cupsctl:	cupsctl.o ../cups/$(LIBCUPS)
 
 
 #
-# cupstestdsc
-#
-
-cupstestdsc:	cupstestdsc.o ../cups/$(LIBCUPS)
-	echo Linking $@...
-	$(LD_CC) $(LDFLAGS) -o $@ cupstestdsc.o $(LIBS)
-	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
-
-
-#
 # cupstestppd
 #
 
-cupstestppd:	cupstestppd.o ../cups/$(LIBCUPS) ../filter/$(LIBCUPSIMAGE)
+cupstestppd:	cupstestppd.o ../cups/$(LIBCUPS) ../cups/$(LIBCUPSIMAGE)
 	echo Linking $@...
 	$(LD_CC) $(LDFLAGS) -o $@ cupstestppd.o $(LINKCUPSIMAGE) $(IMGLIBS) $(LIBS)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
-cupstestppd-static:	cupstestppd.o ../cups/$(LIBCUPSSTATIC) ../filter/libcupsimage.a
+cupstestppd-static:	cupstestppd.o ../cups/$(LIBCUPSSTATIC) ../cups/libcupsimage.a
 	echo Linking $@...
-	$(LD_CC) $(LDFLAGS) -o $@ cupstestppd.o ../filter/libcupsimage.a \
+	$(LD_CC) $(LDFLAGS) -o $@ cupstestppd.o ../cups/libcupsimage.a \
 		../cups/$(LIBCUPSSTATIC) $(IMGLIBS) $(LIBGSSAPI) $(LIBS) $(LIBZ)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 

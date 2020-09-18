@@ -3,13 +3,8 @@
  *
  * Copyright © 2007-2018 by Apple Inc.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
- *
- * This file is subject to the Apple OS-Developed Software exception.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+ * information.
  */
 
 #ifndef _CUPS_VERSIONING_H_
@@ -84,6 +79,10 @@
 #    define _CUPS_INTERNAL	__attribute__ ((visibility("hidden")))
 #    define _CUPS_PRIVATE	__attribute__ ((visibility("default")))
 #    define _CUPS_PUBLIC	__attribute__ ((visibility("default")))
+#  elif defined(_WIN32) && defined(LIBCUPS2_EXPORTS) && 0
+#    define _CUPS_INTERNAL
+#    define _CUPS_PRIVATE	__declspec(dllexport)
+#    define _CUPS_PUBLIC	__declspec(dllexport)
 #  else
 #    define _CUPS_INTERNAL
 #    define _CUPS_PRIVATE
@@ -119,6 +118,7 @@
 #    define _CUPS_API_2_2 API_AVAILABLE(macos(10.12), ios(11.0)) _CUPS_PUBLIC
 #    define _CUPS_API_2_2_4 API_AVAILABLE(macos(10.13), ios(11.0)) _CUPS_PUBLIC
 #    define _CUPS_API_2_2_7 API_AVAILABLE(macos(10.14), ios(11.0)) _CUPS_PUBLIC
+#    define _CUPS_API_2_3 _CUPS_PUBLIC
 #  else
 #    define _CUPS_API_1_1_19 _CUPS_PUBLIC
 #    define _CUPS_API_1_1_20 _CUPS_PUBLIC
@@ -133,6 +133,7 @@
 #    define _CUPS_API_2_2 _CUPS_PUBLIC
 #    define _CUPS_API_2_2_4 _CUPS_PUBLIC
 #    define _CUPS_API_2_2_7 _CUPS_PUBLIC
+#    define _CUPS_API_2_3 _CUPS_PUBLIC
 #  endif /* __APPLE__ && !_CUPS_SOURCE */
 
 

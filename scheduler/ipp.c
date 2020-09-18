@@ -7,11 +7,8 @@
  * This file contains Kerberos support code, copyright 2006 by
  * Jelmer Vernooij.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+ * information.
  */
 
 /*
@@ -914,6 +911,8 @@ add_class(cupsd_client_t  *con,		/* I - Client connection */
 
     pclass = cupsdAddClass(resource + 9);
     modify = 0;
+
+    pclass->printer_id = NextPrinterId ++;
   }
   else if ((status = cupsdCheckPolicy(pclass->op_policy_ptr, con,
                                       NULL)) != HTTP_OK)
@@ -2013,7 +2012,7 @@ add_job_subscriptions(
 		host[HTTP_MAX_URI],	/* Host portion of URI */
 		resource[HTTP_MAX_URI];	/* Resource portion of URI */
         int	port;			/* Port portion of URI */
-
+        struct stat info;		/* File information */
 
         recipient = attr->values[0].string.text;
 
@@ -2029,9 +2028,8 @@ add_job_subscriptions(
 	  return;
 	}
 
-        snprintf(notifier, sizeof(notifier), "%s/notifier/%s", ServerBin,
-	         scheme);
-        if (access(notifier, X_OK) || !strcmp(scheme, ".") || !strcmp(scheme, ".."))
+        snprintf(notifier, sizeof(notifier), "%s/notifier/%s", ServerBin, scheme);
+        if (access(notifier, X_OK) || stat(notifier, &info) || !S_ISREG(info.st_mode))
 	{
           send_ipp_status(con, IPP_NOT_POSSIBLE,
 	                  _("notify-recipient-uri URI \"%s\" uses unknown "
@@ -2310,6 +2308,8 @@ add_printer(cupsd_client_t  *con,	/* I - Client connection */
 
     printer = cupsdAddPrinter(resource + 10);
     modify  = 0;
+
+    printer->printer_id = NextPrinterId ++;
   }
   else if ((status = cupsdCheckPolicy(printer->op_policy_ptr, con,
                                       NULL)) != HTTP_OK)
@@ -2810,9 +2810,15 @@ add_printer(cupsd_client_t  *con,	/* I - Client connection */
   * Update the printer attributes and return...
   */
 
-  cupsdSetPrinterAttrs(printer);
   if (!printer->temporary)
+  {
+    if (!printer->printer_id)
+      printer->printer_id = NextPrinterId ++;
+
     cupsdMarkDirty(CUPSD_DIRTY_PRINTERS);
+  }
+
+  cupsdSetPrinterAttrs(printer);
 
   if (need_restart_job && printer->job)
   {
@@ -4852,12 +4858,11 @@ copy_printer_attrs(
     cupsd_printer_t *printer,		/* I - Printer */
     cups_array_t    *ra)		/* I - Requested attributes array */
 {
-  char			printer_uri[HTTP_MAX_URI];
-					/* Printer URI */
-  char			printer_icons[HTTP_MAX_URI];
-					/* Printer icons */
-  time_t		curtime;	/* Current time */
-  int			i;		/* Looping var */
+  char		uri[HTTP_MAX_URI];	/* URI value */
+  time_t	curtime;		/* Current time */
+  int		i;			/* Looping var */
+  int		is_encrypted = httpIsEncrypted(con->http);
+					/* Is the connection encrypted? */
 
 
  /*
@@ -4870,89 +4875,71 @@ copy_printer_attrs(
   curtime = time(NULL);
 
   if (!ra || cupsArrayFind(ra, "marker-change-time"))
-    ippAddInteger(con->response, IPP_TAG_PRINTER, IPP_TAG_INTEGER,
-                  "marker-change-time", printer->marker_time);
+    ippAddInteger(con->response, IPP_TAG_PRINTER, IPP_TAG_INTEGER, "marker-change-time", printer->marker_time);
 
-  if (printer->num_printers > 0 &&
-      (!ra || cupsArrayFind(ra, "member-uris")))
+  if (printer->num_printers > 0 && (!ra || cupsArrayFind(ra, "member-uris")))
   {
     ipp_attribute_t	*member_uris;	/* member-uris attribute */
     cupsd_printer_t	*p2;		/* Printer in class */
     ipp_attribute_t	*p2_uri;	/* printer-uri-supported for class printer */
 
 
-    if ((member_uris = ippAddStrings(con->response, IPP_TAG_PRINTER,
-                                     IPP_TAG_URI, "member-uris",
-				     printer->num_printers, NULL,
-				     NULL)) != NULL)
+    if ((member_uris = ippAddStrings(con->response, IPP_TAG_PRINTER, IPP_TAG_URI, "member-uris", printer->num_printers, NULL, NULL)) != NULL)
     {
       for (i = 0; i < printer->num_printers; i ++)
       {
         p2 = printer->printers[i];
 
-        if ((p2_uri = ippFindAttribute(p2->attrs, "printer-uri-supported",
-	                               IPP_TAG_URI)) != NULL)
-          member_uris->values[i].string.text =
-	      _cupsStrRetain(p2_uri->values[0].string.text);
+        if ((p2_uri = ippFindAttribute(p2->attrs, "printer-uri-supported", IPP_TAG_URI)) != NULL)
+        {
+          member_uris->values[i].string.text = _cupsStrRetain(p2_uri->values[0].string.text);
+        }
         else
 	{
-	  httpAssembleURIf(HTTP_URI_CODING_ALL, printer_uri,
-	                   sizeof(printer_uri), "ipp", NULL, con->clientname,
-			   con->clientport,
-			   (p2->type & CUPS_PRINTER_CLASS) ?
-			       "/classes/%s" : "/printers/%s", p2->name);
-	  member_uris->values[i].string.text = _cupsStrAlloc(printer_uri);
+	  httpAssembleURIf(HTTP_URI_CODING_ALL, uri, sizeof(uri), is_encrypted ? "ipps" : "ipp", NULL, con->clientname, con->clientport, (p2->type & CUPS_PRINTER_CLASS) ? "/classes/%s" : "/printers/%s", p2->name);
+	  member_uris->values[i].string.text = _cupsStrAlloc(uri);
         }
       }
     }
   }
 
   if (printer->alert && (!ra || cupsArrayFind(ra, "printer-alert")))
-    ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_STRING,
-                 "printer-alert", NULL, printer->alert);
+    ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_STRING, "printer-alert", NULL, printer->alert);
 
-  if (printer->alert_description &&
-      (!ra || cupsArrayFind(ra, "printer-alert-description")))
-    ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_TEXT,
-                 "printer-alert-description", NULL,
-		 printer->alert_description);
+  if (printer->alert_description && (!ra || cupsArrayFind(ra, "printer-alert-description")))
+    ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_TEXT, "printer-alert-description", NULL, printer->alert_description);
 
   if (!ra || cupsArrayFind(ra, "printer-config-change-date-time"))
     ippAddDate(con->response, IPP_TAG_PRINTER, "printer-config-change-date-time", ippTimeToDate(printer->config_time));
 
   if (!ra || cupsArrayFind(ra, "printer-config-change-time"))
-    ippAddInteger(con->response, IPP_TAG_PRINTER, IPP_TAG_INTEGER,
-                  "printer-config-change-time", printer->config_time);
+    ippAddInteger(con->response, IPP_TAG_PRINTER, IPP_TAG_INTEGER, "printer-config-change-time", printer->config_time);
 
   if (!ra || cupsArrayFind(ra, "printer-current-time"))
-    ippAddDate(con->response, IPP_TAG_PRINTER, "printer-current-time",
-               ippTimeToDate(curtime));
+    ippAddDate(con->response, IPP_TAG_PRINTER, "printer-current-time", ippTimeToDate(curtime));
 
 #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
   if (!ra || cupsArrayFind(ra, "printer-dns-sd-name"))
   {
     if (printer->reg_name)
-      ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_NAME,
-                   "printer-dns-sd-name", NULL, printer->reg_name);
+      ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_NAME, "printer-dns-sd-name", NULL, printer->reg_name);
     else
-      ippAddInteger(con->response, IPP_TAG_PRINTER, IPP_TAG_NOVALUE,
-                   "printer-dns-sd-name", 0);
+      ippAddInteger(con->response, IPP_TAG_PRINTER, IPP_TAG_NOVALUE, "printer-dns-sd-name", 0);
   }
 #endif /* HAVE_DNSSD || HAVE_AVAHI */
 
   if (!ra || cupsArrayFind(ra, "printer-error-policy"))
-    ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_NAME,
-        	 "printer-error-policy", NULL, printer->error_policy);
+    ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_NAME, "printer-error-policy", NULL, printer->error_policy);
 
   if (!ra || cupsArrayFind(ra, "printer-error-policy-supported"))
   {
     static const char * const errors[] =/* printer-error-policy-supported values */
-		  {
-		    "abort-job",
-		    "retry-current-job",
-		    "retry-job",
-		    "stop-printer"
-		  };
+    {
+      "abort-job",
+      "retry-current-job",
+      "retry-job",
+      "stop-printer"
+    };
 
     if (printer->type & CUPS_PRINTER_CLASS)
       ippAddString(con->response, IPP_TAG_PRINTER, IPP_CONST_TAG(IPP_TAG_NAME), "printer-error-policy-supported", NULL, "retry-current-job");
@@ -4962,12 +4949,9 @@ copy_printer_attrs(
 
   if (!ra || cupsArrayFind(ra, "printer-icons"))
   {
-    httpAssembleURIf(HTTP_URI_CODING_ALL, printer_icons, sizeof(printer_icons),
-                     "http", NULL, con->clientname, con->clientport,
-		     "/icons/%s.png", printer->name);
-    ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_URI, "printer-icons",
-                 NULL, printer_icons);
-    cupsdLogMessage(CUPSD_LOG_DEBUG2, "printer-icons=\"%s\"", printer_icons);
+    httpAssembleURIf(HTTP_URI_CODING_ALL, uri, sizeof(uri), is_encrypted ? "https" : "http", NULL, con->clientname, con->clientport, "/icons/%s.png", printer->name);
+    ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_URI, "printer-icons", NULL, uri);
+    cupsdLogMessage(CUPSD_LOG_DEBUG2, "printer-icons=\"%s\"", uri);
   }
 
   if (!ra || cupsArrayFind(ra, "printer-is-accepting-jobs"))
@@ -4981,35 +4965,34 @@ copy_printer_attrs(
 
   if (!ra || cupsArrayFind(ra, "printer-more-info"))
   {
-    httpAssembleURIf(HTTP_URI_CODING_ALL, printer_uri, sizeof(printer_uri),
-                     "http", NULL, con->clientname, con->clientport,
-		     (printer->type & CUPS_PRINTER_CLASS) ?
-		         "/classes/%s" : "/printers/%s", printer->name);
-    ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_URI,
-        	 "printer-more-info", NULL, printer_uri);
+    httpAssembleURIf(HTTP_URI_CODING_ALL, uri, sizeof(uri), is_encrypted ? "https" : "http", NULL, con->clientname, con->clientport, (printer->type & CUPS_PRINTER_CLASS) ? "/classes/%s" : "/printers/%s", printer->name);
+    ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_URI, "printer-more-info", NULL, uri);
   }
 
   if (!ra || cupsArrayFind(ra, "printer-op-policy"))
-    ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_NAME,
-        	 "printer-op-policy", NULL, printer->op_policy);
+    ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_NAME, "printer-op-policy", NULL, printer->op_policy);
 
   if (!ra || cupsArrayFind(ra, "printer-state"))
-    ippAddInteger(con->response, IPP_TAG_PRINTER, IPP_TAG_ENUM, "printer-state",
-                  printer->state);
+    ippAddInteger(con->response, IPP_TAG_PRINTER, IPP_TAG_ENUM, "printer-state", printer->state);
 
   if (!ra || cupsArrayFind(ra, "printer-state-change-date-time"))
     ippAddDate(con->response, IPP_TAG_PRINTER, "printer-state-change-date-time", ippTimeToDate(printer->state_time));
 
   if (!ra || cupsArrayFind(ra, "printer-state-change-time"))
-    ippAddInteger(con->response, IPP_TAG_PRINTER, IPP_TAG_INTEGER,
-                  "printer-state-change-time", printer->state_time);
+    ippAddInteger(con->response, IPP_TAG_PRINTER, IPP_TAG_INTEGER, "printer-state-change-time", printer->state_time);
 
   if (!ra || cupsArrayFind(ra, "printer-state-message"))
-    ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_TEXT,
-        	 "printer-state-message", NULL, printer->state_message);
+    ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_TEXT, "printer-state-message", NULL, printer->state_message);
 
   if (!ra || cupsArrayFind(ra, "printer-state-reasons"))
     add_printer_state_reasons(con, printer);
+
+  if (!ra || cupsArrayFind(ra, "printer-strings-uri"))
+  {
+    httpAssembleURIf(HTTP_URI_CODING_ALL, uri, sizeof(uri), is_encrypted ? "https" : "http", NULL, con->clientname, con->clientport, "/strings/%s.strings", printer->name);
+    ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_URI, "printer-strings-uri", NULL, uri);
+    cupsdLogMessage(CUPSD_LOG_DEBUG2, "printer-strings-uri=\"%s\"", uri);
+  }
 
   if (!ra || cupsArrayFind(ra, "printer-type"))
   {
@@ -5034,19 +5017,13 @@ copy_printer_attrs(
   }
 
   if (!ra || cupsArrayFind(ra, "printer-up-time"))
-    ippAddInteger(con->response, IPP_TAG_PRINTER, IPP_TAG_INTEGER,
-                  "printer-up-time", curtime);
+    ippAddInteger(con->response, IPP_TAG_PRINTER, IPP_TAG_INTEGER, "printer-up-time", curtime);
 
   if (!ra || cupsArrayFind(ra, "printer-uri-supported"))
   {
-    httpAssembleURIf(HTTP_URI_CODING_ALL, printer_uri, sizeof(printer_uri),
-                     "ipp", NULL, con->clientname, con->clientport,
-		     (printer->type & CUPS_PRINTER_CLASS) ?
-		         "/classes/%s" : "/printers/%s", printer->name);
-    ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_URI,
-        	 "printer-uri-supported", NULL, printer_uri);
-    cupsdLogMessage(CUPSD_LOG_DEBUG2, "printer-uri-supported=\"%s\"",
-                    printer_uri);
+    httpAssembleURIf(HTTP_URI_CODING_ALL, uri, sizeof(uri), is_encrypted ? "ipps" : "ipp", NULL, con->clientname, con->clientport, (printer->type & CUPS_PRINTER_CLASS) ? "/classes/%s" : "/printers/%s", printer->name);
+    ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_URI, "printer-uri-supported", NULL, uri);
+    cupsdLogMessage(CUPSD_LOG_DEBUG2, "printer-uri-supported=\"%s\"", uri);
   }
 
   if (!ra || cupsArrayFind(ra, "queued-job-count"))
@@ -5773,7 +5750,7 @@ create_subscriptions(
 
         snprintf(notifier, sizeof(notifier), "%s/notifier/%s", ServerBin,
 	         scheme);
-        if (access(notifier, X_OK))
+        if (access(notifier, X_OK) || !strcmp(scheme, ".") || !strcmp(scheme, ".."))
 	{
           send_ipp_status(con, IPP_NOT_POSSIBLE,
 	                  _("notify-recipient-uri URI \"%s\" uses unknown "
@@ -7474,6 +7451,7 @@ get_printers(cupsd_client_t *con,	/* I - Client connection */
   ipp_attribute_t *attr;		/* Current attribute */
   int		limit;			/* Max number of printers to return */
   int		count;			/* Number of printers that match */
+  int		printer_id;		/* Printer we are interested in */
   cupsd_printer_t *printer;		/* Current printer pointer */
   cups_ptype_t	printer_type,		/* printer-type attribute */
 		printer_mask;		/* printer-type-mask attribute */
@@ -7527,6 +7505,17 @@ get_printers(cupsd_client_t *con,	/* I - Client connection */
   * Support filtering...
   */
 
+  if ((attr = ippFindAttribute(con->request, "printer-id", IPP_TAG_INTEGER)) != NULL)
+  {
+    if ((printer_id = ippGetInteger(attr, 0)) <= 0)
+    {
+      send_ipp_status(con, IPP_STATUS_ERROR_ATTRIBUTES_OR_VALUES, _("Bad \"printer-id\" value %d."), printer_id);
+      return;
+    }
+  }
+  else
+    printer_id = 0;
+
   if ((attr = ippFindAttribute(con->request, "printer-type",
                                IPP_TAG_ENUM)) != NULL)
     printer_type = (cups_ptype_t)attr->values[0].integer;
@@ -7574,6 +7563,9 @@ get_printers(cupsd_client_t *con,	/* I - Client connection */
        printer = (cupsd_printer_t *)cupsArrayNext(Printers))
   {
     if (!local && !printer->shared)
+      continue;
+
+    if (printer_id && printer->printer_id != printer_id)
       continue;
 
     if ((!type || (printer->type & CUPS_PRINTER_CLASS) == type) &&

@@ -1,16 +1,11 @@
 /*
  * IPP backend for CUPS.
  *
- * Copyright 2007-2018 by Apple Inc.
- * Copyright 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright © 2007-2018 by Apple Inc.
+ * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * "LICENSE" which should have been included with this file.  If this
- * file is missing or damaged, see the license at "http://www.cups.org/".
- *
- * This file is subject to the Apple OS-Developed Software exception.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+ * information.
  */
 
 /*
@@ -1142,10 +1137,10 @@ main(int  argc,				/* I - Number of command-line args */
 
     if ((cups_version = ippFindAttribute(supported, "cups-version", IPP_TAG_TEXT)) != NULL)
     {
-      const char *version = ippGetString(cups_version, 0, NULL);
+      const char *val = ippGetString(cups_version, 0, NULL);
 
-      fprintf(stderr, "DEBUG: cups-version = \"%s\"\n", version);
-      if (!strcmp(version, "cups-version"))
+      fprintf(stderr, "DEBUG: cups-version = \"%s\"\n", val);
+      if (!strcmp(val, "cups-version"))
         cups_version = NULL;		/* Bogus cups-version value returned by buggy printers! */
     }
 
@@ -1496,6 +1491,30 @@ main(int  argc,				/* I - Number of command-line args */
       num_options = cupsAddOption("job-authorization-uri",
                                   ippGetString(job_auth, 0, NULL), num_options,
                                   &options);
+
+    if (ipp_status == IPP_STATUS_OK_IGNORED_OR_SUBSTITUTED || ipp_status == IPP_STATUS_OK_CONFLICTING)
+    {
+     /*
+      * One or more options are not supported...
+      */
+
+      ipp_attribute_t	*attr;		/* Unsupported attribute */
+
+      if ((attr = ippFindAttribute(response, "sides", IPP_TAG_ZERO)) != NULL)
+      {
+       /*
+        * The sides value is not supported, revert to one-sided as needed...
+        */
+
+        const char *sides = cupsGetOption("sides", num_options, options);
+
+        if (!strncmp(sides, "two-sided-", 10))
+        {
+          fputs("DEBUG: Unable to do two-sided printing, setting sides to 'one-sided'.\n", stderr);
+          num_options = cupsAddOption("sides", "one-sided", num_options, &options);
+        }
+      }
+    }
 
     ippDelete(response);
 

@@ -71,16 +71,13 @@ The following options are recognized when configuring a printer queue:
 <dt><b>-c </b><i>class</i>
 <dd style="margin-left: 5.0em">Adds the named <i>printer</i> to <i>class</i>.
 If <i>class</i> does not exist it is created automatically.
-<dt><b>-i </b><i>ppd-file</i>
-<dd style="margin-left: 5.0em"><dt><b>-P </b><i>ppd-file</i>
-<dd style="margin-left: 5.0em">Specifies a PostScript Printer Description (PPD) file to use with the printer.
 <dt><b>-m </b><i>model</i>
 <dd style="margin-left: 5.0em">Sets a standard PPD file for the printer from the <i>model</i> directory or using one of the driver interfaces.
 Use the <i>-m</i> option with the
 <a href="man-lpinfo.html?TOPIC=Man+Pages"><b>lpinfo</b>(8)</a>
 command to get a list of supported models.
 The model "raw" clears any existing PPD file and the model "everywhere" queries the printer referred to by the specified IPP <i>device-uri</i>.
-Note: The "raw" model is deprecated and will not be supported in a future version of CUPS.
+Note: Models other than "everywhere" are deprecated and will not be supported in a future version of CUPS.
 <dt><b>-o cupsIPPSupplies=true</b>
 <dd style="margin-left: 5.0em"><dt><b>-o cupsIPPSupplies=false</b>
 <dd style="margin-left: 5.0em">Specifies whether IPP supply level values should be reported.
@@ -112,8 +109,8 @@ Any print-time option can be defaulted, e.g., "-o number-up-default=2" to set th
 The default program is "none".
 The specified port monitor must be listed in the printer's PPD file.
 <dt><b>-o printer-error-policy=</b><i>name</i>
-<dd style="margin-left: 5.0em">Sets the error policy to be used when the printer backend is unable to send the job to the printer.
-The name must be one of "abort-job", "retry-job", "retry-current-job", or "stop-printer".
+<dd style="margin-left: 5.0em">Sets the policy for errors such as printers that cannot be found or accessed, don't support the format being printed, fail during submission of the print data, or cause one or more filters to crash.
+The name must be one of "abort-job" (abort the job on error), "retry-job" (retry the job at a future time), "retry-current-job" (retry the current job immediately), or "stop-printer" (stop the printer on error).
 The default error policy is "stop-printer" for printers and "retry-current-job" for
 classes.
 <dt><b>-o printer-is-shared=true</b>
@@ -155,14 +152,29 @@ programs on the destination.
 <dt><b>-L "</b><i>location</i><b>"</b>
 <dd style="margin-left: 5.0em">Provides a textual location of the destination.
 </dl>
+<h2 class="title"><a name="DEPRECATED_OPTIONS">Deprecated Options</a></h2>
+The following <b>lpadmin</b> options are deprecated:
+<dl class="man">
+<dt><b>-i </b><i>filename</i>
+<dd style="margin-left: 5.0em">This option historically has been used to provide either a System V interface script or (as an implementation side-effect) a PPD file.
+Note: Interface scripts are not supported by CUPS.
+PPD files and printer drivers are deprecated and will not be supported in a future version of CUPS.
+<dt><b>-P </b><i>ppd-file</i>
+<dd style="margin-left: 5.0em">Specifies a PostScript Printer Description (PPD) file to use with the printer.
+Note: PPD files and printer drivers are deprecated and will not be supported in a future version of CUPS.
+</dl>
 <h2 class="title"><a name="CONFORMING_TO">Conforming To</a></h2>
 Unlike the System V printing system, CUPS allows printer names to contain any printable character except SPACE, TAB, "/", or "#".
 Also, printer and class names are <i>not</i> case-sensitive.
-Finally, the CUPS version of <b>lpadmin</b> may ask the user for an access password depending on the printing system configuration.
+<p>Finally, the CUPS version of <b>lpadmin</b> may ask the user for an access password depending on the printing system configuration.
 This differs from the System V version which requires the root user to execute this command.
 <h2 class="title"><a name="NOTES">Notes</a></h2>
 The CUPS version of <b>lpadmin</b> does not support all of the System V or Solaris printing system configuration options.
+<p>Interface scripts are not supported for security reasons.
 <p>The double meaning of the <b>-E</b> option is an unfortunate historical oddity.
+<p>The <b>lpadmin</b> command communicates with the scheduler (<b>cupsd</b>) to make changes to the printing system configuration.
+This configuration information is stored in several files including <i>printers.conf</i> and <i>classes.conf</i>.
+These files should not be edited directly and are an implementation detail of CUPS that is subject to change at any time.
 <h2 class="title"><a name="EXAMPLE">Example</a></h2>
 Create an IPP Everywhere print queue:
 <pre class="man">

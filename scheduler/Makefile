@@ -1,14 +1,11 @@
 #
 # Scheduler Makefile for CUPS.
 #
-# Copyright 2007-2018 by Apple Inc.
-# Copyright 1997-2007 by Easy Software Products, all rights reserved.
+# Copyright © 2007-2018 by Apple Inc.
+# Copyright © 1997-2007 by Easy Software Products, all rights reserved.
 #
-# These coded instructions, statements, and computer programs are the
-# property of Apple Inc. and are protected by Federal copyright
-# law.  Distribution and use rights are outlined in the file "LICENSE.txt"
-# which should have been included with this file.  If this file is
-# missing or damaged, see the license at "http://www.cups.org/".
+# Licensed under Apache License v2.0.  See the file "LICENSE" for more
+# information.
 #
 
 include ../Makedefs
@@ -93,7 +90,7 @@ all:		$(TARGETS)
 # Make library targets...
 #
 
-libs:		$(LIBTARGETS)
+libs:
 
 
 #
@@ -118,7 +115,7 @@ clean:
 
 depend:
 	$(CC) -MM $(ALL_CFLAGS) $(COBJS:.o=.c) >Dependencies
-	$(CXX) -MM $(ALL_CXXFLAGS) $(LD_CXXOBJS:.o=.cxx) >>Dependencies
+	$(CXX) -MM $(ALL_CXXFLAGS) $(CXXOBJS:.o=.cxx) >>Dependencies
 
 
 #
@@ -340,9 +337,9 @@ cupsd-static:	$(CUPSDOBJS) libcupsmime.a ../cups/$(LIBCUPSSTATIC)
 cupsfilter:	cupsfilter.o libcupsmime.a ../cups/$(LIBCUPS)
 	echo Linking $@...
 	$(LD_CC) $(LDFLAGS) -o cupsfilter cupsfilter.o libcupsmime.a $(LIBS)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 	$(RM) convert
 	$(LN) cupsfilter convert
-	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 cupsfilter-static:	cupsfilter.o libcupsmime.a ../cups/$(LIBCUPSSTATIC)
 	echo Linking $@...
@@ -412,7 +409,6 @@ testlpd:	testlpd.o ../cups/$(LIBCUPSSTATIC) cups-lpd
 	echo Linking $@...
 	$(LD_CC) $(LDFLAGS) -o testlpd testlpd.o ../cups/$(LIBCUPSSTATIC) \
 		$(COMMONLIBS) $(LIBZ) $(SSLLIBS) $(DNSSDLIBS) $(LIBGSSAPI)
-	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
 #
