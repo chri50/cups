@@ -1,7 +1,7 @@
 #
-# API library Makefile for CUPS.
+# Library Makefile for CUPS.
 #
-# Copyright 2007-2016 by Apple Inc.
+# Copyright 2007-2017 by Apple Inc.
 # Copyright 1997-2006 by Easy Software Products, all rights reserved.
 #
 # These coded instructions, statements, and computer programs are the
@@ -517,8 +517,20 @@ testlang:	testlang.o $(LIBCUPSSTATIC)
 	echo Linking $@...
 	$(LD_CC) $(ARCHFLAGS) $(LDFLAGS) -o $@ testlang.o $(LIBCUPSSTATIC) \
 		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	echo Creating locale directory structure...
+	$(RM) -r locale
+	$(MKDIR) locale/en
+	echo 'msgid "No"' > locale/en/cups_en.po
+	echo 'msgstr "No"' >> locale/en/cups_en.po
+	echo 'msgid "Yes"' >> locale/en/cups_en.po
+	echo 'msgstr "Yes"' >> locale/en/cups_en.po
+	for po in ../locale/cups_*.po; do \
+		lang=`basename $$po .po | sed -e '1,$$s/^cups_//'`; \
+		$(MKDIR) locale/$$lang; \
+		$(LN) ../../$$po locale/$$lang; \
+	done
 	echo Running language API tests...
-	./testlang
+	LOCALEDIR=locale ./testlang
 
 
 #
