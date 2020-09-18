@@ -1,6 +1,4 @@
 //
-// "$Id: genstrings.cxx 11800 2014-04-08 19:53:57Z msweet $"
-//
 // GNU gettext message generator for the CUPS PPD Compiler.
 //
 // This program is used to generate a dummy source file containing all of
@@ -201,8 +199,3 @@ write_cstring(const char *s)		/* I - String to write */
   }
   puts("\");");
 }
-
-
-//
-// End of "$Id: genstrings.cxx 11800 2014-04-08 19:53:57Z msweet $".
-//

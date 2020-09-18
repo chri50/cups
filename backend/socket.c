@@ -1,6 +1,4 @@
 /*
- * "$Id: socket.c 11907 2014-06-09 18:35:32Z msweet $"
- *
  * AppSocket backend for CUPS.
  *
  * Copyright 2007-2014 by Apple Inc.
@@ -514,8 +512,3 @@ wait_bc(int device_fd,			/* I - Socket */
   else
     return (-1);
 }
-
-
-/*
- * End of "$Id: socket.c 11907 2014-06-09 18:35:32Z msweet $".
- */

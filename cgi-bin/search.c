@@ -1,6 +1,4 @@
 /*
- * "$Id: search.c 11558 2014-02-06 18:33:34Z msweet $"
- *
  * Search routines for CUPS.
  *
  * Copyright 2007-2014 by Apple Inc.
@@ -368,8 +366,3 @@ cgiFreeSearch(void *search)		/* I - Search context */
 {
   regfree((regex_t *)search);
 }
-
-
-/*
- * End of "$Id: search.c 11558 2014-02-06 18:33:34Z msweet $".
- */

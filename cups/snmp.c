@@ -1,6 +1,4 @@
 /*
- * "$Id: snmp.c 11594 2014-02-14 20:09:01Z msweet $"
- *
  * SNMP functions for CUPS.
  *
  * Copyright 2007-2014 by Apple Inc.
@@ -1674,8 +1672,3 @@ snmp_set_error(cups_snmp_t *packet,	/* I - Packet */
 
   packet->error = _cupsLangString(cg->lang_default, message);
 }
-
-
-/*
- * End of "$Id: snmp.c 11594 2014-02-14 20:09:01Z msweet $".
- */

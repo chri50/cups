@@ -1,6 +1,4 @@
 /*
- * "$Id: classes.c 11781 2014-03-28 20:57:22Z msweet $"
- *
  * Printer class routines for the CUPS scheduler.
  *
  * Copyright 2007-2014 by Apple Inc.
@@ -803,8 +801,3 @@ cupsdSaveAllClasses(void)
 
   cupsdCloseCreatedConfFile(fp, filename);
 }
-
-
-/*
- * End of "$Id: classes.c 11781 2014-03-28 20:57:22Z msweet $".
- */

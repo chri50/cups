@@ -1,6 +1,4 @@
 /*
- * "$Id: statbuf.c 11594 2014-02-14 20:09:01Z msweet $"
- *
  * Status buffer routines for the CUPS scheduler.
  *
  * Copyright 2007-2014 by Apple Inc.
@@ -321,8 +319,3 @@ cupsdStatBufUpdate(
 
   return (line);
 }
-
-
-/*
- * End of "$Id: statbuf.c 11594 2014-02-14 20:09:01Z msweet $".
- */

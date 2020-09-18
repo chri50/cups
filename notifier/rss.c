@@ -1,6 +1,4 @@
 /*
- * "$Id: rss.c 12945 2015-10-26 19:46:02Z msweet $"
- *
  * RSS notifier for CUPS.
  *
  * Copyright 2007-2015 by Apple Inc.
@@ -732,8 +730,3 @@ xml_escape(const char *s)		/* I - String to escape */
 
   return (e);
 }
-
-
-/*
- * End of "$Id: rss.c 12945 2015-10-26 19:46:02Z msweet $".
- */

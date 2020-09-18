@@ -1,11 +1,11 @@
 #
-# "$Id: cups.spec.in 12857 2015-08-31 15:00:45Z msweet $"
+# "$Id$"
 #
 # RPM "spec" file for CUPS.
 #
 # Original version by Jason McMullan <jmcc@ontv.com>.
 #
-# Copyright 2007-2015 by Apple Inc.
+# Copyright 2007-2016 by Apple Inc.
 # Copyright 1999-2007 by Easy Software Products, all rights reserved.
 #
 # These coded instructions, statements, and computer programs are the
@@ -45,12 +45,12 @@
 
 Summary: CUPS
 Name: cups
-Version: 2.1.3
-Release: 1
+Version: 2.2b2
+Release: 0
 Epoch: 1
 License: GPL
 Group: System Environment/Daemons
-Source: http://www.cups.org/software/2.1.3/cups-2.1.3-source.tar.bz2
+Source: https://github.com/apple/cups/releases/download/release-2.2b2/cups-2.2b2-source.tar.gz
 Url: http://www.cups.org
 Packager: Anonymous <anonymous@foo.com>
 Vendor: Apple Inc.
@@ -102,7 +102,7 @@ Requires: %{name} = %{epoch}:%{version} xinetd
 
 %description
 CUPS is the standards-based, open source printing system developed by
-Apple Inc. for OS X and other UNIX®-like operating systems.
+Apple Inc. for macOS® and other UNIX®-like operating systems.
 
 %description devel
 This package provides the CUPS headers and development environment.
@@ -168,7 +168,6 @@ rm -rf $RPM_BUILD_ROOT
 /etc/cups/cups-files.conf.default
 /etc/cups/cupsd.conf.default
 /etc/cups/snmp.conf.default
-%dir /etc/cups/interfaces
 %dir /etc/cups/ppd
 %attr(0700,root,root) %dir /etc/cups/ssl
 
@@ -402,5 +401,5 @@ rm -rf $RPM_BUILD_ROOT
 
 
 #
-# End of "$Id: cups.spec.in 12857 2015-08-31 15:00:45Z msweet $".
+# End of "$Id$".
 #

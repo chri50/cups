@@ -1,6 +1,4 @@
 /*
- * "$Id: runloop.c 11558 2014-02-06 18:33:34Z msweet $"
- *
  * Common run loop APIs for CUPS backends.
  *
  * Copyright 2007-2014 by Apple Inc.
@@ -525,8 +523,3 @@ backendWaitLoop(
 
   return (1);
 }
-
-
-/*
- * End of "$Id: runloop.c 11558 2014-02-06 18:33:34Z msweet $".
- */

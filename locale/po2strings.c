@@ -1,6 +1,4 @@
 /*
- * "$Id: po2strings.c 12794 2015-07-20 18:26:20Z msweet $"
- *
  * Convert a GNU gettext .po file to an Apple .strings file.
  *
  * Copyright 2007-2015 by Apple Inc.
@@ -361,8 +359,3 @@ normalize_string(const char *idstr,	/* I - msgid string */
 
   return (buffer);
 }
-
-
-/*
- * End of "$Id: po2strings.c 12794 2015-07-20 18:26:20Z msweet $".
- */

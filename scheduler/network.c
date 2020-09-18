@@ -1,6 +1,4 @@
 /*
- * "$Id: network.c 11497 2014-01-06 21:59:35Z msweet $"
- *
  * Network interface functions for the CUPS scheduler.
  *
  * Copyright 2007-2014 by Apple Inc.
@@ -295,8 +293,3 @@ compare_netif(cupsd_netif_t *a,		/* I - First network interface */
 {
   return (strcmp(a->name, b->name));
 }
-
-
-/*
- * End of "$Id: network.c 11497 2014-01-06 21:59:35Z msweet $".
- */

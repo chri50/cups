@@ -1,6 +1,4 @@
 /*
- * "$Id: usb-unix.c 12124 2014-08-28 15:37:22Z msweet $"
- *
  * USB port backend for CUPS.
  *
  * This file is included from "usb.c" when compiled on UNIX/Linux.
@@ -600,8 +598,3 @@ side_cb(int         print_fd,		/* I - Print file */
 
   return (cupsSideChannelWrite(command, status, data, datalen, 1.0));
 }
-
-
-/*
- * End of "$Id: usb-unix.c 12124 2014-08-28 15:37:22Z msweet $".
- */

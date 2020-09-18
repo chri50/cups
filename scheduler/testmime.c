@@ -1,6 +1,4 @@
 /*
- * "$Id: testmime.c 11558 2014-02-06 18:33:34Z msweet $"
- *
  * MIME test program for CUPS.
  *
  * Copyright 2007-2014 by Apple Inc.
@@ -516,8 +514,3 @@ type_dir(mime_t     *mime,		/* I - MIME database */
 
   cupsDirClose(dir);
 }
-
-
-/*
- * End of "$Id: testmime.c 11558 2014-02-06 18:33:34Z msweet $".
- */

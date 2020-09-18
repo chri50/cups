@@ -1,6 +1,4 @@
 /*
- * "$Id: testspeed.c 11558 2014-02-06 18:33:34Z msweet $"
- *
  * Scheduler speed test for CUPS.
  *
  * Copyright 2007-2014 by Apple Inc.
@@ -372,9 +370,3 @@ usage(void)
        "[-E] hostname[:port]");
   exit(0);
 }
-
-
-
-/*
- * End of "$Id: testspeed.c 11558 2014-02-06 18:33:34Z msweet $".
- */

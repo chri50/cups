@@ -1,6 +1,4 @@
 #
-# "$Id: Makefile 11928 2014-06-13 00:08:32Z msweet $"
-#
 # Template makefile for CUPS.
 #
 # Copyright 2007-2014 by Apple Inc.
@@ -197,8 +195,3 @@ uninstall-languages:
 	done
 
 uninstall-langbundle:
-
-
-#
-# End of "$Id: Makefile 11928 2014-06-13 00:08:32Z msweet $".
-#

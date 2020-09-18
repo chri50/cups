@@ -1,6 +1,4 @@
 /*
- * "$Id: rastertohp.c 12945 2015-10-26 19:46:02Z msweet $"
- *
  * Hewlett-Packard Page Control Language filter for CUPS.
  *
  * Copyright 2007-2015 by Apple Inc.
@@ -844,8 +842,3 @@ main(int  argc,				/* I - Number of command-line arguments */
   else
     return (0);
 }
-
-
-/*
- * End of "$Id: rastertohp.c 12945 2015-10-26 19:46:02Z msweet $".
- */

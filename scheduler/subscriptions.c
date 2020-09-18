@@ -1,6 +1,4 @@
 /*
- * "$Id: subscriptions.c 13040 2016-01-11 20:29:13Z msweet $"
- *
  * Subscription routines for the CUPS scheduler.
  *
  * Copyright 2007-2014 by Apple Inc.
@@ -1614,8 +1612,3 @@ cupsd_update_notifier(void)
       break;
   }
 }
-
-
-/*
- * End of "$Id: subscriptions.c 13040 2016-01-11 20:29:13Z msweet $".
- */

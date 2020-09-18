@@ -1,6 +1,4 @@
 /*
- * "$Id: auth.h 11776 2014-03-28 19:16:05Z msweet $"
- *
  * Authorization definitions for the CUPS scheduler.
  *
  * Copyright 2007-2014 by Apple Inc.
@@ -140,8 +138,3 @@ extern cupsd_location_t	*cupsdFindLocation(const char *location);
 extern void		cupsdFreeLocation(cupsd_location_t *loc);
 extern http_status_t	cupsdIsAuthorized(cupsd_client_t *con, const char *owner);
 extern cupsd_location_t	*cupsdNewLocation(const char *location);
-
-
-/*
- * End of "$Id: auth.h 11776 2014-03-28 19:16:05Z msweet $".
- */
