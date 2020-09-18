@@ -3,10 +3,15 @@
  * commands such as IPP and Bonjour conformance tests.  This tool is
  * inspired by the UNIX "find" command, thus its name.
  *
- * Copyright © 2008-2018 by Apple Inc.
+ * Copyright 2008-2015 by Apple Inc.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more
- * information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
+ *
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
@@ -1194,7 +1199,12 @@ main(int  argc,				/* I - Number of command-line args */
 			*domain;	/* Domain, if any */
 
     strlcpy(buf, search, sizeof(buf));
-    if ((regtype = strstr(buf, "._")) != NULL)
+
+    if (!strncmp(buf, "_http._", 7) || !strncmp(buf, "_https._", 8) || !strncmp(buf, "_ipp._", 6) || !strncmp(buf, "_ipps._", 7))
+    {
+      regtype = buf;
+    }
+    else if ((regtype = strstr(buf, "._")) != NULL)
     {
       if (strcmp(regtype, "._tcp"))
       {
@@ -1249,6 +1259,9 @@ main(int  argc,				/* I - Number of command-line args */
 
       service = get_service(services, name, regtype, domain);
 
+      if (getenv("IPPFIND_DEBUG"))
+        fprintf(stderr, "Resolving name=\"%s\", regtype=\"%s\", domain=\"%s\"\n", name, regtype, domain);
+
 #ifdef HAVE_DNSSD
       service->ref = dnssd_ref;
       err          = DNSServiceResolve(&(service->ref),
@@ -1273,6 +1286,9 @@ main(int  argc,				/* I - Number of command-line args */
      /*
       * Browse for services of the given type...
       */
+
+      if (getenv("IPPFIND_DEBUG"))
+        fprintf(stderr, "Browsing for regtype=\"%s\", domain=\"%s\"\n", regtype, domain);
 
 #ifdef HAVE_DNSSD
       DNSServiceRef	ref;		/* Browse reference */

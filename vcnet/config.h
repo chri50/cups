@@ -1,10 +1,14 @@
 /*
  * Configuration file for CUPS on Windows.
  *
- * Copyright 2007-2017 by Apple Inc.
- * Copyright 1997-2007 by Easy Software Products.
+ * Copyright © 2007-2018 by Apple Inc.
+ * Copyright © 1997-2007 by Easy Software Products.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
  */
 
 #ifndef _CUPS_CONFIG_H_
@@ -52,8 +56,8 @@
  * and strnicmp() functions...
  */
 
-#define strcasecmp	stricmp
-#define strncasecmp	strnicmp
+#define strcasecmp	_stricmp
+#define strncasecmp	_strnicmp
 
 
 /*
@@ -90,8 +94,8 @@ typedef unsigned long useconds_t;
  * Version of software...
  */
 
-#define CUPS_SVERSION "CUPS v2.3.0"
-#define CUPS_MINIMAL "CUPS/2.3.0"
+#define CUPS_SVERSION "CUPS v2.2.8"
+#define CUPS_MINIMAL "CUPS/2.2.8"
 
 
 /*
@@ -571,6 +575,20 @@ typedef unsigned long useconds_t;
  */
 
 /* #undef HAVE_UPSTART */
+
+
+/*
+ * Various scripting languages...
+ */
+
+/* #undef HAVE_JAVA */
+#define CUPS_JAVA	""
+/* #undef HAVE_PERL */
+#define CUPS_PERL	""
+/* #undef HAVE_PHP */
+#define CUPS_PHP	""
+/* #undef HAVE_PYTHON */
+#define CUPS_PYTHON	""
 
 
 /*

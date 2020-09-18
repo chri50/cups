@@ -1,10 +1,14 @@
 .\"
 .\" cups-files.conf man page for CUPS.
 .\"
-.\" Copyright 2007-2018 by Apple Inc.
+.\" Copyright 2007-2017 by Apple Inc.
 .\" Copyright 1997-2006 by Easy Software Products.
 .\"
-.\" Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+.\" These coded instructions, statements, and computer programs are the
+.\" property of Apple Inc. and are protected by Federal copyright
+.\" law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+.\" which should have been included with this file.  If this file is
+.\" file is missing or damaged, see the license at "http://www.cups.org/".
 .\"
 .TH cups-files.conf 5 "CUPS" "21 September 2017" "Apple Inc."
 .SH NAME
@@ -153,6 +157,11 @@ The server name may be included in filenames using the string "%s", for example:
 
 .fi
 The default is "/var/log/cups/page_log".
+.\"#PassEnv
+.TP 5
+\fBPassEnv \fIvariable \fR[ ... \fIvariable \fR]
+Passes the specified environment variable(s) to child processes.
+Note: the standard CUPS filter and backend environment variables cannot be overridden using this directive.
 .\"#RemoteRoot
 .TP 5
 \fBRemoteRoot \fIusername\fR
@@ -187,6 +196,11 @@ macOS uses its keychain database to store certificates and keys while other plat
 \fBServerRoot \fIdirectory\fR
 Specifies the directory containing the server configuration files.
 The default is "/etc/cups".
+.\"#SetEnv
+.TP 5
+\fBSetEnv \fIvariable value\fR
+Set the specified environment variable to be passed to child processes.
+Note: the standard CUPS filter and backend environment variables cannot be overridden using this directive.
 .\"#StateDir
 .TP 5
 \fBStateDir \fIdirectory\fR
@@ -270,4 +284,4 @@ Specifies the SMB service configuration file to update.
 .BR subscriptions.conf (5),
 CUPS Online Help (http://localhost:631/help)
 .SH COPYRIGHT
-Copyright \[co] 2007-2018 by Apple Inc.
+Copyright \[co] 2007-2017 by Apple Inc.

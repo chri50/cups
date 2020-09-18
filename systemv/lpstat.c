@@ -4,7 +4,11 @@
  * Copyright 2007-2017 by Apple Inc.
  * Copyright 1997-2006 by Easy Software Products.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -1791,16 +1795,20 @@ show_printers(const char  *printers,	/* I - Destinations */
         switch (pstate)
 	{
 	  case IPP_PRINTER_IDLE :
-	      if (ippContainsString(reasons, "hold-new-jobs"))
-		_cupsLangPrintf(stdout, _("printer %s is holding new jobs.  enabled since %s"), printer, printer_state_time);
-	      else
-		_cupsLangPrintf(stdout, _("printer %s is idle.  enabled since %s"), printer, printer_state_time);
+	      _cupsLangPrintf(stdout,
+	                      _("printer %s is idle.  enabled since %s"),
+			      printer, printer_state_time);
 	      break;
 	  case IPP_PRINTER_PROCESSING :
-	      _cupsLangPrintf(stdout, _("printer %s now printing %s-%d.  enabled since %s"), printer, printer, jobid, printer_state_time);
+	      _cupsLangPrintf(stdout,
+	                      _("printer %s now printing %s-%d.  "
+			        "enabled since %s"),
+	        	      printer, printer, jobid, printer_state_time);
 	      break;
 	  case IPP_PRINTER_STOPPED :
-	      _cupsLangPrintf(stdout, _("printer %s disabled since %s -"), printer, printer_state_time);
+	      _cupsLangPrintf(stdout,
+	                      _("printer %s disabled since %s -"),
+			      printer, printer_state_time);
 	      break;
 	}
 

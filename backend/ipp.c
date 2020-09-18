@@ -1,11 +1,16 @@
 /*
  * IPP backend for CUPS.
  *
- * Copyright © 2007-2018 by Apple Inc.
- * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright 2007-2017 by Apple Inc.
+ * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more
- * information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * "LICENSE" which should have been included with this file.  If this
+ * file is missing or damaged, see the license at "http://www.cups.org/".
+ *
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
@@ -2780,7 +2785,7 @@ new_request(
 	char	phone[1024],		/* Phone number string */
 		*ptr,			/* Pointer into string */
 		tel_uri[1024];		/* tel: URI */
-        static const char * const allowed = "0123456789#*-+.()";
+        static const char * const allowed = "0123456789#*-+.()pw";
 					/* Allowed characters */
 
         destination = ippNew();
@@ -2793,7 +2798,9 @@ new_request(
         _httpDecodeURI(phone, keyword, sizeof(phone));
         for (ptr = phone; *ptr;)
 	{
-	  if (!strchr(allowed, *ptr))
+	  if (*ptr == ',')
+	    *ptr = 'p';
+	  else if (!strchr(allowed, *ptr))
 	    _cups_strcpy(ptr, ptr + 1);
 	  else
 	    ptr ++;

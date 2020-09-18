@@ -4,8 +4,11 @@
 # Copyright © 2007-2018 by Apple Inc.
 # Copyright © 2001-2006 by Easy Software Products. All rights reserved.
 #
-# Licensed under Apache License v2.0.  See the file "LICENSE" for more
-# information.
+# These coded instructions, statements, and computer programs are the
+# property of Apple Inc. and are protected by Federal copyright
+# law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+# which should have been included with this file.  If this file is
+# file is missing or damaged, see the license at "http://www.cups.org/".
 #
 # Usage:
 #
@@ -156,7 +159,7 @@ INCLUDE "ipp-2.0.test"
 	EXPECT pwg-raster-document-resolution-supported WITH-VALUE 150dpi DEFINE-MATCH HAVE_150DPI
 	EXPECT pwg-raster-document-resolution-supported WITH-VALUE 180dpi DEFINE-MATCH HAVE_180DPI
 	EXPECT pwg-raster-document-resolution-supported WITH-VALUE 300dpi DEFINE-MATCH HAVE_300DPI
-	EXPECT pwg-raster-document-resolution-supported WITH-VALUE 3600dpi DEFINE-MATCH HAVE_360DPI
+	EXPECT pwg-raster-document-resolution-supported WITH-VALUE 360dpi DEFINE-MATCH HAVE_360DPI
 	EXPECT pwg-raster-document-resolution-supported WITH-VALUE 600dpi DEFINE-MATCH HAVE_600DPI
 	EXPECT pwg-raster-document-resolution-supported WITH-VALUE 720dpi DEFINE-MATCH HAVE_720DPI
 

@@ -4,7 +4,13 @@
  * Copyright 2007-2015 by Apple Inc.
  * Copyright 1997-2007 by Easy Software Products.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
+ *
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
@@ -115,12 +121,12 @@ main(int  argc,				/* I - Number of command-line arguments */
 #endif /* !WIN32 */
 
    /*
-    * Count lines in test file, rewind, then count again.
+    * Count lines in psglyphs, rewind, then count again.
     */
 
-    fputs("\ncupsFileOpen(\"testfile.txt\", \"r\"): ", stdout);
+    fputs("\ncupsFileOpen(\"../data/media.defs\", \"r\"): ", stdout);
 
-    if ((fp = cupsFileOpen("testfile.txt", "r")) == NULL)
+    if ((fp = cupsFileOpen("../data/media.defs", "r")) == NULL)
     {
       puts("FAIL");
       status ++;
@@ -130,9 +136,9 @@ main(int  argc,				/* I - Number of command-line arguments */
       puts("PASS");
       fputs("cupsFileGets: ", stdout);
 
-      if ((count = count_lines(fp)) != 477)
+      if ((count = count_lines(fp)) != 201)
       {
-        printf("FAIL (got %d lines, expected 477)\n", count);
+        printf("FAIL (got %d lines, expected 201)\n", count);
 	status ++;
       }
       else
@@ -150,9 +156,9 @@ main(int  argc,				/* I - Number of command-line arguments */
 	  puts("PASS");
 	  fputs("cupsFileGets: ", stdout);
 
-	  if ((count = count_lines(fp)) != 477)
+	  if ((count = count_lines(fp)) != 201)
 	  {
-	    printf("FAIL (got %d lines, expected 477)\n", count);
+	    printf("FAIL (got %d lines, expected 201)\n", count);
 	    status ++;
 	  }
 	  else

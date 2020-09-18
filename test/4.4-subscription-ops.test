@@ -1,11 +1,7 @@
 #
-# Verify that the CUPS subscription operations work.
+# "$Id$"
 #
-# Copyright © 2007-2013 by Apple Inc.
-# Copyright © 2001-2006 by Easy Software Products. All rights reserved.
-#
-# Licensed under Apache License v2.0.  See the file "LICENSE" for more
-# information.
+#   Verify that the CUPS subscription operations work.
 #
 {
 	# The name of the test...
@@ -151,3 +147,7 @@
 	EXPECT attributes-charset
 	EXPECT attributes-natural-language
 }
+
+#
+# End of "$Id$"
+#
