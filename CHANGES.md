@@ -1,4 +1,4 @@
-CHANGES - 2.2.5 - 2017-10-02
+CHANGES - 2.2.5 - 2017-10-12
 ============================
 
 CHANGES IN CUPS V2.2.5
@@ -37,6 +37,7 @@ CHANGES IN CUPS V2.2.5
   choosing them for draft, normal, and best quality modes (Issue #5091)
 - Fixed the localization unit test on Linux (Issue #5097)
 - The CUPS library did not reuse domain sockets (Issue #5098)
+- Fixed the "make check" target for some environments (Issue #5099)
 - The scheduler woke up once per second to remove old temporary queues
   (Issue #5100)
 - Added USB quirk rule for Kyocera printer (Issue #5102, Issue #5103)
@@ -44,7 +45,10 @@ CHANGES IN CUPS V2.2.5
   directive in `cups-files.conf` to the list of deprecated configuration
   directives (Issue #5117)
 - Added USB quirk rule for HP LaserJet 1160 printer (Issue #5121)
+- Fixed the script interpreter detection in the configure script (Issue #5122)
 - The network backends now retry on more error conditions (Issue #5123)
+- Added a French translation of the web interface (Issue #5134)
+- `cupsGetDests2` was not using the supplied HTTP connection (Issue #5135)
 - `httpAddrConnect` leaked sockets in certain circumstances, causing some
   printers to hang (rdar://31965686)
 - Fixed an issue with Chinese localizations on macOS (rdar://32419311)
