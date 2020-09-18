@@ -4,13 +4,7 @@
  * Copyright 2007-2017 by Apple Inc.
  * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
- *
- * This file is subject to the Apple OS-Developed Software exception.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
  */
 
 /*
@@ -212,7 +206,7 @@ static const char * const ipp_std_ops[] =
 		  "Add-Document-Images",
 		  "Acknowledge-Document",
 
-		  /* 0x0040 - 0x004a */
+		  /* 0x0040 - 0x004f */
 		  "Acknowledge-Identify-Printer",
 		  "Acknowledge-Job",
 		  "Fetch-Document",
@@ -223,7 +217,37 @@ static const char * const ipp_std_ops[] =
 		  "Update-Document-Status",
 		  "Update-Job-Status",
 		  "Update-Output-Device-Attributes",
-		  "Get-Next-Document-Data"
+		  "Get-Next-Document-Data",
+                  "Allocate-Printer-Resources",
+                  "Create-Printer",
+                  "Deallocate-Printer-Resources",
+                  "Delete-Printer",
+                  "Get-Printers",
+
+                  /* 0x0050 - 0x005f */
+                  "Shutdown-One-Printer",
+                  "Startup-One-Printer",
+                  "Cancel-Resource",
+                  "Create-Resource",
+                  "Install-Resource",
+                  "Send-Resource-Data",
+                  "Set-Resource-Attributes",
+                  "Create-Resource-Subscriptions",
+                  "Create-System-Subscriptions",
+                  "Disable-All-Printers",
+                  "Enable-All-Printers",
+                  "Get-System-Attributes",
+                  "Get-System-Supported-Values",
+                  "Pause-All-Printers",
+                  "Pause-All-Printers-After-Current-Job",
+                  "Register-Output-Device",
+
+                  /* 0x0060 - 0x0064 */
+                  "Restart-System",
+                  "Resume-All-Printers",
+                  "Set-System-Attributes",
+                  "Shutdown-All-Printers",
+                  "Startup-All-Printers"
 		},
 		* const ipp_cups_ops[] =
 		{
@@ -960,9 +984,12 @@ ippCreateRequestedArray(ipp_t *request)	/* I - IPP request */
     "feed-orientation-supported",
     "finishings",
     "finishings-col",
+    "finishings-col-database",
     "finishings-col-default",
+    "finishings-col-ready",
     "finishings-col-supported",
     "finishings-default",
+    "finishings-ready",
     "finishings-supported",
     "font-name-requested",
     "font-name-requested-default",
@@ -1001,6 +1028,7 @@ ippCreateRequestedArray(ipp_t *request)	/* I - IPP request */
     "media-bottom-margin-supported",
     "media-col",
     "media-col-default",
+    "media-col-ready",
     "media-col-supported",
     "media-color-supported",
     "media-default",
@@ -1015,6 +1043,7 @@ ippCreateRequestedArray(ipp_t *request)	/* I - IPP request */
     "media-left-margin-supported",
     "media-order-count-supported",
     "media-pre-printed-supported",
+    "media-ready",
     "media-recycled-supported",
     "media-right-margin-supported",
     "media-size-supported",
@@ -1277,9 +1306,12 @@ ippCreateRequestedArray(ipp_t *request)	/* I - IPP request */
     "feed-orientation-supported",
     "finishings",
     "finishings-col",
+    "finishings-col-database",
     "finishings-col-default",
+    "finishings-col-ready",
     "finishings-col-supported",
     "finishings-default",
+    "finishings-ready",
     "finishings-supported",
     "font-name-requested",
     "font-name-requested-default",
@@ -1383,6 +1415,7 @@ ippCreateRequestedArray(ipp_t *request)	/* I - IPP request */
     "media-bottom-margin-supported",
     "media-col",
     "media-col-default",
+    "media-col-ready",
     "media-col-supported",
     "media-color-supported",
     "media-default",
@@ -1397,6 +1430,7 @@ ippCreateRequestedArray(ipp_t *request)	/* I - IPP request */
     "media-left-margin-supported",
     "media-order-count-supported",
     "media-pre-printed-supported",
+    "media-ready",
     "media-recycled-supported",
     "media-right-margin-supported",
     "media-size-supported",
@@ -1582,10 +1616,12 @@ ippCreateRequestedArray(ipp_t *request)	/* I - IPP request */
     "job-page-limit",			/* CUPS extension */
     "job-password-encryption-supported",
     "job-password-supported",
+    "job-presets-supported",		/* IPP Presets */
     "job-quota-period",			/* CUPS extension */
     "job-resolvers-supported",
     "job-settable-attributes-supported",
     "job-spooling-supported",
+    "job-triggers-supported",		/* IPP Presets */
     "jpeg-k-octets-supported",		/* CUPS extension */
     "jpeg-x-dimension-supported",	/* CUPS extension */
     "jpeg-y-dimension-supported",	/* CUPS extension */
@@ -1599,8 +1635,6 @@ ippCreateRequestedArray(ipp_t *request)	/* I - IPP request */
     "marker-message",			/* CUPS extension */
     "marker-names",			/* CUPS extension */
     "marker-types",			/* CUPS extension */
-    "media-col-ready",
-    "media-ready",
     "member-names",			/* CUPS extension */
     "member-uris",			/* CUPS extension */
     "multiple-destination-uris-supported",/* IPP FaxOut */

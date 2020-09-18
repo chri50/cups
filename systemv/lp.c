@@ -1,14 +1,10 @@
 /*
  * "lp" command for CUPS.
  *
- * Copyright 2007-2016 by Apple Inc.
+ * Copyright 2007-2017 by Apple Inc.
  * Copyright 1997-2007 by Easy Software Products.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
  */
 
 /*
@@ -586,33 +582,10 @@ main(int  argc,				/* I - Number of command-line arguments */
 
   if (printer == NULL)
   {
-    val = NULL;
-
-    if ((printer = getenv("LPDEST")) == NULL)
-    {
-      if ((printer = getenv("PRINTER")) != NULL)
-      {
-        if (!strcmp(printer, "lp"))
-          printer = NULL;
-	else
-	  val = "PRINTER";
-      }
-    }
+    if (!cupsGetNamedDest(NULL, NULL, NULL) && cupsLastError() == IPP_STATUS_ERROR_NOT_FOUND)
+      _cupsLangPrintf(stderr, _("%s: Error - %s"), argv[0], cupsLastErrorString());
     else
-      val = "LPDEST";
-
-    if (printer && !cupsGetNamedDest(NULL, printer, NULL))
-      _cupsLangPrintf(stderr,
-		      _("%s: Error - %s environment variable names "
-		        "non-existent destination \"%s\"."), argv[0], val,
-		      printer);
-    else if (cupsLastError() == IPP_NOT_FOUND)
-      _cupsLangPrintf(stderr,
-		      _("%s: Error - no default destination available."),
-		      argv[0]);
-    else
-      _cupsLangPrintf(stderr, _("%s: Error - scheduler not responding."),
-		      argv[0]);
+      _cupsLangPrintf(stderr, _("%s: Error - scheduler not responding."), argv[0]);
 
     return (1);
   }
