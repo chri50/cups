@@ -2,7 +2,7 @@
 title: CUPS Programming Manual
 author: Michael R Sweet
 copyright: Copyright © 2007-2017 by Apple Inc. All Rights Reserved.
-version: 2.2.4
+version: 2.2.5
 ...
 
 > Please [file issues on Github](https://github.com/apple/cups/issues) to
@@ -925,7 +925,7 @@ their values:
                                  IPP_TAG_ENUM)) != NULL)
     {
       printf("printer-state=%s\n",
-             ippTagString("printer-state", ippGetInteger(attr, 0)));
+             ippEnumString("printer-state", ippGetInteger(attr, 0)));
     }
     else
       puts("printer-state=unknown");
@@ -952,7 +952,7 @@ The `ippGetCount` function returns the number of values in an attribute.
 The `ippGetInteger` and `ippGetString` functions return a single integer or
 string value from an attribute.
 
-The `ippTagString` function converts a enum value to its keyword (string)
+The `ippEnumString` function converts a enum value to its keyword (string)
 equivalent.
 
 Once you are done using the IPP response message, free it using the `ippDelete`
