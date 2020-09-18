@@ -4,7 +4,13 @@
  * Copyright © 2007-2018 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
+ *
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /**** This file is included from tls.c ****/
@@ -800,85 +806,24 @@ httpCredentialsString(
   if ((first = (http_credential_t *)cupsArrayFirst(credentials)) != NULL &&
       (secCert = http_cdsa_create_credential(first)) != NULL)
   {
-   /*
-    * Copy certificate (string) values from the SecCertificateRef and produce
-    * a one-line summary.  The API for accessing certificate values like the
-    * issuer name is, um, "interesting"...
-    */
-
-    CFStringRef		cf_string;	/* CF string */
-    CFDictionaryRef	cf_dict;	/* Dictionary for certificate */
-    char		commonName[256],/* Common name associated with cert */
-			issuer[256],	/* Issuer name */
-			sigalg[256];	/* Signature algorithm */
+    CFStringRef		cf_name;	/* CF common name string */
+    char		name[256];	/* Common name associated with cert */
     time_t		expiration;	/* Expiration date of cert */
     unsigned char	md5_digest[16];	/* MD5 result */
 
-    if (SecCertificateCopyCommonName(secCert, &cf_string) == noErr)
+    if ((cf_name = SecCertificateCopySubjectSummary(secCert)) != NULL)
     {
-      CFStringGetCString(cf_string, commonName, (CFIndex)sizeof(commonName), kCFStringEncodingUTF8);
-      CFRelease(cf_string);
+      CFStringGetCString(cf_name, name, (CFIndex)sizeof(name), kCFStringEncodingUTF8);
+      CFRelease(cf_name);
     }
     else
-    {
-      strlcpy(commonName, "unknown", sizeof(commonName));
-    }
-
-    strlcpy(issuer, "unknown", sizeof(issuer));
-    strlcpy(sigalg, "UnknownSignature", sizeof(sigalg));
-
-    if ((cf_dict = SecCertificateCopyValues(secCert, NULL, NULL)) != NULL)
-    {
-      CFDictionaryRef cf_issuer = CFDictionaryGetValue(cf_dict, kSecOIDX509V1IssuerName);
-      CFDictionaryRef cf_sigalg = CFDictionaryGetValue(cf_dict, kSecOIDX509V1SignatureAlgorithm);
-
-      if (cf_issuer)
-      {
-        CFArrayRef cf_values = CFDictionaryGetValue(cf_issuer, kSecPropertyKeyValue);
-        CFIndex i, count = CFArrayGetCount(cf_values);
-        CFDictionaryRef cf_value;
-
-        for (i = 0; i < count; i ++)
-        {
-          cf_value = CFArrayGetValueAtIndex(cf_values, i);
-
-          if (!CFStringCompare(CFDictionaryGetValue(cf_value, kSecPropertyKeyLabel), kSecOIDOrganizationName, kCFCompareCaseInsensitive))
-            CFStringGetCString(CFDictionaryGetValue(cf_value, kSecPropertyKeyValue), issuer, (CFIndex)sizeof(issuer), kCFStringEncodingUTF8);
-        }
-      }
-
-      if (cf_sigalg)
-      {
-        CFArrayRef cf_values = CFDictionaryGetValue(cf_sigalg, kSecPropertyKeyValue);
-        CFIndex i, count = CFArrayGetCount(cf_values);
-        CFDictionaryRef cf_value;
-
-        for (i = 0; i < count; i ++)
-        {
-          cf_value = CFArrayGetValueAtIndex(cf_values, i);
-
-          if (!CFStringCompare(CFDictionaryGetValue(cf_value, kSecPropertyKeyLabel), CFSTR("Algorithm"), kCFCompareCaseInsensitive))
-          {
-            CFStringRef cf_algorithm = CFDictionaryGetValue(cf_value, kSecPropertyKeyValue);
-
-            if (!CFStringCompare(cf_algorithm, CFSTR("1.2.840.113549.1.1.5"), kCFCompareCaseInsensitive))
-              strlcpy(sigalg, "SHA1WithRSAEncryption", sizeof(sigalg));
-	    else if (!CFStringCompare(cf_algorithm, CFSTR("1.2.840.113549.1.1.11"), kCFCompareCaseInsensitive))
-              strlcpy(sigalg, "SHA256WithRSAEncryption", sizeof(sigalg));
-	    else if (!CFStringCompare(cf_algorithm, CFSTR("1.2.840.113549.1.1.4"), kCFCompareCaseInsensitive))
-              strlcpy(sigalg, "MD5WithRSAEncryption", sizeof(sigalg));
-	  }
-        }
-      }
-
-      CFRelease(cf_dict);
-    }
+      strlcpy(name, "unknown", sizeof(name));
 
     expiration = (time_t)(SecCertificateNotValidAfter(secCert) + kCFAbsoluteTimeIntervalSince1970);
 
     cupsHashData("md5", first->data, first->datalen, md5_digest, sizeof(md5_digest));
 
-    snprintf(buffer, bufsize, "%s (issued by %s) / %s / %s / %02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X", commonName, issuer, httpGetDateString(expiration), sigalg, md5_digest[0], md5_digest[1], md5_digest[2], md5_digest[3], md5_digest[4], md5_digest[5], md5_digest[6], md5_digest[7], md5_digest[8], md5_digest[9], md5_digest[10], md5_digest[11], md5_digest[12], md5_digest[13], md5_digest[14], md5_digest[15]);
+    snprintf(buffer, bufsize, "%s / %s / %02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X", name, httpGetDateString(expiration), md5_digest[0], md5_digest[1], md5_digest[2], md5_digest[3], md5_digest[4], md5_digest[5], md5_digest[6], md5_digest[7], md5_digest[8], md5_digest[9], md5_digest[10], md5_digest[11], md5_digest[12], md5_digest[13], md5_digest[14], md5_digest[15]);
 
     CFRelease(secCert);
   }
@@ -1485,7 +1430,7 @@ _httpTLSStart(http_t *http)		/* I - HTTP connection */
     * Server: find/create a certificate for TLS...
     */
 
-    if (http->fields[HTTP_FIELD_HOST])
+    if (http->fields[HTTP_FIELD_HOST][0])
     {
      /*
       * Use hostname for TLS upgrade...
@@ -1952,7 +1897,9 @@ http_cdsa_copy_server(
   DEBUG_printf(("4http_cdsa_copy_server: Returning %p.", (void *)certificates));
 
   return (certificates);
+
 #else
+  (void)common_name;
 
   if (!tls_selfsigned)
     return (NULL);

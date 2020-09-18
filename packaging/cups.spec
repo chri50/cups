@@ -3,11 +3,14 @@
 #
 # Original version by Jason McMullan <jmcc@ontv.com>.
 #
-# Copyright © 2007-2018 by Apple Inc.
-# Copyright © 1999-2007 by Easy Software Products, all rights reserved.
+# Copyright 2007-2017 by Apple Inc.
+# Copyright 1999-2007 by Easy Software Products, all rights reserved.
 #
-# Licensed under Apache License v2.0.  See the file "LICENSE" for more
-# information.
+# These coded instructions, statements, and computer programs are the
+# property of Apple Inc. and are protected by Federal copyright
+# law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+# which should have been included with this file.  If this file is
+# file is missing or damaged, see the license at "http://www.cups.org/".
 #
 
 # Conditional build options (--with name/--without name):
@@ -40,12 +43,12 @@
 
 Summary: CUPS
 Name: cups
-Version: 2.3b5
+Version: 2.2.8
 Release: 0
 Epoch: 1
 License: GPL
 Group: System Environment/Daemons
-Source: https://github.com/apple/cups/releases/download/v2.3b5/cups-2.3b5-source.tar.gz
+Source: https://github.com/apple/cups/releases/download/v2.2.8/cups-2.2.8-source.tar.gz
 Url: http://www.cups.org
 Packager: Anonymous <anonymous@example.com>
 Vendor: Example Corp
@@ -271,10 +274,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/doc/cups/*.*
 %dir /usr/share/doc/cups/help
 /usr/share/doc/cups/help/accounting.html
-/usr/share/doc/cups/help/admin.html
 /usr/share/doc/cups/help/cgi.html
 /usr/share/doc/cups/help/encryption.html
-/usr/share/doc/cups/help/firewalls.html
 /usr/share/doc/cups/help/glossary.html
 /usr/share/doc/cups/help/kerberos.html
 /usr/share/doc/cups/help/license.html
@@ -313,8 +314,6 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/locale/cs/cups_cs.po
 %dir /usr/share/locale/de
 /usr/share/locale/de/cups_de.po
-%dir /usr/share/locale/en
-/usr/share/locale/en/cups_en.po
 %dir /usr/share/locale/es
 /usr/share/locale/es/cups_es.po
 %dir /usr/share/locale/fr

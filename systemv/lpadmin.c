@@ -4,13 +4,19 @@
  * Copyright © 2007-2018 by Apple Inc.
  * Copyright © 1997-2006 by Easy Software Products.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
  * Include necessary headers...
  */
 
+#define _CUPS_NO_DEPRECATED
+#define _PPD_DEPRECATED
 #include <cups/cups-private.h>
 #include <cups/ppd-private.h>
 
@@ -619,10 +625,6 @@ main(int  argc,				/* I - Number of command-line arguments */
       return (1);
 
     num_options = cupsRemoveOption("ppd-name", num_options, &options);
-  }
-  else if (ppd_name || file)
-  {
-    _cupsLangPuts(stderr, _("lpadmin: Printer drivers are deprecated and will stop working in a future version of CUPS."));
   }
 
   if (num_options || file)
