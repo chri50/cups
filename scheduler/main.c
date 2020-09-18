@@ -129,7 +129,7 @@ main(int  argc,				/* I - Number of command-line args */
   time_t		netif_time = 0;	/* Time since last network update */
 #endif /* __APPLE__ */
 #if defined(HAVE_ONDEMAND)
-  int			service_idle_exit;
+  int			service_idle_exit = 0;
 					/* Idle exit on select timeout? */
 #endif /* HAVE_ONDEMAND */
 
@@ -155,7 +155,7 @@ main(int  argc,				/* I - Number of command-line args */
   for (i = 1; i < argc; i ++)
   {
     if (!strcmp(argv[i], "--help"))
-      usage();
+      usage(0);
     else if (argv[i][0] == '-')
     {
       for (opt = argv[i] + 1; *opt != '\0'; opt ++)

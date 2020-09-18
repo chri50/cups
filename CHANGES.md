@@ -1,5 +1,13 @@
-CHANGES - 2.3b6 - 2018-12-07
+CHANGES - 2.3b6 - 2018-12-14
 ============================
+
+Changes in CUPS v2.3b7
+----------------------
+
+- Fixed some build failures (Issue #5451, Issue #5463)
+- Running ppdmerge with the same input and output filenames did not work as
+  advertised (Issue #5455)
+
 
 Changes in CUPS v2.3b6
 ----------------------
