@@ -5,9 +5,7 @@ function reset_config()
 }
 </SCRIPT>
 
-<DIV CLASS="indent">
-
-<H2 CLASS="title">設定ファイルの設定</H2>
+<H2 CLASS="title">設定ファイルの編集</H2>
 
 <FORM NAME="cups" METHOD="POST" ACTION="/admin/">
 <INPUT TYPE="HIDDEN" NAME="org.cups.sid" VALUE="{$org.cups.sid}">
@@ -15,10 +13,8 @@ function reset_config()
 
 <TEXTAREA NAME="CUPSDCONF" COLS="80" ROWS="25">{CUPSDCONF}</TEXTAREA>
 
-<P><INPUT TYPE="SUBMIT" NAME="SAVECHANGES" VALUE="設定の保存">
+<P><INPUT TYPE="SUBMIT" NAME="SAVECHANGES" VALUE="変更の保存">
 <INPUT TYPE="BUTTON" VALUE="デフォルトの設定ファイルを使用"
 onClick="reset_config();"></P>
 
 </FORM>
-
-</DIV>

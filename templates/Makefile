@@ -1,16 +1,16 @@
 #
-# "$Id: Makefile 8841 2009-10-07 16:24:25Z mike $"
+# "$Id: Makefile 11928 2014-06-13 00:08:32Z msweet $"
 #
-#   Template makefile for the Common UNIX Printing System (CUPS).
+# Template makefile for CUPS.
 #
-#   Copyright 2007-2009 by Apple Inc.
-#   Copyright 1993-2007 by Easy Software Products.
+# Copyright 2007-2014 by Apple Inc.
+# Copyright 1993-2007 by Easy Software Products.
 #
-#   These coded instructions, statements, and computer programs are the
-#   property of Apple Inc. and are protected by Federal copyright
-#   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
-#   which should have been included with this file.  If this file is
-#   file is missing or damaged, see the license at "http://www.cups.org/".
+# These coded instructions, statements, and computer programs are the
+# property of Apple Inc. and are protected by Federal copyright
+# law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+# which should have been included with this file.  If this file is
+# file is missing or damaged, see the license at "http://www.cups.org/".
 #
 
 include ../Makedefs
@@ -67,13 +67,13 @@ FILES	=	\
 		printer.tmpl \
 		printer-accept.tmpl \
 		printer-added.tmpl \
+		printer-cancel-jobs.tmpl \
 		printer-configured.tmpl \
 		printer-confirm.tmpl \
 		printer-default.tmpl \
 		printer-deleted.tmpl \
 		printer-jobs-header.tmpl \
 		printer-modified.tmpl \
-		printer-purge.tmpl \
 		printer-reject.tmpl \
 		printer-start.tmpl \
 		printer-stop.tmpl \
@@ -154,6 +154,7 @@ install-languages:
 		fi \
 	done
 
+install-langbundle:
 
 
 #
@@ -195,7 +196,9 @@ uninstall-languages:
 		$(RMDIR) $(DATADIR)/templates/$$lang; \
 	done
 
+uninstall-langbundle:
+
 
 #
-# End of "$Id: Makefile 8841 2009-10-07 16:24:25Z mike $".
+# End of "$Id: Makefile 11928 2014-06-13 00:08:32Z msweet $".
 #

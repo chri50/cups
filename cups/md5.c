@@ -1,32 +1,31 @@
 /*
-  Copyright 2005 by Easy Software Products
-
-  This source file implements private APIs and should not be used in
-  CUPS-based applications.
-
-  Copyright (C) 1999 Aladdin Enterprises.  All rights reserved.
-
-  This software is provided 'as-is', without any express or implied
-  warranty.  In no event will the authors be held liable for any damages
-  arising from the use of this software.
-
-  Permission is granted to anyone to use this software for any purpose,
-  including commercial applications, and to alter it and redistribute it
-  freely, subject to the following restrictions:
-
-  1. The origin of this software must not be misrepresented; you must not
-     claim that you wrote the original software. If you use this software
-     in a product, an acknowledgment in the product documentation would be
-     appreciated but is not required.
-  2. Altered source versions must be plainly marked as such, and must not be
-     misrepresented as being the original software.
-  3. This notice may not be removed or altered from any source distribution.
-
-  L. Peter Deutsch
-  ghost@aladdin.com
-
+ * "$Id: md5.c 12124 2014-08-28 15:37:22Z msweet $"
+ *
+ * Private MD5 implementation for CUPS.
+ *
+ * Copyright 2007-2014 by Apple Inc.
+ * Copyright 2005 by Easy Software Products
+ * Copyright (C) 1999 Aladdin Enterprises.  All rights reserved.
+ *
+ * This software is provided 'as-is', without any express or implied
+ * warranty.  In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ *
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ *
+ * 1. The origin of this software must not be misrepresented; you must not
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would be
+ *    appreciated but is not required.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ *    misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ *
+ * L. Peter Deutsch
+ * ghost@aladdin.com
  */
-/*$Id: md5.c 8179 2008-12-10 05:03:11Z mike $ */
 /*
   Independent implementation of MD5 (RFC 1321).
 
@@ -43,11 +42,8 @@
   1999-05-03 lpd Original version.
  */
 
-#include "md5.h"
-#include "string.h"
-#ifdef __APPLE__
-#  include "md5-apple.h"
-#endif /* __APPLE__ */
+#include "md5-private.h"
+#include "string-private.h"
 
 #define T1 0xd76aa478
 #define T2 0xe8c7b756
@@ -136,7 +132,8 @@ _cups_md5_process(_cups_md5_state_t *pms, const unsigned char *data /*[64]*/)
     int i;
 
     for (i = 0; i < 16; ++i, xp += 4)
-	X[i] = xp[0] + (xp[1] << 8) + (xp[2] << 16) + (xp[3] << 24);
+	X[i] = (unsigned)xp[0] + ((unsigned)xp[1] << 8) +
+	       ((unsigned)xp[2] << 16) + ((unsigned)xp[3] << 24);
 
 #else  /* !ARCH_IS_BIG_ENDIAN */
 
@@ -294,7 +291,7 @@ _cupsMD5Append(_cups_md5_state_t *pms, const unsigned char *data, int nbytes)
 	return;
 
     /* Update the message length. */
-    pms->count[1] += nbytes >> 29;
+    pms->count[1] += (unsigned)nbytes >> 29;
     pms->count[0] += nbits;
     if (pms->count[0] < nbits)
 	pms->count[1]++;
@@ -303,7 +300,7 @@ _cupsMD5Append(_cups_md5_state_t *pms, const unsigned char *data, int nbytes)
     if (offset) {
 	int copy = (offset + nbytes > 64 ? 64 - offset : nbytes);
 
-	memcpy(pms->buf + offset, p, copy);
+	memcpy(pms->buf + offset, p, (size_t)copy);
 	if (offset + copy < 64)
 	    return;
 	p += copy;
@@ -317,7 +314,7 @@ _cupsMD5Append(_cups_md5_state_t *pms, const unsigned char *data, int nbytes)
 
     /* Process a final partial block. */
     if (left)
-	memcpy(pms->buf, p, left);
+	memcpy(pms->buf, p, (size_t)left);
 }
 
 void
@@ -336,9 +333,14 @@ _cupsMD5Finish(_cups_md5_state_t *pms, unsigned char digest[16])
     for (i = 0; i < 8; ++i)
 	data[i] = (unsigned char)(pms->count[i >> 2] >> ((i & 3) << 3));
     /* Pad to 56 bytes mod 64. */
-    _cupsMD5Append(pms, pad, ((55 - (pms->count[0] >> 3)) & 63) + 1);
+    _cupsMD5Append(pms, pad, (int)((55 - (pms->count[0] >> 3)) & 63) + 1);
     /* Append the length. */
     _cupsMD5Append(pms, data, 8);
     for (i = 0; i < 16; ++i)
 	digest[i] = (unsigned char)(pms->abcd[i >> 2] >> ((i & 3) << 3));
 }
+
+
+/*
+ * End of "$Id: md5.c 12124 2014-08-28 15:37:22Z msweet $".
+ */

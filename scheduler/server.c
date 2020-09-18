@@ -1,9 +1,9 @@
 /*
- * "$Id: server.c 9104 2010-04-12 04:03:53Z mike $"
+ * "$Id: server.c 12689 2015-06-03 19:49:54Z msweet $"
  *
  *   Server start/stop routines for the CUPS scheduler.
  *
- *   Copyright 2007-2010 by Apple Inc.
+ *   Copyright 2007-2012 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -34,7 +34,7 @@
  * Local globals...
  */
 
-static int	started = 0;
+static int		started = 0;	/* Did we start the server already? */
 
 
 /*
@@ -45,10 +45,16 @@ void
 cupsdStartServer(void)
 {
  /*
+  * Start color management (as needed)...
+  */
+
+  cupsdStartColor();
+
+ /*
   * Create the default security profile...
   */
 
-  DefaultProfile = cupsdCreateProfile(0);
+  DefaultProfile = cupsdCreateProfile(0, 1);
 
  /*
   * Startup all the networking stuff...
@@ -56,7 +62,6 @@ cupsdStartServer(void)
 
   cupsdStartListening();
   cupsdStartBrowsing();
-  cupsdStartPolling();
 
  /*
   * Create a pipe for CGI processes...
@@ -95,12 +100,17 @@ cupsdStopServer(void)
     return;
 
  /*
-  * Close all network clients and stop all jobs...
+  * Stop color management (as needed)...
+  */
+
+  cupsdStopColor();
+
+ /*
+  * Close all network clients...
   */
 
   cupsdCloseAllClients();
   cupsdStopListening();
-  cupsdStopPolling();
   cupsdStopBrowsing();
   cupsdStopAllNotifiers();
   cupsdDeleteAllCerts();
@@ -126,37 +136,30 @@ cupsdStopServer(void)
     CGIPipes[1] = -1;
   }
 
-#ifdef HAVE_NOTIFY_POST
- /*
-  * Send one last notification as the server shuts down.
-  */
-
-  cupsdLogMessage(CUPSD_LOG_DEBUG,
-                  "notify_post(\"com.apple.printerListChange\") last");
-  notify_post("com.apple.printerListChange");
-#endif /* HAVE_NOTIFY_POST */
-
  /*
   * Close all log files...
   */
 
   if (AccessFile != NULL)
   {
-    cupsFileClose(AccessFile);
+    if (AccessFile != LogStderr)
+      cupsFileClose(AccessFile);
 
     AccessFile = NULL;
   }
 
   if (ErrorFile != NULL)
   {
-    cupsFileClose(ErrorFile);
+    if (ErrorFile != LogStderr)
+      cupsFileClose(ErrorFile);
 
     ErrorFile = NULL;
   }
 
   if (PageFile != NULL)
   {
-    cupsFileClose(PageFile);
+    if (PageFile != LogStderr)
+      cupsFileClose(PageFile);
 
     PageFile = NULL;
   }
@@ -180,5 +183,5 @@ cupsdStopServer(void)
 
 
 /*
- * End of "$Id: server.c 9104 2010-04-12 04:03:53Z mike $".
+ * End of "$Id: server.c 12689 2015-06-03 19:49:54Z msweet $".
  */

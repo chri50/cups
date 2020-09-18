@@ -1,44 +1,25 @@
 /*
- * "$Id: cups-lpd.c 7899 2008-09-03 12:57:17Z mike $"
+ * Line Printer Daemon interface for CUPS.
  *
- *   Line Printer Daemon interface for the Common UNIX Printing System (CUPS).
+ * Copyright 2007-2016 by Apple Inc.
+ * Copyright 1997-2006 by Easy Software Products, all rights reserved.
  *
- *   Copyright 2007-2008 by Apple Inc.
- *   Copyright 1997-2006 by Easy Software Products, all rights reserved.
- *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
- *
- * Contents:
- *
- *   main()           - Process an incoming LPD request...
- *   create_job()     - Create a new print job.
- *   get_printer()    - Get the named printer and its options.
- *   print_file()     - Add a file to the current job.
- *   recv_print_job() - Receive a print job from the client.
- *   remove_jobs()    - Cancel one or more jobs.
- *   send_state()     - Send the queue state.
- *   smart_gets()     - Get a line of text, removing the trailing CR and/or LF.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
  * Include necessary headers...
  */
 
-#include <cups/http-private.h>
-#include <cups/cups.h>
-#include <cups/string.h>
-#include <cups/language.h>
-#include <stdlib.h>
-#include <errno.h>
+#define _CUPS_NO_DEPRECATED
+#include <cups/cups-private.h>
 #include <syslog.h>
-#include <ctype.h>
 #include <unistd.h>
 #include <fcntl.h>
-
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -47,13 +28,9 @@
 #ifdef HAVE_INTTYPES_H
 #  include <inttypes.h>
 #endif /* HAVE_INTTYPES_H */
-
-#ifdef HAVE_COREFOUNDATION_H
-#  include <CoreFoundation/CoreFoundation.h>
-#endif /* HAVE_COREFOUNDATION_H */
-#ifdef HAVE_CFPRIV_H
-#  include <CoreFoundation/CFPriv.h>
-#endif /* HAVE_CFPRIV_H */
+#ifdef __APPLE__
+#  include <vproc.h>
+#endif /* __APPLE__ */
 
 
 /*
@@ -84,7 +61,7 @@ static int	create_job(http_t *http, const char *dest, const char *title,
                            const char *docname, const char *user,
 			   int num_options, cups_option_t *options);
 static int	get_printer(http_t *http, const char *name, char *dest,
-		            int destsize, cups_option_t **options,
+		            size_t destsize, cups_option_t **options,
 			    int *accepting, int *shared, ipp_pstate_t *state);
 static int	print_file(http_t *http, int id, const char *filename,
 		           const char *docname, const char *user,
@@ -121,6 +98,9 @@ main(int  argc,				/* I - Number of command-line arguments */
 		hostip[256],		/* IP address */
 		*hostfamily;		/* Address family */
   int		hostlookups;		/* Do hostname lookups? */
+#ifdef __APPLE__
+  vproc_transaction_t vtran = vproc_transaction_begin(NULL);
+#endif /* __APPLE__ */
 
 
  /*
@@ -198,7 +178,7 @@ main(int  argc,				/* I - Number of command-line arguments */
   if (getpeername(0, (struct sockaddr *)&hostaddr, &hostlen))
   {
     syslog(LOG_WARNING, "Unable to get client address - %s", strerror(errno));
-    strcpy(hostname, "unknown");
+    strlcpy(hostname, "unknown", sizeof(hostname));
   }
   else
   {
@@ -236,6 +216,11 @@ main(int  argc,				/* I - Number of command-line arguments */
 
     syslog(LOG_ERR, "Unable to get command line from client!");
     putchar(1);
+
+#ifdef __APPLE__
+    vproc_transaction_end(NULL, vtran);
+#endif /* __APPLE__ */
+
     return (1);
   }
 
@@ -244,14 +229,16 @@ main(int  argc,				/* I - Number of command-line arguments */
   * resource list, and/or user name.
   */
 
-  command = line[0];
-  dest    = line + 1;
+  if ((command = line[0]) == '\0')
+    dest = line;
+  else
+    dest = line + 1;
 
   if (command == 0x02)
     list = NULL;
   else
   {
-    for (list = dest + 1; *list && !isspace(*list & 255); list ++);
+    for (list = dest; *list && !isspace(*list & 255); list ++);
 
     while (isspace(*list & 255))
       *list++ = '\0';
@@ -282,21 +269,21 @@ main(int  argc,				/* I - Number of command-line arguments */
         syslog(LOG_INFO, "Receive print job for %s", dest);
         /* recv_print_job() sends initial status byte */
 
-        status = recv_print_job(dest, num_defaults, defaults);
+        status = (char)recv_print_job(dest, num_defaults, defaults);
 	break;
 
     case 0x03 : /* Send queue state (short) */
         syslog(LOG_INFO, "Send queue state (short) for %s %s", dest, list);
 	/* no status byte for this command */
 
-        status = send_state(dest, list, 0);
+        status = (char)send_state(dest, list, 0);
 	break;
 
     case 0x04 : /* Send queue state (long) */
         syslog(LOG_INFO, "Send queue state (long) for %s %s", dest, list);
 	/* no status byte for this command */
 
-        status = send_state(dest, list, 1);
+        status = (char)send_state(dest, list, 1);
 	break;
 
     case 0x05 : /* Remove jobs */
@@ -314,7 +301,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 
 	  syslog(LOG_INFO, "Remove jobs %s on %s by %s", list, dest, agent);
 
-	  status = remove_jobs(dest, agent, list);
+	  status = (char)remove_jobs(dest, agent, list);
         }
 	else
 	  status = 1;
@@ -325,6 +312,10 @@ main(int  argc,				/* I - Number of command-line arguments */
 
   syslog(LOG_INFO, "Closing connection");
   closelog();
+
+#ifdef __APPLE__
+  vproc_transaction_end(NULL, vtran);
+#endif /* __APPLE__ */
 
   return (status);
 }
@@ -354,7 +345,7 @@ create_job(http_t        *http,		/* I - HTTP connection */
   * Setup the Create-Job request...
   */
 
-  request = ippNewRequest(IPP_CREATE_JOB);
+  request = ippNewRequest(IPP_OP_CREATE_JOB);
 
   httpAssembleURIf(HTTP_URI_CODING_ALL, uri, sizeof(uri), "ipp", NULL,
                    "localhost", 0, "/printers/%s", dest);
@@ -369,10 +360,6 @@ create_job(http_t        *http,		/* I - HTTP connection */
     ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_NAME, "job-name",
                  NULL, title);
 
-  if (docname[0])
-    ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_NAME, "document-name", 
-                 NULL, docname);
-
   cupsEncodeOptions(request, num_options, options);
 
  /*
@@ -383,7 +370,7 @@ create_job(http_t        *http,		/* I - HTTP connection */
 
   response = cupsDoRequest(http, request, uri);
 
-  if (!response || cupsLastError() > IPP_OK_CONFLICT)
+  if (!response || cupsLastError() > IPP_STATUS_OK_CONFLICTING)
   {
     syslog(LOG_ERR, "Unable to create job - %s", cupsLastErrorString());
 
@@ -423,7 +410,7 @@ static int				/* O - Number of options or -1 on error */
 get_printer(http_t        *http,	/* I - HTTP connection */
             const char    *name,	/* I - Printer name from request */
 	    char          *dest,	/* I - Destination buffer */
-            int           destsize,	/* I - Size of destination buffer */
+            size_t        destsize,	/* I - Size of destination buffer */
 	    cups_option_t **options,	/* O - Printer options */
 	    int           *accepting,	/* O - printer-is-accepting-jobs value */
 	    int           *shared,	/* O - printer-is-shared value */
@@ -459,7 +446,7 @@ get_printer(http_t        *http,	/* I - HTTP connection */
   if (shared)
     *shared = 0;
   if (state)
-    *state = IPP_PRINTER_STOPPED;
+    *state = IPP_PSTATE_STOPPED;
   if (options)
     *options = NULL;
 
@@ -475,7 +462,7 @@ get_printer(http_t        *http,	/* I - HTTP connection */
   * Setup the Get-Printer-Attributes request...
   */
 
-  request = ippNewRequest(IPP_GET_PRINTER_ATTRIBUTES);
+  request = ippNewRequest(IPP_OP_GET_PRINTER_ATTRIBUTES);
 
   httpAssembleURIf(HTTP_URI_CODING_ALL, uri, sizeof(uri), "ipp", NULL,
 		   "localhost", 0, "/printers/%s", dest);
@@ -494,7 +481,7 @@ get_printer(http_t        *http,	/* I - HTTP connection */
 
   response = cupsDoRequest(http, request, "/");
 
-  if (!response || cupsLastError() > IPP_OK_CONFLICT)
+  if (!response || cupsLastError() > IPP_STATUS_OK_CONFLICTING)
   {
    /*
     * If we can't find the printer by name, look up the printer-name
@@ -514,7 +501,7 @@ get_printer(http_t        *http,	/* I - HTTP connection */
     * Setup the CUPS-Get-Printers request...
     */
 
-    request = ippNewRequest(CUPS_GET_PRINTERS);
+    request = ippNewRequest(IPP_OP_CUPS_GET_PRINTERS);
 
     ippAddStrings(request, IPP_TAG_OPERATION, IPP_TAG_KEYWORD,
                   "requested-attributes",
@@ -527,7 +514,7 @@ get_printer(http_t        *http,	/* I - HTTP connection */
 
     response = cupsDoRequest(http, request, "/");
 
-    if (!response || cupsLastError() > IPP_OK_CONFLICT)
+    if (!response || cupsLastError() > IPP_STATUS_OK_CONFLICTING)
     {
       syslog(LOG_ERR, "Unable to get list of printers - %s",
              cupsLastErrorString());
@@ -588,7 +575,7 @@ get_printer(http_t        *http,	/* I - HTTP connection */
       }
 
       if (info_attr && name_attr &&
-          !strcasecmp(name, info_attr->values[0].string.text))
+          !_cups_strcasecmp(name, info_attr->values[0].string.text))
       {
        /*
         * Found a match, use this one!
@@ -663,100 +650,6 @@ get_printer(http_t        *http,	/* I - HTTP connection */
   }
 
  /*
-  * Override shared value for LPD using system-specific APIs...
-  */
-
-#ifdef HAVE_CFPRIV_H /* MacOS X */
-  if (shared && *shared)
-  {
-    CFURLRef		prefsurl;	/* URL for preferences file */
-    CFDataRef		xmldata;	/* XML data from preferences file */
-    CFPropertyListRef	plist;		/* Property list from XML data */
-    CFStringRef		queueid;	/* CFString of destination name */
-    CFArrayRef		lprqarray;	/* Array of shared "LPR" printers */
-    CFBooleanRef	serverflag;	/* State of the print service */
-    static const char printerprefsfile[] =
-        "/Library/Preferences/com.apple.printservice.plist";
-					/* Preferences file */
-
-
-   /*
-    * See if we are running on MacOS X Server...
-    */
-
-    CFDictionaryRef versdict = _CFCopyServerVersionDictionary();
-
-    if (versdict)
-    {
-     /*
-      * Yes, use the LPR sharing preference...
-      */
-
-      CFRelease(versdict);
-
-      *shared = 0;
-
-      prefsurl = CFURLCreateFromFileSystemRepresentation(
-                     kCFAllocatorDefault, 
-		     (const UInt8 *)printerprefsfile, 
-		     (CFIndex)strlen(printerprefsfile), 
-		     false);
-      if (prefsurl)
-      {
-        if (CFURLCreateDataAndPropertiesFromResource(kCFAllocatorDefault,
-	                                             prefsurl, &xmldata, NULL,
-						     NULL, NULL))
-	{
-	  plist = CFPropertyListCreateFromXMLData(kCFAllocatorDefault, xmldata, 
-						  kCFPropertyListImmutable,
-						  NULL);
-	  if (plist)
-	  {
-	    serverflag = (CFBooleanRef)CFDictionaryGetValue(
-	                                   (CFDictionaryRef)plist,
-					   CFSTR("serviceState"));
-
-            if (serverflag && CFBooleanGetValue(serverflag))
-	    {
-	      lprqarray = (CFArrayRef)CFDictionaryGetValue(
-	                                  (CFDictionaryRef)plist,
-					  CFSTR("lprSharedQueues"));
-
-	      if (lprqarray)
-	      {
-	        queueid = CFStringCreateWithCString(CFAllocatorGetDefault(), 
-						    dest,
-						    kCFStringEncodingUTF8);
-
-                if (queueid)
-		{
-	          *shared = CFArrayContainsValue(lprqarray,
-						 CFRangeMake(0,
-						     CFArrayGetCount(lprqarray)),
-						 queueid);
-
-                  CFRelease(queueid);
-		}
-	      }
-	    }
-
-	    CFRelease(plist);
-	  }
-
-	  CFRelease(xmldata);
-	}
-
-	CFRelease(prefsurl);
-      }
-
-      if (!shared)
-	syslog(LOG_ERR, "Warning - Print Service sharing disabled for LPD "
-	                "on queue: %s", name);
-    }
-  }
-#endif /* HAVE_CFPRIV_H */
-
- /*
   * Next look for the printer in the lpoptions file...
   */
 
@@ -777,7 +670,7 @@ get_printer(http_t        *http,	/* I - HTTP connection */
 	* Make sure we have "Dest name options" or "Default name options"...
 	*/
 
-	if ((strcasecmp(line, "Dest") && strcasecmp(line, "Default")) || !value)
+	if ((_cups_strcasecmp(line, "Dest") && _cups_strcasecmp(line, "Default")) || !value)
           continue;
 
        /*
@@ -794,7 +687,7 @@ get_printer(http_t        *http,	/* I - HTTP connection */
 	* the loop - we're done!
 	*/
 
-	if (!strcasecmp(value, name))
+	if (!_cups_strcasecmp(value, name))
 	{
           num_options = cupsParseOptions(optptr, num_options, options);
 	  break;
@@ -836,7 +729,7 @@ print_file(http_t     *http,		/* I - HTTP connection */
   * Setup the Send-Document request...
   */
 
-  request = ippNewRequest(IPP_SEND_DOCUMENT);
+  request = ippNewRequest(IPP_OP_SEND_DOCUMENT);
 
   snprintf(uri, sizeof(uri), "ipp://localhost/jobs/%d", id);
   ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "job-uri", NULL, uri);
@@ -852,8 +745,7 @@ print_file(http_t     *http,		/* I - HTTP connection */
     ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_MIMETYPE,
                  "document-format", NULL, format);
 
-  if (last)
-    ippAddBoolean(request, IPP_TAG_OPERATION, "last-document", 1);
+  ippAddBoolean(request, IPP_TAG_OPERATION, "last-document", (char)last);
 
  /*
   * Do the request...
@@ -863,7 +755,7 @@ print_file(http_t     *http,		/* I - HTTP connection */
 
   ippDelete(cupsDoFileRequest(http, request, uri, filename));
 
-  if (cupsLastError() > IPP_OK_CONFLICT)
+  if (cupsLastError() > IPP_STATUS_OK_CONFLICTING)
   {
     syslog(LOG_ERR, "Unable to send document - %s", cupsLastErrorString());
 
@@ -890,7 +782,8 @@ recv_print_job(
   int		fd;			/* Temporary file */
   FILE		*fp;			/* File pointer */
   char		filename[1024];		/* Temporary filename */
-  int		bytes;			/* Bytes received */
+  ssize_t	bytes;			/* Bytes received */
+  size_t	total;			/* Total bytes */
   char		line[256],		/* Line from file/stdin */
 		command,		/* Command from line */
 		*count,			/* Number of bytes */
@@ -917,7 +810,7 @@ recv_print_job(
   * Connect to the server...
   */
 
-  http = httpConnectEncrypt(cupsServer(), ippPort(), cupsEncryption());
+  http = httpConnect2(cupsServer(), ippPort(), NULL, AF_UNSPEC, cupsEncryption(), 1, 30000, NULL);
   if (!http)
   {
     syslog(LOG_ERR, "Unable to connect to server: %s", strerror(errno));
@@ -1023,7 +916,7 @@ recv_print_job(
 	      break;
 	    }
 
-	    strcpy(filename, control);
+	    strlcpy(filename, control, sizeof(filename));
 	  }
 	  break;
 
@@ -1059,7 +952,7 @@ recv_print_job(
 	    break;
 	  }
 
-	  strcpy(filename, temp[num_data]);
+	  strlcpy(filename, temp[num_data], sizeof(filename));
 
           num_data ++;
 	  break;
@@ -1074,15 +967,15 @@ recv_print_job(
     * Copy the data or control file from the client...
     */
 
-    for (i = atoi(count); i > 0; i -= bytes)
+    for (total = (size_t)strtoll(count, NULL, 10); total > 0; total -= (size_t)bytes)
     {
-      if (i > sizeof(line))
-        bytes = sizeof(line);
+      if (total > sizeof(line))
+        bytes = (ssize_t)sizeof(line);
       else
-        bytes = i;
+        bytes = (ssize_t)total;
 
-      if ((bytes = fread(line, 1, bytes, stdin)) > 0)
-        bytes = write(fd, line, bytes);
+      if ((bytes = (ssize_t)fread(line, 1, (size_t)bytes, stdin)) > 0)
+        bytes = write(fd, line, (size_t)bytes);
 
       if (bytes < 1)
       {
@@ -1225,7 +1118,7 @@ recv_print_job(
       {
 	syslog(LOG_WARNING, "No username specified by client! "
 		            "Using \"anonymous\"...");
-	strcpy(user, "anonymous");
+	strlcpy(user, "anonymous", sizeof(user));
       }
 
      /*
@@ -1347,8 +1240,7 @@ remove_jobs(const char *dest,		/* I - Destination */
   * Try connecting to the local server...
   */
 
-  if ((http = httpConnectEncrypt(cupsServer(), ippPort(),
-                                 cupsEncryption())) == NULL)
+  if ((http = httpConnect2(cupsServer(), ippPort(), NULL, AF_UNSPEC, cupsEncryption(), 1, 30000, NULL)) == NULL)
   {
     syslog(LOG_ERR, "Unable to connect to server %s: %s", cupsServer(),
            strerror(errno));
@@ -1371,7 +1263,7 @@ remove_jobs(const char *dest,		/* I - Destination */
       list ++;
 
    /*
-    * Build an IPP_CANCEL_JOB request, which requires the following
+    * Build an IPP_OP_CANCEL_JOB request, which requires the following
     * attributes:
     *
     *    attributes-charset
@@ -1380,7 +1272,7 @@ remove_jobs(const char *dest,		/* I - Destination */
     *    requesting-user-name
     */
 
-    request = ippNewRequest(IPP_CANCEL_JOB);
+    request = ippNewRequest(IPP_OP_CANCEL_JOB);
 
     sprintf(uri, "ipp://localhost/jobs/%d", id);
     ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "job-uri", NULL, uri);
@@ -1394,7 +1286,7 @@ remove_jobs(const char *dest,		/* I - Destination */
 
     ippDelete(cupsDoRequest(http, request, "/jobs"));
 
-    if (cupsLastError() > IPP_OK_CONFLICT)
+    if (cupsLastError() > IPP_STATUS_OK_CONFLICTING)
     {
       syslog(LOG_WARNING, "Cancel of job ID %d failed: %s\n", id,
              cupsLastErrorString());
@@ -1468,8 +1360,7 @@ send_state(const char *queue,		/* I - Destination */
   * Try connecting to the local server...
   */
 
-  if ((http = httpConnectEncrypt(cupsServer(), ippPort(),
-                                 cupsEncryption())) == NULL)
+  if ((http = httpConnect2(cupsServer(), ippPort(), NULL, AF_UNSPEC, cupsEncryption(), 1, 30000, NULL)) == NULL)
   {
     syslog(LOG_ERR, "Unable to connect to server %s: %s", cupsServer(),
            strerror(errno));
@@ -1495,19 +1386,19 @@ send_state(const char *queue,		/* I - Destination */
 
   switch (state)
   {
-    case IPP_PRINTER_IDLE :
+    case IPP_PSTATE_IDLE :
         printf("%s is ready\n", dest);
 	break;
-    case IPP_PRINTER_PROCESSING :
+    case IPP_PSTATE_PROCESSING :
         printf("%s is ready and printing\n", dest);
 	break;
-    case IPP_PRINTER_STOPPED :
+    case IPP_PSTATE_STOPPED :
         printf("%s is not ready\n", dest);
 	break;
   }
 
  /*
-  * Build an IPP_GET_JOBS or IPP_GET_JOB_ATTRIBUTES request, which requires
+  * Build an IPP_OP_GET_JOBS or IPP_OP_GET_JOB_ATTRIBUTES request, which requires
   * the following attributes:
   *
   *    attributes-charset
@@ -1517,7 +1408,7 @@ send_state(const char *queue,		/* I - Destination */
 
   id = atoi(list);
 
-  request = ippNewRequest(id ? IPP_GET_JOB_ATTRIBUTES : IPP_GET_JOBS);
+  request = ippNewRequest(id ? IPP_OP_GET_JOB_ATTRIBUTES : IPP_OP_GET_JOBS);
 
   httpAssembleURIf(HTTP_URI_CODING_ALL, uri, sizeof(uri), "ipp", NULL,
                    "localhost", 0, "/printers/%s", dest);
@@ -1546,7 +1437,7 @@ send_state(const char *queue,		/* I - Destination */
   jobcount = 0;
   response = cupsDoRequest(http, request, "/");
 
-  if (cupsLastError() > IPP_OK_CONFLICT)
+  if (cupsLastError() > IPP_STATUS_OK_CONFLICTING)
   {
     printf("get-jobs failed: %s\n", cupsLastErrorString());
     ippDelete(response);
@@ -1575,7 +1466,7 @@ send_state(const char *queue,		/* I - Destination */
 
     jobid     = 0;
     jobsize   = 0;
-    jobstate  = IPP_JOB_PENDING;
+    jobstate  = IPP_JSTATE_PENDING;
     jobname   = "untitled";
     jobuser   = NULL;
     jobdest   = NULL;
@@ -1636,8 +1527,8 @@ send_state(const char *queue,		/* I - Destination */
     * Display the job...
     */
 
-    if (jobstate == IPP_JOB_PROCESSING)
-      strcpy(rankstr, "active");
+    if (jobstate == IPP_JSTATE_PROCESSING)
+      strlcpy(rankstr, "active", sizeof(rankstr));
     else
     {
       snprintf(rankstr, sizeof(rankstr), "%d%s", rank, ranks[rank % 10]);
@@ -1718,7 +1609,7 @@ smart_gets(char *s,			/* I - Pointer to line buffer */
       break;
     }
     else if (ptr < end)
-      *ptr++ = ch;
+      *ptr++ = (char)ch;
   }
 
   *ptr = '\0';
@@ -1728,8 +1619,3 @@ smart_gets(char *s,			/* I - Pointer to line buffer */
   else
     return (s);
 }
-
-
-/*
- * End of "$Id: cups-lpd.c 7899 2008-09-03 12:57:17Z mike $".
- */

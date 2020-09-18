@@ -1,23 +1,18 @@
 /*
- * "$Id: socket.c 9454 2011-01-10 08:02:55Z mike $"
+ * "$Id: socket.c 11907 2014-06-09 18:35:32Z msweet $"
  *
- *   AppSocket backend for the Common UNIX Printing System (CUPS).
+ * AppSocket backend for CUPS.
  *
- *   Copyright 2007-2010 by Apple Inc.
- *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright 2007-2014 by Apple Inc.
+ * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   "LICENSE" which should have been included with this file.  If this
- *   file is missing or damaged, see the license at "http://www.cups.org/".
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * "LICENSE" which should have been included with this file.  If this
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  *
- *   This file is subject to the Apple OS-Developed Software exception.
- *
- * Contents:
- *
- *   main()    - Send a file to the printer or server.
- *   wait_bc() - Wait for back-channel data...
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
@@ -46,7 +41,7 @@
  * Local functions...
  */
 
-static int	wait_bc(int device_fd, int secs);
+static ssize_t	wait_bc(int device_fd, int secs);
 
 
 /*
@@ -73,11 +68,6 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
   int		print_fd;		/* Print file */
   int		copies;			/* Number of copies to print */
   time_t	start_time;		/* Time of first connect */
-#ifdef __APPLE__
-  time_t	current_time,		/* Current time */
-		wait_time;		/* Time to wait before shutting down socket */
-#endif /* __APPLE__ */
-  int		recoverable;		/* Recoverable error shown? */
   int		contimeout;		/* Connection timeout */
   int		waiteof;		/* Wait for end-of-file? */
   int		port;			/* Port number */
@@ -88,11 +78,14 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
   http_addrlist_t *addrlist,		/* Address list */
 		*addr;			/* Connected address */
   char		addrname[256];		/* Address name */
+  int		snmp_enabled = 1;	/* Is SNMP enabled? */
   int		snmp_fd,		/* SNMP socket */
 		start_count,		/* Page count via SNMP at start */
 		page_count,		/* Page count via SNMP */
 		have_supplies;		/* Printer supports supply levels? */
-  ssize_t	tbytes;			/* Total number of bytes written */
+  ssize_t	bytes = 0,		/* Initial bytes read */
+		tbytes;			/* Total number of bytes written */
+  char		buffer[1024];		/* Initial print buffer */
 #if defined(HAVE_SIGACTION) && !defined(HAVE_SIGSET)
   struct sigaction action;		/* Actions for POSIX signals */
 #endif /* HAVE_SIGACTION && !HAVE_SIGSET */
@@ -131,7 +124,7 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
   else if (argc < 6 || argc > 7)
   {
     _cupsLangPrintf(stderr,
-                    _("Usage: %s job-id user title copies options [file]\n"),
+                    _("Usage: %s job-id user title copies options [file]"),
                     argv[0]);
     return (CUPS_BACKEND_FAILED);
   }
@@ -154,9 +147,7 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
 
     if ((print_fd = open(argv[6], O_RDONLY)) < 0)
     {
-      _cupsLangPrintf(stderr,
-                      _("ERROR: Unable to open print file \"%s\": %s\n"),
-                      argv[6], strerror(errno));
+      _cupsLangPrintError("ERROR", _("Unable to open print file"));
       return (CUPS_BACKEND_FAILED);
     }
 
@@ -167,8 +158,14 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
   * Extract the hostname and port number from the URI...
   */
 
-  if ((device_uri = cupsBackendDeviceURI(argv)) == NULL)
-    return (CUPS_BACKEND_FAILED);
+  while ((device_uri = cupsBackendDeviceURI(argv)) == NULL)
+  {
+    _cupsLangPrintFilter(stderr, "INFO", _("Unable to locate printer."));
+    sleep(10);
+
+    if (getenv("CLASS") != NULL)
+      return (CUPS_BACKEND_FAILED);
+  }
 
   httpSeparateURI(HTTP_URI_CODING_ALL, device_uri, scheme, sizeof(scheme),
                   username, sizeof(username), hostname, sizeof(hostname), &port,
@@ -232,16 +229,26 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
       * Process the option...
       */
 
-      if (!strcasecmp(name, "waiteof"))
+      if (!_cups_strcasecmp(name, "waiteof"))
       {
        /*
         * Set the wait-for-eof value...
 	*/
 
-        waiteof = !value[0] || !strcasecmp(value, "on") ||
-		  !strcasecmp(value, "yes") || !strcasecmp(value, "true");
+        waiteof = !value[0] || !_cups_strcasecmp(value, "on") ||
+		  !_cups_strcasecmp(value, "yes") || !_cups_strcasecmp(value, "true");
       }
-      else if (!strcasecmp(name, "contimeout"))
+      else if (!_cups_strcasecmp(name, "snmp"))
+      {
+        /*
+         * Enable/disable SNMP stuff...
+         */
+
+         snmp_enabled = !value[0] || !_cups_strcasecmp(value, "on") ||
+                        !_cups_strcasecmp(value, "yes") ||
+                        !_cups_strcasecmp(value, "true");
+      }
+      else if (!_cups_strcasecmp(name, "contimeout"))
       {
        /*
         * Set the connection timeout...
@@ -254,26 +261,62 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
   }
 
  /*
-  * Then try to connect to the remote host...
+  * Then try finding the remote host...
   */
 
-  recoverable = 0;
-  start_time  = time(NULL);
+  start_time = time(NULL);
 
   sprintf(portname, "%d", port);
 
   fputs("STATE: +connecting-to-device\n", stderr);
   fprintf(stderr, "DEBUG: Looking up \"%s\"...\n", hostname);
 
-  if ((addrlist = httpAddrGetList(hostname, AF_UNSPEC, portname)) == NULL)
+  while ((addrlist = httpAddrGetList(hostname, AF_UNSPEC, portname)) == NULL)
   {
-    _cupsLangPrintf(stderr, _("ERROR: Unable to locate printer \'%s\'!\n"),
-                    hostname);
-    return (CUPS_BACKEND_STOP);
+    _cupsLangPrintFilter(stderr, "INFO",
+                         _("Unable to locate printer \"%s\"."), hostname);
+    sleep(10);
+
+    if (getenv("CLASS") != NULL)
+    {
+      fputs("STATE: -connecting-to-device\n", stderr);
+      return (CUPS_BACKEND_STOP);
+    }
   }
 
+ /*
+  * See if the printer supports SNMP...
+  */
+
+  if (snmp_enabled)
+    snmp_fd = _cupsSNMPOpen(addrlist->addr.addr.sa_family);
+  else
+    snmp_fd = -1;
+
+  if (snmp_fd >= 0)
+    have_supplies = !backendSNMPSupplies(snmp_fd, &(addrlist->addr),
+                                         &start_count, NULL);
+  else
+    have_supplies = start_count = 0;
+
+ /*
+  * Wait for data from the filter...
+  */
+
+  if (print_fd == 0)
+  {
+    if (!backendWaitLoop(snmp_fd, &(addrlist->addr), 1, backendNetworkSideCB))
+      return (CUPS_BACKEND_OK);
+    else if ((bytes = read(0, buffer, sizeof(buffer))) <= 0)
+      return (CUPS_BACKEND_OK);
+  }
+
+ /*
+  * Connect to the printer...
+  */
+
   fprintf(stderr, "DEBUG: Connecting to %s:%d\n", hostname, port);
-  _cupsLangPuts(stderr, _("INFO: Connecting to printer...\n"));
+  _cupsLangPrintFilter(stderr, "INFO", _("Connecting to printer."));
 
   for (delay = 5;;)
   {
@@ -291,9 +334,9 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
 	* available printer in the class.
 	*/
 
-        _cupsLangPuts(stderr,
-	              _("INFO: Unable to contact printer, queuing on next "
-			"printer in class...\n"));
+        _cupsLangPrintFilter(stderr, "INFO",
+			     _("Unable to contact printer, queuing on next "
+			       "printer in class."));
 
        /*
         * Sleep 5 seconds to keep the job from requeuing too rapidly...
@@ -304,36 +347,48 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
         return (CUPS_BACKEND_FAILED);
       }
 
+      fprintf(stderr, "DEBUG: Connection error: %s\n", strerror(error));
+
       if (error == ECONNREFUSED || error == EHOSTDOWN ||
           error == EHOSTUNREACH)
       {
         if (contimeout && (time(NULL) - start_time) > contimeout)
 	{
-	  _cupsLangPuts(stderr, _("ERROR: Printer not responding!\n"));
+	  _cupsLangPrintFilter(stderr, "ERROR",
+	                       _("The printer is not responding."));
 	  return (CUPS_BACKEND_FAILED);
 	}
 
-        recoverable = 1;
+	switch (error)
+	{
+	  case EHOSTDOWN :
+	      _cupsLangPrintFilter(stderr, "WARNING",
+				   _("The printer may not exist or "
+				     "is unavailable at this time."));
+	      break;
 
-	_cupsLangPrintf(stderr,
-			_("WARNING: recoverable: Network host \'%s\' is busy; "
-			  "will retry in %d seconds...\n"),
-			hostname, delay);
+	  case EHOSTUNREACH :
+	      _cupsLangPrintFilter(stderr, "WARNING",
+				   _("The printer is unreachable at this "
+				     "time."));
+	      break;
 
-	sleep(delay);
+	  case ECONNREFUSED :
+	  default :
+	      _cupsLangPrintFilter(stderr, "WARNING",
+	                           _("The printer is in use."));
+	      break;
+        }
+
+	sleep((unsigned)delay);
 
 	if (delay < 30)
 	  delay += 5;
       }
       else
       {
-        recoverable = 1;
-
-        _cupsLangPrintf(stderr, "DEBUG: Connection error: %s\n",
-	                strerror(errno));
-	_cupsLangPuts(stderr,
-	              _("ERROR: recoverable: Unable to connect to printer; "
-		        "will retry in 30 seconds...\n"));
+	_cupsLangPrintFilter(stderr, "ERROR",
+	                     _("The printer is not responding."));
 	sleep(30);
       }
     }
@@ -341,49 +396,21 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
       break;
   }
 
-  if (recoverable)
-  {
-   /*
-    * If we've shown a recoverable error make sure the printer proxies have a
-    * chance to see the recovered message. Not pretty but necessary for now...
-    */
-
-    fputs("INFO: recovered: \n", stderr);
-    sleep(5);
-  }
-
   fputs("STATE: -connecting-to-device\n", stderr);
-  _cupsLangPuts(stderr, _("INFO: Connected to printer...\n"));
+  _cupsLangPrintFilter(stderr, "INFO", _("Connected to printer."));
 
-#ifdef AF_INET6
-  if (addr->addr.addr.sa_family == AF_INET6)
-    fprintf(stderr, "DEBUG: Connected to [%s]:%d (IPv6)...\n", 
-	    httpAddrString(&addr->addr, addrname, sizeof(addrname)),
-	    ntohs(addr->addr.ipv6.sin6_port));
-  else
-#endif /* AF_INET6 */
-    if (addr->addr.addr.sa_family == AF_INET)
-      fprintf(stderr, "DEBUG: Connected to %s:%d (IPv4)...\n",
-	      httpAddrString(&addr->addr, addrname, sizeof(addrname)),
-	      ntohs(addr->addr.ipv4.sin_port));
-
- /*
-  * See if the printer supports SNMP...
-  */
-
-  if ((snmp_fd = _cupsSNMPOpen(addr->addr.addr.sa_family)) >= 0)
-  {
-    have_supplies = !backendSNMPSupplies(snmp_fd, &(addr->addr), &start_count,
-                                         NULL);
-  }
-  else
-    have_supplies = start_count = 0;
+  fprintf(stderr, "DEBUG: Connected to %s:%d...\n",
+	  httpAddrString(&(addr->addr), addrname, sizeof(addrname)),
+	  httpAddrPort(&(addr->addr)));
 
  /*
   * Print everything...
   */
 
   tbytes = 0;
+
+  if (bytes > 0)
+    tbytes += write(device_fd, buffer, (size_t)bytes);
 
   while (copies > 0 && tbytes >= 0)
   {
@@ -395,29 +422,14 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
       lseek(print_fd, 0, SEEK_SET);
     }
 
-    tbytes = backendRunLoop(print_fd, device_fd, snmp_fd, &(addr->addr), 1, 0, 
-                            backendNetworkSideCB);
+    tbytes = backendRunLoop(print_fd, device_fd, snmp_fd, &(addrlist->addr), 1,
+                            0, backendNetworkSideCB);
 
     if (print_fd != 0 && tbytes >= 0)
-      _cupsLangPrintf(stderr,
-#ifdef HAVE_LONG_LONG
-		      _("INFO: Sent print file, %lld bytes...\n"),
-#else
-		      _("INFO: Sent print file, %ld bytes...\n"),
-#endif /* HAVE_LONG_LONG */
-		      CUPS_LLCAST tbytes);
+      _cupsLangPrintFilter(stderr, "INFO", _("Print file sent."));
   }
 
-#ifdef __APPLE__
- /*
-  * Wait up to 5 seconds to get any pending back-channel data...
-  */
-
-  wait_time = time(NULL) + 5;
-  while (wait_time >= time(&current_time))
-    if (wait_bc(device_fd, wait_time - current_time) <= 0)
-      break;
-#endif /* __APPLE__ */
+  fputs("STATE: +cups-waiting-for-job-completed\n", stderr);
 
   if (waiteof)
   {
@@ -425,8 +437,7 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
     * Shutdown the socket and wait for the other end to finish...
     */
 
-    _cupsLangPuts(stderr,
-                  _("INFO: Print file sent, waiting for printer to finish...\n"));
+    _cupsLangPrintFilter(stderr, "INFO", _("Waiting for printer to finish."));
 
     shutdown(device_fd, 1);
 
@@ -437,8 +448,8 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
   * Collect the final page count as needed...
   */
 
-  if (have_supplies && 
-      !backendSNMPSupplies(snmp_fd, &(addr->addr), &page_count, NULL) &&
+  if (have_supplies &&
+      !backendSNMPSupplies(snmp_fd, &(addrlist->addr), &page_count, NULL) &&
       page_count > start_count)
     fprintf(stderr, "PAGE: total %d\n", page_count - start_count);
 
@@ -457,10 +468,7 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
   if (print_fd != 0)
     close(print_fd);
 
-  if (tbytes >= 0)
-    _cupsLangPuts(stderr, _("INFO: Ready to print.\n"));
-
-  return (tbytes < 0 ? CUPS_BACKEND_FAILED : CUPS_BACKEND_OK);
+  return (CUPS_BACKEND_OK);
 }
 
 
@@ -468,7 +476,7 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
  * 'wait_bc()' - Wait for back-channel data...
  */
 
-static int				/* O - # bytes read or -1 on error */
+static ssize_t				/* O - # bytes read or -1 on error */
 wait_bc(int device_fd,			/* I - Socket */
         int secs)			/* I - Seconds to wait */
 {
@@ -496,9 +504,9 @@ wait_bc(int device_fd,			/* I - Socket */
 
     if ((bytes = read(device_fd, buffer, sizeof(buffer))) > 0)
     {
-      fprintf(stderr, "DEBUG: Received %d bytes of back-channel data!\n",
+      fprintf(stderr, "DEBUG: Received %d bytes of back-channel data\n",
 	      (int)bytes);
-      cupsBackChannelWrite(buffer, bytes, 1.0);
+      cupsBackChannelWrite(buffer, (size_t)bytes, 1.0);
     }
 
     return (bytes);
@@ -509,5 +517,5 @@ wait_bc(int device_fd,			/* I - Socket */
 
 
 /*
- * End of "$Id: socket.c 9454 2011-01-10 08:02:55Z mike $".
+ * End of "$Id: socket.c 11907 2014-06-09 18:35:32Z msweet $".
  */

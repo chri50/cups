@@ -1,22 +1,16 @@
 /*
- * "$Id: search.c 7720 2008-07-11 22:46:21Z mike $"
+ * "$Id: search.c 11558 2014-02-06 18:33:34Z msweet $"
  *
- *   Search routines for the Common UNIX Printing System (CUPS).
+ * Search routines for CUPS.
  *
- *   Copyright 2007-2008 by Apple Inc.
- *   Copyright 1997-2006 by Easy Software Products.
+ * Copyright 2007-2014 by Apple Inc.
+ * Copyright 1997-2006 by Easy Software Products.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
- *
- * Contents:
- *
- *   cgiCompileSearch() - Compile a search string.
- *   cgiDoSearch()      - Do a search of some text.
- *   cgiFreeSearch()    - Free a compiled search context.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -38,12 +32,12 @@ cgiCompileSearch(const char *query)	/* I - Query string */
   char		*s,			/* Regular expression string */
 		*sptr,			/* Pointer into RE string */
 		*sword;			/* Pointer to start of word */
-  int		slen;			/* Allocated size of RE string */
+  size_t	slen;			/* Allocated size of RE string */
   const char	*qptr,			/* Pointer into query string */
 		*qend;			/* End of current word */
   const char	*prefix;		/* Prefix to add to next word */
   int		quoted;			/* Word is quoted */
-  int		wlen;			/* Word length */
+  size_t	wlen;			/* Word length */
   char		*lword;			/* Last word in query */
 
 
@@ -139,13 +133,13 @@ cgiCompileSearch(const char *query)	/* I - Query string */
       for (qend = qptr + 1; *qend && !isspace(*qend); qend ++);
     }
 
-    wlen = qend - qptr;
+    wlen = (size_t)(qend - qptr);
 
    /*
     * Look for logic words: AND, OR
     */
 
-    if (wlen == 3 && !strncasecmp(qptr, "AND", 3))
+    if (wlen == 3 && !_cups_strncasecmp(qptr, "AND", 3))
     {
      /*
       * Logical AND with the following text...
@@ -156,7 +150,7 @@ cgiCompileSearch(const char *query)	/* I - Query string */
 
       qptr = qend;
     }
-    else if (wlen == 2 && !strncasecmp(qptr, "OR", 2))
+    else if (wlen == 2 && !_cups_strncasecmp(qptr, "OR", 2))
     {
      /*
       * Logical OR with the following text...
@@ -174,7 +168,7 @@ cgiCompileSearch(const char *query)	/* I - Query string */
       * string + RE overhead...
       */
 
-      wlen = (sptr - s) + 2 * 4 * wlen + 2 * strlen(prefix) + 11;
+      wlen = (size_t)(sptr - s) + 2 * 4 * wlen + 2 * strlen(prefix) + 11;
       if (lword)
         wlen += strlen(lword);
 
@@ -208,7 +202,7 @@ cgiCompileSearch(const char *query)	/* I - Query string */
       * Add the prefix string...
       */
 
-      strcpy(sptr, prefix);
+      memcpy(sptr, prefix, strlen(prefix) + 1);
       sptr += strlen(sptr);
 
      /*
@@ -249,16 +243,16 @@ cgiCompileSearch(const char *query)	/* I - Query string */
 	  return (NULL);
 	}
 
-        strcpy(sptr, ".*|.*");
+        memcpy(sptr, ".*|.*", 6);
 	sptr += 5;
 
-	strcpy(sptr, lword2);
+	memcpy(sptr, lword2, strlen(lword2) + 1);
 	sptr += strlen(sptr);
 
-        strcpy(sptr, ".*");
+        memcpy(sptr, ".*", 3);
 	sptr += 2;
 
-	strcpy(sptr, lword);
+	memcpy(sptr, lword, strlen(lword) + 1);
 	sptr += strlen(sptr);
 
         free(lword);
@@ -287,7 +281,7 @@ cgiCompileSearch(const char *query)	/* I - Query string */
     free(lword);
 
   if (sptr > s)
-    strcpy(sptr, ".*");
+    memcpy(sptr, ".*", 3);
   else
   {
    /*
@@ -377,5 +371,5 @@ cgiFreeSearch(void *search)		/* I - Search context */
 
 
 /*
- * End of "$Id: search.c 7720 2008-07-11 22:46:21Z mike $".
+ * End of "$Id: search.c 11558 2014-02-06 18:33:34Z msweet $".
  */

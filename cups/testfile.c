@@ -1,38 +1,29 @@
 /*
- * "$Id: testfile.c 8938 2009-12-18 23:52:01Z mike $"
+ * "$Id: testfile.c 12577 2015-03-30 19:07:17Z msweet $"
  *
- *   File test program for the Common UNIX Printing System (CUPS).
+ * File test program for CUPS.
  *
- *   Copyright 2007-2008 by Apple Inc.
- *   Copyright 1997-2007 by Easy Software Products.
+ * Copyright 2007-2015 by Apple Inc.
+ * Copyright 1997-2007 by Easy Software Products.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  *
- *   This file is subject to the Apple OS-Developed Software exception.
- *
- * Contents:
- *
- *   main()             - Main entry.
- *   count_lines()      - Count the number of lines in a file.
- *   random_tests()     - Do random access tests.
- *   read_write_tests() - Perform read/write tests.
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
  * Include necessary headers...
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <time.h>
-#include "string.h"
+#include "string-private.h"
+#include "debug-private.h"
 #include "file.h"
-#include "debug.h"
+#include <stdlib.h>
+#include <time.h>
 #ifdef HAVE_LIBZ
 #  include <zlib.h>
 #endif /* HAVE_LIBZ */
@@ -132,12 +123,12 @@ main(int  argc,				/* I - Number of command-line arguments */
 #endif /* !WIN32 */
 
    /*
-    * Count lines in euc-jp.txt, rewind, then count again.
+    * Count lines in psglyphs, rewind, then count again.
     */
 
-    fputs("\ncupsFileOpen(\"../data/euc-jp.txt\", \"r\"): ", stdout);
+    fputs("\ncupsFileOpen(\"../data/media.defs\", \"r\"): ", stdout);
 
-    if ((fp = cupsFileOpen("../data/euc-jp.txt", "r")) == NULL)
+    if ((fp = cupsFileOpen("../data/media.defs", "r")) == NULL)
     {
       puts("FAIL");
       status ++;
@@ -147,9 +138,9 @@ main(int  argc,				/* I - Number of command-line arguments */
       puts("PASS");
       fputs("cupsFileGets: ", stdout);
 
-      if ((count = count_lines(fp)) != 15184)
+      if ((count = count_lines(fp)) != 208)
       {
-        printf("FAIL (got %d lines, expected 15184)\n", count);
+        printf("FAIL (got %d lines, expected 208)\n", count);
 	status ++;
       }
       else
@@ -167,9 +158,9 @@ main(int  argc,				/* I - Number of command-line arguments */
 	  puts("PASS");
 	  fputs("cupsFileGets: ", stdout);
 
-	  if ((count = count_lines(fp)) != 15184)
+	  if ((count = count_lines(fp)) != 208)
 	  {
-	    printf("FAIL (got %d lines, expected 15184)\n", count);
+	    printf("FAIL (got %d lines, expected 208)\n", count);
 	    status ++;
 	  }
 	  else
@@ -214,14 +205,14 @@ main(int  argc,				/* I - Number of command-line arguments */
     * Cat the filename on the command-line...
     */
 
-    char	line[1024];		/* Line from file */
+    char	line[8192];		/* Line from file */
 
     if ((fp = cupsFileOpen(argv[1], "r")) == NULL)
     {
       perror(argv[1]);
       status = 1;
     }
-    else
+    else if (argc == 2)
     {
       status = 0;
 
@@ -229,6 +220,21 @@ main(int  argc,				/* I - Number of command-line arguments */
         puts(line);
 
       if (!cupsFileEOF(fp))
+        perror(argv[1]);
+
+      cupsFileClose(fp);
+    }
+    else
+    {
+      status = 0;
+      ssize_t bytes;
+
+      while ((bytes = cupsFileRead(fp, line, sizeof(line))) > 0)
+        printf("%s: %d bytes\n", argv[1], (int)bytes);
+
+      if (cupsFileEOF(fp))
+        printf("%s: EOF\n", argv[1]);
+      else
         perror(argv[1]);
 
       cupsFileClose(fp);
@@ -268,8 +274,8 @@ random_tests(void)
 		count,			/* Number of records read */
 		record,			/* Current record */
 		num_records;		/* Number of records */
-  ssize_t	pos,			/* Position in file */
-		expected;		/* Expected position in file */
+  off_t		pos;			/* Position in file */
+  ssize_t	expected;		/* Expected position in file */
   cups_file_t	*fp;			/* File */
   char		buffer[512];		/* Data buffer */
 
@@ -300,10 +306,10 @@ random_tests(void)
     * cupsFileTell()
     */
 
-    expected = 256 * sizeof(buffer) * pass;
+    expected = 256 * (ssize_t)sizeof(buffer) * pass;
 
     fputs("cupsFileTell(): ", stdout);
-    if ((pos = cupsFileTell(fp)) != expected)
+    if ((pos = cupsFileTell(fp)) != (off_t)expected)
     {
       printf("FAIL (" CUPS_LLFMT " instead of " CUPS_LLFMT ")\n",
 	     CUPS_LLCAST pos, CUPS_LLCAST expected);
@@ -321,7 +327,7 @@ random_tests(void)
     for (record = 0; record < 256; record ++)
     {
       memset(buffer, record, sizeof(buffer));
-      if (cupsFileWrite(fp, buffer, sizeof(buffer)) < sizeof(buffer))
+      if (cupsFileWrite(fp, buffer, sizeof(buffer)) < (ssize_t)sizeof(buffer))
         break;
     }
 
@@ -338,10 +344,10 @@ random_tests(void)
     * cupsFileTell()
     */
 
-    expected += 256 * sizeof(buffer);
+    expected += 256 * (ssize_t)sizeof(buffer);
 
     fputs("cupsFileTell(): ", stdout);
-    if ((pos = cupsFileTell(fp)) != expected)
+    if ((pos = cupsFileTell(fp)) != (off_t)expected)
     {
       printf("FAIL (" CUPS_LLFMT " instead of " CUPS_LLFMT ")\n",
              CUPS_LLCAST pos, CUPS_LLCAST expected);
@@ -374,11 +380,9 @@ random_tests(void)
 
     fputs("cupsFileSeek(), cupsFileRead(): ", stdout);
 
-    for (num_records = (pass + 1) * 256, count = (pass + 1) * 256,
-             record = CUPS_RAND() % num_records;
+    for (num_records = (pass + 1) * 256, count = (pass + 1) * 256, record = ((int)CUPS_RAND() & 65535) % num_records;
          count > 0;
-	 count --, record = (record + (CUPS_RAND() & 31) - 16 + num_records) %
-	                    num_records)
+	 count --, record = (record + ((int)CUPS_RAND() & 31) - 16 + num_records) % num_records)
     {
      /*
       * The last record is always the first...
@@ -392,7 +396,7 @@ random_tests(void)
       * contents...
       */
 
-      expected = sizeof(buffer) * record;
+      expected = (ssize_t)sizeof(buffer) * record;
 
       if ((pos = cupsFileSeek(fp, expected)) != expected)
       {
@@ -431,7 +435,7 @@ random_tests(void)
   */
 
   unlink("testfile.dat");
-                    
+
  /*
   * Return the test status...
   */
@@ -456,6 +460,7 @@ read_write_tests(int compression)	/* I - Use compression? */
   unsigned char	readbuf[8192],		/* Read buffer */
 		writebuf[8192];		/* Write buffer */
   int		byte;			/* Byte from file */
+  ssize_t	bytes;			/* Number of bytes read/written */
   off_t		length;			/* Length of file */
   static const char *partial_line = "partial line";
 					/* Partial line */
@@ -471,10 +476,10 @@ read_write_tests(int compression)	/* I - Use compression? */
   * Initialize the write buffer with random data...
   */
 
-  CUPS_SRAND(time(NULL));
+  CUPS_SRAND((unsigned)time(NULL));
 
   for (i = 0; i < (int)sizeof(writebuf); i ++)
-    writebuf[i] = CUPS_RAND();
+    writebuf[i] = (unsigned char)CUPS_RAND();
 
  /*
   * cupsFileOpen(write)
@@ -675,10 +680,10 @@ read_write_tests(int compression)	/* I - Use compression? */
 
     fputs("cupsFileGetConf(): ", stdout);
 
-    for (i = 0; i < 1000; i ++)
+    for (i = 0, value = NULL; i < 1000; i ++)
       if (!cupsFileGetConf(fp, line, sizeof(line), &value, &linenum))
         break;
-      else if (strcasecmp(line, "TestLine") || !value || atoi(value) != i ||
+      else if (_cups_strcasecmp(line, "TestLine") || !value || atoi(value) != i ||
                linenum != (i + 2))
         break;
 
@@ -702,7 +707,7 @@ read_write_tests(int compression)	/* I - Use compression? */
 
     fputs("cupsFileGetChar(): ", stdout);
 
-    for (i = 0; i < 256; i ++)
+    for (i = 0, byte = 0; i < 256; i ++)
       if ((byte = cupsFileGetChar(fp)) != i)
         break;
 
@@ -725,15 +730,15 @@ read_write_tests(int compression)	/* I - Use compression? */
 
     fputs("cupsFileRead(): ", stdout);
 
-    for (i = 0; i < 10000; i ++)
-      if ((byte = cupsFileRead(fp, (char *)readbuf, sizeof(readbuf))) < 0)
+    for (i = 0, bytes = 0; i < 10000; i ++)
+      if ((bytes = cupsFileRead(fp, (char *)readbuf, sizeof(readbuf))) < 0)
         break;
       else if (memcmp(readbuf, writebuf, sizeof(readbuf)))
         break;
 
     if (i >= 10000)
       puts("PASS");
-    else if (byte > 0)
+    else if (bytes > 0)
     {
       printf("FAIL (Pass %d, ", i);
 
@@ -808,8 +813,9 @@ read_write_tests(int compression)	/* I - Use compression? */
   * Remove the test file...
   */
 
-  unlink(compression ? "testfile.dat.gz" : "testfile.dat");
-                    
+  if (!status)
+    unlink(compression ? "testfile.dat.gz" : "testfile.dat");
+
  /*
   * Return the test status...
   */
@@ -819,5 +825,5 @@ read_write_tests(int compression)	/* I - Use compression? */
 
 
 /*
- * End of "$Id: testfile.c 8938 2009-12-18 23:52:01Z mike $".
+ * End of "$Id: testfile.c 12577 2015-03-30 19:07:17Z msweet $".
  */

@@ -1,16 +1,16 @@
 /*
- * "$Id: config.h 9544 2011-02-18 04:28:50Z mike $"
+ * "$Id: config.h 12998 2015-12-02 15:09:04Z msweet $"
  *
- *   Configuration file for CUPS.
+ * Configuration file for CUPS on Windows.
  *
- *   Copyright 2007-2011 by Apple Inc.
- *   Copyright 1997-2007 by Easy Software Products.
+ * Copyright 2007-2014 by Apple Inc.
+ * Copyright 1997-2007 by Easy Software Products.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  */
 
 #ifndef _CUPS_CONFIG_H_
@@ -25,6 +25,7 @@
 #include <string.h>
 #include <stdarg.h>
 #include <io.h>
+#include <direct.h>
 
 
 /*
@@ -41,8 +42,10 @@
 #define close		_close
 #define fileno		_fileno
 #define lseek		_lseek
+#define mkdir(d,p)	_mkdir(d)
 #define open		_open
 #define read	        _read
+#define rmdir		_rmdir
 #define snprintf 	_snprintf
 #define strdup		_strdup
 #define unlink		_unlink
@@ -51,9 +54,19 @@
 
 
 /*
+ * Map the POSIX strcasecmp() and strncasecmp() functions to the Win32 stricmp()
+ * and strnicmp() functions...
+ */
+
+#define strcasecmp	stricmp
+#define strncasecmp	strnicmp
+
+
+/*
  * Map the POSIX sleep() and usleep() functions to the Win32 Sleep() function...
  */
 
+typedef unsigned long useconds_t;
 #define sleep(X)	Sleep(1000 * (X))
 #define usleep(X)	Sleep((X)/1000)
 
@@ -67,7 +80,7 @@
 #  define R_OK		04
 #  define O_RDONLY	_O_RDONLY
 #  define O_WRONLY	_O_WRONLY
-#  define O_CREATE	_O_CREAT
+#  define O_CREAT	_O_CREAT
 #  define O_TRUNC	_O_TRUNC
 
 
@@ -83,8 +96,8 @@
  * Version of software...
  */
 
-#define CUPS_SVERSION "CUPS v1.4.7"
-#define CUPS_MINIMAL "CUPS/1.4.7"
+#define CUPS_SVERSION "CUPS v2.1.2"
+#define CUPS_MINIMAL "CUPS/2.1.2"
 
 
 /*
@@ -101,7 +114,7 @@
  * Default file permissions...
  */
 
-#define CUPS_DEFAULT_CONFIG_FILE_PERM 0644
+#define CUPS_DEFAULT_CONFIG_FILE_PERM 0640
 #define CUPS_DEFAULT_LOG_FILE_PERM 0644
 
 
@@ -125,12 +138,8 @@
  */
 
 #define CUPS_DEFAULT_BROWSING 1
-#define CUPS_DEFAULT_BROWSE_LOCAL_PROTOCOLS "CUPS dnssd"
-#define CUPS_DEFAULT_BROWSE_REMOTE_PROTOCOLS ""
-#define CUPS_DEFAULT_BROWSE_SHORT_NAMES 1
+#define CUPS_DEFAULT_BROWSE_LOCAL_PROTOCOLS ""
 #define CUPS_DEFAULT_DEFAULT_SHARED 1
-#define CUPS_DEFAULT_IMPLICIT_CLASSES 1
-#define CUPS_DEFAULT_USE_NETWORK_DEFAULT 0
 
 
 /*
@@ -163,10 +172,17 @@
 
 
 /*
- * Do we have domain socket support?
+ * Do we have domain socket support, and if so what is the default one?
  */
 
 #undef CUPS_DEFAULT_DOMAINSOCKET
+
+
+/*
+ * Default WebInterface value...
+ */
+
+#undef CUPS_DEFAULT_WEBIF
 
 
 /*
@@ -191,23 +207,25 @@
 
 
 /*
- * Do we have various image libraries?
+ * Do we have posix_spawn?
  */
 
-/* #undef HAVE_LIBPNG */
-/* #undef HAVE_LIBZ */
-/* #undef HAVE_LIBJPEG */
-/* #undef HAVE_LIBTIFF */
+/* #undef HAVE_POSIX_SPAWN */
+
+
+/*
+ * Do we have ZLIB?
+ */
+
+#define HAVE_LIBZ 1
+#define HAVE_INFLATECOPY 1
 
 
 /*
  * Do we have PAM stuff?
  */
 
-#ifndef HAVE_LIBPAM
 #define HAVE_LIBPAM 0
-#endif /* !HAVE_LIBPAM */
-
 /* #undef HAVE_PAM_PAM_APPL_H */
 /* #undef HAVE_PAM_SET_ITEM */
 /* #undef HAVE_PAM_SETCRED */
@@ -228,10 +246,10 @@
 
 
 /*
- * Do we have <scsi/sg.h>?
+ * Use <stdint.h>?
  */
 
-/* #undef HAVE_SCSI_SG_H */
+/* #undef HAVE_STDINT_H */
 
 
 /*
@@ -274,8 +292,6 @@
  */
 
 #define HAVE_STRDUP 1
-#define HAVE_STRCASECMP 1
-#define HAVE_STRNCASECMP 1
 /* #undef HAVE_STRLCAT */
 /* #undef HAVE_STRLCPY */
 
@@ -285,6 +301,13 @@
  */
 
 /* #undef HAVE_GETEUID */
+
+
+/*
+ * Do we have the setpgid() function?
+ */
+
+/* #undef HAVE_SETPGID */
 
 
 /*
@@ -346,8 +369,22 @@
 
 /* #undef HAVE_CDSASSL */
 /* #undef HAVE_GNUTLS */
-/* #undef HAVE_LIBSSL */
-/* #undef HAVE_SSL */
+#define HAVE_SSPISSL
+#define HAVE_SSL
+
+
+/*
+ * Do we have the gnutls_transport_set_pull_timeout_function function?
+ */
+
+/* #undef HAVE_GNUTLS_TRANSPORT_SET_PULL_TIMEOUT_FUNCTION */
+
+
+/*
+ * Do we have the gnutls_priority_set_direct function?
+ */
+
+/* #undef HAVE_GNUTLS_PRIORITY_SET_DIRECT */
 
 
 /*
@@ -355,36 +392,35 @@
  */
 
 /* #undef HAVE_AUTHORIZATION_H */
+/* #undef HAVE_SECBASEPRIV_H */
+/* #undef HAVE_SECCERTIFICATE_H */
+/* #undef HAVE_SECIDENTITYSEARCHPRIV_H */
+/* #undef HAVE_SECITEM_H */
+/* #undef HAVE_SECITEMPRIV_H */
 /* #undef HAVE_SECPOLICY_H */
 /* #undef HAVE_SECPOLICYPRIV_H */
-/* #undef HAVE_SECBASEPRIV_H */
-/* #undef HAVE_SECIDENTITYSEARCHPRIV_H */
+/* #undef HAVE_SECURETRANSPORTPRIV_H */
 
 
 /*
- * Do we have the SecIdentitySearchCreateWithPolicy function?
+ * Do we have the cssmErrorString function?
  */
 
-/* #undef HAVE_SECIDENTITYSEARCHCREATEWITHPOLICY */
+/* #undef HAVE_CSSMERRORSTRING */
 
 
 /*
- * Do we have the SLP library?
+ * Do we have the SecGenerateSelfSignedCertificate function?
  */
 
-/* #undef HAVE_LIBSLP */
+/* #undef HAVE_SECGENERATESELFSIGNEDCERTIFICATE */
 
 
 /*
- * Do we have an LDAP library?
+ * Do we have the SecKeychainOpen function?
  */
 
-/* #undef HAVE_LDAP */
-/* #undef HAVE_OPENLDAP */
-/* #undef HAVE_MOZILLA_LDAP */
-/* #undef HAVE_LDAP_SSL_H */
-/* #undef HAVE_LDAP_SSL */
-/* #undef HAVE_LDAP_REBIND_PROC */
+/* #undef HAVE_SECKEYCHAINOPEN */
 
 
 /*
@@ -395,17 +431,31 @@
 
 
 /*
- * Do we have DNS Service Discovery (aka Bonjour)?
+ * Do we have mDNSResponder for DNS Service Discovery (aka Bonjour)?
  */
 
-/* #undef HAVE_DNSSD */
+#define HAVE_DNSSD 1
+
+
+/*
+ * Do we have Avahi for DNS Service Discovery (aka Bonjour)?
+ */
+
+#undef HAVE_AVAHI
 
 
 /*
  * Do we have <sys/ioctl.h>?
  */
 
-/* #undef HAVE_SYS_IOCTL_H */
+#undef HAVE_SYS_IOCTL_H
+
+
+/*
+ * Does the "stat" structure contain the "st_gen" member?
+ */
+
+/* #undef HAVE_ST_GEN */
 
 
 /*
@@ -479,13 +529,6 @@
 
 
 /*
- * Do we have the AIX usersec.h header file?
- */
-
-/* #undef HAVE_USERSEC_H */
-
-
-/*
  * Do we have pthread support?
  */
 
@@ -498,6 +541,13 @@
 
 /* #undef HAVE_LAUNCH_H */
 /* #undef HAVE_LAUNCHD */
+
+
+/*
+ * Do we have systemd support?
+ */
+
+/* #undef HAVE_SYSTEMD */
 
 
 /*
@@ -519,6 +569,7 @@
  */
 
 /* #undef HAVE_PDFTOPS */
+/* #undef HAVE_PDFTOPS_WITH_ORIGPAGESIZES */
 #define CUPS_PDFTOPS ""
 
 
@@ -531,20 +582,19 @@
 
 
 /*
- * Do we have Darwin's CoreFoundation and SystemConfiguration frameworks?
- */
-
-/* #undef HAVE_COREFOUNDATION */
-/* #undef HAVE_SYSTEMCONFIGURATION */
-
-
-/*
  * Do we have CoreFoundation public and private headers?
  */
 
 /* #undef HAVE_COREFOUNDATION_H */
 /* #undef HAVE_CFPRIV_H */
 /* #undef HAVE_CFBUNDLEPRIV_H */
+
+
+/*
+ * Do we have ApplicationServices public headers?
+ */
+
+/* #undef HAVE_APPLICATIONSERVICES_H */
 
 
 /*
@@ -555,7 +605,7 @@
 
 
 /*
- * Do we have MacOSX 10.4's mbr_XXX functions()?
+ * Do we have OS X 10.4's mbr_XXX functions?
  */
 
 /* #undef HAVE_MEMBERSHIP_H */
@@ -564,7 +614,7 @@
 
 
 /*
- * Do we have Darwin's notify_post() header and function?
+ * Do we have Darwin's notify_post header and function?
  */
 
 /* #undef HAVE_NOTIFY_H */
@@ -577,30 +627,20 @@
 
 /* #undef HAVE_DBUS */
 /* #undef HAVE_DBUS_MESSAGE_ITER_INIT_APPEND */
-
-
-/*
- * Do we have the AppleTalk/at_proto.h header?
- */
-
-/* #undef HAVE_APPLETALK_AT_PROTO_H */
+/* #undef HAVE_DBUS_THREADS_INIT */
 
 
 /*
  * Do we have the GSSAPI support library (for Kerberos support)?
  */
 
-/* #undef HAVE_GSSAPI */
-/* #undef HAVE_GSSAPI_H */
-/* #undef HAVE_GSSAPI_GSSAPI_H */
-/* #undef HAVE_GSSAPI_GSSAPI_GENERIC_H */
-/* #undef HAVE_GSSAPI_GSSAPI_KRB5_H */
-/* #undef HAVE_GSSKRB5_REGISTER_ACCEPTOR_IDENTITY */
+/* #undef HAVE_GSS_ACQUIRE_CRED_EX_F */
 /* #undef HAVE_GSS_C_NT_HOSTBASED_SERVICE */
-/* #undef HAVE_KRB5_CC_NEW_UNIQUE */
-/* #undef HAVE_KRB5_IPC_CLIENT_SET_TARGET_UID */
-/* #undef HAVE_KRB5_H */
-/* #undef HAVE_HEIMDAL */
+/* #undef HAVE_GSS_GSSAPI_H */
+/* #undef HAVE_GSS_GSSAPI_SPI_H */
+/* #undef HAVE_GSSAPI */
+/* #undef HAVE_GSSAPI_GSSAPI_H */
+/* #undef HAVE_GSSAPI_H */
 
 
 /*
@@ -688,7 +728,7 @@
  * Do we have libusb?
  */
 
-/* #undef HAVE_USB_H */
+/* #undef HAVE_LIBUSB */
 
 
 /*
@@ -698,8 +738,66 @@
 /* #undef HAVE_TCPD_H */
 
 
+/*
+ * Do we have <iconv.h>?
+ */
+
+/* #undef HAVE_ICONV_H */
+
+
+/*
+ * Do we have statfs or statvfs and one of the corresponding headers?
+ */
+
+/* #undef HAVE_STATFS */
+/* #undef HAVE_STATVFS */
+/* #undef HAVE_SYS_MOUNT_H */
+/* #undef HAVE_SYS_STATFS_H */
+/* #undef HAVE_SYS_STATVFS_H */
+/* #undef HAVE_SYS_VFS_H */
+
+
+/*
+ * Location of OS X localization bundle, if any.
+ */
+
+/* #undef CUPS_BUNDLEDIR */
+
+
+/*
+ * Do we have XPC?
+ */
+
+/* #undef HAVE_XPC */
+/* #undef HAVE_XPC_PRIVATE_H */
+
+
+/*
+ * Do we have Mini-XML?
+ */
+
+/* #undef HAVE_MXML_H */
+
+
+/*
+ * Do we have the C99 abs() function?
+ */
+
+/* #undef HAVE_ABS */
+#if !defined(HAVE_ABS) && !defined(abs)
+#  if defined(__GNUC__) || __STDC_VERSION__ >= 199901L
+#    define abs(x) _cups_abs(x)
+static inline int _cups_abs(int i) { return (i < 0 ? -i : i); }
+#  elif defined(_MSC_VER)
+#    define abs(x) _cups_abs(x)
+static __inline int _cups_abs(int i) { return (i < 0 ? -i : i); }
+#  else
+#    define abs(x) ((x) < 0 ? -(x) : (x))
+#  endif /* __GNUC__ || __STDC_VERSION__ */
+#endif /* !HAVE_ABS && !abs */
+
 #endif /* !_CUPS_CONFIG_H_ */
 
 /*
- * End of "$Id: config.h 9544 2011-02-18 04:28:50Z mike $".
+ * End of "$Id: config.h 12998 2015-12-02 15:09:04Z msweet $".
  */

@@ -1,29 +1,18 @@
 /*
- * "$Id: rastertoepson.c 8615 2009-05-12 03:22:10Z mike $"
+ * "$Id: rastertoepson.c 12945 2015-10-26 19:46:02Z msweet $"
  *
- *   EPSON ESC/P and ESC/P2 filter for the Common UNIX Printing System
- *   (CUPS).
+ * EPSON ESC/P and ESC/P2 filter for CUPS.
  *
- *   Copyright 2007-2009 by Apple Inc.
- *   Copyright 1993-2007 by Easy Software Products.
+ * Copyright 2007-2015 by Apple Inc.
+ * Copyright 1993-2007 by Easy Software Products.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  *
- *   This file is subject to the Apple OS-Developed Software exception.
- *
- * Contents:
- *
- *   Setup()        - Prepare the printer for printing.
- *   StartPage()    - Start a page of graphics.
- *   EndPage()      - Finish a page of graphics.
- *   Shutdown()     - Shutdown the printer.
- *   CompressData() - Compress a line of graphics.
- *   OutputLine()   - Output a line of graphics.
- *   main()         - Main entry and processing of driver.
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
@@ -32,14 +21,12 @@
 
 #include <cups/cups.h>
 #include <cups/ppd.h>
-#include <cups/string.h>
-#include <cups/i18n.h>
+#include <cups/string-private.h>
+#include <cups/language-private.h>
 #include <cups/raster.h>
-#include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <signal.h>
-#include <errno.h>
 
 
 /*
@@ -69,17 +56,17 @@ unsigned char	*Planes[6],		/* Output buffers */
 		*CompBuffer,		/* Compression buffer */
 		*LineBuffers[2];	/* Line bitmap buffers */
 int		Model,			/* Model number */
-		NumPlanes,		/* Number of color planes */
+		EjectPage,		/* Eject the page when done? */
+		Shingling,		/* Shingle output? */
+		Canceled;		/* Has the current job been canceled? */
+unsigned	NumPlanes,		/* Number of color planes */
 		Feed,			/* Number of lines to skip */
-		EjectPage;		/* Eject the page when done? */
-int		DotBit,			/* Bit in buffers */
+		DotBit,			/* Bit in buffers */
 		DotBytes,		/* # bytes in a dot column */
 		DotColumns,		/* # columns in 1/60 inch */
 		LineCount,		/* # of lines processed */
 		EvenOffset,		/* Offset into 'even' buffers */
-		OddOffset,		/* Offset into 'odd' buffers */
-		Shingling,		/* Shingle output? */
-		Canceled;		/* Has the current job been canceled? */
+		OddOffset;		/* Offset into 'odd' buffers */
 
 
 /*
@@ -92,8 +79,8 @@ void	EndPage(const cups_page_header2_t *header);
 void	Shutdown(void);
 
 void	CancelJob(int sig);
-void	CompressData(const unsigned char *line, int length, int plane,
-	             int type, int xstep, int ystep);
+void	CompressData(const unsigned char *line, unsigned length, unsigned plane,
+	             unsigned type, unsigned xstep, unsigned ystep);
 void	OutputLine(const cups_page_header2_t *header);
 void	OutputRows(const cups_page_header2_t *header, int row);
 
@@ -128,9 +115,33 @@ StartPage(
     const ppd_file_t         *ppd,	/* I - PPD file */
     const cups_page_header2_t *header)	/* I - Page header */
 {
-  int	n, t;				/* Numbers */
-  int	plane;				/* Looping var */
+  int		n, t;			/* Numbers */
+  unsigned	plane;			/* Looping var */
 
+
+ /*
+  * Show page device dictionary...
+  */
+
+  fprintf(stderr, "DEBUG: StartPage...\n");
+  fprintf(stderr, "DEBUG: Duplex = %d\n", header->Duplex);
+  fprintf(stderr, "DEBUG: HWResolution = [ %d %d ]\n", header->HWResolution[0], header->HWResolution[1]);
+  fprintf(stderr, "DEBUG: ImagingBoundingBox = [ %d %d %d %d ]\n", header->ImagingBoundingBox[0], header->ImagingBoundingBox[1], header->ImagingBoundingBox[2], header->ImagingBoundingBox[3]);
+  fprintf(stderr, "DEBUG: Margins = [ %d %d ]\n", header->Margins[0], header->Margins[1]);
+  fprintf(stderr, "DEBUG: ManualFeed = %d\n", header->ManualFeed);
+  fprintf(stderr, "DEBUG: MediaPosition = %d\n", header->MediaPosition);
+  fprintf(stderr, "DEBUG: NumCopies = %d\n", header->NumCopies);
+  fprintf(stderr, "DEBUG: Orientation = %d\n", header->Orientation);
+  fprintf(stderr, "DEBUG: PageSize = [ %d %d ]\n", header->PageSize[0], header->PageSize[1]);
+  fprintf(stderr, "DEBUG: cupsWidth = %d\n", header->cupsWidth);
+  fprintf(stderr, "DEBUG: cupsHeight = %d\n", header->cupsHeight);
+  fprintf(stderr, "DEBUG: cupsMediaType = %d\n", header->cupsMediaType);
+  fprintf(stderr, "DEBUG: cupsBitsPerColor = %d\n", header->cupsBitsPerColor);
+  fprintf(stderr, "DEBUG: cupsBitsPerPixel = %d\n", header->cupsBitsPerPixel);
+  fprintf(stderr, "DEBUG: cupsBytesPerLine = %d\n", header->cupsBytesPerLine);
+  fprintf(stderr, "DEBUG: cupsColorOrder = %d\n", header->cupsColorOrder);
+  fprintf(stderr, "DEBUG: cupsColorSpace = %d\n", header->cupsColorSpace);
+  fprintf(stderr, "DEBUG: cupsCompression = %d\n", header->cupsCompression);
 
  /*
   * Send a reset sequence.
@@ -214,27 +225,26 @@ StartPage(
         if (Model < EPSON_ICOLOR)
 	{
 	  pwrite("\033(U\001\000", 5);		/* Resolution/units */
-	  putchar(3600 / header->HWResolution[1]);
+	  putchar((int)(3600 / header->HWResolution[1]));
         }
 	else
 	{
 	  pwrite("\033(U\005\000", 5);
-	  putchar(1440 / header->HWResolution[1]);
-	  putchar(1440 / header->HWResolution[1]);
-	  putchar(1440 / header->HWResolution[0]);
+	  putchar((int)(1440 / header->HWResolution[1]));
+	  putchar((int)(1440 / header->HWResolution[1]));
+	  putchar((int)(1440 / header->HWResolution[0]));
 	  putchar(0xa0);	/* n/1440ths... */
 	  putchar(0x05);
 	}
 
-	n = header->PageSize[1] * header->HWResolution[1] / 72.0;
+	n = (int)(header->PageSize[1] * header->HWResolution[1] / 72.0);
 
 	pwrite("\033(C\002\000", 5);		/* Page length */
 	putchar(n);
 	putchar(n >> 8);
 
         if (ppd)
-	  t = (ppd->sizes[1].length - ppd->sizes[1].top) *
-	      header->HWResolution[1] / 72.0;
+	  t = (int)((ppd->sizes[1].length - ppd->sizes[1].top) * header->HWResolution[1] / 72.0);
         else
 	  t = 0;
 
@@ -277,9 +287,9 @@ StartPage(
   * Allocate memory for a line/row of graphics...
   */
 
-  if ((Planes[0] = malloc(header->cupsBytesPerLine)) == NULL)
+  if ((Planes[0] = malloc(header->cupsBytesPerLine + NumPlanes)) == NULL)
   {
-    fputs("ERROR: Unable to allocate memory!\n", stderr);
+    fputs("ERROR: Unable to allocate memory\n", stderr);
     exit(1);
   }
 
@@ -288,9 +298,9 @@ StartPage(
 
   if (header->cupsCompression || DotBytes)
   {
-    if ((CompBuffer = calloc(2, header->cupsWidth)) == NULL)
+    if ((CompBuffer = calloc(2, header->cupsWidth + 1)) == NULL)
     {
-      fputs("ERROR: Unable to allocate memory!\n", stderr);
+      fputs("ERROR: Unable to allocate memory\n", stderr);
       exit(1);
     }
   }
@@ -299,10 +309,9 @@ StartPage(
 
   if (DotBytes)
   {
-    if ((LineBuffers[0] = calloc(DotBytes,
-                                 header->cupsWidth * (Shingling + 1))) == NULL)
+    if ((LineBuffers[0] = calloc((size_t)DotBytes, header->cupsWidth * (size_t)(Shingling + 1))) == NULL)
     {
-      fputs("ERROR: Unable to allocate memory!\n", stderr);
+      fputs("ERROR: Unable to allocate memory\n", stderr);
       exit(1);
     }
 
@@ -401,11 +410,11 @@ CancelJob(int sig)			/* I - Signal */
 
 void
 CompressData(const unsigned char *line,	/* I - Data to compress */
-             int                 length,/* I - Number of bytes */
-	     int                 plane,	/* I - Color plane */
-	     int                 type,	/* I - Type of compression */
-	     int                 xstep,	/* I - X resolution */
-	     int                 ystep)	/* I - Y resolution */
+             unsigned            length,/* I - Number of bytes */
+	     unsigned            plane,	/* I - Color plane */
+	     unsigned            type,	/* I - Type of compression */
+	     unsigned            xstep,	/* I - X resolution */
+	     unsigned            ystep)	/* I - Y resolution */
 {
   const unsigned char	*line_ptr,	/* Current byte pointer */
         		*line_end,	/* End-of-line byte pointer */
@@ -512,7 +521,7 @@ CompressData(const unsigned char *line,	/* I - Data to compress */
               count ++;
 	    }
 
-	    *comp_ptr++ = 257 - count;
+	    *comp_ptr++ = (unsigned char)(257 - count);
 	    *comp_ptr++ = *line_ptr++;
 	  }
 	  else
@@ -533,9 +542,9 @@ CompressData(const unsigned char *line,	/* I - Data to compress */
               count ++;
 	    }
 
-	    *comp_ptr++ = count - 1;
+	    *comp_ptr++ = (unsigned char)(count - 1);
 
-	    memcpy(comp_ptr, start, count);
+	    memcpy(comp_ptr, start, (size_t)count);
 	    comp_ptr += count;
 	  }
 	}
@@ -575,12 +584,12 @@ CompressData(const unsigned char *line,	/* I - Data to compress */
 
     length *= 8;
     printf("\033.");			/* Raster graphics */
-    putchar(type);
-    putchar(ystep);
-    putchar(xstep);
+    putchar((int)type);
+    putchar((int)ystep);
+    putchar((int)xstep);
     putchar(1);
-    putchar(length);
-    putchar(length >> 8);
+    putchar((int)length);
+    putchar((int)(length >> 8));
   }
   else
   {
@@ -590,15 +599,15 @@ CompressData(const unsigned char *line,	/* I - Data to compress */
 
     printf("\033i");
     putchar(ctable[plane]);
-    putchar(type);
+    putchar((int)type);
     putchar(1);
-    putchar(length & 255);
-    putchar(length >> 8);
+    putchar((int)length);
+    putchar((int)(length >> 8));
     putchar(1);
     putchar(0);
   }
 
-  pwrite(line_ptr, line_end - line_ptr);
+  pwrite(line_ptr, (size_t)(line_end - line_ptr));
   fflush(stdout);
 }
 
@@ -613,11 +622,11 @@ OutputLine(
 {
   if (header->cupsRowCount)
   {
-    int			width;
+    unsigned		width;
     unsigned char	*tempptr,
 			*evenptr,
 			*oddptr;
-    register int	x;
+    unsigned int	x;
     unsigned char	bit;
     const unsigned char	*pixel;
     unsigned char 	*temp;
@@ -670,9 +679,15 @@ OutputLine(
         }
 
         for (width = header->cupsWidth, tempptr = CompBuffer;
-             width > 0;
+             width > 1;
              width -= 2, tempptr += 2, oddptr += DotBytes * 2,
 	         evenptr += DotBytes * 2)
+        {
+          evenptr[0] = tempptr[0];
+          oddptr[0]  = tempptr[1];
+        }
+
+        if (width == 1)
         {
           evenptr[0] = tempptr[0];
           oddptr[0]  = tempptr[1];
@@ -727,10 +742,9 @@ OutputLine(
   }
   else
   {
-    int	plane;		/* Current plane */
-    int	bytes;		/* Bytes per plane */
-    int	xstep, ystep;	/* X & Y resolutions */
-
+    unsigned	plane;		/* Current plane */
+    unsigned	bytes;		/* Bytes per plane */
+    unsigned	xstep, ystep;	/* X & Y resolutions */
 
    /*
     * Write a single line of bitmap data as needed...
@@ -747,7 +761,7 @@ OutputLine(
       */
 
       if (!Planes[plane][0] &&
-          memcmp(Planes[plane], Planes[plane] + 1, bytes - 1) == 0)
+          memcmp(Planes[plane], Planes[plane] + 1, (size_t)bytes - 1) == 0)
 	continue;
 
      /*
@@ -757,14 +771,13 @@ OutputLine(
       if (Feed > 0)
       {
 	pwrite("\033(v\002\000", 5);	/* Relative vertical position */
-	putchar(Feed);
-	putchar(Feed >> 8);
+	putchar((int)Feed);
+	putchar((int)(Feed >> 8));
 
 	Feed = 0;
       }
 
-      CompressData(Planes[plane], bytes, plane, header->cupsCompression, xstep,
-                   ystep);
+      CompressData(Planes[plane], bytes, plane, header->cupsCompression, xstep, ystep);
     }
 
     Feed ++;
@@ -781,8 +794,8 @@ OutputRows(
     const cups_page_header2_t *header,	/* I - Page image header */
     int                      row)	/* I - Row number (0 or 1) */
 {
-  unsigned	i, n;			/* Looping vars */
-  int		dot_count,		/* Number of bytes to print */
+  unsigned	i, n,			/* Looping vars */
+		dot_count,		/* Number of bytes to print */
                 dot_min;		/* Minimum number of bytes */
   unsigned char *dot_ptr,		/* Pointer to print data */
 		*ptr;			/* Current data */
@@ -791,8 +804,7 @@ OutputRows(
   dot_min = DotBytes * DotColumns;
 
   if (LineBuffers[row][0] != 0 ||
-      memcmp(LineBuffers[row], LineBuffers[row] + 1,
-             header->cupsWidth * DotBytes - 1))
+      memcmp(LineBuffers[row], LineBuffers[row] + 1, header->cupsWidth * DotBytes - 1))
   {
    /*
     * Skip leading space...
@@ -829,8 +841,8 @@ OutputRows(
     {
       putchar(0x1b);
       putchar('$');
-      putchar(i & 255);
-      putchar(i >> 8);
+      putchar((int)(i & 255));
+      putchar((int)(i >> 8));
     }
 
    /*
@@ -870,9 +882,9 @@ OutputRows(
           break;
     }
 
-    n = (unsigned)dot_count / DotBytes;
-    putchar(n & 255);
-    putchar(n / 256);
+    n = dot_count / DotBytes;
+    putchar((int)(n & 255));
+    putchar((int)(n / 256));
 
    /*
     * Write the graphics data...
@@ -891,6 +903,9 @@ OutputRows(
 	putchar(0);
       }
 
+      if (dot_count & 1)
+        putchar(*ptr);
+
      /*
       * Move the head back and print the odd bytes...
       */
@@ -901,8 +916,8 @@ OutputRows(
       {
 	putchar(0x1b);
 	putchar('$');
-	putchar(i & 255);
-	putchar(i >> 8);
+	putchar((int)(i & 255));
+	putchar((int)(i >> 8));
       }
 
       if (header->HWResolution[0] == 120)
@@ -911,14 +926,17 @@ OutputRows(
       	printf("\033*\003");		/* Select bit image */
 
       n = (unsigned)dot_count / DotBytes;
-      putchar(n & 255);
-      putchar(n / 256);
+      putchar((int)(n & 255));
+      putchar((int)(n / 256));
 
       for (n = dot_count / 2, ptr = dot_ptr + 1; n > 0; n --, ptr += 2)
       {
 	putchar(0);
         putchar(*ptr);
       }
+
+      if (dot_count & 1)
+        putchar(0);
     }
     else
       pwrite(dot_ptr, dot_count);
@@ -961,7 +979,7 @@ main(int  argc,				/* I - Number of command-line arguments */
   cups_page_header2_t	header;		/* Page header from file */
   ppd_file_t		*ppd;		/* PPD file */
   int			page;		/* Current page */
-  int			y;		/* Current line */
+  unsigned		y;		/* Current line */
 #if defined(HAVE_SIGACTION) && !defined(HAVE_SIGSET)
   struct sigaction action;		/* Actions for POSIX signals */
 #endif /* HAVE_SIGACTION && !HAVE_SIGSET */
@@ -984,9 +1002,9 @@ main(int  argc,				/* I - Number of command-line arguments */
     * and return.
     */
 
-    _cupsLangPrintf(stderr,
-                    _("Usage: %s job-id user title copies options [file]\n"),
-                    "rastertoepson");
+    _cupsLangPrintFilter(stderr, "ERROR",
+                         _("%s job-id user title copies options [file]"),
+                         "rastertoepson");
     return (1);
   }
 
@@ -998,8 +1016,7 @@ main(int  argc,				/* I - Number of command-line arguments */
   {
     if ((fd = open(argv[6], O_RDONLY)) == -1)
     {
-      _cupsLangPrintf(stderr, _("ERROR: Unable to open raster file - %s\n"),
-                      strerror(errno));
+      _cupsLangPrintError("ERROR", _("Unable to open raster file"));
       sleep(1);
       return (1);
     }
@@ -1033,8 +1050,22 @@ main(int  argc,				/* I - Number of command-line arguments */
   */
 
   ppd = ppdOpenFile(getenv("PPD"));
-  if (ppd)
-    Model = ppd->model_number;
+  if (!ppd)
+  {
+    ppd_status_t	status;		/* PPD error */
+    int			linenum;	/* Line number */
+
+    _cupsLangPrintFilter(stderr, "ERROR",
+                         _("The PPD file could not be opened."));
+
+    status = ppdLastError(&linenum);
+
+    fprintf(stderr, "DEBUG: %s on line %d.\n", ppdErrorString(status), linenum);
+
+    return (1);
+  }
+
+  Model = ppd->model_number;
 
   Setup();
 
@@ -1056,6 +1087,7 @@ main(int  argc,				/* I - Number of command-line arguments */
     page ++;
 
     fprintf(stderr, "PAGE: %d %d\n", page, header.NumCopies);
+    _cupsLangPrintFilter(stderr, "INFO", _("Starting page %d."), page);
 
    /*
     * Start the page...
@@ -1077,8 +1109,13 @@ main(int  argc,				/* I - Number of command-line arguments */
 	break;
 
       if ((y & 127) == 0)
-        _cupsLangPrintf(stderr, _("INFO: Printing page %d, %d%% complete...\n"),
-                        page, 100 * y / header.cupsHeight);
+      {
+        _cupsLangPrintFilter(stderr, "INFO",
+	                     _("Printing page %d, %u%% complete."),
+			     page, 100 * y / header.cupsHeight);
+        fprintf(stderr, "ATTR: job-media-progress=%u\n",
+		100 * y / header.cupsHeight);
+      }
 
      /*
       * Read a line of graphics...
@@ -1097,6 +1134,8 @@ main(int  argc,				/* I - Number of command-line arguments */
    /*
     * Eject the page...
     */
+
+    _cupsLangPrintFilter(stderr, "INFO", _("Finished page %d."), page);
 
     EndPage(&header);
 
@@ -1126,17 +1165,14 @@ main(int  argc,				/* I - Number of command-line arguments */
 
   if (page == 0)
   {
-    _cupsLangPuts(stderr, _("ERROR: No pages found!\n"));
+    _cupsLangPrintFilter(stderr, "ERROR", _("No pages were found."));
     return (1);
   }
   else
-  {
-    _cupsLangPuts(stderr, _("INFO: Ready to print.\n"));
     return (0);
-  }
 }
 
 
 /*
- * End of "$Id: rastertoepson.c 8615 2009-05-12 03:22:10Z mike $".
+ * End of "$Id: rastertoepson.c 12945 2015-10-26 19:46:02Z msweet $".
  */

@@ -1,25 +1,16 @@
 /*
- * "$Id: cert.c 9120 2010-04-23 18:56:34Z mike $"
+ * "$Id: cert.c 12972 2015-11-13 20:30:37Z msweet $"
  *
- *   Authentication certificate routines for CUPS.
+ * Authentication certificate routines for the CUPS scheduler.
  *
- *   Copyright 2007-2010 by Apple Inc.
- *   Copyright 1997-2006 by Easy Software Products.
+ * Copyright 2007-2015 by Apple Inc.
+ * Copyright 1997-2006 by Easy Software Products.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
- *
- * Contents:
- *
- *   cupsdAddCert()        - Add a certificate.
- *   cupsdDeleteCert()     - Delete a single certificate.
- *   cupsdDeleteAllCerts() - Delete all certificates...
- *   cupsdFindCert()       - Find a certificate.
- *   cupsdInitCerts()      - Initialize the certificate "system" and root
- *                           certificate.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -36,13 +27,20 @@
 
 
 /*
+ * Local functions...
+ */
+
+static int	ctcompare(const char *a, const char *b);
+
+
+/*
  * 'cupsdAddCert()' - Add a certificate.
  */
 
 void
 cupsdAddCert(int        pid,		/* I - Process ID */
              const char *username,	/* I - Username */
-             void       *ccache)	/* I - Kerberos credentials or NULL */
+             int        type)		/* I - AuthType for username */
 {
   int		i;			/* Looping var */
   cupsd_cert_t	*cert;			/* Current certificate */
@@ -52,8 +50,7 @@ cupsdAddCert(int        pid,		/* I - Process ID */
 					/* Hex constants... */
 
 
-  cupsdLogMessage(CUPSD_LOG_DEBUG2,
-                  "cupsdAddCert: Adding certificate for PID %d", pid);
+  cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdAddCert: Adding certificate for PID %d", pid);
 
  /*
   * Allocate memory for the certificate...
@@ -66,7 +63,8 @@ cupsdAddCert(int        pid,		/* I - Process ID */
   * Fill in the certificate information...
   */
 
-  cert->pid = pid;
+  cert->pid  = pid;
+  cert->type = type;
   strlcpy(cert->username, username, sizeof(cert->username));
 
   for (i = 0; i < 32; i ++)
@@ -110,8 +108,7 @@ cupsdAddCert(int        pid,		/* I - Process ID */
     fchmod(fd, 0440);
     fchown(fd, RunUser, SystemGroupIDs[0]);
 
-    cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdAddCert: NumSystemGroups=%d",
-                    NumSystemGroups);
+    cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdAddCert: NumSystemGroups=%d", NumSystemGroups);
 
 #ifdef HAVE_ACL_INIT
     if (NumSystemGroups > 1)
@@ -120,6 +117,8 @@ cupsdAddCert(int        pid,		/* I - Process ID */
       * Set POSIX ACLs for the root certificate so that all system
       * groups can access it...
       */
+
+      int	j;			/* Looping var */
 
 #  ifdef HAVE_MBR_UID_TO_UUID
      /*
@@ -134,6 +133,13 @@ cupsdAddCert(int        pid,		/* I - Process ID */
         * Add each group ID to the ACL...
 	*/
 
+        for (j = 0; j < i; j ++)
+	  if (SystemGroupIDs[j] == SystemGroupIDs[i])
+            break;
+
+        if (j < i)
+          continue;			/* Skip duplicate groups */
+
         acl_create_entry(&acl, &entry);
 	acl_get_permset(entry, &permset);
 	acl_add_perm(permset, ACL_READ_DATA);
@@ -142,6 +148,7 @@ cupsdAddCert(int        pid,		/* I - Process ID */
 	acl_set_qualifier(entry, &group);
 	acl_set_permset(entry, permset);
       }
+
 #  else
      /*
       * POSIX ACLs need permissions for owner, group, other, and mask
@@ -184,6 +191,13 @@ cupsdAddCert(int        pid,		/* I - Process ID */
         * Add each group ID to the ACL...
 	*/
 
+        for (j = 0; j < i; j ++)
+	  if (SystemGroupIDs[j] == SystemGroupIDs[i])
+            break;
+
+        if (j < i)
+          continue;			/* Skip duplicate groups */
+
         acl_create_entry(&acl, &entry);
 	acl_get_permset(entry, &permset);
 	acl_add_perm(permset, ACL_READ);
@@ -196,7 +210,6 @@ cupsdAddCert(int        pid,		/* I - Process ID */
       {
         char *text, *textptr;		/* Temporary string */
 
-
         cupsdLogMessage(CUPSD_LOG_ERROR, "ACL did not validate: %s",
 	                strerror(errno));
         text = acl_to_text(acl, NULL);
@@ -206,7 +219,7 @@ cupsdAddCert(int        pid,		/* I - Process ID */
 	  *textptr = ',';
 
 	cupsdLogMessage(CUPSD_LOG_ERROR, "ACL: %s", text);
-	free(text);
+	acl_free(text);
       }
 #  endif /* HAVE_MBR_UID_TO_UUID */
 
@@ -244,16 +257,6 @@ cupsdAddCert(int        pid,		/* I - Process ID */
   close(fd);
 
  /*
-  * Add Kerberos credentials as needed...
-  */
-
-#ifdef HAVE_GSSAPI
-  cert->ccache = (krb5_ccache)ccache;
-#else
-  (void)ccache;
-#endif /* HAVE_GSSAPI */
-
- /*
   * Insert the certificate at the front of the list...
   */
 
@@ -281,8 +284,7 @@ cupsdDeleteCert(int pid)		/* I - Process ID */
       * Remove this certificate from the list...
       */
 
-      cupsdLogMessage(CUPSD_LOG_DEBUG2,
-                      "cupsdDeleteCert: Removing certificate for PID %d", pid);
+      cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdDeleteCert: Removing certificate for PID %d.", pid);
 
       DEBUG_printf(("DELETE pid=%d, username=%s, cert=%s\n", cert->pid,
                     cert->username, cert->certificate));
@@ -291,15 +293,6 @@ cupsdDeleteCert(int pid)		/* I - Process ID */
         Certs = cert->next;
       else
         prev->next = cert->next;
-
-#ifdef HAVE_GSSAPI
-     /*
-      * Release Kerberos credentials as needed...
-      */
-
-      if (cert->ccache)
-	krb5_cc_destroy(KerberosContext, cert->ccache);
-#endif /* HAVE_GSSAPI */
 
       free(cert);
 
@@ -365,17 +358,15 @@ cupsdFindCert(const char *certificate)	/* I - Certificate */
   cupsd_cert_t	*cert;			/* Current certificate */
 
 
-  cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdFindCert(certificate=%s)",
-                  certificate);
+  cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdFindCert(certificate=%s)", certificate);
   for (cert = Certs; cert != NULL; cert = cert->next)
-    if (!strcasecmp(certificate, cert->certificate))
+    if (!ctcompare(certificate, cert->certificate))
     {
-      cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdFindCert: Returning %s...",
-                      cert->username);
+      cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdFindCert: Returning \"%s\".", cert->username);
       return (cert);
     }
 
-  cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdFindCert: Certificate not found!");
+  cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdFindCert: Certificate not found.");
 
   return (NULL);
 }
@@ -419,10 +410,10 @@ cupsdInitCerts(void)
     * them as the seed...
     */
 
-    seed = cupsFileGetChar(fp);
-    seed = (seed << 8) | cupsFileGetChar(fp);
-    seed = (seed << 8) | cupsFileGetChar(fp);
-    CUPS_SRAND((seed << 8) | cupsFileGetChar(fp));
+    seed = (unsigned)cupsFileGetChar(fp);
+    seed = (seed << 8) | (unsigned)cupsFileGetChar(fp);
+    seed = (seed << 8) | (unsigned)cupsFileGetChar(fp);
+    CUPS_SRAND((seed << 8) | (unsigned)cupsFileGetChar(fp));
 
     cupsFileClose(fp);
   }
@@ -433,10 +424,32 @@ cupsdInitCerts(void)
   */
 
   if (!RunUser)
-    cupsdAddCert(0, "root", NULL);
+    cupsdAddCert(0, "root", cupsdDefaultAuthType());
 }
 
 
 /*
- * End of "$Id: cert.c 9120 2010-04-23 18:56:34Z mike $".
+ * 'ctcompare()' - Compare two strings in constant time.
+ */
+
+static int				/* O - 0 on match, non-zero on non-match */
+ctcompare(const char *a,		/* I - First string */
+          const char *b)		/* I - Second string */
+{
+  int	result = 0;			/* Result */
+
+
+  while (*a && *b)
+  {
+    result |= *a ^ *b;
+    a ++;
+    b ++;
+  }
+
+  return (result);
+}
+
+
+/*
+ * End of "$Id: cert.c 12972 2015-11-13 20:30:37Z msweet $".
  */

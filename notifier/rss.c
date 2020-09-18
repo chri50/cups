@@ -1,27 +1,16 @@
 /*
- * "$Id: rss.c 8359 2009-02-16 23:57:08Z mike $"
+ * "$Id: rss.c 12945 2015-10-26 19:46:02Z msweet $"
  *
- *   RSS notifier for the Common UNIX Printing System (CUPS).
+ * RSS notifier for CUPS.
  *
- *   Copyright 2007-2009 by Apple Inc.
- *   Copyright 2007 by Easy Software Products.
+ * Copyright 2007-2015 by Apple Inc.
+ * Copyright 2007 by Easy Software Products.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
- *
- * Contents:
- *
- *   main()           - Main entry for the test notifier.
- *   compare_rss()    - Compare two messages.
- *   delete_message() - Free all memory used by a message.
- *   load_rss()       - Load an existing RSS feed file.
- *   new_message()    - Create a new RSS message.
- *   password_cb()    - Return the cached password.
- *   save_rss()       - Save messages to a RSS file.
- *   xml_escape()     - Copy a string, escaping &, <, and > as needed.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -29,11 +18,12 @@
  */
 
 #include <cups/cups.h>
+#include <sys/stat.h>
 #include <cups/language.h>
-#include <cups/string.h>
+#include <cups/string-private.h>
 #include <cups/array.h>
-#include <errno.h>
 #include <sys/select.h>
+#include <cups/ipp-private.h>	/* TODO: Update so we don't need this */
 
 
 /*
@@ -252,7 +242,7 @@ main(int  argc,				/* I - Number of command-line arguments */
     {
      /*
       * Save the messages to the file again, uploading as needed...
-      */ 
+      */
 
       if (save_rss(rss, newname, baseurl))
       {
@@ -554,6 +544,15 @@ load_rss(cups_array_t *rss,		/* I - RSS messages */
       sequence_number = atoi(start + 6);
   }
 
+  if (subject)
+    free(subject);
+
+  if (text)
+    free(text);
+
+  if (link_url)
+    free(link_url);
+
   fclose(fp);
 }
 
@@ -620,6 +619,8 @@ save_rss(cups_array_t *rss,		/* I - RSS messages */
     return (0);
   }
 
+  fchmod(fileno(fp), 0644);
+
   fputs("<?xml version=\"1.0\"?>\n", fp);
   fputs("<rss version=\"2.0\">\n", fp);
   fputs("  <channel>\n", fp);
@@ -640,15 +641,21 @@ save_rss(cups_array_t *rss,		/* I - RSS messages */
        msg;
        msg = (_cups_rss_t *)cupsArrayPrev(rss))
   {
+    char *subject = xml_escape(msg->subject);
+    char *text = xml_escape(msg->text);
+
     fputs("    <item>\n", fp);
-    fprintf(fp, "      <title>%s</title>\n", msg->subject);
-    fprintf(fp, "      <description>%s</description>\n", msg->text);
+    fprintf(fp, "      <title>%s</title>\n", subject);
+    fprintf(fp, "      <description>%s</description>\n", text);
     if (msg->link_url)
       fprintf(fp, "      <link>%s</link>\n", msg->link_url);
     fprintf(fp, "      <pubDate>%s</pubDate>\n",
             httpGetDateString2(msg->event_time, date, sizeof(date)));
     fprintf(fp, "      <guid>%d</guid>\n", msg->sequence_number);
     fputs("    </item>\n", fp);
+
+    free(subject);
+    free(text);
   }
 
   fputs(" </channel>\n", fp);
@@ -728,5 +735,5 @@ xml_escape(const char *s)		/* I - String to escape */
 
 
 /*
- * End of "$Id: rss.c 8359 2009-02-16 23:57:08Z mike $".
+ * End of "$Id: rss.c 12945 2015-10-26 19:46:02Z msweet $".
  */

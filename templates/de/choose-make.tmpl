@@ -1,6 +1,4 @@
-<DIV CLASS="indent">
-
-<H2 CLASS="title">{op=modify-printer?{printer_name} &auml;ndern:Drucker hinzuf&uuml;gen}</H2>
+<H2 CLASS="title">{op=modify-printer?{printer_name} ändern:Drucker hinzufügen (Schritt4/5)}</H2>
 
 <FORM METHOD="POST" ACTION="/admin" ENCTYPE="multipart/form-data">
 <INPUT TYPE="HIDDEN" NAME="org.cups.sid" VALUE="{$org.cups.sid}">
@@ -31,7 +29,7 @@
 <TR>
 <TH CLASS="label">Freigabe:</TH>
 <TD><INPUT TYPE="HIDDEN" NAME="PRINTER_IS_SHARED" VALUE="{?printer_is_shared}">
-Diesen Drucker {?printer_is_shared=?nicht:{?printer_is_shared=0?nicht:}} freigeben</TD>
+Diesen Drucker {?printer_is_shared=?nicht:{?printer_is_shared=0?nicht:}} im Netz freigeben</TD>
 </TR>
 <TR>
 <TH CLASS="label">Marke:</TH>
@@ -50,15 +48,14 @@ Diesen Drucker {?printer_is_shared=?nicht:{?printer_is_shared=0?nicht:}} freigeb
 <TD>&nbsp;</TD>
 </TR>
 <TR>
-<TH CLASS="label">Oder stellen Sie eine PPD Datei bereit:</TH>
+<TH CLASS="label">Or Provide a PPD File:</TH>
 <TD><INPUT TYPE="HIDDEN" NAME="MAX_FILE_SIZE" VALUE="262144"><INPUT
 TYPE="FILE" NAME="PPD_FILE"></TD>
 </TR>
 <TR>
 <TD></TD>
-<TD><INPUT TYPE="SUBMIT" VALUE="{op=add-printer?Drucker hinzuf&uuml;gen:Drucker &auml;ndern}"></TD>
+<TD><INPUT TYPE="SUBMIT" VALUE="{op=add-printer?Add Printer:Modify Printer}"></TD>
 </TR>
 </TABLE>
 
 </FORM>
-</DIV>

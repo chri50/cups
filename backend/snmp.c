@@ -1,44 +1,18 @@
 /*
- * "$Id: snmp.c 8912 2009-12-08 02:13:42Z mike $"
+ * "$Id: snmp.c 11594 2014-02-14 20:09:01Z msweet $"
  *
- *   SNMP discovery backend for the Common UNIX Printing System (CUPS).
+ * SNMP discovery backend for CUPS.
  *
- *   Copyright 2007-2009 by Apple Inc.
- *   Copyright 2006-2007 by Easy Software Products, all rights reserved.
+ * Copyright 2007-2014 by Apple Inc.
+ * Copyright 2006-2007 by Easy Software Products, all rights reserved.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   "LICENSE" which should have been included with this file.  If this
- *   file is missing or damaged, see the license at "http://www.cups.org/".
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * "LICENSE" which should have been included with this file.  If this
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  *
- *   This file is subject to the Apple OS-Developed Software exception.
- *
- * Contents:
- *
- *   main()                    - Discover printers via SNMP.
- *   add_array()               - Add a string to an array.
- *   add_cache()               - Add a cached device...
- *   add_device_uri()          - Add a device URI to the cache.
- *   alarm_handler()           - Handle alarm signals...
- *   compare_cache()           - Compare two cache entries.
- *   debug_printf()            - Display some debugging information.
- *   fix_make_model()          - Fix common problems in the make-and-model
- *                               string.
- *   free_array()              - Free an array of strings.
- *   free_cache()              - Free the array of cached devices.
- *   get_interface_addresses() - Get the broadcast address(es) associated with
- *                               an interface.
- *   list_device()             - List a device we found...
- *   password_cb()             - Handle authentication requests.
- *   probe_device()            - Probe a device to discover whether it is a
- *                               printer.
- *   read_snmp_conf()          - Read the snmp.conf file.
- *   read_snmp_response()      - Read and parse a SNMP response...
- *   run_time()                - Return the total running time...
- *   scan_devices()            - Scan for devices using SNMP.
- *   try_connect()             - Try connecting on a port...
- *   update_cache()            - Update a cached device...
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
@@ -141,13 +115,6 @@ typedef struct snmp_cache_s		/**** SNMP scan cache ****/
 
 
 /*
- * Private CUPS API to set the last error...
- */
-
-extern void		_cupsSetError(ipp_status_t status, const char *message);
-
-
-/*
  * Local functions...
  */
 
@@ -171,7 +138,7 @@ static void		probe_device(snmp_cache_t *device);
 static void		read_snmp_conf(const char *address);
 static void		read_snmp_response(int fd);
 static double		run_time(void);
-static void		scan_devices(int fd);
+static void		scan_devices(int ipv4, int ipv6);
 static int		try_connect(http_addr_t *addr, const char *addrname,
 			            int port);
 static void		update_cache(snmp_cache_t *device, const char *uri,
@@ -209,7 +176,8 @@ int					/* O - Exit status */
 main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
      char *argv[])			/* I - Command-line arguments */
 {
-  int		fd;			/* SNMP socket */
+  int		ipv4,			/* SNMP IPv4 socket */
+		ipv6;			/* SNMP IPv6 socket */
 #if defined(HAVE_SIGACTION) && !defined(HAVE_SIGSET)
   struct sigaction action;		/* Actions for POSIX signals */
 #endif /* HAVE_SIGACTION && !HAVE_SIGSET */
@@ -221,7 +189,7 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
 
   if (argc > 2)
   {
-    fputs(_("Usage: snmp [host-or-ip-address]\n"), stderr);
+    _cupsLangPuts(stderr, _("Usage: snmp [host-or-ip-address]"));
     return (1);
   }
 
@@ -252,8 +220,15 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
   * Open the SNMP socket...
   */
 
-  if ((fd = _cupsSNMPOpen(AF_INET)) < 0)
+  if ((ipv4 = _cupsSNMPOpen(AF_INET)) < 0)
     return (1);
+
+#ifdef AF_INET6
+  if ((ipv6 = _cupsSNMPOpen(AF_INET6)) < 0)
+    perror("DEBUG: Unable to create IPv6 socket");
+#else
+  ipv6 = -1;
+#endif /* AF_INET6 */
 
  /*
   * Read the configuration file and any cache data...
@@ -269,13 +244,15 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
   * Scan for devices...
   */
 
-  scan_devices(fd);
+  scan_devices(ipv4, ipv6);
 
  /*
   * Close, free, and return with no errors...
   */
 
-  _cupsSNMPClose(fd);
+  _cupsSNMPClose(ipv4);
+  if (ipv6 >= 0)
+    _cupsSNMPClose(ipv6);
 
   free_array(Addresses);
   free_array(Communities);
@@ -464,7 +441,7 @@ static int				/* O - Result of comparison */
 compare_cache(snmp_cache_t *a,		/* I - First cache entry */
               snmp_cache_t *b)		/* I - Second cache entry */
 {
-  return (strcasecmp(a->addrname, b->addrname));
+  return (_cups_strcasecmp(a->addrname, b->addrname));
 }
 
 
@@ -506,7 +483,7 @@ fix_make_model(
   * that printer driver detection works better...
   */
 
-  if (!strncasecmp(old_make_model, "Hewlett-Packard", 15))
+  if (!_cups_strncasecmp(old_make_model, "Hewlett-Packard", 15))
   {
    /*
     * Strip leading Hewlett-Packard and hp prefixes and replace
@@ -518,7 +495,7 @@ fix_make_model(
     while (isspace(*mmptr & 255))
       mmptr ++;
 
-    if (!strncasecmp(mmptr, "hp", 2))
+    if (!_cups_strncasecmp(mmptr, "hp", 2))
     {
       mmptr += 2;
 
@@ -529,17 +506,16 @@ fix_make_model(
     make_model[0] = 'H';
     make_model[1] = 'P';
     make_model[2] = ' ';
-    strlcpy(make_model + 3, mmptr, make_model_size - 3);
+    strlcpy(make_model + 3, mmptr, (size_t)make_model_size - 3);
   }
-  else if (!strncasecmp(old_make_model, "deskjet", 7))
-    snprintf(make_model, make_model_size, "HP DeskJet%s", old_make_model + 7);
-  else if (!strncasecmp(old_make_model, "officejet", 9))
-    snprintf(make_model, make_model_size, "HP OfficeJet%s", old_make_model + 9);
-  else if (!strncasecmp(old_make_model, "stylus_pro_", 11))
-    snprintf(make_model, make_model_size, "EPSON Stylus Pro %s",
-             old_make_model + 11);
+  else if (!_cups_strncasecmp(old_make_model, "deskjet", 7))
+    snprintf(make_model, (size_t)make_model_size, "HP DeskJet%s", old_make_model + 7);
+  else if (!_cups_strncasecmp(old_make_model, "officejet", 9))
+    snprintf(make_model, (size_t)make_model_size, "HP OfficeJet%s", old_make_model + 9);
+  else if (!_cups_strncasecmp(old_make_model, "stylus_pro_", 11))
+    snprintf(make_model, (size_t)make_model_size, "EPSON Stylus Pro %s", old_make_model + 11);
   else
-    strlcpy(make_model, old_make_model, make_model_size);
+    strlcpy(make_model, old_make_model, (size_t)make_model_size);
 
   if ((mmptr = strstr(make_model, ", Inc.,")) != NULL)
   {
@@ -715,7 +691,7 @@ probe_device(snmp_cache_t *device)	/* I - Device */
 
 #ifdef __APPLE__
  /*
-  * TODO: Try an mDNS query first, and then fallback on direct probes...
+  * If the printer supports Bonjour/mDNS, don't report it from the SNMP backend.
   */
 
   if (!try_connect(&(device->address), device->addrname, 5353))
@@ -750,7 +726,7 @@ probe_device(snmp_cache_t *device)	/* I - Device */
 	    * Insert hostname/address...
 	    */
 
-	    strlcpy(uriptr, device->addrname, sizeof(uri) - (uriptr - uri));
+	    strlcpy(uriptr, device->addrname, sizeof(uri) - (size_t)(uriptr - uri));
 	    uriptr += strlen(uriptr);
 	    format += 2;
 	  }
@@ -841,16 +817,16 @@ read_snmp_conf(const char *address)	/* I - Single address to probe */
       if (!value)
         fprintf(stderr, "ERROR: Missing value on line %d of %s!\n", linenum,
 	        filename);
-      else if (!strcasecmp(line, "Address"))
+      else if (!_cups_strcasecmp(line, "Address"))
       {
         if (!address)
           add_array(Addresses, value);
       }
-      else if (!strcasecmp(line, "Community"))
+      else if (!_cups_strcasecmp(line, "Community"))
         add_array(Communities, value);
-      else if (!strcasecmp(line, "DebugLevel"))
+      else if (!_cups_strcasecmp(line, "DebugLevel"))
         DebugLevel = atoi(value);
-      else if (!strcasecmp(line, "DeviceURI"))
+      else if (!_cups_strcasecmp(line, "DeviceURI"))
       {
         if (*value != '\"')
 	  fprintf(stderr,
@@ -859,12 +835,12 @@ read_snmp_conf(const char *address)	/* I - Single address to probe */
         else
 	  add_device_uri(value);
       }
-      else if (!strcasecmp(line, "HostNameLookups"))
-        HostNameLookups = !strcasecmp(value, "on") ||
-	                  !strcasecmp(value, "yes") ||
-	                  !strcasecmp(value, "true") ||
-	                  !strcasecmp(value, "double");
-      else if (!strcasecmp(line, "MaxRunTime"))
+      else if (!_cups_strcasecmp(line, "HostNameLookups"))
+        HostNameLookups = !_cups_strcasecmp(value, "on") ||
+	                  !_cups_strcasecmp(value, "yes") ||
+	                  !_cups_strcasecmp(value, "true") ||
+	                  !_cups_strcasecmp(value, "double");
+      else if (!_cups_strcasecmp(line, "MaxRunTime"))
         MaxRunTime = atoi(value);
       else
         fprintf(stderr, "ERROR: Unknown directive %s on line %d of %s!\n",
@@ -945,7 +921,7 @@ read_snmp_response(int fd)		/* I - SNMP socket file descriptor */
   debug_printf("DEBUG: request-id=%d\n", packet.request_id);
   debug_printf("DEBUG: error-status=%d\n", packet.error_status);
 
-  if (packet.error_status)
+  if (packet.error_status && packet.request_id != DEVICE_TYPE)
     return;
 
  /*
@@ -1022,6 +998,11 @@ read_snmp_response(int fd)		/* I - SNMP socket file descriptor */
 	    * Description is the IEEE-1284 device ID...
 	    */
 
+            char *ptr;			/* Pointer into device ID */
+
+            for (ptr = (char *)packet.object_value.string.bytes; *ptr; ptr ++)
+              if (*ptr == '\n')
+                *ptr = ';';		/* A lot of bad printers put a newline */
 	    if (!device->id)
 	      device->id = strdup((char *)packet.object_value.string.bytes);
 
@@ -1063,8 +1044,11 @@ read_snmp_response(int fd)		/* I - SNMP socket file descriptor */
 	  */
 
 	  char	make_model[256];	/* Make and model */
+          char *ptr;			/* Pointer into device ID */
 
-
+          for (ptr = (char *)packet.object_value.string.bytes; *ptr; ptr ++)
+            if (*ptr == '\n')
+              *ptr = ';';		/* A lot of bad printers put a newline */
 	  if (device->id)
 	    free(device->id);
 
@@ -1109,11 +1093,17 @@ read_snmp_response(int fd)		/* I - SNMP socket file descriptor */
 
     case DEVICE_URI :
 	if (device && packet.object_type == CUPS_ASN1_OCTET_STRING &&
-	    !device->uri && packet.object_value.string.num_bytes > 0)
+	    !device->uri && packet.object_value.string.num_bytes > 3)
 	{
 	 /*
 	  * Update an existing cache entry...
 	  */
+
+          char	scheme[32],		/* URI scheme */
+		userpass[256],		/* Username:password in URI */
+		hostname[256],		/* Hostname in URI */
+		resource[1024];		/* Resource path in URI */
+	  int	port;			/* Port number in URI */
 
 	  if (!strncmp((char *)packet.object_value.string.bytes, "lpr:", 4))
 	  {
@@ -1124,7 +1114,13 @@ read_snmp_response(int fd)		/* I - SNMP socket file descriptor */
 	    packet.object_value.string.bytes[2] = 'd';
 	  }
 
-	  device->uri = strdup((char *)packet.object_value.string.bytes);
+          if (httpSeparateURI(HTTP_URI_CODING_ALL,
+                              (char *)packet.object_value.string.bytes,
+                              scheme, sizeof(scheme),
+                              userpass, sizeof(userpass),
+                              hostname, sizeof(hostname), &port,
+                              resource, sizeof(resource)) >= HTTP_URI_OK)
+	    device->uri = strdup((char *)packet.object_value.string.bytes);
 	}
 	break;
   }
@@ -1153,8 +1149,11 @@ run_time(void)
  */
 
 static void
-scan_devices(int fd)			/* I - SNMP socket */
+scan_devices(int ipv4,			/* I - SNMP IPv4 socket */
+             int ipv6)			/* I - SNMP IPv6 socket */
 {
+  int			fd,		/* File descriptor for this address */
+			busy;		/* Are we busy processing something? */
   char			*address,	/* Current address */
 			*community;	/* Current community */
   fd_set		input;		/* Input set for select() */
@@ -1163,6 +1162,7 @@ scan_devices(int fd)			/* I - SNMP socket */
   http_addrlist_t	*addrs,		/* List of addresses */
 			*addr;		/* Current address */
   snmp_cache_t		*device;	/* Current device */
+  char			temp[1024];	/* Temporary address string */
 
 
   gettimeofday(&StartTime, NULL);
@@ -1181,7 +1181,6 @@ scan_devices(int fd)			/* I - SNMP socket */
     {
       char	ifname[255];		/* Interface name */
 
-
       strlcpy(ifname, address + 4, sizeof(ifname));
       if (ifname[0])
         ifname[strlen(ifname) - 1] = '\0';
@@ -1189,7 +1188,7 @@ scan_devices(int fd)			/* I - SNMP socket */
       addrs = get_interface_addresses(ifname);
     }
     else
-      addrs = httpAddrGetList(address, AF_INET, NULL);
+      addrs = httpAddrGetList(address, AF_UNSPEC, NULL);
 
     if (!addrs)
     {
@@ -1205,8 +1204,20 @@ scan_devices(int fd)			/* I - SNMP socket */
         	   community, address);
 
       for (addr = addrs; addr; addr = addr->next)
+      {
+#ifdef AF_INET6
+        if (httpAddrFamily(&(addr->addr)) == AF_INET6)
+	  fd = ipv6;
+	else
+#endif /* AF_INET6 */
+        fd = ipv4;
+
+        debug_printf("DEBUG: Sending get request to %s...\n",
+	             httpAddrString(&(addr->addr), temp, sizeof(temp)));
+
         _cupsSNMPWrite(fd, &(addr->addr), CUPS_SNMP_VERSION_1, community,
 	               CUPS_ASN1_GET_REQUEST, DEVICE_TYPE, DeviceTypeOID);
+      }
     }
 
     httpAddrFreeList(addrs);
@@ -1225,17 +1236,33 @@ scan_devices(int fd)			/* I - SNMP socket */
     timeout.tv_sec  = 2;
     timeout.tv_usec = 0;
 
-    FD_SET(fd, &input);
+    FD_SET(ipv4, &input);
+    if (ipv6 >= 0)
+      FD_SET(ipv6, &input);
+
+    fd = ipv4 > ipv6 ? ipv4 : ipv6;
     if (select(fd + 1, &input, NULL, NULL, &timeout) < 0)
     {
-      fprintf(stderr, "ERROR: %.3f select() for %d failed: %s\n", run_time(),
-              fd, strerror(errno));
+      fprintf(stderr, "ERROR: %.3f select() for %d/%d failed: %s\n", run_time(),
+              ipv4, ipv6, strerror(errno));
       break;
     }
 
-    if (FD_ISSET(fd, &input))
-      read_snmp_response(fd);
-    else
+    busy = 0;
+
+    if (FD_ISSET(ipv4, &input))
+    {
+      read_snmp_response(ipv4);
+      busy = 1;
+    }
+
+    if (ipv6 >= 0 && FD_ISSET(ipv6, &input))
+    {
+      read_snmp_response(ipv6);
+      busy = 1;
+    }
+
+    if (!busy)
     {
      /*
       * List devices with complete information...
@@ -1281,18 +1308,18 @@ try_connect(http_addr_t *addr,		/* I - Socket address */
   debug_printf("DEBUG: %.3f Trying %s://%s:%d...\n", run_time(),
                port == 515 ? "lpd" : "socket", addrname, port);
 
-  if ((fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+  if ((fd = socket(httpAddrFamily(addr), SOCK_STREAM, 0)) < 0)
   {
     fprintf(stderr, "ERROR: Unable to create socket: %s\n",
             strerror(errno));
     return (-1);
   }
 
-  addr->ipv4.sin_port = htons(port);
+  _httpAddrSetPort(addr, port);
 
   alarm(1);
 
-  status = connect(fd, (void *)addr, httpAddrLength(addr));
+  status = connect(fd, (void *)addr, (socklen_t)httpAddrLength(addr));
 
   close(fd);
   alarm(0);
@@ -1337,5 +1364,5 @@ update_cache(snmp_cache_t *device,	/* I - Device */
 
 
 /*
- * End of "$Id: snmp.c 8912 2009-12-08 02:13:42Z mike $".
+ * End of "$Id: snmp.c 11594 2014-02-14 20:09:01Z msweet $".
  */

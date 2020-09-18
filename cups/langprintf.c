@@ -1,36 +1,25 @@
 /*
- * "$Id: langprintf.c 8632 2009-05-14 18:19:48Z mike $"
+ * "$Id: langprintf.c 11558 2014-02-06 18:33:34Z msweet $"
  *
- *   Localized printf/puts functions for the Common UNIX Printing
- *   System (CUPS).
+ * Localized printf/puts functions for CUPS.
  *
- *   Copyright 2007-2008 by Apple Inc.
- *   Copyright 2002-2007 by Easy Software Products.
+ * Copyright 2007-2014 by Apple Inc.
+ * Copyright 2002-2007 by Easy Software Products.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  *
- *   This file is subject to the Apple OS-Developed Software exception.
- *
- * Contents:
- *
- *   _cupsLangPrintError() - Print a message followed by a standard error.
- *   _cupsLangPrintf()     - Print a formatted message string to a file.
- *   _cupsLangPuts()       - Print a static message string to a file.
- *   _cupsSetLocale()      - Set the current locale and transcode the
- *                           command-line.
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
  * Include necessary headers...
  */
 
-#include <stdio.h>
-#include "globals.h"
-#include <errno.h>
+#include "cups-private.h"
 
 
 /*
@@ -38,11 +27,13 @@
  */
 
 void
-_cupsLangPrintError(const char *message)/* I - Message */
+_cupsLangPrintError(const char *prefix,	/* I - Non-localized message prefix */
+                    const char *message)/* I - Message */
 {
-  int		bytes;			/* Number of bytes formatted */
+  ssize_t	bytes;			/* Number of bytes formatted */
   int		last_errno;		/* Last error */
   char		buffer[2048],		/* Message buffer */
+		*bufptr,		/* Pointer into buffer */
 		output[8192];		/* Output buffer */
   _cups_globals_t *cg;			/* Global data */
 
@@ -73,8 +64,19 @@ _cupsLangPrintError(const char *message)/* I - Message */
   * Format the message...
   */
 
-  snprintf(buffer, sizeof(buffer), "%s: %s\n",
+  if (prefix)
+  {
+    snprintf(buffer, sizeof(buffer), "%s:", prefix);
+    bufptr = buffer + strlen(buffer);
+  }
+  else
+    bufptr = buffer;
+
+  snprintf(bufptr, sizeof(buffer) - (size_t)(bufptr - buffer),
+	   /* TRANSLATORS: Message is "subject: error" */
+	   _cupsLangString(cg->lang_default, _("%s: %s")),
 	   _cupsLangString(cg->lang_default, message), strerror(last_errno));
+  strlcat(buffer, "\n", sizeof(buffer));
 
  /*
   * Convert and write to stderr...
@@ -84,7 +86,66 @@ _cupsLangPrintError(const char *message)/* I - Message */
                             cg->lang_default->encoding);
 
   if (bytes > 0)
-    fwrite(output, 1, bytes, stderr);
+    fwrite(output, 1, (size_t)bytes, stderr);
+}
+
+
+/*
+ * '_cupsLangPrintFilter()' - Print a formatted filter message string to a file.
+ */
+
+int					/* O - Number of bytes written */
+_cupsLangPrintFilter(
+    FILE       *fp,			/* I - File to write to */
+    const char *prefix,			/* I - Non-localized message prefix */
+    const char *message,		/* I - Message string to use */
+    ...)				/* I - Additional arguments as needed */
+{
+  ssize_t	bytes;			/* Number of bytes formatted */
+  char		temp[2048],		/* Temporary format buffer */
+		buffer[2048],		/* Message buffer */
+		output[8192];		/* Output buffer */
+  va_list 	ap;			/* Pointer to additional arguments */
+  _cups_globals_t *cg;			/* Global data */
+
+
+ /*
+  * Range check...
+  */
+
+  if (!fp || !message)
+    return (-1);
+
+  cg = _cupsGlobals();
+
+  if (!cg->lang_default)
+    cg->lang_default = cupsLangDefault();
+
+ /*
+  * Format the string...
+  */
+
+  va_start(ap, message);
+  snprintf(temp, sizeof(temp), "%s: %s\n", prefix,
+	   _cupsLangString(cg->lang_default, message));
+  vsnprintf(buffer, sizeof(buffer), temp, ap);
+  va_end(ap);
+
+ /*
+  * Transcode to the destination charset...
+  */
+
+  bytes = cupsUTF8ToCharset(output, (cups_utf8_t *)buffer, sizeof(output),
+                            cg->lang_default->encoding);
+
+ /*
+  * Write the string and return the number of bytes written...
+  */
+
+  if (bytes > 0)
+    return ((int)fwrite(output, 1, (size_t)bytes, fp));
+  else
+    return ((int)bytes);
 }
 
 
@@ -93,11 +154,11 @@ _cupsLangPrintError(const char *message)/* I - Message */
  */
 
 int					/* O - Number of bytes written */
-_cupsLangPrintf(FILE        *fp,	/* I - File to write to */
-	        const char  *message,	/* I - Message string to use */
+_cupsLangPrintf(FILE       *fp,		/* I - File to write to */
+		const char *message,	/* I - Message string to use */
 	        ...)			/* I - Additional arguments as needed */
 {
-  int		bytes;			/* Number of bytes formatted */
+  ssize_t	bytes;			/* Number of bytes formatted */
   char		buffer[2048],		/* Message buffer */
 		output[8192];		/* Output buffer */
   va_list 	ap;			/* Pointer to additional arguments */
@@ -121,9 +182,11 @@ _cupsLangPrintf(FILE        *fp,	/* I - File to write to */
   */
 
   va_start(ap, message);
-  vsnprintf(buffer, sizeof(buffer),
-            _cupsLangString(cg->lang_default, message), ap);
+  vsnprintf(buffer, sizeof(buffer) - 1,
+	    _cupsLangString(cg->lang_default, message), ap);
   va_end(ap);
+
+  strlcat(buffer, "\n", sizeof(buffer));
 
  /*
   * Transcode to the destination charset...
@@ -137,9 +200,9 @@ _cupsLangPrintf(FILE        *fp,	/* I - File to write to */
   */
 
   if (bytes > 0)
-    return ((int)fwrite(output, 1, bytes, fp));
+    return ((int)fwrite(output, 1, (size_t)bytes, fp));
   else
-    return (bytes);
+    return ((int)bytes);
 }
 
 
@@ -148,11 +211,11 @@ _cupsLangPrintf(FILE        *fp,	/* I - File to write to */
  */
 
 int					/* O - Number of bytes written */
-_cupsLangPuts(FILE        *fp,		/* I - File to write to */
-	      const char  *message)	/* I - Message string to use */
+_cupsLangPuts(FILE       *fp,		/* I - File to write to */
+              const char *message)	/* I - Message string to use */
 {
-  int		bytes;			/* Number of bytes formatted */
-  char		output[2048];		/* Message buffer */
+  ssize_t	bytes;			/* Number of bytes formatted */
+  char		output[8192];		/* Message buffer */
   _cups_globals_t *cg;			/* Global data */
 
 
@@ -173,18 +236,19 @@ _cupsLangPuts(FILE        *fp,		/* I - File to write to */
   */
 
   bytes = cupsUTF8ToCharset(output,
-                            (cups_utf8_t *)_cupsLangString(cg->lang_default,
-			                                   message),
-			    sizeof(output), cg->lang_default->encoding);
+			    (cups_utf8_t *)_cupsLangString(cg->lang_default,
+							   message),
+			    sizeof(output) - 4, cg->lang_default->encoding);
+  bytes += cupsUTF8ToCharset(output + bytes, (cups_utf8_t *)"\n", (int)(sizeof(output) - (size_t)bytes), cg->lang_default->encoding);
 
  /*
   * Write the string and return the number of bytes written...
   */
 
   if (bytes > 0)
-    return ((int)fwrite(output, 1, bytes, fp));
+    return ((int)fwrite(output, 1, (size_t)bytes, fp));
   else
-    return (bytes);
+    return ((int)bytes);
 }
 
 
@@ -226,10 +290,10 @@ _cupsSetLocale(char *argv[])		/* IO - Command-line arguments */
     if ((charset = strchr(new_lc_time, '.')) == NULL)
       charset = new_lc_time + strlen(new_lc_time);
 
-    strlcpy(charset, ".UTF-8", sizeof(new_lc_time) - (charset - new_lc_time));
+    strlcpy(charset, ".UTF-8", sizeof(new_lc_time) - (size_t)(charset - new_lc_time));
   }
   else
-    strcpy(new_lc_time, "C");
+    strlcpy(new_lc_time, "C", sizeof(new_lc_time));
 
   setlocale(LC_TIME, new_lc_time);
 #endif /* LC_TIME */
@@ -273,5 +337,5 @@ _cupsSetLocale(char *argv[])		/* IO - Command-line arguments */
 
 
 /*
- * End of "$Id: langprintf.c 8632 2009-05-14 18:19:48Z mike $".
+ * End of "$Id: langprintf.c 11558 2014-02-06 18:33:34Z msweet $".
  */

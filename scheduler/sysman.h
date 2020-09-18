@@ -1,16 +1,16 @@
 /*
- * "$Id: sysman.h 8095 2008-10-31 21:23:58Z mike $"
+ * "$Id: sysman.h 12140 2014-08-30 01:51:22Z msweet $"
  *
- *   System management definitions for the Common UNIX Printing System (CUPS).
+ * System management definitions for the CUPS scheduler.
  *
- *   Copyright 2007-2008 by Apple Inc.
- *   Copyright 2006 by Easy Software Products.
+ * Copyright 2007-2014 by Apple Inc.
+ * Copyright 2006 by Easy Software Products.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -20,10 +20,10 @@
 #define CUPSD_DIRTY_NONE	0	/* Nothing is dirty */
 #define CUPSD_DIRTY_PRINTERS	1	/* printers.conf is dirty */
 #define CUPSD_DIRTY_CLASSES	2	/* classes.conf is dirty */
-#define CUPSD_DIRTY_REMOTE	4	/* remote.cache is dirty */
-#define CUPSD_DIRTY_PRINTCAP	8	/* printcap is dirty */
-#define CUPSD_DIRTY_JOBS	16	/* jobs.cache or "c" file(s) are dirty */
-#define CUPSD_DIRTY_SUBSCRIPTIONS 32	/* subscriptions.conf is dirty */
+#define CUPSD_DIRTY_PRINTCAP	4	/* printcap is dirty */
+#define CUPSD_DIRTY_JOBS	8	/* jobs.cache or "c" file(s) are dirty */
+#define CUPSD_DIRTY_SUBSCRIPTIONS 16	/* subscriptions.conf is dirty */
+
 
 /*
  * Globals...
@@ -35,7 +35,9 @@ VAR int			DirtyFiles	VALUE(CUPSD_DIRTY_NONE),
 					/* How often do we write dirty files? */
 VAR time_t		DirtyCleanTime	VALUE(0);
 					/* When to clean dirty files next */
-VAR int			Sleeping	VALUE(0);
+VAR int			ACPower		VALUE(-1),
+					/* Is the system on AC power? */
+			Sleeping	VALUE(0);
 					/* Non-zero if machine is entering or *
 					 * in a sleep state...                */
 VAR time_t		SleepJobs	VALUE(0);
@@ -60,5 +62,5 @@ extern void	cupsdStopSystemMonitor(void);
 
 
 /*
- * End of "$Id: sysman.h 8095 2008-10-31 21:23:58Z mike $".
+ * End of "$Id: sysman.h 12140 2014-08-30 01:51:22Z msweet $".
  */

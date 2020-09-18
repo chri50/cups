@@ -1,16 +1,16 @@
 dnl
-dnl "$Id: cups-directories.m4 8497 2009-04-12 23:04:51Z mike $"
+dnl "$Id: cups-directories.m4 11717 2014-03-21 16:42:53Z msweet $"
 dnl
-dnl   Directory stuff for the Common UNIX Printing System (CUPS).
+dnl Directory stuff for CUPS.
 dnl
-dnl   Copyright 2007 by Apple Inc.
-dnl   Copyright 1997-2007 by Easy Software Products, all rights reserved.
+dnl Copyright 2007-2014 by Apple Inc.
+dnl Copyright 1997-2007 by Easy Software Products, all rights reserved.
 dnl
-dnl   These coded instructions, statements, and computer programs are the
-dnl   property of Apple Inc. and are protected by Federal copyright
-dnl   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
-dnl   which should have been included with this file.  If this file is
-dnl   file is missing or damaged, see the license at "http://www.cups.org/".
+dnl These coded instructions, statements, and computer programs are the
+dnl property of Apple Inc. and are protected by Federal copyright
+dnl law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+dnl which should have been included with this file.  If this file is
+dnl file is missing or damaged, see the license at "http://www.cups.org/".
 dnl
 
 AC_PREFIX_DEFAULT(/)
@@ -102,141 +102,24 @@ fi
 dnl Fix "libdir" variable...
 if test "$libdir" = "\${exec_prefix}/lib"; then
 	case "$uname" in
-		IRIX*)
-			libdir="$exec_prefix/lib32"
-			;;
 		Linux*)
-			if test -d /usr/lib64; then
+			if test -d /usr/lib64 -a ! -d /usr/lib64/fakeroot; then
 				libdir="$exec_prefix/lib64"
 			fi
 			;;
-		HP-UX*)
-			if test -d /usr/lib/hpux32; then
-				libdir="$exec_prefix/lib/hpux32"
-			fi
-			;;
 	esac
 fi
 
-dnl Setup init.d locations...
-AC_ARG_WITH(rcdir, [  --with-rcdir            set path for rc scripts],rcdir="$withval",rcdir="")
-AC_ARG_WITH(rclevels, [  --with-rclevels         set run levels for rc scripts],rclevels="$withval",rclevels="2 3 5")
-AC_ARG_WITH(rcstart, [  --with-rcstart          set start number for rc scripts],rcstart="$withval",rcstart="99")
-AC_ARG_WITH(rcstop, [  --with-rcstop           set stop number for rc scripts],rcstop="$withval",rcstop="00")
-AC_ARG_WITH(smfmanifestdir, [  --with-smfmanifestdir   set path for Solaris SMF manifest],smfmanifestdir="$withval",smfmanifestdir="")
-
-INITDIR=""
-INITDDIR=""
-RCLEVELS="$rclevels"
-RCSTART="$rcstart"
-RCSTOP="$rcstop"
-SMFMANIFESTDIR=""
-
-if test x$rcdir = x; then
-	case "$uname" in
-		AIX*)
-			INITDIR="/etc/rc.d"
-			;;
-
-		Darwin*)
-			# Darwin and MacOS X...
-			if test -x /sbin/launchd; then
-				INITDDIR="/System/Library/LaunchDaemons"
-			else 
-				INITDDIR="/System/Library/StartupItems/PrintingServices"
-			fi
-			;;
-
-		FreeBSD* | OpenBSD* | MirBSD* | ekkoBSD*)
-			# FreeBSD and OpenBSD
-			;;
-
-		HP-UX*)
-			INITDIR="/sbin"
-			RCLEVELS="2"
-			RCSTART="380"
-			RCSTOP="620"
-			;;
-
-		IRIX*)
-			# IRIX
-			INITDIR="/etc"
-			RCSTART="60"
-			RCSTOP="25"
-			;;
-
-		Linux | GNU | GNU/k*BSD*)
-			# Linux/HURD seems to choose an init.d directory at random...
-			if test -d /sbin/init.d; then
-				# SuSE
-				INITDIR="/sbin/init.d"
-			else
-				if test -d /etc/init.d; then
-					# Others
-					INITDIR="/etc"
-				else
-					# RedHat
-					INITDIR="/etc/rc.d"
-				fi
-			fi
-			RCSTART="81"
-			RCSTOP="36"
-			;;
-
-		NetBSD*)
-			# NetBSD
-			INITDDIR="/etc/rc.d"
-			;;
-
-		OSF1*)
-			INITDIR="/sbin"
-			;;
-
-		SunOS*)
-			# Solaris
-			if test "x$smfmanifestdir" != x; then
-				SMFMANIFESTDIR=$smfmanifestdir
-			else
-				INITDIR="/etc"
-				RCSTART="81"
-			fi
-			;;
-
-		*)
-			INITDIR="/etc"
-			;;
-
-	esac
-elif test "x$rcdir" != xno; then
-	if test "x$rclevels" = x; then
-		INITDDIR="$rcdir"
-	else
-		INITDIR="$rcdir"
-	fi
+dnl Setup private include directory...
+AC_ARG_WITH(privateinclude, [  --with-privateinclude   set path for private include files, default=none],privateinclude="$withval",privateinclude="")
+if test "x$privateinclude" != x -a "x$privateinclude" != xnone; then
+	PRIVATEINCLUDE="$privateinclude/cups"
+else
+	privateinclude=""
+	PRIVATEINCLUDE=""
 fi
-
-AC_SUBST(INITDIR)
-AC_SUBST(INITDDIR)
-AC_SUBST(RCLEVELS)
-AC_SUBST(RCSTART)
-AC_SUBST(RCSTOP)
-AC_SUBST(SMFMANIFESTDIR)
-
-dnl Xinetd support...
-AC_ARG_WITH(xinetd, [  --with-xinetd           set path for xinetd config files],XINETD="$withval",XINETD="")
-
-if test "x$XINETD" = x -a ! -x /sbin/launchd; then
-	for dir in /private/etc/xinetd.d /etc/xinetd.d /usr/local/etc/xinetd.d; do
-		if test -d $dir; then
-			XINETD="$dir"
-			break
-		fi
-	done
-elif test "x$XINETD" = xno; then
-	XINETD=""
-fi
-
-AC_SUBST(XINETD)
+AC_SUBST(privateinclude)
+AC_SUBST(PRIVATEINCLUDE)
 
 dnl LPD sharing support...
 AC_ARG_WITH(lpdconfig, [  --with-lpdconfig        set URI for LPD config file],
@@ -354,10 +237,6 @@ if test "$localedir" = "\${datarootdir}/locale"; then
 			CUPS_LOCALEDIR="$datarootdir/locale"
 			;;
 
-		OSF1* | AIX*)
-			CUPS_LOCALEDIR="$exec_prefix/lib/nls/msg"
-			;;
-
 		*)
 			# This is the standard System V location...
 			CUPS_LOCALEDIR="$exec_prefix/lib/locale"
@@ -411,19 +290,20 @@ AC_DEFINE_UNQUOTED(CUPS_SERVERROOT, "$sysconfdir/cups")
 AC_SUBST(CUPS_SERVERROOT)
 
 # Transient run-time state
-case "$uname" in
-	Darwin*)
-		# Darwin (Mac OS X)
-		CUPS_STATEDIR="$CUPS_SERVERROOT"
-		;;
-	*)
-		# All others
-		CUPS_STATEDIR="$localstatedir/run/cups"
-		;;
-esac
+AC_ARG_WITH(rundir, [  --with-rundir           set transient run-time state directory],CUPS_STATEDIR="$withval",[
+	case "$uname" in
+		Darwin*)
+			# Darwin (OS X)
+			CUPS_STATEDIR="$CUPS_SERVERROOT"
+			;;
+		*)
+			# All others
+			CUPS_STATEDIR="$localstatedir/run/cups"
+			;;
+	esac])
 AC_DEFINE_UNQUOTED(CUPS_STATEDIR, "$CUPS_STATEDIR")
 AC_SUBST(CUPS_STATEDIR)
 
 dnl
-dnl End of "$Id: cups-directories.m4 8497 2009-04-12 23:04:51Z mike $".
+dnl End of "$Id: cups-directories.m4 11717 2014-03-21 16:42:53Z msweet $".
 dnl

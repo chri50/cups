@@ -1,32 +1,26 @@
 /*
- * "$Id: bcp.c 6800 2007-08-16 18:28:44Z mike $"
+ * "$Id: bcp.c 11558 2014-02-06 18:33:34Z msweet $"
  *
- *   TBCP port monitor for the Common UNIX Printing System (CUPS).
+ * TBCP port monitor for CUPS.
  *
- *   Copyright 2007 by Apple Inc.
- *   Copyright 1993-2006 by Easy Software Products.
+ * Copyright 2007-2014 by Apple Inc.
+ * Copyright 1993-2006 by Easy Software Products.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  *
- *   This file is subject to the Apple OS-Developed Software exception.
- *
- * Contents:
- *
- *   main()    - Main entry...
- *   psgets()  - Get a line from a file.
- *   pswrite() - Write data from a file.
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
  * Include necessary headers...
  */
 
-#include <cups/string.h>
-#include <cups/cups.h>
+#include <cups/cups-private.h>
+#include <cups/ppd.h>
 
 
 /*
@@ -34,7 +28,7 @@
  */
 
 static char		*psgets(char *buf, size_t *bytes, FILE *fp);
-static size_t		pswrite(const char *buf, size_t bytes, FILE *fp);
+static ssize_t		pswrite(const char *buf, size_t bytes);
 
 
 /*
@@ -58,7 +52,9 @@ main(int  argc,				/* I - Number of command-line args */
 
   if (argc < 6 || argc > 7)
   {
-    fputs("ERROR: tbcp job-id user title copies options [file]\n", stderr);
+    _cupsLangPrintf(stderr,
+                    _("Usage: %s job-id user title copies options [file]"),
+		    argv[0]);
     return (1);
   }
 
@@ -149,7 +145,7 @@ main(int  argc,				/* I - Number of command-line args */
       if (psgets(line, &linelen, fp) == NULL)
 	break;
     }
-    while (pswrite(line, linelen, stdout) > 0);
+    while (pswrite(line, linelen) > 0);
 
     fflush(stdout);
   }
@@ -182,7 +178,7 @@ psgets(char   *buf,			/* I  - Buffer to read into */
   bufptr = buf;
   ch     = EOF;
 
-  while ((bufptr - buf) < len)
+  while ((size_t)(bufptr - buf) < len)
   {
     if ((ch = getc(fp)) == EOF)
       break;
@@ -207,7 +203,7 @@ psgets(char   *buf,			/* I  - Buffer to read into */
     else if (ch == '\n')
       break;
     else
-      *bufptr++ = ch;
+      *bufptr++ = (char)ch;
   }
 
  /*
@@ -216,8 +212,8 @@ psgets(char   *buf,			/* I  - Buffer to read into */
 
   if (ch == '\n' || ch == '\r')
   {
-    if ((bufptr - buf) < len)
-      *bufptr++ = ch;
+    if ((size_t)(bufptr - buf) < len)
+      *bufptr++ = (char)ch;
     else
       ungetc(ch, fp);
   }
@@ -227,7 +223,7 @@ psgets(char   *buf,			/* I  - Buffer to read into */
   */
 
   *bufptr = '\0';
-  *bytes  = bufptr - buf;
+  *bytes  = (size_t)(bufptr - buf);
 
   if (ch == EOF && bufptr == buf)
     return (NULL);
@@ -240,10 +236,9 @@ psgets(char   *buf,			/* I  - Buffer to read into */
  * 'pswrite()' - Write data from a file.
  */
 
-static size_t				/* O - Number of bytes written */
+static ssize_t				/* O - Number of bytes written */
 pswrite(const char *buf,		/* I - Buffer to write */
-        size_t     bytes,		/* I - Bytes to write */
-	FILE       *fp)			/* I - File to write to */
+        size_t     bytes)		/* I - Bytes to write */
 {
   size_t	count;			/* Remaining bytes */
 
@@ -281,10 +276,10 @@ pswrite(const char *buf,		/* I - Buffer to write */
 	  break;
     }
 
-  return (bytes);
+  return ((ssize_t)bytes);
 }
 
 
 /*
- * End of "$Id: bcp.c 6800 2007-08-16 18:28:44Z mike $".
+ * End of "$Id: bcp.c 11558 2014-02-06 18:33:34Z msweet $".
  */

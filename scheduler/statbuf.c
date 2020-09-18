@@ -1,23 +1,16 @@
 /*
- * "$Id: statbuf.c 8459 2009-03-20 16:45:12Z mike $"
+ * "$Id: statbuf.c 11594 2014-02-14 20:09:01Z msweet $"
  *
- *   Status buffer routines for the Common UNIX Printing System (CUPS)
- *   scheduler.
+ * Status buffer routines for the CUPS scheduler.
  *
- *   Copyright 2007-2009 by Apple Inc.
- *   Copyright 1997-2006 by Easy Software Products, all rights reserved.
+ * Copyright 2007-2014 by Apple Inc.
+ * Copyright 1997-2006 by Easy Software Products, all rights reserved.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
- *
- * Contents:
- *
- *   cupsdStatBufDelete() - Destroy a status buffer.
- *   cupsdStatBufNew()    - Create a new status buffer.
- *   cupsdStatBufUpdate() - Update the status buffer.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -120,7 +113,7 @@ cupsdStatBufNew(int        fd,		/* I - File descriptor of pipe */
 char *					/* O - Line from buffer, "", or NULL */
 cupsdStatBufUpdate(
     cupsd_statbuf_t *sb,		/* I - Status buffer */
-    int             *loglevel,		/* O - Log level */ 
+    int             *loglevel,		/* O - Log level */
     char            *line,		/* I - Line buffer */
     int             linelen)		/* I - Size of line buffer */
 {
@@ -139,8 +132,7 @@ cupsdStatBufUpdate(
     * No, read more data...
     */
 
-    if ((bytes = read(sb->fd, sb->buffer + sb->bufused,
-                      CUPSD_SB_BUFFER_SIZE - sb->bufused - 1)) > 0)
+    if ((bytes = read(sb->fd, sb->buffer + sb->bufused, (size_t)(CUPSD_SB_BUFFER_SIZE - sb->bufused - 1))) > 0)
     {
       sb->bufused += bytes;
       sb->buffer[sb->bufused] = '\0';
@@ -259,6 +251,11 @@ cupsdStatBufUpdate(
     *loglevel = CUPSD_LOG_STATE;
     message   = sb->buffer + 6;
   }
+  else if (!strncmp(sb->buffer, "JOBSTATE:", 9))
+  {
+    *loglevel = CUPSD_LOG_JOBSTATE;
+    message   = sb->buffer + 9;
+  }
   else if (!strncmp(sb->buffer, "ATTR:", 5))
   {
     *loglevel = CUPSD_LOG_ATTR;
@@ -308,7 +305,7 @@ cupsdStatBufUpdate(
   * Copy the message to the line buffer...
   */
 
-  strlcpy(line, message, linelen);
+  strlcpy(line, message, (size_t)linelen);
 
  /*
   * Copy over the buffer data we've used up...
@@ -327,5 +324,5 @@ cupsdStatBufUpdate(
 
 
 /*
- * End of "$Id: statbuf.c 8459 2009-03-20 16:45:12Z mike $".
+ * End of "$Id: statbuf.c 11594 2014-02-14 20:09:01Z msweet $".
  */

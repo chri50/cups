@@ -1,34 +1,24 @@
 /*
- * "$Id: testsnmp.c 8254 2009-01-14 22:40:58Z mike $"
+ * "$Id: testsnmp.c 11558 2014-02-06 18:33:34Z msweet $"
  *
- *   SNMP test program for the Common UNIX Printing System (CUPS).
+ * SNMP test program for CUPS.
  *
- *   Copyright 2008-2009 by Apple Inc.
+ * Copyright 2008-2014 by Apple Inc.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  *
- *   This file is subject to the Apple OS-Developed Software exception.
- *
- * Contents:
- *
- *   main()     - Main entry.
- *   scan_oid() - Scan an OID value.
- *   show_oid() - Show the specified OID.
- *   usage()    - Show program usage and exit.
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
  * Include necessary headers...
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
-#include "string.h"
+#include "cups-private.h"
 #include "snmp-private.h"
 
 
@@ -39,7 +29,7 @@
 static void	print_packet(cups_snmp_t *packet, void *data);
 static int	show_oid(int fd, const char *community,
 		         http_addr_t *addr, const char *s, int walk);
-static void	usage(void);
+static void	usage(void) __attribute__((noreturn));
 
 
 /*
@@ -122,7 +112,7 @@ main(int  argc,				/* I - Number of command-line args */
 		         ".1.3.6.1.2.1.43.10.2.1.4.1.1", walk))
       return (1);
   }
-  
+
   return (0);
 }
 
@@ -135,8 +125,8 @@ static void
 print_packet(cups_snmp_t *packet,	/* I - SNMP response packet */
              void        *data)		/* I - User data pointer (not used) */
 {
-  int	i;				/* Looping var */
-  char	temp[1024];			/* Temporary OID string */
+  unsigned	i;			/* Looping var */
+  char		temp[1024];		/* Temporary OID string */
 
 
   (void)data;
@@ -303,5 +293,5 @@ usage(void)
 
 
 /*
- * End of "$Id: testsnmp.c 8254 2009-01-14 22:40:58Z mike $".
+ * End of "$Id: testsnmp.c 11558 2014-02-06 18:33:34Z msweet $".
  */

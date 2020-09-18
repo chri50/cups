@@ -1,25 +1,20 @@
 dnl
-dnl "$Id: cups-pam.m4 8825 2009-09-22 21:53:31Z mike $"
+dnl "$Id: cups-pam.m4 11342 2013-10-18 20:36:01Z msweet $"
 dnl
-dnl   PAM stuff for the Common UNIX Printing System (CUPS).
+dnl   PAM stuff for CUPS.
 dnl
-dnl   Copyright 2007-2009 by Apple Inc.
-dnl   Copyright 1997-2005 by Easy Software Products, all rights reserved.
+dnl Copyright 2007-2013 by Apple Inc.
+dnl Copyright 1997-2005 by Easy Software Products, all rights reserved.
 dnl
-dnl   These coded instructions, statements, and computer programs are the
-dnl   property of Apple Inc. and are protected by Federal copyright
-dnl   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
-dnl   which should have been included with this file.  If this file is
-dnl   file is missing or damaged, see the license at "http://www.cups.org/".
+dnl These coded instructions, statements, and computer programs are the
+dnl property of Apple Inc. and are protected by Federal copyright
+dnl law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+dnl which should have been included with this file.  If this file is
+dnl file is missing or damaged, see the license at "http://www.cups.org/".
 dnl
 
 AC_ARG_ENABLE(pam, [  --disable-pam           disable PAM support])
 AC_ARG_WITH(pam_module, [  --with-pam-module       specify the PAM module to use])
-
-dnl Don't use PAM with AIX...
-if test $uname = AIX; then
-	enable_pam=no
-fi
 
 PAMDIR=""
 PAMFILE="pam.std"
@@ -61,7 +56,7 @@ if test x$enable_pam != xno; then
 
 	case "$uname" in
 		Darwin*)
-			# Darwin/Mac OS X
+			# Darwin/OS X
 			if test "x$with_pam_module" != x; then
 				PAMFILE="pam.$with_pam_module"
 			elif test -f /usr/lib/pam/pam_opendirectory.so.2; then
@@ -98,5 +93,5 @@ AC_SUBST(PAMMOD)
 AC_SUBST(PAMMODAUTH)
 
 dnl
-dnl End of "$Id: cups-pam.m4 8825 2009-09-22 21:53:31Z mike $".
+dnl End of "$Id: cups-pam.m4 11342 2013-10-18 20:36:01Z msweet $".
 dnl

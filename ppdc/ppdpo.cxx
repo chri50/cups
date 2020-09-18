@@ -1,22 +1,16 @@
 //
-// "$Id: ppdpo.cxx 8484 2009-04-03 17:35:17Z mike $"
+// "$Id: ppdpo.cxx 12633 2015-05-15 19:16:58Z msweet $"
 //
-//   PPD file message catalog program for the CUPS PPD Compiler.
+// PPD file message catalog program for the CUPS PPD Compiler.
 //
-//   Copyright 2007-2008 by Apple Inc.
-//   Copyright 2002-2005 by Easy Software Products.
+// Copyright 2007-2015 by Apple Inc.
+// Copyright 2002-2005 by Easy Software Products.
 //
-//   These coded instructions, statements, and computer programs are the
-//   property of Apple Inc. and are protected by Federal copyright
-//   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
-//   which should have been included with this file.  If this file is
-//   file is missing or damaged, see the license at "http://www.cups.org/".
-//
-// Contents:
-//
-//   main()           - Main entry for the PPD compiler.
-//   add_ui_strings() - Add all UI strings from the driver.
-//   usage()          - Show usage and exit.
+// These coded instructions, statements, and computer programs are the
+// property of Apple Inc. and are protected by Federal copyright
+// law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+// which should have been included with this file.  If this file is
+// file is missing or damaged, see the license at "http://www.cups.org/".
 //
 
 //
@@ -58,7 +52,7 @@ main(int  argc,				// I - Number of command-line arguments
 
   // Scan the command-line...
   catalog = new ppdcCatalog("en");
-  src     = 0;
+  src     = new ppdcSource();
   verbose = 0;
   outfile = 0;
 
@@ -90,7 +84,7 @@ main(int  argc,				// I - Number of command-line arguments
 
               if (verbose > 1)
 	        _cupsLangPrintf(stdout,
-		                _("ppdc: Adding include directory \"%s\"...\n"),
+		                _("ppdc: Adding include directory \"%s\"."),
 				argv[i]);
 
 	      ppdcSource::add_include(argv[i]);
@@ -120,27 +114,31 @@ main(int  argc,				// I - Number of command-line arguments
       // Open and load the driver info file...
       if (verbose > 1)
         _cupsLangPrintf(stdout,
-	                _("ppdc: Loading driver information file \"%s\"...\n"),
+	                _("ppdc: Loading driver information file \"%s\"."),
 			argv[i]);
 
-      src = new ppdcSource(argv[i]);
-
-      // Add UI strings...
-      for (d = (ppdcDriver *)src->drivers->first();
-           d;
-	   d = (ppdcDriver *)src->drivers->next())
-      {
-	if (verbose)
-	  _cupsLangPrintf(stderr,
-	                  _("ppdc: Adding/updating UI text from %s...\n"),
-			  argv[i]);
-
-        add_ui_strings(d, catalog);
-      }
-
-      // Delete the printer driver information...
-      src->release();
+      src->read_file(argv[i]);
     }
+
+  // If no drivers have been loaded, display the program usage message.
+  if ((d = (ppdcDriver *)src->drivers->first()) != NULL)
+  {
+    // Add UI strings...
+    while (d != NULL)
+    {
+      if (verbose)
+	_cupsLangPrintf(stderr, _("ppdc: Adding/updating UI text from %s."), argv[i]);
+
+      add_ui_strings(d, catalog);
+
+      d = (ppdcDriver *)src->drivers->next();
+    }
+  }
+  else
+    usage();
+
+  // Delete the printer driver information...
+  src->release();
 
   // Write the message catalog...
   if (!outfile)
@@ -149,10 +147,6 @@ main(int  argc,				// I - Number of command-line arguments
     catalog->save_messages(outfile);
 
   catalog->release();
-
-  // If no drivers have been loaded, display the program usage message.
-  if (!src)
-    usage();
 
   // Return with no errors.
   return (0);
@@ -191,7 +185,7 @@ add_ui_strings(ppdcDriver  *d,		// I - Driver data
     if (!g->options->count)
       continue;
 
-    if (strcasecmp(g->name->value, "General"))
+    if (_cups_strcasecmp(g->name->value, "General"))
       catalog->add_message(g->text->value);
 
     for (o = (ppdcOption *)g->options->first();
@@ -250,19 +244,19 @@ add_ui_strings(ppdcDriver  *d,		// I - Driver data
 static void
 usage(void)
 {
-  _cupsLangPuts(stdout,
-                _("Usage: ppdpo [options] -o filename.po filename.drv [ ... "
-		  "filenameN.drv ]\n"
-		  "Options:\n"
-		  "  -D name=value        Set named variable to value.\n"
-		  "  -I include-dir    Add include directory to search path.\n"
-		  "  -v                Be verbose (more v's for more "
-		  "verbosity).\n"));
+  _cupsLangPuts(stdout, _("Usage: ppdpo [options] -o filename.po filename.drv "
+                          "[ ... filenameN.drv ]"));
+  _cupsLangPuts(stdout, _("Options:"));
+  _cupsLangPuts(stdout, _("  -D name=value           Set named variable to "
+                          "value."));
+  _cupsLangPuts(stdout, _("  -I include-dir          Add include directory to "
+                          "search path."));
+  _cupsLangPuts(stdout, _("  -v                      Be verbose."));
 
   exit(1);
 }
 
 
 //
-// End of "$Id: ppdpo.cxx 8484 2009-04-03 17:35:17Z mike $".
+// End of "$Id: ppdpo.cxx 12633 2015-05-15 19:16:58Z msweet $".
 //

@@ -1,27 +1,16 @@
 /*
- * "$Id: env.c 9470 2011-01-11 07:05:58Z mike $"
+ * "$Id: env.c 12700 2015-06-08 18:32:35Z msweet $"
  *
- *   Environment management routines for the CUPS scheduler.
+ * Environment management routines for the CUPS scheduler.
  *
- *   Copyright 2007-2011 by Apple Inc.
- *   Copyright 1997-2006 by Easy Software Products, all rights reserved.
+ * Copyright 2007-2014 by Apple Inc.
+ * Copyright 1997-2006 by Easy Software Products, all rights reserved.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
- *
- * Contents:
- *
- *   cupsdInitEnv()   - Initialize the current environment with standard
- *                      variables.
- *   cupsdLoadEnv()   - Copy common environment variables into an array.
- *   cupsdSetEnv()    - Set a common environment variable.
- *   cupsdSetEnvf()   - Set a formatted common environment variable.
- *   cupsdUpdateEnv() - Update the environment for the configured directories.
- *   clear_env()      - Clear common environment variables.
- *   find_env()       - Find a common environment variable.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -62,7 +51,7 @@ cupsdInitEnv(void)
 
 #if defined(__APPLE__)
  /*
-  * Add special voodoo magic for MacOS X - this allows MacOS X 
+  * Add special voodoo magic for MacOS X - this allows MacOS X
   * programs to access their bundle resources properly...
   *
   * This string is replaced in cupsdStartProcess()...
@@ -128,6 +117,13 @@ cupsdSetEnv(const char *name,		/* I - Name of variable */
     value = getenv(name);
 
   if (!value)
+    return;
+
+ /*
+  * Do not allow dynamic linker variables when running as root...
+  */
+
+  if (!RunUser && (!strncmp(name, "DYLD_", 5) || !strncmp(name, "LD_", 3)))
     return;
 
  /*
@@ -227,6 +223,8 @@ cupsdUpdateEnv(void)
   set_if_undefined("TZ", NULL);
   set_if_undefined("USER", "root");
   set_if_undefined("VG_ARGS", NULL);
+
+  cupsdSetEnvf("CUPS_MAX_MESSAGE", "%d", CUPSD_SB_BUFFER_SIZE - 1);
 }
 
 
@@ -267,5 +265,5 @@ find_env(const char *name)		/* I - Variable name */
 
 
 /*
- * End of "$Id: env.c 9470 2011-01-11 07:05:58Z mike $".
+ * End of "$Id: env.c 12700 2015-06-08 18:32:35Z msweet $".
  */

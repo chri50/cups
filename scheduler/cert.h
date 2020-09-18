@@ -1,10 +1,9 @@
 /*
- * "$Id: cert.h 7383 2008-03-20 20:58:07Z mike $"
+ * "$Id: cert.h 10996 2013-05-29 11:51:34Z msweet $"
  *
- *   Authentication certificate definitions for the Common UNIX
- *   Printing System (CUPS).
+ *   Authentication certificate definitions for the CUPS scheduler.
  *
- *   Copyright 2007-2008 by Apple Inc.
+ *   Copyright 2007-2012 by Apple Inc.
  *   Copyright 1997-2005 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -24,9 +23,7 @@ typedef struct cupsd_cert_s
   int		pid;			/* Process ID (0 for root certificate) */
   char		certificate[33];	/* 32 hex characters, or 128 bits */
   char		username[33];		/* Authenticated username */
-#ifdef HAVE_GSSAPI
-  krb5_ccache	ccache;			/* Kerberos credential cache */
-#endif /* HAVE_GSSAPI */
+  int		type;			/* AuthType for username */
 } cupsd_cert_t;
 
 
@@ -44,8 +41,7 @@ VAR time_t		RootCertTime	/* Root certificate update time */
  * Prototypes...
  */
 
-extern void		cupsdAddCert(int pid, const char *username,
-			             void *ccache);
+extern void		cupsdAddCert(int pid, const char *username, int type);
 extern void		cupsdDeleteCert(int pid);
 extern void		cupsdDeleteAllCerts(void);
 extern cupsd_cert_t	*cupsdFindCert(const char *certificate);
@@ -53,5 +49,5 @@ extern void		cupsdInitCerts(void);
 
 
 /*
- * End of "$Id: cert.h 7383 2008-03-20 20:58:07Z mike $".
+ * End of "$Id: cert.h 10996 2013-05-29 11:51:34Z msweet $".
  */

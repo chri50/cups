@@ -1,28 +1,16 @@
 /*
- * "$Id: util.c 8700 2009-06-05 21:38:52Z mike $"
+ * "$Id: util.c 11558 2014-02-06 18:33:34Z msweet $"
  *
- *   Mini-daemon utility functions for the Common UNIX Printing System (CUPS).
+ * Mini-daemon utility functions for CUPS.
  *
- *   Copyright 2007-2009 by Apple Inc.
- *   Copyright 1997-2005 by Easy Software Products.
+ * Copyright 2007-2014 by Apple Inc.
+ * Copyright 1997-2005 by Easy Software Products.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
- *
- * Contents:
- *
- *   cupsdCompareNames()       - Compare two names.
- *   cupsdCreateStringsArray() - Create a CUPS array of strings.
- *   cupsdExec()               - Run a program with the correct environment.
- *   cupsdPipeCommand()        - Read output from a command.
- *   cupsdSendIPPGroup()       - Send a group tag.
- *   cupsdSendIPPHeader()      - Send the IPP response header.
- *   cupsdSendIPPInteger()     - Send an integer attribute.
- *   cupsdSendIPPString()      - Send a string attribute.
- *   cupsdSendIPPTrailer()     - Send the end-of-message tag.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -36,13 +24,13 @@
 #ifdef __APPLE__
 #  include <libgen.h>
 extern char **environ;
-#endif /* __APPLE__ */ 
+#endif /* __APPLE__ */
 
 
 /*
  * 'cupsdCompareNames()' - Compare two names.
  *
- * This function basically does a strcasecmp() of the two strings,
+ * This function basically does a _cups_strcasecmp() of the two strings,
  * but is also aware of numbers so that "a2" < "a100".
  */
 
@@ -91,7 +79,7 @@ cupsdCompareNames(const char *s,	/* I - First string */
       else if (!isdigit(*s & 255) && isdigit(*t & 255))
         return (-1);
       else if (!isdigit(*s & 255) || !isdigit(*t & 255))
-        continue;     
+        continue;
 
       if (*s < *t)
         diff = -1;
@@ -160,46 +148,17 @@ cupsdCompareNames(const char *s,	/* I - First string */
 cups_array_t *				/* O - CUPS array */
 cupsdCreateStringsArray(const char *s)	/* I - Comma-delimited strings */
 {
-  cups_array_t	*a;			/* CUPS array */
-  const char	*start,			/* Start of string */
-		*end;			/* End of string */
-  char		*ptr;			/* New string */
-
-
-  if (!s)
+  if (!s || !*s)
     return (NULL);
-
-  if ((a = cupsArrayNew((cups_array_func_t)strcmp, NULL)) != NULL)
-  {
-    for (start = end = s; *end; start = end + 1)
-    {
-     /*
-      * Find the end of the current delimited string...
-      */
-
-      if ((end = strchr(start, ',')) == NULL)
-        end = start + strlen(start);
-
-     /*
-      * Duplicate the string and add it to the array...
-      */
-
-      if ((ptr = calloc(1, end - start + 1)) == NULL)
-        break;
-
-      memcpy(ptr, start, end - start);
-      cupsArrayAdd(a, ptr);
-    }
-  }
-
-  return (a);
+  else
+    return (_cupsArrayNewStrings(s, ','));
 }
 
 
 /*
  * 'cupsdExec()' - Run a program with the correct environment.
  *
- * On Mac OS X, we need to update the CFProcessPath environment variable that
+ * On OS X, we need to update the CFProcessPath environment variable that
  * is passed in the environment so the child can access its bundled resources.
  */
 
@@ -216,7 +175,7 @@ cupsdExec(const char *command,		/* I - Full path to program */
 
 
  /*
-  * Some Mac OS X programs are bundled and need the CFProcessPath environment
+  * Some OS X programs are bundled and need the CFProcessPath environment
   * variable defined.  If the command is a symlink, resolve the link and point
   * to the resolved location, otherwise, use the command path itself.
   */
@@ -280,7 +239,7 @@ cups_file_t *				/* O - CUPS file or NULL on error */
 cupsdPipeCommand(int        *pid,	/* O - Process ID or 0 on error */
                  const char *command,	/* I - Command to run */
                  char       **argv,	/* I - Arguments to pass to command */
-		 int        user)	/* I - User to run as or 0 for current */
+		 uid_t      user)	/* I - User to run as or 0 for current */
 {
   int	fd,				/* Temporary file descriptor */
 	fds[2];				/* Pipe file descriptors */
@@ -433,8 +392,8 @@ cupsdSendIPPInteger(
   putchar(value_tag);
 
   len = strlen(name);
-  putchar(len >> 8);
-  putchar(len);
+  putchar((int)(len >> 8));
+  putchar((int)len);
 
   fputs(name, stdout);
 
@@ -470,14 +429,14 @@ cupsdSendIPPString(
   putchar(value_tag);
 
   len = strlen(name);
-  putchar(len >> 8);
-  putchar(len);
+  putchar((int)(len >> 8));
+  putchar((int)len);
 
   fputs(name, stdout);
 
   len = strlen(value);
-  putchar(len >> 8);
-  putchar(len);
+  putchar((int)(len >> 8));
+  putchar((int)len);
 
   fputs(value, stdout);
 }
@@ -496,5 +455,5 @@ cupsdSendIPPTrailer(void)
 
 
 /*
- * End of "$Id: util.c 8700 2009-06-05 21:38:52Z mike $".
+ * End of "$Id: util.c 11558 2014-02-06 18:33:34Z msweet $".
  */

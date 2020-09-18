@@ -1,15 +1,22 @@
-# DO NOT DELETE THIS LINE -- make depend depends on it.
-
-dbus.o: ../cups/cups.h ../cups/ipp.h ../cups/http.h ../cups/versioning.h
-dbus.o: ../cups/ppd.h ../cups/array.h ../cups/file.h ../cups/language.h
-dbus.o: ../cups/string.h ../config.h
-mailto.o: ../cups/cups.h ../cups/ipp.h ../cups/http.h ../cups/versioning.h
-mailto.o: ../cups/ppd.h ../cups/array.h ../cups/file.h ../cups/language.h
-mailto.o: ../cups/i18n.h ../cups/transcode.h ../cups/string.h ../config.h
-rss.o: ../cups/cups.h ../cups/ipp.h ../cups/http.h ../cups/versioning.h
-rss.o: ../cups/ppd.h ../cups/array.h ../cups/file.h ../cups/language.h
-rss.o: ../cups/language.h ../cups/string.h ../config.h ../cups/array.h
-testnotify.o: ../cups/cups.h ../cups/ipp.h ../cups/http.h
-testnotify.o: ../cups/versioning.h ../cups/ppd.h ../cups/array.h
-testnotify.o: ../cups/file.h ../cups/language.h ../cups/language.h
-testnotify.o: ../cups/string.h ../config.h
+dbus.o: dbus.c ../cups/cups.h ../cups/file.h ../cups/versioning.h \
+  ../cups/ipp.h ../cups/http.h ../cups/array.h ../cups/language.h \
+  ../cups/pwg.h ../cups/string-private.h ../config.h
+mailto.o: mailto.c ../cups/cups-private.h ../cups/string-private.h \
+  ../config.h ../cups/debug-private.h ../cups/versioning.h \
+  ../cups/array-private.h ../cups/array.h ../cups/ipp-private.h \
+  ../cups/ipp.h ../cups/http.h ../cups/http-private.h ../cups/language.h \
+  ../cups/md5-private.h ../cups/language-private.h ../cups/transcode.h \
+  ../cups/pwg-private.h ../cups/cups.h ../cups/file.h ../cups/pwg.h \
+  ../cups/ppd-private.h ../cups/ppd.h ../cups/thread-private.h
+rss.o: rss.c ../cups/cups.h ../cups/file.h ../cups/versioning.h \
+  ../cups/ipp.h ../cups/http.h ../cups/array.h ../cups/language.h \
+  ../cups/pwg.h ../cups/string-private.h ../config.h \
+  ../cups/ipp-private.h
+testnotify.o: testnotify.c ../cups/cups-private.h \
+  ../cups/string-private.h ../config.h ../cups/debug-private.h \
+  ../cups/versioning.h ../cups/array-private.h ../cups/array.h \
+  ../cups/ipp-private.h ../cups/ipp.h ../cups/http.h \
+  ../cups/http-private.h ../cups/language.h ../cups/md5-private.h \
+  ../cups/language-private.h ../cups/transcode.h ../cups/pwg-private.h \
+  ../cups/cups.h ../cups/file.h ../cups/pwg.h ../cups/ppd-private.h \
+  ../cups/ppd.h ../cups/thread-private.h

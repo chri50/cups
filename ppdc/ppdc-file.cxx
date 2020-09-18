@@ -1,9 +1,9 @@
 //
-// "$Id: ppdc-file.cxx 8484 2009-04-03 17:35:17Z mike $"
+// "$Id: ppdc-file.cxx 3755 2012-03-30 05:59:14Z msweet $"
 //
 //   File class for the CUPS PPD Compiler.
 //
-//   Copyright 2007-2009 by Apple Inc.
+//   Copyright 2007-2010 by Apple Inc.
 //   Copyright 2002-2005 by Easy Software Products.
 //
 //   These coded instructions, statements, and computer programs are the
@@ -25,7 +25,6 @@
 //
 
 #include "ppdc-private.h"
-#include <cups/i18n.h>
 
 
 //
@@ -43,11 +42,12 @@ ppdcFile::ppdcFile(const char  *f,		// I - File to open
   else
     fp = cupsFileOpen(f, "r");
 
-  filename = f;
-  line     = 1;
+  close_on_delete = !ffp;
+  filename        = f;
+  line            = 1;
 
   if (!fp)
-    _cupsLangPrintf(stderr, _("%s: Unable to open %s: %s\n"), "ppdc", f,
+    _cupsLangPrintf(stderr, _("ppdc: Unable to open %s: %s"), f,
                     strerror(errno));
 }
 
@@ -58,7 +58,7 @@ ppdcFile::ppdcFile(const char  *f,		// I - File to open
 
 ppdcFile::~ppdcFile()
 {
-  if (fp)
+  if (close_on_delete && fp)
     cupsFileClose(fp);
 }
 
@@ -106,5 +106,5 @@ ppdcFile::peek()
 
 
 //
-// End of "$Id: ppdc-file.cxx 8484 2009-04-03 17:35:17Z mike $".
+// End of "$Id: ppdc-file.cxx 3755 2012-03-30 05:59:14Z msweet $".
 //

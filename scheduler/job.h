@@ -1,16 +1,16 @@
 /*
- * "$Id: job.h 8614 2009-05-11 22:46:01Z mike $"
+ * "$Id: job.h 12668 2015-05-27 19:30:32Z msweet $"
  *
- *   Print job definitions for the Common UNIX Printing System (CUPS) scheduler.
+ * Print job definitions for the CUPS scheduler.
  *
- *   Copyright 2007-2009 by Apple Inc.
- *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright 2007-2015 by Apple Inc.
+ * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -39,15 +39,25 @@ struct cupsd_job_s			/**** Job request ****/
 					 * waiting on files */
   char			*username;	/* Printing user */
   char			*dest;		/* Destination printer or class */
+  char			*name;		/* Job name/title */
+  int			koctets;	/* job-k-octets */
   cups_ptype_t		dtype;		/* Destination type */
+  cupsd_printer_t	*printer;	/* Printer this job is assigned to */
   int			num_files;	/* Number of files in job */
   mime_type_t		**filetypes;	/* File types */
   int			*compressions;	/* Compression status of each file */
-  ipp_attribute_t	*sheets;	/* job-media-sheets-completed */
+  ipp_attribute_t	*impressions,	/* job-impressions-completed */
+			*sheets;	/* job-media-sheets-completed */
   time_t		access_time,	/* Last access time */
-			kill_time,	/* When to send SIGKILL */
-			hold_until;	/* Hold expiration date/time */
+			cancel_time,	/* When to cancel/send SIGTERM */
+			creation_time,	/* When job was created */
+			completed_time,	/* When job was completed (0 if not) */
+			file_time,	/* Job file retain time */
+			history_time,	/* Job history retain time */
+			hold_until,	/* Hold expiration date/time */
+			kill_time;	/* When to send SIGKILL */
   ipp_attribute_t	*state;		/* Job state */
+  ipp_attribute_t	*reasons;	/* Job state reasons */
   ipp_attribute_t	*job_sheets;	/* Job sheets (NULL if none) */
   ipp_attribute_t	*printer_message,
 					/* job-printer-state-message */
@@ -68,21 +78,18 @@ struct cupsd_job_s			/**** Job request ****/
 					/* Filter process IDs, 0 terminated */
   int			backend;	/* Backend process ID */
   int			status;		/* Status code from filters */
-  cupsd_printer_t	*printer;	/* Printer this job is assigned to */
   int			tries;		/* Number of tries for this job */
-  char			*auth_username,	/* AUTH_USERNAME environment variable,
+  int			completed;	/* cups-waiting-for-job-completed seen */
+  int			retry_as_raster;/* Need to retry the job as raster */
+  char			*auth_env[3],	/* AUTH_xxx environment variables,
                                          * if any */
-			*auth_domain,	/* AUTH_DOMAIN environment variable,
-					 * if any */
-			*auth_password;	/* AUTH_PASSWORD environment variable,
-					 * if any */
-  void			*profile;	/* Security profile */
+			*auth_uid;	/* AUTH_UID environment variable */
+  void			*profile,	/* Security profile for filters */
+			*bprofile;	/* Security profile for backend */
   cups_array_t		*history;	/* Debug log history */
   int			progress;	/* Printing progress */
-#ifdef HAVE_GSSAPI
-  krb5_ccache		ccache;		/* Kerberos credential cache */
-  char			*ccname;	/* KRB5CCNAME environment variable */
-#endif /* HAVE_GSSAPI */
+  int			num_keywords;	/* Number of PPD keywords */
+  cups_option_t		*keywords;	/* PPD keywords */
 };
 
 typedef struct cupsd_joblog_s		/**** Job log message ****/
@@ -96,18 +103,24 @@ typedef struct cupsd_joblog_s		/**** Job log message ****/
  * Globals...
  */
 
-VAR int			JobHistory	VALUE(1);
+VAR int			JobHistory	VALUE(INT_MAX);
 					/* Preserve job history? */
-VAR int			JobFiles	VALUE(0);
+VAR int			JobFiles	VALUE(86400);
 					/* Preserve job files? */
+VAR time_t		JobHistoryUpdate VALUE(0);
+					/* Time for next job history update */
 VAR int			MaxJobs		VALUE(0),
 					/* Max number of jobs */
 			MaxActiveJobs	VALUE(0),
 					/* Max number of active jobs */
+			MaxHoldTime	VALUE(0),
+					/* Max time for indefinite hold */
 			MaxJobsPerUser	VALUE(0),
 					/* Max jobs per user */
-			MaxJobsPerPrinter VALUE(0);
+			MaxJobsPerPrinter VALUE(0),
 					/* Max jobs per printer */
+			MaxJobTime	VALUE(3 * 60 * 60);
+					/* Max time for a job */
 VAR int			JobAutoPurge	VALUE(0);
 					/* Automatically purge jobs */
 VAR cups_array_t	*Jobs		VALUE(NULL),
@@ -140,6 +153,7 @@ extern void		cupsdDeleteJob(cupsd_job_t *job,
 			               cupsd_jobaction_t action);
 extern cupsd_job_t	*cupsdFindJob(int id);
 extern void		cupsdFreeAllJobs(void);
+extern cups_array_t	*cupsdGetCompletedJobs(cupsd_printer_t *p);
 extern int		cupsdGetPrinterJobCount(const char *dest);
 extern int		cupsdGetUserJobCount(const char *username);
 extern void		cupsdLoadAllJobs(void);
@@ -156,16 +170,15 @@ extern void		cupsdSetJobState(cupsd_job_t *job,
 			                 ipp_jstate_t newstate,
 					 cupsd_jobaction_t action,
 					 const char *message, ...)
-#ifdef __GNUC__
-__attribute__ ((__format__ (__printf__, 4, 5)))
-#endif /* __GNUC__ */
-;
+					__attribute__((__format__(__printf__,
+					                          4, 5)));
 extern void		cupsdStopAllJobs(cupsd_jobaction_t action,
 			                 int kill_delay);
 extern int		cupsdTimeoutJob(cupsd_job_t *job);
 extern void		cupsdUnloadCompletedJobs(void);
+extern void		cupsdUpdateJobs(void);
 
 
 /*
- * End of "$Id: job.h 8614 2009-05-11 22:46:01Z mike $".
+ * End of "$Id: job.h 12668 2015-05-27 19:30:32Z msweet $".
  */

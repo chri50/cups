@@ -1,35 +1,25 @@
 /*
- * "$Id: error.c 8673 2009-05-22 17:34:15Z mike $"
+ * "$Id: error.c 12747 2015-06-24 15:55:05Z msweet $"
  *
- *   Raster error handling for the Common UNIX Printing System (CUPS).
+ * Raster error handling for CUPS.
  *
- *   Copyright 2007-2008 by Apple Inc.
- *   Copyright 2007 by Easy Software Products.
+ * Copyright 2007-2015 by Apple Inc.
+ * Copyright 2007 by Easy Software Products.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  *
- *   This file is subject to the Apple OS-Developed Software exception.
- *
- * Contents:
- *
- *   _cupsRasterAddError()   - Add an error message to the error buffer.
- *   _cupsRasterClearError() - Clear the error buffer.
- *   cupsRasterErrorString() - Return the last error from a raster function.
- *   get_error_buffer()      - Return a pointer to thread local storage.
- *   raster_init()           - Initialize error buffer once.
- *   raster_destructor()     - Free memory allocated by get_error_buffer().
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
  * Include necessary headers...
  */
 
-#include "image-private.h"
-#include <stdarg.h>
+#include <cups/raster-private.h>
 
 
 /*
@@ -63,8 +53,10 @@ _cupsRasterAddError(const char *f,	/* I - Printf-style error message */
 					/* Error buffer */
   va_list	ap;			/* Pointer to additional arguments */
   char		s[2048];		/* Message string */
-  size_t	bytes;			/* Bytes in message string */
+  ssize_t	bytes;			/* Bytes in message string */
 
+
+  DEBUG_printf(("_cupsRasterAddError(f=\"%s\", ...)", f));
 
   va_start(ap, f);
   bytes = vsnprintf(s, sizeof(s), f, ap);
@@ -73,12 +65,14 @@ _cupsRasterAddError(const char *f,	/* I - Printf-style error message */
   if (bytes <= 0)
     return;
 
+  DEBUG_printf(("1_cupsRasterAddError: %s", s));
+
   bytes ++;
 
-  if (bytes >= sizeof(s))
+  if ((size_t)bytes >= sizeof(s))
     return;
 
-  if (bytes > (buf->end - buf->current))
+  if (bytes > (ssize_t)(buf->end - buf->current))
   {
    /*
     * Allocate more memory...
@@ -88,7 +82,7 @@ _cupsRasterAddError(const char *f,	/* I - Printf-style error message */
     size_t	size;			/* Size of buffer */
 
 
-    size = buf->end - buf->start + 2 * bytes + 1024;
+    size = (size_t)(buf->end - buf->start + 2 * bytes + 1024);
 
     if (buf->start)
       temp = realloc(buf->start, size);
@@ -111,7 +105,7 @@ _cupsRasterAddError(const char *f,	/* I - Printf-style error message */
   * Append the message to the end of the current string...
   */
 
-  memcpy(buf->current, s, bytes);
+  memcpy(buf->current, s, (size_t)bytes);
   buf->current += bytes - 1;
 }
 
@@ -139,7 +133,7 @@ _cupsRasterClearError(void)
  *
  * If there are no recent errors, NULL is returned.
  *
- * @since CUPS 1.3/Mac OS X 10.5@
+ * @since CUPS 1.3/OS X 10.5@
  */
 
 const char *				/* O - Last error */
@@ -168,8 +162,7 @@ cupsRasterErrorString(void)
  * Local globals...
  */
 
-static pthread_key_t	raster_key = -1;
-					/* Thread local storage key */
+static pthread_key_t	raster_key = 0;	/* Thread local storage key */
 static pthread_once_t	raster_key_once = PTHREAD_ONCE_INIT;
 					/* One-time initialization object */
 
@@ -192,11 +185,11 @@ get_error_buffer(void)
   _cups_raster_error_t *buf;		/* Pointer to error buffer */
 
 
- /* 
+ /*
   * Initialize the global data exactly once...
   */
 
-  DEBUG_puts("get_error_buffer()");
+  DEBUG_puts("3get_error_buffer()");
 
   pthread_once(&raster_key_once, raster_init);
 
@@ -207,7 +200,7 @@ get_error_buffer(void)
   if ((buf = (_cups_raster_error_t *)pthread_getspecific(raster_key))
           == NULL)
   {
-    DEBUG_puts("get_error_buffer: allocating memory for thread...");
+    DEBUG_puts("4get_error_buffer: allocating memory for thread.");
 
    /*
     * No, allocate memory as set the pointer for the key...
@@ -216,7 +209,7 @@ get_error_buffer(void)
     buf = calloc(1, sizeof(_cups_raster_error_t));
     pthread_setspecific(raster_key, buf);
 
-    DEBUG_printf(("    buf=%p\n", buf));
+    DEBUG_printf(("4get_error_buffer: buf=%p", buf));
   }
 
  /*
@@ -236,8 +229,7 @@ raster_init(void)
 {
   pthread_key_create(&raster_key, raster_destructor);
 
-  DEBUG_printf(("raster_init(): raster_key=%x(%u)\n", (unsigned)raster_key,
-                (unsigned)raster_key));
+  DEBUG_printf(("3raster_init(): raster_key=%x(%u)", (unsigned)raster_key, (unsigned)raster_key));
 }
 
 
@@ -252,7 +244,7 @@ raster_destructor(void *value)		/* I - Data to free */
 					/* Error buffer */
 
 
-  DEBUG_printf(("raster_destructor(value=%p)\n", value));
+  DEBUG_printf(("3raster_destructor(value=%p)", value));
 
   if (buf->start)
     free(buf->start);
@@ -283,5 +275,5 @@ get_error_buffer(void)
 
 
 /*
- * End of "$Id: error.c 8673 2009-05-22 17:34:15Z mike $".
+ * End of "$Id: error.c 12747 2015-06-24 15:55:05Z msweet $".
  */

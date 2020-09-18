@@ -1,37 +1,16 @@
 /*
- * "$Id: admin.c 9582 2011-03-04 19:28:38Z mike $"
+ * "$Id: admin.c 12516 2015-02-12 20:18:11Z msweet $"
  *
- *   Administration CGI for CUPS.
+ * Administration CGI for CUPS.
  *
- *   Copyright 2007-2011 by Apple Inc.
- *   Copyright 1997-2007 by Easy Software Products.
+ * Copyright 2007-2015 by Apple Inc.
+ * Copyright 1997-2007 by Easy Software Products.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
- *
- * Contents:
- *
- *   main()                    - Main entry for CGI.
- *   choose_device_cb()        - Add a device to the device selection page.
- *   do_add_rss_subscription() - Add a RSS subscription.
- *   do_am_class()             - Add or modify a class.
- *   do_am_printer()           - Add or modify a printer.
- *   do_cancel_subscription()  - Cancel a subscription.
- *   do_config_server()        - Configure server settings.
- *   do_delete_class()         - Delete a class.
- *   do_delete_printer()       - Delete a printer.
- *   do_export()               - Export printers to Samba.
- *   do_list_printers()        - List available printers.
- *   do_menu()                 - Show the main menu.
- *   do_set_allowed_users()    - Set the allowed/denied users for a queue.
- *   do_set_default()          - Set the server default printer/class.
- *   do_set_options()          - Configure the default options for a queue.
- *   do_set_sharing()          - Set printer-is-shared value.
- *   get_option_value()        - Return the value of an option.
- *   get_points()              - Get a value in points.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -39,8 +18,10 @@
  */
 
 #include "cgi-private.h"
+#include <cups/http-private.h>
+#include <cups/ppd-private.h>
 #include <cups/adminutil.h>
-#include <cups/file.h>
+#include <cups/ppd.h>
 #include <errno.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -59,12 +40,7 @@ static int	current_device = 0;	/* Current device shown */
  * Local functions...
  */
 
-static void	choose_device_cb(const char *device_class,
-                                 const char *device_id, const char *device_info,
-                                 const char *device_make_and_model,
-                                 const char *device_uri,
-                                 const char *device_location,
-				 const char *title);
+static void	choose_device_cb(const char *device_class, const char *device_id, const char *device_info, const char *device_make_and_model, const char *device_uri, const char *device_location, const char *title);
 static void	do_add_rss_subscription(http_t *http);
 static void	do_am_class(http_t *http, int modify);
 static void	do_am_printer(http_t *http, int modify);
@@ -82,6 +58,7 @@ static void	do_set_sharing(http_t *http);
 static char	*get_option_value(ppd_file_t *ppd, const char *name,
 		                  char *buffer, size_t bufsize);
 static double	get_points(double number, const char *uval);
+static char	*get_printer_ppd(const char *uri, char *buffer, size_t bufsize);
 
 
 /*
@@ -89,8 +66,7 @@ static double	get_points(double number, const char *uval);
  */
 
 int					/* O - Exit status */
-main(int  argc,				/* I - Number of command-line arguments */
-     char *argv[])			/* I - Command-line arguments */
+main(void)
 {
   http_t	*http;			/* Connection to the server */
   const char	*op;			/* Operation name */
@@ -496,7 +472,7 @@ do_add_rss_subscription(http_t *http)	/* I - HTTP connection */
 
   request = ippNewRequest(IPP_CREATE_PRINTER_SUBSCRIPTION);
 
-  if (!strcasecmp(printer_uri, "#ALL#"))
+  if (!_cups_strcasecmp(printer_uri, "#ALL#"))
     ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri",
                  NULL, "ipp://localhost/");
   else
@@ -523,7 +499,7 @@ do_add_rss_subscription(http_t *http)	/* I - HTTP connection */
   else if (cupsLastError() > IPP_OK_CONFLICT)
   {
     cgiStartHTML(_("Add RSS Subscription"));
-    cgiShowIPPError(_("Unable to add RSS subscription:"));
+    cgiShowIPPError(_("Unable to add RSS subscription"));
   }
   else
   {
@@ -586,8 +562,7 @@ do_am_class(http_t *http,		/* I - HTTP connection */
     ippAddInteger(request, IPP_TAG_OPERATION, IPP_TAG_ENUM, "printer-type",
 		  CUPS_PRINTER_LOCAL);
     ippAddInteger(request, IPP_TAG_OPERATION, IPP_TAG_ENUM, "printer-type-mask",
-		  CUPS_PRINTER_CLASS | CUPS_PRINTER_REMOTE |
-		      CUPS_PRINTER_IMPLICIT);
+		  CUPS_PRINTER_CLASS | CUPS_PRINTER_REMOTE);
 
    /*
     * Do the request and get back a response...
@@ -611,7 +586,7 @@ do_am_class(http_t *http,		/* I - HTTP connection */
 	if (attr->name && !strcmp(attr->name, "printer-uri-supported"))
 	{
 	  if ((ptr = strrchr(attr->values[0].string.text, '/')) != NULL &&
-	      (!name || strcasecmp(name, ptr + 1)))
+	      (!name || _cups_strcasecmp(name, ptr + 1)))
 	  {
 	   /*
 	    * Don't show the current class...
@@ -627,7 +602,7 @@ do_am_class(http_t *http,		/* I - HTTP connection */
 	   attr = attr->next)
 	if (attr->name && !strcmp(attr->name, "printer-name"))
 	{
-	  if (!name || strcasecmp(name, attr->values[0].string.text))
+	  if (!name || _cups_strcasecmp(name, attr->values[0].string.text))
 	  {
 	   /*
 	    * Don't show the current class...
@@ -688,7 +663,7 @@ do_am_class(http_t *http,		/* I - HTTP connection */
 	  {
 	    for (j = 0; j < num_printers; j ++)
 	    {
-	      if (!strcasecmp(attr->values[i].string.text,
+	      if (!_cups_strcasecmp(attr->values[i].string.text,
 	                      cgiGetArray("MEMBER_NAMES", j)))
 	      {
 		cgiSetArray("MEMBER_SELECTED", j, "SELECTED");
@@ -734,7 +709,7 @@ do_am_class(http_t *http,		/* I - HTTP connection */
   if (!name)
   {
     cgiStartHTML(title);
-    cgiSetVariable("ERROR", cgiText(_("Missing form variable!")));
+    cgiSetVariable("ERROR", cgiText(_("Missing form variable")));
     cgiCopyTemplateLang("error.tmpl");
     cgiEndHTML();
     return;
@@ -811,8 +786,8 @@ do_am_class(http_t *http,		/* I - HTTP connection */
   else if (cupsLastError() > IPP_OK_CONFLICT)
   {
     cgiStartHTML(title);
-    cgiShowIPPError(modify ? _("Unable to modify class:") :
-                             _("Unable to add class:"));
+    cgiShowIPPError(modify ? _("Unable to modify class") :
+                             _("Unable to add class"));
   }
   else
   {
@@ -855,7 +830,8 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
   const cgi_file_t *file;		/* Uploaded file, if any */
   const char	*var;			/* CGI variable */
   char		uri[HTTP_MAX_URI],	/* Device or printer URI */
-		*uriptr;		/* Pointer into URI */
+		*uriptr,		/* Pointer into URI */
+		evefile[1024] = "";	/* IPP Everywhere PPD file */
   int		maxrate;		/* Maximum baud rate */
   char		baudrate[255];		/* Baud rate string */
   const char	*name,			/* Pointer to class name */
@@ -960,16 +936,16 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
         *makeptr = '\0';
       else if ((makeptr = strchr(make, '-')) != NULL)
         *makeptr = '\0';
-      else if (!strncasecmp(make, "laserjet", 8) ||
-               !strncasecmp(make, "deskjet", 7) ||
-               !strncasecmp(make, "designjet", 9))
-        strcpy(make, "HP");
-      else if (!strncasecmp(make, "phaser", 6))
-        strcpy(make, "Xerox");
-      else if (!strncasecmp(make, "stylus", 6))
-        strcpy(make, "Epson");
+      else if (!_cups_strncasecmp(make, "laserjet", 8) ||
+               !_cups_strncasecmp(make, "deskjet", 7) ||
+               !_cups_strncasecmp(make, "designjet", 9))
+        strlcpy(make, "HP", sizeof(make));
+      else if (!_cups_strncasecmp(make, "phaser", 6))
+        strlcpy(make, "Xerox", sizeof(make));
+      else if (!_cups_strncasecmp(make, "stylus", 6))
+        strlcpy(make, "Epson", sizeof(make));
       else
-        strcpy(make, "Generic");
+        strlcpy(make, "Generic", sizeof(make));
 
       if (!cgiGetVariable("CURRENT_MAKE"))
         cgiSetVariable("CURRENT_MAKE", make);
@@ -1056,8 +1032,8 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
       else
       {
 	cgiStartHTML(title);
-	cgiShowIPPError(modify ? _("Unable to modify printer:") :
-				 _("Unable to add printer:"));
+	cgiShowIPPError(modify ? _("Unable to modify printer") :
+				 _("Unable to add printer"));
 	cgiEndHTML();
         return;
       }
@@ -1173,7 +1149,7 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
       char		filename[1024];	/* PPD filename */
       ppd_file_t	*ppd;		/* PPD information */
       char		buffer[1024];	/* Buffer */
-      int		bytes;		/* Number of bytes */
+      ssize_t		bytes;		/* Number of bytes */
       http_status_t	get_status;	/* Status of GET */
 
 
@@ -1195,7 +1171,7 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
       else if ((fd = cupsTempFd(filename, sizeof(filename))) >= 0)
       {
 	while ((bytes = httpRead2(http, buffer, sizeof(buffer))) > 0)
-          write(fd, buffer, bytes);
+          write(fd, buffer, (size_t)bytes);
 
 	close(fd);
 
@@ -1212,8 +1188,10 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
 	}
 	else
 	{
+	  int linenum;			/* Line number */
+
 	  fprintf(stderr, "ERROR: Unable to open PPD file %s: %s\n",
-	          filename, ppdErrorString(ppdLastError(&bytes)));
+	          filename, ppdErrorString(ppdLastError(&linenum)));
 	}
       }
       else
@@ -1318,7 +1296,7 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
     else
     {
       cgiStartHTML(title);
-      cgiShowIPPError(_("Unable to get list of printer drivers:"));
+      cgiShowIPPError(_("Unable to get list of printer drivers"));
       cgiCopyTemplateLang("error.tmpl");
       cgiEndHTML();
     }
@@ -1349,19 +1327,21 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
     ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri",
                  NULL, uri);
 
+    if (!file)
+    {
+      var = cgiGetVariable("PPD_NAME");
+      if (!strcmp(var, "everywhere"))
+        get_printer_ppd(cgiGetVariable("DEVICE_URI"), evefile, sizeof(evefile));
+      else if (strcmp(var, "__no_change__"))
+	ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_NAME, "ppd-name",
+		     NULL, var);
+    }
+
     ippAddString(request, IPP_TAG_PRINTER, IPP_TAG_TEXT, "printer-location",
                  NULL, cgiGetVariable("PRINTER_LOCATION"));
 
     ippAddString(request, IPP_TAG_PRINTER, IPP_TAG_TEXT, "printer-info",
                  NULL, cgiGetVariable("PRINTER_INFO"));
-
-    if (!file)
-    {
-      var = cgiGetVariable("PPD_NAME");
-      if (strcmp(var, "__no_change__"))
-	ippAddString(request, IPP_TAG_PRINTER, IPP_TAG_NAME, "ppd-name",
-		     NULL, var);
-    }
 
     strlcpy(uri, cgiGetVariable("DEVICE_URI"), sizeof(uri));
 
@@ -1381,7 +1361,7 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
       if ((uriptr = strchr(uri, '?')) == NULL)
         uriptr = uri + strlen(uri);
 
-      snprintf(uriptr, sizeof(uri) - (uriptr - uri),
+      snprintf(uriptr, sizeof(uri) - (size_t)(uriptr - uri),
                "?baud=%s+bits=%s+parity=%s+flow=%s",
                cgiGetVariable("BAUDRATE"), cgiGetVariable("BITS"),
 	       cgiGetVariable("PARITY"), cgiGetVariable("FLOW"));
@@ -1405,6 +1385,11 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
 
     if (file)
       ippDelete(cupsDoFileRequest(http, request, "/admin/", file->tempfile));
+    else if (evefile[0])
+    {
+      ippDelete(cupsDoFileRequest(http, request, "/admin/", evefile));
+      unlink(evefile);
+    }
     else
       ippDelete(cupsDoRequest(http, request, "/admin/"));
 
@@ -1416,8 +1401,8 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
     else if (cupsLastError() > IPP_OK_CONFLICT)
     {
       cgiStartHTML(title);
-      cgiShowIPPError(modify ? _("Unable to modify printer:") :
-                               _("Unable to add printer:"));
+      cgiShowIPPError(modify ? _("Unable to modify printer") :
+                               _("Unable to add printer"));
     }
     else if (modify)
     {
@@ -1482,7 +1467,7 @@ do_cancel_subscription(http_t *http)/* I - HTTP connection */
 
   if (id <= 0)
   {
-    cgiSetVariable("ERROR", cgiText(_("Bad subscription ID!")));
+    cgiSetVariable("ERROR", cgiText(_("Bad subscription ID")));
     cgiStartHTML(_("Cancel RSS Subscription"));
     cgiCopyTemplateLang("error.tmpl");
     cgiEndHTML();
@@ -1523,7 +1508,7 @@ do_cancel_subscription(http_t *http)/* I - HTTP connection */
   else if (cupsLastError() > IPP_OK_CONFLICT)
   {
     cgiStartHTML(_("Cancel RSS Subscription"));
-    cgiShowIPPError(_("Unable to cancel RSS subscription:"));
+    cgiShowIPPError(_("Unable to cancel RSS subscription"));
   }
   else
   {
@@ -1558,10 +1543,10 @@ do_config_server(http_t *http)		/* I - HTTP connection */
     int			advanced,	/* Advanced settings shown? */
 			changed;	/* Have settings changed? */
     const char		*debug_logging,	/* DEBUG_LOGGING value */
+			*preserve_jobs = NULL,
+					/* PRESERVE_JOBS value */
 			*remote_admin,	/* REMOTE_ADMIN value */
 			*remote_any,	/* REMOTE_ANY value */
-			*remote_printers,
-					/* REMOTE_PRINTERS value */
 			*share_printers,/* SHARE_PRINTERS value */
 			*user_cancel_any,
 					/* USER_CANCEL_ANY value */
@@ -1577,10 +1562,6 @@ do_config_server(http_t *http)		/* I - HTTP connection */
 					/* MaxJobs value */
 			*max_log_size = NULL;
 					/* MaxLogSize value */
-    char		local_protocols[255],
-					/* BrowseLocalProtocols */
-			remote_protocols[255];
-					/* BrowseRemoteProtocols */
     const char		*current_browse_web_if,
 					/* BrowseWebIF value */
 			*current_preserve_job_history,
@@ -1591,12 +1572,8 @@ do_config_server(http_t *http)		/* I - HTTP connection */
 					/* MaxClients value */
 			*current_max_jobs,
 					/* MaxJobs value */
-			*current_max_log_size,
+			*current_max_log_size;
 					/* MaxLogSize value */
-			*current_local_protocols,
-					/* BrowseLocalProtocols */
-			*current_remote_protocols;
-					/* BrowseRemoteProtocols */
 #ifdef HAVE_GSSAPI
     char		default_auth_type[255];
 					/* DefaultAuthType value */
@@ -1611,7 +1588,6 @@ do_config_server(http_t *http)		/* I - HTTP connection */
     debug_logging        = cgiGetVariable("DEBUG_LOGGING") ? "1" : "0";
     remote_admin         = cgiGetVariable("REMOTE_ADMIN") ? "1" : "0";
     remote_any           = cgiGetVariable("REMOTE_ANY") ? "1" : "0";
-    remote_printers      = cgiGetVariable("REMOTE_PRINTERS") ? "1" : "0";
     share_printers       = cgiGetVariable("SHARE_PRINTERS") ? "1" : "0";
     user_cancel_any      = cgiGetVariable("USER_CANCEL_ANY") ? "1" : "0";
 
@@ -1623,80 +1599,37 @@ do_config_server(http_t *http)		/* I - HTTP connection */
       */
 
       browse_web_if        = cgiGetVariable("BROWSE_WEB_IF") ? "Yes" : "No";
-      preserve_job_history = cgiGetVariable("PRESERVE_JOB_HISTORY") ? "Yes" : "No";
-      preserve_job_files   = cgiGetVariable("PRESERVE_JOB_FILES") ? "Yes" : "No";
       max_clients          = cgiGetVariable("MAX_CLIENTS");
-      max_jobs             = cgiGetVariable("MAX_JOBS");
       max_log_size         = cgiGetVariable("MAX_LOG_SIZE");
+      preserve_jobs        = cgiGetVariable("PRESERVE_JOBS");
+
+      if (preserve_jobs)
+      {
+        max_jobs             = cgiGetVariable("MAX_JOBS");
+	preserve_job_history = cgiGetVariable("PRESERVE_JOB_HISTORY");
+	preserve_job_files   = cgiGetVariable("PRESERVE_JOB_FILES");
+
+	if (!max_jobs || atoi(max_jobs) < 0)
+	  max_jobs = "500";
+
+	if (!preserve_job_history)
+	  preserve_job_history = "On";
+
+	if (!preserve_job_files)
+	  preserve_job_files = "1d";
+      }
+      else
+      {
+        max_jobs             = "0";
+        preserve_job_history = "No";
+        preserve_job_files   = "No";
+      }
 
       if (!max_clients || atoi(max_clients) <= 0)
 	max_clients = "100";
 
-      if (!max_jobs || atoi(max_jobs) <= 0)
-	max_jobs = "500";
-
-      if (!max_log_size || atof(max_log_size) <= 0.0)
+      if (!max_log_size || atoi(max_log_size) <= 0.0)
 	max_log_size = "1m";
-
-      if (cgiGetVariable("BROWSE_LOCAL_CUPS"))
-	strcpy(local_protocols, "cups");
-      else
-	local_protocols[0] = '\0';
-
-#ifdef HAVE_DNSSD
-      if (cgiGetVariable("BROWSE_LOCAL_DNSSD"))
-      {
-	if (local_protocols[0])
-	  strcat(local_protocols, " dnssd");
-	else
-	  strcat(local_protocols, "dnssd");
-      }
-#endif /* HAVE_DNSSD */
-
-#ifdef HAVE_LDAP
-      if (cgiGetVariable("BROWSE_LOCAL_LDAP"))
-      {
-	if (local_protocols[0])
-	  strcat(local_protocols, " ldap");
-	else
-	  strcat(local_protocols, "ldap");
-      }
-#endif /* HAVE_LDAP */
-
-#ifdef HAVE_LIBSLP
-      if (cgiGetVariable("BROWSE_LOCAL_SLP"))
-      {
-	if (local_protocols[0])
-	  strcat(local_protocols, " slp");
-	else
-	  strcat(local_protocols, "slp");
-      }
-#endif /* HAVE_SLP */
-
-      if (cgiGetVariable("BROWSE_REMOTE_CUPS"))
-	strcpy(remote_protocols, "cups");
-      else
-	remote_protocols[0] = '\0';
-
-#ifdef HAVE_LDAP
-      if (cgiGetVariable("BROWSE_REMOTE_LDAP"))
-      {
-	if (remote_protocols[0])
-	  strcat(remote_protocols, " ldap");
-	else
-	  strcat(remote_protocols, "ldap");
-      }
-#endif /* HAVE_LDAP */
-
-#ifdef HAVE_LIBSLP
-      if (cgiGetVariable("BROWSE_REMOTE_SLP"))
-      {
-	if (remote_protocols[0])
-	  strcat(remote_protocols, " slp");
-	else
-	  strcat(remote_protocols, "slp");
-      }
-#endif /* HAVE_SLP */
     }
 
    /*
@@ -1707,7 +1640,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
     {
       cgiStartHTML(cgiText(_("Change Settings")));
       cgiSetVariable("MESSAGE",
-                     cgiText(_("Unable to change server settings:")));
+                     cgiText(_("Unable to change server settings")));
       cgiSetVariable("ERROR", cupsLastErrorString());
       cgiCopyTemplateLang("error.tmpl");
       cgiEndHTML();
@@ -1725,7 +1658,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
     {
       val = cupsGetOption("DefaultAuthType", num_settings, settings);
 
-      if (!val || !strcasecmp(val, "Negotiate"))
+      if (!val || !_cups_strcasecmp(val, "Negotiate"))
         strlcpy(default_auth_type, "Basic", sizeof(default_auth_type));
       else
         strlcpy(default_auth_type, val, sizeof(default_auth_type));
@@ -1746,7 +1679,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
     if ((current_preserve_job_files = cupsGetOption("PreserveJobFiles",
                                                     num_settings,
 						    settings)) == NULL)
-      current_preserve_job_files = "No";
+      current_preserve_job_files = "1d";
 
     if ((current_max_clients = cupsGetOption("MaxClients", num_settings,
                                              settings)) == NULL)
@@ -1760,16 +1693,6 @@ do_config_server(http_t *http)		/* I - HTTP connection */
                                               settings)) == NULL)
       current_max_log_size = "1m";
 
-    if ((current_local_protocols = cupsGetOption("BrowseLocalProtocols",
-                                                 num_settings,
-						settings)) == NULL)
-      current_local_protocols = CUPS_DEFAULT_BROWSE_LOCAL_PROTOCOLS;
-
-    if ((current_remote_protocols = cupsGetOption("BrowseRemoteProtocols",
-                                                  num_settings,
-						  settings)) == NULL)
-      current_remote_protocols = CUPS_DEFAULT_BROWSE_REMOTE_PROTOCOLS;
-
    /*
     * See if the settings have changed...
     */
@@ -1780,8 +1703,6 @@ do_config_server(http_t *http)		/* I - HTTP connection */
 						 num_settings, settings)) ||
 	      strcmp(remote_any, cupsGetOption(CUPS_SERVER_REMOTE_ANY,
 					       num_settings, settings)) ||
-	      strcmp(remote_printers, cupsGetOption(CUPS_SERVER_REMOTE_PRINTERS,
-						    num_settings, settings)) ||
 	      strcmp(share_printers, cupsGetOption(CUPS_SERVER_SHARE_PRINTERS,
 						   num_settings, settings)) ||
 #ifdef HAVE_GSSAPI
@@ -1793,14 +1714,12 @@ do_config_server(http_t *http)		/* I - HTTP connection */
 						    num_settings, settings));
 
     if (advanced && !changed)
-      changed = strcasecmp(local_protocols, current_local_protocols) ||
-		strcasecmp(remote_protocols, current_remote_protocols) ||
-		strcasecmp(browse_web_if, current_browse_web_if) ||
-		strcasecmp(preserve_job_history, current_preserve_job_history) ||
-		strcasecmp(preserve_job_files, current_preserve_job_files) ||
-		strcasecmp(max_clients, current_max_clients) ||
-		strcasecmp(max_jobs, current_max_jobs) ||
-		strcasecmp(max_log_size, current_max_log_size);
+      changed = _cups_strcasecmp(browse_web_if, current_browse_web_if) ||
+		_cups_strcasecmp(preserve_job_history, current_preserve_job_history) ||
+		_cups_strcasecmp(preserve_job_files, current_preserve_job_files) ||
+		_cups_strcasecmp(max_clients, current_max_clients) ||
+		_cups_strcasecmp(max_jobs, current_max_jobs) ||
+		_cups_strcasecmp(max_log_size, current_max_log_size);
 
     if (changed)
     {
@@ -1817,8 +1736,6 @@ do_config_server(http_t *http)		/* I - HTTP connection */
                                    remote_admin, num_settings, &settings);
       num_settings = cupsAddOption(CUPS_SERVER_REMOTE_ANY,
                                    remote_any, num_settings, &settings);
-      num_settings = cupsAddOption(CUPS_SERVER_REMOTE_PRINTERS,
-                                   remote_printers, num_settings, &settings);
       num_settings = cupsAddOption(CUPS_SERVER_SHARE_PRINTERS,
                                    share_printers, num_settings, &settings);
       num_settings = cupsAddOption(CUPS_SERVER_USER_CANCEL_ANY,
@@ -1834,29 +1751,23 @@ do_config_server(http_t *http)		/* I - HTTP connection */
         * Add advanced settings...
 	*/
 
-	if (strcasecmp(local_protocols, current_local_protocols))
-	  num_settings = cupsAddOption("BrowseLocalProtocols", local_protocols,
-				       num_settings, &settings);
-	if (strcasecmp(remote_protocols, current_remote_protocols))
-	  num_settings = cupsAddOption("BrowseRemoteProtocols", remote_protocols,
-				       num_settings, &settings);
-	if (strcasecmp(browse_web_if, current_browse_web_if))
+	if (_cups_strcasecmp(browse_web_if, current_browse_web_if))
 	  num_settings = cupsAddOption("BrowseWebIF", browse_web_if,
 				       num_settings, &settings);
-	if (strcasecmp(preserve_job_history, current_preserve_job_history))
+	if (_cups_strcasecmp(preserve_job_history, current_preserve_job_history))
 	  num_settings = cupsAddOption("PreserveJobHistory",
 	                               preserve_job_history, num_settings,
 				       &settings);
-	if (strcasecmp(preserve_job_files, current_preserve_job_files))
+	if (_cups_strcasecmp(preserve_job_files, current_preserve_job_files))
 	  num_settings = cupsAddOption("PreserveJobFiles", preserve_job_files,
 	                               num_settings, &settings);
-        if (strcasecmp(max_clients, current_max_clients))
+        if (_cups_strcasecmp(max_clients, current_max_clients))
 	  num_settings = cupsAddOption("MaxClients", max_clients, num_settings,
 	                               &settings);
-        if (strcasecmp(max_jobs, current_max_jobs))
+        if (_cups_strcasecmp(max_jobs, current_max_jobs))
 	  num_settings = cupsAddOption("MaxJobs", max_jobs, num_settings,
 	                               &settings);
-        if (strcasecmp(max_log_size, current_max_log_size))
+        if (_cups_strcasecmp(max_log_size, current_max_log_size))
 	  num_settings = cupsAddOption("MaxLogSize", max_log_size, num_settings,
 	                               &settings);
       }
@@ -1871,14 +1782,15 @@ do_config_server(http_t *http)		/* I - HTTP connection */
 
 	cgiStartHTML(cgiText(_("Change Settings")));
 	cgiSetVariable("MESSAGE",
-                       cgiText(_("Unable to change server settings:")));
+                       cgiText(_("Unable to change server settings")));
 	cgiSetVariable("ERROR", cupsLastErrorString());
 	cgiCopyTemplateLang("error.tmpl");
       }
       else
       {
         if (advanced)
-	  cgiSetVariable("refresh_page", "5;URL=/admin/?OP=redirect&URL=/admin/?ADVANCEDSETTINGS=YES");
+	  cgiSetVariable("refresh_page", "5;URL=/admin/?OP=redirect&"
+	                                 "URL=/admin/?ADVANCEDSETTINGS=YES");
         else
 	  cgiSetVariable("refresh_page", "5;URL=/admin/?OP=redirect");
 	cgiStartHTML(cgiText(_("Change Settings")));
@@ -1921,7 +1833,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
     if ((tempfd = cupsTempFd(tempfile, sizeof(tempfile))) < 0)
     {
       cgiStartHTML(cgiText(_("Edit Configuration File")));
-      cgiSetVariable("MESSAGE", cgiText(_("Unable to create temporary file:")));
+      cgiSetVariable("MESSAGE", cgiText(_("Unable to create temporary file")));
       cgiSetVariable("ERROR", strerror(errno));
       cgiCopyTemplateLang("error.tmpl");
       cgiEndHTML();
@@ -1933,7 +1845,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
     if ((temp = cupsFileOpenFd(tempfd, "w")) == NULL)
     {
       cgiStartHTML(cgiText(_("Edit Configuration File")));
-      cgiSetVariable("MESSAGE", cgiText(_("Unable to create temporary file:")));
+      cgiSetVariable("MESSAGE", cgiText(_("Unable to create temporary file")));
       cgiSetVariable("ERROR", strerror(errno));
       cgiCopyTemplateLang("error.tmpl");
       cgiEndHTML();
@@ -1955,7 +1867,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
         if ((end = strstr(start, "\n")) == NULL)
 	  end = start + strlen(start);
 
-      cupsFileWrite(temp, start, end - start);
+      cupsFileWrite(temp, start, (size_t)(end - start));
       cupsFilePutChar(temp, '\n');
 
       if (*end == '\r')
@@ -1983,7 +1895,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
     else if (status != HTTP_CREATED)
     {
       cgiSetVariable("MESSAGE",
-                     cgiText(_("Unable to upload cupsd.conf file:")));
+                     cgiText(_("Unable to upload cupsd.conf file")));
       cgiSetVariable("ERROR", httpStatus(status));
 
       cgiStartHTML(cgiText(_("Edit Configuration File")));
@@ -1991,7 +1903,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
     }
     else
     {
-      cgiSetVariable("refresh_page", "5;URL=/admin/?OP=redirect");
+      cgiSetVariable("refresh_page", "5;URL=/admin/");
 
       cgiStartHTML(cgiText(_("Edit Configuration File")));
       cgiCopyTemplateLang("restart.tmpl");
@@ -2030,7 +1942,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
     {
       cgiStartHTML(cgiText(_("Edit Configuration File")));
       cgiSetVariable("MESSAGE",
-                     cgiText(_("Unable to access cupsd.conf file:")));
+                     cgiText(_("Unable to access cupsd.conf file")));
       cgiSetVariable("ERROR", strerror(errno));
       cgiCopyTemplateLang("error.tmpl");
       cgiEndHTML();
@@ -2043,10 +1955,10 @@ do_config_server(http_t *http)		/* I - HTTP connection */
     {
       cgiStartHTML(cgiText(_("Edit Configuration File")));
       cgiSetVariable("MESSAGE",
-                     cgiText(_("Unable to access cupsd.conf file:")));
+                     cgiText(_("Unable to access cupsd.conf file")));
       cgiSetVariable("ERROR",
                      cgiText(_("Unable to edit cupsd.conf files larger than "
-		               "1MB!")));
+		               "1MB")));
       cgiCopyTemplateLang("error.tmpl");
       cgiEndHTML();
 
@@ -2067,7 +1979,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
 
       cgiStartHTML(cgiText(_("Edit Configuration File")));
       cgiSetVariable("MESSAGE",
-                     cgiText(_("Unable to access cupsd.conf file:")));
+                     cgiText(_("Unable to access cupsd.conf file")));
       cgiSetVariable("ERROR", strerror(errno));
       cgiCopyTemplateLang("error.tmpl");
       cgiEndHTML();
@@ -2080,9 +1992,9 @@ do_config_server(http_t *http)		/* I - HTTP connection */
     * Allocate memory and load the file into a string buffer...
     */
 
-    if ((buffer = calloc(1, info.st_size + 1)) != NULL)
+    if ((buffer = calloc(1, (size_t)info.st_size + 1)) != NULL)
     {
-      cupsFileRead(cupsd, buffer, info.st_size);
+      cupsFileRead(cupsd, buffer, (size_t)info.st_size);
       cgiSetVariable("CUPSDCONF", buffer);
       free(buffer);
     }
@@ -2099,7 +2011,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
     if (!stat(filename, &info) && info.st_size < (1024 * 1024) &&
         (cupsd = cupsFileOpen(filename, "r")) != NULL)
     {
-      if ((buffer = calloc(1, 2 * info.st_size + 1)) != NULL)
+      if ((buffer = calloc(1, 2 * (size_t)info.st_size + 1)) != NULL)
       {
 	bufend = buffer + 2 * info.st_size - 1;
 
@@ -2109,7 +2021,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
 	  if (ch == '\\' || ch == '\"')
 	  {
 	    *bufptr++ = '\\';
-	    *bufptr++ = ch;
+	    *bufptr++ = (char)ch;
 	  }
 	  else if (ch == '\n')
 	  {
@@ -2122,7 +2034,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
 	    *bufptr++ = 't';
 	  }
 	  else if (ch >= ' ')
-	    *bufptr++ = ch;
+	    *bufptr++ = (char)ch;
 	}
 
 	*bufptr = '\0';
@@ -2177,7 +2089,7 @@ do_delete_class(http_t *http)		/* I - HTTP connection */
   else
   {
     cgiStartHTML(cgiText(_("Delete Class")));
-    cgiSetVariable("ERROR", cgiText(_("Missing form variable!")));
+    cgiSetVariable("ERROR", cgiText(_("Missing form variable")));
     cgiCopyTemplateLang("error.tmpl");
     cgiEndHTML();
     return;
@@ -2224,7 +2136,7 @@ do_delete_class(http_t *http)		/* I - HTTP connection */
   cgiStartHTML(cgiText(_("Delete Class")));
 
   if (cupsLastError() > IPP_OK_CONFLICT)
-    cgiShowIPPError(_("Unable to delete class:"));
+    cgiShowIPPError(_("Unable to delete class"));
   else
     cgiCopyTemplateLang("class-deleted.tmpl");
 
@@ -2262,7 +2174,7 @@ do_delete_printer(http_t *http)		/* I - HTTP connection */
   else
   {
     cgiStartHTML(cgiText(_("Delete Printer")));
-    cgiSetVariable("ERROR", cgiText(_("Missing form variable!")));
+    cgiSetVariable("ERROR", cgiText(_("Missing form variable")));
     cgiCopyTemplateLang("error.tmpl");
     cgiEndHTML();
     return;
@@ -2309,7 +2221,7 @@ do_delete_printer(http_t *http)		/* I - HTTP connection */
   cgiStartHTML(cgiText(_("Delete Printer")));
 
   if (cupsLastError() > IPP_OK_CONFLICT)
-    cgiShowIPPError(_("Unable to delete printer:"));
+    cgiShowIPPError(_("Unable to delete printer"));
   else
     cgiCopyTemplateLang("printer-deleted.tmpl");
 
@@ -2359,8 +2271,7 @@ do_export(http_t *http)			/* I - HTTP connection */
                 "printer-type", 0);
 
   ippAddInteger(request, IPP_TAG_OPERATION, IPP_TAG_ENUM,
-                "printer-type-mask", CUPS_PRINTER_CLASS | CUPS_PRINTER_REMOTE |
-		                     CUPS_PRINTER_IMPLICIT);
+                "printer-type-mask", CUPS_PRINTER_CLASS | CUPS_PRINTER_REMOTE);
 
   ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_KEYWORD,
                "requested-attributes", NULL, "printer-name");
@@ -2379,7 +2290,7 @@ do_export(http_t *http)			/* I - HTTP connection */
         dest = cgiGetArray("PRINTER_NAME", i);
 
         for (j = 0; j < export_count; j ++)
-	  if (!strcasecmp(dest, cgiGetArray("EXPORT_NAME", j)))
+	  if (!_cups_strcasecmp(dest, cgiGetArray("EXPORT_NAME", j)))
             break;
 
         cgiSetArray("PRINTER_EXPORT", i, j < export_count ? "Y" : "");
@@ -2437,11 +2348,11 @@ do_export(http_t *http)			/* I - HTTP connection */
   else if (username && !*username)
     cgiSetVariable("ERROR",
                    cgiText(_("A Samba username is required to export "
-		             "printer drivers!")));
+		             "printer drivers")));
   else if (username && (!password || !*password))
     cgiSetVariable("ERROR",
                    cgiText(_("A Samba password is required to export "
-		             "printer drivers!")));
+		             "printer drivers")));
 
  /*
   * Show form...
@@ -2567,7 +2478,7 @@ do_list_printers(http_t *http)		/* I - HTTP connection */
 	*/
 
 	if (device_info && device_make_and_model && device_uri &&
-	    strcasecmp(device_make_and_model, "unknown") &&
+	    _cups_strcasecmp(device_make_and_model, "unknown") &&
 	    strchr(device_uri, ':'))
 	{
 	 /*
@@ -2594,7 +2505,7 @@ do_list_printers(http_t *http)		/* I - HTTP connection */
 	    * suitable name.
 	    */
 
-            if (strncasecmp(device_info, "unknown", 7))
+            if (_cups_strncasecmp(device_info, "unknown", 7))
 	      ptr = device_info;
             else if ((ptr = strstr(device_uri, "://")) != NULL)
 	      ptr += 3;
@@ -2696,10 +2607,6 @@ do_menu(http_t *http)			/* I - HTTP connection */
                            settings)) != NULL && atoi(val))
     cgiSetVariable("REMOTE_ANY", "CHECKED");
 
-  if ((val = cupsGetOption(CUPS_SERVER_REMOTE_PRINTERS, num_settings,
-                           settings)) != NULL && atoi(val))
-    cgiSetVariable("REMOTE_PRINTERS", "CHECKED");
-
   if ((val = cupsGetOption(CUPS_SERVER_SHARE_PRINTERS, num_settings,
                            settings)) != NULL && atoi(val))
     cgiSetVariable("SHARE_PRINTERS", "CHECKED");
@@ -2712,83 +2619,43 @@ do_menu(http_t *http)			/* I - HTTP connection */
   cgiSetVariable("HAVE_GSSAPI", "1");
 
   if ((val = cupsGetOption("DefaultAuthType", num_settings,
-                           settings)) != NULL && !strcasecmp(val, "Negotiate"))
+                           settings)) != NULL && !_cups_strcasecmp(val, "Negotiate"))
     cgiSetVariable("KERBEROS", "CHECKED");
   else
 #endif /* HAVE_GSSAPI */
   cgiSetVariable("KERBEROS", "");
 
-#ifdef HAVE_DNSSD
-  cgiSetVariable("HAVE_DNSSD", "1");
-#endif /* HAVE_DNSSD */
-
-#ifdef HAVE_LDAP
-  cgiSetVariable("HAVE_LDAP", "1");
-#endif /* HAVE_LDAP */
-
-#ifdef HAVE_LIBSLP
-  cgiSetVariable("HAVE_LIBSLP", "1");
-#endif /* HAVE_LIBSLP */
-
-  if ((val = cupsGetOption("BrowseRemoteProtocols", num_settings,
-                           settings)) == NULL)
-    if ((val = cupsGetOption("BrowseProtocols", num_settings,
-                           settings)) == NULL)
-      val = CUPS_DEFAULT_BROWSE_REMOTE_PROTOCOLS;
-
-  if (strstr(val, "cups") || strstr(val, "CUPS"))
-    cgiSetVariable("BROWSE_REMOTE_CUPS", "CHECKED");
-
-  if (strstr(val, "ldap") || strstr(val, "LDAP"))
-    cgiSetVariable("BROWSE_REMOTE_LDAP", "CHECKED");
-
-  if (strstr(val, "slp") || strstr(val, "SLP"))
-    cgiSetVariable("BROWSE_REMOTE_SLP", "CHECKED");
-
-  if ((val = cupsGetOption("BrowseLocalProtocols", num_settings,
-                           settings)) == NULL)
-    if ((val = cupsGetOption("BrowseProtocols", num_settings,
-                           settings)) == NULL)
-      val = CUPS_DEFAULT_BROWSE_LOCAL_PROTOCOLS;
-
-  if (strstr(val, "cups") || strstr(val, "CUPS"))
-    cgiSetVariable("BROWSE_LOCAL_CUPS", "CHECKED");
-
-  if (strstr(val, "dnssd") || strstr(val, "DNSSD") ||
-      strstr(val, "dns-sd") || strstr(val, "DNS-SD") ||
-      strstr(val, "bonjour") || strstr(val, "BONJOUR"))
-    cgiSetVariable("BROWSE_LOCAL_DNSSD", "CHECKED");
-
-  if (strstr(val, "ldap") || strstr(val, "LDAP"))
-    cgiSetVariable("BROWSE_LOCAL_LDAP", "CHECKED");
-
-  if (strstr(val, "slp") || strstr(val, "SLP"))
-    cgiSetVariable("BROWSE_LOCAL_SLP", "CHECKED");
-
   if ((val = cupsGetOption("BrowseWebIF", num_settings,
                            settings)) == NULL)
     val = "No";
 
-  if (!strcasecmp(val, "yes") || !strcasecmp(val, "on") ||
-      !strcasecmp(val, "true"))
+  if (!_cups_strcasecmp(val, "yes") || !_cups_strcasecmp(val, "on") ||
+      !_cups_strcasecmp(val, "true"))
     cgiSetVariable("BROWSE_WEB_IF", "CHECKED");
 
   if ((val = cupsGetOption("PreserveJobHistory", num_settings,
                            settings)) == NULL)
     val = "Yes";
 
-  if (!strcasecmp(val, "yes") || !strcasecmp(val, "on") ||
-      !strcasecmp(val, "true"))
+  if (val &&
+      (!_cups_strcasecmp(val, "0") || !_cups_strcasecmp(val, "no") ||
+       !_cups_strcasecmp(val, "off") || !_cups_strcasecmp(val, "false") ||
+       !_cups_strcasecmp(val, "disabled")))
   {
-    cgiSetVariable("PRESERVE_JOB_HISTORY", "CHECKED");
+    cgiSetVariable("PRESERVE_JOB_HISTORY", "0");
+    cgiSetVariable("PRESERVE_JOB_FILES", "0");
+  }
+  else
+  {
+    cgiSetVariable("PRESERVE_JOBS", "CHECKED");
+    cgiSetVariable("PRESERVE_JOB_HISTORY", val);
 
     if ((val = cupsGetOption("PreserveJobFiles", num_settings,
 			     settings)) == NULL)
-      val = "No";
+      val = "1d";
 
-    if (!strcasecmp(val, "yes") || !strcasecmp(val, "on") ||
-	!strcasecmp(val, "true"))
-      cgiSetVariable("PRESERVE_JOB_FILES", "CHECKED");
+    cgiSetVariable("PRESERVE_JOB_FILES", val);
+
   }
 
   if ((val = cupsGetOption("MaxClients", num_settings, settings)) == NULL)
@@ -2901,7 +2768,7 @@ do_set_allowed_users(http_t *http)	/* I - HTTP connection */
 
   if (!printer)
   {
-    cgiSetVariable("ERROR", cgiText(_("Missing form variable!")));
+    cgiSetVariable("ERROR", cgiText(_("Missing form variable")));
     cgiStartHTML(cgiText(_("Set Allowed Users")));
     cgiCopyTemplateLang("error.tmpl");
     cgiEndHTML();
@@ -2956,7 +2823,7 @@ do_set_allowed_users(http_t *http)	/* I - HTTP connection */
       exit(0);
     }
     else if (cupsLastError() > IPP_OK_CONFLICT)
-      cgiShowIPPError(_("Unable to get printer attributes:"));
+      cgiShowIPPError(_("Unable to get printer attributes"));
     else
       cgiCopyTemplateLang("users.tmpl");
 
@@ -3106,7 +2973,7 @@ do_set_allowed_users(http_t *http)	/* I - HTTP connection */
     else if (cupsLastError() > IPP_OK_CONFLICT)
     {
       cgiStartHTML(cgiText(_("Set Allowed Users")));
-      cgiShowIPPError(_("Unable to change printer:"));
+      cgiShowIPPError(_("Unable to change printer"));
     }
     else
     {
@@ -3155,7 +3022,7 @@ do_set_default(http_t *http)		/* I - HTTP connection */
 
   if (!printer)
   {
-    cgiSetVariable("ERROR", cgiText(_("Missing form variable!")));
+    cgiSetVariable("ERROR", cgiText(_("Missing form variable")));
     cgiStartHTML(title);
     cgiCopyTemplateLang("error.tmpl");
     cgiEndHTML();
@@ -3193,7 +3060,7 @@ do_set_default(http_t *http)		/* I - HTTP connection */
   else if (cupsLastError() > IPP_OK_CONFLICT)
   {
     cgiStartHTML(title);
-    cgiShowIPPError(_("Unable to set server default:"));
+    cgiShowIPPError(_("Unable to set server default"));
   }
   else
   {
@@ -3266,7 +3133,7 @@ do_set_options(http_t *http,		/* I - HTTP connection */
 		     printer);
   else
   {
-    cgiSetVariable("ERROR", cgiText(_("Missing form variable!")));
+    cgiSetVariable("ERROR", cgiText(_("Missing form variable")));
     cgiStartHTML(title);
     cgiCopyTemplateLang("error.tmpl");
     cgiEndHTML();
@@ -3302,7 +3169,7 @@ do_set_options(http_t *http,		/* I - HTTP connection */
     if ((ppd = ppdOpenFile(filename)) == NULL)
     {
       cgiSetVariable("ERROR", ppdErrorString(ppdLastError(&i)));
-      cgiSetVariable("MESSAGE", cgiText(_("Unable to open PPD file:")));
+      cgiSetVariable("MESSAGE", cgiText(_("Unable to open PPD file")));
       cgiStartHTML(title);
       cgiCopyTemplateLang("error.tmpl");
       cgiEndHTML();
@@ -3464,6 +3331,20 @@ do_set_options(http_t *http,		/* I - HTTP connection */
 	   i > 0;
 	   i --, group ++)
       {
+	for (j = group->num_options, option = group->options;
+	     j > 0;
+	     j --, option ++)
+	{
+	  if (!strcmp(option->keyword, "PageRegion"))
+	    continue;
+
+	  if (option->num_choices > 1)
+	    break;
+	}
+
+        if (j == 0)
+	  continue;
+
         cgiSetVariable("GROUP_ID", group->name);
 
 	if (!strcmp(group->name, "InstallableOptions"))
@@ -3477,7 +3358,7 @@ do_set_options(http_t *http,		/* I - HTTP connection */
 	     j > 0;
 	     j --, option ++)
 	{
-	  if (!strcmp(option->keyword, "PageRegion"))
+	  if (!strcmp(option->keyword, "PageRegion") || option->num_choices < 2)
 	    continue;
 
 	  cgiSetVariable("KEYWORD", option->keyword);
@@ -3510,16 +3391,15 @@ do_set_options(http_t *http,		/* I - HTTP connection */
 	  {
             const char *units = NULL;	/* Units value, if any */
 
-
 	    cgiSetVariable("ISCUSTOM", "1");
 
 	    for (cparam = ppdFirstCustomParam(coption), m = 0;
 		 cparam;
 		 cparam = ppdNextCustomParam(coption), m ++)
 	    {
-	      if (!strcasecmp(option->keyword, "PageSize") &&
-	          strcasecmp(cparam->name, "Width") &&
-		  strcasecmp(cparam->name, "Height"))
+	      if (!_cups_strcasecmp(option->keyword, "PageSize") &&
+	          _cups_strcasecmp(cparam->name, "Width") &&
+		  _cups_strcasecmp(cparam->name, "Height"))
               {
 	        m --;
 		continue;
@@ -3532,7 +3412,7 @@ do_set_options(http_t *http,		/* I - HTTP connection */
 	      switch (cparam->type)
 	      {
 		case PPD_CUSTOM_POINTS :
-		    if (!strncasecmp(option->defchoice, "Custom.", 7))
+		    if (!_cups_strncasecmp(option->defchoice, "Custom.", 7))
 		    {
 		      units = option->defchoice + strlen(option->defchoice) - 2;
 
@@ -3653,14 +3533,18 @@ do_set_options(http_t *http,		/* I - HTTP connection */
       attr = ippFindAttribute(response, "job-sheets-default", IPP_TAG_ZERO);
 
       cgiSetVariable("KEYWORD", "job_sheets_start");
-      cgiSetVariable("KEYTEXT", cgiText(_("Starting Banner")));
+      cgiSetVariable("KEYTEXT",
+                     /* TRANSLATORS: Banner/cover sheet before the print job. */
+                     cgiText(_("Starting Banner")));
       cgiSetVariable("DEFCHOICE", attr != NULL ?
 				  attr->values[0].string.text : "");
 
       cgiCopyTemplateLang("option-pickone.tmpl");
 
       cgiSetVariable("KEYWORD", "job_sheets_end");
-      cgiSetVariable("KEYTEXT", cgiText(_("Ending Banner")));
+      cgiSetVariable("KEYTEXT",
+                     /* TRANSLATORS: Banner/cover sheet after the print job. */
+                     cgiText(_("Ending Banner")));
       cgiSetVariable("DEFCHOICE", attr != NULL && attr->num_values > 1 ?
 				  attr->values[1].string.text : "");
 
@@ -3906,7 +3790,7 @@ do_set_options(http_t *http,		/* I - HTTP connection */
     else if (cupsLastError() > IPP_OK_CONFLICT)
     {
       cgiStartHTML(title);
-      cgiShowIPPError(_("Unable to set options:"));
+      cgiShowIPPError(_("Unable to set options"));
     }
     else
     {
@@ -3959,7 +3843,7 @@ do_set_sharing(http_t *http)		/* I - HTTP connection */
 
   if (!printer || !shared)
   {
-    cgiSetVariable("ERROR", cgiText(_("Missing form variable!")));
+    cgiSetVariable("ERROR", cgiText(_("Missing form variable")));
     cgiStartHTML(cgiText(_("Set Publishing")));
     cgiCopyTemplateLang("error.tmpl");
     cgiEndHTML();
@@ -3984,7 +3868,7 @@ do_set_sharing(http_t *http)		/* I - HTTP connection */
   ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri",
                NULL, uri);
 
-  ippAddBoolean(request, IPP_TAG_OPERATION, "printer-is-shared", atoi(shared));
+  ippAddBoolean(request, IPP_TAG_OPERATION, "printer-is-shared", (char)atoi(shared));
 
  /*
   * Do the request and get back a response...
@@ -4005,7 +3889,7 @@ do_set_sharing(http_t *http)		/* I - HTTP connection */
   else if (cupsLastError() > IPP_OK_CONFLICT)
   {
     cgiStartHTML(cgiText(_("Set Publishing")));
-    cgiShowIPPError(_("Unable to change printer-is-shared attribute:"));
+    cgiShowIPPError(_("Unable to change printer-is-shared attribute"));
   }
   else
   {
@@ -4068,7 +3952,7 @@ get_option_value(
 
     return (NULL);
   }
-  else if (strcasecmp(val, "Custom") ||
+  else if (_cups_strcasecmp(val, "Custom") ||
            (coption = ppdFindCustomOption(ppd, name)) == NULL)
   {
    /*
@@ -4198,7 +4082,7 @@ get_option_value(
       if ((val = cgiGetVariable(keyword)) == NULL)
 	return (NULL);
 
-      snprintf(bufptr, bufend - bufptr, "%s%s=", prefix, cparam->name);
+      snprintf(bufptr, (size_t)(bufend - bufptr), "%s%s=", prefix, cparam->name);
       bufptr += strlen(bufptr);
       prefix = " ";
 
@@ -4212,7 +4096,7 @@ get_option_value(
 		number > cparam->maximum.custom_real)
 	      return (NULL);
 
-	    snprintf(bufptr, bufend - bufptr, "%g", number);
+	    snprintf(bufptr, (size_t)(bufend - bufptr), "%g", number);
 	    break;
 
 	case PPD_CUSTOM_INT :
@@ -4222,7 +4106,7 @@ get_option_value(
 		integer > cparam->maximum.custom_int)
 	      return (NULL);
 
-	    snprintf(bufptr, bufend - bufptr, "%ld", integer);
+	    snprintf(bufptr, (size_t)(bufend - bufptr), "%ld", integer);
 	    break;
 
 	case PPD_CUSTOM_POINTS :
@@ -4240,7 +4124,7 @@ get_option_value(
 		number_points > cparam->maximum.custom_points)
 	      return (NULL);
 
-	    snprintf(bufptr, bufend - bufptr, "%g%s", number, uval);
+	    snprintf(bufptr, (size_t)(bufend - bufptr), "%g%s", number, uval);
 	    break;
 
 	case PPD_CUSTOM_PASSCODE :
@@ -4289,7 +4173,7 @@ get_option_value(
     if (bufptr == buffer || (bufend - bufptr) < 2)
       return (NULL);
 
-    strcpy(bufptr, "}");
+    memcpy(bufptr, "}", 2);
   }
 
   return (buffer);
@@ -4320,5 +4204,78 @@ get_points(double     number,		/* I - Original number */
 
 
 /*
- * End of "$Id: admin.c 9582 2011-03-04 19:28:38Z mike $".
+ * 'get_printer_ppd()' - Get an IPP Everywhere PPD file for the given URI.
+ */
+
+static char *				/* O - Filename or NULL */
+get_printer_ppd(const char *uri,	/* I - Printer URI */
+                char       *buffer,	/* I - Filename buffer */
+		size_t     bufsize)	/* I - Size of filename buffer */
+{
+  http_t	*http;			/* Connection to printer */
+  ipp_t		*request,		/* Get-Printer-Attributes request */
+		*response;		/* Get-Printer-Attributes response */
+  char		resolved[1024],		/* Resolved URI */
+		scheme[32],		/* URI scheme */
+		userpass[256],		/* Username:password */
+		host[256],		/* Hostname */
+		resource[256];		/* Resource path */
+  int		port;			/* Port number */
+
+
+ /*
+  * Connect to the printer...
+  */
+
+  if (strstr(uri, "._tcp"))
+  {
+   /*
+    * Resolve URI...
+    */
+
+    if (!_httpResolveURI(uri, resolved, sizeof(resolved), _HTTP_RESOLVE_DEFAULT, NULL, NULL))
+    {
+      fprintf(stderr, "ERROR: Unable to resolve \"%s\".\n", uri);
+      return (NULL);
+    }
+
+    uri = resolved;
+  }
+
+  if (httpSeparateURI(HTTP_URI_CODING_ALL, uri, scheme, sizeof(scheme), userpass, sizeof(userpass), host, sizeof(host), &port, resource, sizeof(resource)) < HTTP_URI_STATUS_OK)
+  {
+    fprintf(stderr, "ERROR: Bad printer URI \"%s\".\n", uri);
+    return (NULL);
+  }
+
+  http = httpConnect2(host, port, NULL, AF_UNSPEC, !strcmp(scheme, "ipps") ? HTTP_ENCRYPTION_ALWAYS : HTTP_ENCRYPTION_IF_REQUESTED, 1, 30000, NULL);
+  if (!http)
+  {
+    fprintf(stderr, "ERROR: Unable to connect to \"%s:%d\": %s\n", host, port, cupsLastErrorString());
+    return (NULL);
+  }
+
+ /*
+  * Send a Get-Printer-Attributes request...
+  */
+
+  request = ippNewRequest(IPP_OP_GET_PRINTER_ATTRIBUTES);
+  ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri", NULL, uri);
+  response = cupsDoRequest(http, request, resource);
+
+  if (!_ppdCreateFromIPP(buffer, bufsize, response))
+    fprintf(stderr, "ERROR: Unable to create PPD file: %s\n", strerror(errno));
+
+  ippDelete(response);
+  httpClose(http);
+
+  if (buffer[0])
+    return (buffer);
+  else
+    return (NULL);
+}
+
+
+/*
+ * End of "$Id: admin.c 12516 2015-02-12 20:18:11Z msweet $".
  */

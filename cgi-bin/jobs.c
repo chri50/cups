@@ -1,21 +1,16 @@
 /*
- * "$Id: jobs.c 8859 2009-11-09 23:01:17Z mike $"
+ * "$Id: jobs.c 11558 2014-02-06 18:33:34Z msweet $"
  *
- *   Job status CGI for the Common UNIX Printing System (CUPS).
+ * Job status CGI for CUPS.
  *
- *   Copyright 2007-2008 by Apple Inc.
- *   Copyright 1997-2006 by Easy Software Products.
+ * Copyright 2007-2014 by Apple Inc.
+ * Copyright 1997-2006 by Easy Software Products.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
- *
- * Contents:
- *
- *   main()      - Main entry for CGI.
- *   do_job_op() - Do a job operation.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -37,8 +32,7 @@ static void	do_job_op(http_t *http, int job_id, ipp_op_t op);
  */
 
 int					/* O - Exit status */
-main(int  argc,				/* I - Number of command-line arguments */
-     char *argv[])			/* I - Command-line arguments */
+main(void)
 {
   http_t	*http;			/* Connection to the server */
   const char	*op;			/* Operation name */
@@ -182,7 +176,7 @@ do_job_op(http_t      *http,		/* I - HTTP connection */
     char	url[1024];		/* Encoded URL */
 
 
-    strcpy(url, "5;URL=");
+    strlcpy(url, "5;URL=", sizeof(url));
     cgiFormEncode(url + 6, getenv("HTTP_REFERER"), sizeof(url) - 6);
     cgiSetVariable("refresh_page", url);
   }
@@ -195,7 +189,7 @@ do_job_op(http_t      *http,		/* I - HTTP connection */
   cgiStartHTML(cgiText(_("Jobs")));
 
   if (cupsLastError() > IPP_OK_CONFLICT)
-    cgiShowIPPError(_("Job operation failed:"));
+    cgiShowIPPError(_("Job operation failed"));
   else if (op == IPP_CANCEL_JOB)
     cgiCopyTemplateLang("job-cancel.tmpl");
   else if (op == IPP_HOLD_JOB)
@@ -210,5 +204,5 @@ do_job_op(http_t      *http,		/* I - HTTP connection */
 
 
 /*
- * End of "$Id: jobs.c 8859 2009-11-09 23:01:17Z mike $".
+ * End of "$Id: jobs.c 11558 2014-02-06 18:33:34Z msweet $".
  */

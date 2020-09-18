@@ -1,29 +1,16 @@
 /*
- * "$Id: classes.c 9258 2010-08-13 01:34:04Z mike $"
+ * "$Id: classes.c 11781 2014-03-28 20:57:22Z msweet $"
  *
- *   Printer class routines for the Common UNIX Printing System (CUPS).
+ * Printer class routines for the CUPS scheduler.
  *
- *   Copyright 2007-2010 by Apple Inc.
- *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright 2007-2014 by Apple Inc.
+ * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
- *
- * Contents:
- *
- *   cupsdAddClass()                 - Add a class to the system.
- *   cupsdAddPrinterToClass()        - Add a printer to a class...
- *   cupsdDeletePrinterFromClass()   - Delete a printer from a class.
- *   cupsdDeletePrinterFromClasses() - Delete a printer from all classes.
- *   cupsdFindAvailablePrinter()     - Find an available printer in a class.
- *   cupsdFindClass()                - Find the named class.
- *   cupsdLoadAllClasses()           - Load classes from the classes.conf file.
- *   cupsdSaveAllClasses()           - Save classes to the classes.conf file.
- *   cupsdUpdateImplicitClasses()    - Update the accepting state of implicit
- *                                     classes.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -95,7 +82,7 @@ cupsdAddPrinterToClass(
   if (c->num_printers == 0)
     temp = malloc(sizeof(cupsd_printer_t *));
   else
-    temp = realloc(c->printers, sizeof(cupsd_printer_t *) * (c->num_printers + 1));
+    temp = realloc(c->printers, sizeof(cupsd_printer_t *) * (size_t)(c->num_printers + 1));
 
   if (temp == NULL)
   {
@@ -149,7 +136,7 @@ cupsdDeletePrinterFromClass(
     c->num_printers --;
     if (i < c->num_printers)
       memmove(c->printers + i, c->printers + i + 1,
-              (c->num_printers - i) * sizeof(cupsd_printer_t *));
+              (size_t)(c->num_printers - i) * sizeof(cupsd_printer_t *));
   }
   else
     return (0);
@@ -184,23 +171,8 @@ cupsdDeletePrinterFromClasses(
   for (c = (cupsd_printer_t *)cupsArrayFirst(Printers);
        c;
        c = (cupsd_printer_t *)cupsArrayNext(Printers))
-    if (c->type & (CUPS_PRINTER_CLASS | CUPS_PRINTER_IMPLICIT))
+    if (c->type & CUPS_PRINTER_CLASS)
       changed |= cupsdDeletePrinterFromClass(c, p);
-
- /*
-  * Then clean out any empty implicit classes...
-  */
-
-  for (c = (cupsd_printer_t *)cupsArrayFirst(ImplicitPrinters);
-       c;
-       c = (cupsd_printer_t *)cupsArrayNext(ImplicitPrinters))
-    if (c->num_printers == 0)
-    {
-      cupsdLogMessage(CUPSD_LOG_DEBUG, "Deleting implicit class \"%s\"...",
-                      c->name);
-      cupsdDeletePrinter(c, 0);
-      changed = 1;
-    }
 
   return (changed);
 }
@@ -279,8 +251,7 @@ cupsdFindClass(const char *name)	/* I - Name of class */
   cupsd_printer_t	*c;		/* Current class/printer */
 
 
-  if ((c = cupsdFindDest(name)) != NULL &&
-      (c->type & (CUPS_PRINTER_CLASS | CUPS_PRINTER_IMPLICIT)))
+  if ((c = cupsdFindDest(name)) != NULL && (c->type & CUPS_PRINTER_CLASS))
     return (c);
   else
     return (NULL);
@@ -309,13 +280,8 @@ cupsdLoadAllClasses(void)
   */
 
   snprintf(line, sizeof(line), "%s/classes.conf", ServerRoot);
-  if ((fp = cupsFileOpen(line, "r")) == NULL)
-  {
-    if (errno != ENOENT)
-      cupsdLogMessage(CUPSD_LOG_ERROR, "Unable to open %s - %s", line,
-		      strerror(errno));
+  if ((fp = cupsdOpenConfFile(line)) == NULL)
     return;
-  }
 
  /*
   * Read class configurations until we hit EOF...
@@ -330,8 +296,8 @@ cupsdLoadAllClasses(void)
     * Decode the directive...
     */
 
-    if (!strcasecmp(line, "<Class") ||
-        !strcasecmp(line, "<DefaultClass"))
+    if (!_cups_strcasecmp(line, "<Class") ||
+        !_cups_strcasecmp(line, "<DefaultClass"))
     {
      /*
       * <Class name> or <DefaultClass name>
@@ -359,14 +325,14 @@ cupsdLoadAllClasses(void)
 	p->accepting = 1;
 	p->state     = IPP_PRINTER_IDLE;
 
-        if (!strcasecmp(line, "<DefaultClass"))
+        if (!_cups_strcasecmp(line, "<DefaultClass"))
 	  DefaultPrinter = p;
       }
       else
         cupsdLogMessage(CUPSD_LOG_ERROR,
 	                "Syntax error on line %d of classes.conf.", linenum);
     }
-    else if (!strcasecmp(line, "</Class>"))
+    else if (!_cups_strcasecmp(line, "</Class>") || !_cups_strcasecmp(line, "</DefaultClass>"))
     {
       if (p != NULL)
       {
@@ -382,24 +348,32 @@ cupsdLoadAllClasses(void)
       cupsdLogMessage(CUPSD_LOG_ERROR,
                       "Syntax error on line %d of classes.conf.", linenum);
     }
-    else if (!strcasecmp(line, "AuthInfoRequired"))
+    else if (!_cups_strcasecmp(line, "UUID"))
+    {
+      if (value && !strncmp(value, "urn:uuid:", 9))
+        cupsdSetString(&(p->uuid), value);
+      else
+        cupsdLogMessage(CUPSD_LOG_ERROR,
+	                "Bad UUID on line %d of classes.conf.", linenum);
+    }
+    else if (!_cups_strcasecmp(line, "AuthInfoRequired"))
     {
       if (!cupsdSetAuthInfoRequired(p, value, NULL))
 	cupsdLogMessage(CUPSD_LOG_ERROR,
 			"Bad AuthInfoRequired on line %d of classes.conf.",
 			linenum);
     }
-    else if (!strcasecmp(line, "Info"))
+    else if (!_cups_strcasecmp(line, "Info"))
     {
       if (value)
         cupsdSetString(&p->info, value);
     }
-    else if (!strcasecmp(line, "Location"))
+    else if (!_cups_strcasecmp(line, "Location"))
     {
       if (value)
         cupsdSetString(&p->location, value);
     }
-    else if (!strcasecmp(line, "Option") && value)
+    else if (!_cups_strcasecmp(line, "Option") && value)
     {
      /*
       * Option name value
@@ -418,7 +392,7 @@ cupsdLoadAllClasses(void)
 	                               &(p->options));
       }
     }
-    else if (!strcasecmp(line, "Printer"))
+    else if (!_cups_strcasecmp(line, "Printer"))
     {
       if (!value)
       {
@@ -440,9 +414,8 @@ cupsdLoadAllClasses(void)
 	{
 	  cupsdSetString(&temp->make_model, "Remote Printer on unknown");
 
-          temp->state       = IPP_PRINTER_STOPPED;
-	  temp->type        |= CUPS_PRINTER_REMOTE;
-	  temp->browse_time = 2147483647;
+          temp->state = IPP_PRINTER_STOPPED;
+	  temp->type  |= CUPS_PRINTER_REMOTE;
 
 	  cupsdSetString(&temp->location, "Location Unknown");
 	  cupsdSetString(&temp->info, "No Information Available");
@@ -455,15 +428,15 @@ cupsdLoadAllClasses(void)
       if (temp)
         cupsdAddPrinterToClass(p, temp);
     }
-    else if (!strcasecmp(line, "State"))
+    else if (!_cups_strcasecmp(line, "State"))
     {
      /*
       * Set the initial queue state...
       */
 
-      if (!strcasecmp(value, "idle"))
+      if (!_cups_strcasecmp(value, "idle"))
         p->state = IPP_PRINTER_IDLE;
-      else if (!strcasecmp(value, "stopped"))
+      else if (!_cups_strcasecmp(value, "stopped"))
       {
         p->state = IPP_PRINTER_STOPPED;
 
@@ -483,7 +456,7 @@ cupsdLoadAllClasses(void)
 	                "Syntax error on line %d of classes.conf.",
 	                linenum);
     }
-    else if (!strcasecmp(line, "StateMessage"))
+    else if (!_cups_strcasecmp(line, "StateMessage"))
     {
      /*
       * Set the initial queue state message...
@@ -492,7 +465,7 @@ cupsdLoadAllClasses(void)
       if (value)
 	strlcpy(p->state_message, value, sizeof(p->state_message));
     }
-    else if (!strcasecmp(line, "StateTime"))
+    else if (!_cups_strcasecmp(line, "StateTime"))
     {
      /*
       * Set the state time...
@@ -501,49 +474,49 @@ cupsdLoadAllClasses(void)
       if (value)
         p->state_time = atoi(value);
     }
-    else if (!strcasecmp(line, "Accepting"))
+    else if (!_cups_strcasecmp(line, "Accepting"))
     {
      /*
       * Set the initial accepting state...
       */
 
       if (value &&
-          (!strcasecmp(value, "yes") ||
-           !strcasecmp(value, "on") ||
-           !strcasecmp(value, "true")))
+          (!_cups_strcasecmp(value, "yes") ||
+           !_cups_strcasecmp(value, "on") ||
+           !_cups_strcasecmp(value, "true")))
         p->accepting = 1;
       else if (value &&
-               (!strcasecmp(value, "no") ||
-        	!strcasecmp(value, "off") ||
-        	!strcasecmp(value, "false")))
+               (!_cups_strcasecmp(value, "no") ||
+        	!_cups_strcasecmp(value, "off") ||
+        	!_cups_strcasecmp(value, "false")))
         p->accepting = 0;
       else
 	cupsdLogMessage(CUPSD_LOG_ERROR,
 	                "Syntax error on line %d of classes.conf.",
 	                linenum);
     }
-    else if (!strcasecmp(line, "Shared"))
+    else if (!_cups_strcasecmp(line, "Shared"))
     {
      /*
       * Set the initial shared state...
       */
 
       if (value &&
-          (!strcasecmp(value, "yes") ||
-           !strcasecmp(value, "on") ||
-           !strcasecmp(value, "true")))
+          (!_cups_strcasecmp(value, "yes") ||
+           !_cups_strcasecmp(value, "on") ||
+           !_cups_strcasecmp(value, "true")))
         p->shared = 1;
       else if (value &&
-               (!strcasecmp(value, "no") ||
-        	!strcasecmp(value, "off") ||
-        	!strcasecmp(value, "false")))
+               (!_cups_strcasecmp(value, "no") ||
+        	!_cups_strcasecmp(value, "off") ||
+        	!_cups_strcasecmp(value, "false")))
         p->shared = 0;
       else
 	cupsdLogMessage(CUPSD_LOG_ERROR,
 	                "Syntax error on line %d of classes.conf.",
 	                linenum);
     }
-    else if (!strcasecmp(line, "JobSheets"))
+    else if (!_cups_strcasecmp(line, "JobSheets"))
     {
      /*
       * Set the initial job sheets...
@@ -579,29 +552,29 @@ cupsdLoadAllClasses(void)
 	cupsdLogMessage(CUPSD_LOG_ERROR,
 	                "Syntax error on line %d of classes.conf.", linenum);
     }
-    else if (!strcasecmp(line, "AllowUser"))
+    else if (!_cups_strcasecmp(line, "AllowUser"))
     {
       if (value)
       {
         p->deny_users = 0;
-        cupsdAddPrinterUser(p, value);
+        cupsdAddString(&(p->users), value);
       }
       else
 	cupsdLogMessage(CUPSD_LOG_ERROR,
 	                "Syntax error on line %d of classes.conf.", linenum);
     }
-    else if (!strcasecmp(line, "DenyUser"))
+    else if (!_cups_strcasecmp(line, "DenyUser"))
     {
       if (value)
       {
         p->deny_users = 1;
-        cupsdAddPrinterUser(p, value);
+        cupsdAddString(&(p->users), value);
       }
       else
 	cupsdLogMessage(CUPSD_LOG_ERROR,
 	                "Syntax error on line %d of classes.conf.", linenum);
     }
-    else if (!strcasecmp(line, "QuotaPeriod"))
+    else if (!_cups_strcasecmp(line, "QuotaPeriod"))
     {
       if (value)
         p->quota_period = atoi(value);
@@ -609,7 +582,7 @@ cupsdLoadAllClasses(void)
 	cupsdLogMessage(CUPSD_LOG_ERROR,
 	                "Syntax error on line %d of classes.conf.", linenum);
     }
-    else if (!strcasecmp(line, "PageLimit"))
+    else if (!_cups_strcasecmp(line, "PageLimit"))
     {
       if (value)
         p->page_limit = atoi(value);
@@ -617,7 +590,7 @@ cupsdLoadAllClasses(void)
 	cupsdLogMessage(CUPSD_LOG_ERROR,
 	                "Syntax error on line %d of classes.conf.", linenum);
     }
-    else if (!strcasecmp(line, "KLimit"))
+    else if (!_cups_strcasecmp(line, "KLimit"))
     {
       if (value)
         p->k_limit = atoi(value);
@@ -625,7 +598,7 @@ cupsdLoadAllClasses(void)
 	cupsdLogMessage(CUPSD_LOG_ERROR,
 	                "Syntax error on line %d of classes.conf.", linenum);
     }
-    else if (!strcasecmp(line, "OpPolicy"))
+    else if (!_cups_strcasecmp(line, "OpPolicy"))
     {
       if (value)
       {
@@ -646,7 +619,7 @@ cupsdLoadAllClasses(void)
 	cupsdLogMessage(CUPSD_LOG_ERROR,
 	                "Syntax error on line %d of classes.conf.", linenum);
     }
-    else if (!strcasecmp(line, "ErrorPolicy"))
+    else if (!_cups_strcasecmp(line, "ErrorPolicy"))
     {
       if (value)
       {
@@ -683,9 +656,10 @@ void
 cupsdSaveAllClasses(void)
 {
   cups_file_t		*fp;		/* classes.conf file */
-  char			temp[1024],	/* Temporary string */
-			backup[1024],	/* printers.conf.O file */
-			value[2048];	/* Value string */
+  char			filename[1024],	/* classes.conf filename */
+			temp[1024],	/* Temporary string */
+			value[2048],	/* Value string */
+			*name;		/* Current user name */
   cupsd_printer_t	*pclass;	/* Current printer class */
   int			i;		/* Looping var */
   time_t		curtime;	/* Current time */
@@ -697,35 +671,12 @@ cupsdSaveAllClasses(void)
   * Create the classes.conf file...
   */
 
-  snprintf(temp, sizeof(temp), "%s/classes.conf", ServerRoot);
-  snprintf(backup, sizeof(backup), "%s/classes.conf.O", ServerRoot);
+  snprintf(filename, sizeof(filename), "%s/classes.conf", ServerRoot);
 
-  if (rename(temp, backup))
-  {
-    if (errno != ENOENT)
-      cupsdLogMessage(CUPSD_LOG_ERROR, "Unable to backup classes.conf - %s",
-                      strerror(errno));
-  }
-
-  if ((fp = cupsFileOpen(temp, "w")) == NULL)
-  {
-    cupsdLogMessage(CUPSD_LOG_ERROR, "Unable to save classes.conf - %s",
-                    strerror(errno));
-
-    if (rename(backup, temp))
-      cupsdLogMessage(CUPSD_LOG_ERROR, "Unable to restore classes.conf - %s",
-                      strerror(errno));
+  if ((fp = cupsdCreateConfFile(filename, ConfigFilePerm)) == NULL)
     return;
-  }
-  else
-    cupsdLogMessage(CUPSD_LOG_INFO, "Saving classes.conf...");
 
- /*
-  * Restrict access to the file...
-  */
-
-  fchown(cupsFileNumber(fp), RunUser, Group);
-  fchmod(cupsFileNumber(fp), ConfigFilePerm);
+  cupsdLogMessage(CUPSD_LOG_INFO, "Saving classes.conf...");
 
  /*
   * Write a small header to the file...
@@ -752,7 +703,6 @@ cupsdSaveAllClasses(void)
     */
 
     if ((pclass->type & CUPS_PRINTER_REMOTE) ||
-        (pclass->type & CUPS_PRINTER_IMPLICIT) ||
         !(pclass->type & CUPS_PRINTER_CLASS))
       continue;
 
@@ -764,6 +714,8 @@ cupsdSaveAllClasses(void)
       cupsFilePrintf(fp, "<DefaultClass %s>\n", pclass->name);
     else
       cupsFilePrintf(fp, "<Class %s>\n", pclass->name);
+
+    cupsFilePrintf(fp, "UUID %s\n", pclass->uuid);
 
     if (pclass->num_auth_info_required > 0)
     {
@@ -825,9 +777,10 @@ cupsdSaveAllClasses(void)
     cupsFilePrintf(fp, "PageLimit %d\n", pclass->page_limit);
     cupsFilePrintf(fp, "KLimit %d\n", pclass->k_limit);
 
-    for (i = 0; i < pclass->num_users; i ++)
-      cupsFilePutConf(fp, pclass->deny_users ? "DenyUser" : "AllowUser",
-                      pclass->users[i]);
+    for (name = (char *)cupsArrayFirst(pclass->users);
+         name;
+	 name = (char *)cupsArrayNext(pclass->users))
+      cupsFilePutConf(fp, pclass->deny_users ? "DenyUser" : "AllowUser", name);
 
      if (pclass->op_policy)
       cupsFilePutConf(fp, "OpPolicy", pclass->op_policy);
@@ -842,43 +795,16 @@ cupsdSaveAllClasses(void)
       cupsFilePutConf(fp, "Option", value);
     }
 
-    cupsFilePuts(fp, "</Class>\n");
+    if (pclass == DefaultPrinter)
+      cupsFilePuts(fp, "</DefaultClass>\n");
+    else
+      cupsFilePuts(fp, "</Class>\n");
   }
 
-  cupsFileClose(fp);
+  cupsdCloseCreatedConfFile(fp, filename);
 }
 
 
 /*
- * 'cupsdUpdateImplicitClasses()' - Update the accepting state of implicit
- *                                  classes.
- */
-
-void
-cupsdUpdateImplicitClasses(void)
-{
-  int			i;		/* Looping var */
-  cupsd_printer_t	*pclass;	/* Current class */
-  int			accepting;	/* printer-is-accepting-jobs value */
-
-
-  for (pclass = (cupsd_printer_t *)cupsArrayFirst(ImplicitPrinters);
-       pclass;
-       pclass = (cupsd_printer_t *)cupsArrayNext(ImplicitPrinters))
-  {
-   /*
-    * Loop through the printers to come up with a composite state...
-    */
-
-    for (i = 0, accepting = 0; i < pclass->num_printers; i ++)
-      if ((accepting = pclass->printers[i]->accepting) != 0)
-	break;
-
-    pclass->accepting = accepting;
-  }
-}
-
-
-/*
- * End of "$Id: classes.c 9258 2010-08-13 01:34:04Z mike $".
+ * End of "$Id: classes.c 11781 2014-03-28 20:57:22Z msweet $".
  */

@@ -1,16 +1,16 @@
 #
-# "$Id: Makefile 9120 2010-04-23 18:56:34Z mike $"
+# "$Id: Makefile 12414 2015-01-21 00:02:04Z msweet $"
 #
-#   Top-level Makefile for CUPS.
+# Top-level Makefile for CUPS.
 #
-#   Copyright 2007-2010 by Apple Inc.
-#   Copyright 1997-2007 by Easy Software Products, all rights reserved.
+# Copyright 2007-2014 by Apple Inc.
+# Copyright 1997-2007 by Easy Software Products, all rights reserved.
 #
-#   These coded instructions, statements, and computer programs are the
-#   property of Apple Inc. and are protected by Federal copyright
-#   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
-#   which should have been included with this file.  If this file is
-#   file is missing or damaged, see the license at "http://www.cups.org/".
+# These coded instructions, statements, and computer programs are the
+# property of Apple Inc. and are protected by Federal copyright
+# law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+# which should have been included with this file.  If this file is
+# file is missing or damaged, see the license at "http://www.cups.org/".
 #
 
 include Makedefs
@@ -20,10 +20,7 @@ include Makedefs
 # Directories to make...
 #
 
-DIRS	=	cups filter backend berkeley cgi-bin driver locale man monitor \
-		notifier ppdc scheduler systemv test \
-		$(PHPDIR) \
-		conf data doc examples $(FONTS) templates
+DIRS	=	cups test $(BUILDDIRS)
 
 
 #
@@ -101,22 +98,18 @@ clean:
 
 distclean:	clean
 	$(RM) Makedefs config.h config.log config.status
+	$(RM) conf/cups-files.conf conf/cupsd.conf conf/mime.convs conf/pam.std conf/snmp.conf
 	$(RM) cups-config
-	$(RM) conf/cupsd.conf conf/mime.convs conf/pam.std conf/snmp.conf
-	$(RM) doc/help/ref-cupsd-conf.html doc/help/standard.html doc/index.html
-	$(RM) init/cups.sh init/cups-lpd init/org.cups.cups-lpd.plist
-	$(RM) man/client.conf.man
-	$(RM) man/cups-deviced.man man/cups-driverd.man
-	$(RM) man/cups-lpd.man man/cupsaddsmb.man man/cupsd.man
-	$(RM) man/cupsd.conf.man man/drv.man man/lpoptions.man
-	$(RM) packaging/cups.list
-	$(RM) packaging/cups-desc.plist packaging/cups-info.plist
-	$(RM) templates/header.tmpl
+	$(RM) data/testprint
 	$(RM) desktop/cups.desktop
-	$(RM) init/cups.xml
+	$(RM) doc/index.html
+	$(RM) man/client.conf.man man/cups-files.conf.man man/cups-lpd.man man/cups-snmp.man man/cupsaddsmb.man man/cupsd.conf.man man/cupsd.man man/lpoptions.man
+	$(RM) packaging/cups.list
+	$(RM) scheduler/cups-lpd.xinetd scheduler/cups.sh scheduler/cups.xml scheduler/org.cups.cups-lpd.plist scheduler/org.cups.cups-lpdAT.service scheduler/org.cups.cupsd.path scheduler/org.cups.cupsd.service scheduler/org.cups.cupsd.socket
+	$(RM) templates/header.tmpl
 	-$(RM) doc/*/index.html
 	-$(RM) templates/*/header.tmpl
-	-$(RM) -r autom4te*.cache clang cups/charmaps cups/locale driver/test
+	-$(RM) -r autom4te*.cache clang cups/charmaps cups/locale
 
 
 #
@@ -131,8 +124,11 @@ depend:
 
 
 #
-# Run the clang.llvm.org static code analysis tool on the C sources.
-# (at least checker-231 is required for scan-build to work this way)
+# Run the Clang static code analysis tool on the sources, available here:
+#
+#    http://clang-analyzer.llvm.org
+#
+# At least checker-231 is required.
 #
 
 .PHONY: clang clang-changes
@@ -141,6 +137,26 @@ clang:
 	scan-build -V -k -o `pwd`/clang $(MAKE) $(MFLAGS) clean all
 clang-changes:
 	scan-build -V -k -o `pwd`/clang $(MAKE) $(MFLAGS) all
+
+
+#
+# Run the STACK tool on the sources, available here:
+#
+#    http://css.csail.mit.edu/stack/
+#
+# Do the following to pass options to configure:
+#
+#    make CONFIGFLAGS="--foo --bar" stack
+#
+
+.PHONY: stack
+stack:
+	stack-build ./configure $(CONFIGFLAGS)
+	stack-build $(MAKE) $(MFLAGS) clean all
+	poptck
+	$(MAKE) $(MFLAGS) distclean
+	$(RM) */*.ll
+	$(RM) */*.ll.out
 
 
 #
@@ -163,6 +179,8 @@ install:	install-data install-headers install-libs install-exec
 #
 
 install-data:
+	echo Making all in cups...
+	(cd cups; $(MAKE) $(MFLAGS) all)
 	for dir in $(DIRS); do\
 		echo Installing data files in $$dir... ;\
 		(cd $$dir; $(MAKE) $(MFLAGS) install-data) || exit 1;\
@@ -170,73 +188,7 @@ install-data:
 	echo Installing cups-config script...
 	$(INSTALL_DIR) -m 755 $(BINDIR)
 	$(INSTALL_SCRIPT) cups-config $(BINDIR)/cups-config
-	if test "x$(INITDIR)" != x; then \
-		echo Installing init scripts...; \
-		$(INSTALL_DIR) -m 755 $(BUILDROOT)$(INITDIR)/init.d; \
-		$(INSTALL_SCRIPT) init/cups.sh $(BUILDROOT)$(INITDIR)/init.d/cups; \
-		for level in $(RCLEVELS); do \
-			$(INSTALL_DIR) -m 755 $(BUILDROOT)$(INITDIR)/rc$${level}.d; \
-			$(LN) ../init.d/cups $(BUILDROOT)$(INITDIR)/rc$${level}.d/S$(RCSTART)cups; \
-			if test `uname` = HP-UX; then \
-				level=`expr $$level - 1`; \
-				$(INSTALL_DIR) -m 755 $(BUILDROOT)$(INITDIR)/rc$${level}.d; \
-			fi; \
-			$(LN) ../init.d/cups $(BUILDROOT)$(INITDIR)/rc$${level}.d/K$(RCSTOP)cups; \
-		done; \
-		$(INSTALL_DIR) -m 755 $(BUILDROOT)$(INITDIR)/rc0.d; \
-		$(LN) ../init.d/cups $(BUILDROOT)$(INITDIR)/rc0.d/K$(RCSTOP)cups; \
-	fi
-	if test "x$(INITDIR)" = x -a "x$(INITDDIR)" != x; then \
-		$(INSTALL_DIR) $(BUILDROOT)$(INITDDIR); \
-		if test "$(INITDDIR)" = "/System/Library/LaunchDaemons"; then \
-			echo Installing LaunchDaemons configuration files...; \
-			$(INSTALL_DATA) init/org.cups.cupsd.plist $(BUILDROOT)$(DEFAULT_LAUNCHD_CONF); \
-			$(INSTALL_DATA) init/org.cups.cups-lpd.plist $(BUILDROOT)/System/Library/LaunchDaemons; \
-			case `uname -r` in \
-				8.*) \
-				$(INSTALL_DIR) $(BUILDROOT)/System/Library/StartupItems/PrintingServices; \
-				$(INSTALL_SCRIPT) init/PrintingServices.launchd $(BUILDROOT)/System/Library/StartupItems/PrintingServices/PrintingServices; \
-				$(INSTALL_DATA) init/StartupParameters.plist $(BUILDROOT)/System/Library/StartupItems/PrintingServices/StartupParameters.plist; \
-				$(INSTALL_DIR) $(BUILDROOT)/System/Library/StartupItems/PrintingServices/Resources/English.lproj; \
-				$(INSTALL_DATA) init/Localizable.strings $(BUILDROOT)/System/Library/StartupItems/PrintingServices/Resources/English.lproj/Localizable.strings; \
-				;; \
-			esac \
-		else \
-			echo Installing RC script...; \
-			$(INSTALL_SCRIPT) init/cups.sh $(BUILDROOT)$(INITDDIR)/cups; \
-		fi \
-	fi
-	if test "x$(SMFMANIFESTDIR)" != x; then \
-		echo Installing SMF manifest in $(SMFMANIFESTDIR)...;\
-		$(INSTALL_DIR) $(BUILDROOT)/$(SMFMANIFESTDIR); \
-		$(INSTALL_SCRIPT) init/cups.xml $(BUILDROOT)$(SMFMANIFESTDIR)/cups.xml; \
-	fi
-	if test "x$(DBUSDIR)" != x; then \
-		echo Installing cups.conf in $(DBUSDIR)...;\
-		$(INSTALL_DIR) -m 755 $(BUILDROOT)$(DBUSDIR)/system.d; \
-		$(INSTALL_DATA) packaging/cups-dbus.conf $(BUILDROOT)$(DBUSDIR)/system.d/cups.conf; \
-	fi
-	if test "x$(XINETD)" != x; then \
-		echo Installing xinetd configuration file for cups-lpd...; \
-		$(INSTALL_DIR) -m 755 $(BUILDROOT)$(XINETD); \
-		$(INSTALL_DATA) init/cups-lpd $(BUILDROOT)$(XINETD)/cups-lpd; \
-	fi
-	if test "x$(MENUDIR)" != x; then \
-		echo Installing desktop menu...; \
-		$(INSTALL_DIR) -m 755 $(BUILDROOT)$(MENUDIR); \
-		$(INSTALL_DATA) desktop/cups.desktop $(BUILDROOT)$(MENUDIR); \
-	fi
-	if test "x$(ICONDIR)" != x; then \
-		echo Installing desktop icons...; \
-		$(INSTALL_DIR) -m 755 $(BUILDROOT)$(ICONDIR)/hicolor/16x16/apps; \
-		$(INSTALL_DATA) desktop/cups-16.png $(BUILDROOT)$(ICONDIR)/hicolor/16x16/apps/cups.png; \
-		$(INSTALL_DIR) -m 755 $(BUILDROOT)$(ICONDIR)/hicolor/32x32/apps; \
-		$(INSTALL_DATA) desktop/cups-32.png $(BUILDROOT)$(ICONDIR)/hicolor/32x32/apps/cups.png; \
-		$(INSTALL_DIR) -m 755 $(BUILDROOT)$(ICONDIR)/hicolor/64x64/apps; \
-		$(INSTALL_DATA) desktop/cups-64.png $(BUILDROOT)$(ICONDIR)/hicolor/64x64/apps/cups.png; \
-		$(INSTALL_DIR) -m 755 $(BUILDROOT)$(ICONDIR)/hicolor/128x128/apps; \
-		$(INSTALL_DATA) desktop/cups-128.png $(BUILDROOT)$(ICONDIR)/hicolor/128x128/apps/cups.png; \
-	fi
+
 
 #
 # Install header files...
@@ -247,6 +199,11 @@ install-headers:
 		echo Installing header files in $$dir... ;\
 		(cd $$dir; $(MAKE) $(MFLAGS) install-headers) || exit 1;\
 	done
+	if test "x$(privateinclude)" != x; then \
+		echo Installing config.h into $(PRIVATEINCLUDE)...; \
+		$(INSTALL_DIR) -m 755 $(PRIVATEINCLUDE); \
+		$(INSTALL_DATA) config.h $(PRIVATEINCLUDE)/config.h; \
+	fi
 
 
 #
@@ -283,58 +240,6 @@ uninstall:
 	echo Uninstalling cups-config script...
 	$(RM) $(BINDIR)/cups-config
 	-$(RMDIR) $(BINDIR)
-	echo Uninstalling startup script...
-	if test "x$(INITDIR)" != x; then \
-		$(RM) $(BUILDROOT)$(INITDIR)/init.d/cups; \
-		$(RMDIR) $(BUILDROOT)$(INITDIR)/init.d; \
-		$(RM)  $(BUILDROOT)$(INITDIR)/rc0.d/K00cups; \
-		$(RMDIR) $(BUILDROOT)$(INITDIR)/rc0.d; \
-		$(RM) $(BUILDROOT)$(INITDIR)/rc2.d/S99cups; \
-		$(RMDIR) $(BUILDROOT)$(INITDIR)/rc2.d; \
-		$(RM) $(BUILDROOT)$(INITDIR)/rc3.d/S99cups; \
-		$(RMDIR) $(BUILDROOT)$(INITDIR)/rc3.d; \
-		$(RM) $(BUILDROOT)$(INITDIR)/rc5.d/S99cups; \
-		$(RMDIR) $(BUILDROOT)$(INITDIR)/rc5.d; \
-	fi
-	if test "x$(INITDIR)" = x -a "x$(INITDDIR)" != x; then \
-		if test "$(INITDDIR)" = "/System/Library/StartupItems/PrintingServices"; then \
-			$(RM) $(BUILDROOT)$(INITDDIR)/PrintingServices; \
-			$(RM) $(BUILDROOT)$(INITDDIR)/StartupParameters.plist; \
-			$(RM) $(BUILDROOT)$(INITDDIR)/Resources/English.lproj/Localizable.strings; \
-			$(RMDIR) $(BUILDROOT)$(INITDDIR)/Resources/English.lproj; \
-		elif test "$(INITDDIR)" = "/System/Library/LaunchDaemons"; then \
-			$(RM) $(BUILDROOT)$(INITDDIR)/org.cups.cupsd.plist; \
-			$(RM) $(BUILDROOT)$(INITDDIR)/org.cups.cups-lpd.plist; \
-			$(RMDIR) $(BUILDROOT)/System/Library/StartupItems/PrintingServices; \
-		else \
-			$(INSTALL_SCRIPT) init/cups.sh $(BUILDROOT)$(INITDDIR)/cups; \
-		fi \
-		$(RMDIR) $(BUILDROOT)$(INITDDIR); \
-	fi
-	if test "x$(SMFMANIFESTDIR)" != x; then \
-		echo Uninstalling SMF manifest in $(SMFMANIFESTDIR)...;\
-		$(RM) $(BUILDROOT)$(SMFMANIFESTDIR)/cups.xml; \
-	fi
-	if test "x$(DBUSDIR)" != x; then \
-		echo Uninstalling cups.conf in $(DBUSDIR)...;\
-		$(RM) $(BUILDROOT)$(DBUSDIR)/cups.conf; \
-		$(RMDIR) $(BUILDROOT)$(DBUSDIR); \
-	fi
-	if test "x$(XINETD)" != x; then \
-		echo Uninstalling xinetd configuration file for cups-lpd...; \
-		$(RM) $(BUILDROOT)$(XINETD)/cups-lpd; \
-	fi
-	if test "x$(MENUDIR)" != x; then \
-		echo Uninstalling desktop menu...; \
-		$(RM) $(BUILDROOT)$(MENUDIR)/cups.desktop; \
-	fi
-	if test "x$(ICONDIR)" != x; then \
-		echo Uninstalling desktop icons...; \
-		$(RM) $(BUILDROOT)$(ICONDIR)/hicolor/16x16/apps/cups.png; \
-		$(RM) $(BUILDROOT)$(ICONDIR)/hicolor/32x32/apps/cups.png; \
-		$(RM) $(BUILDROOT)$(ICONDIR)/hicolor/64x64/apps/cups.png; \
-		$(RM) $(BUILDROOT)$(ICONDIR)/hicolor/128x128/apps/cups.png; \
-	fi
 
 
 #
@@ -348,28 +253,32 @@ test:	all unittests
 
 check:	all unittests
 	echo Running CUPS test suite with defaults...
-	cd test; ./run-stp-tests.sh 1 0 n
+	cd test; ./run-stp-tests.sh 1 0 n n
+
+debugcheck:	all unittests
+	echo Running CUPS test suite with debug printfs...
+	cd test; ./run-stp-tests.sh 1 0 n y
 
 
 #
-# Create HTML documentation...
+# Create HTML documentation using Mini-XML's mxmldoc (http://www.msweet.org/)...
 #
 
 apihelp:
-	for dir in cgi-bin cups filter driver ppdc scheduler; do\
+	for dir in cgi-bin cups filter ppdc scheduler; do\
 		echo Generating API help in $$dir... ;\
 		(cd $$dir; $(MAKE) $(MFLAGS) apihelp) || exit 1;\
 	done
 
 framedhelp:
-	for dir in cgi-bin cups filter driver ppdc scheduler; do\
+	for dir in cgi-bin cups filter ppdc scheduler; do\
 		echo Generating framed API help in $$dir... ;\
 		(cd $$dir; $(MAKE) $(MFLAGS) framedhelp) || exit 1;\
 	done
 
 
 #
-# Create an Xcode docset...
+# Create an Xcode docset using Mini-XML's mxmldoc (http://www.msweet.org/)...
 #
 
 docset:	apihelp
@@ -385,29 +294,36 @@ docset:	apihelp
 		doc/help/api-*.tokens
 	$(RM) doc/help/api-*.tokens
 	echo Indexing docset...
-	/Developer/usr/bin/docsetutil index org.cups.docset
+	/Applications/Xcode.app/Contents/Developer/usr/bin/docsetutil index org.cups.docset
 	echo Generating docset archive and feed...
 	$(RM) org.cups.docset.atom
-	/Developer/usr/bin/docsetutil package --output org.cups.docset.xar \
+	/Applications/Xcode.app/Contents/Developer/usr/bin/docsetutil package --output org.cups.docset.xar \
 		--atom org.cups.docset.atom \
 		--download-url http://www.cups.org/org.cups.docset.xar \
 		org.cups.docset
 
 
 #
-# Make software distributions using EPM (http://www.epmhome.org/)...
+# Lines of code computation...
+#
+
+sloc:
+	for dir in cups scheduler; do \
+		(cd $$dir; $(MAKE) $(MFLAGS) sloc) || exit 1;\
+	done
+
+
+#
+# Make software distributions using EPM (http://www.msweet.org/)...
 #
 
 EPMFLAGS	=	-v --output-dir dist $(EPMARCH)
 
-aix bsd deb depot inst pkg setld slackware swinstall tardist:
+bsd deb pkg slackware:
 	epm $(EPMFLAGS) -f $@ cups packaging/cups.list
 
 epm:
 	epm $(EPMFLAGS) -s packaging/installer.gif cups packaging/cups.list
-
-osx:
-	epm $(EPMFLAGS) -f osx -s packaging/installer.tif cups packaging/cups.list
 
 rpm:
 	epm $(EPMFLAGS) -f rpm -s packaging/installer.gif cups packaging/cups.list
@@ -419,7 +335,6 @@ dist:	all
 	case `uname` in \
 		*BSD*) $(MAKE) $(MFLAGS) bsd;; \
 		Darwin*) $(MAKE) $(MFLAGS) osx;; \
-		IRIX*) $(MAKE) $(MFLAGS) tardist;; \
 		Linux*) test ! -x /usr/bin/rpm || $(MAKE) $(MFLAGS) rpm;; \
 		SunOS*) $(MAKE) $(MFLAGS) pkg;; \
 	esac
@@ -433,5 +348,5 @@ dist:	all
 
 
 #
-# End of "$Id: Makefile 9120 2010-04-23 18:56:34Z mike $".
+# End of "$Id: Makefile 12414 2015-01-21 00:02:04Z msweet $".
 #

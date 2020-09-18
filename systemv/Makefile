@@ -1,25 +1,25 @@
 #
-# "$Id: Makefile 8572 2009-04-29 15:32:18Z mike $"
+# "$Id: Makefile 11776 2014-03-28 19:16:05Z msweet $"
 #
-#   System V commands makefile for the Common UNIX Printing System (CUPS).
+# System V commands makefile for CUPS.
 #
-#   Copyright 2007-2009 by Apple Inc.
-#   Copyright 1997-2006 by Easy Software Products, all rights reserved.
+# Copyright 2007-2014 by Apple Inc.
+# Copyright 1997-2006 by Easy Software Products, all rights reserved.
 #
-#   These coded instructions, statements, and computer programs are the
-#   property of Apple Inc. and are protected by Federal copyright
-#   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
-#   which should have been included with this file.  If this file is
-#   file is missing or damaged, see the license at "http://www.cups.org/".
+# These coded instructions, statements, and computer programs are the
+# property of Apple Inc. and are protected by Federal copyright
+# law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+# which should have been included with this file.  If this file is
+# file is missing or damaged, see the license at "http://www.cups.org/".
 #
 
 include ../Makedefs
 
 TARGETS	=	cancel cupsaccept cupsaddsmb cupsctl cupstestdsc cupstestppd \
-		lp lpadmin lpinfo lpmove lpoptions lppasswd lpstat
+		lp lpadmin lpinfo lpmove lpoptions lpstat
 OBJS	=	cancel.o cupsaccept.o cupsaddsmb.o cupsctl.o cupstestdsc.o \
 		cupstestppd.o lp.o lpadmin.o lpinfo.o lpmove.o lpoptions.o \
-		lppasswd.o lpstat.o
+		lpstat.o
 
 
 #
@@ -57,7 +57,7 @@ clean:
 #
 
 depend:
-	makedepend -Y -I.. -fDependencies $(OBJS:.o=.c) >/dev/null 2>&1
+	$(CC) -MM $(ALL_CFLAGS) $(OBJS:.o=.c) >Dependencies
 
 
 #
@@ -105,11 +105,11 @@ install-exec:
 	$(INSTALL_BIN) lp $(BINDIR)
 	$(INSTALL_BIN) lpoptions $(BINDIR)
 	$(INSTALL_BIN) lpstat $(BINDIR)
-	$(INSTALL_BIN) lppasswd $(BINDIR)
 	if test "x$(SYMROOT)" != "x"; then \
 		$(INSTALL_DIR) $(SYMROOT); \
 		for file in $(TARGETS); do \
 			cp $$file $(SYMROOT); \
+			dsymutil $(SYMROOT)/$$file; \
 		done \
 	fi
 
@@ -138,7 +138,6 @@ uninstall:
 	$(RM) $(BINDIR)/cupstestppd
 	$(RM) $(BINDIR)/lp
 	$(RM) $(BINDIR)/lpoptions
-	$(RM) $(BINDIR)/lppasswd
 	$(RM) $(BINDIR)/lpstat
 	-$(RMDIR) $(BINDIR)
 	$(RM) $(SBINDIR)/accept
@@ -212,10 +211,10 @@ cupstestppd:	cupstestppd.o ../cups/$(LIBCUPS) ../filter/$(LIBCUPSIMAGE)
 	echo Linking $@...
 	$(CC) $(LDFLAGS) -o $@ cupstestppd.o $(LINKCUPSIMAGE) $(IMGLIBS) $(LIBS)
 
-cupstestppd-static:	cupstestppd.o ../cups/libcups.a ../filter/libcupsimage.a
+cupstestppd-static:	cupstestppd.o ../cups/$(LIBCUPSSTATIC) ../filter/libcupsimage.a
 	echo Linking $@...
 	$(CC) $(LDFLAGS) -o $@ cupstestppd.o ../filter/libcupsimage.a \
-		../cups/libcups.a $(IMGLIBS) $(LIBGSSAPI) $(LIBS) $(LIBZ)
+		../cups/$(LIBCUPSSTATIC) $(IMGLIBS) $(LIBGSSAPI) $(LIBS) $(LIBZ)
 
 
 #
@@ -264,15 +263,6 @@ lpoptions:	lpoptions.o ../cups/$(LIBCUPS)
 
 
 #
-# lppasswd
-#
-
-lppasswd:	lppasswd.o ../cups/$(LIBCUPS)
-	echo Linking $@...
-	$(CC) $(LDFLAGS) -o lppasswd lppasswd.o $(LIBZ) $(LIBS)
-
-
-#
 # lpstat
 #
 
@@ -289,5 +279,5 @@ include Dependencies
 
 
 #
-# End of "$Id: Makefile 8572 2009-04-29 15:32:18Z mike $".
+# End of "$Id: Makefile 11776 2014-03-28 19:16:05Z msweet $".
 #

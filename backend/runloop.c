@@ -1,23 +1,18 @@
 /*
- * "$Id: runloop.c 9258 2010-08-13 01:34:04Z mike $"
+ * "$Id: runloop.c 11558 2014-02-06 18:33:34Z msweet $"
  *
- *   Common run loop APIs for CUPS.
+ * Common run loop APIs for CUPS backends.
  *
- *   Copyright 2007-2010 by Apple Inc.
- *   Copyright 2006-2007 by Easy Software Products, all rights reserved.
+ * Copyright 2007-2014 by Apple Inc.
+ * Copyright 2006-2007 by Easy Software Products, all rights reserved.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   "LICENSE" which should have been included with this file.  If this
- *   file is missing or damaged, see the license at "http://www.cups.org/".
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * "LICENSE" which should have been included with this file.  If this
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  *
- *   This file is subject to the Apple OS-Developed Software exception.
- *
- * Contents:
- *
- *   backendDrainOutput() - Drain pending print data to the device.
- *   backendRunLoop()     - Read and write print and back-channel data.
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
@@ -26,11 +21,7 @@
 
 #include "backend-private.h"
 #include <limits.h>
-#ifdef __hpux
-#  include <sys/time.h>
-#else
-#  include <sys/select.h>
-#endif /* __hpux */
+#include <sys/select.h>
 
 
 /*
@@ -90,7 +81,8 @@ backendDrainOutput(int print_fd,	/* I - Print file descriptor */
 
       if (errno != EAGAIN || errno != EINTR)
       {
-	perror("ERROR: Unable to read print data");
+	fprintf(stderr, "DEBUG: Read failed: %s\n", strerror(errno));
+	_cupsLangPrintFilter(stderr, "ERROR", _("Unable to read print data."));
 	return (-1);
       }
 
@@ -110,7 +102,7 @@ backendDrainOutput(int print_fd,	/* I - Print file descriptor */
 
     for (print_ptr = print_buffer; print_bytes > 0;)
     {
-      if ((bytes = write(device_fd, print_ptr, print_bytes)) < 0)
+      if ((bytes = write(device_fd, print_ptr, (size_t)print_bytes)) < 0)
       {
        /*
         * Write error - bail if we don't see an error we can retry...
@@ -119,8 +111,7 @@ backendDrainOutput(int print_fd,	/* I - Print file descriptor */
         if (errno != ENOSPC && errno != ENXIO && errno != EAGAIN &&
 	    errno != EINTR && errno != ENOTTY)
 	{
-	  _cupsLangPrintf(stderr, _("ERROR: Unable to write print data: %s\n"),
-			  strerror(errno));
+	  _cupsLangPrintError("ERROR", _("Unable to write print data"));
 	  return (-1);
 	}
       }
@@ -142,14 +133,13 @@ backendDrainOutput(int print_fd,	/* I - Print file descriptor */
 
 ssize_t					/* O - Total bytes on success, -1 on error */
 backendRunLoop(
-    int         print_fd,		/* I - Print file descriptor */
-    int         device_fd,		/* I - Device file descriptor */
-    int         snmp_fd,		/* I - SNMP socket or -1 if none */
-    http_addr_t *addr,			/* I - Address of device */
-    int         use_bc,			/* I - Use back-channel? */
-    int         update_state,		/* I - Update printer-state-reasons? */
-    int         (*side_cb)(int, int, int, http_addr_t *, int))
-					/* I - Side-channel callback */
+    int          print_fd,		/* I - Print file descriptor */
+    int          device_fd,		/* I - Device file descriptor */
+    int          snmp_fd,		/* I - SNMP socket or -1 if none */
+    http_addr_t  *addr,			/* I - Address of device */
+    int          use_bc,		/* I - Use back-channel? */
+    int          update_state,		/* I - Update printer-state-reasons? */
+    _cups_sccb_t side_cb)		/* I - Side-channel callback */
 {
   int		nfds;			/* Maximum file descriptor value + 1 */
   fd_set	input,			/* Input set for reading */
@@ -249,13 +239,14 @@ backendRunLoop(
 	if (errno == ENXIO && offline != 1 && update_state)
 	{
 	  fputs("STATE: +offline-report\n", stderr);
-	  _cupsLangPuts(stderr, _("INFO: Printer is currently offline.\n"));
+	  _cupsLangPrintFilter(stderr, "INFO",
+	                       _("The printer is not connected."));
 	  offline = 1;
 	}
 	else if (errno == EINTR && total_bytes == 0)
 	{
 	  fputs("DEBUG: Received an interrupt before any bytes were "
-	        "written, aborting!\n", stderr);
+	        "written, aborting.\n", stderr);
           return (0);
 	}
 
@@ -289,9 +280,9 @@ backendRunLoop(
       if ((bc_bytes = read(device_fd, bc_buffer, sizeof(bc_buffer))) > 0)
       {
 	fprintf(stderr,
-	        "DEBUG: Received " CUPS_LLFMT " bytes of back-channel data!\n",
+	        "DEBUG: Received " CUPS_LLFMT " bytes of back-channel data\n",
 	        CUPS_LLCAST bc_bytes);
-        cupsBackChannelWrite(bc_buffer, bc_bytes, 1.0);
+        cupsBackChannelWrite(bc_buffer, (size_t)bc_bytes, 1.0);
       }
       else if (bc_bytes < 0 && errno != EAGAIN && errno != EINTR)
       {
@@ -318,7 +309,9 @@ backendRunLoop(
 
 	if (errno != EAGAIN || errno != EINTR)
 	{
-	  perror("ERROR: Unable to read print data");
+	  fprintf(stderr, "DEBUG: Read failed: %s\n", strerror(errno));
+	  _cupsLangPrintFilter(stderr, "ERROR",
+	                       _("Unable to read print data."));
 	  return (-1);
 	}
 
@@ -346,7 +339,7 @@ backendRunLoop(
 
     if (print_bytes && FD_ISSET(device_fd, &output))
     {
-      if ((bytes = write(device_fd, print_ptr, print_bytes)) < 0)
+      if ((bytes = write(device_fd, print_ptr, (size_t)print_bytes)) < 0)
       {
        /*
         * Write error - bail if we don't see an error we can retry...
@@ -357,7 +350,7 @@ backendRunLoop(
 	  if (paperout != 1 && update_state)
 	  {
 	    fputs("STATE: +media-empty-warning\n", stderr);
-	    _cupsLangPuts(stderr, _("ERROR: Out of paper!\n"));
+	    fputs("DEBUG: Out of paper\n", stderr);
 	    paperout = 1;
 	  }
         }
@@ -366,14 +359,14 @@ backendRunLoop(
 	  if (offline != 1 && update_state)
 	  {
 	    fputs("STATE: +offline-report\n", stderr);
-	    _cupsLangPuts(stderr, _("INFO: Printer is currently off-line.\n"));
+	    _cupsLangPrintFilter(stderr, "INFO",
+	                         _("The printer is not connected."));
 	    offline = 1;
 	  }
 	}
 	else if (errno != EAGAIN && errno != EINTR && errno != ENOTTY)
 	{
-	  fprintf(stderr, _("ERROR: Unable to write print data: %s\n"),
-	          strerror(errno));
+	  _cupsLangPrintError("ERROR", _("Unable to write print data"));
 	  return (-1);
 	}
       }
@@ -388,7 +381,8 @@ backendRunLoop(
 	if (offline && update_state)
 	{
 	  fputs("STATE: -offline-report\n", stderr);
-	  _cupsLangPuts(stderr, _("INFO: Printer is now online.\n"));
+	  _cupsLangPrintFilter(stderr, "INFO",
+	                       _("The printer is now connected."));
 	  offline = 0;
 	}
 
@@ -422,5 +416,117 @@ backendRunLoop(
 
 
 /*
- * End of "$Id: runloop.c 9258 2010-08-13 01:34:04Z mike $".
+ * 'backendWaitLoop()' - Wait for input from stdin while handling side-channel
+ *                       queries.
+ */
+
+int					/* O - 1 if data is ready, 0 if not */
+backendWaitLoop(
+    int          snmp_fd,		/* I - SNMP socket or -1 if none */
+    http_addr_t  *addr,			/* I - Address of device */
+    int          use_bc,		/* I - Use back-channel? */
+    _cups_sccb_t side_cb)		/* I - Side-channel callback */
+{
+  int			nfds;		/* Number of file descriptors */
+  fd_set		input;		/* Input set for reading */
+  time_t		curtime = 0,	/* Current time */
+			snmp_update = 0;/* Last SNMP status update */
+  struct timeval	timeout;	/* Timeout for select() */
+
+
+  fprintf(stderr, "DEBUG: backendWaitLoop(snmp_fd=%d, addr=%p, side_cb=%p)\n",
+	  snmp_fd, addr, side_cb);
+
+ /*
+  * Now loop until we receive data from stdin...
+  */
+
+  if (snmp_fd >= 0)
+    snmp_update = time(NULL) + 5;
+
+  for (;;)
+  {
+   /*
+    * Use select() to determine whether we have data to copy around...
+    */
+
+    FD_ZERO(&input);
+    FD_SET(0, &input);
+    if (side_cb)
+      FD_SET(CUPS_SC_FD, &input);
+
+    if (snmp_fd >= 0)
+    {
+      curtime         = time(NULL);
+      timeout.tv_sec  = curtime >= snmp_update ? 0 : snmp_update - curtime;
+      timeout.tv_usec = 0;
+
+      nfds = select(CUPS_SC_FD + 1, &input, NULL, NULL, &timeout);
+    }
+    else
+      nfds = select(CUPS_SC_FD + 1, &input, NULL, NULL, NULL);
+
+    if (nfds < 0)
+    {
+     /*
+      * Pause printing to clear any pending errors...
+      */
+
+      if (errno == EINTR)
+      {
+	fputs("DEBUG: Received an interrupt before any bytes were "
+	      "written, aborting.\n", stderr);
+	return (0);
+      }
+
+      sleep(1);
+      continue;
+    }
+
+   /*
+    * Check for input on stdin...
+    */
+
+    if (FD_ISSET(0, &input))
+      break;
+
+   /*
+    * Check if we have a side-channel request ready...
+    */
+
+    if (side_cb && FD_ISSET(CUPS_SC_FD, &input))
+    {
+     /*
+      * Do the side-channel request, then start back over in the select
+      * loop since it may have read from print_fd...
+      */
+
+      if ((*side_cb)(0, -1, snmp_fd, addr, use_bc))
+        side_cb = NULL;
+      continue;
+    }
+
+   /*
+    * Do SNMP updates periodically...
+    */
+
+    if (snmp_fd >= 0 && curtime >= snmp_update)
+    {
+      if (backendSNMPSupplies(snmp_fd, addr, NULL, NULL))
+        snmp_fd = -1;
+      else
+        snmp_update = curtime + 5;
+    }
+  }
+
+ /*
+  * Return with success...
+  */
+
+  return (1);
+}
+
+
+/*
+ * End of "$Id: runloop.c 11558 2014-02-06 18:33:34Z msweet $".
  */

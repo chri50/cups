@@ -1,23 +1,16 @@
 /*
- * "$Id: network.c 9445 2011-01-08 00:03:51Z mike $"
+ * "$Id: network.c 11497 2014-01-06 21:59:35Z msweet $"
  *
- *   Network interface functions for the CUPS scheduler.
+ * Network interface functions for the CUPS scheduler.
  *
- *   Copyright 2007-2010 by Apple Inc.
- *   Copyright 1997-2006 by Easy Software Products, all rights reserved.
+ * Copyright 2007-2014 by Apple Inc.
+ * Copyright 1997-2006 by Easy Software Products, all rights reserved.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   "LICENSE" which should have been included with this file.  If this
- *   file is missing or damaged, see the license at "http://www.cups.org/".
- *
- * Contents:
- *
- *   cupsdNetIFFind()   - Find a network interface.
- *   cupsdNetIFFree()   - Free the current network interface list.
- *   cupsdNetIFUpdate() - Update the network interface list as needed...
- *   compare_netif()    - Compare two network interfaces.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * "LICENSE" which should have been included with this file.  If this
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -133,7 +126,10 @@ cupsdNetIFUpdate(void)
   */
 
   if (getifaddrs(&addrs) < 0)
+  {
+    cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdNetIFUpdate: Unable to get interface list - %s", strerror(errno));
     return;
+  }
 
   for (addr = addrs; addr != NULL; addr = addr->ifa_next)
   {
@@ -148,7 +144,10 @@ cupsdNetIFUpdate(void)
 #endif
 	) ||
         addr->ifa_netmask == NULL || addr->ifa_name == NULL)
+    {
+      cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdNetIFUpdate: Ignoring \"%s\".", addr->ifa_name);
       continue;
+    }
 
    /*
     * Try looking up the hostname for the address as needed...
@@ -166,7 +165,7 @@ cupsdNetIFUpdate(void)
       */
 
       if (httpAddrLocalhost((http_addr_t *)(addr->ifa_addr)))
-        strcpy(hostname, "localhost");
+        strlcpy(hostname, "localhost", sizeof(hostname));
       else
 	httpAddrString((http_addr_t *)(addr->ifa_addr), hostname,
 		       sizeof(hostname));
@@ -178,7 +177,10 @@ cupsdNetIFUpdate(void)
 
     hostlen = strlen(hostname);
     if ((temp = calloc(1, sizeof(cupsd_netif_t) + hostlen)) == NULL)
+    {
+      cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdNetIFUpdate: Unable to allocate memory for interface.");
       break;
+    }
 
    /*
     * Copy all of the information...
@@ -186,7 +188,7 @@ cupsdNetIFUpdate(void)
 
     strlcpy(temp->name, addr->ifa_name, sizeof(temp->name));
     temp->hostlen = hostlen;
-    strcpy(temp->hostname, hostname);	/* Safe because hostname is allocated */
+    memcpy(temp->hostname, hostname, hostlen + 1);
 
     if (addr->ifa_addr->sa_family == AF_INET)
     {
@@ -264,12 +266,7 @@ cupsdNetIFUpdate(void)
 
       if (match)
       {
-        if (lis->address.addr.sa_family == AF_INET)
-          temp->port = ntohs(lis->address.ipv4.sin_port);
-#ifdef AF_INET6
-        else if (lis->address.addr.sa_family == AF_INET6)
-          temp->port = ntohs(lis->address.ipv6.sin6_port);
-#endif /* AF_INET6 */
+        temp->port = httpAddrPort(&(lis->address));
 	break;
       }
     }
@@ -301,5 +298,5 @@ compare_netif(cupsd_netif_t *a,		/* I - First network interface */
 
 
 /*
- * End of "$Id: network.c 9445 2011-01-08 00:03:51Z mike $".
+ * End of "$Id: network.c 11497 2014-01-06 21:59:35Z msweet $".
  */

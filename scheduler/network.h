@@ -1,10 +1,9 @@
 /*
- * "$Id: network.h 8512 2009-04-16 19:31:37Z mike $"
+ * "$Id: network.h 10996 2013-05-29 11:51:34Z msweet $"
  *
- *   Network interface definitions for the Common UNIX Printing System
- *   (CUPS) scheduler.
+ *   Network interface definitions for the CUPS scheduler.
  *
- *   Copyright 2007-2009 by Apple Inc.
+ *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -49,5 +48,5 @@ extern void		cupsdNetIFUpdate(void);
 
 
 /*
- * End of "$Id: network.h 8512 2009-04-16 19:31:37Z mike $".
+ * End of "$Id: network.h 10996 2013-05-29 11:51:34Z msweet $".
  */

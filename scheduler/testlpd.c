@@ -1,27 +1,16 @@
 /*
- * "$Id: testlpd.c 8700 2009-06-05 21:38:52Z mike $"
+ * "$Id: testlpd.c 12644 2015-05-19 21:22:35Z msweet $"
  *
- *   cups-lpd test program for the Common UNIX Printing System (CUPS).
+ * cups-lpd test program for CUPS.
  *
- *   Copyright 2007 by Apple Inc.
- *   Copyright 2006 by Easy Software Products, all rights reserved.
+ * Copyright 2007-2015 by Apple Inc.
+ * Copyright 2006 by Easy Software Products, all rights reserved.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
- *
- * Contents:
- *
- *   main()          - Simulate an LPD client.
- *   do_command()    - Send the LPD command and wait for a response.
- *   print_job()     - Submit a file for printing.
- *   print_waiting() - Print waiting jobs.
- *   remove_job()    - Cancel a print job.
- *   status_long()   - Show the long printer status.
- *   status_short()  - Show the short printer status.
- *   usage()         - Show program usage...
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -29,11 +18,9 @@
  */
 
 #include <cups/cups.h>
-#include <cups/string.h>
-#include <stdlib.h>
+#include <cups/string-private.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
-#include <errno.h>
 #include <signal.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -44,12 +31,12 @@
  */
 
 static int	do_command(int outfd, int infd, const char *command);
-static int	print_job(int outfd, int infd, char *dest, char **args);
+static int	print_job(int outfd, int infd, char *dest, char **args) __attribute__((nonnull(4)));
 static int	print_waiting(int outfd, int infd, char *dest);
-static int	remove_job(int outfd, int infd, char *dest, char **args);
-static int	status_long(int outfd, int infd, char *dest, char **args);
-static int	status_short(int outfd, int infd, char *dest, char **args);
-static void	usage(void);
+static int	remove_job(int outfd, int infd, char *dest, char **args) __attribute__((nonnull(4)));
+static int	status_long(int outfd, int infd, char *dest, char **args) __attribute__((nonnull(4)));
+static int	status_short(int outfd, int infd, char *dest, char **args) __attribute__((nonnull(4)));
+static void	usage(void) __attribute__((noreturn));
 
 
 /*
@@ -78,7 +65,7 @@ main(int  argc,				/* I - Number of command-line arguments */
   */
 
   op              = NULL;
-  opargs          = NULL;
+  opargs          = argv + argc;
   dest            = NULL;
   cupslpd_argc    = 1;
   cupslpd_argv[0] = (char *)"cups-lpd";
@@ -212,15 +199,15 @@ do_command(int        outfd,		/* I - Command file descriptor */
            int        infd,		/* I - Response file descriptor */
 	   const char *command)		/* I - Command line to send */
 {
-  int	len;				/* Length of command line */
-  char	status;				/* Status byte */
+  size_t	len;			/* Length of command line */
+  char		status;			/* Status byte */
 
 
   printf("COMMAND: %02X %s", command[0], command + 1);
 
   len = strlen(command);
 
-  if (write(outfd, command, len) < len)
+  if ((size_t)write(outfd, command, len) < len)
   {
     puts("    Write failed!");
     return (-1);
@@ -253,7 +240,7 @@ print_job(int  outfd,			/* I - Command file descriptor */
   struct stat	fileinfo;		/* File information */
   char		*jobname;		/* Job name */
   int		sequence;		/* Sequence number */
-  int		bytes;			/* Bytes read/written */
+  ssize_t	bytes;			/* Bytes read/written */
 
 
  /*
@@ -307,10 +294,10 @@ print_job(int  outfd,			/* I - Command file descriptor */
   * Send the control file...
   */
 
-  bytes = strlen(control);
+  bytes = (ssize_t)strlen(control);
 
   snprintf(command, sizeof(command), "\002%d cfA%03dlocalhost\n",
-           bytes, sequence);
+           (int)bytes, sequence);
 
   if ((status = do_command(outfd, infd, command)) != 0)
   {
@@ -320,14 +307,14 @@ print_job(int  outfd,			/* I - Command file descriptor */
 
   bytes ++;
 
-  if (write(outfd, control, bytes) < bytes)
+  if (write(outfd, control, (size_t)bytes) < bytes)
   {
-    printf("CONTROL: Unable to write %d bytes!\n", bytes);
+    printf("CONTROL: Unable to write %d bytes!\n", (int)bytes);
     close(fd);
     return (-1);
   }
 
-  printf("CONTROL: Wrote %d bytes.\n", bytes);
+  printf("CONTROL: Wrote %d bytes.\n", (int)bytes);
 
   if (read(infd, command, 1) < 1)
   {
@@ -357,9 +344,9 @@ print_job(int  outfd,			/* I - Command file descriptor */
 
   while ((bytes = read(fd, buffer, sizeof(buffer))) > 0)
   {
-    if (write(outfd, buffer, bytes) < bytes)
+    if (write(outfd, buffer, (size_t)bytes) < bytes)
     {
-      printf("DATA: Unable to write %d bytes!\n", bytes);
+      printf("DATA: Unable to write %d bytes!\n", (int)bytes);
       close(fd);
       return (-1);
     }
@@ -453,21 +440,21 @@ status_long(int  outfd,			/* I - Command file descriptor */
 {
   char		command[1024],		/* Command buffer */
 		buffer[8192];		/* Status buffer */
-  int		bytes;			/* Bytes read/written */
+  ssize_t	bytes;			/* Bytes read/written */
 
 
  /*
   * Send the "send short status" command...
   */
 
-  if (args)
+  if (args[0])
     snprintf(command, sizeof(command), "\004%s %s\n", dest, args[0]);
   else
     snprintf(command, sizeof(command), "\004%s\n", dest);
 
-  bytes = strlen(command);
+  bytes = (ssize_t)strlen(command);
 
-  if (write(outfd, command, bytes) < bytes)
+  if (write(outfd, command, (size_t)bytes) < bytes)
     return (-1);
 
  /*
@@ -476,7 +463,7 @@ status_long(int  outfd,			/* I - Command file descriptor */
 
   while ((bytes = read(infd, buffer, sizeof(buffer))) > 0)
   {
-    fwrite(buffer, 1, bytes, stdout);
+    fwrite(buffer, 1, (size_t)bytes, stdout);
     fflush(stdout);
   }
 
@@ -496,21 +483,21 @@ status_short(int  outfd,		/* I - Command file descriptor */
 {
   char		command[1024],		/* Command buffer */
 		buffer[8192];		/* Status buffer */
-  int		bytes;			/* Bytes read/written */
+  ssize_t	bytes;			/* Bytes read/written */
 
 
  /*
   * Send the "send short status" command...
   */
 
-  if (args)
+  if (args[0])
     snprintf(command, sizeof(command), "\003%s %s\n", dest, args[0]);
   else
     snprintf(command, sizeof(command), "\003%s\n", dest);
 
-  bytes = strlen(command);
+  bytes = (ssize_t)strlen(command);
 
-  if (write(outfd, command, bytes) < bytes)
+  if (write(outfd, command, (size_t)bytes) < bytes)
     return (-1);
 
  /*
@@ -519,7 +506,7 @@ status_short(int  outfd,		/* I - Command file descriptor */
 
   while ((bytes = read(infd, buffer, sizeof(buffer))) > 0)
   {
-    fwrite(buffer, 1, bytes, stdout);
+    fwrite(buffer, 1, (size_t)bytes, stdout);
     fflush(stdout);
   }
 
@@ -548,5 +535,5 @@ usage(void)
 
 
 /*
- * End of "$Id: testlpd.c 8700 2009-06-05 21:38:52Z mike $".
+ * End of "$Id: testlpd.c 12644 2015-05-19 21:22:35Z msweet $".
  */

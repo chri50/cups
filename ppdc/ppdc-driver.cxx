@@ -1,34 +1,16 @@
 //
-// "$Id: ppdc-driver.cxx 8877 2009-11-16 21:17:22Z mike $"
+// "$Id: ppdc-driver.cxx 11558 2014-02-06 18:33:34Z msweet $"
 //
-//   PPD file compiler definitions for the CUPS PPD Compiler.
+// PPD file compiler definitions for the CUPS PPD Compiler.
 //
-//   Copyright 2007-2009 by Apple Inc.
-//   Copyright 2002-2006 by Easy Software Products.
+// Copyright 2007-2014 by Apple Inc.
+// Copyright 2002-2006 by Easy Software Products.
 //
-//   These coded instructions, statements, and computer programs are the
-//   property of Apple Inc. and are protected by Federal copyright
-//   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
-//   which should have been included with this file.  If this file is
-//   file is missing or damaged, see the license at "http://www.cups.org/".
-//
-// Contents:
-//
-//   ppdcDriver::ppdcDriver()           - Create a new printer driver.
-//   ppdcDriver::~ppdcDriver()          - Destroy a printer driver.
-//   ppdcDriver::find_attr()            - Find an attribute.
-//   ppdcDriver::find_group()           - Find a group.
-//   ppdcDriver::find_option()          - Find an option.
-//   ppdcDriver::find_option_group()    - Find an option and its group.
-//   ppdcDriver::set_custom_size_code() - Set the custom page size code.
-//   ppdcDriver::set_default_font()     - Set the default font name.
-//   ppdcDriver::set_default_size()     - Set the default size name.
-//   ppdcDriver::set_file_name()        - Set the full filename.
-//   ppdcDriver::set_manufacturer()     - Set the manufacturer name.
-//   ppdcDriver::set_model_name()       - Set the model name.
-//   ppdcDriver::set_pc_file_name()     - Set the PC filename.
-//   ppdcDriver::set_version()          - Set the version string.
-//   ppdcDriver::write_ppd_file()       - Write a PPD file...
+// These coded instructions, statements, and computer programs are the
+// property of Apple Inc. and are protected by Federal copyright
+// law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+// which should have been included with this file.  If this file is
+// file is missing or damaged, see the license at "http://www.cups.org/".
 //
 
 //
@@ -36,7 +18,6 @@
 //
 
 #include "ppdc-private.h"
-#include <cups/globals.h>
 
 
 //
@@ -209,7 +190,7 @@ ppdcDriver::find_group(const char *n)	// I - Group name
 
 
   for (g = (ppdcGroup *)groups->first(); g; g = (ppdcGroup *)groups->next())
-    if (!strcasecmp(n, g->name->value))
+    if (!_cups_strcasecmp(n, g->name->value))
       return (g);
 
   return (0);
@@ -242,7 +223,7 @@ ppdcDriver::find_option_group(
 
   for (g = (ppdcGroup *)groups->first(); g; g = (ppdcGroup *)groups->next())
     for (o = (ppdcOption *)g->options->first(); o; o = (ppdcOption *)g->options->next())
-      if (!strcasecmp(n, o->name->value))
+      if (!_cups_strcasecmp(n, o->name->value))
       {
         if (mg)
 	  *mg = g;
@@ -476,7 +457,7 @@ ppdcDriver::write_ppd_file(
   if ((a = find_attr("ModelName", NULL)) != NULL)
     cupsFilePrintf(fp, "*ModelName: \"%s\"%s",
         	   catalog->find_message(a->value->value), lf);
-  else if (strncasecmp(model_name->value, manufacturer->value,
+  else if (_cups_strncasecmp(model_name->value, manufacturer->value,
                        strlen(manufacturer->value)))
     cupsFilePrintf(fp, "*ModelName: \"%s %s\"%s",
         	   catalog->find_message(manufacturer->value),
@@ -488,7 +469,7 @@ ppdcDriver::write_ppd_file(
   if ((a = find_attr("ShortNickName", NULL)) != NULL)
     cupsFilePrintf(fp, "*ShortNickName: \"%s\"%s",
         	   catalog->find_message(a->value->value), lf);
-  else if (strncasecmp(model_name->value, manufacturer->value,
+  else if (_cups_strncasecmp(model_name->value, manufacturer->value,
                        strlen(manufacturer->value)))
     cupsFilePrintf(fp, "*ShortNickName: \"%s %s\"%s",
         	   catalog->find_message(manufacturer->value),
@@ -500,7 +481,7 @@ ppdcDriver::write_ppd_file(
   if ((a = find_attr("NickName", NULL)) != NULL)
     cupsFilePrintf(fp, "*NickName: \"%s\"%s",
         	   catalog->find_message(a->value->value), lf);
-  else if (strncasecmp(model_name->value, manufacturer->value,
+  else if (_cups_strncasecmp(model_name->value, manufacturer->value,
                        strlen(manufacturer->value)))
     cupsFilePrintf(fp, "*NickName: \"%s %s, %s\"%s",
         	   catalog->find_message(manufacturer->value),
@@ -729,7 +710,7 @@ ppdcDriver::write_ppd_file(
 	  // No, skip this one...
           _cupsLangPrintf(stderr,
 	                  _("ppdc: No message catalog provided for locale "
-			    "%s!\n"), locale->value);
+			    "%s."), locale->value);
           continue;
 	}
 
@@ -1015,7 +996,7 @@ ppdcDriver::write_ppd_file(
     if (!g->options->count)
       continue;
 
-    if (strcasecmp(g->name->value, "General"))
+    if (_cups_strcasecmp(g->name->value, "General"))
       cupsFilePrintf(fp, "*OpenGroup: %s/%s%s", g->name->value,
                      catalog->find_message(g->text->value), lf);
 
@@ -1026,7 +1007,16 @@ ppdcDriver::write_ppd_file(
       if (!o->choices->count)
         continue;
 
-      if (!o->text->value)
+      if (o->section == PPDC_SECTION_JCL)
+      {
+	if (!o->text->value)
+	  cupsFilePrintf(fp, "*JCLOpenUI *%s/%s: ", o->name->value,
+			 catalog->find_message(o->name->value));
+	else
+	  cupsFilePrintf(fp, "*JCLOpenUI *%s/%s: ", o->name->value,
+			 catalog->find_message(o->text->value));
+      }
+      else if (!o->text->value)
 	cupsFilePrintf(fp, "*OpenUI *%s/%s: ", o->name->value,
 	               catalog->find_message(o->name->value));
       else
@@ -1149,7 +1139,7 @@ ppdcDriver::write_ppd_file(
       }
     }
 
-    if (strcasecmp(g->name->value, "General"))
+    if (_cups_strcasecmp(g->name->value, "General"))
       cupsFilePrintf(fp, "*CloseGroup: %s%s", g->name->value, lf);
   }
 
@@ -1182,7 +1172,7 @@ ppdcDriver::write_ppd_file(
 	cupsFilePrintf(fp, "*%s.Translation ModelName/%s: \"\"%s",
                        locale->value,
         	       locatalog->find_message(a->value->value), lf);
-      else if (strncasecmp(model_name->value, manufacturer->value,
+      else if (_cups_strncasecmp(model_name->value, manufacturer->value,
                 	   strlen(manufacturer->value)))
 	cupsFilePrintf(fp, "*%s.Translation ModelName/%s %s: \"\"%s",
                        locale->value,
@@ -1197,7 +1187,7 @@ ppdcDriver::write_ppd_file(
 	cupsFilePrintf(fp, "*%s.Translation ShortNickName/%s: \"\"%s",
                        locale->value,
         	       locatalog->find_message(a->value->value), lf);
-      else if (strncasecmp(model_name->value, manufacturer->value,
+      else if (_cups_strncasecmp(model_name->value, manufacturer->value,
                 	   strlen(manufacturer->value)))
 	cupsFilePrintf(fp, "*%s.Translation ShortNickName/%s %s: \"\"%s",
                        locale->value,
@@ -1212,7 +1202,7 @@ ppdcDriver::write_ppd_file(
 	cupsFilePrintf(fp, "*%s.Translation NickName/%s: \"\"%s",
                        locale->value,
         	       locatalog->find_message(a->value->value), lf);
-      else if (strncasecmp(model_name->value, manufacturer->value,
+      else if (_cups_strncasecmp(model_name->value, manufacturer->value,
                 	   strlen(manufacturer->value)))
 	cupsFilePrintf(fp, "*%s.Translation NickName/%s %s, %s: \"\"%s",
                        locale->value,
@@ -1244,7 +1234,7 @@ ppdcDriver::write_ppd_file(
 	if (!g->options->count)
 	  continue;
 
-	if (strcasecmp(g->name->value, "General"))
+	if (_cups_strcasecmp(g->name->value, "General"))
 	  cupsFilePrintf(fp, "*%s.Translation %s/%s: \"\"%s", locale->value,
 	                 g->name->value,
                 	 locatalog->find_message(g->text->value), lf);
@@ -1325,7 +1315,7 @@ ppdcDriver::write_ppd_file(
 		     fn->status == PPDC_FONT_ROM ? "ROM" : "Disk", lf);
 
   cupsFilePrintf(fp, "*%% End of %s, %05d bytes.%s", pc_file_name->value,
-        	 (int)(cupsFileTell(fp) + 25 + strlen(pc_file_name->value)),
+        	 (int)((size_t)cupsFileTell(fp) + 25 + strlen(pc_file_name->value)),
 		 lf);
 
   if (delete_cat)
@@ -1336,5 +1326,5 @@ ppdcDriver::write_ppd_file(
 
 
 //
-// End of "$Id: ppdc-driver.cxx 8877 2009-11-16 21:17:22Z mike $".
+// End of "$Id: ppdc-driver.cxx 11558 2014-02-06 18:33:34Z msweet $".
 //

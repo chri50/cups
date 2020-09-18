@@ -1,16 +1,16 @@
 #
-# "$Id: Makefile 9120 2010-04-23 18:56:34Z mike $"
+# "$Id: Makefile 12519 2015-02-17 13:10:19Z msweet $"
 #
-#   Scheduler Makefile for CUPS.
+# Scheduler Makefile for CUPS.
 #
-#   Copyright 2007-2010 by Apple Inc.
-#   Copyright 1997-2007 by Easy Software Products, all rights reserved.
+# Copyright 2007-2015 by Apple Inc.
+# Copyright 1997-2007 by Easy Software Products, all rights reserved.
 #
-#   These coded instructions, statements, and computer programs are the
-#   property of Apple Inc. and are protected by Federal copyright
-#   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
-#   which should have been included with this file.  If this file is
-#   file is missing or damaged, see the license at "http://www.cups.org/".
+# These coded instructions, statements, and computer programs are the
+# property of Apple Inc. and are protected by Federal copyright
+# law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+# which should have been included with this file.  If this file is
+# file is missing or damaged, see the license at "http://www.cups.org/".
 #
 
 include ../Makedefs
@@ -21,9 +21,11 @@ CUPSDOBJS =	\
 		cert.o \
 		classes.o \
 		client.o \
+		colorman.o \
 		conf.o \
 		dirsvc.o \
 		env.o \
+		file.o \
 		main.o \
 		ipp.o \
 		listen.o \
@@ -34,7 +36,6 @@ CUPSDOBJS =	\
 		printers.o \
 		process.o \
 		quotas.o \
-		removefile.o \
 		select.o \
 		server.o \
 		statbuf.o \
@@ -49,9 +50,8 @@ COBJS	=	\
 		$(LIBOBJS) \
 		cupsfilter.o \
 		cups-deviced.o \
+		cups-exec.o \
 		cups-lpd.o \
-		cups-polld.o \
-		testdirsvc.o \
 		testlpd.o \
 		testmime.o \
 		testspeed.o \
@@ -67,23 +67,22 @@ LIBTARGETS =	\
 		libcupsmime.a
 
 UNITTARGETS =	\
-		testdirsvc \
 		testlpd \
 		testmime \
 		testspeed \
 		testsub
 
-DAEMONS =	\
+PROGRAMS =	\
 		cupsd \
 		cupsfilter \
 		cups-deviced \
 		cups-driverd \
-		cups-lpd \
-		cups-polld
+		cups-exec \
+		cups-lpd
 
 TARGETS	=	\
 		$(LIBTARGETS) \
-		$(DAEMONS)
+		$(PROGRAMS)
 
 
 #
@@ -114,7 +113,7 @@ unittests:	$(UNITTARGETS)
 clean:
 	$(RM) $(OBJS)
 	$(RM) $(TARGETS) $(UNITTARGETS) convert
-	$(RM) libcupsmime.so libcupsmime.sl libcupsmime.dylib
+	$(RM) libcupsmime.so libcupsmime.dylib
 
 
 #
@@ -122,8 +121,16 @@ clean:
 #
 
 depend:
-	makedepend -Y -I.. -fDependencies $(COBJS:.o=.c) \
-		$(CXXOBJS:.o=.cxx) >/dev/null 2>&1
+	$(CC) -MM $(ALL_CFLAGS) $(COBJS:.o=.c) >Dependencies
+	$(CXX) -MM $(ALL_CXXFLAGS) $(CXXOBJS:.o=.cxx) >>Dependencies
+
+
+#
+# Run oclint to check code coverage...
+#
+
+oclint:
+	oclint -o=oclint.html -html $(CUPSDOBJS:.o=.c) $(LIBOBJS:.o=.c) -- $(ALL_CFLAGS)
 
 
 #
@@ -164,7 +171,48 @@ install-data:
 	echo Creating $(REQUESTS)/tmp...
 	$(INSTALL_DIR) -m 1770 -g $(CUPS_GROUP) $(REQUESTS)/tmp
 	echo Creating $(CACHEDIR)...
-	$(INSTALL_DIR) -m 775 -g $(CUPS_GROUP) $(CACHEDIR)
+	$(INSTALL_DIR) -m 770 -g $(CUPS_GROUP) $(CACHEDIR)
+	if test "x$(INITDIR)" != x; then \
+		echo Installing init scripts...; \
+		$(INSTALL_DIR) -m 755 $(BUILDROOT)$(INITDIR)/init.d; \
+		$(INSTALL_SCRIPT) cups.sh $(BUILDROOT)$(INITDIR)/init.d/cups; \
+		for level in $(RCLEVELS); do \
+			$(INSTALL_DIR) -m 755 $(BUILDROOT)$(INITDIR)/rc$${level}.d; \
+			$(LN) ../init.d/cups $(BUILDROOT)$(INITDIR)/rc$${level}.d/S$(RCSTART)cups; \
+			$(LN) ../init.d/cups $(BUILDROOT)$(INITDIR)/rc$${level}.d/K$(RCSTOP)cups; \
+		done; \
+		$(INSTALL_DIR) -m 755 $(BUILDROOT)$(INITDIR)/rc0.d; \
+		$(LN) ../init.d/cups $(BUILDROOT)$(INITDIR)/rc0.d/K$(RCSTOP)cups; \
+	fi
+	if test "x$(INITDDIR)" != x; then \
+		echo Installing init script...; \
+		$(INSTALL_DIR) -m 755 $(BUILDROOT)$(INITDDIR); \
+		$(INSTALL_SCRIPT) cups.sh $(BUILDROOT)$(INITDDIR); \
+	fi
+	if test "x$(LAUNCHD_DIR)" != x; then \
+		echo Installing launchd configuration files...; \
+		$(INSTALL_DIR) $(BUILDROOT)$(LAUNCHD_DIR); \
+		$(INSTALL_DATA) org.cups.cupsd.plist $(BUILDROOT)$(LAUNCHD_DIR); \
+		$(INSTALL_DATA) org.cups.cups-lpd.plist $(BUILDROOT)$(LAUNCHD_DIR); \
+	fi
+	if test "x$(SMFMANIFESTDIR)" != x; then \
+		echo Installing SMF manifest in $(SMFMANIFESTDIR)...;\
+		$(INSTALL_DIR) $(BUILDROOT)/$(SMFMANIFESTDIR); \
+		$(INSTALL_SCRIPT) cups.xml $(BUILDROOT)$(SMFMANIFESTDIR)/cups.xml; \
+	fi
+	if test "x$(SYSTEMD_DIR)" != x; then \
+		echo Installing systemd configuration files...; \
+		$(INSTALL_DIR) $(BUILDROOT)$(SYSTEMD_DIR); \
+		$(INSTALL_DATA) org.cups.cupsd.path $(BUILDROOT)$(SYSTEMD_DIR); \
+		$(INSTALL_DATA) org.cups.cupsd.service $(BUILDROOT)$(SYSTEMD_DIR); \
+		$(INSTALL_DATA) org.cups.cupsd.socket $(BUILDROOT)$(SYSTEMD_DIR); \
+		$(INSTALL_DATA) org.cups.cups-lpdAT.service $(BUILDROOT)$(SYSTEMD_DIR)/org.cups.cups-lpd@.service; \
+		$(INSTALL_DATA) org.cups.cups-lpd.socket $(BUILDROOT)$(SYSTEMD_DIR); \
+	elif test "x$(XINETD)" != x; then \
+		echo Installing xinetd configuration file for cups-lpd...; \
+		$(INSTALL_DIR) -m 755 $(BUILDROOT)$(XINETD); \
+		$(INSTALL_DATA) cups-lpd.xinetd $(BUILDROOT)$(XINETD)/cups-lpd; \
+	fi
 
 
 #
@@ -174,23 +222,20 @@ install-data:
 install-exec:
 	echo Installing programs in $(SBINDIR)...
 	$(INSTALL_DIR) -m 755 $(SBINDIR)
-	$(INSTALL_BIN) -m 500 cupsd $(SBINDIR)
+	$(INSTALL_BIN) -m $(CUPS_CUPSD_FILE_PERM) cupsd $(SBINDIR)
 	$(INSTALL_BIN) cupsfilter $(SBINDIR)
-	-if test "x`uname`" = xDarwin; then \
-		$(INSTALL_DIR) $(BUILDROOT)/System/Library/Printers/Libraries; \
-		$(LN) $(sbindir)/cupsfilter $(BUILDROOT)/System/Library/Printers/Libraries/convert; \
-	fi
 	echo Installing programs in $(SERVERBIN)/daemon...
 	$(INSTALL_DIR) -m 755 $(SERVERBIN)
 	$(INSTALL_DIR) -m 755 $(SERVERBIN)/daemon
 	$(INSTALL_BIN) cups-deviced $(SERVERBIN)/daemon
 	$(INSTALL_BIN) cups-driverd $(SERVERBIN)/daemon
+	$(INSTALL_BIN) cups-exec $(SERVERBIN)/daemon
 	$(INSTALL_BIN) cups-lpd $(SERVERBIN)/daemon
-	$(INSTALL_BIN) cups-polld $(SERVERBIN)/daemon
 	if test "x$(SYMROOT)" != "x"; then \
 		$(INSTALL_DIR) $(SYMROOT); \
-		for file in $(DAEMONS); do \
+		for file in $(PROGRAMS); do \
 			cp $$file $(SYMROOT); \
+			dsymutil $(SYMROOT)/$$file; \
 		done \
 	fi
 
@@ -213,7 +258,7 @@ install-libs: $(INSTALLSTATIC)
 	echo Installing libraries in $(LIBDIR)...
 	$(INSTALL_DIR) -m 755 $(LIBDIR)
 	$(INSTALL_LIB) $(LIBCUPSMIME) $(LIBDIR)
-	if test $(LIBCUPSMIME) = "libcupsmime.so.1" -o $(LIBCUPSMIME) = "libcupsmime.sl.1"; then \
+	if test $(LIBCUPSMIME) = "libcupsmime.so.1"; then \
 		$(RM) $(LIBDIR)/`basename $(LIBCUPSMIME) .1`; \
 		$(LN) $(LIBCUPSMIME) $(LIBDIR)/`basename $(LIBCUPSMIME) .1`; \
 	fi
@@ -224,6 +269,7 @@ install-libs: $(INSTALLSTATIC)
 	if test "x$(SYMROOT)" != "x"; then \
 		$(INSTALL_DIR) $(SYMROOT); \
 		cp $(LIBCUPSMIME) $(SYMROOT); \
+		dsymutil $(SYMROOT)/$(LIBCUPSMIME); \
 	fi
 
 installstatic:
@@ -242,9 +288,8 @@ uninstall:
 	$(RM) $(SBINDIR)/cupsfilter
 	$(RM) $(SERVERBIN)/daemon/cups-deviced
 	$(RM) $(SERVERBIN)/daemon/cups-driverd
+	$(RM) $(SERVERBIN)/daemon/cups-exec
 	$(RM) $(SERVERBIN)/daemon/cups-lpd
-	$(RM) $(SERVERBIN)/daemon/cups-polld
-	$(RM) $(BUILDROOT)/System/Library/Printers/Libraries/convert
 	-$(RMDIR) $(STATEDIR)/certs
 	-$(RMDIR) $(STATEDIR)
 	-$(RMDIR) $(SERVERROOT)/ppd
@@ -261,14 +306,48 @@ uninstall:
 	$(RM) $(LIBDIR)/libcupsmime.1.dylib
 	$(RM) $(LIBDIR)/libcupsmime.a
 	$(RM) $(LIBDIR)/libcupsmime.dylib
-	$(RM) $(LIBDIR)/libcupsmime_s.a
-	$(RM) $(LIBDIR)/libcupsmime.sl
-	$(RM) $(LIBDIR)/libcupsmime.sl.1
 	$(RM) $(LIBDIR)/libcupsmime.so
 	$(RM) $(LIBDIR)/libcupsmime.so.1
 	-$(RMDIR) $(LIBDIR)
 	$(RM) $(INCLUDEDIR)/cups/mime.h
 	-$(RMDIR) $(INCLUDEDIR)/cups
+	if test "x$(INITDIR)" != x; then \
+		echo Uninstalling init scripts...; \
+		$(RM) $(BUILDROOT)$(INITDIR)/init.d/cups; \
+		$(RMDIR) $(BUILDROOT)$(INITDIR)/init.d; \
+		$(RM)  $(BUILDROOT)$(INITDIR)/rc0.d/K00cups; \
+		$(RMDIR) $(BUILDROOT)$(INITDIR)/rc0.d; \
+		$(RM) $(BUILDROOT)$(INITDIR)/rc2.d/S99cups; \
+		$(RMDIR) $(BUILDROOT)$(INITDIR)/rc2.d; \
+		$(RM) $(BUILDROOT)$(INITDIR)/rc3.d/S99cups; \
+		$(RMDIR) $(BUILDROOT)$(INITDIR)/rc3.d; \
+		$(RM) $(BUILDROOT)$(INITDIR)/rc5.d/S99cups; \
+		$(RMDIR) $(BUILDROOT)$(INITDIR)/rc5.d; \
+	fi
+	if test "x$(INITDDIR)" != x; then \
+		echo Uninstalling startup script...; \
+		$(RM) $(BUILDROOT)$(INITDDIR)/cups.sh; \
+		$(RMDIR) $(BUILDROOT)$(INITDDIR); \
+	fi
+	if test "x$LAUNCHD_DIR" != x; then \
+		echo Uninstalling launchd files...; \
+		$(RM) $(BUILDROOT)$(LAUNCHD_DIR)/org.cups.cupsd.plist; \
+		$(RM) $(BUILDROOT)$(LAUNCHD_DIR)/org.cups.cups-lpd.plist; \
+	fi
+	if test "x$SYSTEMD_DIR" != x; then \
+		echo Uninstalling systemd files...; \
+		$(RM) $(BUILDROOT)$(SYSTEMD_DIR)/org.cups.cupsd.path; \
+		$(RM) $(BUILDROOT)$(SYSTEMD_DIR)/org.cups.cupsd.service; \
+		$(RM) $(BUILDROOT)$(SYSTEMD_DIR)/org.cups.cupsd.socket; \
+	fi
+	if test "x$(SMFMANIFESTDIR)" != x; then \
+		echo Uninstalling SMF manifest file...;\
+		$(RM) $(BUILDROOT)$(SMFMANIFESTDIR)/cups.xml; \
+	fi
+	if test "x$(XINETD)" != x; then \
+		echo Uninstalling xinetd configuration file for cups-lpd...; \
+		$(RM) $(BUILDROOT)$(XINETD)/cups-lpd; \
+	fi
 
 
 #
@@ -301,16 +380,16 @@ cupsd:	$(CUPSDOBJS) $(LIBCUPSMIME) ../cups/$(LIBCUPS)
 	echo Linking $@...
 	$(CC) $(LDFLAGS) -o cupsd $(CUPSDOBJS) -L. -lcupsmime \
 		$(LIBZ) $(SSLLIBS) $(LIBSLP) $(LIBLDAP) $(PAMLIBS) \
-		$(LIBPAPER) $(LIBMALLOC) $(CUPSDLIBS) $(DNSSDLIBS) $(LIBS) \
-		$(LIBGSSAPI) $(LIBWRAP)
+		$(LIBPAPER) $(LIBMALLOC) $(SERVERLIBS) $(ONDEMANDLIBS) \
+                $(DNSSDLIBS) $(LIBS) $(LIBGSSAPI) $(LIBWRAP)
 
-cupsd-static:	$(CUPSDOBJS) libcupsmime.a ../cups/libcups.a
+cupsd-static:	$(CUPSDOBJS) libcupsmime.a ../cups/$(LIBCUPSSTATIC)
 	echo Linking $@...
 	$(CC) $(LDFLAGS) -o cupsd-static $(CUPSDOBJS) libcupsmime.a \
 		$(LIBZ) $(SSLLIBS) $(LIBSLP) $(LIBLDAP) $(PAMLIBS) \
-		../cups/libcups.a $(COMMONLIBS) $(LIBZ) $(LIBPAPER) \
-		$(LIBMALLOC) $(CUPSDLIBS) $(DNSSDLIBS) $(LIBGSSAPI) \
-		$(LIBWRAP)
+		../cups/$(LIBCUPSSTATIC) $(COMMONLIBS) $(LIBZ) $(LIBPAPER) \
+		$(LIBMALLOC) $(SERVERLIBS) $(ONDEMANDLIBS) $(DNSSDLIBS) \
+                $(LIBGSSAPI) $(LIBWRAP)
 
 
 #
@@ -322,6 +401,12 @@ cupsfilter:	cupsfilter.o $(LIBCUPSMIME) ../cups/$(LIBCUPS)
 	$(CC) $(LDFLAGS) -o cupsfilter cupsfilter.o -L. -lcupsmime $(LIBS)
 	$(RM) convert
 	$(LN) cupsfilter convert
+
+cupsfilter-static:	cupsfilter.o libcupsmime.a ../cups/$(LIBCUPSSTATIC)
+	echo Linking $@...
+	$(CC) $(LDFLAGS) -o cupsfilter-static cupsfilter.o libcupsmime.a \
+		../cups/$(LIBCUPSSTATIC) $(COMMONLIBS) $(LIBZ) $(SSLLIBS) \
+		$(DNSSDLIBS) $(LIBGSSAPI)
 
 
 #
@@ -344,6 +429,15 @@ cups-driverd:	cups-driverd.o util.o ../cups/$(LIBCUPS) ../ppdc/$(LIBCUPSPPDC)
 
 
 #
+# Make the sandbox execution helper, "cups-exec".
+#
+
+cups-exec:	cups-exec.o
+	echo Linking $@...
+	$(CC) $(LDFLAGS) -o cups-exec cups-exec.o $(LIBS)
+
+
+#
 # Make the line printer daemon, "cups-lpd".
 #
 
@@ -353,19 +447,10 @@ cups-lpd:	cups-lpd.o ../cups/$(LIBCUPS)
 
 
 #
-# Make the polling daemon, "cups-polld".
+# libcupsmime.so.1
 #
 
-cups-polld:	cups-polld.o ../cups/$(LIBCUPS)
-	echo Linking $@...
-	$(CC) $(LDFLAGS) -o cups-polld cups-polld.o $(LIBS)
-
-
-#
-# libcupsmime.so.1, libcupsmime.sl.1
-#
-
-libcupsmime.so.1 libcupsmime.sl.1:	$(LIBOBJS)
+libcupsmime.so.1:	$(LIBOBJS)
 	echo Linking $@...
 	$(DSO) $(ARCHFLAGS) $(DSOFLAGS) -o $@ $(LIBOBJS) $(LIBS)
 	$(RM) `basename $@ .1`
@@ -386,17 +471,6 @@ libcupsmime.1.dylib:	$(LIBOBJS) libcupsmime.exp
 		$(LIBOBJS) $(LIBS)
 	$(RM) libcupsmime.dylib
 	$(LN) $@ libcupsmime.dylib
-
-
-#
-# libcupsmime_s.a
-#
-
-libcupsmime_s.a:	$(LIBOBJS)
-	echo Creating $@...
-	$(DSO) $(DSOFLAGS) -o libcupsmime_s.o $(LIBOBJS) $(LIBS)
-	$(RM) $@
-	$(AR) $(ARFLAGS) $@ libcupsmime_s.o
 
 
 #
@@ -421,21 +495,12 @@ libcupsmime.a:	$(LIBOBJS)
 
 
 #
-# Make the test program, "testdirsvc".
-#
-
-testdirsvc:	testdirsvc.o
-	echo Linking $@...
-	$(CC) $(LDFLAGS) -o testdirsvc testdirsvc.o $(COMMONLIBS) $(NETLIBS)
-
-
-#
 # Make the test program, "testlpd".
 #
 
-testlpd:	testlpd.o ../cups/libcups.a cups-lpd
+testlpd:	testlpd.o ../cups/$(LIBCUPSSTATIC) cups-lpd
 	echo Linking $@...
-	$(CC) $(LDFLAGS) -o testlpd testlpd.o ../cups/libcups.a \
+	$(CC) $(LDFLAGS) -o testlpd testlpd.o ../cups/$(LIBCUPSSTATIC) \
 		$(COMMONLIBS) $(LIBZ) $(SSLLIBS) $(DNSSDLIBS) $(LIBGSSAPI)
 
 
@@ -443,10 +508,10 @@ testlpd:	testlpd.o ../cups/libcups.a cups-lpd
 # testmime
 #
 
-testmime:	testmime.o libcupsmime.a ../cups/libcups.a
+testmime:	testmime.o libcupsmime.a ../cups/$(LIBCUPSSTATIC)
 	echo Linking $@...
 	$(CC) $(ARCHFLAGS) $(LDFLAGS) -o $@ testmime.o libcupsmime.a \
-		../cups/libcups.a $(COMMONLIBS) $(LIBZ) $(SSLLIBS) \
+		../cups/$(LIBCUPSSTATIC) $(COMMONLIBS) $(LIBZ) $(SSLLIBS) \
 		$(DNSSDLIBS) $(LIBGSSAPI)
 	echo Running MIME tests...
 	./testmime
@@ -456,9 +521,9 @@ testmime:	testmime.o libcupsmime.a ../cups/libcups.a
 # Make the test program, "testspeed".
 #
 
-testspeed:	testspeed.o ../cups/libcups.a
+testspeed:	testspeed.o ../cups/$(LIBCUPSSTATIC)
 	echo Linking $@...
-	$(CC) $(LDFLAGS) -o testspeed testspeed.o ../cups/libcups.a \
+	$(CC) $(LDFLAGS) -o testspeed testspeed.o ../cups/$(LIBCUPSSTATIC) \
 		$(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ) $(LIBGSSAPI)
 
 
@@ -466,19 +531,28 @@ testspeed:	testspeed.o ../cups/libcups.a
 # Make the test program, "testsub".
 #
 
-testsub:	testsub.o ../cups/libcups.a
+testsub:	testsub.o ../cups/$(LIBCUPSSTATIC)
 	echo Linking $@...
-	$(CC) $(LDFLAGS) -o testsub testsub.o ../cups/libcups.a \
+	$(CC) $(LDFLAGS) -o testsub testsub.o ../cups/$(LIBCUPSSTATIC) \
 		$(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ) $(LIBGSSAPI)
+
+
+#
+# Lines of code computation...
+#
+
+sloc:
+	echo "cupsd: \c"
+	sloccount $(CUPSDOBJS:.o=.c) $(LIBOBJS:.o=.c) cups-driverd.cxx cups-lpd.c 2>/dev/null | grep "Total Physical" | awk '{print $$9}'
 
 
 #
 # Dependencies...
 #
-  
+
 include Dependencies
 
 
 #
-# End of "$Id: Makefile 9120 2010-04-23 18:56:34Z mike $".
+# End of "$Id: Makefile 12519 2015-02-17 13:10:19Z msweet $".
 #

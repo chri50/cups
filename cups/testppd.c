@@ -1,40 +1,34 @@
 /*
- * "$Id: testppd.c 9586 2011-03-04 21:43:50Z mike $"
+ * "$Id: testppd.c 12603 2015-05-06 01:42:51Z msweet $"
  *
- *   PPD test program for CUPS.
+ * PPD test program for CUPS.
  *
- *   Copyright 2007-2011 by Apple Inc.
- *   Copyright 1997-2006 by Easy Software Products.
+ * Copyright 2007-2015 by Apple Inc.
+ * Copyright 1997-2006 by Easy Software Products.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  *
- *   This file is subject to the Apple OS-Developed Software exception.
- *
- * Contents:
- *
- *   main() - Main entry.
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
  * Include necessary headers...
  */
 
-#include <cups/cups.h>
-#include <cups/string.h>
-#include <stdio.h>
-#include <stdlib.h>
+#undef _CUPS_NO_DEPRECATED
+#include "cups-private.h"
 #include <sys/stat.h>
-#include <errno.h>
 #ifdef WIN32
 #  include <io.h>
 #else
 #  include <unistd.h>
 #  include <fcntl.h>
 #endif /* WIN32 */
+#include <math.h>
 
 
 /*
@@ -54,6 +48,11 @@ static const char	*default_code =
 			"[{\n"
 			"%%BeginFeature: *InputSlot Tray\n"
 			"InputSlot=Tray\n"
+			"%%EndFeature\n"
+			"} stopped cleartomark\n"
+			"[{\n"
+			"%%BeginFeature: *OutputBin Tray1\n"
+			"OutputBin=Tray1\n"
 			"%%EndFeature\n"
 			"} stopped cleartomark\n"
 			"[{\n"
@@ -83,6 +82,11 @@ static const char	*custom_code =
 			"[{\n"
 			"%%BeginFeature: *MediaType Plain\n"
 			"MediaType=Plain\n"
+			"%%EndFeature\n"
+			"} stopped cleartomark\n"
+			"[{\n"
+			"%%BeginFeature: *OutputBin Tray1\n"
+			"OutputBin=Tray1\n"
 			"%%EndFeature\n"
 			"} stopped cleartomark\n"
 			"[{\n"
@@ -154,6 +158,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 		maxsize,		/* Maximum size */
 		*size;			/* Current size */
   ppd_attr_t	*attr;			/* Current attribute */
+  _ppd_cache_t	*pc;			/* PPD cache */
 
 
   status = 0;
@@ -182,7 +187,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 
     fputs("ppdOpenFile(test.ppd): ", stdout);
 
-    if ((ppd = ppdOpenFile("test.ppd")) != NULL)
+    if ((ppd = _ppdOpenFile("test.ppd", _PPD_LOCALIZATION_ALL)) != NULL)
       puts("PASS");
     else
     {
@@ -305,9 +310,9 @@ main(int  argc,				/* I - Number of command-line arguments */
     num_options = cupsGetConflicts(ppd, "InputSlot", "Envelope", &options);
     if (num_options != 2 ||
         (val = cupsGetOption("PageRegion", num_options, options)) == NULL ||
-	strcasecmp(val, "Letter") ||
+	_cups_strcasecmp(val, "Letter") ||
 	(val = cupsGetOption("PageSize", num_options, options)) == NULL ||
-	strcasecmp(val, "Letter"))
+	_cups_strcasecmp(val, "Letter"))
     {
       printf("FAIL (%d options:", num_options);
       for (i = 0; i < num_options; i ++)
@@ -356,8 +361,8 @@ main(int  argc,				/* I - Number of command-line arguments */
     num_options = 0;
     options     = NULL;
     if (cupsResolveConflicts(ppd, NULL, NULL, &num_options, &options) &&
-        num_options == 1 && !strcasecmp(options[0].name, "InputSlot") &&
-	!strcasecmp(options[0].value, "Tray"))
+        num_options == 1 && !_cups_strcasecmp(options[0].name, "InputSlot") &&
+	!_cups_strcasecmp(options[0].value, "Tray"))
       puts("PASS (Resolved by changing InputSlot)");
     else if (num_options > 0)
     {
@@ -396,10 +401,10 @@ main(int  argc,				/* I - Number of command-line arguments */
     fputs("ppdPageSizeLimits: ", stdout);
     if (ppdPageSizeLimits(ppd, &minsize, &maxsize))
     {
-      if (minsize.width != 36 || minsize.length != 36 ||
-          maxsize.width != 1080 || maxsize.length != 86400)
+      if (fabs(minsize.width - 36.0) > 0.001 || fabs(minsize.length - 36.0) > 0.001 ||
+          fabs(maxsize.width - 1080.0) > 0.001 || fabs(maxsize.length - 86400.0) > 0.001)
       {
-        printf("FAIL (got min=%.0fx%.0f, max=%.0fx%.0f, "
+        printf("FAIL (got min=%.3fx%.3f, max=%.3fx%.3f, "
 	       "expected min=36x36, max=1080x86400)\n", minsize.width,
 	       minsize.length, maxsize.width, maxsize.length);
         status ++;
@@ -469,6 +474,27 @@ main(int  argc,				/* I - Number of command-line arguments */
     if (!size || strcmp(size->name, "A4"))
     {
       printf("FAIL (%s)\n", size ? size->name : "unknown");
+      status ++;
+    }
+    else
+      puts("PASS");
+
+   /*
+    * Custom sizes...
+    */
+
+    fputs("cupsMarkOptions(media=Custom.8x10in): ", stdout);
+    num_options = cupsAddOption("media", "Custom.8x10in", 0, &options);
+    cupsMarkOptions(ppd, num_options, options);
+    cupsFreeOptions(num_options, options);
+
+    size = ppdPageSize(ppd, NULL);
+    if (!size || strcmp(size->name, "Custom") ||
+        fabs(size->width - 576.0) > 0.001 ||
+        fabs(size->length - 720.0) > 0.001)
+    {
+      printf("FAIL (%s - %gx%g)\n", size ? size->name : "unknown",
+             size ? size->width : 0.0, size ? size->length : 0.0);
       status ++;
     }
     else
@@ -694,8 +720,8 @@ main(int  argc,				/* I - Number of command-line arguments */
     num_options = 0;
     options     = NULL;
     if (cupsResolveConflicts(ppd, NULL, NULL, &num_options, &options) &&
-        num_options == 1 && !strcasecmp(options->name, "Quality") &&
-	!strcasecmp(options->value, "Normal"))
+        num_options == 1 && !_cups_strcasecmp(options->name, "Quality") &&
+	!_cups_strcasecmp(options->value, "Normal"))
       puts("PASS");
     else if (num_options > 0)
     {
@@ -754,8 +780,8 @@ main(int  argc,				/* I - Number of command-line arguments */
     fputs("ppdPageSizeLimits(default): ", stdout);
     if (ppdPageSizeLimits(ppd, &minsize, &maxsize))
     {
-      if (minsize.width != 36 || minsize.length != 36 ||
-          maxsize.width != 1080 || maxsize.length != 86400)
+      if (fabs(minsize.width - 36.0) > 0.001 || fabs(minsize.length - 36.0) > 0.001 ||
+          fabs(maxsize.width - 1080.0) > 0.001 || fabs(maxsize.length - 86400.0) > 0.001)
       {
         printf("FAIL (got min=%.0fx%.0f, max=%.0fx%.0f, "
 	       "expected min=36x36, max=1080x86400)\n", minsize.width,
@@ -776,8 +802,8 @@ main(int  argc,				/* I - Number of command-line arguments */
     fputs("ppdPageSizeLimits(InputSlot=Manual): ", stdout);
     if (ppdPageSizeLimits(ppd, &minsize, &maxsize))
     {
-      if (minsize.width != 100 || minsize.length != 100 ||
-          maxsize.width != 1000 || maxsize.length != 1000)
+      if (fabs(minsize.width - 100.0) > 0.001 || fabs(minsize.length - 100.0) > 0.001 ||
+          fabs(maxsize.width - 1000.0) > 0.001 || fabs(maxsize.length - 1000.0) > 0.001)
       {
         printf("FAIL (got min=%.0fx%.0f, max=%.0fx%.0f, "
 	       "expected min=100x100, max=1000x1000)\n", minsize.width,
@@ -798,8 +824,8 @@ main(int  argc,				/* I - Number of command-line arguments */
     fputs("ppdPageSizeLimits(Quality=Photo): ", stdout);
     if (ppdPageSizeLimits(ppd, &minsize, &maxsize))
     {
-      if (minsize.width != 200 || minsize.length != 200 ||
-          maxsize.width != 1000 || maxsize.length != 1000)
+      if (fabs(minsize.width - 200.0) > 0.001 || fabs(minsize.length - 200.0) > 0.001 ||
+          fabs(maxsize.width - 1000.0) > 0.001 || fabs(maxsize.length - 1000.0) > 0.001)
       {
         printf("FAIL (got min=%.0fx%.0f, max=%.0fx%.0f, "
 	       "expected min=200x200, max=1000x1000)\n", minsize.width,
@@ -820,8 +846,8 @@ main(int  argc,				/* I - Number of command-line arguments */
     fputs("ppdPageSizeLimits(Quality=Photo): ", stdout);
     if (ppdPageSizeLimits(ppd, &minsize, &maxsize))
     {
-      if (minsize.width != 300 || minsize.length != 300 ||
-          maxsize.width != 1080 || maxsize.length != 86400)
+      if (fabs(minsize.width - 300.0) > 0.001 || fabs(minsize.length - 300.0) > 0.001 ||
+          fabs(maxsize.width - 1080.0) > 0.001 || fabs(maxsize.length - 86400.0) > 0.001)
       {
         printf("FAIL (got min=%.0fx%.0f, max=%.0fx%.0f, "
 	       "expected min=300x300, max=1080x86400)\n", minsize.width,
@@ -837,13 +863,66 @@ main(int  argc,				/* I - Number of command-line arguments */
       status ++;
     }
   }
+  else if (!strncmp(argv[1], "ipp://", 6) || !strncmp(argv[1], "ipps://", 7))
+  {
+   /*
+    * ipp://... or ipps://...
+    */
+
+    http_t	*http;			/* Connection to printer */
+    ipp_t	*request,		/* Get-Printer-Attributes request */
+		*response;		/* Get-Printer-Attributes response */
+    char	scheme[32],		/* URI scheme */
+		userpass[256],		/* Username:password */
+		host[256],		/* Hostname */
+		resource[256];		/* Resource path */
+    int		port;			/* Port number */
+
+    if (httpSeparateURI(HTTP_URI_CODING_ALL, argv[1], scheme, sizeof(scheme), userpass, sizeof(userpass), host, sizeof(host), &port, resource, sizeof(resource)) < HTTP_URI_STATUS_OK)
+    {
+      printf("Bad URI \"%s\".\n", argv[1]);
+      return (1);
+    }
+
+    http = httpConnect2(host, port, NULL, AF_UNSPEC, !strcmp(scheme, "ipps") ? HTTP_ENCRYPTION_ALWAYS : HTTP_ENCRYPTION_IF_REQUESTED, 1, 30000, NULL);
+    if (!http)
+    {
+      printf("Unable to connect to \"%s:%d\": %s\n", host, port, cupsLastErrorString());
+      return (1);
+    }
+
+    request = ippNewRequest(IPP_OP_GET_PRINTER_ATTRIBUTES);
+    ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri", NULL, argv[1]);
+    response = cupsDoRequest(http, request, resource);
+
+    if (_ppdCreateFromIPP(buffer, sizeof(buffer), response))
+      printf("Created PPD: %s\n", buffer);
+    else
+      puts("Unable to create PPD.");
+
+    ippDelete(response);
+    httpClose(http);
+    return (0);
+  }
   else
   {
     const char	*filename;		/* PPD filename */
     struct stat	fileinfo;		/* File information */
 
 
-    if (!strncmp(argv[1], "-d", 2))
+    if (strchr(argv[1], ':'))
+    {
+     /*
+      * Server PPD...
+      */
+
+      if ((filename = cupsGetServerPPD(CUPS_HTTP_DEFAULT, argv[1])) == NULL)
+      {
+        printf("%s: %s\n", argv[1], cupsLastErrorString());
+        return (1);
+      }
+    }
+    else if (!strncmp(argv[1], "-d", 2))
     {
       const char *printer;		/* Printer name */
 
@@ -881,7 +960,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 
 
       if ((realsize = readlink(filename, realfile, sizeof(realfile) - 1)) < 0)
-        strcpy(realfile, "Unknown");
+        strlcpy(realfile, "Unknown", sizeof(realfile));
       else
         realfile[realsize] = '\0';
 
@@ -1029,6 +1108,11 @@ main(int  argc,				/* I - Number of command-line arguments */
 	}
       }
 
+      puts("\nSizes:");
+      for (i = ppd->num_sizes, size = ppd->sizes; i > 0; i --, size ++)
+        printf("    %s = %gx%g, [%g %g %g %g]\n", size->name, size->width,
+	       size->length, size->left, size->bottom, size->right, size->top);
+
       puts("\nConstraints:");
 
       for (i = ppd->num_consts, c = ppd->consts; i > 0; i --, c ++)
@@ -1052,6 +1136,15 @@ main(int  argc,				/* I - Number of command-line arguments */
 	   attr = (ppd_attr_t *)cupsArrayNext(ppd->sorted_attrs))
         printf("    *%s %s/%s: \"%s\"\n", attr->name, attr->spec,
 	       attr->text, attr->value ? attr->value : "");
+
+      puts("\nPPD Cache:");
+      if ((pc = _ppdCacheCreateWithPPD(ppd)) == NULL)
+        printf("    Unable to create: %s\n", cupsLastErrorString());
+      else
+      {
+        _ppdCacheWriteFile(pc, "t.cache", NULL);
+        puts("    Wrote t.cache.");
+      }
     }
 
     if (!strncmp(argv[1], "-d", 2))
@@ -1077,5 +1170,5 @@ main(int  argc,				/* I - Number of command-line arguments */
 
 
 /*
- * End of "$Id: testppd.c 9586 2011-03-04 21:43:50Z mike $".
+ * End of "$Id: testppd.c 12603 2015-05-06 01:42:51Z msweet $".
  */

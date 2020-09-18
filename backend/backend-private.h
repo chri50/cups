@@ -1,18 +1,18 @@
 /*
- * "$Id: backend-private.h 8912 2009-12-08 02:13:42Z mike $"
+ * "$Id: backend-private.h 11558 2014-02-06 18:33:34Z msweet $"
  *
- *   Backend support definitions for the Common UNIX Printing System (CUPS).
+ * Backend support definitions for CUPS.
  *
- *   Copyright 2007-2009 by Apple Inc.
- *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright 2007-2014 by Apple Inc.
+ * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   "LICENSE" which should have been included with this file.  If this
- *   file is missing or damaged, see the license at "http://www.cups.org/".
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * "LICENSE" which should have been included with this file.  If this
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  *
- *   This file is subject to the Apple OS-Developed Software exception.
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 #ifndef _CUPS_BACKEND_PRIVATE_H_
@@ -23,15 +23,10 @@
  * Include necessary headers.
  */
 
+#  include <cups/cups-private.h>
+#  include <cups/snmp-private.h>
 #  include <cups/backend.h>
 #  include <cups/sidechannel.h>
-#  include <cups/ppd-private.h>
-#  include <cups/debug.h>
-#  include <cups/i18n.h>
-#  include <cups/snmp-private.h>
-#  include <stdlib.h>
-#  include <errno.h>
-#  include <cups/string.h>
 #  include <signal.h>
 
 #  ifdef __linux
@@ -264,6 +259,20 @@ extern "C" {
 #define CUPS_TC_inserts				33
 #define CUPS_TC_covers				34
 
+#define CUPS_TC_tenThousandthsOfInches		3
+#define CUPS_TC_micrometers			4
+#define CUPS_TC_impressions			7
+#define CUPS_TC_sheets				8
+#define CUPS_TC_hours				11
+#define CUPS_TC_thousandthsOfOunces		12
+#define CUPS_TC_tenthsOfGrams			13
+#define CUPS_TC_hundrethsOfFluidOunces		14
+#define CUPS_TC_tenthsOfMilliliters		15
+#define CUPS_TC_feet				16
+#define CUPS_TC_meters				17
+#define CUPS_TC_items				18
+#define CUPS_TC_percent				19
+
 /* These come from RFC 3808 to define character sets we support */
 /* Also see http://www.iana.org/assignments/character-sets */
 #define CUPS_TC_csASCII				3
@@ -279,6 +288,15 @@ extern "C" {
 #define CUPS_TC_csUTF32				1017
 #define CUPS_TC_csUTF32BE			1018
 #define CUPS_TC_csUTF32LE			1019
+#define CUPS_TC_csWindows31J			2024
+
+
+/*
+ * Types...
+ */
+
+typedef int (*_cups_sccb_t)(int print_fd, int device_fd, int snmp_fd,
+			    http_addr_t *addr, int use_bc);
 
 
 /*
@@ -295,21 +313,19 @@ extern int		backendGetDeviceID(int fd, char *device_id,
 					   int uri_size);
 extern int		backendGetMakeModel(const char *device_id,
 			                    char *make_model,
-				            int make_model_size);
+				            size_t make_model_size);
 extern int		backendNetworkSideCB(int print_fd, int device_fd,
 			                     int snmp_fd, http_addr_t *addr,
 					     int use_bc);
 extern ssize_t		backendRunLoop(int print_fd, int device_fd, int snmp_fd,
-			               http_addr_t *addr, int use_bc, 
-			               int update_state, 
-				       int (*side_cb)(int print_fd,
-				                      int device_fd,
-						      int snmp_fd,
-						      http_addr_t *addr,
-						      int use_bc));
+			               http_addr_t *addr, int use_bc,
+			               int update_state, _cups_sccb_t side_cb);
 extern int		backendSNMPSupplies(int snmp_fd, http_addr_t *addr,
 			                    int *page_count,
 					    int *printer_state);
+extern int		backendWaitLoop(int snmp_fd, http_addr_t *addr,
+			                int use_bc, _cups_sccb_t side_cb);
+
 
 #  ifdef __cplusplus
 }
@@ -318,5 +334,5 @@ extern int		backendSNMPSupplies(int snmp_fd, http_addr_t *addr,
 
 
 /*
- * End of "$Id: backend-private.h 8912 2009-12-08 02:13:42Z mike $".
+ * End of "$Id: backend-private.h 11558 2014-02-06 18:33:34Z msweet $".
  */

@@ -1,34 +1,25 @@
 /*
- * "$Id: gziptoany.c 9558 2011-02-21 17:19:29Z mike $"
+ * "$Id: gziptoany.c 12655 2015-05-22 17:26:40Z msweet $"
  *
- *   GZIP/raw pre-filter for CUPS.
+ * GZIP/raw pre-filter for CUPS.
  *
- *   Copyright 2007-2011 by Apple Inc.
- *   Copyright 1993-2007 by Easy Software Products.
+ * Copyright 2007-2015 by Apple Inc.
+ * Copyright 1993-2007 by Easy Software Products.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  *
- *   This file is subject to the Apple OS-Developed Software exception.
- *
- * Contents:
- *
- *   main() - Copy (and uncompress) files to stdout.
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
  * Include necessary headers...
  */
 
-#include <cups/file.h>
-#include <cups/string.h>
-#include <cups/i18n.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <errno.h>
+#include <cups/cups-private.h>
 
 
 /*
@@ -41,7 +32,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 {
   cups_file_t	*fp;			/* File */
   char		buffer[8192];		/* Data buffer */
-  int		bytes;			/* Number of bytes read/written */
+  ssize_t	bytes;			/* Number of bytes read/written */
   int		copies;			/* Number of copies */
 
 
@@ -49,10 +40,10 @@ main(int  argc,				/* I - Number of command-line arguments */
   * Check command-line...
   */
 
-  if (argc != 7)
+  if (argc < 6 || argc > 7)
   {
     _cupsLangPrintf(stderr,
-                    _("Usage: %s job-id user title copies options file\n"),
+                    _("Usage: %s job-id user title copies options [file]"),
                     argv[0]);
     return (1);
   }
@@ -71,10 +62,15 @@ main(int  argc,				/* I - Number of command-line arguments */
   * Open the file...
   */
 
-  if ((fp = cupsFileOpen(argv[6], "r")) == NULL)
+  if (argc == 6)
   {
-    _cupsLangPrintf(stderr, _("ERROR: Unable to open file \"%s\": %s\n"),
-                    argv[6], strerror(errno));
+    copies = 1;
+    fp     = cupsFileStdin();
+  }
+  else if ((fp = cupsFileOpen(argv[6], "r")) == NULL)
+  {
+    fprintf(stderr, "DEBUG: Unable to open \"%s\".\n", argv[6]);
+    _cupsLangPrintError("ERROR", _("Unable to open print file"));
     return (1);
   }
 
@@ -90,12 +86,13 @@ main(int  argc,				/* I - Number of command-line arguments */
     cupsFileRewind(fp);
 
     while ((bytes = cupsFileRead(fp, buffer, sizeof(buffer))) > 0)
-      if (write(1, buffer, bytes) < bytes)
+      if (write(1, buffer, (size_t)bytes) < bytes)
       {
-	_cupsLangPrintf(stderr,
-	                _("ERROR: Unable to write uncompressed document data: "
-			  "%s\n"), strerror(errno));
-	cupsFileClose(fp);
+	_cupsLangPrintFilter(stderr, "ERROR",
+			     _("Unable to write uncompressed print data: %s"),
+			     strerror(errno));
+        if (argc == 7)
+	  cupsFileClose(fp);
 
 	return (1);
       }
@@ -107,12 +104,13 @@ main(int  argc,				/* I - Number of command-line arguments */
   * Close the file and return...
   */
 
-  cupsFileClose(fp);
+  if (argc == 7)
+    cupsFileClose(fp);
 
   return (0);
 }
 
 
 /*
- * End of "$Id: gziptoany.c 9558 2011-02-21 17:19:29Z mike $".
+ * End of "$Id: gziptoany.c 12655 2015-05-22 17:26:40Z msweet $".
  */

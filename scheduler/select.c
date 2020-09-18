@@ -1,28 +1,16 @@
 /*
- * "$Id: select.c 9157 2010-06-16 05:27:41Z mike $"
+ * "$Id: select.c 11594 2014-02-14 20:09:01Z msweet $"
  *
- *   Select abstraction functions for the Common UNIX Printing System (CUPS).
+ * Select abstraction functions for the CUPS scheduler.
  *
- *   Copyright 2007-2010 by Apple Inc.
- *   Copyright 2006-2007 by Easy Software Products.
+ * Copyright 2007-2014 by Apple Inc.
+ * Copyright 2006-2007 by Easy Software Products.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
- *
- * Contents:
- *
- *   cupsdAddSelect()    - Add a file descriptor to the list.
- *   cupsdDoSelect()     - Do a select-like operation.
- *   cupsdIsSelecting()  - Determine whether we are monitoring a file
- *                         descriptor.
- *   cupsdRemoveSelect() - Remove a file descriptor from the list.
- *   cupsdStartSelect()  - Initialize the file polling engine.
- *   cupsdStopSelect()   - Shutdown the file polling engine.
- *   compare_fds()       - Compare file descriptors.
- *   find_fd()           - Find an existing file descriptor record.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -33,14 +21,12 @@
 
 #ifdef HAVE_EPOLL
 #  include <sys/epoll.h>
-#  include <sys/poll.h>
+#  include <poll.h>
 #elif defined(HAVE_KQUEUE)
 #  include <sys/event.h>
 #  include <sys/time.h>
 #elif defined(HAVE_POLL)
-#  include <sys/poll.h>
-#elif defined(__hpux)
-#  include <sys/time.h>
+#  include <poll.h>
 #else
 #  include <sys/select.h>
 #endif /* HAVE_EPOLL */
@@ -49,15 +35,14 @@
 /*
  * Design Notes for Poll/Select API in CUPSD
  * -----------------------------------------
- * 
+ *
  * SUPPORTED APIS
- * 
+ *
  *     OS              select  poll    epoll   kqueue  /dev/poll
  *     --------------  ------  ------  ------  ------  ---------
  *     AIX             YES     YES     NO      NO      NO
  *     FreeBSD         YES     YES     NO      YES     NO
  *     HP-UX           YES     YES     NO      NO      NO
- *     IRIX            YES     YES     NO      NO      NO
  *     Linux           YES     YES     YES     NO      NO
  *     MacOS X         YES     YES     NO      YES     NO
  *     NetBSD          YES     YES     NO      YES     NO
@@ -65,22 +50,22 @@
  *     Solaris         YES     YES     NO      NO      YES
  *     Tru64           YES     YES     NO      NO      NO
  *     Windows         YES     NO      NO      NO      NO
- * 
- * 
+ *
+ *
  * HIGH-LEVEL API
- * 
+ *
  *     typedef void (*cupsd_selfunc_t)(void *data);
- * 
+ *
  *     void cupsdStartSelect(void);
  *     void cupsdStopSelect(void);
  *     void cupsdAddSelect(int fd, cupsd_selfunc_t read_cb,
  *                         cupsd_selfunc_t write_cb, void *data);
  *     void cupsdRemoveSelect(int fd);
  *     int cupsdDoSelect(int timeout);
- * 
- * 
+ *
+ *
  * IMPLEMENTATION STRATEGY
- * 
+ *
  *     0. Common Stuff
  *         a. CUPS array of file descriptor to callback functions
  *            and data + temporary array of removed fd's.
@@ -103,7 +88,7 @@
  *            working sets.
  *         d. cupsdStopSelect() frees all of the memory used by the
  *            CUPS array and fd_set's.
- * 
+ *
  *     2. poll() - O(n log n)
  *         a. Regular array of pollfd, sorted the same as the CUPS
  *            array.
@@ -117,7 +102,7 @@
  *         e. cupsdRemoveSelect() flags the pollfd array as invalid.
  *         f. cupsdStopSelect() frees all of the memory used by the
  *            CUPS array and pollfd array.
- * 
+ *
  *     3. epoll() - O(n)
  *         a. cupsdStartSelect() creates epoll file descriptor using
  *            epoll_create() with the maximum fd count, and
@@ -133,7 +118,7 @@
  *            the callback record.
  *         d. cupsdStopSelect() closes the epoll file descriptor and
  *            frees all of the memory used by the event buffer.
- * 
+ *
  *     4. kqueue() - O(n)
  *         b. cupsdStartSelect() creates kqueue file descriptor
  *            using kqueue() function and allocates a global event
@@ -146,7 +131,7 @@
  *            find the callback record.
  *         e. cupsdStopSelect() closes the kqueue() file descriptor
  *            and frees all of the memory used by the event buffer.
- * 
+ *
  *     5. /dev/poll - O(n log n) - NOT YET IMPLEMENTED
  *         a. cupsdStartSelect() opens /dev/poll and allocates an
  *            array of pollfd structs; on failure to open /dev/poll,
@@ -533,15 +518,13 @@ cupsdDoSelect(long timeout)		/* I - Timeout in seconds */
 
 
       if (cupsd_pollfds)
-	pfd = realloc(cupsd_pollfds, allocfds * sizeof(struct pollfd));
+	pfd = realloc(cupsd_pollfds, (size_t)allocfds * sizeof(struct pollfd));
       else
-	pfd = malloc(allocfds * sizeof(struct pollfd));
+	pfd = malloc((size_t)allocfds * sizeof(struct pollfd));
 
       if (!pfd)
       {
-	cupsdLogMessage(CUPSD_LOG_EMERG,
-                	"Unable to allocate %d bytes for polling!",
-                	(int)(allocfds * sizeof(struct pollfd)));
+	cupsdLogMessage(CUPSD_LOG_EMERG, "Unable to allocate %d bytes for polling.", (int)((size_t)allocfds * sizeof(struct pollfd)));
 
 	return (-1);
       }
@@ -570,9 +553,9 @@ cupsdDoSelect(long timeout)		/* I - Timeout in seconds */
   }
 
   if (timeout >= 0 && timeout < 86400)
-    nfds = poll(cupsd_pollfds, count, timeout * 1000);
+    nfds = poll(cupsd_pollfds, (nfds_t)count, timeout * 1000);
   else
-    nfds = poll(cupsd_pollfds, count, -1);
+    nfds = poll(cupsd_pollfds, (nfds_t)count, -1);
 
   if (nfds > 0)
   {
@@ -813,7 +796,7 @@ cupsdRemoveSelect(int fd)		/* I - File descriptor */
 void
 cupsdStartSelect(void)
 {
-  cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdStartSelect()");
+  cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdStartSelect()");
 
   cupsd_fds = cupsArrayNew((cups_array_func_t)compare_fds, NULL);
 
@@ -823,13 +806,13 @@ cupsdStartSelect(void)
 
 #ifdef HAVE_EPOLL
   cupsd_epoll_fd       = epoll_create(MaxFDs);
-  cupsd_epoll_events   = calloc(MaxFDs, sizeof(struct epoll_event));
+  cupsd_epoll_events   = calloc((size_t)MaxFDs, sizeof(struct epoll_event));
   cupsd_update_pollfds = 0;
 
 #elif defined(HAVE_KQUEUE)
   cupsd_kqueue_fd      = kqueue();
   cupsd_kqueue_changes = 0;
-  cupsd_kqueue_events  = calloc(MaxFDs, sizeof(struct kevent));
+  cupsd_kqueue_events  = calloc((size_t)MaxFDs, sizeof(struct kevent));
 
 #elif defined(HAVE_POLL)
   cupsd_update_pollfds = 0;
@@ -851,7 +834,7 @@ cupsdStopSelect(void)
   _cupsd_fd_t	*fdptr;			/* Current file descriptor */
 
 
-  cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdStopSelect()");
+  cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdStopSelect()");
 
   for (fdptr = (_cupsd_fd_t *)cupsArrayFirst(cupsd_fds);
        fdptr;
@@ -947,5 +930,5 @@ find_fd(int fd)				/* I - File descriptor */
 
 
 /*
- * End of "$Id: select.c 9157 2010-06-16 05:27:41Z mike $".
+ * End of "$Id: select.c 11594 2014-02-14 20:09:01Z msweet $".
  */

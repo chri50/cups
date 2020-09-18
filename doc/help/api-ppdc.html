@@ -2,9 +2,10 @@
 <html>
 <!-- SECTION: Programming -->
 <head>
-<title>PPD Compiler API</title>
-<meta name="keywords" content="Programming">
-<meta name="creator" content="Mini-XML v2.7">
+	<title>PPD Compiler API	</title>
+	<meta name="keywords" content="Programming">
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<meta name="creator" content="Mini-XML v2.7">
 <style type="text/css"><!--
 BODY {
   font-family: lucida grande, geneva, helvetica, arial, sans-serif;
@@ -24,7 +25,9 @@ PRE {
 }
 
 PRE.command {
+  border: dotted thin #7f7f7f;
   margin-left: 36pt;
+  padding: 10px;
 }
 
 P.compact {
@@ -35,7 +38,19 @@ P.example {
   font-style: italic;
   margin-left: 36pt;
 }
-  
+
+DL.man DD {
+  margin-left: 5em;
+}
+
+DL.man DT {
+  margin-left: 0;
+}
+
+PRE.man {
+  margin: 0;
+}
+
 PRE.example {
   background: #eeeeee;
   border: dotted thin #999999;
@@ -74,7 +89,7 @@ A:link:hover IMG {
 }
 
 A:link, A:visited {
-  font-weight: normal;
+  font-weight: inherit;
   text-decoration: none;
 }
 
@@ -338,7 +353,7 @@ div.contents ul.subcontents li {
 <body>
 <div class='body'>
 <!--
-  "$Id: api-ppdc.html 9728 2011-04-28 21:21:24Z mike $"
+  "$Id: api-array.header 8087 2008-10-27 21:37:05Z mike $"
 
   PPD Compiler API header for CUPS.
 
@@ -373,28 +388,27 @@ div.contents ul.subcontents li {
 </table></div>
 <h2 class="title">Contents</h2>
 <ul class="contents">
-<ul class="subcontents">
 <li><a href="#OVERVIEW">Overview</a></li>
 <li><a href="#CLASSES">Classes</a><ul class="code">
-<li><a href="#ppdcArray" title="// Shared Array">ppdcArray</a></li>
-<li><a href="#ppdcAttr" title="// Attribute">ppdcAttr</a></li>
-<li><a href="#ppdcCatalog" title="// Translation catalog">ppdcCatalog</a></li>
-<li><a href="#ppdcChoice" title="// Option Choice">ppdcChoice</a></li>
-<li><a href="#ppdcConstraint" title="// Constraint">ppdcConstraint</a></li>
-<li><a href="#ppdcDriver" title="// Printer Driver Data">ppdcDriver</a></li>
-<li><a href="#ppdcFile" title="// File">ppdcFile</a></li>
-<li><a href="#ppdcFilter" title="// Filter Program">ppdcFilter</a></li>
-<li><a href="#ppdcFont" title="// Shared Font">ppdcFont</a></li>
-<li><a href="#ppdcGroup" title="// Group of Options">ppdcGroup</a></li>
-<li><a href="#ppdcInteger" title="// Shared integer">ppdcInteger</a></li>
-<li><a href="#ppdcMediaSize" title="// Media Size">ppdcMediaSize</a></li>
-<li><a href="#ppdcMessage" title="// Translation message">ppdcMessage</a></li>
-<li><a href="#ppdcOption" title="// Option">ppdcOption</a></li>
-<li><a href="#ppdcProfile" title="// Color Profile">ppdcProfile</a></li>
-<li><a href="#ppdcShared" title="// Shared Data Value">ppdcShared</a></li>
-<li><a href="#ppdcSource" title="// Source File">ppdcSource</a></li>
-<li><a href="#ppdcString" title="// Shared String">ppdcString</a></li>
-<li><a href="#ppdcVariable" title="// Variable Definition">ppdcVariable</a></li>
+	<li><a href="#ppdcArray" title="// Shared Array">ppdcArray</a></li>
+	<li><a href="#ppdcAttr" title="// Attribute">ppdcAttr</a></li>
+	<li><a href="#ppdcCatalog" title="// Translation catalog">ppdcCatalog</a></li>
+	<li><a href="#ppdcChoice" title="// Option Choice">ppdcChoice</a></li>
+	<li><a href="#ppdcConstraint" title="// Constraint">ppdcConstraint</a></li>
+	<li><a href="#ppdcDriver" title="// Printer Driver Data">ppdcDriver</a></li>
+	<li><a href="#ppdcFile" title="// File">ppdcFile</a></li>
+	<li><a href="#ppdcFilter" title="// Filter Program">ppdcFilter</a></li>
+	<li><a href="#ppdcFont" title="// Shared Font">ppdcFont</a></li>
+	<li><a href="#ppdcGroup" title="// Group of Options">ppdcGroup</a></li>
+	<li><a href="#ppdcInteger" title="// Shared integer">ppdcInteger</a></li>
+	<li><a href="#ppdcMediaSize" title="// Media Size">ppdcMediaSize</a></li>
+	<li><a href="#ppdcMessage" title="// Translation message">ppdcMessage</a></li>
+	<li><a href="#ppdcOption" title="// Option">ppdcOption</a></li>
+	<li><a href="#ppdcProfile" title="// Color Profile">ppdcProfile</a></li>
+	<li><a href="#ppdcShared" title="// Shared Data Value">ppdcShared</a></li>
+	<li><a href="#ppdcSource" title="// Source File">ppdcSource</a></li>
+	<li><a href="#ppdcString" title="// Shared String">ppdcString</a></li>
+	<li><a href="#ppdcVariable" title="// Variable Definition">ppdcVariable</a></li>
 </ul></li>
 <li><a href="#TYPES">Data Types</a><ul class="code">
 	<li><a href="#ppdc_cs_t" title="">ppdc_cs_t</a></li>
@@ -410,8 +424,9 @@ div.contents ul.subcontents li {
 	<li><a href="#ppdcOptSection" title="// Option section">ppdcOptSection</a></li>
 	<li><a href="#ppdcOptType" title="// Option type">ppdcOptType</a></li>
 </ul></li>
+</ul>
 <!--
-  "$Id: api-ppdc.html 9728 2011-04-28 21:21:24Z mike $"
+  "$Id: api-array.shtml 7616 2008-05-28 00:34:13Z mike $"
 
   PPD Compiler API introduction for CUPS.
 
@@ -1013,12 +1028,15 @@ void ~ppdcDriver (void);</p>
 <p class="description">// File</p>
 <p class="code">class ppdcFile {<br>
 &nbsp;&nbsp;public:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;bool close_on_delete;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;const char *filename;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;cups_file_t *fp;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;int line;<br>
 };</p>
 <h4 class="members">Members</h4>
 <dl>
+<dt>close_on_delete </dt>
+<dd class="description">Close file on delete?</dd>
 <dt>filename </dt>
 <dd class="description">Filename</dd>
 <dt>fp </dt>

@@ -1,37 +1,25 @@
 /*
- * "$Id: options.c 9233 2010-08-10 06:15:55Z mike $"
+ * "$Id: options.c 11558 2014-02-06 18:33:34Z msweet $"
  *
- *   Option routines for the Common UNIX Printing System (CUPS).
+ * Option routines for CUPS.
  *
- *   Copyright 2007-2009 by Apple Inc.
- *   Copyright 1997-2007 by Easy Software Products.
+ * Copyright 2007-2014 by Apple Inc.
+ * Copyright 1997-2007 by Easy Software Products.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  *
- *   This file is subject to the Apple OS-Developed Software exception.
- *
- * Contents:
- *
- *   cupsAddOption()    - Add an option to an option array.
- *   cupsFreeOptions()  - Free all memory used by options.
- *   cupsGetOption()    - Get an option value.
- *   cupsParseOptions() - Parse options from a command-line argument.
- *   cupsRemoveOption() - Remove an option from an option array.
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
  * Include necessary headers...
  */
 
-#include "cups.h"
-#include <stdlib.h>
-#include <ctype.h>
-#include "string.h"
-#include "debug.h"
+#include "cups-private.h"
 
 
 /*
@@ -63,7 +51,7 @@ cupsAddOption(const char    *name,	/* I  - Name of option */
 
   DEBUG_printf(("2cupsAddOption(name=\"%s\", value=\"%s\", num_options=%d, "
                 "options=%p)", name, value, num_options, options));
- 
+
   if (!name || !name[0] || !value || !options || num_options < 0)
   {
     DEBUG_printf(("3cupsAddOption: Returning %d", num_options));
@@ -100,10 +88,9 @@ cupsAddOption(const char    *name,	/* I  - Name of option */
     if (num_options == 0)
       temp = (cups_option_t *)malloc(sizeof(cups_option_t));
     else
-      temp = (cups_option_t *)realloc(*options, sizeof(cups_option_t) *
-                                        	(num_options + 1));
+      temp = (cups_option_t *)realloc(*options, sizeof(cups_option_t) * (size_t)(num_options + 1));
 
-    if (temp == NULL)
+    if (!temp)
     {
       DEBUG_puts("3cupsAddOption: Unable to expand option array, returning 0");
       return (0);
@@ -115,8 +102,7 @@ cupsAddOption(const char    *name,	/* I  - Name of option */
     {
       DEBUG_printf(("4cupsAddOption: Shifting %d options...",
                     (int)(num_options - insert)));
-      memmove(temp + insert + 1, temp + insert,
-	      (num_options - insert) * sizeof(cups_option_t));
+      memmove(temp + insert + 1, temp + insert, (size_t)(num_options - insert) * sizeof(cups_option_t));
     }
 
     temp        += insert;
@@ -324,7 +310,7 @@ cupsParseOptions(
       * Boolean option...
       */
 
-      if (!strncasecmp(name, "no", 2))
+      if (!_cups_strncasecmp(name, "no", 2))
         num_options = cupsAddOption(name + 2, "false", num_options,
 	                            options);
       else
@@ -439,7 +425,7 @@ cupsParseOptions(
 /*
  * 'cupsRemoveOption()' - Remove an option from an option array.
  *
- * @since CUPS 1.2/Mac OS X 10.5@
+ * @since CUPS 1.2/OS X 10.5@
  */
 
 int					/* O  - New number of options */
@@ -470,7 +456,7 @@ cupsRemoveOption(
   */
 
   for (i = num_options, option = *options; i > 0; i --, option ++)
-    if (!strcasecmp(name, option->name))
+    if (!_cups_strcasecmp(name, option->name))
       break;
 
   if (i)
@@ -488,7 +474,7 @@ cupsRemoveOption(
     _cupsStrFree(option->value);
 
     if (i > 0)
-      memmove(option, option + 1, i * sizeof(cups_option_t));
+      memmove(option, option + 1, (size_t)i * sizeof(cups_option_t));
   }
 
  /*
@@ -501,6 +487,89 @@ cupsRemoveOption(
 
 
 /*
+ * '_cupsGet1284Values()' - Get 1284 device ID keys and values.
+ *
+ * The returned dictionary is a CUPS option array that can be queried with
+ * cupsGetOption and freed with cupsFreeOptions.
+ */
+
+int					/* O - Number of key/value pairs */
+_cupsGet1284Values(
+    const char *device_id,		/* I - IEEE-1284 device ID string */
+    cups_option_t **values)		/* O - Array of key/value pairs */
+{
+  int		num_values;		/* Number of values */
+  char		key[256],		/* Key string */
+		value[256],		/* Value string */
+		*ptr;			/* Pointer into key/value */
+
+
+ /*
+  * Range check input...
+  */
+
+  if (values)
+    *values = NULL;
+
+  if (!device_id || !values)
+    return (0);
+
+ /*
+  * Parse the 1284 device ID value into keys and values.  The format is
+  * repeating sequences of:
+  *
+  *   [whitespace]key:value[whitespace];
+  */
+
+  num_values = 0;
+  while (*device_id)
+  {
+    while (_cups_isspace(*device_id))
+      device_id ++;
+
+    if (!*device_id)
+      break;
+
+    for (ptr = key; *device_id && *device_id != ':'; device_id ++)
+      if (ptr < (key + sizeof(key) - 1))
+        *ptr++ = *device_id;
+
+    if (!*device_id)
+      break;
+
+    while (ptr > key && _cups_isspace(ptr[-1]))
+      ptr --;
+
+    *ptr = '\0';
+    device_id ++;
+
+    while (_cups_isspace(*device_id))
+      device_id ++;
+
+    if (!*device_id)
+      break;
+
+    for (ptr = value; *device_id && *device_id != ';'; device_id ++)
+      if (ptr < (value + sizeof(value) - 1))
+        *ptr++ = *device_id;
+
+    if (!*device_id)
+      break;
+
+    while (ptr > value && _cups_isspace(ptr[-1]))
+      ptr --;
+
+    *ptr = '\0';
+    device_id ++;
+
+    num_values = cupsAddOption(key, value, num_values, values);
+  }
+
+  return (num_values);
+}
+
+
+/*
  * 'cups_compare_options()' - Compare two options.
  */
 
@@ -508,7 +577,7 @@ static int				/* O - Result of comparison */
 cups_compare_options(cups_option_t *a,	/* I - First option */
 		     cups_option_t *b)	/* I - Second option */
 {
-  return (strcasecmp(a->name, b->name));
+  return (_cups_strcasecmp(a->name, b->name));
 }
 
 
@@ -625,5 +694,5 @@ cups_find_option(
 
 
 /*
- * End of "$Id: options.c 9233 2010-08-10 06:15:55Z mike $".
+ * End of "$Id: options.c 11558 2014-02-06 18:33:34Z msweet $".
  */

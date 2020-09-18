@@ -1,16 +1,16 @@
 #
-# "$Id: Makefile 9181 2010-06-22 21:42:44Z mike $"
+# "$Id: Makefile 12814 2015-07-30 15:03:33Z msweet $"
 #
-#   Man page makefile for the Common UNIX Printing System (CUPS).
+# Man page makefile for CUPS.
 #
-#   Copyright 2007-2008 by Apple Inc.
-#   Copyright 1993-2006 by Easy Software Products.
+# Copyright 2007-2015 by Apple Inc.
+# Copyright 1993-2006 by Easy Software Products.
 #
-#   These coded instructions, statements, and computer programs are the
-#   property of Apple Inc. and are protected by Federal copyright
-#   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
-#   which should have been included with this file.  If this file is
-#   file is missing or damaged, see the license at "http://www.cups.org/".
+# These coded instructions, statements, and computer programs are the
+# property of Apple Inc. and are protected by Federal copyright
+# law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+# which should have been included with this file.  If this file is
+# file is missing or damaged, see the license at "http://www.cups.org/".
 #
 
 include ../Makedefs
@@ -21,12 +21,14 @@ include ../Makedefs
 #
 
 MAN1	=	cancel.$(MAN1EXT) \
+		cups.$(MAN1EXT) \
 		cups-config.$(MAN1EXT) \
 		cupstestdsc.$(MAN1EXT) \
 		cupstestppd.$(MAN1EXT) \
+		$(IPPFIND_MAN) \
+		ipptool.$(MAN1EXT) \
 		lp.$(MAN1EXT) \
 		lpoptions.$(MAN1EXT) \
-		lppasswd.$(MAN1EXT) \
 		lpq.$(MAN1EXT) \
 		lprm.$(MAN1EXT) \
 		lpr.$(MAN1EXT) \
@@ -38,8 +40,11 @@ MAN1	=	cancel.$(MAN1EXT) \
 		ppdpo.$(MAN1EXT)
 MAN5	=	classes.conf.$(MAN5EXT) \
 		client.conf.$(MAN5EXT) \
+		cups-files.conf.$(MAN5EXT) \
 		cups-snmp.conf.$(MAN5EXT) \
 		cupsd.conf.$(MAN5EXT) \
+		cupsd-logs.$(MAN5EXT) \
+		ipptoolfile.$(MAN5EXT) \
 		mailto.conf.$(MAN5EXT) \
 		mime.convs.$(MAN5EXT) \
 		mime.types.$(MAN5EXT) \
@@ -53,11 +58,10 @@ MAN8	=	cupsaccept.$(MAN8EXT) \
 		cupsaddsmb.$(MAN8EXT) \
 		cupsctl.$(MAN8EXT) \
 		cupsfilter.$(MAN8EXT) \
-		cups-deviced.$(MAN8EXT) \
-		cups-driverd.$(MAN8EXT) \
 		cups-lpd.$(MAN8EXT) \
-		cups-polld.$(MAN8EXT) \
+		cups-snmp.$(MAN8EXT) \
 		cupsd.$(MAN8EXT) \
+		cupsd-helper.$(MAN8EXT) \
 		cupsenable.$(MAN8EXT) \
 		lpadmin.$(MAN8EXT) \
 		lpinfo.$(MAN8EXT) \
@@ -93,18 +97,6 @@ unittests:
 clean:
 	$(RM) mantohtml mantohtml.o
 	$(RM) $(MAN1) $(MAN5) $(MAN7) $(MAN8)
-	for file in $(MAN1); do \
-		$(RM) ../doc/help/man-`basename $$file .$(MAN1EXT)`.html; \
-	done
-	for file in $(MAN5); do \
-		$(RM) ../doc/help/man-`basename $$file .$(MAN5EXT)`.html; \
-	done
-	for file in $(MAN7); do \
-		$(RM) ../doc/help/man-`basename $$file .$(MAN7EXT)`.html; \
-	done
-	for file in $(MAN8); do \
-		$(RM) ../doc/help/man-`basename $$file .$(MAN8EXT)`.html; \
-	done
 
 
 #
@@ -152,6 +144,10 @@ install-data: all
 	done
 	$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
 	$(LN) cupsenable.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
+	for file in cups-deviced cups-driverd cups-exec; do \
+		$(RM) $(AMANDIR)/man$(MAN8DIR)/$$file.$(MAN8EXT); \
+		$(LN) cupsd-helper.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/$$file.$(MAN8EXT); \
+	done
 
 
 #
@@ -225,10 +221,12 @@ html:	$(MAN1) $(MAN5) $(MAN7) $(MAN8) mantohtml
 		./mantohtml `basename $$file .$(MAN8EXT)`.man >../doc/help/man-`basename $$file .$(MAN8EXT)`.html; \
 	done
 
-mantohtml:	mantohtml.o
-	$(CC) $(ARCHFLAGS) $(LDFLAGS) -o $@ mantohtml.o
+mantohtml:	mantohtml.o ../cups/$(LIBCUPSSTATIC)
+	$(CC) $(ARCHFLAGS) $(LDFLAGS) -o $@ mantohtml.o \
+		../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) \
+		$(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
 
 
 #
-# End of "$Id: Makefile 9181 2010-06-22 21:42:44Z mike $".
+# End of "$Id: Makefile 12814 2015-07-30 15:03:33Z msweet $".
 #

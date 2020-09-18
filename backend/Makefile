@@ -1,9 +1,9 @@
 #
-# "$Id: Makefile 8400 2009-03-03 19:39:21Z mike $"
+# "$Id: Makefile 11859 2014-05-08 22:42:44Z msweet $"
 #
-#   Backend makefile for the Common UNIX Printing System (CUPS).
+#   Backend makefile for CUPS.
 #
-#   Copyright 2007-2009 by Apple Inc.
+#   Copyright 2007-2014 by Apple Inc.
 #   Copyright 1997-2007 by Easy Software Products, all rights reserved.
 #
 #   These coded instructions, statements, and computer programs are the
@@ -17,13 +17,49 @@
 
 include ../Makedefs
 
-RBACKENDS =	ipp lpd $(DNSSD_BACKEND)
-UBACKENDS =	$(PAP) $(LEGACY_BACKENDS) serial snmp socket usb
-UNITTESTS =	test1284 testbackend testsupplies
-TARGETS =	libbackend.a $(RBACKENDS) $(UBACKENDS)
-LIBOBJS	=	ieee1284.o network.o runloop.o snmp-supplies.o
-OBJS	=	ipp.o lpd.o dnssd.o pap.o parallel.o scsi.o serial.o snmp.o \
-		socket.o test1284.o testbackend.o testsupplies.o usb.o
+#
+# Object files...
+#
+
+# RBACKENDS are installed mode 0700 so cupsd will run them as root...
+#
+# UBACKENDS and ULBACKENDS are installed mode 0755 so cupsd will run them as
+# an unprivileged user...
+#
+# See http://www.cups.org/documentation.php/api-filter.html for more info...
+RBACKENDS =	\
+		ipp \
+		lpd \
+		$(DNSSD_BACKEND)
+UBACKENDS =	\
+		snmp \
+		socket
+ULBACKENDS =	\
+		usb
+UNITTESTS =	\
+		test1284 \
+		testbackend \
+		testsupplies
+TARGETS =	\
+		libbackend.a \
+		$(RBACKENDS) \
+		$(UBACKENDS) \
+		$(ULBACKENDS)
+LIBOBJS	=	\
+		ieee1284.o \
+		network.o \
+		runloop.o \
+		snmp-supplies.o
+OBJS	=	\
+		ipp.o \
+		lpd.o \
+		dnssd.o \
+		snmp.o \
+		socket.o \
+		test1284.o \
+		testbackend.o \
+		testsupplies.o \
+		usb.o
 
 
 #
@@ -37,7 +73,7 @@ all:	$(TARGETS)
 # Make library targets...
 #
 
-libs:
+libs:	$(ULBACKENDS)
 
 
 #
@@ -52,7 +88,7 @@ unittests:	$(UNITTESTS)
 #
 
 clean:
-	$(RM) $(OBJS) $(TARGETS) $(UNITTESTS) $(LIBOBJS) http mdns
+	$(RM) $(OBJS) $(TARGETS) $(UNITTESTS) $(LIBOBJS) http https ipps mdns
 
 
 #
@@ -60,7 +96,7 @@ clean:
 #
 
 depend:
-	makedepend -Y -I.. -fDependencies $(OBJS:.o=.c) >/dev/null 2>&1
+	$(CC) -MM $(ALL_CFLAGS) $(OBJS:.o=.c) >Dependencies
 
 
 #
@@ -75,13 +111,19 @@ install:	all install-data install-headers install-libs install-exec
 #
 
 install-data:
+	if test "x$(USBQUIRKS)" != x; then \
+		echo Installing USB quirks in $(USBQUIRKS); \
+		$(INSTALL_DIR) -m 755 $(USBQUIRKS); \
+		$(INSTALL_DATA) org.cups.usb-quirks $(USBQUIRKS); \
+	fi
 
 
 #
 # Install programs...
 #
 
-install-exec:
+install-exec:	$(INSTALLXPC)
+	echo Installing backends in $(SERVERBIN)/backend
 	$(INSTALL_DIR) -m 755 $(SERVERBIN)/backend
 	for file in $(RBACKENDS); do \
 		$(LIBTOOL) $(INSTALL_BIN) -m 700 $$file $(SERVERBIN)/backend; \
@@ -89,18 +131,30 @@ install-exec:
 	for file in $(UBACKENDS); do \
 		$(INSTALL_BIN) $$file $(SERVERBIN)/backend; \
 	done
-	$(RM) $(SERVERBIN)/backend/http
-	$(LN) ipp $(SERVERBIN)/backend/http
-	if test "x$(DNSSD_BACKEND)" != x; then \
+	for file in $(IPPALIASES); do \
+		$(RM) $(SERVERBIN)/backend/$$file; \
+		$(LN) ipp $(SERVERBIN)/backend/$$file; \
+	done
+	if test "x$(DNSSD_BACKEND)" != x -a `uname` = Darwin; then \
 		$(RM) $(SERVERBIN)/backend/mdns; \
 		$(LN) $(DNSSD_BACKEND) $(SERVERBIN)/backend/mdns; \
 	fi
 	if test "x$(SYMROOT)" != "x"; then \
 		$(INSTALL_DIR) $(SYMROOT); \
-		for file in $(TARGETS); do \
+		for file in $(RBACKENDS) $(UBACKENDS); do \
 			cp $$file $(SYMROOT); \
+			dsymutil $(SYMROOT)/$$file; \
 		done \
 	fi
+
+install-xpc:	ipp
+	echo Installing XPC backends in $(SERVERBIN)/apple
+	$(INSTALL_DIR) -m 755 $(SERVERBIN)/apple
+	$(LIBTOOL) $(INSTALL_BIN) ipp $(SERVERBIN)/apple
+	for file in $(IPPALIASES); do \
+		$(RM) $(SERVERBIN)/apple/$$file; \
+		$(LN) ipp $(SERVERBIN)/apple/$$file; \
+	done
 
 
 #
@@ -115,6 +169,18 @@ install-headers:
 #
 
 install-libs:
+	echo Installing backends in $(SERVERBIN)/backend
+	$(INSTALL_DIR) -m 755 $(SERVERBIN)/backend
+	for file in $(ULBACKENDS); do \
+		$(INSTALL_BIN) $$file $(SERVERBIN)/backend; \
+	done
+	if test "x$(SYMROOT)" != "x"; then \
+		$(INSTALL_DIR) $(SYMROOT); \
+		for file in $(ULBACKENDS); do \
+			cp $$file $(SYMROOT); \
+			dsymutil $(SYMROOT)/$$file; \
+		done \
+	fi
 
 
 #
@@ -122,10 +188,17 @@ install-libs:
 #
 
 uninstall:
-	for file in $(RBACKENDS) $(UBACKENDS); do \
+	$(RM) $(SERVERBIN)/apple/ipp
+	for file in $(IPPALIASES); do \
+		$(RM) $(SERVERBIN)/apple/$$file; \
+	done
+	-$(RMDIR) $(SERVERBIN)/apple
+	for file in $(RBACKENDS) $(UBACKENDS) $(ULBACKENDS); do \
 		$(RM) $(SERVERBIN)/backend/$$file; \
 	done
-	$(RM) $(SERVERBIN)/backend/http
+	for file in $(IPPALIASES); do \
+		$(RM) $(SERVERBIN)/backend/$$file; \
+	done
 	-$(RMDIR) $(SERVERBIN)/backend
 	-$(RMDIR) $(SERVERBIN)
 
@@ -134,9 +207,9 @@ uninstall:
 # test1284
 #
 
-test1284:	test1284.o ../cups/libcups.a
+test1284:	test1284.o ../cups/$(LIBCUPSSTATIC)
 	echo Linking $@...
-	$(CC) $(LDFLAGS) -o test1284 test1284.o ../cups/libcups.a \
+	$(CC) $(LDFLAGS) -o test1284 test1284.o ../cups/$(LIBCUPSSTATIC) \
 		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
 
 
@@ -144,9 +217,9 @@ test1284:	test1284.o ../cups/libcups.a
 # testbackend
 #
 
-testbackend:	testbackend.o ../cups/libcups.a
+testbackend:	testbackend.o ../cups/$(LIBCUPSSTATIC)
 	echo Linking $@...
-	$(CC) $(LDFLAGS) -o testbackend testbackend.o ../cups/libcups.a \
+	$(CC) $(LDFLAGS) -o testbackend testbackend.o ../cups/$(LIBCUPSSTATIC) \
 		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
 
 
@@ -154,10 +227,10 @@ testbackend:	testbackend.o ../cups/libcups.a
 # testsupplies
 #
 
-testsupplies:	testsupplies.o libbackend.a ../cups/libcups.a
+testsupplies:	testsupplies.o libbackend.a ../cups/$(LIBCUPSSTATIC)
 	echo Linking $@...
 	$(CC) $(LDFLAGS) -o testsupplies testsupplies.o libbackend.a \
-		../cups/libcups.a $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
+		../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
 		$(COMMONLIBS) $(LIBZ)
 
 
@@ -179,8 +252,10 @@ libbackend.a:	$(LIBOBJS)
 dnssd:	dnssd.o ../cups/$(LIBCUPS) libbackend.a
 	echo Linking $@...
 	$(CC) $(LDFLAGS) -o dnssd dnssd.o libbackend.a $(LIBS)
-	$(RM) mdns
-	$(LN) dnssd mdns
+	if test `uname` = Darwin; then \
+		$(RM) mdns; \
+		$(LN) dnssd mdns; \
+	fi
 
 
 #
@@ -201,44 +276,6 @@ ipp:	ipp.o ../cups/$(LIBCUPS) libbackend.a
 lpd:	lpd.o ../cups/$(LIBCUPS) libbackend.a
 	echo Linking $@...
 	$(CC) $(LDFLAGS) -o lpd lpd.o libbackend.a $(LIBS)
-
-
-#
-# pap
-#
-
-pap:	pap.o ../cups/$(LIBCUPS)
-	echo Linking $@...
-	$(CC) $(LDFLAGS) -o pap pap.o $(BACKLIBS) $(LIBS) -framework AppleTalk
-
-
-#
-# parallel
-#
-
-parallel:	parallel.o ../cups/$(LIBCUPS) libbackend.a
-	echo Linking $@...
-	$(CC) $(LDFLAGS) -o parallel parallel.o libbackend.a $(LIBS)
-
-
-#
-# scsi
-#
-
-scsi:	scsi.o ../cups/$(LIBCUPS)
-	echo Linking $@...
-	$(CC) $(LDFLAGS) -o scsi scsi.o $(LIBS)
-
-scsi.o:	scsi.c scsi-irix.c scsi-linux.c
-
-
-#
-# serial
-#
-
-serial:	serial.o ../cups/$(LIBCUPS) libbackend.a
-	echo Linking $@...
-	$(CC) $(LDFLAGS) -o serial serial.o libbackend.a $(BACKLIBS) $(LIBS)
 
 
 #
@@ -265,7 +302,7 @@ socket:	socket.o ../cups/$(LIBCUPS) libbackend.a
 
 usb:	usb.o ../cups/$(LIBCUPS) libbackend.a
 	echo Linking $@...
-	$(CC) $(LDFLAGS) -o usb usb.o libbackend.a $(LIBUSB) \
+	$(CC) $(ARCHFLAGS) $(LDFLAGS) -o usb usb.o libbackend.a $(LIBUSB) \
 		$(BACKLIBS) $(LIBS)
 usb.o:	usb.c usb-darwin.c usb-libusb.c usb-unix.c
 
@@ -278,5 +315,5 @@ include Dependencies
 
 
 #
-# End of "$Id: Makefile 8400 2009-03-03 19:39:21Z mike $".
+# End of "$Id: Makefile 11859 2014-05-08 22:42:44Z msweet $".
 #

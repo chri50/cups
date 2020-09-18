@@ -1,9 +1,9 @@
 /*
- * "$Id: custom.c 9426 2011-01-06 22:48:42Z mike $"
+ * "$Id: custom.c 10996 2013-05-29 11:51:34Z msweet $"
  *
  *   PPD custom option routines for CUPS.
  *
- *   Copyright 2007-2011 by Apple Inc.
+ *   Copyright 2007-2012 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -35,14 +35,13 @@
  * Include necessary headers.
  */
 
-#include "globals.h"
-#include "debug.h"
+#include "cups-private.h"
 
 
 /*
  * 'ppdFindCustomOption()' - Find a custom option.
  *
- * @since CUPS 1.2/Mac OS X 10.5@
+ * @since CUPS 1.2/OS X 10.5@
  */
 
 ppd_coption_t *				/* O - Custom option or NULL */
@@ -63,7 +62,7 @@ ppdFindCustomOption(ppd_file_t *ppd,	/* I - PPD file */
 /*
  * 'ppdFindCustomParam()' - Find a parameter for a custom option.
  *
- * @since CUPS 1.2/Mac OS X 10.5@
+ * @since CUPS 1.2/OS X 10.5@
  */
 
 ppd_cparam_t *				/* O - Custom parameter or NULL */
@@ -79,7 +78,7 @@ ppdFindCustomParam(ppd_coption_t *opt,	/* I - Custom option */
   for (param = (ppd_cparam_t *)cupsArrayFirst(opt->params);
        param;
        param = (ppd_cparam_t *)cupsArrayNext(opt->params))
-    if (!strcasecmp(param->name, name))
+    if (!_cups_strcasecmp(param->name, name))
       break;
 
   return (param);
@@ -89,7 +88,7 @@ ppdFindCustomParam(ppd_coption_t *opt,	/* I - Custom option */
 /*
  * 'ppdFirstCustomParam()' - Return the first parameter for a custom option.
  *
- * @since CUPS 1.2/Mac OS X 10.5@
+ * @since CUPS 1.2/OS X 10.5@
  */
 
 ppd_cparam_t *				/* O - Custom parameter or NULL */
@@ -105,7 +104,7 @@ ppdFirstCustomParam(ppd_coption_t *opt)	/* I - Custom option */
 /*
  * 'ppdNextCustomParam()' - Return the next parameter for a custom option.
  *
- * @since CUPS 1.2/Mac OS X 10.5@
+ * @since CUPS 1.2/OS X 10.5@
  */
 
 ppd_cparam_t *				/* O - Custom parameter or NULL */
@@ -119,5 +118,5 @@ ppdNextCustomParam(ppd_coption_t *opt)	/* I - Custom option */
 
 
 /*
- * End of "$Id: custom.c 9426 2011-01-06 22:48:42Z mike $".
+ * End of "$Id: custom.c 10996 2013-05-29 11:51:34Z msweet $".
  */

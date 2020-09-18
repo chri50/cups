@@ -1,9 +1,9 @@
 /*
- * "$Id: mime.h 9133 2010-05-05 00:44:55Z mike $"
+ * "$Id: mime.h 11272 2013-09-10 19:15:36Z msweet $"
  *
- *   MIME type/conversion database definitions for the Common UNIX Printing System (CUPS).
+ *   MIME type/conversion database definitions for CUPS.
  *
- *   Copyright 2007-2008 by Apple Inc.
+ *   Copyright 2007-2013 by Apple Inc.
  *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -19,6 +19,7 @@
 #  include <cups/array.h>
 #  include <cups/ipp.h>
 #  include <cups/file.h>
+#  include <regex.h>
 
 
 /*
@@ -58,7 +59,8 @@ typedef enum
   MIME_MAGIC_INT,			/* Integer/32-bit word matches */
   MIME_MAGIC_LOCALE,			/* Current locale matches string */
   MIME_MAGIC_CONTAINS,			/* File contains a string */
-  MIME_MAGIC_ISTRING			/* Case-insensitive string matches */
+  MIME_MAGIC_ISTRING,			/* Case-insensitive string matches */
+  MIME_MAGIC_REGEX			/* Regular expression matches */
 } mime_op_t;
 
 typedef struct _mime_magic_s		/**** MIME Magic Data ****/
@@ -80,6 +82,7 @@ typedef struct _mime_magic_s		/**** MIME Magic Data ****/
     unsigned char charv;		/* Byte value */
     unsigned short shortv;		/* Short value */
     unsigned	intv;			/* Integer value */
+    regex_t	rev;			/* Regular expression value */
   }		value;
 } mime_magic_t;
 
@@ -97,13 +100,18 @@ typedef struct _mime_filter_s		/**** MIME Conversion Filter Data ****/
 		*dst;			/* Destination type */
   int		cost;			/* Relative cost */
   char		filter[MIME_MAX_FILTER];/* Filter program to use */
+  size_t	maxsize;		/* Maximum file size for this filter */
 } mime_filter_t;
+
+typedef void (*mime_error_cb_t)(void *ctx, const char *message);
 
 typedef struct _mime_s			/**** MIME Database ****/
 {
-  cups_array_t	*types;			/* File types */
-  cups_array_t	*filters;		/* Type conversion filters */
-  cups_array_t	*srcs;			/* Filters sorted by source type */
+  cups_array_t		*types;		/* File types */
+  cups_array_t		*filters;	/* Type conversion filters */
+  cups_array_t		*srcs;		/* Filters sorted by source type */
+  mime_error_cb_t	error_cb;	/* Error message callback */
+  void			*error_ctx;	/* Pointer for callback */
 } mime_t;
 
 
@@ -112,6 +120,7 @@ typedef struct _mime_s			/**** MIME Database ****/
  */
 
 extern void		mimeDelete(mime_t *mime);
+extern mime_t		*mimeNew(void) _CUPS_API_1_5;
 extern mime_t		*mimeLoad(const char *pathname, const char *filterpath);
 extern mime_t		*mimeLoadFilters(mime_t *mime, const char *pathname,
 			                 const char *filterpath);
@@ -135,11 +144,16 @@ extern mime_filter_t	*mimeAddFilter(mime_t *mime, mime_type_t *src,
 extern void		mimeDeleteFilter(mime_t *mime, mime_filter_t *filter);
 extern cups_array_t	*mimeFilter(mime_t *mime, mime_type_t *src,
 			            mime_type_t *dst, int *cost);
+extern cups_array_t	*mimeFilter2(mime_t *mime, mime_type_t *src,
+			             size_t srcsize, mime_type_t *dst,
+				     int *cost);
 extern mime_filter_t	*mimeFilterLookup(mime_t *mime, mime_type_t *src,
 			                  mime_type_t *dst);
 extern mime_filter_t	*mimeFirstFilter(mime_t *mime);
 extern mime_filter_t	*mimeNextFilter(mime_t *mime);
 extern int		mimeNumFilters(mime_t *mime);
+extern void		mimeSetErrorCallback(mime_t *mime, mime_error_cb_t cb,
+			                     void *context) _CUPS_API_1_5;
 
 #  ifdef __cplusplus
 }
@@ -147,5 +161,5 @@ extern int		mimeNumFilters(mime_t *mime);
 #endif /* !_CUPS_MIME_H_ */
 
 /*
- * End of "$Id: mime.h 9133 2010-05-05 00:44:55Z mike $".
+ * End of "$Id: mime.h 11272 2013-09-10 19:15:36Z msweet $".
  */

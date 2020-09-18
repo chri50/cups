@@ -4,6 +4,7 @@
 	Version="9.00"
 	Name="libcups2"
 	ProjectGUID="{CB4AA6F2-3E84-45BE-B505-95CD375E8BE3}"
+	RootNamespace="libcups2"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -44,8 +45,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\vcnet,.."
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;LIBCUPS2_EXPORTS;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
+				AdditionalIncludeDirectories="..\vcnet,..,..\vcnet\regex"
+				PreprocessorDefinitions="ZLIB_WINAPI;WIN32;DEBUG;_DEBUG;_WINDOWS;_USRDLL;LIBCUPS2_EXPORTS;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -66,7 +67,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib advapi32.lib"
+				AdditionalOptions="/NODEFAULTLIB:libcmt"
+				AdditionalDependencies="ws2_32.lib advapi32.lib zlibwapi.lib"
 				OutputFile="$(OutDir)\libcups2.dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile="..\cups\libcups2.def"
@@ -127,8 +129,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\vcnet,.."
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;LIBCUPS2_EXPORTS;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
+				AdditionalIncludeDirectories="..\vcnet,..,..\vcnet\regex"
+				PreprocessorDefinitions="ZLIB_WINAPI;WIN32;DEBUG;_DEBUG;_WINDOWS;_USRDLL;LIBCUPS2_EXPORTS;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -149,7 +151,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib advapi32.lib"
+				AdditionalDependencies="ws2_32.lib advapi32.lib zlibwapi.lib"
 				OutputFile="$(OutDir)\libcups2.dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile="..\cups\libcups2.def"
@@ -207,8 +209,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="1"
-				AdditionalIncludeDirectories="..\vcnet,.."
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBCUPS2_EXPORTS;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
+				AdditionalIncludeDirectories="..\vcnet,..,..\vcnet\regex"
+				PreprocessorDefinitions="ZLIB_WINAPI;WIN32;DEBUG;NDEBUG;_WINDOWS;_USRDLL;LIBCUPS2_EXPORTS;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -226,7 +228,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib advapi32.lib"
+				AdditionalOptions="/NODEFAULTLIB:libcmt"
+				AdditionalDependencies="ws2_32.lib advapi32.lib zlibwapi.lib"
 				OutputFile="$(OutDir)\libcups2.dll"
 				LinkIncremental="1"
 				ModuleDefinitionFile="..\cups\libcups2.def"
@@ -260,7 +263,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="if not &quot;%RC_XBS%&quot; == &quot;YES&quot; goto END&#x0D;&#x0A;if not exist &quot;$(DSTROOT)\Program Files\Bonjour\$(PlatformName)&quot;   mkdir &quot;$(DSTROOT)\Program Files\Bonjour\$(PlatformName)&quot;&#x0D;&#x0A;xcopy /I/Y &quot;$(TargetPath)&quot;                                                                  &quot;$(DSTROOT)\Program Files\Bonjour\$(PlatformName)&quot;&#x0D;&#x0A;:END&#x0D;&#x0A;"
+				CommandLine=""
 			/>
 		</Configuration>
 		<Configuration
@@ -290,8 +293,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="1"
-				AdditionalIncludeDirectories="..\vcnet,.."
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBCUPS2_EXPORTS;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
+				AdditionalIncludeDirectories="..\vcnet,..,..\vcnet\regex"
+				PreprocessorDefinitions="ZLIB_WINAPI;WIN32;DEBUG;NDEBUG;_WINDOWS;_USRDLL;LIBCUPS2_EXPORTS;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -309,7 +312,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib advapi32.lib"
+				AdditionalDependencies="ws2_32.lib advapi32.lib zlibwapi.lib"
 				OutputFile="$(OutDir)\libcups2.dll"
 				LinkIncremental="1"
 				ModuleDefinitionFile="..\cups\libcups2.def"
@@ -475,6 +478,22 @@
 			</File>
 			<File
 				RelativePath="..\cups\custom.c"
+				>
+			</File>
+			<File
+				RelativePath="..\cups\debug.c"
+				>
+			</File>
+			<File
+				RelativePath="..\cups\dest-job.c"
+				>
+			</File>
+			<File
+				RelativePath="..\cups\dest-localization.c"
+				>
+			</File>
+			<File
+				RelativePath="..\cups\dest-options.c"
 				>
 			</File>
 			<File
@@ -1022,6 +1041,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\cups\libcups2.def"
+				>
+			</File>
+			<File
 				RelativePath="..\cups\localize.c"
 				>
 			</File>
@@ -1210,6 +1233,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\cups\ppd-cache.c"
+				>
+			</File>
+			<File
 				RelativePath="..\cups\ppd.c"
 				>
 				<FileConfiguration
@@ -1246,15 +1273,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\cups\pwg-file.c"
-				>
-			</File>
-			<File
 				RelativePath="..\cups\pwg-media.c"
-				>
-			</File>
-			<File
-				RelativePath="..\cups\pwg-ppd.c"
 				>
 			</File>
 			<File
@@ -1372,6 +1391,14 @@
 						PreprocessorDefinitions="WIN32"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\cups\thread.c"
+				>
+			</File>
+			<File
+				RelativePath="..\cups\tls.c"
+				>
 			</File>
 			<File
 				RelativePath="..\cups\transcode.c"
@@ -1504,15 +1531,23 @@
 				>
 			</File>
 			<File
+				RelativePath="..\cups\cups-private.h"
+				>
+			</File>
+			<File
 				RelativePath="..\cups\cups.h"
 				>
 			</File>
 			<File
-				RelativePath="..\cups\debug.h"
+				RelativePath="..\cups\debug-private.h"
 				>
 			</File>
 			<File
 				RelativePath="..\cups\dir.h"
+				>
+			</File>
+			<File
+				RelativePath="..\cups\file-private.h"
 				>
 			</File>
 			<File
@@ -1560,6 +1595,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\cups\ppd-private.h"
+				>
+			</File>
+			<File
 				RelativePath="..\cups\ppd.h"
 				>
 			</File>
@@ -1568,7 +1607,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\cups\string.h"
+				RelativePath="..\cups\string-private.h"
+				>
+			</File>
+			<File
+				RelativePath="..\cups\thread-private.h"
 				>
 			</File>
 			<File

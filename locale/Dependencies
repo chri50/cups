@@ -1,10 +1,16 @@
-# DO NOT DELETE THIS LINE -- make depend depends on it.
-
-checkpo.o: ../cups/string.h ../config.h ../cups/i18n.h ../cups/transcode.h
-checkpo.o: ../cups/language.h ../cups/array.h ../cups/versioning.h
-po2strings.o: ../cups/i18n.h ../cups/transcode.h ../cups/language.h
-po2strings.o: ../cups/array.h ../cups/versioning.h ../cups/string.h
-po2strings.o: ../config.h
-translate.o: ../cups/string.h ../config.h ../cups/file.h ../cups/versioning.h
-translate.o: ../cups/http.h ../cups/i18n.h ../cups/transcode.h
-translate.o: ../cups/language.h ../cups/array.h
+checkpo.o: checkpo.c ../cups/cups-private.h ../cups/string-private.h \
+  ../config.h ../cups/debug-private.h ../cups/versioning.h \
+  ../cups/array-private.h ../cups/array.h ../cups/ipp-private.h \
+  ../cups/ipp.h ../cups/http.h ../cups/http-private.h ../cups/language.h \
+  ../cups/md5-private.h ../cups/language-private.h ../cups/transcode.h \
+  ../cups/pwg-private.h ../cups/cups.h ../cups/file.h ../cups/pwg.h \
+  ../cups/ppd-private.h ../cups/ppd.h ../cups/thread-private.h
+po2strings.o: po2strings.c ../cups/cups-private.h \
+  ../cups/string-private.h ../config.h ../cups/debug-private.h \
+  ../cups/versioning.h ../cups/array-private.h ../cups/array.h \
+  ../cups/ipp-private.h ../cups/ipp.h ../cups/http.h \
+  ../cups/http-private.h ../cups/language.h ../cups/md5-private.h \
+  ../cups/language-private.h ../cups/transcode.h ../cups/pwg-private.h \
+  ../cups/cups.h ../cups/file.h ../cups/pwg.h ../cups/ppd-private.h \
+  ../cups/ppd.h ../cups/thread-private.h
+strings2po.o: strings2po.c

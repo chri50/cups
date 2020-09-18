@@ -1,23 +1,16 @@
 /*
- * "$Id: testsub.c 6649 2007-07-11 21:46:42Z mike $"
+ * "$Id: testsub.c 11889 2014-05-22 13:54:15Z msweet $"
  *
- *   Scheduler notification tester for the Common UNIX Printing System (CUPS).
+ * Scheduler notification tester for CUPS.
  *
- *   Copyright 2007 by Apple Inc.
- *   Copyright 2006-2007 by Easy Software Products.
+ * Copyright 2007-2014 by Apple Inc.
+ * Copyright 2006-2007 by Easy Software Products.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
- *
- * Contents:
- *
- *   main()             - Subscribe to the .
- *   print_attributes() - Print the attributes in a request...
- *   sigterm_handler()  - Flag when the user hits CTRL-C...
- *   usage()            - Show program usage...
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -25,9 +18,10 @@
  */
 
 #include <cups/cups.h>
-#include <cups/debug.h>
-#include <cups/string.h>
+#include <cups/debug-private.h>
+#include <cups/string-private.h>
 #include <signal.h>
+#include <cups/ipp-private.h>	/* TODO: Update so we don't need this */
 
 
 /*
@@ -43,7 +37,7 @@ static int	terminate = 0;
 
 static void	print_attributes(ipp_t *ipp, int indent);
 static void	sigterm_handler(int sig);
-static void	usage(void);
+static void	usage(void) __attribute__((noreturn));
 
 
 /*
@@ -250,7 +244,7 @@ main(int  argc,				/* I - Number of command-line arguments */
       interval = 5;
 
     ippDelete(response);
-    sleep(interval);
+    sleep((unsigned)interval);
   }
 
  /*
@@ -302,7 +296,7 @@ print_attributes(ipp_t *ipp,		/* I - IPP request */
   int			i;		/* Looping var */
   ipp_tag_t		group;		/* Current group */
   ipp_attribute_t	*attr;		/* Current attribute */
-  ipp_value_t		*val;		/* Current value */
+  _ipp_value_t		*val;		/* Current value */
   static const char * const tags[] =	/* Value/group tag strings */
 			{
 			  "reserved-00",
@@ -434,17 +428,10 @@ print_attributes(ipp_t *ipp,		/* I - IPP request */
 
       case IPP_TAG_DATE :
           {
-	    time_t	vtime;		/* Date/Time value */
-	    struct tm	*vdate;		/* Date info */
 	    char	vstring[256];	/* Formatted time */
 
 	    for (i = 0, val = attr->values; i < attr->num_values; i ++, val ++)
-	    {
-	      vtime = ippDateToTime(val->date);
-	      vdate = localtime(&vtime);
-	      strftime(vstring, sizeof(vstring), "%c", vdate);
-	      printf(" (%s)", vstring);
-	    }
+	      printf(" (%s)", _cupsStrDate(vstring, sizeof(vstring), ippDateToTime(val->date)));
           }
           putchar('\n');
           break;
@@ -452,7 +439,7 @@ print_attributes(ipp_t *ipp,		/* I - IPP request */
       case IPP_TAG_RESOLUTION :
           for (i = 0, val = attr->values; i < attr->num_values; i ++, val ++)
 	    printf(" %dx%d%s", val->resolution.xres, val->resolution.yres,
-	           val->resolution.units == IPP_RES_PER_INCH ? "dpi" : "dpc");
+	           val->resolution.units == IPP_RES_PER_INCH ? "dpi" : "dpcm");
           putchar('\n');
           break;
 
@@ -518,5 +505,5 @@ usage(void)
 
 
 /*
- * End of "$Id: testsub.c 6649 2007-07-11 21:46:42Z mike $".
+ * End of "$Id: testsub.c 11889 2014-05-22 13:54:15Z msweet $".
  */

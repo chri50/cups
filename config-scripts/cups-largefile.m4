@@ -1,9 +1,9 @@
 dnl
-dnl "$Id: cups-largefile.m4 6649 2007-07-11 21:46:42Z mike $"
+dnl "$Id: cups-largefile.m4 11324 2013-10-04 03:11:42Z msweet $"
 dnl
-dnl   Large file support stuff for the Common UNIX Printing System (CUPS).
+dnl   Large file support stuff for CUPS.
 dnl
-dnl   Copyright 2007 by Apple Inc.
+dnl   Copyright 2007-2011 by Apple Inc.
 dnl   Copyright 1997-2005 by Easy Software Products, all rights reserved.
 dnl
 dnl   These coded instructions, statements, and computer programs are the
@@ -48,5 +48,5 @@ fi
 AC_CHECK_FUNC(strtoll, AC_DEFINE(HAVE_STRTOLL))
 
 dnl
-dnl End of "$Id: cups-largefile.m4 6649 2007-07-11 21:46:42Z mike $".
+dnl End of "$Id: cups-largefile.m4 11324 2013-10-04 03:11:42Z msweet $".
 dnl

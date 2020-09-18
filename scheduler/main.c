@@ -1,40 +1,16 @@
 /*
- * "$Id: main.c 9310 2010-09-21 22:34:57Z mike $"
+ * "$Id: main.c 13087 2016-02-12 18:53:24Z msweet $"
  *
- *   Main loop for the CUPS scheduler.
+ * Main loop for the CUPS scheduler.
  *
- *   Copyright 2007-2010 by Apple Inc.
- *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright 2007-2016 by Apple Inc.
+ * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   "LICENSE" which should have been included with this file.  If this
- *   file is missing or damaged, see the license at "http://www.cups.org/".
- *
- * Contents:
- *
- *   main()                - Main entry for the CUPS scheduler.
- *   cupsdCheckProcess()   - Tell the main loop to check for dead children.
- *   cupsdClosePipe()      - Close a pipe as necessary.
- *   cupsdOpenPipe()       - Create a pipe which is closed on exec.
- *   cupsdClearString()    - Clear a string.
- *   cupsdHoldSignals()    - Hold child and termination signals.
- *   cupsdReleaseSignals() - Release signals for delivery.
- *   cupsdSetString()      - Set a string value.
- *   cupsdSetStringf()     - Set a formatted string value.
- *   cupsd_clean_files()   - Clean out old files.
- *   launchd_checkin()     - Check-in with launchd and collect the listening
- *                           fds.
- *   launchd_checkout()    - Update the launchd KeepAlive file as needed.
- *   parent_handler()      - Catch USR1/CHLD signals...
- *   process_children()    - Process all dead children...
- *   select_timeout()      - Calculate the select timeout value.
- *   sigchld_handler()     - Handle 'child' signals from old processes.
- *   sighup_handler()      - Handle 'hangup' signals to reconfigure the
- *                           scheduler.
- *   sigterm_handler()     - Handle 'terminate' signals that stop the scheduler.
- *   usage()               - Show scheduler usage.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * "LICENSE" which should have been included with this file.  If this
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -44,56 +20,64 @@
 #define _MAIN_C_
 #include "cupsd.h"
 #include <sys/resource.h>
+#ifdef HAVE_ASL_H
+#  include <asl.h>
+#elif defined(HAVE_SYSTEMD_SD_JOURNAL_H)
+#  define SD_JOURNAL_SUPPRESS_LOCATION
+#  include <systemd/sd-journal.h>
+#endif /* HAVE_ASL_H */
 #include <syslog.h>
 #include <grp.h>
-#include <cups/dir.h>
-#include <fnmatch.h>
 
 #ifdef HAVE_LAUNCH_H
 #  include <launch.h>
 #  include <libgen.h>
 #  define CUPS_KEEPALIVE CUPS_CACHEDIR "/org.cups.cupsd"
 					/* Name of the launchd KeepAlive file */
-#  ifndef LAUNCH_JOBKEY_KEEPALIVE
-#    define LAUNCH_JOBKEY_KEEPALIVE "KeepAlive"
-#  endif /* !LAUNCH_JOBKEY_KEEPALIVE */
-#  ifndef LAUNCH_JOBKEY_PATHSTATE
-#    define LAUNCH_JOBKEY_PATHSTATE "PathState"
-#  endif /* !LAUNCH_JOBKEY_PATHSTATE */
-#  ifndef LAUNCH_JOBKEY_SERVICEIPC
-#    define LAUNCH_JOBKEY_SERVICEIPC "ServiceIPC"
-#  endif /* !LAUNCH_JOBKEY_SERVICEIPC */
+#  ifdef HAVE_LAUNCH_ACTIVATE_SOCKET
+/* Update when we have a public header we can include */
+extern int launch_activate_socket(const char *name, int **fds, size_t *cnt);
+#  endif /* HAVE_LAUNCH_ACTIVATE_SOCKET */
 #endif /* HAVE_LAUNCH_H */
+
+#ifdef HAVE_SYSTEMD
+#  include <systemd/sd-daemon.h>
+#  define CUPS_KEEPALIVE CUPS_CACHEDIR "/org.cups.cupsd"
+					/* Name of the systemd path file */
+#endif /* HAVE_SYSTEMD */
 
 #if defined(HAVE_MALLOC_H) && defined(HAVE_MALLINFO)
 #  include <malloc.h>
 #endif /* HAVE_MALLOC_H && HAVE_MALLINFO */
+
 #ifdef HAVE_NOTIFY_H
 #  include <notify.h>
 #endif /* HAVE_NOTIFY_H */
 
-#if defined(__APPLE__) && defined(HAVE_DLFCN_H)
-#  include <dlfcn.h>
-#endif /* __APPLE__ && HAVE_DLFCN_H */
+#ifdef HAVE_DBUS
+#  include <dbus/dbus.h>
+#endif /* HAVE_DBUS */
+
+#ifdef HAVE_SYS_PARAM_H
+#  include <sys/param.h>
+#endif /* HAVE_SYS_PARAM_H */
 
 
 /*
  * Local functions...
  */
 
-static void		cupsd_clean_files(const char *path,
-			                  const char *pattern);
-#ifdef HAVE_LAUNCHD
-static void		launchd_checkin(void);
-static void		launchd_checkout(void);
-#endif /* HAVE_LAUNCHD */
 static void		parent_handler(int sig);
 static void		process_children(void);
 static void		sigchld_handler(int sig);
 static void		sighup_handler(int sig);
 static void		sigterm_handler(int sig);
 static long		select_timeout(int fds);
-static void		usage(int status);
+#if defined(HAVE_LAUNCHD) || defined(HAVE_SYSTEMD)
+static void		service_checkin(void);
+static void		service_checkout(void);
+#endif /* HAVE_LAUNCHD || HAVE_SYSTEMD */
+static void		usage(int status) __attribute__((noreturn));
 
 
 /*
@@ -111,12 +95,6 @@ static int		dead_children = 0;
 static int		stop_scheduler = 0;
 					/* Should the scheduler stop? */
 
-#if defined(__APPLE__) && defined(HAVE_DLFCN_H)
-static const char *PSQLibPath = "/usr/lib/libPrintServiceQuota.dylib";
-static const char *PSQLibFuncName = "PSQUpdateQuota";
-static void *PSQLibRef;			/* libPrintServiceQuota.dylib */
-#endif /* HAVE_DLFCN_H */
-
 
 /*
  * 'main()' - Main entry for the CUPS scheduler.
@@ -128,14 +106,17 @@ main(int  argc,				/* I - Number of command-line args */
 {
   int			i;		/* Looping var */
   char			*opt;		/* Option character */
-  int			fg;		/* Run in the foreground */
+  int			close_all = 1,	/* Close all file descriptors? */
+			disconnect = 1,	/* Disconnect from controlling terminal? */
+			fg = 0,		/* Run in foreground? */
+			run_as_child = 0;
+					/* Running as child process? */
   int			fds;		/* Number of ready descriptors */
   cupsd_client_t	*con;		/* Current client */
   cupsd_job_t		*job;		/* Current job */
   cupsd_listener_t	*lis;		/* Current listener */
   time_t		current_time,	/* Current time */
 			activity,	/* Client activity timer */
-			browse_time,	/* Next browse send time */
 			senddoc_time,	/* Send-Document time */
 			expire_time,	/* Subscription expire time */
 			report_time,	/* Malloc/client/job report time */
@@ -145,22 +126,15 @@ main(int  argc,				/* I - Number of command-line args */
 #if defined(HAVE_SIGACTION) && !defined(HAVE_SIGSET)
   struct sigaction	action;		/* Actions for POSIX signals */
 #endif /* HAVE_SIGACTION && !HAVE_SIGSET */
-#ifdef __sgi
-  cups_file_t		*fp;		/* Fake lpsched lock file */
-  struct stat		statbuf;	/* Needed for checking lpsched FIFO */
-#endif /* __sgi */
-  int			run_as_child = 0;
-					/* Needed for background fork/exec */
 #ifdef __APPLE__
-  int			use_sysman = !getuid();
-					/* Use system management functions? */
+  int			use_sysman = 1;	/* Use system management functions? */
 #else
   time_t		netif_time = 0;	/* Time since last network update */
 #endif /* __APPLE__ */
-#if HAVE_LAUNCHD
-  int			launchd_idle_exit;
+#if defined(HAVE_LAUNCHD) || defined(HAVE_SYSTEMD)
+  int			service_idle_exit;
 					/* Idle exit on select timeout? */
-#endif	/* HAVE_LAUNCHD */
+#endif /* HAVE_LAUNCHD || HAVE_SYSTEMD */
 
 
 #ifdef HAVE_GETEUID
@@ -170,7 +144,7 @@ main(int  argc,				/* I - Number of command-line args */
 
   if (getuid() != geteuid())
   {
-    fputs("cupsd: Cannot run as a setuid program!\n", stderr);
+    fputs("cupsd: Cannot run as a setuid program.\n", stderr);
     return (1);
   }
 #endif /* HAVE_GETEUID */
@@ -184,8 +158,10 @@ main(int  argc,				/* I - Number of command-line args */
 #ifdef HAVE_LAUNCHD
   if (getenv("CUPSD_LAUNCHD"))
   {
-    Launchd = 1;
-    fg      = 1;
+    OnDemand   = 1;
+    fg         = 1;
+    close_all  = 0;
+    disconnect = 0;
   }
 #endif /* HAVE_LAUNCHD */
 
@@ -196,14 +172,15 @@ main(int  argc,				/* I - Number of command-line args */
 	{
 	  case 'C' : /* Run as child with config file */
               run_as_child = 1;
-	      fg           = -1;
+	      fg           = 1;
+	      close_all    = 0;
 
 	  case 'c' : /* Configuration file */
 	      i ++;
 	      if (i >= argc)
 	      {
 	        _cupsLangPuts(stderr, _("cupsd: Expected config filename "
-		                        "after \"-c\" option!\n"));
+		                        "after \"-c\" option."));
 	        usage(1);
 	      }
 
@@ -223,7 +200,6 @@ main(int  argc,				/* I - Number of command-line args */
 
                 char *current;		/* Current directory */
 
-
 	       /*
 	        * Allocate a buffer for the current working directory to
 		* reduce run-time stack usage; this approximates the
@@ -234,14 +210,14 @@ main(int  argc,				/* I - Number of command-line args */
                 if ((current = malloc(1024)) == NULL)
 		{
 		  _cupsLangPuts(stderr,
-		                _("cupsd: Unable to get current directory!\n"));
+		                _("cupsd: Unable to get current directory."));
                   return (1);
 		}
 
 		if (!getcwd(current, 1024))
 		{
 		  _cupsLangPuts(stderr,
-		                _("cupsd: Unable to get current directory!\n"));
+		                _("cupsd: Unable to get current directory."));
                   free(current);
 		  return (1);
 		}
@@ -252,26 +228,33 @@ main(int  argc,				/* I - Number of command-line args */
 	      break;
 
           case 'f' : /* Run in foreground... */
-	      fg = 1;
+	      fg         = 1;
+	      disconnect = 0;
+	      close_all  = 0;
 	      break;
 
           case 'F' : /* Run in foreground, but disconnect from terminal... */
-	      fg = -1;
+	      fg        = 1;
+	      close_all = 0;
 	      break;
 
           case 'h' : /* Show usage/help */
 	      usage(0);
 	      break;
 
-          case 'l' : /* Started by launchd... */
-#ifdef HAVE_LAUNCHD
-	      Launchd = 1;
-	      fg      = 1;
+          case 'l' : /* Started by launchd/systemd... */
+#if defined(HAVE_LAUNCHD) || defined(HAVE_SYSTEMD)
+	      OnDemand   = 1;
+	      fg         = 1;
+	      close_all  = 0;
+	      disconnect = 0;
 #else
-	      _cupsLangPuts(stderr, _("cupsd: launchd(8) support not compiled "
-	                              "in, running in normal mode.\n"));
-              fg = 0;
-#endif /* HAVE_LAUNCHD */
+	      _cupsLangPuts(stderr, _("cupsd: On-demand support not compiled "
+	                              "in, running in normal mode."));
+              fg         = 0;
+	      disconnect = 1;
+	      close_all  = 1;
+#endif /* HAVE_LAUNCHD || HAVE_SYSTEMD */
 	      break;
 
           case 'p' : /* Stop immediately for profiling */
@@ -279,12 +262,36 @@ main(int  argc,				/* I - Number of command-line args */
                     "use only!\n", stderr);
 	      stop_scheduler = 1;
 	      fg             = 1;
+	      disconnect     = 0;
+	      close_all      = 0;
 	      break;
 
           case 'P' : /* Disable security profiles */
-              fputs("cupsd: -P (disable security profiles) is for internal "
-                    "testing use only!\n", stderr);
-	      UseProfiles = 0;
+              fputs("cupsd: -P (disable sandboxing) is for internal testing use only.\n", stderr);
+	      UseSandboxing = 0;
+	      break;
+
+          case 's' : /* Set cups-files.conf location */
+              i ++;
+	      if (i >= argc)
+	      {
+	        _cupsLangPuts(stderr, _("cupsd: Expected cups-files.conf "
+	                                "filename after \"-s\" option."));
+	        usage(1);
+	      }
+
+              if (argv[i][0] != '/')
+	      {
+	       /*
+	        * Relative filename not allowed...
+		*/
+
+	        _cupsLangPuts(stderr, _("cupsd: Relative cups-files.conf "
+	                                "filename not allowed."));
+	        usage(1);
+              }
+
+	      cupsdSetString(&CupsFilesFile, argv[i]);
 	      break;
 
 #ifdef __APPLE__
@@ -298,17 +305,19 @@ main(int  argc,				/* I - Number of command-line args */
           case 't' : /* Test the cupsd.conf file... */
 	      TestConfigFile = 1;
 	      fg             = 1;
+	      disconnect     = 0;
+	      close_all      = 0;
 	      break;
 
 	  default : /* Unknown option */
               _cupsLangPrintf(stderr, _("cupsd: Unknown option \"%c\" - "
-	                                "aborting!\n"), *opt);
+	                                "aborting."), *opt);
 	      usage(1);
 	      break;
 	}
     else
     {
-      _cupsLangPrintf(stderr, _("cupsd: Unknown argument \"%s\" - aborting!\n"),
+      _cupsLangPrintf(stderr, _("cupsd: Unknown argument \"%s\" - aborting."),
                       argv[i]);
       usage(1);
     }
@@ -316,8 +325,88 @@ main(int  argc,				/* I - Number of command-line args */
   if (!ConfigurationFile)
     cupsdSetString(&ConfigurationFile, CUPS_SERVERROOT "/cupsd.conf");
 
+  if (!CupsFilesFile)
+  {
+    char	*filename,		/* Copy of cupsd.conf filename */
+		*slash;			/* Final slash in cupsd.conf filename */
+    size_t	len;			/* Size of buffer */
+
+    len = strlen(ConfigurationFile) + 15;
+    if ((filename = malloc(len)) == NULL)
+    {
+      _cupsLangPrintf(stderr,
+		      _("cupsd: Unable to get path to "
+			"cups-files.conf file."));
+      return (1);
+    }
+
+    strlcpy(filename, ConfigurationFile, len);
+    if ((slash = strrchr(filename, '/')) == NULL)
+    {
+      _cupsLangPrintf(stderr,
+		      _("cupsd: Unable to get path to "
+			"cups-files.conf file."));
+      return (1);
+    }
+
+    strlcpy(slash, "/cups-files.conf", len - (size_t)(slash - filename));
+    cupsdSetString(&CupsFilesFile, filename);
+    free(filename);
+  }
+
+  if (disconnect)
+  {
+   /*
+    * Make sure we aren't tying up any filesystems...
+    */
+
+    chdir("/");
+
+   /*
+    * Disconnect from the controlling terminal...
+    */
+
+    setsid();
+  }
+
+  if (close_all)
+  {
+   /*
+    * Close all open files...
+    */
+
+    getrlimit(RLIMIT_NOFILE, &limit);
+
+    for (i = 0; i < (int)limit.rlim_cur && i < 1024; i ++)
+      close(i);
+
+   /*
+    * Redirect stdin/out/err to /dev/null...
+    */
+
+    if ((i = open("/dev/null", O_RDONLY)) != 0)
+    {
+      dup2(i, 0);
+      close(i);
+    }
+
+    if ((i = open("/dev/null", O_WRONLY)) != 1)
+    {
+      dup2(i, 1);
+      close(i);
+    }
+
+    if ((i = open("/dev/null", O_WRONLY)) != 2)
+    {
+      dup2(i, 2);
+      close(i);
+    }
+  }
+  else
+    LogStderr = cupsFileStderr();
+
  /*
-  * If the user hasn't specified "-f", run in the background...
+  * Run in the background as needed...
   */
 
   if (!fg)
@@ -370,94 +459,37 @@ main(int  argc,				/* I - Number of command-line args */
       }
       else if (WIFEXITED(i))
       {
-        fprintf(stderr, "cupsd: Child exited with status %d!\n",
+        fprintf(stderr, "cupsd: Child exited with status %d\n",
 	        WEXITSTATUS(i));
 	return (2);
       }
       else
       {
-        fprintf(stderr, "cupsd: Child exited on signal %d!\n", WTERMSIG(i));
+        fprintf(stderr, "cupsd: Child exited on signal %d\n", WTERMSIG(i));
 	return (3);
       }
     }
 
-#ifdef __OpenBSD__
+#if defined(__OpenBSD__) && OpenBSD < 201211
    /*
     * Call _thread_sys_closefrom() so the child process doesn't reset the
     * parent's file descriptors to be blocking.  This is a workaround for a
-    * limitation of userland libpthread on OpenBSD.
+    * limitation of userland libpthread on older versions of OpenBSD.
     */
 
     _thread_sys_closefrom(0);
-#endif /* __OpenBSD__ */
+#endif /* __OpenBSD__ && OpenBSD < 201211 */
 
    /*
-    * Since CoreFoundation and DBUS both create fork-unsafe data on execution of
-    * a program, and since this kind of really unfriendly behavior seems to be
-    * more common these days in system libraries, we need to re-execute the
-    * background cupsd with the "-C" option to avoid problems.  Unfortunately,
-    * we also have to assume that argv[0] contains the name of the cupsd
-    * executable - there is no portable way to get the real pathname...
+    * Since many system libraries create fork-unsafe data on execution of a
+    * program, we need to re-execute the background cupsd with the "-C" and "-s"
+    * options to avoid problems.  Unfortunately, we also have to assume that
+    * argv[0] contains the name of the cupsd executable - there is no portable
+    * way to get the real pathname...
     */
 
-    execlp(argv[0], argv[0], "-C", ConfigurationFile, (char *)0);
+    execlp(argv[0], argv[0], "-C", ConfigurationFile, "-s", CupsFilesFile, (char *)0);
     exit(errno);
-  }
-
-  if (fg < 1)
-  {
-   /*
-    * Make sure we aren't tying up any filesystems...
-    */
-
-    chdir("/");
-
-#ifndef DEBUG
-   /*
-    * Disable core dumps...
-    */
-
-    getrlimit(RLIMIT_CORE, &limit);
-    limit.rlim_cur = 0;
-    setrlimit(RLIMIT_CORE, &limit);
-
-   /*
-    * Disconnect from the controlling terminal...
-    */
-
-    setsid();
-
-   /*
-    * Close all open files...
-    */
-
-    getrlimit(RLIMIT_NOFILE, &limit);
-
-    for (i = 0; i < limit.rlim_cur && i < 1024; i ++)
-      close(i);
-
-   /*
-    * Redirect stdin/out/err to /dev/null...
-    */
-
-    if ((i = open("/dev/null", O_RDONLY)) != 0)
-    {
-      dup2(i, 0);
-      close(i);
-    }
-
-    if ((i = open("/dev/null", O_WRONLY)) != 1)
-    {
-      dup2(i, 1);
-      close(i);
-    }
-
-    if ((i = open("/dev/null", O_WRONLY)) != 2)
-    {
-      dup2(i, 2);
-      close(i);
-    }
-#endif /* DEBUG */
   }
 
  /*
@@ -469,6 +501,14 @@ main(int  argc,				/* I - Number of command-line args */
 #ifdef LC_TIME
   setlocale(LC_TIME, "");
 #endif /* LC_TIME */
+
+#ifdef HAVE_DBUS_THREADS_INIT
+ /*
+  * Enable threading support for D-BUS...
+  */
+
+  dbus_threads_init_default();
+#endif /* HAVE_DBUS_THREADS_INIT */
 
  /*
   * Set the maximum number of files...
@@ -488,7 +528,7 @@ main(int  argc,				/* I - Number of command-line args */
 #endif /* RLIM_INFINITY */
     MaxFDs = limit.rlim_max;
 
-  limit.rlim_cur = MaxFDs;
+  limit.rlim_cur = (rlim_t)MaxFDs;
 
   setrlimit(RLIMIT_NOFILE, &limit);
 
@@ -499,17 +539,11 @@ main(int  argc,				/* I - Number of command-line args */
   */
 
   if (!cupsdReadConfiguration())
-  {
-    if (TestConfigFile)
-      printf("%s contains errors\n", ConfigurationFile);
-    else
-      syslog(LOG_LPR, "Unable to read configuration file \'%s\' - exiting!",
-	     ConfigurationFile);
     return (1);
-  }
   else if (TestConfigFile)
   {
-    printf("%s is OK\n", ConfigurationFile);
+    printf("\"%s\" is OK.\n", CupsFilesFile);
+    printf("\"%s\" is OK.\n", ConfigurationFile);
     return (0);
   }
 
@@ -518,32 +552,22 @@ main(int  argc,				/* I - Number of command-line args */
   */
 
   if (!strncmp(TempDir, RequestRoot, strlen(RequestRoot)))
-    cupsd_clean_files(TempDir, NULL);
+    cupsdCleanFiles(TempDir, NULL);
 
-  cupsd_clean_files(CacheDir, "*.ipp");
+  cupsdCleanFiles(CacheDir, "*.ipp");
 
-#if HAVE_LAUNCHD
-  if (Launchd)
+#if defined(HAVE_LAUNCHD) || defined(HAVE_SYSTEMD)
+  if (OnDemand)
   {
    /*
-    * If we were started by launchd get the listen sockets file descriptors...
+    * If we were started on demand by launchd or systemd get the listen sockets
+    * file descriptors...
     */
 
-    launchd_checkin();
-    launchd_checkout();
+    service_checkin();
+    service_checkout();
   }
-#endif /* HAVE_LAUNCHD */
-
-#if defined(__APPLE__) && defined(HAVE_DLFCN_H)
- /*
-  * Load Print Service quota enforcement library (X Server only)
-  */
-
-  PSQLibRef = dlopen(PSQLibPath, RTLD_LAZY);
-
-  if (PSQLibRef)
-    PSQUpdateQuotaProc = dlsym(PSQLibRef, PSQLibFuncName);
-#endif /* __APPLE__ && HAVE_DLFCN_H */
+#endif /* HAVE_LAUNCHD || HAVE_SYSTEMD */
 
  /*
   * Startup the server...
@@ -592,28 +616,6 @@ main(int  argc,				/* I - Number of command-line args */
   signal(SIGTERM, sigterm_handler);
 #endif /* HAVE_SIGSET */
 
-#ifdef __sgi
- /*
-  * Try to create a fake lpsched lock file if one is not already there.
-  * Some Adobe applications need it under IRIX in order to enable
-  * printing...
-  */
-
-  if ((fp = cupsFileOpen("/var/spool/lp/SCHEDLOCK", "w")) == NULL)
-  {
-    syslog(LOG_LPR, "Unable to create fake lpsched lock file "
-                    "\"/var/spool/lp/SCHEDLOCK\"\' - %s!",
-           strerror(errno));
-  }
-  else
-  {
-    fchmod(cupsFileNumber(fp), 0644);
-    fchown(cupsFileNumber(fp), User, Group);
-
-    cupsFileClose(fp);
-  }
-#endif /* __sgi */
-
  /*
   * Initialize authentication certificates...
   */
@@ -652,18 +654,15 @@ main(int  argc,				/* I - Number of command-line args */
   * Send server-started event...
   */
 
-#ifdef HAVE_LAUNCHD
-  if (Launchd)
-    cupsdAddEvent(CUPSD_EVENT_SERVER_STARTED, NULL, NULL,
-                  "Scheduler started via launchd.");
+#if defined(HAVE_LAUNCHD) || defined(HAVE_SYSTEMD)
+  if (OnDemand)
+    cupsdAddEvent(CUPSD_EVENT_SERVER_STARTED, NULL, NULL, "Scheduler started on demand.");
   else
-#endif /* HAVE_LAUNCHD */
+#endif /* HAVE_LAUNCHD || HAVE_SYSTEMD */
   if (fg)
-    cupsdAddEvent(CUPSD_EVENT_SERVER_STARTED, NULL, NULL,
-                  "Scheduler started in foreground.");
+    cupsdAddEvent(CUPSD_EVENT_SERVER_STARTED, NULL, NULL, "Scheduler started in foreground.");
   else
-    cupsdAddEvent(CUPSD_EVENT_SERVER_STARTED, NULL, NULL,
-                  "Scheduler started in background.");
+    cupsdAddEvent(CUPSD_EVENT_SERVER_STARTED, NULL, NULL, "Scheduler started in background.");
 
  /*
   * Start any pending print jobs...
@@ -676,7 +675,6 @@ main(int  argc,				/* I - Number of command-line args */
   */
 
   current_time  = time(NULL);
-  browse_time   = current_time;
   event_time    = current_time;
   expire_time   = current_time;
   fds           = 1;
@@ -707,10 +705,10 @@ main(int  argc,				/* I - Number of command-line args */
 	for (con = (cupsd_client_t *)cupsArrayFirst(Clients);
 	     con;
 	     con = (cupsd_client_t *)cupsArrayNext(Clients))
-	  if (con->http.state == HTTP_WAITING)
+	  if (httpGetState(con->http) == HTTP_WAITING)
 	    cupsdCloseClient(con);
 	  else
-	    con->http.keep_alive = HTTP_KEEPALIVE_OFF;
+	    con->http->keep_alive = HTTP_KEEPALIVE_OFF;
 
         cupsdPauseListening();
       }
@@ -738,23 +736,21 @@ main(int  argc,				/* I - Number of command-line args */
 
         if (!cupsdReadConfiguration())
         {
-          syslog(LOG_LPR, "Unable to read configuration file \'%s\' - exiting!",
-		 ConfigurationFile);
+#ifdef HAVE_ASL_H
+	  asl_object_t	m;		/* Log message */
+
+	  m = asl_new(ASL_TYPE_MSG);
+	  asl_set(m, ASL_KEY_FACILITY, "org.cups.cupsd");
+	  asl_log(NULL, m, ASL_LEVEL_ERR, "Unable to read configuration file \"%s\" - exiting.", ConfigurationFile);
+	  asl_release(m);
+#elif defined(HAVE_SYSTEMD_SD_JOURNAL_H)
+	  sd_journal_print(LOG_ERR, "Unable to read configuration file \"%s\" - exiting.", ConfigurationFile);
+#else
+          syslog(LOG_LPR, "Unable to read configuration file \'%s\' - exiting.", ConfigurationFile);
+#endif /* HAVE_ASL_H */
+
           break;
 	}
-
-#if HAVE_LAUNCHD
-	if (Launchd)
-	{
-	 /*
-	  * If we were started by launchd, get the listen socket file
-	  * descriptors...
-	  */
-
-	  launchd_checkin();
-	  launchd_checkout();
-	}
-#endif /* HAVE_LAUNCHD */
 
        /*
         * Startup the server...
@@ -785,25 +781,26 @@ main(int  argc,				/* I - Number of command-line args */
     if ((timeout = select_timeout(fds)) > 1 && LastEvent)
       timeout = 1;
 
-#if HAVE_LAUNCHD
+#if defined(HAVE_LAUNCHD) || defined(HAVE_SYSTEMD)
    /*
     * If no other work is scheduled and we're being controlled by
     * launchd then timeout after 'LaunchdTimeout' seconds of
     * inactivity...
     */
 
-    if (timeout == 86400 && Launchd && LaunchdTimeout && !NumPolled &&
+    if (timeout == 86400 && OnDemand && IdleExitTimeout &&
         !cupsArrayCount(ActiveJobs) &&
-	(!Browsing ||
-	 (!BrowseRemoteProtocols &&
-	  (!BrowseLocalProtocols || !cupsArrayCount(Printers)))))
+#  ifdef HAVE_SYSTEMD
+        !WebInterface &&
+#  endif /* HAVE_SYSTEMD */
+	(!Browsing || !BrowseLocalProtocols || !cupsArrayCount(Printers)))
     {
-      timeout		= LaunchdTimeout;
-      launchd_idle_exit = 1;
+      timeout		= IdleExitTimeout;
+      service_idle_exit = 1;
     }
     else
-      launchd_idle_exit = 0;
-#endif	/* HAVE_LAUNCHD */
+      service_idle_exit = 0;
+#endif	/* HAVE_LAUNCHD || HAVE_SYSTEMD */
 
     if ((fds = cupsdDoSelect(timeout)) < 0)
     {
@@ -811,9 +808,9 @@ main(int  argc,				/* I - Number of command-line args */
       * Got an error from select!
       */
 
-#ifdef HAVE_DNSSD
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
       cupsd_printer_t	*p;		/* Current printer */
-#endif /* HAVE_DNSSD */
+#endif /* HAVE_DNSSD || HAVE_AVAHI */
 
 
       if (errno == EINTR)		/* Just interrupted by a signal */
@@ -831,14 +828,12 @@ main(int  argc,				/* I - Number of command-line args */
 	   i ++, con = (cupsd_client_t *)cupsArrayNext(Clients))
         cupsdLogMessage(CUPSD_LOG_EMERG,
 	                "Clients[%d] = %d, file = %d, state = %d",
-	                i, con->http.fd, con->file, con->http.state);
+	                i, con->number, con->file, httpGetState(con->http));
 
       for (i = 0, lis = (cupsd_listener_t *)cupsArrayFirst(Listeners);
            lis;
 	   i ++, lis = (cupsd_listener_t *)cupsArrayNext(Listeners))
         cupsdLogMessage(CUPSD_LOG_EMERG, "Listeners[%d] = %d", i, lis->fd);
-
-      cupsdLogMessage(CUPSD_LOG_EMERG, "BrowseSocket = %d", BrowseSocket);
 
       cupsdLogMessage(CUPSD_LOG_EMERG, "CGIPipes[0] = %d", CGIPipes[0]);
 
@@ -856,13 +851,13 @@ main(int  argc,				/* I - Number of command-line args */
 			job->print_pipes[0], job->print_pipes[1],
 			job->back_pipes[0], job->back_pipes[1]);
 
-#ifdef HAVE_DNSSD
+#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
       for (p = (cupsd_printer_t *)cupsArrayFirst(Printers);
 	   p;
 	   p = (cupsd_printer_t *)cupsArrayNext(Printers))
         cupsdLogMessage(CUPSD_LOG_EMERG, "printer[%s] reg_name=\"%s\"", p->name,
 	                p->reg_name ? p->reg_name : "(null)");
-#endif /* HAVE_DNSSD */
+#endif /* HAVE_DNSSD || HAVE_AVAHI */
 
       break;
     }
@@ -886,7 +881,7 @@ main(int  argc,				/* I - Number of command-line args */
         cupsArrayCount(PrintingJobs) > 0)
     {
       SleepJobs = 0;
-      cupsdStopAllJobs(CUPSD_JOB_DEFAULT, 10);
+      cupsdStopAllJobs(CUPSD_JOB_DEFAULT, 5);
     }
 #endif /* __APPLE__ */
 
@@ -902,13 +897,13 @@ main(int  argc,				/* I - Number of command-line args */
     }
 #endif /* !__APPLE__ */
 
-#if HAVE_LAUNCHD
+#if defined(HAVE_LAUNCHD) || defined(HAVE_SYSTEMD)
    /*
     * If no other work was scheduled and we're being controlled by launchd
     * then timeout after 'LaunchdTimeout' seconds of inactivity...
     */
 
-    if (!fds && launchd_idle_exit)
+    if (!fds && service_idle_exit)
     {
       cupsdLogMessage(CUPSD_LOG_INFO,
                       "Printer sharing is off and there are no jobs pending, "
@@ -916,7 +911,7 @@ main(int  argc,				/* I - Number of command-line args */
       stop_scheduler = 1;
       break;
     }
-#endif /* HAVE_LAUNCHD */
+#endif /* HAVE_LAUNCHD || HAVE_SYSTEMD */
 
    /*
     * Resume listening for new connections as needed...
@@ -940,31 +935,7 @@ main(int  argc,				/* I - Number of command-line args */
       expire_time = current_time;
     }
 
-   /*
-    * Update the browse list as needed...
-    */
-
-    if (Browsing)
-    {
-#ifdef HAVE_LIBSLP
-      if ((BrowseRemoteProtocols & BROWSE_SLP) &&
-          BrowseSLPRefresh <= current_time)
-        cupsdUpdateSLPBrowse();
-#endif /* HAVE_LIBSLP */
-
-#ifdef HAVE_LDAP
-      if ((BrowseRemoteProtocols & BROWSE_LDAP) &&
-          BrowseLDAPRefresh <= current_time)
-        cupsdUpdateLDAPBrowse();
-#endif /* HAVE_LDAP */
-    }
-
-    if (Browsing && current_time > browse_time)
-    {
-      cupsdSendBrowseList();
-      browse_time = current_time;
-    }
-
+#ifndef HAVE_AUTHORIZATION_H
    /*
     * Update the root certificate once every 5 minutes if we have client
     * connections...
@@ -978,8 +949,9 @@ main(int  argc,				/* I - Number of command-line args */
       */
 
       cupsdDeleteCert(0);
-      cupsdAddCert(0, "root", NULL);
+      cupsdAddCert(0, "root", cupsdDefaultAuthType());
     }
+#endif /* !HAVE_AUTHORIZATION_H */
 
    /*
     * Check for new data on the client sockets...
@@ -993,7 +965,7 @@ main(int  argc,				/* I - Number of command-line args */
       * Process pending data in the input buffer...
       */
 
-      if (con->http.used)
+      if (httpGetReady(con->http))
       {
         cupsdReadClient(con);
 	continue;
@@ -1004,11 +976,9 @@ main(int  argc,				/* I - Number of command-line args */
       */
 
       activity = current_time - Timeout;
-      if (con->http.activity < activity && !con->pipe_pid)
+      if (httpGetActivity(con->http) < activity && !con->pipe_pid)
       {
-        cupsdLogMessage(CUPSD_LOG_DEBUG,
-	                "Closing client %d after %d seconds of inactivity...",
-	                con->http.fd, Timeout);
+        cupsdLogMessage(CUPSD_LOG_DEBUG, "Closing client %d after %d seconds of inactivity.", con->number, Timeout);
 
         cupsdCloseClient(con);
         continue;
@@ -1022,9 +992,15 @@ main(int  argc,				/* I - Number of command-line args */
     if ((current_time - senddoc_time) >= 10)
     {
       cupsdCheckJobs();
-      cupsdCleanJobs();
       senddoc_time = current_time;
     }
+
+   /*
+    * Clean job history...
+    */
+
+    if (JobHistoryUpdate && current_time >= JobHistoryUpdate)
+      cupsdCleanJobs();
 
    /*
     * Log statistics at most once a minute when in debug mode...
@@ -1055,8 +1031,6 @@ main(int  argc,				/* I - Number of command-line args */
                       cupsArrayCount(ActiveJobs));
       cupsdLogMessage(CUPSD_LOG_DEBUG, "Report: printers=%d",
                       cupsArrayCount(Printers));
-      cupsdLogMessage(CUPSD_LOG_DEBUG, "Report: printers-implicit=%d",
-                      cupsArrayCount(ImplicitPrinters));
 
       string_count = _cupsStrStatistics(&alloc_bytes, &total_bytes);
       cupsdLogMessage(CUPSD_LOG_DEBUG,
@@ -1141,14 +1115,14 @@ main(int  argc,				/* I - Number of command-line args */
 
   cupsdStopServer();
 
-#ifdef HAVE_LAUNCHD
+#if defined(HAVE_LAUNCHD) || defined(HAVE_SYSTEMD)
  /*
-  * Update the launchd KeepAlive file as needed...
+  * Update the keep-alive file as needed...
   */
 
-  if (Launchd)
-    launchd_checkout();
-#endif /* HAVE_LAUNCHD */
+  if (OnDemand)
+    service_checkout();
+#endif /* HAVE_LAUNCHD || HAVE_SYSTEMD */
 
  /*
   * Stop all jobs...
@@ -1165,51 +1139,27 @@ main(int  argc,				/* I - Number of command-line args */
     cupsdStopSystemMonitor();
 #endif /* __APPLE__ */
 
-#ifdef HAVE_GSSAPI
- /*
-  * Free the scheduler's Kerberos context...
-  */
-
-#  ifdef __APPLE__
- /*
-  * If the weak-linked GSSAPI/Kerberos library is not present, don't try
-  * to use it...
-  */
-
-  if (krb5_init_context != NULL)
-#  endif /* __APPLE__ */
-  if (KerberosContext)
-    krb5_free_context(KerberosContext);
-#endif /* HAVE_GSSAPI */
-
-#if defined(__APPLE__) && defined(HAVE_DLFCN_H)
- /*
-  * Unload Print Service quota enforcement library (X Server only)
-  */
-
-  PSQUpdateQuotaProc = NULL;
-  if (PSQLibRef)
-  {
-    dlclose(PSQLibRef);
-    PSQLibRef = NULL;
-  }
-#endif /* __APPLE__ && HAVE_DLFCN_H */
-
-#ifdef __sgi
- /*
-  * Remove the fake IRIX lpsched lock file, but only if the existing
-  * file is not a FIFO which indicates that the real IRIX lpsched is
-  * running...
-  */
-
-  if (!stat("/var/spool/lp/FIFO", &statbuf))
-    if (!S_ISFIFO(statbuf.st_mode))
-      unlink("/var/spool/lp/SCHEDLOCK");
-#endif /* __sgi */
-
   cupsdStopSelect();
 
   return (!stop_scheduler);
+}
+
+
+/*
+ * 'cupsdAddString()' - Copy and add a string to an array.
+ */
+
+int					/* O  - 1 on success, 0 on failure */
+cupsdAddString(cups_array_t **a,	/* IO - String array */
+               const char   *s)		/* I  - String to copy and add */
+{
+  if (!*a)
+    *a = cupsArrayNew3((cups_array_func_t)strcmp, NULL,
+		       (cups_ahash_func_t)NULL, 0,
+		       (cups_acopy_func_t)strdup,
+		       (cups_afree_func_t)free);
+
+  return (cupsArrayAdd(*a, (char *)s));
 }
 
 
@@ -1229,84 +1179,6 @@ cupsdCheckProcess(void)
 
 
 /*
- * 'cupsdClosePipe()' - Close a pipe as necessary.
- */
-
-void
-cupsdClosePipe(int *fds)		/* I - Pipe file descriptors (2) */
-{
- /*
-  * Close file descriptors as needed...
-  */
-
-  if (fds[0] >= 0)
-  {
-    close(fds[0]);
-    fds[0] = -1;
-  }
-
-  if (fds[1] >= 0)
-  {
-    close(fds[1]);
-    fds[1] = -1;
-  }
-}
-
-
-/*
- * 'cupsdOpenPipe()' - Create a pipe which is closed on exec.
- */
-
-int					/* O - 0 on success, -1 on error */
-cupsdOpenPipe(int *fds)			/* O - Pipe file descriptors (2) */
-{
- /*
-  * Create the pipe...
-  */
-
-  if (pipe(fds))
-  {
-    fds[0] = -1;
-    fds[1] = -1;
-
-    return (-1);
-  }
-
- /*
-  * Set the "close on exec" flag on each end of the pipe...
-  */
-
-  if (fcntl(fds[0], F_SETFD, fcntl(fds[0], F_GETFD) | FD_CLOEXEC))
-  {
-    close(fds[0]);
-    close(fds[1]);
-
-    fds[0] = -1;
-    fds[1] = -1;
-
-    return (-1);
-  }
-
-  if (fcntl(fds[1], F_SETFD, fcntl(fds[1], F_GETFD) | FD_CLOEXEC))
-  {
-    close(fds[0]);
-    close(fds[1]);
-
-    fds[0] = -1;
-    fds[1] = -1;
-
-    return (-1);
-  }
-
- /*
-  * Return 0 indicating success...
-  */
-
-  return (0);
-}
-
-
-/*
  * 'cupsdClearString()' - Clear a string.
  */
 
@@ -1315,8 +1187,23 @@ cupsdClearString(char **s)		/* O - String value */
 {
   if (s && *s)
   {
-    _cupsStrFree(*s);
+    free(*s);
     *s = NULL;
+  }
+}
+
+
+/*
+ * 'cupsdFreeStrings()' - Free an array of strings.
+ */
+
+void
+cupsdFreeStrings(cups_array_t **a)	/* IO - String array */
+{
+  if (*a)
+  {
+    cupsArrayDelete(*a);
+    *a = NULL;
   }
 }
 
@@ -1381,10 +1268,10 @@ cupsdSetString(char       **s,		/* O - New string */
     return;
 
   if (*s)
-    _cupsStrFree(*s);
+    free(*s);
 
   if (v)
-    *s = _cupsStrAlloc(v);
+    *s = strdup(v);
   else
     *s = NULL;
 }
@@ -1399,7 +1286,7 @@ cupsdSetStringf(char       **s,		/* O - New string */
                 const char *f,		/* I - Printf-style format string */
 	        ...)			/* I - Additional args as needed */
 {
-  char		v[4096];		/* Formatting string value */
+  char		v[65536 + 64];		/* Formatting string value */
   va_list	ap;			/* Argument pointer */
   char		*olds;			/* Old string */
 
@@ -1415,274 +1302,14 @@ cupsdSetStringf(char       **s,		/* O - New string */
     vsnprintf(v, sizeof(v), f, ap);
     va_end(ap);
 
-    *s = _cupsStrAlloc(v);
+    *s = strdup(v);
   }
   else
     *s = NULL;
 
   if (olds)
-    _cupsStrFree(olds);
+    free(olds);
 }
-
-
-/*
- * 'cupsd_clean_files()' - Clean out old files.
- */
- 
-static void
-cupsd_clean_files(const char *path,	/* I - Directory to clean */
-                  const char *pattern)	/* I - Filename pattern or NULL */
-{
-  cups_dir_t	*dir;			/* Directory */
-  cups_dentry_t	*dent;			/* Directory entry */
-  char		filename[1024];		/* Filename */
-  int		status;			/* Status from unlink/rmdir */
-
-
-  cupsdLogMessage(CUPSD_LOG_DEBUG,
-                  "cupsd_clean_files(path=\"%s\", pattern=\"%s\")", path,
-		  pattern ? pattern : "(null)");
-
-  if ((dir = cupsDirOpen(path)) == NULL)
-  {
-    cupsdLogMessage(CUPSD_LOG_ERROR, "Unable to open directory \"%s\" - %s",
-		    path, strerror(errno));
-    return;
-  }
-
-  cupsdLogMessage(CUPSD_LOG_INFO, "Cleaning out old files in \"%s\"...", path);
-
-  while ((dent = cupsDirRead(dir)) != NULL)
-  {
-    if (pattern && fnmatch(pattern, dent->filename, 0))
-      continue;
-
-    snprintf(filename, sizeof(filename), "%s/%s", path, dent->filename);
-
-    if (S_ISDIR(dent->fileinfo.st_mode))
-    {
-      cupsd_clean_files(filename, pattern);
-
-      status = rmdir(filename);
-    }
-    else
-      status = unlink(filename);
-
-    if (status)
-      cupsdLogMessage(CUPSD_LOG_ERROR, "Unable to remove \"%s\" - %s", filename,
-		      strerror(errno));
-    else
-      cupsdLogMessage(CUPSD_LOG_DEBUG, "Removed \"%s\"...", filename);
-  }
-
-  cupsDirClose(dir);
-}
-
-
-#ifdef HAVE_LAUNCHD
-/*
- * 'launchd_checkin()' - Check-in with launchd and collect the listening fds.
- */
-
-static void
-launchd_checkin(void)
-{
-  size_t		i,		/* Looping var */
-			count;		/* Number of listeners */
-#  ifdef HAVE_SSL
-  int			portnum;	/* Port number */
-#  endif /* HAVE_SSL */
-  launch_data_t		ld_msg,		/* Launch data message */
-			ld_resp,	/* Launch data response */
-			ld_array,	/* Launch data array */
-			ld_sockets,	/* Launch data sockets dictionary */
-			tmp;		/* Launch data */
-  cupsd_listener_t	*lis;		/* Listeners array */
-  http_addr_t		addr;		/* Address variable */
-  socklen_t		addrlen;	/* Length of address */
-  int			fd;		/* File descriptor */
-  char			s[256];		/* String addresss */
-
-
-  cupsdLogMessage(CUPSD_LOG_DEBUG, "launchd_checkin: pid=%d", (int)getpid());
-
- /*
-  * Check-in with launchd...
-  */
-
-  ld_msg = launch_data_new_string(LAUNCH_KEY_CHECKIN);
-  if ((ld_resp = launch_msg(ld_msg)) == NULL)
-  {
-    cupsdLogMessage(CUPSD_LOG_ERROR,
-		    "launchd_checkin: launch_msg(\"" LAUNCH_KEY_CHECKIN
-		    "\") IPC failure");
-    exit(EXIT_FAILURE);
-    return; /* anti-compiler-warning */
-  }
-
-  if (launch_data_get_type(ld_resp) == LAUNCH_DATA_ERRNO)
-  {
-    errno = launch_data_get_errno(ld_resp);
-    cupsdLogMessage(CUPSD_LOG_ERROR, "launchd_checkin: Check-in failed: %s",
-                    strerror(errno));
-    exit(EXIT_FAILURE);
-    return; /* anti-compiler-warning */
-  }
-
- /*
-  * Get the sockets dictionary...
-  */
-
-  if ((ld_sockets = launch_data_dict_lookup(ld_resp, LAUNCH_JOBKEY_SOCKETS))
-          == NULL)
-  {
-    cupsdLogMessage(CUPSD_LOG_ERROR,
-                    "launchd_checkin: No sockets found to answer requests on!");
-    exit(EXIT_FAILURE);
-    return; /* anti-compiler-warning */
-  }
-
- /*
-  * Get the array of listener sockets...
-  */
-
-  if ((ld_array = launch_data_dict_lookup(ld_sockets, "Listeners")) == NULL)
-  {
-    cupsdLogMessage(CUPSD_LOG_ERROR,
-                    "launchd_checkin: No sockets found to answer requests on!");
-    exit(EXIT_FAILURE);
-    return; /* anti-compiler-warning */
-  }
-
- /*
-  * Add listening fd(s) to the Listener array...
-  */
-
-  if (launch_data_get_type(ld_array) == LAUNCH_DATA_ARRAY)
-  {
-    count = launch_data_array_get_count(ld_array);
-
-    for (i = 0; i < count; i ++)
-    {
-     /*
-      * Get the launchd file descriptor and address...
-      */
-
-      if ((tmp = launch_data_array_get_index(ld_array, i)) != NULL)
-      {
-	fd      = launch_data_get_fd(tmp);
-	addrlen = sizeof(addr);
-
-	if (getsockname(fd, (struct sockaddr *)&addr, &addrlen))
-	{
-	  cupsdLogMessage(CUPSD_LOG_ERROR,
-			  "launchd_checkin: Unable to get local address - %s",
-			  strerror(errno));
-	  continue;
-	}
-
-       /*
-	* Try to match the launchd socket address to one of the listeners...
-	*/
-
-	for (lis = (cupsd_listener_t *)cupsArrayFirst(Listeners);
-	     lis;
-	     lis = (cupsd_listener_t *)cupsArrayNext(Listeners))
-	  if (httpAddrEqual(&lis->address, &addr))
-	    break;
-
-       /*
-	* Add a new listener If there's no match...
-	*/
-
-	if (lis)
-	{
-	  cupsdLogMessage(CUPSD_LOG_DEBUG,
-		  "launchd_checkin: Matched existing listener %s with fd %d...",
-		  httpAddrString(&(lis->address), s, sizeof(s)), fd);
-	}
-	else
-	{
-	  cupsdLogMessage(CUPSD_LOG_DEBUG,
-		  "launchd_checkin: Adding new listener %s with fd %d...",
-		  httpAddrString(&addr, s, sizeof(s)), fd);
-
-	  if ((lis = calloc(1, sizeof(cupsd_listener_t))) == NULL)
-	  {
-	    cupsdLogMessage(CUPSD_LOG_ERROR,
-			    "launchd_checkin: Unable to allocate listener - "
-			    "%s.", strerror(errno));
-	    exit(EXIT_FAILURE);
-	  }
-
-	  cupsArrayAdd(Listeners, lis);
-
-	  memcpy(&lis->address, &addr, sizeof(lis->address));
-	}
-
-	lis->fd = fd;
-
-#  ifdef HAVE_SSL
-	portnum = 0;
-
-#    ifdef AF_INET6
-	if (lis->address.addr.sa_family == AF_INET6)
-	  portnum = ntohs(lis->address.ipv6.sin6_port);
-	else
-#    endif /* AF_INET6 */
-	if (lis->address.addr.sa_family == AF_INET)
-	  portnum = ntohs(lis->address.ipv4.sin_port);
-
-	if (portnum == 443)
-	  lis->encryption = HTTP_ENCRYPT_ALWAYS;
-#  endif /* HAVE_SSL */
-      }
-    }
-  }
-
-  launch_data_free(ld_msg);
-  launch_data_free(ld_resp);
-}
-
-
-/*
- * 'launchd_checkout()' - Update the launchd KeepAlive file as needed.
- */
-
-static void
-launchd_checkout(void)
-{
-  int	fd;				/* File descriptor */
-
-
- /*
-  * Create or remove the launchd KeepAlive file based on whether
-  * there are active jobs, polling, browsing for remote printers or
-  * shared printers to advertise...
-  */
-
-  if (cupsArrayCount(ActiveJobs) || NumPolled ||
-      (Browsing &&
-       (BrowseRemoteProtocols || 
-        (BrowseLocalProtocols && cupsArrayCount(Printers)))))
-  {
-    cupsdLogMessage(CUPSD_LOG_DEBUG,
-                    "Creating launchd keepalive file \"" CUPS_KEEPALIVE
-                    "\"...");
-
-    if ((fd = open(CUPS_KEEPALIVE, O_RDONLY | O_CREAT | O_EXCL, S_IRUSR)) >= 0)
-      close(fd);
-  }
-  else
-  {
-    cupsdLogMessage(CUPSD_LOG_DEBUG,
-                    "Removing launchd keepalive file \"" CUPS_KEEPALIVE
-                    "\"...");
-
-    unlink(CUPS_KEEPALIVE);
-  }
-}
-#endif /* HAVE_LAUNCHD */
 
 
 /*
@@ -1713,6 +1340,7 @@ process_children(void)
   cupsd_job_t	*job;			/* Current job */
   int		i;			/* Looping var */
   char		name[1024];		/* Process name */
+  const char	*type;			/* Type of program */
 
 
   cupsdLogMessage(CUPSD_LOG_DEBUG2, "process_children()");
@@ -1752,7 +1380,12 @@ process_children(void)
     * Handle completed job filters...
     */
 
-    if (job_id > 0 && (job = cupsdFindJob(job_id)) != NULL)
+    if (job_id > 0)
+      job = cupsdFindJob(job_id);
+    else
+      job  = NULL;
+
+    if (job)
     {
       for (i = 0; job->filters[i]; i ++)
 	if (job->filters[i] == pid)
@@ -1765,12 +1398,18 @@ process_children(void)
 	*/
 
 	if (job->filters[i])
+	{
 	  job->filters[i] = -pid;
+	  type            = "Filter";
+	}
 	else
+	{
 	  job->backend = -pid;
+	  type         = "Backend";
+	}
 
 	if (status && status != SIGTERM && status != SIGKILL &&
-	    status != SIGPIPE && job->status >= 0)
+	    status != SIGPIPE)
 	{
 	 /*
 	  * An error occurred; save the exit status so we know to stop
@@ -1778,28 +1417,40 @@ process_children(void)
 	  *
 	  * A negative status indicates that the backend failed and the
 	  * printer needs to be stopped.
+	  *
+	  * In order to preserve the most serious status, we always log
+	  * when a process dies due to a signal (e.g. SIGABRT, SIGSEGV,
+	  * and SIGBUS) and prefer to log the backend exit status over a
+	  * filter's.
 	  */
 
-	  if (job->filters[i])
-	    job->status = status;	/* Filter failed */
-	  else
-	    job->status = -status;	/* Backend failed */
+	  int old_status = abs(job->status);
+
+          if (WIFSIGNALED(status) ||	/* This process crashed, or */
+              !job->status ||		/* No process had a status, or */
+              (!job->filters[i] && WIFEXITED(old_status)))
+          {				/* Backend and filter didn't crash */
+	    if (job->filters[i])
+	      job->status = status;	/* Filter failed */
+	    else
+	      job->status = -status;	/* Backend failed */
+          }
 
 	  if (job->state_value == IPP_JOB_PROCESSING &&
-	      job->status_level > CUPSD_LOG_ERROR)
+	      job->status_level > CUPSD_LOG_ERROR &&
+	      (job->filters[i] || !WIFEXITED(status)))
 	  {
 	    char	message[1024];	/* New printer-state-message */
 
 
 	    job->status_level = CUPSD_LOG_ERROR;
 
-	    snprintf(message, sizeof(message), "%s failed", name);
+	    snprintf(message, sizeof(message), "%s failed", type);
 
             if (job->printer)
 	    {
 	      strlcpy(job->printer->state_message, message,
 		       sizeof(job->printer->state_message));
-	      cupsdAddPrinterHistory(job->printer);
 	    }
 
 	    if (!job->attrs)
@@ -1817,8 +1468,7 @@ process_children(void)
 	    }
 
 	    if (job->printer_message)
-	      cupsdSetString(&(job->printer_message->values[0].string.text),
-			     message);
+	      ippSetString(job->attrs, &job->printer_message, 0, message);
 	  }
 	}
 
@@ -1831,7 +1481,9 @@ process_children(void)
 	{
 	  for (i = 0; job->filters[i] < 0; i ++);
 
-	  if (!job->filters[i])
+	  if (!job->filters[i] &&
+	      (!job->printer->pc || !job->printer->pc->single_file ||
+	       job->backend <= 0))
 	  {
 	   /*
 	    * Process the next file...
@@ -1862,33 +1514,42 @@ process_children(void)
 
     if (status == SIGTERM || status == SIGKILL)
     {
-      cupsdLogMessage(CUPSD_LOG_DEBUG,
-                      "PID %d (%s) was terminated normally with signal %d.",
-                      pid, name, status);
+      cupsdLogJob(job, CUPSD_LOG_DEBUG,
+		  "PID %d (%s) was terminated normally with signal %d.", pid,
+		  name, status);
     }
     else if (status == SIGPIPE)
     {
-      cupsdLogMessage(CUPSD_LOG_DEBUG,
-                      "PID %d (%s) did not catch or ignore signal %d.",
-                      pid, name, status);
+      cupsdLogJob(job, CUPSD_LOG_DEBUG,
+		  "PID %d (%s) did not catch or ignore signal %d.", pid, name,
+		  status);
     }
     else if (status)
     {
       if (WIFEXITED(status))
-	cupsdLogMessage(CUPSD_LOG_DEBUG, "PID %d (%s) stopped with status %d!",
-	                pid, name, WEXITSTATUS(status));
+      {
+        int code = WEXITSTATUS(status);	/* Exit code */
+
+        if (code > 100)
+	  cupsdLogJob(job, CUPSD_LOG_DEBUG,
+		      "PID %d (%s) stopped with status %d (%s)", pid, name,
+		      code, strerror(code - 100));
+	else
+	  cupsdLogJob(job, CUPSD_LOG_DEBUG,
+		      "PID %d (%s) stopped with status %d.", pid, name, code);
+      }
       else
-	cupsdLogMessage(CUPSD_LOG_ERROR, "PID %d (%s) crashed on signal %d!",
-	                pid, name, WTERMSIG(status));
+	cupsdLogJob(job, CUPSD_LOG_DEBUG, "PID %d (%s) crashed on signal %d.",
+		    pid, name, WTERMSIG(status));
 
       if (LogLevel < CUPSD_LOG_DEBUG)
-        cupsdLogMessage(CUPSD_LOG_INFO,
-	                "Hint: Try setting the LogLevel to \"debug\" to find "
-			"out more.");
+        cupsdLogJob(job, CUPSD_LOG_INFO,
+		    "Hint: Try setting the LogLevel to \"debug\" to find out "
+		    "more.");
     }
     else
-      cupsdLogMessage(CUPSD_LOG_DEBUG, "PID %d (%s) exited with no errors.",
-                      pid, name);
+      cupsdLogJob(job, CUPSD_LOG_DEBUG, "PID %d (%s) exited with no errors.",
+		  pid, name);
   }
 
  /*
@@ -1911,11 +1572,12 @@ select_timeout(int fds)			/* I - Number of descriptors returned */
   long			timeout;	/* Timeout for select */
   time_t		now;		/* Current time */
   cupsd_client_t	*con;		/* Client information */
-  cupsd_printer_t	*p;		/* Printer information */
   cupsd_job_t		*job;		/* Job information */
-  cupsd_subscription_t	*sub;		/* Subscription information */
   const char		*why;		/* Debugging aid */
 
+
+  cupsdLogMessage(CUPSD_LOG_DEBUG2, "select_timeout: JobHistoryUpdate=%ld",
+		  (long)JobHistoryUpdate);
 
  /*
   * Check to see if any of the clients have pending data to be
@@ -1925,7 +1587,7 @@ select_timeout(int fds)			/* I - Number of descriptors returned */
   for (con = (cupsd_client_t *)cupsArrayFirst(Clients);
        con;
        con = (cupsd_client_t *)cupsArrayNext(Clients))
-    if (con->http.used > 0)
+    if (httpGetReady(con->http))
       return (0);
 
  /*
@@ -1979,59 +1641,11 @@ select_timeout(int fds)			/* I - Number of descriptors returned */
   for (con = (cupsd_client_t *)cupsArrayFirst(Clients);
        con;
        con = (cupsd_client_t *)cupsArrayNext(Clients))
-    if ((con->http.activity + Timeout) < timeout)
+    if ((httpGetActivity(con->http) + Timeout) < timeout)
     {
-      timeout = con->http.activity + Timeout;
+      timeout = httpGetActivity(con->http) + Timeout;
       why     = "timeout a client connection";
     }
-
- /*
-  * Update the browse list as needed...
-  */
-
-  if (Browsing && BrowseLocalProtocols)
-  {
-#ifdef HAVE_LIBSLP
-    if ((BrowseLocalProtocols & BROWSE_SLP) && (BrowseSLPRefresh < timeout))
-    {
-      timeout = BrowseSLPRefresh;
-      why     = "update SLP browsing";
-    }
-#endif /* HAVE_LIBSLP */
-
-#ifdef HAVE_LDAP
-    if ((BrowseLocalProtocols & BROWSE_LDAP) && (BrowseLDAPRefresh < timeout))
-    {
-      timeout = BrowseLDAPRefresh;
-      why     = "update LDAP browsing";
-    }
-#endif /* HAVE_LDAP */
-
-    if ((BrowseLocalProtocols & BROWSE_CUPS) && NumBrowsers)
-    {
-      for (p = (cupsd_printer_t *)cupsArrayFirst(Printers);
-           p;
-	   p = (cupsd_printer_t *)cupsArrayNext(Printers))
-      {
-	if (p->type & CUPS_PRINTER_REMOTE)
-	{
-	  if ((p->browse_time + BrowseTimeout) < timeout)
-	  {
-	    timeout = p->browse_time + BrowseTimeout;
-	    why     = "browse timeout a printer";
-	  }
-	}
-	else if (p->shared && !(p->type & CUPS_PRINTER_IMPLICIT))
-	{
-	  if (BrowseInterval && (p->browse_time + BrowseInterval) < timeout)
-	  {
-	    timeout = p->browse_time + BrowseInterval;
-	    why     = "send browse update";
-	  }
-	}
-      }
-    }
-  }
 
  /*
   * Write out changes to configuration and state files...
@@ -2044,13 +1658,25 @@ select_timeout(int fds)			/* I - Number of descriptors returned */
   }
 
  /*
-  * Check for any active jobs...
+  * Check for any job activity...
   */
+
+  if (JobHistoryUpdate && timeout > JobHistoryUpdate)
+  {
+    timeout = JobHistoryUpdate;
+    why     = "update job history";
+  }
 
   for (job = (cupsd_job_t *)cupsArrayFirst(ActiveJobs);
        job;
        job = (cupsd_job_t *)cupsArrayNext(ActiveJobs))
   {
+    if (job->cancel_time && job->cancel_time < timeout)
+    {
+      timeout = job->cancel_time;
+      why     = "cancel stuck jobs";
+    }
+
     if (job->kill_time && job->kill_time < timeout)
     {
       timeout = job->kill_time;
@@ -2062,7 +1688,8 @@ select_timeout(int fds)			/* I - Number of descriptors returned */
       timeout = job->hold_until;
       why     = "release held jobs";
     }
-    else if (job->state_value == IPP_JOB_PENDING && timeout > (now + 10))
+
+    if (job->state_value == IPP_JOB_PENDING && timeout > (now + 10))
     {
       timeout = now + 10;
       why     = "start pending jobs";
@@ -2083,24 +1710,9 @@ select_timeout(int fds)			/* I - Number of descriptors returned */
 #endif /* HAVE_MALLINFO */
 
  /*
-  * Expire subscriptions as needed...
-  */
-
-  for (sub = (cupsd_subscription_t *)cupsArrayFirst(Subscriptions);
-       sub;
-       sub = (cupsd_subscription_t *)cupsArrayNext(Subscriptions))
-    if (!sub->job && sub->expire && sub->expire < timeout)
-    {
-      timeout = sub->expire;
-      why     = "expire subscription";
-    }
-
- /*
-  * Adjust from absolute to relative time.  If p->browse_time above
-  * was 0 then we can end up with a negative value here, so check.
-  * We add 1 second to the timeout since events occur after the
-  * timeout expires, and limit the timeout to 86400 seconds (1 day)
-  * to avoid select() timeout limits present on some operating
+  * Adjust from absolute to relative time.  We add 1 second to the timeout since
+  * events occur after the timeout expires, and limit the timeout to 86400
+  * seconds (1 day) to avoid select() timeout limits present on some operating
   * systems...
   */
 
@@ -2182,6 +1794,361 @@ sigterm_handler(int sig)		/* I - Signal number */
 }
 
 
+#if defined(HAVE_LAUNCHD) || defined(HAVE_SYSTEMD)
+/*
+ * 'service_checkin()' - Check-in with launchd and collect the listening fds.
+ */
+
+static void
+service_checkin(void)
+{
+#  ifdef HAVE_LAUNCH_ACTIVATE_SOCKET
+  int			error;		/* Check-in error, if any */
+  size_t		i,		/* Looping var */
+			count;		/* Number of listeners */
+  int			*ld_sockets;	/* Listener sockets */
+  cupsd_listener_t	*lis;		/* Listeners array */
+  http_addr_t		addr;		/* Address variable */
+  socklen_t		addrlen;	/* Length of address */
+  char			s[256];		/* String addresss */
+
+
+  cupsdLogMessage(CUPSD_LOG_DEBUG, "service_checkin: pid=%d", (int)getpid());
+
+ /*
+  * Check-in with launchd...
+  */
+
+  if ((error = launch_activate_socket("Listeners", &ld_sockets, &count)) != 0)
+  {
+    cupsdLogMessage(CUPSD_LOG_ERROR, "service_checkin: Unable to get listener sockets: %s", strerror(error));
+    exit(EXIT_FAILURE);
+    return; /* anti-compiler-warning */
+  }
+
+ /*
+  * Try to match the launchd sockets to the cupsd listeners...
+  */
+
+  cupsdLogMessage(CUPSD_LOG_DEBUG, "service_checkin: %d listeners.", (int)count);
+
+  for (i = 0; i < count; i ++)
+  {
+   /*
+    * Get the launchd socket address...
+    */
+
+    addrlen = sizeof(addr);
+
+    if (getsockname(ld_sockets[i], (struct sockaddr *)&addr, &addrlen))
+    {
+      cupsdLogMessage(CUPSD_LOG_ERROR, "service_checkin: Unable to get local address for listener #%d: %s", (int)i + 1, strerror(errno));
+      continue;
+    }
+
+    cupsdLogMessage(CUPSD_LOG_DEBUG, "service_checkin: Listener #%d at fd %d, \"%s\".", (int)i + 1, ld_sockets[i], httpAddrString(&addr, s, sizeof(s)));
+
+    for (lis = (cupsd_listener_t *)cupsArrayFirst(Listeners);
+	 lis;
+	 lis = (cupsd_listener_t *)cupsArrayNext(Listeners))
+      if (httpAddrEqual(&lis->address, &addr))
+	break;
+
+   /*
+    * Add a new listener if there's no match...
+    */
+
+    if (lis)
+    {
+      cupsdLogMessage(CUPSD_LOG_DEBUG, "service_checkin: Matched existing listener #%d to %s.", (int)i + 1, httpAddrString(&(lis->address), s, sizeof(s)));
+    }
+    else
+    {
+      cupsdLogMessage(CUPSD_LOG_DEBUG, "service_checkin: Adding new listener #%d for %s.", (int)i + 1, httpAddrString(&addr, s, sizeof(s)));
+
+      if ((lis = calloc(1, sizeof(cupsd_listener_t))) == NULL)
+      {
+	cupsdLogMessage(CUPSD_LOG_ERROR, "service_checkin: Unable to allocate listener: %s", strerror(errno));
+	exit(EXIT_FAILURE);
+      }
+
+      cupsArrayAdd(Listeners, lis);
+
+      memcpy(&lis->address, &addr, sizeof(lis->address));
+    }
+
+    lis->fd        = ld_sockets[i];
+    lis->on_demand = 1;
+
+#    ifdef HAVE_SSL
+    if (httpAddrPort(&(lis->address)) == 443)
+      lis->encryption = HTTP_ENCRYPT_ALWAYS;
+#    endif /* HAVE_SSL */
+  }
+
+  free(ld_sockets);
+
+#  elif defined(HAVE_LAUNCHD)
+  size_t		i,		/* Looping var */
+			count;		/* Number of listeners */
+  launch_data_t		ld_msg,		/* Launch data message */
+			ld_resp,	/* Launch data response */
+			ld_array,	/* Launch data array */
+			ld_sockets,	/* Launch data sockets dictionary */
+			tmp;		/* Launch data */
+  cupsd_listener_t	*lis;		/* Listeners array */
+  http_addr_t		addr;		/* Address variable */
+  socklen_t		addrlen;	/* Length of address */
+  int			fd;		/* File descriptor */
+  char			s[256];		/* String addresss */
+
+
+  cupsdLogMessage(CUPSD_LOG_DEBUG, "service_checkin: pid=%d", (int)getpid());
+
+ /*
+  * Check-in with launchd...
+  */
+
+  ld_msg = launch_data_new_string(LAUNCH_KEY_CHECKIN);
+  if ((ld_resp = launch_msg(ld_msg)) == NULL)
+  {
+    cupsdLogMessage(CUPSD_LOG_ERROR,
+		    "service_checkin: launch_msg(\"" LAUNCH_KEY_CHECKIN
+		    "\") IPC failure");
+    exit(EXIT_FAILURE);
+    return; /* anti-compiler-warning */
+  }
+
+  if (launch_data_get_type(ld_resp) == LAUNCH_DATA_ERRNO)
+  {
+    errno = launch_data_get_errno(ld_resp);
+    cupsdLogMessage(CUPSD_LOG_ERROR, "service_checkin: Check-in failed: %s",
+                    strerror(errno));
+    exit(EXIT_FAILURE);
+    return; /* anti-compiler-warning */
+  }
+
+ /*
+  * Get the sockets dictionary...
+  */
+
+  if ((ld_sockets = launch_data_dict_lookup(ld_resp, LAUNCH_JOBKEY_SOCKETS))
+          == NULL)
+  {
+    cupsdLogMessage(CUPSD_LOG_ERROR,
+                    "service_checkin: No sockets found to answer requests on.");
+    exit(EXIT_FAILURE);
+    return; /* anti-compiler-warning */
+  }
+
+ /*
+  * Get the array of listener sockets...
+  */
+
+  if ((ld_array = launch_data_dict_lookup(ld_sockets, "Listeners")) == NULL)
+  {
+    cupsdLogMessage(CUPSD_LOG_ERROR,
+                    "service_checkin: No sockets found to answer requests on.");
+    exit(EXIT_FAILURE);
+    return; /* anti-compiler-warning */
+  }
+
+ /*
+  * Add listening fd(s) to the Listener array...
+  */
+
+  if (launch_data_get_type(ld_array) == LAUNCH_DATA_ARRAY)
+  {
+    count = launch_data_array_get_count(ld_array);
+
+    cupsdLogMessage(CUPSD_LOG_DEBUG, "service_checkin: %d listeners.", (int)count);
+
+    for (i = 0; i < count; i ++)
+    {
+     /*
+      * Get the launchd file descriptor and address...
+      */
+
+      if ((tmp = launch_data_array_get_index(ld_array, i)) != NULL)
+      {
+	fd      = launch_data_get_fd(tmp);
+	addrlen = sizeof(addr);
+
+	if (getsockname(fd, (struct sockaddr *)&addr, &addrlen))
+	{
+	  cupsdLogMessage(CUPSD_LOG_ERROR, "service_checkin: Unable to get local address for listener #%d: %s", (int)i + 1, strerror(errno));
+	  continue;
+	}
+
+        cupsdLogMessage(CUPSD_LOG_DEBUG, "service_checkin: Listener #%d at fd %d, \"%s\".", (int)i + 1, fd, httpAddrString(&addr, s, sizeof(s)));
+
+       /*
+	* Try to match the launchd socket address to one of the listeners...
+	*/
+
+	for (lis = (cupsd_listener_t *)cupsArrayFirst(Listeners);
+	     lis;
+	     lis = (cupsd_listener_t *)cupsArrayNext(Listeners))
+	  if (httpAddrEqual(&lis->address, &addr))
+	    break;
+
+       /*
+	* Add a new listener If there's no match...
+	*/
+
+	if (lis)
+	{
+	  cupsdLogMessage(CUPSD_LOG_DEBUG, "service_checkin: Matched existing listener #%d to %s.", (int)i + 1, httpAddrString(&(lis->address), s, sizeof(s)));
+	}
+	else
+	{
+	  cupsdLogMessage(CUPSD_LOG_DEBUG, "service_checkin: Adding new listener #%d for %s.", (int)i + 1, httpAddrString(&addr, s, sizeof(s)));
+
+	  if ((lis = calloc(1, sizeof(cupsd_listener_t))) == NULL)
+	  {
+	    cupsdLogMessage(CUPSD_LOG_ERROR, "service_checkin: Unable to allocate listener: %s.", strerror(errno));
+	    exit(EXIT_FAILURE);
+	  }
+
+	  cupsArrayAdd(Listeners, lis);
+
+	  memcpy(&lis->address, &addr, sizeof(lis->address));
+	}
+
+	lis->fd        = fd;
+        lis->on_demand = 1;
+
+#    ifdef HAVE_SSL
+	if (httpAddrPort(&(lis->address)) == 443)
+	  lis->encryption = HTTP_ENCRYPT_ALWAYS;
+#    endif /* HAVE_SSL */
+      }
+    }
+  }
+
+  launch_data_free(ld_msg);
+  launch_data_free(ld_resp);
+
+#  else /* HAVE_SYSTEMD */
+  int			i,		/* Looping var */
+			count;		/* Number of listeners */
+  cupsd_listener_t	*lis;		/* Listeners array */
+  http_addr_t		addr;		/* Address variable */
+  socklen_t		addrlen;	/* Length of address */
+  char			s[256];		/* String addresss */
+
+
+  cupsdLogMessage(CUPSD_LOG_DEBUG, "service_checkin: pid=%d", (int)getpid());
+
+ /*
+  * Check-in with systemd...
+  */
+
+  if ((count = sd_listen_fds(0)) < 0)
+  {
+    cupsdLogMessage(CUPSD_LOG_ERROR, "service_checkin: Unable to get listener sockets: %s", strerror(-count));
+    exit(EXIT_FAILURE);
+    return; /* anti-compiler-warning */
+  }
+
+ /*
+  * Try to match the systemd sockets to the cupsd listeners...
+  */
+
+  cupsdLogMessage(CUPSD_LOG_DEBUG, "service_checkin: %d listeners.", count);
+
+  for (i = 0; i < count; i ++)
+  {
+   /*
+    * Get the launchd socket address...
+    */
+
+    addrlen = sizeof(addr);
+
+    if (getsockname(SD_LISTEN_FDS_START + i, (struct sockaddr *)&addr, &addrlen))
+    {
+      cupsdLogMessage(CUPSD_LOG_ERROR, "service_checkin: Unable to get local address for listener #%d: %s", (int)i + 1, strerror(errno));
+      continue;
+    }
+
+    cupsdLogMessage(CUPSD_LOG_DEBUG, "service_checkin: Listener #%d at fd %d, \"%s\".", (int)i + 1, SD_LISTEN_FDS_START + i, httpAddrString(&addr, s, sizeof(s)));
+
+    for (lis = (cupsd_listener_t *)cupsArrayFirst(Listeners);
+	 lis;
+	 lis = (cupsd_listener_t *)cupsArrayNext(Listeners))
+      if (httpAddrEqual(&lis->address, &addr))
+	break;
+
+   /*
+    * Add a new listener if there's no match...
+    */
+
+    if (lis)
+    {
+      cupsdLogMessage(CUPSD_LOG_DEBUG, "service_checkin: Matched existing listener #%d to %s.", (int)i + 1, httpAddrString(&(lis->address), s, sizeof(s)));
+    }
+    else
+    {
+      cupsdLogMessage(CUPSD_LOG_DEBUG, "service_checkin: Adding new listener #%d for %s.", (int)i + 1, httpAddrString(&addr, s, sizeof(s)));
+
+      if ((lis = calloc(1, sizeof(cupsd_listener_t))) == NULL)
+      {
+	cupsdLogMessage(CUPSD_LOG_ERROR, "service_checkin: Unable to allocate listener: %s", strerror(errno));
+	exit(EXIT_FAILURE);
+      }
+
+      cupsArrayAdd(Listeners, lis);
+
+      memcpy(&lis->address, &addr, sizeof(lis->address));
+    }
+
+    lis->fd        = SD_LISTEN_FDS_START + i;
+    lis->on_demand = 1;
+
+#    ifdef HAVE_SSL
+    if (httpAddrPort(&(lis->address)) == 443)
+      lis->encryption = HTTP_ENCRYPT_ALWAYS;
+#    endif /* HAVE_SSL */
+  }
+#  endif /* HAVE_LAUNCH_ACTIVATE_SOCKET */
+}
+
+
+/*
+ * 'service_checkout()' - Update the CUPS_KEEPALIVE file as needed.
+ */
+
+static void
+service_checkout(void)
+{
+  int	fd;				/* File descriptor */
+
+
+ /*
+  * Create or remove the "keep-alive" file based on whether there are active
+  * jobs or shared printers to advertise...
+  */
+
+  if (cupsArrayCount(ActiveJobs) ||	/* Active jobs */
+      WebInterface ||			/* Web interface enabled */
+      (Browsing && BrowseLocalProtocols && cupsArrayCount(Printers)))
+					/* Printers being shared */
+  {
+    cupsdLogMessage(CUPSD_LOG_DEBUG, "Creating keep-alive file \"" CUPS_KEEPALIVE "\".");
+
+    if ((fd = open(CUPS_KEEPALIVE, O_RDONLY | O_CREAT | O_EXCL, S_IRUSR)) >= 0)
+      close(fd);
+  }
+  else
+  {
+    cupsdLogMessage(CUPSD_LOG_DEBUG, "Removing keep-alive file \"" CUPS_KEEPALIVE "\".");
+
+    unlink(CUPS_KEEPALIVE);
+  }
+}
+#endif /* HAVE_LAUNCHD || HAVE_SYSTEMD */
+
+
 /*
  * 'usage()' - Show scheduler usage.
  */
@@ -2189,18 +2156,23 @@ sigterm_handler(int sig)		/* I - Signal number */
 static void
 usage(int status)			/* O - Exit status */
 {
-  _cupsLangPuts(status ? stderr : stdout,
-                _("Usage: cupsd [-c config-file] [-f] [-F] [-h] [-l]\n"
-		  "\n"
-		  "-c config-file      Load alternate configuration file\n"
-		  "-f                  Run in the foreground\n"
-		  "-F                  Run in the foreground but detach\n"
-		  "-h                  Show this usage message\n"
-		  "-l                  Run cupsd from launchd(8)\n"));
+  FILE	*fp = status ? stderr : stdout;	/* Output file */
+
+
+  _cupsLangPuts(fp, _("Usage: cupsd [options]"));
+  _cupsLangPuts(fp, _("Options:"));
+  _cupsLangPuts(fp, _("  -c cupsd.conf           Set cupsd.conf file to use."));
+  _cupsLangPuts(fp, _("  -f                      Run in the foreground."));
+  _cupsLangPuts(fp, _("  -F                      Run in the foreground but detach from console."));
+  _cupsLangPuts(fp, _("  -h                      Show this usage message."));
+  _cupsLangPuts(fp, _("  -l                      Run cupsd on demand."));
+  _cupsLangPuts(fp, _("  -s cups-files.conf      Set cups-files.conf file to use."));
+  _cupsLangPuts(fp, _("  -t                      Test the configuration file."));
+
   exit(status);
 }
 
 
 /*
- * End of "$Id: main.c 9310 2010-09-21 22:34:57Z mike $".
+ * End of "$Id: main.c 13087 2016-02-12 18:53:24Z msweet $".
  */

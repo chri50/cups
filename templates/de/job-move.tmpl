@@ -1,11 +1,9 @@
-<DIV CLASS="indent">
-
 <FORM METHOD="POST" ACTION="/{SECTION}/{job_id?:{printer_name}}">
 <INPUT TYPE="HIDDEN" NAME="org.cups.sid" VALUE="{$org.cups.sid}">
 <INPUT TYPE="HIDDEN" NAME="OP" VALUE="{op}">
 {job_id?<INPUT TYPE="HIDDEN" NAME="JOB_ID" VALUE="{job_id}">:}
 
-<H2 CLASS="title">{job_id?Auftrag {job_id} verschieben:Alle Auftr&auml;ge verschieben}</H2>
+<H2 CLASS="title">{job_id?Auftrag {job_id} verschieben:Alle Aufträge verschieben}</H2>
 
 <TABLE>
 <TR>
@@ -18,10 +16,8 @@
 </TR>
 <TR>
 <TD></TD>
-<TD><INPUT TYPE="SUBMIT" VALUE="{job_id?Auftrag verschieben:Auftr&auml;ge verschieben}"></TD>
+<TD><INPUT TYPE="SUBMIT" VALUE="{job_id?Auftrag verschieben:Aufträge verschieben}"></TD>
 </TR>
 </TABLE>
 
 </FORM>
-
-</DIV>

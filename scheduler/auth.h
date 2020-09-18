@@ -1,17 +1,16 @@
 /*
- * "$Id: auth.h 8525 2009-04-19 23:09:54Z mike $"
+ * "$Id: auth.h 11776 2014-03-28 19:16:05Z msweet $"
  *
- *   Authorization definitions for the Common UNIX Printing System (CUPS)
- *   scheduler.
+ * Authorization definitions for the CUPS scheduler.
  *
- *   Copyright 2007-2009 by Apple Inc.
- *   Copyright 1997-2006 by Easy Software Products, all rights reserved.
+ * Copyright 2007-2014 by Apple Inc.
+ * Copyright 1997-2006 by Easy Software Products, all rights reserved.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -28,9 +27,8 @@
 #define CUPSD_AUTH_DEFAULT	-1	/* Use DefaultAuthType */
 #define CUPSD_AUTH_NONE		0	/* No authentication */
 #define CUPSD_AUTH_BASIC	1	/* Basic authentication */
-#define CUPSD_AUTH_DIGEST	2	/* Digest authentication */
-#define CUPSD_AUTH_BASICDIGEST	3	/* Basic authentication w/passwd.md5 */
-#define CUPSD_AUTH_NEGOTIATE	4	/* Kerberos authentication */
+#define CUPSD_AUTH_NEGOTIATE	2	/* Kerberos authentication */
+#define CUPSD_AUTH_AUTO		3	/* Kerberos or Basic, depending on configuration of server */
 
 #define CUPSD_AUTH_ANON		0	/* Anonymous access */
 #define CUPSD_AUTH_USER		1	/* Must have a valid username/password */
@@ -74,7 +72,7 @@ typedef struct
 
 typedef struct
 {
-  int		length;			/* Length of name */
+  size_t	length;			/* Length of name */
   char		*name;			/* Name string */
 } cupsd_namemask_t;
 
@@ -91,19 +89,16 @@ typedef struct
 typedef struct
 {
   char			*location;	/* Location of resource */
+  size_t		length;		/* Length of location string */
   ipp_op_t		op;		/* IPP operation */
   int			limit,		/* Limit for these types of requests */
-			length,		/* Length of location string */
 			order_type,	/* Allow or Deny */
 			type,		/* Type of authentication */
 			level,		/* Access level required */
 			satisfy;	/* Satisfy any or all limits? */
-  int			num_names;	/* Number of names */
-  char			**names;	/* User or group names */
-  int			num_allow;	/* Number of Allow lines */
-  cupsd_authmask_t	*allow;		/* Allow lines */
-  int			num_deny;	/* Number of Deny lines */
-  cupsd_authmask_t	*deny;		/* Deny lines */
+  cups_array_t		*names,		/* User or group names */
+			*allow,		/* Allow lines */
+			*deny;		/* Deny lines */
   http_encryption_t	encryption;	/* To encrypt or not to encrypt... */
 } cupsd_location_t;
 
@@ -116,8 +111,6 @@ typedef struct cupsd_client_s cupsd_client_t;
 
 VAR cups_array_t	*Locations	VALUE(NULL);
 					/* Authorization locations */
-VAR int			DefaultAuthType	VALUE(CUPSD_AUTH_BASIC);
-					/* Default AuthType, if not specified */
 #ifdef HAVE_SSL
 VAR http_encryption_t	DefaultEncryption VALUE(HTTP_ENCRYPT_REQUIRED);
 					/* Default encryption for authentication */
@@ -128,35 +121,27 @@ VAR http_encryption_t	DefaultEncryption VALUE(HTTP_ENCRYPT_REQUIRED);
  * Prototypes...
  */
 
-extern cupsd_location_t	*cupsdAddLocation(const char *location);
+extern int		cupsdAddIPMask(cups_array_t **masks,
+				       const unsigned address[4],
+				       const unsigned netmask[4]);
+extern void		cupsdAddLocation(cupsd_location_t *loc);
 extern void		cupsdAddName(cupsd_location_t *loc, char *name);
-extern void		cupsdAllowHost(cupsd_location_t *loc, char *name);
-extern void		cupsdAllowIP(cupsd_location_t *loc, 
-				     const unsigned address[4],
-			             const unsigned netmask[4]);
+extern int		cupsdAddNameMask(cups_array_t **masks, char *name);
 extern void		cupsdAuthorize(cupsd_client_t *con);
-extern int		cupsdCheckAccess(unsigned ip[4], char *name,
-			                 int namelen, cupsd_location_t *loc);
-extern int		cupsdCheckAuth(unsigned ip[4], char *name, int namelen,
-				       int num_masks, cupsd_authmask_t *masks);
+extern int		cupsdCheckAccess(unsigned ip[4], const char *name, size_t namelen, cupsd_location_t *loc);
+extern int		cupsdCheckAuth(unsigned ip[4], const char *name, size_t namelen, cups_array_t *masks);
 extern int		cupsdCheckGroup(const char *username,
 			                struct passwd *user,
 			                const char *groupname);
-#ifdef HAVE_GSSAPI
-extern krb5_ccache	cupsdCopyKrb5Creds(cupsd_client_t *con);
-#endif /* HAVE_GSSAPI */
-extern cupsd_location_t	*cupsdCopyLocation(cupsd_location_t **loc);
+extern cupsd_location_t	*cupsdCopyLocation(cupsd_location_t *loc);
 extern void		cupsdDeleteAllLocations(void);
-extern void		cupsdDeleteLocation(cupsd_location_t *loc);
-extern void		cupsdDenyHost(cupsd_location_t *loc, char *name);
-extern void		cupsdDenyIP(cupsd_location_t *loc, 
-				    const unsigned address[4],
-			            const unsigned netmask[4]);
 extern cupsd_location_t	*cupsdFindBest(const char *path, http_state_t state);
 extern cupsd_location_t	*cupsdFindLocation(const char *location);
+extern void		cupsdFreeLocation(cupsd_location_t *loc);
 extern http_status_t	cupsdIsAuthorized(cupsd_client_t *con, const char *owner);
+extern cupsd_location_t	*cupsdNewLocation(const char *location);
 
 
 /*
- * End of "$Id: auth.h 8525 2009-04-19 23:09:54Z mike $".
+ * End of "$Id: auth.h 11776 2014-03-28 19:16:05Z msweet $".
  */

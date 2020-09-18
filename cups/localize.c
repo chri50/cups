@@ -1,58 +1,42 @@
 /*
- * "$Id: localize.c 9233 2010-08-10 06:15:55Z mike $"
+ * "$Id: localize.c 12834 2015-08-06 13:56:32Z msweet $"
  *
- *   PPD localization routines for the Common UNIX Printing System (CUPS).
+ * PPD localization routines for CUPS.
  *
- *   Copyright 2007-2009 by Apple Inc.
- *   Copyright 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright 2007-2015 by Apple Inc.
+ * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- *   These coded instructions, statements, and computer programs are the
- *   property of Apple Inc. and are protected by Federal copyright
- *   law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- *   which should have been included with this file.  If this file is
- *   file is missing or damaged, see the license at "http://www.cups.org/".
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * file is missing or damaged, see the license at "http://www.cups.org/".
  *
- *   PostScript is a trademark of Adobe Systems, Inc.
+ * PostScript is a trademark of Adobe Systems, Inc.
  *
- *   This code and any derivative of it may be used and distributed
- *   freely under the terms of the GNU General Public License when
- *   used with GNU Ghostscript or its derivatives.  Use of the code
- *   (or any derivative of it) with software other than GNU
- *   GhostScript (or its derivatives) is governed by the CUPS license
- *   agreement.
+ * This code and any derivative of it may be used and distributed
+ * freely under the terms of the GNU General Public License when
+ * used with GNU Ghostscript or its derivatives.  Use of the code
+ * (or any derivative of it) with software other than GNU
+ * GhostScript (or its derivatives) is governed by the CUPS license
+ * agreement.
  *
- *   This file is subject to the Apple OS-Developed Software exception.
- *
- * Contents:
- *
- *   ppdLocalize()           - Localize the PPD file to the current locale.
- *   ppdLocalizeAttr()       - Localize an attribute.
- *   ppdLocalizeIPPReason()  - Get the localized version of a cupsIPPReason
- *                             attribute.
- *   ppdLocalizeMarkerName() - Get the localized version of a marker-names
- *                             attribute value.
- *   _ppdFreeLanguages()     - Free an array of languages from _ppdGetLanguages.
- *   _ppdGetLanguages()      - Get an array of languages from a PPD file.
- *   _ppdHashName()          - Generate a hash value for a device or profile
- *                             name.
- *   _ppdLocalizedAttr()     - Find a localized attribute.
- *   ppd_ll_CC()             - Get the current locale names.
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
  * Include necessary headers.
  */
 
-#include "globals.h"
+#include "cups-private.h"
 #include "ppd-private.h"
-#include "debug.h"
 
 
 /*
  * Local functions...
  */
 
-static cups_lang_t	*ppd_ll_CC(char *ll_CC, int ll_CC_size);
+static cups_lang_t	*ppd_ll_CC(char *ll_CC, size_t ll_CC_size);
 
 
 /*
@@ -62,7 +46,7 @@ static cups_lang_t	*ppd_ll_CC(char *ll_CC, int ll_CC_size);
  * descriptions, printer presets, and custom option parameters.  Each
  * localized string uses the UTF-8 character encoding.
  *
- * @since CUPS 1.2/Mac OS X 10.5@
+ * @since CUPS 1.2/OS X 10.5@
  */
 
 int					/* O - 0 on success, -1 on error */
@@ -247,7 +231,7 @@ ppdLocalizeAttr(ppd_file_t *ppd,	/* I - PPD file */
  *
  * If no value of the requested scheme can be found, NULL is returned.
  *
- * @since CUPS 1.3/Mac OS X 10.5@
+ * @since CUPS 1.3/OS X 10.5@
  */
 
 const char *				/* O - Value or NULL if not found */
@@ -264,8 +248,8 @@ ppdLocalizeIPPReason(
 		*bufptr,		/* Pointer into buffer */
 		*bufend,		/* Pointer to end of buffer */
 		*valptr;		/* Pointer into value */
-  int		ch,			/* Hex-encoded character */
-		schemelen;		/* Length of scheme name */
+  int		ch;			/* Hex-encoded character */
+  size_t	schemelen;		/* Length of scheme name */
 
 
  /*
@@ -303,56 +287,55 @@ ppdLocalizeIPPReason(
 
       const char *message = NULL;	/* Localized message */
 
-
       if (!strncmp(reason, "media-needed", 12))
-        message = _("Media tray needs to be filled.");
+	message = _("Load paper.");
       else if (!strncmp(reason, "media-jam", 9))
-        message = _("Media jam!");
+	message = _("Paper jam.");
       else if (!strncmp(reason, "offline", 7) ||
-	       !strncmp(reason, "shutdown", 8))
-        message = _("Printer offline.");
+		       !strncmp(reason, "shutdown", 8))
+	message = _("The printer is not connected.");
       else if (!strncmp(reason, "toner-low", 9))
-        message = _("Toner low.");
+	message = _("The printer is low on toner.");
       else if (!strncmp(reason, "toner-empty", 11))
-        message = _("Out of toner!");
+	message = _("The printer may be out of toner.");
       else if (!strncmp(reason, "cover-open", 10))
-        message = _("Cover open.");
+	message = _("The printer's cover is open.");
       else if (!strncmp(reason, "interlock-open", 14))
-        message = _("Interlock open.");
+	message = _("The printer's interlock is open.");
       else if (!strncmp(reason, "door-open", 9))
-        message = _("Door open.");
+	message = _("The printer's door is open.");
       else if (!strncmp(reason, "input-tray-missing", 18))
-        message = _("Media tray missing!");
+	message = _("Paper tray is missing.");
       else if (!strncmp(reason, "media-low", 9))
-        message = _("Media tray almost empty.");
+	message = _("Paper tray is almost empty.");
       else if (!strncmp(reason, "media-empty", 11))
-        message = _("Media tray empty!");
+	message = _("Paper tray is empty.");
       else if (!strncmp(reason, "output-tray-missing", 19))
-        message = _("Output tray missing!");
+	message = _("Output bin is missing.");
       else if (!strncmp(reason, "output-area-almost-full", 23))
-        message = _("Output bin almost full.");
+	message = _("Output bin is almost full.");
       else if (!strncmp(reason, "output-area-full", 16))
-        message = _("Output bin full!");
+	message = _("Output bin is full.");
       else if (!strncmp(reason, "marker-supply-low", 17))
-        message = _("Ink/toner almost empty.");
+	message = _("The printer is low on ink.");
       else if (!strncmp(reason, "marker-supply-empty", 19))
-        message = _("Ink/toner empty!");
+	message = _("The printer may be out of ink.");
       else if (!strncmp(reason, "marker-waste-almost-full", 24))
-        message = _("Ink/toner waste bin almost full.");
+	message = _("The printer's waste bin is almost full.");
       else if (!strncmp(reason, "marker-waste-full", 17))
-        message = _("Ink/toner waste bin full!");
+	message = _("The printer's waste bin is full.");
       else if (!strncmp(reason, "fuser-over-temp", 15))
-        message = _("Fuser temperature high!");
+	message = _("The fuser's temperature is high.");
       else if (!strncmp(reason, "fuser-under-temp", 16))
-        message = _("Fuser temperature low!");
+	message = _("The fuser's temperature is low.");
       else if (!strncmp(reason, "opc-near-eol", 12))
-        message = _("OPC almost at end-of-life.");
+	message = _("The optical photoconductor will need to be replaced soon.");
       else if (!strncmp(reason, "opc-life-over", 13))
-        message = _("OPC at end-of-life!");
+	message = _("The optical photoconductor needs to be replaced.");
       else if (!strncmp(reason, "developer-low", 13))
-        message = _("Developer almost empty.");
+	message = _("The developer unit will need to be replaced soon.");
       else if (!strncmp(reason, "developer-empty", 15))
-        message = _("Developer empty!");
+	message = _("The developer unit needs to be replaced.");
 
       if (message)
       {
@@ -407,9 +390,9 @@ ppdLocalizeIPPReason(
 	    valptr ++;
 
 	    if (isdigit(*valptr & 255))
-	      *bufptr++ = ch | (*valptr - '0');
+	      *bufptr++ = (char)(ch | (*valptr - '0'));
 	    else
-	      *bufptr++ = ch | (tolower(*valptr) - 'a' + 10);
+	      *bufptr++ = (char)(ch | (tolower(*valptr) - 'a' + 10));
 	    valptr ++;
 	  }
 	  else if (*valptr == '+')
@@ -501,7 +484,7 @@ ppdLocalizeIPPReason(
  * text from the attribute value. If no localized text for the requested
  * name can be found, @code NULL@ is returned.
  *
- * @since CUPS 1.4/Mac OS X 10.6@
+ * @since CUPS 1.4/OS X 10.6@
  */
 
 const char *				/* O - Value or @code NULL@ if not found */
@@ -639,15 +622,15 @@ _ppdGetLanguages(ppd_file_t *ppd)	/* I - PPD file */
 /*
  * '_ppdHashName()' - Generate a hash value for a device or profile name.
  *
- * This function is primarily used on Mac OS X, but is generally accessible
+ * This function is primarily used on OS X, but is generally accessible
  * since cupstestppd needs to check for profile name collisions in PPD files...
  */
 
 unsigned				/* O - Hash value */
 _ppdHashName(const char *name)		/* I - Name to hash */
 {
-  int		mult;			/* Multiplier */
-  unsigned	hash = 0;		/* Hash value */
+  unsigned	mult,			/* Multiplier */
+		hash = 0;		/* Hash value */
 
 
   for (mult = 1; *name && mult <= 128; mult ++, name ++)
@@ -681,8 +664,23 @@ _ppdLocalizedAttr(ppd_file_t *ppd,	/* I - PPD file */
   snprintf(lkeyword, sizeof(lkeyword), "%s.%s", ll_CC, keyword);
   if ((attr = ppdFindAttr(ppd, lkeyword, spec)) == NULL)
   {
-    snprintf(lkeyword, sizeof(lkeyword), "%2.2s.%s", ll_CC, keyword);
-    attr = ppdFindAttr(ppd, lkeyword, spec);
+   /*
+    * <rdar://problem/22130168>
+    *
+    * Hong Kong locale needs special handling...  Sigh...
+    */
+
+    if (!strcmp(ll_CC, "zh_HK"))
+    {
+      snprintf(lkeyword, sizeof(lkeyword), "zh_TW.%s", keyword);
+      attr = ppdFindAttr(ppd, lkeyword, spec);
+    }
+
+    if (!attr)
+    {
+      snprintf(lkeyword, sizeof(lkeyword), "%2.2s.%s", ll_CC, keyword);
+      attr = ppdFindAttr(ppd, lkeyword, spec);
+    }
 
     if (!attr)
     {
@@ -729,8 +727,8 @@ _ppdLocalizedAttr(ppd_file_t *ppd,	/* I - PPD file */
  */
 
 static cups_lang_t *			/* O - Current language */
-ppd_ll_CC(char *ll_CC,			/* O - Country-specific locale name */
-          int  ll_CC_size)		/* I - Size of country-specific name */
+ppd_ll_CC(char   *ll_CC,		/* O - Country-specific locale name */
+          size_t ll_CC_size)		/* I - Size of country-specific name */
 {
   cups_lang_t	*lang;			/* Current language */
 
@@ -777,5 +775,5 @@ ppd_ll_CC(char *ll_CC,			/* O - Country-specific locale name */
 
 
 /*
- * End of "$Id: localize.c 9233 2010-08-10 06:15:55Z mike $".
+ * End of "$Id: localize.c 12834 2015-08-06 13:56:32Z msweet $".
  */

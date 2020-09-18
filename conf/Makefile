@@ -1,9 +1,9 @@
 #
-# "$Id: Makefile 8825 2009-09-22 21:53:31Z mike $"
+# "$Id: Makefile 12533 2015-02-27 12:30:26Z msweet $"
 #
-#   Configuration file makefile for the Common UNIX Printing System (CUPS).
+#   Configuration file makefile for CUPS.
 #
-#   Copyright 2007-2008 by Apple Inc.
+#   Copyright 2007-2015 by Apple Inc.
 #   Copyright 1993-2006 by Easy Software Products.
 #
 #   These coded instructions, statements, and computer programs are the
@@ -19,7 +19,7 @@ include ../Makedefs
 # Config files...
 #
 
-KEEP	=	cupsd.conf snmp.conf
+KEEP	=	cups-files.conf cupsd.conf snmp.conf
 REPLACE	=	mime.convs mime.types
 
 
@@ -76,8 +76,8 @@ install-data:
 		else \
 			$(INSTALL_CONFIG) -g $(CUPS_GROUP) $$file $(SERVERROOT) ; \
 		fi ; \
+		$(INSTALL_CONFIG) -g $(CUPS_GROUP) $$file $(SERVERROOT)/$$file.default; \
 	done
-	$(INSTALL_CONFIG) -g $(CUPS_GROUP) cupsd.conf $(SERVERROOT)/cupsd.conf.default
 	$(INSTALL_DIR) -m 755 $(DATADIR)/mime
 	for file in $(REPLACE); do \
 		if test -r $(DATADIR)/mime/$$file ; then \
@@ -139,5 +139,5 @@ uninstall:
 
 
 #
-# End of "$Id: Makefile 8825 2009-09-22 21:53:31Z mike $".
+# End of "$Id: Makefile 12533 2015-02-27 12:30:26Z msweet $".
 #

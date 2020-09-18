@@ -1,9 +1,9 @@
 /*
- * "$Id: banners.h 6649 2007-07-11 21:46:42Z mike $"
+ * "$Id: banners.h 10996 2013-05-29 11:51:34Z msweet $"
  *
- *   Banner definitions for the Common UNIX Printing System (CUPS).
+ *   Banner definitions for the CUPS scheduler.
  *
- *   Copyright 2007 by Apple Inc.
+ *   Copyright 2007-2010 by Apple Inc.
  *   Copyright 1997-2006 by Easy Software Products.
  *
  *   These coded instructions, statements, and computer programs are the
@@ -41,5 +41,5 @@ extern void		cupsdLoadBanners(const char *d);
 
 
 /*
- * End of "$Id: banners.h 6649 2007-07-11 21:46:42Z mike $".
+ * End of "$Id: banners.h 10996 2013-05-29 11:51:34Z msweet $".
  */

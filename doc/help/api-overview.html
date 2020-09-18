@@ -2,9 +2,10 @@
 <html>
 <!-- SECTION: Programming -->
 <head>
-<title>Introduction to CUPS Programming</title>
-<meta name="keywords" content="Programming">
-<meta name="creator" content="Mini-XML v2.7">
+	<title>Introduction to CUPS Programming	</title>
+	<meta name="keywords" content="Programming">
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<meta name="creator" content="Mini-XML v2.7">
 <style type="text/css"><!--
 BODY {
   font-family: lucida grande, geneva, helvetica, arial, sans-serif;
@@ -24,7 +25,9 @@ PRE {
 }
 
 PRE.command {
+  border: dotted thin #7f7f7f;
   margin-left: 36pt;
+  padding: 10px;
 }
 
 P.compact {
@@ -35,7 +38,19 @@ P.example {
   font-style: italic;
   margin-left: 36pt;
 }
-  
+
+DL.man DD {
+  margin-left: 5em;
+}
+
+DL.man DT {
+  margin-left: 0;
+}
+
+PRE.man {
+  margin: 0;
+}
+
 PRE.example {
   background: #eeeeee;
   border: dotted thin #999999;
@@ -74,7 +89,7 @@ A:link:hover IMG {
 }
 
 A:link, A:visited {
-  font-weight: normal;
+  font-weight: inherit;
   text-decoration: none;
 }
 
@@ -338,12 +353,11 @@ div.contents ul.subcontents li {
 <body>
 <div class='body'>
 <!--
-  "$Id: api-overview.html 9728 2011-04-28 21:21:24Z mike $"
+  "$Id: api-cups.header 7279 2008-01-31 01:50:44Z mike $"
 
-  Introduction to CUPS programming header for the Common UNIX Printing System
-  (CUPS).
+  Introduction to CUPS programming header for CUPS.
 
-  Copyright 2008-2009 by Apple Inc.
+  Copyright 2008-2011 by Apple Inc.
 
   These coded instructions, statements, and computer programs are the
   property of Apple Inc. and are protected by Federal copyright
@@ -393,15 +407,15 @@ div.contents ul.subcontents li {
 </table></div>
 <h2 class="title">Contents</h2>
 <ul class="contents">
-<ul class="subcontents">
 <li><a href="#OVERVIEW">Overview</a></li>
 <li><a href="#COMPILING">Compiling Programs</a><ul class="subcontents">
-<li><a href="#XCODE">Compiling with Xcode</a></li>
-<li><a href="#COMMANDLINE">Compiling with GCC</a></li>
+	<li><a href="#XCODE">Compiling with Xcode</a></li>
+	<li><a href="#COMMANDLINE">Compiling with GCC</a></li>
 </ul></li>
 <li><a href="#WHERETOGO">Where to Go Next</a></li>
+</ul>
 <!--
-  "$Id: api-overview.html 9728 2011-04-28 21:21:24Z mike $"
+  "$Id: api-cups.header 7279 2008-01-31 01:50:44Z mike $"
 
   Introduction to CUPS programming content for CUPS.
 
