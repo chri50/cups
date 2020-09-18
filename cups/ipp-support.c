@@ -4,13 +4,8 @@
  * Copyright © 2007-2018 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
- *
- * This file is subject to the Apple OS-Developed Software exception.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+ * information.
  */
 
 /*
@@ -212,7 +207,7 @@ static const char * const ipp_std_ops[] =
 		  "Add-Document-Images",
 		  "Acknowledge-Document",
 
-		  /* 0x0040 - 0x004a */
+		  /* 0x0040 - 0x004f */
 		  "Acknowledge-Identify-Printer",
 		  "Acknowledge-Job",
 		  "Fetch-Document",
@@ -223,7 +218,37 @@ static const char * const ipp_std_ops[] =
 		  "Update-Document-Status",
 		  "Update-Job-Status",
 		  "Update-Output-Device-Attributes",
-		  "Get-Next-Document-Data"
+		  "Get-Next-Document-Data",
+                  "Allocate-Printer-Resources",
+                  "Create-Printer",
+                  "Deallocate-Printer-Resources",
+                  "Delete-Printer",
+                  "Get-Printers",
+
+                  /* 0x0050 - 0x005f */
+                  "Shutdown-One-Printer",
+                  "Startup-One-Printer",
+                  "Cancel-Resource",
+                  "Create-Resource",
+                  "Install-Resource",
+                  "Send-Resource-Data",
+                  "Set-Resource-Attributes",
+                  "Create-Resource-Subscriptions",
+                  "Create-System-Subscriptions",
+                  "Disable-All-Printers",
+                  "Enable-All-Printers",
+                  "Get-System-Attributes",
+                  "Get-System-Supported-Values",
+                  "Pause-All-Printers",
+                  "Pause-All-Printers-After-Current-Job",
+                  "Register-Output-Device",
+
+                  /* 0x0060 - 0x0064 */
+                  "Restart-System",
+                  "Resume-All-Printers",
+                  "Set-System-Attributes",
+                  "Shutdown-All-Printers",
+                  "Startup-All-Printers"
 		},
 		* const ipp_cups_ops[] =
 		{
@@ -891,7 +916,9 @@ ippCreateRequestedArray(ipp_t *request)	/* I - IPP request */
     "force-front-side-actual",
     "imposition-template-actual",
     "impressions",
+    "impressions-col",
     "impressions-completed",
+    "impressions-completed-col",
     "impressions-completed-current-copy",
     "insert-sheet-actual",
     "k-octets",
@@ -902,7 +929,9 @@ ippCreateRequestedArray(ipp_t *request)	/* I - IPP request */
     "media-col-actual",
     "media-input-tray-check-actual",
     "media-sheets",
+    "media-sheets-col",
     "media-sheets-completed",
+    "media-sheets-completed-col",
     "more-info",
     "multiple-object-handling-actual",	/* IPP 3D */
     "number-up-actual",
@@ -914,7 +943,9 @@ ippCreateRequestedArray(ipp_t *request)	/* I - IPP request */
     "page-order-received-actual",
     "page-ranges-actual",
     "pages",
+    "pages-col",
     "pages-completed",
+    "pages-completed-col",
     "pages-completed-current-copy",
     "platform-temperature-actual",	/* IPP 3D */
     "presentation-direction-number-up-actual",
@@ -1180,13 +1211,17 @@ ippCreateRequestedArray(ipp_t *request)	/* I - IPP request */
     "job-hold-until-actual",
     "job-id",
     "job-impressions",
+    "job-impressions-col",
     "job-impressions-completed",
+    "job-impressions-completed-col",
     "job-k-octets",
     "job-k-octets-processed",
     "job-mandatory-attributes",
     "job-media-progress",		/* CUPS extension */
     "job-media-sheets",
+    "job-media-sheets-col",
     "job-media-sheets-completed",
+    "job-media-sheets-completed-col",
     "job-message-from-operator",
     "job-more-info",
     "job-name",
@@ -1194,7 +1229,9 @@ ippCreateRequestedArray(ipp_t *request)	/* I - IPP request */
     "job-originating-user-name",
     "job-originating-user-uri",
     "job-pages",
+    "job-pages-col",
     "job-pages-completed",
+    "job-pages-completed-col",
     "job-pages-completed-current-copy",
     "job-printer-state-message",	/* CUPS extension */
     "job-printer-state-reasons",	/* CUPS extension */
@@ -1572,6 +1609,8 @@ ippCreateRequestedArray(ipp_t *request)	/* I - IPP request */
     "document-natural-language-default",
     "document-natural-language-supported",
     "document-password-supported",
+    "document-privacy-attributes",	/* IPP Privacy Attributes */
+    "document-privacy-scope",		/* IPP Privacy Attributes */
     "generated-natural-language-supported",
     "identify-actions-default",
     "identify-actions-supported",
@@ -1593,6 +1632,8 @@ ippCreateRequestedArray(ipp_t *request)	/* I - IPP request */
     "job-password-encryption-supported",
     "job-password-supported",
     "job-presets-supported",		/* IPP Presets */
+    "job-privacy-attributes",		/* IPP Privacy Attributes */
+    "job-privacy-scope",		/* IPP Privacy Attributes */
     "job-quota-period",			/* CUPS extension */
     "job-resolvers-supported",
     "job-settable-attributes-supported",
@@ -1697,6 +1738,8 @@ ippCreateRequestedArray(ipp_t *request)	/* I - IPP request */
     "requesting-user-name-denied",	/* CUPS extension */
     "requesting-user-uri-supported",
     "subordinate-printers-supported",
+    "subscription-privacy-attributes",	/* IPP Privacy Attributes */
+    "subscription-privacy-scope",	/* IPP Privacy Attributes */
     "urf-supported",			/* CUPS extension */
     "uri-authentication-supported",
     "uri-security-supported",
@@ -1716,7 +1759,7 @@ ippCreateRequestedArray(ipp_t *request)	/* I - IPP request */
     "notify-subscriber-user-name",
     "notify-subscriber-user-uri",
     "notify-subscription-id",
-    "subscriptions-uuid"
+    "notify-subscription-uuid"
   };
   static const char * const subscription_template[] =
   {					/* subscription-template group */

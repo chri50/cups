@@ -4,13 +4,7 @@
  * Copyright © 2007-2018 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
- *
- * This file is subject to the Apple OS-Developed Software exception.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
  */
 
 /**** This file is included from tls.c ****/
@@ -1430,7 +1424,7 @@ _httpTLSStart(http_t *http)		/* I - HTTP connection */
     * Server: find/create a certificate for TLS...
     */
 
-    if (http->fields[HTTP_FIELD_HOST][0])
+    if (http->fields[HTTP_FIELD_HOST])
     {
      /*
       * Use hostname for TLS upgrade...

@@ -4,13 +4,7 @@
  * Copyright 2007-2017 by Apple Inc.
  * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
- *
- * This file is subject to the Apple OS-Developed Software exception.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
  */
 
 #ifndef _CUPS_HTTP_H_
@@ -497,10 +491,10 @@ extern char		*httpEncode64(char *out, const char *in) _CUPS_DEPRECATED_MSG("Use 
 extern char		*httpDecode64(char *out, const char *in) _CUPS_DEPRECATED_MSG("Use httpDecode64_2 instead.");
 extern int		httpGetLength(http_t *http) _CUPS_DEPRECATED_MSG("Use httpGetLength2 instead.");
 extern char		*httpMD5(const char *, const char *, const char *,
-			         char [33]);
+			         char [33]) _CUPS_DEPRECATED_MSG("Use cupsDoAuth or cupsHashData instead.");
 extern char		*httpMD5Final(const char *, const char *, const char *,
-			              char [33]);
-extern char		*httpMD5String(const unsigned char *, char [33]);
+			              char [33]) _CUPS_DEPRECATED_MSG("Use cupsDoAuth or cupsHashData instead.");
+extern char		*httpMD5String(const unsigned char *, char [33]) _CUPS_DEPRECATED_MSG("Use cupsHashString instead.");
 
 /**** New in CUPS 1.1.19 ****/
 extern void		httpClearCookie(http_t *http) _CUPS_API_1_1_19;
