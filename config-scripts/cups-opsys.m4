@@ -1,7 +1,7 @@
 dnl
 dnl Operating system stuff for CUPS.
 dnl
-dnl Copyright 2007-2017 by Apple Inc.
+dnl Copyright 2007-2018 by Apple Inc.
 dnl Copyright 1997-2006 by Easy Software Products, all rights reserved.
 dnl
 dnl These coded instructions, statements, and computer programs are the
@@ -35,3 +35,5 @@ else
 	LOCALTARGET=""
 fi
 AC_SUBST(LOCALTARGET)
+
+AC_PATH_PROGS(CODE_SIGN, codesign true)

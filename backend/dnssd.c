@@ -1,7 +1,7 @@
 /*
  * DNS-SD discovery backend for CUPS.
  *
- * Copyright 2008-2017 by Apple Inc.
+ * Copyright 2008-2018 by Apple Inc.
  *
  * These coded instructions, statements, and computer programs are the
  * property of Apple Inc. and are protected by Federal copyright
@@ -94,7 +94,7 @@ static void		browse_callback(DNSServiceRef sdRef,
 				        const char *serviceName,
 				        const char *regtype,
 				        const char *replyDomain, void *context)
-					__attribute__((nonnull(1,5,6,7,8)));
+					_CUPS_NONNULL((1,5,6,7,8));
 static void		browse_local_callback(DNSServiceRef sdRef,
 					      DNSServiceFlags flags,
 					      uint32_t interfaceIndex,
@@ -103,7 +103,7 @@ static void		browse_local_callback(DNSServiceRef sdRef,
 					      const char *regtype,
 					      const char *replyDomain,
 					      void *context)
-					      __attribute__((nonnull(1,5,6,7,8)));
+					      _CUPS_NONNULL((1,5,6,7,8));
 #endif /* HAVE_DNSSD */
 #ifdef HAVE_AVAHI
 static void		browse_callback(AvahiServiceBrowser *browser,
@@ -121,12 +121,12 @@ static void		client_callback(AvahiClient *client,
 #endif /* HAVE_AVAHI */
 
 static int		compare_devices(cups_device_t *a, cups_device_t *b);
-static void		exec_backend(char **argv) __attribute__((noreturn));
+static void		exec_backend(char **argv) _CUPS_NORETURN;
 static cups_device_t	*get_device(cups_array_t *devices,
 			            const char *serviceName,
 			            const char *regtype,
 				    const char *replyDomain)
-				    __attribute__((nonnull(1,2,3,4)));
+				    _CUPS_NONNULL((1,2,3,4));
 #ifdef HAVE_DNSSD
 static void		query_callback(DNSServiceRef sdRef,
 			               DNSServiceFlags flags,
@@ -136,7 +136,7 @@ static void		query_callback(DNSServiceRef sdRef,
 				       uint16_t rrclass, uint16_t rdlen,
 				       const void *rdata, uint32_t ttl,
 				       void *context)
-				       __attribute__((nonnull(1,5,9,11)));
+				       _CUPS_NONNULL((1,5,9,11));
 #elif defined(HAVE_AVAHI)
 static int		poll_callback(struct pollfd *pollfds,
 			              unsigned int num_pollfds, int timeout,
@@ -153,7 +153,7 @@ static void		query_callback(AvahiRecordBrowser *browser,
 #endif /* HAVE_DNSSD */
 static void		sigterm_handler(int sig);
 static void		unquote(char *dst, const char *src, size_t dstsize)
-			    __attribute__((nonnull(1,2)));
+			    _CUPS_NONNULL((1,2));
 
 
 /*
@@ -1256,6 +1256,13 @@ query_callback(
   {
     strlcat(make_and_model, " ", sizeof(make_and_model));
     strlcat(make_and_model, model, sizeof(make_and_model));
+
+    if (!_cups_strncasecmp(make_and_model, "EPSON EPSON ", 12))
+      _cups_strcpy(make_and_model, make_and_model + 6);
+    else if (!_cups_strncasecmp(make_and_model, "HP HP ", 6))
+      _cups_strcpy(make_and_model, make_and_model + 3);
+    else if (!_cups_strncasecmp(make_and_model, "Lexmark International Lexmark ", 30))
+      _cups_strcpy(make_and_model, make_and_model + 22);
 
     device->make_and_model = strdup(make_and_model);
   }

@@ -1,7 +1,7 @@
 /*
  * ipptool command for CUPS.
  *
- * Copyright 2007-2017 by Apple Inc.
+ * Copyright 2007-2018 by Apple Inc.
  * Copyright 1997-2007 by Easy Software Products.
  *
  * These coded instructions, statements, and computer programs are the
@@ -21,7 +21,7 @@
 #include <cups/file-private.h>
 #include <regex.h>
 #include <sys/stat.h>
-#ifdef WIN32
+#ifdef _WIN32
 #  include <windows.h>
 #  ifndef R_OK
 #    define R_OK 0
@@ -29,7 +29,7 @@
 #else
 #  include <signal.h>
 #  include <termios.h>
-#endif /* WIN32 */
+#endif /* _WIN32 */
 #ifndef O_BINARY
 #  define O_BINARY 0
 #endif /* !O_BINARY */
@@ -152,11 +152,11 @@ static int	PasswordTries = 0;	/* Number of tries with password */
  * Local functions...
  */
 
-static void	add_stringf(cups_array_t *a, const char *s, ...) __attribute__ ((__format__ (__printf__, 2, 3)));
+static void	add_stringf(cups_array_t *a, const char *s, ...) _CUPS_FORMAT(2, 3);
 static int      compare_uris(const char *a, const char *b);
 static int	compare_vars(_cups_var_t *a, _cups_var_t *b);
 static int	do_tests(cups_file_t *outfile, _cups_vars_t *vars, const char *testfile);
-static void	expand_variables(_cups_vars_t *vars, char *dst, const char *src, size_t dstsize) __attribute__((nonnull(1,2,3)));
+static void	expand_variables(_cups_vars_t *vars, char *dst, const char *src, size_t dstsize) _CUPS_NONNULL((1,2,3));
 static int      expect_matches(_cups_expect_t *expect, ipp_tag_t value_tag);
 static ipp_t	*get_collection(cups_file_t *outfile, _cups_vars_t *vars, cups_file_t *fp, int *linenum);
 static char	*get_filename(const char *testfile, char *dst, const char *src, size_t dstsize);
@@ -168,17 +168,17 @@ static const char *password_cb(const char *prompt);
 static void	pause_message(const char *message);
 static void	print_attr(cups_file_t *outfile, int format, ipp_attribute_t *attr, ipp_tag_t *group);
 static void	print_csv(cups_file_t *outfile, ipp_attribute_t *attr, int num_displayed, char **displayed, size_t *widths);
-static void	print_fatal_error(cups_file_t *outfile, const char *s, ...) __attribute__ ((__format__ (__printf__, 2, 3)));
+static void	print_fatal_error(cups_file_t *outfile, const char *s, ...) _CUPS_FORMAT(2, 3);
 static void	print_line(cups_file_t *outfile, ipp_attribute_t *attr, int num_displayed, char **displayed, size_t *widths);
 static void	print_xml_header(cups_file_t *outfile);
 static void	print_xml_string(cups_file_t *outfile, const char *element, const char *s);
 static void	print_xml_trailer(cups_file_t *outfile, int success, const char *message);
 static void	set_variable(cups_file_t *outfile, _cups_vars_t *vars, const char *name, const char *value);
-#ifndef WIN32
+#ifndef _WIN32
 static void	sigterm_handler(int sig);
-#endif /* WIN32 */
+#endif /* _WIN32 */
 static int	timeout_cb(http_t *http, void *user_data);
-static void	usage(void) __attribute__((noreturn));
+static void	usage(void) _CUPS_NORETURN;
 static int	validate_attr(cups_file_t *outfile, cups_array_t *errors, ipp_attribute_t *attr);
 static const char *with_flags_string(int flags);
 static int      with_value(cups_file_t *outfile, cups_array_t *errors, char *value, int flags, ipp_attribute_t *attr, char *matchbuf, size_t matchlen);
@@ -213,14 +213,14 @@ main(int  argc,				/* I - Number of command-line args */
 					/* Global data */
 
 
-#ifndef WIN32
+#ifndef _WIN32
  /*
   * Catch SIGINT and SIGTERM...
   */
 
   signal(SIGINT, sigterm_handler);
   signal(SIGTERM, sigterm_handler);
-#endif /* !WIN32 */
+#endif /* !_WIN32 */
 
  /*
   * Initialize the locale and variables...
@@ -432,9 +432,9 @@ main(int  argc,				/* I - Number of command-line args */
 
 		snprintf(filename, sizeof(filename), "%s.gz", argv[i]);
                 if (access(filename, 0) && filename[0] != '/'
-#ifdef WIN32
+#ifdef _WIN32
                     && (!isalpha(filename[0] & 255) || filename[1] != ':')
-#endif /* WIN32 */
+#endif /* _WIN32 */
                     )
 		{
 		  snprintf(filename, sizeof(filename), "%s/ipptool/%s",
@@ -650,9 +650,9 @@ main(int  argc,				/* I - Number of command-line args */
       }
 
       if (access(argv[i], 0) && argv[i][0] != '/'
-#ifdef WIN32
+#ifdef _WIN32
           && (!isalpha(argv[i][0] & 255) || argv[i][1] != ':')
-#endif /* WIN32 */
+#endif /* _WIN32 */
           )
       {
         snprintf(testname, sizeof(testname), "%s/ipptool/%s", cg->cups_datadir,
@@ -2757,11 +2757,11 @@ do_tests(cups_file_t  *outfile,		/* I - Output file */
 	  }
 
 	  if (!Cancel && status == HTTP_STATUS_ERROR && http->error != EINVAL &&
-#ifdef WIN32
+#ifdef _WIN32
 	      http->error != WSAETIMEDOUT)
 #else
 	      http->error != ETIMEDOUT)
-#endif /* WIN32 */
+#endif /* _WIN32 */
 	  {
 	    if (httpReconnect2(http, 30000, NULL))
 	      prev_pass = 0;
@@ -2784,11 +2784,11 @@ do_tests(cups_file_t  *outfile,		/* I - Output file */
       }
 
       if (!Cancel && status == HTTP_STATUS_ERROR && http->error != EINVAL &&
-#ifdef WIN32
+#ifdef _WIN32
 	  http->error != WSAETIMEDOUT)
 #else
 	  http->error != ETIMEDOUT)
-#endif /* WIN32 */
+#endif /* _WIN32 */
       {
 	if (httpReconnect2(http, 30000, NULL))
 	  prev_pass = 0;
@@ -4056,9 +4056,9 @@ get_filename(const char *testfile,	/* I - Current test file */
       *dstptr = '\0';
   }
   else if (*src == '/' || !strchr(testfile, '/')
-#ifdef WIN32
+#ifdef _WIN32
            || (isalpha(*src & 255) && src[1] == ':')
-#endif /* WIN32 */
+#endif /* _WIN32 */
            )
   {
    /*
@@ -4353,7 +4353,7 @@ password_cb(const char *prompt)		/* I - Prompt (unused) */
 static void
 pause_message(const char *message)	/* I - Message */
 {
-#ifdef WIN32
+#ifdef _WIN32
   HANDLE	tty;			/* Console handle */
   DWORD		mode;			/* Console mode */
   char		key;			/* Key press */
@@ -4401,7 +4401,7 @@ pause_message(const char *message)	/* I - Message */
     close(tty);
     return;
   }
-#endif /* WIN32 */
+#endif /* _WIN32 */
 
  /*
   * Display the prompt...
@@ -4409,7 +4409,7 @@ pause_message(const char *message)	/* I - Message */
 
   cupsFilePrintf(cupsFileStdout(), "%s\n---- PRESS ANY KEY ----", message);
 
-#ifdef WIN32
+#ifdef _WIN32
  /*
   * Read a key...
   */
@@ -4435,7 +4435,7 @@ pause_message(const char *message)	/* I - Message */
 
   tcsetattr(tty, TCSAFLUSH, &original);
   close(tty);
-#endif /* WIN32 */
+#endif /* _WIN32 */
 
  /*
   * Erase the "press any key" prompt...
@@ -4997,7 +4997,7 @@ set_variable(cups_file_t  *outfile,	/* I - Output file */
 }
 
 
-#ifndef WIN32
+#ifndef _WIN32
 /*
  * 'sigterm_handler()' - Handle SIGINT and SIGTERM.
  */
@@ -5012,7 +5012,7 @@ sigterm_handler(int sig)		/* I - Signal number (unused) */
   signal(SIGINT, SIG_DFL);
   signal(SIGTERM, SIG_DFL);
 }
-#endif /* !WIN32 */
+#endif /* !_WIN32 */
 
 
 /*
