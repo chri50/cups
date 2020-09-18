@@ -2,11 +2,14 @@
  * "cupsaccept", "cupsdisable", "cupsenable", and "cupsreject" commands for
  * CUPS.
  *
- * Copyright © 2007-2018 by Apple Inc.
- * Copyright © 1997-2006 by Easy Software Products.
+ * Copyright 2007-2017 by Apple Inc.
+ * Copyright 1997-2006 by Easy Software Products.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more
- * information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -14,13 +17,6 @@
  */
 
 #include <cups/cups-private.h>
-
-
-/*
- * Local functions...
- */
-
-static void	usage(const char *command) _CUPS_NORETURN;
 
 
 /*
@@ -54,13 +50,13 @@ main(int  argc,				/* I - Number of command-line arguments */
 
   cancel = 0;
 
-  if (!strcmp(command, "cupsaccept"))
+  if (!strcmp(command, "cupsaccept") || !strcmp(command, "accept"))
     op = CUPS_ACCEPT_JOBS;
-  else if (!strcmp(command, "cupsreject"))
+  else if (!strcmp(command, "cupsreject") || !strcmp(command, "reject"))
     op = CUPS_REJECT_JOBS;
-  else if (!strcmp(command, "cupsdisable"))
+  else if (!strcmp(command, "cupsdisable") || !strcmp(command, "disable"))
     op = IPP_PAUSE_PRINTER;
-  else if (!strcmp(command, "cupsenable"))
+  else if (!strcmp(command, "cupsenable") || !strcmp(command, "enable"))
     op = IPP_RESUME_PRINTER;
   else
   {
@@ -76,9 +72,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 
   for (i = 1; i < argc; i ++)
   {
-    if (!strcmp(argv[i], "--help"))
-      usage(command);
-    else if (!strcmp(argv[i], "--hold"))
+    if (!strcmp(argv[i], "--hold"))
       op = IPP_HOLD_NEW_JOBS;
     else if (!strcmp(argv[i], "--release"))
       op = IPP_RELEASE_HELD_NEW_JOBS;
@@ -108,7 +102,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 		if (i >= argc)
 		{
 		  _cupsLangPrintf(stderr, _("%s: Error - expected username after \"-U\" option."), command);
-		  usage(command);
+		  return (1);
 		}
 
 		cupsSetUser(argv[i]);
@@ -131,7 +125,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 		if (i >= argc)
 		{
 		  _cupsLangPrintf(stderr, _("%s: Error - expected hostname after \"-h\" option."), command);
-		  usage(command);
+		  return (1);
 		}
 
 		cupsSetServer(argv[i]);
@@ -150,7 +144,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 		if (i >= argc)
 		{
 		  _cupsLangPrintf(stderr, _("%s: Error - expected reason text after \"-r\" option."), command);
-		  usage(command);
+		  return (1);
 		}
 
 		reason = argv[i];
@@ -159,7 +153,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 
 	  default :
 	      _cupsLangPrintf(stderr, _("%s: Error - unknown option \"%c\"."), command, *opt);
-	      usage(command);
+	      return (1);
 	}
       }
     }
@@ -229,26 +223,4 @@ main(int  argc,				/* I - Number of command-line arguments */
   }
 
   return (0);
-}
-
-
-/*
- * 'usage()' - Show program usage and exit.
- */
-
-static void
-usage(const char *command)		/* I - Command name */
-{
-  _cupsLangPrintf(stdout, _("Usage: %s [options] destination(s)"), command);
-  _cupsLangPuts(stdout, _("Options:"));
-  _cupsLangPuts(stdout, _("-E                      Encrypt the connection to the server"));
-  _cupsLangPuts(stdout, _("-h server[:port]        Connect to the named server and port"));
-  _cupsLangPuts(stdout, _("-r reason               Specify a reason message that others can see"));
-  _cupsLangPuts(stdout, _("-U username             Specify the username to use for authentication"));
-  if (!strcmp(command, "cupsdisable"))
-    _cupsLangPuts(stdout, _("--hold                  Hold new jobs"));
-  if (!strcmp(command, "cupsenable"))
-    _cupsLangPuts(stdout, _("--release               Release previously held jobs"));
-
-  exit(1);
 }

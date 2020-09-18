@@ -1,13 +1,18 @@
 /*
  * PPD code emission routines for CUPS.
  *
- * Copyright 2007-2019 by Apple Inc.
+ * Copyright 2007-2015 by Apple Inc.
  * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more
- * information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
  *
  * PostScript is a trademark of Adobe Systems, Inc.
+ *
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
@@ -15,7 +20,6 @@
  */
 
 #include "cups-private.h"
-#include "debug-internal.h"
 #include "ppd.h"
 #if defined(_WIN32) || defined(__EMX__)
 #  include <io.h>
@@ -441,9 +445,6 @@ ppdEmitJCL(ppd_file_t *ppd,		/* I - PPD file record */
     * Clean up the job title...
     */
 
-    if (!title)
-      title = "Unknown";
-
     if ((ptr = strrchr(title, '/')) != NULL)
     {
      /*
@@ -492,9 +493,6 @@ ppdEmitJCL(ppd_file_t *ppd,		/* I - PPD file record */
     * Generate the display message, truncating at 32 characters + nul to avoid
     * issues with some printer's PJL implementations...
     */
-
-    if (!user)
-      user = "anonymous";
 
     snprintf(displaymsg, sizeof(displaymsg), "%d %s %s", job_id, user, temp);
 
@@ -838,7 +836,7 @@ ppdEmitString(ppd_file_t    *ppd,	/* I - PPD file record */
 	    *bufptr++ = *cptr++;
 	}
       }
-      else if (choices[i]->code)
+      else
       {
        /*
         * Otherwise just copy the option code directly...
@@ -1071,7 +1069,7 @@ ppdEmitString(ppd_file_t    *ppd,	/* I - PPD file record */
       DEBUG_printf(("2ppdEmitString: Offset in string is %d...",
                     (int)(bufptr - buffer)));
     }
-    else if (choices[i]->code)
+    else
     {
       strlcpy(bufptr, choices[i]->code, (size_t)(bufend - bufptr + 1));
       bufptr += strlen(bufptr);

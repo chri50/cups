@@ -1,11 +1,14 @@
 /*
  * Configuration file for CUPS on Windows.
  *
- * Copyright © 2007-2019 by Apple Inc.
+ * Copyright © 2007-2018 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more
- * information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
  */
 
 #ifndef _CUPS_CONFIG_H_
@@ -41,8 +44,10 @@
 #define open		_open
 #define read	        _read
 #define rmdir		_rmdir
+#define snprintf 	_snprintf
 #define strdup		_strdup
 #define unlink		_unlink
+#define vsnprintf 	_vsnprintf
 #define write		_write
 
 
@@ -89,8 +94,8 @@ typedef unsigned long useconds_t;
  * Version of software...
  */
 
-#define CUPS_SVERSION "CUPS v2.3.0"
-#define CUPS_MINIMAL "CUPS/2.3.0"
+#define CUPS_SVERSION "CUPS v2.2.11"
+#define CUPS_MINIMAL "CUPS/2.2.11"
 
 
 /*
@@ -322,9 +327,8 @@ typedef unsigned long useconds_t;
  * Do we have the (v)snprintf() functions?
  */
 
-/* Windows snprintf/vsnprintf are non-conforming */
-/* #undef HAVE_SNPRINTF */
-/* #undef HAVE_VSNPRINTF */
+#define HAVE_SNPRINTF 1
+#define HAVE_VSNPRINTF 1
 
 
 /*
@@ -394,9 +398,21 @@ typedef unsigned long useconds_t;
  */
 
 /* #undef HAVE_AUTHORIZATION_H */
+/* #undef HAVE_SECBASEPRIV_H */
 /* #undef HAVE_SECCERTIFICATE_H */
+/* #undef HAVE_SECIDENTITYSEARCHPRIV_H */
 /* #undef HAVE_SECITEM_H */
+/* #undef HAVE_SECITEMPRIV_H */
 /* #undef HAVE_SECPOLICY_H */
+/* #undef HAVE_SECPOLICYPRIV_H */
+/* #undef HAVE_SECURETRANSPORTPRIV_H */
+
+
+/*
+ * Do we have the cssmErrorString function?
+ */
+
+/* #undef HAVE_CSSMERRORSTRING */
 
 
 /*
@@ -404,6 +420,20 @@ typedef unsigned long useconds_t;
  */
 
 /* #undef HAVE_SECGENERATESELFSIGNEDCERTIFICATE */
+
+
+/*
+ * Do we have the SecKeychainOpen function?
+ */
+
+/* #undef HAVE_SECKEYCHAINOPEN */
+
+
+/*
+ * Do we have (a working) SSLSetEnabledCiphers function?
+ */
+
+#define HAVE_SSLSETENABLEDCIPHERS 1
 
 
 /*
@@ -548,10 +578,26 @@ typedef unsigned long useconds_t;
 
 
 /*
- * Do we have CoreFoundation public headers?
+ * Various scripting languages...
+ */
+
+/* #undef HAVE_JAVA */
+#define CUPS_JAVA	""
+/* #undef HAVE_PERL */
+#define CUPS_PERL	""
+/* #undef HAVE_PHP */
+#define CUPS_PHP	""
+/* #undef HAVE_PYTHON */
+#define CUPS_PYTHON	""
+
+
+/*
+ * Do we have CoreFoundation public and private headers?
  */
 
 /* #undef HAVE_COREFOUNDATION_H */
+/* #undef HAVE_CFPRIV_H */
+/* #undef HAVE_CFBUNDLEPRIV_H */
 
 
 /*
@@ -580,6 +626,7 @@ typedef unsigned long useconds_t;
  */
 
 /* #undef HAVE_MEMBERSHIP_H */
+/* #undef HAVE_MEMBERSHIPPRIV_H */
 /* #undef HAVE_MBR_UID_TO_UUID */
 
 
@@ -732,6 +779,14 @@ typedef unsigned long useconds_t;
  */
 
 /* #undef HAVE_XPC */
+/* #undef HAVE_XPC_PRIVATE_H */
+
+
+/*
+ * Do we have Mini-XML?
+ */
+
+/* #undef HAVE_MXML_H */
 
 
 /*

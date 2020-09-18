@@ -4,8 +4,13 @@
  * Copyright © 2007-2018 by Apple Inc.
  * Copyright © 1997-2006 by Easy Software Products.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more
- * information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
+ *
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
@@ -14,7 +19,6 @@
 
 #include "cups-private.h"
 #include "ppd-private.h"
-#include "debug-internal.h"
 #include <fcntl.h>
 #include <sys/stat.h>
 #if defined(_WIN32) || defined(__EMX__)
@@ -151,21 +155,18 @@ cupsGetPPD3(http_t     *http,		/* I  - HTTP connection or @code CUPS_HTTP_DEFAUL
 
   if (!name)
   {
-    DEBUG_puts("2cupsGetPPD3: No printer name, returning NULL.");
     _cupsSetError(IPP_STATUS_ERROR_INTERNAL, _("No printer name"), 1);
     return (HTTP_STATUS_NOT_ACCEPTABLE);
   }
 
   if (!modtime)
   {
-    DEBUG_puts("2cupsGetPPD3: No modtime, returning NULL.");
     _cupsSetError(IPP_STATUS_ERROR_INTERNAL, _("No modification time"), 1);
     return (HTTP_STATUS_NOT_ACCEPTABLE);
   }
 
   if (!buffer || bufsize <= 1)
   {
-    DEBUG_puts("2cupsGetPPD3: No filename buffer, returning NULL.");
     _cupsSetError(IPP_STATUS_ERROR_INTERNAL, _("Bad filename buffer"), 1);
     return (HTTP_STATUS_NOT_ACCEPTABLE);
   }
@@ -200,8 +201,6 @@ cupsGetPPD3(http_t     *http,		/* I  - HTTP connection or @code CUPS_HTTP_DEFAUL
 
       if (buffer[0])
       {
-        DEBUG_printf(("2cupsGetPPD3: Using filename \"%s\".", buffer));
-
         unlink(buffer);
 
 	if (symlink(ppdname, buffer) && errno != EEXIST)
@@ -216,7 +215,6 @@ cupsGetPPD3(http_t     *http,		/* I  - HTTP connection or @code CUPS_HTTP_DEFAUL
         int		tries;		/* Number of tries */
         const char	*tmpdir;	/* TMPDIR environment variable */
 	struct timeval	curtime;	/* Current time */
-
 
 #ifdef __APPLE__
        /*
@@ -250,8 +248,6 @@ cupsGetPPD3(http_t     *http,		/* I  - HTTP connection or @code CUPS_HTTP_DEFAUL
 	  tmpdir = "/tmp";
 #endif /* __APPLE__ */
 
-        DEBUG_printf(("2cupsGetPPD3: tmpdir=\"%s\".", tmpdir));
-
        /*
 	* Make the temporary name using the specified directory...
 	*/
@@ -281,16 +277,12 @@ cupsGetPPD3(http_t     *http,		/* I  - HTTP connection or @code CUPS_HTTP_DEFAUL
 	  if (!symlink(ppdname, buffer))
 	    break;
 
-	  DEBUG_printf(("2cupsGetPPD3: Symlink \"%s\" to \"%s\" failed: %s", ppdname, buffer, strerror(errno)));
-
 	  tries ++;
 	}
 	while (tries < 1000);
 
         if (tries >= 1000)
 	{
-	  DEBUG_puts("2cupsGetPPD3: Unable to symlink after 1000 tries, returning error.");
-
           _cupsSetError(IPP_STATUS_ERROR_INTERNAL, NULL, 0);
 
 	  return (HTTP_STATUS_SERVER_ERROR);
@@ -298,13 +290,9 @@ cupsGetPPD3(http_t     *http,		/* I  - HTTP connection or @code CUPS_HTTP_DEFAUL
       }
 
       if (*modtime >= ppdinfo.st_mtime)
-      {
-        DEBUG_printf(("2cupsGetPPD3: Returning not-modified, filename=\"%s\".", buffer));
         return (HTTP_STATUS_NOT_MODIFIED);
-      }
       else
       {
-        DEBUG_printf(("2cupsGetPPD3: Returning ok, filename=\"%s\", modtime=%ld.", buffer, (long)ppdinfo.st_mtime));
         *modtime = ppdinfo.st_mtime;
 	return (HTTP_STATUS_OK);
       }
@@ -316,24 +304,16 @@ cupsGetPPD3(http_t     *http,		/* I  - HTTP connection or @code CUPS_HTTP_DEFAUL
   * Try finding a printer URI for this printer...
   */
 
-  DEBUG_puts("2cupsGetPPD3: Unable to access local file, copying...");
-
   if (!http)
-  {
     if ((http = _cupsConnect()) == NULL)
-    {
-      DEBUG_puts("2cupsGetPPD3: Unable to connect to scheduler.");
       return (HTTP_STATUS_SERVICE_UNAVAILABLE);
-    }
-  }
 
-  if (!cups_get_printer_uri(http, name, hostname, sizeof(hostname), &port, resource, sizeof(resource), 0))
-  {
-    DEBUG_puts("2cupsGetPPD3: Unable to get printer URI.");
+  if (!cups_get_printer_uri(http, name, hostname, sizeof(hostname), &port,
+                            resource, sizeof(resource), 0))
     return (HTTP_STATUS_NOT_FOUND);
-  }
 
-  DEBUG_printf(("2cupsGetPPD3: Printer hostname=\"%s\", port=%d", hostname, port));
+  DEBUG_printf(("2cupsGetPPD3: Printer hostname=\"%s\", port=%d", hostname,
+                port));
 
   if (cupsServer()[0] == '/' && !_cups_strcasecmp(hostname, "localhost") && port == ippPort())
   {
@@ -377,7 +357,7 @@ cupsGetPPD3(http_t     *http,		/* I  - HTTP connection or @code CUPS_HTTP_DEFAUL
   else if ((http2 = httpConnect2(hostname, port, NULL, AF_UNSPEC,
 				 cupsEncryption(), 1, 30000, NULL)) == NULL)
   {
-    DEBUG_puts("2cupsGetPPD3: Unable to connect to server");
+    DEBUG_puts("1cupsGetPPD3: Unable to connect to server");
 
     return (HTTP_STATUS_SERVICE_UNAVAILABLE);
   }
@@ -449,7 +429,7 @@ cupsGetPPD3(http_t     *http,		/* I  - HTTP connection or @code CUPS_HTTP_DEFAUL
   * Return the PPD file...
   */
 
-  DEBUG_printf(("2cupsGetPPD3: Returning status %d", status));
+  DEBUG_printf(("1cupsGetPPD3: Returning status %d", status));
 
   return (status);
 }

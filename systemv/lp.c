@@ -1,11 +1,14 @@
 /*
  * "lp" command for CUPS.
  *
- * Copyright © 2007-2018 by Apple Inc.
- * Copyright © 1997-2007 by Easy Software Products.
+ * Copyright 2007-2017 by Apple Inc.
+ * Copyright 1997-2007 by Easy Software Products.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more
- * information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -19,9 +22,9 @@
  * Local functions.
  */
 
-static int	restart_job(const char *command, int job_id);
-static int	set_job_attrs(const char *command, int job_id, int num_options, cups_option_t *options);
-static void	usage(void) _CUPS_NORETURN;
+int	restart_job(const char *command, int job_id);
+int	set_job_attrs(const char *command, int job_id, int num_options,
+	              cups_option_t *options);
 
 
 /*
@@ -83,9 +86,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 
   for (i = 1; i < argc; i ++)
   {
-    if (!strcmp(argv[i], "--help"))
-      usage();
-    else if (argv[i][0] == '-' && argv[i][1] && !end_options)
+    if (argv[i][0] == '-' && argv[i][1] && !end_options)
     {
       for (opt = argv[i] + 1; *opt; opt ++)
       {
@@ -111,7 +112,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 		if (i >= argc)
 		{
 		  _cupsLangPrintf(stderr, _("%s: Error - expected username after \"-U\" option."), argv[0]);
-		  usage();
+		  return (1);
 		}
 
 		cupsSetUser(argv[i]);
@@ -134,7 +135,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 		if (i >= argc)
 		{
 		  _cupsLangPrintf(stderr, _("%s: Error - expected destination after \"-d\" option."), argv[0]);
-		  usage();
+		  return (1);
 		}
 
 		printer = argv[i];
@@ -175,7 +176,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 		if (i >= argc)
 		{
 		  _cupsLangPrintf(stderr, _("%s: Error - expected form after \"-f\" option."), argv[0]);
-		  usage();
+		  return (1);
 		}
 	      }
 
@@ -195,7 +196,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 		if (i >= argc)
 		{
 		  _cupsLangPrintf(stderr, _("%s: Error - expected hostname after \"-h\" option."), argv[0]);
-		  usage();
+		  return (1);
 		}
 
 		cupsSetServer(argv[i]);
@@ -215,7 +216,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 		if (i >= argc)
 		{
 		  _cupsLangPrintf(stderr, _("%s: Expected job ID after \"-i\" option."), argv[0]);
-		  usage();
+		  return (1);
 		}
 
 		val = argv[i];
@@ -268,7 +269,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 		if (i >= argc)
 		{
 		  _cupsLangPrintf(stderr, _("%s: Error - expected copies after \"-n\" option."), argv[0]);
-		  usage();
+		  return (1);
 		}
 
 		num_copies = atoi(argv[i]);
@@ -298,7 +299,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 		if (i >= argc)
 		{
 		  _cupsLangPrintf(stderr, _("%s: Error - expected option=value after \"-o\" option."), argv[0]);
-		  usage();
+		  return (1);
 		}
 
 		num_options = cupsParseOptions(argv[i], num_options, &options);
@@ -319,7 +320,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 		if ((i + 1) >= argc)
 		{
 		  _cupsLangPrintf(stderr, _("%s: Error - expected priority after \"-%c\" option."), argv[0], *opt);
-		  usage();
+		  return (1);
 		}
 
 		i ++;
@@ -364,7 +365,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 		if (i >= argc)
 		{
 		  _cupsLangPrintf(stderr, _("%s: Error - expected title after \"-t\" option."), argv[0]);
-		  usage();
+		  return (1);
 		}
 
 		title = argv[i];
@@ -383,7 +384,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 		if (i >= argc)
 		{
 		  _cupsLangPrintf(stderr, _("%s: Error - expected mode list after \"-y\" option."), argv[0]);
-		  usage();
+		  return (1);
 		}
 	      }
 
@@ -403,7 +404,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 		if (i >= argc)
 		{
 		  _cupsLangPrintf(stderr, _("%s: Error - expected hold name after \"-H\" option."), argv[0]);
-		  usage();
+		  return (1);
 		}
 
 		val = argv[i];
@@ -446,7 +447,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 		if (i >= argc)
 		{
 		  _cupsLangPrintf(stderr, _("%s: Error - expected page list after \"-P\" option."), argv[0]);
-		  usage();
+		  return (1);
 		}
 
 		val = argv[i];
@@ -467,7 +468,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 		if (i >= argc)
 		{
 		  _cupsLangPrintf(stderr, _("%s: Error - expected character set after \"-S\" option."), argv[0]);
-		  usage();
+		  return (1);
 		}
 	      }
 
@@ -486,7 +487,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 		if (i >= argc)
 		{
 		  _cupsLangPrintf(stderr, _("%s: Error - expected content type after \"-T\" option."), argv[0]);
-		  usage();
+		  return (1);
 		}
 	      }
 
@@ -497,7 +498,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 	      if (opt[1] != '\0')
 	      {
 		_cupsLangPrintf(stderr, _("%s: Error - unknown option \"%s\"."), argv[0], argv[i]);
-		usage();
+		return (1);
 	      }
 
 	      end_options = 1;
@@ -505,7 +506,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 
 	  default :
 	      _cupsLangPrintf(stderr, _("%s: Error - unknown option \"%c\"."), argv[0], *opt);
-	      usage();
+	      return (1);
 	}
       }
     }
@@ -650,7 +651,7 @@ main(int  argc,				/* I - Number of command-line arguments */
  * 'restart_job()' - Restart a job.
  */
 
-static int				/* O - Exit status */
+int					/* O - Exit status */
 restart_job(const char *command,	/* I - Command name */
             int        job_id)		/* I - Job ID */
 {
@@ -692,12 +693,11 @@ restart_job(const char *command,	/* I - Command name */
  * 'set_job_attrs()' - Set job attributes.
  */
 
-static int				/* O - Exit status */
-set_job_attrs(
-    const char    *command,		/* I - Command name */
-    int           job_id,		/* I - Job ID */
-    int           num_options,		/* I - Number of options */
-    cups_option_t *options)		/* I - Options */
+int					/* O - Exit status */
+set_job_attrs(const char    *command,	/* I - Command name */
+              int           job_id,	/* I - Job ID */
+              int           num_options,/* I - Number of options */
+	      cups_option_t *options)	/* I - Options */
 {
   ipp_t		*request;		/* IPP request */
   char		uri[HTTP_MAX_URI];	/* URI for job */
@@ -735,48 +735,4 @@ set_job_attrs(
   }
 
   return (0);
-}
-
-
-/*
- * 'usage()' - Show program usage and exit.
- */
-
-static void
-usage(void)
-{
-  _cupsLangPuts(stdout, _("Usage: lp [options] [--] [file(s)]\n"
-                          "       lp [options] -i id"));
-  _cupsLangPuts(stdout, _("Options:"));
-  _cupsLangPuts(stdout, _("-c                      Make a copy of the print file(s)"));
-  _cupsLangPuts(stdout, _("-E                      Encrypt the connection to the server"));
-  _cupsLangPuts(stdout, _("-h server[:port]        Connect to the named server and port"));
-  _cupsLangPuts(stdout, _("-H HH:MM                Hold the job until the specified UTC time"));
-  _cupsLangPuts(stdout, _("-H hold                 Hold the job until released/resumed"));
-  _cupsLangPuts(stdout, _("-H immediate            Print the job as soon as possible"));
-  _cupsLangPuts(stdout, _("-H restart              Reprint the job"));
-  _cupsLangPuts(stdout, _("-H resume               Resume a held job"));
-  _cupsLangPuts(stdout, _("-i id                   Specify an existing job ID to modify"));
-  _cupsLangPuts(stdout, _("-m                      Send an email notification when the job completes"));
-  _cupsLangPuts(stdout, _("-n num-copies           Specify the number of copies to print"));
-  _cupsLangPuts(stdout, _("-o option[=value]       Specify a printer-specific option"));
-  _cupsLangPuts(stdout, _("-o job-sheets=standard  Print a banner page with the job"));
-  _cupsLangPuts(stdout, _("-o media=size           Specify the media size to use"));
-  _cupsLangPuts(stdout, _("-o number-up=N          Specify that input pages should be printed N-up (1, 2, 4, 6, 9, and 16 are supported)"));
-  _cupsLangPuts(stdout, _("-o orientation-requested=N\n"
-                          "                        Specify portrait (3) or landscape (4) orientation"));
-  _cupsLangPuts(stdout, _("-o print-quality=N      Specify the print quality - draft (3), normal (4), or best (5)"));
-  _cupsLangPuts(stdout, _("-o sides=one-sided      Specify 1-sided printing"));
-  _cupsLangPuts(stdout, _("-o sides=two-sided-long-edge\n"
-                          "                        Specify 2-sided portrait printing"));
-  _cupsLangPuts(stdout, _("-o sides=two-sided-short-edge\n"
-                          "                        Specify 2-sided landscape printing"));
-  _cupsLangPuts(stdout, _("-P page-list            Specify a list of pages to print"));
-  _cupsLangPuts(stdout, _("-q priority             Specify the priority from low (1) to high (100)"));
-  _cupsLangPuts(stdout, _("-s                      Be silent"));
-  _cupsLangPuts(stdout, _("-t title                Specify the job title"));
-  _cupsLangPuts(stdout, _("-U username             Specify the username to use for authentication"));
-
-
-  exit(1);
 }

@@ -3,11 +3,14 @@
 #
 # Original version by Jason McMullan <jmcc@ontv.com>.
 #
-# Copyright © 2007-2019 by Apple Inc.
-# Copyright © 1999-2007 by Easy Software Products, all rights reserved.
+# Copyright 2007-2017 by Apple Inc.
+# Copyright 1999-2007 by Easy Software Products, all rights reserved.
 #
-# Licensed under Apache License v2.0.  See the file "LICENSE" for more
-# information.
+# These coded instructions, statements, and computer programs are the
+# property of Apple Inc. and are protected by Federal copyright
+# law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+# which should have been included with this file.  If this file is
+# file is missing or damaged, see the license at "http://www.cups.org/".
 #
 
 # Conditional build options (--with name/--without name):
@@ -40,12 +43,12 @@
 
 Summary: CUPS
 Name: cups
-Version: 2.3rc1
+Version: 2.2.11
 Release: 0
 Epoch: 1
 License: GPL
 Group: System Environment/Daemons
-Source: https://github.com/apple/cups/releases/download/v2.3rc1/cups-2.3rc1-source.tar.gz
+Source: https://github.com/apple/cups/releases/download/v2.2.11/cups-2.2.11-source.tar.gz
 Url: http://www.cups.org
 Packager: Anonymous <anonymous@example.com>
 Vendor: Example Corp
@@ -215,8 +218,8 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 /usr/bin/cancel
+/usr/bin/cupstestdsc
 /usr/bin/cupstestppd
-/usr/bin/ippeveprinter
 /usr/bin/ipptool
 /usr/bin/lp*
 %dir /usr/lib/cups
@@ -236,8 +239,6 @@ rm -rf $RPM_BUILD_ROOT
 /usr/lib/cups/backend/usb
 %dir /usr/lib/cups/cgi-bin
 /usr/lib/cups/cgi-bin/*
-%dir /usr/lib/cups/command
-/usr/lib/cups/command/*
 %dir /usr/lib/cups/daemon
 /usr/lib/cups/daemon/cups-deviced
 /usr/lib/cups/daemon/cups-driverd
@@ -273,10 +274,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/doc/cups/*.*
 %dir /usr/share/doc/cups/help
 /usr/share/doc/cups/help/accounting.html
-/usr/share/doc/cups/help/admin.html
 /usr/share/doc/cups/help/cgi.html
 /usr/share/doc/cups/help/encryption.html
-/usr/share/doc/cups/help/firewalls.html
 /usr/share/doc/cups/help/glossary.html
 /usr/share/doc/cups/help/kerberos.html
 /usr/share/doc/cups/help/license.html
@@ -315,8 +314,6 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/locale/cs/cups_cs.po
 %dir /usr/share/locale/de
 /usr/share/locale/de/cups_de.po
-%dir /usr/share/locale/en
-/usr/share/locale/en/cups_en.po
 %dir /usr/share/locale/es
 /usr/share/locale/es/cups_es.po
 %dir /usr/share/locale/fr
@@ -335,8 +332,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir /usr/share/man/man1
 /usr/share/man/man1/cancel.1.gz
 /usr/share/man/man1/cups.1.gz
+/usr/share/man/man1/cupstestdsc.1.gz
 /usr/share/man/man1/cupstestppd.1.gz
-/usr/share/man/man1/ippeveprinter.1.gz
 %if %{?_with_dnssd:1}%{!?_with_dnssd:0}
 # DNS-SD
 /usr/share/man/man1/ippfind.1.gz
@@ -353,14 +350,13 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/man/man5/cupsd-logs.5.gz
 /usr/share/man/man5/ipptoolfile.5.gz
 /usr/share/man/man5/mime.*.5.gz
-%dir /usr/share/man/man7
-/usr/share/man/man7/ippevepcl.7.gz
-/usr/share/man/man7/ippeveps.7.gz
 %dir /usr/share/man/man8
+/usr/share/man/man8/accept.8.gz
 /usr/share/man/man8/cups-deviced.8.gz
 /usr/share/man/man8/cups-driverd.8.gz
 /usr/share/man/man8/cups-exec.8.gz
 /usr/share/man/man8/cups-snmp.8.gz
+/usr/share/man/man8/cupsaddsmb.8.gz
 /usr/share/man/man8/cupsaccept.8.gz
 /usr/share/man/man8/cupsctl.8.gz
 /usr/share/man/man8/cupsfilter.8.gz
@@ -373,6 +369,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/man/man8/lpc.8.gz
 /usr/share/man/man8/lpinfo.8.gz
 /usr/share/man/man8/lpmove.8.gz
+/usr/share/man/man8/reject.8.gz
 
 %dir /var/cache/cups
 %attr(0775,root,sys) %dir /var/cache/cups/rss
@@ -411,7 +408,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %dir /usr/share/doc/cups/help
 /usr/share/doc/cups/help/api*.html
-/usr/share/doc/cups/help/cupspm.*
+/usr/share/doc/cups/help/cupspm.html
 /usr/share/doc/cups/help/postscript-driver.html
 /usr/share/doc/cups/help/ppd-compiler.html
 /usr/share/doc/cups/help/raster-driver.html

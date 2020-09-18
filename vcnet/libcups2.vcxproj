@@ -14,7 +14,6 @@
     <ProjectGuid>{CB4AA6F2-3E84-45BE-B505-95CD375E8BE3}</ProjectGuid>
     <RootNamespace>libcups2</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -25,7 +24,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -97,7 +96,7 @@
       <OutputFile>$(OutDir)libcups2.dll</OutputFile>
       <ModuleDefinitionFile>..\cups\libcups2.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(Platform)\$(Configuration)\libcups2.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>libcups2.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -168,12 +167,10 @@ xcopy /I/Y "$(TargetPath)"                                                      
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-    <ClCompile Include="..\cups\ipp-file.c" />
     <ClCompile Include="..\cups\ipp-support.c">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-    <ClCompile Include="..\cups\ipp-vars.c" />
     <ClCompile Include="..\cups\ipp.c">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -213,11 +210,6 @@ xcopy /I/Y "$(TargetPath)"                                                      
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\cups\pwg-media.c" />
-    <ClCompile Include="..\cups\raster-error.c" />
-    <ClCompile Include="..\cups\raster-interpret.c" />
-    <ClCompile Include="..\cups\raster-interstub.c" />
-    <ClCompile Include="..\cups\raster-stream.c" />
-    <ClCompile Include="..\cups\raster-stubs.c" />
     <ClCompile Include="..\cups\request.c" />
     <ClCompile Include="..\cups\snprintf.c">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -254,6 +246,7 @@ xcopy /I/Y "$(TargetPath)"                                                      
     <ClInclude Include="..\cups\adminutil.h" />
     <ClInclude Include="..\cups\array-private.h" />
     <ClInclude Include="..\cups\array.h" />
+    <ClInclude Include="..\cups\backend.h" />
     <ClInclude Include="..\cups\cups-private.h" />
     <ClInclude Include="..\cups\cups.h" />
     <ClInclude Include="..\cups\debug-private.h" />
@@ -272,8 +265,6 @@ xcopy /I/Y "$(TargetPath)"                                                      
     <ClInclude Include="..\cups\ppd.h" />
     <ClInclude Include="..\cups\pwg-private.h" />
     <ClInclude Include="..\cups\pwg.h" />
-    <ClInclude Include="..\cups\raster-private.h" />
-    <ClInclude Include="..\cups\raster.h" />
     <ClInclude Include="..\cups\string-private.h" />
     <ClInclude Include="..\cups\thread-private.h" />
     <ClInclude Include="..\cups\transcode.h" />

@@ -1,11 +1,14 @@
 /*
  * Printer routines for the CUPS scheduler.
  *
- * Copyright © 2007-2019 by Apple Inc.
- * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright 2007-2019 by Apple Inc.
+ * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more
- * information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -148,32 +151,8 @@ cupsdCreateCommonData(void)
   struct statfs		spoolinfo;	/* FS info for spool directory */
   double		spoolsize;	/* FS size */
 #endif /* HAVE_STATVFS */
-  static const char * const page_delivery[] =
-		{			/* page-delivery-supported values */
-		  "reverse-order",
-		  "same-order"
-		};
-  static const char * const print_scaling[] =
-		{			/* print-scaling-supported values */
-		  "auto",
-		  "auto-fit",
-		  "fill",
-		  "fit",
-		  "none"
-		};
-  static const int number_up[] =		/* number-up-supported values */
+  static const int nups[] =		/* number-up-supported values */
 		{ 1, 2, 4, 6, 9, 16 };
-  static const char * const number_up_layout[] =
-		{			/* number-up-layout-supported values */
-		  "btlr",
-		  "btrl",
-		  "lrbt",
-		  "lrtb",
-		  "rlbt",
-		  "rltb",
-		  "tblr",
-		  "tbrl"
-		};
   static const int orients[4] =/* orientation-requested-supported values */
 		{
 		  IPP_PORTRAIT,
@@ -314,7 +293,6 @@ cupsdCreateCommonData(void)
 		{			/* job-creation-attributes-supported */
 		  "copies",
 		  "finishings",
-		  "finishings-col",
 		  "ipp-attribute-fidelity",
 		  "job-hold-until",
 		  "job-name",
@@ -324,14 +302,11 @@ cupsdCreateCommonData(void)
 		  "media-col",
 		  "multiple-document-handling",
 		  "number-up",
-		  "number-up-layout",
-		  "orientation-requested",
 		  "output-bin",
-		  "page-delivery",
+		  "orientation-requested",
 		  "page-ranges",
 		  "print-color-mode",
 		  "print-quality",
-		  "print-scaling",
 		  "printer-resolution",
 		  "sides"
 		};
@@ -629,10 +604,7 @@ cupsdCreateCommonData(void)
 
   /* number-up-supported */
   ippAddIntegers(CommonData, IPP_TAG_PRINTER, IPP_TAG_INTEGER,
-                 "number-up-supported", sizeof(number_up) / sizeof(number_up[0]), number_up);
-
-  /* number-up-layout-supported */
-  ippAddStrings(CommonData, IPP_TAG_PRINTER, IPP_CONST_TAG(IPP_TAG_KEYWORD), "number-up-layout-supported", sizeof(number_up_layout) / sizeof(number_up_layout[0]), NULL, number_up_layout);
+                 "number-up-supported", sizeof(nups) / sizeof(nups[0]), nups);
 
   /* operations-supported */
   ippAddIntegers(CommonData, IPP_TAG_PRINTER, IPP_TAG_ENUM,
@@ -641,9 +613,6 @@ cupsdCreateCommonData(void)
   /* orientation-requested-supported */
   ippAddIntegers(CommonData, IPP_TAG_PRINTER, IPP_TAG_ENUM,
                  "orientation-requested-supported", 4, orients);
-
-  /* page-delivery-supported */
-  ippAddStrings(CommonData, IPP_TAG_PRINTER, IPP_CONST_TAG(IPP_TAG_KEYWORD), "page-delivery-supported", sizeof(page_delivery) / sizeof(page_delivery[0]), NULL, page_delivery);
 
   /* page-ranges-supported */
   ippAddBoolean(CommonData, IPP_TAG_PRINTER, "page-ranges-supported", 1);
@@ -661,9 +630,6 @@ cupsdCreateCommonData(void)
   /* pdl-override-supported */
   ippAddString(CommonData, IPP_TAG_PRINTER, IPP_TAG_KEYWORD | IPP_TAG_COPY,
                "pdl-override-supported", NULL, "attempted");
-
-  /* print-scaling-supported */
-  ippAddStrings(CommonData, IPP_TAG_PRINTER, IPP_CONST_TAG(IPP_TAG_KEYWORD), "print-scaling-supported", sizeof(print_scaling) / sizeof(print_scaling[0]), NULL, print_scaling);
 
   /* printer-get-attributes-supported */
   ippAddString(CommonData, IPP_TAG_PRINTER, IPP_CONST_TAG(IPP_TAG_KEYWORD), "printer-get-attributes-supported", NULL, "document-format");
@@ -842,7 +808,6 @@ cupsdDeletePrinter(
   cupsdClearString(&p->port_monitor);
   cupsdClearString(&p->op_policy);
   cupsdClearString(&p->error_policy);
-  cupsdClearString(&p->strings);
 
   cupsdClearString(&p->alert);
   cupsdClearString(&p->alert_description);
@@ -963,14 +928,8 @@ cupsdLoadAllPrinters(void)
     * Decode the directive...
     */
 
-    if (!_cups_strcasecmp(line, "NextPrinterId"))
-    {
-      if (value && (i = atoi(value)) > 0)
-        NextPrinterId = i;
-      else
-        cupsdLogMessage(CUPSD_LOG_ERROR, "Syntax error on line %d of printers.conf.", linenum);
-    }
-    else if (!_cups_strcasecmp(line, "<Printer") || !_cups_strcasecmp(line, "<DefaultPrinter"))
+    if (!_cups_strcasecmp(line, "<Printer") ||
+        !_cups_strcasecmp(line, "<DefaultPrinter"))
     {
      /*
       * <Printer name> or <DefaultPrinter name>
@@ -1007,21 +966,17 @@ cupsdLoadAllPrinters(void)
         * Close out the current printer...
 	*/
 
-        if (!p->printer_id)
-        {
-          p->printer_id = NextPrinterId ++;
-          cupsdMarkDirty(CUPSD_DIRTY_PRINTERS);
-	}
-
         cupsdSetPrinterAttrs(p);
 
-        if (strncmp(p->device_uri, "file:", 5) && p->state != IPP_PRINTER_STOPPED)
+        if (strncmp(p->device_uri, "file:", 5) &&
+	    p->state != IPP_PRINTER_STOPPED)
 	{
 	 /*
           * See if the backend exists...
 	  */
 
-	  snprintf(line, sizeof(line), "%s/backend/%s", ServerBin, p->device_uri);
+	  snprintf(line, sizeof(line), "%s/backend/%s", ServerBin,
+	           p->device_uri);
 
           if ((valueptr = strchr(line + strlen(ServerBin), ':')) != NULL)
 	    *valueptr = '\0';		/* Chop everything but URI scheme */
@@ -1033,7 +988,8 @@ cupsdLoadAllPrinters(void)
 	    */
 
 	    p->state = IPP_PRINTER_STOPPED;
-	    snprintf(p->state_message, sizeof(p->state_message), "Backend %s does not exist!", line);
+	    snprintf(p->state_message, sizeof(p->state_message),
+	             "Backend %s does not exist!", line);
 	  }
         }
 
@@ -1047,13 +1003,6 @@ cupsdLoadAllPrinters(void)
     {
       cupsdLogMessage(CUPSD_LOG_ERROR,
                       "Syntax error on line %d of printers.conf.", linenum);
-    }
-    else if (!_cups_strcasecmp(line, "PrinterId"))
-    {
-      if (value && (i = atoi(value)) > 0)
-        p->printer_id = i;
-      else
-        cupsdLogMessage(CUPSD_LOG_ERROR, "Bad PrinterId on line %d of printers.conf.", linenum);
     }
     else if (!_cups_strcasecmp(line, "UUID"))
     {
@@ -1511,8 +1460,6 @@ cupsdSaveAllPrinters(void)
   cupsFilePrintf(fp, "# Written by cupsd on %s\n", temp);
   cupsFilePuts(fp, "# DO NOT EDIT THIS FILE WHEN CUPSD IS RUNNING\n");
 
-  cupsFilePrintf(fp, "NextPrinterId %d\n", NextPrinterId);
-
  /*
   * Write each local printer known to the system...
   */
@@ -1536,9 +1483,6 @@ cupsdSaveAllPrinters(void)
       cupsFilePrintf(fp, "<DefaultPrinter %s>\n", printer->name);
     else
       cupsFilePrintf(fp, "<Printer %s>\n", printer->name);
-
-    if (printer->printer_id)
-      cupsFilePrintf(fp, "PrinterId %d\n", printer->printer_id);
 
     cupsFilePrintf(fp, "UUID %s\n", printer->uuid);
 
@@ -2259,6 +2203,9 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */
 		*filter;		/* Current filter */
 
 
+  DEBUG_printf(("cupsdSetPrinterAttrs: entering name = %s, type = %x\n", p->name,
+                p->type));
+
  /*
   * Make sure that we have the common attributes defined...
   */
@@ -2323,8 +2270,6 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */
                "uri-authentication-supported", NULL, auth_supported);
   ippAddString(p->attrs, IPP_TAG_PRINTER, IPP_TAG_KEYWORD,
                "uri-security-supported", NULL, "none");
-  if (p->printer_id)
-    ippAddInteger(p->attrs, IPP_TAG_PRINTER, IPP_TAG_INTEGER, "printer-id", p->printer_id);
   ippAddString(p->attrs, IPP_TAG_PRINTER, IPP_TAG_NAME, "printer-name", NULL,
                p->name);
   ippAddString(p->attrs, IPP_TAG_PRINTER, IPP_TAG_TEXT, "printer-location",
@@ -2588,6 +2533,9 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */
   */
 
   add_printer_formats(p);
+
+  DEBUG_printf(("cupsdSetPrinterAttrs: leaving name = %s, type = %x\n", p->name,
+                p->type));
 
  /*
   * Add name-default attributes...
@@ -3030,6 +2978,9 @@ cupsdValidateDest(
   int			port;		/* Port portion of URI */
 
 
+  DEBUG_printf(("cupsdValidateDest(uri=\"%s\", dtype=%p, printer=%p)\n", uri,
+                dtype, printer));
+
  /*
   * Initialize return values...
   */
@@ -3132,6 +3083,8 @@ cupsdValidateDest(
       }
     }
   }
+
+  DEBUG_printf(("localized hostname is \"%s\"...\n", localname));
 
  /*
   * Find a matching printer or class...
@@ -3851,8 +3804,7 @@ load_ppd(cupsd_printer_t *p)		/* I - Printer */
   ppd_file_t	*ppd;			/* PPD file */
   char		ppd_name[1024];		/* PPD filename */
   struct stat	ppd_info;		/* PPD file info */
-  char		strings_name[1024];	/* Strings filename */
-  int		num_media;		/* Number of media values */
+  int		num_media;		/* Number of media options */
   ppd_size_t	*size;			/* Current PPD size */
   ppd_option_t	*duplex,		/* Duplex option */
 		*output_bin,		/* OutputBin option */
@@ -3907,8 +3859,6 @@ load_ppd(cupsd_printer_t *p)		/* I - Printer */
   snprintf(ppd_name, sizeof(ppd_name), "%s/ppd/%s.ppd", ServerRoot, p->name);
   if (stat(ppd_name, &ppd_info))
     ppd_info.st_mtime = 1;
-
-  snprintf(strings_name, sizeof(strings_name), "%s/%s.strings", CacheDir, p->name);
 
   ippDelete(p->ppd_attrs);
   p->ppd_attrs = NULL;
@@ -4080,14 +4030,6 @@ load_ppd(cupsd_printer_t *p)		/* I - Printer */
 
     ippAddString(p->ppd_attrs, IPP_TAG_PRINTER, IPP_TAG_TEXT,
 		 "printer-make-and-model", NULL, p->make_model);
-
-    if (p->pc && p->pc->strings)
-      _cupsMessageSave(strings_name, _CUPS_MESSAGE_STRINGS, p->pc->strings);
-
-    if (!access(strings_name, R_OK))
-      cupsdSetString(&p->strings, strings_name);
-    else
-      cupsdClearString(&p->strings);
 
    /*
     * Add media options from the PPD file...
@@ -4326,16 +4268,16 @@ load_ppd(cupsd_printer_t *p)		/* I - Printer */
       if ((attr = ippAddCollections(p->ppd_attrs, IPP_TAG_PRINTER, "media-col-database", p->pc->num_sizes, NULL)) != NULL)
       {
        /*
-	* Add each page size without source or type...
+	* Adding each page size without source or type...
 	*/
 
         for (i = 0, pwgsize = p->pc->sizes; i < p->pc->num_sizes; i ++, pwgsize ++)
 	{
-	  ipp_t *col = new_media_col(pwgsize);
+          ipp_t *col = new_media_col(pwgsize);
 
-	  ippSetCollection(p->ppd_attrs, &attr, i, col);
-	  ippDelete(col);
-	}
+          ippSetCollection(p->ppd_attrs, &attr, i, col);
+          ippDelete(col);
+        }
       }
     }
 
@@ -4646,22 +4588,6 @@ load_ppd(cupsd_printer_t *p)		/* I - Printer */
           default :
               break;
         }
-      }
-    }
-
-    if (p->pc && p->pc->templates)
-    {
-      const char 	*template;	/* Finishing template */
-      ipp_attribute_t	*fin_col_db;	/* finishings-col-database attribute */
-      ipp_t		*fin_col;	/* finishings-col value */
-
-      fin_col_db = ippAddCollections(p->ppd_attrs, IPP_TAG_PRINTER, "finishings-col-database", cupsArrayCount(p->pc->templates), NULL);
-      for (i = 0, template = (const char *)cupsArrayFirst(p->pc->templates); template; i ++, template = (const char *)cupsArrayNext(p->pc->templates))
-      {
-        fin_col = ippNew();
-        ippAddString(fin_col, IPP_TAG_PRINTER, IPP_TAG_KEYWORD, "finishing-template", NULL, template);
-        ippSetCollection(p->ppd_attrs, &fin_col_db, i, fin_col);
-        ippDelete(fin_col);
       }
     }
 

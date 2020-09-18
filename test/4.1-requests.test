@@ -1,15 +1,11 @@
 #
-# Verify that the server requires the following attributes:
+# "$Id$"
 #
-#   attributes-charset
-#   attributes-natural-language
-#   printer-uri/job-uri
+#   Verify that the server requires the following attributes:
 #
-# Copyright © 2007-2019 by Apple Inc.
-# Copyright © 2001-2006 by Easy Software Products. All rights reserved.
-#
-# Licensed under Apache License v2.0.  See the file "LICENSE" for more
-# information.
+#       attributes-charset
+#       attributes-natural-language
+#       printer-uri/job-uri
 #
 {
 	# The name of the test...

@@ -3,7 +3,13 @@
  *
  * Copyright 2011-2012 by Apple Inc.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
+ *
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 #ifndef _CUPS_ARRAY_PRIVATE_H_
@@ -30,9 +36,9 @@ extern "C" {
  */
 
 extern int		_cupsArrayAddStrings(cups_array_t *a, const char *s,
-			                     char delim) _CUPS_PRIVATE;
+			                     char delim) _CUPS_API_1_5;
 extern cups_array_t	*_cupsArrayNewStrings(const char *s, char delim)
-			                      _CUPS_PRIVATE;
+			                      _CUPS_API_1_5;
 
 #  ifdef __cplusplus
 }

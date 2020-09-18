@@ -1,11 +1,14 @@
 #
 # Makefile for the CUPS PPD Compiler.
 #
-# Copyright © 2007-2019 by Apple Inc.
-# Copyright © 2002-2006 by Easy Software Products.
+# Copyright 2007-2018 by Apple Inc.
+# Copyright 2002-2006 by Easy Software Products.
 #
-# Licensed under Apache License v2.0.  See the file "LICENSE" for more
-# information.
+# These coded instructions, statements, and computer programs are the
+# property of Apple Inc. and are protected by Federal copyright
+# law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+# which should have been included with this file.  If this file is
+# missing or damaged, see the license at "http://www.cups.org/".
 #
 
 #
@@ -78,7 +81,7 @@ all:		$(TARGETS)
 # Make library targets...
 #
 
-libs:
+libs:		$(LIBTARGETS)
 
 
 #
@@ -183,9 +186,9 @@ local:	genstrings
 genstrings:		genstrings.o libcupsppdc.a ../cups/$(LIBCUPSSTATIC) \
 			sample.drv ../data/media.defs
 	echo Linking $@...
-	$(LD_CXX) $(ARCHFLAGS) $(ALL_LDFLAGS) -o genstrings genstrings.o \
-		libcupsppdc.a $(LINKCUPSSTATIC)
-	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
+	$(LD_CXX) $(ARCHFLAGS) $(LDFLAGS) -o genstrings genstrings.o \
+		libcupsppdc.a ../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) \
+		$(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
 	echo Generating localization strings...
 	./genstrings >sample.c
 
@@ -196,14 +199,15 @@ genstrings:		genstrings.o libcupsppdc.a ../cups/$(LIBCUPSSTATIC) \
 
 ppdc:			ppdc.o libcupsppdc.a ../cups/$(LIBCUPS)
 	echo Linking $@...
-	$(LD_CXX) $(ALL_LDFLAGS) -o $@ ppdc.o libcupsppdc.a $(COMMONLIBS) $(LINKCUPS)
+	$(LD_CXX) $(LDFLAGS) -o $@ ppdc.o libcupsppdc.a $(LIBS)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
 ppdc-static:		ppdc.o libcupsppdc.a ../cups/$(LIBCUPSSTATIC) foo.drv foo-fr.po
 	echo Linking $@...
-	$(LD_CXX) $(ARCHFLAGS) $(ALL_LDFLAGS) -o ppdc-static ppdc.o libcupsppdc.a \
-		$(LINKCUPSSTATIC)
+	$(LD_CXX) $(ARCHFLAGS) $(LDFLAGS) -o ppdc-static ppdc.o libcupsppdc.a \
+		../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
+		$(COMMONLIBS) $(LIBZ)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 	echo Testing PPD compiler...
 	./ppdc-static -l en,fr -I ../data foo.drv
@@ -216,7 +220,7 @@ ppdc-static:		ppdc.o libcupsppdc.a ../cups/$(LIBCUPSSTATIC) foo.drv foo-fr.po
 
 ppdhtml:			ppdhtml.o libcupsppdc.a ../cups/$(LIBCUPS)
 	echo Linking $@...
-	$(LD_CXX) $(ALL_LDFLAGS) -o $@ ppdhtml.o libcupsppdc.a $(COMMONLIBS) $(LINKCUPS)
+	$(LD_CXX) $(LDFLAGS) -o $@ ppdhtml.o libcupsppdc.a $(LIBS)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
@@ -226,14 +230,15 @@ ppdhtml:			ppdhtml.o libcupsppdc.a ../cups/$(LIBCUPS)
 
 ppdi:			ppdi.o libcupsppdc.a ../cups/$(LIBCUPS)
 	echo Linking $@...
-	$(LD_CXX) $(ALL_LDFLAGS) -o $@ ppdi.o libcupsppdc.a $(COMMONLIBS) $(LINKCUPS)
+	$(LD_CXX) $(LDFLAGS) -o $@ ppdi.o libcupsppdc.a $(LIBS)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
-ppdi-static:		ppdc-static ppdi.o libcupsppdc.a ../cups/$(LIBCUPSSTATIC)
+ppdi-static:		ppdc-static ppdi.o libcupsppdc.a  ../cups/$(LIBCUPSSTATIC)
 	echo Linking $@...
-	$(LD_CXX) $(ARCHFLAGS) $(ALL_LDFLAGS) -o ppdi-static ppdi.o libcupsppdc.a \
-		$(LINKCUPSSTATIC)
+	$(LD_CXX) $(ARCHFLAGS) $(LDFLAGS) -o ppdi-static ppdi.o libcupsppdc.a \
+		../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
+		$(COMMONLIBS) $(LIBZ)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 	echo Testing PPD importer...
 	$(RM) -r ppd ppd2 sample-import.drv
@@ -254,7 +259,7 @@ ppdi-static:		ppdc-static ppdi.o libcupsppdc.a ../cups/$(LIBCUPSSTATIC)
 
 ppdmerge:			ppdmerge.o ../cups/$(LIBCUPS)
 	echo Linking $@...
-	$(LD_CXX) $(ALL_LDFLAGS) -o $@ ppdmerge.o $(LINKCUPS)
+	$(LD_CXX) $(LDFLAGS) -o $@ ppdmerge.o $(LIBS)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
@@ -264,7 +269,7 @@ ppdmerge:			ppdmerge.o ../cups/$(LIBCUPS)
 
 ppdpo:			ppdpo.o libcupsppdc.a ../cups/$(LIBCUPS)
 	echo Linking $@...
-	$(LD_CXX) $(ALL_LDFLAGS) -o $@ ppdpo.o libcupsppdc.a $(COMMONLIBS) $(LINKCUPS)
+	$(LD_CXX) $(LDFLAGS) -o $@ ppdpo.o libcupsppdc.a $(LIBS)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
@@ -274,8 +279,9 @@ ppdpo:			ppdpo.o libcupsppdc.a ../cups/$(LIBCUPS)
 
 testcatalog:		testcatalog.o libcupsppdc.a ../cups/$(LIBCUPSSTATIC)
 	echo Linking $@...
-	$(LD_CXX) $(ALL_LDFLAGS) -o $@ testcatalog.o libcupsppdc.a \
-		$(LINKCUPSSTATIC)
+	$(LD_CXX) $(LDFLAGS) -o $@ testcatalog.o libcupsppdc.a \
+		../cups/$(LIBCUPSSTATIC) $(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) \
+		$(COMMONLIBS) $(LIBZ)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 

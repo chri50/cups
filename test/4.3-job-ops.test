@@ -1,11 +1,7 @@
 #
-# Verify that the IPP job operations work.
+# "$Id$"
 #
-# Copyright © 2007-2019 by Apple Inc.
-# Copyright © 2001-2006 by Easy Software Products. All rights reserved.
-#
-# Licensed under Apache License v2.0.  See the file "LICENSE" for more
-# information.
+#   Verify that the IPP job operations work.
 #
 {
 	# The name of the test...
@@ -23,7 +19,7 @@
 	ATTR name requesting-user-name $user
 	ATTR name job-sheets "none\,none"
 
-	FILE ../examples/testfile.ps
+	FILE testfile.ps
 
 	# What statuses are OK?
 	STATUS client-error-bad-request
@@ -43,7 +39,7 @@
 	ATTR uri printer-uri $method://$hostname:$port/printers/Test1
 	ATTR name requesting-user-name $user
 
-	FILE ../examples/testfile.ps
+	FILE testfile.ps
 
 	# What statuses are OK?
 	STATUS successful-ok
@@ -96,7 +92,7 @@
         GROUP subscription
 	ATTR uri notify-recipient-uri testnotify:///
 
-	FILE ../examples/testfile.jpg
+	FILE testfile.jpg
 
 	# What statuses are OK?
 	STATUS successful-ok
@@ -147,7 +143,7 @@
 	ATTR uri printer-uri $method://$hostname:$port/printers/Test1
 	ATTR name requesting-user-name $user
 
-	FILE ../examples/testfile.txt
+	FILE testfile.txt
 
 	# What statuses are OK?
 	STATUS successful-ok
@@ -175,7 +171,7 @@
 	GROUP job
 	ATTR keyword job-hold-until weekend
 
-	FILE ../examples/testfile.pdf
+	FILE testfile.pdf
 
 	# What statuses are OK?
 	STATUS successful-ok
@@ -248,7 +244,7 @@
 	GROUP job
 	ATTR keyword job-hold-until indefinite
 
-	FILE ../examples/testfile.jpg
+	FILE testfile.jpg
 
 	# What statuses are OK?
 	STATUS successful-ok
@@ -328,3 +324,7 @@
 	EXPECT job-state
 	EXPECT job-printer-uri
 }
+
+#
+# End of "$Id$"
+#

@@ -1,15 +1,18 @@
 /*
  * PPD test program for CUPS.
  *
- * THIS PROGRAM IS DEPRECATED AND WILL BE REMOVED IN A FUTURE VERSION OF CUPS.
+ * Copyright 2007-2018 by Apple Inc.
+ * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- * Copyright © 2007-2018 by Apple Inc.
- * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
- *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more
- * information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
  *
  * PostScript is a trademark of Adobe Systems, Inc.
+ *
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
@@ -167,9 +170,7 @@ main(int  argc,				/* I - Number of command-line args */
   ignore  = WARN_NONE;
 
   for (i = 1; i < argc; i ++)
-    if (!strcmp(argv[i], "--help"))
-      usage();
-    else if (argv[i][0] == '-' && argv[i][1])
+    if (argv[i][0] == '-' && argv[i][1])
     {
       for (opt = argv[i] + 1; *opt; opt ++)
         switch (*opt)
@@ -3851,19 +3852,23 @@ test_raster(ppd_file_t *ppd,		/* I - PPD file */
 static void
 usage(void)
 {
-  _cupsLangPuts(stdout, _("Warning: This program will be removed in a future version of CUPS."));
-  _cupsLangPuts(stdout, _("Usage: cupstestppd [options] filename1.ppd[.gz] [... filenameN.ppd[.gz]]\n"
-		          "       program | cupstestppd [options] -"));
+  _cupsLangPuts(stdout, _("Usage: cupstestppd [options] filename1.ppd[.gz] "
+		          "[... filenameN.ppd[.gz]]"));
+  _cupsLangPuts(stdout, _("       program | cupstestppd [options] -"));
+  _cupsLangPuts(stdout, "");
   _cupsLangPuts(stdout, _("Options:"));
-  _cupsLangPuts(stdout, _("-I {filename,filters,none,profiles}\n"
-                          "                          Ignore specific warnings"));
-  _cupsLangPuts(stdout, _("-R root-directory       Set alternate root"));
-  _cupsLangPuts(stdout, _("-W {all,none,constraints,defaults,duplex,filters,profiles,sizes,translations}\n"
-                          "                          Issue warnings instead of errors"));
-  _cupsLangPuts(stdout, _("-q                      Run silently"));
-  _cupsLangPuts(stdout, _("-r                      Use 'relaxed' open mode"));
-  _cupsLangPuts(stdout, _("-v                      Be verbose"));
-  _cupsLangPuts(stdout, _("-vv                     Be very verbose"));
+  _cupsLangPuts(stdout, "");
+  _cupsLangPuts(stdout, _("  -I {filename,filters,none,profiles}"));
+  _cupsLangPuts(stdout, _("                          Ignore specific warnings."));
+  _cupsLangPuts(stdout, _("  -R root-directory       Set alternate root."));
+  _cupsLangPuts(stdout, _("  -W {all,none,constraints,defaults,duplex,"
+                          "filters,profiles,sizes,translations}"));
+  _cupsLangPuts(stdout, _("                          Issue warnings instead of "
+                          "errors."));
+  _cupsLangPuts(stdout, _("  -q                      Run silently."));
+  _cupsLangPuts(stdout, _("  -r                      Use 'relaxed' open mode."));
+  _cupsLangPuts(stdout, _("  -v                      Be verbose."));
+  _cupsLangPuts(stdout, _("  -vv                     Be very verbose."));
 
   exit(ERROR_USAGE);
 }

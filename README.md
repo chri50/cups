@@ -1,10 +1,5 @@
-README - CUPS v2.3rc1 - 2019-05-21
+README - CUPS v2.2.11 - 2019-03-22
 ==================================
-
-> **Note:** CUPS v2.3b8 is not production code.  Do not use on production
-> systems.  For a production version of CUPS, please see the CUPS 2.2.x
-> releases.  **Do not use CUPS v2.3b8 on production systems.**
-
 
 Looking for compile instructions?  Read the file `INSTALL.md` instead...
 
@@ -27,8 +22,8 @@ included with CUPS to support many Dymo, EPSON, HP, Intellitech, OKIDATA, and
 Zebra printers.  Many more drivers are available online and (in some cases) on
 the driver CD-ROM that came with your printer.
 
-CUPS is licensed under the Apache License Version 2.0.  See the file
-"LICENSE" for more information.
+CUPS is licensed under the GNU General Public License and GNU Library General
+Public License versions 2.  See the file "LICENSE.txt" for more information.
 
 
 READING THE DOCUMENTATION
@@ -153,14 +148,13 @@ This will prevent the filters from misinterpreting your print file.
 LEGAL STUFF
 -----------
 
-Copyright © 2007-2019 by Apple Inc.
-Copyright © 1997-2007 by Easy Software Products.
+CUPS is copyright © 2007-2019 by Apple Inc.  CUPS and the CUPS logo are
+trademarks of Apple Inc.
 
-CUPS is provided under the terms of the Apache License, Version 2.0.  A copy of
-this license can be found in the file `LICENSE`.  Additional legal information
-is provided in the file `NOTICE`.
+The MD5 Digest code is Copyright 1999 Aladdin Enterprises.
 
-Unless required by applicable law or agreed to in writing, software distributed
-under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-CONDITIONS OF ANY KIND, either express or implied.  See the License for the
-specific language governing permissions and limitations under the License.
+CUPS is provided under the terms of version 2 of the GNU General Public License
+and GNU Library General Public License. This program is distributed in the hope
+that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+`doc/help/license.html` or `LICENSE.txt` files for more information.

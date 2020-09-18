@@ -1,11 +1,14 @@
 /*
  * Job management routines for the CUPS scheduler.
  *
- * Copyright © 2007-2019 by Apple Inc.
- * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright 2007-2019 by Apple Inc.
+ * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more
- * information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -304,12 +307,10 @@ cupsdCheckJobs(void)
 
         if (cupsdTimeoutJob(job))
 	  continue;
-
-	cupsdSetJobState(job, IPP_JOB_PENDING, CUPSD_JOB_DEFAULT, "Job submission timed out.");
-	cupsdLogJob(job, CUPSD_LOG_ERROR, "Job submission timed out.");
       }
-      else
-	cupsdSetJobState(job, IPP_JOB_PENDING, CUPSD_JOB_DEFAULT, "Job hold expired.");
+
+      cupsdSetJobState(job, IPP_JOB_PENDING, CUPSD_JOB_DEFAULT,
+                       "Job submission timed out.");
     }
 
    /*
@@ -1305,7 +1306,9 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
   cupsdClosePipe(filterfds[slot]);
 
   for (i = 6; i < argc; i ++)
-    free(argv[i]);
+    if (argv[i])
+      free(argv[i]);
+
   free(argv);
 
   if (printer_state_reasons)
@@ -1338,9 +1341,8 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
   if (argv)
   {
     for (i = 6; i < argc; i ++)
-      free(argv[i]);
-
-    free(argv);
+      if (argv[i])
+	free(argv[i]);
   }
 
   if (printer_state_reasons)
@@ -2782,6 +2784,8 @@ cupsdStopAllJobs(
   cupsd_job_t	*job;			/* Current job */
 
 
+  DEBUG_puts("cupsdStopAllJobs()");
+
   for (job = (cupsd_job_t *)cupsArrayFirst(PrintingJobs);
        job;
        job = (cupsd_job_t *)cupsArrayNext(PrintingJobs))
@@ -3849,20 +3853,6 @@ get_options(cupsd_job_t *job,		/* I - Job */
   }
 
  /*
-  * Map page-delivery values...
-  */
-
-  if ((attr = ippFindAttribute(job->attrs, "page-delivery", IPP_TAG_KEYWORD)) != NULL && !ippFindAttribute(job->attrs, "outputorder", IPP_TAG_ZERO))
-  {
-    const char *page_delivery = ippGetString(attr, 0, NULL);
-
-    if (!strncmp(page_delivery, "same-order", 10))
-      num_pwgppds = cupsAddOption("OutputOrder", "Normal", num_pwgppds, &pwgppds);
-    else if (!strncmp(page_delivery, "reverse-order", 13))
-      num_pwgppds = cupsAddOption("OutputOrder", "Reverse", num_pwgppds, &pwgppds);
-  }
-
- /*
   * Figure out how much room we need...
   */
 
@@ -4031,45 +4021,6 @@ get_options(cupsd_job_t *job,		/* I - Job */
 	      break;
 
           case IPP_TAG_STRING :
-              {
-                int length = attr->values[i].unknown.length;
-
-		for (valptr = attr->values[i].unknown.data; length > 0; length --)
-		{
-		  if ((*valptr & 255) < 0x20 || *valptr == 0x7f)
-		    break;
-		}
-
-		if (length > 0)
-		{
-		 /*
-		  * Encode this string as hex characters...
-		  */
-
-                  *optptr++ = '<';
-
-		  for (valptr = attr->values[i].unknown.data, length = attr->values[i].unknown.length; length > 0; length --)
-		  {
-		    snprintf(optptr, optlength - (size_t)(optptr - options) - 1, "%02X", *valptr & 255);
-		    optptr += 2;
-		  }
-
-                  *optptr++ = '>';
-		}
-		else
-		{
-		  for (valptr = attr->values[i].unknown.data, length = attr->values[i].unknown.length; length > 0; length --)
-		  {
-		    if (strchr(" \t\n\\\'\"", *valptr))
-		      *optptr++ = '\\';
-		    *optptr++ = *valptr++;
-		  }
-		}
-	      }
-
-	      *optptr = '\0';
-	      break;
-
 	  case IPP_TAG_TEXT :
 	  case IPP_TAG_NAME :
 	  case IPP_TAG_KEYWORD :
@@ -4215,16 +4166,6 @@ ipp_length(ipp_t *ipp)			/* I - IPP request */
 	  break;
 
       case IPP_TAG_STRING :
-         /*
-	  * Octet strings can contain characters that need quoting.  We need
-	  * at least 2 * len + 2 characters to cover the quotes and any
-	  * backslashes in the string.
-	  */
-
-          for (i = 0; i < attr->num_values; i ++)
-	    bytes += 2 * (size_t)attr->values[i].unknown.length + 2;
-	  break;
-
       case IPP_TAG_TEXT :
       case IPP_TAG_NAME :
       case IPP_TAG_KEYWORD :

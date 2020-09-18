@@ -1,11 +1,14 @@
 /*
  * "lpinfo" command for CUPS.
  *
- * Copyright © 2007-2018 by Apple Inc.
- * Copyright © 1997-2006 by Easy Software Products.
+ * Copyright 2007-2017 by Apple Inc.
+ * Copyright 1997-2006 by Easy Software Products.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more
- * information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -20,7 +23,7 @@
  * Local functions...
  */
 
-static void	device_cb(const char *device_class, const char *device_id,
+static void	device_cb(const char *device_clas, const char *device_id,
 		          const char *device_info,
 			  const char *device_make_and_model,
 			  const char *device_uri, const char *device_location,
@@ -33,7 +36,6 @@ static int	show_models(int long_status,
 			    const char *make_model, const char *product,
 			    const char *include_schemes,
 			    const char *exclude_schemes);
-static void	usage(void) _CUPS_NORETURN;
 
 
 /*
@@ -78,7 +80,7 @@ main(int  argc,				/* I - Number of command-line arguments */
       else
       {
 	_cupsLangPuts(stderr, _("lpinfo: Expected 1284 device ID string after \"--device-id\"."));
-	usage();
+	return (1);
       }
     }
     else if (!strncmp(argv[i], "--device-id=", 12) && argv[i][12])
@@ -94,15 +96,13 @@ main(int  argc,				/* I - Number of command-line arguments */
       else
       {
 	_cupsLangPuts(stderr, _("lpinfo: Expected scheme list after \"--exclude-schemes\"."));
-	usage();
+	return (1);
       }
     }
     else if (!strncmp(argv[i], "--exclude-schemes=", 18) && argv[i][18])
     {
       exclude_schemes = argv[i] + 18;
     }
-    else if (!strcmp(argv[i], "--help"))
-      usage();
     else if (!strcmp(argv[i], "--include-schemes"))
     {
       i ++;
@@ -112,7 +112,7 @@ main(int  argc,				/* I - Number of command-line arguments */
       else
       {
 	_cupsLangPuts(stderr, _("lpinfo: Expected scheme list after \"--include-schemes\"."));
-	usage();
+	return (1);
       }
     }
     else if (!strncmp(argv[i], "--include-schemes=", 18) && argv[i][18])
@@ -127,7 +127,7 @@ main(int  argc,				/* I - Number of command-line arguments */
       else
       {
 	_cupsLangPuts(stderr, _("lpinfo: Expected language after \"--language\"."));
-	usage();
+	return (1);
       }
     }
     else if (!strncmp(argv[i], "--language=", 11) && argv[i][11])
@@ -142,7 +142,7 @@ main(int  argc,				/* I - Number of command-line arguments */
       else
       {
 	_cupsLangPuts(stderr, _("lpinfo: Expected make and model after \"--make-and-model\"."));
-	usage();
+	return (1);
       }
     }
     else if (!strncmp(argv[i], "--make-and-model=", 17) && argv[i][17])
@@ -157,7 +157,7 @@ main(int  argc,				/* I - Number of command-line arguments */
       else
       {
 	_cupsLangPuts(stderr, _("lpinfo: Expected product string after \"--product\"."));
-	usage();
+	return (1);
       }
     }
     else if (!strncmp(argv[i], "--product=", 10) && argv[i][10])
@@ -172,7 +172,7 @@ main(int  argc,				/* I - Number of command-line arguments */
       else
       {
 	_cupsLangPuts(stderr, _("lpinfo: Expected timeout after \"--timeout\"."));
-	usage();
+	return (1);
       }
     }
     else if (!strncmp(argv[i], "--timeout=", 10) && argv[i][10])
@@ -206,7 +206,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 		if (i >= argc)
 		{
 		  _cupsLangPuts(stderr, _("Error: need hostname after \"-h\" option."));
-		  usage();
+		  return (1);
 		}
 
 		cupsSetServer(argv[i]);
@@ -229,14 +229,14 @@ main(int  argc,				/* I - Number of command-line arguments */
 
 	  default :
 	      _cupsLangPrintf(stderr, _("%s: Unknown option \"%c\"."), argv[0], *opt);
-	      usage();
+	      return (1);
 	}
       }
     }
     else
     {
       _cupsLangPrintf(stderr, _("%s: Unknown argument \"%s\"."), argv[0], argv[i]);
-      usage();
+      return (1);
     }
   }
 
@@ -468,7 +468,7 @@ show_models(
 			  "        natural_language = %s\n"
 			  "        make-and-model = %s\n"
 			  "        device-id = %s"),
-			"everywhere", cupsLangDefault()->language, "IPP Everywhere™", "CMD:PwgRaster");
+			"everywhere", cupsLangDefault()->language, "IPP Everywhere", "CMD:PwgRaster");
       }
       else
         _cupsLangPuts(stdout, "everywhere IPP Everywhere");
@@ -482,34 +482,4 @@ show_models(
   }
 
   return (0);
-}
-
-
-/*
- * 'usage()' - Show program usage and exit.
- */
-
-static void
-usage(void)
-{
-  _cupsLangPuts(stdout, _("Usage: lpinfo [options] -m\n"
-                          "       lpinfo [options] -v"));
-  _cupsLangPuts(stdout, _("Options:"));
-  _cupsLangPuts(stdout, _("-E                      Encrypt the connection to the server"));
-  _cupsLangPuts(stdout, _("-h server[:port]        Connect to the named server and port"));
-  _cupsLangPuts(stdout, _("-l                      Show verbose (long) output"));
-  _cupsLangPuts(stdout, _("-m                      Show models"));
-  _cupsLangPuts(stdout, _("-U username             Specify the username to use for authentication"));
-  _cupsLangPuts(stdout, _("-v                      Show devices"));
-  _cupsLangPuts(stdout, _("--device-id device-id   Show models matching the given IEEE 1284 device ID"));
-  _cupsLangPuts(stdout, _("--exclude-schemes scheme-list\n"
-                          "                        Exclude the specified URI schemes"));
-  _cupsLangPuts(stdout, _("--include-schemes scheme-list\n"
-                          "                        Include only the specified URI schemes"));
-  _cupsLangPuts(stdout, _("--language locale       Show models matching the given locale"));
-  _cupsLangPuts(stdout, _("--make-and-model name   Show models matching the given make and model name"));
-  _cupsLangPuts(stdout, _("--product name          Show models matching the given PostScript product"));
-  _cupsLangPuts(stdout, _("--timeout seconds       Specify the maximum number of seconds to discover devices"));
-
-  exit(1);
 }

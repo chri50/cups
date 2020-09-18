@@ -6,8 +6,11 @@
 # Copyright © 2007-2019 by Apple Inc.
 # Copyright © 1997-2007 by Easy Software Products, all rights reserved.
 #
-# Licensed under Apache License v2.0.  See the file "LICENSE" for more
-# information.
+# These coded instructions, statements, and computer programs are the
+# property of Apple Inc. and are protected by Federal copyright
+# law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+# which should have been included with this file.  If this file is
+# file is missing or damaged, see the license at "http://www.cups.org/".
 #
 
 argcount=$#
@@ -396,10 +399,10 @@ trap "" PIPE
 gziptoany "$1" "$2" "$3" "$4" "$5" \$6 >/dev/null
 case "\$5" in
 	*media=a4* | *media=iso_a4* | *PageSize=A4*)
-		gziptoany "$1" "$2" "$3" "$4" "$5" "$root/examples/onepage-a4.pdf"
+		gziptoany "$1" "$2" "$3" "$4" "$5" "$root/test/onepage-a4.pdf"
 		;;
 	*)
-		gziptoany "$1" "$2" "$3" "$4" "$5" "$root/examples/onepage-letter.pdf"
+		gziptoany "$1" "$2" "$3" "$4" "$5" "$root/test/onepage-letter.pdf"
 		;;
 esac
 EOF
@@ -413,10 +416,10 @@ trap "" PIPE
 gziptoany "$1" "$2" "$3" "$4" "$5" \$6 >/dev/null
 case "\$5" in
 	*media=a4* | *media=iso_a4* | *PageSize=A4*)
-		gziptoany "$1" "$2" "$3" "$4" "$5" "$root/examples/onepage-a4.ps"
+		gziptoany "$1" "$2" "$3" "$4" "$5" "$root/test/onepage-a4.ps"
 		;;
 	*)
-		gziptoany "$1" "$2" "$3" "$4" "$5" "$root/examples/onepage-letter.ps"
+		gziptoany "$1" "$2" "$3" "$4" "$5" "$root/test/onepage-letter.ps"
 		;;
 esac
 EOF
@@ -430,10 +433,10 @@ trap "" PIPE
 gziptoany "$1" "$2" "$3" "$4" "$5" \$6 >/dev/null
 case "\$5" in
 	*media=a4* | *media=iso_a4* | *PageSize=A4*)
-		gziptoany "$1" "$2" "$3" "$4" "$5" "$root/examples/onepage-a4-300-black-1.pwg"
+		gziptoany "$1" "$2" "$3" "$4" "$5" "$root/test/onepage-a4-300-black-1.pwg.gz"
 		;;
 	*)
-		gziptoany "$1" "$2" "$3" "$4" "$5" "$root/examples/onepage-letter-300-black-1.pwg"
+		gziptoany "$1" "$2" "$3" "$4" "$5" "$root/test/onepage-letter-300-black-1.pwg.gz"
 		;;
 esac
 EOF
@@ -533,9 +536,7 @@ PassEnv DYLD_LIBRARY_PATH
 PassEnv LD_LIBRARY_PATH
 PassEnv LD_PRELOAD
 PassEnv LOCALEDIR
-PassEnv ASAN_OPTIONS
-
-Sandboxing Off
+PassEnv SHLIB_PATH
 EOF
 
 if test $ssltype != 0 -a `uname` = Darwin; then
@@ -579,40 +580,29 @@ fi
 
 echo "Setting up environment variables for test..."
 
-if test "x$ASAN_OPTIONS" = x; then
-	# AddressSanitizer on Linux reports memory leaks from the main function
-	# which is basically useless - in general, programs do not need to free
-	# every object before exit since the OS will recover the process's
-	# memory.
-	ASAN_OPTIONS="detect_leaks=false"
-	export ASAN_OPTIONS
+if test "x$LD_LIBRARY_PATH" = x; then
+	LD_LIBRARY_PATH="$root/cups:$root/filter"
+else
+	LD_LIBRARY_PATH="$root/cups:$root/filter:$LD_LIBRARY_PATH"
 fi
 
-if test -f "$root/cups/libcups.so.2"; then
-	if test "x$LD_LIBRARY_PATH" = x; then
-		LD_LIBRARY_PATH="$root/cups"
-	else
-		LD_LIBRARY_PATH="$root/cups:$LD_LIBRARY_PATH"
-	fi
-
-	LD_PRELOAD="$root/cups/libcups.so.2:$root/cups/libcupsimage.so.2"
-	if test `uname` = SunOS -a -r /usr/lib/libCrun.so.1; then
-		LD_PRELOAD="/usr/lib/libCrun.so.1:$LD_PRELOAD"
-	fi
+LD_PRELOAD="$root/cups/libcups.so.2:$root/filter/libcupsimage.so.2"
+if test `uname` = SunOS -a -r /usr/lib/libCrun.so.1; then
+	LD_PRELOAD="/usr/lib/libCrun.so.1:$LD_PRELOAD"
 fi
 
-if test -f "$root/cups/libcups.2.dylib"; then
-	if test "x$DYLD_INSERT_LIBRARIES" = x; then
-		DYLD_INSERT_LIBRARIES="$root/cups/libcups.2.dylib:$root/cups/libcupsimage.2.dylib"
-	else
-		DYLD_INSERT_LIBRARIES="$root/cups/libcups.2.dylib:$root/cups/libcupsimage.2.dylib:$DYLD_INSERT_LIBRARIES"
-	fi
+if test -f $root/cups/libcups.2.dylib; then
+        if test "x$DYLD_INSERT_LIBRARIES" = x; then
+                DYLD_INSERT_LIBRARIES="$root/cups/libcups.2.dylib:$root/filter/libcupsimage.2.dylib"
+        else
+                DYLD_INSERT_LIBRARIES="$root/cups/libcups.2.dylib:$root/filter/libcupsimage.2.dylib:$DYLD_INSERT_LIBRARIES"
+        fi
+fi
 
-	if test "x$DYLD_LIBRARY_PATH" = x; then
-		DYLD_LIBRARY_PATH="$root/cups"
-	else
-		DYLD_LIBRARY_PATH="$root/cups:$DYLD_LIBRARY_PATH"
-	fi
+if test "x$DYLD_LIBRARY_PATH" = x; then
+	DYLD_LIBRARY_PATH="$root/cups:$root/filter"
+else
+	DYLD_LIBRARY_PATH="$root/cups:$root/filter:$DYLD_LIBRARY_PATH"
 fi
 
 # These get exported because they don't have side-effects...
@@ -678,7 +668,17 @@ echo "Starting scheduler:"
 echo "    $runcups $VALGRIND ../scheduler/cupsd -c $BASE/cupsd.conf -f >$BASE/log/debug_log 2>&1 &"
 echo ""
 
-$runcups $VALGRIND ../scheduler/cupsd -c $BASE/cupsd.conf -f >$BASE/log/debug_log 2>&1 &
+if test `uname` = Darwin -a "x$VALGRIND" = x; then
+        if test "x$DYLD_INSERT_LIBRARIES" = x; then
+                insert="/usr/lib/libgmalloc.dylib"
+        else
+                insert="/usr/lib/libgmalloc.dylib:$DYLD_INSERT_LIBRARIES"
+        fi
+
+	DYLD_INSERT_LIBRARIES="$insert" MallocStackLogging=1 $runcups ../scheduler/cupsd -c $BASE/cupsd.conf -f >$BASE/log/debug_log 2>&1 &
+else
+	$runcups $VALGRIND ../scheduler/cupsd -c $BASE/cupsd.conf -f >$BASE/log/debug_log 2>&1 &
+fi
 
 cupsd=$!
 
@@ -737,19 +737,19 @@ echo "    $date by $user on `hostname`." >>$strfile
 echo "    <pre>" >>$strfile
 
 fail=0
-for file in 4*.test ../examples/ipp-2.1.test; do
-	echo $ac_n "Performing `basename $file`: $ac_c"
+for file in 4*.test ipp-2.1.test; do
+	echo $ac_n "Performing $file: $ac_c"
 	echo "" >>$strfile
         echo $ac_n "`date '+[%d/%b/%Y:%H:%M:%S %z]'` $ac_c" >>$strfile
 
-	if test $file = ../examples/ipp-2.1.test; then
+	if test $file = ipp-2.1.test; then
 		uri="ipp://localhost:$port/printers/Test1"
 		options="-V 2.1 -d NOPRINT=1 -f testfile.ps"
 	else
 		uri="ipp://localhost:$port/printers"
 		options=""
 	fi
-	$runcups $VALGRIND ../tools/ipptool -tI $options $uri $file >> $strfile
+	$runcups $VALGRIND ./ipptool -tI $options $uri $file >> $strfile
 	status=$?
 
 	if test $status != 0; then
@@ -792,6 +792,14 @@ for file in 5*.sh; do
 done
 
 #
+# Log all allocations made by the scheduler...
+#
+
+if test `uname` = Darwin -a "x$VALGRIND" = x; then
+	malloc_history $cupsd -callTree -showContent >$BASE/log/malloc_log 2>&1
+fi
+
+#
 # Restart the server...
 #
 
@@ -831,7 +839,7 @@ echo "`date '+[%d/%b/%Y:%H:%M:%S %z]'` \"5.11-history\":" >>$strfile
 
 echo "    lp -d Test1 testfile.jpg" >>$strfile
 
-$runcups ../systemv/lp -d Test1 ../examples/testfile.jpg 2>&1 >>$strfile
+$runcups ../systemv/lp -d Test1 testfile.jpg 2>&1 >>$strfile
 if test $? != 0; then
 	echo "FAIL (unable to queue test job)"
 	echo "    FAILED" >>$strfile
@@ -1093,13 +1101,9 @@ fi
 
 # Debug2 log messages
 count=`$GREP '^d ' $BASE/log/error_log | wc -l | awk '{print $1}'`
-if test $count = 0 -a $loglevel = debug2; then
+if test $count = 0; then
 	echo "FAIL: $count debug2 messages, expected more than 0."
 	echo "    <p>FAIL: $count debug2 messages, expected more than 0.</p>" >>$strfile
-	fail=`expr $fail + 1`
-elif test $count != 0 -a $loglevel = debug; then
-	echo "FAIL: $count debug2 messages, expected 0."
-	echo "    <p>FAIL: $count debug2 messages, expected 0.</p>" >>$strfile
 	fail=`expr $fail + 1`
 else
 	echo "PASS: $count debug2 messages."

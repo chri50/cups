@@ -1,14 +1,17 @@
 /*
  * Authorization routines for the CUPS scheduler.
  *
- * Copyright © 2007-2019 by Apple Inc.
- * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright © 2007-2018 by Apple Inc.
+ * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
  * This file contains Kerberos support code, copyright 2006 by
  * Jelmer Vernooij.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more
- * information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -35,6 +38,11 @@
 #endif /* HAVE_MEMBERSHIP_H */
 #ifdef HAVE_AUTHORIZATION_H
 #  include <Security/AuthorizationTags.h>
+#  ifdef HAVE_SECBASEPRIV_H
+#    include <Security/SecBasePriv.h>
+#  else
+extern const char *cssmErrorString(int error);
+#  endif /* HAVE_SECBASEPRIV_H */
 #endif /* HAVE_AUTHORIZATION_H */
 #ifdef HAVE_SYS_PARAM_H
 #  include <sys/param.h>
@@ -339,7 +347,7 @@ cupsdAuthorize(cupsd_client_t *con)	/* I - Client connection */
 
     if ((status = AuthorizationCreateFromExternalForm((AuthorizationExternalForm *)authdata, &con->authref)) != 0)
     {
-      cupsdLogClient(con, CUPSD_LOG_ERROR, "AuthorizationCreateFromExternalForm returned %d", (int)status);
+      cupsdLogClient(con, CUPSD_LOG_ERROR, "AuthorizationCreateFromExternalForm returned %d (%s)", (int)status, cssmErrorString(status));
       return;
     }
 
@@ -1920,7 +1928,9 @@ check_authref(cupsd_client_t *con,	/* I - Connection */
 					kAuthorizationEmptyEnvironment,
 					authflags, NULL)) != 0)
   {
-    cupsdLogMessage(CUPSD_LOG_ERROR, "AuthorizationCopyRights(\"%s\") returned %d", authright.name, (int)status);
+    cupsdLogMessage(CUPSD_LOG_ERROR,
+		    "AuthorizationCopyRights(\"%s\") returned %d (%s)",
+		    authright.name, (int)status, cssmErrorString(status));
     return (0);
   }
 
@@ -2028,33 +2038,45 @@ pam_func(
   * Answer all of the messages...
   */
 
+  DEBUG_printf(("pam_func: appdata_ptr = %p\n", appdata_ptr));
+
   data = (cupsd_authdata_t *)appdata_ptr;
 
   for (i = 0; i < num_msg; i ++)
   {
+    DEBUG_printf(("pam_func: Message = \"%s\"\n", msg[i]->msg));
+
     switch (msg[i]->msg_style)
     {
       case PAM_PROMPT_ECHO_ON:
+          DEBUG_printf(("pam_func: PAM_PROMPT_ECHO_ON, returning \"%s\"...\n",
+	                data->username));
           replies[i].resp_retcode = PAM_SUCCESS;
           replies[i].resp         = strdup(data->username);
           break;
 
       case PAM_PROMPT_ECHO_OFF:
+          DEBUG_printf(("pam_func: PAM_PROMPT_ECHO_OFF, returning \"%s\"...\n",
+	                data->password));
           replies[i].resp_retcode = PAM_SUCCESS;
           replies[i].resp         = strdup(data->password);
           break;
 
       case PAM_TEXT_INFO:
+          DEBUG_puts("pam_func: PAM_TEXT_INFO...");
           replies[i].resp_retcode = PAM_SUCCESS;
           replies[i].resp         = NULL;
           break;
 
       case PAM_ERROR_MSG:
+          DEBUG_puts("pam_func: PAM_ERROR_MSG...");
           replies[i].resp_retcode = PAM_SUCCESS;
           replies[i].resp         = NULL;
           break;
 
       default:
+          DEBUG_printf(("pam_func: Unknown PAM message %d...\n",
+	                msg[i]->msg_style));
           free(replies);
           return (PAM_CONV_ERR);
     }

@@ -1,10 +1,13 @@
 dnl
 dnl DNS Service Discovery (aka Bonjour) stuff for CUPS.
 dnl
-dnl Copyright © 2007-2019 by Apple Inc.
+dnl Copyright 2007-2017 by Apple Inc.
 dnl
-dnl Licensed under Apache License v2.0.  See the file "LICENSE" for more
-dnl information.
+dnl These coded instructions, statements, and computer programs are the
+dnl property of Apple Inc. and are protected by Federal copyright
+dnl law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+dnl which should have been included with this file.  If this file is
+dnl missing or damaged, see the license at "http://www.cups.org/".
 dnl
 
 AC_ARG_ENABLE(avahi, [  --disable-avahi         disable DNS Service Discovery support using Avahi])
@@ -29,7 +32,7 @@ if test "x$PKGCONFIG" != x -a x$enable_avahi != xno -a x$host_os_name != xdarwin
 		DNSSDLIBS="`$PKGCONFIG --libs avahi-client`"
 		DNSSD_BACKEND="dnssd"
 		IPPFIND_BIN="ippfind"
-		IPPFIND_MAN="ippfind.1"
+		IPPFIND_MAN="ippfind.\$(MAN1EXT)"
 		AC_DEFINE(HAVE_AVAHI)
 	else
 		AC_MSG_RESULT(no)
@@ -42,9 +45,10 @@ if test "x$DNSSD_BACKEND" = x -a x$enable_dnssd != xno; then
 			darwin*)
 				# Darwin and macOS...
 				AC_DEFINE(HAVE_DNSSD)
+				DNSSDLIBS="-framework CoreFoundation -framework SystemConfiguration"
 				DNSSD_BACKEND="dnssd"
 				IPPFIND_BIN="ippfind"
-				IPPFIND_MAN="ippfind.1"
+				IPPFIND_MAN="ippfind.\$(MAN1EXT)"
 				;;
 			*)
 				# All others...
@@ -62,7 +66,7 @@ if test "x$DNSSD_BACKEND" = x -a x$enable_dnssd != xno; then
 					DNSSDLIBS="-ldns_sd"
 					DNSSD_BACKEND="dnssd",
 					IPPFIND_BIN="ippfind"
-					IPPFIND_MAN="ippfind.1"
+					IPPFIND_MAN="ippfind.\$(MAN1EXT)"
 					AC_MSG_RESULT(no))
 				LIBS="$SAVELIBS"
 				;;

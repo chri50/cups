@@ -4,8 +4,11 @@
  * Copyright © 2007-2018 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more
- * information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -80,9 +83,6 @@ static const cupsd_var_t	cupsd_vars[] =
   { "DefaultPolicy",		&DefaultPolicy,		CUPSD_VARTYPE_STRING },
   { "DefaultShared",		&DefaultShared,		CUPSD_VARTYPE_BOOLEAN },
   { "DirtyCleanInterval",	&DirtyCleanInterval,	CUPSD_VARTYPE_TIME },
-#if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
-  { "DNSSDHostName",		&DNSSDHostName,		CUPSD_VARTYPE_STRING },
-#endif /* HAVE_DNSSD || HAVE_AVAHI */
   { "ErrorPolicy",		&ErrorPolicy,		CUPSD_VARTYPE_STRING },
   { "FilterLimit",		&FilterLimit,		CUPSD_VARTYPE_INTEGER },
   { "FilterNice",		&FilterNice,		CUPSD_VARTYPE_INTEGER },
@@ -729,14 +729,14 @@ cupsdReadConfiguration(void)
   MaxClientsPerHost        = 0;
   MaxLogSize               = 1024 * 1024;
   MaxRequestSize           = 0;
-  MultipleOperationTimeout = 900;
+  MultipleOperationTimeout = DEFAULT_TIMEOUT;
   NumSystemGroups          = 0;
   ReloadTimeout	           = DEFAULT_KEEPALIVE;
   RootCertDuration         = 300;
   Sandboxing               = CUPSD_SANDBOXING_STRICT;
   StrictConformance        = FALSE;
   SyncOnClose              = FALSE;
-  Timeout                  = 900;
+  Timeout                  = DEFAULT_TIMEOUT;
   WebInterface             = CUPS_DEFAULT_WEBIF;
 
   BrowseLocalProtocols     = parse_protocols(CUPS_DEFAULT_BROWSE_LOCAL_PROTOCOLS);
@@ -746,7 +746,6 @@ cupsdReadConfiguration(void)
 
 #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
   cupsdSetString(&DNSSDSubTypes, "_cups,_print");
-  cupsdClearString(&DNSSDHostName);
 #endif /* HAVE_DNSSD || HAVE_AVAHI */
 
   cupsdSetString(&LPDConfigFile, CUPS_DEFAULT_LPD_CONFIG_FILE);
@@ -3573,7 +3572,10 @@ read_cups_files_conf(cups_file_t *fp)	/* I - File to read from */
       */
 
       if (!_cups_strcasecmp(value, "off") && getuid())
+      {
         Sandboxing = CUPSD_SANDBOXING_OFF;
+        cupsdLogMessage(CUPSD_LOG_WARN, "Disabling sandboxing is not recommended (line %d of %s)", linenum, CupsFilesFile);
+      }
       else if (!_cups_strcasecmp(value, "relaxed"))
         Sandboxing = CUPSD_SANDBOXING_RELAXED;
       else if (!_cups_strcasecmp(value, "strict"))

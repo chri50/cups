@@ -4,7 +4,11 @@
  * Copyright 2007-2014 by Apple Inc.
  * Copyright 1997-2006 by Easy Software Products.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -230,6 +234,8 @@ show_status(http_t     *http,		/* I - HTTP connection to server */
 		};
 
 
+  DEBUG_printf(("show_status(http=%p, dests=\"%s\")\n", http, dests));
+
   if (http == NULL)
     return;
 
@@ -253,6 +259,8 @@ show_status(http_t     *http,		/* I - HTTP connection to server */
 
   if ((response = cupsDoRequest(http, request, "/")) != NULL)
   {
+    DEBUG_puts("show_status: request succeeded...");
+
    /*
     * Loop through the printers returned in the list and display
     * their status...

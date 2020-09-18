@@ -1,13 +1,19 @@
 /*
  * Authentication functions for CUPS.
  *
- * Copyright 2007-2019 by Apple Inc.
- * Copyright 1997-2007 by Easy Software Products.
+ * Copyright © 2007-2018 by Apple Inc.
+ * Copyright © 1997-2007 by Easy Software Products.
  *
  * This file contains Kerberos support code, copyright 2006 by
  * Jelmer Vernooij.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
+ *
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
@@ -15,7 +21,6 @@
  */
 
 #include "cups-private.h"
-#include "debug-internal.h"
 #include <fcntl.h>
 #include <sys/stat.h>
 #if defined(_WIN32) || defined(__EMX__)
@@ -26,6 +31,11 @@
 
 #if HAVE_AUTHORIZATION_H
 #  include <Security/Authorization.h>
+#  ifdef HAVE_SECBASEPRIV_H
+#    include <Security/SecBasePriv.h>
+#  else
+extern const char *cssmErrorString(int error);
+#  endif /* HAVE_SECBASEPRIV_H */
 #endif /* HAVE_AUTHORIZATION_H */
 
 #if defined(SO_PEERCRED) && defined(AF_LOCAL)
@@ -590,7 +600,7 @@ cups_auth_param(const char *scheme,		/* I - Pointer to auth data */
                 size_t     valsize)		/* I - Size of value buffer */
 {
   char		*valptr = value,		/* Pointer into value buffer */
-      		*valend = value + valsize - 1;	/* Pointer to end of buffer */
+		*valend = value + valsize - 1;	/* Pointer to end of buffer */
   size_t	namelen = strlen(name);		/* Name length */
   int		param;				/* Is this a parameter? */
 
@@ -982,8 +992,8 @@ cups_local_auth(http_t *http)		/* I - HTTP connection to server */
     status = AuthorizationCreate(NULL, kAuthorizationEmptyEnvironment, kAuthorizationFlagDefaults, &http->auth_ref);
     if (status != errAuthorizationSuccess)
     {
-      DEBUG_printf(("8cups_local_auth: AuthorizationCreate() returned %d",
-		    (int)status));
+      DEBUG_printf(("8cups_local_auth: AuthorizationCreate() returned %d (%s)",
+		    (int)status, cssmErrorString(status)));
       return (-1);
     }
 
@@ -1024,7 +1034,8 @@ cups_local_auth(http_t *http)		/* I - HTTP connection to server */
     else if (status == errAuthorizationCanceled)
       return (-1);
 
-    DEBUG_printf(("9cups_local_auth: AuthorizationCopyRights() returned %d", (int)status));
+    DEBUG_printf(("9cups_local_auth: AuthorizationCopyRights() returned %d (%s)",
+		  (int)status, cssmErrorString(status)));
 
   /*
    * Fall through to try certificates...

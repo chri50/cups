@@ -3,7 +3,13 @@
  *
  * Copyright 2008-2016 by Apple Inc.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
+ *
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
@@ -11,7 +17,6 @@
  */
 
 #include "cups-private.h"
-#include "debug-internal.h"
 #include "adminutil.h"
 
 
@@ -24,10 +29,7 @@
  * parameters provide comma-delimited lists of backends to include or omit from
  * the request respectively.
  *
- * This function is deprecated with the IPP printer discovery functionality
- * being provided by the @link cupsEnumDests@ and @cupsGetDests@ functions.
- *
- * @deprecated@
+ * @since CUPS 1.4/macOS 10.6@
  */
 
 ipp_status_t				/* O - Request status - @code IPP_OK@ on success. */

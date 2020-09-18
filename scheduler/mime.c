@@ -4,7 +4,11 @@
  * Copyright 2007-2014 by Apple Inc.
  * Copyright 1997-2006 by Easy Software Products, all rights reserved.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -12,16 +16,9 @@
  */
 
 #include <cups/string-private.h>
+#include <cups/debug-private.h>
 #include <cups/dir.h>
 #include "mime-private.h"
-
-
-/*
- * Debug macros that used to be private API...
- */
-
-#define DEBUG_puts(x)
-#define DEBUG_printf(...)
 
 
 /*

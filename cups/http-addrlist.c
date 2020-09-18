@@ -4,8 +4,13 @@
  * Copyright 2007-2018 by Apple Inc.
  * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more
- * information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
+ *
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
@@ -13,7 +18,6 @@
  */
 
 #include "cups-private.h"
-#include "debug-internal.h"
 #ifdef HAVE_RESOLV_H
 #  include <resolv.h>
 #endif /* HAVE_RESOLV_H */
@@ -652,11 +656,7 @@ httpAddrGetList(const char *hostname,	/* I - Hostname, IP address, or NULL for p
       if (error == EAI_FAIL)
         cg->need_res_init = 1;
 
-#  ifdef _WIN32 /* Really, Microsoft?!? */
-      _cupsSetError(IPP_STATUS_ERROR_INTERNAL, gai_strerrorA(error), 0);
-#  else
       _cupsSetError(IPP_STATUS_ERROR_INTERNAL, gai_strerror(error), 0);
-#  endif /* _WIN32 */
     }
 
 #else

@@ -1,11 +1,7 @@
 #
-# Verify that the CUPS printer operations work.
+# "$Id$"
 #
-# Copyright © 2007-2019 by Apple Inc.
-# Copyright © 2001-2006 by Easy Software Products. All rights reserved.
-#
-# Licensed under Apache License v2.0.  See the file "LICENSE" for more
-# information.
+#   Verify that the CUPS printer operations work.
 #
 {
 	# The name of the test...
@@ -326,3 +322,7 @@
 	# What attributes do we expect?
 	EXPECT media-col-default
 }
+
+#
+# End of "$Id$"
+#

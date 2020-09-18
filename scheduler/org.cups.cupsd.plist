@@ -5,11 +5,9 @@
 	<key>Label</key>
 	<string>org.cups.cupsd</string>
 	<key>ProcessType</key>
-	<string>Interactive</string>
+	<string>Adaptive</string>
 	<key>EnableTransactions</key>
 	<true/>
-	<key>TransactionTimeLimitEnabled</key>
-	<false/>
 	<key>ExitTimeOut</key>
 	<integer>60</integer>
 	<key>KeepAlive</key>

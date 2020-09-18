@@ -1,11 +1,14 @@
 /*
  * "lpmove" command for CUPS.
  *
- * Copyright © 2007-2018 by Apple Inc.
- * Copyright © 1997-2006 by Easy Software Products.
+ * Copyright 2007-2016 by Apple Inc.
+ * Copyright 1997-2006 by Easy Software Products.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more
- * information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -19,8 +22,8 @@
  * Local functions...
  */
 
-static int	move_job(http_t *http, const char *src, int jobid, const char *dest);
-static void	usage(void) _CUPS_NORETURN;
+static int	move_job(http_t *http, const char *src, int jobid,
+		         const char *dest);
 
 
 /*
@@ -53,9 +56,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 
   for (i = 1; i < argc; i ++)
   {
-    if (!strcmp(argv[i], "--help"))
-      usage();
-    else if (argv[i][0] == '-')
+    if (argv[i][0] == '-')
     {
       for (opt = argv[i] + 1; *opt; opt ++)
       {
@@ -83,7 +84,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 		if (i >= argc)
 		{
 		  _cupsLangPuts(stderr, _("Error: need hostname after \"-h\" option."));
-		  usage();
+		  return (1);
 		}
 
 		cupsSetServer(argv[i]);
@@ -92,7 +93,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 
 	  default :
 	      _cupsLangPrintf(stderr, _("%s: Unknown option \"%c\"."), argv[0], *opt);
-	      usage();
+	      return (1);
 	}
       }
     }
@@ -115,12 +116,15 @@ main(int  argc,				/* I - Number of command-line arguments */
     else
     {
       _cupsLangPrintf(stderr, _("lpmove: Unknown argument \"%s\"."), argv[i]);
-      usage();
+      return (1);
     }
   }
 
   if ((!jobid && !src) || !dest)
-    usage();
+  {
+    _cupsLangPuts(stdout, _("Usage: lpmove job/src dest"));
+    return (1);
+  }
 
   http = httpConnectEncrypt(cupsServer(), ippPort(), cupsEncryption());
 
@@ -201,22 +205,4 @@ move_job(http_t     *http,		/* I - HTTP connection to server */
   }
   else
     return (0);
-}
-
-
-/*
- * 'usage()' - Show program usage and exit.
- */
-
-static void
-usage(void)
-{
-  _cupsLangPuts(stdout, _("Usage: lpmove [options] job destination\n"
-                          "       lpmove [options] source-destination destination"));
-  _cupsLangPuts(stdout, _("Options:"));
-  _cupsLangPuts(stdout, _("-E                      Encrypt the connection to the server"));
-  _cupsLangPuts(stdout, _("-h server[:port]        Connect to the named server and port"));
-  _cupsLangPuts(stdout, _("-U username             Specify the username to use for authentication"));
-
-  exit(1);
 }

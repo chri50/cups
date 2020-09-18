@@ -4,8 +4,11 @@
  * Copyright 2007-2018 by Apple Inc.
  * Copyright 1997-2006 by Easy Software Products.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more
- * information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -35,6 +38,8 @@ cgiCompileSearch(const char *query)	/* I - Query string */
   size_t	wlen;			/* Word length */
   char		*lword;			/* Last word in query */
 
+
+  DEBUG_printf(("cgiCompileSearch(query=\"%s\")\n", query));
 
  /*
   * Range check input...
@@ -290,6 +295,8 @@ cgiCompileSearch(const char *query)	/* I - Query string */
  /*
   * Compile the regular expression...
   */
+
+  DEBUG_printf(("    s=\"%s\"\n", s));
 
   if (regcomp(re, s, REG_EXTENDED | REG_ICASE))
   {

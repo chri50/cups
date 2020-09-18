@@ -1,4 +1,4 @@
-INSTALL - CUPS v2.3rc1 - 2019-05-21
+INSTALL - CUPS v2.2.11 - 2019-03-22
 ===================================
 
 This file describes how to compile and install CUPS from source code. For more
@@ -21,7 +21,7 @@ does not endorse or support third-party support software for CUPS.
 > c. software updates will often replace parts of your local installation,
 >    potentially rendering your system unusable.
 >
-> Apple only supports using the Clang supplied with Xcode to build CUPS on
+> Apple only supports using the compiler supplied with Xcode to build CUPS on
 > macOS.
 
 

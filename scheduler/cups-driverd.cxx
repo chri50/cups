@@ -5,11 +5,14 @@
  * created from driver information files, and dynamically generated PPD files
  * using driver helper programs.
  *
- * Copyright © 2007-2019 by Apple Inc.
- * Copyright © 1997-2007 by Easy Software Products.
+ * Copyright � 2007-2019 by Apple Inc.
+ * Copyright � 1997-2007 by Easy Software Products.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more
- * information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
  */
 
 /*
@@ -347,7 +350,8 @@ cat_drv(const char *name,		/* I - PPD name */
     return (1);
   }
 
-  if ((fp = get_file(resource, request_id, "drv", filename, sizeof(filename), &pc_file_name)) == NULL || !pc_file_name)
+  if ((fp = get_file(resource, request_id, "drv", filename, sizeof(filename),
+                     &pc_file_name)) == NULL)
     return (1);
 
   src = new ppdcSource(filename, fp);

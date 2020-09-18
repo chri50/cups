@@ -1,11 +1,16 @@
 /*
  * Scheduler control program for CUPS.
  *
- * Copyright © 2007-2019 by Apple Inc.
- * Copyright © 2006-2007 by Easy Software Products.
+ * Copyright 2007-2018 by Apple Inc.
+ * Copyright 2006-2007 by Easy Software Products.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more
- * information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
+ *
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
@@ -31,47 +36,11 @@ int					/* O - Exit status */
 main(int  argc,				/* I - Number of command-line args */
      char *argv[])			/* I - Command-line arguments */
 {
-  int		i, j,			/* Looping vars */
+  int		i,			/* Looping var */
 		num_settings;		/* Number of settings */
-  cups_option_t	*settings,		/* Settings */
-		*setting;		/* Current setting */
+  cups_option_t	*settings;		/* Settings */
   const char	*opt;			/* Current option character */
   http_t	*http;			/* Connection to server */
-  static const char * const disallowed[] =
-  {					/* List of disallowed directives for cupsd.conf */
-    "AccessLog",
-    "CacheDir",
-    "ConfigFilePerm",
-    "DataDir",
-    "DocumentRoot",
-    "ErrorLog",
-    "FatalErrors",
-    "FileDevice",
-    "FontPath",
-    "Group",
-    "Listen",
-    "LogFilePerm",
-    "LPDConfigFile",
-    "PageLog",
-    "PassEnv",
-    "Port",
-    "Printcap",
-    "PrintcapFormat",
-    "RemoteRoot",
-    "RequestRoot",
-    "ServerBin",
-    "ServerCertificate",
-    "ServerKey",
-    "ServerKeychain",
-    "ServerRoot",
-    "SetEnv",
-    "SMBConfigFile",
-    "StateDir",
-    "SystemGroup",
-    "SystemGroupAuthKey",
-    "TempDir",
-    "User"
-  };
 
 
  /*
@@ -85,9 +54,7 @@ main(int  argc,				/* I - Number of command-line args */
 
   for (i = 1; i < argc; i ++)
   {
-    if (!strcmp(argv[i], "--help"))
-      usage(NULL);
-    else if (argv[i][0] == '-')
+    if (argv[i][0] == '-')
     {
       if (argv[i][1] == '-')
       {
@@ -161,16 +128,11 @@ main(int  argc,				/* I - Number of command-line args */
       usage(argv[i]);
   }
 
-  for (i = num_settings, setting = settings; i > 0; i --, setting ++)
+  if (cupsGetOption("Listen", num_settings, settings) ||
+      cupsGetOption("Port", num_settings, settings))
   {
-    for (j = 0; j < (int)(sizeof(disallowed) / sizeof(disallowed[0])); j ++)
-    {
-      if (!_cups_strcasecmp(setting->name, disallowed[j]))
-      {
-	_cupsLangPrintf(stderr, _("cupsctl: Cannot set %s directly."), disallowed[j]);
-	return (1);
-      }
-    }
+    _cupsLangPuts(stderr, _("cupsctl: Cannot set Listen or Port directly."));
+    return (1);
   }
 
  /*
@@ -228,16 +190,26 @@ usage(const char *opt)			/* I - Option character/string */
       _cupsLangPrintf(stderr, _("cupsctl: Unknown option \"-%c\""), *opt);
   }
 
-  _cupsLangPuts(stdout, _("Usage: cupsctl [options] [param=value ... paramN=valueN]"));
+  _cupsLangPuts(stdout, _("Usage: cupsctl [options] [param=value ... "
+                          "paramN=valueN]"));
+  _cupsLangPuts(stdout, "");
   _cupsLangPuts(stdout, _("Options:"));
-  _cupsLangPuts(stdout, _("-E                      Encrypt the connection to the server"));
-  _cupsLangPuts(stdout, _("-h server[:port]        Connect to the named server and port"));
-  _cupsLangPuts(stdout, _("-U username             Specify username to use for authentication"));
-  _cupsLangPuts(stdout, _("--[no-]debug-logging    Turn debug logging on/off"));
-  _cupsLangPuts(stdout, _("--[no-]remote-admin     Turn remote administration on/off"));
-  _cupsLangPuts(stdout, _("--[no-]remote-any       Allow/prevent access from the Internet"));
-  _cupsLangPuts(stdout, _("--[no-]share-printers   Turn printer sharing on/off"));
-  _cupsLangPuts(stdout, _("--[no-]user-cancel-any  Allow/prevent users to cancel any job"));
+  _cupsLangPuts(stdout, "");
+  _cupsLangPuts(stdout, _("  -E                      Encrypt the connection."));
+  _cupsLangPuts(stdout, _("  -U username             Specify username."));
+  _cupsLangPuts(stdout, _("  -h server[:port]        Specify server "
+                          "address."));
+  _cupsLangPuts(stdout, "");
+  _cupsLangPuts(stdout, _("  --[no-]debug-logging    Turn debug logging "
+                          "on/off."));
+  _cupsLangPuts(stdout, _("  --[no-]remote-admin     Turn remote "
+                          "administration on/off."));
+  _cupsLangPuts(stdout, _("  --[no-]remote-any       Allow/prevent access "
+                          "from the Internet."));
+  _cupsLangPuts(stdout, _("  --[no-]share-printers   Turn printer sharing "
+                          "on/off."));
+  _cupsLangPuts(stdout, _("  --[no-]user-cancel-any  Allow/prevent users to "
+                          "cancel any job."));
 
   exit(1);
 }

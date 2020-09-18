@@ -4,7 +4,13 @@
  * Copyright 2007-2015 by Apple Inc.
  * Copyright 1993-2007 by Easy Software Products.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
+ *
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
@@ -31,8 +37,8 @@ unsigned char	*Planes[4],		/* Output buffers */
 unsigned 	NumPlanes,		/* Number of color planes */
 		ColorBits,		/* Number of bits per color */
 		Feed;			/* Number of lines to skip */
-cups_bool_t	Duplex;			/* Current duplex mode */
-int		Page,			/* Current page number */
+int		Duplex,			/* Current duplex mode */
+		Page,			/* Current page number */
 		Canceled;		/* Has the current job been canceled? */
 
 

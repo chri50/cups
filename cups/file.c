@@ -6,11 +6,16 @@
  * our own file functions allows us to provide transparent support of
  * different line endings, gzip'd print files, PPD files, etc.
  *
- * Copyright © 2007-2019 by Apple Inc.
- * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright 2007-2018 by Apple Inc.
+ * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more
- * information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
+ *
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
@@ -18,7 +23,6 @@
  */
 
 #include "file-private.h"
-#include "debug-internal.h"
 #include <sys/stat.h>
 #include <sys/types.h>
 

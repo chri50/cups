@@ -1,10 +1,14 @@
 /*
  * Configuration file for CUPS and Xcode.
  *
- * Copyright 2007-2019 by Apple Inc.
- * Copyright 1997-2007 by Easy Software Products.
+ * Copyright © 2007-2018 by Apple Inc.
+ * Copyright © 1997-2007 by Easy Software Products.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
  */
 
 #ifndef _CUPS_CONFIG_H_
@@ -18,8 +22,8 @@
  * Version of software...
  */
 
-#define CUPS_SVERSION "CUPS v2.3.0"
-#define CUPS_MINIMAL "CUPS/2.3.0"
+#define CUPS_SVERSION "CUPS v2.2.11"
+#define CUPS_MINIMAL "CUPS/2.2.11"
 
 
 /*
@@ -323,22 +327,52 @@
  * What Security framework headers do we have?
  */
 
-#if TARGET_OS_OSX
+#if !TARGET_OS_IOS
 #  define HAVE_AUTHORIZATION_H 1
-#endif /* TARGET_OS_OSX */
+#endif /* !TARGET_OS_IOS */
 
+/* #undef HAVE_SECBASEPRIV_H */
 #define HAVE_SECCERTIFICATE_H 1
+/* #undef HAVE_SECIDENTITYSEARCHPRIV_H */
 #define HAVE_SECITEM_H 1
+/* #undef HAVE_SECITEMPRIV_H */
 #define HAVE_SECPOLICY_H 1
+/* #undef HAVE_SECPOLICYPRIV_H */
+/* #undef HAVE_SECURETRANSPORTPRIV_H */
+
+
+/*
+ * Do we have the cssmErrorString function?
+ */
+
+#if !TARGET_OS_IOS
+#  define HAVE_CSSMERRORSTRING 1
+#endif /* !TARGET_OS_IOS */
 
 
 /*
  * Do we have the SecGenerateSelfSignedCertificate function?
  */
 
-#if !TARGET_OS_OSX
+#if TARGET_OS_IOS
 #  define HAVE_SECGENERATESELFSIGNEDCERTIFICATE 1
-#endif /* !TARGET_OS_OSX */
+#endif /* TARGET_OS_IOS */
+
+
+/*
+ * Do we have the SecKeychainOpen function?
+ */
+
+#if !TARGET_OS_IOS
+#  define HAVE_SECKEYCHAINOPEN 1
+#endif /* !TARGET_OS_IOS */
+
+
+/*
+ * Do we have (a working) SSLSetEnabledCiphers function?
+ */
+
+#define HAVE_SSLSETENABLEDCIPHERS 1
 
 
 /*
@@ -483,28 +517,46 @@
 
 
 /*
- * Do we have CoreFoundation public headers?
+ * Various scripting languages...
+ */
+
+#if !TARGET_OS_IOS
+#  define HAVE_JAVA 1
+#  define CUPS_JAVA "/usr/bin/java"
+#  define HAVE_PERL 1
+#  define CUPS_PERL "/usr/bin/perl"
+#  define HAVE_PHP 1
+#  define CUPS_PHP "/usr/bin/php"
+#  define HAVE_PYTHON 1
+#  define CUPS_PYTHON "/usr/bin/python"
+#endif /* !TARGET_OS_IOS */
+
+
+/*
+ * Do we have CoreFoundation public and private headers?
  */
 
 #define HAVE_COREFOUNDATION_H 1
+/* #undef HAVE_CFPRIV_H */
+/* #undef HAVE_CFBUNDLEPRIV_H */
 
 
 /*
  * Do we have ApplicationServices public headers?
  */
 
-#if TARGET_OS_OSX
+#if !TARGET_OS_IOS
 #  define HAVE_APPLICATIONSERVICES_H 1
-#endif /* TARGET_OS_OSX */
+#endif /* !TARGET_OS_IOS */
 
 
 /*
  * Do we have the SCDynamicStoreCopyComputerName function?
  */
 
-#if TARGET_OS_OSX
+#if !TARGET_OS_IOS
 #  define HAVE_SCDYNAMICSTORECOPYCOMPUTERNAME 1
-#endif /* TARGET_OS_OSX */
+#endif /* !TARGET_OS_IOS */
 
 
 /*
@@ -519,6 +571,7 @@
  */
 
 #define HAVE_MEMBERSHIP_H 1
+/* #undef HAVE_MEMBERSHIPPRIV_H */
 #define HAVE_MBR_UID_TO_UUID 1
 
 
@@ -543,7 +596,7 @@
  * Do we have the GSSAPI support library (for Kerberos support)?
  */
 
-#if TARGET_OS_OSX
+#if !TARGET_OS_IOS
 #  define HAVE_GSS_ACQUIRED_CRED_EX_F 1
 #  define HAVE_GSS_C_NT_HOSTBASED_SERVICE 1
 #  define HAVE_GSS_GSSAPI_H 1
@@ -551,7 +604,7 @@
 #  define HAVE_GSSAPI 1
 /* #undef HAVE_GSSAPI_GSSAPI_H */
 /* #undef HAVE_GSSAPI_H */
-#endif /* TARGET_OS_OSX */
+#endif /* !TARGET_OS_IOS */
 
 
 /*
@@ -662,14 +715,12 @@
 
 
 /*
- * Location of localization bundle, if any.
+ * Location of macOS localization bundle, if any.
  */
 
-#if TARGET_OS_OSX
+#if !TARGET_OS_IOS
 #  define CUPS_BUNDLEDIR "/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/PrintCore.framework/Versions/A"
-#else
-#  define CUPS_BUNDLEDIR "/System/Library/PrivateFrameworks/PrintKit.framework/Versions/A"
-#endif /* TARGET_OS_OSX */
+#endif /* !TARGET_OS_IOS */
 
 
 /*
@@ -677,6 +728,14 @@
  */
 
 #define HAVE_XPC 1
+/* #undef HAVE_XPC_PRIVATE_H */
+
+
+/*
+ * Do we have Mini-XML?
+ */
+
+/* #undef HAVE_MXML_H */
 
 
 /*
