@@ -6,13 +6,8 @@
  *
  * This file is part of the CUPS Imaging library.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
- *
- * This file is subject to the Apple OS-Developed Software exception.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+ * information.
  */
 
 /*
@@ -1673,6 +1668,10 @@ cups_raster_io(cups_raster_t *r,	/* I - Raster stream */
     DEBUG_printf(("6cups_raster_io: count=%d, total=%d", (int)count, (int)total));
     if (count == 0)
       break;
+//    {
+//      DEBUG_puts("6cups_raster_io: Returning 0.");
+//      return (0);
+//    }
     else if (count < 0)
     {
       DEBUG_puts("6cups_raster_io: Returning -1 on error.");

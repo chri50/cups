@@ -1,25 +1,13 @@
 /*
  * Private PPD definitions for CUPS.
  *
- * Copyright 2007-2017 by Apple Inc.
+ * Copyright 2007-2018 by Apple Inc.
  * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+ * information.
  *
  * PostScript is a trademark of Adobe Systems, Inc.
- *
- * This code and any derivative of it may be used and distributed
- * freely under the terms of the GNU General Public License when
- * used with GNU Ghostscript or its derivatives.  Use of the code
- * (or any derivative of it) with software other than GNU
- * GhostScript (or its derivatives) is governed by the CUPS license
- * agreement.
- *
- * This file is subject to the Apple OS-Developed Software exception.
  */
 
 #ifndef _CUPS_PPD_PRIVATE_H_
@@ -47,7 +35,7 @@ extern "C" {
  * Constants...
  */
 
-#  define _PPD_CACHE_VERSION	8	/* Version number in cache file */
+#  define _PPD_CACHE_VERSION	9	/* Version number in cache file */
 
 
 /*
@@ -151,12 +139,14 @@ struct _ppd_cache_s			/**** PPD cache and PWG conversion data ****/
 		*prefilters;		/* cupsPreFilter values */
   int		single_file;		/* cupsSingleFile value */
   cups_array_t	*finishings;		/* cupsIPPFinishings values */
+  cups_array_t	*templates;		/* cupsFinishingTemplate values */
   int		max_copies,		/* cupsMaxCopies value */
 		account_id,		/* cupsJobAccountId value */
 		accounting_user_id;	/* cupsJobAccountingUserId value */
   char		*password;		/* cupsJobPassword value */
   cups_array_t	*mandatory;		/* cupsMandatory value */
   char		*charge_info_uri;	/* cupsChargeInfoURI value */
+  cups_array_t	*strings;		/* Localization strings */
   cups_array_t	*support_files;		/* Support files - ICC profiles, etc. */
 };
 
@@ -177,11 +167,7 @@ extern int		_ppdCacheGetFinishingOptions(_ppd_cache_t *pc,
 			                             ipp_finishings_t value,
 			                             int num_options,
 			                             cups_option_t **options);
-extern int		_ppdCacheGetFinishingValues(_ppd_cache_t *pc,
-			                            int num_options,
-			                            cups_option_t *options,
-			                            int max_values,
-			                            int *values);
+extern int		_ppdCacheGetFinishingValues(ppd_file_t *ppd, _ppd_cache_t *pc, int max_values, int *values);
 extern const char	*_ppdCacheGetInputSlot(_ppd_cache_t *pc, ipp_t *job,
 			                       const char *keyword);
 extern const char	*_ppdCacheGetMediaType(_ppd_cache_t *pc, ipp_t *job,

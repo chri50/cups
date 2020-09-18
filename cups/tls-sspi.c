@@ -4,13 +4,7 @@
  *
  * Copyright 2010-2018 by Apple Inc.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
- *
- * This file is subject to the Apple OS-Developed Software exception.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
  */
 
 /**** This file is included from tls.c ****/
@@ -976,7 +970,7 @@ _httpTLSStart(http_t *http)		/* I - HTTP connection */
     * Server: determine hostname to use...
     */
 
-    if (http->fields[HTTP_FIELD_HOST][0])
+    if (http->fields[HTTP_FIELD_HOST])
     {
      /*
       * Use hostname for TLS upgrade...
@@ -1767,25 +1761,21 @@ http_sspi_find_credentials(
 #ifdef SP_PROT_TLS1_2_SERVER
   if (http->mode == _HTTP_MODE_SERVER)
   {
-    if (tls_min_version == _HTTP_TLS_SSL3)
-      SchannelCred.grbitEnabledProtocols = SP_PROT_TLS1_2_SERVER | SP_PROT_TLS1_1_SERVER | SP_PROT_TLS1_0_SERVER | SP_PROT_SSL3_SERVER;
-    else if (tls_min_version == _HTTP_TLS_1_0)
-      SchannelCred.grbitEnabledProtocols = SP_PROT_TLS1_2_SERVER | SP_PROT_TLS1_1_SERVER | SP_PROT_TLS1_0_SERVER;
-    else if (tls_min_version == _HTTP_TLS_1_1)
+    if (tls_options & _HTTP_TLS_DENY_TLS10)
       SchannelCred.grbitEnabledProtocols = SP_PROT_TLS1_2_SERVER | SP_PROT_TLS1_1_SERVER;
+    else if (tls_options & _HTTP_TLS_ALLOW_SSL3)
+      SchannelCred.grbitEnabledProtocols = SP_PROT_TLS1_2_SERVER | SP_PROT_TLS1_1_SERVER | SP_PROT_TLS1_0_SERVER | SP_PROT_SSL3_SERVER;
     else
-      SchannelCred.grbitEnabledProtocols = SP_PROT_TLS1_2_SERVER;
+      SchannelCred.grbitEnabledProtocols = SP_PROT_TLS1_2_SERVER | SP_PROT_TLS1_1_SERVER | SP_PROT_TLS1_0_SERVER;
   }
   else
   {
-    if (tls_min_version == _HTTP_TLS_SSL3)
-      SchannelCred.grbitEnabledProtocols = SP_PROT_TLS1_2_CLIENT | SP_PROT_TLS1_1_CLIENT | SP_PROT_TLS1_0_CLIENT | SP_PROT_SSL3_CLIENT;
-    else if (tls_min_version == _HTTP_TLS_1_0)
-      SchannelCred.grbitEnabledProtocols = SP_PROT_TLS1_2_CLIENT | SP_PROT_TLS1_1_CLIENT | SP_PROT_TLS1_0_CLIENT;
-    else if (tls_min_version == _HTTP_TLS_1_1)
+    if (tls_options & _HTTP_TLS_DENY_TLS10)
       SchannelCred.grbitEnabledProtocols = SP_PROT_TLS1_2_CLIENT | SP_PROT_TLS1_1_CLIENT;
+    else if (tls_options & _HTTP_TLS_ALLOW_SSL3)
+      SchannelCred.grbitEnabledProtocols = SP_PROT_TLS1_2_CLIENT | SP_PROT_TLS1_1_CLIENT | SP_PROT_TLS1_0_CLIENT | SP_PROT_SSL3_CLIENT;
     else
-      SchannelCred.grbitEnabledProtocols = SP_PROT_TLS1_2_CLIENT;
+      SchannelCred.grbitEnabledProtocols = SP_PROT_TLS1_2_CLIENT | SP_PROT_TLS1_1_CLIENT | SP_PROT_TLS1_0_CLIENT;
   }
 
 #else
