@@ -3,8 +3,8 @@
 # Perform the complete set of IPP compliance tests specified in the
 # CUPS Software Test Plan.
 #
-# Copyright 2007-2018 by Apple Inc.
-# Copyright 1997-2007 by Easy Software Products, all rights reserved.
+# Copyright © 2007-2018 by Apple Inc.
+# Copyright © 1997-2007 by Easy Software Products, all rights reserved.
 #
 # These coded instructions, statements, and computer programs are the
 # property of Apple Inc. and are protected by Federal copyright
@@ -599,7 +599,7 @@ fi
 
 export LD_LIBRARY_PATH
 
-LD_PRELOAD="$root/cups/libcups.so.2:$root/cups/libcupsimage.so.2:$root/cgi-bin/libcupscgi.so.1:$root/scheduler/libcupsmime.so.1:$root/ppdc/libcupsppdc.so.1"
+LD_PRELOAD="$root/cups/libcups.so.2:$root/filter/libcupsimage.so.2:$root/cgi-bin/libcupscgi.so.1:$root/scheduler/libcupsmime.so.1:$root/ppdc/libcupsppdc.so.1"
 if test `uname` = SunOS -a -r /usr/lib/libCrun.so.1; then
 	LD_PRELOAD="/usr/lib/libCrun.so.1:$LD_PRELOAD"
 fi
@@ -607,9 +607,9 @@ export LD_PRELOAD
 
 if test -f $root/cups/libcups.2.dylib; then
         if test "x$DYLD_INSERT_LIBRARIES" = x; then
-                DYLD_INSERT_LIBRARIES="$root/cups/libcups.2.dylib:$root/cups/libcupsimage.2.dylib:$root/cgi-bin/libcupscgi.1.dylib:$root/scheduler/libcupsmime.1.dylib:$root/ppdc/libcupsppdc.1.dylib"
+                DYLD_INSERT_LIBRARIES="$root/cups/libcups.2.dylib:$root/filter/libcupsimage.2.dylib:$root/cgi-bin/libcupscgi.1.dylib:$root/scheduler/libcupsmime.1.dylib:$root/ppdc/libcupsppdc.1.dylib"
         else
-                DYLD_INSERT_LIBRARIES="$root/cups/libcups.2.dylib:$root/cups/libcupsimage.2.dylib:$root/cgi-bin/libcupscgi.1.dylib:$root/scheduler/libcupsmime.1.dylib:$root/ppdc/libcupsppdc.1.dylib:$DYLD_INSERT_LIBRARIES"
+                DYLD_INSERT_LIBRARIES="$root/cups/libcups.2.dylib:$root/filter/libcupsimage.2.dylib:$root/cgi-bin/libcupscgi.1.dylib:$root/scheduler/libcupsmime.1.dylib:$root/ppdc/libcupsppdc.1.dylib:$DYLD_INSERT_LIBRARIES"
         fi
 
         export DYLD_INSERT_LIBRARIES
@@ -918,7 +918,7 @@ fi
 # Paged printed on Test3
 count=`$GREP '^Test3 ' $BASE/log/page_log | awk 'BEGIN{count=0}{count=count+$7}END{print count}'`
 expected=2
-if test $count != $expected; then
+if test $count -lt $expected; then
 	echo "FAIL: Printer 'Test3' produced $count page(s), expected $expected."
 	echo "    <p>FAIL: Printer 'Test3' produced $count page(s), expected $expected.</p>" >>$strfile
 	fail=`expr $fail + 1`

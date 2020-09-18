@@ -4,8 +4,13 @@
  * Copyright 2007-2018 by Apple Inc.
  * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more
- * information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
+ *
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 #ifndef _CUPS_HTTP_PRIVATE_H_
@@ -286,8 +291,8 @@ struct _http_s				/**** HTTP connection structure ****/
   struct sockaddr_in	_hostaddr;	/* Address of connected host (deprecated) */
   char			hostname[HTTP_MAX_HOST],
   					/* Name of connected host */
-			_fields[HTTP_FIELD_ACCEPT_ENCODING][HTTP_MAX_VALUE];
-					/* Field values up to Accept-Encoding (deprecated) */
+			fields[HTTP_FIELD_ACCEPT_ENCODING][HTTP_MAX_VALUE];
+					/* Field values up to Accept-Encoding */
   char			*data;		/* Pointer to data buffer */
   http_encoding_t	data_encoding;	/* Chunked or not */
   int			_data_remaining;/* Number of bytes left (deprecated) */
@@ -323,6 +328,8 @@ struct _http_s				/**** HTTP connection structure ****/
   int			wused;		/* Write buffer bytes used */
 
   /**** New in CUPS 1.3 ****/
+  char			*field_authorization;
+					/* Authorization field */
   char			*authstring;	/* Current Authorization field */
 #  ifdef HAVE_GSSAPI
   gss_OID 		gssmech;	/* Authentication mechanism */
@@ -347,17 +354,19 @@ struct _http_s				/**** HTTP connection structure ****/
   /**** New in CUPS 1.7 ****/
   int			tls_upgrade;	/* Non-zero if we are doing an upgrade */
   _http_mode_t		mode;		/* _HTTP_MODE_CLIENT or _HTTP_MODE_SERVER */
+  char			*accept_encoding,
+					/* Accept-Encoding field */
+			*allow,		/* Allow field */
+			*server,	/* Server field */
+			*default_accept_encoding,
+			*default_server,
+			*default_user_agent;
+					/* Default field values */
 #  ifdef HAVE_LIBZ
   _http_coding_t	coding;		/* _HTTP_CODING_xxx */
   z_stream		stream;		/* (De)compression stream */
   Bytef			*sbuffer;	/* (De)compression buffer */
 #  endif /* HAVE_LIBZ */
-
-  /**** New in CUPS 2.3 ****/
-  char			*fields[HTTP_FIELD_MAX],
-					/* Allocated field values */
-  			*default_fields[HTTP_FIELD_MAX];
-					/* Default field values, if any */
 };
 #  endif /* !_HTTP_NO_PRIVATE */
 

@@ -1,9 +1,15 @@
 /*
  * Hashing function for CUPS.
  *
- * Copyright 2015-2017 by Apple Inc.
+ * Copyright © 2015-2018 by Apple Inc.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
+ *
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
@@ -274,6 +280,8 @@ cupsHashData(const char    *algorithm,	/* I - Algorithm name */
  * 'cupsHashString()' - Format a hash value as a hexadecimal string.
  *
  * The passed buffer must be at least 2 * hashsize + 1 characters in length.
+ *
+ * @since CUPS 2.2.7@
  */
 
 const char *				/* O - Formatted string */

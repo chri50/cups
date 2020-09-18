@@ -1,10 +1,16 @@
 /*
  * TLS support code for CUPS on macOS.
  *
- * Copyright 2007-2018 by Apple Inc.
- * Copyright 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright © 2007-2018 by Apple Inc.
+ * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
+ *
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /**** This file is included from tls.c ****/
@@ -1424,7 +1430,7 @@ _httpTLSStart(http_t *http)		/* I - HTTP connection */
     * Server: find/create a certificate for TLS...
     */
 
-    if (http->fields[HTTP_FIELD_HOST])
+    if (http->fields[HTTP_FIELD_HOST][0])
     {
      /*
       * Use hostname for TLS upgrade...
@@ -1532,7 +1538,28 @@ _httpTLSStart(http_t *http)		/* I - HTTP connection */
 
   if (!error)
   {
-    int done = 0;			/* Are we done yet? */
+    int			done = 0;	/* Are we done yet? */
+    double		old_timeout;	/* Old timeout value */
+    http_timeout_cb_t	old_cb;		/* Old timeout callback */
+    void		*old_data;	/* Old timeout data */
+
+   /*
+    * Enforce a minimum timeout of 10 seconds for the TLS handshake...
+    */
+
+    old_timeout  = http->timeout_value;
+    old_cb       = http->timeout_cb;
+    old_data     = http->timeout_data;
+
+    if (!old_cb || old_timeout < 10.0)
+    {
+      DEBUG_puts("4_httpTLSStart: Setting timeout to 10 seconds.");
+      httpSetTimeout(http, 10.0, NULL, NULL);
+    }
+
+   /*
+    * Do the TLS handshake...
+    */
 
     while (!error && !done)
     {
@@ -1653,6 +1680,12 @@ _httpTLSStart(http_t *http)		/* I - HTTP connection */
 	    break;
       }
     }
+
+   /*
+    * Restore the previous timeout settings...
+    */
+
+    httpSetTimeout(http, old_timeout, old_cb, old_data);
   }
 
   if (error)
@@ -2085,7 +2118,7 @@ http_cdsa_read(
 
   http = (http_t *)connection;
 
-  if (!http->blocking)
+  if (!http->blocking || http->timeout_value > 0.0)
   {
    /*
     * Make sure we have data before we read...

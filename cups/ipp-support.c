@@ -1,10 +1,16 @@
 /*
  * Internet Printing Protocol support functions for CUPS.
  *
- * Copyright 2007-2017 by Apple Inc.
- * Copyright 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright © 2007-2018 by Apple Inc.
+ * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
+ *
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
@@ -206,7 +212,7 @@ static const char * const ipp_std_ops[] =
 		  "Add-Document-Images",
 		  "Acknowledge-Document",
 
-		  /* 0x0040 - 0x004f */
+		  /* 0x0040 - 0x004a */
 		  "Acknowledge-Identify-Printer",
 		  "Acknowledge-Job",
 		  "Fetch-Document",
@@ -217,37 +223,7 @@ static const char * const ipp_std_ops[] =
 		  "Update-Document-Status",
 		  "Update-Job-Status",
 		  "Update-Output-Device-Attributes",
-		  "Get-Next-Document-Data",
-                  "Allocate-Printer-Resources",
-                  "Create-Printer",
-                  "Deallocate-Printer-Resources",
-                  "Delete-Printer",
-                  "Get-Printers",
-
-                  /* 0x0050 - 0x005f */
-                  "Shutdown-One-Printer",
-                  "Startup-One-Printer",
-                  "Cancel-Resource",
-                  "Create-Resource",
-                  "Install-Resource",
-                  "Send-Resource-Data",
-                  "Set-Resource-Attributes",
-                  "Create-Resource-Subscriptions",
-                  "Create-System-Subscriptions",
-                  "Disable-All-Printers",
-                  "Enable-All-Printers",
-                  "Get-System-Attributes",
-                  "Get-System-Supported-Values",
-                  "Pause-All-Printers",
-                  "Pause-All-Printers-After-Current-Job",
-                  "Register-Output-Device",
-
-                  /* 0x0060 - 0x0064 */
-                  "Restart-System",
-                  "Resume-All-Printers",
-                  "Set-System-Attributes",
-                  "Shutdown-All-Printers",
-                  "Startup-All-Printers"
+		  "Get-Next-Document-Data"
 		},
 		* const ipp_cups_ops[] =
 		{
@@ -1657,6 +1633,8 @@ ippCreateRequestedArray(ipp_t *request)	/* I - IPP request */
     "printer-charge-info",
     "printer-charge-info-uri",
     "printer-commands",			/* CUPS extension */
+    "printer-config-change-date-time",
+    "printer-config-change-time",
     "printer-current-time",
     "printer-detailed-status-messages",
     "printer-device-id",

@@ -4,7 +4,13 @@
  * Copyright 2007-2017 by Apple Inc.
  * Copyright 1997-2005 by Easy Software Products.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
+ *
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
@@ -72,7 +78,7 @@ httpMD5Final(const char *nonce,		/* I - Server nonce value */
 
   snprintf(line, sizeof(line), "%s:%s", method, resource);
   cupsHashData("md5", (unsigned char *)line, strlen(line), sum, sizeof(sum));
-  httpMD5String(sum, a2);
+  cupsHashString(sum, sizeof(sum), a2, sizeof(a2));
 
  /*
   * Then combine A1 (MD5 of username, realm, and password) with the nonce

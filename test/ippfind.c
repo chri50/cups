@@ -3,10 +3,15 @@
  * commands such as IPP and Bonjour conformance tests.  This tool is
  * inspired by the UNIX "find" command, thus its name.
  *
- * Copyright 2008-2017 by Apple Inc.
+ * Copyright 2008-2015 by Apple Inc.
  *
- * Licensed under Apache License v2.0.  See the file "LICENSE" for more
- * information.
+ * These coded instructions, statements, and computer programs are the
+ * property of Apple Inc. and are protected by Federal copyright
+ * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
+ * which should have been included with this file.  If this file is
+ * missing or damaged, see the license at "http://www.cups.org/".
+ *
+ * This file is subject to the Apple OS-Developed Software exception.
  */
 
 /*
@@ -1168,46 +1173,27 @@ main(int  argc,				/* I - Number of command-line args */
 			*domain;	/* Domain, if any */
 
     strlcpy(buf, search, sizeof(buf));
-    if ((regtype = strstr(buf, "._")) != NULL)
+    if (buf[0] == '_')
     {
-      if (strcmp(regtype, "._tcp"))
-      {
-       /*
-        * "something._protocol._tcp" -> search for something with the given
-        * protocol...
-        */
-
-	name = buf;
-	*regtype++ = '\0';
-      }
-      else
-      {
-       /*
-        * "_protocol._tcp" -> search for everything with the given protocol...
-        */
-
-        /* name = NULL; */
-        regtype = buf;
-      }
+      regtype = buf;
+    }
+    else if ((regtype = strstr(buf, "._")) != NULL)
+    {
+      name = buf;
+      *regtype++ = '\0';
     }
     else
     {
-     /*
-      * "something" -> search for something with IPP protocol...
-      */
-
       name    = buf;
       regtype = "_ipp._tcp";
     }
 
     for (domain = regtype; *domain; domain ++)
-    {
       if (*domain == '.' && domain[1] != '_')
       {
-	*domain++ = '\0';
-	break;
+        *domain++ = '\0';
+        break;
       }
-    }
 
     if (!*domain)
       domain = NULL;
@@ -1277,6 +1263,14 @@ main(int  argc,				/* I - Number of command-line args */
     {
       _cupsLangPrintf(stderr, _("ippfind: Unable to browse or resolve: %s"),
                       dnssd_error_string(err));
+
+      if (name)
+        printf("name=\"%s\"\n", name);
+
+      printf("regtype=\"%s\"\n", regtype);
+
+      if (domain)
+        printf("domain=\"%s\"\n", domain);
 
       return (IPPFIND_EXIT_BONJOUR);
     }
