@@ -5366,7 +5366,7 @@ create_local_bg_thread(
     }
   }
   else
-    cupsdLogMessage(CUPSD_LOG_ERROR, "%s: PPD creation failed.", printer->name);
+    cupsdLogMessage(CUPSD_LOG_ERROR, "%s: PPD creation failed: %s", printer->name, cupsLastErrorString());
 
   return (NULL);
 }
@@ -5478,6 +5478,9 @@ create_local_printer(
     send_ipp_status(con, IPP_STATUS_ERROR_INTERNAL, _("Unable to create printer."));
     return;
   }
+
+  printer->shared    = 0;
+  printer->temporary = 1;
 
   cupsdSetDeviceURI(printer, ippGetString(device_uri, 0, NULL));
 
