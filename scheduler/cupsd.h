@@ -1,14 +1,11 @@
 /*
  * Main header file for the CUPS scheduler.
  *
- * Copyright 2007-2018 by Apple Inc.
- * Copyright 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright © 2007-2018 by Apple Inc.
+ * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * "LICENSE" which should have been included with this file.  If this
- * file is missing or damaged, see the license at "http://www.cups.org/".
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+ * information.
  */
 
 
@@ -195,7 +192,8 @@ extern char		*cupsdMakeUUID(const char *name, int number,
 				       char *buffer, size_t bufsize);
 extern void		cupsdReleaseSignals(void);
 extern void		cupsdSetString(char **s, const char *v);
-extern void		cupsdSetStringf(char **s, const char *f, ...) _CUPS_FORMAT(2, 3);
+extern void		cupsdSetStringf(char **s, const char *f, ...)
+			__attribute__ ((__format__ (__printf__, 2, 3)));
 
 /* process.c */
 extern void		*cupsdCreateProfile(int job_id, int allow_networking);

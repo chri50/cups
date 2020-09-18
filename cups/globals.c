@@ -4,13 +4,7 @@
  * Copyright 2007-2015 by Apple Inc.
  * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
- *
- * This file is subject to the Apple OS-Developed Software exception.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more information.
  */
 
 /*
@@ -228,8 +222,7 @@ cups_globals_alloc(void)
 
     strlcpy(installdir, "C:/Program Files/cups.org", sizeof(installdir));
 
-    if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "SOFTWARE\\cups.org", 0, KEY_READ,
-                      &key))
+    if (!RegOpenKeyExA(HKEY_LOCAL_MACHINE, "SOFTWARE\\cups.org", 0, KEY_READ, &key))
     {
      /*
       * Grab the installation directory...
@@ -238,7 +231,7 @@ cups_globals_alloc(void)
       char  *ptr;			/* Pointer into installdir */
 
       size = sizeof(installdir);
-      RegQueryValueEx(key, "installdir", NULL, NULL, installdir, &size);
+      RegQueryValueExA(key, "installdir", NULL, NULL, installdir, &size);
       RegCloseKey(key);
 
       for (ptr = installdir; *ptr;)
@@ -357,6 +350,9 @@ cups_globals_free(_cups_globals_t *cg)	/* I - Pointer to global data */
   cupsFileClose(cg->stdio_files[2]);
 
   cupsFreeOptions(cg->cupsd_num_settings, cg->cupsd_settings);
+
+  if (cg->raster_error.start)
+    free(cg->raster_error.start);
 
   free(cg);
 }

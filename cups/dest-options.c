@@ -1,15 +1,10 @@
 /*
  * Destination option/media support for CUPS.
  *
- * Copyright 2012-2019 by Apple Inc.
+ * Copyright © 2012-2019 by Apple Inc.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
- *
- * This file is subject to the Apple OS-Developed Software exception.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+ * information.
  */
 
 /*
@@ -17,6 +12,7 @@
  */
 
 #include "cups-private.h"
+#include "debug-internal.h"
 
 
 /*
@@ -31,6 +27,8 @@
  */
 
 static void		cups_add_dconstres(cups_array_t *a, ipp_t *collection);
+static int		cups_collection_contains(ipp_t *test, ipp_t *match);
+static size_t		cups_collection_string(ipp_attribute_t *attr, char *buffer, size_t bufsize) _CUPS_NONNULL((1,2));
 static int		cups_compare_dconstres(_cups_dconstres_t *a,
 			                       _cups_dconstres_t *b);
 static int		cups_compare_media_db(_cups_media_db_t *a,
@@ -56,6 +54,104 @@ static cups_array_t	*cups_test_constraints(cups_dinfo_t *dinfo,
 					       int *num_conflicts,
 					       cups_option_t **conflicts);
 static void		cups_update_ready(http_t *http, cups_dinfo_t *dinfo);
+
+
+/*
+ * 'cupsAddDestMediaOptions()' - Add the option corresponding to the specified media size.
+ *
+ * @since CUPS 2.3/macOS 10.14@
+ */
+
+int					/* O  - New number of options */
+cupsAddDestMediaOptions(
+    http_t        *http,		/* I  - Connection to destination */
+    cups_dest_t   *dest,		/* I  - Destination */
+    cups_dinfo_t  *dinfo,		/* I  - Destination information */
+    unsigned      flags,		/* I  - Media matching flags */
+    cups_size_t   *size,		/* I  - Media size */
+    int           num_options,		/* I  - Current number of options */
+    cups_option_t **options)		/* IO - Options */
+{
+  cups_array_t		*db;		/* Media database */
+  _cups_media_db_t	*mdb;		/* Media database entry */
+  char			value[2048];	/* Option value */
+
+
+ /*
+  * Range check input...
+  */
+
+  if (!http || !dest || !dinfo || !size || !options)
+  {
+    _cupsSetError(IPP_STATUS_ERROR_INTERNAL, strerror(EINVAL), 0);
+    return (num_options);
+  }
+
+ /*
+  * Find the matching media size...
+  */
+
+  if (flags & CUPS_MEDIA_FLAGS_READY)
+    db = dinfo->ready_db;
+  else
+    db = dinfo->media_db;
+
+  DEBUG_printf(("1cupsAddDestMediaOptions: size->media=\"%s\"", size->media));
+
+  for (mdb = (_cups_media_db_t *)cupsArrayFirst(db); mdb; mdb = (_cups_media_db_t *)cupsArrayNext(db))
+  {
+    if (mdb->key && !strcmp(mdb->key, size->media))
+      break;
+    else if (mdb->size_name && !strcmp(mdb->size_name, size->media))
+      break;
+  }
+
+  if (!mdb)
+  {
+    for (mdb = (_cups_media_db_t *)cupsArrayFirst(db); mdb; mdb = (_cups_media_db_t *)cupsArrayNext(db))
+    {
+      if (mdb->width == size->width && mdb->length == size->length && mdb->bottom == size->bottom && mdb->left == size->left && mdb->right == size->right && mdb->top == size->top)
+	break;
+    }
+  }
+
+  if (!mdb)
+  {
+    for (mdb = (_cups_media_db_t *)cupsArrayFirst(db); mdb; mdb = (_cups_media_db_t *)cupsArrayNext(db))
+    {
+      if (mdb->width == size->width && mdb->length == size->length)
+	break;
+    }
+  }
+
+  if (!mdb)
+  {
+    DEBUG_puts("1cupsAddDestMediaOptions: Unable to find matching size.");
+    return (num_options);
+  }
+
+  DEBUG_printf(("1cupsAddDestMediaOptions: MATCH mdb%p [key=\"%s\" size_name=\"%s\" source=\"%s\" type=\"%s\" width=%d length=%d B%d L%d R%d T%d]", (void *)mdb, mdb->key, mdb->size_name, mdb->source, mdb->type, mdb->width, mdb->length, mdb->bottom, mdb->left, mdb->right, mdb->top));
+
+  if (mdb->source)
+  {
+    if (mdb->type)
+      snprintf(value, sizeof(value), "{media-size={x-dimension=%d y-dimension=%d} media-bottom-margin=%d media-left-margin=%d media-right-margin=%d media-top-margin=%d media-source=\"%s\" media-type=\"%s\"}", mdb->width, mdb->length, mdb->bottom, mdb->left, mdb->right, mdb->top, mdb->source, mdb->type);
+    else
+      snprintf(value, sizeof(value), "{media-size={x-dimension=%d y-dimension=%d} media-bottom-margin=%d media-left-margin=%d media-right-margin=%d media-top-margin=%d media-source=\"%s\"}", mdb->width, mdb->length, mdb->bottom, mdb->left, mdb->right, mdb->top, mdb->source);
+  }
+  else if (mdb->type)
+  {
+    snprintf(value, sizeof(value), "{media-size={x-dimension=%d y-dimension=%d} media-bottom-margin=%d media-left-margin=%d media-right-margin=%d media-top-margin=%d media-type=\"%s\"}", mdb->width, mdb->length, mdb->bottom, mdb->left, mdb->right, mdb->top, mdb->type);
+  }
+  else
+  {
+    snprintf(value, sizeof(value), "{media-size={x-dimension=%d y-dimension=%d} media-bottom-margin=%d media-left-margin=%d media-right-margin=%d media-top-margin=%d}", mdb->width, mdb->length, mdb->bottom, mdb->left, mdb->right, mdb->top);
+  }
+
+  num_options = cupsAddOption("media-col", value, num_options, options);
+
+  return (num_options);
+}
 
 
 /*
@@ -1290,6 +1386,346 @@ cups_add_dconstres(
 
 
 /*
+ * 'cups_collection_contains()' - Check whether test collection is contained in the matching collection.
+ */
+
+static int				/* O - 1 on a match, 0 on a non-match */
+cups_collection_contains(ipp_t *test,	/* I - Collection to test */
+                         ipp_t *match)	/* I - Matching values */
+{
+  int			i, j,		/* Looping vars */
+			mcount,		/* Number of match values */
+			tcount;		/* Number of test values */
+  ipp_attribute_t	*tattr,		/* Testing attribute */
+			*mattr;		/* Matching attribute */
+  const char		*tval;		/* Testing string value */
+
+
+  for (mattr = ippFirstAttribute(match); mattr; mattr = ippNextAttribute(match))
+  {
+    if ((tattr = ippFindAttribute(test, ippGetName(mattr), IPP_TAG_ZERO)) == NULL)
+      return (0);
+
+    tcount = ippGetCount(tattr);
+
+    switch (ippGetValueTag(mattr))
+    {
+      case IPP_TAG_INTEGER :
+      case IPP_TAG_ENUM :
+          if (ippGetValueTag(tattr) != ippGetValueTag(mattr))
+            return (0);
+
+          for (i = 0; i < tcount; i ++)
+          {
+            if (!ippContainsInteger(mattr, ippGetInteger(tattr, i)))
+              return (0);
+          }
+          break;
+
+      case IPP_TAG_RANGE :
+          if (ippGetValueTag(tattr) != IPP_TAG_INTEGER)
+            return (0);
+
+          for (i = 0; i < tcount; i ++)
+          {
+            if (!ippContainsInteger(mattr, ippGetInteger(tattr, i)))
+              return (0);
+          }
+          break;
+
+      case IPP_TAG_BOOLEAN :
+          if (ippGetValueTag(tattr) != IPP_TAG_BOOLEAN || ippGetBoolean(tattr, 0) != ippGetBoolean(mattr, 0))
+            return (0);
+          break;
+
+      case IPP_TAG_TEXTLANG :
+      case IPP_TAG_NAMELANG :
+      case IPP_TAG_TEXT :
+      case IPP_TAG_NAME :
+      case IPP_TAG_KEYWORD :
+      case IPP_TAG_URI :
+      case IPP_TAG_URISCHEME :
+      case IPP_TAG_CHARSET :
+      case IPP_TAG_LANGUAGE :
+      case IPP_TAG_MIMETYPE :
+          for (i = 0; i < tcount; i ++)
+          {
+            if ((tval = ippGetString(tattr, i, NULL)) == NULL || !ippContainsString(mattr, tval))
+              return (0);
+          }
+          break;
+
+      case IPP_TAG_BEGIN_COLLECTION :
+          for (i = 0; i < tcount; i ++)
+          {
+            ipp_t *tcol = ippGetCollection(tattr, i);
+					/* Testing collection */
+
+            for (j = 0, mcount = ippGetCount(mattr); j < mcount; j ++)
+              if (!cups_collection_contains(tcol, ippGetCollection(mattr, j)))
+                return (0);
+          }
+          break;
+
+      default :
+          return (0);
+    }
+  }
+
+  return (1);
+}
+
+
+/*
+ * 'cups_collection_string()' - Convert an IPP collection to an option string.
+ */
+
+static size_t				/* O - Number of bytes needed */
+cups_collection_string(
+    ipp_attribute_t *attr,		/* I - Collection attribute */
+    char            *buffer,		/* I - String buffer */
+    size_t          bufsize)		/* I - Size of buffer */
+{
+  int			i, j,		/* Looping vars */
+			count,		/* Number of collection values */
+			mcount;		/* Number of member values */
+  ipp_t			*col;		/* Collection */
+  ipp_attribute_t	*first,		/* First member attribute */
+			*member;	/* Member attribute */
+  char			*bufptr,	/* Pointer into buffer */
+			*bufend,	/* End of buffer */
+			temp[100];	/* Temporary string */
+  const char		*mptr;		/* Pointer into member value */
+  int			mlen;		/* Length of octetString */
+
+
+  bufptr = buffer;
+  bufend = buffer + bufsize - 1;
+
+  for (i = 0, count = ippGetCount(attr); i < count; i ++)
+  {
+    col = ippGetCollection(attr, i);
+
+    if (i)
+    {
+      if (bufptr < bufend)
+        *bufptr++ = ',';
+      else
+        bufptr ++;
+    }
+
+    if (bufptr < bufend)
+      *bufptr++ = '{';
+    else
+      bufptr ++;
+
+    for (member = first = ippFirstAttribute(col); member; member = ippNextAttribute(col))
+    {
+      const char *mname = ippGetName(member);
+
+      if (member != first)
+      {
+	if (bufptr < bufend)
+	  *bufptr++ = ' ';
+	else
+	  bufptr ++;
+      }
+
+      if (ippGetValueTag(member) == IPP_TAG_BOOLEAN)
+      {
+        if (!ippGetBoolean(member, 0))
+        {
+	  if (bufptr < bufend)
+	    strlcpy(bufptr, "no", (size_t)(bufend - bufptr + 1));
+	  bufptr += 2;
+        }
+
+	if (bufptr < bufend)
+	  strlcpy(bufptr, mname, (size_t)(bufend - bufptr + 1));
+	bufptr += strlen(mname);
+        continue;
+      }
+
+      if (bufptr < bufend)
+        strlcpy(bufptr, mname, (size_t)(bufend - bufptr + 1));
+      bufptr += strlen(mname);
+
+      if (bufptr < bufend)
+        *bufptr++ = '=';
+      else
+        bufptr ++;
+
+      if (ippGetValueTag(member) == IPP_TAG_BEGIN_COLLECTION)
+      {
+       /*
+	* Convert sub-collection...
+	*/
+
+	bufptr += cups_collection_string(member, bufptr, bufptr < bufend ? (size_t)(bufend - bufptr + 1) : 0);
+      }
+      else
+      {
+       /*
+        * Convert simple type...
+        */
+
+	for (j = 0, mcount = ippGetCount(member); j < mcount; j ++)
+	{
+	  if (j)
+	  {
+	    if (bufptr < bufend)
+	      *bufptr++ = ',';
+	    else
+	      bufptr ++;
+	  }
+
+          switch (ippGetValueTag(member))
+          {
+            case IPP_TAG_INTEGER :
+            case IPP_TAG_ENUM :
+                bufptr += snprintf(bufptr, bufptr < bufend ? (size_t)(bufend - bufptr + 1) : 0, "%d", ippGetInteger(member, j));
+                break;
+
+	    case IPP_TAG_STRING :
+		if (bufptr < bufend)
+		  *bufptr++ = '\"';
+		else
+		  bufptr ++;
+
+	        for (mptr = (const char *)ippGetOctetString(member, j, &mlen); mlen > 0; mlen --, mptr ++)
+	        {
+	          if (*mptr == '\"' || *mptr == '\\')
+	          {
+		    if (bufptr < bufend)
+		      *bufptr++ = '\\';
+		    else
+		      bufptr ++;
+		  }
+
+		  if (bufptr < bufend)
+		    *bufptr++ = *mptr;
+		  else
+		    bufptr ++;
+                }
+
+		if (bufptr < bufend)
+		  *bufptr++ = '\"';
+		else
+		  bufptr ++;
+	        break;
+
+            case IPP_TAG_DATE :
+		{
+		  unsigned year;	/* Year */
+		  const ipp_uchar_t *date = ippGetDate(member, j);
+					/* Date value */
+
+		  year = ((unsigned)date[0] << 8) + (unsigned)date[1];
+
+		  if (date[9] == 0 && date[10] == 0)
+		    snprintf(temp, sizeof(temp), "%04u-%02u-%02uT%02u:%02u:%02uZ", year, date[2], date[3], date[4], date[5], date[6]);
+		  else
+		    snprintf(temp, sizeof(temp), "%04u-%02u-%02uT%02u:%02u:%02u%c%02u%02u", year, date[2], date[3], date[4], date[5], date[6], date[8], date[9], date[10]);
+
+		  if (bufptr < bufend)
+		    strlcpy(bufptr, temp, (size_t)(bufend - bufptr + 1));
+
+		  bufptr += strlen(temp);
+		}
+                break;
+
+            case IPP_TAG_RESOLUTION :
+                {
+                  int		xres,	/* Horizontal resolution */
+				yres;	/* Vertical resolution */
+                  ipp_res_t	units;	/* Resolution units */
+
+                  xres = ippGetResolution(member, j, &yres, &units);
+
+                  if (xres == yres)
+                    snprintf(temp, sizeof(temp), "%d%s", xres, units == IPP_RES_PER_INCH ? "dpi" : "dpcm");
+		  else
+                    snprintf(temp, sizeof(temp), "%dx%d%s", xres, yres, units == IPP_RES_PER_INCH ? "dpi" : "dpcm");
+
+		  if (bufptr < bufend)
+		    strlcpy(bufptr, temp, (size_t)(bufend - bufptr + 1));
+
+		  bufptr += strlen(temp);
+                }
+                break;
+
+            case IPP_TAG_RANGE :
+                {
+                  int		lower,	/* Lower bound */
+				upper;	/* Upper bound */
+
+                  lower = ippGetRange(member, j, &upper);
+
+		  snprintf(temp, sizeof(temp), "%d-%d", lower, upper);
+
+		  if (bufptr < bufend)
+		    strlcpy(bufptr, temp, (size_t)(bufend - bufptr + 1));
+
+		  bufptr += strlen(temp);
+                }
+                break;
+
+            case IPP_TAG_TEXTLANG :
+            case IPP_TAG_NAMELANG :
+            case IPP_TAG_TEXT :
+            case IPP_TAG_NAME :
+            case IPP_TAG_KEYWORD :
+            case IPP_TAG_URI :
+            case IPP_TAG_URISCHEME :
+            case IPP_TAG_CHARSET :
+            case IPP_TAG_LANGUAGE :
+            case IPP_TAG_MIMETYPE :
+		if (bufptr < bufend)
+		  *bufptr++ = '\"';
+		else
+		  bufptr ++;
+
+	        for (mptr = ippGetString(member, j, NULL); *mptr; mptr ++)
+	        {
+	          if (*mptr == '\"' || *mptr == '\\')
+	          {
+		    if (bufptr < bufend)
+		      *bufptr++ = '\\';
+		    else
+		      bufptr ++;
+		  }
+
+		  if (bufptr < bufend)
+		    *bufptr++ = *mptr;
+		  else
+		    bufptr ++;
+                }
+
+		if (bufptr < bufend)
+		  *bufptr++ = '\"';
+		else
+		  bufptr ++;
+                break;
+
+            default :
+                break;
+          }
+	}
+      }
+    }
+
+    if (bufptr < bufend)
+      *bufptr++ = '}';
+    else
+      bufptr ++;
+  }
+
+  *bufptr = '\0';
+  return ((size_t)(bufptr - buffer + 1));
+}
+
+
+/*
  * 'cups_compare_dconstres()' - Compare to resolver entries.
  */
 
@@ -1476,8 +1912,6 @@ cups_create_constraints(
 
 /*
  * 'cups_create_defaults()' - Create the -default option array.
- *
- * TODO: Need to support collection defaults...
  */
 
 static void
@@ -1496,32 +1930,26 @@ cups_create_defaults(
   * xxx=value to the defaults option array.
   */
 
-  for (attr = ippFirstAttribute(dinfo->attrs);
-       attr;
-       attr = ippNextAttribute(dinfo->attrs))
+  for (attr = ippFirstAttribute(dinfo->attrs); attr; attr = ippNextAttribute(dinfo->attrs))
   {
-    if (!attr->name || attr->group_tag != IPP_TAG_PRINTER)
+    if (!ippGetName(attr) || ippGetGroupTag(attr) != IPP_TAG_PRINTER)
       continue;
 
-    if (attr->value_tag == IPP_TAG_BEGIN_COLLECTION)
-      continue;				/* TODO: STR #4096 */
-
-    if ((nameptr = attr->name + strlen(attr->name) - 8) <= attr->name ||
-        strcmp(nameptr, "-default"))
-      continue;
-
-    strlcpy(name, attr->name, sizeof(name));
-    if ((nameptr = name + strlen(name) - 8) <= name ||
-        strcmp(nameptr, "-default"))
+    strlcpy(name, ippGetName(attr), sizeof(name));
+    if ((nameptr = name + strlen(name) - 8) <= name || strcmp(nameptr, "-default"))
       continue;
 
     *nameptr = '\0';
 
-    if (ippAttributeString(attr, value, sizeof(value)) >= sizeof(value))
+    if (ippGetValueTag(attr) == IPP_TAG_BEGIN_COLLECTION)
+    {
+      if (cups_collection_string(attr, value, sizeof(value)) >= sizeof(value))
+        continue;
+    }
+    else if (ippAttributeString(attr, value, sizeof(value)) >= sizeof(value))
       continue;
 
-    dinfo->num_defaults = cupsAddOption(name, value, dinfo->num_defaults,
-                                        &dinfo->defaults);
+    dinfo->num_defaults = cupsAddOption(name, value, dinfo->num_defaults, &dinfo->defaults);
   }
 }
 
@@ -2139,8 +2567,6 @@ cups_is_close_media_db(
 
 /*
  * 'cups_test_constraints()' - Test constraints.
- *
- * TODO: STR #4096 - Need to properly support media-col contraints...
  */
 
 static cups_array_t *			/* O - Active constraints */
@@ -2154,11 +2580,13 @@ cups_test_constraints(
     cups_option_t **conflicts)		/* O - Conflicting options */
 {
   int			i,		/* Looping var */
+			count,		/* Number of values */
 			match;		/* Value matches? */
   int			num_matching;	/* Number of matching options */
   cups_option_t		*matching;	/* Matching options */
   _cups_dconstres_t	*c;		/* Current constraint */
   cups_array_t		*active = NULL;	/* Active constraints */
+  ipp_t			*col;		/* Collection value */
   ipp_attribute_t	*attr;		/* Current attribute */
   _ipp_value_t		*attrval;	/* Current attribute value */
   const char		*value;		/* Current value */
@@ -2180,17 +2608,13 @@ cups_test_constraints(
          attr;
          attr = ippNextAttribute(c->collection))
     {
-      if (attr->value_tag == IPP_TAG_BEGIN_COLLECTION)
-        break;				/* TODO: STR #4096 */
-
      /*
       * Get the value for the current attribute in the constraint...
       */
 
       if (new_option && new_value && !strcmp(attr->name, new_option))
         value = new_value;
-      else if ((value = cupsGetOption(attr->name, num_options,
-                                      options)) == NULL)
+      else if ((value = cupsGetOption(attr->name, num_options, options)) == NULL)
         value = cupsGetOption(attr->name, dinfo->num_defaults, dinfo->defaults);
 
       if (!value)
@@ -2305,6 +2729,22 @@ cups_test_constraints(
             }
 	    break;
 
+        case IPP_TAG_BEGIN_COLLECTION :
+            col = ippNew();
+            _cupsEncodeOption(col, IPP_TAG_ZERO, NULL, ippGetName(attr), value);
+
+            for (i = 0, count = ippGetCount(attr); i < count; i ++)
+            {
+              if (cups_collection_contains(col, ippGetCollection(attr, i)))
+              {
+                match = 1;
+                break;
+	      }
+            }
+
+            ippDelete(col);
+            break;
+
         default :
             break;
       }
@@ -2327,8 +2767,7 @@ cups_test_constraints(
         cups_option_t	*moption;	/* Matching option */
 
         for (i = num_matching, moption = matching; i > 0; i --, moption ++)
-          *num_conflicts = cupsAddOption(moption->name, moption->value,
-					 *num_conflicts, conflicts);
+          *num_conflicts = cupsAddOption(moption->name, moption->value, *num_conflicts, conflicts);
       }
     }
 

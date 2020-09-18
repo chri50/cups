@@ -4,11 +4,8 @@
  * Copyright © 2007-2019 by Apple Inc.
  * Copyright © 1997-2005 by Easy Software Products.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+ * information.
  */
 
 /*
@@ -117,7 +114,12 @@ cgiCheckVariables(const char *names)	/* I - Variables to look for */
       return (0);
 
     if (*val == '\0')
+    {
+      free((void *)val);
       return (0);	/* Can't be blank, either! */
+    }
+
+    free((void *)val);
   }
 
   return (1);
@@ -155,7 +157,7 @@ cgiClearVariables(void)
  * 'cgiGetArray()' - Get an element from a form array.
  */
 
-const char *				/* O - Element value or NULL */
+char *					/* O - Element value or NULL */
 cgiGetArray(const char *name,		/* I - Name of array variable */
             int        element)		/* I - Element number (0 to N) */
 {
@@ -218,21 +220,13 @@ cgiGetSize(const char *name)		/* I - Name of variable */
  * array of values, returns the last element.
  */
 
-const char *				/* O - Value of variable */
+char *					/* O - Value of variable */
 cgiGetVariable(const char *name)	/* I - Name of variable */
 {
   const _cgi_var_t	*var;		/* Returned variable */
 
 
   var = cgi_find_variable(name);
-
-#ifdef DEBUG
-  if (var == NULL)
-    DEBUG_printf(("cgiGetVariable(\"%s\") is returning NULL...\n", name));
-  else
-    DEBUG_printf(("cgiGetVariable(\"%s\") is returning \"%s\"...\n", name,
-		  var->values[var->nvalues - 1]));
-#endif /* DEBUG */
 
   return ((var == NULL) ? NULL : strdup(var->values[var->nvalues - 1]));
 }
@@ -324,11 +318,18 @@ cgiInitialize(void)
       else
 	fputs("DEBUG: " CUPS_SID " form variable is not present.\n", stderr);
 
+      free((void *)cups_sid_form);
+
       cgiClearVariables();
+
       return (0);
     }
     else
+    {
+      free((void *)cups_sid_form);
+
       return (1);
+    }
   }
   else
     return (0);
@@ -536,9 +537,6 @@ cgi_add_variable(const char *name,	/* I - Variable name */
   if (name == NULL || value == NULL || element < 0 || element > 100000)
     return;
 
-  DEBUG_printf(("cgi_add_variable: Adding variable \'%s\' with value "
-                "\'%s\'...\n", name, value));
-
   if (form_count >= form_alloc)
   {
     _cgi_var_t	*temp_vars;		/* Temporary form pointer */
@@ -717,8 +715,6 @@ cgi_initialize_get(void)
   char	*data;				/* Pointer to form data string */
 
 
-  DEBUG_puts("cgi_initialize_get: Initializing variables using GET method...");
-
  /*
   * Check to see if there is anything for us to read...
   */
@@ -757,8 +753,6 @@ cgi_initialize_multipart(
 		fd;			/* Temporary file descriptor */
   size_t	blen;			/* Length of boundary string */
 
-
-  DEBUG_printf(("cgi_initialize_multipart(boundary=\"%s\")\n", boundary));
 
  /*
   * Read multipart form data until we run out...
@@ -887,12 +881,13 @@ cgi_initialize_multipart(
 	  if (line[0])
             cgiSetArray(name, atoi(ptr) - 1, line);
 	}
-	else if (cgiGetVariable(name))
+	else if ((ptr = cgiGetVariable(name)) != NULL)
 	{
 	 /*
 	  * Add another element in the array...
 	  */
 
+          free(ptr);
 	  cgiSetArray(name, cgiGetSize(name), line);
 	}
 	else
@@ -972,8 +967,6 @@ cgi_initialize_post(void)
   int		status;			/* Return status */
 
 
-  DEBUG_puts("cgi_initialize_post: Initializing variables using POST method...");
-
  /*
   * Check to see if there is anything for us to read...
   */
@@ -1049,7 +1042,8 @@ cgi_initialize_string(const char *data)	/* I - Form data string */
   char	*s,				/* Pointer to current form string */
 	ch,				/* Temporary character */
 	name[255],			/* Name of form variable */
-	value[65536];			/* Variable value */
+	value[65536],			/* Variable value */
+	*temp;				/* Temporary pointer */
 
 
  /*
@@ -1151,8 +1145,11 @@ cgi_initialize_string(const char *data)	/* I - Form data string */
       if (value[0])
         cgiSetArray(name, atoi(s) - 1, value);
     }
-    else if (cgiGetVariable(name) != NULL)
+    else if ((temp = cgiGetVariable(name)) != NULL)
+    {
+      free(temp);
       cgiSetArray(name, cgiGetSize(name), value);
+    }
     else
       cgiSetVariable(name, value);
   }
@@ -1238,26 +1235,11 @@ cgi_set_sid(void)
 static void
 cgi_sort_variables(void)
 {
-#ifdef DEBUG
-  int	i;
-
-
-  DEBUG_puts("cgi_sort_variables: Sorting variables...");
-#endif /* DEBUG */
-
   if (form_count < 2)
     return;
 
   qsort(form_vars, (size_t)form_count, sizeof(_cgi_var_t),
         (int (*)(const void *, const void *))cgi_compare_variables);
-
-#ifdef DEBUG
-  DEBUG_puts("cgi_sort_variables: Sorted variable list is:");
-  for (i = 0; i < form_count; i ++)
-    DEBUG_printf(("cgi_sort_variables: %d: %s (%d) = \"%s\" ...\n", i,
-                  form_vars[i].name, form_vars[i].nvalues,
-		  form_vars[i].values[0]));
-#endif /* DEBUG */
 }
 
 

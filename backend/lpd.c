@@ -1,16 +1,11 @@
 /*
  * Line Printer Daemon backend for CUPS.
  *
- * Copyright 2007-2016 by Apple Inc.
- * Copyright 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright © 2007-2019 by Apple Inc.
+ * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * "LICENSE" which should have been included with this file.  If this
- * file is missing or damaged, see the license at "http://www.cups.org/".
- *
- * This file is subject to the Apple OS-Developed Software exception.
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+ * information.
  */
 
 /*
@@ -77,12 +72,7 @@ static int	abort_job = 0;		/* Non-zero if we get SIGTERM */
 
 static int	cups_rresvport(int *port, int family);
 static int	lpd_command(int lpd_fd, char *format, ...);
-static int	lpd_queue(const char *hostname, http_addrlist_t *addrlist,
-			  const char *printer, int print_fd, int snmp_fd,
-			  int mode, const char *user, const char *title,
-			  int copies, int banner, int format, int order,
-			  int reserve, int manual_copies, int timeout,
-			  int contimeout, const char *orighost);
+static int	lpd_queue(const char *hostname, http_addrlist_t *addrlist, const char *printer, int print_fd, int snmp_fd, int mode, const char *user, const char *title, int copies, int banner, int format, int order, int reserve, int manual_copies, int timeout, int contimeout, const char *orighost) _CUPS_NONNULL((1,2,3,7,8,17));
 static ssize_t	lpd_write(int lpd_fd, char *buffer, size_t length);
 static void	sigterm_handler(int sig);
 

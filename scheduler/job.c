@@ -1,14 +1,11 @@
 /*
  * Job management routines for the CUPS scheduler.
  *
- * Copyright 2007-2019 by Apple Inc.
- * Copyright 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright © 2007-2019 by Apple Inc.
+ * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
- * These coded instructions, statements, and computer programs are the
- * property of Apple Inc. and are protected by Federal copyright
- * law.  Distribution and use rights are outlined in the file "LICENSE.txt"
- * which should have been included with this file.  If this file is
- * missing or damaged, see the license at "http://www.cups.org/".
+ * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+ * information.
  */
 
 /*
@@ -465,7 +462,7 @@ cupsdCleanJobs(void)
         cupsdLogJob(job, CUPSD_LOG_DEBUG, "Removing from history.");
 	cupsdDeleteJob(job, CUPSD_JOB_PURGE);
       }
-      else if (job->file_time && job->file_time <= curtime)
+      else if (job->file_time && job->file_time <= curtime && job->num_files > 0)
       {
         cupsdLogJob(job, CUPSD_LOG_DEBUG, "Removing document files.");
         remove_job_files(job);
@@ -1308,9 +1305,7 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
   cupsdClosePipe(filterfds[slot]);
 
   for (i = 6; i < argc; i ++)
-    if (argv[i])
-      free(argv[i]);
-
+    free(argv[i]);
   free(argv);
 
   if (printer_state_reasons)
@@ -1343,8 +1338,9 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
   if (argv)
   {
     for (i = 6; i < argc; i ++)
-      if (argv[i])
-	free(argv[i]);
+      free(argv[i]);
+
+    free(argv);
   }
 
   if (printer_state_reasons)
@@ -2581,7 +2577,7 @@ cupsdSetJobState(
   job->state_value = newstate;
 
   if (job->state)
-    job->state->values[0].integer = newstate;
+    job->state->values[0].integer = (int)newstate;
 
   switch (newstate)
   {
@@ -2629,7 +2625,7 @@ cupsdSetJobState(
     else
       cupsdAddEvent(CUPSD_EVENT_JOB_STATE, job->printer, job, "%s", buffer);
 
-    if (newstate == IPP_JOB_STOPPED || newstate == IPP_JOB_ABORTED)
+    if (newstate == IPP_JOB_STOPPED || newstate == IPP_JOB_ABORTED || newstate == IPP_JOB_HELD)
       cupsdLogJob(job, CUPSD_LOG_ERROR, "%s", buffer);
     else
       cupsdLogJob(job, CUPSD_LOG_INFO, "%s", buffer);
@@ -2785,8 +2781,6 @@ cupsdStopAllJobs(
 {
   cupsd_job_t	*job;			/* Current job */
 
-
-  DEBUG_puts("cupsdStopAllJobs()");
 
   for (job = (cupsd_job_t *)cupsArrayFirst(PrintingJobs);
        job;
@@ -3852,6 +3846,20 @@ get_options(cupsd_job_t *job,		/* I - Job */
 
     for (i = num_pwgppds, pwgppd = pwgppds; i > 0; i --, pwgppd ++)
       cupsdLogJob(job, CUPSD_LOG_DEBUG2, "After mapping finishings %s=%s", pwgppd->name, pwgppd->value);
+  }
+
+ /*
+  * Map page-delivery values...
+  */
+
+  if ((attr = ippFindAttribute(job->attrs, "page-delivery", IPP_TAG_KEYWORD)) != NULL && !ippFindAttribute(job->attrs, "outputorder", IPP_TAG_ZERO))
+  {
+    const char *page_delivery = ippGetString(attr, 0, NULL);
+
+    if (!strncmp(page_delivery, "same-order", 10))
+      num_pwgppds = cupsAddOption("OutputOrder", "Normal", num_pwgppds, &pwgppds);
+    else if (!strncmp(page_delivery, "reverse-order", 13))
+      num_pwgppds = cupsAddOption("OutputOrder", "Reverse", num_pwgppds, &pwgppds);
   }
 
  /*

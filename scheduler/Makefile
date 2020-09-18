@@ -1,14 +1,11 @@
 #
 # Scheduler Makefile for CUPS.
 #
-# Copyright 2007-2018 by Apple Inc.
-# Copyright 1997-2007 by Easy Software Products, all rights reserved.
+# Copyright © 2007-2019 by Apple Inc.
+# Copyright © 1997-2007 by Easy Software Products, all rights reserved.
 #
-# These coded instructions, statements, and computer programs are the
-# property of Apple Inc. and are protected by Federal copyright
-# law.  Distribution and use rights are outlined in the file "LICENSE.txt"
-# which should have been included with this file.  If this file is
-# missing or damaged, see the license at "http://www.cups.org/".
+# Licensed under Apache License v2.0.  See the file "LICENSE" for more
+# information.
 #
 
 include ../Makedefs
@@ -93,7 +90,7 @@ all:		$(TARGETS)
 # Make library targets...
 #
 
-libs:		$(LIBTARGETS)
+libs:
 
 
 #
@@ -118,7 +115,7 @@ clean:
 
 depend:
 	$(CC) -MM $(ALL_CFLAGS) $(COBJS:.o=.c) >Dependencies
-	$(CXX) -MM $(ALL_CXXFLAGS) $(LD_CXXOBJS:.o=.cxx) >>Dependencies
+	$(CXX) -MM $(ALL_CXXFLAGS) $(CXXOBJS:.o=.cxx) >>Dependencies
 
 
 #
@@ -317,19 +314,15 @@ uninstall:
 
 cupsd:	$(CUPSDOBJS) libcupsmime.a ../cups/$(LIBCUPS)
 	echo Linking $@...
-	$(LD_CC) $(LDFLAGS) -o cupsd $(CUPSDOBJS) libcupsmime.a \
-		$(LIBZ) $(SSLLIBS) $(LIBSLP) $(LIBLDAP) $(PAMLIBS) \
-		$(LIBPAPER) $(LIBMALLOC) $(SERVERLIBS) $(ONDEMANDLIBS) \
-                $(DNSSDLIBS) $(LIBS) $(LIBGSSAPI) $(LIBWRAP)
+	$(LD_CC) $(ALL_LDFLAGS) -o cupsd $(CUPSDOBJS) libcupsmime.a \
+		$(PAMLIBS) $(LIBPAPER) $(LIBMALLOC) $(DNSSDLIBS) $(SERVERLIBS) \
+		$(ONDEMANDLIBS) $(LIBWRAP) $(LIBGSSAPI) $(COMMONLIBS) $(LINKCUPS)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 cupsd-static:	$(CUPSDOBJS) libcupsmime.a ../cups/$(LIBCUPSSTATIC)
 	echo Linking $@...
-	$(LD_CC) $(LDFLAGS) -o cupsd-static $(CUPSDOBJS) libcupsmime.a \
-		$(LIBZ) $(SSLLIBS) $(LIBSLP) $(LIBLDAP) $(PAMLIBS) \
-		../cups/$(LIBCUPSSTATIC) $(COMMONLIBS) $(LIBZ) $(LIBPAPER) \
-		$(LIBMALLOC) $(SERVERLIBS) $(ONDEMANDLIBS) $(DNSSDLIBS) \
-                $(LIBGSSAPI) $(LIBWRAP)
+	$(LD_CC) $(ALL_LDFLAGS) -o cupsd-static $(CUPSDOBJS) libcupsmime.a \
+		$(PAMLIBS) $(LIBPAPER) $(LIBMALLOC) $(SERVERLIBS) $(ONDEMANDLIBS) \ $(LIBWRAP) $(LINKCUPSSTATIC)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
@@ -339,16 +332,15 @@ cupsd-static:	$(CUPSDOBJS) libcupsmime.a ../cups/$(LIBCUPSSTATIC)
 
 cupsfilter:	cupsfilter.o libcupsmime.a ../cups/$(LIBCUPS)
 	echo Linking $@...
-	$(LD_CC) $(LDFLAGS) -o cupsfilter cupsfilter.o libcupsmime.a $(LIBS)
+	$(LD_CC) $(ALL_LDFLAGS) -o cupsfilter cupsfilter.o libcupsmime.a $(LINKCUPS)
+	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 	$(RM) convert
 	$(LN) cupsfilter convert
-	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 cupsfilter-static:	cupsfilter.o libcupsmime.a ../cups/$(LIBCUPSSTATIC)
 	echo Linking $@...
-	$(LD_CC) $(LDFLAGS) -o cupsfilter-static cupsfilter.o libcupsmime.a \
-		../cups/$(LIBCUPSSTATIC) $(COMMONLIBS) $(LIBZ) $(SSLLIBS) \
-		$(DNSSDLIBS) $(LIBGSSAPI)
+	$(LD_CC) $(ALL_LDFLAGS) -o cupsfilter-static cupsfilter.o libcupsmime.a \
+		$(LINKCUPSSTATIC)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
@@ -358,7 +350,7 @@ cupsfilter-static:	cupsfilter.o libcupsmime.a ../cups/$(LIBCUPSSTATIC)
 
 cups-deviced:	cups-deviced.o util.o ../cups/$(LIBCUPS)
 	echo Linking $@...
-	$(LD_CC) $(LDFLAGS) -o cups-deviced cups-deviced.o util.o $(LIBS)
+	$(LD_CC) $(ALL_LDFLAGS) -o cups-deviced cups-deviced.o util.o $(LINKCUPS)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
@@ -368,8 +360,8 @@ cups-deviced:	cups-deviced.o util.o ../cups/$(LIBCUPS)
 
 cups-driverd:	cups-driverd.o util.o ../cups/$(LIBCUPS) ../ppdc/libcupsppdc.a
 	echo Linking $@...
-	$(LD_CXX) $(LDFLAGS) -o cups-driverd cups-driverd.o util.o \
-		../ppdc/libcupsppdc.a $(LIBS)
+	$(LD_CXX) $(ALL_LDFLAGS) -o cups-driverd cups-driverd.o util.o \
+		../ppdc/libcupsppdc.a $(COMMONLIBS) $(LINKCUPS)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
@@ -379,7 +371,7 @@ cups-driverd:	cups-driverd.o util.o ../cups/$(LIBCUPS) ../ppdc/libcupsppdc.a
 
 cups-exec:	cups-exec.o
 	echo Linking $@...
-	$(LD_CC) $(LDFLAGS) -o cups-exec cups-exec.o $(LIBS)
+	$(LD_CC) $(ALL_LDFLAGS) -o cups-exec cups-exec.o $(LINKCUPS)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
@@ -389,7 +381,7 @@ cups-exec:	cups-exec.o
 
 cups-lpd:	cups-lpd.o ../cups/$(LIBCUPS)
 	echo Linking $@...
-	$(LD_CC) $(LDFLAGS) -o cups-lpd cups-lpd.o $(LIBS)
+	$(LD_CC) $(ALL_LDFLAGS) -o cups-lpd cups-lpd.o $(LINKCUPS)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
@@ -410,9 +402,7 @@ libcupsmime.a:	$(LIBOBJS)
 
 testlpd:	testlpd.o ../cups/$(LIBCUPSSTATIC) cups-lpd
 	echo Linking $@...
-	$(LD_CC) $(LDFLAGS) -o testlpd testlpd.o ../cups/$(LIBCUPSSTATIC) \
-		$(COMMONLIBS) $(LIBZ) $(SSLLIBS) $(DNSSDLIBS) $(LIBGSSAPI)
-	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
+	$(LD_CC) $(ALL_LDFLAGS) -o testlpd testlpd.o $(LINKCUPSSTATIC)
 
 
 #
@@ -421,9 +411,8 @@ testlpd:	testlpd.o ../cups/$(LIBCUPSSTATIC) cups-lpd
 
 testmime:	testmime.o libcupsmime.a ../cups/$(LIBCUPSSTATIC)
 	echo Linking $@...
-	$(LD_CC) $(ARCHFLAGS) $(LDFLAGS) -o $@ testmime.o libcupsmime.a \
-		../cups/$(LIBCUPSSTATIC) $(COMMONLIBS) $(LIBZ) $(SSLLIBS) \
-		$(DNSSDLIBS) $(LIBGSSAPI)
+	$(LD_CC) $(ARCHFLAGS) $(ALL_LDFLAGS) -o $@ testmime.o libcupsmime.a \
+		$(LINKCUPSSTATIC)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 	echo Running MIME tests...
 	./testmime
@@ -435,8 +424,7 @@ testmime:	testmime.o libcupsmime.a ../cups/$(LIBCUPSSTATIC)
 
 testspeed:	testspeed.o ../cups/$(LIBCUPSSTATIC)
 	echo Linking $@...
-	$(LD_CC) $(LDFLAGS) -o testspeed testspeed.o ../cups/$(LIBCUPSSTATIC) \
-		$(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ) $(LIBGSSAPI)
+	$(LD_CC) $(ALL_LDFLAGS) -o testspeed testspeed.o $(LINKCUPSSTATIC)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
@@ -446,8 +434,7 @@ testspeed:	testspeed.o ../cups/$(LIBCUPSSTATIC)
 
 testsub:	testsub.o ../cups/$(LIBCUPSSTATIC)
 	echo Linking $@...
-	$(LD_CC) $(LDFLAGS) -o testsub testsub.o ../cups/$(LIBCUPSSTATIC) \
-		$(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ) $(LIBGSSAPI)
+	$(LD_CC) $(ALL_LDFLAGS) -o testsub testsub.o $(LINKCUPSSTATIC)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
