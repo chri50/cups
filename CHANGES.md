@@ -1,4 +1,4 @@
-CHANGES - 2.2.5 - 2017-08-28
+CHANGES - 2.2.5 - 2017-08-31
 ============================
 
 CHANGES IN CUPS V2.2.5
@@ -31,10 +31,14 @@ CHANGES IN CUPS V2.2.5
 - Updated the cups-files.conf and cupsd.conf file documentation for missing
   directives (Issue #5084)
 - Fixed an Avahi-related crash bug in the scheduler (Issue #5085, Issue #5086)
+- Fixed the interactions between the "print-quality" and "cupsPrintQuality"
+  options (Issue #5090)
 - The IPP Everywhere PPD generator now sorts the supported resolutions before
   choosing them for draft, normal, and best quality modes (Issue #5091)
 - Fixed the localization unit test on Linux (Issue #5097)
 - The CUPS library did not reuse domain sockets (Issue #5098)
+- `httpAddrConnect` leaked sockets in certain circumstances, causing some
+  printers to hang (rdar://31965686)
 - Fixed an issue with Chinese localizations on macOS (rdar://32419311)
 - The IPP backend now always sends the "finishings" attribute for printers that
   support it because otherwise the client cannot override printer defaults
@@ -49,6 +53,7 @@ CHANGES IN CUPS V2.2.5
   (rdar://33688003)
 - Fixed the localization fallback code on macOS (rdar://33583699)
 - The `ipptool` program now offers an option to validate response headers.
+- The `ipptool` program's `-P` option did not work correctly.
 
 
 CHANGES IN CUPS V2.2.4
