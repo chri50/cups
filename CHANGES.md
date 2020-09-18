@@ -37,6 +37,9 @@ CHANGES IN CUPS V2.2.5
   choosing them for draft, normal, and best quality modes (Issue #5091)
 - Fixed the localization unit test on Linux (Issue #5097)
 - The CUPS library did not reuse domain sockets (Issue #5098)
+- The scheduler woke up once per second to remove old temporary queues
+  (Issue #5100)
+- Added USB quirk rule for Kyocera printer (Issue #5102, Issue #5103)
 - `httpAddrConnect` leaked sockets in certain circumstances, causing some
   printers to hang (rdar://31965686)
 - Fixed an issue with Chinese localizations on macOS (rdar://32419311)
@@ -54,6 +57,9 @@ CHANGES IN CUPS V2.2.5
 - Fixed the localization fallback code on macOS (rdar://33583699)
 - The `ipptool` program now offers an option to validate response headers.
 - The `ipptool` program's `-P` option did not work correctly.
+- The `ipptool` program did not compare URI scheme or hostname components
+  correctly for the WITH-ALL-HOSTNAMES, WITH-ALL-SCHEMES, WITH-HOSTNAME, or
+  WITH-SCHEME predicates.
 
 
 CHANGES IN CUPS V2.2.4
