@@ -307,10 +307,12 @@ cupsdCheckJobs(void)
 
         if (cupsdTimeoutJob(job))
 	  continue;
-      }
 
-      cupsdSetJobState(job, IPP_JOB_PENDING, CUPSD_JOB_DEFAULT,
-                       "Job submission timed out.");
+	cupsdSetJobState(job, IPP_JOB_PENDING, CUPSD_JOB_DEFAULT, "Job submission timed out.");
+	cupsdLogJob(job, CUPSD_LOG_ERROR, "Job submission timed out.");
+      }
+      else
+	cupsdSetJobState(job, IPP_JOB_PENDING, CUPSD_JOB_DEFAULT, "Job hold expired.");
     }
 
    /*
@@ -445,7 +447,7 @@ cupsdCleanJobs(void)
   {
     cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdCleanJobs: Job %d, state=%d, printer=%p, history_time=%d, file_time=%d", job->id, (int)job->state_value, (void *)job->printer, (int)job->history_time, (int)job->file_time);
 
-    if ((job->history_time && job->history_time) < JobHistoryUpdate || !JobHistoryUpdate)
+    if ((job->history_time && job->history_time < JobHistoryUpdate) || !JobHistoryUpdate)
       JobHistoryUpdate = job->history_time;
 
     if ((job->file_time && job->file_time < JobHistoryUpdate) || !JobHistoryUpdate)
@@ -4021,6 +4023,45 @@ get_options(cupsd_job_t *job,		/* I - Job */
 	      break;
 
           case IPP_TAG_STRING :
+              {
+                int length = attr->values[i].unknown.length;
+
+		for (valptr = attr->values[i].unknown.data; length > 0; length --)
+		{
+		  if ((*valptr & 255) < 0x20 || *valptr == 0x7f)
+		    break;
+		}
+
+		if (length > 0)
+		{
+		 /*
+		  * Encode this string as hex characters...
+		  */
+
+                  *optptr++ = '<';
+
+		  for (valptr = attr->values[i].unknown.data, length = attr->values[i].unknown.length; length > 0; length --)
+		  {
+		    snprintf(optptr, optlength - (size_t)(optptr - options) - 1, "%02X", *valptr & 255);
+		    optptr += 2;
+		  }
+
+                  *optptr++ = '>';
+		}
+		else
+		{
+		  for (valptr = attr->values[i].unknown.data, length = attr->values[i].unknown.length; length > 0; length --)
+		  {
+		    if (strchr(" \t\n\\\'\"", *valptr))
+		      *optptr++ = '\\';
+		    *optptr++ = *valptr++;
+		  }
+		}
+	      }
+
+	      *optptr = '\0';
+	      break;
+
 	  case IPP_TAG_TEXT :
 	  case IPP_TAG_NAME :
 	  case IPP_TAG_KEYWORD :
@@ -4166,6 +4207,16 @@ ipp_length(ipp_t *ipp)			/* I - IPP request */
 	  break;
 
       case IPP_TAG_STRING :
+         /*
+	  * Octet strings can contain characters that need quoting.  We need
+	  * at least 2 * len + 2 characters to cover the quotes and any
+	  * backslashes in the string.
+	  */
+
+          for (i = 0; i < attr->num_values; i ++)
+	    bytes += 2 * (size_t)attr->values[i].unknown.length + 2;
+	  break;
+
       case IPP_TAG_TEXT :
       case IPP_TAG_NAME :
       case IPP_TAG_KEYWORD :
