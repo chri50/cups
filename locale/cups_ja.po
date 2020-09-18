@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CUPS 2.3\n"
 "Report-Msgid-Bugs-To: https://github.com/apple/cups/issues\n"
-"POT-Creation-Date: 2019-04-24 18:36-0400\n"
+"POT-Creation-Date: 2019-05-17 10:17-0400\n"
 "PO-Revision-Date: 2014-11-15 19:27+0900\n"
 "Last-Translator: OPFC TRANSCUPS <opfc-transcups@sourceforge.jp>\n"
 "Language-Team: Japanese - OPFC TRANSCUPS <opfc-transcups@sourceforge.jp>\n"
@@ -1763,6 +1763,9 @@ msgid "-E                      Test with encryption using HTTP Upgrade to TLS"
 msgstr ""
 
 msgid "-F                      Run in the foreground but detach from console."
+msgstr ""
+
+msgid "-F output-type/subtype  Set the output format for the printer"
 msgstr ""
 
 msgid "-H                      Show the default server and port"
@@ -5293,10 +5296,16 @@ msgstr "Web インターフェイスが無効になっています"
 msgid "Yes"
 msgstr "はい"
 
+msgid "You cannot access this page."
+msgstr ""
+
 #, c-format
 msgid "You must access this page using the URL https://%s:%d%s."
 msgstr ""
 "このページには URL https://%s:%d%s を使ってアクセスする必要があります。"
+
+msgid "Your account does not have the necessary privileges."
+msgstr ""
 
 msgid "ZPL Label Printer"
 msgstr "ZPL ラベルプリンター"
@@ -5595,8 +5604,9 @@ msgstr "cups-deviced の実行に失敗しました。"
 msgid "cups-driverd failed to execute."
 msgstr "cups-driverd の実行に失敗しました。"
 
-msgid "cupsctl: Cannot set Listen or Port directly."
-msgstr "cupsctl: Listen あるいは Port を直接設定できません。"
+#, c-format
+msgid "cupsctl: Cannot set %s directly."
+msgstr ""
 
 #, c-format
 msgid "cupsctl: Unable to connect to server: %s"
@@ -15626,6 +15636,9 @@ msgstr ""
 
 #~ msgid "Export Printers to Samba"
 #~ msgstr "Samba へプリンターをエクスポート"
+
+#~ msgid "cupsctl: Cannot set Listen or Port directly."
+#~ msgstr "cupsctl: Listen あるいは Port を直接設定できません。"
 
 #~ msgid "lpadmin: Unable to open PPD file \"%s\" - %s"
 #~ msgstr "lpadmin: PPD ファイル \"%s\" を開けません - %s"

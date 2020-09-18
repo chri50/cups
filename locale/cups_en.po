@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CUPS 2.3b6\n"
 "Report-Msgid-Bugs-To: https://github.com/apple/cups/issues\n"
-"POT-Creation-Date: 2019-04-24 18:36-0400\n"
+"POT-Creation-Date: 2019-05-17 10:17-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: English\n"
@@ -1796,6 +1796,9 @@ msgstr "-E                      Test with encryption using HTTP Upgrade to TLS"
 
 msgid "-F                      Run in the foreground but detach from console."
 msgstr "-F                      Run in the foreground but detach from console."
+
+msgid "-F output-type/subtype  Set the output format for the printer"
+msgstr ""
 
 msgid "-H                      Show the default server and port"
 msgstr "-H                      Show the default server and port"
@@ -5390,9 +5393,15 @@ msgstr "Web Interface is Disabled"
 msgid "Yes"
 msgstr "Yes"
 
+msgid "You cannot access this page."
+msgstr ""
+
 #, c-format
 msgid "You must access this page using the URL https://%s:%d%s."
 msgstr "You must access this page using the URL https://%s:%d%s."
+
+msgid "Your account does not have the necessary privileges."
+msgstr ""
 
 msgid "ZPL Label Printer"
 msgstr "ZPL Label Printer"
@@ -5691,8 +5700,9 @@ msgstr "cups-deviced failed to execute."
 msgid "cups-driverd failed to execute."
 msgstr "cups-driverd failed to execute."
 
-msgid "cupsctl: Cannot set Listen or Port directly."
-msgstr "cupsctl: Cannot set Listen or Port directly."
+#, c-format
+msgid "cupsctl: Cannot set %s directly."
+msgstr ""
 
 #, c-format
 msgid "cupsctl: Unable to connect to server: %s"
@@ -15701,6 +15711,9 @@ msgstr "~/.cups/lpoptions file names default destination that does not exist."
 #~ msgstr ""
 #~ "You must access this page using the URL <A HREF=\"https://%s:%d%s"
 #~ "\">https://%s:%d%s</A>."
+
+#~ msgid "cupsctl: Cannot set Listen or Port directly."
+#~ msgstr "cupsctl: Cannot set Listen or Port directly."
 
 #~ msgid "lpadmin: Unable to open PPD file \"%s\" - %s"
 #~ msgstr "lpadmin: Unable to open PPD file \"%s\" - %s"

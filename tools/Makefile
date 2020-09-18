@@ -89,10 +89,10 @@ install-exec:
 	for file in $(IPPTOOLS); do \
 		$(INSTALL_BIN) $$file $(BINDIR); \
 	done
-	echo Installing printer commands in $(SERVERBIN)/ippeveprinter...
-	$(INSTALL_DIR) -m 755 $(SERVERBIN)/ippeveprinter
+	echo Installing printer commands in $(SERVERBIN)/command...
+	$(INSTALL_DIR) -m 755 $(SERVERBIN)/command
 	for file in $(IPPEVECOMMANDS); do \
-		$(INSTALL_BIN) $$file $(SERVERBIN)/ippeveprinter; \
+		$(INSTALL_BIN) $$file $(SERVERBIN)/command; \
 	done
 	if test "x$(SYMROOT)" != "x"; then \
 		$(INSTALL_DIR) $(SYMROOT); \
@@ -127,9 +127,9 @@ uninstall:
 		$(RM) $(BINDIR)/$$file; \
 	done
 	-$(RMDIR) $(BINDIR)
-	echo Uninstalling print commands from $(SERVERBIN)/ippeveprinter...
+	echo Uninstalling print commands from $(SERVERBIN)/command...
 	for file in $(IPPEVECOMMANDS); do \
-		$(RM) $(SERVERBIN)/ippeveprinter/$$file; \
+		$(RM) $(SERVERBIN)/command/$$file; \
 	done
 	-$(RMDIR) $(SERVERBIN)/ippeveprinter
 
@@ -145,9 +145,9 @@ local:	ippeveprinter-static ipptool-static
 # ippeveprinter
 #
 
-ippeveprinter:	ippeveprinter.o ../cups/$(LIBCUPSSTATIC)
+ippeveprinter:	ippeveprinter.o ../cups/$(LIBCUPS)
 	echo Linking $@...
-	$(LD_CC) $(ALL_LDFLAGS) -o $@ ippeveprinter.o $(LIBS)
+	$(LD_CC) $(ALL_LDFLAGS) -o $@ ippeveprinter.o $(DNSSDLIBS) $(LINKCUPS)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
@@ -155,10 +155,9 @@ ippeveprinter:	ippeveprinter.o ../cups/$(LIBCUPSSTATIC)
 # ippeveprinter-static
 #
 
-ippeveprinter-static:	ippeveprinter.o ../cups/$(LIBCUPS)
+ippeveprinter-static:	ippeveprinter.o ../cups/$(LIBCUPSSTATIC)
 	echo Linking $@...
-	$(LD_CC) $(ALL_LDFLAGS) -o $@ ippeveprinter.o ../cups/$(LIBCUPSSTATIC) \
-		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(LD_CC) $(ALL_LDFLAGS) -o $@ ippeveprinter.o $(LINKCUPSSTATIC)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
@@ -168,7 +167,7 @@ ippeveprinter-static:	ippeveprinter.o ../cups/$(LIBCUPS)
 
 ippevepcl:	ippevepcl.o ../cups/$(LIBCUPS)
 	echo Linking $@...
-	$(LD_CC) $(ALL_LDFLAGS) -o $@ ippevepcl.o $(LIBS)
+	$(LD_CC) $(ALL_LDFLAGS) -o $@ ippevepcl.o $(LINKCUPS)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
@@ -178,7 +177,7 @@ ippevepcl:	ippevepcl.o ../cups/$(LIBCUPS)
 
 ippeveps:	ippeveps.o ../cups/$(LIBCUPS)
 	echo Linking $@...
-	$(LD_CC) $(ALL_LDFLAGS) -o $@ ippeveps.o $(LIBS)
+	$(LD_CC) $(ALL_LDFLAGS) -o $@ ippeveps.o $(LINKCUPS)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
@@ -188,7 +187,7 @@ ippeveps:	ippeveps.o ../cups/$(LIBCUPS)
 
 ippfind:	ippfind.o ../cups/$(LIBCUPS)
 	echo Linking $@...
-	$(LD_CC) $(ALL_LDFLAGS) -o $@ ippfind.o $(LIBS)
+	$(LD_CC) $(ALL_LDFLAGS) -o $@ ippfind.o $(DNSSDLIBS) $(LINKCUPS)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
@@ -198,8 +197,7 @@ ippfind:	ippfind.o ../cups/$(LIBCUPS)
 
 ippfind-static:	ippfind.o ../cups/$(LIBCUPSSTATIC)
 	echo Linking $@
-	$(LD_CC) $(ALL_LDFLAGS) -o $@ ippfind.o  ../cups/$(LIBCUPSSTATIC) \
-		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(LD_CC) $(ALL_LDFLAGS) -o $@ ippfind.o $(LINKCUPSSTATIC)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
@@ -209,7 +207,7 @@ ippfind-static:	ippfind.o ../cups/$(LIBCUPSSTATIC)
 
 ipptool:	ipptool.o ../cups/$(LIBCUPS)
 	echo Linking $@...
-	$(LD_CC) $(ALL_LDFLAGS) -o $@ ipptool.o $(LIBS)
+	$(LD_CC) $(ALL_LDFLAGS) -o $@ ipptool.o $(LINKCUPS)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
@@ -219,8 +217,7 @@ ipptool:	ipptool.o ../cups/$(LIBCUPS)
 
 ipptool-static:	ipptool.o ../cups/$(LIBCUPSSTATIC)
 	echo Linking $@...
-	$(LD_CC) $(ALL_LDFLAGS) -o $@ ipptool.o  ../cups/$(LIBCUPSSTATIC) \
-		$(LIBGSSAPI) $(SSLLIBS) $(DNSSDLIBS) $(COMMONLIBS) $(LIBZ)
+	$(LD_CC) $(ALL_LDFLAGS) -o $@ ipptool.o $(LINKCUPSSTATIC)
 	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 
 
