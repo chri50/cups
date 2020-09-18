@@ -40,7 +40,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CUPS 2.1.2\n"
 "Report-Msgid-Bugs-To: http://www.cups.org/str.php\n"
-"POT-Creation-Date: 2017-01-03 16:43-0500\n"
+"POT-Creation-Date: 2017-03-11 10:02-0500\n"
 "PO-Revision-Date: 2016-01-31 16:45-0200\n"
 "Last-Translator: Rafael Fontenelle <rffontenelle@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <traducao-cups-pt-br@googlegroups.com>\n"
@@ -2776,6 +2776,9 @@ msgstr "Endereço"
 msgid "Administration"
 msgstr "Administração"
 
+msgid "Advanced Photo Paper"
+msgstr ""
+
 msgid "Alternate"
 msgstr ""
 
@@ -2798,6 +2801,12 @@ msgid "Archival Envelope"
 msgstr ""
 
 msgid "Archival Fabric"
+msgstr ""
+
+msgid "Archival Paper"
+msgstr ""
+
+msgid "Archival Photo Paper"
 msgstr ""
 
 #, c-format
@@ -3033,6 +3042,9 @@ msgstr ""
 msgid "Bond Paper"
 msgstr "Papel autocolante"
 
+msgid "Booklet"
+msgstr ""
+
 msgid "Booklet Maker"
 msgstr ""
 
@@ -3159,6 +3171,9 @@ msgid "Copying print data."
 msgstr "Copiando dados de impressão."
 
 msgid "Cotton Envelope"
+msgstr ""
+
+msgid "Cotton Paper"
 msgstr ""
 
 msgid "Cover"
@@ -3548,6 +3563,12 @@ msgstr "A cada 9 etiquetas"
 msgid "Every Label"
 msgstr "A cada etiqueta"
 
+msgid "Everyday Glossy Photo Paper"
+msgstr ""
+
+msgid "Everyday Matte Paper"
+msgstr ""
+
 msgid "Executive"
 msgstr "Executivo"
 
@@ -3559,6 +3580,9 @@ msgstr "Exportar impressoras para o Samba"
 
 msgid "Expressions:"
 msgstr "Expressões:"
+
+msgid "Extra Heavyweight Paper"
+msgstr ""
 
 msgid "FAIL"
 msgstr "FALHA"
@@ -3625,9 +3649,6 @@ msgstr ""
 msgid "Finished page %d."
 msgstr "Terminou página %d."
 
-msgid "Finishing"
-msgstr ""
-
 msgid "Flexo Base"
 msgstr ""
 
@@ -3679,6 +3700,9 @@ msgstr ""
 msgid "Glass Textured"
 msgstr ""
 
+msgid "Glossy Brochure Paper"
+msgstr ""
+
 msgid "Glossy Fabric"
 msgstr ""
 
@@ -3719,6 +3743,9 @@ msgid "Hanging Folder"
 msgstr "Pasta suspensa"
 
 msgid "Hash buffer too small."
+msgstr ""
+
+msgid "Heavyweight Coated Paper"
 msgstr ""
 
 msgid "Heavyweight Envelope"
@@ -3842,6 +3869,9 @@ msgid "Inkjet Envelope"
 msgstr ""
 
 msgid "Inkjet Labels"
+msgstr ""
+
+msgid "Inkjet Paper"
 msgstr ""
 
 msgid "Installable Options"
@@ -4119,6 +4149,12 @@ msgstr ""
 msgid "Manual Feed"
 msgstr "Alimentação manual"
 
+msgid "Matte Brochure Paper"
+msgstr ""
+
+msgid "Matte Cover Paper"
+msgstr ""
+
 msgid "Matte Fabric"
 msgstr ""
 
@@ -4165,6 +4201,9 @@ msgid "Metal Satin"
 msgstr ""
 
 msgid "Metal Semi Gloss"
+msgstr ""
+
+msgid "Mid-Weight Paper"
 msgstr ""
 
 msgid "Middle"
@@ -4287,6 +4326,9 @@ msgstr ""
 msgid "Multipurpose"
 msgstr ""
 
+msgid "Multipurpose Paper"
+msgstr ""
+
 msgid "My Mailbox"
 msgstr ""
 
@@ -4314,7 +4356,7 @@ msgstr "Não"
 msgid "No Content"
 msgstr "Nenhum conteúdo"
 
-msgid "No Finishing"
+msgid "No IPP attributes."
 msgstr ""
 
 msgid "No PPD name"
@@ -4422,6 +4464,9 @@ msgstr "Não-contíguo (Mark sensing)"
 msgid "Non-continuous (Web sensing)"
 msgstr "Não-contíguo (Web sensing)"
 
+msgid "None"
+msgstr ""
+
 msgid "Normal"
 msgstr "Normal"
 
@@ -4457,6 +4502,9 @@ msgstr "OK"
 
 msgid "Off (1-Sided)"
 msgstr "Off (1 lado)"
+
+msgid "Office Recycled Paper"
+msgstr ""
 
 msgid "Oki"
 msgstr "Oki"
@@ -4601,7 +4649,10 @@ msgstr "Foto pequena"
 msgid "Photo Paper"
 msgstr ""
 
-msgid "Photographic Archival"
+msgid "Photo Paper Plus Glossy II"
+msgstr ""
+
+msgid "Photo Paper Pro Platinum"
 msgstr ""
 
 msgid "Plain Envelope"
@@ -4665,6 +4716,15 @@ msgid "Poster Fold"
 msgstr ""
 
 msgid "Pre Cut Tabs"
+msgstr ""
+
+msgid "Premium Inkjet Paper"
+msgstr ""
+
+msgid "Premium Photo Glossy Paper"
+msgstr ""
+
+msgid "Premium Presentation Matte Paper"
 msgstr ""
 
 msgid "Preparing to print."
@@ -4745,6 +4805,9 @@ msgstr "Impressora não consegue imprimir o conteúdo fornecido."
 
 msgid "Printer cannot print with supplied options."
 msgstr "Impressora não consegue imprimir os opções fornecidas."
+
+msgid "Printer does not support required IPP attributes or document formats."
+msgstr ""
 
 msgid "Printer:"
 msgstr "Impressora:"
@@ -5061,21 +5124,6 @@ msgstr "Iniciando página %d."
 
 msgid "Statement"
 msgstr "Declaração"
-
-msgid "Stationery"
-msgstr ""
-
-msgid "Stationery Archival"
-msgstr ""
-
-msgid "Stationery Cotton"
-msgstr ""
-
-msgid "Stationery Heavyweight Coated"
-msgstr ""
-
-msgid "Stationery Inkjet Paper"
-msgstr ""
 
 #, c-format
 msgid "Subscription #%d does not exist."
