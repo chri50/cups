@@ -1,3 +1,9 @@
+cups (2.3.3op1~44-gc9176e958-1) experimental; urgency=medium
+
+  * Rebase packaging on todays's OpenPrinting/cups fork snapshot
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 23 Oct 2020 11:15:24 +0200
+
 cups (2.3.3-3) unstable; urgency=medium
 
   [ Didier Raboud ]

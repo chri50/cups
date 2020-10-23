@@ -234,6 +234,12 @@ main(int  argc,				/* I - Number of command-line arguments */
 		_cupsLangPrintf(stderr, _("%s: Error - add '/version=1.1' to server name."), argv[0]);
 		return (1);
 	      }
+	      else if (cupsLastError() == IPP_STATUS_ERROR_NOT_FOUND)
+	      {
+		_cupsLangPrintf(stderr,
+				_("%s: Error - The printer or class does not exist."), argv[0]);
+		return (1);
+	      }
 	      break;
 
 	  case '#' : /* Number of copies */
@@ -260,8 +266,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 		return (1);
 	      }
 
-	      sprintf(buffer, "%d", num_copies);
-	      num_options = cupsAddOption("copies", buffer, num_options, &options);
+	      num_options = cupsAddIntegerOption("copies", num_copies, num_options, &options);
 	      break;
 
 	  case 'C' : /* Class */

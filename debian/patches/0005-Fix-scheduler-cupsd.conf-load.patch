@@ -29,7 +29,7 @@ Bug: https://github.com/apple/cups/issues/5744
  1 file changed, 19 insertions(+), 19 deletions(-)
 
 diff --git a/scheduler/client.c b/scheduler/client.c
-index c2ee8f1..54b841b 100644
+index 6213944..9730eea 100644
 --- a/scheduler/client.c
 +++ b/scheduler/client.c
 @@ -2789,6 +2789,25 @@ get_file(cupsd_client_t *con,		/* I  - Client connection */

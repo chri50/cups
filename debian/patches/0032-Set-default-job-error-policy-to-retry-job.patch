@@ -48,7 +48,7 @@ index 49fdb06..6d3d8e3 100644
  .TP 5
  \fBFilterLimit \fIlimit\fR
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index f2924f8..944655e 100644
+index 8b21f20..ffce0bd 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -752,7 +752,7 @@ cupsdReadConfiguration(void)
