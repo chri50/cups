@@ -1245,7 +1245,10 @@ cupsdReadConfiguration(void)
     char	*paper_result;		/* Paper size name from libpaper */
 
     if ((paper_result = systempapername()) != NULL)
+    {
       cupsdSetString(&DefaultPaperSize, paper_result);
+      free(paper_result);
+    }
     else
 #endif /* HAVE_LIBPAPER */
     if (!DefaultLanguage ||
@@ -1742,7 +1745,7 @@ get_address(const char  *value,		/* I - Value string */
       * Use the default port...
       */
 
-      sprintf(defpname, "%d", defport);
+      snprintf(defpname, sizeof(defpname), "%d", defport);
       portname = defpname;
       hostname = buffer;
     }

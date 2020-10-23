@@ -11,7 +11,7 @@ Patch-Name: do-not-broadcast-with-hostnames.patch
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index bb4f9d2..b73d33f 100644
+index a1555fc..e734c7c 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -899,7 +899,7 @@ cupsdReadConfiguration(void)

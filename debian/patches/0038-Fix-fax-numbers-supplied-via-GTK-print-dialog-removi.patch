@@ -10,7 +10,7 @@ Subject: Fix fax numbers supplied via GTK print dialog,
  1 file changed, 48 insertions(+), 13 deletions(-)
 
 diff --git a/backend/ipp.c b/backend/ipp.c
-index a99079e..d80d650 100644
+index a4039ba..40a321c 100644
 --- a/backend/ipp.c
 +++ b/backend/ipp.c
 @@ -2828,7 +2828,19 @@ new_request(

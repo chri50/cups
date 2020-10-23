@@ -8,7 +8,7 @@ Patch-Name: confdirperms.patch
  1 file changed, 2 insertions(+)
 
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index b73d33f..31eedbf 100644
+index e734c7c..550cccb 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
 @@ -1135,10 +1135,12 @@ cupsdReadConfiguration(void)

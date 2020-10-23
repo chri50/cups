@@ -17,7 +17,7 @@ Patch-Name install-root-backends-world-readable.patch
  3 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/backend/Makefile b/backend/Makefile
-index e3ce49b..b734458 100644
+index 01900fb..8ddf6ab 100644
 --- a/backend/Makefile
 +++ b/backend/Makefile
 @@ -13,7 +13,7 @@ include ../Makedefs
@@ -33,8 +33,8 @@ index e3ce49b..b734458 100644
  	echo Installing backends in $(SERVERBIN)/backend
  	$(INSTALL_DIR) -m 755 $(SERVERBIN)/backend
  	for file in $(RBACKENDS); do \
--		$(LIBTOOL) $(INSTALL_BIN) -m 700 $$file $(SERVERBIN)/backend; \
-+		$(LIBTOOL) $(INSTALL_BIN) -m 744 $$file $(SERVERBIN)/backend; \
+-		$(INSTALL_BIN) -m 700 $$file $(SERVERBIN)/backend; \
++		$(INSTALL_BIN) -m 744 $$file $(SERVERBIN)/backend; \
  	done
  	for file in $(UBACKENDS); do \
  		$(INSTALL_BIN) $$file $(SERVERBIN)/backend; \
@@ -52,7 +52,7 @@ index 77703b9..14478fd 100644
  
    cupsDirClose(dir);
 diff --git a/scheduler/job.c b/scheduler/job.c
-index e20e7c5..eb99b3e 100644
+index 17b3418..7f35a0e 100644
 --- a/scheduler/job.c
 +++ b/scheduler/job.c
 @@ -1247,7 +1247,7 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
