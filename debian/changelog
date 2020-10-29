@@ -1,3 +1,15 @@
+cups (2.3.3op1~59-gcab7bcb37-1) experimental; urgency=medium
+
+  * New OpenPrinting cups snapshot
+  * Packaging refresh:
+     - Drop pre-oldstable postinst ConfigFilePerm handling
+     - Add missing BSD-2-Clause block in debian/copyright
+     - Convert debian/po files to UTF-8
+     - Refresh manpage translation files
+     - Drop --as-needed as it's now default in Debian
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 29 Oct 2020 21:09:38 +0100
+
 cups (2.3.3op1~44-gc9176e958-1) experimental; urgency=medium
 
   * Rebase packaging on todays's OpenPrinting/cups fork snapshot

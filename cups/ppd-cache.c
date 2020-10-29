@@ -3228,7 +3228,7 @@ _ppdCreateFromIPP(char   *buffer,	/* I - Filename buffer */
         cupsFilePuts(fp, "*cupsFilter2: \"application/vnd.cups-pdf application/pdf 10 -\"\n");
     }
     else
-      cupsFilePuts(fp, "*cupsManualCopies: true\n");
+      cupsFilePuts(fp, "*cupsManualCopies: True\n");
     if (is_apple)
       cupsFilePuts(fp, "*cupsFilter2: \"image/urf image/urf 100 -\"\n");
     if (is_pwg)
@@ -3790,6 +3790,11 @@ _ppdCreateFromIPP(char   *buffer,	/* I - Filename buffer */
 	PRINTF_COLOROPTION("RGB", _("Color"), CUPS_CSPACE_SRGB, 8)
 
 	default_color = "RGB";
+
+        // Apparently some printers only advertise color support, so make sure
+        // we also do grayscale for these printers...
+	if (!ippContainsString(attr, "sgray_8") && !ippContainsString(attr, "black_1") && !ippContainsString(attr, "black_8"))
+	  PRINTF_COLOROPTION("Gray", _("GrayScale"), CUPS_CSPACE_SW, 8)
       }
       else if (!strcasecmp(keyword, "adobe-rgb_16") || !strcmp(keyword, "ADOBERGB48") || !strcmp(keyword, "ADOBERGB24-48"))
       {
@@ -3924,7 +3929,7 @@ _ppdCreateFromIPP(char   *buffer,	/* I - Filename buffer */
   else
     strlcpy(ppdname, "Unknown", sizeof(ppdname));
 
-  if ((attr = ippFindAttribute(response, "output-bin-supported", IPP_TAG_ZERO)) != NULL && (count = ippGetCount(attr)) > 1)
+  if ((attr = ippFindAttribute(response, "output-bin-supported", IPP_TAG_ZERO)) != NULL && (count = ippGetCount(attr)) > 0)
   {
     ipp_attribute_t	*trays = ippFindAttribute(response, "printer-output-tray", IPP_TAG_STRING);
 					/* printer-output-tray attribute, if any */

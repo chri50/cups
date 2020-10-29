@@ -557,7 +557,7 @@ index 7e83de1..3572726 100644
  Define two MIME media types for raster data, with one being a subset with higher priority:
  .nf
 diff --git a/man/ppdc.1 b/man/ppdc.1
-index 44e9d24..38e2669 100644
+index fdc065f..4699d28 100644
 --- a/man/ppdc.1
 +++ b/man/ppdc.1
 @@ -85,7 +85,7 @@ The default is to generate uncompressed PPD files.

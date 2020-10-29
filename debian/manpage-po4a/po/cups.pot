@@ -7,13 +7,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-12-13 17:30+0100\n"
+"POT-Creation-Date: 2020-10-29 20:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #. type: TH
@@ -23,25 +23,59 @@ msgid "backend"
 msgstr ""
 
 #. type: TH
-#: backend.7:10 cancel.1:10 classes.conf.5:10 client.conf.5:10 cups.1:10 cupsaccept.8:10 cups-config.1:10 cupsctl.8:10 cupsd.8:10 cupsd.conf.5:10 cupsd-helper.8:10 cupsd-logs.5:10 cupsenable.8:10 cups-files.conf.5:10 cupsfilter.8:9 cups-lpd.8:10 cups-snmp.8:9 cups-snmp.conf.5:10 cupstestppd.1:10 filter.7:10 ippevepcl.7:9 ippeveprinter.1:9 ipptool.1:9 ipptoolfile.5:9 lp.1:10 lpadmin.8:10 lpc.8:10 lpinfo.8:10 lpmove.8:10 lpoptions.1:10 lpq.1:10 lpr.1:10 lprm.1:10 lpstat.1:9 mailto.conf.5:10 mime.convs.5:10 mime.types.5:10 notifier.7:10 ppdc.1:10 ppdcfile.5:10 ppdhtml.1:10 ppdi.1:10 ppdmerge.1:10 ppdpo.1:10 printers.conf.5:9 subscriptions.conf.5:10
+#: backend.7:10 cancel.1:10 classes.conf.5:10 client.conf.5:10 cups.1:10
+#: cupsaccept.8:10 cups-config.1:10 cupsctl.8:10 cupsd.8:10 cupsd.conf.5:10
+#: cupsd-helper.8:10 cupsd-logs.5:10 cupsenable.8:10 cups-files.conf.5:10
+#: cupsfilter.8:9 cups-lpd.8:10 cups-snmp.8:9 cups-snmp.conf.5:10
+#: cupstestppd.1:10 filter.7:10 ippevepcl.7:9 ippeveprinter.1:9 ipptool.1:9
+#: ipptoolfile.5:9 lp.1:10 lpadmin.8:10 lpc.8:10 lpinfo.8:10 lpmove.8:10
+#: lpoptions.1:10 lpq.1:10 lpr.1:10 lprm.1:10 lpstat.1:9 mailto.conf.5:10
+#: mime.convs.5:10 mime.types.5:10 notifier.7:10 ppdc.1:10 ppdcfile.5:10
+#: ppdhtml.1:10 ppdi.1:10 ppdmerge.1:10 ppdpo.1:10 printers.conf.5:9
+#: subscriptions.conf.5:10
 #, no-wrap
 msgid "CUPS"
 msgstr ""
 
 #. type: TH
-#: backend.7:10 cancel.1:10 classes.conf.5:10 cups.1:10 cupsaccept.8:10 cups-config.1:10 cupsctl.8:10 cupsd.8:10 cupsd-helper.8:10 cupsd-logs.5:10 cupsenable.8:10 cups-files.conf.5:10 cupsfilter.8:9 cups-lpd.8:10 cups-snmp.8:9 cups-snmp.conf.5:10 cupstestppd.1:10 filter.7:10 ippfind.1:9 ipptool.1:9 lp.1:10 lpadmin.8:10 lpc.8:10 lpinfo.8:10 lpmove.8:10 lpoptions.1:10 lpq.1:10 lpr.1:10 lprm.1:10 lpstat.1:9 mailto.conf.5:10 mime.convs.5:10 mime.types.5:10 notifier.7:10 ppdc.1:10 ppdcfile.5:10 ppdhtml.1:10 ppdi.1:10 ppdmerge.1:10 ppdpo.1:10 printers.conf.5:9 subscriptions.conf.5:10
+#: backend.7:10 cancel.1:10 classes.conf.5:10 cups.1:10 cupsaccept.8:10
+#: cups-config.1:10 cupsctl.8:10 cupsd.8:10 cupsd-helper.8:10 cupsd-logs.5:10
+#: cupsenable.8:10 cups-files.conf.5:10 cupsfilter.8:9 cups-lpd.8:10
+#: cups-snmp.8:9 cups-snmp.conf.5:10 cupstestppd.1:10 filter.7:10 ippfind.1:9
+#: ipptool.1:9 lp.1:10 lpadmin.8:10 lpc.8:10 lpinfo.8:10 lpmove.8:10
+#: lpoptions.1:10 lpq.1:10 lpr.1:10 lprm.1:10 lpstat.1:9 mailto.conf.5:10
+#: mime.convs.5:10 mime.types.5:10 notifier.7:10 ppdcfile.5:10 ppdhtml.1:10
+#: ppdi.1:10 ppdmerge.1:10 ppdpo.1:10 printers.conf.5:9 subscriptions.conf.5:10
 #, no-wrap
 msgid "26 April 2019"
 msgstr ""
 
 #. type: TH
-#: backend.7:10 cancel.1:10 classes.conf.5:10 client.conf.5:10 cups.1:10 cupsaccept.8:10 cups-config.1:10 cupsctl.8:10 cupsd.8:10 cupsd.conf.5:10 cupsd-helper.8:10 cupsd-logs.5:10 cupsenable.8:10 cups-files.conf.5:10 cupsfilter.8:9 cups-lpd.8:10 cups-snmp.8:9 cups-snmp.conf.5:10 cupstestppd.1:10 filter.7:10 ippevepcl.7:9 ippeveprinter.1:9 ippfind.1:9 ipptool.1:9 ipptoolfile.5:9 lp.1:10 lpadmin.8:10 lpc.8:10 lpinfo.8:10 lpmove.8:10 lpoptions.1:10 lpq.1:10 lpr.1:10 lprm.1:10 lpstat.1:9 mailto.conf.5:10 mime.convs.5:10 mime.types.5:10 notifier.7:10 ppdc.1:10 ppdcfile.5:10 ppdhtml.1:10 ppdi.1:10 ppdmerge.1:10 ppdpo.1:10 printers.conf.5:9 subscriptions.conf.5:10
+#: backend.7:10 cancel.1:10 classes.conf.5:10 client.conf.5:10 cups.1:10
+#: cupsaccept.8:10 cups-config.1:10 cupsctl.8:10 cupsd.8:10 cupsd.conf.5:10
+#: cupsd-helper.8:10 cupsd-logs.5:10 cupsenable.8:10 cups-files.conf.5:10
+#: cupsfilter.8:9 cups-lpd.8:10 cups-snmp.8:9 cups-snmp.conf.5:10
+#: cupstestppd.1:10 filter.7:10 ippevepcl.7:9 ippeveprinter.1:9 ippfind.1:9
+#: ipptool.1:9 ipptoolfile.5:9 lp.1:10 lpadmin.8:10 lpc.8:10 lpinfo.8:10
+#: lpmove.8:10 lpoptions.1:10 lpq.1:10 lpr.1:10 lprm.1:10 lpstat.1:9
+#: mailto.conf.5:10 mime.convs.5:10 mime.types.5:10 notifier.7:10 ppdc.1:10
+#: ppdcfile.5:10 ppdhtml.1:10 ppdi.1:10 ppdmerge.1:10 ppdpo.1:10
+#: printers.conf.5:9 subscriptions.conf.5:10
 #, no-wrap
 msgid "Apple Inc."
 msgstr ""
 
 #. type: SH
-#: backend.7:11 cancel.1:11 classes.conf.5:11 client.conf.5:11 cups.1:11 cupsaccept.8:11 cups-config.1:11 cupsctl.8:11 cupsd.8:11 cupsd.conf.5:11 cupsd-helper.8:11 cupsd-logs.5:11 cupsenable.8:11 cups-files.conf.5:11 cupsfilter.8:10 cups-lpd.8:11 cups-snmp.8:10 cups-snmp.conf.5:11 cupstestppd.1:11 filter.7:11 ippevepcl.7:10 ippeveprinter.1:10 ippfind.1:10 ipptool.1:10 ipptoolfile.5:10 lp.1:11 lpadmin.8:11 lpc.8:11 lpinfo.8:11 lpmove.8:11 lpoptions.1:11 lpq.1:11 lpr.1:11 lprm.1:11 lpstat.1:10 mailto.conf.5:11 mime.convs.5:11 mime.types.5:11 notifier.7:11 ppdc.1:11 ppdcfile.5:11 ppdhtml.1:11 ppdi.1:11 ppdmerge.1:11 ppdpo.1:11 printers.conf.5:10 subscriptions.conf.5:11
+#: backend.7:11 cancel.1:11 classes.conf.5:11 client.conf.5:11 cups.1:11
+#: cupsaccept.8:11 cups-config.1:11 cupsctl.8:11 cupsd.8:11 cupsd.conf.5:11
+#: cupsd-helper.8:11 cupsd-logs.5:11 cupsenable.8:11 cups-files.conf.5:11
+#: cupsfilter.8:10 cups-lpd.8:11 cups-snmp.8:10 cups-snmp.conf.5:11
+#: cupstestppd.1:11 filter.7:11 ippevepcl.7:10 ippeveprinter.1:10 ippfind.1:10
+#: ipptool.1:10 ipptoolfile.5:10 lp.1:11 lpadmin.8:11 lpc.8:11 lpinfo.8:11
+#: lpmove.8:11 lpoptions.1:11 lpq.1:11 lpr.1:11 lprm.1:11 lpstat.1:10
+#: mailto.conf.5:11 mime.convs.5:11 mime.types.5:11 notifier.7:11 ppdc.1:11
+#: ppdcfile.5:11 ppdhtml.1:11 ppdi.1:11 ppdmerge.1:11 ppdpo.1:11
+#: printers.conf.5:10 subscriptions.conf.5:11
 #, no-wrap
 msgid "NAME"
 msgstr ""
@@ -52,7 +86,13 @@ msgid "backend - cups backend transmission interfaces"
 msgstr ""
 
 #. type: SH
-#: backend.7:13 cancel.1:13 cupsaccept.8:13 cups-config.1:13 cupsctl.8:13 cupsd.8:13 cupsd-helper.8:13 cupsenable.8:13 cupsfilter.8:12 cups-lpd.8:13 cups-snmp.8:12 cupstestppd.1:13 filter.7:13 ippevepcl.7:12 ippeveprinter.1:12 ippfind.1:12 ipptool.1:12 lp.1:13 lpadmin.8:13 lpc.8:13 lpinfo.8:13 lpmove.8:13 lpoptions.1:13 lpq.1:13 lpr.1:13 lprm.1:13 lpstat.1:12 notifier.7:13 ppdc.1:13 ppdhtml.1:13 ppdi.1:13 ppdmerge.1:13 ppdpo.1:13
+#: backend.7:13 cancel.1:13 cupsaccept.8:13 cups-config.1:13 cupsctl.8:13
+#: cupsd.8:13 cupsd-helper.8:13 cupsenable.8:13 cupsfilter.8:12 cups-lpd.8:13
+#: cups-snmp.8:12 cupstestppd.1:13 filter.7:13 ippevepcl.7:12
+#: ippeveprinter.1:12 ippfind.1:12 ipptool.1:12 lp.1:13 lpadmin.8:13 lpc.8:13
+#: lpinfo.8:13 lpmove.8:13 lpoptions.1:13 lpq.1:13 lpr.1:13 lprm.1:13
+#: lpstat.1:12 notifier.7:13 ppdc.1:13 ppdhtml.1:13 ppdi.1:13 ppdmerge.1:13
+#: ppdpo.1:13
 #, no-wrap
 msgid "SYNOPSIS"
 msgstr ""
@@ -119,7 +159,16 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: backend.7:49 cancel.1:37 classes.conf.5:13 client.conf.5:13 cups.1:13 cupsaccept.8:40 cups-config.1:49 cupsctl.8:36 cupsd.8:32 cupsd.conf.5:13 cupsd-helper.8:46 cupsd-logs.5:13 cupsenable.8:46 cups-files.conf.5:13 cupsfilter.8:54 cups-lpd.8:23 cups-snmp.8:23 cups-snmp.conf.5:13 cupstestppd.1:51 filter.7:51 ippevepcl.7:22 ippeveprinter.1:84 ippfind.1:32 ipptool.1:75 ipptoolfile.5:12 lp.1:84 lpadmin.8:54 lpc.8:20 lpinfo.8:60 lpmove.8:37 lpoptions.1:53 lpq.1:31 lpr.1:53 lprm.1:31 lpstat.1:65 mailto.conf.5:13 mime.convs.5:13 mime.types.5:13 notifier.7:19 ppdc.1:45 ppdcfile.5:13 ppdhtml.1:22 ppdi.1:26 ppdmerge.1:24 ppdpo.1:25 printers.conf.5:12 subscriptions.conf.5:13
+#: backend.7:49 cancel.1:37 classes.conf.5:13 client.conf.5:13 cups.1:13
+#: cupsaccept.8:40 cups-config.1:49 cupsctl.8:36 cupsd.8:32 cupsd.conf.5:13
+#: cupsd-helper.8:46 cupsd-logs.5:13 cupsenable.8:46 cups-files.conf.5:13
+#: cupsfilter.8:54 cups-lpd.8:23 cups-snmp.8:23 cups-snmp.conf.5:13
+#: cupstestppd.1:51 filter.7:51 ippevepcl.7:22 ippeveprinter.1:84 ippfind.1:32
+#: ipptool.1:75 ipptoolfile.5:12 lp.1:84 lpadmin.8:54 lpc.8:20 lpinfo.8:60
+#: lpmove.8:37 lpoptions.1:53 lpq.1:31 lpr.1:53 lprm.1:31 lpstat.1:65
+#: mailto.conf.5:13 mime.convs.5:13 mime.types.5:13 notifier.7:19 ppdc.1:45
+#: ppdcfile.5:13 ppdhtml.1:22 ppdi.1:26 ppdmerge.1:24 ppdpo.1:25
+#: printers.conf.5:12 subscriptions.conf.5:13
 #, no-wrap
 msgid "DESCRIPTION"
 msgstr ""
@@ -309,7 +358,8 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: backend.7:135 cupsfilter.8:102 cupstestppd.1:110 ippevepcl.7:39 ippeveprinter.1:200 ippfind.1:214 ipptool.1:191
+#: backend.7:135 cupsfilter.8:102 cupstestppd.1:110 ippevepcl.7:39
+#: ippeveprinter.1:200 ippfind.1:214 ipptool.1:191
 #, no-wrap
 msgid "EXIT STATUS"
 msgstr ""
@@ -434,7 +484,8 @@ msgid "All other exit code values are reserved."
 msgstr ""
 
 #. type: SH
-#: backend.7:173 cups.1:60 cupsfilter.8:105 cups-snmp.8:37 ippevepcl.7:41 ippeveprinter.1:211 ippfind.1:216
+#: backend.7:173 cups.1:60 cupsfilter.8:105 cups-snmp.8:37 ippevepcl.7:41
+#: ippeveprinter.1:211 ippfind.1:216
 #, no-wrap
 msgid "ENVIRONMENT"
 msgstr ""
@@ -458,7 +509,9 @@ msgid "The device URI associated with the printer."
 msgstr ""
 
 #. type: SH
-#: backend.7:182 cups.1:114 cupsd.8:71 cupsd-helper.8:56 cupsfilter.8:110 cups-lpd.8:54 cups-snmp.8:40 ipptool.1:195 lpoptions.1:104 mime.convs.5:37 mime.types.5:87
+#: backend.7:182 cups.1:114 cupsd.8:71 cupsd-helper.8:56 cupsfilter.8:110
+#: cups-lpd.8:54 cups-snmp.8:40 ipptool.1:195 lpoptions.1:104 mime.convs.5:37
+#: mime.types.5:87
 #, no-wrap
 msgid "FILES"
 msgstr ""
@@ -469,7 +522,12 @@ msgid "I</etc/cups/cups-files.conf>"
 msgstr ""
 
 #. type: SH
-#: backend.7:184 backend.7:204 cancel.1:81 classes.conf.5:19 client.conf.5:126 cups.1:122 cupsd.conf.5:858 cupsd-helper.8:77 cups-files.conf.5:273 cupsfilter.8:117 cups-lpd.8:60 cups-snmp.8:44 cups-snmp.conf.5:58 cupstestppd.1:138 filter.7:201 lpadmin.8:203 lpc.8:40 lpinfo.8:117 lpr.1:151 mime.convs.5:50 ppdc.1:90 ppdcfile.5:149 ppdhtml.1:35 ppdi.1:42 ppdmerge.1:35 ppdpo.1:42 printers.conf.5:16 subscriptions.conf.5:19
+#: backend.7:184 backend.7:204 cancel.1:81 classes.conf.5:19 client.conf.5:126
+#: cups.1:122 cupsd.conf.5:858 cupsd-helper.8:77 cups-files.conf.5:273
+#: cupsfilter.8:117 cups-lpd.8:60 cups-snmp.8:44 cups-snmp.conf.5:58
+#: cupstestppd.1:138 filter.7:201 lpadmin.8:203 lpc.8:40 lpinfo.8:117 lpr.1:151
+#: mime.convs.5:50 ppdc.1:90 ppdcfile.5:149 ppdhtml.1:35 ppdi.1:42
+#: ppdmerge.1:35 ppdpo.1:42 printers.conf.5:16 subscriptions.conf.5:19
 #, no-wrap
 msgid "NOTES"
 msgstr ""
@@ -506,7 +564,16 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: backend.7:208 cancel.1:84 classes.conf.5:21 client.conf.5:138 cups.1:126 cupsaccept.8:77 cups-config.1:105 cupsctl.8:92 cupsd.8:109 cupsd.conf.5:895 cupsd-helper.8:81 cupsd-logs.5:216 cupsenable.8:88 cups-files.conf.5:280 cupsfilter.8:131 cups-lpd.8:111 cups-snmp.8:49 cups-snmp.conf.5:62 cupstestppd.1:142 filter.7:212 ippevepcl.7:45 ippeveprinter.1:268 ippfind.1:255 ipptool.1:246 ipptoolfile.5:649 lp.1:219 lpadmin.8:224 lpc.8:47 lpinfo.8:121 lpmove.8:66 lpoptions.1:110 lpq.1:56 lpr.1:171 lprm.1:74 lpstat.1:140 mailto.conf.5:40 mime.convs.5:54 mime.types.5:100 notifier.7:31 ppdc.1:94 ppdcfile.5:153 ppdhtml.1:39 ppdi.1:46 ppdmerge.1:42 ppdpo.1:46 printers.conf.5:18 subscriptions.conf.5:21
+#: backend.7:208 cancel.1:84 classes.conf.5:21 client.conf.5:138 cups.1:126
+#: cupsaccept.8:77 cups-config.1:105 cupsctl.8:92 cupsd.8:109 cupsd.conf.5:895
+#: cupsd-helper.8:81 cupsd-logs.5:216 cupsenable.8:88 cups-files.conf.5:280
+#: cupsfilter.8:131 cups-lpd.8:111 cups-snmp.8:49 cups-snmp.conf.5:62
+#: cupstestppd.1:142 filter.7:212 ippevepcl.7:45 ippeveprinter.1:268
+#: ippfind.1:255 ipptool.1:246 ipptoolfile.5:649 lp.1:219 lpadmin.8:224
+#: lpc.8:47 lpinfo.8:121 lpmove.8:66 lpoptions.1:110 lpq.1:56 lpr.1:171
+#: lprm.1:74 lpstat.1:140 mailto.conf.5:40 mime.convs.5:54 mime.types.5:100
+#: notifier.7:31 ppdc.1:94 ppdcfile.5:153 ppdhtml.1:39 ppdi.1:46 ppdmerge.1:42
+#: ppdpo.1:46 printers.conf.5:18 subscriptions.conf.5:21
 #, no-wrap
 msgid "SEE ALSO"
 msgstr ""
@@ -524,13 +591,31 @@ msgid "CUPS Online Help (http://localhost:631/help)"
 msgstr ""
 
 #. type: SH
-#: backend.7:219 cancel.1:90 classes.conf.5:29 client.conf.5:142 cups.1:142 cupsaccept.8:85 cups-config.1:108 cupsctl.8:97 cupsd.8:125 cupsd.conf.5:904 cupsd-helper.8:89 cupsd-logs.5:221 cupsenable.8:96 cups-files.conf.5:290 cupsfilter.8:138 cups-lpd.8:118 cups-snmp.8:55 cups-snmp.conf.5:65 cupstestppd.1:146 filter.7:220 ippevepcl.7:47 ippeveprinter.1:272 ippfind.1:257 ipptool.1:251 ipptoolfile.5:654 lp.1:228 lpadmin.8:230 lpc.8:57 lpinfo.8:124 lpmove.8:73 lpoptions.1:117 lpq.1:63 lpr.1:180 lprm.1:81 lpstat.1:147 mailto.conf.5:43 mime.convs.5:61 mime.types.5:107 notifier.7:35 ppdc.1:101 ppdcfile.5:160 ppdhtml.1:46 ppdi.1:53 ppdmerge.1:49 ppdpo.1:53 printers.conf.5:27 subscriptions.conf.5:30
+#: backend.7:219 cancel.1:90 classes.conf.5:29 client.conf.5:142 cups.1:142
+#: cupsaccept.8:85 cups-config.1:108 cupsctl.8:97 cupsd.8:125 cupsd.conf.5:904
+#: cupsd-helper.8:89 cupsd-logs.5:221 cupsenable.8:96 cups-files.conf.5:290
+#: cupsfilter.8:138 cups-lpd.8:118 cups-snmp.8:55 cups-snmp.conf.5:65
+#: cupstestppd.1:146 filter.7:220 ippevepcl.7:47 ippeveprinter.1:272
+#: ippfind.1:257 ipptool.1:251 ipptoolfile.5:654 lp.1:228 lpadmin.8:230
+#: lpc.8:57 lpinfo.8:124 lpmove.8:73 lpoptions.1:117 lpq.1:63 lpr.1:180
+#: lprm.1:81 lpstat.1:147 mailto.conf.5:43 mime.convs.5:61 mime.types.5:107
+#: notifier.7:35 ppdc.1:101 ppdcfile.5:160 ppdhtml.1:46 ppdi.1:53 ppdmerge.1:49
+#: ppdpo.1:53 printers.conf.5:27 subscriptions.conf.5:30
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr ""
 
 #. type: Plain text
-#: backend.7:220 cancel.1:91 classes.conf.5:30 client.conf.5:143 cups.1:143 cupsaccept.8:86 cups-config.1:109 cupsctl.8:98 cupsd.8:126 cupsd.conf.5:905 cupsd-helper.8:90 cupsd-logs.5:222 cupsenable.8:97 cups-files.conf.5:291 cupsfilter.8:139 cups-lpd.8:119 cups-snmp.8:56 cups-snmp.conf.5:66 cupstestppd.1:147 filter.7:221 ippeveprinter.1:273 ipptool.1:252 ipptoolfile.5:655 lp.1:229 lpadmin.8:231 lpc.8:58 lpinfo.8:125 lpmove.8:74 lpoptions.1:118 lpq.1:64 lpr.1:181 lprm.1:82 lpstat.1:148 mailto.conf.5:44 mime.convs.5:62 mime.types.5:108 notifier.7:36 ppdc.1:102 ppdcfile.5:161 ppdhtml.1:47 ppdi.1:54 ppdmerge.1:50 ppdpo.1:54 printers.conf.5:28 subscriptions.conf.5:31
+#: backend.7:220 cancel.1:91 classes.conf.5:30 client.conf.5:143 cups.1:143
+#: cupsaccept.8:86 cups-config.1:109 cupsctl.8:98 cupsd.8:126 cupsd.conf.5:905
+#: cupsd-helper.8:90 cupsd-logs.5:222 cupsenable.8:97 cups-files.conf.5:291
+#: cupsfilter.8:139 cups-lpd.8:119 cups-snmp.8:56 cups-snmp.conf.5:66
+#: cupstestppd.1:147 filter.7:221 ippeveprinter.1:273 ipptool.1:252
+#: ipptoolfile.5:655 lp.1:229 lpadmin.8:231 lpc.8:58 lpinfo.8:125 lpmove.8:74
+#: lpoptions.1:118 lpq.1:64 lpr.1:181 lprm.1:82 lpstat.1:148 mailto.conf.5:44
+#: mime.convs.5:62 mime.types.5:108 notifier.7:36 ppdc.1:102 ppdcfile.5:161
+#: ppdhtml.1:47 ppdi.1:54 ppdmerge.1:50 ppdpo.1:54 printers.conf.5:28
+#: subscriptions.conf.5:31
 msgid "Copyright \\[co] 2007-2019 by Apple Inc."
 msgstr ""
 
@@ -562,7 +647,12 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: cancel.1:40 cupsaccept.8:50 cups-config.1:52 cupsctl.8:40 cupsd.8:37 cupsd.conf.5:485 cupsenable.8:51 cupsfilter.8:59 cups-lpd.8:32 cupstestppd.1:58 filter.7:60 ippeveprinter.1:87 ippfind.1:191 ipptool.1:88 lp.1:94 lpadmin.8:73 lpinfo.8:63 lpmove.8:39 lpoptions.1:68 lpq.1:36 lpr.1:64 lprm.1:36 lpstat.1:68 ppdc.1:48 ppdhtml.1:25 ppdi.1:30 ppdmerge.1:28 ppdpo.1:28
+#: cancel.1:40 cupsaccept.8:50 cups-config.1:52 cupsctl.8:40 cupsd.8:37
+#: cupsd.conf.5:485 cupsenable.8:51 cupsfilter.8:59 cups-lpd.8:32
+#: cupstestppd.1:58 filter.7:60 ippeveprinter.1:87 ippfind.1:191 ipptool.1:88
+#: lp.1:94 lpadmin.8:73 lpinfo.8:63 lpmove.8:39 lpoptions.1:68 lpq.1:36
+#: lpr.1:64 lprm.1:36 lpstat.1:68 ppdc.1:48 ppdhtml.1:25 ppdi.1:30
+#: ppdmerge.1:28 ppdpo.1:28
 #, no-wrap
 msgid "OPTIONS"
 msgstr ""
@@ -586,13 +676,16 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cancel.1:46 cupsaccept.8:55 cupsctl.8:42 cupsenable.8:53 ipptool.1:125 lp.1:99 lpadmin.8:175 lpinfo.8:65 lpmove.8:41 lpoptions.1:70 lpq.1:38 lpr.1:66 lprm.1:40 lpstat.1:70
+#: cancel.1:46 cupsaccept.8:55 cupsctl.8:42 cupsenable.8:53 ipptool.1:125
+#: lp.1:99 lpadmin.8:175 lpinfo.8:65 lpmove.8:41 lpoptions.1:70 lpq.1:38
+#: lpr.1:66 lprm.1:40 lpstat.1:70
 #, no-wrap
 msgid "B<-E>"
 msgstr ""
 
 #. type: Plain text
-#: cancel.1:49 cupsaccept.8:58 lp.1:102 lpinfo.8:68 lpmove.8:44 lpq.1:41 lpr.1:69 lprm.1:43 lpstat.1:73
+#: cancel.1:49 cupsaccept.8:58 lp.1:102 lpinfo.8:68 lpmove.8:44 lpq.1:41
+#: lpr.1:69 lprm.1:43 lpstat.1:73
 msgid "Forces encryption when connecting to the server."
 msgstr ""
 
@@ -608,7 +701,8 @@ msgid "Specifies an alternate server."
 msgstr ""
 
 #. type: TP
-#: cancel.1:52 cupsaccept.8:58 cupsctl.8:45 cupsenable.8:56 lp.1:102 lpmove.8:44 lpq.1:44 lpr.1:82 lprm.1:46 lpstat.1:79
+#: cancel.1:52 cupsaccept.8:58 cupsctl.8:45 cupsenable.8:56 lp.1:102
+#: lpmove.8:44 lpq.1:44 lpr.1:82 lprm.1:46 lpstat.1:79
 #, no-wrap
 msgid "B<-U >I<username>"
 msgstr ""
@@ -641,7 +735,10 @@ msgid "Deletes job data files in addition to canceling."
 msgstr ""
 
 #. type: SH
-#: cancel.1:61 cups.1:119 cupsaccept.8:67 cupsd.8:81 cupsd.conf.5:873 cupsenable.8:77 cups-lpd.8:46 cups-snmp.8:47 filter.7:199 ippeveprinter.1:207 ipptool.1:229 lp.1:196 lpadmin.8:197 lpinfo.8:97 lpoptions.1:108 lprm.1:52 lpstat.1:133
+#: cancel.1:61 cups.1:119 cupsaccept.8:67 cupsd.8:81 cupsd.conf.5:873
+#: cupsenable.8:77 cups-lpd.8:46 cups-snmp.8:47 filter.7:199
+#: ippeveprinter.1:207 ipptool.1:229 lp.1:196 lpadmin.8:197 lpinfo.8:97
+#: lpoptions.1:108 lprm.1:52 lpstat.1:133
 #, no-wrap
 msgid "CONFORMING TO"
 msgstr ""
@@ -655,7 +752,9 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: cancel.1:63 cups-config.1:87 cupsctl.8:66 cupsd.8:84 cupsd.conf.5:875 cupstestppd.1:125 ippeveprinter.1:252 ippfind.1:242 ipptool.1:233 lp.1:201 lpinfo.8:99 lpmove.8:50 lpr.1:153 lprm.1:56 mime.convs.5:43 mime.types.5:89
+#: cancel.1:63 cups-config.1:87 cupsctl.8:66 cupsd.8:84 cupsd.conf.5:875
+#: cupstestppd.1:125 ippeveprinter.1:252 ippfind.1:242 ipptool.1:233 lp.1:201
+#: lpinfo.8:99 lpmove.8:50 lpr.1:153 lprm.1:56 mime.convs.5:43 mime.types.5:89
 #, no-wrap
 msgid "EXAMPLES"
 msgstr ""
@@ -1869,7 +1968,8 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cupsctl.8:48 cupsenable.8:62 lpinfo.8:68 lpmove.8:47 lpoptions.1:78 lpq.1:50 lpstat.1:100
+#: cupsctl.8:48 cupsenable.8:62 lpinfo.8:68 lpmove.8:47 lpoptions.1:78 lpq.1:50
+#: lpstat.1:100
 #, no-wrap
 msgid "B<-h >I<server>[B<:>I<port>]"
 msgstr ""
@@ -2072,7 +2172,8 @@ msgid "Shows the program usage."
 msgstr ""
 
 #. type: TP
-#: cupsd.8:57 ippfind.1:74 ipptool.1:172 lpinfo.8:71 lpoptions.1:81 lpq.1:53 lpr.1:91 lpstat.1:103
+#: cupsd.8:57 ippfind.1:74 ipptool.1:172 lpinfo.8:71 lpoptions.1:81 lpq.1:53
+#: lpr.1:91 lpstat.1:103
 #, no-wrap
 msgid "B<-l>"
 msgstr ""
@@ -7233,7 +7334,8 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: cupstestppd.1:142 ppdc.1:94 ppdcfile.5:153 ppdhtml.1:39 ppdi.1:46 ppdmerge.1:39 ppdpo.1:46
+#: cupstestppd.1:142 ppdc.1:94 ppdcfile.5:153 ppdhtml.1:39 ppdi.1:46
+#: ppdmerge.1:39 ppdpo.1:46
 msgid ""
 "PPD files are deprecated and will no longer be supported in a future feature "
 "release of CUPS.  Printers that do not support IPP can be supported using "
@@ -13684,6 +13786,12 @@ msgstr ""
 msgid "ppdc"
 msgstr ""
 
+#. type: TH
+#: ppdc.1:10
+#, no-wrap
+msgid "28 October 2020"
+msgstr ""
+
 #. type: Plain text
 #: ppdc.1:13
 msgid "ppdc - cups ppd compiler (deprecated)"
@@ -13782,7 +13890,7 @@ msgstr ""
 #: ppdc.1:73
 msgid ""
 "Specifies that the output filename should be based on the ModelName value "
-"instead of FileName or PCFilenName."
+"instead of FileName or PCFileName."
 msgstr ""
 
 #. type: Plain text

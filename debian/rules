@@ -5,7 +5,6 @@ derives_from_ubuntu := $(shell (dpkg-vendor --derives-from Ubuntu && echo "yes")
 # Enabling PIE globally doesn't work, but ./configure already enables PIE
 # where necessary.
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all,-pie
-export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 
 ifeq ($(shell dpkg-vendor --is Ubuntu && echo yes) $(DEB_HOST_ARCH), yes i386)
    skip_packages = -Ncups -Ncups-core-drivers

@@ -4021,7 +4021,8 @@ load_ppd(cupsd_printer_t *p)		/* I - Printer */
 
     num_qualities = 0;
 
-    if ((output_mode = ppdFindOption(ppd, "OutputMode")) != NULL)
+    if ((output_mode = ppdFindOption(ppd, "OutputMode")) ||
+        (output_mode = ppdFindOption(ppd, "cupsPrintQuality")))
     {
       if (ppdFindChoice(output_mode, "draft") ||
           ppdFindChoice(output_mode, "fast"))
