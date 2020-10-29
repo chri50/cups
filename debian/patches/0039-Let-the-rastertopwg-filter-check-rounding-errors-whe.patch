@@ -8,7 +8,7 @@ Subject: Let the rastertopwg filter check rounding errors when calculating
  1 file changed, 22 insertions(+), 6 deletions(-)
 
 diff --git a/filter/rastertopwg.c b/filter/rastertopwg.c
-index 1e63e4e..bffd89a 100644
+index 0fa127e..9343497 100644
 --- a/filter/rastertopwg.c
 +++ b/filter/rastertopwg.c
 @@ -41,8 +41,10 @@ main(int  argc,				/* I - Number of command-line args */
@@ -55,7 +55,7 @@ index 1e63e4e..bffd89a 100644
      {
        _cupsLangPrintFilter(stderr, "ERROR", _("Unsupported raster data."));
        fprintf(stderr, "DEBUG: Bad bottom/left/top margin on page %d.\n", page);
-@@ -291,8 +309,7 @@ main(int  argc,				/* I - Number of command-line args */
+@@ -290,8 +308,7 @@ main(int  argc,				/* I - Number of command-line args */
  	  outheader.cupsInteger[1] = ~0U;/* CrossFeedTransform */
  	  outheader.cupsInteger[2] = 1;	/* FeedTransform */
  
@@ -65,7 +65,7 @@ index 1e63e4e..bffd89a 100644
  					/* ImageBoxLeft */
  	  outheader.cupsInteger[4] = page_top;
  					/* ImageBoxTop */
-@@ -355,8 +372,7 @@ main(int  argc,				/* I - Number of command-line args */
+@@ -354,8 +371,7 @@ main(int  argc,				/* I - Number of command-line args */
  	  outheader.cupsInteger[1] = ~0U;/* CrossFeedTransform */
  	  outheader.cupsInteger[2] = ~0U;/* FeedTransform */
  

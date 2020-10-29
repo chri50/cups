@@ -10,7 +10,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups-2.0.3-6\n"
-"POT-Creation-Date: 2019-12-13 17:30+0100\n"
+"POT-Creation-Date: 2020-10-29 20:48+0100\n"
 "PO-Revision-Date: 2018-04-25 11:57+0200\n"
 "Last-Translator: Jean-Paul Guillonneau <guillonneau.jeanpaul@free.fr>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
@@ -50,9 +50,8 @@ msgstr "CUPS"
 #: cups-snmp.8:9 cups-snmp.conf.5:10 cupstestppd.1:10 filter.7:10 ippfind.1:9
 #: ipptool.1:9 lp.1:10 lpadmin.8:10 lpc.8:10 lpinfo.8:10 lpmove.8:10
 #: lpoptions.1:10 lpq.1:10 lpr.1:10 lprm.1:10 lpstat.1:9 mailto.conf.5:10
-#: mime.convs.5:10 mime.types.5:10 notifier.7:10 ppdc.1:10 ppdcfile.5:10
-#: ppdhtml.1:10 ppdi.1:10 ppdmerge.1:10 ppdpo.1:10 printers.conf.5:9
-#: subscriptions.conf.5:10
+#: mime.convs.5:10 mime.types.5:10 notifier.7:10 ppdcfile.5:10 ppdhtml.1:10
+#: ppdi.1:10 ppdmerge.1:10 ppdpo.1:10 printers.conf.5:9 subscriptions.conf.5:10
 #, no-wrap
 msgid "26 April 2019"
 msgstr "26 avril 2019"
@@ -17487,6 +17486,14 @@ msgstr ""
 msgid "ppdc"
 msgstr "ppdc"
 
+# type: TH
+#. type: TH
+#: ppdc.1:10
+#, fuzzy, no-wrap
+#| msgid "23 October 2008"
+msgid "28 October 2020"
+msgstr "23 octobre 2008"
+
 #. type: Plain text
 #: ppdc.1:13
 msgid "ppdc - cups ppd compiler (deprecated)"
@@ -17612,9 +17619,13 @@ msgstr ""
 # type: Plain text
 #. type: Plain text
 #: ppdc.1:73
+#, fuzzy
+#| msgid ""
+#| "Specifies that the output filename should be based on the ModelName value "
+#| "instead of FileName or PCFilenName."
 msgid ""
 "Specifies that the output filename should be based on the ModelName value "
-"instead of FileName or PCFilenName."
+"instead of FileName or PCFileName."
 msgstr ""
 "Indiquer que le nom du fichier de sortie sera basé sur la valeur ModelName "
 "au lieu de FileName ou PCFilenName."
@@ -19676,10 +19687,6 @@ msgstr ""
 #~ msgid "Getting the full set of Windows driver files should be easier."
 #~ msgstr ""
 #~ "Récupérer l'ensemble complet des pilotes Windows devrait être plus simple."
-
-# type: TH
-#~ msgid "23 October 2008"
-#~ msgstr "23 octobre 2008"
 
 # type: TH
 #~ msgid "11 January 2013"

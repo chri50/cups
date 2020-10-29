@@ -11,7 +11,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 2.3.1-1\n"
-"POT-Creation-Date: 2019-12-13 17:30+0100\n"
+"POT-Creation-Date: 2020-10-29 20:48+0100\n"
 "PO-Revision-Date: 2019-12-24 06:37+0100\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
@@ -49,9 +49,8 @@ msgstr "CUPS"
 #: cups-snmp.8:9 cups-snmp.conf.5:10 cupstestppd.1:10 filter.7:10 ippfind.1:9
 #: ipptool.1:9 lp.1:10 lpadmin.8:10 lpc.8:10 lpinfo.8:10 lpmove.8:10
 #: lpoptions.1:10 lpq.1:10 lpr.1:10 lprm.1:10 lpstat.1:9 mailto.conf.5:10
-#: mime.convs.5:10 mime.types.5:10 notifier.7:10 ppdc.1:10 ppdcfile.5:10
-#: ppdhtml.1:10 ppdi.1:10 ppdmerge.1:10 ppdpo.1:10 printers.conf.5:9
-#: subscriptions.conf.5:10
+#: mime.convs.5:10 mime.types.5:10 notifier.7:10 ppdcfile.5:10 ppdhtml.1:10
+#: ppdi.1:10 ppdmerge.1:10 ppdpo.1:10 printers.conf.5:9 subscriptions.conf.5:10
 #, no-wrap
 msgid "26 April 2019"
 msgstr "26. April 2019"
@@ -9439,14 +9438,14 @@ msgid ""
 "v[vvv]> ] I<service-name>"
 msgstr ""
 "B<ippeveprinter> [ B<--help> ] [ B<--no-web-forms> ] [ B<--pam-service> "
-"I<Dienst> ][ B<--version> ] "
-"[ B<-2> ]  [ B<-A> ] [ B<-D> I<Geräte-URI> ] [ B<-F> I<Ausgabetyp/-untertyp> ] [ B<-K> "
-"I<Schlüsselpfad> ] [ B<-M> I<Hersteller> ] [ B<-P> I<Dateiname.ppd> ] [ B<-"
-"V> I<IPP-Version> ] [ B<-a> I<Dateiname.conf> ] [ B<-c> I<Befehl> ] [ B<-d> "
-"I<Spool-Verzeichnis> ] [ B<-f> I<Typ/Untertyp[,…]> ] [ B<-i> I<Icon-Datei."
-"png> ] [ B<-k> ] [ B<-l> I<Ort> ] [ B<-m> I<Modell> ] [ B<-n> "
-"I<Rechnername> ] [ B<-p> I<Port> ] [ B<-r> I<Untertyp[,Untertyp]> ] [ B<-s> "
-"I<Geschwindigkeit[,Farbgeschwindigkeit]> ] [ B<-v[vvv]> ] I<Dienstename>"
+"I<Dienst> ][ B<--version> ] [ B<-2> ]  [ B<-A> ] [ B<-D> I<Geräte-URI> ] "
+"[ B<-F> I<Ausgabetyp/-untertyp> ] [ B<-K> I<Schlüsselpfad> ] [ B<-M> "
+"I<Hersteller> ] [ B<-P> I<Dateiname.ppd> ] [ B<-V> I<IPP-Version> ] [ B<-a> "
+"I<Dateiname.conf> ] [ B<-c> I<Befehl> ] [ B<-d> I<Spool-Verzeichnis> ] [ B<-"
+"f> I<Typ/Untertyp[,…]> ] [ B<-i> I<Icon-Datei.png> ] [ B<-k> ] [ B<-l> "
+"I<Ort> ] [ B<-m> I<Modell> ] [ B<-n> I<Rechnername> ] [ B<-p> I<Port> ] [ B<-"
+"r> I<Untertyp[,Untertyp]> ] [ B<-s> I<Geschwindigkeit[,"
+"Farbgeschwindigkeit]> ] [ B<-v[vvv]> ] I<Dienstename>"
 
 #. type: Plain text
 #: ippeveprinter.1:87
@@ -9494,8 +9493,7 @@ msgstr "B<--pam-service >I<Dienst>"
 #. type: Plain text
 #: ippeveprinter.1:100
 msgid "Set the PAM service name.  The default service is \"cups\"."
-msgstr ""
-"Legt den PAM-Dienstenamen fest. Der Vorgabedienst ist »cups«."
+msgstr "Legt den PAM-Dienstenamen fest. Der Vorgabedienst ist »cups«."
 
 #. type: Plain text
 #: ippeveprinter.1:103
@@ -16311,6 +16309,14 @@ msgstr ""
 msgid "ppdc"
 msgstr "ppdc"
 
+# type: TH
+#. type: TH
+#: ppdc.1:10
+#, fuzzy, no-wrap
+#| msgid "23 October 2008"
+msgid "28 October 2020"
+msgstr "23. Oktober 2008"
+
 #. type: Plain text
 #: ppdc.1:13
 msgid "ppdc - cups ppd compiler (deprecated)"
@@ -16429,9 +16435,13 @@ msgstr ""
 
 #. type: Plain text
 #: ppdc.1:73
+#, fuzzy
+#| msgid ""
+#| "Specifies that the output filename should be based on the ModelName value "
+#| "instead of FileName or PCFilenName."
 msgid ""
 "Specifies that the output filename should be based on the ModelName value "
-"instead of FileName or PCFilenName."
+"instead of FileName or PCFileName."
 msgstr ""
 "Legt fest, dass der Ausgabename auf dem Wert von ModelName statt von "
 "FileName oder PCFilenName basieren soll."
@@ -18254,10 +18264,6 @@ msgstr ""
 #~ msgid "Getting the full set of Windows driver files should be easier."
 #~ msgstr ""
 #~ "Es sollte leichter sein, den kompletten Windows-Treibersatz zu bekommen."
-
-# type: TH
-#~ msgid "23 October 2008"
-#~ msgstr "23. Oktober 2008"
 
 #~ msgid "11 January 2013"
 #~ msgstr "11. Januar 2013"
