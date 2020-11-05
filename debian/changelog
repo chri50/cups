@@ -1,3 +1,12 @@
+cups (2.3.3op1~81-g8b6765a72-1) experimental; urgency=medium
+
+  * New OpenPrinting cups snapshot
+  * Cleanup patch suite:
+    - 8 Debian patches merged
+    - Drop 2 obsolete patches
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 05 Nov 2020 08:58:45 +0100
+
 cups (2.3.3op1~59-gcab7bcb37-1) experimental; urgency=medium
 
   * New OpenPrinting cups snapshot
