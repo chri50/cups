@@ -17,7 +17,7 @@ Patch-Name Build-mantohtml-with-the-build-architecture-compiler.patch
  4 files changed, 22 insertions(+), 8 deletions(-)
 
 diff --git a/Makedefs.in b/Makedefs.in
-index 511fbf8..fbd16fb 100644
+index 038bb94..291099c 100644
 --- a/Makedefs.in
 +++ b/Makedefs.in
 @@ -22,6 +22,7 @@ CUPS_VERSION    =       @CUPS_VERSION@
@@ -29,7 +29,7 @@ index 511fbf8..fbd16fb 100644
  CXX		=	@LIBTOOL_CXX@ @CXX@
  DSO		=	@DSO@
 diff --git a/configure.ac b/configure.ac
-index dbf3bda..535b0b9 100644
+index 1f75f72..cfa8deee 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -19,6 +19,15 @@ sinclude(config-scripts/cups-common.m4)

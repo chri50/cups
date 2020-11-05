@@ -31,7 +31,7 @@ index 1668eee..7d161ed 100644
  <dd style="margin-left: 5.0em">Specifies the maximum cost of filters that are run concurrently, which can be used to minimize disk, memory, and CPU resource problems.
  A limit of 0 disables filter limiting.
 diff --git a/man/cupsd.conf.5 b/man/cupsd.conf.5
-index 49fdb06..6d3d8e3 100644
+index 00b1a22..6b260e6 100644
 --- a/man/cupsd.conf.5
 +++ b/man/cupsd.conf.5
 @@ -140,10 +140,10 @@ Specifies that a failed print job should be aborted (discarded) unless otherwise

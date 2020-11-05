@@ -37,7 +37,7 @@ index c567cbb..f2f6802 100644
  <dd style="margin-left: 5.0em">Specifies the group(s) to use for <i>@SYSTEM</i> group authentication.
  The default contains "admin", "lpadmin", "root", "sys", and/or "system".
 diff --git a/man/cups-files.conf.5 b/man/cups-files.conf.5
-index 7249406..955f47b 100644
+index b451e2f..38acff1 100644
 --- a/man/cups-files.conf.5
 +++ b/man/cups-files.conf.5
 @@ -211,7 +211,7 @@ The default is "/var/run/cups" or "/etc/cups" depending on the platform.

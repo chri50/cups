@@ -9,7 +9,7 @@ Patch-Name: man-cups-lpd-drop-dangling-references.patch
  1 file changed, 2 deletions(-)
 
 diff --git a/man/cups-lpd.8 b/man/cups-lpd.8
-index 344d2af..e998df3 100644
+index e8ce325..963735b 100644
 --- a/man/cups-lpd.8
 +++ b/man/cups-lpd.8
 @@ -109,9 +109,7 @@ Simply enable the
