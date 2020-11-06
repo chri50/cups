@@ -1,3 +1,11 @@
+cups (2.3.3op1~81-g8b6765a72-2) experimental; urgency=medium
+
+  * Refresh patch suite to bring it back closer to upstream;
+    - Drop several old line counting exceptions
+    - Use 2 latest upstream patch proposals
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 06 Nov 2020 15:24:09 +0100
+
 cups (2.3.3op1~81-g8b6765a72-1) experimental; urgency=medium
 
   * New OpenPrinting cups snapshot

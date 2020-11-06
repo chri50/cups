@@ -18,7 +18,7 @@ Patch-Name: tests-no-pdftourf.patch
  delete mode 100644 test/test.types
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index d9b3985..bc332fc 100755
+index 58f502b..4ed84ae 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
 @@ -268,7 +268,7 @@ case "$usedebugprintfs" in
