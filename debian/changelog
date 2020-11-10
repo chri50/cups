@@ -1,3 +1,10 @@
+cups (2.3.3op1~89-g26e085bfd-1) experimental; urgency=medium
+
+  * New OpenPrinting cups snapshot
+    - Drop 2 merged patch proposals
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 10 Nov 2020 16:42:26 +0100
+
 cups (2.3.3op1~81-g8b6765a72-2) experimental; urgency=medium
 
   * Refresh patch suite to bring it back closer to upstream;
