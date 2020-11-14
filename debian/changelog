@@ -1,3 +1,15 @@
+cups (2.3.3op1~102-ge24833656-1) experimental; urgency=medium
+
+  * New OpenPrinting cups snapshot, with several Debian-induced changes
+  * Patch-suite:
+    - Drop all test-related patches
+    - Migrate from from patches to configure options for two
+      Debian-needed options
+    - Reorder (upstream-mergeable first, Debian-specific later)
+    - Reword and refresh metadata for the last 12 patches
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 14 Nov 2020 18:27:39 +0100
+
 cups (2.3.3op1~89-g26e085bfd-3) experimental; urgency=medium
 
   * Re-add 'Job: held by' errorlog filter patch for mips{,64}el

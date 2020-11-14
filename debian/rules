@@ -38,6 +38,8 @@ endif
 	# Rebuild ./configure to get build system patches working
 	aclocal
 	autoconf
+	# --with-error-policy=retry-job # Set default job error policy to "retry-job", since it is less confusing and a better default on most machines
+	# --enable-sync-on-close # Set SyncOnClose to yes; considered saner on Linux
 	# --with-max-log-size=0 # Deactivate CUPS' internal logrotating, as we provide a better one, especially LogLevel debug2 gets usable now
 	dh_auto_configure -- \
 		--with-docdir=/usr/share/cups/doc-root \
@@ -60,6 +62,8 @@ endif
 		--with-log-file-perm=0640 \
 		--with-local_protocols='dnssd' \
 		--with-systemd=/lib/systemd/system \
+		--with-error-policy=retry-job \
+		--enable-sync-on-close \
 		--with-max-log-size=0 \
 		$(CONFIG_LIBUSB)
 

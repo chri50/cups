@@ -642,10 +642,13 @@ CUPS_USER
 CUPS_DEFAULT_SHARED
 CUPS_BROWSE_LOCAL_PROTOCOLS
 CUPS_BROWSING
+CUPS_SYNC_ON_CLOSE
 CUPS_PAGE_LOG_FORMAT
 CUPS_ACCESS_LOG_LEVEL
 CUPS_LOG_LEVEL
 CUPS_FATAL_ERRORS
+CUPS_ERROR_POLICY
+CUPS_MAX_LOG_SIZE
 CUPS_LOG_FILE_PERM
 CUPS_CUPSD_FILE_PERM
 CUPS_CONFIG_FILE_PERM
@@ -895,10 +898,13 @@ with_exe_file_perm
 with_config_file_perm
 with_cupsd_file_perm
 with_log_file_perm
+with_max_log_size
+with_error_policy
 with_fatal_errors
 with_log_level
 with_access_log_level
 enable_page_logging
+enable_sync_on_close
 enable_browsing
 with_local_protocols
 enable_default_shared
@@ -1569,6 +1575,7 @@ Optional Features:
   --disable-systemd       disable systemd support
   --enable-upstart        enable upstart support
   --enable-page-logging   enable page_log by default
+  --enable-sync-on-close  enable SyncOnClose (off by default)
   --disable-browsing      disable Browsing by default
   --disable-default-shared
 			  disable DefaultShared by default
@@ -1619,6 +1626,8 @@ Optional Packages:
   --with-config-file-perm set default ConfigFilePerm value, default=0640
   --with-cupsd-file-perm  set default cupsd permissions, default=0500
   --with-log-file-perm    set default LogFilePerm value, default=0644
+  --with-max-log-size     set default MaxLogSize value, default=1m
+  --with-error-policy     set default ErrorPolicy value, default=stop-printer
   --with-fatal-errors     set default FatalErrors value, default=config
   --with-log-level        set default LogLevel value, default=warn
   --with-access-log-level set default AccessLogLevel value, default=none
@@ -9372,6 +9381,34 @@ _ACEOF
 
 
 
+# Check whether --with-max_log_size was given.
+if test "${with_max_log_size+set}" = set; then :
+  withval=$with_max_log_size; CUPS_MAX_LOG_SIZE="$withval"
+else
+  CUPS_MAX_LOG_SIZE="1m"
+fi
+
+
+cat >>confdefs.h <<_ACEOF
+#define CUPS_DEFAULT_MAX_LOG_SIZE "$CUPS_MAX_LOG_SIZE"
+_ACEOF
+
+
+
+# Check whether --with-error_policy was given.
+if test "${with_error_policy+set}" = set; then :
+  withval=$with_error_policy; CUPS_ERROR_POLICY="$withval"
+else
+  CUPS_ERROR_POLICY="stop-printer"
+fi
+
+
+cat >>confdefs.h <<_ACEOF
+#define CUPS_DEFAULT_ERROR_POLICY "$CUPS_ERROR_POLICY"
+_ACEOF
+
+
+
 # Check whether --with-fatal_errors was given.
 if test "${with_fatal_errors+set}" = set; then :
   withval=$with_fatal_errors; CUPS_FATAL_ERRORS="$withval"
@@ -9422,6 +9459,20 @@ if test "x$enable_page_logging" = xyes; then
 	CUPS_PAGE_LOG_FORMAT=""
 else
 	CUPS_PAGE_LOG_FORMAT="PageLogFormat"
+fi
+
+
+# Check whether --enable-sync_on_close was given.
+if test "${enable_sync_on_close+set}" = set; then :
+  enableval=$enable_sync_on_close;
+fi
+
+if test "x$enable_sync_on_close" = xyes; then
+	CUPS_SYNC_ON_CLOSE="Yes"
+	$as_echo "#define CUPS_DEFAULT_SYNC_ON_CLOSE 1" >>confdefs.h
+
+else
+	CUPS_SYNC_ON_CLOSE="No"
 fi
 
 

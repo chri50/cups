@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-10-29 20:48+0100\n"
+"POT-Creation-Date: 2020-11-14 17:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,12 +40,12 @@ msgstr ""
 #. type: TH
 #: backend.7:10 cancel.1:10 classes.conf.5:10 cups.1:10 cupsaccept.8:10
 #: cups-config.1:10 cupsctl.8:10 cupsd.8:10 cupsd-helper.8:10 cupsd-logs.5:10
-#: cupsenable.8:10 cups-files.conf.5:10 cupsfilter.8:9 cups-lpd.8:10
-#: cups-snmp.8:9 cups-snmp.conf.5:10 cupstestppd.1:10 filter.7:10 ippfind.1:9
-#: ipptool.1:9 lp.1:10 lpadmin.8:10 lpc.8:10 lpinfo.8:10 lpmove.8:10
-#: lpoptions.1:10 lpq.1:10 lpr.1:10 lprm.1:10 lpstat.1:9 mailto.conf.5:10
-#: mime.convs.5:10 mime.types.5:10 notifier.7:10 ppdcfile.5:10 ppdhtml.1:10
-#: ppdi.1:10 ppdmerge.1:10 ppdpo.1:10 printers.conf.5:9 subscriptions.conf.5:10
+#: cupsenable.8:10 cupsfilter.8:9 cups-lpd.8:10 cups-snmp.8:9
+#: cups-snmp.conf.5:10 cupstestppd.1:10 filter.7:10 ippfind.1:9 ipptool.1:9
+#: lp.1:10 lpadmin.8:10 lpc.8:10 lpinfo.8:10 lpmove.8:10 lpoptions.1:10
+#: lpq.1:10 lpr.1:10 lprm.1:10 lpstat.1:9 mailto.conf.5:10 mime.convs.5:10
+#: mime.types.5:10 notifier.7:10 ppdcfile.5:10 ppdhtml.1:10 ppdi.1:10
+#: ppdmerge.1:10 ppdpo.1:10 printers.conf.5:9 subscriptions.conf.5:10
 #, no-wrap
 msgid "26 April 2019"
 msgstr ""
@@ -523,7 +523,7 @@ msgstr ""
 
 #. type: SH
 #: backend.7:184 backend.7:204 cancel.1:81 classes.conf.5:19 client.conf.5:126
-#: cups.1:122 cupsd.conf.5:858 cupsd-helper.8:77 cups-files.conf.5:273
+#: cups.1:122 cupsd.conf.5:858 cupsd-helper.8:77 cups-files.conf.5:278
 #: cupsfilter.8:117 cups-lpd.8:60 cups-snmp.8:44 cups-snmp.conf.5:58
 #: cupstestppd.1:138 filter.7:201 lpadmin.8:203 lpc.8:40 lpinfo.8:117 lpr.1:151
 #: mime.convs.5:50 ppdc.1:90 ppdcfile.5:149 ppdhtml.1:35 ppdi.1:42
@@ -566,7 +566,7 @@ msgstr ""
 #. type: SH
 #: backend.7:208 cancel.1:84 classes.conf.5:21 client.conf.5:138 cups.1:126
 #: cupsaccept.8:77 cups-config.1:105 cupsctl.8:92 cupsd.8:109 cupsd.conf.5:895
-#: cupsd-helper.8:81 cupsd-logs.5:216 cupsenable.8:88 cups-files.conf.5:280
+#: cupsd-helper.8:81 cupsd-logs.5:216 cupsenable.8:88 cups-files.conf.5:285
 #: cupsfilter.8:131 cups-lpd.8:111 cups-snmp.8:49 cups-snmp.conf.5:62
 #: cupstestppd.1:142 filter.7:212 ippevepcl.7:45 ippeveprinter.1:268
 #: ippfind.1:255 ipptool.1:246 ipptoolfile.5:649 lp.1:219 lpadmin.8:224
@@ -593,7 +593,7 @@ msgstr ""
 #. type: SH
 #: backend.7:219 cancel.1:90 classes.conf.5:29 client.conf.5:142 cups.1:142
 #: cupsaccept.8:85 cups-config.1:108 cupsctl.8:97 cupsd.8:125 cupsd.conf.5:904
-#: cupsd-helper.8:89 cupsd-logs.5:221 cupsenable.8:96 cups-files.conf.5:290
+#: cupsd-helper.8:89 cupsd-logs.5:221 cupsenable.8:96 cups-files.conf.5:295
 #: cupsfilter.8:138 cups-lpd.8:118 cups-snmp.8:55 cups-snmp.conf.5:65
 #: cupstestppd.1:146 filter.7:220 ippevepcl.7:47 ippeveprinter.1:272
 #: ippfind.1:257 ipptool.1:251 ipptoolfile.5:654 lp.1:228 lpadmin.8:230
@@ -608,7 +608,7 @@ msgstr ""
 #. type: Plain text
 #: backend.7:220 cancel.1:91 classes.conf.5:30 client.conf.5:143 cups.1:143
 #: cupsaccept.8:86 cups-config.1:109 cupsctl.8:98 cupsd.8:126 cupsd.conf.5:905
-#: cupsd-helper.8:90 cupsd-logs.5:222 cupsenable.8:97 cups-files.conf.5:291
+#: cupsd-helper.8:90 cupsd-logs.5:222 cupsenable.8:97 cups-files.conf.5:296
 #: cupsfilter.8:139 cups-lpd.8:119 cups-snmp.8:56 cups-snmp.conf.5:66
 #: cupstestppd.1:147 filter.7:221 ippeveprinter.1:273 ipptool.1:252
 #: ipptoolfile.5:655 lp.1:229 lpadmin.8:231 lpc.8:58 lpinfo.8:125 lpmove.8:74
@@ -2631,8 +2631,7 @@ msgstr ""
 #: cupsd.conf.5:144
 msgid ""
 "Specifies that a failed print job should be retried at a later time unless "
-"otherwise specified for the printer. The 'retry-job' error policy is the "
-"default."
+"otherwise specified for the printer."
 msgstr ""
 
 #. type: TP
@@ -2646,7 +2645,7 @@ msgstr ""
 #: cupsd.conf.5:148
 msgid ""
 "Specifies that a failed print job should stop the printer unless otherwise "
-"specified for the printer."
+"specified for the printer. The 'stop-printer' error policy is the default."
 msgstr ""
 
 #. type: TP
@@ -4615,7 +4614,7 @@ msgid ""
 msgstr ""
 
 #. type: SS
-#: cupsd.conf.5:815 cups-files.conf.5:230
+#: cupsd.conf.5:815 cups-files.conf.5:235
 #, no-wrap
 msgid "DEPRECATED DIRECTIVES"
 msgstr ""
@@ -5609,6 +5608,12 @@ msgstr ""
 msgid "cups-files.conf"
 msgstr ""
 
+#. type: TH
+#: cups-files.conf.5:10
+#, no-wrap
+msgid "14 November 2020"
+msgstr ""
+
 #. type: Plain text
 #: cups-files.conf.5:13
 msgid "cups-files.conf - file and directory configuration file for cups"
@@ -5934,9 +5939,8 @@ msgstr ""
 msgid "B<Group >I<group-name-or-number>"
 msgstr ""
 
-#. #LogFilePerm
 #. type: Plain text
-#: cups-files.conf.5:135
+#: cups-files.conf.5:134
 msgid ""
 "Specifies the group name or ID that will be used when executing external "
 "programs.  The default group is operating system specific but is usually "
@@ -5944,39 +5948,53 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:135
+#: cups-files.conf.5:136
+#, no-wrap
+msgid "B<LogFileGroup >I<group-name-or-number>"
+msgstr ""
+
+#. #LogFilePerm
+#. type: Plain text
+#: cups-files.conf.5:141
+msgid ""
+"Specifies the group name or ID that will be used for log files.  The default "
+"group is operating system specific but is usually \"lp\" or \"nobody\"."
+msgstr ""
+
+#. type: TP
+#: cups-files.conf.5:141
 #, no-wrap
 msgid "B<LogFilePerm >I<mode>"
 msgstr ""
 
 #. #PageLog
 #. type: Plain text
-#: cups-files.conf.5:140
+#: cups-files.conf.5:146
 msgid ""
 "Specifies the permissions of all log files that the scheduler writes.  The "
 "default is \"0644\"."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:140
+#: cups-files.conf.5:146
 #, no-wrap
 msgid "B<PageLog >[ I<filename> ]"
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:142
+#: cups-files.conf.5:148
 #, no-wrap
 msgid "B<PageLog stderr>"
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:144
+#: cups-files.conf.5:150
 #, no-wrap
 msgid "B<PageLog syslog>"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.5:151
+#: cups-files.conf.5:157
 msgid ""
 "Defines the page log filename.  The value \"stderr\" causes log entries to "
 "be sent to the standard error file when the scheduler is running in the "
@@ -5987,26 +6005,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.5:154
+#: cups-files.conf.5:160
 #, no-wrap
 msgid "    PageLog /var/log/cups/%s-page_log\n"
 msgstr ""
 
 #. #PassEnv
 #. type: Plain text
-#: cups-files.conf.5:158
+#: cups-files.conf.5:164
 msgid "The default is \"/var/log/cups/page_log\"."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:158
+#: cups-files.conf.5:164
 #, no-wrap
 msgid "B<PassEnv >I<variable >[ ... I<variable >]"
 msgstr ""
 
 #. #RemoteRoot
 #. type: Plain text
-#: cups-files.conf.5:163
+#: cups-files.conf.5:169
 msgid ""
 "Passes the specified environment variable(s) to child processes.  Note: the "
 "standard CUPS filter and backend environment variables cannot be overridden "
@@ -6014,48 +6032,48 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:163
+#: cups-files.conf.5:169
 #, no-wrap
 msgid "B<RemoteRoot >I<username>"
 msgstr ""
 
 #. #RequestRoot
 #. type: Plain text
-#: cups-files.conf.5:168
+#: cups-files.conf.5:174
 msgid ""
 "Specifies the username that is associated with unauthenticated accesses by "
 "clients claiming to be the root user.  The default is \"remroot\"."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:168
+#: cups-files.conf.5:174
 #, no-wrap
 msgid "B<RequestRoot >I<directory>"
 msgstr ""
 
 #. #Sandboxing
 #. type: Plain text
-#: cups-files.conf.5:173
+#: cups-files.conf.5:179
 msgid ""
 "Specifies the directory that contains print jobs and other HTTP request "
 "data.  The default is \"/var/spool/cups\"."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:173
+#: cups-files.conf.5:179
 #, no-wrap
 msgid "B<Sandboxing relaxed>"
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:175
+#: cups-files.conf.5:181
 #, no-wrap
 msgid "B<Sandboxing strict>"
 msgstr ""
 
 #. #ServerBin
 #. type: Plain text
-#: cups-files.conf.5:181
+#: cups-files.conf.5:187
 msgid ""
 "Specifies the level of security sandboxing that is applied to print filters, "
 "backends, and other child processes of the scheduler.  The default is "
@@ -6063,14 +6081,14 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:181
+#: cups-files.conf.5:187
 #, no-wrap
 msgid "B<ServerBin >I<directory>"
 msgstr ""
 
 #. #ServerKeychain
 #. type: Plain text
-#: cups-files.conf.5:186
+#: cups-files.conf.5:192
 msgid ""
 "Specifies the directory containing the backends, CGI programs, filters, "
 "helper programs, notifiers, and port monitors.  The default is "
@@ -6078,14 +6096,14 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:186
+#: cups-files.conf.5:192
 #, no-wrap
 msgid "B<ServerKeychain >I<path>"
 msgstr ""
 
 #. #ServerRoot
 #. type: Plain text
-#: cups-files.conf.5:192
+#: cups-files.conf.5:198
 msgid ""
 "Specifies the location of TLS certificates and private keys.  The default is "
 "\"/Library/Keychains/System.keychain\" on macOS and \"/etc/cups/ssl\" on all "
@@ -6096,28 +6114,28 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:192
+#: cups-files.conf.5:198
 #, no-wrap
 msgid "B<ServerRoot >I<directory>"
 msgstr ""
 
 #. #SetEnv
 #. type: Plain text
-#: cups-files.conf.5:197
+#: cups-files.conf.5:203
 msgid ""
 "Specifies the directory containing the server configuration files.  The "
 "default is \"/etc/cups\"."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:197
+#: cups-files.conf.5:203
 #, no-wrap
 msgid "B<SetEnv >I<variable value>"
 msgstr ""
 
 #. #StateDir
 #. type: Plain text
-#: cups-files.conf.5:202
+#: cups-files.conf.5:208
 msgid ""
 "Set the specified environment variable to be passed to child processes.  "
 "Note: the standard CUPS filter and backend environment variables cannot be "
@@ -6125,48 +6143,48 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:202
+#: cups-files.conf.5:208
 #, no-wrap
 msgid "B<StateDir >I<directory>"
 msgstr ""
 
 #. #SyncOnClose
 #. type: Plain text
-#: cups-files.conf.5:207
+#: cups-files.conf.5:213
 msgid ""
 "Specifies the directory to use for PID and local certificate files.  The "
 "default is \"/var/run/cups\" or \"/etc/cups\" depending on the platform."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:207
+#: cups-files.conf.5:213
 #, no-wrap
 msgid "B<SyncOnClose Yes>"
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:209
+#: cups-files.conf.5:215
 #, no-wrap
 msgid "B<SyncOnClose No>"
 msgstr ""
 
 #. #SystemGroup
 #. type: Plain text
-#: cups-files.conf.5:216
+#: cups-files.conf.5:221
 msgid ""
 "Specifies whether the scheduler calls B<fsync>(2)  after writing "
-"configuration or state files.  The default is \"Yes\"."
+"configuration or state files."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:216
+#: cups-files.conf.5:221
 #, no-wrap
 msgid "B<SystemGroup >I<group-name >[ ... I<group-name> ]"
 msgstr ""
 
 #. #TempDir
 #. type: Plain text
-#: cups-files.conf.5:221
+#: cups-files.conf.5:226
 msgid ""
 "Specifies the group(s) to use for I<@SYSTEM> group authentication.  The "
 "default contains \"admin\", \"lpadmin\", \"root\", \"sys\", and/or "
@@ -6174,27 +6192,27 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:221
+#: cups-files.conf.5:226
 #, no-wrap
 msgid "B<TempDir >I<directory>"
 msgstr ""
 
 #. #User
 #. type: Plain text
-#: cups-files.conf.5:226
+#: cups-files.conf.5:231
 msgid ""
 "Specifies the directory where short-term temporary files are stored.  The "
 "default is \"/var/spool/cups/tmp\"."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:226
+#: cups-files.conf.5:231
 #, no-wrap
 msgid "B<User >I<username>"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.5:230
+#: cups-files.conf.5:235
 msgid ""
 "Specifies the user name or ID that is used when running external programs.  "
 "The default is \"lp\"."
@@ -6202,27 +6220,27 @@ msgstr ""
 
 #. #FileDevice
 #. type: Plain text
-#: cups-files.conf.5:233
+#: cups-files.conf.5:238
 msgid ""
 "The following directives are deprecated and will be removed from a future "
 "version of CUPS:"
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:233
+#: cups-files.conf.5:238
 #, no-wrap
 msgid "B<FileDevice Yes>"
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:235
+#: cups-files.conf.5:240
 #, no-wrap
 msgid "B<FileDevice No>"
 msgstr ""
 
 #. #FontPath
 #. type: Plain text
-#: cups-files.conf.5:243
+#: cups-files.conf.5:248
 msgid ""
 "Specifies whether the file pseudo-device can be used for new printer "
 "queues.  The URI \"file:///dev/null\" is always allowed.  File devices "
@@ -6232,14 +6250,14 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:243
+#: cups-files.conf.5:248
 #, no-wrap
 msgid "B<FontPath >I<directory[:...:directoryN]>"
 msgstr ""
 
 #. #LPDConfigFile
 #. type: Plain text
-#: cups-files.conf.5:251
+#: cups-files.conf.5:256
 msgid ""
 "Specifies a colon separated list of directories where fonts can be found.  "
 "On Linux the B<font-config>(1)  mechanism is used instead.  On macOS the "
@@ -6247,50 +6265,50 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:251
+#: cups-files.conf.5:256
 #, no-wrap
 msgid " B<LPDConfigFile >I<filename>"
 msgstr ""
 
 #. #Printcap
 #. type: Plain text
-#: cups-files.conf.5:255
+#: cups-files.conf.5:260
 msgid "Specifies the LPD service configuration file to update."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:255
+#: cups-files.conf.5:260
 #, no-wrap
 msgid "B<Printcap >I<filename>"
 msgstr ""
 
 #. #PrintcapFormat
 #. type: Plain text
-#: cups-files.conf.5:259
+#: cups-files.conf.5:264
 msgid "Specifies a file that is filled with a list of local print queues."
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:259
+#: cups-files.conf.5:264
 #, no-wrap
 msgid "B<PrintcapFormat bsd>"
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:261
+#: cups-files.conf.5:266
 #, no-wrap
 msgid "B<PrintcapFormat plist>"
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:263
+#: cups-files.conf.5:268
 #, no-wrap
 msgid "B<PrintcapFormat solaris>"
 msgstr ""
 
 #. #SMBConfigFile
 #. type: Plain text
-#: cups-files.conf.5:270
+#: cups-files.conf.5:275
 msgid ""
 "Specifies the format to use for the Printcap file.  \"bsd\" is the "
 "historical LPD printcap file format.  \"plist\" is the Apple plist file "
@@ -6298,18 +6316,18 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cups-files.conf.5:270
+#: cups-files.conf.5:275
 #, no-wrap
 msgid "B<SMBConfigFile >I<filename>"
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.5:273
+#: cups-files.conf.5:278
 msgid "Specifies the SMB service configuration file to update."
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.5:280
+#: cups-files.conf.5:285
 msgid ""
 "The scheduler MUST be restarted manually after making changes to the "
 "B<cups-files.conf> file.  On Linux this is typically done using the "
@@ -6318,7 +6336,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: cups-files.conf.5:290
+#: cups-files.conf.5:295
 msgid ""
 "B<classes.conf>(5), B<cups>(1), B<cupsd>(8), B<cupsd.conf>(5), "
 "B<mime.convs>(5), B<mime.types>(5), B<printers.conf>(5), "

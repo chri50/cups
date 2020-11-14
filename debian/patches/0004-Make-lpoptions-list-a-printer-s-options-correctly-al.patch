@@ -3,6 +3,7 @@ Date: Tue, 25 Aug 2020 21:34:00 +0200
 Subject: Make lpoptions list a printer's options correctly also when CUPS is
  running on an alternative port
 
+Bug: https://github.com/OpenPrinting/cups/pull/39
 ---
  systemv/lpoptions.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
