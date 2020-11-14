@@ -11,7 +11,7 @@ Patch-Name: tests-wait-on-unfinished-jobs-everytime.patch
  1 file changed, 5 insertions(+)
 
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index 0d4e88e..b140dc8 100755
+index b16dde4..744afc8 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
 @@ -776,6 +776,11 @@ echo "    $date by $user on `hostname`." >>$strfile
