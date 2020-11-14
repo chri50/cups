@@ -456,7 +456,6 @@ else
 	instfilter pdftopdf pdftopdf passthru
 	instfilter pdftops pdftops ps
 	instfilter pdftoraster pdftoraster raster
-	instfilter pdftoraster pdftourf raster
 	instfilter pstoraster pstoraster raster
 	instfilter texttopdf texttopdf pdf
 
@@ -488,7 +487,7 @@ fi
 cat >$BASE/cupsd.conf <<EOF
 StrictConformance Yes
 Browsing Off
-Listen 127.0.0.1:$port
+Listen localhost:$port
 Listen $BASE/sock
 MaxSubscriptions 3
 MaxLogSize 0
@@ -615,7 +614,7 @@ fi
 
 # These get exported because they don't have side-effects...
 CUPS_DISABLE_APPLE_DEFAULT=yes; export CUPS_DISABLE_APPLE_DEFAULT
-CUPS_SERVER=127.0.0.1:$port; export CUPS_SERVER
+CUPS_SERVER=localhost:$port; export CUPS_SERVER
 CUPS_SERVERROOT=$BASE; export CUPS_SERVERROOT
 CUPS_STATEDIR=$BASE; export CUPS_STATEDIR
 CUPS_DATADIR=$BASE/share; export CUPS_DATADIR
@@ -640,7 +639,6 @@ echo "DYLD_LIBRARY_PATH=\"$DYLD_LIBRARY_PATH\"; export DYLD_LIBRARY_PATH" >>$run
 echo "LD_LIBRARY_PATH=\"$LD_LIBRARY_PATH\"; export LD_LIBRARY_PATH" >>$runcups
 echo "LD_PRELOAD=\"$LD_PRELOAD\"; export LD_PRELOAD" >>$runcups
 echo "LOCALEDIR=\"$LOCALEDIR\"; export LOCALEDIR" >>$runcups
-echo "LC_ALL=\"C\"; export LC_ALL" >>$runcups
 if test "x$CUPS_DEBUG_LEVEL" != x; then
 	echo "CUPS_DEBUG_FILTER='$CUPS_DEBUG_FILTER'; export CUPS_DEBUG_FILTER" >>$runcups
 	echo "CUPS_DEBUG_LEVEL=$CUPS_DEBUG_LEVEL; export CUPS_DEBUG_LEVEL" >>$runcups
@@ -742,10 +740,10 @@ for file in 4*.test ../examples/ipp-2.1.test; do
         echo $ac_n "`date '+[%d/%b/%Y:%H:%M:%S %z]'` $ac_c" >>$strfile
 
 	if test $file = ../examples/ipp-2.1.test; then
-		uri="ipp://127.0.0.1:$port/printers/Test1"
+		uri="ipp://localhost:$port/printers/Test1"
 		options="-V 2.1 -d NOPRINT=1 -f testfile.ps"
 	else
-		uri="ipp://127.0.0.1:$port/printers"
+		uri="ipp://localhost:$port/printers"
 		options=""
 	fi
 	$runcups $VALGRIND ../tools/ipptool -tI $options $uri $file >> $strfile
@@ -775,11 +773,13 @@ echo "    $date by $user on `hostname`." >>$strfile
 echo "    <pre>" >>$strfile
 
 for file in 5*.sh; do
-	#
-	# Make sure the past jobs are done before going on.
-	#
-	./waitjobs.sh 1800
+	# Wait for jobs from the previous test to complete before running the
+	# next test...
+	if test $file != 5.1-lpadmin.sh; then
+		./waitjobs.sh 1800
+	fi
 
+	# Run the test...
 	echo $ac_n "Performing $file: $ac_c"
 	echo "" >>$strfile
         echo "`date '+[%d/%b/%Y:%H:%M:%S %z]'` \"$file\":" >>$strfile
@@ -1029,10 +1029,7 @@ else
 fi
 
 # Error log messages
-count=`$GREP '^E ' $BASE/log/error_log | $GREP -v 'Unknown default SystemGroup' | \
-       $GREP -v -E 'Unable to open listen socket for address .* Address family not supported by protocol.' | \
-       $GREP -v 'Job held by' | \
-       wc -l | awk '{print $1}'`
+count=`$GREP '^E ' $BASE/log/error_log | $GREP -v 'Unknown default SystemGroup' | wc -l | awk '{print $1}'`
 if test $count != 33; then
 	echo "FAIL: $count error messages, expected 33."
 	$GREP '^E ' $BASE/log/error_log
@@ -1047,11 +1044,7 @@ else
 fi
 
 # Warning log messages
-count=`$GREP '^W ' $BASE/log/error_log | $GREP -v CreateProfile | \
-       $GREP -v 'Unable to initialize USB access via libusb, libusb error' | \
-       $GREP -v 'org.freedesktop.ColorManager' | \
-       $GREP -v -E 'Avahi client failed: -(1|26)' | \
-       wc -l | awk '{print $1}'`
+count=`$GREP '^W ' $BASE/log/error_log | $GREP -v CreateProfile | $GREP -v 'libusb error' | $GREP -v ColorManager | $GREP -v 'Avahi client failed' | wc -l | awk '{print $1}'`
 if test $count != 8; then
 	echo "FAIL: $count warning messages, expected 8."
 	$GREP '^W ' $BASE/log/error_log

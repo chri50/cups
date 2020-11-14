@@ -3,7 +3,6 @@ Date: Tue, 9 Aug 2016 18:11:48 +0200
 Subject: Drop dangling references from cups-lpd.man
 
 Bug-Debian: https://bugs.debian.org/570157
-Patch-Name: man-cups-lpd-drop-dangling-references.patch
 ---
  man/cups-lpd.8 | 2 --
  1 file changed, 2 deletions(-)

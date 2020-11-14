@@ -432,7 +432,7 @@ main(int  argc,				/* I - Argument Count */
   }
   else
     puts("PASS");
-#endif /* !__linux */
+#endif /* !__linux && !__GLIBC__ */
 
  /*
   * Test UTF-8 to/from legacy charset (Windows 950)...
