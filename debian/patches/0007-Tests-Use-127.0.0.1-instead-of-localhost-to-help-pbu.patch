@@ -28,7 +28,7 @@ index 7efc398..08b8c50 100644
  	echo "    FAILED"
  	exit 1
 diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
-index b140dc8..73d1494 100755
+index 744afc8..7a0dc9d 100755
 --- a/test/run-stp-tests.sh
 +++ b/test/run-stp-tests.sh
 @@ -490,7 +490,7 @@ fi

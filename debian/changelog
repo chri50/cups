@@ -1,3 +1,9 @@
+cups (2.3.3op1~89-g26e085bfd-3) experimental; urgency=medium
+
+  * Re-add 'Job: held by' errorlog filter patch for mips{,64}el
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 14 Nov 2020 10:53:06 +0100
+
 cups (2.3.3op1~89-g26e085bfd-2) experimental; urgency=medium
 
   * Use --with-max-log-size=0 in configure call, with proposed-upstream patch

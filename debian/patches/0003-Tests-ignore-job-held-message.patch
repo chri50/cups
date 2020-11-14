@@ -1,0 +1,23 @@
+From: Didier Raboud <odyx@debian.org>
+Date: Sat, 8 Feb 2020 11:49:07 +0100
+Subject: Tests: ignore 'job held' message
+
+These errors showed up on
+* mips64el: https://buildd.debian.org/status/fetch.php?pkg=cups&arch=mips64el&ver=2.3.3op1%7E89-g26e085bfd-2&stamp=1605290790&raw=0
+* mipsel:   https://buildd.debian.org/status/fetch.php?pkg=cups&arch=mipsel&ver=2.3.3op1%7E89-g26e085bfd-2&stamp=1605291505&raw=0
+---
+ test/run-stp-tests.sh | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/test/run-stp-tests.sh b/test/run-stp-tests.sh
+index 0d4e88e..b16dde4 100755
+--- a/test/run-stp-tests.sh
++++ b/test/run-stp-tests.sh
+@@ -1027,6 +1027,7 @@ fi
+ # Error log messages
+ count=`$GREP '^E ' $BASE/log/error_log | $GREP -v 'Unknown default SystemGroup' | \
+        $GREP -v -E 'Unable to open listen socket for address .* Address family not supported by protocol.' | \
++       $GREP -v 'Job held by' | \
+        wc -l | awk '{print $1}'`
+ if test $count != 33; then
+ 	echo "FAIL: $count error messages, expected 33."
