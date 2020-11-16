@@ -7,7 +7,7 @@ Subject: Debian: Set LogFileGroup to adm
  1 file changed, 4 insertions(+)
 
 diff --git a/conf/cups-files.conf.in b/conf/cups-files.conf.in
-index f987c99..8e59485 100644
+index af11fcc..80ca351 100644
 --- a/conf/cups-files.conf.in
 +++ b/conf/cups-files.conf.in
 @@ -29,6 +29,10 @@ SystemGroup @CUPS_SYSTEM_GROUPS@
