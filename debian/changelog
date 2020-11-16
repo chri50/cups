@@ -1,3 +1,11 @@
+cups (2.3.3op1~106-ga72b0140e-1) experimental; urgency=medium
+
+  * New OpenPrinting cups snapshot
+  * Drop the Debian-specific systemd units' renaming, now upstream
+  * Drop one more Debian-specific manpage patch
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 16 Nov 2020 08:40:27 +0100
+
 cups (2.3.3op1~102-ge24833656-1) experimental; urgency=medium
 
   * New OpenPrinting cups snapshot, with several Debian-induced changes
