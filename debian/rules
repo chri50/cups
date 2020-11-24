@@ -25,16 +25,13 @@ else
 CONFIG_LIBUSB=--enable-libusb
 endif
 
-override_dh_auto_configure:
 ifeq ($(derives_from_ubuntu),yes)
-	set -e; if ! [ -e debian/patches-ubuntu/stamp-applied ]; then \
-	    echo '---- Applying Ubuntu specific patches'; \
-	    for p in debian/patches-ubuntu/*; do \
-	        patch -p1 --no-backup-if-mismatch < $$p; \
-	    done; \
-	    touch debian/patches-ubuntu/stamp-applied; \
-	fi
+CUPS_CONFIGURE_DISTRO_OPTIONS=--disable-browsing
+else
+CUPS_CONFIGURE_DISTRO_OPTIONS=
 endif
+
+override_dh_auto_configure:
 	# Rebuild ./configure to get build system patches working
 	aclocal
 	autoconf
@@ -42,6 +39,7 @@ endif
 	# --enable-sync-on-close # Set SyncOnClose to yes; considered saner on Linux
 	# --with-max-log-size=0 # Deactivate CUPS' internal logrotating, as we provide a better one, especially LogLevel debug2 gets usable now
 	dh_auto_configure -- \
+		$(CUPS_CONFIGURE_DISTRO_OPTIONS) \
 		--with-docdir=/usr/share/cups/doc-root \
 		--localedir=/usr/share/cups/locale \
 		--enable-libpaper \
@@ -224,16 +222,6 @@ ifeq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 override_dh_makeshlibs:
 	dh_makeshlibs -- -c4
 endif
-
-override_dh_clean:
-	dh_clean
-	if [ -e debian/patches-ubuntu/stamp-applied ]; then \
-	    echo '---- Unapplying Ubuntu specific patches'; \
-	    for p in debian/patches-ubuntu/*; do \
-	        patch -Rp1 --no-backup-if-mismatch < $$p; \
-	    done; \
-	    rm debian/patches-ubuntu/stamp-applied; \
-	fi
 
 override_dh_auto_clean:
 	[ ! -f Makedefs ] || dh_auto_clean

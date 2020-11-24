@@ -1,0 +1,126 @@
+From: Michael R Sweet <msweet@msweet.org>
+Date: Sun, 22 Nov 2020 08:38:07 -0500
+Subject: Fix default option values that start with "custom" that aren't
+ custom values (Issue #48)
+
+---
+ CHANGES-OPENPRINTING.md |  1 +
+ cups/ppd.c              | 70 ++++++++++++++++++++++++++++++++++++++++++++-----
+ 2 files changed, 64 insertions(+), 7 deletions(-)
+
+diff --git a/CHANGES-OPENPRINTING.md b/CHANGES-OPENPRINTING.md
+index b616ec8..5c2c161 100644
+--- a/CHANGES-OPENPRINTING.md
++++ b/CHANGES-OPENPRINTING.md
+@@ -60,5 +60,6 @@ Changes in CUPS v2.3.3op1
+ - Fixed the "uri-security-supported" value from the scheduler (Issue #42)
+ - Fixed IPP backend crash bug with "printer-alert" values (Issue #43)
+ - Removed old Solaris inetconv(1m) reference in cups-lpd man page (Issue #46)
++- Fixed default options that incorrectly use the "custom" prefix (Issue #48)
+ - Fixed crash in rastertopwg (Apple issue #5773)
+ - Fixed cupsManualCopies values in IPP Everywhere PPDs (Apple issue #5807)
+diff --git a/cups/ppd.c b/cups/ppd.c
+index fd74a9c..ae411cb 100644
+--- a/cups/ppd.c
++++ b/cups/ppd.c
+@@ -1496,6 +1496,27 @@ _ppdOpen(
+ 	goto error;
+       }
+ 
++      if (!_cups_strcasecmp(option->defchoice, "custom") || !_cups_strncasecmp(option->defchoice, "custom.", 7))
++      {
++       /*
++	* "*DefaultOption: Custom..." may set the default to a custom value
++	* or (for a very small number of incompatible PPD files) select a
++	* standard choice for the option, which CUPS renames to "_Custom..."
++	* to avoid compatibility issues.  See which this is...
++	*/
++
++        char tchoice[PPD_MAX_NAME];	/* Temporary choice name */
++
++	snprintf(tchoice, sizeof(tchoice), "_%s", option->defchoice);
++
++	if (ppdFindChoice(option, tchoice))
++	{
++	  strlcpy(option->defchoice, tchoice, sizeof(option->defchoice));
++
++	  DEBUG_printf(("2_ppdOpen: Reset Default%s to %s...", option->keyword, tchoice));
++	}
++      }
++
+       option = NULL;
+ 
+       free(string);
+@@ -1510,6 +1531,27 @@ _ppdOpen(
+ 	goto error;
+       }
+ 
++      if (!_cups_strcasecmp(option->defchoice, "custom") || !_cups_strncasecmp(option->defchoice, "custom.", 7))
++      {
++       /*
++	* "*DefaultOption: Custom..." may set the default to a custom value
++	* or (for a very small number of incompatible PPD files) select a
++	* standard choice for the option, which CUPS renames to "_Custom..."
++	* to avoid compatibility issues.  See which this is...
++	*/
++
++        char tchoice[PPD_MAX_NAME];	/* Temporary choice name */
++
++	snprintf(tchoice, sizeof(tchoice), "_%s", option->defchoice);
++
++	if (ppdFindChoice(option, tchoice))
++	{
++	  strlcpy(option->defchoice, tchoice, sizeof(option->defchoice));
++
++	  DEBUG_printf(("2_ppdOpen: Reset Default%s to %s...", option->keyword, tchoice));
++	}
++      }
++
+       option = NULL;
+ 
+       free(string);
+@@ -1668,11 +1710,9 @@ _ppdOpen(
+         * Set the default as part of the current option...
+ 	*/
+ 
+-        DEBUG_printf(("2_ppdOpen: Setting %s to %s...", keyword, string));
++	strlcpy(option->defchoice, string, sizeof(option->defchoice));
+ 
+-        strlcpy(option->defchoice, string, sizeof(option->defchoice));
+-
+-        DEBUG_printf(("2_ppdOpen: %s is now %s...", keyword, option->defchoice));
++        DEBUG_printf(("2_ppdOpen: Set %s to %s...", keyword, option->defchoice));
+       }
+       else
+       {
+@@ -1682,11 +1722,27 @@ _ppdOpen(
+ 
+         ppd_option_t	*toption;	/* Temporary option */
+ 
+-
+         if ((toption = ppdFindOption(ppd, keyword + 7)) != NULL)
+ 	{
+-	  DEBUG_printf(("2_ppdOpen: Setting %s to %s...", keyword, string));
+-	  strlcpy(toption->defchoice, string, sizeof(toption->defchoice));
++	  if (!_cups_strcasecmp(string, "custom") || !_cups_strncasecmp(string, "custom.", 7))
++	  {
++	   /*
++	    * "*DefaultOption: Custom..." may set the default to a custom value
++	    * or (for a very small number of incompatible PPD files) select a
++	    * standard choice for the option, which CUPS renames to "_Custom..."
++	    * to avoid compatibility issues.  See which this is...
++	    */
++
++	    snprintf(toption->defchoice, sizeof(toption->defchoice), "_%s", string);
++	    if (!ppdFindChoice(toption, toption->defchoice))
++	      strlcpy(toption->defchoice, string, sizeof(toption->defchoice));
++	  }
++	  else
++	  {
++	    strlcpy(toption->defchoice, string, sizeof(toption->defchoice));
++	  }
++
++	  DEBUG_printf(("2_ppdOpen: Set %s to %s...", keyword, toption->defchoice));
+ 	}
+       }
+     }

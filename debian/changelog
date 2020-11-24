@@ -1,3 +1,16 @@
+cups (2.3.3op1~106-ga72b0140e-2) experimental; urgency=medium
+
+  * Drop Ubuntu "Make lpoptions list a printer's options correctly also when
+    CUPS is running on an alternative port" patch, refused upstream
+    (Closes: #970725)
+  * Cherry-pick some upstream patches
+    - Don't show waiting for jobs unless we are waiting for jobs
+    - Fix default option values that start with "custom" that aren't custom
+      values (Issue #48)
+    - Fix memory leak (Issue #49)
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 24 Nov 2020 09:03:24 +0100
+
 cups (2.3.3op1~106-ga72b0140e-1) experimental; urgency=medium
 
   * New OpenPrinting cups snapshot
@@ -72,6 +85,15 @@ cups (2.3.3op1~44-gc9176e958-1) experimental; urgency=medium
   * Rebase packaging on todays's OpenPrinting/cups fork snapshot
 
  -- Didier Raboud <odyx@debian.org>  Fri, 23 Oct 2020 11:15:24 +0200
+
+cups (2.3.3-4) unstable; urgency=medium
+
+  * Drop Ubuntu "Make lpoptions list a printer's options correctly also when
+    CUPS is running on an alternative port" patch, refused upstream
+    (Closes: #970725)
+  * Use upstream-merged patches for fax numbers' fix and rastertopwg rounding
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 24 Nov 2020 08:49:46 +0100
 
 cups (2.3.3-3) unstable; urgency=medium
 
