@@ -1,0 +1,32 @@
+From: Michael R Sweet <msweet@msweet.org>
+Date: Sun, 22 Nov 2020 08:37:49 -0500
+Subject: Don't show waiting for jobs unless we are waiting for jobs...
+
+---
+ test/waitjobs.sh | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/test/waitjobs.sh b/test/waitjobs.sh
+index 79c1ab0..b9ff265 100755
+--- a/test/waitjobs.sh
++++ b/test/waitjobs.sh
+@@ -30,6 +30,19 @@ else
+         ac_c='\c'
+ fi
+ 
++#
++# Check whether we have any jobs to wait for...
++#
++
++jobs=`$runcups ../systemv/lpstat 2>/dev/null | wc -l | tr -d ' '`
++if test $jobs = 0; then
++	exit 0
++fi
++
++#
++# We do, let the tester know what is going on...
++#
++
+ echo $ac_n "Waiting for jobs to complete...$ac_c"
+ oldjobs=0
+ 

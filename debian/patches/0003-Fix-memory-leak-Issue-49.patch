@@ -1,0 +1,54 @@
+From: Michael R Sweet <msweet@msweet.org>
+Date: Mon, 23 Nov 2020 22:15:26 -0500
+Subject: Fix memory leak (Issue #49)
+
+---
+ CHANGES-OPENPRINTING.md | 1 +
+ cups/http-support.c     | 9 +++++++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/CHANGES-OPENPRINTING.md b/CHANGES-OPENPRINTING.md
+index 5c2c161..980053d 100644
+--- a/CHANGES-OPENPRINTING.md
++++ b/CHANGES-OPENPRINTING.md
+@@ -61,5 +61,6 @@ Changes in CUPS v2.3.3op1
+ - Fixed IPP backend crash bug with "printer-alert" values (Issue #43)
+ - Removed old Solaris inetconv(1m) reference in cups-lpd man page (Issue #46)
+ - Fixed default options that incorrectly use the "custom" prefix (Issue #48)
++- Fixed a memory leak when resolving DNS-SD URIs (Issue #49)
+ - Fixed crash in rastertopwg (Apple issue #5773)
+ - Fixed cupsManualCopies values in IPP Everywhere PPDs (Apple issue #5807)
+diff --git a/cups/http-support.c b/cups/http-support.c
+index 521b7e0..b0506c9 100644
+--- a/cups/http-support.c
++++ b/cups/http-support.c
+@@ -1,8 +1,9 @@
+ /*
+  * HTTP support routines for CUPS.
+  *
+- * Copyright 2007-2019 by Apple Inc.
+- * Copyright 1997-2007 by Easy Software Products, all rights reserved.
++ * Copyright © 2020 by Michael R Sweet
++ * Copyright © 2007-2019 by Apple Inc.
++ * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
+  *
+  * Licensed under Apache License v2.0.  See the file "LICENSE" for more
+  * information.
+@@ -2545,6 +2546,8 @@ http_resolve_cb(
+     memcpy(uuid, value, valueLen);
+     uuid[valueLen] = '\0';
+ 
++    avahi_free(value);
++
+     if (_cups_strcasecmp(uuid, uribuf->uuid))
+     {
+       if (uribuf->options & _HTTP_RESOLVE_STDERR)
+@@ -2629,6 +2632,8 @@ http_resolve_cb(
+       memcpy(resource + 1, value, valueLen);
+       resource[valueLen + 1] = '\0';
+     }
++
++    avahi_free(value);
+   }
+   else
+   {
