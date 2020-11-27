@@ -1,10 +1,8 @@
 From: Till Kampetter <till.kampetter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:36 +0200
-Subject: CUPS removes the "(recommended)" comments of the NickNames of
- Foomatic PPDs when listing available PPDs. This patch removes this removal
- action.
+Subject: Keep foomatic PPDs "(recommended)" stanzas in NickNames
 
-Patch-Name: reactivate_recommended_driver.patch
+Bug-Upstream: https://github.com/OpenPrinting/cups/pull/33
 ---
  scheduler/cups-driverd.cxx | 10 ----------
  1 file changed, 10 deletions(-)

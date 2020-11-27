@@ -93,6 +93,20 @@ AC_ARG_WITH(log_file_perm, [  --with-log-file-perm    set default LogFilePerm va
 AC_SUBST(CUPS_LOG_FILE_PERM)
 AC_DEFINE_UNQUOTED(CUPS_DEFAULT_LOG_FILE_PERM, 0$CUPS_LOG_FILE_PERM)
 
+dnl Default MaxLogSize
+AC_ARG_WITH(max_log_size, [  --with-max-log-size     set default MaxLogSize value, default=1m],
+	CUPS_MAX_LOG_SIZE="$withval",
+	CUPS_MAX_LOG_SIZE="1m")
+AC_SUBST(CUPS_MAX_LOG_SIZE)
+AC_DEFINE_UNQUOTED(CUPS_DEFAULT_MAX_LOG_SIZE, "$CUPS_MAX_LOG_SIZE")
+
+dnl Default ErrorPolicy
+AC_ARG_WITH(error_policy, [  --with-error-policy     set default ErrorPolicy value, default=stop-printer],
+	CUPS_ERROR_POLICY="$withval",
+	CUPS_ERROR_POLICY="stop-printer")
+AC_SUBST(CUPS_ERROR_POLICY)
+AC_DEFINE_UNQUOTED(CUPS_DEFAULT_ERROR_POLICY, "$CUPS_ERROR_POLICY")
+
 dnl Default FatalErrors
 AC_ARG_WITH(fatal_errors, [  --with-fatal-errors     set default FatalErrors value, default=config],
 	CUPS_FATAL_ERRORS="$withval",
@@ -122,6 +136,16 @@ else
 	CUPS_PAGE_LOG_FORMAT="PageLogFormat"
 fi
 AC_SUBST(CUPS_PAGE_LOG_FORMAT)
+
+dnl Default SyncOnClose
+AC_ARG_ENABLE(sync_on_close, [  --enable-sync-on-close  enable SyncOnClose (off by default)])
+if test "x$enable_sync_on_close" = xyes; then
+	CUPS_SYNC_ON_CLOSE="Yes"
+	AC_DEFINE(CUPS_DEFAULT_SYNC_ON_CLOSE)
+else
+	CUPS_SYNC_ON_CLOSE="No"
+fi
+AC_SUBST(CUPS_SYNC_ON_CLOSE)
 
 dnl Default Browsing
 AC_ARG_ENABLE(browsing, [  --disable-browsing      disable Browsing by default])

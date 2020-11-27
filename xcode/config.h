@@ -18,8 +18,8 @@
  * Version of software...
  */
 
-#define CUPS_SVERSION "CUPS v2.3.3"
-#define CUPS_MINIMAL "CUPS/2.3.3"
+#define CUPS_SVERSION "CUPS v2.3.3op1"
+#define CUPS_MINIMAL "CUPS/2.3.3op1"
 
 
 /*
@@ -47,6 +47,7 @@
 
 #define CUPS_DEFAULT_LOG_LEVEL "warn"
 #define CUPS_DEFAULT_ACCESS_LOG_LEVEL "none"
+#define CUPS_DEFAULT_MAX_LOG_SIZE "1m"
 
 
 /*
@@ -88,10 +89,24 @@
 
 
 /*
+ * Default ErrorPolicy value...
+ */
+
+#define CUPS_DEFAULT_ERROR_POLICY "stop-printer"
+
+
+/*
  * Default MaxCopies value...
  */
 
 #define CUPS_DEFAULT_MAX_COPIES 9999
+
+
+/*
+ * Default SyncOnClose value...
+ */
+
+/* #undef CUPS_DEFAULT_SYNC_ON_CLOSE */
 
 
 /*

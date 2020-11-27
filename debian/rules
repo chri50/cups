@@ -5,7 +5,6 @@ derives_from_ubuntu := $(shell (dpkg-vendor --derives-from Ubuntu && echo "yes")
 # Enabling PIE globally doesn't work, but ./configure already enables PIE
 # where necessary.
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all,-pie
-export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 
 ifeq ($(shell dpkg-vendor --is Ubuntu && echo yes) $(DEB_HOST_ARCH), yes i386)
    skip_packages = -Ncups -Ncups-core-drivers
@@ -26,20 +25,21 @@ else
 CONFIG_LIBUSB=--enable-libusb
 endif
 
-override_dh_auto_configure:
 ifeq ($(derives_from_ubuntu),yes)
-	set -e; if ! [ -e debian/patches-ubuntu/stamp-applied ]; then \
-	    echo '---- Applying Ubuntu specific patches'; \
-	    for p in debian/patches-ubuntu/*; do \
-	        patch -p1 --no-backup-if-mismatch < $$p; \
-	    done; \
-	    touch debian/patches-ubuntu/stamp-applied; \
-	fi
+CUPS_CONFIGURE_DISTRO_OPTIONS=--disable-browsing
+else
+CUPS_CONFIGURE_DISTRO_OPTIONS=
 endif
+
+override_dh_auto_configure:
 	# Rebuild ./configure to get build system patches working
 	aclocal
 	autoconf
+	# --with-error-policy=retry-job # Set default job error policy to "retry-job", since it is less confusing and a better default on most machines
+	# --enable-sync-on-close # Set SyncOnClose to yes; considered saner on Linux
+	# --with-max-log-size=0 # Deactivate CUPS' internal logrotating, as we provide a better one, especially LogLevel debug2 gets usable now
 	dh_auto_configure -- \
+		$(CUPS_CONFIGURE_DISTRO_OPTIONS) \
 		--with-docdir=/usr/share/cups/doc-root \
 		--localedir=/usr/share/cups/locale \
 		--enable-libpaper \
@@ -60,6 +60,9 @@ endif
 		--with-log-file-perm=0640 \
 		--with-local_protocols='dnssd' \
 		--with-systemd=/lib/systemd/system \
+		--with-error-policy=retry-job \
+		--enable-sync-on-close \
+		--with-max-log-size=0 \
 		$(CONFIG_LIBUSB)
 
 override_dh_auto_install:
@@ -162,10 +165,6 @@ endif
 
 
 override_dh_install:
-	# Rename the systemd service units to cups.* instead of org.cups.cupsd.*
-	set -e; for type in socket path service; do \
-	    mv debian/tmp/lib/systemd/system/org.cups.cupsd.$$type debian/tmp/lib/systemd/system/cups.$$type ;\
-	done
 	dh_install
 
 ifneq (,$(filter cups-server-common,$(shell dh_listpackages)))
@@ -223,16 +222,6 @@ ifeq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 override_dh_makeshlibs:
 	dh_makeshlibs -- -c4
 endif
-
-override_dh_clean:
-	dh_clean
-	if [ -e debian/patches-ubuntu/stamp-applied ]; then \
-	    echo '---- Unapplying Ubuntu specific patches'; \
-	    for p in debian/patches-ubuntu/*; do \
-	        patch -Rp1 --no-backup-if-mismatch < $$p; \
-	    done; \
-	    rm debian/patches-ubuntu/stamp-applied; \
-	fi
 
 override_dh_auto_clean:
 	[ ! -f Makedefs ] || dh_auto_clean
