@@ -1,14 +1,14 @@
 From: Helmut Grohne <helmut@subdivi.de>
 Date: Tue, 9 Aug 2016 18:11:49 +0200
-Subject: Build mantohtml with the build architecture compiler
+Subject: Debian: Build mantohtml with the build architecture compiler
 
 mantohtml is run during build. Thus it needs to be built with the build
 architecture compiler (or execution fails). The obvious part is switching to
 CC_FOR_BUILD. That also depends on it not requiring any other cups components.
 In particular, removing uses of strlcpy and replacing host architecture-
 specific includes is thus needed.
+
 Bug-Debian: https://bugs.debian.org/837936
-Patch-Name Build-mantohtml-with-the-build-architecture-compiler.patch
 ---
  Makedefs.in     |  1 +
  configure.ac    |  9 +++++++++
@@ -17,7 +17,7 @@ Patch-Name Build-mantohtml-with-the-build-architecture-compiler.patch
  4 files changed, 22 insertions(+), 8 deletions(-)
 
 diff --git a/Makedefs.in b/Makedefs.in
-index 511fbf8..fbd16fb 100644
+index 038bb94..291099c 100644
 --- a/Makedefs.in
 +++ b/Makedefs.in
 @@ -22,6 +22,7 @@ CUPS_VERSION    =       @CUPS_VERSION@
@@ -29,10 +29,10 @@ index 511fbf8..fbd16fb 100644
  CXX		=	@LIBTOOL_CXX@ @CXX@
  DSO		=	@DSO@
 diff --git a/configure.ac b/configure.ac
-index dbf3bda..535b0b9 100644
+index b22e24f..176c44f 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -19,6 +19,15 @@ sinclude(config-scripts/cups-common.m4)
+@@ -20,6 +20,15 @@ sinclude(config-scripts/cups-common.m4)
  sinclude(config-scripts/cups-directories.m4)
  sinclude(config-scripts/cups-manpages.m4)
  

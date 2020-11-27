@@ -658,13 +658,11 @@ main(int  argc,				/* I - Number of command-line arguments */
     * Test localization...
     */
 
-   /*
-    * Enforce void localization
-    */
-    putenv("LANG=C");
-    putenv("LC_ALL=C");
-    putenv("LC_CTYPE=C");
-    putenv("LC_MESSAGES=C");
+    /* Force US English base locale */
+    putenv("LANG=en");
+    putenv("LC_ALL=en");
+    putenv("LC_CTYPE=en");
+    putenv("LC_MESSAGES=en");
 
     fputs("ppdLocalizeIPPReason(text): ", stdout);
     if (ppdLocalizeIPPReason(ppd, "foo", NULL, buffer, sizeof(buffer)) &&
@@ -706,6 +704,7 @@ main(int  argc,				/* I - Number of command-line arguments */
       printf("FAIL (\"%s\" instead of \"/help/foo/bar.html\")\n", buffer);
     }
 
+    /* Force French */
     putenv("LANG=fr");
     putenv("LC_ALL=fr");
     putenv("LC_CTYPE=fr");
@@ -721,6 +720,7 @@ main(int  argc,				/* I - Number of command-line arguments */
       printf("FAIL (\"%s\" instead of \"La Long Foo Reason\")\n", buffer);
     }
 
+    /* Force Simplified Chinese */
     putenv("LANG=zh_TW");
     putenv("LC_ALL=zh_TW");
     putenv("LC_CTYPE=zh_TW");
@@ -740,6 +740,7 @@ main(int  argc,				/* I - Number of command-line arguments */
     * cupsMarkerName localization...
     */
 
+    /* Force US English base locale */
     putenv("LANG=en");
     putenv("LC_ALL=en");
     putenv("LC_CTYPE=en");
@@ -767,6 +768,7 @@ main(int  argc,				/* I - Number of command-line arguments */
              text ? text : "(null)");
     }
 
+    /* Force French locale */
     putenv("LANG=fr");
     putenv("LC_ALL=fr");
     putenv("LC_CTYPE=fr");
@@ -783,6 +785,7 @@ main(int  argc,				/* I - Number of command-line arguments */
              text ? text : "(null)");
     }
 
+    /* Force Simplified Chinese locale */
     putenv("LANG=zh_TW");
     putenv("LC_ALL=zh_TW");
     putenv("LC_CTYPE=zh_TW");
@@ -800,6 +803,12 @@ main(int  argc,				/* I - Number of command-line arguments */
     }
 
     ppdClose(ppd);
+
+    /* Force US English base locale */
+    putenv("LANG=en");
+    putenv("LC_ALL=en");
+    putenv("LC_CTYPE=en");
+    putenv("LC_MESSAGES=en");
 
    /*
     * Test new constraints...

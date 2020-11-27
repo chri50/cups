@@ -1,3 +1,31 @@
+cups (2.3.3op1-1) unstable; urgency=medium
+
+  * Use OpenPrinting CUPS fork instead of Apple's codebase
+    - Update d/upstream/metadata, d/watch
+    - d/upstream/signing-key.asc: Swap Apple's with Michael R Sweet's
+  * Large patch-suite cleanup thanks to lots of Debian proposals merged
+    upstream; from 40 to 9;
+    - Reorder (upstream-mergeable first, Debian-specific later)
+    - Reword and refresh metadata for the last patches
+  * Set Debian customizations in d/rules instead of patches;
+    - Set --with-max-log-size=0
+    - Set --enable-sync-on-close
+    - Set --with-error-policy=retry-job
+  * Packaging cleanup;
+    - Drop the Debian-specific systemd units' renaming, now upstream
+    - Drop pre-oldstable postinst ConfigFilePerm handling
+    - Add missing BSD-2-Clause block in debian/copyright
+    - Convert debian/po files to UTF-8
+    - Drop --as-needed as it's now default in Debian
+    - Drop Ubuntu-specific patch handling, in favour of compile-time option
+      for --disable-browsing
+    - Bump S-V to 4.5.1 without changes needed
+    - Use debian/main as head branch; update d/gbp.conf accordingly
+    - Drop outdated d/source/options
+   * Refresh manpage translation pofiles for 2.3.3op1
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 27 Nov 2020 17:27:21 +0100
+
 cups (2.3.3-4) unstable; urgency=medium
 
   * Drop Ubuntu "Make lpoptions list a printer's options correctly also when

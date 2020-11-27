@@ -1,6 +1,7 @@
 /*
  * Printer routines for the CUPS scheduler.
  *
+ * Copyright © 2020 by Michael R Sweet
  * Copyright © 2007-2019 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
@@ -822,12 +823,15 @@ cupsdDeletePrinter(
   ippDelete(p->attrs);
   ippDelete(p->ppd_attrs);
 
+  _ppdCacheDestroy(p->pc);
+
   mimeDeleteType(MimeDatabase, p->filetype);
   mimeDeleteType(MimeDatabase, p->prefiltertype);
 
   cupsdFreeStrings(&(p->users));
   cupsdFreeQuotas(p);
 
+  cupsdClearString(&p->uuid);
   cupsdClearString(&p->uri);
   cupsdClearString(&p->hostname);
   cupsdClearString(&p->name);
@@ -2316,8 +2320,6 @@ cupsdSetPrinterAttrs(cupsd_printer_t *p)/* I - Printer to setup */
 
   ippAddString(p->attrs, IPP_TAG_PRINTER, IPP_TAG_KEYWORD,
                "uri-authentication-supported", NULL, auth_supported);
-  ippAddString(p->attrs, IPP_TAG_PRINTER, IPP_TAG_KEYWORD,
-               "uri-security-supported", NULL, "none");
   if (p->printer_id)
     ippAddInteger(p->attrs, IPP_TAG_PRINTER, IPP_TAG_INTEGER, "printer-id", p->printer_id);
   ippAddString(p->attrs, IPP_TAG_PRINTER, IPP_TAG_NAME, "printer-name", NULL,
@@ -4018,7 +4020,8 @@ load_ppd(cupsd_printer_t *p)		/* I - Printer */
 
     num_qualities = 0;
 
-    if ((output_mode = ppdFindOption(ppd, "OutputMode")) != NULL)
+    if ((output_mode = ppdFindOption(ppd, "OutputMode")) ||
+        (output_mode = ppdFindOption(ppd, "cupsPrintQuality")))
     {
       if (ppdFindChoice(output_mode, "draft") ||
           ppdFindChoice(output_mode, "fast"))

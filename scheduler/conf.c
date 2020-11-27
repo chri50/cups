@@ -723,6 +723,7 @@ cupsdReadConfiguration(void)
   ListenBackLog            = SOMAXCONN;
   LogDebugHistory          = 200;
   LogFilePerm              = CUPS_DEFAULT_LOG_FILE_PERM;
+  LogFileGroup             = Group;
   LogLevel                 = CUPSD_LOG_WARN;
   LogTimeFormat            = CUPSD_TIME_STANDARD;
   MaxClients               = 100;
@@ -735,7 +736,11 @@ cupsdReadConfiguration(void)
   RootCertDuration         = 300;
   Sandboxing               = CUPSD_SANDBOXING_STRICT;
   StrictConformance        = FALSE;
+#ifdef CUPS_DEFAULT_SYNC_ON_CLOSE
   SyncOnClose              = TRUE;
+#else
+  SyncOnClose              = FALSE;
+#endif /* CUPS_DEFAULT_SYNC_ON_CLOSE */
   Timeout                  = 900;
   WebInterface             = CUPS_DEFAULT_WEBIF;
 
@@ -752,7 +757,7 @@ cupsdReadConfiguration(void)
   cupsdSetString(&LPDConfigFile, CUPS_DEFAULT_LPD_CONFIG_FILE);
   cupsdSetString(&SMBConfigFile, CUPS_DEFAULT_SMB_CONFIG_FILE);
 
-  cupsdSetString(&ErrorPolicy, "retry-job");
+  cupsdSetString(&ErrorPolicy, CUPS_DEFAULT_ERROR_POLICY);
 
   JobHistory          = DEFAULT_HISTORY;
   JobFiles            = DEFAULT_FILES;
@@ -1233,8 +1238,8 @@ cupsdReadConfiguration(void)
       strcmp(ErrorPolicy, "retry-job") &&
       strcmp(ErrorPolicy, "stop-printer"))
   {
-    cupsdLogMessage(CUPSD_LOG_ALERT, "Invalid ErrorPolicy \"%s\", resetting to \"retry-job\".", ErrorPolicy);
-    cupsdSetString(&ErrorPolicy, "retry-job");
+    cupsdLogMessage(CUPSD_LOG_ALERT, "Invalid ErrorPolicy \"%s\", resetting to \"stop-printer\".", ErrorPolicy);
+    cupsdSetString(&ErrorPolicy, "stop-printer");
   }
 
  /*
@@ -1247,7 +1252,10 @@ cupsdReadConfiguration(void)
     char	*paper_result;		/* Paper size name from libpaper */
 
     if ((paper_result = systempapername()) != NULL)
+    {
       cupsdSetString(&DefaultPaperSize, paper_result);
+      free(paper_result);
+    }
     else
 #endif /* HAVE_LIBPAPER */
     if (!DefaultLanguage ||
@@ -1744,7 +1752,7 @@ get_address(const char  *value,		/* I - Value string */
       * Use the default port...
       */
 
-      sprintf(defpname, "%d", defport);
+      snprintf(defpname, sizeof(defpname), "%d", defport);
       portname = defpname;
       hostname = buffer;
     }
@@ -3500,6 +3508,31 @@ read_cups_files_conf(cups_file_t *fp)	/* I - File to read from */
 	{
 	  cupsdLogMessage(CUPSD_LOG_ERROR,
 	                  "Unknown Group \"%s\" on line %d of %s.", value,
+	                  linenum, CupsFilesFile);
+	  if (FatalErrors & CUPSD_FATAL_CONFIG)
+	    return (0);
+	}
+      }
+    }
+    else if (!_cups_strcasecmp(line, "LogFileGroup") && value)
+    {
+     /*
+      * Group ID to log as...
+      */
+
+      if (isdigit(value[0]))
+        LogFileGroup = (gid_t)atoi(value);
+      else
+      {
+        endgrent();
+	group = getgrnam(value);
+
+	if (group != NULL)
+	  LogFileGroup = group->gr_gid;
+	else
+	{
+	  cupsdLogMessage(CUPSD_LOG_ERROR,
+	                  "Unknown LogFileGroup \"%s\" on line %d of %s.", value,
 	                  linenum, CupsFilesFile);
 	  if (FatalErrors & CUPSD_FATAL_CONFIG)
 	    return (0);

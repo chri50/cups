@@ -1,13 +1,12 @@
 From: Till Kamppeter <till.kamppeter@gmail.com>
 Date: Tue, 9 Aug 2016 18:11:29 +0200
-Subject: Patch to support Apple AirPrint (printing from iPhone, iPad,
- iPod Touch to a CUPS server)
+Subject: Apple AirPrint support
 
 Bug-Ubuntu: https://bugs.launchpad.net/bugs/711779
 Bug-Ubuntu: https://bugs.launchpad.net/bugs/1054495
 Bug-Debian: https://bugs.debian.org/700961
 Bug: https://github.com/apple/cups/issues/4341
-Patch-Name: airprint-support.patch
+Bug: https://github.com/OpenPrinting/cups/pull/27
 ---
  conf/mime.convs.in   | 3 +++
  conf/mime.types      | 3 +++
@@ -45,10 +44,10 @@ index fcd6b6e..ebb0525 100644
  #
  # Text files...
 diff --git a/scheduler/conf.c b/scheduler/conf.c
-index bb6049b..bb4f9d2 100644
+index 74531a8..bfd1b0b 100644
 --- a/scheduler/conf.c
 +++ b/scheduler/conf.c
-@@ -745,7 +745,7 @@ cupsdReadConfiguration(void)
+@@ -750,7 +750,7 @@ cupsdReadConfiguration(void)
    DefaultShared            = CUPS_DEFAULT_DEFAULT_SHARED;
  
  #if defined(HAVE_DNSSD) || defined(HAVE_AVAHI)
@@ -75,10 +74,10 @@ index ddd3701..fb2a305 100644
      {
        keyvalue[count  ][0] = "air";
 diff --git a/scheduler/printers.c b/scheduler/printers.c
-index e341bdb..545e0de 100644
+index 7e9a9f2..3e00874 100644
 --- a/scheduler/printers.c
 +++ b/scheduler/printers.c
-@@ -3731,7 +3731,9 @@ add_printer_formats(cupsd_printer_t *p)	/* I - Printer */
+@@ -3733,7 +3733,9 @@ add_printer_formats(cupsd_printer_t *p)	/* I - Printer */
        }
        else if (!_cups_strcasecmp(type->super, "image"))
        {

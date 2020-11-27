@@ -1,8 +1,9 @@
 /*
  * HTTP support routines for CUPS.
  *
- * Copyright 2007-2019 by Apple Inc.
- * Copyright 1997-2007 by Easy Software Products, all rights reserved.
+ * Copyright © 2020 by Michael R Sweet
+ * Copyright © 2007-2019 by Apple Inc.
+ * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
  * Licensed under Apache License v2.0.  See the file "LICENSE" for more
  * information.
@@ -26,6 +27,7 @@
 #elif defined(HAVE_AVAHI)
 #  include <avahi-client/client.h>
 #  include <avahi-client/lookup.h>
+#  include <avahi-common/malloc.h>
 #  include <avahi-common/simple-watch.h>
 #endif /* HAVE_DNSSD */
 
@@ -839,6 +841,13 @@ httpGetDateTime(const char *s)		/* I - Date/time string */
 
   DEBUG_printf(("4httpGetDateTime: day=%d, mon=\"%s\", year=%d, hour=%d, "
                 "min=%d, sec=%d", day, mon, year, hour, min, sec));
+
+ /*
+  * Check for invalid year (RFC 7231 says it's 4DIGIT)
+  */
+
+  if (year > 9999)
+    return (0);
 
  /*
   * Convert the month name to a number from 0 to 11.
@@ -2504,7 +2513,8 @@ http_resolve_cb(
 			*resdefault;	/* Default path */
   char			resource[257],	/* Remote path */
 			fqdn[256];	/* FQDN of the .local name */
-  char			ifname[IF_NAMESIZE]; /* Interface name */
+  char			ifname[IF_NAMESIZE];
+					/* Interface name */
   AvahiStringList	*pair;		/* Current TXT record key/value pair */
   char			*value;		/* Value for "rp" key */
   size_t		valueLen = 0;	/* Length of "rp" key */
@@ -2536,6 +2546,8 @@ http_resolve_cb(
 
     memcpy(uuid, value, valueLen);
     uuid[valueLen] = '\0';
+
+    avahi_free(value);
 
     if (_cups_strcasecmp(uuid, uribuf->uuid))
     {
@@ -2621,6 +2633,8 @@ http_resolve_cb(
       memcpy(resource + 1, value, valueLen);
       resource[valueLen + 1] = '\0';
     }
+
+    avahi_free(value);
   }
   else
   {
@@ -2632,33 +2646,29 @@ http_resolve_cb(
   }
 
  /*
-  * Check whether the interface is the loopback interface ("lo"), in this
-  * case set "localhost" as the host name
+  * Get the name of the interface this is coming from...
   */
 
   if (!if_indextoname((unsigned int)interface, ifname))
   {
     if (uribuf->options & _HTTP_RESOLVE_STDERR)
-      fprintf(stderr,
-	      "DEBUG: Unable to find interface name for interface %d: %s\n",
-	      interface, strerror(errno));
-    DEBUG_printf(("Unable to find interface name for interface %d: %s\n",
-		  interface, strerror(errno)));
+      fprintf(stderr, "DEBUG: Unable to find interface name for interface %d: %s\n", interface, strerror(errno));
+    DEBUG_printf(("Unable to find interface name for interface %d: %s\n", interface, strerror(errno)));
     ifname[0] = '\0';
   }
 
-  if (!strcmp(ifname, "lo")) {
+  if (!strcmp(ifname, "lo"))
+  {
+   /*
+    * If this service is registered on loopback interface ("lo"), force the host
+    * name to "localhost"...
+    */
+
     if (uribuf->options & _HTTP_RESOLVE_STDERR)
-      fputs("DEBUG: Service comes from loopback interface \"lo\", setting \"localhost\" as host name.\n",
-	    stderr);
+      fputs("DEBUG: Service comes from loopback interface \"lo\", setting \"localhost\" as host name.\n", stderr);
     DEBUG_puts("Service comes from loopback interface \"lo\", setting \"localhost\" as host name.");
     hostTarget = "localhost";
   }
-
- /*
-  * Lookup the FQDN if needed...
-  */
-
   else if ((uribuf->options & _HTTP_RESOLVE_FQDN) &&
 	   (hostptr = hostTarget + strlen(hostTarget) - 6) > hostTarget &&
 	   !_cups_strcasecmp(hostptr, ".local"))
@@ -2707,8 +2717,7 @@ http_resolve_cb(
   * Assemble the final device URI using the resolved hostname...
   */
 
-  httpAssembleURI(HTTP_URI_CODING_ALL, uribuf->buffer, (int)uribuf->bufsize, scheme,
-                  NULL, hostTarget, port, resource);
+  httpAssembleURI(HTTP_URI_CODING_ALL, uribuf->buffer, (int)uribuf->bufsize, scheme, NULL, hostTarget, port, resource);
   DEBUG_printf(("5http_resolve_cb: Resolved URI is \"%s\".", uribuf->buffer));
 
   avahi_simple_poll_quit(uribuf->poll);

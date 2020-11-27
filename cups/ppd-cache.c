@@ -3228,7 +3228,7 @@ _ppdCreateFromIPP(char   *buffer,	/* I - Filename buffer */
         cupsFilePuts(fp, "*cupsFilter2: \"application/vnd.cups-pdf application/pdf 10 -\"\n");
     }
     else
-      cupsFilePuts(fp, "*cupsManualCopies: true\n");
+      cupsFilePuts(fp, "*cupsManualCopies: True\n");
     if (is_apple)
       cupsFilePuts(fp, "*cupsFilter2: \"image/urf image/urf 100 -\"\n");
     if (is_pwg)
@@ -3620,10 +3620,12 @@ _ppdCreateFromIPP(char   *buffer,	/* I - Filename buffer */
   if ((attr = ippFindAttribute(ippGetCollection(defattr, 0), "media-source", IPP_TAG_ZERO)) != NULL)
     pwg_ppdize_name(ippGetString(attr, 0, NULL), ppdname, sizeof(ppdname));
   else
-    strlcpy(ppdname, "Unknown", sizeof(ppdname));
+    ppdname[0] = '\0';
 
   if ((attr = ippFindAttribute(response, "media-source-supported", IPP_TAG_ZERO)) != NULL && (count = ippGetCount(attr)) > 1)
   {
+    int have_default = ppdname[0] != '\0';
+					/* Do we have a default InputSlot? */
     static const char * const sources[] =
     {					/* Standard "media-source" strings */
       "auto",
@@ -3678,14 +3680,19 @@ _ppdCreateFromIPP(char   *buffer,	/* I - Filename buffer */
       "roll-10"
     };
 
-    cupsFilePrintf(fp, "*OpenUI *InputSlot: PickOne\n"
-                       "*OrderDependency: 10 AnySetup *InputSlot\n"
-                       "*DefaultInputSlot: %s\n", ppdname);
+    cupsFilePuts(fp, "*OpenUI *InputSlot: PickOne\n"
+                     "*OrderDependency: 10 AnySetup *InputSlot\n");
+    if (have_default)
+      cupsFilePrintf(fp, "*DefaultInputSlot: %s\n", ppdname);
+
     for (i = 0, count = ippGetCount(attr); i < count; i ++)
     {
       keyword = ippGetString(attr, i, NULL);
 
       pwg_ppdize_name(keyword, ppdname, sizeof(ppdname));
+
+      if (i == 0 && !have_default)
+	cupsFilePrintf(fp, "*DefaultInputSlot: %s\n", ppdname);
 
       for (j = 0; j < (int)(sizeof(sources) / sizeof(sources[0])); j ++)
         if (!strcmp(sources[j], keyword))
@@ -3790,6 +3797,11 @@ _ppdCreateFromIPP(char   *buffer,	/* I - Filename buffer */
 	PRINTF_COLOROPTION("RGB", _("Color"), CUPS_CSPACE_SRGB, 8)
 
 	default_color = "RGB";
+
+        // Apparently some printers only advertise color support, so make sure
+        // we also do grayscale for these printers...
+	if (!ippContainsString(attr, "sgray_8") && !ippContainsString(attr, "black_1") && !ippContainsString(attr, "black_8"))
+	  PRINTF_COLOROPTION("Gray", _("GrayScale"), CUPS_CSPACE_SW, 8)
       }
       else if (!strcasecmp(keyword, "adobe-rgb_16") || !strcmp(keyword, "ADOBERGB48") || !strcmp(keyword, "ADOBERGB24-48"))
       {
@@ -3924,7 +3936,7 @@ _ppdCreateFromIPP(char   *buffer,	/* I - Filename buffer */
   else
     strlcpy(ppdname, "Unknown", sizeof(ppdname));
 
-  if ((attr = ippFindAttribute(response, "output-bin-supported", IPP_TAG_ZERO)) != NULL && (count = ippGetCount(attr)) > 1)
+  if ((attr = ippFindAttribute(response, "output-bin-supported", IPP_TAG_ZERO)) != NULL && (count = ippGetCount(attr)) > 0)
   {
     ipp_attribute_t	*trays = ippFindAttribute(response, "printer-output-tray", IPP_TAG_STRING);
 					/* printer-output-tray attribute, if any */

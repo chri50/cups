@@ -264,7 +264,7 @@ USBQUIRKS	=	@USBQUIRKS@
 # Rules...
 #
 
-.SUFFIXES:	.1 .1.gz .1m .1m.gz .3 .3.gz .5 .5.gz .7 .7.gz .8 .8.gz .a .c .cxx .h .man .o .gz
+.SUFFIXES:	.a .c .cxx .h .o
 
 .c.o:
 	echo Compiling $<...

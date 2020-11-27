@@ -1804,10 +1804,7 @@ main(int  argc,				/* I - Number of command-line args */
 	ippAddBoolean(request, IPP_TAG_OPERATION, "last-document",
         	      (i + 1) >= num_files);
 
-	if (num_files > 1)
-	  ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_MIMETYPE,
-		       "document-format", NULL, "application/octet-stream");
-	else if (document_format)
+	if (document_format)
 	  ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_MIMETYPE,
 		       "document-format", NULL, document_format);
 
@@ -3108,7 +3105,7 @@ report_printer_state(ipp_t *ipp)	/* I - IPP response */
   * Report alerts and messages...
   */
 
-  if ((pa = ippFindAttribute(ipp, "printer-alert", IPP_TAG_TEXT)) != NULL)
+  if ((pa = ippFindAttribute(ipp, "printer-alert", IPP_TAG_STRING)) != NULL)
     report_attr(pa);
 
   if ((pam = ippFindAttribute(ipp, "printer-alert-message",
@@ -3149,11 +3146,10 @@ report_printer_state(ipp_t *ipp)	/* I - IPP response */
       if (*ptr < ' ' && *ptr > 0 && *ptr != '\t')
       {
        /*
-        * Substitute "<XX>" for the control character; sprintf is safe because
-	* we always leave 6 chars free at the end...
+        * Substitute "<XX>" for the control character...
 	*/
 
-        sprintf(valptr, "<%02X>", *ptr);
+        snprintf(valptr, sizeof(value) - (size_t)(valptr - value), "<%02X>", *ptr);
 	valptr += 4;
       }
       else
