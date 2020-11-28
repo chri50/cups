@@ -213,7 +213,7 @@ override_dh_strip_nondeterminism: override_dh_fixperms
 
 override_dh_auto_test:
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
-	CUPS_TESTBASE=$(shell mktemp -d /tmp/cups.XXXXXX) make check
+	CUPS_TESTBASE=$(shell mktemp -d /tmp/cups.XXXXXX) dh_auto_test
 	# Check that cups-config is not architecture-specific
 	[ -r cups-config ] && grep -vq $(shell dpkg-architecture -qDEB_HOST_MULTIARCH) cups-config
 endif
