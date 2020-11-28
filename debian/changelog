@@ -1,3 +1,10 @@
+cups (2.3.3op1-2) unstable; urgency=medium
+
+  * Backport upstream "Force a 5 second sleep to wait for the job control file
+    to be written" patch, to address s390x test suite timing issue
+
+ -- Didier Raboud <odyx@debian.org>  Sat, 28 Nov 2020 16:50:59 +0100
+
 cups (2.3.3op1-1) unstable; urgency=medium
 
   * Use OpenPrinting CUPS fork instead of Apple's codebase
