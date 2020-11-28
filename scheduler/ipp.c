@@ -4908,8 +4908,8 @@ copy_printer_attrs(
   }
 
   if (printer->alert && (!ra || cupsArrayFind(ra, "printer-alert")))
-    ippAddString(con->response, IPP_TAG_PRINTER, IPP_TAG_STRING,
-                 "printer-alert", NULL, printer->alert);
+    ippAddOctetString(con->response, IPP_TAG_PRINTER,
+                 "printer-alert", printer->alert, (int)strlen(printer->alert));
 
   if (printer->alert_description &&
       (!ra || cupsArrayFind(ra, "printer-alert-description")))

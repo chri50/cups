@@ -49,3 +49,4 @@ manpage-translations.patch
 0049-CVE-2019-2228-Fix-ippSetValueTag-validation-of-defau.patch
 0050-CVE-2020-3898-heap-buffer-overflow-in-libcups-s-ppdF.patch
 0051-CVE-2019-8842-The-ippReadIO-function-may-under-read-.patch
+0052-backend-scheduler-ipp.c-Fix-printer-alert-invalid-fr.patch
