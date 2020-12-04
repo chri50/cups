@@ -1,3 +1,13 @@
+cups (2.3.3op1-3) unstable; urgency=medium
+
+  [ Helge Kreutzmann ]
+  * Update German man page (2211t)
+
+  [ Didier Raboud ]
+  * Patch configure scripts to fix FTBFS on freebsd-gnu systems
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 04 Dec 2020 10:32:55 +0100
+
 cups (2.3.3op1-2) unstable; urgency=medium
 
   * Backport upstream "Force a 5 second sleep to wait for the job control file
