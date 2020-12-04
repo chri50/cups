@@ -1,5 +1,5 @@
 # Translation of cups man pages to German
-# Copyright (C) Helge Kreutzmann <debian@helgefjell.de>, 2008-2019
+# Copyright (C) Helge Kreutzmann <debian@helgefjell.de>, 2008-2020
 # Chris Leick <c.leick@vollbio.de>, 2009.
 # This file is distributed under the same license as the cups package.
 #
@@ -10,9 +10,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: cups man pages 2.3.1-1\n"
+"Project-Id-Version: cups man pages 2.3.3op1-2\n"
 "POT-Creation-Date: 2020-11-27 16:31+0100\n"
-"PO-Revision-Date: 2019-12-24 06:37+0100\n"
+"PO-Revision-Date: 2020-12-02 19:50+0100\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
 "Language: de\n"
@@ -3091,18 +3091,13 @@ msgstr "B<ErrorPolicy stop-printer>"
 #. #FilterLimit
 #. type: Plain text
 #: cupsd.conf.5:148
-#, fuzzy
-#| msgid ""
-#| "Specifies that a failed print job should be retried at a later time "
-#| "unless otherwise specified for the printer. The 'retry-job' error policy "
-#| "is the default."
 msgid ""
 "Specifies that a failed print job should stop the printer unless otherwise "
 "specified for the printer. The 'stop-printer' error policy is the default."
 msgstr ""
-"Legt fest, dass ein fehlgeschlagener Druckauftrag zu einem späteren "
-"Zeitpunkt neu versucht werden soll, es sei denn, es wurde anders für den "
-"Drucker festgelegt. Die Fehler-Richtlinie »retry-job« ist die Vorgabe."
+"Legt fest, dass ein fehlgeschlagener Druckauftrag den Drucker stoppen soll, "
+"außer etwas anderes wurde für den Drucker festgelegt. Die Fehler-Richtlinie "
+"»stop-printer« ist die Vorgabe."
 
 #. type: TP
 #: cupsd.conf.5:148
@@ -6523,10 +6518,9 @@ msgstr "cups-files.conf"
 
 #. type: TH
 #: cups-files.conf.5:11 cups-lpd.8:11
-#, fuzzy, no-wrap
-#| msgid "19 November 2009"
+#, no-wrap
 msgid "14 November 2020"
-msgstr "19. November 2009"
+msgstr "14. November 2020"
 
 #. type: Plain text
 #: cups-files.conf.5:14
@@ -6917,25 +6911,19 @@ msgstr ""
 
 #. type: TP
 #: cups-files.conf.5:137
-#, fuzzy, no-wrap
-#| msgid "B<Group >I<group-name-or-number>"
+#, no-wrap
 msgid "B<LogFileGroup >I<group-name-or-number>"
-msgstr "B<Group >I<Gruppenname-oder-Nummer>"
+msgstr "B<LogFileGroup >I<Gruppenname-oder-Nummer>"
 
 #. #LogFilePerm
 #. type: Plain text
 #: cups-files.conf.5:142
-#, fuzzy
-#| msgid ""
-#| "Specifies the group name or ID that will be used when executing external "
-#| "programs.  The default group is operating system specific but is usually "
-#| "\"lp\" or \"nobody\"."
 msgid ""
 "Specifies the group name or ID that will be used for log files.  The default "
 "group is operating system specific but is usually \"lp\" or \"nobody\"."
 msgstr ""
-"Legt den Gruppenname oder deren ID, die bei der Ausführung externer "
-"Programme verwandt wird, fest. Die Vorgabegruppe ist abhängig vom "
+"Legt den Gruppenname oder deren ID, die für Protokolldateien verwandt wird, "
+"fest. Die Vorgabegruppe ist abhängig vom "
 "Betriebssystem; gewöhnlich ist sie »lp« oder »nobody«."
 
 #. type: TP
@@ -7189,16 +7177,12 @@ msgstr "B<SyncOnClose No>"
 #. #SystemGroup
 #. type: Plain text
 #: cups-files.conf.5:222
-#, fuzzy
-#| msgid ""
-#| "Specifies whether the scheduler calls B<fsync>(2)  after writing "
-#| "configuration or state files.  The default is \"Yes\"."
 msgid ""
 "Specifies whether the scheduler calls B<fsync>(2)  after writing "
 "configuration or state files."
 msgstr ""
 "Legt fest, ob der Auftragsplaner nach dem Schreiben der Konfigurations- oder "
-"Zustandsdateien B<fsync>(2) aufruft. Die Vorgabe ist »Yes«."
+"Zustandsdateien B<fsync>(2) aufruft."
 
 #. type: TP
 #: cups-files.conf.5:222
@@ -7399,12 +7383,12 @@ msgstr ""
 
 #. type: Plain text
 #: cups-files.conf.5:298 cups-lpd.8:118
-#, fuzzy
-#| msgid "Copyright \\[co] 2007-2019 by Apple Inc."
 msgid ""
 "Copyright \\[co] 2020 by Michael R Sweet Copyright \\[co] 2007-2019 by Apple "
 "Inc."
-msgstr "Copyright \\[co] 2007-2019 by Apple Inc."
+msgstr ""
+"Copyright \\[co] 2020 Michael R Sweet Copyright \\[co] 2007-2019 Apple "
+"Inc."
 
 #. type: TH
 #: cupsfilter.8:9
@@ -7941,16 +7925,12 @@ msgstr ""
 
 #. type: Plain text
 #: cups-lpd.8:116
-#, fuzzy
-#| msgid ""
-#| "B<cupsd>(8), B<inetd>(8), B<launchd>(8), B<xinetd>(8), CUPS Online Help "
-#| "(http://localhost:631/help), RFC 2569"
 msgid ""
 "B<cups>(1), B<cupsd>(8), B<inetd>(8), B<launchd>(8), B<xinetd>(8), CUPS "
 "Online Help (http://localhost:631/help), RFC 2569"
 msgstr ""
-"B<cupsd>(8), B<inetd>(8), B<launchd>(8), B<xinetd>(8), CUPS-Online-Hilfe "
-"(http://localhost:631/help), RFC 2569"
+"B<cups>(1), B<cupsd>(8), B<inetd>(8), B<launchd>(8), B<xinetd>(8), CUPS-"
+"Online-Hilfe (http://localhost:631/help), RFC 2569"
 
 #. type: TH
 #: cups-snmp.8:9
@@ -16349,13 +16329,11 @@ msgstr ""
 msgid "ppdc"
 msgstr "ppdc"
 
-# type: TH
 #. type: TH
 #: ppdc.1:10
-#, fuzzy, no-wrap
-#| msgid "23 October 2008"
+#, no-wrap
 msgid "28 October 2020"
-msgstr "23. Oktober 2008"
+msgstr "28. Oktober 2020"
 
 #. type: Plain text
 #: ppdc.1:13
@@ -16475,16 +16453,12 @@ msgstr ""
 
 #. type: Plain text
 #: ppdc.1:73
-#, fuzzy
-#| msgid ""
-#| "Specifies that the output filename should be based on the ModelName value "
-#| "instead of FileName or PCFilenName."
 msgid ""
 "Specifies that the output filename should be based on the ModelName value "
 "instead of FileName or PCFileName."
 msgstr ""
 "Legt fest, dass der Ausgabename auf dem Wert von ModelName statt von "
-"FileName oder PCFilenName basieren soll."
+"FileName oder PCFileName basieren soll."
 
 #. type: Plain text
 #: ppdc.1:76
