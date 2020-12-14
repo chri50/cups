@@ -60,6 +60,7 @@ override_dh_auto_configure:
 		--with-log-file-perm=0640 \
 		--with-local_protocols='dnssd' \
 		--with-systemd=/lib/systemd/system \
+		--with-system-groups='lpadmin root' \
 		--with-error-policy=retry-job \
 		--enable-sync-on-close \
 		--with-max-log-size=0 \
