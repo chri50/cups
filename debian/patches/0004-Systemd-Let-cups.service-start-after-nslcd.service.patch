@@ -1,0 +1,23 @@
+From: Wolfgang Schweer <w.schweer@gmx.de>
+Date: Sat, 12 Dec 2020 13:38:52 +0100
+Subject: Systemd: Let cups.service start after nslcd.service
+
+Bug-Debian: #977198
+Bug-Upstream: https://github.com/OpenPrinting/cups/issues/69
+---
+ scheduler/cups.service.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scheduler/cups.service.in b/scheduler/cups.service.in
+index 9e70b29..a3fa0e8 100644
+--- a/scheduler/cups.service.in
++++ b/scheduler/cups.service.in
+@@ -1,7 +1,7 @@
+ [Unit]
+ Description=CUPS Scheduler
+ Documentation=man:cupsd(8)
+-After=network.target sssd.service ypbind.service
++After=network.target sssd.service ypbind.service nslcd.service
+ Requires=cups.socket
+ 
+ [Service]
