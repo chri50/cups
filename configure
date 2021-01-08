@@ -667,6 +667,8 @@ SYSTEMD_DIR
 LAUNCHD_DIR
 ONDEMANDLIBS
 ONDEMANDFLAGS
+SNAPDGLIBLIBS
+APPARMORLIBS
 IPPFIND_MAN
 IPPFIND_BIN
 DNSSD_BACKEND
@@ -812,6 +814,7 @@ infodir
 docdir
 oldincludedir
 includedir
+runstatedir
 localstatedir
 sharedstatedir
 sysconfdir
@@ -881,6 +884,7 @@ enable_avahi
 enable_dnssd
 with_dnssd_libs
 with_dnssd_includes
+enable_snap
 enable_launchd
 enable_systemd
 with_systemd
@@ -971,6 +975,7 @@ datadir='${datarootdir}'
 sysconfdir='${prefix}/etc'
 sharedstatedir='${prefix}/com'
 localstatedir='${prefix}/var'
+runstatedir='${localstatedir}/run'
 includedir='${prefix}/include'
 oldincludedir='/usr/include'
 docdir='${datarootdir}/doc/${PACKAGE_TARNAME}'
@@ -1223,6 +1228,15 @@ do
   | -silent | --silent | --silen | --sile | --sil)
     silent=yes ;;
 
+  -runstatedir | --runstatedir | --runstatedi | --runstated \
+  | --runstate | --runstat | --runsta | --runst | --runs \
+  | --run | --ru | --r)
+    ac_prev=runstatedir ;;
+  -runstatedir=* | --runstatedir=* | --runstatedi=* | --runstated=* \
+  | --runstate=* | --runstat=* | --runsta=* | --runst=* | --runs=* \
+  | --run=* | --ru=* | --r=*)
+    runstatedir=$ac_optarg ;;
+
   -sbindir | --sbindir | --sbindi | --sbind | --sbin | --sbi | --sb)
     ac_prev=sbindir ;;
   -sbindir=* | --sbindir=* | --sbindi=* | --sbind=* | --sbin=* \
@@ -1360,7 +1374,7 @@ fi
 for ac_var in	exec_prefix prefix bindir sbindir libexecdir datarootdir \
 		datadir sysconfdir sharedstatedir localstatedir includedir \
 		oldincludedir docdir infodir htmldir dvidir pdfdir psdir \
-		libdir localedir mandir
+		libdir localedir mandir runstatedir
 do
   eval ac_val=\$$ac_var
   # Remove trailing slashes.
@@ -1513,6 +1527,7 @@ Fine tuning of the installation directories:
   --sysconfdir=DIR        read-only single-machine data [PREFIX/etc]
   --sharedstatedir=DIR    modifiable architecture-independent data [PREFIX/com]
   --localstatedir=DIR     modifiable single-machine data [PREFIX/var]
+  --runstatedir=DIR       modifiable per-process data [LOCALSTATEDIR/run]
   --libdir=DIR            object code libraries [EPREFIX/lib]
   --includedir=DIR        C header files [PREFIX/include]
   --oldincludedir=DIR     C header files for non-gcc [/usr/include]
@@ -1571,6 +1586,7 @@ Optional Features:
   --disable-largefile     omit support for large files
   --disable-avahi         disable DNS Service Discovery support using Avahi
   --disable-dnssd         disable DNS Service Discovery support using mDNSResponder
+  --enable-snap           enable support for packaging CUPS in a Snap
   --disable-launchd       disable launchd support
   --disable-systemd       disable systemd support
   --enable-upstart        enable upstart support
@@ -8656,7 +8672,7 @@ else
     We can't simply define LARGE_OFF_T to be 9223372036854775807,
     since some C++ compilers masquerading as C compilers
     incorrectly reject 9223372036854775807.  */
-#define LARGE_OFF_T (((off_t) 1 << 62) - 1 + ((off_t) 1 << 62))
+#define LARGE_OFF_T ((((off_t) 1 << 31) << 31) - 1 + (((off_t) 1 << 31) << 31))
   int off_t_is_large[(LARGE_OFF_T % 2147483629 == 721
 		       && LARGE_OFF_T % 2147483647 == 1)
 		      ? 1 : -1];
@@ -8702,7 +8718,7 @@ else
     We can't simply define LARGE_OFF_T to be 9223372036854775807,
     since some C++ compilers masquerading as C compilers
     incorrectly reject 9223372036854775807.  */
-#define LARGE_OFF_T (((off_t) 1 << 62) - 1 + ((off_t) 1 << 62))
+#define LARGE_OFF_T ((((off_t) 1 << 31) << 31) - 1 + (((off_t) 1 << 31) << 31))
   int off_t_is_large[(LARGE_OFF_T % 2147483629 == 721
 		       && LARGE_OFF_T % 2147483647 == 1)
 		      ? 1 : -1];
@@ -8726,7 +8742,7 @@ rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
     We can't simply define LARGE_OFF_T to be 9223372036854775807,
     since some C++ compilers masquerading as C compilers
     incorrectly reject 9223372036854775807.  */
-#define LARGE_OFF_T (((off_t) 1 << 62) - 1 + ((off_t) 1 << 62))
+#define LARGE_OFF_T ((((off_t) 1 << 31) << 31) - 1 + (((off_t) 1 << 31) << 31))
   int off_t_is_large[(LARGE_OFF_T % 2147483629 == 721
 		       && LARGE_OFF_T % 2147483647 == 1)
 		      ? 1 : -1];
@@ -8771,7 +8787,7 @@ else
     We can't simply define LARGE_OFF_T to be 9223372036854775807,
     since some C++ compilers masquerading as C compilers
     incorrectly reject 9223372036854775807.  */
-#define LARGE_OFF_T (((off_t) 1 << 62) - 1 + ((off_t) 1 << 62))
+#define LARGE_OFF_T ((((off_t) 1 << 31) << 31) - 1 + (((off_t) 1 << 31) << 31))
   int off_t_is_large[(LARGE_OFF_T % 2147483629 == 721
 		       && LARGE_OFF_T % 2147483647 == 1)
 		      ? 1 : -1];
@@ -8795,7 +8811,7 @@ rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
     We can't simply define LARGE_OFF_T to be 9223372036854775807,
     since some C++ compilers masquerading as C compilers
     incorrectly reject 9223372036854775807.  */
-#define LARGE_OFF_T (((off_t) 1 << 62) - 1 + ((off_t) 1 << 62))
+#define LARGE_OFF_T ((((off_t) 1 << 31) << 31) - 1 + (((off_t) 1 << 31) << 31))
   int off_t_is_large[(LARGE_OFF_T % 2147483629 == 721
 		       && LARGE_OFF_T % 2147483647 == 1)
 		      ? 1 : -1];
@@ -8996,6 +9012,64 @@ fi
 fi
 
 
+
+
+
+
+
+# Snap packaging support
+
+# Check whether --enable-snap was given.
+if test "${enable_snap+set}" = set; then :
+  enableval=$enable_snap;
+fi
+
+
+APPARMORLIBS=""
+SNAPDGLIBLIBS=""
+ENABLE_SNAP="NO"
+
+if test "x$PKGCONFIG" != x -a x$enable_snap != xno; then
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for libapparmor" >&5
+$as_echo_n "checking for libapparmor... " >&6; }
+	if $PKGCONFIG --exists libapparmor; then
+		{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+		CFLAGS="$CFLAGS `$PKGCONFIG --cflags libapparmor`"
+		APPARMORLIBS="`$PKGCONFIG --libs libapparmor`"
+		$as_echo "#define HAVE_APPARMOR 1" >>confdefs.h
+
+		{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for snapd-glib" >&5
+$as_echo_n "checking for snapd-glib... " >&6; }
+		if $PKGCONFIG --exists snapd-glib glib-2.0 gio-2.0; then
+			{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+			CFLAGS="$CFLAGS `$PKGCONFIG --cflags snapd-glib glib-2.0 gio-2.0`"
+			SNAPDGLIBLIBS="`$PKGCONFIG --libs snapd-glib glib-2.0 gio-2.0`"
+			$as_echo "#define HAVE_SNAPDGLIB 1" >>confdefs.h
+
+			$as_echo "#define BUILD_SNAP 1" >>confdefs.h
+
+			ENABLE_SNAP="YES"
+		else
+			{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+		fi
+	else
+		{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+	fi
+fi
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for Snap support" >&5
+$as_echo_n "checking for Snap support... " >&6; }
+if test "x$ENABLE_SNAP" != "xNO"; then
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+else
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
 
 
 
