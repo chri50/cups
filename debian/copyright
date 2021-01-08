@@ -1,8 +1,8 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: CUPS
 Upstream-Contact: Michael Sweet <msweet@apple.com>
-Source: https://www.cups.org/software.html
-Copyright: 2005-2018, Apple Inc.
+Source: https://github.com/OpenPrinting/cups/
+Copyright: 2005-2019, Apple Inc.
 License: Apache-2.0-with-GPL2-LGPL2-Exception
 
 Files: *

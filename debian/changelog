@@ -1,3 +1,11 @@
+cups (2.3.3op1-5) unstable; urgency=medium
+
+  * Update Homepage and Source fields to point
+    https://github.com/OpenPrinting/cups/ as Debian's using the OpenPrinting
+    (friendly) fork (Closes: #979461)
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 08 Jan 2021 11:35:18 +0100
+
 cups (2.3.3op1-4) unstable; urgency=medium
 
   * Drop ancient manual link-doc setting in cups-bsd.postinst
