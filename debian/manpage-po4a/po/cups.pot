@@ -104,7 +104,8 @@ msgstr ""
 
 #. type: Plain text
 #: backend.7:25
-msgid "B<backend> I<job> I<user> I<title> I<num-copies> I<options> [ I<filename> ]"
+msgid ""
+"B<backend> I<job> I<user> I<title> I<num-copies> I<options> [ I<filename> ]"
 msgstr ""
 
 #. type: Plain text
@@ -153,8 +154,7 @@ msgstr ""
 #, no-wrap
 msgid ""
 "B<int cupsSideChannelWrite>(B<cups_sc_command_t >I<command>,\n"
-"                         B<cups_sc_status_t >I<status>, B<const char "
-"*>I<data>,\n"
+"                         B<cups_sc_status_t >I<status>, B<const char *>I<data>,\n"
 "                         B<int >I<datalen>, B<double >I<timeout>);\n"
 msgstr ""
 
@@ -234,10 +234,8 @@ msgstr ""
 msgid ""
 "    device-class scheme \"Unknown\" \"device-info\"\n"
 "    device-class device-uri \"device-make-and-model\" \"device-info\"\n"
-"    device-class device-uri \"device-make-and-model\" \"device-info\" "
-"\"device-id\"\n"
-"    device-class device-uri \"device-make-and-model\" \"device-info\" "
-"\"device-id\" \"device-location\"\n"
+"    device-class device-uri \"device-make-and-model\" \"device-info\" \"device-id\"\n"
+"    device-class device-uri \"device-make-and-model\" \"device-info\" \"device-id\" \"device-location\"\n"
 msgstr ""
 
 #. type: Plain text
@@ -377,7 +375,8 @@ msgstr ""
 
 #. type: Plain text
 #: backend.7:140
-msgid "The print file was successfully transmitted to the device or remote server."
+msgid ""
+"The print file was successfully transmitted to the device or remote server."
 msgstr ""
 
 #. type: TP
@@ -391,8 +390,8 @@ msgstr ""
 msgid ""
 "The print file was not successfully transmitted to the device or remote "
 "server.  The scheduler will respond to this by canceling the job, retrying "
-"the job, or stopping the queue depending on the state of the "
-"I<printer-error-policy> attribute."
+"the job, or stopping the queue depending on the state of the I<printer-error-"
+"policy> attribute."
 msgstr ""
 
 #. type: TP
@@ -406,8 +405,8 @@ msgstr ""
 msgid ""
 "The print file was not successfully transmitted because valid authentication "
 "information is required.  The scheduler will respond to this by holding the "
-"job and adding the 'cups-held-for-authentication' keyword to the "
-"\"job-reasons\" Job Description attribute."
+"job and adding the 'cups-held-for-authentication' keyword to the \"job-"
+"reasons\" Job Description attribute."
 msgstr ""
 
 #. type: TP
@@ -493,8 +492,8 @@ msgstr ""
 #. type: Plain text
 #: backend.7:179
 msgid ""
-"In addition to the environment variables listed in B<cups>(1)  and "
-"B<filter>(7), CUPS backends can expect the following environment variable:"
+"In addition to the environment variables listed in B<cups>(1)  and B<filter>"
+"(7), CUPS backends can expect the following environment variable:"
 msgstr ""
 
 #. type: TP
@@ -525,8 +524,8 @@ msgstr ""
 #: backend.7:184 backend.7:204 cancel.1:81 classes.conf.5:19 client.conf.5:126
 #: cups.1:122 cupsd.conf.5:858 cupsd-helper.8:77 cups-files.conf.5:279
 #: cupsfilter.8:117 cups-lpd.8:61 cups-snmp.8:44 cups-snmp.conf.5:58
-#: cupstestppd.1:138 filter.7:201 lpadmin.8:203 lpc.8:40 lpinfo.8:117 lpr.1:151
-#: mime.convs.5:50 ppdc.1:90 ppdcfile.5:149 ppdhtml.1:35 ppdi.1:42
+#: cupstestppd.1:138 filter.7:201 lpadmin.8:203 lpc.8:40 lpinfo.8:117
+#: lpr.1:151 mime.convs.5:50 ppdc.1:90 ppdcfile.5:149 ppdhtml.1:35 ppdi.1:42
 #: ppdmerge.1:35 ppdpo.1:42 printers.conf.5:16 subscriptions.conf.5:19
 #, no-wrap
 msgid "NOTES"
@@ -581,8 +580,8 @@ msgstr ""
 #. type: Plain text
 #: backend.7:217
 msgid ""
-"I<cups>(1), I<cups-files.conf>(5), I<cups-snmp>(8), I<cupsd>(8), "
-"I<filter>(7), I<lp>(1), I<lpinfo>(8), I<lpr>(1),"
+"I<cups>(1), I<cups-files.conf>(5), I<cups-snmp>(8), I<cupsd>(8), I<filter>"
+"(7), I<lp>(1), I<lpinfo>(8), I<lpr>(1),"
 msgstr ""
 
 #. type: Plain text
@@ -599,8 +598,8 @@ msgstr ""
 #: ippfind.1:257 ipptool.1:251 ipptoolfile.5:654 lp.1:228 lpadmin.8:230
 #: lpc.8:57 lpinfo.8:124 lpmove.8:73 lpoptions.1:117 lpq.1:63 lpr.1:180
 #: lprm.1:81 lpstat.1:147 mailto.conf.5:43 mime.convs.5:61 mime.types.5:107
-#: notifier.7:35 ppdc.1:101 ppdcfile.5:160 ppdhtml.1:46 ppdi.1:53 ppdmerge.1:49
-#: ppdpo.1:53 printers.conf.5:27 subscriptions.conf.5:30
+#: notifier.7:35 ppdc.1:101 ppdcfile.5:160 ppdhtml.1:46 ppdi.1:53
+#: ppdmerge.1:49 ppdpo.1:53 printers.conf.5:27 subscriptions.conf.5:30
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr ""
@@ -613,8 +612,8 @@ msgstr ""
 #: ippeveprinter.1:273 ipptool.1:252 ipptoolfile.5:655 lp.1:229 lpadmin.8:231
 #: lpc.8:58 lpinfo.8:125 lpmove.8:74 lpoptions.1:118 lpq.1:64 lpr.1:181
 #: lprm.1:82 lpstat.1:148 mailto.conf.5:44 mime.convs.5:62 mime.types.5:108
-#: notifier.7:36 ppdc.1:102 ppdcfile.5:161 ppdhtml.1:47 ppdi.1:54 ppdmerge.1:50
-#: ppdpo.1:54 printers.conf.5:28 subscriptions.conf.5:31
+#: notifier.7:36 ppdc.1:102 ppdcfile.5:161 ppdhtml.1:47 ppdi.1:54
+#: ppdmerge.1:50 ppdpo.1:54 printers.conf.5:28 subscriptions.conf.5:31
 msgid "Copyright \\[co] 2007-2019 by Apple Inc."
 msgstr ""
 
@@ -632,17 +631,16 @@ msgstr ""
 #. type: Plain text
 #: cancel.1:37
 msgid ""
-"B<cancel> [ B<-E> ] [ B<-U> I<username> ] [ B<-a> ] [ B<-h> "
-"I<hostname[:port]> ] [ B<-u> I<username> ] [ B<-x> ] [ I<id> ] [ "
-"I<destination> ] [ I<destination-id> ]"
+"B<cancel> [ B<-E> ] [ B<-U> I<username> ] [ B<-a> ] [ B<-h> I<hostname[:port]"
+"> ] [ B<-u> I<username> ] [ B<-x> ] [ I<id> ] [ I<destination> ] "
+"[ I<destination-id> ]"
 msgstr ""
 
 #. type: Plain text
 #: cancel.1:40
 msgid ""
 "The B<cancel> command cancels print jobs.  If no I<destination> or I<id> is "
-"specified, the currently printing job on the default destination is "
-"canceled."
+"specified, the currently printing job on the default destination is canceled."
 msgstr ""
 
 #. type: SH
@@ -837,8 +835,8 @@ msgstr ""
 #: classes.conf.5:29
 msgid ""
 "B<cupsd>(8), B<cupsd.conf>(5), B<mime.convs>(5), B<mime.types>(5), "
-"B<printers.conf>(5), B<subscriptions.conf>(5), CUPS Online Help "
-"(http://localhost:631/help)"
+"B<printers.conf>(5), B<subscriptions.conf>(5), CUPS Online Help (http://"
+"localhost:631/help)"
 msgstr ""
 
 #. type: TH
@@ -873,9 +871,9 @@ msgid ""
 "B<Note:> Starting with macOS 10.7, this file is only used by command-line "
 "and X11 applications plus the IPP backend.  The B<ServerName> directive is "
 "not supported on macOS at all.  Starting with macOS 10.12, all applications "
-"can access these settings in the "
-"I</Library/Preferences/org.cups.PrintingPrefs.plist> file instead.  See the "
-"NOTES section below for more information."
+"can access these settings in the I</Library/Preferences/org.cups."
+"PrintingPrefs.plist> file instead.  See the NOTES section below for more "
+"information."
 msgstr ""
 
 #. type: SS
@@ -1027,10 +1025,7 @@ msgstr ""
 #. type: TP
 #: client.conf.5:68 cupsd.conf.5:437
 #, no-wrap
-msgid ""
-"B<SSLOptions >[I<AllowDH>] [I<AllowRC4>] [I<AllowSSL3>] [I<DenyCBC>] "
-"[I<DenyTLS1.0>] [I<MaxTLS1.0>] [I<MaxTLS1.1>] [I<MaxTLS1.2>] [I<MaxTLS1.3>] "
-"[I<MinTLS1.0>] [I<MinTLS1.1>] [I<MinTLS1.2>] [I<MinTLS1.3>]"
+msgid "B<SSLOptions >[I<AllowDH>] [I<AllowRC4>] [I<AllowSSL3>] [I<DenyCBC>] [I<DenyTLS1.0>] [I<MaxTLS1.0>] [I<MaxTLS1.1>] [I<MaxTLS1.2>] [I<MaxTLS1.3>] [I<MinTLS1.0>] [I<MinTLS1.1>] [I<MinTLS1.2>] [I<MinTLS1.3>]"
 msgstr ""
 
 #. type: TP
@@ -1138,8 +1133,8 @@ msgstr ""
 msgid ""
 "Specifies what information is included in the User-Agent header of HTTP "
 "requests.  \"None\" disables the User-Agent header.  \"ProductOnly\" reports "
-"\"CUPS\".  \"Major\" reports \"CUPS/major IPP/2\".  \"Minor\" reports "
-"\"CUPS/major.minor IPP/2.1\".  \"Minimal\" reports \"CUPS/major.minor.patch "
+"\"CUPS\".  \"Major\" reports \"CUPS/major IPP/2\".  \"Minor\" reports \"CUPS/"
+"major.minor IPP/2.1\".  \"Minimal\" reports \"CUPS/major.minor.patch "
 "IPP/2.1\".  \"OS\" reports \"CUPS/major.minor.path (osname osversion) "
 "IPP/2.1\".  \"Full\" reports \"CUPS/major.minor.path (osname osversion; "
 "architecture) IPP/2.1\".  The default is \"Minimal\"."
@@ -1176,10 +1171,8 @@ msgstr ""
 #: client.conf.5:134
 #, no-wrap
 msgid ""
-"defaults write /Library/Preferences/org.cups.PrintingPrefs.plist Encryption "
-"Required\n"
-"defaults write /Library/Preferences/org.cups.PrintingPrefs.plist "
-"TrustOnFirstUse -bool NO\n"
+"defaults write /Library/Preferences/org.cups.PrintingPrefs.plist Encryption Required\n"
+"defaults write /Library/Preferences/org.cups.PrintingPrefs.plist TrustOnFirstUse -bool NO\n"
 msgstr ""
 
 #. type: Plain text
@@ -1300,18 +1293,17 @@ msgstr ""
 msgid ""
 "After the printer is added you will be asked to set the default printer "
 "options (paper size, output mode, etc.) for the printer. Make any changes as "
-"needed and then click/press on the Set Default Options button to save "
-"them. Some printers also support auto-configuration - click/press on the "
-"Query Printer for Default Options button to update the options "
-"automatically."
+"needed and then click/press on the Set Default Options button to save them. "
+"Some printers also support auto-configuration - click/press on the Query "
+"Printer for Default Options button to update the options automatically."
 msgstr ""
 
 #. type: Plain text
 #: cups.1:44
 msgid ""
-"Once you have added the printer, you can print to it from any "
-"application. You can also choose Print Test Page from the maintenance menu "
-"to print a simple test page and verify that everything is working properly."
+"Once you have added the printer, you can print to it from any application. "
+"You can also choose Print Test Page from the maintenance menu to print a "
+"simple test page and verify that everything is working properly."
 msgstr ""
 
 #. type: Plain text
@@ -1557,18 +1549,18 @@ msgstr ""
 msgid ""
 "CUPS printer drivers, backends, and PPD files are deprecated and will no "
 "longer be supported in a future feature release of CUPS.  Printers that do "
-"not support IPP can be supported using applications such as "
-"B<ippeveprinter>(1)."
+"not support IPP can be supported using applications such as B<ippeveprinter>"
+"(1)."
 msgstr ""
 
 #. type: Plain text
 #: cups.1:142
 msgid ""
 "B<cancel>(1), B<client.conf>(7), B<cupsctl>(8), B<cupsd>(8), B<lp>(1), "
-"B<lpadmin>(8), B<lpinfo>(8), B<lpoptions>(1), B<lpr>(1), B<lprm>(1), "
-"B<lpq>(1), B<lpstat>(1), CUPS Online Help (http://localhost:631/help), CUPS "
-"Web Site (http://www.CUPS.org), PWG Internet Printing Protocol Workgroup "
-"(http://www.pwg.org/ipp)"
+"B<lpadmin>(8), B<lpinfo>(8), B<lpoptions>(1), B<lpr>(1), B<lprm>(1), B<lpq>"
+"(1), B<lpstat>(1), CUPS Online Help (http://localhost:631/help), CUPS Web "
+"Site (http://www.CUPS.org), PWG Internet Printing Protocol Workgroup (http://"
+"www.pwg.org/ipp)"
 msgstr ""
 
 #. type: TH
@@ -1592,8 +1584,8 @@ msgstr ""
 #. type: Plain text
 #: cupsaccept.8:40
 msgid ""
-"B<cupsreject> [ B<-E> ] [ B<-U> I<username> ] [ B<-h> I<hostname[:port]> ] [ "
-"B<-r> I<reason> ] I<destination(s)>"
+"B<cupsreject> [ B<-E> ] [ B<-U> I<username> ] [ B<-h> I<hostname[:port]> ] "
+"[ B<-r> I<reason> ] I<destination(s)>"
 msgstr ""
 
 #. type: Plain text
@@ -1614,7 +1606,8 @@ msgstr ""
 
 #. type: Plain text
 #: cupsaccept.8:55
-msgid "The following options are supported by both B<cupsaccept> and B<cupsreject>:"
+msgid ""
+"The following options are supported by both B<cupsaccept> and B<cupsreject>:"
 msgstr ""
 
 #. type: Plain text
@@ -1641,7 +1634,8 @@ msgstr ""
 
 #. type: Plain text
 #: cupsaccept.8:67
-msgid "Sets the reason string that is shown for a printer that is rejecting jobs."
+msgid ""
+"Sets the reason string that is shown for a printer that is rejecting jobs."
 msgstr ""
 
 #. type: Plain text
@@ -1864,8 +1858,7 @@ msgstr ""
 #. type: Plain text
 #: cups-config.1:87
 msgid ""
-"Reports the full version number of the CUPS installation "
-"(major.minor.patch)."
+"Reports the full version number of the CUPS installation (major.minor.patch)."
 msgstr ""
 
 #. type: Plain text
@@ -1936,9 +1929,9 @@ msgstr ""
 #: cupsctl.8:36
 msgid ""
 "B<cupsctl> [ B<-E> ] [ B<-U> I<username> ] [ B<-h> I<server>[B<:>I<port>] ] "
-"[ B<-->[B<no->]B<debug-logging> ] [ B<-->[B<no->]B<remote-admin> ] [ "
-"B<-->[B<no->]B<remote-any> ] [ B<-->[B<no->]B<share-printers> ] [ "
-"B<-->[B<no->]B<user-cancel-any> ] [ I<name=value> ]"
+"[ B<-->[B<no->]B<debug-logging> ] [ B<-->[B<no->]B<remote-admin> ] [ B<-->"
+"[B<no->]B<remote-any> ] [ B<-->[B<no->]B<share-printers> ] [ B<-->[B<no->]"
+"B<user-cancel-any> ] [ I<name=value> ]"
 msgstr ""
 
 #. type: Plain text
@@ -1967,8 +1960,8 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: cupsctl.8:48 cupsenable.8:62 lpinfo.8:68 lpmove.8:47 lpoptions.1:78 lpq.1:50
-#: lpstat.1:100
+#: cupsctl.8:48 cupsenable.8:62 lpinfo.8:68 lpmove.8:47 lpoptions.1:78
+#: lpq.1:50 lpstat.1:100
 #, no-wrap
 msgid "B<-h >I<server>[B<:>I<port>]"
 msgstr ""
@@ -2107,8 +2100,8 @@ msgstr ""
 #. type: Plain text
 #: cupsd.8:32
 msgid ""
-"B<cupsd> [ B<-c> I<cupsd.conf> ] [ B<-f> ] [ B<-F> ] [ B<-h> ] [ B<-l> ] [ "
-"B<-s> I<cups-files.conf> ] [ B<-t> ]"
+"B<cupsd> [ B<-c> I<cupsd.conf> ] [ B<-f> ] [ B<-F> ] [ B<-h> ] [ B<-l> ] "
+"[ B<-s> I<cups-files.conf> ] [ B<-t> ]"
 msgstr ""
 
 #. type: Plain text
@@ -2116,9 +2109,9 @@ msgstr ""
 msgid ""
 "B<cupsd> is the scheduler for CUPS. It implements a printing system based "
 "upon the Internet Printing Protocol, version 2.1, and supports most of the "
-"requirements for IPP Everywhere. If no options are specified on the "
-"command-line then the default configuration file I</etc/cups/cupsd.conf> "
-"will be used."
+"requirements for IPP Everywhere. If no options are specified on the command-"
+"line then the default configuration file I</etc/cups/cupsd.conf> will be "
+"used."
 msgstr ""
 
 #. type: TP
@@ -2222,9 +2215,8 @@ msgstr ""
 #. type: Plain text
 #: cupsd.8:84
 msgid ""
-"B<cupsd> implements all of the required IPP/2.1 attributes and "
-"operations. It also implements several CUPS-specific administrative "
-"operations."
+"B<cupsd> implements all of the required IPP/2.1 attributes and operations. "
+"It also implements several CUPS-specific administrative operations."
 msgstr ""
 
 #. type: Plain text
@@ -2252,8 +2244,8 @@ msgstr ""
 #. type: Plain text
 #: cupsd.8:104
 msgid ""
-"Run B<cupsd> in the foreground with a test configuration file called "
-"I<test.conf>:"
+"Run B<cupsd> in the foreground with a test configuration file called I<test."
+"conf>:"
 msgstr ""
 
 #. type: Plain text
@@ -2265,11 +2257,10 @@ msgstr ""
 #. type: Plain text
 #: cupsd.8:125
 msgid ""
-"B<backend>(7), B<classes.conf>(5), B<cups>(1), B<cups-files.conf>(5), "
-"B<cups-lpd>(8), B<cupsd.conf>(5), B<cupsd-helper>(8), B<cupsd-logs>(8), "
-"B<filter>(7), B<launchd>(8), B<mime.convs>(5), B<mime.types>(5), "
-"B<printers.conf>(5), B<systemd>(8), CUPS Online Help "
-"(http://localhost:631/help)"
+"B<backend>(7), B<classes.conf>(5), B<cups>(1), B<cups-files.conf>(5), B<cups-"
+"lpd>(8), B<cupsd.conf>(5), B<cupsd-helper>(8), B<cupsd-logs>(8), B<filter>"
+"(7), B<launchd>(8), B<mime.convs>(5), B<mime.types>(5), B<printers.conf>(5), "
+"B<systemd>(8), CUPS Online Help (http://localhost:631/help)"
 msgstr ""
 
 #. type: TH
@@ -2296,8 +2287,8 @@ msgid ""
 "normally located in the I</etc/cups> directory.  Each line in the file can "
 "be a configuration directive, a blank line, or a comment.  Configuration "
 "directives typically consist of a name and zero or more values separated by "
-"whitespace.  The configuration directive name and values are "
-"case-insensitive.  Comment lines start with the # character."
+"whitespace.  The configuration directive name and values are case-"
+"insensitive.  Comment lines start with the # character."
 msgstr ""
 
 #. type: SS
@@ -2421,8 +2412,8 @@ msgstr ""
 #. type: Plain text
 #: cupsd.conf.5:72
 msgid ""
-"Specifies whether the CUPS web interface is advertised.  The default is "
-"\"No\"."
+"Specifies whether the CUPS web interface is advertised.  The default is \"No"
+"\"."
 msgstr ""
 
 #. type: TP
@@ -2440,7 +2431,8 @@ msgstr ""
 #. #DefaultAuthType
 #. type: Plain text
 #: cupsd.conf.5:80
-msgid "Specifies whether shared printers are advertised.  The default is \"No\"."
+msgid ""
+"Specifies whether shared printers are advertised.  The default is \"No\"."
 msgstr ""
 
 #. type: TP
@@ -2459,8 +2451,8 @@ msgstr ""
 #. type: Plain text
 #: cupsd.conf.5:88
 msgid ""
-"Specifies the default type of authentication to use.  The default is "
-"\"Basic\"."
+"Specifies the default type of authentication to use.  The default is \"Basic"
+"\"."
 msgstr ""
 
 #. type: TP
@@ -2561,8 +2553,8 @@ msgstr ""
 #. type: Plain text
 #: cupsd.conf.5:124
 msgid ""
-"Specifies whether local printers are shared by default.  The default is "
-"\"Yes\"."
+"Specifies whether local printers are shared by default.  The default is \"Yes"
+"\"."
 msgstr ""
 
 #. type: TP
@@ -2711,13 +2703,13 @@ msgstr ""
 #. type: Plain text
 #: cupsd.conf.5:184
 msgid ""
-"Specifies whether to do reverse lookups on connecting clients.  The "
-"\"Double\" setting causes B<cupsd>(8)  to verify that the hostname resolved "
-"from the address matches one of the addresses returned for that hostname.  "
-"Double lookups also prevent clients with unregistered addresses from "
-"connecting to your server.  The default is \"Off\" to avoid the potential "
-"server performance problems with hostname lookups.  Only set this option to "
-"\"On\" or \"Double\" if absolutely required."
+"Specifies whether to do reverse lookups on connecting clients.  The \"Double"
+"\" setting causes B<cupsd>(8)  to verify that the hostname resolved from the "
+"address matches one of the addresses returned for that hostname.  Double "
+"lookups also prevent clients with unregistered addresses from connecting to "
+"your server.  The default is \"Off\" to avoid the potential server "
+"performance problems with hostname lookups.  Only set this option to \"On\" "
+"or \"Double\" if absolutely required."
 msgstr ""
 
 #. type: TP
@@ -2825,9 +2817,8 @@ msgstr ""
 #. type: Plain text
 #: cupsd.conf.5:225
 msgid ""
-"Specifies the IPP operations that are being limited inside a Policy "
-"section. IPP operation names are listed below in the section \"IPP OPERATION "
-"NAMES\"."
+"Specifies the IPP operations that are being limited inside a Policy section. "
+"IPP operation names are listed below in the section \"IPP OPERATION NAMES\"."
 msgstr ""
 
 #. type: TP
@@ -2846,9 +2837,8 @@ msgstr ""
 #. type: Plain text
 #: cupsd.conf.5:232
 msgid ""
-"Specifies the HTTP methods that are being limited inside a Location "
-"section. HTTP method names are listed below in the section \"HTTP METHOD "
-"NAMES\"."
+"Specifies the HTTP methods that are being limited inside a Location section. "
+"HTTP method names are listed below in the section \"HTTP METHOD NAMES\"."
 msgstr ""
 
 #. type: TP
@@ -3012,8 +3002,7 @@ msgstr ""
 #: cupsd.conf.5:289
 msgid ""
 "Specifies the level of logging for the ErrorLog file.  The value \"none\" "
-"stops all logging while \"debug2\" logs everything.  The default is "
-"\"warn\"."
+"stops all logging while \"debug2\" logs everything.  The default is \"warn\"."
 msgstr ""
 
 #. type: TP
@@ -3227,8 +3216,8 @@ msgstr ""
 msgid ""
 "Specifies whether job files (documents) are preserved after a job is "
 "printed.  If a numeric value is specified, job files are preserved for the "
-"indicated number of seconds after printing.  The default is \"86400\" "
-"(preserve 1 day)."
+"indicated number of seconds after printing.  The default is "
+"\"86400\" (preserve 1 day)."
 msgstr ""
 
 #. type: TP
@@ -3373,8 +3362,8 @@ msgstr ""
 msgid ""
 "Specifies what information is included in the Server header of HTTP "
 "responses.  \"None\" disables the Server header.  \"ProductOnly\" reports "
-"\"CUPS\".  \"Major\" reports \"CUPS/major IPP/2\".  \"Minor\" reports "
-"\"CUPS/major.minor IPP/2.1\".  \"Minimal\" reports \"CUPS/major.minor.patch "
+"\"CUPS\".  \"Major\" reports \"CUPS/major IPP/2\".  \"Minor\" reports \"CUPS/"
+"major.minor IPP/2.1\".  \"Minimal\" reports \"CUPS/major.minor.patch "
 "IPP/2.1\".  \"OS\" reports \"CUPS/major.minor.path (osname osversion) "
 "IPP/2.1\".  \"Full\" reports \"CUPS/major.minor.path (osname osversion; "
 "architecture) IPP/2.1\".  The default is \"Minimal\"."
@@ -3445,7 +3434,8 @@ msgstr ""
 #. #WebInterface
 #. type: Plain text
 #: cupsd.conf.5:470
-msgid "Specifies the HTTP request timeout.  The default is \"900\" (15 minutes)."
+msgid ""
+"Specifies the HTTP request timeout.  The default is \"900\" (15 minutes)."
 msgstr ""
 
 #. type: TP
@@ -3497,7 +3487,8 @@ msgstr ""
 
 #. type: Plain text
 #: cupsd.conf.5:485
-msgid "Used by a client to get the type, size, and modification date of resources."
+msgid ""
+"Used by a client to get the type, size, and modification date of resources."
 msgstr ""
 
 #. type: Plain text
@@ -4070,8 +4061,8 @@ msgstr ""
 #. type: Plain text
 #: cupsd.conf.5:641
 msgid ""
-"The path for access to the CUPS configuration files (cupsd.conf, "
-"client.conf, etc.)"
+"The path for access to the CUPS configuration files (cupsd.conf, client."
+"conf, etc.)"
 msgstr ""
 
 #. type: TP
@@ -4082,7 +4073,8 @@ msgstr ""
 
 #. type: Plain text
 #: cupsd.conf.5:644
-msgid "The path for access to the CUPS log files (access_log, error_log, page_log)"
+msgid ""
+"The path for access to the CUPS log files (access_log, error_log, page_log)"
 msgstr ""
 
 #. type: TP
@@ -4430,11 +4422,11 @@ msgstr ""
 msgid ""
 "Specifies that an authenticated user must match one of the named users or be "
 "a member of one of the named groups.  The group name \"@SYSTEM\" corresponds "
-"to the list of groups defined by the SystemGroup directive in the "
-"B<cups-files.conf>(5)  file.  The group name \"@OWNER\" corresponds to the "
-"owner of the resource, for example the person that submitted a print job.  "
-"Note: The 'root' user is not special and must be granted privileges like any "
-"other user account."
+"to the list of groups defined by the SystemGroup directive in the B<cups-"
+"files.conf>(5)  file.  The group name \"@OWNER\" corresponds to the owner of "
+"the resource, for example the person that submitted a print job.  Note: The "
+"'root' user is not special and must be granted privileges like any other "
+"user account."
 msgstr ""
 
 #. type: TP
@@ -4485,8 +4477,8 @@ msgstr ""
 #. type: Plain text
 #: cupsd.conf.5:769
 msgid ""
-"The following directives may be placed inside Policy sections in the "
-"B<cupsd.conf> file:"
+"The following directives may be placed inside Policy sections in the B<cupsd."
+"conf> file:"
 msgstr ""
 
 #. type: TP
@@ -4511,10 +4503,10 @@ msgstr ""
 #: cupsd.conf.5:782
 msgid ""
 "Specifies an access list for a job's private values.  The \"default\" access "
-"list is \"@OWNER @SYSTEM\".  \"@ACL\" maps to the printer's "
-"requesting-user-name-allowed or requesting-user-name-denied values.  "
-"\"@OWNER\" maps to the job's owner.  \"@SYSTEM\" maps to the groups listed "
-"for the SystemGroup directive in the B<cups-files.conf>(5)  file."
+"list is \"@OWNER @SYSTEM\".  \"@ACL\" maps to the printer's requesting-user-"
+"name-allowed or requesting-user-name-denied values.  \"@OWNER\" maps to the "
+"job's owner.  \"@SYSTEM\" maps to the groups listed for the SystemGroup "
+"directive in the B<cups-files.conf>(5)  file."
 msgstr ""
 
 #. type: TP
@@ -4545,8 +4537,8 @@ msgstr ""
 #: cupsd.conf.5:792
 msgid ""
 "Specifies the list of job values to make private.  The \"default\" values "
-"are \"job-name\", \"job-originating-host-name\", "
-"\"job-originating-user-name\", and \"phone\"."
+"are \"job-name\", \"job-originating-host-name\", \"job-originating-user-name"
+"\", and \"phone\"."
 msgstr ""
 
 #. type: TP
@@ -4564,19 +4556,17 @@ msgstr ""
 #. type: TP
 #: cupsd.conf.5:796
 #, no-wrap
-msgid ""
-"B<SubscriptionPrivateAccess "
-">{I<user>|B<@>I<group>|B<@ACL>|B<@OWNER>|B<@SYSTEM>} ..."
+msgid "B<SubscriptionPrivateAccess >{I<user>|B<@>I<group>|B<@ACL>|B<@OWNER>|B<@SYSTEM>} ..."
 msgstr ""
 
 #. type: Plain text
 #: cupsd.conf.5:805
 msgid ""
-"Specifies an access list for a subscription's private values.  The "
-"\"default\" access list is \"@OWNER @SYSTEM\".  \"@ACL\" maps to the "
-"printer's requesting-user-name-allowed or requesting-user-name-denied "
-"values.  \"@OWNER\" maps to the job's owner.  \"@SYSTEM\" maps to the groups "
-"listed for the SystemGroup directive in the B<cups-files.conf>(5)  file."
+"Specifies an access list for a subscription's private values.  The \"default"
+"\" access list is \"@OWNER @SYSTEM\".  \"@ACL\" maps to the printer's "
+"requesting-user-name-allowed or requesting-user-name-denied values.  \"@OWNER"
+"\" maps to the job's owner.  \"@SYSTEM\" maps to the groups listed for the "
+"SystemGroup directive in the B<cups-files.conf>(5)  file."
 msgstr ""
 
 #. type: TP
@@ -4607,9 +4597,8 @@ msgstr ""
 #: cupsd.conf.5:815
 msgid ""
 "Specifies the list of subscription values to make private.  The \"default\" "
-"values are \"notify-events\", \"notify-pull-method\", "
-"\"notify-recipient-uri\", \"notify-subscriber-user-name\", and "
-"\"notify-user-data\"."
+"values are \"notify-events\", \"notify-pull-method\", \"notify-recipient-uri"
+"\", \"notify-subscriber-user-name\", and \"notify-user-data\"."
 msgstr ""
 
 #. type: SS
@@ -4659,8 +4648,8 @@ msgstr ""
 #: cupsd.conf.5:833
 msgid ""
 "Specifies whether users may override the classification (cover page) of "
-"individual print jobs using the \"job-sheets\" option.  The default is "
-"\"No\"."
+"individual print jobs using the \"job-sheets\" option.  The default is \"No"
+"\"."
 msgstr ""
 
 #. type: TP
@@ -4698,10 +4687,10 @@ msgstr ""
 msgid ""
 "The default is the empty string, which disables page logging.  The string "
 "\"%p %u %j %T %P %C %{job-billing} %{job-originating-host-name} %{job-name} "
-"%{media} %{sides}\" creates a page log with the standard items.  Use "
-"\"%{job-impressions-completed}\" to insert the number of pages (sides) that "
-"were printed, or \"%{job-media-sheets-completed}\" to insert the number of "
-"sheets that were printed."
+"%{media} %{sides}\" creates a page log with the standard items.  Use \"%{job-"
+"impressions-completed}\" to insert the number of pages (sides) that were "
+"printed, or \"%{job-media-sheets-completed}\" to insert the number of sheets "
+"that were printed."
 msgstr ""
 
 #. type: TP
@@ -4728,10 +4717,9 @@ msgstr ""
 #. type: Plain text
 #: cupsd.conf.5:869
 msgid ""
-"The scheduler MUST be restarted manually after making changes to the "
-"B<cupsd.conf> file.  On Linux this is typically done using the "
-"B<systemctl>(8)  command, while on macOS the B<launchctl>(8)  command is "
-"used instead."
+"The scheduler MUST be restarted manually after making changes to the B<cupsd."
+"conf> file.  On Linux this is typically done using the B<systemctl>(8)  "
+"command, while on macOS the B<launchctl>(8)  command is used instead."
 msgstr ""
 
 #. type: Plain text
@@ -4817,8 +4805,8 @@ msgstr ""
 #. type: Plain text
 #: cupsd-helper.8:46
 msgid ""
-"B<cups-exec> I<sandbox-profile> [ I<-g> I<group-id> ] [ I<-n> I<nice-value> "
-"] [ I<-u> I<user-id> ] I</path/to/program> I<argv0> I<...> I<argvN>"
+"B<cups-exec> I<sandbox-profile> [ I<-g> I<group-id> ] [ I<-n> I<nice-"
+"value> ] [ I<-u> I<user-id> ] I</path/to/program> I<argv0> I<...> I<argvN>"
 msgstr ""
 
 #. type: Plain text
@@ -4841,8 +4829,8 @@ msgstr ""
 #. type: Plain text
 #: cupsd-helper.8:56
 msgid ""
-"The B<cups-exec> helper program runs backends, filters, and other "
-"programs. On macOS these programs are run in a secure sandbox."
+"The B<cups-exec> helper program runs backends, filters, and other programs. "
+"On macOS these programs are run in a secure sandbox."
 msgstr ""
 
 #. type: Plain text
@@ -4875,8 +4863,8 @@ msgstr ""
 #. type: Plain text
 #: cupsd-helper.8:77
 msgid ""
-"Driver information files must conform to the format defined in "
-"B<ppdcfile>(5)."
+"Driver information files must conform to the format defined in B<ppdcfile>"
+"(5)."
 msgstr ""
 
 #. type: Plain text
@@ -4925,8 +4913,7 @@ msgstr ""
 #: cupsd-logs.5:28
 #, no-wrap
 msgid ""
-"    I<host group user date-time >\"I<method resource version>\" I<status "
-"bytes\n"
+"    I<host group user date-time >\"I<method resource version>\" I<status bytes\n"
 "      ipp-operation ipp-status>\n"
 msgstr ""
 
@@ -5138,8 +5125,8 @@ msgstr ""
 #. type: Plain text
 #: cupsd-logs.5:102
 msgid ""
-"Server error; typically this happens when the server is unable to "
-"open/create a file - consult the error_log file for details."
+"Server error; typically this happens when the server is unable to open/"
+"create a file - consult the error_log file for details."
 msgstr ""
 
 #. type: TP
@@ -5151,8 +5138,8 @@ msgstr ""
 #. type: Plain text
 #: cupsd-logs.5:105
 msgid ""
-"The client requested encryption but encryption support is not "
-"enabled/compiled in."
+"The client requested encryption but encryption support is not enabled/"
+"compiled in."
 msgstr ""
 
 #. type: TP
@@ -5370,7 +5357,8 @@ msgstr ""
 
 #. type: Plain text
 #: cupsd-logs.5:185
-msgid "For example the entry for a two page job called \"myjob\" might look like:"
+msgid ""
+"For example the entry for a two page job called \"myjob\" might look like:"
 msgstr ""
 
 #. type: Plain text
@@ -5399,8 +5387,8 @@ msgstr ""
 #. type: Plain text
 #: cupsd-logs.5:199
 msgid ""
-"The I<user> field contains the name of the user (the IPP "
-"requesting-user-name attribute) that submitted this file for printing."
+"The I<user> field contains the name of the user (the IPP requesting-user-"
+"name attribute) that submitted this file for printing."
 msgstr ""
 
 #. type: Plain text
@@ -5426,9 +5414,9 @@ msgstr ""
 #. type: Plain text
 #: cupsd-logs.5:208
 msgid ""
-"The I<job-billing> field contains a copy of the job-billing or "
-"job-account-id attributes provided with the IPP Create-Job or Print-Job "
-"requests or \"-\" if neither was provided."
+"The I<job-billing> field contains a copy of the job-billing or job-account-"
+"id attributes provided with the IPP Create-Job or Print-Job requests or \"-"
+"\" if neither was provided."
 msgstr ""
 
 #. type: Plain text
@@ -5481,16 +5469,15 @@ msgstr ""
 #. type: Plain text
 #: cupsenable.8:31
 msgid ""
-"B<cupsdisable> [ B<-E> ] [ B<-U> I<username> ] [ B<-c> ] [ B<-h "
-">I<server>[B<:>I<port>] ] [ B<-r> I<reason> ] [ B<--hold> ] "
-"I<destination(s)>"
+"B<cupsdisable> [ B<-E> ] [ B<-U> I<username> ] [ B<-c> ] [ B<-h >I<server>"
+"[B<:>I<port>] ] [ B<-r> I<reason> ] [ B<--hold> ] I<destination(s)>"
 msgstr ""
 
 #. type: Plain text
 #: cupsenable.8:46
 msgid ""
-"B<cupsenable> [ B<-E> ] [ B<-U> I<username> ] [ B<-c> ] [ B<-h "
-">I<server>[B<:>I<port>] ] [ B<--release> ] I<destination(s)>"
+"B<cupsenable> [ B<-E> ] [ B<-U> I<username> ] [ B<-c> ] [ B<-h >I<server>[B<:"
+">I<port>] ] [ B<--release> ] I<destination(s)>"
 msgstr ""
 
 #. type: Plain text
@@ -5582,8 +5569,8 @@ msgstr ""
 #: cupsenable.8:85
 msgid ""
 "The System V versions of these commands are B<disable> and B<enable>, "
-"respectively.  They have been renamed to avoid conflicts with the B<bash>(1)  "
-"build-in commands of the same names."
+"respectively.  They have been renamed to avoid conflicts with the B<bash>"
+"(1)  build-in commands of the same names."
 msgstr ""
 
 #. type: Plain text
@@ -5671,10 +5658,9 @@ msgid ""
 "Defines the access log filename.  Specifying a blank filename disables "
 "access log generation.  The value \"stderr\" causes log entries to be sent "
 "to the standard error file when the scheduler is running in the foreground, "
-"or to the system log daemon when run in the background.  The value "
-"\"syslog\" causes log entries to be sent to the system log daemon.  The "
-"server name may be included in filenames using the string \"%s\", for "
-"example:"
+"or to the system log daemon when run in the background.  The value \"syslog"
+"\" causes log entries to be sent to the system log daemon.  The server name "
+"may be included in filenames using the string \"%s\", for example:"
 msgstr ""
 
 #. type: Plain text
@@ -5942,8 +5928,8 @@ msgstr ""
 #: cups-files.conf.5:135
 msgid ""
 "Specifies the group name or ID that will be used when executing external "
-"programs.  The default group is operating system specific but is usually "
-"\"lp\" or \"nobody\"."
+"programs.  The default group is operating system specific but is usually \"lp"
+"\" or \"nobody\"."
 msgstr ""
 
 #. type: TP
@@ -6090,8 +6076,8 @@ msgstr ""
 #: cups-files.conf.5:193
 msgid ""
 "Specifies the directory containing the backends, CGI programs, filters, "
-"helper programs, notifiers, and port monitors.  The default is "
-"\"/usr/lib/cups\" or \"/usr/libexec/cups\" depending on the platform."
+"helper programs, notifiers, and port monitors.  The default is \"/usr/lib/"
+"cups\" or \"/usr/libexec/cups\" depending on the platform."
 msgstr ""
 
 #. type: TP
@@ -6108,8 +6094,8 @@ msgid ""
 "\"/Library/Keychains/System.keychain\" on macOS and \"/etc/cups/ssl\" on all "
 "other operating systems.  macOS uses its keychain database to store "
 "certificates and keys while other platforms use separate files in the "
-"specified directory, *.crt for PEM-encoded certificates and *.key for "
-"PEM-encoded private keys."
+"specified directory, *.crt for PEM-encoded certificates and *.key for PEM-"
+"encoded private keys."
 msgstr ""
 
 #. type: TP
@@ -6186,8 +6172,8 @@ msgstr ""
 #: cups-files.conf.5:227
 msgid ""
 "Specifies the group(s) to use for I<@SYSTEM> group authentication.  The "
-"default contains \"admin\", \"lpadmin\", \"root\", \"sys\", and/or "
-"\"system\"."
+"default contains \"admin\", \"lpadmin\", \"root\", \"sys\", and/or \"system"
+"\"."
 msgstr ""
 
 #. type: TP
@@ -6328,18 +6314,17 @@ msgstr ""
 #. type: Plain text
 #: cups-files.conf.5:286
 msgid ""
-"The scheduler MUST be restarted manually after making changes to the "
-"B<cups-files.conf> file.  On Linux this is typically done using the "
-"B<systemctl>(8)  command, while on macOS the B<launchctl>(8)  command is "
-"used instead."
+"The scheduler MUST be restarted manually after making changes to the B<cups-"
+"files.conf> file.  On Linux this is typically done using the B<systemctl>"
+"(8)  command, while on macOS the B<launchctl>(8)  command is used instead."
 msgstr ""
 
 #. type: Plain text
 #: cups-files.conf.5:296
 msgid ""
-"B<classes.conf>(5), B<cups>(1), B<cupsd>(8), B<cupsd.conf>(5), "
-"B<mime.convs>(5), B<mime.types>(5), B<printers.conf>(5), "
-"B<subscriptions.conf>(5), CUPS Online Help (http://localhost:631/help)"
+"B<classes.conf>(5), B<cups>(1), B<cupsd>(8), B<cupsd.conf>(5), B<mime.convs>"
+"(5), B<mime.types>(5), B<printers.conf>(5), B<subscriptions.conf>(5), CUPS "
+"Online Help (http://localhost:631/help)"
 msgstr ""
 
 #. type: Plain text
@@ -6358,16 +6343,15 @@ msgstr ""
 #. type: Plain text
 #: cupsfilter.8:12
 msgid ""
-"cupsfilter - convert a file to another format using cups filters "
-"(deprecated)"
+"cupsfilter - convert a file to another format using cups filters (deprecated)"
 msgstr ""
 
 #. type: Plain text
 #: cupsfilter.8:54
 msgid ""
 "B<cupsfilter> [ B<--list-filters> ] [ B<-D> ] [ B<-U> I<user> ] [ B<-c> "
-"I<config-file> ] [ B<-d> I<printer> ] [ B<-e> ] [ B<-i> I<mime/type> ] [ "
-"B<-j> I<job-id[,N]> ] [ B<-m> I<mime/type> ] [ B<-n> I<copies> ] [ B<-o> "
+"I<config-file> ] [ B<-d> I<printer> ] [ B<-e> ] [ B<-i> I<mime/type> ] [ B<-"
+"j> I<job-id[,N]> ] [ B<-m> I<mime/type> ] [ B<-n> I<copies> ] [ B<-o> "
 "I<name=value> ] [ B<-p> I<filename.ppd> ] [ B<-t> I<title> ] [ B<-u> ] "
 "I<filename>"
 msgstr ""
@@ -6479,9 +6463,9 @@ msgstr ""
 #. type: Plain text
 #: cupsfilter.8:87
 msgid ""
-"Specifies the destination file type. The default file type is "
-"application/pdf. Use printer/foo to convert to the printer format defined by "
-"the filters in the PPD file."
+"Specifies the destination file type. The default file type is application/"
+"pdf. Use printer/foo to convert to the printer format defined by the filters "
+"in the PPD file."
 msgstr ""
 
 #. type: TP
@@ -6567,8 +6551,8 @@ msgstr ""
 msgid ""
 "CUPS printer drivers, filters, and backends are deprecated and will no "
 "longer be supported in a future feature release of CUPS.  Printers that do "
-"not support IPP can be supported using applications such as "
-"B<ippeveprinter>(1)."
+"not support IPP can be supported using applications such as B<ippeveprinter>"
+"(1)."
 msgstr ""
 
 #. type: Plain text
@@ -6601,8 +6585,8 @@ msgstr ""
 #. type: Plain text
 #: cupsfilter.8:138
 msgid ""
-"B<cups>(1), B<cupsd.conf>(5), B<filter(7),> B<mime.convs>(7), "
-"B<mime.types>(7), CUPS Online Help (http://localhost:631/help)"
+"B<cups>(1), B<cupsd.conf>(5), B<filter(7),> B<mime.convs>(7), B<mime.types>"
+"(7), CUPS Online Help (http://localhost:631/help)"
 msgstr ""
 
 #. type: TH
@@ -6631,8 +6615,8 @@ msgid ""
 "B<cups-lpd> is the CUPS Line Printer Daemon (\"LPD\") mini-server that "
 "supports legacy client systems that use the LPD protocol.  B<cups-lpd> does "
 "not act as a standalone network daemon but instead operates using any of the "
-"Internet \"super-servers\" such as B<inetd>(8), B<launchd>(8), and "
-"B<systemd>(8)."
+"Internet \"super-servers\" such as B<inetd>(8), B<launchd>(8), and B<systemd>"
+"(8)."
 msgstr ""
 
 #. type: TP
@@ -6772,8 +6756,7 @@ msgstr ""
 #: cups-lpd.8:97
 #, no-wrap
 msgid ""
-"    printer stream tcp nowait lp /usr/lib/cups/daemon/cups-lpd cups-lpd "
-"\\e\n"
+"    printer stream tcp nowait lp /usr/lib/cups/daemon/cups-lpd cups-lpd \\e\n"
 "        -o document-format=application/octet-stream\n"
 msgstr ""
 
@@ -6842,9 +6825,9 @@ msgstr ""
 #. type: Plain text
 #: cups-snmp.8:37
 msgid ""
-"In the second form, the SNMP backend is run indirectly using the "
-"B<lpinfo>(8)  command.  The output provides all printers detected via SNMP "
-"on the configured broadcast addresses.  I<Note: no broadcast addresses are "
+"In the second form, the SNMP backend is run indirectly using the B<lpinfo>"
+"(8)  command.  The output provides all printers detected via SNMP on the "
+"configured broadcast addresses.  I<Note: no broadcast addresses are "
 "configured by default.>"
 msgstr ""
 
@@ -6982,9 +6965,9 @@ msgstr ""
 msgid ""
 "Specifies one or more device URIs that should be used for a given make and "
 "model string.  The regular expression is used to match the detected make and "
-"model, and the device URI strings must be of the form "
-"\"scheme://%s[:port]/[path]\", where \"%s\" represents the detected address "
-"or hostname.  There are no default device URI matching rules."
+"model, and the device URI strings must be of the form \"scheme://%s[:port]/"
+"[path]\", where \"%s\" represents the detected address or hostname.  There "
+"are no default device URI matching rules."
 msgstr ""
 
 #. type: TP
@@ -7047,15 +7030,15 @@ msgstr ""
 #: cupstestppd.1:35
 msgid ""
 "B<cupstestppd> [ B<-I> I<category> ] [ B<-R> I<rootdir> ] [ B<-W> "
-"I<category> ] [ B<-q> ] [ B<-r> ] [ B<-v>[B<v>] ] I<filename.ppd[.gz]> [ "
-"...  I<filename.ppd[.gz]> ]"
+"I<category> ] [ B<-q> ] [ B<-r> ] [ B<-v>[B<v>] ] I<filename.ppd[.gz]> "
+"[ ...  I<filename.ppd[.gz]> ]"
 msgstr ""
 
 #. type: Plain text
 #: cupstestppd.1:51
 msgid ""
-"B<cupstestppd> [ B<-R> I<rootdir> ] [ B<-W> I<category> ] [ B<-q> ] [ B<-r> "
-"] [ B<-v>[B<v>] ] B<->"
+"B<cupstestppd> [ B<-R> I<rootdir> ] [ B<-W> I<category> ] [ B<-q> ] [ B<-"
+"r> ] [ B<-v>[B<v>] ] B<->"
 msgstr ""
 
 #. type: Plain text
@@ -7070,9 +7053,8 @@ msgstr ""
 #. type: Plain text
 #: cupstestppd.1:58
 msgid ""
-"The first form of B<cupstestppd> tests one or more PPD files on the "
-"command-line.  The second form tests the PPD file provided on the standard "
-"input."
+"The first form of B<cupstestppd> tests one or more PPD files on the command-"
+"line.  The second form tests the PPD file provided on the standard input."
 msgstr ""
 
 #. type: Plain text
@@ -7379,7 +7361,8 @@ msgstr ""
 
 #. type: Plain text
 #: filter.7:23
-msgid "B<filter> I<job> I<user> I<title> I<num-copies> I<options> [ I<filename> ]"
+msgid ""
+"B<filter> I<job> I<user> I<title> I<num-copies> I<options> [ I<filename> ]"
 msgstr ""
 
 #. type: Plain text
@@ -7394,10 +7377,8 @@ msgstr ""
 #: filter.7:33
 #, no-wrap
 msgid ""
-"B<cups_sc_status_t cupsSideChannelDoRequest>(B<cups_sc_command_t "
-">I<command>,\n"
-"                                          B<char *>I<data>, B<int "
-"*>I<datalen>,\n"
+"B<cups_sc_status_t cupsSideChannelDoRequest>(B<cups_sc_command_t >I<command>,\n"
+"                                          B<char *>I<data>, B<int *>I<datalen>,\n"
 "                                          B<double >I<timeout>);\n"
 msgstr ""
 
@@ -7411,8 +7392,7 @@ msgstr ""
 #: filter.7:38
 #, no-wrap
 msgid ""
-"B<const char *cupsGetOption>(B<const char *>I<name>, B<int "
-">I<num_options>,\n"
+"B<const char *cupsGetOption>(B<const char *>I<name>, B<int >I<num_options>,\n"
 "                 B<cups_option_t *>I<options>);\n"
 msgstr ""
 
@@ -7435,9 +7415,7 @@ msgstr ""
 #. type: Plain text
 #: filter.7:46
 #, no-wrap
-msgid ""
-"B<ppd_choice_t *ppdFindMarkedChoice>(B<ppd_file_t *>I<ppd>, B<const char "
-"*>I<keyword>);\n"
+msgid "B<ppd_choice_t *ppdFindMarkedChoice>(B<ppd_file_t *>I<ppd>, B<const char *>I<keyword>);\n"
 msgstr ""
 
 #. type: Plain text
@@ -7572,10 +7550,9 @@ msgstr ""
 msgid ""
 "Sets the named job or printer attribute(s). The following job attributes can "
 "be set: \"job-media-progress\". The following printer attributes can be set: "
-"\"auth-info-required\", \"marker-colors\", \"marker-high-levels\", "
-"\"marker-levels\", \"marker-low-levels\", \"marker-message\", "
-"\"marker-names\", \"marker-types\", \"printer-alert\", and "
-"\"printer-alert-description\"."
+"\"auth-info-required\", \"marker-colors\", \"marker-high-levels\", \"marker-"
+"levels\", \"marker-low-levels\", \"marker-message\", \"marker-names\", "
+"\"marker-types\", \"printer-alert\", and \"printer-alert-description\"."
 msgstr ""
 
 #. type: TP
@@ -7601,8 +7578,8 @@ msgstr ""
 #: filter.7:109
 msgid ""
 "Adds the specified message to the current B<ErrorLog> using the \"debug\" "
-"log level.  B<DEBUG> messages are never stored in the "
-"\"printer-state-message\" attribute."
+"log level.  B<DEBUG> messages are never stored in the \"printer-state-message"
+"\" attribute."
 msgstr ""
 
 #. type: TP
@@ -7615,8 +7592,8 @@ msgstr ""
 #: filter.7:114
 msgid ""
 "Adds the specified message to the current B<ErrorLog> using the \"debug2\" "
-"log level.  B<DEBUG2> messages are never stored in the "
-"\"printer-state-message\" attribute."
+"log level.  B<DEBUG2> messages are never stored in the \"printer-state-"
+"message\" attribute."
 msgstr ""
 
 #. type: TP
@@ -7688,8 +7665,8 @@ msgstr ""
 #: filter.7:131
 msgid ""
 "Adds an entry to the current B<PageLog>. The first form adds I<#-copies> to "
-"the \"job-media-sheets-completed\" attribute. The second form sets the "
-"\"job-media-sheets-completed\" attribute to I<#-pages>."
+"the \"job-media-sheets-completed\" attribute. The second form sets the \"job-"
+"media-sheets-completed\" attribute to I<#-pages>."
 msgstr ""
 
 #. type: TP
@@ -7798,7 +7775,8 @@ msgstr ""
 
 #. type: Plain text
 #: filter.7:159
-msgid "The directory where semi-persistent cache files can be found and stored."
+msgid ""
+"The directory where semi-persistent cache files can be found and stored."
 msgstr ""
 
 #. type: TP
@@ -7890,7 +7868,8 @@ msgstr ""
 
 #. type: Plain text
 #: filter.7:190
-msgid "The recommended amount of memory to use for Raster Image Processors (RIPs)."
+msgid ""
+"The recommended amount of memory to use for Raster Image Processors (RIPs)."
 msgstr ""
 
 #. type: TP
@@ -7901,7 +7880,8 @@ msgstr ""
 
 #. type: Plain text
 #: filter.7:193
-msgid "The name and version number of the server (typically CUPS/I<major.minor>)."
+msgid ""
+"The name and version number of the server (typically CUPS/I<major.minor>)."
 msgstr ""
 
 #. type: TP
@@ -7943,16 +7923,15 @@ msgid ""
 "filters also expect specific environment variables and file descriptors, and "
 "typically run in a user session that (on macOS) has additional restrictions "
 "that affect how it runs.  Unless you are a developer and know what you are "
-"doing, please do not run filters directly.  Instead, use the "
-"B<cupsfilter>(8)  program to use the appropriate filters to do the "
-"conversions you need."
+"doing, please do not run filters directly.  Instead, use the B<cupsfilter>"
+"(8)  program to use the appropriate filters to do the conversions you need."
 msgstr ""
 
 #. type: Plain text
 #: filter.7:218
 msgid ""
-"B<backend>(7), B<cups>(1), B<cups-files.conf>(5), B<cupsd>(8), "
-"B<cupsfilter>(8),"
+"B<backend>(7), B<cups>(1), B<cups-files.conf>(5), B<cupsd>(8), B<cupsfilter>"
+"(8),"
 msgstr ""
 
 #. type: TH
@@ -8055,14 +8034,14 @@ msgstr ""
 #: ippeveprinter.1:84
 msgid ""
 "B<ippeveprinter> [ B<--help> ] [ B<--no-web-forms> ] [ B<--pam-service> "
-"I<service> ] [ B<--version> ] [ B<-2> ] [ B<-A> ] [ B<-D> I<device-uri> ] [ "
-"B<-F> I<output-type/subtype> ] [ B<-K> I<keypath> ] [ B<-M> I<manufacturer> "
-"] [ B<-P> I<filename.ppd> ] [ B<-V> I<ipp-version> ] [ B<-a> "
+"I<service> ] [ B<--version> ] [ B<-2> ] [ B<-A> ] [ B<-D> I<device-uri> ] "
+"[ B<-F> I<output-type/subtype> ] [ B<-K> I<keypath> ] [ B<-M> "
+"I<manufacturer> ] [ B<-P> I<filename.ppd> ] [ B<-V> I<ipp-version> ] [ B<-a> "
 "I<filename.conf> ] [ B<-c> I<command> ] [ B<-d> I<spool-directory> ] [ B<-f> "
 "I<type/subtype[,...]> ] [ B<-i> I<iconfile.png> ] [ B<-k> ] [ B<-l> "
-"I<location> ] [ B<-m> I<model> ] [ B<-n> I<hostname> ] [ B<-p> I<port> ] [ "
-"B<-r> I<subtype[,subtype]> ] [ B<-s> I<speed[,color-speed]> ] [ B<-v[vvv]> ] "
-"I<service-name>"
+"I<location> ] [ B<-m> I<model> ] [ B<-n> I<hostname> ] [ B<-p> I<port> ] "
+"[ B<-r> I<subtype[,subtype]> ] [ B<-s> I<speed[,color-speed]> ] [ B<-v[vvv]"
+"> ] I<service-name>"
 msgstr ""
 
 #. type: Plain text
@@ -8092,7 +8071,8 @@ msgstr ""
 
 #. type: Plain text
 #: ippeveprinter.1:96
-msgid "Disable the web interface forms used to update the media and supply levels."
+msgid ""
+"Disable the web interface forms used to update the media and supply levels."
 msgstr ""
 
 #. type: TP
@@ -8159,8 +8139,8 @@ msgstr ""
 #. type: Plain text
 #: ippeveprinter.1:122
 msgid ""
-"Specifies the output MIME media type.  The default is "
-"\"application/postscript\" when the B<-P> option is specified."
+"Specifies the output MIME media type.  The default is \"application/"
+"postscript\" when the B<-P> option is specified."
 msgstr ""
 
 #. type: TP
@@ -8217,11 +8197,11 @@ msgid ""
 "Run the specified command for each document that is printed.  If \"command\" "
 "is not an absolute path (\"/path/to/command\"), B<ippeveprinter> looks for "
 "the command in the \"command\" subdirectory of the CUPS binary directory, "
-"typically /usr/lib/cups/command or /usr/libexec/cups/command.  The "
-"B<cups-config>(1)  command can be used to discover the correct binary "
-"directory (\"cups-config --serverbin\").  In addition, the CUPS_SERVERBIN "
-"environment variable can be used to override the default location of this "
-"directory - see the B<cups>(1)  man page for more details."
+"typically /usr/lib/cups/command or /usr/libexec/cups/command.  The B<cups-"
+"config>(1)  command can be used to discover the correct binary directory "
+"(\"cups-config --serverbin\").  In addition, the CUPS_SERVERBIN environment "
+"variable can be used to override the default location of this directory - "
+"see the B<cups>(1)  man page for more details."
 msgstr ""
 
 #. type: TP
@@ -8271,7 +8251,8 @@ msgstr ""
 
 #. type: Plain text
 #: ippeveprinter.1:166
-msgid "Keeps the print documents in the spool directory rather than deleting them."
+msgid ""
+"Keeps the print documents in the spool directory rather than deleting them."
 msgstr ""
 
 #. type: TP
@@ -8412,10 +8393,10 @@ msgstr ""
 msgid ""
 "Enumerated values are converted to their keyword equivalents.  For example, "
 "a \"print-quality\" Job Template attribute with a enum value of 3 will "
-"become the \"IPP_PRINT_QUALITY\" environment variable with a value of "
-"\"draft\".  This string conversion only happens for standard Job Template "
-"attributes, currently \"finishings\", \"orientation-requested\", and "
-"\"print-quality\"."
+"become the \"IPP_PRINT_QUALITY\" environment variable with a value of \"draft"
+"\".  This string conversion only happens for standard Job Template "
+"attributes, currently \"finishings\", \"orientation-requested\", and \"print-"
+"quality\"."
 msgstr ""
 
 #. type: Plain text
@@ -8438,8 +8419,8 @@ msgstr ""
 #. type: Plain text
 #: ippeveprinter.1:226
 msgid ""
-"Unless they communicate directly with a printer, print commands send "
-"printer-ready data to the standard output."
+"Unless they communicate directly with a printer, print commands send printer-"
+"ready data to the standard output."
 msgstr ""
 
 #. type: Plain text
@@ -8458,9 +8439,9 @@ msgstr ""
 #. type: Plain text
 #: ippeveprinter.1:234
 msgid ""
-"Sets the named attribute(s) to the given values.  Currently only the "
-"\"job-impressions\" and \"job-impressions-completed\" Job Status attributes "
-"and the \"marker-xxx\", \"printer-alert\", \"printer-alert-description\", "
+"Sets the named attribute(s) to the given values.  Currently only the \"job-"
+"impressions\" and \"job-impressions-completed\" Job Status attributes and "
+"the \"marker-xxx\", \"printer-alert\", \"printer-alert-description\", "
 "\"printer-supply\", and \"printer-supply-description\" Printer Status "
 "attributes can be set."
 msgstr ""
@@ -8591,15 +8572,15 @@ msgstr ""
 #. type: Plain text
 #: ippfind.1:19
 msgid ""
-"B<ippfind> [ I<options> ] I<regtype>[B<,>I<subtype>][B<.>I<domain>B<.>] "
-"... [ I<expression> ... ]"
+"B<ippfind> [ I<options> ] I<regtype>[B<,>I<subtype>][B<.>I<domain>B<.>] ... "
+"[ I<expression> ... ]"
 msgstr ""
 
 #. type: Plain text
 #: ippfind.1:26
 msgid ""
-"B<ippfind> [ I<options> ] I<name>[B<.>I<regtype>[B<.>I<domain>B<.>]] ... [ "
-"I<expression> ... ]"
+"B<ippfind> [ I<options> ] I<name>[B<.>I<regtype>[B<.>I<domain>B<.>]] ... "
+"[ I<expression> ... ]"
 msgstr ""
 
 #. type: Plain text
@@ -8697,8 +8678,8 @@ msgstr ""
 msgid ""
 "B<ippfind> supports expressions much like the B<find>(1)  utility.  However, "
 "unlike B<find>(1), B<ippfind> uses POSIX regular expressions instead of "
-"shell filename matching patterns.  If I<--exec>, I<-l>, I<--ls>, I<-p>, "
-"I<--print>, I<--print-name>, I<-q>, I<--quiet>, I<-s>, or I<-x> is not "
+"shell filename matching patterns.  If I<--exec>, I<-l>, I<--ls>, I<-p>, I<--"
+"print>, I<--print-name>, I<-q>, I<--quiet>, I<-s>, or I<-x> is not "
 "specified, B<ippfind> adds I<--print> to print the service URI of anything "
 "it finds.  The following expressions are supported:"
 msgstr ""
@@ -9065,8 +9046,8 @@ msgstr ""
 #. type: Plain text
 #: ippfind.1:171 ippfind.1:224
 msgid ""
-"Fully-qualified domain name, e.g., \"printer.example.com.\", "
-"\"printer.local.\", etc."
+"Fully-qualified domain name, e.g., \"printer.example.com.\", \"printer.local."
+"\", etc."
 msgstr ""
 
 #. type: TP
@@ -9128,8 +9109,8 @@ msgstr ""
 #. type: Plain text
 #: ippfind.1:188 ippfind.1:239
 msgid ""
-"URI for service, e.g., \"ipp://printer.local./ipp/print\", "
-"\"http://printer.local./\", etc."
+"URI for service, e.g., \"ipp://printer.local./ipp/print\", \"http://printer."
+"local./\", etc."
 msgstr ""
 
 #. type: TP
@@ -9288,7 +9269,8 @@ msgstr ""
 
 #. type: Plain text
 #: ippfind.1:250
-msgid "Similarly, to send a PostScript test page to every PostScript printer, run:"
+msgid ""
+"Similarly, to send a PostScript test page to every PostScript printer, run:"
 msgstr ""
 
 #. type: Plain text
@@ -9323,25 +9305,24 @@ msgstr ""
 #. type: Plain text
 #: ipptool.1:75
 msgid ""
-"B<ipptool> [ B<--help> ] [ B<--ippserver> I<filename> ] [ "
-"B<--stop-after-include-error> ] [ B<--version> ] [ B<-4> ] [ B<-6> ] [ B<-C> "
-"] [ B<-E> ] [ B<-I> ] [ B<-L> ] [ B<-P> I<filename.plist> ] [ B<-S> ] [ "
-"B<-T> I<seconds> ] [ B<-V> I<version> ] [ B<-X> ] [ B<-c> ] [ B<-d> "
+"B<ipptool> [ B<--help> ] [ B<--ippserver> I<filename> ] [ B<--stop-after-"
+"include-error> ] [ B<--version> ] [ B<-4> ] [ B<-6> ] [ B<-C> ] [ B<-E> ] "
+"[ B<-I> ] [ B<-L> ] [ B<-P> I<filename.plist> ] [ B<-S> ] [ B<-T> "
+"I<seconds> ] [ B<-V> I<version> ] [ B<-X> ] [ B<-c> ] [ B<-d> "
 "I<name=value> ] [ B<-f> I<filename> ] [ B<-h> ] [ B<-i> I<seconds> ] [ B<-n> "
-"I<repeat-count> ] [ B<-q> ] [ B<-t> ] [ B<-v ]> I<printer-uri> I<testfile> [ "
-"...  I<testfile> ]"
+"I<repeat-count> ] [ B<-q> ] [ B<-t> ] [ B<-v ]> I<printer-uri> I<testfile> "
+"[ ...  I<testfile> ]"
 msgstr ""
 
 #. type: Plain text
 #: ipptool.1:88
 msgid ""
-"B<ipptool> sends IPP requests to the specified I<printer-uri> and tests "
-"and/or displays the results.  Each named I<testfile> defines one or more "
+"B<ipptool> sends IPP requests to the specified I<printer-uri> and tests and/"
+"or displays the results.  Each named I<testfile> defines one or more "
 "requests, including the expected response status, attributes, and values.  "
 "Output is either a plain text, formatted text, CSV, or XML report on the "
 "standard output, with a non-zero exit status indicating that one or more "
-"tests have failed.  The I<testfile> format is described in "
-"B<ipptoolfile>(5)."
+"tests have failed.  The I<testfile> format is described in B<ipptoolfile>(5)."
 msgstr ""
 
 #. type: Plain text
@@ -9387,12 +9368,14 @@ msgstr ""
 
 #. type: Plain text
 #: ipptool.1:116
-msgid "Specifies that B<ipptool> must connect to the printer or server using IPv4."
+msgid ""
+"Specifies that B<ipptool> must connect to the printer or server using IPv4."
 msgstr ""
 
 #. type: Plain text
 #: ipptool.1:121
-msgid "Specifies that B<ipptool> must connect to the printer or server using IPv6."
+msgid ""
+"Specifies that B<ipptool> must connect to the printer or server using IPv6."
 msgstr ""
 
 #. type: TP
@@ -9404,18 +9387,18 @@ msgstr ""
 #. type: Plain text
 #: ipptool.1:125
 msgid ""
-"Specifies that requests should be sent using the HTTP/1.1 "
-"\"Transfer-Encoding: chunked\" header, which is required for conformance by "
-"all versions of IPP.  The default is to use \"Transfer-Encoding: chunked\" "
-"for requests with attached files and \"Content-Length:\" for requests "
-"without attached files."
+"Specifies that requests should be sent using the HTTP/1.1 \"Transfer-"
+"Encoding: chunked\" header, which is required for conformance by all "
+"versions of IPP.  The default is to use \"Transfer-Encoding: chunked\" for "
+"requests with attached files and \"Content-Length:\" for requests without "
+"attached files."
 msgstr ""
 
 #. type: Plain text
 #: ipptool.1:128
 msgid ""
-"Forces TLS encryption when connecting to the server using the HTTP "
-"\"Upgrade\" header."
+"Forces TLS encryption when connecting to the server using the HTTP \"Upgrade"
+"\" header."
 msgstr ""
 
 #. type: TP
@@ -9438,11 +9421,10 @@ msgstr ""
 #. type: Plain text
 #: ipptool.1:137
 msgid ""
-"Specifies that requests should be sent using the HTTP/1.0 "
-"\"Content-Length:\" header, which is required for conformance by all "
-"versions of IPP.  The default is to use \"Transfer-Encoding: chunked\" for "
-"requests with attached files and \"Content-Length:\" for requests without "
-"attached files."
+"Specifies that requests should be sent using the HTTP/1.0 \"Content-Length:"
+"\" header, which is required for conformance by all versions of IPP.  The "
+"default is to use \"Transfer-Encoding: chunked\" for requests with attached "
+"files and \"Content-Length:\" for requests without attached files."
 msgstr ""
 
 #. type: TP
@@ -9662,7 +9644,8 @@ msgstr ""
 
 #. type: Plain text
 #: ipptool.1:241
-msgid "Send email notifications to \"user@example.com\" when \"myprinter\" changes:"
+msgid ""
+"Send email notifications to \"user@example.com\" when \"myprinter\" changes:"
 msgstr ""
 
 #. type: Plain text
@@ -9670,17 +9653,15 @@ msgstr ""
 #, no-wrap
 msgid ""
 "    ipptool -d recipient=mailto:user@example.com \\e\n"
-"        ipp://localhost/printers/myprinter "
-"create-printer-subscription.test\n"
+"        ipp://localhost/printers/myprinter create-printer-subscription.test\n"
 msgstr ""
 
 #. type: Plain text
 #: ipptool.1:251
 msgid ""
-"B<ipptoolfile>(5), IANA IPP Registry "
-"(http://www.iana.org/assignments/ipp-registrations), PWG Internet Printing "
-"Protocol Workgroup (http://www.pwg.org/ipp)  RFC 8011 "
-"(http://tools.ietf.org/html/rfc8011),"
+"B<ipptoolfile>(5), IANA IPP Registry (http://www.iana.org/assignments/ipp-"
+"registrations), PWG Internet Printing Protocol Workgroup (http://www.pwg.org/"
+"ipp)  RFC 8011 (http://tools.ietf.org/html/rfc8011),"
 msgstr ""
 
 #. type: TH
@@ -9909,8 +9890,8 @@ msgstr ""
 #: ipptoolfile.5:113
 msgid ""
 "Includes another test file. The first form includes a file relative to the "
-"current test file, while the second form includes a file from the "
-"B<ipptool>(8)  include directory."
+"current test file, while the second form includes a file from the B<ipptool>"
+"(8)  include directory."
 msgstr ""
 
 #. type: TP
@@ -9986,7 +9967,8 @@ msgstr ""
 
 #. type: Plain text
 #: ipptoolfile.5:137
-msgid "Specifies whether tests will be stopped after an error in an included file."
+msgid ""
+"Specifies whether tests will be stopped after an error in an included file."
 msgstr ""
 
 #. type: TP
@@ -10028,9 +10010,9 @@ msgstr ""
 #: ipptoolfile.5:150
 msgid ""
 "Specifies that tests will, by default, use the HTTP/1.0 \"Content-Length:\" "
-"header. This is equivalent to specifying I<-l> on the B<ipptool>(8)  "
-"command-line. Support for content length requests is required for "
-"conformance with all versions of IPP."
+"header. This is equivalent to specifying I<-l> on the B<ipptool>(8)  command-"
+"line. Support for content length requests is required for conformance with "
+"all versions of IPP."
 msgstr ""
 
 #. type: TP
@@ -10065,7 +10047,8 @@ msgstr ""
 
 #. type: Plain text
 #: ipptoolfile.5:161
-msgid "Specifies the default IPP version number to use for the tests that follow."
+msgid ""
+"Specifies the default IPP version number to use for the tests that follow."
 msgstr ""
 
 #. type: SS
@@ -10104,9 +10087,7 @@ msgstr ""
 #. type: TP
 #: ipptoolfile.5:171
 #, no-wrap
-msgid ""
-"B<ATTR collection >I<attribute-name >B<{ MEMBER >I<tag member-name value(s) "
-"... >B<}> [ I<... >B<,{ >I<... >B<} >]"
+msgid "B<ATTR collection >I<attribute-name >B<{ MEMBER >I<tag member-name value(s) ... >B<}> [ I<... >B<,{ >I<... >B<} >]"
 msgstr ""
 
 #. type: Plain text
@@ -10190,12 +10171,11 @@ msgstr ""
 #. type: Plain text
 #: ipptoolfile.5:198
 msgid ""
-"Specifies that the response must/may/must not include the named "
-"attribute. Additional requirements can be added as predicates - see the "
-"\"EXPECT PREDICATES\" section for more information on predicates. Attribute "
-"names can specify member attributes by separating the attribute and member "
-"names with the forward slash, for example "
-"\"media-col/media-size/x-dimension\"."
+"Specifies that the response must/may/must not include the named attribute. "
+"Additional requirements can be added as predicates - see the \"EXPECT "
+"PREDICATES\" section for more information on predicates. Attribute names can "
+"specify member attributes by separating the attribute and member names with "
+"the forward slash, for example \"media-col/media-size/x-dimension\"."
 msgstr ""
 
 #. type: TP
@@ -10311,9 +10291,9 @@ msgstr ""
 #. type: Plain text
 #: ipptoolfile.5:235
 msgid ""
-"Specifies an alternate resource path that is used for the HTTP POST "
-"request. The default is the resource from the URI provided to the "
-"B<ipptool>(8)  program."
+"Specifies an alternate resource path that is used for the HTTP POST request. "
+"The default is the resource from the URI provided to the B<ipptool>(8)  "
+"program."
 msgstr ""
 
 #. type: Plain text
@@ -10377,13 +10357,14 @@ msgstr ""
 #. type: Plain text
 #: ipptoolfile.5:259
 msgid ""
-"Specifies that this test will use the HTTP/1.1 \"Transfer-Encoding: "
-"chunked\" header."
+"Specifies that this test will use the HTTP/1.1 \"Transfer-Encoding: chunked"
+"\" header."
 msgstr ""
 
 #. type: Plain text
 #: ipptoolfile.5:262
-msgid "Specifies that this test will use the HTTP/1.0 \"Content-Length:\" header."
+msgid ""
+"Specifies that this test will use the HTTP/1.0 \"Content-Length:\" header."
 msgstr ""
 
 #. type: Plain text
@@ -10412,7 +10393,8 @@ msgstr ""
 
 #. type: Plain text
 #: ipptoolfile.5:278
-msgid "Requires the B<EXPECT> attribute to have the specified number of values."
+msgid ""
+"Requires the B<EXPECT> attribute to have the specified number of values."
 msgstr ""
 
 #. type: TP
@@ -10424,8 +10406,8 @@ msgstr ""
 #. type: Plain text
 #: ipptoolfile.5:281
 msgid ""
-"Defines the variable to \"1\" when the B<EXPECT> condition matches. A "
-"side-effect of this predicate is that this B<EXPECT> will never fail a test."
+"Defines the variable to \"1\" when the B<EXPECT> condition matches. A side-"
+"effect of this predicate is that this B<EXPECT> will never fail a test."
 msgstr ""
 
 #. type: TP
@@ -10500,7 +10482,8 @@ msgstr ""
 
 #. type: Plain text
 #: ipptoolfile.5:299
-msgid "Requires the B<EXPECT> attribute to use one of the specified value tag(s)."
+msgid ""
+"Requires the B<EXPECT> attribute to use one of the specified value tag(s)."
 msgstr ""
 
 #. type: TP
@@ -10580,8 +10563,8 @@ msgstr ""
 #. type: Plain text
 #: ipptoolfile.5:321
 msgid ""
-"Requires that all URI values contain a matching resource (including leading "
-"/)."
+"Requires that all URI values contain a matching resource (including "
+"leading /)."
 msgstr ""
 
 #. type: TP
@@ -10675,8 +10658,8 @@ msgstr ""
 #: ipptoolfile.5:346
 msgid ""
 "Requires that all values of the B<EXPECT> attribute match the regular "
-"expression, which must conform to the POSIX regular expression "
-"syntax. Comparisons are case-sensitive."
+"expression, which must conform to the POSIX regular expression syntax. "
+"Comparisons are case-sensitive."
 msgstr ""
 
 #. type: TP
@@ -10820,9 +10803,9 @@ msgstr ""
 #: ipptoolfile.5:385
 msgid ""
 "Requires that the value(s) of the B<EXPECT> attribute matches the value(s) "
-"in the specified attribute.  For example, \"EXPECT job-sheets "
-"WITH-VALUE-FROM job-sheets-supported\" requires that the \"job-sheets\" "
-"value is listed as a value of the \"job-sheets-supported\" attribute."
+"in the specified attribute.  For example, \"EXPECT job-sheets WITH-VALUE-"
+"FROM job-sheets-supported\" requires that the \"job-sheets\" value is listed "
+"as a value of the \"job-sheets-supported\" attribute."
 msgstr ""
 
 #. type: SS
@@ -10848,8 +10831,8 @@ msgstr ""
 #. type: Plain text
 #: ipptoolfile.5:393
 msgid ""
-"Defines the variable to \"1\" when the B<STATUS> does not match. A "
-"side-effect of this predicate is that this B<STATUS> will never fail a test."
+"Defines the variable to \"1\" when the B<STATUS> does not match. A side-"
+"effect of this predicate is that this B<STATUS> will never fail a test."
 msgstr ""
 
 #. type: Plain text
@@ -10859,20 +10842,21 @@ msgstr ""
 
 #. type: Plain text
 #: ipptoolfile.5:399
-msgid "Makes the B<STATUS> apply only if the specified variable is not defined."
+msgid ""
+"Makes the B<STATUS> apply only if the specified variable is not defined."
 msgstr ""
 
 #. type: Plain text
 #: ipptoolfile.5:403
-msgid "Specifies the maximum number of times to repeat. The default value is 1000."
+msgid ""
+"Specifies the maximum number of times to repeat. The default value is 1000."
 msgstr ""
 
 #. type: Plain text
 #: ipptoolfile.5:408
 msgid ""
-"Specifies that the current test should be repeated when the response "
-"status-code matches or does not match the value specified by the STATUS "
-"directive."
+"Specifies that the current test should be repeated when the response status-"
+"code matches or does not match the value specified by the STATUS directive."
 msgstr ""
 
 #. type: SS
@@ -11111,9 +11095,9 @@ msgstr ""
 #: ipptoolfile.5:590
 msgid ""
 "The B<ipptool>(8)  program maintains a list of variables that can be used in "
-"any literal string or attribute value by specifying "
-"\"I<$variable-name>\". Aside from variables defined using the I<-d> option "
-"or B<DEFINE> directive, the following pre-defined variables are available:"
+"any literal string or attribute value by specifying \"I<$variable-name>\". "
+"Aside from variables defined using the I<-d> option or B<DEFINE> directive, "
+"the following pre-defined variables are available:"
 msgstr ""
 
 #. type: TP
@@ -11149,8 +11133,8 @@ msgstr ""
 #. type: Plain text
 #: ipptoolfile.5:599
 msgid ""
-"Inserts the current date and time using the ISO-8601 format "
-"(\"yyyy-mm-ddThh:mm:ssZ\")."
+"Inserts the current date and time using the ISO-8601 format (\"yyyy-mm-ddThh:"
+"mm:ssZ\")."
 msgstr ""
 
 #. type: TP
@@ -11162,8 +11146,8 @@ msgstr ""
 #. type: Plain text
 #: ipptoolfile.5:602
 msgid ""
-"Inserts the starting date and time using the ISO-8601 format "
-"(\"yyyy-mm-ddThh:mm:ssZ\")."
+"Inserts the starting date and time using the ISO-8601 format (\"yyyy-mm-"
+"ddThh:mm:ssZ\")."
 msgstr ""
 
 #. type: TP
@@ -11309,10 +11293,9 @@ msgstr ""
 #. type: Plain text
 #: ipptoolfile.5:654
 msgid ""
-"B<ipptool>(1), IANA IPP Registry "
-"(http://www.iana.org/assignments/ipp-registrations), PWG Internet Printing "
-"Protocol Workgroup (http://www.pwg.org/ipp), RFC 8011 "
-"(http://tools.ietf.org/html/rfc8011)"
+"B<ipptool>(1), IANA IPP Registry (http://www.iana.org/assignments/ipp-"
+"registrations), PWG Internet Printing Protocol Workgroup (http://www.pwg.org/"
+"ipp), RFC 8011 (http://tools.ietf.org/html/rfc8011)"
 msgstr ""
 
 #. type: TH
@@ -11329,20 +11312,20 @@ msgstr ""
 #. type: Plain text
 #: lp.1:52
 msgid ""
-"B<lp> [ B<-E> ] [ B<-U> I<username> ] [ B<-c> ] [ B<-d "
-">I<destination>[B</>I<instance>] ] [ B<-h >I<hostname>[B<:>I<port>] ] [ "
-"B<-m> ] [ B<-n> I<num-copies> ] [ B<-o >I<option>[B<=>I<value>] ] [ B<-q> "
-"I<priority> ] [ B<-s> ] [ B<-t> I<title> ] [ B<-H> I<handling> ] [ B<-P> "
-"I<page-list> ] [ B<--> ] [ I<file(s)> ]"
+"B<lp> [ B<-E> ] [ B<-U> I<username> ] [ B<-c> ] [ B<-d >I<destination>[B</"
+">I<instance>] ] [ B<-h >I<hostname>[B<:>I<port>] ] [ B<-m> ] [ B<-n> I<num-"
+"copies> ] [ B<-o >I<option>[B<=>I<value>] ] [ B<-q> I<priority> ] [ B<-s> ] "
+"[ B<-t> I<title> ] [ B<-H> I<handling> ] [ B<-P> I<page-list> ] [ B<--> ] "
+"[ I<file(s)> ]"
 msgstr ""
 
 #. type: Plain text
 #: lp.1:84
 msgid ""
-"B<lp> [ B<-E> ] [ B<-U> I<username> ] [ B<-c> ] [ B<-h "
-">I<hostname>[B<:>I<port>] ] [ B<-i> I<job-id> ] [ B<-n> I<num-copies> ] [ "
-"B<-o >I<option>[B<=>I<value>] ] [ B<-q> I<priority> ] [ B<-t> I<title> ] [ "
-"B<-H> I<handling> ] [ B<-P> I<page-list> ]"
+"B<lp> [ B<-E> ] [ B<-U> I<username> ] [ B<-c> ] [ B<-h >I<hostname>[B<:"
+">I<port>] ] [ B<-i> I<job-id> ] [ B<-n> I<num-copies> ] [ B<-o >I<option>"
+"[B<=>I<value>] ] [ B<-q> I<priority> ] [ B<-t> I<title> ] [ B<-H> "
+"I<handling> ] [ B<-P> I<page-list> ]"
 msgstr ""
 
 #. type: Plain text
@@ -11712,8 +11695,8 @@ msgstr ""
 #. type: Plain text
 #: lp.1:228
 msgid ""
-"B<cancel>(1), B<lpadmin>(8), B<lpoptions>(1), B<lpq>(1), B<lpr>(1), "
-"B<lprm>(1), B<lpstat>(1), CUPS Online Help (http://localhost:631/help)"
+"B<cancel>(1), B<lpadmin>(8), B<lpoptions>(1), B<lpq>(1), B<lpr>(1), B<lprm>"
+"(1), B<lpstat>(1), CUPS Online Help (http://localhost:631/help)"
 msgstr ""
 
 #. type: TH
@@ -11766,9 +11749,9 @@ msgstr ""
 #: lpadmin.8:68
 msgid ""
 "The first form of the command (I<-d>) sets the default printer or class to "
-"I<destination>.  Subsequent print jobs submitted via the B<lp>(1)  or "
-"B<lpr>(1)  commands will use this destination unless the user specifies "
-"otherwise with the B<lpoptions>(1)  command."
+"I<destination>.  Subsequent print jobs submitted via the B<lp>(1)  or B<lpr>"
+"(1)  commands will use this destination unless the user specifies otherwise "
+"with the B<lpoptions>(1)  command."
 msgstr ""
 
 #. type: Plain text
@@ -11808,12 +11791,12 @@ msgstr ""
 #: lpadmin.8:87
 msgid ""
 "Sets a standard PPD file for the printer from the I<model> directory or "
-"using one of the driver interfaces.  Use the I<-m> option with the "
-"B<lpinfo>(8)  command to get a list of supported models.  The model \"raw\" "
-"clears any existing PPD file and the model \"everywhere\" queries the "
-"printer referred to by the specified IPP I<device-uri>.  Note: Models other "
-"than \"everywhere\" are deprecated and will not be supported in a future "
-"version of CUPS."
+"using one of the driver interfaces.  Use the I<-m> option with the B<lpinfo>"
+"(8)  command to get a list of supported models.  The model \"raw\" clears "
+"any existing PPD file and the model \"everywhere\" queries the printer "
+"referred to by the specified IPP I<device-uri>.  Note: Models other than "
+"\"everywhere\" are deprecated and will not be supported in a future version "
+"of CUPS."
 msgstr ""
 
 #. type: TP
@@ -11847,7 +11830,8 @@ msgstr ""
 
 #. type: Plain text
 #: lpadmin.8:97
-msgid "Specifies whether SNMP supply level (RFC 3805) values should be reported."
+msgid ""
+"Specifies whether SNMP supply level (RFC 3805) values should be reported."
 msgstr ""
 
 #. type: TP
@@ -11915,8 +11899,8 @@ msgstr ""
 #. type: Plain text
 #: lpadmin.8:120
 msgid ""
-"Sets a PPD option for the printer.  PPD options can be listed using the "
-"I<-l> option with the B<lpoptions>(1)  command."
+"Sets a PPD option for the printer.  PPD options can be listed using the I<-"
+"l> option with the B<lpoptions>(1)  command."
 msgstr ""
 
 #. type: TP
@@ -11942,8 +11926,8 @@ msgstr ""
 #. type: Plain text
 #: lpadmin.8:129
 msgid ""
-"Sets the binary communications program to use when printing, \"none\", "
-"\"bcp\", or \"tbcp\".  The default program is \"none\".  The specified port "
+"Sets the binary communications program to use when printing, \"none\", \"bcp"
+"\", or \"tbcp\".  The default program is \"none\".  The specified port "
 "monitor must be listed in the printer's PPD file."
 msgstr ""
 
@@ -11980,11 +11964,10 @@ msgstr ""
 #. type: Plain text
 #: lpadmin.8:142
 msgid ""
-"Sets the destination to shared/published or unshared/unpublished.  "
-"Shared/published destinations are publicly announced by the server on the "
-"LAN based on the browsing configuration in I<cupsd.conf>, while "
-"unshared/unpublished destinations are not announced.  The default value is "
-"\"true\"."
+"Sets the destination to shared/published or unshared/unpublished.  Shared/"
+"published destinations are publicly announced by the server on the LAN based "
+"on the browsing configuration in I<cupsd.conf>, while unshared/unpublished "
+"destinations are not announced.  The default value is \"true\"."
 msgstr ""
 
 #. type: TP
@@ -12054,9 +12037,9 @@ msgstr ""
 msgid ""
 "Sets user-level access control on a destination.  Names starting with \"@\" "
 "are interpreted as UNIX groups.  The latter two forms turn user-level access "
-"control off.  Note: The user 'root' is not granted special access - using "
-"\"-u allow:foo,bar\" will allow users 'foo' and 'bar' to access the printer "
-"but NOT 'root'."
+"control off.  Note: The user 'root' is not granted special access - using \"-"
+"u allow:foo,bar\" will allow users 'foo' and 'bar' to access the printer but "
+"NOT 'root'."
 msgstr ""
 
 #. type: TP
@@ -12089,8 +12072,8 @@ msgstr ""
 msgid ""
 "When specified before the B<-d>, B<-p>, or B<-x> options, forces the use of "
 "TLS encryption on the connection to the scheduler.  Otherwise, enables the "
-"destination and accepts jobs; this is the same as running the "
-"B<cupsaccept>(8)  and B<cupsenable>(8)  programs on the destination."
+"destination and accepts jobs; this is the same as running the B<cupsaccept>"
+"(8)  and B<cupsenable>(8)  programs on the destination."
 msgstr ""
 
 #. type: TP
@@ -12160,7 +12143,8 @@ msgstr ""
 
 #. type: Plain text
 #: lpadmin.8:213
-msgid "The double meaning of the B<-E> option is an unfortunate historical oddity."
+msgid ""
+"The double meaning of the B<-E> option is an unfortunate historical oddity."
 msgstr ""
 
 #. type: Plain text
@@ -12181,9 +12165,7 @@ msgstr ""
 #. type: Plain text
 #: lpadmin.8:222
 #, no-wrap
-msgid ""
-"    lpadmin -p myprinter -E -v ipp://myprinter.local/ipp/print -m "
-"everywhere\n"
+msgid "    lpadmin -p myprinter -E -v ipp://myprinter.local/ipp/print -m everywhere\n"
 msgstr ""
 
 #. type: Plain text
@@ -12301,8 +12283,8 @@ msgstr ""
 #: lpc.8:57
 msgid ""
 "B<cancel>(1), B<cupsaccept>(8), B<cupsenable>(8), B<lp>(1), B<lpadmin>(8), "
-"B<lpr>(1), B<lprm>(1), B<lpstat>(1), CUPS Online Help "
-"(http://localhost:631/help)"
+"B<lpr>(1), B<lprm>(1), B<lpstat>(1), CUPS Online Help (http://localhost:631/"
+"help)"
 msgstr ""
 
 #. type: TH
@@ -12319,18 +12301,18 @@ msgstr ""
 #. type: Plain text
 #: lpinfo.8:41
 msgid ""
-"B<lpinfo> [ B<-E> ] [ B<-h >I<server>[B<:>I<port>] ] [ B<-l> ] [ "
-"B<--device-id> I<device-id-string> ] [ B<--exclude-schemes> I<scheme-list> ] "
-"[ B<--include-schemes> I<scheme-list> ] [ B<--language> I<locale> ] [ "
-"B<--make-and-model> I<name> ] [ B<--product> I<name> ] B<-m>"
+"B<lpinfo> [ B<-E> ] [ B<-h >I<server>[B<:>I<port>] ] [ B<-l> ] [ B<--device-"
+"id> I<device-id-string> ] [ B<--exclude-schemes> I<scheme-list> ] [ B<--"
+"include-schemes> I<scheme-list> ] [ B<--language> I<locale> ] [ B<--make-and-"
+"model> I<name> ] [ B<--product> I<name> ] B<-m>"
 msgstr ""
 
 #. type: Plain text
 #: lpinfo.8:60
 msgid ""
-"B<lpinfo> [ B<-E> ] [ B<-h >I<server>[B<:>I<port>] ] [ B<-l> ] [ "
-"B<--exclude-schemes> I<scheme-list> ] [ B<--include-schemes> I<scheme-list> "
-"] [ B<--timeout> I<seconds> ] B<-v>"
+"B<lpinfo> [ B<-E> ] [ B<-h >I<server>[B<:>I<port>] ] [ B<-l> ] [ B<--exclude-"
+"schemes> I<scheme-list> ] [ B<--include-schemes> I<scheme-list> ] [ B<--"
+"timeout> I<seconds> ] B<-v>"
 msgstr ""
 
 #. type: Plain text
@@ -12365,8 +12347,8 @@ msgstr ""
 #. type: Plain text
 #: lpinfo.8:77
 msgid ""
-"Specifies the IEEE-1284 device ID to match when listing drivers with the "
-"I<-m> option."
+"Specifies the IEEE-1284 device ID to match when listing drivers with the I<-"
+"m> option."
 msgstr ""
 
 #. type: TP
@@ -12403,7 +12385,8 @@ msgstr ""
 
 #. type: Plain text
 #: lpinfo.8:88
-msgid "Specifies the language to match when listing drivers with the I<-m> option."
+msgid ""
+"Specifies the language to match when listing drivers with the I<-m> option."
 msgstr ""
 
 #. type: TP
@@ -12427,7 +12410,8 @@ msgstr ""
 
 #. type: Plain text
 #: lpinfo.8:94
-msgid "Specifies the product to match when listing drivers with the I<-m> option."
+msgid ""
+"Specifies the product to match when listing drivers with the I<-m> option."
 msgstr ""
 
 #. type: TP
@@ -12580,8 +12564,8 @@ msgstr ""
 #. type: Plain text
 #: lpoptions.1:24
 msgid ""
-"B<lpoptions> [ B<-E> ] [ B<-h >I<server>[B<:>I<port>] ] B<-d "
-">I<destination>[B</>I<instance>] [ B<-l> ]"
+"B<lpoptions> [ B<-E> ] [ B<-h >I<server>[B<:>I<port>] ] B<-d >I<destination>"
+"[B</>I<instance>] [ B<-l> ]"
 msgstr ""
 
 #. type: Plain text
@@ -12601,8 +12585,8 @@ msgstr ""
 #. type: Plain text
 #: lpoptions.1:53
 msgid ""
-"B<lpoptions> [ B<-E> ] [ B<-h >I<server>[B<:>I<port>] ] B<-x "
-">I<destination>[B</>I<instance>]"
+"B<lpoptions> [ B<-E> ] [ B<-h >I<server>[B<:>I<port>] ] B<-x >I<destination>"
+"[B</>I<instance>]"
 msgstr ""
 
 #. type: Plain text
@@ -12722,8 +12706,7 @@ msgstr ""
 #. type: Plain text
 #: lpoptions.1:106
 msgid ""
-"I<~/.cups/lpoptions> - user defaults and instances created by non-root "
-"users."
+"I<~/.cups/lpoptions> - user defaults and instances created by non-root users."
 msgstr ""
 
 #. type: Plain text
@@ -12759,9 +12742,8 @@ msgstr ""
 #. type: Plain text
 #: lpq.1:31
 msgid ""
-"B<lpq> [ B<-E> ] [ B<-U> I<username> ] [ B<-h >I<server>[B<:>I<port>] ] [ "
-"B<-P >I<destination>[B</>I<instance>] ] [ B<-a> ] [ B<-l> ] [ "
-"B<+>I<interval> ]"
+"B<lpq> [ B<-E> ] [ B<-U> I<username> ] [ B<-h >I<server>[B<:>I<port>] ] [ B<-"
+"P >I<destination>[B</>I<instance>] ] [ B<-a> ] [ B<-l> ] [ B<+>I<interval> ]"
 msgstr ""
 
 #. type: Plain text
@@ -12827,11 +12809,10 @@ msgstr ""
 #. type: Plain text
 #: lpr.1:53
 msgid ""
-"B<lpr> [ B<-E> ] [ B<-H >I<server>[B<:>I<port>] ] [ B<-U> I<username> ] [ "
-"B<-P >I<destination>[B</>I<instance>] ] [ B<-#> I<num-copies> [ B<-h> ] [ "
-"B<-l> ] [ B<-m> ] [ B<-o >I<option>[B<=>I<value>] ] [ B<-p> ] [ B<-q> ] [ "
-"B<-r> ] [ B<-C> I<title> ] [ B<-J> I<title> ] [ B<-T> I<title> ] [ "
-"I<file(s)> ]"
+"B<lpr> [ B<-E> ] [ B<-H >I<server>[B<:>I<port>] ] [ B<-U> I<username> ] [ B<-"
+"P >I<destination>[B</>I<instance>] ] [ B<-#> I<num-copies> [ B<-h> ] [ B<-"
+"l> ] [ B<-m> ] [ B<-o >I<option>[B<=>I<value>] ] [ B<-p> ] [ B<-q> ] [ B<-"
+"r> ] [ B<-C> I<title> ] [ B<-J> I<title> ] [ B<-T> I<title> ] [ I<file(s)> ]"
 msgstr ""
 
 #. type: Plain text
@@ -12886,8 +12867,7 @@ msgstr ""
 #. type: Plain text
 #: lpr.1:91
 msgid ""
-"Disables banner printing. This option is equivalent to I<-o "
-"job-sheets=none>."
+"Disables banner printing. This option is equivalent to I<-o job-sheets=none>."
 msgstr ""
 
 #. type: Plain text
@@ -12911,8 +12891,8 @@ msgstr ""
 #: lpr.1:106
 msgid ""
 "Specifies that the print file should be formatted with a shaded header with "
-"the date, time, job name, and page number.  This option is equivalent to "
-"I<-o prettyprint> and is only useful when printing text files."
+"the date, time, job name, and page number.  This option is equivalent to I<-"
+"o prettyprint> and is only useful when printing text files."
 msgstr ""
 
 #. type: Plain text
@@ -12923,8 +12903,7 @@ msgstr ""
 #. type: Plain text
 #: lpr.1:112
 msgid ""
-"Specifies that the named print files should be deleted after submitting "
-"them."
+"Specifies that the named print files should be deleted after submitting them."
 msgstr ""
 
 #. type: Plain text
@@ -12960,8 +12939,8 @@ msgstr ""
 #. type: Plain text
 #: lpr.1:180
 msgid ""
-"B<cancel>(1), B<lp>(1), B<lpadmin>(8), B<lpoptions>(1), B<lpq>(1), "
-"B<lprm>(1), B<lpstat>(1), CUPS Online Help (http://localhost:631/help)"
+"B<cancel>(1), B<lp>(1), B<lpadmin>(8), B<lpoptions>(1), B<lpq>(1), B<lprm>"
+"(1), B<lpstat>(1), CUPS Online Help (http://localhost:631/help)"
 msgstr ""
 
 #. type: TH
@@ -12978,8 +12957,8 @@ msgstr ""
 #. type: Plain text
 #: lprm.1:31
 msgid ""
-"B<lprm> [ B<-E> ] [ B<-U> I<username> ] [ B<-h> I<server>[I<:port>] ] [ "
-"B<-P> I<destination>[I</instance>] ] [ B<-> ] [ I<job-id(s)> ]"
+"B<lprm> [ B<-E> ] [ B<-U> I<username> ] [ B<-h> I<server>[I<:port>] ] [ B<-"
+"P> I<destination>[I</instance>] ] [ B<-> ] [ I<job-id(s)> ]"
 msgstr ""
 
 #. type: Plain text
@@ -13069,11 +13048,11 @@ msgstr ""
 #. type: Plain text
 #: lpstat.1:65
 msgid ""
-"B<lpstat> [ B<-E> ] [ B<-H> ] [ B<-U> I<username> ] [ B<-h "
-">I<hostname>[B<:>I<port>] ] [ B<-l> ] [ B<-W> I<which-jobs> ] [ B<-a> [ "
-"I<destination(s)> ] ] [ B<-c> [ I<class(es)> ] ] [ B<-d> ] [ B<-e> ] [ B<-o> "
-"[ I<destination(s)> ] ] [ B<-p> [ I<printer(s)> ] ] [ B<-r> ] [ B<-R> ] [ "
-"B<-s> ] [ B<-t> ] [ B<-u> [ I<user(s)> ] ] [ B<-v> [ I<printer(s)> ] ]"
+"B<lpstat> [ B<-E> ] [ B<-H> ] [ B<-U> I<username> ] [ B<-h >I<hostname>[B<:"
+">I<port>] ] [ B<-l> ] [ B<-W> I<which-jobs> ] [ B<-a> [ I<destination(s)"
+"> ] ] [ B<-c> [ I<class(es)> ] ] [ B<-d> ] [ B<-e> ] [ B<-o> [ I<destination"
+"(s)> ] ] [ B<-p> [ I<printer(s)> ] ] [ B<-r> ] [ B<-R> ] [ B<-s> ] [ B<-t> ] "
+"[ B<-u> [ I<user(s)> ] ] [ B<-v> [ I<printer(s)> ] ]"
 msgstr ""
 
 #. type: Plain text
@@ -13320,9 +13299,8 @@ msgstr ""
 #: mailto.conf.5:32
 msgid ""
 "Specifies the sendmail command to use when sending email notifications.  "
-"Only one I<Sendmail> or I<SMTPServer> line may be present in the "
-"B<mailto.conf> file.  If multiple lines are present, only the last one is "
-"used."
+"Only one I<Sendmail> or I<SMTPServer> line may be present in the B<mailto."
+"conf> file.  If multiple lines are present, only the last one is used."
 msgstr ""
 
 #. type: TP
@@ -13347,7 +13325,8 @@ msgstr ""
 
 #. type: Plain text
 #: mailto.conf.5:40
-msgid "Specifies a prefix string for the subject line of an email notification."
+msgid ""
+"Specifies a prefix string for the subject line of an email notification."
 msgstr ""
 
 #. type: Plain text
@@ -13442,15 +13421,14 @@ msgstr ""
 
 #. type: Plain text
 #: mime.convs.5:45
-msgid "Define a filter that converts PostScript documents to CUPS Raster format:"
+msgid ""
+"Define a filter that converts PostScript documents to CUPS Raster format:"
 msgstr ""
 
 #. type: Plain text
 #: mime.convs.5:48
 #, no-wrap
-msgid ""
-"    application/vnd.cups-postscript application/vnd.cups-raster 50 "
-"pstoraster\n"
+msgid "    application/vnd.cups-postscript application/vnd.cups-raster 50 pstoraster\n"
 msgstr ""
 
 #. type: Plain text
@@ -13496,8 +13474,7 @@ msgstr ""
 msgid ""
 "Each line in the B<mime.types> file is a comment, blank, or rule line.  "
 "Comment lines start with the # character.  Rule lines start with the MIME "
-"media type and are optionally followed by a series of file recognition "
-"rules:"
+"media type and are optionally followed by a series of file recognition rules:"
 msgstr ""
 
 #. type: Plain text
@@ -13534,8 +13511,8 @@ msgstr ""
 #: mime.types.5:37
 msgid ""
 "The rules may be grouped using parenthesis, joined using \"+\" for a logical "
-"AND, joined using \",\" or whitespace for a logical OR, and negated using "
-"\"!\"."
+"AND, joined using \",\" or whitespace for a logical OR, and negated using \"!"
+"\"."
 msgstr ""
 
 #. type: SS
@@ -13645,7 +13622,8 @@ msgstr ""
 
 #. type: Plain text
 #: mime.types.5:67
-msgid "True if the 16-bit big-endian integer at I<offset> is identical to I<value>."
+msgid ""
+"True if the 16-bit big-endian integer at I<offset> is identical to I<value>."
 msgstr ""
 
 #. type: TP
@@ -13656,7 +13634,8 @@ msgstr ""
 
 #. type: Plain text
 #: mime.types.5:70
-msgid "True if the 32-bit big-endian integer at I<offset> is identical to I<value>."
+msgid ""
+"True if the 32-bit big-endian integer at I<offset> is identical to I<value>."
 msgstr ""
 
 #. type: TP
@@ -13736,8 +13715,7 @@ msgstr ""
 #, no-wrap
 msgid ""
 "    application/vnd.cups-raster  string(0,\"RaSt\") string(0,\"tSaR\") \\e\n"
-"                                  string(0,\"RaS2\") string(0,\"2SaR\") "
-"\\e\n"
+"                                  string(0,\"RaS2\") string(0,\"2SaR\") \\e\n"
 "                                  string(0,\"RaS3\") string(0,\"3SaR\")\n"
 msgstr ""
 
@@ -13746,8 +13724,7 @@ msgstr ""
 #, no-wrap
 msgid ""
 "    image/pwg-raster              string(0,\"RaS2\") + \\e\n"
-"                                  string(4,PwgRasterE<lt>00E<gt>) "
-"priority(150)\n"
+"                                  string(4,PwgRasterE<lt>00E<gt>) priority(150)\n"
 msgstr ""
 
 #. type: Plain text
@@ -13817,10 +13794,10 @@ msgstr ""
 #. type: Plain text
 #: ppdc.1:45
 msgid ""
-"B<ppdc> [ B<-D >I<name>[B<=>I<value>] ] [ B<-I> I<include-directory> ] [ "
-"B<-c> I<message-catalog> ] [ B<-d> I<output-directory> ] [ B<-l> "
-"I<language(s)> ] [ B<-m> ] [ B<-t> ] [ B<-v> ] [ B<-z> ] [ B<--cr> ] [ "
-"B<--crlf> ] [ B<--lf> ] I<source-file>"
+"B<ppdc> [ B<-D >I<name>[B<=>I<value>] ] [ B<-I> I<include-directory> ] [ B<-"
+"c> I<message-catalog> ] [ B<-d> I<output-directory> ] [ B<-l> I<language(s)"
+"> ] [ B<-m> ] [ B<-t> ] [ B<-v> ] [ B<-z> ] [ B<--cr> ] [ B<--crlf> ] [ B<--"
+"lf> ] I<source-file>"
 msgstr ""
 
 #. type: Plain text
@@ -13919,8 +13896,8 @@ msgstr ""
 #: ppdc.1:82
 msgid ""
 "Specifies verbose output, basically a running status of which files are "
-"being loaded or written.  B<-z> Generates compressed PPD files "
-"(filename.ppd.gz).  The default is to generate uncompressed PPD files."
+"being loaded or written.  B<-z> Generates compressed PPD files (filename.ppd."
+"gz).  The default is to generate uncompressed PPD files."
 msgstr ""
 
 #. type: TP
@@ -13987,9 +13964,9 @@ msgstr ""
 #. type: Plain text
 #: ppdcfile.5:21
 msgid ""
-"Printer driver information can be grouped and shared using curly braces ({ "
-"... }); PPD files are written when a close brace or end-of-file is seen and "
-"a PCFileName directive has been defined."
+"Printer driver information can be grouped and shared using curly braces "
+"({ ... }); PPD files are written when a close brace or end-of-file is seen "
+"and a PCFileName directive has been defined."
 msgstr ""
 
 #. type: Plain text
@@ -14129,17 +14106,13 @@ msgstr ""
 #. type: TP
 #: ppdcfile.5:65
 #, no-wrap
-msgid ""
-"B<CustomMedia >I<name width length left bottom right top "
-">B<\">I<size-code>B<\" \">I<region-code>B<\">"
+msgid "B<CustomMedia >I<name width length left bottom right top >B<\">I<size-code>B<\" \">I<region-code>B<\">"
 msgstr ""
 
 #. type: TP
 #: ppdcfile.5:67
 #, no-wrap
-msgid ""
-"B<CustomMedia \">I<name>B</>I<text>B<\" >I<width length left bottom right "
-"top >B<\">I<size-code>B<\" \">I<region-code>B<\">"
+msgid "B<CustomMedia \">I<name>B</>I<text>B<\" >I<width length left bottom right top >B<\">I<size-code>B<\" \">I<region-code>B<\">"
 msgstr ""
 
 #. type: TP
@@ -14331,17 +14304,13 @@ msgstr ""
 #. type: TP
 #: ppdcfile.5:131
 #, no-wrap
-msgid ""
-"B<Resolution >I<colorspace bits-per-color row-count row-feed row-step "
-">B<\">I<name>B</>I<text>B<\">"
+msgid "B<Resolution >I<colorspace bits-per-color row-count row-feed row-step >B<\">I<name>B</>I<text>B<\">"
 msgstr ""
 
 #. type: TP
 #: ppdcfile.5:133
 #, no-wrap
-msgid ""
-"B<SimpleColorProfile >I<resolution>B</>I<mediatype density yellow-density "
-"red-density gamma red-adjust green-adjust blue-adjust>"
+msgid "B<SimpleColorProfile >I<resolution>B</>I<mediatype density yellow-density red-density gamma red-adjust green-adjust blue-adjust>"
 msgstr ""
 
 #. type: TP
@@ -14558,8 +14527,8 @@ msgstr ""
 #. type: Plain text
 #: ppdpo.1:25
 msgid ""
-"B<ppdpo> [ B<-D >I<name>[B<=>I<value>] ] [ B<-I> I<include-directory> ] [ "
-"B<-o> I<output-file> ] I<source-file>"
+"B<ppdpo> [ B<-D >I<name>[B<=>I<value>] ] [ B<-I> I<include-directory> ] [ B<-"
+"o> I<output-file> ] I<source-file>"
 msgstr ""
 
 #. type: Plain text
@@ -14651,4 +14620,49 @@ msgid ""
 "B<classes.conf>(5), B<cups-files.conf>(5), B<cupsd>(8), B<cupsd.conf>(5), "
 "B<mime.convs>(5), B<mime.types>(5), B<printers.conf>(5), CUPS Online Help "
 "(http://localhost:631/help)"
+msgstr ""
+
+#. type: Plain text
+#: cupsd.conf.5:144
+msgid ""
+"Specifies that a failed print job should be retried at a later time unless "
+"otherwise specified for the printer. The 'retry-job' error policy is the "
+"default."
+msgstr ""
+
+#. #FilterLimit
+#. type: Plain text
+#: cupsd.conf.5:148
+msgid ""
+"Specifies that a failed print job should stop the printer unless otherwise "
+"specified for the printer."
+msgstr ""
+
+#. #SystemGroup
+#. type: Plain text
+#: cups-files.conf.5:216
+msgid ""
+"Specifies whether the scheduler calls B<fsync>(2)  after writing "
+"configuration or state files.  The default is \"Yes\"."
+msgstr ""
+
+#. type: Plain text
+#: cups-lpd.8:102
+msgid ""
+"I<Note:> If you are using Solaris 10 or higher, you must run the B<inetdconv>"
+"(1m)  program to register the changes to the I<inetd.conf> file."
+msgstr ""
+
+#. type: Plain text
+#: cups-lpd.8:118
+msgid ""
+"B<cupsd>(8), B<inetd>(8), B<launchd>(8), B<xinetd>(8), CUPS Online Help "
+"(http://localhost:631/help), RFC 2569"
+msgstr ""
+
+#. type: Plain text
+#: ppdc.1:73
+msgid ""
+"Specifies that the output filename should be based on the ModelName value "
+"instead of FileName or PCFilenName."
 msgstr ""
