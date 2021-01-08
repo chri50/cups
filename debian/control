@@ -40,7 +40,7 @@ Build-Conflicts: libgmp-dev (<< 2:6)
 Standards-Version: 4.5.1
 Vcs-Browser: https://salsa.debian.org/printing-team/cups
 Vcs-Git: https://salsa.debian.org/printing-team/cups.git
-Homepage: https://www.cups.org/
+Homepage: https://github.com/OpenPrinting/cups/
 Rules-Requires-Root: no
 
 Package: libcups2
