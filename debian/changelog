@@ -1,3 +1,10 @@
+cups (2.3.3op1-7) unstable; urgency=medium
+
+  [ Helmut Grohne ]
+  * Reduce Build-Depends, move dh_apparmor to B-D-A (Closes: #980104)
+
+ -- Didier Raboud <odyx@debian.org>  Fri, 15 Jan 2021 12:11:30 +0100
+
 cups (2.3.3op1-6) unstable; urgency=medium
 
   [ Till Kamppeter ]
