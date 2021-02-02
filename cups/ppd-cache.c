@@ -1916,8 +1916,10 @@ _ppdCacheCreateWithPPD(ppd_file_t *ppd)	/* I - PPD file */
        ppd_attr = ppdFindNextAttr(ppd, "cupsICCProfile", NULL))
     cupsArrayAdd(pc->support_files, ppd_attr->value);
 
+#ifdef HAVE_APPLICATIONSERVICES_H
   if ((ppd_attr = ppdFindAttr(ppd, "APPrinterIconPath", NULL)) != NULL)
     cupsArrayAdd(pc->support_files, ppd_attr->value);
+#endif
 
  /*
   * Return the cache data...
@@ -3751,6 +3753,8 @@ _ppdCreateFromIPP(char   *buffer,	/* I - Filename buffer */
     int wrote_color = 0;
     const char *default_color = NULL;	/* Default */
 
+    cupsFilePrintf(fp, "*%% ColorModel from %s\n", ippGetName(attr));
+
     for (i = 0, count = ippGetCount(attr); i < count; i ++)
     {
       keyword = ippGetString(attr, i, NULL);
@@ -3800,7 +3804,7 @@ _ppdCreateFromIPP(char   *buffer,	/* I - Filename buffer */
 
         // Apparently some printers only advertise color support, so make sure
         // we also do grayscale for these printers...
-	if (!ippContainsString(attr, "sgray_8") && !ippContainsString(attr, "black_1") && !ippContainsString(attr, "black_8"))
+	if (!ippContainsString(attr, "sgray_8") && !ippContainsString(attr, "black_1") && !ippContainsString(attr, "black_8") && !ippContainsString(attr, "W8") && !ippContainsString(attr, "W8-16"))
 	  PRINTF_COLOROPTION("Gray", _("GrayScale"), CUPS_CSPACE_SW, 8)
       }
       else if (!strcasecmp(keyword, "adobe-rgb_16") || !strcmp(keyword, "ADOBERGB48") || !strcmp(keyword, "ADOBERGB24-48"))

@@ -1,3 +1,13 @@
+cups (2.3.3op2-1) unstable; urgency=medium
+
+  * New OpenPrinting 2.3.3op2 release
+    - CVE-2020-10001: Fixed a buffer (read) overflow in the `ippReadIO`
+      function
+    - Drop 4 patches merged upstream
+  * Update d/copyright authors and years
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 02 Feb 2021 21:20:06 +0100
+
 cups (2.3.3op1-7) unstable; urgency=medium
 
   [ Helmut Grohne ]
