@@ -4,7 +4,7 @@ Uploaders: Didier Raboud <odyx@debian.org>,
            Till Kamppeter <till.kamppeter@gmail.com>
 Section: net
 Priority: optional
-Build-Depends: debhelper-compat (= 12),
+Build-Depends: debhelper-compat (= 13),
                dh-strip-nondeterminism,
                patch,
                autoconf,
