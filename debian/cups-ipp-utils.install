@@ -1,4 +1,4 @@
+tools/ippeveprinter usr/sbin
 usr/bin/ippfind
 usr/bin/ipptool
-tools/ippeveprinter usr/sbin
 usr/share/cups/ipptool/*.test

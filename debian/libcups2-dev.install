@@ -1,6 +1,6 @@
+#../../cups/language-private.h
+#usr/include/cups/i18n.h
 usr/bin/cups-config
-usr/lib/*/libcups.so
-usr/lib/*/libcups.a
 usr/include/cups/adminutil.h
 usr/include/cups/array.h
 usr/include/cups/backend.h
@@ -15,4 +15,5 @@ usr/include/cups/pwg.h
 usr/include/cups/sidechannel.h
 usr/include/cups/transcode.h
 usr/include/cups/versioning.h
-#../../cups/language-private.h usr/include/cups/i18n.h
+usr/lib/*/libcups.a
+usr/lib/*/libcups.so
