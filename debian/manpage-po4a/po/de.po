@@ -1,5 +1,5 @@
 # Translation of cups man pages to German
-# Copyright (C) Helge Kreutzmann <debian@helgefjell.de>, 2008-2020
+# Copyright (C) Helge Kreutzmann <debian@helgefjell.de>, 2008-2021
 # Chris Leick <c.leick@vollbio.de>, 2009.
 # This file is distributed under the same license as the cups package.
 #
@@ -11,8 +11,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 2.3.3op1-2\n"
-"POT-Creation-Date: 2020-11-27 16:31+0100\n"
-"PO-Revision-Date: 2020-12-02 19:50+0100\n"
+"POT-Creation-Date: 2021-02-03 18:08+0100\n"
+"PO-Revision-Date: 2021-02-03 18:15+0100\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
 "Language: de\n"
@@ -29,7 +29,7 @@ msgstr "Backend"
 
 #. type: TH
 #: backend.7:10 cancel.1:10 classes.conf.5:10 client.conf.5:10 cups.1:10
-#: cupsaccept.8:10 cups-config.1:10 cupsctl.8:10 cupsd.8:10 cupsd.conf.5:10
+#: cupsaccept.8:10 cups-config.1:10 cupsctl.8:10 cupsd.8:10 cupsd.conf.5:11
 #: cupsd-helper.8:10 cupsd-logs.5:10 cupsenable.8:10 cups-files.conf.5:11
 #: cupsfilter.8:9 cups-lpd.8:11 cups-snmp.8:9 cups-snmp.conf.5:10
 #: cupstestppd.1:10 filter.7:10 ippevepcl.7:9 ippeveprinter.1:9 ipptool.1:9
@@ -57,7 +57,7 @@ msgstr "26. April 2019"
 
 #. type: TH
 #: backend.7:10 cancel.1:10 classes.conf.5:10 client.conf.5:10 cups.1:10
-#: cupsaccept.8:10 cups-config.1:10 cupsctl.8:10 cupsd.8:10 cupsd.conf.5:10
+#: cupsaccept.8:10 cups-config.1:10 cupsctl.8:10 cupsd.8:10 cupsd.conf.5:11
 #: cupsd-helper.8:10 cupsd-logs.5:10 cupsenable.8:10 cups-files.conf.5:11
 #: cupsfilter.8:9 cups-lpd.8:11 cups-snmp.8:9 cups-snmp.conf.5:10
 #: cupstestppd.1:10 filter.7:10 ippevepcl.7:9 ippeveprinter.1:9 ippfind.1:9
@@ -72,7 +72,7 @@ msgstr "Apple Inc."
 
 #. type: SH
 #: backend.7:11 cancel.1:11 classes.conf.5:11 client.conf.5:11 cups.1:11
-#: cupsaccept.8:11 cups-config.1:11 cupsctl.8:11 cupsd.8:11 cupsd.conf.5:11
+#: cupsaccept.8:11 cups-config.1:11 cupsctl.8:11 cupsd.8:11 cupsd.conf.5:12
 #: cupsd-helper.8:11 cupsd-logs.5:11 cupsenable.8:11 cups-files.conf.5:12
 #: cupsfilter.8:10 cups-lpd.8:12 cups-snmp.8:10 cups-snmp.conf.5:11
 #: cupstestppd.1:11 filter.7:11 ippevepcl.7:10 ippeveprinter.1:10 ippfind.1:10
@@ -181,7 +181,7 @@ msgstr ""
 
 #. type: SH
 #: backend.7:49 cancel.1:37 classes.conf.5:13 client.conf.5:13 cups.1:13
-#: cupsaccept.8:40 cups-config.1:49 cupsctl.8:36 cupsd.8:32 cupsd.conf.5:13
+#: cupsaccept.8:40 cups-config.1:49 cupsctl.8:36 cupsd.8:32 cupsd.conf.5:14
 #: cupsd-helper.8:46 cupsd-logs.5:13 cupsenable.8:46 cups-files.conf.5:14
 #: cupsfilter.8:54 cups-lpd.8:24 cups-snmp.8:23 cups-snmp.conf.5:13
 #: cupstestppd.1:51 filter.7:51 ippevepcl.7:22 ippeveprinter.1:84 ippfind.1:32
@@ -630,7 +630,7 @@ msgstr "I</etc/cups/cups-files.conf>"
 
 #. type: SH
 #: backend.7:184 backend.7:204 cancel.1:81 classes.conf.5:19 client.conf.5:126
-#: cups.1:122 cupsd.conf.5:858 cupsd-helper.8:77 cups-files.conf.5:279
+#: cups.1:122 cupsd.conf.5:860 cupsd-helper.8:77 cups-files.conf.5:279
 #: cupsfilter.8:117 cups-lpd.8:61 cups-snmp.8:44 cups-snmp.conf.5:58
 #: cupstestppd.1:138 filter.7:201 lpadmin.8:203 lpc.8:40 lpinfo.8:117 lpr.1:151
 #: mime.convs.5:50 ppdc.1:90 ppdcfile.5:149 ppdhtml.1:35 ppdi.1:42
@@ -691,7 +691,7 @@ msgstr ""
 
 #. type: SH
 #: backend.7:208 cancel.1:84 classes.conf.5:21 client.conf.5:138 cups.1:126
-#: cupsaccept.8:77 cups-config.1:105 cupsctl.8:92 cupsd.8:109 cupsd.conf.5:895
+#: cupsaccept.8:77 cups-config.1:105 cupsctl.8:92 cupsd.8:109 cupsd.conf.5:897
 #: cupsd-helper.8:81 cupsd-logs.5:216 cupsenable.8:88 cups-files.conf.5:286
 #: cupsfilter.8:131 cups-lpd.8:108 cups-snmp.8:49 cups-snmp.conf.5:62
 #: cupstestppd.1:142 filter.7:212 ippevepcl.7:45 ippeveprinter.1:268
@@ -720,7 +720,7 @@ msgstr "CUPS-Online-Hilfe (http://localhost:631/help)"
 
 #. type: SH
 #: backend.7:219 cancel.1:90 classes.conf.5:29 client.conf.5:142 cups.1:142
-#: cupsaccept.8:85 cups-config.1:108 cupsctl.8:97 cupsd.8:125 cupsd.conf.5:904
+#: cupsaccept.8:85 cups-config.1:108 cupsctl.8:97 cupsd.8:125 cupsd.conf.5:906
 #: cupsd-helper.8:89 cupsd-logs.5:221 cupsenable.8:96 cups-files.conf.5:296
 #: cupsfilter.8:138 cups-lpd.8:116 cups-snmp.8:55 cups-snmp.conf.5:65
 #: cupstestppd.1:146 filter.7:220 ippevepcl.7:47 ippeveprinter.1:272
@@ -735,14 +735,15 @@ msgstr "COPYRIGHT"
 
 #. type: Plain text
 #: backend.7:220 cancel.1:91 classes.conf.5:30 client.conf.5:143 cups.1:143
-#: cupsaccept.8:86 cups-config.1:109 cupsctl.8:98 cupsd.8:126 cupsd.conf.5:905
-#: cupsd-helper.8:90 cupsd-logs.5:222 cupsenable.8:97 cupsfilter.8:139
-#: cups-snmp.8:56 cups-snmp.conf.5:66 cupstestppd.1:147 filter.7:221
-#: ippeveprinter.1:273 ipptool.1:252 ipptoolfile.5:655 lp.1:229 lpadmin.8:231
-#: lpc.8:58 lpinfo.8:125 lpmove.8:74 lpoptions.1:118 lpq.1:64 lpr.1:181
-#: lprm.1:82 lpstat.1:148 mailto.conf.5:44 mime.convs.5:62 mime.types.5:108
-#: notifier.7:36 ppdc.1:102 ppdcfile.5:161 ppdhtml.1:47 ppdi.1:54 ppdmerge.1:50
-#: ppdpo.1:54 printers.conf.5:28 subscriptions.conf.5:31
+#: cupsaccept.8:86 cups-config.1:109 cupsctl.8:98 cupsd.8:126 cupsd.conf.5:909
+#: cupsd-helper.8:90 cupsd-logs.5:222 cupsenable.8:97 cups-files.conf.5:299
+#: cupsfilter.8:139 cups-snmp.8:56 cups-snmp.conf.5:66 cupstestppd.1:147
+#: filter.7:221 ippeveprinter.1:273 ipptool.1:252 ipptoolfile.5:655 lp.1:229
+#: lpadmin.8:231 lpc.8:58 lpinfo.8:125 lpmove.8:74 lpoptions.1:118 lpq.1:64
+#: lpr.1:181 lprm.1:82 lpstat.1:148 mailto.conf.5:44 mime.convs.5:62
+#: mime.types.5:108 notifier.7:36 ppdc.1:102 ppdcfile.5:161 ppdhtml.1:47
+#: ppdi.1:54 ppdmerge.1:50 ppdpo.1:54 printers.conf.5:28
+#: subscriptions.conf.5:31
 msgid "Copyright \\[co] 2007-2019 by Apple Inc."
 msgstr "Copyright \\[co] 2007-2019 by Apple Inc."
 
@@ -780,7 +781,7 @@ msgstr ""
 
 #. type: SH
 #: cancel.1:40 cupsaccept.8:50 cups-config.1:52 cupsctl.8:40 cupsd.8:37
-#: cupsd.conf.5:485 cupsenable.8:51 cupsfilter.8:59 cups-lpd.8:33
+#: cupsd.conf.5:487 cupsenable.8:51 cupsfilter.8:59 cups-lpd.8:33
 #: cupstestppd.1:58 filter.7:60 ippeveprinter.1:87 ippfind.1:191 ipptool.1:88
 #: lp.1:94 lpadmin.8:73 lpinfo.8:63 lpmove.8:39 lpoptions.1:68 lpq.1:36
 #: lpr.1:64 lprm.1:36 lpstat.1:68 ppdc.1:48 ppdhtml.1:25 ppdi.1:30
@@ -871,7 +872,7 @@ msgid "Deletes job data files in addition to canceling."
 msgstr "Löscht Auftragsdatendateien zusätzlich zum Abbruch."
 
 #. type: SH
-#: cancel.1:61 cups.1:119 cupsaccept.8:67 cupsd.8:81 cupsd.conf.5:873
+#: cancel.1:61 cups.1:119 cupsaccept.8:67 cupsd.8:81 cupsd.conf.5:875
 #: cupsenable.8:77 cups-lpd.8:47 cups-snmp.8:47 filter.7:199
 #: ippeveprinter.1:207 ipptool.1:229 lp.1:196 lpadmin.8:197 lpinfo.8:97
 #: lpoptions.1:108 lprm.1:52 lpstat.1:133
@@ -891,7 +892,7 @@ msgstr ""
 "sind Drucker- und Klassennamen I<unabhängig> von der Groß-/Kleinschreibung."
 
 #. type: SH
-#: cancel.1:63 cups-config.1:87 cupsctl.8:66 cupsd.8:84 cupsd.conf.5:875
+#: cancel.1:63 cups-config.1:87 cupsctl.8:66 cupsd.8:84 cupsd.conf.5:877
 #: cupstestppd.1:125 ippeveprinter.1:252 ippfind.1:242 ipptool.1:233 lp.1:201
 #: lpinfo.8:99 lpmove.8:50 lpr.1:153 lprm.1:56 mime.convs.5:43 mime.types.5:89
 #, no-wrap
@@ -1127,19 +1128,19 @@ msgstr ""
 "die Unterstützung für den ursprünglichen MD5-Hash-Algorithmus."
 
 #. type: TP
-#: client.conf.5:45 cupsd.conf.5:732
+#: client.conf.5:45 cupsd.conf.5:734
 #, no-wrap
 msgid "B<Encryption IfRequested>"
 msgstr "B<Encryption IfRequested>"
 
 #. type: TP
-#: client.conf.5:47 cupsd.conf.5:734
+#: client.conf.5:47 cupsd.conf.5:736
 #, no-wrap
 msgid "B<Encryption Never>"
 msgstr "B<Encryption Never>"
 
 #. type: TP
-#: client.conf.5:49 cupsd.conf.5:736
+#: client.conf.5:49 cupsd.conf.5:738
 #, no-wrap
 msgid "B<Encryption Required>"
 msgstr "B<Encryption Required>"
@@ -1151,7 +1152,7 @@ msgid "Specifies the level of encryption that should be used."
 msgstr "Legt die zu verwendende Verschlüsselungsstufe fest."
 
 #. type: TP
-#: client.conf.5:53 cupsd.conf.5:165
+#: client.conf.5:53 cupsd.conf.5:166
 #, no-wrap
 msgid "B<GSSServiceName >I<name>"
 msgstr "B<GSSServiceName >I<Name>"
@@ -1208,20 +1209,20 @@ msgstr ""
 "verwandt werden sollen, auf dem CUPS 1.3.12 oder älter läuft, fest."
 
 #. type: TP
-#: client.conf.5:68 cupsd.conf.5:437
+#: client.conf.5:68 cupsd.conf.5:439
 #, no-wrap
 msgid "B<SSLOptions >[I<AllowDH>] [I<AllowRC4>] [I<AllowSSL3>] [I<DenyCBC>] [I<DenyTLS1.0>] [I<MaxTLS1.0>] [I<MaxTLS1.1>] [I<MaxTLS1.2>] [I<MaxTLS1.3>] [I<MinTLS1.0>] [I<MinTLS1.1>] [I<MinTLS1.2>] [I<MinTLS1.3>]"
 msgstr "B<SSLOptions >[I<AllowDH>] [I<AllowRC4>] [I<AllowSSL3>] [I<DenyCBC>] [I<DenyTLS1.0>] [I<MaxTLS1.0>] [I<MaxTLS1.1>] [I<MaxTLS1.2>] [I<MaxTLS1.3>] [I<MinTLS1.0>] [I<MinTLS1.1>] [I<MinTLS1.2>] [I<MinTLS1.3>]"
 
 #. type: TP
-#: client.conf.5:70 cupsd.conf.5:439
+#: client.conf.5:70 cupsd.conf.5:441
 #, no-wrap
 msgid "B<SSLOptions None>"
 msgstr "B<SSLOptions None>"
 
 #. #SSLPort
 #. type: Plain text
-#: client.conf.5:85 cupsd.conf.5:454
+#: client.conf.5:85 cupsd.conf.5:456
 msgid ""
 "Sets encryption options (only in /etc/cups/client.conf).  By default, CUPS "
 "only supports encryption using TLS v1.0 or higher using known secure cipher "
@@ -2662,24 +2663,24 @@ msgstr ""
 "conf>(5), B<systemd>(8), CUPS-Online-Hilfe (http://localhost:631/help)"
 
 #. type: TH
-#: cupsd.conf.5:10
+#: cupsd.conf.5:11
 #, no-wrap
 msgid "cupsd.conf"
 msgstr "cupsd.conf"
 
 #. type: TH
-#: cupsd.conf.5:10
+#: cupsd.conf.5:11
 #, no-wrap
-msgid "16 July 2019"
-msgstr "16. Juli 2019"
+msgid "28 November 2020"
+msgstr "28. November 2020"
 
 #. type: Plain text
-#: cupsd.conf.5:13
+#: cupsd.conf.5:14
 msgid "cupsd.conf - server configuration file for cups"
 msgstr "cupsd.conf - Server-Konfigurationsdatei für CUPS"
 
 #. type: Plain text
-#: cupsd.conf.5:25
+#: cupsd.conf.5:26
 msgid ""
 "The I<cupsd.conf> file configures the CUPS scheduler, B<cupsd>(8).  It is "
 "normally located in the I</etc/cups> directory.  Each line in the file can "
@@ -2697,39 +2698,39 @@ msgstr ""
 "nicht relevant. Kommentarzeilen beginnen mit dem Zeichen »#«. "
 
 #. type: SS
-#: cupsd.conf.5:25 ipptoolfile.5:83
+#: cupsd.conf.5:26 ipptoolfile.5:83
 #, no-wrap
 msgid "TOP-LEVEL DIRECTIVES"
 msgstr "OBERSTE DIREKTIVEN"
 
 #. #AccessLogLevel
 #. type: Plain text
-#: cupsd.conf.5:29
+#: cupsd.conf.5:30
 msgid "The following top-level directives are understood by B<cupsd>(8):"
 msgstr ""
 "Die nachfolgenden obersten Direktiven werden von B<cupsd>(8) verstanden:"
 
 #. type: TP
-#: cupsd.conf.5:29
+#: cupsd.conf.5:30
 #, no-wrap
 msgid "B<AccessLogLevel config>"
 msgstr "B<AccessLogLevel config>"
 
 #. type: TP
-#: cupsd.conf.5:31
+#: cupsd.conf.5:32
 #, no-wrap
 msgid "B<AccessLogLevel actions>"
 msgstr "B<AccessLogLevel actions>"
 
 #. type: TP
-#: cupsd.conf.5:33
+#: cupsd.conf.5:34
 #, no-wrap
 msgid "B<AccessLogLevel all>"
 msgstr "B<AccessLogLevel all>"
 
 #. #AutoPurgeJobs
 #. type: Plain text
-#: cupsd.conf.5:41
+#: cupsd.conf.5:42
 msgid ""
 "Specifies the logging level for the AccessLog file.  The \"config\" level "
 "logs when printers and classes are added, deleted, or modified and when "
@@ -2747,20 +2748,20 @@ msgstr ""
 "Anfragen. Die Vorgabestufe ist »actions«."
 
 #. type: TP
-#: cupsd.conf.5:41
+#: cupsd.conf.5:42
 #, no-wrap
 msgid "B<AutoPurgeJobs Yes>"
 msgstr "B<AutoPurgeJobs Yes>"
 
 #. type: TP
-#: cupsd.conf.5:43
+#: cupsd.conf.5:44
 #, no-wrap
 msgid "B<AutoPurgeJobs No>"
 msgstr "B<AutoPurgeJobs No>"
 
 #. #BrowseDNSSDSubTypes
 #. type: Plain text
-#: cupsd.conf.5:49
+#: cupsd.conf.5:50
 msgid ""
 "Specifies whether to purge job history data automatically when it is no "
 "longer required for quotas.  The default is \"No\"."
@@ -2770,14 +2771,14 @@ msgstr ""
 "Die Vorgabe ist »No«."
 
 #. type: TP
-#: cupsd.conf.5:49
+#: cupsd.conf.5:50
 #, no-wrap
 msgid "B<BrowseDNSSDSubTypes>I<_subtype[,...]>"
 msgstr "B<BrowseDNSSDSubTypes>I<_Untertyp[,…]>"
 
 #. #BrowseLocalProtocols
 #. type: Plain text
-#: cupsd.conf.5:55
+#: cupsd.conf.5:56
 msgid ""
 "Specifies a list of Bonjour sub-types to advertise for each shared printer.  "
 "For example, \"BrowseDNSSDSubTypes _cups,_print\" will tell network clients "
@@ -2793,26 +2794,26 @@ msgstr ""
 "Systemen notwendig ist."
 
 #. type: TP
-#: cupsd.conf.5:55
+#: cupsd.conf.5:56
 #, no-wrap
 msgid "B<BrowseLocalProtocols all>"
 msgstr "B<BrowseLocalProtocols all>"
 
 #. type: TP
-#: cupsd.conf.5:57
+#: cupsd.conf.5:58
 #, no-wrap
 msgid "B<BrowseLocalProtocols dnssd>"
 msgstr "B<BrowseLocalProtocols dnssd>"
 
 #. type: TP
-#: cupsd.conf.5:59
+#: cupsd.conf.5:60
 #, no-wrap
 msgid "B<BrowseLocalProtocols none>"
 msgstr "B<BrowseLocalProtocols none>"
 
 #. #BrowseWebIF
 #. type: Plain text
-#: cupsd.conf.5:64
+#: cupsd.conf.5:65
 msgid ""
 "Specifies which protocols to use for local printer sharing.  The default is "
 "\"dnssd\" on systems that support Bonjour and \"none\" otherwise."
@@ -2822,20 +2823,20 @@ msgstr ""
 "andernfalls »none«."
 
 #. type: TP
-#: cupsd.conf.5:64
+#: cupsd.conf.5:65
 #, no-wrap
 msgid "B<BrowseWebIF Yes>"
 msgstr "B<BrowseWebIF Yes>"
 
 #. type: TP
-#: cupsd.conf.5:66
+#: cupsd.conf.5:67
 #, no-wrap
 msgid "B<BrowseWebIF No>"
 msgstr "B<BrowseWebIF No>"
 
 #. #Browsing
 #. type: Plain text
-#: cupsd.conf.5:72
+#: cupsd.conf.5:73
 msgid ""
 "Specifies whether the CUPS web interface is advertised.  The default is \"No"
 "\"."
@@ -2844,20 +2845,20 @@ msgstr ""
 "ist »No«."
 
 #. type: TP
-#: cupsd.conf.5:72
+#: cupsd.conf.5:73
 #, no-wrap
 msgid "B<Browsing Yes>"
 msgstr "B<Browsing Yes>"
 
 #. type: TP
-#: cupsd.conf.5:74
+#: cupsd.conf.5:75
 #, no-wrap
 msgid "B<Browsing No>"
 msgstr "B<Browsing No>"
 
 #. #DefaultAuthType
 #. type: Plain text
-#: cupsd.conf.5:80
+#: cupsd.conf.5:81
 msgid ""
 "Specifies whether shared printers are advertised.  The default is \"No\"."
 msgstr ""
@@ -2865,20 +2866,20 @@ msgstr ""
 "»No«."
 
 #. type: TP
-#: cupsd.conf.5:80
+#: cupsd.conf.5:81
 #, no-wrap
 msgid "B<DefaultAuthType Basic>"
 msgstr "B<DefaultAuthType Basic>"
 
 #. type: TP
-#: cupsd.conf.5:82
+#: cupsd.conf.5:83
 #, no-wrap
 msgid "B<DefaultAuthType Negotiate>"
 msgstr "B<DefaultAuthType Negotiate>"
 
 #. #DefaultEncryption
 #. type: Plain text
-#: cupsd.conf.5:88
+#: cupsd.conf.5:89
 msgid ""
 "Specifies the default type of authentication to use.  The default is \"Basic"
 "\"."
@@ -2887,26 +2888,26 @@ msgstr ""
 "Vorgabe ist »Basic«."
 
 #. type: TP
-#: cupsd.conf.5:88
+#: cupsd.conf.5:89
 #, no-wrap
 msgid "B<DefaultEncryption Never>"
 msgstr "B<DefaultEncryption Never>"
 
 #. type: TP
-#: cupsd.conf.5:90
+#: cupsd.conf.5:91
 #, no-wrap
 msgid "B<DefaultEncryption IfRequested>"
 msgstr "B<DefaultEncryption IfRequested>"
 
 #. type: TP
-#: cupsd.conf.5:92
+#: cupsd.conf.5:93
 #, no-wrap
 msgid "B<DefaultEncryption Required>"
 msgstr "B<DefaultEncryption Required>"
 
 #. #DefaultLanguage
 #. type: Plain text
-#: cupsd.conf.5:97
+#: cupsd.conf.5:98
 msgid ""
 "Specifies whether encryption will be used for authenticated requests.  The "
 "default is \"Required\"."
@@ -2915,14 +2916,14 @@ msgstr ""
 "soll. Die Vorgabe ist »Required«."
 
 #. type: TP
-#: cupsd.conf.5:97
+#: cupsd.conf.5:98
 #, no-wrap
 msgid "B<DefaultLanguage >I<locale>"
 msgstr "B<DefaultLanguage >I<Standorteinstellung>"
 
 #. #DefaultPaperSize
 #. type: Plain text
-#: cupsd.conf.5:102
+#: cupsd.conf.5:103
 msgid ""
 "Specifies the default language to use for text and web content.  The default "
 "is \"en\"."
@@ -2931,26 +2932,26 @@ msgstr ""
 "fest. Die Vorgabe ist »en«."
 
 #. type: TP
-#: cupsd.conf.5:102
+#: cupsd.conf.5:103
 #, no-wrap
 msgid "B<DefaultPaperSize Auto>"
 msgstr "B<DefaultPaperSize Auto>"
 
 #. type: TP
-#: cupsd.conf.5:104
+#: cupsd.conf.5:105
 #, no-wrap
 msgid "B<DefaultPaperSize None>"
 msgstr "B<DefaultPaperSize None>"
 
 #. type: TP
-#: cupsd.conf.5:106
+#: cupsd.conf.5:107
 #, no-wrap
 msgid "B<DefaultPaperSize >I<sizename>"
 msgstr "B<DefaultPaperSize >I<Größenname>"
 
 #. #DefaultPolicy
 #. type: Plain text
-#: cupsd.conf.5:112
+#: cupsd.conf.5:113
 msgid ""
 "Specifies the default paper size for new print queues. \"Auto\" uses a "
 "locale-specific default, while \"None\" specifies there is no default paper "
@@ -2963,14 +2964,14 @@ msgstr ""
 "»Letter« oder »A4«. Die Vorgabe ist »Auto«."
 
 #. type: TP
-#: cupsd.conf.5:112
+#: cupsd.conf.5:113
 #, no-wrap
 msgid "B<DefaultPolicy >I<policy-name>"
 msgstr "B<DefaultPolicy >I<Richtlinienname>"
 
 #. #DefaultShared
 #. type: Plain text
-#: cupsd.conf.5:117
+#: cupsd.conf.5:118
 msgid ""
 "Specifies the default access policy to use.  The default access policy is "
 "\"default\"."
@@ -2979,20 +2980,20 @@ msgstr ""
 "Standardzugriffsrichtlinie ist »default«."
 
 #. type: TP
-#: cupsd.conf.5:117
+#: cupsd.conf.5:118
 #, no-wrap
 msgid "B<DefaultShared Yes>"
 msgstr "B<DefaultShared Yes>"
 
 #. type: TP
-#: cupsd.conf.5:119
+#: cupsd.conf.5:120
 #, no-wrap
 msgid "B<DefaultShared No>"
 msgstr "B<DefaultShared No>"
 
 #. #DirtyCleanInterval
 #. type: Plain text
-#: cupsd.conf.5:124
+#: cupsd.conf.5:125
 msgid ""
 "Specifies whether local printers are shared by default.  The default is \"Yes"
 "\"."
@@ -3001,14 +3002,14 @@ msgstr ""
 "»Yes«."
 
 #. type: TP
-#: cupsd.conf.5:124
+#: cupsd.conf.5:125
 #, no-wrap
 msgid "B<DirtyCleanInterval >I<seconds>"
 msgstr "B<DirtyCleanInterval >I<Sekunden>"
 
 #. #DNSSDHostName
 #. type: Plain text
-#: cupsd.conf.5:130
+#: cupsd.conf.5:131
 msgid ""
 "Specifies the delay for updating of configuration and state files.  A value "
 "of 0 causes the update to happen as soon as possible, typically within a few "
@@ -3020,14 +3021,14 @@ msgstr ""
 "Millisekunden. Die Vorgabe ist »30«."
 
 #. type: TP
-#: cupsd.conf.5:130
+#: cupsd.conf.5:131
 #, no-wrap
 msgid "B<DNSSDHostName>I<hostname.example.com>"
 msgstr "B<DNSSDHostName>I<Rechnername.example.com>"
 
 #. #ErrorPolicy
 #. type: Plain text
-#: cupsd.conf.5:135
+#: cupsd.conf.5:136
 msgid ""
 "Specifies the fully-qualified domain name for the server that is used for "
 "Bonjour sharing.  The default is typically the server's \".local\" hostname."
@@ -3037,13 +3038,13 @@ msgstr ""
 "typischerweise der ».local«-Rechnername des Servers."
 
 #. type: TP
-#: cupsd.conf.5:135
+#: cupsd.conf.5:136
 #, no-wrap
 msgid "B<ErrorPolicy abort-job>"
 msgstr "B<ErrorPolicy abort-job>"
 
 #. type: Plain text
-#: cupsd.conf.5:138
+#: cupsd.conf.5:139
 msgid ""
 "Specifies that a failed print job should be aborted (discarded) unless "
 "otherwise specified for the printer."
@@ -3052,13 +3053,13 @@ msgstr ""
 "werden soll, es sei denn, es wurde anders für den Drucker festgelegt."
 
 #. type: TP
-#: cupsd.conf.5:138
+#: cupsd.conf.5:139
 #, no-wrap
 msgid "B<ErrorPolicy retry-current-job>"
 msgstr "B<ErrorPolicy retry-current-job>"
 
 #. type: Plain text
-#: cupsd.conf.5:141
+#: cupsd.conf.5:142
 msgid ""
 "Specifies that a failed print job should be retried immediately unless "
 "otherwise specified for the printer."
@@ -3067,13 +3068,13 @@ msgstr ""
 "soll, es sei denn, es wurde anders für den Drucker festgelegt."
 
 #. type: TP
-#: cupsd.conf.5:141
+#: cupsd.conf.5:142
 #, no-wrap
 msgid "B<ErrorPolicy retry-job>"
 msgstr "B<ErrorPolicy retry-job>"
 
 #. type: Plain text
-#: cupsd.conf.5:144
+#: cupsd.conf.5:145
 msgid ""
 "Specifies that a failed print job should be retried at a later time unless "
 "otherwise specified for the printer."
@@ -3083,14 +3084,14 @@ msgstr ""
 "Drucker festgelegt."
 
 #. type: TP
-#: cupsd.conf.5:144
+#: cupsd.conf.5:145
 #, no-wrap
 msgid "B<ErrorPolicy stop-printer>"
 msgstr "B<ErrorPolicy stop-printer>"
 
 #. #FilterLimit
 #. type: Plain text
-#: cupsd.conf.5:148
+#: cupsd.conf.5:149
 msgid ""
 "Specifies that a failed print job should stop the printer unless otherwise "
 "specified for the printer. The 'stop-printer' error policy is the default."
@@ -3100,14 +3101,14 @@ msgstr ""
 "»stop-printer« ist die Vorgabe."
 
 #. type: TP
-#: cupsd.conf.5:148
+#: cupsd.conf.5:149
 #, no-wrap
 msgid "B<FilterLimit >I<limit>"
 msgstr "B<FilterLimit >I<Beschränkung>"
 
 #. #FilterNice
 #. type: Plain text
-#: cupsd.conf.5:157
+#: cupsd.conf.5:158
 msgid ""
 "Specifies the maximum cost of filters that are run concurrently, which can "
 "be used to minimize disk, memory, and CPU resource problems.  A limit of 0 "
@@ -3128,14 +3129,14 @@ msgstr ""
 "»0«."
 
 #. type: TP
-#: cupsd.conf.5:157
+#: cupsd.conf.5:158
 #, no-wrap
 msgid "B<FilterNice >I<nice-value>"
 msgstr "B<FilterNice >I<Nice-Wert>"
 
 #. #GSSServiceName
 #. type: Plain text
-#: cupsd.conf.5:165
+#: cupsd.conf.5:166
 msgid ""
 "Specifies the scheduling priority ( B<nice>(8)  value) of filters that are "
 "run to print a job.  The nice value ranges from 0, the highest priority, to "
@@ -3147,7 +3148,7 @@ msgstr ""
 "Vorgabe ist 0."
 
 #. type: Plain text
-#: cupsd.conf.5:169
+#: cupsd.conf.5:170
 msgid ""
 "Specifies the service name when using Kerberos authentication.  The default "
 "service name is \"http.\""
@@ -3157,26 +3158,26 @@ msgstr ""
 
 #. #HostNameLookups
 #. type: TP
-#: cupsd.conf.5:169
+#: cupsd.conf.5:170
 #, no-wrap
 msgid "B<HostNameLookups On>"
 msgstr "B<HostNameLookups On>"
 
 #. type: TP
-#: cupsd.conf.5:172
+#: cupsd.conf.5:173
 #, no-wrap
 msgid "B<HostNameLookups Off>"
 msgstr "B<HostNameLookups Off>"
 
 #. type: TP
-#: cupsd.conf.5:174
+#: cupsd.conf.5:175
 #, no-wrap
 msgid "B<HostNameLookups Double>"
 msgstr "B<HostNameLookups Double>"
 
 #. #IdleExitTimeout
 #. type: Plain text
-#: cupsd.conf.5:184
+#: cupsd.conf.5:185
 msgid ""
 "Specifies whether to do reverse lookups on connecting clients.  The \"Double"
 "\" setting causes B<cupsd>(8)  to verify that the hostname resolved from the "
@@ -3197,14 +3198,14 @@ msgstr ""
 "erforderlich ist. "
 
 #. type: TP
-#: cupsd.conf.5:184
+#: cupsd.conf.5:185
 #, no-wrap
 msgid "B<IdleExitTimeout >I<seconds>"
 msgstr "B<IdleExitTimeout >I<Sekunden>"
 
 #. #JobKillDelay
 #. type: Plain text
-#: cupsd.conf.5:192
+#: cupsd.conf.5:193
 msgid ""
 "Specifies the length of time to wait before shutting down due to "
 "inactivity.  The default is \"60\" seconds.  Note: Only applicable when "
@@ -3215,14 +3216,14 @@ msgstr ""
 "B<cupsd>(8) auf Anforderung (z.B. mit B<-l>) läuft."
 
 #. type: TP
-#: cupsd.conf.5:192
+#: cupsd.conf.5:193
 #, no-wrap
 msgid "B<JobKillDelay >I<seconds>"
 msgstr "B<JobKillDelay >I<Sekunden>"
 
 #. #JobRetryInterval
 #. type: Plain text
-#: cupsd.conf.5:197
+#: cupsd.conf.5:198
 msgid ""
 "Specifies the number of seconds to wait before killing the filters and "
 "backend associated with a canceled or held job.  The default is \"30\"."
@@ -3232,14 +3233,14 @@ msgstr ""
 "verbunden sind, fest. Die Vorgabe ist »30«."
 
 #. type: TP
-#: cupsd.conf.5:197
+#: cupsd.conf.5:198
 #, no-wrap
 msgid "B<JobRetryInterval >I<seconds>"
 msgstr "B<JobRetryInterval >I<Sekunden>"
 
 #. #JobRetryLimit
 #. type: Plain text
-#: cupsd.conf.5:203
+#: cupsd.conf.5:204
 msgid ""
 "Specifies the interval between retries of jobs in seconds.  This is "
 "typically used for fax queues but can also be used with normal print queues "
@@ -3253,14 +3254,14 @@ msgstr ""
 "»30«."
 
 #. type: TP
-#: cupsd.conf.5:203
+#: cupsd.conf.5:204
 #, no-wrap
 msgid "B<JobRetryLimit >I<count>"
 msgstr "B<JobRetryLimit >I<Anzahl>"
 
 #. #KeepAlive
 #. type: Plain text
-#: cupsd.conf.5:209
+#: cupsd.conf.5:210
 msgid ""
 "Specifies the number of retries that are done for jobs.  This is typically "
 "used for fax queues but can also be used with normal print queues whose "
@@ -3273,20 +3274,20 @@ msgstr ""
 "oder »retry-current-job« ist. Die Vorgabe ist »5«."
 
 #. type: TP
-#: cupsd.conf.5:209
+#: cupsd.conf.5:210
 #, no-wrap
 msgid "B<KeepAlive Yes>"
 msgstr "B<KeepAlive Yes>"
 
 #. type: TP
-#: cupsd.conf.5:211
+#: cupsd.conf.5:212
 #, no-wrap
 msgid "B<KeepAlive No>"
 msgstr "B<KeepAlive No>"
 
 #. #KeepAliveTimeout
 #. type: Plain text
-#: cupsd.conf.5:216
+#: cupsd.conf.5:217
 msgid ""
 "Specifies whether to support HTTP keep-alive connections.  The default is "
 "\"Yes\"."
@@ -3295,14 +3296,14 @@ msgstr ""
 "ist »Yes«."
 
 #. type: TP
-#: cupsd.conf.5:216
+#: cupsd.conf.5:217
 #, no-wrap
 msgid "B<KeepAliveTimeout >I<seconds>"
 msgstr "B<KeepAliveTimeout >I<Sekunden>"
 
 #. #LimitIPP
 #. type: Plain text
-#: cupsd.conf.5:221
+#: cupsd.conf.5:222
 msgid ""
 "Specifies how long an idle client connection remains open.  The default is "
 "\"30\"."
@@ -3311,14 +3312,14 @@ msgstr ""
 "Die Vorgabe ist »30«."
 
 #. type: TP
-#: cupsd.conf.5:221
+#: cupsd.conf.5:222
 #, no-wrap
 msgid "B<E<lt>Limit >I<operation >...B<E<gt> >... B<E<lt>/LimitE<gt>>"
 msgstr "B<E<lt>Limit >I<Vorgang >…B<E<gt> >… B<E<lt>/LimitE<gt>>"
 
 #. #Limit
 #. type: Plain text
-#: cupsd.conf.5:225
+#: cupsd.conf.5:226
 msgid ""
 "Specifies the IPP operations that are being limited inside a Policy section. "
 "IPP operation names are listed below in the section \"IPP OPERATION NAMES\"."
@@ -3328,20 +3329,20 @@ msgstr ""
 "VORGANGSNAMEN« beschrieben."
 
 #. type: TP
-#: cupsd.conf.5:225
+#: cupsd.conf.5:226
 #, no-wrap
 msgid "B<E<lt>Limit >I<method >...B<E<gt> >... B<E<lt>/LimitE<gt>>"
 msgstr "B<E<lt>Limit >I<Methode >…B<E<gt> >… B<E<lt>/LimitE<gt>>"
 
 #. type: TP
-#: cupsd.conf.5:228
+#: cupsd.conf.5:229
 #, no-wrap
 msgid "B<E<lt>LimitExcept >I<method >...B<E<gt> >... B<E<lt>/LimitExceptE<gt>>"
 msgstr "B<E<lt>LimitExcept >I<Methode >…B<E<gt> >… B<E<lt>/LimitExceptE<gt>>"
 
 #. #LimitRequestBody
 #. type: Plain text
-#: cupsd.conf.5:232
+#: cupsd.conf.5:233
 msgid ""
 "Specifies the HTTP methods that are being limited inside a Location section. "
 "HTTP method names are listed below in the section \"HTTP METHOD NAMES\"."
@@ -3351,14 +3352,14 @@ msgstr ""
 "METHODENNAMEN« aufgeführt."
 
 #. type: TP
-#: cupsd.conf.5:232
+#: cupsd.conf.5:233
 #, no-wrap
 msgid "B<LimitRequestBody >I<size>"
 msgstr "B<LimitRequestBody >I<Größe>"
 
 #. #Listen
 #. type: Plain text
-#: cupsd.conf.5:237
+#: cupsd.conf.5:238
 msgid ""
 "Specifies the maximum size of print files, IPP requests, and HTML form "
 "data.  The default is \"0\" which disables the limit check."
@@ -3368,53 +3369,59 @@ msgstr ""
 "wird."
 
 #. type: TP
-#: cupsd.conf.5:237
+#: cupsd.conf.5:238
 #, no-wrap
 msgid "B<Listen >I<ipv4-address>B<:>I<port>"
 msgstr "B<Listen >I<IPv4-Adresse>B<:>I<Port>"
 
 #. type: TP
-#: cupsd.conf.5:239
+#: cupsd.conf.5:240
 #, no-wrap
 msgid "B<Listen [>I<ipv6-address>B<]:>I<port>"
 msgstr "B<Listen [>I<IPv6-Adresse>B<]:>I<Port>"
 
 #. type: TP
-#: cupsd.conf.5:241
+#: cupsd.conf.5:242
 #, no-wrap
 msgid "B<Listen *:>I<port>"
 msgstr "B<Listen *:>I<Port>"
 
 #. type: TP
-#: cupsd.conf.5:243
+#: cupsd.conf.5:244
 #, no-wrap
 msgid "B<Listen >I</path/to/domain/socket>"
 msgstr "B<Listen >I</Pfad/zu/Domain/Socket>"
 
 #. #ListenBackLog
 #. type: Plain text
-#: cupsd.conf.5:249
+#: cupsd.conf.5:251
 msgid ""
 "Listens to the specified address and port or domain socket path for "
 "connections.  Multiple Listen directives can be provided to listen on "
 "multiple addresses.  The Listen directive is similar to the Port directive "
-"but allows you to restrict access to specific interfaces or networks."
+"but allows you to restrict access to specific interfaces or networks.  Note: "
+"\"Listen *:I<port>\" and \"Port I<port>\" effectively listen on all IP "
+"addresses, so you cannot combine them with Listen directives for explicit "
+"IPv4 or IPv6 addresses on the same port."
 msgstr ""
 "Wartet auf den angegebenen Adressen und Ports oder Domain-Socketpfaden auf "
 "Anfragen. Mehrere »Listen«-Direktiven können angegeben werden, um auf "
 "mehreren Adressen auf Anfragen zu warten. Die Direktive »Listen« ist ähnlich "
 "zu der Direktive »Port«, erlaubt es Ihnen aber, den Zugriff auf bestimmte "
-"Schnittstellen oder Netze zu beschränken."
+"Schnittstellen oder Netze zu beschränken. Hinweis: Mit »I<Port>« und »Port "
+"I<Port>« wird effektiv an allen IP-Adressen auf Anfragen gewartet, daher "
+"können Sie dies nicht mit »Listen«-Direktiven für explizite IPv4- oder IPv6-"
+"Adressen auf dem gleichen Port kombinieren."
 
 #. type: TP
-#: cupsd.conf.5:249
+#: cupsd.conf.5:251
 #, no-wrap
 msgid "B<ListenBackLog >I<number>"
 msgstr "B<ListenBackLog >I<Anzahl>"
 
 #. #Location
 #. type: Plain text
-#: cupsd.conf.5:256
+#: cupsd.conf.5:258
 msgid ""
 "Specifies the number of pending connections that will be allowed.  This "
 "normally only affects very busy servers that have reached the MaxClients "
@@ -3434,14 +3441,14 @@ msgstr ""
 "Betriebssystemen oder »128« auf neueren Betriebssystemen."
 
 #. type: TP
-#: cupsd.conf.5:256
+#: cupsd.conf.5:258
 #, no-wrap
 msgid "B<E<lt>Location >I</path>B<E<gt> >... B<E<lt>/LocationE<gt>>"
 msgstr "B<E<lt>Location >I</Pfad>B<E<gt> >… B<E<lt>/LocationE<gt>>"
 
 #. #LogDebugHistory
 #. type: Plain text
-#: cupsd.conf.5:261
+#: cupsd.conf.5:263
 msgid ""
 "Specifies access control for the named location.  Paths are documented below "
 "in the section \"LOCATION PATHS\"."
@@ -3450,14 +3457,14 @@ msgstr ""
 "unten im Abschnitt »ORTSPFADE« beschrieben."
 
 #. type: TP
-#: cupsd.conf.5:261
+#: cupsd.conf.5:263
 #, no-wrap
 msgid "B<LogDebugHistory >I<number>"
 msgstr "B<LogDebugHistory >I<Anzahl>"
 
 #. #LogLevel
 #. type: Plain text
-#: cupsd.conf.5:265
+#: cupsd.conf.5:267
 msgid ""
 "Specifies the number of debugging messages that are retained for logging if "
 "an error occurs in a print job. Debug messages are logged regardless of the "
@@ -3469,68 +3476,68 @@ msgstr ""
 "protokolliert."
 
 #. type: TP
-#: cupsd.conf.5:265
+#: cupsd.conf.5:267
 #, no-wrap
 msgid "B<LogLevel >none"
 msgstr "B<LogLevel >none"
 
 #. type: TP
-#: cupsd.conf.5:267
+#: cupsd.conf.5:269
 #, no-wrap
 msgid "B<LogLevel >emerg"
 msgstr "B<LogLevel >emerg"
 
 #. type: TP
-#: cupsd.conf.5:269
+#: cupsd.conf.5:271
 #, no-wrap
 msgid "B<LogLevel >alert"
 msgstr "B<LogLevel >alert"
 
 #. type: TP
-#: cupsd.conf.5:271
+#: cupsd.conf.5:273
 #, no-wrap
 msgid "B<LogLevel >crit"
 msgstr "B<LogLevel >crit"
 
 #. type: TP
-#: cupsd.conf.5:273
+#: cupsd.conf.5:275
 #, no-wrap
 msgid "B<LogLevel >error"
 msgstr "B<LogLevel >error"
 
 #. type: TP
-#: cupsd.conf.5:275
+#: cupsd.conf.5:277
 #, no-wrap
 msgid "B<LogLevel >warn"
 msgstr "B<LogLevel >warn"
 
 #. type: TP
-#: cupsd.conf.5:277
+#: cupsd.conf.5:279
 #, no-wrap
 msgid "B<LogLevel >notice"
 msgstr "B<LogLevel >notice"
 
 #. type: TP
-#: cupsd.conf.5:279
+#: cupsd.conf.5:281
 #, no-wrap
 msgid "B<LogLevel >info"
 msgstr "B<LogLevel >info"
 
 #. type: TP
-#: cupsd.conf.5:281
+#: cupsd.conf.5:283
 #, no-wrap
 msgid "B<LogLevel >debug"
 msgstr "B<LogLevel >debug"
 
 #. type: TP
-#: cupsd.conf.5:283
+#: cupsd.conf.5:285
 #, no-wrap
 msgid "B<LogLevel >debug2"
 msgstr "B<LogLevel >debug2"
 
 #. #LogTimeFormat
 #. type: Plain text
-#: cupsd.conf.5:289
+#: cupsd.conf.5:291
 msgid ""
 "Specifies the level of logging for the ErrorLog file.  The value \"none\" "
 "stops all logging while \"debug2\" logs everything.  The default is \"warn\"."
@@ -3540,20 +3547,20 @@ msgstr ""
 "Vorgabe ist »warn«."
 
 #. type: TP
-#: cupsd.conf.5:289
+#: cupsd.conf.5:291
 #, no-wrap
 msgid "B<LogTimeFormat >standard"
 msgstr "B<LogTimeFormat >standard"
 
 #. type: TP
-#: cupsd.conf.5:291
+#: cupsd.conf.5:293
 #, no-wrap
 msgid "B<LogTimeFormat >usecs"
 msgstr "B<LogTimeFormat >usecs"
 
 #. #MaxClients
 #. type: Plain text
-#: cupsd.conf.5:296
+#: cupsd.conf.5:298
 msgid ""
 "Specifies the format of the date and time in the log files.  The value "
 "\"standard\" is the default and logs whole seconds while \"usecs\" logs "
@@ -3564,14 +3571,14 @@ msgstr ""
 "»usecs« in Mikrosekunden protokolliert."
 
 #. type: TP
-#: cupsd.conf.5:296
+#: cupsd.conf.5:298
 #, no-wrap
 msgid "B<MaxClients >I<number>"
 msgstr "B<MaxClients >I<Anzahl>"
 
 #. #MaxClientPerHost
 #. type: Plain text
-#: cupsd.conf.5:301
+#: cupsd.conf.5:303
 msgid ""
 "Specifies the maximum number of simultaneous clients that are allowed by the "
 "scheduler.  The default is \"100\"."
@@ -3580,14 +3587,14 @@ msgstr ""
 "erlaubt werden, fest. Die Vorgabe ist »100«."
 
 #. type: TP
-#: cupsd.conf.5:301
+#: cupsd.conf.5:303
 #, no-wrap
 msgid "B<MaxClientsPerHost >I<number>"
 msgstr "B<MaxClientsPerHost >I<Anzahl>"
 
 #. #MaxCopies
 #. type: Plain text
-#: cupsd.conf.5:307
+#: cupsd.conf.5:309
 msgid ""
 "Specifies the maximum number of simultaneous clients that are allowed from a "
 "single address.  The default is the MaxClients value."
@@ -3596,14 +3603,14 @@ msgstr ""
 "Adresse erlaubt sind, fest. Die Vorgabe ist der Wert MaxClients."
 
 #. type: TP
-#: cupsd.conf.5:307
+#: cupsd.conf.5:309
 #, no-wrap
 msgid "B<MaxCopies >I<number>"
 msgstr "B<MaxCopies >I<Anzahl>"
 
 #. #MaxHoldTime
 #. type: Plain text
-#: cupsd.conf.5:312
+#: cupsd.conf.5:314
 msgid ""
 "Specifies the maximum number of copies that a user can print of each job.  "
 "The default is \"9999\"."
@@ -3612,14 +3619,14 @@ msgstr ""
 "drucken kann, fest. Die Vorgabe ist »9999«."
 
 #. type: TP
-#: cupsd.conf.5:312
+#: cupsd.conf.5:314
 #, no-wrap
 msgid "B<MaxHoldTime >I<seconds>"
 msgstr "B<MaxHoldTime >I<Sekunden>"
 
 #. #MaxJobs
 #. type: Plain text
-#: cupsd.conf.5:317
+#: cupsd.conf.5:319
 msgid ""
 "Specifies the maximum time a job may remain in the \"indefinite\" hold state "
 "before it is canceled.  The default is \"0\" which disables cancellation of "
@@ -3630,14 +3637,14 @@ msgstr ""
 "gehaltene Aufträge abgebrochen werden."
 
 #. type: TP
-#: cupsd.conf.5:317
+#: cupsd.conf.5:319
 #, no-wrap
 msgid "B<MaxJobs >I<number>"
 msgstr "B<MaxJobs >I<Anzahl>"
 
 #. #MaxJobsPerPrinter
 #. type: Plain text
-#: cupsd.conf.5:323
+#: cupsd.conf.5:325
 msgid ""
 "Specifies the maximum number of simultaneous jobs that are allowed.  Set to "
 "\"0\" to allow an unlimited number of jobs.  The default is \"500\"."
@@ -3647,14 +3654,14 @@ msgstr ""
 "erlauben. Die Vorgabe ist »500«."
 
 #. type: TP
-#: cupsd.conf.5:323
+#: cupsd.conf.5:325
 #, no-wrap
 msgid "B<MaxJobsPerPrinter >I<number>"
 msgstr "B<MaxJobsPerPrinter >I<Anzahl>"
 
 #. #MaxJobsPerUser
 #. type: Plain text
-#: cupsd.conf.5:328
+#: cupsd.conf.5:330
 msgid ""
 "Specifies the maximum number of simultaneous jobs that are allowed per "
 "printer.  The default is \"0\" which allows up to MaxJobs jobs per printer."
@@ -3664,14 +3671,14 @@ msgstr ""
 "erlaubt sind."
 
 #. type: TP
-#: cupsd.conf.5:328
+#: cupsd.conf.5:330
 #, no-wrap
 msgid "B<MaxJobsPerUser >I<number>"
 msgstr "B<MaxJobsPerUser >I<Anzahl>"
 
 #. #MaxJobTime
 #. type: Plain text
-#: cupsd.conf.5:333
+#: cupsd.conf.5:335
 msgid ""
 "Specifies the maximum number of simultaneous jobs that are allowed per "
 "user.  The default is \"0\" which allows up to MaxJobs jobs per user."
@@ -3681,14 +3688,14 @@ msgstr ""
 "erlaubt sind."
 
 #. type: TP
-#: cupsd.conf.5:333
+#: cupsd.conf.5:335
 #, no-wrap
 msgid "B<MaxJobTime >I<seconds>"
 msgstr "B<MaxJobTime >I<Sekunden>"
 
 #. #MaxLogSize
 #. type: Plain text
-#: cupsd.conf.5:339
+#: cupsd.conf.5:341
 msgid ""
 "Specifies the maximum time a job may take to print before it is canceled.  "
 "Set to \"0\" to disable cancellation of \"stuck\" jobs.  The default is "
@@ -3700,14 +3707,14 @@ msgstr ""
 "Stunden)."
 
 #. type: TP
-#: cupsd.conf.5:339
+#: cupsd.conf.5:341
 #, no-wrap
 msgid "B<MaxLogSize >I<size>"
 msgstr "B<MaxLogSize >I<Größe>"
 
 #. #MultipleOperationTimeout
 #. type: Plain text
-#: cupsd.conf.5:345
+#: cupsd.conf.5:347
 msgid ""
 "Specifies the maximum size of the log files before they are rotated.  The "
 "value \"0\" disables log rotation.  The default is \"1048576\" (1MB)."
@@ -3717,14 +3724,14 @@ msgstr ""
 "Vorgabe ist »1048576« (1 MB)."
 
 #. type: TP
-#: cupsd.conf.5:345
+#: cupsd.conf.5:347
 #, no-wrap
 msgid "B<MultipleOperationTimeout >I<seconds>"
 msgstr "B<MultipleOperationTimeout >I<Sekunden>"
 
 #. #Policy
 #. type: Plain text
-#: cupsd.conf.5:350
+#: cupsd.conf.5:352
 msgid ""
 "Specifies the maximum amount of time to allow between files in a multiple "
 "file print job.  The default is \"900\" (15 minutes)."
@@ -3733,50 +3740,50 @@ msgstr ""
 "mehreren Dateien fest. Die Vorgabe ist »900« (15 Minuten)."
 
 #. type: TP
-#: cupsd.conf.5:350
+#: cupsd.conf.5:352
 #, no-wrap
 msgid "B<E<lt>Policy >I<name>B<E<gt> >... B<E<lt>/PolicyE<gt>>"
 msgstr "B<E<lt>Policy >I<Name>B<E<gt> >… B<E<lt>/PolicyE<gt>>"
 
 #. #Port
 #. type: Plain text
-#: cupsd.conf.5:354
+#: cupsd.conf.5:356
 msgid "Specifies access control for the named policy."
 msgstr "Legt die Zugriffskontrolle für die genannte Richtlinie fest."
 
 #. type: TP
-#: cupsd.conf.5:354
+#: cupsd.conf.5:356
 #, no-wrap
 msgid "B<Port >I<number>"
 msgstr "B<Port >I<Nummer>"
 
 #. #PreserveJobFiles
 #. type: Plain text
-#: cupsd.conf.5:358
+#: cupsd.conf.5:360
 msgid "Listens to the specified port number for connections."
 msgstr "Wartet auf der angegebenen Portnummer auf Verbindungen."
 
 #. type: TP
-#: cupsd.conf.5:358
+#: cupsd.conf.5:360
 #, no-wrap
 msgid "B<PreserveJobFiles Yes>"
 msgstr "B<PreserveJobFiles Yes>"
 
 #. type: TP
-#: cupsd.conf.5:360
+#: cupsd.conf.5:362
 #, no-wrap
 msgid "B<PreserveJobFiles No>"
 msgstr "B<PreserveJobFiles No>"
 
 #. type: TP
-#: cupsd.conf.5:362
+#: cupsd.conf.5:364
 #, no-wrap
 msgid "B<PreserveJobFiles >I<seconds>"
 msgstr "B<PreserveJobFiles >I<Sekunden>"
 
 #. #PreserveJobHistory
 #. type: Plain text
-#: cupsd.conf.5:368
+#: cupsd.conf.5:370
 msgid ""
 "Specifies whether job files (documents) are preserved after a job is "
 "printed.  If a numeric value is specified, job files are preserved for the "
@@ -3789,26 +3796,26 @@ msgstr ""
 "erhalten. Die Vorgabe ist »86400« (einen Tag erhalten)."
 
 #. type: TP
-#: cupsd.conf.5:368
+#: cupsd.conf.5:370
 #, no-wrap
 msgid "B<PreserveJobHistory Yes>"
 msgstr "B<PreserveJobHistory Yes>"
 
 #. type: TP
-#: cupsd.conf.5:370
+#: cupsd.conf.5:372
 #, no-wrap
 msgid "B<PreserveJobHistory No>"
 msgstr "B<PreserveJobHistory No>"
 
 #. type: TP
-#: cupsd.conf.5:372
+#: cupsd.conf.5:374
 #, no-wrap
 msgid "B<PreserveJobHistory >I<seconds>"
 msgstr "B<PreserveJobHistory >I<Sekunden>"
 
 #. #ReloadTimeout
 #. type: Plain text
-#: cupsd.conf.5:379
+#: cupsd.conf.5:381
 msgid ""
 "Specifies whether the job history is preserved after a job is printed.  If a "
 "numeric value is specified, the job history is preserved for the indicated "
@@ -3822,14 +3829,14 @@ msgstr ""
 "Vorgabe ist »Yes«."
 
 #. type: TP
-#: cupsd.conf.5:379
+#: cupsd.conf.5:381
 #, no-wrap
 msgid "B<ReloadTimeout >I<seconds>"
 msgstr "B<ReloadTimeout >I<Sekunden>"
 
 #. #ServerAdmin
 #. type: Plain text
-#: cupsd.conf.5:384
+#: cupsd.conf.5:386
 msgid ""
 "Specifies the amount of time to wait for job completion before restarting "
 "the scheduler.  The default is \"30\"."
@@ -3839,14 +3846,14 @@ msgstr ""
 "Die Vorgabe ist »30«."
 
 #. type: TP
-#: cupsd.conf.5:384
+#: cupsd.conf.5:386
 #, no-wrap
 msgid "B<ServerAdmin >I<email-address>"
 msgstr "B<ServerAdmin >I<E-Mail-Adresse>"
 
 #. #ServerAlias
 #. type: Plain text
-#: cupsd.conf.5:389
+#: cupsd.conf.5:391
 msgid ""
 "Specifies the email address of the server administrator.  The default value "
 "is \"root@ServerName\"."
@@ -3855,20 +3862,20 @@ msgstr ""
 "»root@ServerName«."
 
 #. type: TP
-#: cupsd.conf.5:389
+#: cupsd.conf.5:391
 #, no-wrap
 msgid "B<ServerAlias >I<hostname >[ ... I<hostname >]"
 msgstr "B<ServerAlias >I<Rechnername >[ … I<Rechnername >]"
 
 #. type: TP
-#: cupsd.conf.5:391
+#: cupsd.conf.5:393
 #, no-wrap
 msgid "B<ServerAlias *>"
 msgstr "B<ServerAlias *>"
 
 #. #ServerName
 #. type: Plain text
-#: cupsd.conf.5:397
+#: cupsd.conf.5:399
 msgid ""
 "The ServerAlias directive is used for HTTP Host header validation when "
 "clients connect to the scheduler from external interfaces.  Using the "
@@ -3887,14 +3894,14 @@ msgstr ""
 "verwenden."
 
 #. type: TP
-#: cupsd.conf.5:397
+#: cupsd.conf.5:399
 #, no-wrap
 msgid "B<ServerName >I<hostname>"
 msgstr "B<ServerName >I<Rechnername>"
 
 #. #ServerTokens
 #. type: Plain text
-#: cupsd.conf.5:404
+#: cupsd.conf.5:406
 msgid ""
 "Specifies the fully-qualified hostname of the server.  The default is the "
 "value reported by the B<hostname>(1)  command."
@@ -3903,50 +3910,50 @@ msgstr ""
 "der Wert, der von dem Befehl B<hostname>(1) berichtet wird."
 
 #. type: TP
-#: cupsd.conf.5:404
+#: cupsd.conf.5:406
 #, no-wrap
 msgid "B<ServerTokens None>"
 msgstr "B<ServerTokens None>"
 
 #. type: TP
-#: cupsd.conf.5:406
+#: cupsd.conf.5:408
 #, no-wrap
 msgid "B<ServerTokens ProductOnly>"
 msgstr "B<ServerTokens ProductOnly>"
 
 #. type: TP
-#: cupsd.conf.5:408
+#: cupsd.conf.5:410
 #, no-wrap
 msgid "B<ServerTokens Major>"
 msgstr "B<ServerTokens Major>"
 
 #. type: TP
-#: cupsd.conf.5:410
+#: cupsd.conf.5:412
 #, no-wrap
 msgid "B<ServerTokens Minor>"
 msgstr "B<ServerTokens Minor>"
 
 #. type: TP
-#: cupsd.conf.5:412
+#: cupsd.conf.5:414
 #, no-wrap
 msgid "B<ServerTokens Minimal>"
 msgstr "B<ServerTokens Minimal>"
 
 #. type: TP
-#: cupsd.conf.5:414
+#: cupsd.conf.5:416
 #, no-wrap
 msgid "B<ServerTokens OS>"
 msgstr "B<ServerTokens OS>"
 
 #. type: TP
-#: cupsd.conf.5:416
+#: cupsd.conf.5:418
 #, no-wrap
 msgid "B<ServerTokens Full>"
 msgstr "B<ServerTokens Full>"
 
 #. #SSLListen
 #. type: Plain text
-#: cupsd.conf.5:428
+#: cupsd.conf.5:430
 msgid ""
 "Specifies what information is included in the Server header of HTTP "
 "responses.  \"None\" disables the Server header.  \"ProductOnly\" reports "
@@ -3965,58 +3972,58 @@ msgstr ""
 "IPP/2.1«. Die Vorgabe ist »Minimal«."
 
 #. type: TP
-#: cupsd.conf.5:428
+#: cupsd.conf.5:430
 #, no-wrap
 msgid "B<SSLListen >I<ipv4-address>B<:>I<port>"
 msgstr "B<SSLListen >I<IPv4-Adresse>B<:>I<Port>"
 
 #. type: TP
-#: cupsd.conf.5:430
+#: cupsd.conf.5:432
 #, no-wrap
 msgid "B<SSLListen [>I<ipv6-address>B<]:>I<port>"
 msgstr "B<SSLListen [>I<IPv6-Adresse>B<]:>I<Port>"
 
 #. type: TP
-#: cupsd.conf.5:432
+#: cupsd.conf.5:434
 #, no-wrap
 msgid "B<SSLListen *:>I<port>"
 msgstr "B<SSLListen *:>I<Port>"
 
 #. #SSLOptions
 #. type: Plain text
-#: cupsd.conf.5:436
+#: cupsd.conf.5:438
 msgid "Listens on the specified address and port for encrypted connections."
 msgstr ""
 "Wartet auf der angegebenen Adresse und dem Port auf verschlüsselte "
 "Verbindungen."
 
 #. type: TP
-#: cupsd.conf.5:454
+#: cupsd.conf.5:456
 #, no-wrap
 msgid "B<SSLPort >I<port>"
 msgstr "B<SSLPort >I<Port>"
 
 #. #StrictConformance
 #. type: Plain text
-#: cupsd.conf.5:458
+#: cupsd.conf.5:460
 msgid "Listens on the specified port for encrypted connections."
 msgstr "Wartet auf dem angegebenen Port auf verschlüsselte Verbindungen."
 
 #. type: TP
-#: cupsd.conf.5:458
+#: cupsd.conf.5:460
 #, no-wrap
 msgid "B<StrictConformance Yes>"
 msgstr "B<StrictConformance Yes>"
 
 #. type: TP
-#: cupsd.conf.5:460
+#: cupsd.conf.5:462
 #, no-wrap
 msgid "B<StrictConformance No>"
 msgstr "B<StrictConformance No>"
 
 #. #Timeout
 #. type: Plain text
-#: cupsd.conf.5:465
+#: cupsd.conf.5:467
 msgid ""
 "Specifies whether the scheduler requires clients to strictly adhere to the "
 "IPP specifications.  The default is \"No\"."
@@ -4025,56 +4032,56 @@ msgstr ""
 "den IPP-Spezifikationen folgen. Die Vorgabe ist »No«."
 
 #. type: TP
-#: cupsd.conf.5:465
+#: cupsd.conf.5:467
 #, no-wrap
 msgid "B<Timeout >I<seconds>"
 msgstr "B<Timeout >I<Sekunden>"
 
 #. #WebInterface
 #. type: Plain text
-#: cupsd.conf.5:470
+#: cupsd.conf.5:472
 msgid ""
 "Specifies the HTTP request timeout.  The default is \"900\" (15 minutes)."
 msgstr ""
 "Legt die HTTP-Zeitüberschreitung fest. Die Vorgabe ist »900« (15 Minuten)."
 
 #. type: TP
-#: cupsd.conf.5:470
+#: cupsd.conf.5:472
 #, no-wrap
 msgid "B<WebInterface yes>"
 msgstr "B<WebInterface yes>"
 
 #. type: TP
-#: cupsd.conf.5:472
+#: cupsd.conf.5:474
 #, no-wrap
 msgid "B<WebInterface no>"
 msgstr "B<WebInterface no>"
 
 #. type: Plain text
-#: cupsd.conf.5:476
+#: cupsd.conf.5:478
 msgid "Specifies whether the web interface is enabled.  The default is \"No\"."
 msgstr ""
 "Legt fest, ob die Webschnittstelle freigegeben ist. Die Vorgabe ist »No«."
 
 #. type: SS
-#: cupsd.conf.5:476
+#: cupsd.conf.5:478
 #, no-wrap
 msgid "HTTP METHOD NAMES"
 msgstr "HTTP-METHODENNAMEN"
 
 #. type: Plain text
-#: cupsd.conf.5:479
+#: cupsd.conf.5:481
 msgid "The following HTTP methods are supported by B<cupsd>(8):"
 msgstr "Die folgenden HTTP-Methoden werden von B<cupsd>(8) unterstützt:"
 
 #. type: TP
-#: cupsd.conf.5:479
+#: cupsd.conf.5:481
 #, no-wrap
 msgid "GET"
 msgstr "GET"
 
 #. type: Plain text
-#: cupsd.conf.5:482
+#: cupsd.conf.5:484
 msgid ""
 "Used by a client to download icons and other printer resources and to access "
 "the CUPS web interface."
@@ -4083,13 +4090,13 @@ msgstr ""
 "Druckressourcen und zum Zugriff auf die CUPS-Webschnittstelle verwandt."
 
 #. type: TP
-#: cupsd.conf.5:482
+#: cupsd.conf.5:484
 #, no-wrap
 msgid "HEAD"
 msgstr "HEAD"
 
 #. type: Plain text
-#: cupsd.conf.5:485
+#: cupsd.conf.5:487
 msgid ""
 "Used by a client to get the type, size, and modification date of resources."
 msgstr ""
@@ -4097,19 +4104,19 @@ msgstr ""
 "von Ressourcen zu erhalten."
 
 #. type: Plain text
-#: cupsd.conf.5:488
+#: cupsd.conf.5:490
 msgid "Used by a client to establish a secure (SSL/TLS) connection."
 msgstr ""
 "Wird vom Client verwandt, um eine sichere (SSL/TLS)-Verbindung zu etablieren."
 
 #. type: TP
-#: cupsd.conf.5:488
+#: cupsd.conf.5:490
 #, no-wrap
 msgid "POST"
 msgstr "POST"
 
 #. type: Plain text
-#: cupsd.conf.5:491
+#: cupsd.conf.5:493
 msgid ""
 "Used by a client to submit IPP requests and HTML forms from the CUPS web "
 "interface."
@@ -4118,402 +4125,402 @@ msgstr ""
 "aus der CUPS-Webschnittstelle verwandt."
 
 #. type: TP
-#: cupsd.conf.5:491
+#: cupsd.conf.5:493
 #, no-wrap
 msgid "PUT"
 msgstr "PUT"
 
 #. type: Plain text
-#: cupsd.conf.5:494
+#: cupsd.conf.5:496
 msgid "Used by a client to upload configuration files."
 msgstr ""
 "Wird von einem Client zum Hochladen von Konfigurationsdateien verwandt."
 
 #. type: SS
-#: cupsd.conf.5:494
+#: cupsd.conf.5:496
 #, no-wrap
 msgid "IPP OPERATION NAMES"
 msgstr "IPP-VORGANGSNAMEN"
 
 #. type: Plain text
-#: cupsd.conf.5:497
+#: cupsd.conf.5:499
 msgid "The following IPP operations are supported by B<cupsd>(8):"
 msgstr "Die folgenden IPP-Vorgänge werden von B<cupsd>(8) unterstützt:"
 
 #. type: TP
-#: cupsd.conf.5:497
+#: cupsd.conf.5:499
 #, no-wrap
 msgid "CUPS-Accept-Jobs"
 msgstr "CUPS-Accept-Jobs"
 
 #. type: Plain text
-#: cupsd.conf.5:500
+#: cupsd.conf.5:502
 msgid "Allows a printer to accept new jobs."
 msgstr "Erlaubt es einem Drucker, neue Aufträge zu akzeptieren."
 
 #. type: TP
-#: cupsd.conf.5:500
+#: cupsd.conf.5:502
 #, no-wrap
 msgid "CUPS-Add-Modify-Class"
 msgstr "CUPS-Add-Modify-Class"
 
 #. type: Plain text
-#: cupsd.conf.5:503
+#: cupsd.conf.5:505
 msgid "Adds or modifies a printer class."
 msgstr "Fügt eine Druckerklasse hinzu oder ändert sie."
 
 #. type: TP
-#: cupsd.conf.5:503
+#: cupsd.conf.5:505
 #, no-wrap
 msgid "CUPS-Add-Modify-Printer"
 msgstr "CUPS-Add-Modify-Printer"
 
 #. type: Plain text
-#: cupsd.conf.5:506
+#: cupsd.conf.5:508
 msgid "Adds or modifies a printer."
 msgstr "Fügt einen Drucker hinzu oder ändert ihn."
 
 #. type: TP
-#: cupsd.conf.5:506
+#: cupsd.conf.5:508
 #, no-wrap
 msgid "CUPS-Authenticate-Job"
 msgstr "CUPS-Authenticate-Job"
 
 #. type: Plain text
-#: cupsd.conf.5:509
+#: cupsd.conf.5:511
 msgid "Releases a job that is held for authentication."
 msgstr "Gibt einen Auftrag frei, der für Authentifizierung gehalten ist."
 
 #. type: TP
-#: cupsd.conf.5:509
+#: cupsd.conf.5:511
 #, no-wrap
 msgid "CUPS-Delete-Class"
 msgstr "CUPS-Delete-Class"
 
 #. type: Plain text
-#: cupsd.conf.5:512
+#: cupsd.conf.5:514
 msgid "Deletes a printer class."
 msgstr "Löscht eine Druckerklasse."
 
 #. type: TP
-#: cupsd.conf.5:512
+#: cupsd.conf.5:514
 #, no-wrap
 msgid "CUPS-Delete-Printer"
 msgstr "CUPS-Delete-Printer"
 
 #. type: Plain text
-#: cupsd.conf.5:515
+#: cupsd.conf.5:517
 msgid "Deletes a printer."
 msgstr "Löscht einen Drucker."
 
 #. type: TP
-#: cupsd.conf.5:515
+#: cupsd.conf.5:517
 #, no-wrap
 msgid "CUPS-Get-Classes"
 msgstr "CUPS-Get-Classes"
 
 #. type: Plain text
-#: cupsd.conf.5:518
+#: cupsd.conf.5:520
 msgid "Gets a list of printer classes."
 msgstr "Ermittelt eine Liste von Druckerklassen."
 
 #. type: TP
-#: cupsd.conf.5:518
+#: cupsd.conf.5:520
 #, no-wrap
 msgid "CUPS-Get-Default"
 msgstr "CUPS-Get-Default"
 
 #. type: Plain text
-#: cupsd.conf.5:521
+#: cupsd.conf.5:523
 msgid "Gets the server default printer or printer class."
 msgstr "Ermittelt die Servervorgabe für den Drucker oder die Druckerklasse."
 
 #. type: TP
-#: cupsd.conf.5:521
+#: cupsd.conf.5:523
 #, no-wrap
 msgid "CUPS-Get-Devices"
 msgstr "CUPS-Get-Devices"
 
 #. type: Plain text
-#: cupsd.conf.5:524
+#: cupsd.conf.5:526
 msgid "Gets a list of devices that are currently available."
 msgstr "Ermittelt eine Liste von derzeit verfügbaren Geräten."
 
 #. type: TP
-#: cupsd.conf.5:524
+#: cupsd.conf.5:526
 #, no-wrap
 msgid "CUPS-Get-Document"
 msgstr "CUPS-Get-Document"
 
 #. type: Plain text
-#: cupsd.conf.5:527
+#: cupsd.conf.5:529
 msgid "Gets a document file for a job."
 msgstr "Ermittelt eine Dokumentendatei für einen Auftrag."
 
 #. type: TP
-#: cupsd.conf.5:527
+#: cupsd.conf.5:529
 #, no-wrap
 msgid "CUPS-Get-PPD"
 msgstr "CUPS-Get-PPD"
 
 #. type: Plain text
-#: cupsd.conf.5:530
+#: cupsd.conf.5:532
 msgid "Gets a PPD file."
 msgstr "Ermittelt eine PPD-Datei."
 
 #. type: TP
-#: cupsd.conf.5:530
+#: cupsd.conf.5:532
 #, no-wrap
 msgid "CUPS-Get-PPDs"
 msgstr "CUPS-Get-PPDs"
 
 #. type: Plain text
-#: cupsd.conf.5:533
+#: cupsd.conf.5:535
 msgid "Gets a list of installed PPD files."
 msgstr "Ermittelt eine Liste von installierten PPD-Dateien."
 
 #. type: TP
-#: cupsd.conf.5:533
+#: cupsd.conf.5:535
 #, no-wrap
 msgid "CUPS-Get-Printers"
 msgstr "CUPS-Get-Printers"
 
 #. type: Plain text
-#: cupsd.conf.5:536
+#: cupsd.conf.5:538
 msgid "Gets a list of printers."
 msgstr "Ermittelt eine Liste von Druckern."
 
 #. type: TP
-#: cupsd.conf.5:536
+#: cupsd.conf.5:538
 #, no-wrap
 msgid "CUPS-Move-Job"
 msgstr "CUPS-Move-Job"
 
 #. type: Plain text
-#: cupsd.conf.5:539
+#: cupsd.conf.5:541
 msgid "Moves a job."
 msgstr "Verschiebt einen Auftrag."
 
 #. type: TP
-#: cupsd.conf.5:539
+#: cupsd.conf.5:541
 #, no-wrap
 msgid "CUPS-Reject-Jobs"
 msgstr "CUPS-Reject-Jobs"
 
 #. type: Plain text
-#: cupsd.conf.5:542
+#: cupsd.conf.5:544
 msgid "Prevents a printer from accepting new jobs."
 msgstr "Verhindert, dass ein Drucker neue Aufträge akzeptiert."
 
 #. type: TP
-#: cupsd.conf.5:542
+#: cupsd.conf.5:544
 #, no-wrap
 msgid "CUPS-Set-Default"
 msgstr "CUPS-Set-Default"
 
 #. type: Plain text
-#: cupsd.conf.5:545
+#: cupsd.conf.5:547
 msgid "Sets the server default printer or printer class."
 msgstr "Setzt die Server-Vorgabe für einen Drucker oder eine Druckerklasse."
 
 #. type: TP
-#: cupsd.conf.5:545
+#: cupsd.conf.5:547
 #, no-wrap
 msgid "Cancel-Job"
 msgstr "Cancel-Job"
 
 #. type: Plain text
-#: cupsd.conf.5:548
+#: cupsd.conf.5:550
 msgid "Cancels a job."
 msgstr "Bricht einen Auftrag ab."
 
 #. type: TP
-#: cupsd.conf.5:548
+#: cupsd.conf.5:550
 #, no-wrap
 msgid "Cancel-Jobs"
 msgstr "Cancel-Jobs"
 
 #. type: Plain text
-#: cupsd.conf.5:551
+#: cupsd.conf.5:553
 msgid "Cancels one or more jobs."
 msgstr "Bricht einen oder mehrere Aufträge ab."
 
 #. type: TP
-#: cupsd.conf.5:551
+#: cupsd.conf.5:553
 #, no-wrap
 msgid "Cancel-My-Jobs"
 msgstr "Cancel-My-Jobs"
 
 #. type: Plain text
-#: cupsd.conf.5:554
+#: cupsd.conf.5:556
 msgid "Cancels one or more jobs creates by a user."
 msgstr "Bricht einen oder mehrere von einem Benutzer erstellte Aufträge ab."
 
 #. type: TP
-#: cupsd.conf.5:554
+#: cupsd.conf.5:556
 #, no-wrap
 msgid "Cancel-Subscription"
 msgstr "Cancel-Subscription"
 
 #. type: Plain text
-#: cupsd.conf.5:557
+#: cupsd.conf.5:559
 msgid "Cancels a subscription."
 msgstr "Beendet ein Abonnement."
 
 #. type: TP
-#: cupsd.conf.5:557
+#: cupsd.conf.5:559
 #, no-wrap
 msgid "Close-Job"
 msgstr "Close-Job"
 
 #. type: Plain text
-#: cupsd.conf.5:560
+#: cupsd.conf.5:562
 msgid "Closes a job that is waiting for more documents."
 msgstr "Schließt einen Auftrag, der auf weitere Dokumente wartet."
 
 #. type: TP
-#: cupsd.conf.5:560
+#: cupsd.conf.5:562
 #, no-wrap
 msgid "Create-Job"
 msgstr "Create-Job"
 
 #. type: Plain text
-#: cupsd.conf.5:563
+#: cupsd.conf.5:565
 msgid "Creates a new job with no documents."
 msgstr "Erstellt einen neuen Auftrag ohne Dokumente."
 
 #. type: TP
-#: cupsd.conf.5:563
+#: cupsd.conf.5:565
 #, no-wrap
 msgid "Create-Job-Subscriptions"
 msgstr "Create-Job-Subscriptions"
 
 #. type: Plain text
-#: cupsd.conf.5:566
+#: cupsd.conf.5:568
 msgid "Creates a subscription for job events."
 msgstr "Erstellt ein Abonnement für Auftragsereignisse."
 
 #. type: TP
-#: cupsd.conf.5:566
+#: cupsd.conf.5:568
 #, no-wrap
 msgid "Create-Printer-Subscriptions"
 msgstr "Create-Printer-Subscriptions"
 
 #. type: Plain text
-#: cupsd.conf.5:569
+#: cupsd.conf.5:571
 msgid "Creates a subscription for printer events."
 msgstr "Erstellt ein Abonnement für Druckerereignisse."
 
 #. type: TP
-#: cupsd.conf.5:569
+#: cupsd.conf.5:571
 #, no-wrap
 msgid "Get-Job-Attributes"
 msgstr "Get-Job-Attributes"
 
 #. type: Plain text
-#: cupsd.conf.5:572
+#: cupsd.conf.5:574
 msgid "Gets information about a job."
 msgstr "Ermittelt Informationen über einen Auftrag."
 
 #. type: TP
-#: cupsd.conf.5:572
+#: cupsd.conf.5:574
 #, no-wrap
 msgid "Get-Jobs"
 msgstr "Get-Jobs"
 
 #. type: Plain text
-#: cupsd.conf.5:575
+#: cupsd.conf.5:577
 msgid "Gets a list of jobs."
 msgstr "Ermittelt eine Liste von Aufträgen."
 
 #. type: TP
-#: cupsd.conf.5:575
+#: cupsd.conf.5:577
 #, no-wrap
 msgid "Get-Notifications"
 msgstr "Get-Notifications"
 
 #. type: Plain text
-#: cupsd.conf.5:578
+#: cupsd.conf.5:580
 msgid "Gets a list of event notifications for a subscription."
 msgstr ""
 "Ermittelt eine Liste von Ereignisbenachrichtigungen für ein Abonnement."
 
 #. type: TP
-#: cupsd.conf.5:578
+#: cupsd.conf.5:580
 #, no-wrap
 msgid "Get-Printer-Attributes"
 msgstr "Get-Printer-Attributes"
 
 #. type: Plain text
-#: cupsd.conf.5:581
+#: cupsd.conf.5:583
 msgid "Gets information about a printer or printer class."
 msgstr "Ermittelt Informationen über einen Drucker oder eine Druckerklasse."
 
 #. type: TP
-#: cupsd.conf.5:581
+#: cupsd.conf.5:583
 #, no-wrap
 msgid "Get-Subscription-Attributes"
 msgstr "Get-Subscription-Attributes"
 
 #. type: Plain text
-#: cupsd.conf.5:584
+#: cupsd.conf.5:586
 msgid "Gets information about a subscription."
 msgstr "Ermittelt Informationen über ein Abonnement."
 
 #. type: TP
-#: cupsd.conf.5:584
+#: cupsd.conf.5:586
 #, no-wrap
 msgid "Get-Subscriptions"
 msgstr "Get-Subscriptions"
 
 #. type: Plain text
-#: cupsd.conf.5:587
+#: cupsd.conf.5:589
 msgid "Gets a list of subscriptions."
 msgstr "Ermittelt eine Liste von Abonnements."
 
 #. type: TP
-#: cupsd.conf.5:587
+#: cupsd.conf.5:589
 #, no-wrap
 msgid "Hold-Job"
 msgstr "Hold-Job"
 
 #. type: Plain text
-#: cupsd.conf.5:590
+#: cupsd.conf.5:592
 msgid "Holds a job from printing."
 msgstr "Hält einen Auftrag vom Druck zurück."
 
 #. type: TP
-#: cupsd.conf.5:590
+#: cupsd.conf.5:592
 #, no-wrap
 msgid "Hold-New-Jobs"
 msgstr "Hold-New-Jobs"
 
 #. type: Plain text
-#: cupsd.conf.5:593
+#: cupsd.conf.5:595
 msgid "Holds all new jobs from printing."
 msgstr "Hält alle neuen Aufträge vom Druck zurück."
 
 #. type: TP
-#: cupsd.conf.5:593
+#: cupsd.conf.5:595
 #, no-wrap
 msgid "Pause-Printer"
 msgstr "Pause-Printer"
 
 #. type: Plain text
-#: cupsd.conf.5:596
+#: cupsd.conf.5:598
 msgid "Stops processing of jobs by a printer or printer class."
 msgstr ""
 "Beendet die Verarbeitung von Aufträgen von einem Drucker oder einer "
 "Druckerklasse."
 
 #. type: TP
-#: cupsd.conf.5:596
+#: cupsd.conf.5:598
 #, no-wrap
 msgid "Pause-Printer-After-Current-Job"
 msgstr "Pause-Printer-After-Current-Job"
 
 #. type: Plain text
-#: cupsd.conf.5:599
+#: cupsd.conf.5:601
 msgid ""
 "Stops processing of jobs by a printer or printer class after the current job "
 "is finished."
@@ -4522,147 +4529,147 @@ msgstr ""
 "Druckerklasse, nachdem der aktuelle Auftrag beendet wurde."
 
 #. type: TP
-#: cupsd.conf.5:599
+#: cupsd.conf.5:601
 #, no-wrap
 msgid "Print-Job"
 msgstr "Print-Job"
 
 #. type: Plain text
-#: cupsd.conf.5:602
+#: cupsd.conf.5:604
 msgid "Creates a new job with a single document."
 msgstr "Erstellt einen neuen Auftrag mit einem einzelnen Dokument."
 
 #. type: TP
-#: cupsd.conf.5:602
+#: cupsd.conf.5:604
 #, no-wrap
 msgid "Purge-Jobs"
 msgstr "Purge-Jobs"
 
 #. type: Plain text
-#: cupsd.conf.5:605
+#: cupsd.conf.5:607
 msgid "Cancels one or more jobs and deletes the job history."
 msgstr "Bricht einen oder mehrere Aufträge ab und löscht die Auftragschronik."
 
 #. type: TP
-#: cupsd.conf.5:605
+#: cupsd.conf.5:607
 #, no-wrap
 msgid "Release-Held-New-Jobs"
 msgstr "Release-Held-New-Jobs"
 
 #. type: Plain text
-#: cupsd.conf.5:608
+#: cupsd.conf.5:610
 msgid "Allows previously held jobs to print."
 msgstr "Erlaubt, vorher angehaltenen Aufträgen zu drucken."
 
 #. type: TP
-#: cupsd.conf.5:608
+#: cupsd.conf.5:610
 #, no-wrap
 msgid "Release-Job"
 msgstr "Release-Job"
 
 #. type: Plain text
-#: cupsd.conf.5:611
+#: cupsd.conf.5:613
 msgid "Allows a job to print."
 msgstr "Erlaubt einem Auftrag, zu drucken."
 
 #. type: TP
-#: cupsd.conf.5:611
+#: cupsd.conf.5:613
 #, no-wrap
 msgid "Renew-Subscription"
 msgstr "Renew-Subscription"
 
 #. type: Plain text
-#: cupsd.conf.5:614
+#: cupsd.conf.5:616
 msgid "Renews a subscription."
 msgstr "Erneuert ein Abonnement."
 
 #. type: TP
-#: cupsd.conf.5:614
+#: cupsd.conf.5:616
 #, no-wrap
 msgid "Restart-Job"
 msgstr "Restart-Job"
 
 #. type: Plain text
-#: cupsd.conf.5:617
+#: cupsd.conf.5:619
 msgid "Reprints a job, if possible."
 msgstr "Druckt falls möglich einen Auftrag erneut."
 
 #. type: TP
-#: cupsd.conf.5:617
+#: cupsd.conf.5:619
 #, no-wrap
 msgid "Send-Document"
 msgstr "Send-Document"
 
 #. type: Plain text
-#: cupsd.conf.5:620
+#: cupsd.conf.5:622
 msgid "Adds a document to a job."
 msgstr "Fügt ein Dokument zu einem Auftrag hinzu."
 
 #. type: TP
-#: cupsd.conf.5:620
+#: cupsd.conf.5:622
 #, no-wrap
 msgid "Set-Job-Attributes"
 msgstr "Set-Job-Attributes"
 
 #. type: Plain text
-#: cupsd.conf.5:623
+#: cupsd.conf.5:625
 msgid "Changes job information."
 msgstr "Ändert Auftragsinformationen."
 
 #. type: TP
-#: cupsd.conf.5:623
+#: cupsd.conf.5:625
 #, no-wrap
 msgid "Set-Printer-Attributes"
 msgstr "Set-Printer-Attributes"
 
 #. type: Plain text
-#: cupsd.conf.5:626
+#: cupsd.conf.5:628
 msgid "Changes printer or printer class information."
 msgstr "Ändert Drucker- oder Druckerklasseninformationen."
 
 #. type: TP
-#: cupsd.conf.5:626
+#: cupsd.conf.5:628
 #, no-wrap
 msgid "Validate-Job"
 msgstr "Validate-Job"
 
 #. type: Plain text
-#: cupsd.conf.5:629
+#: cupsd.conf.5:631
 msgid "Validates options for a new job."
 msgstr "Validiert Optionen für einen neuen Auftrag."
 
 #. type: SS
-#: cupsd.conf.5:629
+#: cupsd.conf.5:631
 #, no-wrap
 msgid "LOCATION PATHS"
 msgstr "ORTSPFADE"
 
 #. type: Plain text
-#: cupsd.conf.5:632
+#: cupsd.conf.5:634
 msgid "The following paths are commonly used when configuring B<cupsd>(8):"
 msgstr ""
 "Die folgenden Pfade werden bei der Konfiguration von B<cupsd>(8) häufig "
 "verwandt:"
 
 #. type: TP
-#: cupsd.conf.5:632
+#: cupsd.conf.5:634
 #, no-wrap
 msgid "/"
 msgstr "/"
 
 #. type: Plain text
-#: cupsd.conf.5:635
+#: cupsd.conf.5:637
 msgid "The path for all get operations (get-printers, get-jobs, etc.)"
 msgstr "Der Pfad für alle »get«-Vorgänge (get-printers, get-jobs, usw.)"
 
 #. type: TP
-#: cupsd.conf.5:635
+#: cupsd.conf.5:637
 #, no-wrap
 msgid "/admin"
 msgstr "/admin"
 
 #. type: Plain text
-#: cupsd.conf.5:638
+#: cupsd.conf.5:640
 msgid ""
 "The path for all administration operations (add-printer, delete-printer, "
 "start-printer, etc.)"
@@ -4671,13 +4678,13 @@ msgstr ""
 "start-printer, usw.)"
 
 #. type: TP
-#: cupsd.conf.5:638
+#: cupsd.conf.5:640
 #, no-wrap
 msgid "/admin/conf"
 msgstr "/admin/conf"
 
 #. type: Plain text
-#: cupsd.conf.5:641
+#: cupsd.conf.5:643
 msgid ""
 "The path for access to the CUPS configuration files (cupsd.conf, client."
 "conf, etc.)"
@@ -4686,13 +4693,13 @@ msgstr ""
 "usw.) zuzugreifen"
 
 #. type: TP
-#: cupsd.conf.5:641
+#: cupsd.conf.5:643
 #, no-wrap
 msgid "/admin/log"
 msgstr "/admin/log"
 
 #. type: Plain text
-#: cupsd.conf.5:644
+#: cupsd.conf.5:646
 msgid ""
 "The path for access to the CUPS log files (access_log, error_log, page_log)"
 msgstr ""
@@ -4700,101 +4707,101 @@ msgstr ""
 "zuzugreifen"
 
 #. type: TP
-#: cupsd.conf.5:644
+#: cupsd.conf.5:646
 #, no-wrap
 msgid "/classes"
 msgstr "/classes"
 
 #. type: Plain text
-#: cupsd.conf.5:647
+#: cupsd.conf.5:649
 msgid "The path for all printer classes"
 msgstr "Der Pfad für alle Druckerklassen"
 
 #. type: TP
-#: cupsd.conf.5:647
+#: cupsd.conf.5:649
 #, no-wrap
 msgid "/classes/name"
 msgstr "/classes/name"
 
 #. type: Plain text
-#: cupsd.conf.5:650
+#: cupsd.conf.5:652
 msgid "The resource for the named printer class"
 msgstr "Die Ressourcen für die benannte Druckerklasse"
 
 #. type: TP
-#: cupsd.conf.5:650
+#: cupsd.conf.5:652
 #, no-wrap
 msgid "/jobs"
 msgstr "/jobs"
 
 #. type: Plain text
-#: cupsd.conf.5:653
+#: cupsd.conf.5:655
 msgid "The path for all jobs (hold-job, release-job, etc.)"
 msgstr "Der Pfad für alle Aufträge (hold-job, release-job, usw.)"
 
 #. type: TP
-#: cupsd.conf.5:653
+#: cupsd.conf.5:655
 #, no-wrap
 msgid "/jobs/id"
 msgstr "/jobs/id"
 
 #. type: Plain text
-#: cupsd.conf.5:656
+#: cupsd.conf.5:658
 msgid "The path for the specified job"
 msgstr "Der Pfad für den angegebenen Auftrag"
 
 #. type: TP
-#: cupsd.conf.5:656
+#: cupsd.conf.5:658
 #, no-wrap
 msgid "/printers"
 msgstr "/printers"
 
 #. type: Plain text
-#: cupsd.conf.5:659
+#: cupsd.conf.5:661
 msgid "The path for all printers"
 msgstr "Der Pfad für alle Drucker"
 
 #. type: TP
-#: cupsd.conf.5:659
+#: cupsd.conf.5:661
 #, no-wrap
 msgid "/printers/name"
 msgstr "/printers/name"
 
 #. type: Plain text
-#: cupsd.conf.5:662
+#: cupsd.conf.5:664
 msgid "The path for the named printer"
 msgstr "Der Pfad für den benannten Drucker"
 
 #. type: TP
-#: cupsd.conf.5:662
+#: cupsd.conf.5:664
 #, no-wrap
 msgid "/printers/name.png"
 msgstr "/printers/name.png"
 
 #. type: Plain text
-#: cupsd.conf.5:665
+#: cupsd.conf.5:667
 msgid "The icon file path for the named printer"
 msgstr "Der Icon-Dateipfad für den benannten Drucker"
 
 #. type: TP
-#: cupsd.conf.5:665
+#: cupsd.conf.5:667
 #, no-wrap
 msgid "/printers/name.ppd"
 msgstr "/printers/name.ppd"
 
 #. type: Plain text
-#: cupsd.conf.5:668
+#: cupsd.conf.5:670
 msgid "The PPD file path for the named printer"
 msgstr "Der PPD-Dateipfad für den benannten Drucker"
 
 #. type: SS
-#: cupsd.conf.5:668
+#: cupsd.conf.5:670
 #, no-wrap
 msgid "DIRECTIVES VALID WITHIN LOCATION AND LIMIT SECTIONS"
 msgstr "DIREKTIVEN, DIE INNERHALB VON ORTS- UND EINSCHRÄNKUNGSABSCHNITTEN GÜLTIG SIND"
 
 #. type: Plain text
-#: cupsd.conf.5:670
+#: cupsd.conf.5:672
 msgid ""
 "The following directives may be placed inside Location and Limit sections in "
 "the B<cupsd.conf> file:"
@@ -4803,73 +4810,73 @@ msgstr ""
 "Einschränkungsabschnitten in der Datei B<cupsd.conf> eingetragen werden:"
 
 #. type: TP
-#: cupsd.conf.5:670
+#: cupsd.conf.5:672
 #, no-wrap
 msgid "B<Allow all>"
 msgstr "B<Allow all>"
 
 #. type: TP
-#: cupsd.conf.5:672
+#: cupsd.conf.5:674
 #, no-wrap
 msgid "B<Allow none>"
 msgstr "B<Allow none>"
 
 #. type: TP
-#: cupsd.conf.5:674
+#: cupsd.conf.5:676
 #, no-wrap
 msgid "B<Allow >I<host.domain.com>"
 msgstr "B<Allow >I<Rechner.domain.com>"
 
 #. type: TP
-#: cupsd.conf.5:676
+#: cupsd.conf.5:678
 #, no-wrap
 msgid "B<Allow *.>I<domain.com>"
 msgstr "B<Allow *.>I<domain.com>"
 
 #. type: TP
-#: cupsd.conf.5:678
+#: cupsd.conf.5:680
 #, no-wrap
 msgid "B<Allow >I<ipv4-address>"
 msgstr "B<Allow >I<IPv4-Adresse>"
 
 #. type: TP
-#: cupsd.conf.5:680
+#: cupsd.conf.5:682
 #, no-wrap
 msgid "B<Allow >I<ipv4-address>B</>I<netmask>"
 msgstr "B<Allow >I<IPv4-Adresse>B</>I<Netzmaske>"
 
 #. type: TP
-#: cupsd.conf.5:682
+#: cupsd.conf.5:684
 #, no-wrap
 msgid "B<Allow >I<ipv4-address>B</>I<mm>"
 msgstr "B<Allow >I<IPv4-Adresse>B</>I<mm>"
 
 #. type: TP
-#: cupsd.conf.5:684
+#: cupsd.conf.5:686
 #, no-wrap
 msgid "B<Allow [>I<ipv6-address>B<]>"
 msgstr "B<Allow [>I<IPv6-Adresse>B<]>"
 
 #. type: TP
-#: cupsd.conf.5:686
+#: cupsd.conf.5:688
 #, no-wrap
 msgid "B<Allow [>I<ipv6-address>B<]/>I<mm>"
 msgstr "B<Allow [>I<IPv6-Adresse>B<]/>I<mm>"
 
 #. type: TP
-#: cupsd.conf.5:688
+#: cupsd.conf.5:690
 #, no-wrap
 msgid "B<Allow @IF(>I<name>B<)>"
 msgstr "B<Allow @IF(>I<Name>B<)>"
 
 #. type: TP
-#: cupsd.conf.5:690
+#: cupsd.conf.5:692
 #, no-wrap
 msgid "B<Allow @LOCAL>"
 msgstr "B<Allow @LOCAL>"
 
 #. type: Plain text
-#: cupsd.conf.5:696
+#: cupsd.conf.5:698
 msgid ""
 "Allows access from the named hosts, domains, addresses, or interfaces.  The "
 "@IF(name) form uses the current subnets configured for the named interface.  "
@@ -4887,31 +4894,31 @@ msgstr ""
 "ob »Allow«-Zeilen vor oder nach »Deny«-Zeilen ausgewertet werden."
 
 #. type: TP
-#: cupsd.conf.5:696
+#: cupsd.conf.5:698
 #, no-wrap
 msgid "B<AuthType None>"
 msgstr "B<AuthType None>"
 
 #. type: TP
-#: cupsd.conf.5:698
+#: cupsd.conf.5:700
 #, no-wrap
 msgid "B<AuthType Basic>"
 msgstr "B<AuthType Basic>"
 
 #. type: TP
-#: cupsd.conf.5:700
+#: cupsd.conf.5:702
 #, no-wrap
 msgid "B<AuthType Default>"
 msgstr "B<AuthType Default>"
 
 #. type: TP
-#: cupsd.conf.5:702
+#: cupsd.conf.5:704
 #, no-wrap
 msgid "B<AuthType Negotiate>"
 msgstr "B<AuthType Negotiate>"
 
 #. type: Plain text
-#: cupsd.conf.5:706
+#: cupsd.conf.5:708
 msgid ""
 "Specifies the type of authentication required.  The value \"Default\" "
 "corresponds to the DefaultAuthType value."
@@ -4920,73 +4927,73 @@ msgstr ""
 "entspricht dem Wert »DefaultAuthType«."
 
 #. type: TP
-#: cupsd.conf.5:706
+#: cupsd.conf.5:708
 #, no-wrap
 msgid "B<Deny all>"
 msgstr "B<Deny all>"
 
 #. type: TP
-#: cupsd.conf.5:708
+#: cupsd.conf.5:710
 #, no-wrap
 msgid "B<Deny none>"
 msgstr "B<Deny none>"
 
 #. type: TP
-#: cupsd.conf.5:710
+#: cupsd.conf.5:712
 #, no-wrap
 msgid "B<Deny >I<host.domain.com>"
 msgstr "B<Deny >I<Rechner.domain.com>"
 
 #. type: TP
-#: cupsd.conf.5:712
+#: cupsd.conf.5:714
 #, no-wrap
 msgid "B<Deny *.>I<domain.com>"
 msgstr "B<Deny *.>I<domain.com>"
 
 #. type: TP
-#: cupsd.conf.5:714
+#: cupsd.conf.5:716
 #, no-wrap
 msgid "B<Deny >I<ipv4-address>"
 msgstr "B<Deny >I<IPv4-Adresse>"
 
 #. type: TP
-#: cupsd.conf.5:716
+#: cupsd.conf.5:718
 #, no-wrap
 msgid "B<Deny >I<ipv4-address>B</>I<netmask>"
 msgstr "B<Deny >I<IPv4-Adresse>B</>I<Netzmaske>"
 
 #. type: TP
-#: cupsd.conf.5:718
+#: cupsd.conf.5:720
 #, no-wrap
 msgid "B<Deny >I<ipv4-address>B</>I<mm>"
 msgstr "B<Deny >I<IPv4-Adresse>B</>I<mm>"
 
 #. type: TP
-#: cupsd.conf.5:720
+#: cupsd.conf.5:722
 #, no-wrap
 msgid "B<Deny [>I<ipv6-address>B<]>"
 msgstr "B<Deny [>I<IPv6-Adresse>B<]>"
 
 #. type: TP
-#: cupsd.conf.5:722
+#: cupsd.conf.5:724
 #, no-wrap
 msgid "B<Deny [>I<ipv6-address>B<]/>I<mm>"
 msgstr "B<Deny [>I<IPv6-Adresse>B<]/>I<mm>"
 
 #. type: TP
-#: cupsd.conf.5:724
+#: cupsd.conf.5:726
 #, no-wrap
 msgid "B<Deny @IF(>I<name>B<)>"
 msgstr "B<Deny @IF(>I<Name>B<)>"
 
 #. type: TP
-#: cupsd.conf.5:726
+#: cupsd.conf.5:728
 #, no-wrap
 msgid "B<Deny @LOCAL>"
 msgstr "B<Deny @LOCAL>"
 
 #. type: Plain text
-#: cupsd.conf.5:732
+#: cupsd.conf.5:734
 msgid ""
 "Denies access from the named hosts, domains, addresses, or interfaces.  The "
 "@IF(name) form uses the current subnets configured for the named interface.  "
@@ -5004,7 +5011,7 @@ msgstr ""
 "ob »Allow«-Zeilen vor oder nach »Deny«-Zeilen ausgewertet werden."
 
 #. type: Plain text
-#: cupsd.conf.5:740
+#: cupsd.conf.5:742
 msgid ""
 "Specifies the level of encryption that is required for a particular "
 "location.  The default value is \"IfRequested\"."
@@ -5013,13 +5020,13 @@ msgstr ""
 "fest. Der Vorgabewert ist »IfRequested«."
 
 #. type: TP
-#: cupsd.conf.5:740
+#: cupsd.conf.5:742
 #, no-wrap
 msgid "B<Order allow,deny>"
 msgstr "B<Order allow,deny>"
 
 #. type: Plain text
-#: cupsd.conf.5:743
+#: cupsd.conf.5:745
 msgid ""
 "Specifies that access is denied by default. Allow lines are then processed "
 "followed by Deny lines to determine whether a client may access a particular "
@@ -5030,13 +5037,13 @@ msgstr ""
 "auf eine bestimmte Ressource zugreifen darf."
 
 #. type: TP
-#: cupsd.conf.5:743
+#: cupsd.conf.5:745
 #, no-wrap
 msgid "B<Order deny,allow>"
 msgstr "B<Order deny,allow>"
 
 #. type: Plain text
-#: cupsd.conf.5:746
+#: cupsd.conf.5:748
 msgid ""
 "Specifies that access is allowed by default. Deny lines are then processed "
 "followed by Allow lines to determine whether a client may access a "
@@ -5047,13 +5054,13 @@ msgstr ""
 "eine bestimmte Ressource zugreifen darf."
 
 #. type: TP
-#: cupsd.conf.5:746
+#: cupsd.conf.5:748
 #, no-wrap
 msgid "B<Require group >I<group-name >[ I<group-name >... ]"
 msgstr "B<Require group >I<Gruppenname >[ I<Gruppenname >… ]"
 
 #. type: Plain text
-#: cupsd.conf.5:749
+#: cupsd.conf.5:751
 msgid ""
 "Specifies that an authenticated user must be a member of one of the named "
 "groups."
@@ -5062,13 +5069,13 @@ msgstr ""
 "benannten Gruppen sein muss."
 
 #. type: TP
-#: cupsd.conf.5:749
+#: cupsd.conf.5:751
 #, no-wrap
 msgid "B<Require user {>I<user-name>|B<@>I<group-name>} ..."
 msgstr "B<Require user {>I<Benutzername>|B<@>I<Gruppenname>} …"
 
 #. type: Plain text
-#: cupsd.conf.5:757
+#: cupsd.conf.5:759
 msgid ""
 "Specifies that an authenticated user must match one of the named users or be "
 "a member of one of the named groups.  The group name \"@SYSTEM\" corresponds "
@@ -5088,24 +5095,24 @@ msgstr ""
 "Benutzerkonto übertragen werden."
 
 #. type: TP
-#: cupsd.conf.5:757
+#: cupsd.conf.5:759
 #, no-wrap
 msgid "B<Require valid-user>"
 msgstr "B<Require valid-user>"
 
 #. type: Plain text
-#: cupsd.conf.5:760
+#: cupsd.conf.5:762
 msgid "Specifies that any authenticated user is acceptable."
 msgstr "Legt fest, dass jeder authentifizierte Benutzer akzeptiert wird."
 
 #. type: TP
-#: cupsd.conf.5:760
+#: cupsd.conf.5:762
 #, no-wrap
 msgid "B<Satisfy all>"
 msgstr "B<Satisfy all>"
 
 #. type: Plain text
-#: cupsd.conf.5:763
+#: cupsd.conf.5:765
 msgid ""
 "Specifies that all Allow, AuthType, Deny, Order, and Require conditions must "
 "be satisfied to allow access."
@@ -5114,13 +5121,13 @@ msgstr ""
 "Bedingungen erfüllt sein müssen, damit der Zugriff erlaubt wird."
 
 #. type: TP
-#: cupsd.conf.5:763
+#: cupsd.conf.5:765
 #, no-wrap
 msgid "B<Satisfy any>"
 msgstr "B<Satisfy any>"
 
 #. type: Plain text
-#: cupsd.conf.5:767
+#: cupsd.conf.5:769
 msgid ""
 "Specifies that any a client may access a resource if either the "
 "authentication (AuthType/Require) or address (Allow/Deny/Order) conditions "
@@ -5133,13 +5140,13 @@ msgstr ""
 "werden, Authentifizierung nur bei Zugriff aus der Ferne zu verlangen."
 
 #. type: SS
-#: cupsd.conf.5:767
+#: cupsd.conf.5:769
 #, no-wrap
 msgid "DIRECTIVES VALID WITHIN POLICY SECTIONS"
 msgstr "DIREKTIVEN, DIE INNERHALB VON POLICY-ABSCHNITTEN GÜLTIG SIND"
 
 #. type: Plain text
-#: cupsd.conf.5:769
+#: cupsd.conf.5:771
 msgid ""
 "The following directives may be placed inside Policy sections in the B<cupsd."
 "conf> file:"
@@ -5148,25 +5155,25 @@ msgstr ""
 "Datei B<cupsd.conf> gesetzt werden."
 
 #. type: TP
-#: cupsd.conf.5:769
+#: cupsd.conf.5:771
 #, no-wrap
 msgid "B<JobPrivateAccess all>"
 msgstr "B<JobPrivateAccess all>"
 
 #. type: TP
-#: cupsd.conf.5:771
+#: cupsd.conf.5:773
 #, no-wrap
 msgid "B<JobPrivateAccess default>"
 msgstr "B<JobPrivateAccess default>"
 
 #. type: TP
-#: cupsd.conf.5:773
+#: cupsd.conf.5:775
 #, no-wrap
 msgid "B<JobPrivateAccess >{I<user>|B<@>I<group>|B<@ACL>|B<@OWNER>|B<@SYSTEM>} ..."
 msgstr "B<JobPrivateAccess >{I<Benutzer>|B<@>I<Gruppe>|B<@ACL>|B<@OWNER>|B<@SYSTEM>} …"
 
 #. type: Plain text
-#: cupsd.conf.5:782
+#: cupsd.conf.5:784
 msgid ""
 "Specifies an access list for a job's private values.  The \"default\" access "
 "list is \"@OWNER @SYSTEM\".  \"@ACL\" maps to the printer's requesting-user-"
@@ -5182,31 +5189,31 @@ msgstr ""
 "aufgeführten Gruppen."
 
 #. type: TP
-#: cupsd.conf.5:782
+#: cupsd.conf.5:784
 #, no-wrap
 msgid "B<JobPrivateValues all>"
 msgstr "B<JobPrivateValues all>"
 
 #. type: TP
-#: cupsd.conf.5:784
+#: cupsd.conf.5:786
 #, no-wrap
 msgid "B<JobPrivateValues default>"
 msgstr "B<JobPrivateValues default>"
 
 #. type: TP
-#: cupsd.conf.5:786
+#: cupsd.conf.5:788
 #, no-wrap
 msgid "B<JobPrivateValues none>"
 msgstr "B<JobPrivateValues none>"
 
 #. type: TP
-#: cupsd.conf.5:788
+#: cupsd.conf.5:790
 #, no-wrap
 msgid "B<JobPrivateValues >I<attribute-name >[ ... I<attribute-name >]"
 msgstr "B<JobPrivateValues >I<Attributename >[ … I<Attributname >]"
 
 #. type: Plain text
-#: cupsd.conf.5:792
+#: cupsd.conf.5:794
 msgid ""
 "Specifies the list of job values to make private.  The \"default\" values "
 "are \"job-name\", \"job-originating-host-name\", \"job-originating-user-name"
@@ -5217,25 +5224,25 @@ msgstr ""
 "»job-originating-user-name« und »phone«."
 
 #. type: TP
-#: cupsd.conf.5:792
+#: cupsd.conf.5:794
 #, no-wrap
 msgid "B<SubscriptionPrivateAccess all>"
 msgstr "B<SubscriptionPrivateAccess all>"
 
 #. type: TP
-#: cupsd.conf.5:794
+#: cupsd.conf.5:796
 #, no-wrap
 msgid "B<SubscriptionPrivateAccess default>"
 msgstr "B<SubscriptionPrivateAccess default>"
 
 #. type: TP
-#: cupsd.conf.5:796
+#: cupsd.conf.5:798
 #, no-wrap
 msgid "B<SubscriptionPrivateAccess >{I<user>|B<@>I<group>|B<@ACL>|B<@OWNER>|B<@SYSTEM>} ..."
 msgstr "B<SubscriptionPrivateAccess >{I<Benutzer>|B<@>I<Gruppe>|B<@ACL>|B<@OWNER>|B<@SYSTEM>} …"
 
 #. type: Plain text
-#: cupsd.conf.5:805
+#: cupsd.conf.5:807
 msgid ""
 "Specifies an access list for a subscription's private values.  The \"default"
 "\" access list is \"@OWNER @SYSTEM\".  \"@ACL\" maps to the printer's "
@@ -5251,31 +5258,31 @@ msgstr ""
 "aufgeführten Gruppen."
 
 #. type: TP
-#: cupsd.conf.5:805
+#: cupsd.conf.5:807
 #, no-wrap
 msgid "B<SubscriptionPrivateValues all>"
 msgstr "B<SubscriptionPrivateValues all>"
 
 #. type: TP
-#: cupsd.conf.5:807
+#: cupsd.conf.5:809
 #, no-wrap
 msgid "B<SubscriptionPrivateValues default>"
 msgstr "B<SubscriptionPrivateValues default>"
 
 #. type: TP
-#: cupsd.conf.5:809
+#: cupsd.conf.5:811
 #, no-wrap
 msgid "B<SubscriptionPrivateValues none>"
 msgstr "B<SubscriptionPrivateValues none>"
 
 #. type: TP
-#: cupsd.conf.5:811
+#: cupsd.conf.5:813
 #, no-wrap
 msgid "B<SubscriptionPrivateValues >I<attribute-name >[ ... I<attribute-name >]"
 msgstr "B<SubscriptionPrivateValues >I<Attributname >[ … I<Attributname >]"
 
 #. type: Plain text
-#: cupsd.conf.5:815
+#: cupsd.conf.5:817
 msgid ""
 "Specifies the list of subscription values to make private.  The \"default\" "
 "values are \"notify-events\", \"notify-pull-method\", \"notify-recipient-uri"
@@ -5286,14 +5293,14 @@ msgstr ""
 "»notify-recipient-uri«, »notify-subscriber-user-name« und »notify-user-data«."
 
 #. type: SS
-#: cupsd.conf.5:815 cups-files.conf.5:236
+#: cupsd.conf.5:817 cups-files.conf.5:236
 #, no-wrap
 msgid "DEPRECATED DIRECTIVES"
 msgstr "VERALTETE DIREKTIVEN"
 
 #. #Classification
 #. type: Plain text
-#: cupsd.conf.5:818
+#: cupsd.conf.5:820
 msgid ""
 "The following directives are deprecated and will be removed in a future "
 "release of CUPS:"
@@ -5302,14 +5309,14 @@ msgstr ""
 "Veröffentlichung von CUPS entfernt werden>:"
 
 #. type: TP
-#: cupsd.conf.5:818
+#: cupsd.conf.5:820
 #, no-wrap
 msgid "B<Classification >I<banner>"
 msgstr "B<Classification >I<Deckblatt>"
 
 #. #ClassifyOverride
 #. type: Plain text
-#: cupsd.conf.5:825
+#: cupsd.conf.5:827
 msgid ""
 "Specifies the security classification of the server.  Any valid banner name "
 "can be used, including \"classified\", \"confidential\", \"secret\", "
@@ -5323,20 +5330,20 @@ msgstr ""
 "gibt es kein Einstufungsdeckblatt."
 
 #. type: TP
-#: cupsd.conf.5:825
+#: cupsd.conf.5:827
 #, no-wrap
 msgid "B<ClassifyOverride Yes>"
 msgstr "B<ClassifyOverride Yes>"
 
 #. type: TP
-#: cupsd.conf.5:827
+#: cupsd.conf.5:829
 #, no-wrap
 msgid "B<ClassifyOverride No>"
 msgstr "B<ClassifyOverride No>"
 
 #. #PageLogFormat
 #. type: Plain text
-#: cupsd.conf.5:833
+#: cupsd.conf.5:835
 msgid ""
 "Specifies whether users may override the classification (cover page) of "
 "individual print jobs using the \"job-sheets\" option.  The default is \"No"
@@ -5347,13 +5354,13 @@ msgstr ""
 "Vorgabe ist »No«."
 
 #. type: TP
-#: cupsd.conf.5:833
+#: cupsd.conf.5:835
 #, no-wrap
 msgid "B<PageLogFormat >I<format-string>"
 msgstr "B<PageLogFormat >I<Formatzeichenkette>"
 
 #. type: Plain text
-#: cupsd.conf.5:838
+#: cupsd.conf.5:840
 msgid ""
 "Specifies the format of PageLog lines.  Sequences beginning with percent (%) "
 "characters are replaced with the corresponding information, while all other "
@@ -5366,7 +5373,7 @@ msgstr ""
 "Prozentsequenzen werden erkannt:"
 
 #. type: Plain text
-#: cupsd.conf.5:848
+#: cupsd.conf.5:850
 #, no-wrap
 msgid ""
 "    \"%%\" inserts a single percent character.\n"
@@ -5389,7 +5396,7 @@ msgstr ""
 
 #. #RIPCache
 #. type: Plain text
-#: cupsd.conf.5:854
+#: cupsd.conf.5:856
 msgid ""
 "The default is the empty string, which disables page logging.  The string "
 "\"%p %u %j %T %P %C %{job-billing} %{job-originating-host-name} %{job-name} "
@@ -5406,13 +5413,13 @@ msgstr ""
 "media-sheets-completed}«, um die Anzahl der gedruckten Blätter einzufügen."
 
 #. type: TP
-#: cupsd.conf.5:854
+#: cupsd.conf.5:856
 #, no-wrap
 msgid "B<RIPCache >I<size>"
 msgstr "B<RIPCache >I<Größe>"
 
 #. type: Plain text
-#: cupsd.conf.5:858
+#: cupsd.conf.5:860
 msgid ""
 "Specifies the maximum amount of memory to use when converting documents into "
 "bitmaps for a printer.  The default is \"128m\"."
@@ -5421,7 +5428,7 @@ msgstr ""
 "Dokumenten in Bitmaps für den Drucker fest. Die Vorgabe ist »128m«."
 
 #. type: Plain text
-#: cupsd.conf.5:862
+#: cupsd.conf.5:864
 msgid ""
 "File, directory, and user configuration directives that used to be allowed "
 "in the B<cupsd.conf> file are now stored in the B<cups-files.conf>(5)  file "
@@ -5433,7 +5440,7 @@ msgstr ""
 "Rechteerweiterung zu vermeiden."
 
 #. type: Plain text
-#: cupsd.conf.5:869
+#: cupsd.conf.5:871
 msgid ""
 "The scheduler MUST be restarted manually after making changes to the B<cupsd."
 "conf> file.  On Linux this is typically done using the B<systemctl>(8)  "
@@ -5445,7 +5452,7 @@ msgstr ""
 "Befehl B<launchctl>(8) verwandt wird."
 
 #. type: Plain text
-#: cupsd.conf.5:873
+#: cupsd.conf.5:875
 msgid ""
 "The @LOCAL macro name can be confusing since the system running B<cupsd> "
 "often belongs to a different set of subnets from its clients."
@@ -5455,7 +5462,7 @@ msgstr ""
 "Clients."
 
 #. type: Plain text
-#: cupsd.conf.5:875
+#: cupsd.conf.5:877
 msgid ""
 "The B<cupsd.conf> file format is based on the Apache HTTP Server "
 "configuration file format."
@@ -5464,14 +5471,14 @@ msgstr ""
 "Konfigurationsdateiformat."
 
 #. type: Plain text
-#: cupsd.conf.5:877
+#: cupsd.conf.5:879
 msgid "Log everything with a maximum log file size of 32 megabytes:"
 msgstr ""
 "Alles protokollieren, mit einer maximalen Protokolldateigröße von 32 "
 "Megabytes:"
 
 #. type: Plain text
-#: cupsd.conf.5:882
+#: cupsd.conf.5:884
 #, no-wrap
 msgid ""
 "    AccessLogLevel all\n"
@@ -5483,12 +5490,12 @@ msgstr ""
 "    MaxLogSize 32m\n"
 
 #. type: Plain text
-#: cupsd.conf.5:885
+#: cupsd.conf.5:887
 msgid "Require authentication for accesses from outside the 10. network:"
 msgstr "Authentifizierung für Zugriffe außerhalb des 10er-Netzes verlangen:"
 
 #. type: Plain text
-#: cupsd.conf.5:894
+#: cupsd.conf.5:896
 #, no-wrap
 msgid ""
 "    E<lt>Location /E<gt>\n"
@@ -5508,7 +5515,7 @@ msgstr ""
 "    E<lt>/LocationE<gt>\n"
 
 #. type: Plain text
-#: cupsd.conf.5:904
+#: cupsd.conf.5:906
 msgid ""
 "B<classes.conf>(5), B<cups-files.conf>(5), B<cupsd>(8), B<mime.convs>(5), "
 "B<mime.types>(5), B<printers.conf>(5), B<subscriptions.conf>(5), CUPS Online "
@@ -5517,6 +5524,11 @@ msgstr ""
 "B<classes.conf>(5), B<cups-files.conf>(5), B<cupsd>(8), B<mime.convs>(5), "
 "B<mime.types>(5), B<printers.conf>(5), B<subscriptions.conf>(5), CUPS-Online-"
 "Hilfe (http://localhost:631/help)"
+
+#. type: Plain text
+#: cupsd.conf.5:908 cups-files.conf.5:298
+msgid "Copyright \\[co] 2020 by Michael R Sweet"
+msgstr "Copyright \\[co] 2020 Michael R Sweet"
 
 #. type: TH
 #: cupsd-helper.8:10
@@ -6923,8 +6935,8 @@ msgid ""
 "group is operating system specific but is usually \"lp\" or \"nobody\"."
 msgstr ""
 "Legt den Gruppenname oder deren ID, die für Protokolldateien verwandt wird, "
-"fest. Die Vorgabegruppe ist abhängig vom "
-"Betriebssystem; gewöhnlich ist sie »lp« oder »nobody«."
+"fest. Die Vorgabegruppe ist abhängig vom Betriebssystem; gewöhnlich ist sie "
+"»lp« oder »nobody«."
 
 #. type: TP
 #: cups-files.conf.5:142
@@ -7380,15 +7392,6 @@ msgstr ""
 "B<classes.conf>(5), B<cups>(1), B<cupsd>(8), B<cupsd.conf>(5), B<mime."
 "convs>(5), B<mime.types>(5), B<printers.conf>(5), B<subscriptions.conf>(5), "
 "CUPS-Online-Hilfe (http://localhost:631/help)"
-
-#. type: Plain text
-#: cups-files.conf.5:298 cups-lpd.8:118
-msgid ""
-"Copyright \\[co] 2020 by Michael R Sweet Copyright \\[co] 2007-2019 by Apple "
-"Inc."
-msgstr ""
-"Copyright \\[co] 2020 Michael R Sweet Copyright \\[co] 2007-2019 Apple "
-"Inc."
 
 #. type: TH
 #: cupsfilter.8:9
@@ -7931,6 +7934,14 @@ msgid ""
 msgstr ""
 "B<cups>(1), B<cupsd>(8), B<inetd>(8), B<launchd>(8), B<xinetd>(8), CUPS-"
 "Online-Hilfe (http://localhost:631/help), RFC 2569"
+
+#. type: Plain text
+#: cups-lpd.8:118
+msgid ""
+"Copyright \\[co] 2020 by Michael R Sweet Copyright \\[co] 2007-2019 by Apple "
+"Inc."
+msgstr ""
+"Copyright \\[co] 2020 Michael R Sweet Copyright \\[co] 2007-2019 Apple Inc."
 
 #. type: TH
 #: cups-snmp.8:9
@@ -9425,7 +9436,7 @@ msgstr "B<ippeveprinter>(8)"
 #. type: Plain text
 #: ippevepcl.7:48
 msgid "Copyright \\[co] 2019 by Apple Inc."
-msgstr "Copyright \\[co] 2019 by Apple Inc."
+msgstr "Copyright \\[co] 2019 Apple Inc."
 
 #. type: TH
 #: ippeveprinter.1:9
@@ -10867,7 +10878,7 @@ msgstr "B<ipptool>(1)"
 #. type: Plain text
 #: ippfind.1:258
 msgid "Copyright \\[co] 2013-2019 by Apple Inc."
-msgstr "Copyright \\[co] 2013-2019 by Apple Inc."
+msgstr "Copyright \\[co] 2013-2019 Apple Inc."
 
 #. type: TH
 #: ipptool.1:9
@@ -17283,6 +17294,10 @@ msgstr ""
 "B<mime.convs>(5), B<mime.types>(5), B<printers.conf>(5), CUPS-Online-Hilfe "
 "(http://localhost:631/help)"
 
+#, no-wrap
+#~ msgid "16 July 2019"
+#~ msgstr "16. Juli 2019"
+
 #~ msgid ""
 #~ "Specifies that a failed print job should stop the printer unless "
 #~ "otherwise specified for the printer."
@@ -17547,22 +17562,6 @@ msgstr ""
 #~ msgid "2 May 2019"
 #~ msgstr "2. Mai 2019"
 
-#, fuzzy
-#~ msgid ""
-#~ "Specifies what information is included in the Server header of HTTP "
-#~ "responses.  \"None\" disables the Server header.  \"ProductOnly\" reports "
-#~ "\"CUPS\".  \"Major\" reports \"CUPS 2\".  \"Minor\" reports \"CUPS "
-#~ "2.0\".  \"Minimal\" reports \"CUPS 2.0.0\".  \"OS\" reports \"CUPS 2.0.0 "
-#~ "(UNAME)\" where UNAME is the output of the B<uname>(1)  command.  \"Full"
-#~ "\" reports \"CUPS 2.0.0 (UNAME) IPP/2.0\".  The default is \"Minimal\"."
-#~ msgstr ""
-#~ "Legt fest, welche Informationen in die Server-Kopfzeilen von HTTP-"
-#~ "Antworten aufgenommen werden. »None« deaktiviert die Server-Kopfzeilen. "
-#~ "»ProductOnly« meldet »CUPS«. »Major« berichtet »CUPS 2.0«. »Minimal« "
-#~ "berichtet »CUPS 2.0.0«. »OS« berichtet »CUPS 2.0.0 (UNAME)«, wobei UNAME "
-#~ "die Ausgabe des Befehls B<uname>(1) ist. »Full« berichtet »CUPS 2.0.0 "
-#~ "(UNAME) IPP/2.0«. Die Vorgabe ist »Minimal«."
-
 #~ msgid ""
 #~ "Sets encryption options.  By default, CUPS only supports encryption using "
 #~ "TLS v1.0 or higher using known secure cipher suites.  Security is reduced "
@@ -17613,7 +17612,7 @@ msgstr ""
 #~ msgstr "8. November 2017"
 
 #~ msgid "Copyright \\[co] 2007-2018 by Apple Inc."
-#~ msgstr "Copyright \\[co] 2007-2018 by Apple Inc."
+#~ msgstr "Copyright \\[co] 2007-2018 Apple Inc."
 
 #~ msgid "12 February 2016"
 #~ msgstr "12. Februar 2016"
@@ -17624,10 +17623,8 @@ msgstr ""
 #~ msgid "3 June 2014"
 #~ msgstr "3. Juni 2014"
 
-#, fuzzy
-#~| msgid "15 April 2014"
 #~ msgid "16 April 2014"
-#~ msgstr "15. April 2014"
+#~ msgstr "16. April 2014"
 
 #~ msgid "cupstestdsc"
 #~ msgstr "cupstestdsc"
@@ -17701,20 +17698,8 @@ msgstr ""
 #~ msgid "Run the specified command for each document that is printed."
 #~ msgstr "Führt den angegebenen Befehl für jedes zu druckende Dokument aus."
 
-#, fuzzy
-#~| msgid ""
-#~| "Specifies the model name of the printer.  The default is \"Printer\"."
-#~ msgid ""
-#~ "Specifies the printer icon file for the server.  The default is \"printer."
-#~ "png\"."
-#~ msgstr "Legt den Modellnamen des Druckers fest. Die Vorgabe ist »Printer«."
-
-#, fuzzy
-#~ msgid "    ippserver -c file \"My Cool Printer\"\n"
-#~ msgstr "    ippserver \"Mein Toller Drucker\"\n"
-
 #~ msgid "Copyright \\[co] 2007-2014 by Apple Inc."
-#~ msgstr "Copyright \\[co] 2007-2014 by Apple Inc."
+#~ msgstr "Copyright \\[co] 2007-2014 Apple Inc."
 
 #~ msgid "4 August 2017"
 #~ msgstr "4. August 2017"
@@ -17874,9 +17859,8 @@ msgstr ""
 #~ msgid "5 March 2016"
 #~ msgstr "5. März 2016"
 
-#, fuzzy
 #~ msgid "13 May 2019"
-#~ msgstr "13. Mai 2013"
+#~ msgstr "13. Mai 2019"
 
 #~ msgid "15 June 2017"
 #~ msgstr "15. Juni 2017"
@@ -17972,22 +17956,11 @@ msgstr ""
 #~ "v3.0, die für einige ältere Clients benötigt wird, die TLS v1.0 nicht "
 #~ "unterstützen."
 
-# FIXME: String broken??
-#, fuzzy
-#~ msgid ""
-#~ "Adds an attribute to the test request. Values are separated by the comma "
-#~ "(\",\") character - escape commas using the \""
-#~ msgstr ""
-#~ "Fügt der Testanfrage ein Attribut hinzu. Werte werden durch Kommata (»,«) "
-#~ "getrennt, maskieren Sie Kommata mit dem Zeichen \"\\e\". Gebräuchliche "
-#~ "Attribute und Werte werden in der IANA-IPP-Registratur aufgeführt -- "
-#~ "lesen Sie die Referenzen unten."
-
 #~ msgid "Specifies a delay before this test will be run."
 #~ msgstr "Legt eine Verzögerung, bevor der Test ausgeführt wird, fest."
 
 #~ msgid "Copyright \\[co] 2007-2015 by Apple Inc."
-#~ msgstr "Copyright \\[co] 2007-2015 by Apple Inc."
+#~ msgstr "Copyright \\[co] 2007-2015 Apple Inc."
 
 #~ msgid "19 May 2015"
 #~ msgstr "19. Mai 2015"
@@ -19890,7 +19863,7 @@ msgstr ""
 
 # type: Plain text
 #~ msgid "Copyright 2007-2009 by Apple Inc."
-#~ msgstr "Copyright 2007-2009 by Apple Inc."
+#~ msgstr "Copyright 2007-2009 Apple Inc."
 
 # type: TH
 #~ msgid "25 February 2006"
@@ -19945,20 +19918,16 @@ msgstr ""
 
 # type: Plain text
 #~ msgid "Copyright 2007-2011 by Apple Inc."
-#~ msgstr "Copyright 2007-2011 by Apple Inc."
+#~ msgstr "Copyright 2007-2011 Apple Inc."
 
-#, fuzzy
 #~ msgid "3 November 2017"
-#~ msgstr "8. November 2017"
+#~ msgstr "3. November 2017"
 
-#, fuzzy
 #~ msgid "8 November 2018"
-#~ msgstr "8. November 2017"
+#~ msgstr "8. November 2018"
 
-#, fuzzy
 #~ msgid "1 November 2017"
-#~ msgstr "8. November 2017"
+#~ msgstr "1. November 2017"
 
-#, fuzzy
 #~ msgid "9 November 2010"
-#~ msgstr "19. November 2012"
+#~ msgstr "9. November 2010"
