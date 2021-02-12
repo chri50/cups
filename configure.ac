@@ -41,6 +41,7 @@ sinclude(config-scripts/cups-ssl.m4)
 sinclude(config-scripts/cups-pam.m4)
 sinclude(config-scripts/cups-largefile.m4)
 sinclude(config-scripts/cups-dnssd.m4)
+sinclude(config-scripts/cups-snap.m4)
 sinclude(config-scripts/cups-startup.m4)
 sinclude(config-scripts/cups-defaults.m4)
 
