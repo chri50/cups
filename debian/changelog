@@ -1,3 +1,10 @@
+cups (2.3.3op2-3ubuntu3) hirsute; urgency=low
+
+  * Updated AppArmor profile entries for CUPS accessing snapd to
+    check whether a client is a Snap and which interfaces it plugs to.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 19 Mar 2021 18:26:41 +0100
+
 cups (2.3.3op2-3ubuntu2) hirsute; urgency=low
 
   * Replaced patch for extra checking of admin requests from snapped
