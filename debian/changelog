@@ -1,3 +1,12 @@
+cups (2.3.3op2-3ubuntu2) hirsute; urgency=low
+
+  * Replaced patch for extra checking of admin requests from snapped
+    clients by the current upstream code. Added "--enable-snapped-clients"
+    to the "./configure" options to use the correct checking mode for an
+    unsnapped cupsd, like provided by this package.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 19 Mar 2021 16:32:41 +0100
+
 cups (2.3.3op2-3ubuntu1) hirsute; urgency=low
 
   * Merge from Debian unstable. Remaining changes:
