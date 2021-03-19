@@ -662,12 +662,19 @@
 #undef HAVE_SYS_VFS_H
 
 /*
- * Do we have the libraries needed for Snap packaging support?
+ * Do we want Snap packaging support and have the needed libraries and
+ * utilities?
  */
 
 #undef HAVE_APPARMOR
 #undef HAVE_SNAPDGLIB
-#undef BUILD_SNAP
+#undef HAVE_SNAPD_CLIENT_RUN_SNAPCTL2_SYNC
+#undef HAVE_SNAPCTL_IS_CONNECTED
+#undef OUR_SNAP_NAME
+#undef SNAPCTL
+#undef CUPS_CONTROL_SLOT
+#undef SUPPORT_SNAPPED_CUPSD
+#undef SUPPORT_SNAPPED_CLIENTS
 
 /*
  * Location of macOS localization bundle, if any.

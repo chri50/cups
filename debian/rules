@@ -64,6 +64,7 @@ override_dh_auto_configure:
 		--with-error-policy=retry-job \
 		--enable-sync-on-close \
 		--with-max-log-size=0 \
+		--enable-snapped-clients \
 		$(CONFIG_LIBUSB)
 
 override_dh_auto_install:

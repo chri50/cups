@@ -11,4 +11,4 @@
 0011-Debian-Reproducibility-Do-not-run-stp-tests-as-root.patch
 0012-Debian-Reproducibility-Run-testlang-for-each-provide.patch
 0013-Debian-po4a-infrastructure-and-translations-for-manp.patch
-9000-cupsd-extra-check-for-admin-tasks-snap-cups-control.patch
+9000-cupsd-cupsfilter-snap-support.patch

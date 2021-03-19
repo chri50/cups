@@ -43,7 +43,6 @@
 #  include <sys/ucred.h>
 typedef struct xucred cupsd_ucred_t;
 #  define CUPSD_UCRED_UID(c) (c).cr_uid
-#  define CUPSD_UCRED_PID(c) (c).cr_pid
 #else
 #  ifndef __OpenBSD__
 typedef struct ucred cupsd_ucred_t;
@@ -51,13 +50,16 @@ typedef struct ucred cupsd_ucred_t;
 typedef struct sockpeercred cupsd_ucred_t;
 #  endif
 #  define CUPSD_UCRED_UID(c) (c).uid
-#  define CUPSD_UCRED_PID(c) (c).pid
 #endif /* HAVE_SYS_UCRED_H */
-#ifdef BUILD_SNAP
-#  include <sys/apparmor.h>
-#  include <glib.h>
-#  include <snapd-glib/snapd-glib.h>
-#endif /* BUILD_SNAP */
+#ifdef SUPPORT_SNAPPED_CLIENTS
+#  ifdef HAVE_APPARMOR
+#    include <sys/apparmor.h>
+#  endif
+#  ifdef HAVE_SNAPDGLIB
+#    include <glib.h>
+#    include <snapd-glib/snapd-glib.h>
+#  endif
+#endif /* SUPPORT_SNAPPED_CLIENTS */
 
 
 /*
@@ -1536,109 +1538,394 @@ cupsdCheckAdminTask(cupsd_client_t *con) /* I - Connection */
 {
   int ret = 1; /* Return value */
 
-  cupsdLogMessage(CUPSD_LOG_DEBUG,
-		  "cupsdCheckAdminTask: Administrative task");
+  cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdCheckAdminTask: Administrative task");
 
-#if defined(SO_PEERCRED) && defined(AF_LOCAL)
  /*
-  * Get the client's PID if it accesses locally via domain socket
+  * If the client accesses locally via domain socket, find out whether it
+  * is a Snap. Grant access if it is not a Snap, if it is a classic Snap
+  * or if it is a confined Snap which plugs "cups-control", deny access
+  * if it is a confined Snap not plugging "cups-control" or if an error
+  * occurs in the process of finding this out.
+  */
+
+#if defined(AF_LOCAL) && defined(SUPPORT_SNAPPED_CLIENTS)
+
+ /*
+  * Get the client's file descriptor and from this its AppArmor context
   */
 
   if (httpAddrFamily(con->http->hostaddr) == AF_LOCAL)
   {
-    cupsd_ucred_t	peercred;	/* Peer credentials */
-    socklen_t		peersize;	/* Size of peer credentials */
-    int                 client_pid;     /* PID of client */
+    int                 peerfd;         /* Peer's file descriptor */
 
-    peersize = sizeof(peercred);
+    peerfd = httpGetFd(con->http);
 
-#  ifdef __APPLE__
-    if (getsockopt(httpGetFd(con->http), 0, LOCAL_PEERCRED, &peercred,
-		   &peersize))
-#  else
-    if (getsockopt(httpGetFd(con->http), SOL_SOCKET, SO_PEERCRED, &peercred,
-		   &peersize))
-#  endif /* __APPLE__ */
+    if (peerfd < 0)
     {
-      cupsdLogMessage(CUPSD_LOG_ERROR,
-		      "cupsdCheckAdminTask: Unable to get peer credentials of client connecting via domain socket - Error: %s",
-		      strerror(errno));
+      cupsdLogMessage(CUPSD_LOG_ERROR, "cupsdCheckAdminTask: Unable to get peer file descriptor of client connecting via domain socket");
     }
     else
     {
-      cupsdLogMessage(CUPSD_LOG_DEBUG2,
-		      "cupsdCheckAdminTask: Client UID %d PID %d",
-		      CUPSD_UCRED_UID(peercred),
-		      CUPSD_UCRED_PID(peercred));
-      client_pid = CUPSD_UCRED_PID(peercred);
+      char *context = NULL;      /* AppArmor profile name of client */
+#  undef CHECK_METHOD_FOUND
+#  ifdef SUPPORT_SNAPPED_CUPSD
+      int status = 65535;        /* Status of client Snap context check */
+#    if defined(HAVE_SNAPDGLIB) && defined(HAVE_SNAPD_CLIENT_RUN_SNAPCTL2_SYNC)
+#      define CHECK_METHOD_FOUND 1
+      char *args[] = { "is-connected", "--apparmor-label", NULL, CUPS_CONTROL_SLOT, NULL }; /* snapctl arguments */
+      SnapdClient *client = NULL; /* Data structure of snapd access */
+      const char *cookie;        /* snapd access cookie */
+      GError *error = NULL;      /* Glib error */
+#    else
+#      ifdef HAVE_SNAPCTL_IS_CONNECTED
+#        define CHECK_METHOD_FOUND 1
+      char *args[] = { SNAPCTL, "is-connected", "--apparmor-label", NULL, CUPS_CONTROL_SLOT, NULL }; /* snapctl command line */
+      int fds[2],                /* Pipe file descriptors for stderr of
+				    snapctl */
+	  nullfd;                /* /dev/null file descriptor for stdout of
+				    snapctl */
+      pid_t pid;                 /* PID of snapctl */
+      cups_file_t *snapctl_stderr; /* CUPS FP for stderr of snapctl */
+      char buf[1024];            /* Buffer for snapctl's stderr output */
+      int wstatus;               /* Wait result of forked snapctl process */
+#      endif /* HAVE_SNAPCTL_IS_CONNECTED */
+#    endif /* HAVE_SNAPDGLIB && HAVE_SNAPD_CLIENT_RUN_SNAPCTL2_SYNC */
+#  else
+#    if !defined(SUPPORT_SNAPPED_CUPSD) && defined(HAVE_SNAPDGLIB)
+#      define CHECK_METHOD_FOUND 1
+      char *snap_name = NULL;    /* Client Snap name */
+      char *dot;                 /* Pointer to dot in AppArmor profile name */
+      SnapdClient *snapd = NULL; /* Data structure of snapd access */
+      GError *error = NULL;      /* Glib error */
+      SnapdSnap *snap = NULL;    /* Data structure of client Snap */
+      GPtrArray *plugs = NULL;   /* Plug search result of client Snap */
+#    endif /* !SUPPORT_SNAPPED_CUPSD && HAVE_SNAPDGLIB */
+#  endif /* SUPPORT_SNAPPED_CUPSD */
 
-      /* Examine client process here */
-      cupsdLogMessage(CUPSD_LOG_DEBUG,
-		      "cupsdCheckAdminTask: Clent connecting via domain socket, examining client process %d ...",
-		      client_pid);
-#  ifdef BUILD_SNAP
-      cupsdLogMessage(CUPSD_LOG_DEBUG,
-		      "cupsdCheckAdminTask: Checking whether client process is from a Snap ...");
 
-#define SNAP_LABEL_PREFIX           "snap."
-#define SNAP_LABEL_PREFIX_LENGTH    5
-
-      char *context = NULL;
-      char *snap_name = NULL;
-      char *dot;
-      SnapdClient *snapd = NULL;
-      SnapdSnap *snap = NULL;
-      GPtrArray *plugs = NULL;
-      GError *error = NULL;
+#  ifndef SUPPORT_SNAPPED_CUPSD
 
       /* If AppArmor is not enabled, then we can't identify the client */
+      /* With cupsd running in a Snap, the "mount-observe" interface
+         needs to be plugged, therefore we do this only if not snapped. */
       if (!aa_is_enabled())
       {
-	cupsdLogMessage(CUPSD_LOG_DEBUG,
-			"cupsdCheckAdminTask: No AppArmor in use");
+	cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdCheckAdminTask: No AppArmor in use");
 	goto snap_check_done;
       }
 
-      if (aa_gettaskcon(client_pid, &context, NULL) < 0)
+#  endif /* !SUPPORT_SNAPPED_CUPSD */
+
+      if (aa_getpeercon(peerfd, &context, NULL) < 0)
       {
-	cupsdLogMessage(CUPSD_LOG_DEBUG,
-			"cupsdCheckAdminTask: AppArmor profile could not be retrieved for client process - Error: %s",
-			strerror(errno));
+	cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdCheckAdminTask: AppArmor profile could not be retrieved for client process - Error: %s", strerror(errno));
 	goto snap_check_done;
       } else
-	cupsdLogMessage(CUPSD_LOG_DEBUG2,
-			"cupsdCheckAdminTask: AppArmor profile of client process: %s",
-			context);
+	cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdCheckAdminTask: AppArmor profile of client process: %s", context);
+
+#  ifdef OUR_SNAP_NAME
+      /* Is the client one of the utilities of our Snap? */
+      if (!strncmp(context, "snap." OUR_SNAP_NAME ".", strlen(OUR_SNAP_NAME) + 6))
+      {
+	cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdCheckAdminTask: Client Snap is the same Snap we are running in, access granted");
+	goto snap_check_done;
+      }
+#  endif /* OUR_SNAP_NAME */
+
+#  ifdef SUPPORT_SNAPPED_CUPSD
+
+     /*
+      * Run
+      *
+      * snapctl is-connected --apparmor-label AA_CONTEXT CUPS_CONTROL_SLOT
+      *
+      * or an equivalent library function call using the
+      * snapd_client_run_snapctl2_sync() function of libsnapd-glib.
+      *
+      * Here AA_CONTEXT is the AppArmor profile name of the client, or
+      * "unconfined" for an unconfined client and CUPS_CONTROL_SLOT
+      * the name of the slot of the CUPS Snap to which clients plug
+      * with their cups-control plug in order to do administrative
+      * CUPS tasks.
+      *
+      * The exit status of the command/function call tells which type
+      * of client we have to do with:
+      *
+      *    0: The client is a confined Snap and plugs cups-control
+      *           -> Grant access
+      *    1: The client is a confined Snap and does not plug cups-control
+      *           -> Deny access
+      *   10: The client is a classic Snap
+      *           -> Grant access
+      *   11: The client is not a Snap
+      *           -> Grant access
+      *
+      * NOTE: This method only works if cupsd is running in a Snap
+      *       providing a slot for the client's "cups-control"
+      *       plug. Do not build CUPS with this method when intending
+      *       to use it unsnapped, for example in a Debian or RPM
+      *       package, or directly installed into your system. The
+      *       errors of snapctl missing or snapctl/the function
+      *       running without a Snap context will deny all
+      *       administrative accesses!
+      *
+      * When running inside a Snap this method is preferred, as it does not
+      * require full access to the snapd under which cupsd is running.
+      */
+
+#    if defined(HAVE_SNAPDGLIB) && defined(HAVE_SNAPD_CLIENT_RUN_SNAPCTL2_SYNC)
+
+     /*
+      * Use the snapd_client_run_snapctl2_sync() function of libsnapd-glib
+      */
+
+      /* Insert client Snap context in snapctl arguments */
+      args[2] = context;
+
+      /* Connect to snapd */
+      client = snapd_client_new();
+      if (!client)
+      {
+	cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdCheckAdminTask: Could not connect to snapd, permission denied");
+	ret = 0;
+	goto snap_check_done;
+      }
+
+      /* snapctl commands are sent over a this socket that is made
+	 available within the snap sandbox */
+      snapd_client_set_socket_path(client, "/run/snapd-snap.socket");
+
+      /* Take cookie from the environment if available */
+      cookie = g_getenv("SNAP_COOKIE");
+      if (!cookie)
+      {
+        cookie = "";
+	cupsdLogMessage(CUPSD_LOG_WARN, "cupsdCheckAdminTask: No SNAP_COOKIE set in the Snap environment, client Snap context check may not work");
+      }
+
+      /* Do the client Snap context check */
+      if (!snapd_client_run_snapctl2_sync(client, cookie, args, NULL, NULL, &status, NULL, &error)) {
+	cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdCheckAdminTask: Client Snap context check error - %s", error->message);
+	ret = 0;
+	goto snap_check_done;
+      }
+
+#    else
+#      ifdef HAVE_SNAPCTL_IS_CONNECTED
+
+     /*
+      * Call the snapctl executable using execv() in a fork
+      */
+
+      /* Insert client Snap context in snapctl command line */
+      args[3] = context;
+
+      /* Create a pipe to catch stderr output from snapctl */
+      if (pipe(fds))
+      {
+	fds[0] = -1;
+	fds[1] = -1;
+	cupsdLogMessage(CUPSD_LOG_ERROR, "cupsdCheckAdminTask: Unable to establish stderr pipe for snapctl call - %s", strerror(errno));
+	ret = 0;
+	goto snap_check_done;
+      }
+
+      /* Set the "close on exec" flag on each end of the pipe... */
+      if (fcntl(fds[0], F_SETFD, fcntl(fds[0], F_GETFD) | FD_CLOEXEC))
+      {
+	close(fds[0]);
+	close(fds[1]);
+	fds[0] = -1;
+	fds[1] = -1;
+	cupsdLogMessage(CUPSD_LOG_ERROR, "cupsdCheckAdminTask: Unable to set \"close on exec\" flag on read end of the stderr pipe for snapctl call - %s", strerror(errno));
+	ret = 0;
+	goto snap_check_done;
+      }
+      if (fcntl(fds[1], F_SETFD, fcntl(fds[1], F_GETFD) | FD_CLOEXEC))
+      {
+	close(fds[0]);
+	close(fds[1]);
+	cupsdLogMessage(CUPSD_LOG_ERROR, "cupsdCheckAdminTask: Unable to set \"close on exec\" flag on write end of the stderr pipe for snapctl call - %s", strerror(errno));
+	ret = 0;
+	goto snap_check_done;
+      }
+
+      if ((pid = fork()) == 0)
+      {
+	/* Couple pipe with stderr of Ghostscript process */
+	if (fds[1] >= 0) {
+	  if (fds[1] != 2) {
+	    if (dup2(fds[1], 2) < 0) {
+	      cupsdLogMessage(CUPSD_LOG_ERROR, "cupsdCheckAdminTask: Unable to couple pipe with stderr of snapctl process - %s", strerror(errno));
+	      exit(100);
+	    }
+	    close(fds[1]);
+	  }
+	  close(fds[0]);
+	} else {
+	  cupsdLogMessage(CUPSD_LOG_ERROR, "cupsdCheckAdminTask: Invalid pipe file descriptor to couple with stderr of snapctl process - %s", strerror(errno));
+	  exit(100);
+	}
+
+	/* Send snapctl's stdout to the Nirwana, as snapctl is supposed to
+	   not output anything here */
+	if ((nullfd = open("/dev/null", O_RDWR)) > 2)
+	{
+	  dup2(nullfd, 1);
+	  close(nullfd);
+	}
+	else
+	  close(nullfd);
+	fcntl(1, F_SETFL, O_NDELAY);
+
+	/* Execute snapctl command line ... */
+	cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdCheckAdminTask: Running command: " SNAPCTL " is-connected --apparmor-label %s " CUPS_CONTROL_SLOT, context);
+	execv(SNAPCTL, args);
+	cupsdLogMessage(CUPSD_LOG_ERROR, "cupsdCheckAdminTask: Unable to launch snapctl: %s", strerror(errno));
+	exit(100);
+      }
+      else if (pid < 0)
+      {
+	cupsdLogMessage(CUPSD_LOG_ERROR, "cupsdCheckAdminTask: Unable to fork for snapctl call - %s", strerror(errno));
+	ret = 0;
+	goto snap_check_done;
+      }
+      cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdCheckAdminTask: Started snapctl (PID %d)", pid);
+
+      close(fds[1]);
+
+      /* Read out stderr from snapctl */
+      buf[0] = '\0';
+      snapctl_stderr = cupsFileOpenFd(fds[0], "r");
+      if (snapctl_stderr)
+      {
+	while (cupsFileGets(snapctl_stderr, buf, sizeof(buf)) && buf[0])
+	{
+	  cupsdLogMessage(CUPSD_LOG_ERROR, "cupsdCheckAdminTask: Error message from snapctl: %s", buf);
+	  ret = 0;
+	}
+	cupsFileClose(snapctl_stderr);
+      }
+      close(fds[0]);
+
+      /* Wait for snapctl to finish */
+    retry_wait:
+      if (waitpid (pid, &wstatus, 0) == -1)
+      {
+	if (errno == EINTR)
+	  goto retry_wait;
+	cupsdLogMessage(CUPSD_LOG_ERROR, "cupsdCheckAdminTask: snapctl (PID %d) stopped with an error - %s", pid, strerror(errno));
+	ret = 0;
+	goto snap_check_done;
+      }
+      if (ret == 0)
+	goto snap_check_done;
+      cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdCheckAdminTask: snapctl (PID %d) exited with no errors.", pid);
+
+      /* How did snapctl terminate */
+      if (WIFEXITED(wstatus))
+      {
+	/* Via regular exit */
+	status = WEXITSTATUS(wstatus);
+	if (status == 100)
+	{
+	  cupsdLogMessage(CUPSD_LOG_ERROR, "cupsdCheckAdminTask: snapctl not executed");
+	  ret = 0;
+	  goto snap_check_done;
+	}
+      }
+      else if (WIFSIGNALED(wstatus))
+      {
+	/* Via signal */
+	cupsdLogMessage(CUPSD_LOG_ERROR, "cupsdCheckAdminTask: snapctl caught the signal %d", WTERMSIG(wstatus));
+	ret = 0;
+	goto snap_check_done;
+      }
+
+#      endif /* HAVE_SNAPCTL_IS_CONNECTED */
+#    endif /* HAVE_SNAPDGLIB && HAVE_SNAPD_CLIENT_RUN_SNAPCTL2_SYNC */
+
+      switch (status)
+      {
+        case  0 :
+	    cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdCheckAdminTask: Client Snap connecting via \"cups-control\" interface, access granted");
+	    break;
+        case  1 :
+	    cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdCheckAdminTask: Client Snap does not connect via \"cups-control\" interface, permission denied");
+	    ret = 0;
+	    break;
+        case 10 :
+	    cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdCheckAdminTask: Client Snap under classic confinement, access granted");
+	    break;
+        case 11 :
+	    cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdCheckAdminTask: Client is not a Snap, access granted");
+	    break;
+        default :
+	    cupsdLogMessage(CUPSD_LOG_ERROR, "cupsdCheckAdminTask: snapctl exited with unknown status: %d", status);
+	    ret = 0;
+	    break;
+      }
+
+    snap_check_done:
+      if (context)
+	free(context);
+#    if defined(HAVE_SNAPDGLIB) && defined(HAVE_SNAPD_CLIENT_RUN_SNAPCTL2_SYNC)
+      g_clear_object(&client);
+#    endif /* HAVE_SNAPDGLIB && HAVE_SNAPD_CLIENT_RUN_SNAPCTL2_SYNC */
+
+#  else
+#    if !defined(SUPPORT_SNAPPED_CUPSD) && defined(HAVE_SNAPDGLIB)
+
+     /*
+      * If the client is a Snap, extract the client Snap's name from
+      * the AppArmor context and then query snapd to find out about the
+      * Snap's confinement type and whether it plugs cups-control. Grant
+      * access if
+      *
+      *   - the client is not a Snap
+      *   - the client is a classic Snap
+      *   - the client is a confined Snap plugging "cups-control"
+      *
+      * We deny access if
+      *
+      *   - the client is a confined Snap not plugging "cups-control"
+      *   - an error occurs during the steps of this method
+      *
+      * NOTE: This method is only for use of cupsd when it is not
+      *       packaged in a Snap. In a Snap one would need to plug the
+      *       snapd-control interface, which gives full control on
+      *       snapd, a high security risk. Therefore one will not get
+      *       automatic connection of this interface granted in the
+      *       Snap Store. This is the reason why the snapctl method
+      *       (above) got created by the snapd developers.
+      *
+      * This is the preferred method to run CUPS unsnapped, as this is
+      * the only way to check Snap status on clients from an unsnapped
+      * cupsd.
+      */
 
       /* If the AppArmor context does not begin with "snap.", then this
-       * is not a snap */
-      if (strncmp(context, SNAP_LABEL_PREFIX, SNAP_LABEL_PREFIX_LENGTH) != 0)
+         is not a snap */
+      if (strncmp(context, "snap.", 5) != 0)
       {
-	cupsdLogMessage(CUPSD_LOG_DEBUG,
-			"cupsdCheckAdminTask: AppArmor context not from a Snap");
+	cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdCheckAdminTask: AppArmor context not from a Snap");
         goto snap_check_done;
       }
 
-      dot = strchr(context + SNAP_LABEL_PREFIX_LENGTH, '.');
+      dot = strchr(context + 5, '.');
       if (dot == NULL)
       {
-        cupsdLogMessage(CUPSD_LOG_DEBUG,
-			"cupsdCheckAdminTask: Malformed snapd AppArmor profile name: %s",
-			context);
+        cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdCheckAdminTask: Malformed snapd AppArmor profile name: %s", context);
         goto snap_check_done;
       }
-      snap_name = strndup(context + SNAP_LABEL_PREFIX_LENGTH,
-			  (size_t)(dot - context - SNAP_LABEL_PREFIX_LENGTH));
-      cupsdLogMessage(CUPSD_LOG_DEBUG,
-		      "cupsdCheckAdminTask: Client is the Snap %s",
-		      snap_name);
+      snap_name = strndup(context + 5, (size_t)(dot - context - 5));
+      cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdCheckAdminTask: Client is the Snap %s", snap_name);
 
       /* Connect to snapd */
       snapd = snapd_client_new();
       if (!snapd)
       {
-	cupsdLogMessage(CUPSD_LOG_DEBUG,
-			"cupsdCheckAdminTask: Could not connect to snapd, permission denied");
+	cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdCheckAdminTask: Could not connect to snapd, permission denied");
 	ret = 0;
 	goto snap_check_done;
       }
@@ -1647,9 +1934,7 @@ cupsdCheckAdminTask(cupsd_client_t *con) /* I - Connection */
       snap = snapd_client_get_snap_sync(snapd, snap_name, NULL, &error);
       if (!snap)
       {
-        cupsdLogMessage(CUPSD_LOG_DEBUG,
-			"cupsdCheckAdminTask: Could not obtain Snap data: \"%s\", permission denied",
-			error->message);
+        cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdCheckAdminTask: Could not obtain client Snap data: \"%s\", permission denied", error->message);
 	ret = 0;
 	goto snap_check_done;
       }
@@ -1657,54 +1942,65 @@ cupsdCheckAdminTask(cupsd_client_t *con) /* I - Connection */
       /* Snaps using classic confinement are granted access */
       if (snapd_snap_get_confinement(snap) == SNAPD_CONFINEMENT_CLASSIC)
       {
-        cupsdLogMessage(CUPSD_LOG_DEBUG,
-			"cupsdCheckAdminTask: Client Snap under classic confinement, access granted");
+        cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdCheckAdminTask: Client Snap under classic confinement, access granted");
         goto snap_check_done;
       }
 
       /* Get list of interfaces to which the client Snap is plugging */
-      if (!snapd_client_get_connections2_sync(snapd,
-					      SNAPD_GET_CONNECTIONS_FLAGS_NONE,
-					      snap_name, "cups-control", NULL,
-					      NULL, &plugs, NULL, NULL, &error))
+      if (!snapd_client_get_connections2_sync(snapd, SNAPD_GET_CONNECTIONS_FLAGS_NONE, snap_name, "cups-control", NULL, NULL, &plugs, NULL, NULL, &error))
       {
-        cupsdLogMessage(CUPSD_LOG_DEBUG,
-			"cupsdCheckAdminTask: Could not obtain the Snap's interface connections: \"%s\", permission denied",
-			error->message);
+        cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdCheckAdminTask: Could not obtain the client Snap's interface connections: \"%s\", permission denied", error->message);
 	ret = 0;
 	goto snap_check_done;
       }
 
       if (plugs->len <= 0)
       {
-	cupsdLogMessage(CUPSD_LOG_DEBUG,
-			"cupsdCheckAdminTask: Snap does not connect via \"cups-control\" interface, permission denied");
+	cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdCheckAdminTask: Client Snap does not connect via \"cups-control\" interface, permission denied");
 	ret = 0;
 	goto snap_check_done;
       }
 
-      cupsdLogMessage(CUPSD_LOG_DEBUG,
-		      "cupsdCheckAdminTask: Snap connecting via \"cups-control\" interface, access granted");
+      cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdCheckAdminTask: Client Snap connecting via \"cups-control\" interface, access granted");
 
     snap_check_done:
       if (context)
 	free(context);
       if (snap_name)
 	free(snap_name);
-      if (snapd)
-	g_clear_object(&snapd);
-      if (snap)
-	g_clear_object(&snap);
+      g_clear_object(&snapd);
+      g_clear_object(&snap);
       if (plugs)
-	g_clear_object(&plugs);
-#  endif /* BUILD_SNAP */
+	g_ptr_array_unref(plugs);
+
+#    endif /* !SUPPORT_SNAPPED_CUPSD && HAVE_SNAPDGLIB */
+#  endif /* SUPPORT_SNAPPED_CUPSD */
+
+#  ifndef CHECK_METHOD_FOUND
+
+     /*
+      * Issue warning if requirements for building Snap-related access control
+      * not fulfilled
+      */
+
+      cupsdLogMessage(CUPSD_LOG_WARN, "cupsdCheckAdminTask: Compiling problem: none of the three access control methods (libsnapd-glib snapd access, \"snapctl is-connected\", libsnapd-glib-based snapctl call) available, no Snap-related access control built!");
+
+    snap_check_done:
+      if (context)
+	free(context);
+
+#  endif /* !CHECK_METHOD_FOUND */
+
     }
   }
-#endif /* SO_PEERCRED && AF_LOCAL */
 
-  cupsdLogMessage(CUPSD_LOG_DEBUG,
-		  "cupsdCheckAdminTask: Access %s",
-		  ret == 1 ? "granted" : "denied");
+  cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdCheckAdminTask: Access %s", ret == 1 ? "granted" : "denied");
+
+#else
+
+  cupsdLogMessage(CUPSD_LOG_DEBUG, "cupsdCheckAdminTask: Access granted (no extra checking)");
+
+#endif /* AF_LOCAL && SUPPORT_SNAPPED_CLIENTS */
 
   return ret;
 }
