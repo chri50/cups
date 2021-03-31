@@ -1,3 +1,14 @@
+cups (2.3.3op2-4) experimental; urgency=medium
+
+  [ Helge Kreutzmann ]
+  * Update German man page (2212t)
+
+  [ Didier Raboud ]
+  * Reorder and cleanup patch queue by replacing some by upstream's
+  * Drop ancient symlink handling in preinsts (Closes: #986165)
+
+ -- Didier Raboud <odyx@debian.org>  Wed, 31 Mar 2021 08:56:11 +0200
+
 cups (2.3.3op2-3) unstable; urgency=medium
 
   [ Helge Kreutzmann ]
