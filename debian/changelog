@@ -1,3 +1,12 @@
+cups (2.3.3op2-3+deb11u1) unstable; urgency=medium
+
+  * Backport 2 upstream USB backend fixes:
+    - Revert enforcing read limits (caused a regression with Lexmark filters)
+    - Use 60s timeout (instead of 250ms) for reading at backchannel, as some
+      older models malfunction if timeout is too short (Closes: #989073)
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 27 May 2021 08:49:36 +0200
+
 cups (2.3.3op2-3) unstable; urgency=medium
 
   [ Helge Kreutzmann ]
