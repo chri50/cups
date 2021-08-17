@@ -3642,7 +3642,8 @@ get_options(cupsd_job_t *job,		/* I - Job */
 			*preset;	/* Current preset option */
   int			print_color_mode,
 					/* Output mode (if any) */
-			print_quality;	/* Print quality (if any) */
+			print_quality,	/* Print quality (if any) */
+			print_content_optimize; /* Print content type (if any)*/
   const char		*ppd;		/* PPD option choice */
   int			exact;		/* Did we get an exact match? */
   static char		*options = NULL;/* Full list of options */
@@ -3741,6 +3742,60 @@ get_options(cupsd_job_t *job,		/* I - Job */
         if (!ippFindAttribute(job->attrs, preset->name, IPP_TAG_ZERO))
         {
           cupsdLogJob(job, CUPSD_LOG_DEBUG2, "Adding preset option %s=%s", preset->name, preset->value);
+
+	  num_pwgppds = cupsAddOption(preset->name, preset->value, num_pwgppds, &pwgppds);
+        }
+      }
+    }
+  }
+
+  if (pc &&
+      ippFindAttribute(job->attrs, "print-content-optimize", IPP_TAG_ZERO))
+  {
+   /*
+    * Map print-content-optimize to a preset...
+    */
+
+    if ((attr = ippFindAttribute(job->attrs, "print-content-optimize",
+				 IPP_TAG_KEYWORD)) != NULL)
+    {
+      if (!strcmp(attr->values[0].string.text, "auto"))
+	print_content_optimize = _PWG_PRINT_CONTENT_OPTIMIZE_AUTO;
+      else if (!strcmp(attr->values[0].string.text, "photo"))
+	print_content_optimize = _PWG_PRINT_CONTENT_OPTIMIZE_PHOTO;
+      else if (!strcmp(attr->values[0].string.text, "graphics") ||
+	       !strcmp(attr->values[0].string.text, "graphic"))
+	print_content_optimize = _PWG_PRINT_CONTENT_OPTIMIZE_GRAPHICS;
+      else if (!strcmp(attr->values[0].string.text, "text"))
+	print_content_optimize = _PWG_PRINT_CONTENT_OPTIMIZE_TEXT;
+      else if (!strcmp(attr->values[0].string.text, "text-and-graphics") ||
+	       !strcmp(attr->values[0].string.text, "text-and-graphic"))
+	print_content_optimize = _PWG_PRINT_CONTENT_OPTIMIZE_TEXT_AND_GRAPHICS;
+      else
+	print_content_optimize = _PWG_PRINT_CONTENT_OPTIMIZE_AUTO;
+    }
+    else
+      print_content_optimize = _PWG_PRINT_CONTENT_OPTIMIZE_AUTO;
+
+    if (pc->num_optimize_presets[print_content_optimize] > 0)
+    {
+     /*
+      * Copy the preset options as long as the corresponding names are not
+      * already defined in the IPP request and also if it does not change
+      * the print quality preset (as long as we do not print in high quality)
+      * ...
+      */
+
+      for (i = pc->num_optimize_presets[print_content_optimize],
+	       preset = pc->optimize_presets[print_content_optimize];
+	   i > 0;
+	   i --, preset ++)
+      {
+        if (!ippFindAttribute(job->attrs, preset->name, IPP_TAG_ZERO) &&
+	    (print_quality == _PWG_PRINT_QUALITY_HIGH ||
+	     cupsGetOption(preset->name, num_pwgppds, pwgppds) == NULL))
+        {
+          cupsdLogJob(job, CUPSD_LOG_DEBUG2, "Adding content optimization preset option %s=%s", preset->name, preset->value);
 
 	  num_pwgppds = cupsAddOption(preset->name, preset->value, num_pwgppds, &pwgppds);
         }
