@@ -1,3 +1,12 @@
+cups (2.3.3op2-6) unstable; urgency=medium
+
+  * Migrate to unstable
+  * Packaging cleanup
+    - Update S-V to 4.6.0 without changes needed
+    - Remove 3 obsolete maintscript entries
+
+ -- Didier Raboud <odyx@debian.org>  Tue, 24 Aug 2021 15:38:05 +0200
+
 cups (2.3.3op2-5) experimental; urgency=low
 
   * Backport 2 upstream USB backend fixes:
@@ -17,6 +26,15 @@ cups (2.3.3op2-4) experimental; urgency=medium
   * Drop ancient symlink handling in preinsts (Closes: #986165)
 
  -- Didier Raboud <odyx@debian.org>  Wed, 31 Mar 2021 08:56:11 +0200
+
+cups (2.3.3op2-3+deb11u1) unstable; urgency=medium
+
+  * Backport 2 upstream USB backend fixes:
+    - Revert enforcing read limits (caused a regression with Lexmark filters)
+    - Use 60s timeout (instead of 250ms) for reading at backchannel, as some
+      older models malfunction if timeout is too short (Closes: #989073)
+
+ -- Didier Raboud <odyx@debian.org>  Thu, 27 May 2021 08:49:36 +0200
 
 cups (2.3.3op2-3) unstable; urgency=medium
 
