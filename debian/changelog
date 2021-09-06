@@ -1,3 +1,13 @@
+cups (2.3.3op2-7) unstable; urgency=medium
+
+  [ Didier Raboud ]
+  * Remove myself from Uploaders
+
+  [ Roger Lynn ]
+  * Apparmor: allow CUPS to read /etc/letsencrypt/archive/ (Closes: #992378)
+
+ -- Didier Raboud <odyx@debian.org>  Mon, 06 Sep 2021 12:08:09 +0200
+
 cups (2.3.3op2-6) unstable; urgency=medium
 
   * Migrate to unstable
