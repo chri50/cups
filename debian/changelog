@@ -1,3 +1,11 @@
+cups (2.3.3op2-7ubuntu2) impish; urgency=low
+
+  * Updated patch for auto-generation of PPD presets to patch proposed
+    upstream (Upstream pull request #236) due to added PPD options taken into
+    account.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 10 Sep 2021 19:20:00 +0200
+
 cups (2.3.3op2-7ubuntu1) impish; urgency=low
 
   * Merge from Debian unstable. Remaining changes:
