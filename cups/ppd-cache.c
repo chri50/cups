@@ -2196,9 +2196,11 @@ _ppdCacheAssignPresets(ppd_file_t *ppd,
 	    else
 	      properties->sets_color = 1;
 	  }
-	  else if (_cups_strcasecmp(o, "HPColorAsGray") == 0) /* HP PostScript */
+	  else if (_cups_strcasecmp(o, "HPColorAsGray") == 0 ||  /* HP PostScript */
+		   _cups_strcasecmp(o, "HPPJLColorAsGray") == 0) /* HP PostScript */
 	  {
-	    if (_cups_strcasecmp(c, "True") == 0)
+	    if (_cups_strcasecmp(c, "True") == 0 ||
+		_cups_strcasecmp(c, "yes") == 0)
 	      properties->sets_mono = 2;
 	    else
 	      properties->sets_color = 1;
@@ -2302,6 +2304,7 @@ _ppdCacheAssignPresets(ppd_file_t *ppd,
 		 ((p = _cups_strcasestr(o, "resolution")) &&
 		  !_cups_strcasestr(p, "enhance")) ||
 		 _cups_strcasecmp(o, "RET") == 0 ||
+		 _cups_strcasecmp(o, "Smoothing") == 0 || /* HPLIP */
 		 ((p = _cups_strcasestr(o, "uni")) && _cups_strcasestr(p, "direction")))
 	{
 	  if (_cups_strcasecmp(c, "True") == 0 ||
@@ -2346,9 +2349,11 @@ _ppdCacheAssignPresets(ppd_file_t *ppd,
 		 _cups_strcasecmp(o, "PrintQuality") == 0 ||
 		 _cups_strcasecmp(o, "PrintMode") == 0 ||
 		 _cups_strcasestr(o, "ColorMode") ||
+		 _cups_strcasestr(o, "HalfTone") || /* HPLIP */
 		 _cups_strcasecmp(o, "ColorResType") == 0 || /* Toshiba */
 		 _cups_strcasestr(o, "MonoColor") || /* Brother */
 		 _cups_strcasestr(o, "Quality") ||
+		 _cups_strcasestr(o, "Resolution") ||
 		 _cups_strcasestr(o, "Precision") || /* ex. stpColorPrecision
 						  in Gutenprint */
 		 _cups_strcasestr(o, "PrintingDirection")) /* Gutenprint */
@@ -2360,6 +2365,7 @@ _ppdCacheAssignPresets(ppd_file_t *ppd,
 	  else if (_cups_strcasestr(c, "Photo") ||
 		   _cups_strcasestr(c, "Enhance") ||
 		   _cups_strcasestr(c, "slow") ||
+		   _cups_strncasecmp(c, "ProRes", 6) == 0 || /* HPLIP */
 		   _cups_strncasecmp(c, "ImageREt", 8) == 0 || /* HPLIP */
 		   ((p = _cups_strcasestr(c, "low")) && _cups_strcasestr(p, "speed")))
 	    properties->sets_high = 2;
@@ -2367,6 +2373,7 @@ _ppdCacheAssignPresets(ppd_file_t *ppd,
 		   _cups_strcasestr(c, "deep") ||
 		   ((p = _cups_strcasestr(c, "high")) && !_cups_strcasestr(p, "speed")) ||
 		   _cups_strcasestr(c, "HQ") ||
+		   _cups_strcasecmp(c, "ProRes600") == 0 || /* HPLIP */
 		   _cups_strcasecmp(c, "ImageREt1200") == 0 || /* HPLIP */
 		   _cups_strcasecmp(c, "Enhanced") == 0)
 	    properties->sets_high = 3;
@@ -2375,10 +2382,12 @@ _ppdCacheAssignPresets(ppd_file_t *ppd,
 		   _cups_strcasecmp(c, "fine") == 0 ||
 		   _cups_strcasecmp(c, "HQ") == 0 ||
 		   _cups_strcasecmp(c, "CMYGray") == 0 || /* HPLIP */
+		   _cups_strcasecmp(c, "ProRes1200") == 0 || /* HPLIP */
 		   _cups_strcasecmp(c, "ImageREt2400") == 0 || /* HPLIP */
 		   _cups_strcasestr(c, "unidir"))
 	    properties->sets_high = 4;
 	  else if (_cups_strcasecmp(c, "best") == 0 ||
+		   _cups_strcasecmp(c, "ProRes2400") == 0 || /* HPLIP */
 		   _cups_strcasecmp(c, "monolowdetail") == 0) /* Toshiba */
 	    properties->sets_high = 5;
 
