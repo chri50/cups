@@ -1,6 +1,7 @@
 /*
  * HTTP test program for CUPS.
  *
+ * Copyright © 2021-2022 by OpenPrinting.
  * Copyright © 2007-2018 by Apple Inc.
  * Copyright © 1997-2006 by Easy Software Products.
  *
@@ -779,7 +780,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 
 	continue;
       }
-#ifdef HAVE_SSL
+#ifdef HAVE_TLS
       else if (status == HTTP_STATUS_UPGRADE_REQUIRED)
       {
 	/* Flush any error message... */
@@ -798,7 +799,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 	/* Try again, this time with encryption enabled... */
 	continue;
       }
-#endif /* HAVE_SSL */
+#endif /* HAVE_TLS */
     }
     while (status == HTTP_STATUS_UNAUTHORIZED ||
            status == HTTP_STATUS_UPGRADE_REQUIRED);
@@ -881,7 +882,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 
 	continue;
       }
-#ifdef HAVE_SSL
+#ifdef HAVE_TLS
       else if (status == HTTP_STATUS_UPGRADE_REQUIRED)
       {
 	/* Flush any error message... */
@@ -900,7 +901,7 @@ main(int  argc,				/* I - Number of command-line arguments */
 	/* Try again, this time with encryption enabled... */
 	continue;
       }
-#endif /* HAVE_SSL */
+#endif /* HAVE_TLS */
     }
     while (status == HTTP_STATUS_UNAUTHORIZED || status == HTTP_STATUS_UPGRADE_REQUIRED);
 

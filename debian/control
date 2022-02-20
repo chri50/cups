@@ -2,6 +2,7 @@ Source: cups
 Maintainer: Debian Printing Team <debian-printing@lists.debian.org>
 Uploaders:
  Till Kamppeter <till.kamppeter@gmail.com>,
+ Thorsten Alteholz <debian@alteholz.de>,
 Section: net
 Priority: optional
 Build-Depends:
