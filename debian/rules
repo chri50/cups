@@ -54,7 +54,7 @@ override_dh_auto_configure:
 		--enable-avahi \
 		--disable-launchd \
 		--with-cups-group=lp \
-		--with-system-groups=lpadmin \
+		--with-system-groups="root lpadmin" \
 		--with-rundir=/run/cups \
 		--with-printcap=/run/cups/printcap \
 		--with-log-file-perm=0640 \
