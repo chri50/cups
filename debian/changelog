@@ -1,3 +1,12 @@
+cups (2.4.1op1-1ubuntu2) jammy; urgency=low
+
+  * Fixed printing on temporary CUPS queues for local services, like
+    IPP-over-USB or Printer Applications. Especially when printing from
+    the GTK print dialog printing on such queues did not work (Upstream
+    pull request #353).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon, 14 Mar 2022 09:13:08 +0100
+
 cups (2.4.1op1-1ubuntu1) jammy; urgency=low
 
   * Merge from Debian unstable. Remaining changes:
