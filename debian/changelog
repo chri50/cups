@@ -1,3 +1,11 @@
+cups (2.4.1op1-1ubuntu3) jammy; urgency=low
+
+  * Fixed crasher in the patch for temporary queues for local services
+    in the previous release. Updated the patch and the upstream pull
+    request (LP: #1965112, Upstream pull request #353).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 16 Mar 2022 18:24:08 +0100
+
 cups (2.4.1op1-1ubuntu2) jammy; urgency=low
 
   * Fixed printing on temporary CUPS queues for local services, like
