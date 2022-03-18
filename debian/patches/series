@@ -11,3 +11,4 @@
 0016-Debian-po4a-infrastructure-and-translations-for-manp.patch
 9100-ppd-cache-add-auto-presets.patch
 9110-create-local-printer-localhost-fix.patch
+9120-scheduler-ipp-c-resolve-mdns-uri.patch
