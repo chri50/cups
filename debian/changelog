@@ -1,3 +1,11 @@
+cups (2.4.1op1-1ubuntu4) jammy; urgency=low
+
+  * Fixed PPD file auto-generation when a print queue is created with
+    a DNS-SD-service-name-based URI and "-m everywhere" backporting the
+    fix from upstream (Upstream issue #340, #343).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Sat, 19 Mar 2022 00:07:00 +0100
+
 cups (2.4.1op1-1ubuntu3) jammy; urgency=low
 
   * Fixed crasher in the patch for temporary queues for local services
