@@ -1,3 +1,11 @@
+cups (2.3.3op2-3+deb11u2) bullseye-security; urgency=high
+
+  * CVE-2022-26691
+    Fix certificate comparison.
+    (Thanks to Zdenek Dohnal <zdohnal@redhat.com> for the patch)
+
+ -- Thorsten Alteholz <debian@alteholz.de>  Mon, 23 May 2022 22:03:02 +0200
+
 cups (2.3.3op2-3+deb11u1) unstable; urgency=medium
 
   * Backport 2 upstream USB backend fixes:
