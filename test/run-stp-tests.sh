@@ -695,7 +695,7 @@ else
 fi
 
 while true; do
-	running=`$runcups ../systemv/lpstat -r 2>/dev/null`
+	running=`LC_ALL=C $runcups ../systemv/lpstat -r 2>/dev/null`
 	if test "x$running" = "xscheduler is running"; then
 		break
 	fi
@@ -809,13 +809,13 @@ kill -HUP $cupsd
 while true; do
 	sleep 10
 
-	running=`$runcups ../systemv/lpstat -r 2>/dev/null`
+	running=`LC_ALL=C $runcups ../systemv/lpstat -r 2>/dev/null`
 	if test "x$running" = "xscheduler is running"; then
 		break
 	fi
 done
 
-description="`$runcups ../systemv/lpstat -l -p Test1 | grep Description | sed -e '1,$s/^[^:]*: //g'`"
+description="`LC_ALL=C $runcups ../systemv/lpstat -l -p Test1 | grep Description | sed -e '1,$s/^[^:]*: //g'`"
 if test "x$description" != "xTest Printer 1"; then
 	echo "Failed, printer-info for Test1 is '$description', expected 'Test Printer 1'." >>$strfile
 	echo "FAIL (got '$description', expected 'Test Printer 1')"
