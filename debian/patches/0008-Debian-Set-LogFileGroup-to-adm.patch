@@ -8,7 +8,7 @@ Forwarded: not-needed
  1 file changed, 4 insertions(+)
 
 diff --git a/conf/cups-files.conf.in b/conf/cups-files.conf.in
-index af11fcc..80ca351 100644
+index 93584a1..b505c40 100644
 --- a/conf/cups-files.conf.in
 +++ b/conf/cups-files.conf.in
 @@ -29,6 +29,10 @@ SystemGroup @CUPS_SYSTEM_GROUPS@
