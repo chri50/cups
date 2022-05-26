@@ -883,6 +883,9 @@ cupsdDeleteTemporaryPrinters(int force) /* I - Force deletion instead of auto? *
   time_t          unused_time;          /* Last time for printer state change */
 
 
+  cupsdLogMessage(CUPSD_LOG_DEBUG2,
+		  "cupsdDeleteTemporaryPrinters: Removing unused temporary printers");
+
  /*
   * Allow temporary printers to stick around for 60 seconds after the last job
   * completes.
@@ -892,7 +895,8 @@ cupsdDeleteTemporaryPrinters(int force) /* I - Force deletion instead of auto? *
 
   for (p = (cupsd_printer_t *)cupsArrayFirst(Printers); p; p = (cupsd_printer_t *)cupsArrayNext(Printers))
   {
-    if (p->temporary && (force || p->state_time < unused_time))
+    if (p->temporary &&
+	(force || (p->state_time < unused_time && p->state != IPP_PSTATE_PROCESSING)))
       cupsdDeletePrinter(p, 0);
   }
 }
@@ -3870,6 +3874,7 @@ load_ppd(cupsd_printer_t *p)		/* I - Printer */
   int		i, j;			/* Looping vars */
   char		cache_name[1024];	/* Cache filename */
   struct stat	cache_info;		/* Cache file info */
+  struct stat	conf_info;		/* cupsd.conf file info */
   ppd_file_t	*ppd;			/* PPD file */
   char		ppd_name[1024];		/* PPD filename */
   struct stat	ppd_info;		/* PPD file info */
@@ -3931,6 +3936,9 @@ load_ppd(cupsd_printer_t *p)		/* I - Printer */
   * Check to see if the cache is up-to-date...
   */
 
+  if (stat(ConfigurationFile, &conf_info))
+    conf_info.st_mtime = 0;
+
   snprintf(cache_name, sizeof(cache_name), "%s/%s.data", CacheDir, p->name);
   if (stat(cache_name, &cache_info))
     cache_info.st_mtime = 0;
@@ -3947,7 +3955,7 @@ load_ppd(cupsd_printer_t *p)		/* I - Printer */
   _ppdCacheDestroy(p->pc);
   p->pc = NULL;
 
-  if (cache_info.st_mtime >= ppd_info.st_mtime)
+  if (cache_info.st_mtime >= ppd_info.st_mtime && cache_info.st_mtime >= conf_info.st_mtime)
   {
     cupsdLogMessage(CUPSD_LOG_DEBUG, "load_ppd: Loading %s...", cache_name);
 

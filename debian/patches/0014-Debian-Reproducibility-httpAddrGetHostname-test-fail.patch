@@ -8,11 +8,11 @@ Forwarded: not-needed
  cups/testhttp.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-Index: cups/cups/testhttp.c
-===================================================================
---- cups.orig/cups/testhttp.c	2022-02-20 07:06:30.262924962 +0000
-+++ cups/cups/testhttp.c	2022-02-20 07:06:30.254924414 +0000
-@@ -417,8 +417,7 @@
+diff --git a/cups/testhttp.c b/cups/testhttp.c
+index 2cda4f7..73f8e34 100644
+--- a/cups/testhttp.c
++++ b/cups/testhttp.c
+@@ -417,8 +417,7 @@ main(int  argc,				/* I - Number of command-line arguments */
      }
      else
      {

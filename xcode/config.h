@@ -1,7 +1,7 @@
 /*
  * Configuration file for CUPS and Xcode.
  *
- * Copyright © 2021 by OpenPrinting
+ * Copyright © 2021-2022 by OpenPrinting
  * Copyright © 2007-2019 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products.
  *
@@ -19,8 +19,8 @@
  * Version of software...
  */
 
-#define CUPS_SVERSION "CUPS v2.4rc1"
-#define CUPS_MINIMAL "CUPS/2.4rc1"
+#define CUPS_SVERSION "CUPS v2.4.2"
+#define CUPS_MINIMAL "CUPS/2.4.2"
 
 
 /*
@@ -308,6 +308,7 @@
 
 #define HAVE_TLS 1
 #define HAVE_CDSASSL 1
+/* #undef HAVE_OPENSSL */
 /* #undef HAVE_GNUTLS */
 /* #undef HAVE_SSPISSL */
 

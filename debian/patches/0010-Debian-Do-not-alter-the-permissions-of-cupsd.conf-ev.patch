@@ -8,11 +8,11 @@ Bug: https://github.com/OpenPrinting/cups/pull/36
  scheduler/conf.c | 2 ++
  1 file changed, 2 insertions(+)
 
-Index: cups/scheduler/conf.c
-===================================================================
---- cups.orig/scheduler/conf.c	2022-02-20 07:05:27.618627438 +0000
-+++ cups/scheduler/conf.c	2022-02-20 07:05:27.606626616 +0000
-@@ -1132,10 +1132,12 @@
+diff --git a/scheduler/conf.c b/scheduler/conf.c
+index 535d40f..cb49078 100644
+--- a/scheduler/conf.c
++++ b/scheduler/conf.c
+@@ -1132,10 +1132,12 @@ cupsdReadConfiguration(void)
  			     Group, 1, 1) < 0 ||
         cupsdCheckPermissions(ServerRoot, "ssl", 0700, RunUser,
  			     Group, 1, 0) < 0 ||

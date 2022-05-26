@@ -8,9 +8,9 @@ Bug-Debian: https://bugs.debian.org/700961
 Bug: https://github.com/apple/cups/issues/4341
 Bug: https://github.com/OpenPrinting/cups/pull/27
 ---
- conf/mime.convs.in   | 3 +++
- conf/mime.types      | 3 +++
- 5 files changed, 16 insertions(+), 2 deletions(-)
+ conf/mime.convs.in | 3 +++
+ conf/mime.types    | 3 +++
+ 2 files changed, 6 insertions(+)
 
 diff --git a/conf/mime.convs.in b/conf/mime.convs.in
 index 57b459d..e042e01 100644
