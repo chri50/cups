@@ -1,3 +1,20 @@
+cups (2.3.1-9ubuntu1.2) focal-security; urgency=medium
+
+  * SECURITY UPDATE: buffer overflow in ippReadIO
+    - debian/patches/CVE-2019-8842.patch: fix check in cups/ipp.c.
+    - CVE-2019-8842
+  * SECURITY UPDATE: buffer overflow in ippReadIO
+    - debian/patches/CVE-2020-10001.patch: fix bounds checks in cups/ipp.c.
+    - CVE-2020-10001
+  * SECURITY UPDATE: Local authorization cert bypass
+    - debian/patches/CVE-2022-26691-1.patch: fix string comparison in
+      scheduler/cert.c.
+    - debian/patches/CVE-2022-26691-2.patch: fix the comment in
+      scheduler/cert.c.
+    - CVE-2022-26691
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 27 May 2022 10:51:54 -0400
+
 cups (2.3.1-9ubuntu1.1) focal-security; urgency=medium
 
   * SECURITY UPDATE: heap-based buffer overflow
