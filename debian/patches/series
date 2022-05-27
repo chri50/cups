@@ -12,3 +12,5 @@
 9100-ppd-cache-add-auto-presets.patch
 9110-create-local-printer-localhost-fix.patch
 9120-scheduler-ipp-c-resolve-mdns-uri.patch
+CVE-2022-26691-1.patch
+CVE-2022-26691-2.patch
