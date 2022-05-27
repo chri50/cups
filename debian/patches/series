@@ -49,3 +49,7 @@ systemd-service-for-cupsd-after-sssd.patch
 CVE-2019-86xx.patch
 CVE-2019-2228.patch
 CVE-2020-3898.patch
+CVE-2019-8842.patch
+CVE-2020-10001.patch
+CVE-2022-26691-1.patch
+CVE-2022-26691-2.patch
