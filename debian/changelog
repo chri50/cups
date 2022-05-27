@@ -1,3 +1,14 @@
+cups (2.4.1op1-1ubuntu4.1) jammy-security; urgency=medium
+
+  * SECURITY UPDATE: Local authorization cert bypass
+    - debian/patches/CVE-2022-26691-1.patch: fix string comparison in
+      scheduler/cert.c.
+    - debian/patches/CVE-2022-26691-2.patch: fix the comment in
+      scheduler/cert.c.
+    - CVE-2022-26691
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 27 May 2022 07:53:01 -0400
+
 cups (2.4.1op1-1ubuntu4) jammy; urgency=low
 
   * Fixed PPD file auto-generation when a print queue is created with
