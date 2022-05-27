@@ -16,3 +16,5 @@
 0016-Debian-po4a-infrastructure-and-translations-for-manp.patch
 9000-cupsd-cupsfilter-snap-support.patch
 9100-ppd-cache-add-auto-presets.patch
+CVE-2022-26691-1.patch
+CVE-2022-26691-2.patch
