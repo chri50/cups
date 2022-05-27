@@ -3079,7 +3079,8 @@ ippReadIO(void       *src,		/* I - Data source */
   unsigned char		*buffer,	/* Data buffer */
 			string[IPP_MAX_TEXT],
 					/* Small string buffer */
-			*bufptr;	/* Pointer into buffer */
+			*bufptr,	/* Pointer into buffer */
+			*bufend;	/* End of buffer */
   ipp_attribute_t	*attr;		/* Current attribute */
   ipp_tag_t		tag;		/* Current tag */
   ipp_tag_t		value_tag;	/* Current value tag */
@@ -3169,7 +3170,7 @@ ippReadIO(void       *src,		/* I - Data source */
             * Read 32-bit "extension" tag...
             */
 
-	    if ((*cb)(src, buffer, 4) < 1)
+	    if ((*cb)(src, buffer, 4) < 4)
 	    {
 	      DEBUG_puts("1ippReadIO: Callback returned EOF/error");
 	      _cupsBufferRelease((char *)buffer);
@@ -3640,6 +3641,7 @@ ippReadIO(void       *src,		/* I - Data source */
 		}
 
                 bufptr = buffer;
+                bufend = buffer + n;
 
 	       /*
 	        * text-with-language and name-with-language are composite
@@ -3653,7 +3655,7 @@ ippReadIO(void       *src,		/* I - Data source */
 
 		n = (bufptr[0] << 8) | bufptr[1];
 
-		if ((bufptr + 2 + n) >= (buffer + IPP_BUF_SIZE) || n >= (int)sizeof(string))
+		if ((bufptr + 2 + n + 2) > bufend || n >= (int)sizeof(string))
 		{
 		  _cupsSetError(IPP_STATUS_ERROR_INTERNAL,
 		                _("IPP language length overflows value."), 1);
@@ -3680,7 +3682,7 @@ ippReadIO(void       *src,		/* I - Data source */
                 bufptr += 2 + n;
 		n = (bufptr[0] << 8) | bufptr[1];
 
-		if ((bufptr + 2 + n) >= (buffer + IPP_BUF_SIZE))
+		if ((bufptr + 2 + n) > bufend)
 		{
 		  _cupsSetError(IPP_STATUS_ERROR_INTERNAL,
 		                _("IPP string length overflows value."), 1);
