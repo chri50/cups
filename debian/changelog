@@ -1,3 +1,9 @@
+cups (2.4.2-1ubuntu2) kinetic; urgency=medium
+
+  * Add patch to build with snapd-glib-2
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Thu, 25 Aug 2022 21:54:33 -0400
+
 cups (2.4.2-1ubuntu1) kinetic; urgency=low
 
   * Merge from Debian unstable. Remaining changes:
