@@ -619,11 +619,13 @@ cupsCopyDestInfo(
     dflags = CUPS_DEST_FLAGS_NONE;
   }
 #endif /* AF_LOCAL */
-  else if ((strcmp(http->hostname, cg->server) && cg->server[0] != '/') || cg->ipp_port != httpAddrPort(http->hostaddr))
-  {
-    DEBUG_printf(("1cupsCopyDestInfo: Connection to device (%s).", http->hostname));
-    dflags = CUPS_DEST_FLAGS_DEVICE;
-  }
+// --- custom modification -- chri50: 2023-01-19  arvato: do not gather information from device
+//  else if ((strcmp(http->hostname, cg->server) && cg->server[0] != '/') || cg->ipp_port != httpAddrPort(http->hostaddr))
+//  {
+//    DEBUG_printf(("1cupsCopyDestInfo: Connection to device (%s).", http->hostname));
+//    dflags = CUPS_DEST_FLAGS_DEVICE;
+//  }
+// --- custom modification -- chri50: 2023-01-19  arvato: do not gather information from device
   else
   {
     DEBUG_printf(("1cupsCopyDestInfo: Connection to server (%s).", http->hostname));
