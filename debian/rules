@@ -48,7 +48,7 @@ override_dh_auto_configure:
 		--localedir=/usr/share/cups/locale \
 		--enable-libpaper \
 		--enable-ssl \
-		--enable-gnutls \
+		--with-tls=gnutls \
 		--enable-threads \
 		--enable-static \
 		--enable-debug \
