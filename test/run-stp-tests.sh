@@ -19,7 +19,8 @@ argcount=$#
 
 if test "x`id -u`" = x0; then
 	echo Please run this as a normal user. Not supported when run as root.
-	exit 1
+	echo "Debian Reproducibility: Skipping allowed, as this is known to break under reprotest. This message MUST NOT be visible in normal Debian buildd logs."
+	exit 0
 fi
 
 #
