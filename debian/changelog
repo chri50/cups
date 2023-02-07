@@ -1,3 +1,20 @@
+cups (2.4.2-1ubuntu4) lunar; urgency=medium
+
+  * In debian/rules updated ./configure arguments from --enable-gnutls to
+    --with-tls=gnutls. Now libcups has support for all hash types again,
+    especially can provide sha2-256 to PAPPL.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed,  8 Feb 2023 00:07:31 +0100
+
+cups (2.4.2-1ubuntu3) kinetic; urgency=medium
+
+  * When polling capabilities of a driverless printer via
+    get-printer-attributes IPP request, do a separate poll
+    of the media-col-database attribute in case it did not
+    get obtained by the first polls.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Sat, 21 Jan 2023 14:27:31 -0300
+
 cups (2.4.2-1ubuntu2) kinetic; urgency=medium
 
   * Add patch to build with snapd-glib-2
