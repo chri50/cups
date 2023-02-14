@@ -20,3 +20,4 @@ check-colormodel-also-for-cmyk.patch
 dont-override-color-settings-from-print-dialog.patch
 CVE-2023-32360.patch
 CVE-2023-4504.patch
+fix-lpoptions-as-root.patch

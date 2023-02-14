@@ -1,0 +1,15 @@
+--- a/cups/dest.c
++++ b/cups/dest.c
+@@ -2080,7 +2080,11 @@
+ 
+   snprintf(filename, sizeof(filename), "%s/lpoptions", cg->cups_serverroot);
+ 
+-  if (cg->home)
++  if (cg->home
++#ifndef _WIN32
++      && getuid() != 0
++#endif
++      )
+   {
+    /*
+     * Create ~/.cups subdirectory...

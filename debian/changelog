@@ -1,3 +1,11 @@
+cups (2.4.1op1-1ubuntu4.8) jammy; urgency=medium
+
+  * The "lpoptions" utility, when run as root was writing into the file
+    /root/.cups/lpoptions instread of /etc/cups/lpoptions. System software
+    should never write into /root/ (LP: #2052925).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 14 Feb 2023 14:10:00 +0100
+
 cups (2.4.1op1-1ubuntu4.7) jammy-security; urgency=medium
 
   * SECURITY UPDATE: Postscript parsing heap overflow
