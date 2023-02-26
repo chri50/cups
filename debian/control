@@ -241,6 +241,8 @@ Depends:
  libcups2 (= ${binary:Version}),
  ${misc:Depends},
  ${shlibs:Depends},
+Recommends:
+ avahi-daemon
 Breaks:
  cups-client (<< 2.0.3-2~),
 Replaces:

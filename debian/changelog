@@ -1,3 +1,18 @@
+cups (2.4.2-2) unstable; urgency=medium
+
+  [ Helge Kreutzmann ]
+  * Update German man page (2220t)
+
+  [ Thorsten Alteholz]
+  * debian/control: add Recommends: avahi-daemon to cups-ipp-utils
+                    (Closes: #904605)
+  * debian/manpage-po4a: add Portuguese translation
+                         (Closes: #1001890)
+  * add ippevepcl and ippeveps (and manpages) to cups-ipp-utils
+    (Closes: #990410)
+
+ -- Thorsten Alteholz <debian@alteholz.de>  Sun, 26 Feb 2023 12:54:05 +0100
+
 cups (2.4.2-1) unstable; urgency=medium
 
   * Update to new upstream version 2.4.2.
