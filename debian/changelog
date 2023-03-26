@@ -1,3 +1,15 @@
+cups (2.4.2-3) unstable; urgency=medium
+
+  [ Helge Kreutzmann ]
+  * update translations (Closes: #1032833)
+  * add more translated man pages to binary packages (Closes: #1032621)
+
+  [ Thorsten Alteholz]
+  * fix typo in French translation
+  * debian/rules: remove link handling for manpages of cups-ipp-utils
+
+ -- Thorsten Alteholz <debian@alteholz.de>  Sun, 26 Mar 2023 10:54:05 +0200
+
 cups (2.4.2-2) unstable; urgency=medium
 
   [ Helge Kreutzmann ]
