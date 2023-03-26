@@ -47,6 +47,10 @@
   network econet dgram,
   network ash dgram,
 
+  # To allow cupsd to determine which interfaces a snapped client
+  # is plugging
+  /{,var/}run/snapd.socket rw,
+
   # CUPS is of systemd service type "notify" now, meaning that cupsd notifies
   # systemd when it is up and running, give CUPS access to systemd's
   # notification socket
