@@ -48,7 +48,7 @@ override_dh_auto_configure:
 		--localedir=/usr/share/cups/locale \
 		--enable-libpaper \
 		--enable-ssl \
-		--enable-gnutls \
+		--with-tls=gnutls \
 		--enable-threads \
 		--enable-static \
 		--enable-debug \
@@ -64,23 +64,56 @@ override_dh_auto_configure:
 		--with-log-file-perm=0640 \
 		--with-local_protocols='dnssd' \
 		--with-systemd=/lib/systemd/system \
+		--with-system-groups='lpadmin root' \
 		--with-error-policy=retry-job \
 		--enable-sync-on-close \
 		--with-max-log-size=0 \
+		--enable-snapped-clients \
 		$(CONFIG_LIBUSB)
 
 override_dh_auto_install:
 	dh_auto_install -- install BUILDROOT=$(shell pwd)/debian/tmp
 
 MANPAGES_L10N_CUPS=man1/cups.1 man5/subscriptions.conf.5 man5/mime.convs.5 man7/filter.7 man8/cupsfilter.8 man8/cups-exec.8 man8/cups-deviced.8 man8/cups-driverd.8 man8/cupsd-helper.8 man8/cupsd-lpd.8
-MANPAGES_L10N_CUPS_SERVER_COMMON=man5/cupsd-logs.conf.5
+MANPAGES_L10N_CUPS=man1/cups.1 man5/subscriptions.conf.5 man5/mime.convs.5 man7/filter.7 man8/cupsfilter.8 man8/cups-exec.8 man8/cups-deviced.8 man8/cups-driverd.8 man8/cupsd-helper.8 man8/cups-lpd.8
+MANPAGES_L10N_CUPS_SERVER_COMMON=man5/cupsd-logs.conf.5 man5/cupsd-logs.5
 MANPAGES_L10N_CUPS_DAEMON=man5/classes.conf.5 man5/cupsd.conf.5 man5/cups-files.conf.5 man5/cups-snmp.conf.5 man5/mailto.conf.5 man5/mime.types.5 man5/printers.conf.5 man7/backend.7 man7/notifier.7 man8/cupsd.8 man8/cups-snmp.8
 MANPAGES_L10N_CUPS_CLIENT=man1/cupstestppd.1 man1/lp.1 man1/lpoptions.1 man1/lppasswd.1 man1/lpstat.1 man1/cancel.1 man5/client.conf.5 man8/cupsenable.8 man8/lpadmin.8 man8/lpinfo.8 man8/lpmove.8 man8/cupsreject.8 man8/cupsdisable.8 man8/cupsaccept.8 man8/cupsctl.8
 MANPAGES_L10N_CUPS_BSD=man1/lpr.1 man1/lprm.1 man1/lpq.1 man8/lpc.8
-MANPAGES_L10N_CUPS_IPP_UTILS=man1/ippeveprinter.1 man1/find.1 man1/ippserver.1 man1/ipptool.1 man5/ipptoolfile.5
+MANPAGES_L10N_CUPS_IPP_UTILS=man1/ippeveprinter.1 man1/ippfind.1 man1/ipptool.1 man5/ipptoolfile.5 man7/ippeveps.7 man7/ippevepcl.7
+MANPAGES_L10N_CUPS_LIBCUPS2_DEV=man1/cups-config.1
+MANPAGES_L10N_CUPS_PPDC=man1/ppdc.1 man1/ppdhtml.1 man1/ppdi.1 man1/ppdmerge.1 man1/ppdpo.1 man5/ppdcfile.5
 
 override_dh_installman:
 	dh_installman
+ifneq (,$(filter libcups2-dev,$(shell dh_listpackages)))
+	# Try to install the translated manpages to libcups2-dev
+	set -e; for m in $(MANPAGES_L10N_CUPS_LIBCUPS2_DEV); do \
+	    for manp in $$(ls debian/tmp/usr/share/man/*/$$m); do \
+	        if [ -r $$manp ]; then \
+	            if [ -L $$manp ]; then \
+	                ln -sf $$(readlink $$manp) $$(echo $$manp | sed -e 's#^debian/tmp#debian/libcups2-dev#');\
+	            else \
+	                install -D -m 644 $$manp $$(echo $$manp | sed -e 's#^debian/tmp#debian/libcups2-dev#');\
+	            fi; \
+	        fi; \
+	    done; \
+	done
+endif
+ifneq (,$(filter cups-ppdc,$(shell dh_listpackages)))
+	# Try to install the translated manpages to cups-ppdc
+	set -e; for m in $(MANPAGES_L10N_CUPS_PPDC); do \
+	    for manp in $$(ls debian/tmp/usr/share/man/*/$$m); do \
+	        if [ -r $$manp ]; then \
+	            if [ -L $$manp ]; then \
+	                ln -sf $$(readlink $$manp) $$(echo $$manp | sed -e 's#^debian/tmp#debian/cups-ppdc#');\
+	            else \
+	                install -D -m 644 $$manp $$(echo $$manp | sed -e 's#^debian/tmp#debian/cups-ppdc#');\
+	            fi; \
+	        fi; \
+	    done; \
+	done
+endif
 ifneq (,$(filter cups-server-common,$(shell dh_listpackages)))
 	# Try to install the translated manpages to cups-server-common
 	set -e; for m in $(MANPAGES_L10N_CUPS_SERVER_COMMON); do \
@@ -152,16 +185,13 @@ ifneq (,$(filter cups-bsd,$(shell dh_listpackages)))
 	done
 endif
 
+# handling of links does not really work here
 ifneq (,$(filter cups-ipp-utils,$(shell dh_listpackages)))
 	# Try to install the translated manpages to cups-ipp-utils
 	set -e; for m in $(MANPAGES_L10N_CUPS_IPP_UTILS); do \
 	    for manp in $$(ls debian/tmp/usr/share/man/*/$$m); do \
 	        if [ -r $$manp ]; then \
-	            if [ -L $$manp ]; then \
-	                ln -sf $$(readlink $$manp) $$(echo $$manp | sed -e 's#^debian/tmp#debian/cups-ipp-utils#');\
-	            else \
 	                install -D -m 644 $$manp $$(echo $$manp | sed -e 's#^debian/tmp#debian/cups-ipp-utils#');\
-	            fi; \
 	        fi; \
 	    done; \
 	done

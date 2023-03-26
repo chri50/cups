@@ -1,0 +1,31 @@
+From dac1a2194da37bcbef6745582b1346cf7b6352ab Mon Sep 17 00:00:00 2001
+From: Jeremy Bicha <jeremy.bicha@canonical.com>
+Date: Wed, 24 Aug 2022 19:09:35 -0400
+Subject: [PATCH] snap: use snapd-glib-2
+
+There is a new API of snapd-glib used for libsoup3
+---
+ config-scripts/cups-container.m4 | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/config-scripts/cups-container.m4 b/config-scripts/cups-container.m4
+index 7e345b5..73e37fc 100644
+--- a/config-scripts/cups-container.m4
++++ b/config-scripts/cups-container.m4
+@@ -40,10 +40,10 @@ AS_IF([test "x$PKGCONFIG" != x], [
+ 	AC_DEFINE([HAVE_LIBAPPARMOR], [1], [Have the apparmor library?])
+ 
+ 	AC_MSG_CHECKING([for libsnapd-glib])
+-	AS_IF([$PKGCONFIG --exists snapd-glib glib-2.0 gio-2.0], [
++	AS_IF([$PKGCONFIG --exists snapd-glib-2 glib-2.0 gio-2.0], [
+ 	    AC_MSG_RESULT([yes])
+-	    CFLAGS="$CFLAGS $($PKGCONFIG --cflags snapd-glib glib-2.0 gio-2.0)"
+-	    SNAPDGLIBLIBS="$($PKGCONFIG --libs snapd-glib glib-2.0 gio-2.0)"
++	    CFLAGS="$CFLAGS $($PKGCONFIG --cflags snapd-glib-2 glib-2.0 gio-2.0)"
++	    SNAPDGLIBLIBS="$($PKGCONFIG --libs snapd-glib-2 glib-2.0 gio-2.0)"
+ 	    AC_DEFINE([HAVE_LIBSNAPDGLIB], [1], [Have the snapd-glib library?])
+ 	    SAVELIBS="$LIBS"
+ 	    LIBS="$SNAPDGLIBLIBS $LIBS"
+-- 
+2.36.1
+
