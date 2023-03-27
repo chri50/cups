@@ -318,7 +318,7 @@ Depends:
  ${misc:Depends},
  ${shlibs:Depends},
 Recommends:
- libcupsfilters1,
+ libcupsfilters2,
 Pre-Depends:
  ${misc:Pre-Depends},
 Description: Common UNIX Printing System(tm) - Raster image library
