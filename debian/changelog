@@ -1,3 +1,9 @@
+cups (2.4.2-3ubuntu2) lunar; urgency=low
+
+  * In libcupsimage2 recommend libcupsfilters2 instead of libcupsfilters1.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon, 27 Mar 2023 23:12:00 +0200
+
 cups (2.4.2-3ubuntu1) lunar; urgency=low
 
   * Merge from Debian unstable. Remaining changes:
