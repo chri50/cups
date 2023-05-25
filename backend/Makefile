@@ -19,7 +19,7 @@ include ../Makedefs
 # Object files...
 #
 
-# RBACKENDS are installed mode 0700 so cupsd will run them as root...
+# RBACKENDS are installed mode 0744 so cupsd will run them as root...
 #
 # UBACKENDS and ULBACKENDS are installed mode 0755 so cupsd will run them as
 # an unprivileged user...
@@ -124,7 +124,7 @@ install-exec:	$(INSTALLXPC)
 	echo Installing backends in $(SERVERBIN)/backend
 	$(INSTALL_DIR) -m 755 $(SERVERBIN)/backend
 	for file in $(RBACKENDS); do \
-		$(LIBTOOL) $(INSTALL_BIN) -m 700 $$file $(SERVERBIN)/backend; \
+		$(LIBTOOL) $(INSTALL_BIN) -m 744 $$file $(SERVERBIN)/backend; \
 	done
 	for file in $(UBACKENDS); do \
 		$(INSTALL_BIN) $$file $(SERVERBIN)/backend; \
