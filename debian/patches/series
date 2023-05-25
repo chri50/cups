@@ -13,3 +13,4 @@
 9110-create-local-printer-localhost-fix.patch
 CVE-2022-26691-2.patch
 snapd-glib-2.patch
+CVE-2023-32324.patch
