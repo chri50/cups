@@ -721,7 +721,7 @@ cupsdReadConfiguration(void)
   KeepAlive                = TRUE;
   KeepAliveTimeout         = DEFAULT_KEEPALIVE;
   ListenBackLog            = SOMAXCONN;
-  LogDebugHistory          = 200;
+  LogDebugHistory          = 99999;
   LogFilePerm              = CUPS_DEFAULT_LOG_FILE_PERM;
   LogLevel                 = CUPSD_LOG_WARN;
   LogTimeFormat            = CUPSD_TIME_STANDARD;
