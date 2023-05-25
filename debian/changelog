@@ -1,3 +1,12 @@
+cups (2.4.1op1-1ubuntu4.2) jammy-security; urgency=medium
+
+  * SECURITY UPDATE: DoS via buffer overflow in format_log_line
+    - debian/patches/CVE-2023-32324.patch: check _cups_strlcpy size in
+      cups/string.c.
+    - CVE-2023-32324
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Thu, 25 May 2023 08:42:49 -0400
+
 cups (2.4.1op1-1ubuntu4.1) jammy-security; urgency=medium
 
   * SECURITY UPDATE: Local authorization cert bypass

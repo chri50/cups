@@ -14,3 +14,4 @@
 9120-scheduler-ipp-c-resolve-mdns-uri.patch
 CVE-2022-26691-1.patch
 CVE-2022-26691-2.patch
+CVE-2023-32324.patch
