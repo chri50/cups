@@ -735,6 +735,9 @@ _cups_strlcpy(char       *dst,		/* O - Destination string */
   size_t	srclen;			/* Length of source string */
 
 
+  if (size == 0)
+    return (0);
+
  /*
   * Figure out how much room is needed...
   */
