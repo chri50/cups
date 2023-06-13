@@ -1,3 +1,14 @@
+cups (2.4.1op1-1ubuntu4.4) jammy-security; urgency=medium
+
+  * SECURITY UPDATE: use-after-free in cupsdAcceptClient()
+    - debian/patches/CVE-2023-34241.patch: log result of httpGetHostname
+      BEFORE closing the connection in scheduler/client.c.
+    - CVE-2023-34241
+  * This package does _not_ contain the changes from 2.4.1op1-1ubuntu4.3 in
+    jammy-proposed.
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Tue, 13 Jun 2023 08:17:22 -0400
+
 cups (2.4.1op1-1ubuntu4.2) jammy-security; urgency=medium
 
   * SECURITY UPDATE: DoS via buffer overflow in format_log_line
