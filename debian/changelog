@@ -1,3 +1,12 @@
+cups (2.4.2-3ubuntu2.2) lunar-security; urgency=medium
+
+  * SECURITY UPDATE: use-after-free in cupsdAcceptClient()
+    - debian/patches/CVE-2023-34241.patch: log result of httpGetHostname
+      BEFORE closing the connection in scheduler/client.c.
+    - CVE-2023-34241
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Tue, 13 Jun 2023 08:15:36 -0400
+
 cups (2.4.2-3ubuntu2.1) lunar-security; urgency=medium
 
   * SECURITY UPDATE: DoS via buffer overflow in format_log_line
