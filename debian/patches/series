@@ -16,3 +16,4 @@ snapd-glib-2.patch
 poll-media-col-database-separately.patch
 0012-add-pt.patch
 CVE-2023-32324.patch
+CVE-2023-34241.patch
