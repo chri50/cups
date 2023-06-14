@@ -54,7 +54,7 @@ typedef struct
     char	name[64];		/* Name value */
     double	number;			/* Number value */
     char	other[64];		/* Other operator */
-    char	string[64];		/* Sring value */
+    char	string[64];		/* String value */
   }			value;		/* Value */
 } _cups_ps_obj_t;
 
@@ -129,7 +129,7 @@ _cupsRasterInterpretPPD(
     cups_option_t       *options,	/* I - Options */
     cups_interpret_cb_t func)		/* I - Optional page header callback (@code NULL@ for none) */
 {
-  int		status;			/* Cummulative status */
+  int		status;			/* Cumulative status */
   char		*code;			/* Code to run */
   const char	*val;			/* Option value */
   ppd_size_t	*size;			/* Current size */
@@ -353,10 +353,10 @@ _cupsRasterInterpretPPD(
                                         h->cupsBorderlessScalingFactor);
   h->ImagingBoundingBox[3] = (unsigned)(top *
                                         h->cupsBorderlessScalingFactor);
-  h->cupsImagingBBox[0]    = (float)left;
-  h->cupsImagingBBox[1]    = (float)bottom;
-  h->cupsImagingBBox[2]    = (float)right;
-  h->cupsImagingBBox[3]    = (float)top;
+  h->cupsImagingBBox[0]    = left;
+  h->cupsImagingBBox[1]    = bottom;
+  h->cupsImagingBBox[2]    = right;
+  h->cupsImagingBBox[3]    = top;
 
  /*
   * Use the callback to validate the page header...

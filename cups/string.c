@@ -518,7 +518,7 @@ _cupsStrScand(const char   *buf,	/* I - Pointer to number */
 
   *tempptr = '\0';
 
-  return (strtod(temp, NULL));
+  return (atof(temp));
 }
 
 
@@ -671,6 +671,36 @@ _cups_strncasecmp(const char *s,	/* I - First string */
     return (-1);
 }
 
+/*
+ * '_cups_strcasestr()' - Do a case-insensitive search for a sub-string.
+ */
+
+char *					/* O - Pointer to found sub-string  or
+					       NULL if not found */
+_cups_strcasestr(const char *haystack,	/* I - String in which to searh */
+                 const char *needle)	/* I - Sub-string */
+{
+  char     cn,  /* Character in needle */
+           ch;  /* Character in haystack */
+  size_t   len; /* Length of needle */
+
+  if ((cn = *needle++) != 0)
+  {
+    cn = _cups_tolower(cn);
+    len = strlen(needle);
+    do
+    {
+      do
+      {
+	if ((ch = *haystack++) == 0)
+	  return (NULL);
+      } while (_cups_tolower(ch) != cn);
+    } while (_cups_strncasecmp(haystack, needle, len) != 0);
+    haystack --;
+  }
+  return ((char *)haystack);
+}
+
 
 #ifndef HAVE_STRLCAT
 /*
@@ -729,6 +759,7 @@ _cups_strlcpy(char       *dst,		/* O - Destination string */
 	      size_t      size)		/* I - Size of destination string buffer */
 {
   size_t	srclen;			/* Length of source string */
+
 
   if (size == 0)
     return (0);

@@ -1,7 +1,7 @@
 /*
  * Destination option/media support for CUPS.
  *
- * Copyright © 2021-2022 by OpenPrinting.
+ * Copyright © 2021-2023 by OpenPrinting.
  * Copyright © 2012-2019 by Apple Inc.
  *
  * Licensed under Apache License v2.0.  See the file "LICENSE" for more
@@ -1621,7 +1621,7 @@ cups_collection_string(
 		  const ipp_uchar_t *date = ippGetDate(member, j);
 					/* Date value */
 
-		  year = ((unsigned)date[0] << 8) + (unsigned)date[1];
+		  year = (date[0] << 8) | date[1];
 
 		  if (date[9] == 0 && date[10] == 0)
 		    snprintf(temp, sizeof(temp), "%04u-%02u-%02uT%02u:%02u:%02uZ", year, date[2], date[3], date[4], date[5], date[6]);

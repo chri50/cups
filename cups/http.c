@@ -1,7 +1,7 @@
 /*
  * HTTP routines for CUPS.
  *
- * Copyright © 2021-2022 by OpenPrinting.
+ * Copyright © 2021-2023 by OpenPrinting.
  * Copyright © 2007-2021 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
@@ -308,13 +308,25 @@ httpClearFields(http_t *http)		/* I - HTTP connection */
 
   if (http)
   {
-    memset(http->_fields, 0, sizeof(http->fields));
+    memset(http->_fields, 0, sizeof(http->_fields));
 
-    for (field = HTTP_FIELD_ACCEPT_LANGUAGE; field < HTTP_FIELD_MAX; field ++)
+    for (field = HTTP_FIELD_ACCEPT_LANGUAGE; field < HTTP_FIELD_ACCEPT_ENCODING; field ++)
     {
-      if (http->fields[field] && http->fields[field] != http->_fields[field])
+      if (!http->fields[field])
+        continue;
+
+      if (http->fields[field] != http->_fields[field])
         free(http->fields[field]);
 
+      http->fields[field] = NULL;
+    }
+
+    for (; field < HTTP_FIELD_MAX; field ++)
+    {
+      if (!http->fields[field])
+        continue;
+
+      free(http->fields[field]);
       http->fields[field] = NULL;
     }
 
@@ -729,7 +741,7 @@ httpFreeCredentials(
        credential = (http_credential_t *)cupsArrayNext(credentials))
   {
     cupsArrayRemove(credentials, credential);
-    free((void *)credential->data);
+    free(credential->data);
     free(credential);
   }
 
@@ -3266,9 +3278,9 @@ httpWrite2(http_t     *http,		/* I - HTTP connection */
                     CUPS_LLCAST length));
 
       if (http->data_encoding == HTTP_ENCODING_CHUNKED)
-	bytes = (ssize_t)http_write_chunk(http, buffer, length);
+	bytes = http_write_chunk(http, buffer, length);
       else
-	bytes = (ssize_t)http_write(http, buffer, length);
+	bytes = http_write(http, buffer, length);
 
       DEBUG_printf(("2httpWrite2: Wrote " CUPS_LLFMT " bytes...",
                     CUPS_LLCAST bytes));
@@ -3349,6 +3361,7 @@ httpWriteResponse(http_t        *http,	/* I - HTTP connection */
 {
   http_encoding_t	old_encoding;	/* Old data_encoding value */
   off_t			old_remaining;	/* Old data_remaining value */
+  cups_lang_t		*lang;		/* Response language */
 
 
  /*
@@ -3421,6 +3434,12 @@ httpWriteResponse(http_t        *http,	/* I - HTTP connection */
 #endif /* HAVE_LIBZ */
 
  /*
+  * Get the response language, if any...
+  */
+
+  lang = cupsLangGet(http->fields[HTTP_FIELD_CONTENT_LANGUAGE]);
+
+ /*
   * Send the response header...
   */
 
@@ -3428,7 +3447,7 @@ httpWriteResponse(http_t        *http,	/* I - HTTP connection */
   old_remaining       = http->data_remaining;
   http->data_encoding = HTTP_ENCODING_FIELDS;
 
-  if (httpPrintf(http, "HTTP/%d.%d %d %s\r\n", http->version / 100, http->version % 100, (int)status, httpStatus(status)) < 0)
+  if (httpPrintf(http, "HTTP/%d.%d %d %s\r\n", http->version / 100, http->version % 100, (int)status, _httpStatus(lang, status)) < 0)
   {
     http->status = HTTP_STATUS_ERROR;
     return (-1);
@@ -3617,7 +3636,7 @@ http_add_field(http_t       *http,	/* I - HTTP connection */
 
   if (!append && http->fields[field])
   {
-    if (http->fields[field] != http->_fields[field])
+    if (field >= HTTP_FIELD_ACCEPT_ENCODING || http->fields[field] != http->_fields[field])
       free(http->fields[field]);
 
     http->fields[field] = NULL;
@@ -3667,7 +3686,7 @@ http_add_field(http_t       *http,	/* I - HTTP connection */
 
     char *mcombined;			/* New value string */
 
-    if (http->fields[field] == http->_fields[field])
+    if (field < HTTP_FIELD_ACCEPT_ENCODING && http->fields[field] == http->_fields[field])
     {
       if ((mcombined = malloc(total + 1)) != NULL)
       {
@@ -3981,7 +4000,7 @@ http_create(
   * Allocate memory for the structure...
   */
 
-  if ((http = calloc(sizeof(http_t), 1)) == NULL)
+  if ((http = calloc(1, sizeof(http_t))) == NULL)
   {
     _cupsSetError(IPP_STATUS_ERROR_INTERNAL, strerror(errno), 0);
     httpAddrFreeList(myaddrlist);
