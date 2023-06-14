@@ -1,7 +1,7 @@
 /*
  * HTTP address list routines for CUPS.
  *
- * Copyright © 2021-2022 by OpenPrinting.
+ * Copyright © 2021-2023 by OpenPrinting.
  * Copyright © 2007-2021 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
@@ -746,10 +746,7 @@ httpAddrGetList(const char *hostname,	/* I - Hostname, IP address, or NULL for p
 	    return (NULL);
 
           first->addr.ipv4.sin_family = AF_INET;
-          first->addr.ipv4.sin_addr.s_addr = htonl((((((((unsigned)ip[0] << 8) |
-	                                               (unsigned)ip[1]) << 8) |
-						     (unsigned)ip[2]) << 8) |
-						   (unsigned)ip[3]));
+          first->addr.ipv4.sin_addr.s_addr = htonl((ip[0] << 24) | (ip[1] << 16) | (ip[2] << 8) | ip[3]);
           first->addr.ipv4.sin_port = htons(portnum);
 	}
       }

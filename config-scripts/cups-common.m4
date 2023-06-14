@@ -1,7 +1,7 @@
 dnl
 dnl Common configuration stuff for CUPS.
 dnl
-dnl Copyright © 2021-2022 by OpenPrinting.
+dnl Copyright © 2021-2023 by OpenPrinting.
 dnl Copyright © 2007-2019 by Apple Inc.
 dnl Copyright © 1997-2007 by Easy Software Products, all rights reserved.
 dnl
@@ -483,7 +483,7 @@ AS_CASE(["$COMPONENTS"], [all], [
     LIBHEADERS="\$(COREHEADERS)"
     LIBHEADERSPRIV="\$(COREHEADERSPRIV)"
 ], [*], [
-    AC_MSG_ERROR([Bad build component "$COMPONENT" specified.])
+    AC_MSG_ERROR([Bad build component "$COMPONENTS" specified.])
 ])
 
 AC_SUBST([BUILDDIRS])

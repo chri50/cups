@@ -3,7 +3,7 @@
  * commands such as IPP and Bonjour conformance tests.  This tool is
  * inspired by the UNIX "find" command, thus its name.
  *
- * Copyright © 2021-2022 by OpenPrinting.
+ * Copyright © 2021-2023 by OpenPrinting.
  * Copyright © 2020 by the IEEE-ISTO Printer Working Group
  * Copyright © 2008-2018 by Apple Inc.
  *
@@ -1376,7 +1376,6 @@ main(int  argc,				/* I - Number of command-line args */
       */
 
       int	active = 0,		/* Number of active resolves */
-		resolved = 0,		/* Number of resolved services */
 		processed = 0;		/* Number of processed services */
 
       for (service = (ippfind_srv_t *)cupsArrayFirst(services);
@@ -1385,9 +1384,6 @@ main(int  argc,				/* I - Number of command-line args */
       {
         if (service->is_processed)
           processed ++;
-
-        if (service->is_resolved)
-          resolved ++;
 
         if (!service->ref && !service->is_resolved)
         {
@@ -1935,7 +1931,7 @@ exec_program(ippfind_srv_t *service,	/* I - Service */
     if (strncmp(environ[i], "IPPFIND_", 8))
       myenvc ++;
 
-  if ((myenvp = calloc(sizeof(char *), (size_t)(myenvc + 1))) == NULL)
+  if ((myenvp = calloc((size_t)(myenvc + 1), sizeof(char *))) == NULL)
   {
     _cupsLangPuts(stderr, _("ippfind: Out of memory."));
     exit(IPPFIND_EXIT_MEMORY);
@@ -1960,7 +1956,7 @@ exec_program(ippfind_srv_t *service,	/* I - Service */
   * Allocate and copy command-line arguments...
   */
 
-  if ((myargv = calloc(sizeof(char *), (size_t)(num_args + 1))) == NULL)
+  if ((myargv = calloc((size_t)(num_args + 1), sizeof(char *))) == NULL)
   {
     _cupsLangPuts(stderr, _("ippfind: Out of memory."));
     exit(IPPFIND_EXIT_MEMORY);
@@ -2167,7 +2163,7 @@ get_service(cups_array_t *services,	/* I - Service array */
   * Yes, add the service...
   */
 
-  if ((service = calloc(sizeof(ippfind_srv_t), 1)) == NULL)
+  if ((service = calloc(1, sizeof(ippfind_srv_t))) == NULL)
     return (NULL);
 
   service->name     = strdup(serviceName);
@@ -2503,9 +2499,12 @@ new_expr(ippfind_op_t op,		/* I - Operation */
       if (!strcmp(args[num_args], ";"))
         break;
 
-     temp->num_args = num_args;
-     temp->args     = malloc((size_t)num_args * sizeof(char *));
-     memcpy(temp->args, args, (size_t)num_args * sizeof(char *));
+    temp->num_args = num_args;
+    temp->args     = malloc((size_t)num_args * sizeof(char *));
+    if (temp->args == NULL)
+      return (NULL);
+
+    memcpy(temp->args, args, (size_t)num_args * sizeof(char *));
   }
 
   return (temp);
