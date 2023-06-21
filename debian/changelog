@@ -1,3 +1,10 @@
+cups (2.4.2-5) unstable; urgency=medium
+
+  * CVE-2023-34241 (Closes: #1038885)
+    use-after-free in cupsdAcceptClient()
+
+ -- Thorsten Alteholz <debian@alteholz.de>  Wed, 21 Jun 2023 22:30:27 +0200
+
 cups (2.4.2-4) unstable; urgency=medium
 
   * CVE-2023-32324
