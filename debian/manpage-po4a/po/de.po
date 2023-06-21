@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cups man pages 2.4.2-1\n"
 "POT-Creation-Date: 2022-05-27 16:10+0200\n"
-"PO-Revision-Date: 2022-05-27 18:26+0200\n"
+"PO-Revision-Date: 2023-06-02 16:35+0200\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
 "Language: de\n"
@@ -1184,7 +1184,7 @@ msgstr "B<ServerName >I<Hostname-oder-IP-Adresse>[I<:Port>]"
 #: client.conf.5:61
 #, no-wrap
 msgid "B<ServerName >I</domain/socket>"
-msgstr "B<ServerName >I</Domäne/Socket>"
+msgstr "B<ServerName >I</Domain/Socket>"
 
 #. type: Plain text
 #: client.conf.5:65
