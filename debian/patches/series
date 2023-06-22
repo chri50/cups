@@ -11,3 +11,4 @@
 0016-Debian-po4a-infrastructure-and-translations-for-manp.patch
 9100-ppd-cache-add-auto-presets.patch
 0012-add-pt.patch
+CVE-2023-34241.patch

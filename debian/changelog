@@ -1,3 +1,12 @@
+cups (2.4.5-0ubuntu2) mantic; urgency=medium
+
+  * SECURITY UPDATE: use-after-free in cupsdAcceptClient()
+    - debian/patches/CVE-2023-34241.patch: log result of httpGetHostname
+      BEFORE closing the connection in scheduler/client.c.
+    - CVE-2023-34241
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Thu, 22 Jun 2023 12:06:19 -0400
+
 cups (2.4.5-0ubuntu1) mantic; urgency=medium
 
   * Update to new upstream version 2.4.5.
