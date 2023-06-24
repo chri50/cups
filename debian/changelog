@@ -1,3 +1,16 @@
+cups (2.4.1op1-1ubuntu4.5) jammy; urgency=medium
+
+  * Fixes to assure color printing on color printers by default or on request
+    (LP: #1971242)
+    - check-colormodel-also-for-cmyk.patch: Take into account that on some
+      printers the ColorModel option's choice for color printing is CMYK and
+      not RGB.
+    - dont-override-color-settings-from-print-dialog.patch: Prioritize
+      the ColorModel PPD file option over the print-color-mode IPP
+      attribute.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Sat, 24 Jun 2023 17:20:00 +0200
+
 cups (2.4.1op1-1ubuntu4.4) jammy-security; urgency=medium
 
   * SECURITY UPDATE: use-after-free in cupsdAcceptClient()
