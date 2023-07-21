@@ -40,10 +40,10 @@ AS_IF([test "x$PKGCONFIG" != x], [
 	AC_DEFINE([HAVE_LIBAPPARMOR], [1], [Have the apparmor library?])
 
 	AC_MSG_CHECKING([for libsnapd-glib])
-	AS_IF([$PKGCONFIG --exists snapd-glib glib-2.0 gio-2.0], [
+	AS_IF([$PKGCONFIG --exists snapd-glib-2 glib-2.0 gio-2.0], [
 	    AC_MSG_RESULT([yes])
-	    CFLAGS="$CFLAGS $($PKGCONFIG --cflags snapd-glib glib-2.0 gio-2.0)"
-	    SNAPDGLIBLIBS="$($PKGCONFIG --libs snapd-glib glib-2.0 gio-2.0)"
+	    CFLAGS="$CFLAGS $($PKGCONFIG --cflags snapd-glib-2 glib-2.0 gio-2.0)"
+	    SNAPDGLIBLIBS="$($PKGCONFIG --libs snapd-glib-2 glib-2.0 gio-2.0)"
 	    AC_DEFINE([HAVE_LIBSNAPDGLIB], [1], [Have the snapd-glib library?])
 	    SAVELIBS="$LIBS"
 	    LIBS="$SNAPDGLIBLIBS $LIBS"
