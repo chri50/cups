@@ -1,5 +1,14 @@
-CHANGES - OpenPrinting CUPS 2.4.5 - 2023-06-13
+CHANGES - OpenPrinting CUPS 2.4.6 - TBA
 ==============================================
+
+Changes in CUPS v2.4.6 - TBA
+----------------------------
+
+- Fix linking error on old MacOS (Issue #715)
+- Fix printing multiple files on specific printers (Issue #643)
+- Fix use-after-free when logging warnings in case of failures
+  in `cupsdAcceptClient()` (fixes CVE-2023-34241)
+
 
 Changes in CUPS v2.4.5 - 2023-06-13
 -----------------------------------
