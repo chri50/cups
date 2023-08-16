@@ -1,3 +1,10 @@
+cups (2.4.6-0ubuntu1) mantic; urgency=medium
+
+  * Update to new upstream version 2.4.6.
+    - Fix printing multiple files on specific printers (Upstream issue #643)
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 16 Aug 2023 21:53:43 +0200
+
 cups (2.4.5-0ubuntu2) mantic; urgency=medium
 
   * SECURITY UPDATE: use-after-free in cupsdAcceptClient()
