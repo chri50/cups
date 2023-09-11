@@ -1,3 +1,12 @@
+cups (2.4.2-3ubuntu2.4) lunar-security; urgency=medium
+
+  * SECURITY UPDATE: recently printed documents authentication issue
+    - debian/patches/CVE-2023-32360.patch: require authentication for
+      CUPS-Get-Document in conf/cupsd.conf.in.
+    - CVE-2023-32360
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Mon, 11 Sep 2023 12:27:52 -0400
+
 cups (2.4.2-3ubuntu2.3) lunar; urgency=medium
 
   * Fixes to assure color printing on color printers by default or on request
