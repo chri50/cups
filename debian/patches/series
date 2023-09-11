@@ -18,3 +18,4 @@ CVE-2023-32324.patch
 CVE-2023-34241.patch
 check-colormodel-also-for-cmyk.patch
 dont-override-color-settings-from-print-dialog.patch
+CVE-2023-32360.patch
