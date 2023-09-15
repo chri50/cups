@@ -1,3 +1,12 @@
+cups (2.4.1op1-1ubuntu4.7) jammy-security; urgency=medium
+
+  * SECURITY UPDATE: Postscript parsing heap overflow
+    - debian/patches/CVE-2023-4504.patch: properly check for end of buffer
+      in cups/raster-interpret.c.
+    - CVE-2023-4504
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 15 Sep 2023 07:19:58 -0400
+
 cups (2.4.1op1-1ubuntu4.6) jammy-security; urgency=medium
 
   * SECURITY UPDATE: recently printed documents authentication issue
