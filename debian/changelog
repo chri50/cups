@@ -1,3 +1,12 @@
+cups (2.3.1-9ubuntu1.6) focal-security; urgency=medium
+
+  * SECURITY UPDATE: Postscript parsing heap overflow
+    - debian/patches/CVE-2023-4504.patch: properly check for end of buffer
+      in cups/raster-interpret.c.
+    - CVE-2023-4504
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 15 Sep 2023 07:20:26 -0400
+
 cups (2.3.1-9ubuntu1.5) focal-security; urgency=medium
 
   * SECURITY UPDATE: recently printed documents authentication issue
