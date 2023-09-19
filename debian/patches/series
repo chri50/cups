@@ -12,3 +12,5 @@
 0012-add-pt.patch
 0013-CVE-2023-32324.patch
 0014-CVE-2023-34241-Log-result-of-httpGetHostname-BEFORE-.patch
+0015-CVE-2023-32360.patch
+0016-CVE-2023-4504.patch
