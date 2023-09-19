@@ -1,3 +1,12 @@
+cups (2.4.2-6) unstable; urgency=medium
+
+  * CVE-2023-4504
+    Postscript parsing heap-based buffer overflow
+  * CVE-2023-32360 (Closes: #1051953)
+    authentication issue
+
+ -- Thorsten Alteholz <debian@alteholz.de>  Tue, 19 Sep 2023 21:20:27 +0200
+
 cups (2.4.2-5) unstable; urgency=medium
 
   * CVE-2023-34241 (Closes: #1038885)
