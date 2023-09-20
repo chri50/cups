@@ -1,3 +1,12 @@
+cups (2.4.6-0ubuntu2) mantic; urgency=medium
+
+  * SECURITY UPDATE: Postscript parsing heap overflow
+    - debian/patches/CVE-2023-4504.patch: properly check for end of buffer
+      in cups/raster-interpret.c.
+    - CVE-2023-4504
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Wed, 20 Sep 2023 12:42:21 -0400
+
 cups (2.4.6-0ubuntu1) mantic; urgency=medium
 
   * Update to new upstream version 2.4.6.
