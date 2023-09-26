@@ -1,3 +1,11 @@
+cups (2.4.6-0ubuntu3) mantic; urgency=medium
+
+  * Let pkg-config data file cups.pc get installed into
+    /usr/lib/<ARCH>/pkgconfig/
+  * Include pkg-config data file cups.pc in libcups2-dev
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Tue, 26 Sep 2023 14:56:43 +0200
+
 cups (2.4.6-0ubuntu2) mantic; urgency=medium
 
   * SECURITY UPDATE: Postscript parsing heap overflow
