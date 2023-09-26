@@ -45,6 +45,7 @@ override_dh_auto_configure:
 	dh_auto_configure -- \
 		$(CUPS_CONFIGURE_DISTRO_OPTIONS) \
 		--with-docdir=/usr/share/cups/doc-root \
+		--with-pkgconfpath=/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig \
 		--localedir=/usr/share/cups/locale \
 		--enable-libpaper \
 		--enable-ssl \
