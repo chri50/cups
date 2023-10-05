@@ -1,3 +1,26 @@
+cups (2.4.2-3+deb12u4) bookworm; urgency=medium
+
+  * remove debian/NEWS again to avoid too much information when only
+    the client part is installed
+  * fix typo in config filename
+
+ -- Thorsten Alteholz <debian@alteholz.de>  Thu, 05 Oct 2023 16:35:27 +0200
+
+cups (2.4.2-3+deb12u3) bookworm; urgency=medium
+
+  * move debian/NEWS.Debian to debian/NEWS
+
+ -- Thorsten Alteholz <debian@alteholz.de>  Fri, 29 Sep 2023 21:20:27 +0200
+
+cups (2.4.2-3+deb12u2) bookworm; urgency=medium
+
+  * CVE-2023-4504
+    Postscript parsing heap-based buffer overflow
+  * CVE-2023-32360 (Closes: #1051953)
+    authentication issue
+
+ -- Thorsten Alteholz <debian@alteholz.de>  Tue, 19 Sep 2023 21:20:27 +0200
+
 cups (2.4.2-3+deb12u1) bookworm; urgency=medium
 
   * CVE-2023-34241 (Closes: #1038885)
