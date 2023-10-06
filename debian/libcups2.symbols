@@ -6,8 +6,8 @@ libcups.so.2 libcups2 #MINVER#
  (optional|regex)"^_http.*@Base$" 2.3~b6
  (optional|regex)"^_ipp.*@Base$" 2.3~b6
  (optional|regex)"^_ppd.*@Base$" 2.3~b6
- (optional=GnuTLS)_httpReadGNUTLS@Base 1.4.4-3~
- (optional=GnuTLS)_httpWriteGNUTLS@Base 1.4.4-3~
+#MISSING: 2.4.7-1#(optional=GnuTLS)_httpReadGNUTLS@Base 1.4.4-3~
+#MISSING: 2.4.7-1#(optional=GnuTLS)_httpWriteGNUTLS@Base 1.4.4-3~
  cupsAddDest@Base 1.4.0
  cupsAddDestMediaOptions@Base 2.3~b1
  cupsAddIntegerOption@Base 2.2.4
@@ -134,6 +134,7 @@ libcups.so.2 libcups2 #MINVER#
  cupsHashData@Base 2.2~b2
  cupsHashString@Base 2.2.7
  cupsGetServerPPD@Base 1.4.0
+ cupsHMACData@Base 2.4.7
  cupsLangDefault@Base 1.4.0
  cupsLangEncoding@Base 1.4.0
  cupsLangFlush@Base 1.4.0

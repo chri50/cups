@@ -1,3 +1,27 @@
+cups (2.4.7-1) unstable; urgency=medium
+
+  * Update to new upstream version 2.4.7.
+    (Closes: #1039983   this should have been fixed in 2.4.3)
+    (Closes: #1041466   this should have been fixed in 2.4.3)
+    (Closes: #1043331   this should have been fixed in 2.4.3)
+    (Closes: #998004    this should have been fixed in 2.4.3)
+    (Closes: #1008053   this should have been fixed in 2.4.3)
+    (Closes: #1009146   this should have been fixed in 2.4.3)
+    (Closes: #1009147   this should have been fixed in 2.4.3)
+  * debian/watch: update watch file (Closes: #1043470)
+                  (thanks a lot to t3b4in+2gxh764v647us@cs.email)
+  * debian/rules: switch on testing again
+  * debian/control: bump standard to 4.6.2 (no changes)
+  * debian/cups-daemon.NEWS: reword last entry (Closes: #1052419)
+                             (thanks to IOhannes m zmoelnig)
+  * debian/local/apparmor-profile: add drop-in for cups-pdf as well
+                                   (Closes: #954974)
+  * Provide a cups.pc file. (Closes: #971625)
+    (thanks a lot to Helmut Grohne for the patch)
+  * update debian/*.lintian-overrides and use new syntax
+
+ -- Thorsten Alteholz <debian@alteholz.de>  Fri, 06 Oct 2023 20:16:49 +0200
+
 cups (2.4.2-6) unstable; urgency=medium
 
   * CVE-2023-4504
@@ -17,7 +41,7 @@ cups (2.4.2-5) unstable; urgency=medium
 cups (2.4.2-4) unstable; urgency=medium
 
   * CVE-2023-32324
-    A heap buffer overflow vulnerability would allow a remote attacker to 
+    A heap buffer overflow vulnerability would allow a remote attacker to
     lauch a dos attack.
 
  -- Thorsten Alteholz <debian@alteholz.de>  Wed, 31 May 2023 21:30:27 +0200

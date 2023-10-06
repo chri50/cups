@@ -1,7 +1,0 @@
-cups (2.4.2-6) unstable; urgency=low
-
-  In case this is not a fresh installation of cups, please double check
-  whether your cupsd.conf really does contain the limitiation for
-  "CUPS-Get-Document" (see patch 0015-CVE-2023-32360.patch)
-
- -- Thorsten Alteholz <debian@alteholz.de>  Tue, 19 Sep 2023 21:20:27 +0200

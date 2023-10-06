@@ -1,7 +1,7 @@
 /*
  * IPP utilities for CUPS.
  *
- * Copyright © 2021-2022 by OpenPrinting.
+ * Copyright © 2021-2023 by OpenPrinting.
  * Copyright © 2007-2018 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products.
  *
@@ -25,9 +25,11 @@
 #ifndef O_BINARY
 #  define O_BINARY 0
 #endif /* O_BINARY */
-#ifndef MSG_DONTWAIT
+#ifdef _AIX
+#  define MSG_DONTWAIT MSG_NONBLOCK
+#elif !defined(MSG_DONTWAIT)
 #  define MSG_DONTWAIT 0
-#endif /* !MSG_DONTWAIT */
+#endif /* _AIX */
 
 
 /*
@@ -179,7 +181,7 @@ cupsDoIORequest(http_t     *http,	/* I - Connection to server or @code CUPS_HTTP
   else
     length = ippLength(request);
 
-  DEBUG_printf(("2cupsDoIORequest: Request length=%ld, total length=%ld", (long)ippLength(request), (long)length));
+  DEBUG_printf(("2cupsDoIORequest: Request length=%lu, total length=%lu", (unsigned long)ippLength(request), (unsigned long)length));
 
  /*
   * Clear any "Local" authentication data since it is probably stale...
@@ -871,7 +873,7 @@ cupsSendRequest(http_t     *http,	/* I - Connection to server or @code CUPS_HTTP
 	  * Don't try using the Expect: header the next time around...
 	  */
 
-	  expect = (http_status_t)0;
+	  expect = HTTP_STATUS_NONE;
 
           DEBUG_puts("2cupsSendRequest: Reconnecting after "
 	             "HTTP_EXPECTATION_FAILED.");

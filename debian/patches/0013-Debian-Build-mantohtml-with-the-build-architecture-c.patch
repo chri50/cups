@@ -30,7 +30,7 @@ index f571fc8..e44c2c0 100644
  CXX		=	@LIBTOOL_CXX@ @CXX@
  DSO		=	@DSO@
 diff --git a/configure.ac b/configure.ac
-index 76793ce..9eaeaa3 100644
+index cf8ba03..df8c4a9 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -25,6 +25,16 @@ sinclude(config-scripts/cups-opsys.m4)
@@ -64,7 +64,7 @@ index 621fe60..e01591a 100644
 +mantohtml:	mantohtml.c
 +	$(CC_FOR_BUILD) -o $@ $<
 diff --git a/man/mantohtml.c b/man/mantohtml.c
-index 0c9c883..6ba901a 100644
+index a46b70e..16ac191 100644
 --- a/man/mantohtml.c
 +++ b/man/mantohtml.c
 @@ -11,8 +11,10 @@

@@ -518,7 +518,7 @@ _cupsStrScand(const char   *buf,	/* I - Pointer to number */
 
   *tempptr = '\0';
 
-  return (strtod(temp, NULL));
+  return (atof(temp));
 }
 
 
@@ -729,6 +729,9 @@ _cups_strlcpy(char       *dst,		/* O - Destination string */
 	      size_t      size)		/* I - Size of destination string buffer */
 {
   size_t	srclen;			/* Length of source string */
+
+  if (size == 0)
+    return (0);
 
   if (size == 0)
     return (0);
