@@ -1,7 +1,7 @@
 /*
  * HTTP address list routines for CUPS.
  *
- * Copyright © 2021-2022 by OpenPrinting.
+ * Copyright © 2021-2023 by OpenPrinting.
  * Copyright © 2007-2021 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
@@ -318,6 +318,23 @@ httpAddrConnect2(
       {
 #  ifdef HAVE_POLL
 	DEBUG_printf(("pfds[%d].revents=%x\n", i, pfds[i].revents));
+#    ifdef __sun
+	// Solaris connect runs asynchronously returning EINPROGRESS. Following
+	// poll() does not detect the socket is not connected and returns
+	// POLLIN|POLLOUT. Check the connection status and update error flag.
+	int            sres, serr;
+	socklen_t      slen = sizeof(serr);
+	sres = getsockopt(fds[i], SOL_SOCKET, SO_ERROR, &serr, &slen);
+	if (sres || serr)
+	{
+	  pfds[i].revents |= POLLERR;
+#      ifdef DEBUG
+	  DEBUG_printf(("1httpAddrConnect2: getsockopt returned: %d with error: %s", sres, strerror(serr)));
+#      endif
+	}
+#    endif // __sun
+
+
 	if (pfds[i].revents && !(pfds[i].revents & (POLLERR | POLLHUP)))
 #  else
 	if (FD_ISSET(fds[i], &input_set) && !FD_ISSET(fds[i], &error_set))
@@ -340,18 +357,6 @@ httpAddrConnect2(
 	else if (FD_ISSET(fds[i], &error_set))
 #  endif /* HAVE_POLL */
         {
-#  ifdef __sun
-          // Solaris incorrectly returns errors when you poll() a socket that is
-          // still connecting.  This check prevents us from removing the socket
-          // from the pool if the "error" is EINPROGRESS...
-          int		sockerr;	// Current error on socket
-          socklen_t	socklen = sizeof(sockerr);
-					// Size of error variable
-
-          if (!getsockopt(fds[i], SOL_SOCKET, SO_ERROR, &sockerr, &socklen) && (!sockerr || sockerr == EINPROGRESS))
-            continue;			// Not an error
-#  endif // __sun
-
          /*
           * Error on socket, remove from the "pool"...
           */
@@ -746,10 +751,7 @@ httpAddrGetList(const char *hostname,	/* I - Hostname, IP address, or NULL for p
 	    return (NULL);
 
           first->addr.ipv4.sin_family = AF_INET;
-          first->addr.ipv4.sin_addr.s_addr = htonl((((((((unsigned)ip[0] << 8) |
-	                                               (unsigned)ip[1]) << 8) |
-						     (unsigned)ip[2]) << 8) |
-						   (unsigned)ip[3]));
+          first->addr.ipv4.sin_addr.s_addr = htonl((ip[0] << 24) | (ip[1] << 16) | (ip[2] << 8) | ip[3]);
           first->addr.ipv4.sin_port = htons(portnum);
 	}
       }

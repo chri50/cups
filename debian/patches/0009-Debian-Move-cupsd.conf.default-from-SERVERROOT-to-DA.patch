@@ -12,7 +12,7 @@ Bug-Debian: https://bugs.debian.org/640124
  2 files changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/cgi-bin/admin.c b/cgi-bin/admin.c
-index 37f93b5..ac9cc42 100644
+index 863e885..f81fd71 100644
 --- a/cgi-bin/admin.c
 +++ b/cgi-bin/admin.c
 @@ -1635,6 +1635,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */

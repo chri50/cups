@@ -1,7 +1,7 @@
 /*
  * PPD cache implementation for CUPS.
  *
- * Copyright © 2021-2022 by OpenPrinting.
+ * Copyright © 2021-2023 by OpenPrinting.
  * Copyright © 2010-2021 by Apple Inc.
  *
  * Licensed under Apache License v2.0.  See the file "LICENSE" for more
@@ -31,6 +31,7 @@
 
 static int	cups_connect(http_t **http, const char *url, char *resource, size_t ressize);
 static int	cups_get_url(http_t **http, const char *url, char *name, size_t namesize);
+static const char *ppd_inputslot_for_keyword(_ppd_cache_t *pc, const char *keyword);
 static void	pwg_add_finishing(cups_array_t *finishings, ipp_finishings_t template, const char *name, const char *value);
 static void	pwg_add_message(cups_array_t *a, const char *msg, const char *str);
 static int	pwg_compare_finishings(_pwg_finishings_t *a, _pwg_finishings_t *b);
@@ -259,15 +260,46 @@ _cupsConvertOptions(
 
   color_attr_name = print_color_mode_sup ? "print-color-mode" : "output-mode";
 
-  if ((keyword = cupsGetOption("print-color-mode", num_options, options)) == NULL)
+ /*
+  * If we use PPD with standardized PPD option for color support - ColorModel,
+  * prefer it to don't break color/grayscale support for PPDs, either classic
+  * or the ones generated from IPP Get-Printer-Attributes response.
+  */
+
+  if ((keyword = cupsGetOption("ColorModel", num_options, options)) == NULL)
   {
+   /*
+    * No ColorModel in options...
+    */
+
     if ((choice = ppdFindMarkedChoice(ppd, "ColorModel")) != NULL)
     {
-      if (!_cups_strcasecmp(choice->choice, "Gray"))
-	keyword = "monochrome";
+     /*
+      * ColorModel is taken from PPD as its default option.
+      */
+
+      if (!strcmp(choice->choice, "Gray") || !strcmp(choice->choice, "FastGray") || !strcmp(choice->choice, "DeviceGray"))
+        keyword = "monochrome";
       else
-	keyword = "color";
+        keyword = "color";
     }
+    else
+     /*
+      * print-color-mode is a default option since 2.4.1, use it as a fallback if there is no
+      * ColorModel in options or PPD...
+      */
+      keyword = cupsGetOption("print-color-mode", num_options, options);
+  }
+  else
+  {
+   /*
+    * ColorModel found in options...
+    */
+
+    if (!strcmp(keyword, "Gray") || !strcmp(keyword, "FastGray") || !strcmp(keyword, "DeviceGray"))
+      keyword = "monochrome";
+    else
+      keyword = "color";
   }
 
   if (keyword && !strcmp(keyword, "monochrome"))
@@ -1332,6 +1364,33 @@ _ppdCacheCreateWithPPD(ppd_file_t *ppd)	/* I - PPD file */
 
   if ((media_type = ppdFindOption(ppd, "MediaType")) != NULL)
   {
+    static const struct
+    {
+      const char *ppd_name;		/* PPD MediaType name or prefix to match */
+      int        match_length;		/* Length of prefix, or -1 to match entire string */
+      const char *pwg_name;		/* Registered PWG media-type name to use */
+    } standard_types[] = {
+      {"Auto", 4, "auto"},
+      {"Any", -1, "auto"},
+      {"Default", -1, "auto"},
+      {"Card", 4, "cardstock"},
+      {"Env", 3, "envelope"},
+      {"Gloss", 5, "photographic-glossy"},
+      {"HighGloss", -1, "photographic-high-gloss"},
+      {"Matte", -1, "photographic-matte"},
+      {"Plain", 5, "stationery"},
+      {"Coated", 6, "stationery-coated"},
+      {"Inkjet", -1, "stationery-inkjet"},
+      {"Letterhead", -1, "stationery-letterhead"},
+      {"Preprint", 8, "stationery-preprinted"},
+      {"Recycled", -1, "stationery-recycled"},
+      {"Transparen", 10, "transparency"},
+    };
+    const size_t num_standard_types = sizeof(standard_types) / sizeof(standard_types[0]);
+					/* Length of the standard_types array */
+    int match_counts[sizeof(standard_types) / sizeof(standard_types[0])] = {0};
+					/* Number of matches for each standard type */
+
     if ((pc->types = calloc((size_t)media_type->num_choices, sizeof(pwg_map_t))) == NULL)
     {
       DEBUG_printf(("_ppdCacheCreateWithPPD: Unable to allocate %d "
@@ -1346,35 +1405,26 @@ _ppdCacheCreateWithPPD(ppd_file_t *ppd)	/* I - PPD file */
 	 i > 0;
 	 i --, choice ++, map ++)
     {
-      if (!_cups_strncasecmp(choice->choice, "Auto", 4) ||
-          !_cups_strcasecmp(choice->choice, "Any") ||
-          !_cups_strcasecmp(choice->choice, "Default"))
-        pwg_name = "auto";
-      else if (!_cups_strncasecmp(choice->choice, "Card", 4))
-        pwg_name = "cardstock";
-      else if (!_cups_strncasecmp(choice->choice, "Env", 3))
-        pwg_name = "envelope";
-      else if (!_cups_strncasecmp(choice->choice, "Gloss", 5))
-        pwg_name = "photographic-glossy";
-      else if (!_cups_strcasecmp(choice->choice, "HighGloss"))
-        pwg_name = "photographic-high-gloss";
-      else if (!_cups_strcasecmp(choice->choice, "Matte"))
-        pwg_name = "photographic-matte";
-      else if (!_cups_strncasecmp(choice->choice, "Plain", 5))
-        pwg_name = "stationery";
-      else if (!_cups_strncasecmp(choice->choice, "Coated", 6))
-        pwg_name = "stationery-coated";
-      else if (!_cups_strcasecmp(choice->choice, "Inkjet"))
-        pwg_name = "stationery-inkjet";
-      else if (!_cups_strcasecmp(choice->choice, "Letterhead"))
-        pwg_name = "stationery-letterhead";
-      else if (!_cups_strncasecmp(choice->choice, "Preprint", 8))
-        pwg_name = "stationery-preprinted";
-      else if (!_cups_strcasecmp(choice->choice, "Recycled"))
-        pwg_name = "stationery-recycled";
-      else if (!_cups_strncasecmp(choice->choice, "Transparen", 10))
-        pwg_name = "transparency";
-      else
+      pwg_name = NULL;
+
+      for (j = 0; j < num_standard_types; j ++)
+      {
+        if (standard_types[j].match_length <= 0)
+        {
+          if (!_cups_strcasecmp(choice->choice, standard_types[j].ppd_name))
+          {
+            pwg_name = standard_types[j].pwg_name;
+            match_counts[j] ++;
+          }
+        }
+        else if (!_cups_strncasecmp(choice->choice, standard_types[j].ppd_name, standard_types[j].match_length))
+        {
+          pwg_name = standard_types[j].pwg_name;
+          match_counts[j] ++;
+        }
+      }
+
+      if (!pwg_name)
       {
        /*
         * Convert PPD name to lowercase...
@@ -1387,12 +1437,40 @@ _ppdCacheCreateWithPPD(ppd_file_t *ppd)	/* I - PPD file */
 
       map->pwg = strdup(pwg_name);
       map->ppd = strdup(choice->choice);
+    }
+
+   /*
+    * Since three PPD name patterns can map to "auto", their match counts
+    * should each be the count of all three combined.
+    */
+
+    i = match_counts[0] + match_counts[1] + match_counts[2];
+    match_counts[0] = match_counts[1] = match_counts[2] = i;
+
+    for (i = 0, choice = media_type->choices, map = pc->types;
+      i < media_type->num_choices;
+      i ++, choice ++, map ++)
+    {
+     /*
+      * If there are two matches for any standard PWG media type, don't give
+      * the PWG name to either one.
+      */
+
+      for (j = 0; j < num_standard_types; j ++)
+      {
+        if (match_counts[j] > 1 && !strcmp(map->pwg, standard_types[j].pwg_name))
+        {
+          free(map->pwg);
+          pwg_unppdize_name(choice->choice, pwg_keyword, sizeof(pwg_keyword), "_");
+          map->pwg = strdup(pwg_keyword);
+        }
+      }
 
      /*
       * Add localized text for PWG keyword to message catalog...
       */
 
-      snprintf(msg_id, sizeof(msg_id), "media-type.%s", pwg_name);
+      snprintf(msg_id, sizeof(msg_id), "media-type.%s", map->pwg);
       pwg_add_message(pc->strings, msg_id, choice->text);
     }
   }
@@ -1604,7 +1682,7 @@ _ppdCacheCreateWithPPD(ppd_file_t *ppd)	/* I - PPD file */
 
 	  num_options = pc->num_presets[_PWG_PRINT_COLOR_MODE_COLOR]
 					[pwg_print_quality];
-	  options     = calloc(sizeof(cups_option_t), (size_t)num_options);
+	  options     = calloc((size_t)num_options, sizeof(cups_option_t));
 
 	  if (options)
 	  {
@@ -2250,6 +2328,28 @@ _ppdCacheGetFinishingValues(
 
 
 /*
+ * 'ppd_inputslot_for_keyword()' - Return the PPD InputSlot associated
+ *                                a keyword string, or NULL if no mapping
+ *                                exists.
+ */
+static const char *			/* O - PPD InputSlot or NULL */
+ppd_inputslot_for_keyword(
+    _ppd_cache_t *pc,			/* I - PPD cache and mapping data */
+    const char   *keyword)		/* I - Keyword string */
+{
+  int	i;				/* Looping var */
+
+  if (!pc || !keyword)
+    return (NULL);
+
+  for (i = 0; i < pc->num_sources; i ++)
+    if (!_cups_strcasecmp(keyword, pc->sources[i].pwg))
+      return (pc->sources[i].ppd);
+
+  return (NULL);
+}
+
+/*
  * '_ppdCacheGetInputSlot()' - Get the PPD InputSlot associated with the job
  *                        attributes or a keyword string.
  */
@@ -2293,24 +2393,21 @@ _ppdCacheGetInputSlot(
     else if (pwgInitSize(&size, job, &margins_set))
     {
      /*
-      * For media <= 5x7, look for a photo tray...
+      * For media <= 5x7, try to ask for automatic selection so the printer can
+      * pick the photo tray.  If auto isn't available, fall back to explicitly
+      * asking for the photo tray.
       */
 
-      if (size.width <= (5 * 2540) && size.length <= (7 * 2540))
+      if (size.width <= (5 * 2540) && size.length <= (7 * 2540)) {
+        const char* match;
+        if ((match = ppd_inputslot_for_keyword(pc, "auto")) != NULL)
+          return (match);
         keyword = "photo";
+      }
     }
   }
 
-  if (keyword)
-  {
-    int	i;				/* Looping var */
-
-    for (i = 0; i < pc->num_sources; i ++)
-      if (!_cups_strcasecmp(keyword, pc->sources[i].pwg))
-        return (pc->sources[i].ppd);
-  }
-
-  return (NULL);
+  return (ppd_inputslot_for_keyword(pc, keyword));
 }
 
 
@@ -3238,20 +3335,20 @@ _ppdCreateFromIPP2(
 	{
 	  keyword = ippGetString(lang_supp, i, NULL);
 
-          request = ippNew();
-          ippSetOperation(request, IPP_OP_GET_PRINTER_ATTRIBUTES);
-          ippSetRequestId(request, i + 1);
-          ippAddString(request, IPP_TAG_OPERATION, IPP_CONST_TAG(IPP_TAG_CHARSET), "attributes-charset", NULL, "utf-8");
-          ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_LANGUAGE, "attributes-natural-language", NULL, keyword);
-          ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri", NULL, printer_uri);
-          ippAddString(request, IPP_TAG_OPERATION, IPP_CONST_TAG(IPP_TAG_KEYWORD), "requested-attributes", NULL, "printer-strings-uri");
+	  request = ippNew();
+	  ippSetOperation(request, IPP_OP_GET_PRINTER_ATTRIBUTES);
+	  ippSetRequestId(request, i + 1);
+	  ippAddString(request, IPP_TAG_OPERATION, IPP_CONST_TAG(IPP_TAG_CHARSET), "attributes-charset", NULL, "utf-8");
+	  ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_LANGUAGE, "attributes-natural-language", NULL, keyword);
+	  ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri", NULL, printer_uri);
+	  ippAddString(request, IPP_TAG_OPERATION, IPP_CONST_TAG(IPP_TAG_KEYWORD), "requested-attributes", NULL, "printer-strings-uri");
 
-          response = cupsDoRequest(http, request, resource);
+	  response = cupsDoRequest(http, request, resource);
 
-          if ((attr = ippFindAttribute(response, "printer-strings-uri", IPP_TAG_URI)) != NULL)
-          {
+	  if ((attr = ippFindAttribute(response, "printer-strings-uri", IPP_TAG_URI)) != NULL)
 	    cupsFilePrintf(fp, "*cupsStringsURI %s: \"%s\"\n", keyword, ippGetString(attr, 0, NULL));
-          }
+
+	  ippDelete(response);
 	}
       }
     }
@@ -4078,7 +4175,8 @@ _ppdCreateFromIPP2(
     int wrote_color = 0;
     const char *default_color = NULL;	/* Default */
 
-    if ((keyword = ippGetString(defattr, 0, NULL)) != NULL)
+    if ((keyword = ippGetString(defattr, 0, NULL)) != NULL &&
+	strcmp(keyword, "auto"))
     {
       if (!strcmp(keyword, "bi-level"))
         default_color = "FastGray";
@@ -4129,7 +4227,7 @@ _ppdCreateFromIPP2(
 
 	PRINTF_COLOROPTION("Gray16", _("Deep Gray"), CUPS_CSPACE_SW, 16)
       }
-      else if (!strcasecmp(keyword, "srgb_8") || !strncmp(keyword, "SRGB24", 7) || !strcmp(keyword, "color"))
+      else if (!strcasecmp(keyword, "srgb_8") || !strncmp(keyword, "SRGB24", 6) || !strcmp(keyword, "color"))
       {
 	PRINTF_COLORMODEL
 
@@ -4958,10 +5056,22 @@ _ppdCreateFromIPP2(
   }
 
  /*
+  * Add cupsSingleFile to support multiple files printing on printers
+  * which don't support multiple files in its firmware...
+  *
+  * Adding the keyword degrades printing performance (there is 1-2 seconds
+  * pause between files).
+  */
+
+  cupsFilePuts(fp, "*cupsSingleFile: true\n");
+
+ /*
   * Close up and return...
   */
 
   cupsFileClose(fp);
+
+  _cupsMessageFree(strings);
 
   return (buffer);
 
@@ -4974,6 +5084,8 @@ _ppdCreateFromIPP2(
   cupsFileClose(fp);
   unlink(buffer);
   *buffer = '\0';
+
+  _cupsMessageFree(strings);
 
   _cupsSetError(IPP_STATUS_ERROR_INTERNAL, _("Printer does not support required IPP attributes or document formats."), 1);
 

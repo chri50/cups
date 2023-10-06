@@ -56,7 +56,7 @@ main(int  argc,				/* I - Number of command-line args */
   const char		*val;		/* Option value */
 
 
-  if (argc < 6 || argc > 7)
+  if (argc != 6 && argc != 7)
   {
     puts("Usage: rastertopwg job user title copies options [filename]");
     return (1);
@@ -152,6 +152,23 @@ main(int  argc,				/* I - Number of command-line args */
       return (1);
     }
 
+    if (inheader.cupsColorOrder != CUPS_ORDER_CHUNKED)
+    {
+      _cupsLangPrintFilter(stderr, "ERROR", _("Unsupported raster data."));
+      fprintf(stderr, "DEBUG: Unsupported cupsColorOrder %d on page %d.\n",
+              inheader.cupsColorOrder, page);
+      return (1);
+    }
+
+    if (inheader.cupsBitsPerPixel != 1 &&
+        inheader.cupsBitsPerColor != 8 && inheader.cupsBitsPerColor != 16)
+    {
+      _cupsLangPrintFilter(stderr, "ERROR", _("Unsupported raster data."));
+      fprintf(stderr, "DEBUG: Unsupported cupsBitsPerColor %d on page %d.\n",
+              inheader.cupsBitsPerColor, page);
+      return (1);
+    }
+
     switch (inheader.cupsColorSpace)
     {
       case CUPS_CSPACE_W :
@@ -187,23 +204,6 @@ main(int  argc,				/* I - Number of command-line args */
 	  fprintf(stderr, "DEBUG: Unsupported cupsColorSpace %d on page %d.\n",
 	          inheader.cupsColorSpace, page);
 	  return (1);
-    }
-
-    if (inheader.cupsColorOrder != CUPS_ORDER_CHUNKED)
-    {
-      _cupsLangPrintFilter(stderr, "ERROR", _("Unsupported raster data."));
-      fprintf(stderr, "DEBUG: Unsupported cupsColorOrder %d on page %d.\n",
-              inheader.cupsColorOrder, page);
-      return (1);
-    }
-
-    if (inheader.cupsBitsPerPixel != 1 &&
-        inheader.cupsBitsPerColor != 8 && inheader.cupsBitsPerColor != 16)
-    {
-      _cupsLangPrintFilter(stderr, "ERROR", _("Unsupported raster data."));
-      fprintf(stderr, "DEBUG: Unsupported cupsBitsPerColor %d on page %d.\n",
-              inheader.cupsBitsPerColor, page);
-      return (1);
     }
 
     memcpy(&outheader, &inheader, sizeof(outheader));
