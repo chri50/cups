@@ -683,9 +683,15 @@ size_t					/* O - Bytes available */
 _httpTLSPending(http_t *http)		/* I - HTTP connection */
 {
   if (http->tls)
-    return (http->tls->readBufferUsed);
+  {
+    DEBUG_printf(("4_httpTLSPending: Returning %d.", http->tls->readBufferUsed + http->tls->decryptBufferUsed));
+    return (http->tls->readBufferUsed + http->tls->decryptBufferUsed);
+  }
   else
+  {
+    DEBUG_puts("4_httpTLSPending: Returning 0.");
     return (0);
+  }
 }
 
 
@@ -752,13 +758,13 @@ _httpTLSRead(http_t *http,		/* I - HTTP connection */
       if (sspi->decryptBufferLength >= 262144)
       {
 	WSASetLastError(E_OUTOFMEMORY);
-        DEBUG_puts("_httpTLSRead: Decryption buffer too large (>256k)");
+        DEBUG_puts("5_httpTLSRead: Decryption buffer too large (>256k)");
 	return (-1);
       }
 
       if ((temp = realloc(sspi->decryptBuffer, sspi->decryptBufferLength + 4096)) == NULL)
       {
-	DEBUG_printf(("_httpTLSRead: Unable to allocate %d byte decryption buffer.", sspi->decryptBufferLength + 4096));
+	DEBUG_printf(("5_httpTLSRead: Unable to allocate %d byte decryption buffer.", sspi->decryptBufferLength + 4096));
 	WSASetLastError(E_OUTOFMEMORY);
 	return (-1);
       }
@@ -766,7 +772,7 @@ _httpTLSRead(http_t *http,		/* I - HTTP connection */
       sspi->decryptBufferLength += 4096;
       sspi->decryptBuffer       = temp;
 
-      DEBUG_printf(("_httpTLSRead: Resized decryption buffer to %d bytes.", sspi->decryptBufferLength));
+      DEBUG_printf(("5_httpTLSRead: Resized decryption buffer to %d bytes.", sspi->decryptBufferLength));
     }
 
     buffers[0].pvBuffer	  = sspi->decryptBuffer;
@@ -857,7 +863,7 @@ _httpTLSRead(http_t *http,		/* I - HTTP connection */
 
         if ((temp = realloc(sspi->readBuffer, sspi->readBufferUsed + bytesToSave)) == NULL)
 	{
-	  DEBUG_printf(("_httpTLSRead: Unable to allocate %d bytes.", sspi->readBufferUsed + bytesToSave));
+	  DEBUG_printf(("5_httpTLSRead: Unable to allocate %d bytes.", sspi->readBufferUsed + bytesToSave));
 	  WSASetLastError(E_OUTOFMEMORY);
 	  return (-1);
 	}
@@ -875,7 +881,7 @@ _httpTLSRead(http_t *http,		/* I - HTTP connection */
   }
   else
   {
-    DEBUG_puts("_httpTLSRead: Unable to find data buffer.");
+    DEBUG_puts("5_httpTLSRead: Unable to find data buffer.");
     WSASetLastError(WSASYSCALLFAILURE);
     return (-1);
   }
@@ -1002,6 +1008,8 @@ _httpTLSStart(http_t *http)		/* I - HTTP connection */
       }
     }
 
+//    fprintf(stderr, "_httpTLSStart: Using hostname '%s'.\n", hostname);
+
     return (http_sspi_server(http, hostname));
   }
 }
@@ -1084,7 +1092,7 @@ _httpTLSStop(http_t *http)		/* I - HTTP connection */
           if ((cbData == SOCKET_ERROR) || (cbData == 0))
           {
             status = WSAGetLastError();
-            DEBUG_printf(("_httpTLSStop: sending close notify failed: %d", status));
+            DEBUG_printf(("4_httpTLSStop: sending close notify failed: %d", status));
           }
           else
           {
@@ -1094,12 +1102,12 @@ _httpTLSStop(http_t *http)		/* I - HTTP connection */
       }
       else
       {
-        DEBUG_printf(("_httpTLSStop: AcceptSecurityContext failed: %s", http_sspi_strerror(sspi->error, sizeof(sspi->error), status)));
+        DEBUG_printf(("4_httpTLSStop: AcceptSecurityContext failed: %s", http_sspi_strerror(sspi->error, sizeof(sspi->error), status)));
       }
     }
     else
     {
-      DEBUG_printf(("_httpTLSStop: ApplyControlToken failed: %s", http_sspi_strerror(sspi->error, sizeof(sspi->error), status)));
+      DEBUG_printf(("4_httpTLSStop: ApplyControlToken failed: %s", http_sspi_strerror(sspi->error, sizeof(sspi->error), status)));
     }
   }
 
@@ -1135,7 +1143,7 @@ _httpTLSWrite(http_t     *http,		/* I - HTTP connection */
 
     if ((temp = (BYTE *)realloc(sspi->writeBuffer, bufferLen)) == NULL)
     {
-      DEBUG_printf(("_httpTLSWrite: Unable to allocate buffer of %d bytes.", bufferLen));
+      DEBUG_printf(("5_httpTLSWrite: Unable to allocate buffer of %d bytes.", bufferLen));
       WSASetLastError(E_OUTOFMEMORY);
       return (-1);
     }
@@ -1186,7 +1194,7 @@ _httpTLSWrite(http_t     *http,		/* I - HTTP connection */
 
     if (FAILED(scRet))
     {
-      DEBUG_printf(("_httpTLSWrite: EncryptMessage failed: %s", http_sspi_strerror(sspi->error, sizeof(sspi->error), scRet)));
+      DEBUG_printf(("5_httpTLSWrite: EncryptMessage failed: %s", http_sspi_strerror(sspi->error, sizeof(sspi->error), scRet)));
       WSASetLastError(WSASYSCALLFAILURE);
       return (-1);
     }
@@ -1201,7 +1209,7 @@ _httpTLSWrite(http_t     *http,		/* I - HTTP connection */
 
     if (num <= 0)
     {
-      DEBUG_printf(("_httpTLSWrite: send failed: %ld", WSAGetLastError()));
+      DEBUG_printf(("5_httpTLSWrite: send failed: %ld", WSAGetLastError()));
       return (num);
     }
 
@@ -1321,7 +1329,6 @@ http_sspi_client(http_t     *http,	/* I - Client connection */
                  const char *hostname)	/* I - Server hostname */
 {
   _http_sspi_t	*sspi = http->tls;	/* SSPI data */
-  DWORD		dwSize;			/* Size for buffer */
   DWORD		dwSSPIFlags;		/* SSL connection attributes we want */
   DWORD		dwSSPIOutFlags;		/* SSL connection attributes we got */
   TimeStamp	tsExpiry;		/* Time stamp */
@@ -1652,7 +1659,7 @@ http_sspi_create_credential(
     http_credential_t *cred)		/* I - Credential */
 {
   if (cred)
-    return (CertCreateCertificateContext(X509_ASN_ENCODING, cred->data, cred->datalen));
+    return (CertCreateCertificateContext(X509_ASN_ENCODING, cred->data, (DWORD)cred->datalen));
   else
     return (NULL);
 }
@@ -1695,7 +1702,7 @@ http_sspi_find_credentials(
     }
   }
 
-  store = CertOpenStore(CERT_STORE_PROV_SYSTEM, X509_ASN_ENCODING|PKCS_7_ASN_ENCODING, hProv, CERT_SYSTEM_STORE_LOCAL_MACHINE | CERT_STORE_NO_CRYPT_RELEASE_FLAG | CERT_STORE_OPEN_EXISTING_FLAG, L"MY");
+  store = CertOpenStore(CERT_STORE_PROV_SYSTEM, X509_ASN_ENCODING|PKCS_7_ASN_ENCODING, hProv, CERT_SYSTEM_STORE_CURRENT_USER | CERT_STORE_NO_CRYPT_RELEASE_FLAG | CERT_STORE_OPEN_EXISTING_FLAG, L"MY");
 
   if (!store)
   {
@@ -1907,17 +1914,19 @@ http_sspi_make_credentials(
       if (!CryptAcquireContextW(&hProv, (LPWSTR)container, MS_DEF_PROV_W, PROV_RSA_FULL, CRYPT_MACHINE_KEYSET))
       {
         DEBUG_printf(("5http_sspi_make_credentials: CryptAcquireContext failed: %s", http_sspi_strerror(sspi->error, sizeof(sspi->error), GetLastError())));
+//        fprintf(stderr, "5http_sspi_make_credentials: CryptAcquireContext failed: %s\n", http_sspi_strerror(sspi->error, sizeof(sspi->error), GetLastError()));
         ok = FALSE;
         goto cleanup;
       }
     }
   }
 
-  store = CertOpenStore(CERT_STORE_PROV_SYSTEM, X509_ASN_ENCODING|PKCS_7_ASN_ENCODING, hProv, CERT_SYSTEM_STORE_LOCAL_MACHINE | CERT_STORE_NO_CRYPT_RELEASE_FLAG | CERT_STORE_OPEN_EXISTING_FLAG, L"MY");
+  store = CertOpenStore(CERT_STORE_PROV_SYSTEM, X509_ASN_ENCODING|PKCS_7_ASN_ENCODING, hProv, CERT_SYSTEM_STORE_CURRENT_USER | CERT_STORE_NO_CRYPT_RELEASE_FLAG | CERT_STORE_OPEN_EXISTING_FLAG, L"MY");
 
   if (!store)
   {
     DEBUG_printf(("5http_sspi_make_credentials: CertOpenSystemStore failed: %s", http_sspi_strerror(sspi->error, sizeof(sspi->error), GetLastError())));
+//    fprintf(stderr, "5http_sspi_make_credentials: CertOpenSystemStore failed: %s\n", http_sspi_strerror(sspi->error, sizeof(sspi->error), GetLastError()));
     ok = FALSE;
     goto cleanup;
   }
@@ -1927,6 +1936,7 @@ http_sspi_make_credentials(
   if (!CertStrToNameA(X509_ASN_ENCODING, common_name, CERT_OID_NAME_STR, NULL, NULL, &dwSize, NULL))
   {
     DEBUG_printf(("5http_sspi_make_credentials: CertStrToName failed: %s", http_sspi_strerror(sspi->error, sizeof(sspi->error), GetLastError())));
+//    fprintf(stderr, "5http_sspi_make_credentials: CertStrToName failed: %s\n", http_sspi_strerror(sspi->error, sizeof(sspi->error), GetLastError()));
     ok = FALSE;
     goto cleanup;
   }
@@ -1936,6 +1946,7 @@ http_sspi_make_credentials(
   if (!p)
   {
     DEBUG_printf(("5http_sspi_make_credentials: malloc failed for %d bytes", dwSize));
+//    fprintf(stderr, "5http_sspi_make_credentials: malloc failed for %d bytes\n", dwSize);
     ok = FALSE;
     goto cleanup;
   }
@@ -1943,17 +1954,22 @@ http_sspi_make_credentials(
   if (!CertStrToNameA(X509_ASN_ENCODING, common_name, CERT_OID_NAME_STR, NULL, p, &dwSize, NULL))
   {
     DEBUG_printf(("5http_sspi_make_credentials: CertStrToName failed: %s", http_sspi_strerror(sspi->error, sizeof(sspi->error), GetLastError())));
+//    fprintf(stderr, "5http_sspi_make_credentials: CertStrToName failed: %s\n", http_sspi_strerror(sspi->error, sizeof(sspi->error), GetLastError()));
     ok = FALSE;
     goto cleanup;
   }
+
+  sib.cbData = dwSize;
+  sib.pbData = p;
 
  /*
   * Create a private key and self-signed certificate...
   */
 
-  if (!CryptGenKey(hProv, AT_KEYEXCHANGE, CRYPT_EXPORTABLE, &hKey))
+  if (!CryptGenKey(hProv, AT_KEYEXCHANGE, CRYPT_EXPORTABLE | RSA1024BIT_KEY, &hKey))
   {
     DEBUG_printf(("5http_sspi_make_credentials: CryptGenKey failed: %s", http_sspi_strerror(sspi->error, sizeof(sspi->error), GetLastError())));
+//    fprintf(stderr, "5http_sspi_make_credentials: CryptGenKey failed: %s\n", http_sspi_strerror(sspi->error, sizeof(sspi->error), GetLastError()));
     ok = FALSE;
     goto cleanup;
   }
@@ -1977,6 +1993,7 @@ http_sspi_make_credentials(
   if (!createdContext)
   {
     DEBUG_printf(("5http_sspi_make_credentials: CertCreateSelfSignCertificate failed: %s", http_sspi_strerror(sspi->error, sizeof(sspi->error), GetLastError())));
+//    fprintf(stderr, "5http_sspi_make_credentials: CertCreateSelfSignCertificate failed: %s\n", http_sspi_strerror(sspi->error, sizeof(sspi->error), GetLastError()));
     ok = FALSE;
     goto cleanup;
   }
@@ -1989,6 +2006,7 @@ http_sspi_make_credentials(
   if (!CertAddCertificateContextToStore(store, createdContext, CERT_STORE_ADD_REPLACE_EXISTING, &storedContext))
   {
     DEBUG_printf(("5http_sspi_make_credentials: CertAddCertificateContextToStore failed: %s", http_sspi_strerror(sspi->error, sizeof(sspi->error), GetLastError())));
+//    fprintf(stderr, "5http_sspi_make_credentials: CertAddCertificateContextToStore failed: %s\n", http_sspi_strerror(sspi->error, sizeof(sspi->error), GetLastError()));
     ok = FALSE;
     goto cleanup;
   }
@@ -2003,6 +2021,7 @@ http_sspi_make_credentials(
   if (!CertSetCertificateContextProperty(storedContext, CERT_KEY_PROV_INFO_PROP_ID, 0, &ckp))
   {
     DEBUG_printf(("5http_sspi_make_credentials: CertSetCertificateContextProperty failed: %s", http_sspi_strerror(sspi->error, sizeof(sspi->error), GetLastError())));
+//    fprintf(stderr, "5http_sspi_make_credentials: CertSetCertificateContextProperty failed: %s\n", http_sspi_strerror(sspi->error, sizeof(sspi->error), GetLastError()));
     ok = FALSE;
     goto cleanup;
   }
@@ -2025,6 +2044,7 @@ http_sspi_make_credentials(
   if (Status != SEC_E_OK)
   {
     DEBUG_printf(("5http_sspi_make_credentials: AcquireCredentialsHandle failed: %s", http_sspi_strerror(sspi->error, sizeof(sspi->error), Status)));
+//    fprintf(stderr, "5http_sspi_make_credentials: AcquireCredentialsHandle failed: %s\n", http_sspi_strerror(sspi->error, sizeof(sspi->error), Status));
     ok = FALSE;
     goto cleanup;
   }
@@ -2065,7 +2085,7 @@ static int				/* O - 0 on success, -1 on failure */
 http_sspi_server(http_t     *http,	/* I - HTTP connection */
                  const char *hostname)	/* I - Hostname of server */
 {
-  _http_sspi_t	*sspi = http->tls;	/* I - SSPI data */
+  _http_sspi_t	*sspi = http->tls;	/* SSPI data */
   char		common_name[512];	/* Common name for cert */
   DWORD		dwSSPIFlags;		/* SSL connection attributes we want */
   DWORD		dwSSPIOutFlags;		/* SSL connection attributes we got */
@@ -2100,6 +2120,9 @@ http_sspi_server(http_t     *http,	/* I - HTTP connection */
   if (!http_sspi_find_credentials(http, L"ServerContainer", common_name))
     if (!http_sspi_make_credentials(http->tls, L"ServerContainer", common_name, _HTTP_MODE_SERVER, 10))
     {
+//      char temp[8192];
+
+//      fprintf(stderr, "Unable to create credentials for '%s': %s\n", common_name, http_sspi_strerror(temp, sizeof(temp), GetLastError()));
       DEBUG_puts("5http_sspi_server: Unable to get server credentials.");
       return (-1);
     }
@@ -2291,7 +2314,7 @@ http_sspi_strerror(char   *buffer,	/* I - Error message buffer */
                    size_t bufsize,	/* I - Size of buffer */
                    DWORD  code)		/* I - Error code */
 {
-  if (FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM, NULL, code, 0, buffer, bufsize, NULL))
+  if (FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM, NULL, code, 0, buffer, (DWORD)bufsize, NULL))
   {
    /*
     * Strip trailing CR + LF...
@@ -2379,7 +2402,7 @@ http_sspi_verify(
   {
     status = GetLastError();
 
-    DEBUG_printf(("CertGetCertificateChain returned: %s", http_sspi_strerror(error, sizeof(error), status)));
+    DEBUG_printf(("5http_sspi_verify: CertGetCertificateChain returned: %s", http_sspi_strerror(error, sizeof(error), status)));
 
     LocalFree(commonNameUnicode);
     return (status);
@@ -2406,7 +2429,7 @@ http_sspi_verify(
   {
     status = GetLastError();
 
-    DEBUG_printf(("CertVerifyCertificateChainPolicy returned %s", http_sspi_strerror(error, sizeof(error), status)));
+    DEBUG_printf(("5http_sspi_verify: CertVerifyCertificateChainPolicy returned %s", http_sspi_strerror(error, sizeof(error), status)));
   }
   else if (policyStatus.dwError)
     status = policyStatus.dwError;
