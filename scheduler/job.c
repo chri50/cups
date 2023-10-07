@@ -1,7 +1,7 @@
 /*
  * Job management routines for the CUPS scheduler.
  *
- * Copyright © 2022 by OpenPrinting.
+ * Copyright © 2022-2023 by OpenPrinting.
  * Copyright © 2007-2019 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
@@ -148,7 +148,7 @@ cupsdAddJob(int        priority,	/* I - Job priority */
   cupsd_job_t	*job;			/* New job record */
 
 
-  if ((job = calloc(sizeof(cupsd_job_t), 1)) == NULL)
+  if ((job = calloc(1, sizeof(cupsd_job_t))) == NULL)
     return (NULL);
 
   job->id              = NextJobId ++;
@@ -585,6 +585,8 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
     if (stat(filename, &fileinfo))
       fileinfo.st_size = 0;
 
+    _cupsRWLockWrite(&MimeDatabase->lock);
+
     if (job->retry_as_raster)
     {
      /*
@@ -619,6 +621,9 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
       abort_state   = IPP_JOB_ABORTED;
 
       ippSetString(job->attrs, &job->reasons, 0, "document-unprintable-error");
+
+      _cupsRWUnlock(&MimeDatabase->lock);
+
       goto abort_job;
     }
 
@@ -705,6 +710,8 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
       cupsArrayDelete(filters);
       filters = prefilters;
     }
+
+    _cupsRWUnlock(&MimeDatabase->lock);
   }
 
  /*
@@ -1194,12 +1201,12 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
       filterfds[slot][1] = job->print_pipes[1];
     }
 
-    pid = cupsdStartProcess(command, argv, envp, filterfds[!slot][0],
+    pid = cupsdStartProcess(command, argv, envp, filterfds[slot ^ 1][0],
                             filterfds[slot][1], job->status_pipes[1],
 		            job->back_pipes[0], job->side_pipes[0], 0,
 			    job->profile, job, job->filters + i);
 
-    cupsdClosePipe(filterfds[!slot]);
+    cupsdClosePipe(filterfds[slot ^ 1]);
 
     if (pid == 0)
     {
@@ -1221,7 +1228,7 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
       argv[6] = NULL;
     }
 
-    slot = !slot;
+    slot ^= 1;
   }
 
   cupsArrayDelete(filters);
@@ -1255,14 +1262,14 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
       filterfds[slot][0] = -1;
       filterfds[slot][1] = -1;
 
-      pid = cupsdStartProcess(command, argv, envp, filterfds[!slot][0],
+      pid = cupsdStartProcess(command, argv, envp, filterfds[slot ^ 1][0],
 			      filterfds[slot][1], job->status_pipes[1],
 			      job->back_pipes[1], job->side_pipes[1],
 			      backroot, job->bprofile, job, &(job->backend));
 
       if (pid == 0)
       {
-	abort_message = "Stopping job because the sheduler could not execute "
+	abort_message = "Stopping job because the scheduler could not execute "
 			"the backend.";
 
         goto abort_job;
@@ -1331,8 +1338,8 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
   FilterLevel -= job->cost;
   job->cost = 0;
 
-  for (slot = 0; slot < 2; slot ++)
-    cupsdClosePipe(filterfds[slot]);
+  cupsdClosePipe(filterfds[0]);
+  cupsdClosePipe(filterfds[1]);
 
   cupsArrayDelete(filters);
 
@@ -1916,6 +1923,8 @@ cupsdLoadJob(cupsd_job_t *job)		/* I - Job */
     * Find all the d##### files...
     */
 
+    _cupsRWLockRead(&MimeDatabase->lock);
+
     for (fileid = 1; fileid < 10000; fileid ++)
     {
       snprintf(jobfile, sizeof(jobfile), "%s/d%05d-%03d", RequestRoot,
@@ -1980,6 +1989,8 @@ cupsdLoadJob(cupsd_job_t *job)		/* I - Job */
         job->filetypes[fileid - 1] = mimeType(MimeDatabase, "application",
 	                                      "vnd.cups-raw");
     }
+
+    _cupsRWUnlock(&MimeDatabase->lock);
   }
 
  /*
@@ -3088,9 +3099,11 @@ finalize_job(cupsd_job_t *job,		/* I - Job */
   ipp_jstate_t		job_state;	/* New job state value */
   const char		*message;	/* Message for job state */
   char			buffer[1024];	/* Buffer for formatted messages */
+  char			scheme[255];	/* Device URI scheme */
 
 
   cupsdLogMessage(CUPSD_LOG_DEBUG2, "finalize_job(job=%p(%d))", job, job->id);
+  sscanf(job->printer->device_uri, "%254[^:]", scheme);
 
  /*
   * Clear the "connecting-to-device" and "cups-waiting-for-job-completed"
@@ -3222,7 +3235,8 @@ finalize_job(cupsd_job_t *job,		/* I - Job */
       exit_code = job->status;
     }
 
-    cupsdLogJob(job, CUPSD_LOG_WARN, "Backend returned status %d (%s)",
+    cupsdLogJob(job, CUPSD_LOG_WARN, "Backend %s returned status %d (%s)",
+		scheme,
 		exit_code,
 		exit_code == CUPS_BACKEND_FAILED ? "failed" :
 		    exit_code == CUPS_BACKEND_AUTH_REQUIRED ?
@@ -3862,6 +3876,23 @@ get_options(cupsd_job_t *job,		/* I - Job */
   }
 
  /*
+  * Map destination-uris value...
+  */
+
+  if ((job->printer->type & CUPS_PRINTER_FAX) && (attr = ippFindAttribute(job->attrs, "destination-uris", IPP_TAG_BEGIN_COLLECTION)) != NULL)
+  {
+    ipp_t *ipp = ippGetCollection(attr, 0);	// Collection value
+    const char *destination_uri = ippGetString(ippFindAttribute(ipp, "destination-uri", IPP_TAG_URI), 0, NULL);
+    const char *pre_dial_string = ippGetString(ippFindAttribute(ipp, "pre-dial-string", IPP_TAG_TEXT), 0, NULL);
+
+    if (destination_uri && !strncmp(destination_uri, "tel:", 4))
+      num_pwgppds = cupsAddOption("phone", destination_uri + 4, num_pwgppds, &pwgppds);
+
+    if (pre_dial_string)
+      num_pwgppds = cupsAddOption("faxPrefix", pre_dial_string, num_pwgppds, &pwgppds);
+  }
+
+ /*
   * Figure out how much room we need...
   */
 
@@ -3873,9 +3904,6 @@ get_options(cupsd_job_t *job,		/* I - Job */
  /*
   * Then allocate/reallocate the option buffer as needed...
   */
-
-  if (newlength == 0)			/* This can never happen, but Clang */
-    newlength = 1;			/* thinks it can... */
 
   if (newlength > optlength || !options)
   {
@@ -4484,6 +4512,8 @@ load_job_cache(const char *filename)	/* I - job.cache filename */
 
       number --;
 
+      _cupsRWLockRead(&MimeDatabase->lock);
+
       job->compressions[number] = compression;
       job->filetypes[number]    = mimeType(MimeDatabase, super, type);
 
@@ -4510,6 +4540,8 @@ load_job_cache(const char *filename)	/* I - job.cache filename */
 	  job->filetypes[number] = mimeType(MimeDatabase, "application",
 	                                    "vnd.cups-raw");
       }
+
+      _cupsRWUnlock(&MimeDatabase->lock);
     }
     else
       cupsdLogMessage(CUPSD_LOG_ERROR, "Unknown %s directive on line %d of %s.", line, linenum, filename);
@@ -4616,7 +4648,7 @@ load_request_root(void)
       * Allocate memory for the job...
       */
 
-      if ((job = calloc(sizeof(cupsd_job_t), 1)) == NULL)
+      if ((job = calloc(1, sizeof(cupsd_job_t))) == NULL)
       {
         cupsdLogMessage(CUPSD_LOG_ERROR, "Ran out of memory for jobs.");
 	cupsDirClose(dir);

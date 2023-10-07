@@ -1,7 +1,7 @@
 /*
  * Client routines for the CUPS scheduler.
  *
- * Copyright © 2021-2022 by OpenPrinting.
+ * Copyright © 2021-2023 by OpenPrinting.
  * Copyright © 2007-2021 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
@@ -1052,7 +1052,11 @@ cupsdReadClient(cupsd_client_t *con)	/* I - Client to read from */
 
             if ((filename = get_file(con, &filestats, buf, sizeof(buf))) != NULL)
             {
+	      _cupsRWLockRead(&MimeDatabase->lock);
+
 	      type = mimeFileType(MimeDatabase, filename, NULL, NULL);
+
+	      _cupsRWUnlock(&MimeDatabase->lock);
 
               cupsdLogClient(con, CUPSD_LOG_DEBUG, "filename=\"%s\", type=%s/%s", filename, type ? type->super : "", type ? type->type : "");
 

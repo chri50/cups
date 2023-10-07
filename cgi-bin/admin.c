@@ -1,7 +1,7 @@
 /*
  * Administration CGI for CUPS.
  *
- * Copyright © 2021-2022 by OpenPrinting
+ * Copyright © 2021-2023 by OpenPrinting
  * Copyright © 2007-2021 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products.
  *
@@ -119,7 +119,7 @@ main(void)
 					/* Printer or class name */
 		*server_port = getenv("SERVER_PORT");
 					/* Port number string */
-      int	port = atoi(server_port ? server_port : "0");
+      int	port = server_port ? atoi(server_port) : 0;
       					/* Port number */
       char	uri[1024];		/* URL */
 
@@ -867,7 +867,7 @@ do_am_printer(http_t *http,		/* I - HTTP connection */
     else
       maxrate = 19200;
 
-    for (i = 0; i < 10; i ++)
+    for (i = 0; i < (int)(sizeof(baudrates)/sizeof(baudrates[0])); i ++)
       if (baudrates[i] > maxrate)
         break;
       else
@@ -3510,8 +3510,8 @@ get_option_value(
     uval = cgiGetVariable("PageSize.Units");
 
     if (!val || !lval || !uval ||
-        (width = strtod(val, NULL)) == 0.0 ||
-        (length = strtod(lval, NULL)) == 0.0 ||
+        (width = atof(val)) == 0.0 ||
+        (length = atof(lval)) == 0.0 ||
         (strcmp(uval, "pt") && strcmp(uval, "in") && strcmp(uval, "ft") &&
 	 strcmp(uval, "cm") && strcmp(uval, "mm") && strcmp(uval, "m")))
       return (NULL);
@@ -3543,7 +3543,7 @@ get_option_value(
       case PPD_CUSTOM_CURVE :
       case PPD_CUSTOM_INVCURVE :
       case PPD_CUSTOM_REAL :
-	  if ((number = strtod(val, NULL)) == 0.0 ||
+	  if ((number = atof(val)) == 0.0 ||
 	      number < cparam->minimum.custom_real ||
 	      number > cparam->maximum.custom_real)
 	    return (NULL);
@@ -3564,7 +3564,7 @@ get_option_value(
       case PPD_CUSTOM_POINTS :
           snprintf(keyword, sizeof(keyword), "%s.Units", coption->keyword);
 
-	  if ((number = strtod(val, NULL)) == 0.0 ||
+	  if ((number = atof(val)) == 0.0 ||
 	      (uval = cgiGetVariable(keyword)) == NULL ||
 	      (strcmp(uval, "pt") && strcmp(uval, "in") && strcmp(uval, "ft") &&
 	       strcmp(uval, "cm") && strcmp(uval, "mm") && strcmp(uval, "m")))
@@ -3624,7 +3624,7 @@ get_option_value(
 	case PPD_CUSTOM_CURVE :
 	case PPD_CUSTOM_INVCURVE :
 	case PPD_CUSTOM_REAL :
-	    if ((number = strtod(val, NULL)) == 0.0 ||
+	    if ((number = atof(val)) == 0.0 ||
 		number < cparam->minimum.custom_real ||
 		number > cparam->maximum.custom_real)
 	      return (NULL);
@@ -3645,7 +3645,7 @@ get_option_value(
 	case PPD_CUSTOM_POINTS :
 	    snprintf(keyword, sizeof(keyword), "%s.Units", coption->keyword);
 
-	    if ((number = strtod(val, NULL)) == 0.0 ||
+	    if ((number = atof(val)) == 0.0 ||
 		(uval = cgiGetVariable(keyword)) == NULL ||
 		(strcmp(uval, "pt") && strcmp(uval, "in") &&
 		 strcmp(uval, "ft") && strcmp(uval, "cm") &&
@@ -3706,7 +3706,8 @@ get_option_value(
     if (bufptr == buffer || (bufend - bufptr) < 2)
       return (NULL);
 
-    memcpy(bufptr, "}", 2);
+    bufptr[0] = '}';
+    bufptr[1] = '\0';
   }
 
   return (buffer);

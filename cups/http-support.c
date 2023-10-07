@@ -1,7 +1,7 @@
 /*
  * HTTP support routines for CUPS.
  *
- * Copyright © 2020-2022 by OpenPrinting
+ * Copyright © 2020-2023 by OpenPrinting
  * Copyright © 2007-2019 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
@@ -729,7 +729,7 @@ httpEncode64_2(char       *out,		/* I - String to write to */
       if (inlen > 1)
         *outptr ++ = base64[(((in[0] & 255) << 4) | ((in[1] & 255) >> 4)) & 63];
       else
-        *outptr ++ = base64[((in[0] & 255) << 4) & 63];
+        *outptr ++ = base64[(in[0] << 4) & 63];
     }
 
     in ++;
@@ -748,7 +748,7 @@ httpEncode64_2(char       *out,		/* I - String to write to */
       if (inlen > 1)
         *outptr ++ = base64[(((in[0] & 255) << 2) | ((in[1] & 255) >> 6)) & 63];
       else
-        *outptr ++ = base64[((in[0] & 255) << 2) & 63];
+        *outptr ++ = base64[(in[0] << 2) & 63];
     }
 
     in ++;

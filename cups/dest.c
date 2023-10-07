@@ -1,7 +1,7 @@
 /*
  * User-defined destination (and option) support for CUPS.
  *
- * Copyright © 2021-2022 by OpenPrinting.
+ * Copyright © 2021-2023 by OpenPrinting.
  * Copyright © 2007-2019 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products.
  *
@@ -293,7 +293,7 @@ cupsAddDest(const char  *name,		/* I  - Destination name */
       * Copy options from parent...
       */
 
-      dest->options = calloc(sizeof(cups_option_t), (size_t)parent->num_options);
+      dest->options = calloc((size_t)parent->num_options, sizeof(cups_option_t));
 
       if (dest->options)
       {
@@ -849,7 +849,7 @@ cupsCopyDest(cups_dest_t *dest,         /* I  - Destination to copy */
   {
     new_dest->is_default = dest->is_default;
 
-    if ((new_dest->options = calloc(sizeof(cups_option_t), (size_t)dest->num_options)) == NULL)
+    if ((new_dest->options = calloc((size_t)dest->num_options, sizeof(cups_option_t))) == NULL)
       return (cupsRemoveDest(dest->name, dest->instance, num_dests, dests));
 
     new_dest->num_options = dest->num_options;
@@ -1836,56 +1836,52 @@ cupsGetNamedDest(http_t     *http,	/* I - Connection to server or @code CUPS_HTT
 
   if (!_cupsGetDests(http, op, dest_name, &dest, 0, 0))
   {
-    if (name)
-    {
-      _cups_namedata_t  data;           /* Callback data */
+    _cups_namedata_t  data;           /* Callback data */
 
+    data.name = dest_name;
+    data.dest = NULL;
+
+    if (data.name)
+    {
       DEBUG_puts("1cupsGetNamedDest: No queue found for printer, looking on network...");
 
-      data.name = name;
-      data.dest = NULL;
-
       cupsEnumDests(0, 1000, NULL, 0, 0, (cups_dest_cb_t)cups_name_cb, &data);
-
-      if (!data.dest)
-      {
-        _cupsSetError(IPP_STATUS_ERROR_NOT_FOUND, _("The printer or class does not exist."), 1);
-        return (NULL);
-      }
-
-      dest = data.dest;
     }
-    else
+
+    if (!data.dest)
     {
       switch (set_as_default)
       {
-        default :
-            break;
+	default :
+	    _cupsSetError(IPP_STATUS_ERROR_NOT_FOUND, _("The printer or class does not exist."), 1);
+	    break;
 
-        case 1 : /* Set from env vars */
-            if (getenv("LPDEST"))
-              _cupsSetError(IPP_STATUS_ERROR_NOT_FOUND, _("LPDEST environment variable names default destination that does not exist."), 1);
+	case 1 : /* Set from env vars */
+	    if (getenv("LPDEST"))
+	      _cupsSetError(IPP_STATUS_ERROR_NOT_FOUND, _("LPDEST environment variable names default destination that does not exist."), 1);
 	    else if (getenv("PRINTER"))
-              _cupsSetError(IPP_STATUS_ERROR_NOT_FOUND, _("PRINTER environment variable names default destination that does not exist."), 1);
+	      _cupsSetError(IPP_STATUS_ERROR_NOT_FOUND, _("PRINTER environment variable names default destination that does not exist."), 1);
 	    else
-              _cupsSetError(IPP_STATUS_ERROR_NOT_FOUND, _("No default destination."), 1);
-            break;
+	      _cupsSetError(IPP_STATUS_ERROR_NOT_FOUND, _("No default destination."), 1);
+	    break;
 
-        case 2 : /* Set from ~/.cups/lpoptions */
+	case 2 : /* Set from ~/.cups/lpoptions */
 	    _cupsSetError(IPP_STATUS_ERROR_NOT_FOUND, _("~/.cups/lpoptions file names default destination that does not exist."), 1);
-            break;
+	    break;
 
-        case 3 : /* Set from /etc/cups/lpoptions */
+	case 3 : /* Set from /etc/cups/lpoptions */
 	    _cupsSetError(IPP_STATUS_ERROR_NOT_FOUND, _("/etc/cups/lpoptions file names default destination that does not exist."), 1);
-            break;
+	    break;
 
-        case 4 : /* Set from server */
+	case 4 : /* Set from server */
 	    _cupsSetError(IPP_STATUS_ERROR_NOT_FOUND, _("No default destination."), 1);
-            break;
+	    break;
       }
 
       return (NULL);
     }
+
+    dest = data.dest;
   }
 
   DEBUG_printf(("1cupsGetNamedDest: Got dest=%p", (void *)dest));
@@ -2080,7 +2076,11 @@ cupsSetDests2(http_t      *http,	/* I - Connection to server or @code CUPS_HTTP_
 
   snprintf(filename, sizeof(filename), "%s/lpoptions", cg->cups_serverroot);
 
-  if (cg->home)
+  if (cg->home
+#ifndef _WIN32
+      && getuid() != 0
+#endif /* !_WIN32 */
+      )
   {
    /*
     * Create ~/.cups subdirectory...
@@ -2831,7 +2831,7 @@ cups_dnssd_get_device(
                   !strcmp(regtype, "_ipps._tcp") ? "IPPS" : "IPP",
                   replyDomain));
 
-    if ((device = calloc(sizeof(_cups_dnssd_device_t), 1)) == NULL)
+    if ((device = calloc(1, sizeof(_cups_dnssd_device_t))) == NULL)
       return (NULL);
 
     device->dest.name = _cupsStrAlloc(name);
@@ -3999,7 +3999,7 @@ cups_find_dest(const char  *name,	/* I - Destination name */
     else
     {
      /*
-      * Start wih previous on left side...
+      * Start with previous on left side...
       */
 
       left  = prev;

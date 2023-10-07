@@ -61,7 +61,7 @@ static int	abort_job = 0;		/* Non-zero if we get SIGTERM */
  * What to reserve...
  */
 
-#define RESERVE_NONE		0	/* Don't reserve a priviledged port */
+#define RESERVE_NONE		0	/* Don't reserve a privileged port */
 #define RESERVE_RFC1179		1	/* Reserve port 721-731 */
 #define RESERVE_ANY		2	/* Reserve port 1-1023 */
 
@@ -101,8 +101,7 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
 		*options,		/* Pointer to options */
 		*name,			/* Name of option */
 		*value,			/* Value of option */
-		sep,			/* Separator character */
-		*filename,		/* File to print */
+		sep,            /* Separator character */
 		title[256];		/* Title string */
   int		port;			/* Port number */
   http_addrlist_t *addrlist;		/* List of addresses for printer */
@@ -114,7 +113,7 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
   int		banner;			/* Print banner page? */
   int		format;			/* Print format */
   int		order;			/* Order of control/data files */
-  int		reserve;		/* Reserve priviledged port? */
+  int		reserve;		/* Reserve privileged port? */
   int		sanitize_title;		/* Sanitize title string? */
   int		manual_copies,		/* Do manual copies? */
 		timeout,		/* Timeout */
@@ -166,7 +165,7 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
            _cupsLangString(cupsLangDefault(), _("LPD/LPR Host or Printer")));
     return (CUPS_BACKEND_OK);
   }
-  else if (argc < 6 || argc > 7)
+  else if (argc != 6 && argc != 7)
   {
     _cupsLangPrintf(stderr,
                     _("Usage: %s job-id user title copies options [file]"),
@@ -460,13 +459,11 @@ main(int  argc,				/* I - Number of command-line arguments (6 or 7) */
     * Stream from stdin...
     */
 
-    filename = NULL;
     fd       = 0;
   }
   else
   {
-    filename = argv[6];
-    fd       = open(filename, O_RDONLY);
+    fd       = open(argv[6], O_RDONLY);
 
     if (fd == -1)
     {
@@ -768,7 +765,7 @@ lpd_queue(const char      *hostname,	/* I - Host to connect to */
         return (CUPS_BACKEND_FAILED);
 
      /*
-      * Choose the next priviledged port...
+      * Choose the next privileged port...
       */
 
       if (!addr)
@@ -805,7 +802,7 @@ lpd_queue(const char      *hostname,	/* I - Host to connect to */
       {
        /*
 	* We're running as root and want to comply with RFC 1179.  Reserve a
-	* priviledged lport between 721 and 731...
+	* privileged lport between 721 and 731...
 	*/
 
 	if ((fd = cups_rresvport(&lport, addr->addr.addr.sa_family)) < 0)
@@ -1046,7 +1043,7 @@ lpd_queue(const char      *hostname,	/* I - Host to connect to */
       * Send the control file...
       */
 
-      if (lpd_command(fd, "\002%d cfA%03d%.15s\n", (int)strlen(control),
+      if (lpd_command(fd, "\002%u cfA%03d%.15s\n", (unsigned)strlen(control),
                       (int)getpid() % 1000, localhost))
       {
 	close(fd);
@@ -1179,7 +1176,7 @@ lpd_queue(const char      *hostname,	/* I - Host to connect to */
       * Send control file...
       */
 
-      if (lpd_command(fd, "\002%d cfA%03d%.15s\n", (int)strlen(control),
+      if (lpd_command(fd, "\002%u cfA%03d%.15s\n", (unsigned)strlen(control),
                       (int)getpid() % 1000, localhost))
       {
 	close(fd);
@@ -1187,8 +1184,8 @@ lpd_queue(const char      *hostname,	/* I - Host to connect to */
         return (CUPS_BACKEND_FAILED);
       }
 
-      fprintf(stderr, "DEBUG: Sending control file (%lu bytes)\n",
-	      (unsigned long)strlen(control));
+      fprintf(stderr, "DEBUG: Sending control file (%u bytes)\n",
+	      (unsigned)strlen(control));
 
       if ((size_t)lpd_write(fd, control, strlen(control) + 1) < (strlen(control) + 1))
       {
