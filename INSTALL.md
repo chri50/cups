@@ -1,5 +1,5 @@
-Building and Installing OpenPrinting CUPS v2.4.1
-================================================
+Building and Installing OpenPrinting CUPS
+=========================================
 
 This file describes how to compile and install CUPS from source code.  For more
 information on CUPS see the file called `README.md`.
@@ -22,10 +22,10 @@ BSD users should use GNU make (`gmake`) since BSD make is not POSIX-compliant
 and does not support the `include` directive.
 
 Besides these tools you'll want ZLIB for compression support, Avahi for mDNS
-support, LIBUSB for USB printing support, the GNU TLS library for encryption
-support on platforms other than iOS, macOS, or Windows, and PAM for
-authentication support.  CUPS will compile and run without these, however you'll
-miss out on many of the features provided by CUPS.
+support, LIBUSB for USB printing support, the GNU TLS, LibreSSL, or OpenSSL
+libraries for encryption support on platforms other than iOS, macOS, or Windows,
+and PAM for authentication support.  CUPS will compile and run without these,
+however you'll miss out on many of the features provided by CUPS.
 
 > Note: Kerberos support is deprecated starting with CUPS 2.4.0 and will be
 > removed in a future version of CUPS.  To build CUPS with Kerberos support,

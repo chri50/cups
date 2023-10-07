@@ -1,5 +1,41 @@
-CHANGES - OpenPrinting CUPS 2.4.1 - 2022-01-27
+CHANGES - OpenPrinting CUPS 2.4.2 - 2022-05-26
 ==============================================
+
+Changes in CUPS v2.4.2 (26th May 2022)
+--------------------------------------
+
+- Fixed certificate strings comparison for Local authorization (CVE-2022-26691)
+- The `cupsFileOpen` function no longer opens files for append in read-write
+  mode (Issue #291)
+- The cupsd daemon removed processing temporary queue (Issue #364)
+- Fixed delay in IPP backend if GNUTLS is used and endpoint doesn't confirm
+  closing the connection (Issue #365)
+- Fixed conditional jump based on uninitialized value in cups/ppd.c (Issue #329)
+- Fixed CSS related issues in CUPS Web UI (Issue #344)
+- Fixed copyright in CUPS Web UI trailer template (Issue #346)
+- mDNS hostname in device uri is not resolved when installaling a permanent
+  IPP Everywhere queue (Issues #340, #343)
+- The `lpstat` command now reports when the scheduler is not running
+  (Issue #352)
+- Updated the man pages concerning the `-h` option (Issue #357)
+- Re-added LibreSSL/OpenSSL support (Issue #362)
+- Updated the Solaris smf service file (Issue #368)
+- Fixed a regression in lpoptions option support (Issue #370)
+- The scheduler now regenerates the PPD cache information after changing the
+  "cupsd.conf" file (Issue #371)
+- Updated the scheduler to set "auth-info-required" to "username,password" if a
+  backend reports it needs authentication info but doesn't set a method for
+  authentication (Issue #373)
+- Updated the configure script to look for the OpenSSL library the old way if
+  pkg-config is not available (Issue #375)
+- Fixed the prototype for the `httpWriteResponse` function (Issue #380)
+- Brought back minimal AIX support (Issue #389)
+- `cupsGetResponse` did not always set the last error.
+- Fixed a number of old references to the Apple CUPS web page.
+- Restored the default/generic printer icon file for the web interface.
+- Removed old stylesheet classes that are no longer used by the web
+  interface.
+
 
 Changes in CUPS v2.4.1 (27th January 2020)
 ------------------------------------------
