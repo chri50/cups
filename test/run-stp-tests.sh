@@ -3,6 +3,7 @@
 # Perform the complete set of IPP compliance tests specified in the
 # CUPS Software Test Plan.
 #
+# Copyright © 2020 by Michael R Sweet
 # Copyright © 2007-2019 by Apple Inc.
 # Copyright © 1997-2007 by Easy Software Products, all rights reserved.
 #
@@ -844,6 +845,7 @@ else
 	echo "PASS"
 	echo "    PASSED" >>$strfile
 
+	sleep 5
 	./waitjobs.sh >>$strfile
 
         echo $ac_n "Verifying that history still exists: $ac_c"
@@ -851,7 +853,8 @@ else
 	echo "    ls -l $BASE/spool" >>$strfile
 	count=`ls -1 $BASE/spool | wc -l`
 	if test $count = 1; then
-		echo "FAIL"
+		echo "FAIL (job control files not present)"
+		ls -l $BASE/spool
 		echo "    FAILED (job control files not present)" >>$strfile
 		ls -l $BASE/spool >>$strfile
 		fail=`expr $fail + 1`
@@ -870,7 +873,8 @@ else
 		echo "    ls -l $BASE/spool" >>$strfile
 		count=`ls -1 $BASE/spool | wc -l`
 		if test $count != 1; then
-			echo "FAIL"
+			echo "FAIL (job control files still present)"
+			ls -l $BASE/spool
 			echo "    FAILED (job control files still present)" >>$strfile
 			ls -l $BASE/spool >>$strfile
 			fail=`expr $fail + 1`
