@@ -1,3 +1,15 @@
+cups (2.4.2-3+deb12u5) bookworm; urgency=medium
+
+  * 0017-check-colormodel-also-for-CMYK.patch
+    Take into account that on some printers the ColorModel option's
+    choice for color printing is CMYK and not RGB.
+  * 0018-dont-override-color-settings-from-print-dialoag.patch
+    Prioritize the ColorModel PPD file option over the print-color-mode
+    IPP attribute. (Closes: #1056581)
+    (Thanks a lot to Till Kamppeter for the patches)
+
+ -- Thorsten Alteholz <debian@alteholz.de>  Fri, 01 Dec 2023 20:35:27 +0100
+
 cups (2.4.2-3+deb12u4) bookworm; urgency=medium
 
   * remove debian/NEWS again to avoid too much information when only
