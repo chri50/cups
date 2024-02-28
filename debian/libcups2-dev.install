@@ -17,3 +17,4 @@ usr/include/cups/transcode.h
 usr/include/cups/versioning.h
 usr/lib/*/libcups.a
 usr/lib/*/libcups.so
+usr/lib/*/pkgconfig/cups.pc
