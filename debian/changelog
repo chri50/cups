@@ -1,3 +1,9 @@
+cups (2.4.7-1ubuntu2) noble; urgency=medium
+
+  * No-change rebuild against libgnutls30t64
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Sun, 10 Mar 2024 02:03:25 +0000
+
 cups (2.4.7-1ubuntu1) noble; urgency=low
 
   * Merge from Debian unstable. Remaining changes:
