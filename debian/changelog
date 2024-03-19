@@ -1,9 +1,65 @@
+cups (2.4.7-1.2ubuntu1) noble; urgency=low
+
+  * Merge from Debian unstable. Remaining changes:
+    - Added "--enable-snapped-clients" to the "./configure" options to use
+      the correct Snap mediation mode for an unsnapped cupsd, like provided
+      by this package.
+    - In the AppArmor profile allow CUPS to access (/var)/run/snapd.socket
+      to allow cupsd to determine which interfaces a snapped client
+      is plugging.
+    - Build-depend on libapparmor-dev, libsnapd-glib-dev, needed for
+      Snap mediation.
+    - Added fully automatic generation of PPD option setting presets to
+      be applied depending on the settings of the job IPP attributes
+      "print-color-mode", "print-quality", and "print-content-optimize".
+      This allows easy control of any printer with only standard IPP
+      attributes, as for example from a phone (functionality overtaken
+      from cups-filters, mot (yet) upstream in CUPS).
+    - In debian/rules updated ./configure arguments from --enable-gnutls to
+      --with-tls=gnutls. Now libcups has support for all hash types again,
+      especially can provide sha2-256 to PAPPL.
+    - In libcupsimage2 recommend libcupsfilters2 instead of libcupsfilters1.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Tue, 19 Mar 2024 10:46:19 +0100
+
 cups (2.4.7-1.2) unstable; urgency=medium
 
   * Non-maintainer upload.
   * Rename libraries for 64-bit time_t transition.
 
  -- Michael Hudson-Doyle <mwhudson@debian.org>  Wed, 28 Feb 2024 23:20:02 +0000
+
+cups (2.4.7-1ubuntu2) noble; urgency=medium
+
+  * No-change rebuild against libgnutls30t64
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Sun, 10 Mar 2024 02:03:25 +0000
+
+cups (2.4.7-1ubuntu1) noble; urgency=low
+
+  * Merge from Debian unstable. Remaining changes:
+    - Added "--enable-snapped-clients" to the "./configure" options to use
+      the correct Snap mediation mode for an unsnapped cupsd, like provided
+      by this package.
+    - In the AppArmor profile allow CUPS to access (/var)/run/snapd.socket
+      to allow cupsd to determine which interfaces a snapped client
+      is plugging.
+    - Build-depend on libapparmor-dev, libsnapd-glib-dev, needed for
+      Snap mediation.
+    - Added fully automatic generation of PPD option setting presets to
+      be applied depending on the settings of the job IPP attributes
+      "print-color-mode", "print-quality", and "print-content-optimize".
+      This allows easy control of any printer with only standard IPP
+      attributes, as for example from a phone (functionality overtaken
+      from cups-filters, mot (yet) upstream in CUPS).
+    - In debian/rules updated ./configure arguments from --enable-gnutls to
+      --with-tls=gnutls. Now libcups has support for all hash types again,
+      especially can provide sha2-256 to PAPPL.
+    - In libcupsimage2 recommend libcupsfilters2 instead of libcupsfilters1.
+  * Removed patches included upstream:
+    - CVE-2023-4504.patch
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 28 Feb 2024 20:07:19 +0100
 
 cups (2.4.7-1) unstable; urgency=medium
 
@@ -29,6 +85,78 @@ cups (2.4.7-1) unstable; urgency=medium
 
  -- Thorsten Alteholz <debian@alteholz.de>  Fri, 06 Oct 2023 20:16:49 +0200
 
+cups (2.4.6-0ubuntu3) mantic; urgency=medium
+
+  * Let pkg-config data file cups.pc get installed into
+    /usr/lib/<ARCH>/pkgconfig/
+  * Include pkg-config data file cups.pc in libcups2-dev
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Tue, 26 Sep 2023 14:56:43 +0200
+
+cups (2.4.6-0ubuntu2) mantic; urgency=medium
+
+  * SECURITY UPDATE: Postscript parsing heap overflow
+    - debian/patches/CVE-2023-4504.patch: properly check for end of buffer
+      in cups/raster-interpret.c.
+    - CVE-2023-4504
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Wed, 20 Sep 2023 12:42:21 -0400
+
+cups (2.4.6-0ubuntu1) mantic; urgency=medium
+
+  * Update to new upstream version 2.4.6.
+    - Fix printing multiple files on specific printers (Upstream issue #643)
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 16 Aug 2023 21:53:43 +0200
+
+cups (2.4.5-0ubuntu2) mantic; urgency=medium
+
+  * SECURITY UPDATE: use-after-free in cupsdAcceptClient()
+    - debian/patches/CVE-2023-34241.patch: log result of httpGetHostname
+      BEFORE closing the connection in scheduler/client.c.
+    - CVE-2023-34241
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Thu, 22 Jun 2023 12:06:19 -0400
+
+cups (2.4.5-0ubuntu1) mantic; urgency=medium
+
+  * Update to new upstream version 2.4.5.
+    - Fixes color printing on printers with "CMYK" choice instead of "RGB"
+      in "ColorModel" option of their PPD (Upstream issues #451 and #500,
+      LP: 1971242).
+  * Merge from Debian unstable. Remaining changes:
+    - Added "--enable-snapped-clients" to the "./configure" options to use
+      the correct Snap mediation mode for an unsnapped cupsd, like provided
+      by this package.
+    - In the AppArmor profile allow CUPS to access (/var)/run/snapd.socket
+      to allow cupsd to determine which interfaces a snapped client
+      is plugging.
+    - Build-depend on libapparmor-dev, libsnapd-glib-dev, needed for
+      Snap mediation.
+    - Added fully automatic generation of PPD option setting presets to
+      be applied depending on the settings of the job IPP attributes
+      "print-color-mode", "print-quality", and "print-content-optimize".
+      This allows easy control of any printer with only standard IPP
+      attributes, as for example from a phone (functionality overtaken
+      from cups-filters, mot (yet) upstream in CUPS).
+    - In debian/rules updated ./configure arguments from --enable-gnutls to
+      --with-tls=gnutls. Now libcups has support for all hash types again,
+      especially can provide sha2-256 to PAPPL.
+    - When polling capabilities of a driverless printer via
+      get-printer-attributes IPP request, do a separate poll of the
+      media-col-database attribute in case it did not get obtained by the
+      first polls.
+    - In libcupsimage2 recommend libcupsfilters2 instead of libcupsfilters1.
+  * Manually refreshed patch 9100-ppd-cache-add-auto-presets.patch.
+  * Removed patches included upstream:
+    - 9110-create-local-printer-localhost-fix.patch
+    - CVE-2022-26691-2.patch
+    - snapd-glib-2.patch
+    - poll-media-col-database-separately.patch
+    - CVE-2023-32324.patch
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 14 Jun 2023 15:38:00 +0200
+
 cups (2.4.2-6) unstable; urgency=medium
 
   * CVE-2023-4504
@@ -52,6 +180,56 @@ cups (2.4.2-4) unstable; urgency=medium
     lauch a dos attack.
 
  -- Thorsten Alteholz <debian@alteholz.de>  Wed, 31 May 2023 21:30:27 +0200
+
+cups (2.4.2-3ubuntu3) mantic; urgency=medium
+
+  * SECURITY UPDATE: DoS via buffer overflow in format_log_line
+    - debian/patches/CVE-2023-32324.patch: check _cups_strlcpy size in
+      cups/string.c.
+    - CVE-2023-32324
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Thu, 25 May 2023 08:37:20 -0400
+
+cups (2.4.2-3ubuntu2) lunar; urgency=low
+
+  * In libcupsimage2 recommend libcupsfilters2 instead of libcupsfilters1.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon, 27 Mar 2023 23:12:00 +0200
+
+cups (2.4.2-3ubuntu1) lunar; urgency=low
+
+  * Merge from Debian unstable. Remaining changes:
+    - Added "--enable-snapped-clients" to the "./configure" options to use
+      the correct Snap mediation mode for an unsnapped cupsd, like provided
+      by this package.
+    - In the AppArmor profile allow CUPS to access (/var)/run/snapd.socket
+      to allow cupsd to determine which interfaces a snapped client
+      is plugging.
+    - Build-depend on libapparmor-dev, libsnapd-glib-dev, needed for
+      Snap mediation.
+    - Added fully automatic generation of PPD option setting presets to
+      be applied depending on the settings of the job IPP attributes
+      "print-color-mode", "print-quality", and "print-content-optimize".
+      This allows easy control of any printer with only standard IPP
+      attributes, as for example from a phone (functionality overtaken
+      from cups-filters, mot (yet) upstream in CUPS).
+    - Fixed printing on temporary CUPS queues for local services, like
+      IPP-over-USB or Printer Applications. Especially when printing from
+      the GTK print dialog printing on such queues did not work (Upstream
+      pull request #353, LP: #1965112).
+    - Comment in CVE-2022-26691 patch fixed.
+    - In debian/rules updated ./configure arguments from --enable-gnutls to
+      --with-tls=gnutls. Now libcups has support for all hash types again,
+      especially can provide sha2-256 to PAPPL.
+    - When polling capabilities of a driverless printer via
+      get-printer-attributes IPP request, do a separate poll of the
+      media-col-database attribute in case it did not get obtained by the
+      first polls.
+    - Patch to build with snapd-glib-2
+  * Refreshed patches 9100-ppd-cache-add-auto-presets.patch and
+    9110-create-local-printer-localhost-fix.patch with quilt.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Sun, 26 Mar 2023 21:01:00 +0200
 
 cups (2.4.2-3) unstable; urgency=medium
 
@@ -80,6 +258,54 @@ cups (2.4.2-2) unstable; urgency=medium
 
  -- Thorsten Alteholz <debian@alteholz.de>  Sun, 26 Feb 2023 12:54:05 +0100
 
+cups (2.4.2-1ubuntu4) lunar; urgency=medium
+
+  * In debian/rules updated ./configure arguments from --enable-gnutls to
+    --with-tls=gnutls. Now libcups has support for all hash types again,
+    especially can provide sha2-256 to PAPPL.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed,  8 Feb 2023 00:07:31 +0100
+
+cups (2.4.2-1ubuntu3) kinetic; urgency=medium
+
+  * When polling capabilities of a driverless printer via
+    get-printer-attributes IPP request, do a separate poll
+    of the media-col-database attribute in case it did not
+    get obtained by the first polls.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Sat, 21 Jan 2023 14:27:31 -0300
+
+cups (2.4.2-1ubuntu2) kinetic; urgency=medium
+
+  * Add patch to build with snapd-glib-2
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Thu, 25 Aug 2022 21:54:33 -0400
+
+cups (2.4.2-1ubuntu1) kinetic; urgency=low
+
+  * Merge from Debian unstable. Remaining changes:
+    - Added "--enable-snapped-clients" to the "./configure" options to use
+      the correct Snap mediation mode for an unsnapped cupsd, like provided
+      by this package.
+    - In the AppArmor profile allow CUPS to access (/var)/run/snapd.socket
+      to allow cupsd to determine which interfaces a snapped client
+      is plugging.
+    - Build-depend on libapparmor-dev, libsnapd-glib-dev, needed for
+      Snap mediation.
+    - Added fully automatic generation of PPD option setting presets to
+      be applied depending on the settings of the job IPP attributes
+      "print-color-mode", "print-quality", and "print-content-optimize".
+      This allows easy control of any printer with only standard IPP
+      attributes, as for example from a phone (functionality overtaken
+      from cups-filters, mot (yet) upstream in CUPS).
+    - Fixed printing on temporary CUPS queues for local services, like
+      IPP-over-USB or Printer Applications. Especially when printing from
+      the GTK print dialog printing on such queues did not work (Upstream
+      pull request #353, LP: #1965112).
+    - Comment in CVE-2022-26691 patch fixed.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon, 06 Jun 2022 20:20:31 +0200
+
 cups (2.4.2-1) unstable; urgency=medium
 
   * Update to new upstream version 2.4.2.
@@ -98,6 +324,67 @@ cups (2.4.1op1-2) unstable; urgency=medium
 
  -- Thorsten Alteholz <debian@alteholz.de>  Mon, 07 Mar 2022 22:08:09 +0100
 
+cups (2.4.1op1-1ubuntu5) kinetic; urgency=medium
+
+  * SECURITY UPDATE: Local authorization cert bypass
+    - debian/patches/CVE-2022-26691-1.patch: fix string comparison in
+      scheduler/cert.c.
+    - debian/patches/CVE-2022-26691-2.patch: fix the comment in
+      scheduler/cert.c.
+    - CVE-2022-26691
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 27 May 2022 07:53:01 -0400
+
+cups (2.4.1op1-1ubuntu4) jammy; urgency=low
+
+  * Fixed PPD file auto-generation when a print queue is created with
+    a DNS-SD-service-name-based URI and "-m everywhere" backporting the
+    fix from upstream (Upstream issue #340, #343).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Sat, 19 Mar 2022 00:07:00 +0100
+
+cups (2.4.1op1-1ubuntu3) jammy; urgency=low
+
+  * Fixed crasher in the patch for temporary queues for local services
+    in the previous release. Updated the patch and the upstream pull
+    request (LP: #1965112, Upstream pull request #353).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 16 Mar 2022 18:24:08 +0100
+
+cups (2.4.1op1-1ubuntu2) jammy; urgency=low
+
+  * Fixed printing on temporary CUPS queues for local services, like
+    IPP-over-USB or Printer Applications. Especially when printing from
+    the GTK print dialog printing on such queues did not work (Upstream
+    pull request #353).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon, 14 Mar 2022 09:13:08 +0100
+
+cups (2.4.1op1-1ubuntu1) jammy; urgency=low
+
+  * Merge from Debian unstable. Remaining changes:
+    - Added "--enable-snapped-clients" to the "./configure" options to use
+      the correct Snap mediation mode for an unsnapped cupsd, like provided
+      by this package.
+    - Build CUPS with "SystemGroup lpadmin root" in cups-files.conf by
+      default, as CUPS always worked this way but the new patch for
+      supporting the "cups-control" interface of Snaps does not allow
+      implicit permission to everything for root any more.
+    - In the AppArmor profile allow CUPS to access (/var)/run/snapd.socket
+      to allow cupsd to determine which interfaces a snapped client
+      is plugging.
+    - Build-depend on libapparmor-dev, libsnapd-glib-dev, needed for
+      Snap mediation.
+    - Added fully automatic generation of PPD option setting presets to
+      be applied depending on the settings of the job IPP attributes
+      "print-color-mode", "print-quality", and "print-content-optimize".
+      This allows easy control of any printer with only standard IPP
+      attributes, as for example from a phone (functionality overtaken
+      from cups-filters, mot (yet) upstream in CUPS).
+  * Updated 9100-ppd-cache-add-auto-presets.patch
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Tue, 22 Feb 2022 12:28:08 +0100
+
 cups (2.4.1op1-1) unstable; urgency=medium
 
   * new upstream release
@@ -110,6 +397,40 @@ cups (2.4.1op1-1) unstable; urgency=medium
     (git debrebase and dgit do not work in my world)
 
  -- Thorsten Alteholz <debian@alteholz.de>  Sun, 20 Feb 2022 20:08:09 +0100
+
+cups (2.3.3op2-7ubuntu2) impish; urgency=low
+
+  * Updated patch for auto-generation of PPD presets to patch proposed
+    upstream (Upstream pull request #236) due to added PPD options taken into
+    account.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 10 Sep 2021 19:20:00 +0200
+
+cups (2.3.3op2-7ubuntu1) impish; urgency=low
+
+  * Merge from Debian unstable. Remaining changes:
+    - Added extra checking when administrative requests (create queue,
+      remove someone else's job, ...) reach cupsd. If the client is a Snap,
+      it has to plug the cups-control interface to be allowed to do the
+      task. Added libapparmor-dev and libsnapd-glib-dev to the build
+      dependencies. Also added needed permissions to AppArmor profile.
+    - Build CUPS with "SystemGroup lpadmin root" in cups-files.conf by
+      default, as CUPS always worked this way but the new patch for
+      supporting the "cups-control" interface of Snaps does not allow
+      implicit permission to everything for root any more.
+    - Added "--enable-snapped-clients"
+      to the "./configure" options to use the correct checking mode for an
+      unsnapped cupsd, like provided by this package.
+    - Added fully automatic generation of PPD option setting presets to
+      be applied depending on the settings of the job IPP attributes
+      "print-color-mode", "print-quality", and "print-content-optimize".
+      This allows easy control of any printer with only standard IPP
+      attributes, as for example from a phone (functionality overtaken
+      from cups-filters, mot (yet) upstream in CUPS).
+  * Updated patch for auto-generation of PPD presets to patch proposed
+    upstream (Upstream pull request #236).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Mon, 06 Sep 2021 21:26:41 +0200
 
 cups (2.3.3op2-7) unstable; urgency=medium
 
@@ -129,6 +450,30 @@ cups (2.3.3op2-6) unstable; urgency=medium
     - Remove 3 obsolete maintscript entries
 
  -- Didier Raboud <odyx@debian.org>  Tue, 24 Aug 2021 15:38:05 +0200
+
+cups (2.3.3op2-5ubuntu1) impish; urgency=low
+
+  * Merge from Debian unstable. Remaining changes:
+    - Added extra checking when administrative requests (create queue,
+      remove someone else's job, ...) reach cupsd. If the client is a Snap,
+      it has to plug the cups-control interface to be allowed to do the
+      task. Added libapparmor-dev and libsnapd-glib-dev to the build
+      dependencies. Also added needed permissions to AppArmor profile.
+    - Build CUPS with "SystemGroup lpadmin root" in cups-files.conf by
+      default, as CUPS always worked this way but the new patch for
+      supporting the "cups-control" interface of Snaps does not allow
+      implicit permission to everything for root any more.
+    - Added "--enable-snapped-clients"
+      to the "./configure" options to use the correct checking mode for an
+      unsnapped cupsd, like provided by this package.
+  * Added fully automatic generation of PPD option setting presets to
+    be applied depending on the settings of the job IPP attributes
+    "print-color-mode", "print-quality", and "print-content-optimize".
+    This allows easy control of any printer with only standard IPP
+    attributes, as for example from a phone (functionality overtaken
+    from cups-filters, mot (yet) upstream in CUPS).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Tue, 17 Aug 2021 23:47:41 +0200
 
 cups (2.3.3op2-5) experimental; urgency=low
 
@@ -158,6 +503,45 @@ cups (2.3.3op2-3+deb11u1) unstable; urgency=medium
       older models malfunction if timeout is too short (Closes: #989073)
 
  -- Didier Raboud <odyx@debian.org>  Thu, 27 May 2021 08:49:36 +0200
+
+cups (2.3.3op2-3ubuntu3) hirsute; urgency=low
+
+  * Updated AppArmor profile entries for CUPS accessing snapd to
+    check whether a client is a Snap and which interfaces it plugs to.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 19 Mar 2021 18:26:41 +0100
+
+cups (2.3.3op2-3ubuntu2) hirsute; urgency=low
+
+  * Replaced patch for extra checking of admin requests from snapped
+    clients by the current upstream code. Added "--enable-snapped-clients"
+    to the "./configure" options to use the correct checking mode for an
+    unsnapped cupsd, like provided by this package.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 19 Mar 2021 16:32:41 +0100
+
+cups (2.3.3op2-3ubuntu1) hirsute; urgency=low
+
+  * Merge from Debian unstable. Remaining changes:
+    - Added extra checking when administrative requests (create queue,
+      remove someone else's job, ...) reach cupsd. If the client is a Snap,
+      it has to plug the cups-control interface to be allowed to do the
+      task. Added libapparmor-dev and libsnapd-glib-dev to the build
+      dependencies. Also added needed permissions to AppArmor profile.
+    - Build CUPS with "SystemGroup lpadmin root" in cups-files.conf by
+      default, as CUPS always worked this way but the new patch for
+      supporting the "cups-control" interface of Snaps does not allow
+      implicit permission to everything for root any more.
+  * Clean up "Build-Depends:" to be in sync with Debian (delta overlooked
+    for near a decade when cups-filters was introduced in 2012), removing
+    the unneeded entries: ghostscript, libavahi-compat-libdnssd-dev,
+    libfontconfig1-dev, libfreetype6-dev, libijs-dev, libjpeg-dev,
+    libldap2-dev, libpng-dev, libtiff-dev, poppler-utils, sharutils
+  * Removed the changes on the machine-generated "configure" file in the
+    patch for checking snapped clients, the changes easily mis-match on
+    updates and we run "autoconf" in debian/rules anyway.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 12 Feb 2021 20:44:41 +0100
 
 cups (2.3.3op2-3) unstable; urgency=medium
 
@@ -205,6 +589,23 @@ cups (2.3.3op1-6) unstable; urgency=medium
 
  -- Didier Raboud <odyx@debian.org>  Mon, 11 Jan 2021 08:31:58 +0100
 
+cups (2.3.3op1-5ubuntu1) hirsute; urgency=low
+
+  * Merge from Debian unstable. Remaining changes:
+    - Added extra checking when administrative requests (create queue,
+      remove someone else's job, ...) reach cupsd. If the client is a Snap,
+      it has to plug the cups-control interface to be allowed to do the
+      task. Added libapparmor-dev and libsnapd-glib-dev to the build
+      dependencies. Also added needed permissions to AppArmor profile.
+    - Build CUPS with "SystemGroup lpadmin root" in cups-files.conf by
+      default, as CUPS always worked this way but the new patch for
+      supporting the "cups-control" interface of Snaps does not allow
+      implicit permission to everything for root any more.
+  * In the AppArmor profile allow cupsd to write to /run/systemd/notify
+    to notify that it is up and running (systemd service type "notify").
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 08 Jan 2021 19:07:00 +0100
+
 cups (2.3.3op1-5) unstable; urgency=medium
 
   * Update Homepage and Source fields to point
@@ -219,6 +620,21 @@ cups (2.3.3op1-4) unstable; urgency=medium
   * Let cups.service start after nslcd.service (Closes: #977198)
 
  -- Didier Raboud <odyx@debian.org>  Wed, 23 Dec 2020 14:53:09 +0100
+
+cups (2.3.3op1-3ubuntu1) hirsute; urgency=low
+
+  * Merge from Debian unstable. Remaining changes:
+    - Added extra checking when administrative requests (create queue,
+      remove someone else's job, ...) rach cupsd. If the client is a Snap,
+      it has to plug the cups-control interface to be allowed to do the
+      task. Added libapparmor-dev and libsnapd-glib-dev to the build
+      dependencies. Also added needed permissions to AppArmor profile.
+    - Build CUPS with "SystemGroup lpadmin root" in cups-files.conf by
+      default, as CUPS always worked this way but the new patch for
+      supporting the "cups-control" interface of Snaps does not allow
+      implicit permission to everything for root any more.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri, 14 Dec 2020 12:47:34 +0100
 
 cups (2.3.3op1-3) unstable; urgency=medium
 
@@ -274,6 +690,21 @@ cups (2.3.3-4) unstable; urgency=medium
 
  -- Didier Raboud <odyx@debian.org>  Tue, 24 Nov 2020 08:49:46 +0100
 
+cups (2.3.3-3ubuntu1) groovy; urgency=medium
+
+  * Merged with Debian unstable. Remaining changes:
+    - Added extra checking when administrative requests (create queue,
+      remove someone else's job, ...) rach cupsd. If the client is a Snap,
+      it has to plug the cups-control interface to be allowed to do the
+      task. Added libapparmor-dev and libsnapd-glib-dev to the build
+      dependencies. Also added needed permissions to AppArmor profile.
+  * Build CUPS with "SystemGroup lpadmin root" in cups-files.conf by
+    defualt, as CUPS always worked this way but the new patch for
+    supporting the "cups-control" interface of Snaps does not allow
+    implicit permission to everything for root any more.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri,  4 Sep 2020 19:00:00 +0200
+
 cups (2.3.3-3) unstable; urgency=medium
 
   [ Didier Raboud ]
@@ -293,6 +724,51 @@ cups (2.3.3-3) unstable; urgency=medium
     the page geometry
 
  -- Didier Raboud <odyx@debian.org>  Thu, 03 Sep 2020 09:27:04 +0200
+
+cups (2.3.3-2ubuntu5) groovy; urgency=medium
+
+  * In all autopkgtests modify set "LogLevel debug2" in cupsd.conf and
+    "SystemGroup lpadmin root" in cups-files.conf and restart cupsd,
+    the former change to more easily find out what failed and the latter
+    as the default configuration did not allow root to create queues,
+    making all tests fail.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Thu, 27 Aug 2020 23:18:00 +0200
+
+cups (2.3.3-2ubuntu4) groovy; urgency=medium
+
+  * Let the rastertopwg filter check rounding errors when calculating the
+    page geometry.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 27 Aug 2020 10:22:00 +0200
+
+cups (2.3.3-2ubuntu3) groovy; urgency=medium
+
+  * Do not choke if the GTK dialog sends "None" as phone number or pre-dial
+    prefix.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 26 Aug 2020 22:33:00 +0200
+
+cups (2.3.3-2ubuntu2) groovy; urgency=medium
+
+  * Fix fax numbers supplied via GTK print dialog, removing a "Custom."
+    prefix.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Wed, 26 Aug 2020 13:03:00 +0200
+
+cups (2.3.3-2ubuntu1) groovy; urgency=medium
+
+  * Added extra checking when administrative requests (create queue,
+    remove someone else's job, ...) rach cupsd. If the client is a Snap,
+    it has to plug the cups-control interface to be allowed to do the
+    task. Added libapparmor-dev and libsnapd-glib-dev to the build
+    dependencies. Also added needed permissions to AppArmor profile.
+  * Resolve DNS-SD-service-name-based URIs correctly also if they are from
+    a service from localhost (like IPP-over-USB, Printer Application, ...)
+  * Make lpoptions list a printer's options correctly also when CUPS is
+    running on an alternative port.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Tue, 25 Aug 2020 21:34:00 +0200
 
 cups (2.3.3-2) unstable; urgency=medium
 
@@ -8847,3 +9323,4 @@ cupsys (1.0.1-1) unstable; urgency=low
   * Initial Release.
 
  -- Jeff Licquia <licquia@debian.org>  Sat, 06 Nov 1999 20:58:02 -0500
+
