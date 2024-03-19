@@ -47,10 +47,11 @@ override_dh_auto_configure:
 	dh_auto_configure -- \
 		$(CUPS_CONFIGURE_DISTRO_OPTIONS) \
 		--with-docdir=/usr/share/cups/doc-root \
+		--with-pkgconfpath=/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig \
 		--localedir=/usr/share/cups/locale \
 		--enable-libpaper \
 		--enable-ssl \
-		--enable-gnutls \
+		--with-tls=gnutls \
 		--enable-threads \
 		--enable-static \
 		--enable-debug \
@@ -66,9 +67,11 @@ override_dh_auto_configure:
 		--with-log-file-perm=0640 \
 		--with-local_protocols='dnssd' \
 		--with-systemd=/lib/systemd/system \
+		--with-system-groups='lpadmin root' \
 		--with-error-policy=retry-job \
 		--enable-sync-on-close \
 		--with-max-log-size=0 \
+		--enable-snapped-clients \
 		$(CONFIG_LIBUSB)
 
 override_dh_auto_install:

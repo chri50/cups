@@ -771,9 +771,9 @@ msgid ""
 "a> ] [ B<-u> I<username> ] [ B<-x> ] [ I<id> ] [ I<destination> ] "
 "[ I<destination-id> ]"
 msgstr ""
-"B<cancel> [ B<-h> I<Rechnername[:Port]> ] [ B<-E> ] [ B<-U> I<Benutzername> ] [ B<-"
-"a> ] [ B<-u> I<Benutzername> ] [ B<-x> ] [ I<Id> ] [ I<Ziel> ] "
-"[ I<Ziel-Id> ]"
+"B<cancel> [ B<-h> I<Rechnername[:Port]> ] [ B<-E> ] [ B<-U> "
+"I<Benutzername> ] [ B<-a> ] [ B<-u> I<Benutzername> ] [ B<-x> ] [ I<Id> ] "
+"[ I<Ziel> ] [ I<Ziel-Id> ]"
 
 #. type: Plain text
 #: cancel.1:41
@@ -1612,11 +1612,11 @@ msgid ""
 "provide online discussion forums to ask printing questions for your "
 "operating system of choice."
 msgstr ""
-"Die Website von B<OpenPrinting CUPS> (https://openprinting.github.io/cups) bietet Zugriff auf die "
-"Mailinglisten I<cups> und I<cups-devel>, zusätzliche Dokumentation und "
-"zusätzliche Ressourcen und eine Fehlerdatenbank. Die meisten Anbieter "
-"stellen auch Online-Diskussionsforen bereit, bei denen Sie Druck-bezogene "
-"Fragen für Ihr ausgewähltes Betriebssystem stellen können."
+"Die Website von B<OpenPrinting CUPS> (https://openprinting.github.io/cups) "
+"bietet Zugriff auf die Mailinglisten I<cups> und I<cups-devel>, zusätzliche "
+"Dokumentation und zusätzliche Ressourcen und eine Fehlerdatenbank. Die "
+"meisten Anbieter stellen auch Online-Diskussionsforen bereit, bei denen Sie "
+"Druck-bezogene Fragen für Ihr ausgewähltes Betriebssystem stellen können."
 
 #. type: Plain text
 #: cups.1:64
@@ -1871,9 +1871,9 @@ msgid ""
 msgstr ""
 "B<cancel>(1), B<client.conf>(5), B<cupsctl>(8), B<cupsd>(8), B<lp>(1), "
 "B<lpadmin>(8), B<lpinfo>(8), B<lpoptions>(1), B<lpr>(1), B<lprm>(1), "
-"B<lpq>(1), B<lpstat>(1), CUPS-Online-Hilfe (http://localhost:631/help), OpenPrinting CUPS-"
-"Website (https://openprinting.github.io/cups), PWG Internet Printing Protocol Workgroup "
-"(http://www.pwg.org/ipp)"
+"B<lpq>(1), B<lpstat>(1), CUPS-Online-Hilfe (http://localhost:631/help), "
+"OpenPrinting CUPS-Website (https://openprinting.github.io/cups), PWG "
+"Internet Printing Protocol Workgroup (http://www.pwg.org/ipp)"
 
 #. type: TH
 #: cupsaccept.8:11
@@ -2861,8 +2861,8 @@ msgstr "B<BrowseWebIF No>"
 #. type: Plain text
 #: cupsd.conf.5:73
 msgid ""
-"Specifies whether the CUPS web interface is advertised.  The default is "
-"\"No\"."
+"Specifies whether the CUPS web interface is advertised.  The default is \"No"
+"\"."
 msgstr ""
 "Legt fest, ob die CUPS-Web-Schnittstelle bekanntgemacht wird. Die Vorgabe "
 "ist »No«."
@@ -2898,8 +2898,8 @@ msgstr "B<DefaultAuthType Basic>"
 #. type: Plain text
 #: cupsd.conf.5:87
 msgid ""
-"Specifies the default type of authentication to use.  The default is "
-"\"Basic\"."
+"Specifies the default type of authentication to use.  The default is \"Basic"
+"\"."
 msgstr ""
 "Legt den standardmäßig zu verwendenden Authentifizierungstyp fest. Die "
 "Vorgabe ist »Basic«."
@@ -3015,8 +3015,8 @@ msgstr "B<DefaultShared No>"
 #. type: Plain text
 #: cupsd.conf.5:124
 msgid ""
-"Specifies whether local printers are shared by default.  The default is "
-"\"Yes\"."
+"Specifies whether local printers are shared by default.  The default is \"Yes"
+"\"."
 msgstr ""
 "Legt fest, ob lokale Drucker standardmäßig freigegeben sind. Die Vorgabe ist "
 "»Yes«."
@@ -3189,13 +3189,13 @@ msgstr "B<HostNameLookups Double>"
 #. type: Plain text
 #: cupsd.conf.5:179
 msgid ""
-"Specifies whether to do reverse lookups on connecting clients.  The "
-"\"Double\" setting causes B<cupsd>(8)  to verify that the hostname resolved "
-"from the address matches one of the addresses returned for that hostname.  "
-"Double lookups also prevent clients with unregistered addresses from "
-"connecting to your server.  The default is \"Off\" to avoid the potential "
-"server performance problems with hostname lookups.  Only set this option to "
-"\"On\" or \"Double\" if absolutely required."
+"Specifies whether to do reverse lookups on connecting clients.  The \"Double"
+"\" setting causes B<cupsd>(8)  to verify that the hostname resolved from the "
+"address matches one of the addresses returned for that hostname.  Double "
+"lookups also prevent clients with unregistered addresses from connecting to "
+"your server.  The default is \"Off\" to avoid the potential server "
+"performance problems with hostname lookups.  Only set this option to \"On\" "
+"or \"Double\" if absolutely required."
 msgstr ""
 "Legt fest, ob Rückwärtsauflösung bei sich verbindenden Clients durchgeführt "
 "werden soll. Die Einstellung »Double« veranlasst B<cupsd>(8) zu prüfen, ob "
@@ -3704,9 +3704,9 @@ msgid ""
 "allowed.  Set to \"0\" to allow an unlimited number of subscriptions.  The "
 "default is \"100\"."
 msgstr ""
-"Legt die maximale Anzahl an Ereignisabonnementen, die gleichzeitig erlaubt sind, "
-"fest. Setzen Sie dies auf »0«, um eine unbegrenzte Anzahl an Abonnements zu "
-"erlauben. Die Vorgabe ist »100«."
+"Legt die maximale Anzahl an Ereignisabonnementen, die gleichzeitig erlaubt "
+"sind, fest. Setzen Sie dies auf »0«, um eine unbegrenzte Anzahl an "
+"Abonnements zu erlauben. Die Vorgabe ist »100«."
 
 #. type: TP
 #: cupsd.conf.5:335
@@ -3722,9 +3722,9 @@ msgid ""
 "allowed per job.  The default is \"0\" which allows up to MaxSubscriptions "
 "subscriptions per job."
 msgstr ""
-"Legt die maximale Anzahl an Ereignisabonnementen, die gleichzeitig pro Auftrag erlaubt "
-"sind, fest. Die Vorgabe ist »0«, womit bis zu MaxSubscriptions Abonnements pro Auftrag "
-"erlaubt sind."
+"Legt die maximale Anzahl an Ereignisabonnementen, die gleichzeitig pro "
+"Auftrag erlaubt sind, fest. Die Vorgabe ist »0«, womit bis zu "
+"MaxSubscriptions Abonnements pro Auftrag erlaubt sind."
 
 #. type: TP
 #: cupsd.conf.5:340
@@ -3740,9 +3740,9 @@ msgid ""
 "allowed per printer.  The default is \"0\" which allows up to "
 "MaxSubscriptions subscriptions per printer."
 msgstr ""
-"Legt die maximale Anzahl an Ereignisabonnementen, die gleichzeitig pro Drucker erlaubt "
-"sind, fest. Die Vorgabe ist »0«, womit bis zu MaxSubscriptions Abonnements pro Drucker "
-"erlaubt sind."
+"Legt die maximale Anzahl an Ereignisabonnementen, die gleichzeitig pro "
+"Drucker erlaubt sind, fest. Die Vorgabe ist »0«, womit bis zu "
+"MaxSubscriptions Abonnements pro Drucker erlaubt sind."
 
 #. type: TP
 #: cupsd.conf.5:345
@@ -3758,9 +3758,9 @@ msgid ""
 "allowed per user.  The default is \"0\" which allows up to MaxSubscriptions "
 "subscriptions per user."
 msgstr ""
-"Legt die maximale Anzahl an Ereignisabonnementen, die gleichzeitig pro Benutzer erlaubt "
-"sind, fest. Die Vorgabe ist »0«, womit bis zu MaxSubscriptions Abonnements pro Benutzer "
-"erlaubt sind."
+"Legt die maximale Anzahl an Ereignisabonnementen, die gleichzeitig pro "
+"Benutzer erlaubt sind, fest. Die Vorgabe ist »0«, womit bis zu "
+"MaxSubscriptions Abonnements pro Benutzer erlaubt sind."
 
 #. type: TP
 #: cupsd.conf.5:350
@@ -3877,11 +3877,11 @@ msgstr "B<ReadyPaperSizes >I<Größenname[,…]>"
 #. type: Plain text
 #: cupsd.conf.5:391
 msgid ""
-"Specifies a list of potential paper sizes that are reported as "
-"\"ready\" (loaded).  The actual list will only contain sizes that each "
-"printer supports.  The default is \"Letter,Legal,Tabloid,4x6,Env10\" when "
-"the default paper size is \"Letter\" and \"A3,A4,A5,A6,EnvDL\" otherwise.  "
-"Note: Paper sizes must use the size names from the PPD file and not PWG self-"
+"Specifies a list of potential paper sizes that are reported as \"ready"
+"\" (loaded).  The actual list will only contain sizes that each printer "
+"supports.  The default is \"Letter,Legal,Tabloid,4x6,Env10\" when the "
+"default paper size is \"Letter\" and \"A3,A4,A5,A6,EnvDL\" otherwise.  Note: "
+"Paper sizes must use the size names from the PPD file and not PWG self-"
 "describing media size names."
 msgstr ""
 "Legt eine Liste möglicher Papiergrößen fest, die als »bereit« (geladen) "
@@ -5273,8 +5273,8 @@ msgstr "B<JobPrivateValues >I<Attributename >[ … I<Attributname >]"
 #: cupsd.conf.5:802
 msgid ""
 "Specifies the list of job values to make private.  The \"default\" values "
-"are \"job-name\", \"job-originating-host-name\", \"job-originating-user-"
-"name\", and \"phone\"."
+"are \"job-name\", \"job-originating-host-name\", \"job-originating-user-name"
+"\", and \"phone\"."
 msgstr ""
 "Legt die Liste der Auftragswerte, die privat werden sollen, fest. Die "
 "»Standard«- (default) Werte sind »job-name«, »job-originating-host-name«, "
@@ -5301,11 +5301,11 @@ msgstr "B<SubscriptionPrivateAccess >{I<Benutzer>|B<@>I<Gruppe>|B<@ACL>|B<@OWNER
 #. type: Plain text
 #: cupsd.conf.5:815
 msgid ""
-"Specifies an access list for a subscription's private values.  The "
-"\"default\" access list is \"@OWNER @SYSTEM\".  \"@ACL\" maps to the "
-"printer's requesting-user-name-allowed or requesting-user-name-denied "
-"values.  \"@OWNER\" maps to the job's owner.  \"@SYSTEM\" maps to the groups "
-"listed for the SystemGroup directive in the B<cups-files.conf>(5)  file."
+"Specifies an access list for a subscription's private values.  The \"default"
+"\" access list is \"@OWNER @SYSTEM\".  \"@ACL\" maps to the printer's "
+"requesting-user-name-allowed or requesting-user-name-denied values.  \"@OWNER"
+"\" maps to the job's owner.  \"@SYSTEM\" maps to the groups listed for the "
+"SystemGroup directive in the B<cups-files.conf>(5)  file."
 msgstr ""
 "Legt eine Zugriffsliste für die privaten Werte eines Abonnements fest. Die "
 "»Standard«- (default) Zugriffsliste ist »@OWNER @SYSTEM«. »@ACL« passt auf "
@@ -5342,8 +5342,8 @@ msgstr "B<SubscriptionPrivateValues >I<Attributname >[ … I<Attributname >]"
 #: cupsd.conf.5:825
 msgid ""
 "Specifies the list of subscription values to make private.  The \"default\" "
-"values are \"notify-events\", \"notify-pull-method\", \"notify-recipient-"
-"uri\", \"notify-subscriber-user-name\", and \"notify-user-data\"."
+"values are \"notify-events\", \"notify-pull-method\", \"notify-recipient-uri"
+"\", \"notify-subscriber-user-name\", and \"notify-user-data\"."
 msgstr ""
 "Legt die Liste der Abonnementswerte, die privat werden sollen, fest. Die "
 "»Standard«- (default) Werte sind »notify-events«, »notify-pull-method«, "
@@ -5413,8 +5413,8 @@ msgstr "B<ClassifyOverride No>"
 #: cupsd.conf.5:845
 msgid ""
 "Specifies whether users may override the classification (cover page) of "
-"individual print jobs using the \"job-sheets\" option.  The default is "
-"\"No\"."
+"individual print jobs using the \"job-sheets\" option.  The default is \"No"
+"\"."
 msgstr ""
 "Legt fest, ob es Benutzern erlaubt werden soll, die Einstufung (Titelseite) "
 "individueller Druckaufträge mit der Option »job-sheets« zu ändern. Die "
@@ -5430,7 +5430,8 @@ msgstr "B<DefaultAuthType Negotiate>"
 #. type: Plain text
 #: cupsd.conf.5:849
 msgid "Specifies that Kerberos authentication is required by default."
-msgstr "Legt fest, dass standardmäßig Kerberos-Authentifizierung benötigt wird."
+msgstr ""
+"Legt fest, dass standardmäßig Kerberos-Authentifizierung benötigt wird."
 
 #. #PageLogFormat
 #. type: Plain text
@@ -6674,10 +6675,9 @@ msgid ""
 "Defines the access log filename.  Specifying a blank filename disables "
 "access log generation.  The value \"stderr\" causes log entries to be sent "
 "to the standard error file when the scheduler is running in the foreground, "
-"or to the system log daemon when run in the background.  The value "
-"\"syslog\" causes log entries to be sent to the system log daemon.  The "
-"server name may be included in filenames using the string \"%s\", for "
-"example:"
+"or to the system log daemon when run in the background.  The value \"syslog"
+"\" causes log entries to be sent to the system log daemon.  The server name "
+"may be included in filenames using the string \"%s\", for example:"
 msgstr ""
 "Definiert den Namen der Zugriffsprotokolldatei. Durch Angabe eines leeren "
 "Dateinamens wird die Protokollierung deaktiviert. Der Wert »stderr« führt "
@@ -6988,8 +6988,8 @@ msgstr "B<Group >I<Gruppenname-oder-Nummer>"
 #: cups-files.conf.5:135
 msgid ""
 "Specifies the group name or ID that will be used when executing external "
-"programs.  The default group is operating system specific but is usually "
-"\"lp\" or \"nobody\"."
+"programs.  The default group is operating system specific but is usually \"lp"
+"\" or \"nobody\"."
 msgstr ""
 "Legt den Gruppenname oder deren ID, die bei der Ausführung externer "
 "Programme verwandt wird, fest. Die Vorgabegruppe ist abhängig vom "
@@ -7281,8 +7281,8 @@ msgstr "B<SystemGroup >I<Gruppenname >[ … I<Gruppenname> ]"
 #: cups-files.conf.5:227
 msgid ""
 "Specifies the group(s) to use for I<@SYSTEM> group authentication.  The "
-"default contains \"admin\", \"lpadmin\", \"root\", \"sys\", and/or "
-"\"system\"."
+"default contains \"admin\", \"lpadmin\", \"root\", \"sys\", and/or \"system"
+"\"."
 msgstr ""
 "Legt die Gruppe(n), die für I<@SYSTEM>-Gruppenauthentifizierung verwendet "
 "werden, fest. Die Vorgabe enthält »admin«, »lpadmin«, »root«, »sys« und/oder "
@@ -8940,8 +8940,8 @@ msgstr "B<DEBUG: >I<Nachricht>"
 #: filter.7:110
 msgid ""
 "Adds the specified message to the current B<ErrorLog> using the \"debug\" "
-"log level.  B<DEBUG> messages are never stored in the \"printer-state-"
-"message\" attribute."
+"log level.  B<DEBUG> messages are never stored in the \"printer-state-message"
+"\" attribute."
 msgstr ""
 "Fügt die angegebene Nachricht zu dem aktuellen B<ErrorLog> mit der "
 "Protokollstufe »debug« hinzu. B<DEBUG>-Nachrichten werden nie im Attribut "
@@ -9895,8 +9895,8 @@ msgstr ""
 msgid ""
 "Enumerated values are converted to their keyword equivalents.  For example, "
 "a \"print-quality\" Job Template attribute with a enum value of 3 will "
-"become the \"IPP_PRINT_QUALITY\" environment variable with a value of "
-"\"draft\".  This string conversion only happens for standard Job Template "
+"become the \"IPP_PRINT_QUALITY\" environment variable with a value of \"draft"
+"\".  This string conversion only happens for standard Job Template "
 "attributes, currently \"finishings\", \"orientation-requested\", and \"print-"
 "quality\"."
 msgstr ""
@@ -10913,9 +10913,9 @@ msgstr ""
 "include-error> ] [ B<--version> ] [ B<-4> ] [ B<-6> ] [ B<-C> ] [ B<-E> ] "
 "[ B<-I> ] [ B<-L> ] [ B<-P> I<Dateiname.plist> ] [ B<-S> ] [ B<-T> "
 "I<Sekunden> ] [ B<-V> I<Version> ] [ B<-X> ] [ B<-c> ] [ B<-d> "
-"I<Name=Wert> ] [ B<-f> I<Dateiname> ] [ B<-h> ] [ B<-i> I<Sekunden> ] [ B<-j> ] [ B<-"
-"n> I<Wiederholungszähler> ] [ B<-q> ] [ B<-t> ] [ B<-v ]> I<Drucker-URI> "
-"I<Testdatei> [ …  I<Testdatei> ]"
+"I<Name=Wert> ] [ B<-f> I<Dateiname> ] [ B<-h> ] [ B<-i> I<Sekunden> ] [ B<-"
+"j> ] [ B<-n> I<Wiederholungszähler> ] [ B<-q> ] [ B<-t> ] [ B<-v ]> "
+"I<Drucker-URI> I<Testdatei> [ …  I<Testdatei> ]"
 
 #. type: Plain text
 #: ipptool.1:91
@@ -11022,8 +11022,8 @@ msgstr ""
 #. type: Plain text
 #: ipptool.1:131
 msgid ""
-"Forces TLS encryption when connecting to the server using the HTTP "
-"\"Upgrade\" header."
+"Forces TLS encryption when connecting to the server using the HTTP \"Upgrade"
+"\" header."
 msgstr ""
 "Erzwingt TLS-Verschlüsselung bei Verbindungen zum Server mit der HTTP-"
 "Kopfzeile »Upgrade«."
@@ -11366,8 +11366,8 @@ msgid ""
 "org/ipp)  RFC 8011 (https://datatracker.ietf.org/doc/html/rfc8011),"
 msgstr ""
 "B<ipptoolfile>(5), IANA IPP Registry (https://www.iana.org/assignments/ipp-"
-"registrations), PWG Internet Printing Protocol Workgroup (https://www.pwg.org/"
-"ipp), RFC 8011 (https://datatracker.ietf.org/doc/html/rfc8011),"
+"registrations), PWG Internet Printing Protocol Workgroup (https://www.pwg."
+"org/ipp), RFC 8011 (https://datatracker.ietf.org/doc/html/rfc8011),"
 
 #. type: TH
 #: ipptoolfile.5:10
@@ -12117,8 +12117,8 @@ msgid ""
 "Specifies that the current test should be passed automatically when the "
 "variable is or is not defined."
 msgstr ""
-"Legt fest, dass der aktuelle Test automatisch bestanden werden soll, wenn die "
-"Variable (nicht) definiert ist."
+"Legt fest, dass der aktuelle Test automatisch bestanden werden soll, wenn "
+"die Variable (nicht) definiert ist."
 
 #. type: TP
 #: ipptoolfile.5:232
@@ -12245,8 +12245,8 @@ msgstr ""
 #. type: Plain text
 #: ipptoolfile.5:269
 msgid ""
-"Specifies that this test will use the HTTP/1.1 \"Transfer-Encoding: "
-"chunked\" header."
+"Specifies that this test will use the HTTP/1.1 \"Transfer-Encoding: chunked"
+"\" header."
 msgstr ""
 "Legt fest, dass dieser Test die HTTP/1.1-Kopfzeile »Transfer-Encoding: "
 "chunked« verwenden wird."
@@ -12416,10 +12416,10 @@ msgstr ""
 "Verlangt, dass das B<EXPECT>-Attribut eines der festgelegten Attribut(e) "
 "verwendet. Die meisten Wertemarkierungen unterstützen auch die Angabe von "
 "Beschränkungen in Klammern, beispielsweise würde »name(42)« nameWith/"
-"WithoutLanguage-Zeichenketten bis zu einer Länge von 42 Oktetten, "
-"»name(4:MAX)« würde nameWith/WithoutLanguage-Zeichenketten zwischen 4 und "
-"255 Oktetten erlauben und »integer(-273:MAX)« würde Ganzzahlen zwischen -273 "
-"und 2147483647 erlauben."
+"WithoutLanguage-Zeichenketten bis zu einer Länge von 42 Oktetten, »name(4:"
+"MAX)« würde nameWith/WithoutLanguage-Zeichenketten zwischen 4 und 255 "
+"Oktetten erlauben und »integer(-273:MAX)« würde Ganzzahlen zwischen -273 und "
+"2147483647 erlauben."
 
 #. type: TP
 #: ipptoolfile.5:316 ipptoolfile.5:422
@@ -13576,8 +13576,8 @@ msgid ""
 "org/ipp), RFC 8011 (https://datatracker.ietf.org/doc/html/rfc8011)"
 msgstr ""
 "B<ipptool>(1), IANA IPP Registry (https://www.iana.org/assignments/ipp-"
-"registrations), PWG Internet Printing Protocol Workgroup (https://www.pwg.org/"
-"ipp), RFC 8011 (https://datatracker.ietf.org/doc/html/rfc8011)"
+"registrations), PWG Internet Printing Protocol Workgroup (https://www.pwg."
+"org/ipp), RFC 8011 (https://datatracker.ietf.org/doc/html/rfc8011)"
 
 #. type: TH
 #: lp.1:11
@@ -13599,11 +13599,11 @@ msgid ""
 "[ B<-t> I<title> ] [ B<-H> I<handling> ] [ B<-P> I<page-list> ] [ B<--> ] "
 "[ I<file(s)> ]"
 msgstr ""
-"B<lp> [ B<-h >I<Rechnername>[B<:>I<Port>] ] [ B<-E> ] [ B<-U> I<Benutzername> ] [ B<-c> ] [ B<-d >I<Ziel>[B</"
-">I<Instanz>] ] [ B<-m> ] [ B<-n> I<Anz-"
-"Kopien> ] [ B<-o >I<Option>[B<=>I<Wert>] ] [ B<-q> I<Priorität> ] [ B<-s> ] "
-"[ B<-t> I<Titel> ] [ B<-H> I<Handhabung> ] [ B<-P> I<Seitenliste> ] [ B<--"
-"> ] [ I<Datei(en)> ]"
+"B<lp> [ B<-h >I<Rechnername>[B<:>I<Port>] ] [ B<-E> ] [ B<-U> "
+"I<Benutzername> ] [ B<-c> ] [ B<-d >I<Ziel>[B</>I<Instanz>] ] [ B<-m> ] [ B<-"
+"n> I<Anz-Kopien> ] [ B<-o >I<Option>[B<=>I<Wert>] ] [ B<-q> I<Priorität> ] "
+"[ B<-s> ] [ B<-t> I<Titel> ] [ B<-H> I<Handhabung> ] [ B<-P> "
+"I<Seitenliste> ] [ B<--> ] [ I<Datei(en)> ]"
 
 #. type: Plain text
 #: lp.1:85
@@ -13613,10 +13613,10 @@ msgid ""
 ">I<option>[B<=>I<value>] ] [ B<-q> I<priority> ] [ B<-t> I<title> ] [ B<-H> "
 "I<handling> ] [ B<-P> I<page-list> ]"
 msgstr ""
-"B<lp> [ B<-h >I<Rechnername>[B<:>I<Port>] ] [ B<-E> ] [ B<-U> I<Benutzername> ] [ B<-c> ] "
-"[ B<-i> I<Auftrags-ID> ] [ B<-n> I<Anz-"
-"Kopien> ] [ B<-o >I<Option>[B<=>I<Wert>] ] [ B<-q> I<Priorität> ] [ B<-t> "
-"I<Titel> ] [ B<-H> I<Handhabung> ] [ B<-P> I<Seitenliste> ]"
+"B<lp> [ B<-h >I<Rechnername>[B<:>I<Port>] ] [ B<-E> ] [ B<-U> "
+"I<Benutzername> ] [ B<-c> ] [ B<-i> I<Auftrags-ID> ] [ B<-n> I<Anz-Kopien> ] "
+"[ B<-o >I<Option>[B<=>I<Wert>] ] [ B<-q> I<Priorität> ] [ B<-t> I<Titel> ] "
+"[ B<-H> I<Handhabung> ] [ B<-P> I<Seitenliste> ]"
 
 #. type: Plain text
 #: lp.1:88
@@ -14321,8 +14321,8 @@ msgstr "B<-o port-monitor=>I<Name>"
 #. type: Plain text
 #: lpadmin.8:130
 msgid ""
-"Sets the binary communications program to use when printing, \"none\", "
-"\"bcp\", or \"tbcp\".  The default program is \"none\".  The specified port "
+"Sets the binary communications program to use when printing, \"none\", \"bcp"
+"\", or \"tbcp\".  The default program is \"none\".  The specified port "
 "monitor must be listed in the printer's PPD file."
 msgstr ""
 "Setzt das binäre Kommunikationsprogramm, das benutzt wird, um »none«, »bcp« "
@@ -15653,10 +15653,11 @@ msgid ""
 "o> [ I<destination(s)> ] ] [ B<-p> [ I<printer(s)> ] ] [ B<-r> ] [ B<-R> ] "
 "[ B<-s> ] [ B<-t> ] [ B<-u> [ I<user(s)> ] ] [ B<-v> [ I<printer(s)> ] ]"
 msgstr ""
-"B<lpstat> [ B<-h >I<Rechnername>[B<:>I<Port>] ] [ B<-E> ] [ B<-H> ] [ B<-U> I<Benutzername> ] [ B<-l> ] [ B<-W> I<welche-Druckaufträge> ] "
-"[ B<-a> [ I<Ziel(e)> ] ] [ B<-c> [ I<Klasse(n)> ] ] [ B<-d> ] [ B<-e> ] [ B<-"
-"o> [ I<Ziel(e)> ] ] [ B<-p> [ I<Drucker> ] ] [ B<-r> ] [ B<-R> ] [ B<-s> ] "
-"[ B<-t> ] [ B<-u> [ I<Benutzer> ] ] [ B<-v> [ I<Drucker> ] ]"
+"B<lpstat> [ B<-h >I<Rechnername>[B<:>I<Port>] ] [ B<-E> ] [ B<-H> ] [ B<-U> "
+"I<Benutzername> ] [ B<-l> ] [ B<-W> I<welche-Druckaufträge> ] [ B<-a> "
+"[ I<Ziel(e)> ] ] [ B<-c> [ I<Klasse(n)> ] ] [ B<-d> ] [ B<-e> ] [ B<-o> "
+"[ I<Ziel(e)> ] ] [ B<-p> [ I<Drucker> ] ] [ B<-r> ] [ B<-R> ] [ B<-s> ] [ B<-"
+"t> ] [ B<-u> [ I<Benutzer> ] ] [ B<-v> [ I<Drucker> ] ]"
 
 #. type: Plain text
 #: lpstat.1:69
@@ -17484,18 +17485,15 @@ msgstr ""
 "B<mime.convs>(5), B<mime.types>(5), B<printers.conf>(5), CUPS-Online-Hilfe "
 "(http://localhost:631/help)"
 
-#, no-wrap
 #~ msgid "26 April 2019"
 #~ msgstr "26. April 2019"
 
-#, no-wrap
 #~ msgid "Apple Inc."
 #~ msgstr "Apple Inc."
 
 #~ msgid "Specifies an alternate server."
 #~ msgstr "Legt einen alternativen Server fest."
 
-#, no-wrap
 #~ msgid "15 October 2019"
 #~ msgstr "15. Oktober 2019"
 
@@ -17505,11 +17503,9 @@ msgstr ""
 #~ msgid "Specifies the server address."
 #~ msgstr "Legt die Server-Adresse fest."
 
-#, no-wrap
 #~ msgid "28 November 2020"
 #~ msgstr "28. November 2020"
 
-#, no-wrap
 #~ msgid "B<KeepAliveTimeout >I<seconds>"
 #~ msgstr "B<KeepAliveTimeout >I<Sekunden>"
 
@@ -17520,7 +17516,6 @@ msgstr ""
 #~ "Legt fest, wie lange leer laufende Client-Verbindungen offen bleiben "
 #~ "sollen. Die Vorgabe ist »30«."
 
-#, no-wrap
 #~ msgid "B<ListenBackLog >I<number>"
 #~ msgstr "B<ListenBackLog >I<Anzahl>"
 
@@ -17542,7 +17537,6 @@ msgstr ""
 #~ "Vorgabe ist die betriebssystemabhängige Beschränkung, typischerweise »5« "
 #~ "auf älteren Betriebssystemen oder »128« auf neueren Betriebssystemen."
 
-#, no-wrap
 #~ msgid "B<RIPCache >I<size>"
 #~ msgstr "B<RIPCache >I<Größe>"
 
@@ -17556,11 +17550,9 @@ msgstr ""
 #~ msgid "Copyright \\[co] 2020 by Michael R Sweet"
 #~ msgstr "Copyright \\[co] 2020 Michael R Sweet"
 
-#, no-wrap
 #~ msgid "14 November 2020"
 #~ msgstr "14. November 2020"
 
-#, no-wrap
 #~ msgid "B<FontPath >I<directory[:...:directoryN]>"
 #~ msgstr "B<FontPath >I<Verzeichnis[:…:VerzeichnisN]>"
 
@@ -17574,14 +17566,12 @@ msgstr ""
 #~ "Mechanismus B<font-config>(1) verwandt. Unter macOS verwaltet die "
 #~ "Anwendung Font Book die systemweit installierten Schriften."
 
-#, no-wrap
 #~ msgid " B<LPDConfigFile >I<filename>"
 #~ msgstr " B<LPDConfigFile >I<Dateiname>"
 
 #~ msgid "Specifies the LPD service configuration file to update."
 #~ msgstr "Gibt die zu aktualisierende LPD-Dienstekonfigurationsdatei an."
 
-#, no-wrap
 #~ msgid "B<SMBConfigFile >I<filename>"
 #~ msgstr "B<SMBConfigFile >I<Dateiname>"
 
@@ -17598,18 +17588,15 @@ msgstr ""
 #~ msgid "cupstestppd - test conformance of ppd files"
 #~ msgstr "cupstestppd - überprüft Konformität von PPD-Dateien"
 
-#, no-wrap
 #~ msgid "24 April 2019"
 #~ msgstr "24. April 2019"
 
 #~ msgid "Copyright \\[co] 2019 by Apple Inc."
 #~ msgstr "Copyright \\[co] 2019 Apple Inc."
 
-#, no-wrap
 #~ msgid "2 December 2019"
 #~ msgstr "2. Dezember 2019"
 
-#, no-wrap
 #~ msgid "15 August 2019"
 #~ msgstr "15. August 2019"
 
@@ -17625,11 +17612,9 @@ msgstr ""
 #~ msgid "Uses an alternate server."
 #~ msgstr "Verwendet einen alternativen Server."
 
-#, no-wrap
 #~ msgid "28 October 2020"
 #~ msgstr "28. Oktober 2020"
 
-#, no-wrap
 #~ msgid "16 July 2019"
 #~ msgstr "16. Juli 2019"
 
@@ -18136,12 +18121,12 @@ msgstr ""
 #~ msgstr "B<-o number-up-layout=>I<Layout>"
 
 #~ msgid ""
-#~ "Specifies the layout of pages with the \"number-up\" option.  The "
-#~ "\"layout\" string can be \"btlr\", \"btrl\", \"lrbt\", \"lrtb\", "
-#~ "\"rlbt\", \"rltb\", \"tblr\", or \"tbrl\" - the first two letters "
-#~ "determine the column order while the second two letters determine the row "
-#~ "order.  \"bt\" is bottom-to-top, \"lr\" is left-to-right, \"rl\" is right-"
-#~ "to-left, and \"tb\" is top-to-bottom."
+#~ "Specifies the layout of pages with the \"number-up\" option.  The \"layout"
+#~ "\" string can be \"btlr\", \"btrl\", \"lrbt\", \"lrtb\", \"rlbt\", \"rltb"
+#~ "\", \"tblr\", or \"tbrl\" - the first two letters determine the column "
+#~ "order while the second two letters determine the row order.  \"bt\" is "
+#~ "bottom-to-top, \"lr\" is left-to-right, \"rl\" is right-to-left, and \"tb"
+#~ "\" is top-to-bottom."
 #~ msgstr ""
 #~ "Legt das Layout der Seiten mit der Option »number-up« fest. Die "
 #~ "Zeichenkette »Layout« kann »btlr«, »btrl«, »lrbt«, »lrtb«, »rlbt«, "
@@ -19310,9 +19295,9 @@ msgstr ""
 #~ msgstr "-o landscape"
 
 #~ msgid ""
-#~ "Prints on one or two sides of the paper. The value \"two-sided-long-"
-#~ "edge\" is normally used when printing portrait (unrotated) pages, while "
-#~ "\"two-sided-short-edge\" is used for landscape pages."
+#~ "Prints on one or two sides of the paper. The value \"two-sided-long-edge"
+#~ "\" is normally used when printing portrait (unrotated) pages, while \"two-"
+#~ "sided-short-edge\" is used for landscape pages."
 #~ msgstr ""
 #~ "Druckt auf einer oder zwei Seiten des Papiers. Der Wert »two-sided-long-"
 #~ "edge« wird normalerweise für den Druck im Hochformat (unrotiert) "
