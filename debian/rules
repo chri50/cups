@@ -224,9 +224,6 @@ endif
 ifneq (,$(filter libcups2-dev,$(shell dh_listpackages)))
 	# debian/libcups2-dev.install entry cannot rename files on-the-fly
 	cp cups/language-private.h debian/libcups2-dev/usr/include/cups/i18n.h
-	# debian/libcups2-dev.install cannot interpolate before compat 13
-	sed -e 's/@DEB_VERSION_UPSTREAM@/${DEB_VERSION_UPSTREAM}/' < debian/cups.pc.in > debian/cups.pc
-	install -D -m 644 debian/cups.pc debian/libcups2-dev/usr/lib/${DEB_HOST_GNU_TYPE}/pkgconfig/cups.pc
 endif
 
 ifneq (,$(filter cups-daemon,$(shell dh_listpackages)))
