@@ -1,3 +1,9 @@
+cups (2.4.7-1.2ubuntu3) noble; urgency=medium
+
+  * No-change rebuild for CVE-2024-3094
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Sun, 31 Mar 2024 07:31:09 +0000
+
 cups (2.4.7-1.2ubuntu2) noble; urgency=low
 
   * Remove Debian's own (broken) cups.pc file, CUPS has it upstreanm from
