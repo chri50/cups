@@ -1,3 +1,11 @@
+cups (2.4.7-1.2ubuntu5) noble; urgency=low
+
+  * Longer timeout for Avahi resolving for cupsGetDests() API function, used
+    by "lpstat -l -e" (Upstream issues #47, #751, fix is already in place
+    in the CUPS Snap).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Sat,  6 Apr 2024 00:05:19 +0200
+
 cups (2.4.7-1.2ubuntu4) noble; urgency=low
 
   * Backported upstream commits 6c6e1b0, ff16dab, and df3718b from 2.4.x GIT
