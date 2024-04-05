@@ -1,3 +1,18 @@
+cups (2.4.7-1.2ubuntu4) noble; urgency=low
+
+  * Backported upstream commits 6c6e1b0, ff16dab, and df3718b from 2.4.x GIT
+    branch, to
+    - Fix race condition due to removal of temporary queue while still accessing
+      it. Now timeout clock is reset on every access, temporary queues not
+      created if there is a permanent queue to the same printer, temporary queues
+      expire after 5 min instead of 1 min (Upstream issue #871).
+    - Fix temporary queue appearing as raw queue while CUPS is still polling
+      the capability information from the printer. This breaks print dialogs and
+      printing itself. Now queue creation is deleayed until the PPD is ready
+      (Upstream issue #347).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Fri,  5 Apr 2024 22:48:19 +0200
+
 cups (2.4.7-1.2ubuntu3) noble; urgency=medium
 
   * No-change rebuild for CVE-2024-3094
