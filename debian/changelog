@@ -1,3 +1,16 @@
+cups (2.4.7-1.2ubuntu6) noble; urgency=low
+
+  * Fix crash caused by the fix of the background polling of printer
+    capability information in ...ubuntu4. Added commit 2e65a35 from 2.4.x
+    GIT branch to the patch (LP: #2060692, Upstream issue #934, pull
+    request #937).
+  * Backported upstream commits 939368f from 2.4.x GIT branch, to
+    fix the auto-repeating of a job in Raster mode when failed printing
+    in PDF mode, due to printer-internal bug/incompatibility (Upstream
+    issue #391).
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Thu, 11 Apr 2024 23:23:19 +0200
+
 cups (2.4.7-1.2ubuntu5) noble; urgency=low
 
   * Longer timeout for Avahi resolving for cupsGetDests() API function, used

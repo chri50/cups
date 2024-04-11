@@ -13,3 +13,4 @@
 0012-add-pt.patch
 9110-delay-creating-driverless-printer-until-ppd-generated.patch
 9120-longer-timeout-for-avahi-resolving-for-cupsgetdests.patch
+9130-fix-document-unprintable-error-handling.patch

@@ -1,0 +1,20 @@
+--- a/backend/ipp.c
++++ b/backend/ipp.c
+@@ -1889,7 +1889,7 @@
+ 
+           if (ippContainsString(reasons, "document-format-error"))
+             ipp_status = IPP_STATUS_ERROR_DOCUMENT_FORMAT_ERROR;
+-          else if (ippContainsString(reasons, "document-unprintable"))
++          else if (ippContainsString(reasons, "document-unprintable-error"))
+             ipp_status = IPP_STATUS_ERROR_DOCUMENT_UNPRINTABLE;
+ 
+ 	  ippDelete(response);
+@@ -2678,7 +2678,7 @@
+             new_reasons |= _CUPS_JSR_JOB_RELEASE_WAIT;
+           else if (!strcmp(attr->values[i].string.text, "document-format-error"))
+             new_reasons |= _CUPS_JSR_DOCUMENT_FORMAT_ERROR;
+-          else if (!strcmp(attr->values[i].string.text, "document-unprintable"))
++          else if (!strcmp(attr->values[i].string.text, "document-unprintable-error"))
+             new_reasons |= _CUPS_JSR_DOCUMENT_UNPRINTABLE;
+ 
+ 	  if (!job_canceled && (!strncmp(attr->values[i].string.text, "job-canceled-", 13) || !strcmp(attr->values[i].string.text, "aborted-by-system")))
