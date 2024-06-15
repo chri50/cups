@@ -1,16 +1,22 @@
+cups (2.4.7-3) unstable; urgency=medium
+
+  [ Helge Kreutzmann ]
+  * Update German man page (2220t)
+
+  [ Thorsten Alteholz ]
+  * reintroduce time_t changes that were accidentally deleted
+    with last upload
+    (thanks to Michael Hudson-Doyle for this work)
+  * debian/rules: no test on riscv64 (Closes: #1073046)
+ 
+ -- Thorsten Alteholz <debian@alteholz.de>  Sat, 15 Jun 2024 22:16:49 +0200
+
 cups (2.4.7-2) unstable; urgency=medium
 
   * CVE-2024-35235 (Closes: #1073002)
     fix domain socket handling
 
  -- Thorsten Alteholz <debian@alteholz.de>  Tue, 11 Jun 2024 22:16:49 +0200
-
-cups (2.4.7-1.2) unstable; urgency=medium
-
-  * Non-maintainer upload.
-  * Rename libraries for 64-bit time_t transition.
-
- -- Michael Hudson-Doyle <mwhudson@debian.org>  Wed, 28 Feb 2024 23:20:02 +0000
 
 cups (2.4.7-1) unstable; urgency=medium
 
