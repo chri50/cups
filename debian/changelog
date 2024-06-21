@@ -1,3 +1,12 @@
+cups (2.4.6-0ubuntu3.1) mantic-security; urgency=medium
+
+   * SECURITY UPDATE: cupsd listen arbitrary chmod 0140777
+    - debian/patches/CVE-2024-35235.patch: validate status of unlink and bind
+      in cups/http-addr.c
+    - CVE-2024-35235 
+
+ -- Sudhakar Verma <sudhakar.verma@canonical.com>  Fri, 21 Jun 2024 15:41:01 +0530
+
 cups (2.4.6-0ubuntu3) mantic; urgency=medium
 
   * Let pkg-config data file cups.pc get installed into
