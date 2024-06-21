@@ -1,3 +1,12 @@
+cups (2.4.7-1.2ubuntu8) oracular; urgency=medium
+
+  * SECURITY UPDATE: cupsd listen arbitrary chmod 0140777
+    - debian/patches/CVE-2024-35235.patch: validate status of unlink and bind
+      in cups/http-addr.c
+    - CVE-2024-35235 
+
+ -- Sudhakar Verma <sudhakar.verma@canonical.com>  Fri, 21 Jun 2024 15:57:06 +0530
+
 cups (2.4.7-1.2ubuntu7) noble; urgency=low
 
   * Another fix for crash caused by the fix of the background polling of
