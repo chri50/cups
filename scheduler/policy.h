@@ -22,8 +22,6 @@ typedef struct
 			*ops;		/* Operations */
 } cupsd_policy_t;
 
-typedef struct cupsd_printer_s cupsd_printer_t;
-
 
 /*
  * Globals...
