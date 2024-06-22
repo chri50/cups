@@ -1,6 +1,7 @@
 /*
  * PPD command interpreter for CUPS.
  *
+ * Copyright © 2020-2024 by OpenPrinting.
  * Copyright © 2007-2018 by Apple Inc.
  * Copyright © 1993-2007 by Easy Software Products.
  *
@@ -1048,6 +1049,8 @@ scan_ps(_cups_ps_stack_t *st,		/* I  - Stack */
   int			parens;		/* Parenthesis nesting level */
 
 
+  if (!*ptr)
+    return (NULL);
  /*
   * Skip leading whitespace...
   */

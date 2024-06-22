@@ -8,7 +8,7 @@ Forwarded: not-needed
  1 file changed, 1 deletion(-)
 
 diff --git a/Makedefs.in b/Makedefs.in
-index 07010f0..f571fc8 100644
+index a2342d5..42c8f23 100644
 --- a/Makedefs.in
 +++ b/Makedefs.in
 @@ -263,7 +263,6 @@ USBQUIRKS	=	@USBQUIRKS@

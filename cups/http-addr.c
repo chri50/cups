@@ -1,7 +1,6 @@
 /*
  * HTTP address routines for CUPS.
  *
- * Copyright © 2023-2024 by OpenPrinting
  * Copyright © 2007-2021 by Apple Inc.
  * Copyright © 1997-2006 by Easy Software Products, all rights reserved.
  *
@@ -212,9 +211,8 @@ httpAddrListen(http_addr_t *addr,	/* I - Address to bind to */
       DEBUG_printf(("1httpAddrListen: Unable to unlink \"%s\": %s", addr->un.sun_path, strerror(errno)));
 
       if (errno == ENOENT)
-       status = 0;
+	status = 0;
     }
-
 
     if (!status)
     {
@@ -222,11 +220,10 @@ httpAddrListen(http_addr_t *addr,	/* I - Address to bind to */
       // the domain socket...
       mask = umask(0);
 
-
       // Bind the domain socket...
       if ((status = bind(fd, (struct sockaddr *)addr, (socklen_t)httpAddrLength(addr))) < 0)
       {
-       DEBUG_printf(("1httpAddrListen: Unable to bind domain socket \"%s\": %s", addr->un.sun_path, strerror(errno)));
+	DEBUG_printf(("1httpAddrListen: Unable to bind domain socket \"%s\": %s", addr->un.sun_path, strerror(errno)));
       }
 
       // Restore the umask...

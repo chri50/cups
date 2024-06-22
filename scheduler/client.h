@@ -1,7 +1,7 @@
 /*
  * Client definitions for the CUPS scheduler.
  *
- * Copyright © 2021-2023 by OpenPrinting.
+ * Copyright © 2020-2024 by OpenPrinting.
  * Copyright © 2007-2018 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
@@ -42,6 +42,8 @@ struct cupsd_client_s
 			*query_string;	/* QUERY_STRING environment variable */
   int			file;		/* Input/output file */
   int			file_ready;	/* Input ready on file/pipe? */
+  int			bg_pending;	/* Background response pending? */
+  cupsd_printer_t	*bg_printer;	/* Background printer */
   int			pipe_pid;	/* Pipe process ID (or 0 if not a pipe) */
   http_status_t		pipe_status;	/* HTTP status from pipe process */
   int			sent_header,	/* Non-zero if sent HTTP header */

@@ -1,7 +1,7 @@
 /*
  * Authorization definitions for the CUPS scheduler.
  *
- * Copyright © 2021-2023 by OpenPrinting.
+ * Copyright © 2020-2024 by OpenPrinting.
  * Copyright 2007-2014 by Apple Inc.
  * Copyright 1997-2006 by Easy Software Products, all rights reserved.
  *
@@ -97,8 +97,6 @@ typedef struct
 			*deny;		/* Deny lines */
   http_encryption_t	encryption;	/* To encrypt or not to encrypt... */
 } cupsd_location_t;
-
-typedef struct cupsd_client_s cupsd_client_t;
 
 
 /*

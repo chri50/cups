@@ -1,7 +1,7 @@
 /*
  * IPP backend for CUPS.
  *
- * Copyright © 2021-2023 by OpenPrinting
+ * Copyright © 2021-2024 by OpenPrinting
  * Copyright © 2007-2021 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
@@ -111,6 +111,7 @@ static const char * const pattrs[] =	/* Printer attributes we want */
   "multiple-document-handling-supported",
   "operations-supported",
   "print-color-mode-supported",
+  "print-scaling-supported",
   "printer-alert",
   "printer-alert-description",
   "printer-is-accepting-jobs",
@@ -163,7 +164,8 @@ static ipp_t		*new_request(ipp_op_t op, int version, const char *uri,
 				     ppd_file_t *ppd,
 				     ipp_attribute_t *media_col_sup,
 				     ipp_attribute_t *doc_handling_sup,
-				     ipp_attribute_t *print_color_mode_sup);
+				     ipp_attribute_t *print_color_mode_sup,
+				     ipp_attribute_t *print_scaling_sup);
 static const char	*password_cb(const char *prompt, http_t *http,
 			             const char *method, const char *resource,
 			             int *user_data);
@@ -217,7 +219,7 @@ main(int  argc,				/* I - Number of command-line args */
   off_t		compatsize = 0;		/* Size of compatibility file */
   int		port;			/* Port number (not used) */
   char		uri[HTTP_MAX_URI];	/* Updated URI without user/pass */
-  char		print_job_name[1024];	/* Update job-name for Print-Job */
+  char		print_job_name[256];	/* Update job-name for Print-Job */
   http_status_t	http_status;		/* Status of HTTP request */
   ipp_status_t	ipp_status;		/* Status of IPP request */
   http_t	*http;			/* HTTP connection */
@@ -251,6 +253,7 @@ main(int  argc,				/* I - Number of command-line args */
   ipp_attribute_t *printer_state;	/* printer-state attribute */
   ipp_attribute_t *printer_accepting;	/* printer-is-accepting-jobs */
   ipp_attribute_t *print_color_mode_sup;/* Does printer support print-color-mode? */
+  ipp_attribute_t *print_scaling_sup;	/* print-scaling-supported */
   int		create_job = 0,		/* Does printer support Create-Job? */
 		get_job_attrs = 0,	/* Does printer support Get-Job-Attributes? */
 		send_document = 0,	/* Does printer support Send-Document? */
@@ -420,6 +423,19 @@ main(int  argc,				/* I - Number of command-line args */
     cupsSetEncryption(HTTP_ENCRYPTION_ALWAYS);
   else
     cupsSetEncryption(HTTP_ENCRYPTION_IF_REQUESTED);
+
+  if (!strcmp(auth_info_required, "negotiate") &&
+      (isdigit(hostname[0] & 255) || hostname[0] == '['))
+  {
+   /*
+    * IP addresses are not allowed with Kerberos...
+    */
+
+    _cupsLangPrintFilter(stderr, "ERROR",
+			 _("IP address is not allowed as hostname when using Negotiate - use FQDN."));
+    update_reasons(NULL, "-connecting-to-device");
+    return (CUPS_BACKEND_FAILED);
+  }
 
  /*
   * See if there are any options...
@@ -893,6 +909,7 @@ main(int  argc,				/* I - Number of command-line args */
   operations_sup       = NULL;
   doc_handling_sup     = NULL;
   print_color_mode_sup = NULL;
+  print_scaling_sup    = NULL;
 
   do
   {
@@ -1162,6 +1179,15 @@ main(int  argc,				/* I - Number of command-line args */
     }
 
     print_color_mode_sup = ippFindAttribute(supported, "print-color-mode-supported", IPP_TAG_KEYWORD);
+
+    if ((print_scaling_sup = ippFindAttribute(supported, "print-scaling-supported", IPP_TAG_KEYWORD)) != NULL)
+    {
+      int count = ippGetCount(print_scaling_sup);
+
+      fprintf(stderr, "DEBUG: print-scaling-supported (%d values)\n", count);
+      for (i = 0; i < count; i ++)
+        fprintf(stderr, "DEBUG: [%d] = %s\n", i, ippGetString(print_scaling_sup, i, NULL));
+    }
 
     if ((operations_sup = ippFindAttribute(supported, "operations-supported",
 					   IPP_TAG_ENUM)) != NULL)
@@ -1458,6 +1484,10 @@ main(int  argc,				/* I - Number of command-line args */
   }
   else
   {
+   /*
+    * TODO: make this compatible with UTF-8 - possible UTF-8 truncation here..
+    */
+
     snprintf(print_job_name, sizeof(print_job_name), "%s - %s", argv[1],
              argv[3]);
     monitor.job_name = print_job_name;
@@ -1474,7 +1504,7 @@ main(int  argc,				/* I - Number of command-line args */
     request = new_request(IPP_OP_VALIDATE_JOB, version, uri, argv[2],
                           monitor.job_name, num_options, options, compression,
 			  copies_sup ? copies : 1, document_format, pc, ppd,
-			  media_col_sup, doc_handling_sup, print_color_mode_sup);
+			  media_col_sup, doc_handling_sup, print_color_mode_sup, print_scaling_sup);
 
     response = cupsDoRequest(http, request, resource);
 
@@ -1597,7 +1627,7 @@ main(int  argc,				/* I - Number of command-line args */
 			  version, uri, argv[2], monitor.job_name, num_options,
 			  options, compression, copies_sup ? copies : 1,
 			  document_format, pc, ppd, media_col_sup,
-			  doc_handling_sup, print_color_mode_sup);
+			  doc_handling_sup, print_color_mode_sup, print_scaling_sup);
 
    /*
     * Do the request...
@@ -1889,7 +1919,7 @@ main(int  argc,				/* I - Number of command-line args */
 
           if (ippContainsString(reasons, "document-format-error"))
             ipp_status = IPP_STATUS_ERROR_DOCUMENT_FORMAT_ERROR;
-          else if (ippContainsString(reasons, "document-unprintable"))
+          else if (ippContainsString(reasons, "document-unprintable-error"))
             ipp_status = IPP_STATUS_ERROR_DOCUMENT_UNPRINTABLE;
 
 	  ippDelete(response);
@@ -2678,7 +2708,7 @@ monitor_printer(
             new_reasons |= _CUPS_JSR_JOB_RELEASE_WAIT;
           else if (!strcmp(attr->values[i].string.text, "document-format-error"))
             new_reasons |= _CUPS_JSR_DOCUMENT_FORMAT_ERROR;
-          else if (!strcmp(attr->values[i].string.text, "document-unprintable"))
+          else if (!strcmp(attr->values[i].string.text, "document-unprintable-error"))
             new_reasons |= _CUPS_JSR_DOCUMENT_UNPRINTABLE;
 
 	  if (!job_canceled && (!strncmp(attr->values[i].string.text, "job-canceled-", 13) || !strcmp(attr->values[i].string.text, "aborted-by-system")))
@@ -2799,8 +2829,9 @@ new_request(
     ppd_file_t      *ppd,		/* I - PPD file data */
     ipp_attribute_t *media_col_sup,	/* I - media-col-supported values */
     ipp_attribute_t *doc_handling_sup,  /* I - multiple-document-handling-supported values */
-    ipp_attribute_t *print_color_mode_sup)
-					/* I - Printer supports print-color-mode */
+    ipp_attribute_t *print_color_mode_sup,
+					/* I - Printer supports print-color-mode? */
+    ipp_attribute_t *print_scaling_sup)	/* I - print-scaling-supported values */
 {
   ipp_t		*request;		/* Request data */
   const char	*keyword;		/* PWG keyword */
@@ -2866,6 +2897,9 @@ new_request(
       fputs("DEBUG: Adding standard IPP operation/job attributes.\n", stderr);
 
       copies = _cupsConvertOptions(request, ppd, pc, media_col_sup, doc_handling_sup, print_color_mode_sup, user, format, copies, num_options, options);
+
+      if ((keyword = cupsGetOption("print-scaling", num_options, options)) != NULL && ippContainsString(print_scaling_sup, keyword))
+        ippAddString(request, IPP_TAG_JOB, IPP_TAG_KEYWORD, "print-scaling", NULL, keyword);
 
      /*
       * Map FaxOut options...

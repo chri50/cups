@@ -1,6 +1,7 @@
 /*
  * MIME type/conversion database definitions for CUPS.
  *
+ * Copyright © 2020-2024 by OpenPrinting.
  * Copyright 2007-2013 by Apple Inc.
  * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
@@ -33,7 +34,7 @@ extern "C" {
 #  define MIME_MAX_SUPER	16		/* Maximum size of supertype name */
 #  define MIME_MAX_TYPE		IPP_MAX_NAME	/* Maximum size of type name */
 #  define MIME_MAX_FILTER	256		/* Maximum size of filter pathname */
-#  define MIME_MAX_BUFFER	4096		/* Maximum size of file buffer */
+#  define MIME_MAX_BUFFER	8192		/* Maximum size of file buffer */
 
 
 /*

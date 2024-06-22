@@ -1,5 +1,72 @@
-CHANGES - OpenPrinting CUPS 2.4.7 - (2023-09-20)
+CHANGES - OpenPrinting CUPS 2.4.10 - (2024-06-18)
 ================================================
+
+Changes in CUPS v2.4.10 (2024-06-18)
+-----------------------------
+
+- Fixed error handling when reading a mixed `1setOf` attribute.
+- Fixed scheduler start if there is only domain socket to listen on (Issue #985)
+
+
+Changes in CUPS v2.4.9 (2024-06-11)
+-----------------------------------
+
+- Fixed domain socket handling (CVE-2024-35235)
+- Fixed creating of `cupsUrfSupported` PPD keyword (Issue #952)
+- Fixed searching for destinations in web ui (Issue #954)
+- Fixed TLS negotiation using OpenSSL with servers that require the TLS SNI
+  extension.
+- Really raised `cups_enum_dests()` timeout for listing available IPP printers
+  (Issue #751)...
+- Fixed `Host` header regression (Issue #967)
+- Fixed DNS-SD lookups of local services with Avahi (Issue #970)
+- Fixed listing jobs in destinations in web ui. (Apple issue #6204)
+- Fixed showing search query in web ui help page. (Issue #977)
+
+
+Changes in CUPS v2.4.8 (2024-04-26)
+-----------------------------------
+
+- Added warning if the device has to be asked for 'all,media-col-database'
+  separately (Issue #829)
+- Added new value for 'lpstat' option '-W' - successfull - for getting
+  successfully printed jobs (Issue #830)
+- Added support for PAM modules password-auth and system-auth (Issue #892)
+- Updated IPP Everywhere printer creation error reporting (Issue #347)
+- Updated and documented the MIME typing buffering limit (Issue #925)
+- Now report an error for temporary printer defaults with lpadmin (Issue #237)
+- Fixed mapping of PPD InputSlot, MediaType, and OutputBin values (Issue #238)
+- Fixed "document-unprintable-error" handling (Issue #391)
+- Fixed the web interface not showing an error for a non-existent printer
+  (Issue #423)
+- Fixed printing of jobs with job name longer than 255 chars on older printers
+  (Issue #644)
+- Really backported fix for Issue #742
+- Fixed `cupsCopyDestInfo` device connection detection (Issue #586)
+- Fixed "Upgrade" header handling when there is no TLS support (Issue #775)
+- Fixed memory leak when unloading a job (Issue #813)
+- Fixed memory leak when creating color profiles (Issue #815)
+- Fixed a punch finishing bug in the IPP Everywhere support (Issue #821)
+- Fixed crash in `scan_ps()` if incoming argument is NULL (Issue #831)
+- Fixed setting job state reasons for successful jobs (Issue #832)
+- Fixed infinite loop in IPP backend if hostname is IP address with Kerberos
+  (Issue #838)
+- Added additional check on socket if `revents` from `poll()` returns POLLHUP
+  together with POLLIN or POLLOUT in `httpAddrConnect2()` (Issue #839)
+- Fixed crash in `ppdEmitString()` if `size` is NULL (Issue #850)
+- Fixed reporting `media-source-supported` when sharing printer which has
+  numbers as strings instead of keywords as `InputSlot` values (Issue #859)
+- Fixed IPP backend to support the "print-scaling" option with IPP printers
+  (Issue #862)
+- Fixed potential race condition for the creation of temporary queues
+  (Issue #871)
+- Fixed `httpGets` timeout handling (Issue #879)
+- Fixed checking for required attributes during PPD generation (Issue #890)
+- Fixed encoding of IPv6 addresses in HTTP requests (Issue #903)
+- Fixed sending response headers to client (Issue #927)
+- Fixed CGI program initialization and validation of form checkbox and text
+  fields.
+
 
 Changes in CUPS v2.4.7 (2023-09-20)
 -----------------------------------
@@ -15,6 +82,7 @@ Changes in CUPS v2.4.7 (2023-09-20)
 - Fixed purging job files via `cancel -x` (Issue #742)
 - Fixed RFC 1179 port reserving behavior in LPD backend (Issue #743)
 - Fixed a bug in the PPD command interpretation code (Issue #768)
+- Fixed Oki 407 freeze when printing larger jobs (Issue #877)
 
 
 Changes in CUPS v2.4.6 (2023-06-22)

@@ -1,7 +1,7 @@
 /*
  * Main loop for the CUPS scheduler.
  *
- * Copyright © 2021-2023 by OpenPrinting.
+ * Copyright © 2020-2024 by OpenPrinting.
  * Copyright © 2007-2019 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
@@ -2036,6 +2036,21 @@ service_checkin(void)
     service_add_listener(fd, 0);
   }
 #endif /* HAVE_LAUNCHD */
+
+  if (cupsArrayCount(Listeners) == 0)
+  {
+   /*
+    * No listeners!
+    */
+
+    cupsdLogMessage(CUPSD_LOG_EMERG, "No listener sockets present.");
+
+   /*
+    * Commit suicide...
+    */
+
+    cupsdEndProcess(getpid(), 0);
+  }
 }
 
 

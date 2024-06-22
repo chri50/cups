@@ -1,7 +1,7 @@
 /*
  * Job management routines for the CUPS scheduler.
  *
- * Copyright © 2022-2023 by OpenPrinting.
+ * Copyright © 2020-2024 by OpenPrinting.
  * Copyright © 2007-2019 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
@@ -1420,10 +1420,10 @@ cupsdDeleteJob(cupsd_job_t       *job,	/* I - Job */
     job->num_files = 0;
   }
 
+  unload_job(job);
+
   if (job->history)
     free_job_history(job);
-
-  unload_job(job);
 
   cupsArrayRemove(Jobs, job);
   cupsArrayRemove(ActiveJobs, job);
@@ -1846,6 +1846,14 @@ cupsdLoadJob(cupsd_job_t *job)		/* I - Job */
       ippSetString(job->attrs, &job->reasons, 0, "printer-stopped");
     else
       ippSetString(job->attrs, &job->reasons, 0, "none");
+  }
+  else if (job->state_value == IPP_JSTATE_COMPLETED && !strcmp(ippGetString(job->reasons, 0, NULL), "processing-to-stop-point"))
+  {
+   /*
+    * Try to fix job reasons for older jobs finished before openprinting/cups #832 was applied...
+    */
+
+    ippSetString(job->attrs, &job->reasons, 0, "job-completed-successfully");
   }
 
   job->impressions = ippFindAttribute(job->attrs, "job-impressions-completed", IPP_TAG_INTEGER);
@@ -2608,8 +2616,16 @@ cupsdSetJobState(
     case IPP_JOB_CANCELED :
     case IPP_JOB_COMPLETED :
 	set_time(job, "time-at-completed");
-	ippSetString(job->attrs, &job->reasons, 0, "processing-to-stop-point");
-        break;
+
+       /*
+	* Set the reasons here only if we call finalize_job()
+	* at the end of this function, so finished jobs can get proper
+	* reasons message there...
+	*/
+
+	if (action >= CUPSD_JOB_FORCE && job && job->printer)
+	  ippSetString(job->attrs, &job->reasons, 0, "processing-to-stop-point");
+	break;
   }
 
  /*
