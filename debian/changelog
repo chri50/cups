@@ -1,3 +1,12 @@
+cups (2.3.1-9ubuntu1.7) focal-security; urgency=medium
+
+  * SECURITY UPDATE: cupsd listen arbitrary chmod 0140777
+    - debian/patches/CVE-2024-35235.patch: validate status of unlink and bind
+      in cups/http-addr.c
+    - CVE-2024-35235 
+
+ -- Sudhakar Verma <sudhakar.verma@canonical.com>  Sun, 23 Jun 2024 02:43:24 +0530
+
 cups (2.3.1-9ubuntu1.6) focal-security; urgency=medium
 
   * SECURITY UPDATE: Postscript parsing heap overflow
