@@ -1,7 +1,7 @@
 /*
  * HTTP routines for CUPS.
  *
- * Copyright © 2021-2023 by OpenPrinting.
+ * Copyright © 2022-2024 by OpenPrinting.
  * Copyright © 2007-2021 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
@@ -1221,6 +1221,7 @@ httpGets(char   *line,			/* I - Line to read into */
 	    continue;
 
 	  http->error = WSAGetLastError();
+	  return (NULL);
 	}
 	else if (WSAGetLastError() != http->error)
 	{
@@ -1241,6 +1242,7 @@ httpGets(char   *line,			/* I - Line to read into */
 	    continue;
 
 	  http->error = errno;
+	  return (NULL);
 	}
 	else if (errno != http->error)
 	{
@@ -4024,7 +4026,31 @@ http_create(
   http->version  = HTTP_VERSION_1_1;
 
   if (host)
-    strlcpy(http->hostname, host, sizeof(http->hostname));
+  {
+    DEBUG_printf(("5http_create: host=\"%s\"", host));
+
+    if (!strncmp(host, "fe80::", 6))
+    {
+      // IPv6 link local address, convert to IPvFuture format...
+      char	*zoneid;		// Pointer to zoneid separator
+
+      snprintf(http->hostname, sizeof(http->hostname), "[v1.%s]", host);
+      if ((zoneid = strchr(http->hostname, '%')) != NULL)
+        *zoneid = '+';
+    }
+    else if (isxdigit(host[0]) && isxdigit(host[1]) && isxdigit(host[2]) && isxdigit(host[3]) && host[4] == ':')
+    {
+      // IPv6 address, convert to URI format...
+      snprintf(http->hostname, sizeof(http->hostname), "[%s]", host);
+    }
+    else
+    {
+      // Not an IPv6 numeric address...
+      strlcpy(http->hostname, host, sizeof(http->hostname));
+    }
+
+    DEBUG_printf(("5http_create: http->hostname=\"%s\"", http->hostname));
+  }
 
   if (port == 443)			/* Always use encryption for https */
     http->encryption = HTTP_ENCRYPTION_ALWAYS;
@@ -4425,11 +4451,6 @@ http_send(http_t       *http,		/* I - HTTP connection */
 
       if (i == HTTP_FIELD_HOST)
       {
-        // Issue #185: Use "localhost" for the loopback addresses to work
-        // around an Avahi bug...
-        if (httpAddrLocalhost(http->hostaddr))
-          value = "localhost";
-
 	if (httpPrintf(http, "Host: %s:%d\r\n", value, httpAddrPort(http->hostaddr)) < 1)
 	{
 	  http->status = HTTP_STATUS_ERROR;

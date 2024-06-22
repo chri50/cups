@@ -1,7 +1,7 @@
 /*
  * Client routines for the CUPS scheduler.
  *
- * Copyright © 2021-2023 by OpenPrinting.
+ * Copyright © 2020-2024 by OpenPrinting.
  * Copyright © 2007-2021 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
@@ -430,6 +430,14 @@ cupsdCloseClient(cupsd_client_t *con)	/* I - Client to close */
     con->file = -1;
   }
 
+  if (con->bg_pending)
+  {
+   /*
+    * Don't close connection when there is a background thread pending
+    */
+    partial = 1;
+  }
+
  /*
   * Close the socket and clear the file from the input set for select()...
   */
@@ -548,6 +556,7 @@ cupsdReadClient(cupsd_client_t *con)	/* I - Client to read from */
 {
   char			line[32768],	/* Line from client... */
 			locale[64],	/* Locale */
+			name[128],	/* Class/Printer name */
 			*ptr;		/* Pointer into strings */
   http_status_t		status;		/* Transfer status */
   ipp_state_t		ipp_state;	/* State of IPP transfer */
@@ -1130,8 +1139,32 @@ cupsdReadClient(cupsd_client_t *con)	/* I - Client to read from */
 	      }
 	      else if (!strncmp(con->uri, "/classes", 8))
 	      {
+		if (strlen(con->uri) > 9)
+		{
+		  if (con->uri[9] != '?')
+		  {
+		    unsigned int i = 0;	// Array index
+
+		    for (char *start = con->uri + 9; *start && *start != '?' && i < sizeof(name);)
+		      name[i++] = *start++;
+
+		    name[i] = '\0';
+
+		    if (!cupsdFindClass(name))
+		    {
+		      if (!cupsdSendError(con, HTTP_STATUS_NOT_FOUND, CUPSD_AUTH_NONE))
+		      {
+			cupsdCloseClient(con);
+			return;
+		      }
+
+		      break;
+		    }
+		  }
+		}
+
 		cupsdSetStringf(&con->command, "%s/cgi-bin/classes.cgi", ServerBin);
-                if (con->uri[8] && con->uri[9])
+		if (con->uri[8] && con->uri[9])
 		  cupsdSetString(&con->options, con->uri + 8);
 		else
 		  cupsdSetString(&con->options, NULL);
@@ -1146,6 +1179,30 @@ cupsdReadClient(cupsd_client_t *con)	/* I - Client to read from */
 	      }
               else if (!strncmp(con->uri, "/printers", 9))
 	      {
+		if (strlen(con->uri) > 10)
+		{
+		  if (con->uri[10] != '?')
+		  {
+		    unsigned int i = 0;	// Array index
+
+		    for (char *start = con->uri + 10; *start && *start != '?' && i < sizeof(name);)
+		      name[i++] = *start++;
+
+		    name[i] = '\0';
+
+		    if (!cupsdFindPrinter(name))
+		    {
+		      if (!cupsdSendError(con, HTTP_STATUS_NOT_FOUND, CUPSD_AUTH_NONE))
+		      {
+			cupsdCloseClient(con);
+			return;
+		      }
+
+		      break;
+		    }
+		  }
+		}
+
 		cupsdSetStringf(&con->command, "%s/cgi-bin/printers.cgi", ServerBin);
                 if (con->uri[9] && con->uri[10])
 		  cupsdSetString(&con->options, con->uri + 9);
@@ -2405,23 +2462,12 @@ cupsdWriteClient(cupsd_client_t *con)	/* I - Client connection */
 	      httpSetField(con->http, field, value);
 
 	      if (field == HTTP_FIELD_LOCATION)
-	      {
 		con->pipe_status = HTTP_STATUS_SEE_OTHER;
-		con->sent_header = 2;
-	      }
-	      else
-	        con->sent_header = 1;
 	    }
 	    else if (!_cups_strcasecmp(con->header, "Status") && value)
-	    {
   	      con->pipe_status = (http_status_t)atoi(value);
-	      con->sent_header = 2;
-	    }
 	    else if (!_cups_strcasecmp(con->header, "Set-Cookie") && value)
-	    {
 	      httpSetCookie(con->http, value);
-	      con->sent_header = 1;
-	    }
 	  }
 
          /*
@@ -2456,6 +2502,8 @@ cupsdWriteClient(cupsd_client_t *con)	/* I - Client connection */
 		cupsdCloseClient(con);
 		return;
 	      }
+
+	      con->sent_header = 1;
 	    }
 	    else
 	    {
@@ -2464,6 +2512,8 @@ cupsdWriteClient(cupsd_client_t *con)	/* I - Client connection */
 		cupsdCloseClient(con);
 		return;
 	      }
+
+	      con->sent_header = 1;
 	    }
           }
 	  else

@@ -1,6 +1,7 @@
 /*
  * PPD code emission routines for CUPS.
  *
+ * Copyright © 2020-2024 by OpenPrinting.
  * Copyright 2007-2019 by Apple Inc.
  * Copyright 1997-2007 by Easy Software Products, all rights reserved.
  *
@@ -892,7 +893,12 @@ ppdEmitString(ppd_file_t    *ppd,	/* I - PPD file record */
         strlcpy(bufptr, "%%BeginFeature: *CustomPageSize True\n", (size_t)(bufend - bufptr + 1));
         bufptr += 37;
 
-        size = ppdPageSize(ppd, "Custom");
+        if ((size = ppdPageSize(ppd, "Custom")) == NULL)
+        {
+          free(buffer);
+          free(choices);
+          return (NULL);
+        }
 
         memset(values, 0, sizeof(values));
 

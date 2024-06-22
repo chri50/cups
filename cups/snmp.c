@@ -1,7 +1,7 @@
 /*
  * SNMP functions for CUPS.
  *
- * Copyright © 2022-2023 by OpenPrinting.
+ * Copyright © 2020-2024 by OpenPrinting.
  * Copyright © 2007-2019 by Apple Inc.
  * Copyright © 2006-2007 by Easy Software Products, all rights reserved.
  *
@@ -509,13 +509,18 @@ _cupsSNMPStringToOID(const char *src,	/* I - OID string */
        *src && dstptr < dstend;
        src ++)
   {
-    if (*src == '.')
+    if (*src == '.' && src[1])
     {
       dstptr ++;
       *dstptr = 0;
     }
     else if (isdigit(*src & 255))
+    {
+      if ((*dstptr * 10 + *src - '0') > 0xffff)
+        break;
+
       *dstptr = *dstptr * 10 + *src - '0';
+    }
     else
       break;
   }

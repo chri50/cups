@@ -18,7 +18,7 @@ Forwarded: not-needed
  4 files changed, 21 insertions(+), 7 deletions(-)
 
 diff --git a/Makedefs.in b/Makedefs.in
-index f571fc8..e44c2c0 100644
+index 42c8f23..5d5d4fe 100644
 --- a/Makedefs.in
 +++ b/Makedefs.in
 @@ -23,6 +23,7 @@ CUPS_VERSION    =       @CUPS_VERSION@
@@ -30,7 +30,7 @@ index f571fc8..e44c2c0 100644
  CXX		=	@LIBTOOL_CXX@ @CXX@
  DSO		=	@DSO@
 diff --git a/configure.ac b/configure.ac
-index cf8ba03..df8c4a9 100644
+index 3b5dd73..d29d876 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -25,6 +25,16 @@ sinclude(config-scripts/cups-opsys.m4)
@@ -51,10 +51,10 @@ index cf8ba03..df8c4a9 100644
  sinclude(config-scripts/cups-libtool.m4)
  sinclude(config-scripts/cups-compiler.m4)
 diff --git a/man/Makefile b/man/Makefile
-index 621fe60..e01591a 100644
+index d6e496a..d883fc2 100644
 --- a/man/Makefile
 +++ b/man/Makefile
-@@ -222,6 +222,5 @@ html:	$(MAN1) $(MAN5) $(MAN7) $(MAN8) mantohtml
+@@ -223,6 +223,5 @@ html:	$(MAN1) $(MAN5) $(MAN7) $(MAN8) mantohtml
  		./mantohtml $$file >../doc/help/man-`basename $$file .8`.html; \
  	done
  
