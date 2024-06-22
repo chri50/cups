@@ -64,7 +64,7 @@ MAN8	=	cupsaccept.8 \
 		lpmove.8 \
 		lpc.8
 
-LANGUAGES=de fr
+LANGUAGES=de fr pt
 
 #
 # Make everything...
