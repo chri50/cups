@@ -1063,7 +1063,11 @@ cupsdReadConfiguration(void)
   * as an error and exit!
   */
 
+#ifdef HAVE_ONDEMAND
   if (cupsArrayCount(Listeners) == 0 && !OnDemand)
+#else
+  if (cupsArrayCount(Listeners) == 0)
+#endif // HAVE_ONDEMAND
   {
    /*
     * No listeners!
