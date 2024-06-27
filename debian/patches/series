@@ -13,3 +13,4 @@
 0012-add-pt.patch
 CVE-2023-4504.patch
 CVE-2024-35235.patch
+fix-scheduler-start-if-only-domain-socket-to-listen.patch
