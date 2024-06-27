@@ -1,3 +1,11 @@
+cups (2.4.7-1.2ubuntu7.2) noble-security; urgency=medium
+
+  * SECURITY REGRESSION: early exit on missing listen directive
+    - d/p/fix-scheduler-start-if-only-domain-socket-to-listen.patch: don't
+      exit if no valid Listen or Port found (LP: #2070315)
+
+ -- Sudhakar Verma <sudhakar.verma@canonical.com>  Thu, 27 Jun 2024 19:17:32 +0530
+
 cups (2.4.7-1.2ubuntu7.1) noble-security; urgency=medium
 
   * SECURITY UPDATE: cupsd listen arbitrary chmod 0140777
