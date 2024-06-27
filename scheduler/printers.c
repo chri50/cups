@@ -620,7 +620,7 @@ cupsdDeletePrinter(
 
 
   cupsdLogMessage(CUPSD_LOG_DEBUG2, "cupsdDeletePrinter(p=%p(%s), update=%d)",
-                  p, p->name, update);
+                  (void *)p, p->name, update);
 
  /*
   * Save the current position in the Printers array...
@@ -782,11 +782,11 @@ cupsdDeleteTemporaryPrinters(int force) /* I - Force deletion instead of auto? *
 		  "cupsdDeleteTemporaryPrinters: Removing unused temporary printers");
 
  /*
-  * Allow temporary printers to stick around for 60 seconds after the last job
+  * Allow temporary printers to stick around for 5 minutes after the last job
   * completes.
   */
 
-  unused_time = time(NULL) - 60;
+  unused_time = time(NULL) - 300;
 
   for (p = (cupsd_printer_t *)cupsArrayFirst(Printers); p; p = (cupsd_printer_t *)cupsArrayNext(Printers))
   {
@@ -2550,7 +2550,7 @@ cupsdSetPrinterReasons(
 
 
   cupsdLogMessage(CUPSD_LOG_DEBUG2,
-		  "cupsdSetPrinterReasons(p=%p(%s),s=\"%s\"", p, p->name, s);
+		  "cupsdSetPrinterReasons(p=%p(%s),s=\"%s\"", (void *)p, p->name, s);
 
   if (s[0] == '-' || s[0] == '+')
   {
@@ -3396,7 +3396,7 @@ add_printer_filter(
 
   cupsdLogMessage(CUPSD_LOG_DEBUG2,
                   "add_printer_filter(p=%p(%s), filtertype=%p(%s/%s), "
-		  "filter=\"%s\")", p, p->name, filtertype, filtertype->super,
+		  "filter=\"%s\")", (void *)p, p->name, (void *)filtertype, filtertype->super,
 		  filtertype->type, filter);
 
  /*
