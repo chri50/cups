@@ -558,6 +558,18 @@ cupsdReadConfiguration(void)
 
   cupsdDeleteAllListeners();
 
+ /*
+  * Allocate array Listeners
+  */
+
+  Listeners = cupsArrayNew(NULL, NULL);
+
+  if (!Listeners)
+  {
+    fprintf(stderr, "Unable to allocate memory for array Listeners.");
+    return (0);
+  }
+
   old_remote_port = RemotePort;
   RemotePort      = 0;
 
@@ -1045,28 +1057,6 @@ cupsdReadConfiguration(void)
 	Group = 65534;
       }
     }
-  }
-
- /*
-  * Check that we have at least one listen/port line; if not, report this
-  * as an error and exit!
-  */
-
-  if (cupsArrayCount(Listeners) == 0)
-  {
-   /*
-    * No listeners!
-    */
-
-    cupsdLogMessage(CUPSD_LOG_EMERG,
-                    "No valid Listen or Port lines were found in the "
-		    "configuration file.");
-
-   /*
-    * Commit suicide...
-    */
-
-    cupsdEndProcess(getpid(), 0);
   }
 
  /*
@@ -3143,17 +3133,6 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
        /*
         * Allocate another listener...
 	*/
-
-        if (!Listeners)
-	  Listeners = cupsArrayNew(NULL, NULL);
-
-	if (!Listeners)
-	{
-          cupsdLogMessage(CUPSD_LOG_ERROR,
-	                  "Unable to allocate %s at line %d - %s.",
-	                  line, linenum, strerror(errno));
-          break;
-	}
 
         if ((lis = calloc(1, sizeof(cupsd_listener_t))) == NULL)
 	{

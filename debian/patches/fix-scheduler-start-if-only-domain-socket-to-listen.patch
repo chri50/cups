@@ -1,0 +1,85 @@
+From 145b946a86062aafab76c656ee9c1112bfd4f804 Mon Sep 17 00:00:00 2001
+From: Zdenek Dohnal <zdohnal@redhat.com>
+Date: Tue, 18 Jun 2024 10:38:48 +0200
+Subject: [PATCH] scheduler: Fix cupsd activated on-demand via socket
+
+If only the expected cups.sock is set as listener in cupsd.conf, the
+array Listeners was NULL. To prevent copying the code, do the array
+allocation earlier and have only one check for Listeners, in
+service_checkin() which is run every time cupsd starts.
+
+Fixes #985
+---
+[Ubuntu note: Ignore CHANGES.md and logs in scheduler/main.c
+backport for HAVE_ONDEMAND missing
+-- sudhackar]
+---
+
+--- cups-2.4.1op1.orig/scheduler/conf.c
++++ cups-2.4.1op1/scheduler/conf.c
+@@ -558,6 +558,18 @@ cupsdReadConfiguration(void)
+ 
+   cupsdDeleteAllListeners();
+ 
++ /*
++  * Allocate array Listeners
++  */
++
++  Listeners = cupsArrayNew(NULL, NULL);
++
++  if (!Listeners)
++  {
++    fprintf(stderr, "Unable to allocate memory for array Listeners.");
++    return (0);
++  }
++
+   old_remote_port = RemotePort;
+   RemotePort      = 0;
+ 
+@@ -1048,28 +1060,6 @@ cupsdReadConfiguration(void)
+   }
+ 
+  /*
+-  * Check that we have at least one listen/port line; if not, report this
+-  * as an error and exit!
+-  */
+-
+-  if (cupsArrayCount(Listeners) == 0)
+-  {
+-   /*
+-    * No listeners!
+-    */
+-
+-    cupsdLogMessage(CUPSD_LOG_EMERG,
+-                    "No valid Listen or Port lines were found in the "
+-		    "configuration file.");
+-
+-   /*
+-    * Commit suicide...
+-    */
+-
+-    cupsdEndProcess(getpid(), 0);
+-  }
+-
+- /*
+   * Set the default locale using the language and charset...
+   */
+ 
+@@ -3144,17 +3134,6 @@ read_cupsd_conf(cups_file_t *fp)	/* I -
+         * Allocate another listener...
+ 	*/
+ 
+-        if (!Listeners)
+-	  Listeners = cupsArrayNew(NULL, NULL);
+-
+-	if (!Listeners)
+-	{
+-          cupsdLogMessage(CUPSD_LOG_ERROR,
+-	                  "Unable to allocate %s at line %d - %s.",
+-	                  line, linenum, strerror(errno));
+-          break;
+-	}
+-
+         if ((lis = calloc(1, sizeof(cupsd_listener_t))) == NULL)
+ 	{
+           cupsdLogMessage(CUPSD_LOG_ERROR,

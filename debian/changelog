@@ -1,3 +1,11 @@
+cups (2.4.1op1-1ubuntu4.10) jammy-security; urgency=medium
+
+  * SECURITY REGRESSION: early exit on missing listen directive
+    - d/p/fix-scheduler-start-if-only-domain-socket-to-listen.patch: don't
+      exit if no valid Listen or Port found (LP: #2070315)
+
+ -- Sudhakar Verma <sudhakar.verma@canonical.com>  Thu, 27 Jun 2024 19:09:25 +0530
+
 cups (2.4.1op1-1ubuntu4.9) jammy-security; urgency=medium
 
   * SECURITY UPDATE: cupsd listen arbitrary chmod 0140777
