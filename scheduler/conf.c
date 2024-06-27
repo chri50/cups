@@ -558,6 +558,18 @@ cupsdReadConfiguration(void)
 
   cupsdDeleteAllListeners();
 
+ /*
+  * Allocate array Listeners
+  */
+
+  Listeners = cupsArrayNew(NULL, NULL);
+
+  if (!Listeners)
+  {
+    fprintf(stderr, "Unable to allocate memory for array Listeners.\n");
+    return (0);
+  }
+
   old_remote_port = RemotePort;
   RemotePort      = 0;
 
@@ -1045,28 +1057,6 @@ cupsdReadConfiguration(void)
 	Group = 65534;
       }
     }
-  }
-
- /*
-  * Check that we have at least one listen/port line; if not, report this
-  * as an error and exit!
-  */
-
-  if (cupsArrayCount(Listeners) == 0)
-  {
-   /*
-    * No listeners!
-    */
-
-    cupsdLogMessage(CUPSD_LOG_EMERG,
-                    "No valid Listen or Port lines were found in the "
-		    "configuration file.");
-
-   /*
-    * Commit suicide...
-    */
-
-    cupsdEndProcess(getpid(), 0);
   }
 
  /*
@@ -3077,6 +3067,26 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
 
 
      /*
+      * If we are launched on-demand, do not use domain sockets from the config
+      * file.  Also check that the domain socket path is not too long...
+      */
+
+#ifdef HAVE_ONDEMAND
+      if (*value == '/' && OnDemand)
+      {
+        if (strcmp(value, CUPS_DEFAULT_DOMAINSOCKET))
+          cupsdLogMessage(CUPSD_LOG_INFO, "Ignoring %s address %s at line %d - only using domain socket from launchd/systemd.", line, value, linenum);
+        continue;
+      }
+#endif // HAVE_ONDEMAND
+
+      if (*value == '/' && strlen(value) > (sizeof(addr->addr.un.sun_path) - 1))
+      {
+        cupsdLogMessage(CUPSD_LOG_INFO, "Ignoring %s address %s at line %d - too long.", line, value, linenum);
+        continue;
+      }
+
+     /*
       * Get the address list...
       */
 
@@ -3123,17 +3133,6 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
        /*
         * Allocate another listener...
 	*/
-
-        if (!Listeners)
-	  Listeners = cupsArrayNew(NULL, NULL);
-
-	if (!Listeners)
-	{
-          cupsdLogMessage(CUPSD_LOG_ERROR,
-	                  "Unable to allocate %s at line %d - %s.",
-	                  line, linenum, strerror(errno));
-          break;
-	}
 
         if ((lis = calloc(1, sizeof(cupsd_listener_t))) == NULL)
 	{

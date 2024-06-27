@@ -16,3 +16,8 @@
 0016-CVE-2023-32360.patch
 0017-check-colormodel-also-for-CMYK.patch
 0018-dont-override-color-settings-from-print-dialoag.patch
+0019-CVE-2024-35235.patch
+0020-CVE-2024-35235-regression1.patch
+0021-CVE-2024-35235-regression2.patch
+0022-CVE-2024-35235-regression3.patch
+0023-CVE-2024-35235-regression4.patch
