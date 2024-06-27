@@ -1,3 +1,11 @@
+cups (2.4.6-0ubuntu3.2) mantic-security; urgency=medium
+
+  * SECURITY REGRESSION: early exit on missing listen directive
+    - d/p/fix-scheduler-start-if-only-domain-socket-to-listen.patch: don't
+      exit if no valid Listen or Port found (LP: #2070315)
+
+ -- Sudhakar Verma <sudhakar.verma@canonical.com>  Thu, 27 Jun 2024 19:13:38 +0530
+
 cups (2.4.6-0ubuntu3.1) mantic-security; urgency=medium
 
    * SECURITY UPDATE: cupsd listen arbitrary chmod 0140777
