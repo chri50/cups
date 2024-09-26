@@ -1,3 +1,16 @@
+cups (2.4.2-3+deb12u8) bookworm-security; urgency=high
+
+  * CVE-2024-47175
+    Fix CVE and upstream also added some extra hardening to patch
+    - validate URIs, attribute names, and capabilities
+      in cups/ppd-cache.c, scheduler/ipp.c
+    - sanitize make and model in cups/ppd-cache.c
+    - PPDize preset and template names in cups/ppd-cache.c
+    - quote PPD localized strings in  cups/ppd-cache.c
+    - fix warnings in cups/ppd-cache.c
+
+ -- Thorsten Alteholz <debian@alteholz.de>  Thu, 26 Sep 2024 23:45:05 +0200
+
 cups (2.4.2-3+deb12u7) bookworm; urgency=medium
 
   * fix regression of CVE-2024-35235 in case only domain sockets
