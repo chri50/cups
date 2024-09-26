@@ -1,5 +1,5 @@
 # Translation of cups man pages to German
-# Copyright (C) Helge Kreutzmann <debian@helgefjell.de>, 2008-2023
+# Copyright (C) Helge Kreutzmann <debian@helgefjell.de>, 2008-2024
 # Chris Leick <c.leick@vollbio.de>, 2009.
 # This file is distributed under the same license as the cups package.
 #
@@ -10,9 +10,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: cups man pages 2.4.7-1\n"
-"POT-Creation-Date: 2023-10-08 06:13+0200\n"
-"PO-Revision-Date: 2023-10-08 06:26+0200\n"
+"Project-Id-Version: cups man pages 2.4.10-1\n"
+"POT-Creation-Date: 2024-06-23 06:18+0200\n"
+"PO-Revision-Date: 2024-06-23 07:05+0200\n"
 "Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
 "Language-Team: de <debian-l10n-german@lists.debian.org>\n"
 "Language: de\n"
@@ -617,7 +617,7 @@ msgstr "Die mit dem Drucker verbundene Geräte-URI."
 #. type: SH
 #: backend.7:183 cups.1:115 cupsd.8:72 cupsd-helper.8:57 cupsfilter.8:111
 #: cups-lpd.8:55 cups-snmp.8:41 ipptool.1:203 lpoptions.1:106 mime.convs.5:38
-#: mime.types.5:88
+#: mime.types.5:91
 #, no-wrap
 msgid "FILES"
 msgstr "DATEIEN"
@@ -696,7 +696,7 @@ msgstr ""
 #: cupstestppd.1:143 filter.7:213 ippevepcl.7:46 ippeveprinter.1:269
 #: ippfind.1:256 ipptool.1:255 ipptoolfile.5:715 lp.1:221 lpadmin.8:225
 #: lpc.8:48 lpinfo.8:123 lpmove.8:68 lpoptions.1:112 lpq.1:58 lpr.1:173
-#: lprm.1:75 lpstat.1:142 mailto.conf.5:41 mime.convs.5:55 mime.types.5:101
+#: lprm.1:75 lpstat.1:142 mailto.conf.5:41 mime.convs.5:55 mime.types.5:104
 #: notifier.7:32 ppdc.1:95 ppdcfile.5:154 ppdhtml.1:40 ppdi.1:47 ppdmerge.1:43
 #: ppdpo.1:47 printers.conf.5:19 subscriptions.conf.5:22
 #, no-wrap
@@ -725,7 +725,7 @@ msgstr "CUPS-Online-Hilfe (http://localhost:631/help)"
 #: cupstestppd.1:147 filter.7:221 ippevepcl.7:48 ippeveprinter.1:273
 #: ippfind.1:258 ipptool.1:260 ipptoolfile.5:720 lp.1:230 lpadmin.8:231
 #: lpc.8:58 lpinfo.8:126 lpmove.8:75 lpoptions.1:119 lpq.1:65 lpr.1:182
-#: lprm.1:82 lpstat.1:149 mailto.conf.5:44 mime.convs.5:62 mime.types.5:108
+#: lprm.1:82 lpstat.1:149 mailto.conf.5:44 mime.convs.5:62 mime.types.5:111
 #: notifier.7:36 ppdc.1:102 ppdcfile.5:161 ppdhtml.1:47 ppdi.1:54 ppdmerge.1:50
 #: ppdpo.1:54 printers.conf.5:28 subscriptions.conf.5:31
 #, no-wrap
@@ -734,17 +734,17 @@ msgstr "COPYRIGHT"
 
 #. type: Plain text
 #: backend.7:221 cancel.1:93 classes.conf.5:31 client.conf.5:144 cups.1:144
-#: cupsaccept.8:87 cups-config.1:116 cupsctl.8:100 cupsd.8:127
-#: cupsd-helper.8:91 cupsd-logs.5:223 cupsenable.8:98 cupsfilter.8:140
-#: cups-snmp.8:57 cups-snmp.conf.5:67 cupstestppd.1:148 filter.7:222
-#: ippevepcl.7:49 ippeveprinter.1:274 ippfind.1:259 ipptool.1:261
-#: ipptoolfile.5:721 lp.1:231 lpadmin.8:232 lpc.8:59 lpinfo.8:127 lpmove.8:76
-#: lpoptions.1:120 lpq.1:66 lpr.1:183 lprm.1:83 lpstat.1:150 mailto.conf.5:45
-#: mime.convs.5:63 mime.types.5:109 notifier.7:37 ppdc.1:103 ppdcfile.5:162
-#: ppdhtml.1:48 ppdi.1:55 ppdmerge.1:51 ppdpo.1:55 printers.conf.5:29
-#: subscriptions.conf.5:32
-msgid "Copyright \\[co] 2021-2023 by OpenPrinting."
-msgstr "Copyright \\[co] 2021-2023 by OpenPrinting."
+#: cupsaccept.8:87 cups-config.1:116 cupsctl.8:100 cupsd.8:127 cupsd.conf.5:921
+#: cupsd-helper.8:91 cupsd-logs.5:223 cupsenable.8:98 cups-files.conf.5:281
+#: cupsfilter.8:140 cups-lpd.8:117 cups-snmp.8:57 cups-snmp.conf.5:67
+#: cupstestppd.1:148 filter.7:222 ippevepcl.7:49 ippeveprinter.1:274
+#: ippfind.1:259 ipptool.1:261 ipptoolfile.5:721 lp.1:231 lpadmin.8:232
+#: lpc.8:59 lpinfo.8:127 lpmove.8:76 lpoptions.1:120 lpq.1:66 lpr.1:183
+#: lprm.1:83 lpstat.1:150 mailto.conf.5:45 mime.convs.5:63 mime.types.5:112
+#: notifier.7:37 ppdc.1:103 ppdcfile.5:162 ppdhtml.1:48 ppdi.1:55 ppdmerge.1:51
+#: ppdpo.1:55 printers.conf.5:29 subscriptions.conf.5:32
+msgid "Copyright \\[co] 2020-2024 by OpenPrinting."
+msgstr "Copyright \\[co] 2020-2024 by OpenPrinting."
 
 #. type: TH
 #: cancel.1:11
@@ -904,7 +904,7 @@ msgstr ""
 #. type: SH
 #: cancel.1:65 cups-config.1:93 cupsctl.8:68 cupsd.8:85 cupsd.conf.5:891
 #: cupstestppd.1:126 ippeveprinter.1:253 ippfind.1:243 ipptool.1:242 lp.1:203
-#: lpinfo.8:101 lpmove.8:52 lpr.1:155 lprm.1:57 mime.convs.5:44 mime.types.5:90
+#: lpinfo.8:101 lpmove.8:52 lpr.1:155 lprm.1:57 mime.convs.5:44 mime.types.5:93
 #, no-wrap
 msgid "EXAMPLES"
 msgstr "BEISPIELE"
@@ -3669,9 +3669,8 @@ msgid ""
 "\"10800\" (3 hours)."
 msgstr ""
 "legt die maximale Zeit, die ein Auftrag zum Drucken verbrauchen darf, bevor "
-"er abgebrochen wird, fest. Falls auf 0 gesetzt, werden keine "
-"»hängenden« (stuck) Aufträge abgebrochen. Die Vorgabe ist 10800 Sekunden (3 "
-"Stunden)."
+"er abgebrochen wird, fest. Falls auf 0 gesetzt, werden keine »hängenden« "
+"(stuck) Aufträge abgebrochen. Die Vorgabe ist 10800 Sekunden (3 Stunden)."
 
 #. type: TP
 #: cupsd.conf.5:323
@@ -3826,8 +3825,8 @@ msgstr "B<PreserveJobFiles >I<Sekunden>"
 msgid ""
 "Specifies whether job files (documents) are preserved after a job is "
 "printed.  If a numeric value is specified, job files are preserved for the "
-"indicated number of seconds after printing.  The default is "
-"\"86400\" (preserve 1 day)."
+"indicated number of seconds after printing.  The default is \"86400\" "
+"(preserve 1 day)."
 msgstr ""
 "Legt fest, ob Auftragsdateien (Dokumente) erhalten bleiben, nachdem ein "
 "Auftrag gedruckt wurde. Falls ein numerischer Wert angegeben wird, werden "
@@ -3877,11 +3876,11 @@ msgstr "B<ReadyPaperSizes >I<Größenname[,…]>"
 #. type: Plain text
 #: cupsd.conf.5:391
 msgid ""
-"Specifies a list of potential paper sizes that are reported as "
-"\"ready\" (loaded).  The actual list will only contain sizes that each "
-"printer supports.  The default is \"Letter,Legal,Tabloid,4x6,Env10\" when "
-"the default paper size is \"Letter\" and \"A3,A4,A5,A6,EnvDL\" otherwise.  "
-"Note: Paper sizes must use the size names from the PPD file and not PWG self-"
+"Specifies a list of potential paper sizes that are reported as \"ready\" "
+"(loaded).  The actual list will only contain sizes that each printer "
+"supports.  The default is \"Letter,Legal,Tabloid,4x6,Env10\" when the "
+"default paper size is \"Letter\" and \"A3,A4,A5,A6,EnvDL\" otherwise.  Note: "
+"Paper sizes must use the size names from the PPD file and not PWG self-"
 "describing media size names."
 msgstr ""
 "Legt eine Liste möglicher Papiergrößen fest, die als »bereit« (geladen) "
@@ -5598,11 +5597,6 @@ msgstr ""
 "B<classes.conf>(5), B<cups-files.conf>(5), B<cupsd>(8), B<mime.convs>(5), "
 "B<mime.types>(5), B<printers.conf>(5), B<subscriptions.conf>(5), CUPS-Online-"
 "Hilfe (http://localhost:631/help)"
-
-#. type: Plain text
-#: cupsd.conf.5:921 cups-files.conf.5:281 cups-lpd.8:117
-msgid "Copyright \\[co] 2020-2023 by OpenPrinting."
-msgstr "Copyright \\[co] 2020-2023 by OpenPrinting."
 
 #. type: TH
 #: cupsd-helper.8:11
@@ -15707,20 +15701,20 @@ msgstr "Zeigt die Rangordnung der Druckaufträge."
 msgid "B<-W >I<which-jobs>"
 msgstr "B<-W >I<welche-Aufträge>"
 
+# FIXME Missing closing quote after "all"
 #. type: Plain text
 #: lpstat.1:87
 msgid ""
-"Specifies which jobs to show, \"completed\" or \"not-completed\" (the "
-"default).  This option I<must> appear before the I<-o> option and/or any "
-"printer names, otherwise the default (\"not-completed\") value will be used "
-"in the request to the scheduler."
+"Specifies which jobs to show, \"all, \"successful\", \"completed\" or \"not-"
+"completed\" (the default).  This option I<must> appear before the I<-o> "
+"option and/or any printer names, otherwise the default (\"not-completed\") "
+"value will be used in the request to the scheduler."
 msgstr ""
-"Legt fest, welche Druckaufträge angezeigt werden sollen, die "
-"»completed« (abgeschlossenen) oder (standardmäßig) die »not-"
-"completed« (nicht-abgeschlossenen). Diese Option I<muss> vor der Option I<-"
-"o> und/oder allen Druckernamen aufgeführt werden, da ansonsten der "
-"Vorgabewert (»not-completed«) für alle Anfragen am Auftragsplaner "
-"(Scheduler) verwandt wird."
+"Legt fest, welche Druckaufträge angezeigt werden sollen, »all« (alle), »successful« (erfolgreiche), »completed« "
+"(abgeschlossene) oder (standardmäßig) »not-completed« (nicht-"
+"abgeschlossene). Diese Option I<muss> vor der Option I<-o> und/oder allen "
+"Druckernamen aufgeführt werden, da ansonsten der Vorgabewert (»not-"
+"completed«) für alle Anfragen am Auftragsplaner (Scheduler) verwandt wird."
 
 #. type: TP
 #: lpstat.1:87
@@ -16082,7 +16076,7 @@ msgstr ""
 "sind relativ zu dem CUPS-Filterverzeichnis."
 
 #. type: Plain text
-#: mime.convs.5:40 mime.types.5:90
+#: mime.convs.5:40 mime.types.5:93
 msgid "I</etc/cups> - Typical CUPS configuration directory."
 msgstr "I</etc/cups> - Typisches CUPS-Konfigurationsverzeichnis."
 
@@ -16254,37 +16248,39 @@ msgid "B<ascii(>I<offset>B<,>I<length>B<)>"
 msgstr "B<ascii(>I<Versatz>B<,>I<Länge>B<)>"
 
 #. type: Plain text
-#: mime.types.5:48
+#: mime.types.5:49
 msgid ""
 "True if the I<length> bytes starting at I<offset> are valid printable ASCII "
-"(CR, NL, TAB, BS, 32-126)."
+"(CR, NL, TAB, BS, 32-126).  I<length> cannot exceed 8192 bytes."
 msgstr ""
 "Wahr, falls die I<Länge> Bytes beginnend an I<Versatz> gültige druckbare "
-"ASCII-Zeichen sind (CR, NL, TAB, BS, 32-126)"
+"ASCII-Zeichen sind (CR, NL, TAB, BS, 32-126). I<Länge> darf 8192 Byte nicht "
+"überschreiten."
 
 #. type: TP
-#: mime.types.5:48
+#: mime.types.5:49
 #, no-wrap
 msgid "B<printable(>I<offset>B<,>I<length>B<)>"
 msgstr "B<printable(>I<Versatz>B<,>I<Länge>B<)>"
 
 #. type: Plain text
-#: mime.types.5:51
+#: mime.types.5:53
 msgid ""
 "True if the I<length> bytes starting at I<offset> are printable 8-bit chars "
-"(CR, NL, TAB, BS, 32-126, 128-254)."
+"(CR, NL, TAB, BS, 32-126, 128-254).  I<length> cannot exceed 8192 bytes."
 msgstr ""
 "Wahr, falls die I<Länge> Bytes beginnend an I<Versatz> gültige druckbare 8-"
-"Bit-Zeichen sind (CR, NL, TAB, BS, 32-126, 128-254)."
+"Bit-Zeichen sind (CR, NL, TAB, BS, 32-126, 128-254). I<Länge> darf 8192 Byte "
+"nicht überschreiten."
 
 #. type: TP
-#: mime.types.5:51
+#: mime.types.5:53
 #, no-wrap
 msgid "B<priority(>I<number>B<)>"
 msgstr "B<priority(>I<Zahl>B<)>"
 
 #. type: Plain text
-#: mime.types.5:56
+#: mime.types.5:58
 msgid ""
 "Specifies the relative priority of this MIME media type.  The default "
 "priority is 100.  Larger values have higher priority while smaller values "
@@ -16295,26 +16291,26 @@ msgstr ""
 "niedrigere Priorität haben."
 
 #. type: TP
-#: mime.types.5:56
+#: mime.types.5:58
 #, no-wrap
 msgid "B<string(>I<offset>B<,\">I<string>B<\")>"
 msgstr "B<string(>I<Versatz>B<,\">I<Zeichenkette>B<\")>"
 
 #. type: Plain text
-#: mime.types.5:59
+#: mime.types.5:61
 msgid "True if the bytes starting at I<offset> are identical to I<string>."
 msgstr ""
 "Wahr, falls die bei I<Versatz> beginnenden Bytes identisch zur "
 "I<Zeichenkette> sind."
 
 #. type: TP
-#: mime.types.5:59
+#: mime.types.5:61
 #, no-wrap
 msgid "B<istring(>I<offset>B<,\">I<string>B<\")>"
 msgstr "B<istring(>I<Versatz>B<,\">I<Zeichenkette>B<\")>"
 
 #. type: Plain text
-#: mime.types.5:62
+#: mime.types.5:64
 msgid ""
 "True if the bytes starting at I<offset> match I<string> without respect to "
 "case."
@@ -16323,24 +16319,24 @@ msgstr ""
 "unabhängig von der Groß-/Kleinschreibung passen."
 
 #. type: TP
-#: mime.types.5:62
+#: mime.types.5:64
 #, no-wrap
 msgid "B<char(>I<offset>B<,>I<value>B<)>"
 msgstr "B<char(>I<Versatz>B<,>I<Wert>B<)>"
 
 #. type: Plain text
-#: mime.types.5:65
+#: mime.types.5:67
 msgid "True if the byte at I<offset> is identical to I<value>."
 msgstr "Wahr, falls das Byte bei I<Versatz> identisch zu I<Wert> ist."
 
 #. type: TP
-#: mime.types.5:65
+#: mime.types.5:67
 #, no-wrap
 msgid "B<short(>I<offset>B<,>I<value>B<)>"
 msgstr "B<short(>I<Versatz>B<,>I<Wert>B<)>"
 
 #. type: Plain text
-#: mime.types.5:68
+#: mime.types.5:70
 msgid ""
 "True if the 16-bit big-endian integer at I<offset> is identical to I<value>."
 msgstr ""
@@ -16348,13 +16344,13 @@ msgstr ""
 "I<Wert> ist."
 
 #. type: TP
-#: mime.types.5:68
+#: mime.types.5:70
 #, no-wrap
 msgid "B<int(>I<offset>B<,>I<value>B<)>"
 msgstr "B<int(>I<Versatz>B<,>I<Wert>B<)>"
 
 #. type: Plain text
-#: mime.types.5:71
+#: mime.types.5:73
 msgid ""
 "True if the 32-bit big-endian integer at I<offset> is identical to I<value>."
 msgstr ""
@@ -16362,39 +16358,39 @@ msgstr ""
 "I<Wert> ist."
 
 #. type: TP
-#: mime.types.5:71
+#: mime.types.5:73
 #, no-wrap
 msgid "B<locale(\">I<string>B<\")>"
 msgstr "B<locale(\">I<Zeichenkette>B<\")>"
 
 #. type: Plain text
-#: mime.types.5:74
+#: mime.types.5:76
 msgid "True if current locale matches I<string>."
 msgstr "Wahr, wenn die aktuelle Standorteinstellung zu I<Zeichenkette> passt."
 
 #. type: TP
-#: mime.types.5:74
+#: mime.types.5:76
 #, no-wrap
-msgid "B<contains(>I<offset>B<,>I<range>B<,\">I<string>B<\")>"
-msgstr "B<contains(>I<Versatz>B<,>I<Bereich>B<,\">I<Zeichenkette>B<\")>"
+msgid "B<contains(>I<offset>B<,>I<length>B<,\">I<string>B<\")>"
+msgstr "B<contains(>I<Versatz>B<,>I<Länge>B<,\">I<Zeichenkette>B<\")>"
 
 #. type: Plain text
-#: mime.types.5:77
+#: mime.types.5:80
 msgid ""
-"True if the bytes starting at I<offset> for I<range> bytes contains "
-"I<string>."
+"True if the bytes starting at I<offset> for I<length> bytes contains "
+"I<string>.  I<length> cannot exceed 8192 bytes."
 msgstr ""
-"Wahr, falls die bei I<Versatz> beginnenden Bytes für den I<Bereich> "
-"I<Zeichenkette> enthält."
+"Wahr, falls die bei I<Versatz> beginnenden Bytes für die I<Länge> "
+"I<Zeichenkette> enthält. I<Länge> darf 8192 Byte nicht überschreiten."
 
 #. type: SS
-#: mime.types.5:77
+#: mime.types.5:80
 #, no-wrap
 msgid "STRING CONSTANTS"
 msgstr "ZEICHENKETTENKONSTANTEN"
 
 #. type: Plain text
-#: mime.types.5:79
+#: mime.types.5:82
 msgid ""
 "String constants can be specified inside quotes (\"\") for strings "
 "containing whitespace and angle brackets (E<lt>E<gt>) for hexadecimal "
@@ -16405,13 +16401,13 @@ msgstr ""
 "innerhalb von Anführungszeichen (\"\") angegeben werden."
 
 #. type: SS
-#: mime.types.5:79
+#: mime.types.5:82
 #, no-wrap
 msgid "TYPE MATCHING AND PRIORITY"
 msgstr "TYP-ÜBEREINSTIMMUNG UND PRIORITÄT"
 
 #. type: Plain text
-#: mime.types.5:83
+#: mime.types.5:86
 msgid ""
 "When CUPS needs to determine the MIME media type of a given file, it checks "
 "every MIME media type defined in the I<.types> files.  When two or more "
@@ -16429,7 +16425,7 @@ msgstr ""
 "erste ausgewählt."
 
 #. type: Plain text
-#: mime.types.5:88
+#: mime.types.5:91
 msgid ""
 "For example, if two types \"text/bar\" and \"text/foo\" are defined as "
 "matching the extension \"doc\", normally the type \"text/bar\" will be "
@@ -16444,7 +16440,7 @@ msgstr ""
 "wird stattdessen »text/foo« ausgewählt."
 
 #. type: Plain text
-#: mime.types.5:92
+#: mime.types.5:95
 msgid ""
 "Define two MIME media types for raster data, with one being a subset with "
 "higher priority:"
@@ -16453,21 +16449,21 @@ msgstr ""
 "Teilmenge mit höherer Priorität ist:"
 
 #. type: Plain text
-#: mime.types.5:97
-#, no-wrap
-msgid ""
-"    application/vnd.cups-raster  string(0,\"RaSt\") string(0,\"tSaR\") \\e\n"
-"                                  string(0,\"RaS2\") string(0,\"2SaR\") \\e\n"
-"                                  string(0,\"RaS3\") string(0,\"3SaR\")\n"
-msgstr ""
-"    application/vnd.cups-raster  string(0,\"RaSt\") string(0,\"tSaR\") \\e\n"
-"                                  string(0,\"RaS2\") string(0,\"2SaR\") \\e\n"
-"                                  string(0,\"RaS3\") string(0,\"3SaR\")\n"
-
-#. type: Plain text
 #: mime.types.5:100
 #, no-wrap
 msgid ""
+"    application/vnd.cups-raster  string(0,\"RaSt\") string(0,\"tSaR\") \\e\n"
+"                                  string(0,\"RaS2\") string(0,\"2SaR\") \\e\n"
+"                                  string(0,\"RaS3\") string(0,\"3SaR\")\n"
+msgstr ""
+"    application/vnd.cups-raster  string(0,\"RaSt\") string(0,\"tSaR\") \\e\n"
+"                                  string(0,\"RaS2\") string(0,\"2SaR\") \\e\n"
+"                                  string(0,\"RaS3\") string(0,\"3SaR\")\n"
+
+#. type: Plain text
+#: mime.types.5:103
+#, no-wrap
+msgid ""
 "    image/pwg-raster              string(0,\"RaS2\") + \\e\n"
 "                                  string(4,PwgRasterE<lt>00E<gt>) priority(150)\n"
 msgstr ""
@@ -16475,7 +16471,7 @@ msgstr ""
 "                                  string(4,PwgRasterE<lt>00E<gt>) priority(150)\n"
 
 #. type: Plain text
-#: mime.types.5:108
+#: mime.types.5:111
 msgid ""
 "B<cups-files.conf>(5), B<cupsd.conf>(5), B<cupsd>(8), B<cupsfilter>(8), "
 "B<mime.convs>(5), CUPS Online Help (http://localhost:631/help)"
@@ -17488,6 +17484,9 @@ msgstr ""
 "B<classes.conf>(5), B<cups-files.conf>(5), B<cupsd>(8), B<cupsd.conf>(5), "
 "B<mime.convs>(5), B<mime.types>(5), B<printers.conf>(5), CUPS-Online-Hilfe "
 "(http://localhost:631/help)"
+
+#~ msgid "Copyright \\[co] 2021-2023 by OpenPrinting."
+#~ msgstr "Copyright \\[co] 2021-2023 by OpenPrinting."
 
 #, no-wrap
 #~ msgid "26 April 2019"
