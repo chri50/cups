@@ -3049,8 +3049,7 @@ _ppdCreateFromIPP(char   *buffer,	/* I - Filename buffer */
   int                   resolutions[1000];
                                         /* Array of resolution indices */
   char			msgid[256];	/* Message identifier (attr.value) */
-  const char		*keyword,	/* Keyword value */
-			*msgstr;	/* Localized string */
+  const char		*keyword;	/* Keyword value */
   cups_lang_t		*lang = cupsLangDefault();
 					/* Localization info */
   cups_array_t		*strings = NULL;/* Printer strings file */
@@ -4644,9 +4643,8 @@ _ppdCreateFromIPP(char   *buffer,	/* I - Filename buffer */
     {
       ipp_t	*preset = ippGetCollection(attr, i);
 					/* Preset collection */
-      const char *preset_name = ippGetString(ippFindAttribute(preset, "preset-name", IPP_TAG_ZERO), 0, NULL),
+      const char *preset_name = ippGetString(ippFindAttribute(preset, "preset-name", IPP_TAG_ZERO), 0, NULL);
 					/* Preset name */
-		*localized_name;	/* Localized preset name */
       ipp_attribute_t *member;		/* Member attribute in preset */
       const char *member_name;		/* Member attribute name */
       char      	member_value[256];	/* Member attribute value */
