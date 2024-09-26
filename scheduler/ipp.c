@@ -5364,6 +5364,13 @@ create_local_bg_thread(
     cupsdLogMessage(CUPSD_LOG_DEBUG, "%s: IPP/1.1 Get-Printer-Attributes returned %s (%s)", printer->name, ippErrorString(cupsLastError()), cupsLastErrorString());
   }
 
+  // Validate response from printer...
+  if (!ippValidateAttributes(response))
+  {
+    cupsdLogMessage(CUPSD_LOG_ERROR, "%s: Printer returned invalid data: %s", printer->name, cupsLastErrorString());
+    return (NULL);
+  }
+
   // TODO: Grab printer icon file...
   httpClose(http);
 
