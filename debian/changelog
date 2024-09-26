@@ -1,3 +1,19 @@
+cups (2.4.1op1-1ubuntu4.11) jammy-security; urgency=medium
+
+  * SECURITY UPDATE: PPD injection issues (LP: #2082335)
+    - debian/patches/sec-202409-1.patch: validate URIs, attribute names,
+      and capabilities in cups/ppd-cache.c, scheduler/ipp.c.
+    - debian/patches/sec-202409-2.patch: sanitize make and model in
+      cups/ppd-cache.c.
+    - debian/patches/sec-202409-3.patch: PPDize preset and template names
+      in cups/ppd-cache.c.
+    - debian/patches/sec-202409-4.patch: quote PPD localized strings in
+      cups/ppd-cache.c.
+    - debian/patches/sec-202409-5.patch: fix warnings in cups/ppd-cache.c.
+    - CVE number pending
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Thu, 26 Sep 2024 07:27:55 -0400
+
 cups (2.4.1op1-1ubuntu4.10) jammy-security; urgency=medium
 
   * SECURITY REGRESSION: early exit on missing listen directive
