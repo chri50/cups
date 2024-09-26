@@ -1,3 +1,19 @@
+cups (2.4.10-1ubuntu2) oracular; urgency=medium
+
+  * SECURITY UPDATE: PPD injection issues (LP: #2082335)
+    - debian/patches/sec-202409-1.patch: validate URIs, attribute names,
+      and capabilities in cups/ppd-cache.c, scheduler/ipp.c.
+    - debian/patches/sec-202409-2.patch: sanitize make and model in
+      cups/ppd-cache.c.
+    - debian/patches/sec-202409-3.patch: PPDize preset and template names
+      in cups/ppd-cache.c.
+    - debian/patches/sec-202409-4.patch: quote PPD localized strings in
+      cups/ppd-cache.c.
+    - debian/patches/sec-202409-5.patch: fix warnings in cups/ppd-cache.c.
+    - CVE-2024-47175
+
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Thu, 26 Sep 2024 07:14:15 -0400
+
 cups (2.4.10-1ubuntu1) oracular; urgency=low
 
   * Merge from Debian unstable. Remaining changes:
