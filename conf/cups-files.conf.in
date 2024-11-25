@@ -32,6 +32,10 @@ SystemGroup @CUPS_SYSTEM_GROUPS@
 #ConfigFilePerm 0@CUPS_CONFIG_FILE_PERM@
 #LogFilePerm 0@CUPS_LOG_FILE_PERM@
 
+# Specifies the group name or ID that will be used for log files.
+# The default group in Debian is "adm".
+LogFileGroup adm
+
 # Location of the file logging all access to the scheduler; may be the name
 # "syslog". If not an absolute path, the value of ServerRoot is used as the
 # root directory.  Also see the "AccessLogLevel" directive in cupsd.conf.
