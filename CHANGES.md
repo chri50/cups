@@ -1,8 +1,25 @@
-CHANGES - OpenPrinting CUPS 2.4.10 - (2024-06-18)
-================================================
+CHANGES - OpenPrinting CUPS
+===========================
+
+
+Changes in CUPS v2.4.11 (2024-09-30)
+------------------------------------
+
+- Updated the maximum file descriptor limit for `cupsd` to 64k-1 (Issue #989)
+- Fixed `lpoptions -d` with a discovered but not added printer (Issue #833)
+- Fixed incorrect error message for HTTP/IPP errors (Issue #893)
+- Fixed JobPrivateAccess and SubscriptionPrivateAccess support for "all"
+  (Issue #990)
+- Fixed issues with cupsGetDestMediaByXxx (Issue #993)
+- Fixed adding and modifying of printers via the web interface (Issue #998)
+- Fixed HTTP PeerCred authentication for domain users (Issue #1001)
+- Fixed checkbox support (Issue #1008)
+- Fixed printer state notifications (Issue #1013)
+- Fixed IPP Everywhere printer setup (Issue #1033)
+
 
 Changes in CUPS v2.4.10 (2024-06-18)
------------------------------
+------------------------------------
 
 - Fixed error handling when reading a mixed `1setOf` attribute.
 - Fixed scheduler start if there is only domain socket to listen on (Issue #985)
