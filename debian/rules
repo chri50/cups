@@ -48,10 +48,11 @@ override_dh_auto_configure:
 	dh_auto_configure -- \
 		$(CUPS_CONFIGURE_DISTRO_OPTIONS) \
 		--with-docdir=/usr/share/cups/doc-root \
+		--with-pkgconfpath=/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig \
 		--localedir=/usr/share/cups/locale \
 		--enable-libpaper \
 		--enable-ssl \
-		--enable-gnutls \
+		--with-tls=gnutls \
 		--enable-threads \
 		--enable-static \
 		--enable-debug \
@@ -67,9 +68,11 @@ override_dh_auto_configure:
 		--with-log-file-perm=0640 \
 		--with-local_protocols='dnssd' \
 		--with-systemd=/usr/lib/systemd/system \
+		--with-system-groups='lpadmin root' \
 		--with-error-policy=retry-job \
 		--enable-sync-on-close \
 		--with-max-log-size=0 \
+		--enable-snapped-clients \
 		$(CONFIG_LIBUSB)
 
 override_dh_auto_install:
@@ -222,9 +225,6 @@ endif
 ifneq (,$(filter libcups2-dev,$(shell dh_listpackages)))
 	# debian/libcups2-dev.install entry cannot rename files on-the-fly
 	cp cups/language-private.h debian/libcups2-dev/usr/include/cups/i18n.h
-	# debian/libcups2-dev.install cannot interpolate before compat 13
-	sed -e 's/@DEB_VERSION_UPSTREAM@/${DEB_VERSION_UPSTREAM}/' < debian/cups.pc.in > debian/cups.pc
-	install -D -m 644 debian/cups.pc debian/libcups2-dev/usr/lib/${DEB_HOST_GNU_TYPE}/pkgconfig/cups.pc
 endif
 
 ifneq (,$(filter cups-daemon,$(shell dh_listpackages)))

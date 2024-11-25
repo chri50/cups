@@ -1,7 +1,7 @@
 /*
  * IPP routines for the CUPS scheduler.
  *
- * Copyright © 2020-2023 by OpenPrinting
+ * Copyright © 2020-2024 by OpenPrinting
  * Copyright © 2007-2021 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
@@ -5346,7 +5346,7 @@ create_local_bg_thread(
 
   request = ippNewRequest(IPP_OP_GET_PRINTER_ATTRIBUTES);
   ippSetVersion(request, 2, 0);
-  ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri", NULL, printer->device_uri);
+  ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri", NULL, device_uri);
   ippAddStrings(request, IPP_TAG_OPERATION, IPP_TAG_KEYWORD, "requested-attributes", (int)(sizeof(pattrs) / sizeof(pattrs[0])), NULL, pattrs);
 
   response = cupsDoRequest(http, request, resource);
@@ -5367,7 +5367,7 @@ create_local_bg_thread(
 
     request = ippNewRequest(IPP_OP_GET_PRINTER_ATTRIBUTES);
     ippSetVersion(request, 1, 1);
-    ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri", NULL, printer->device_uri);
+    ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI, "printer-uri", NULL, device_uri);
     ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_KEYWORD, "requested-attributes", NULL, "all");
 
     response = cupsDoRequest(http, request, resource);
@@ -5390,7 +5390,7 @@ create_local_bg_thread(
     request = ippNewRequest(IPP_OP_GET_PRINTER_ATTRIBUTES);
     ippSetVersion(request, 2, 0);
     ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_URI,
-		 "printer-uri", NULL, uri);
+		 "printer-uri", NULL, device_uri);
     ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_KEYWORD,
 		 "requested-attributes", NULL, "media-col-database");
     response2 = cupsDoRequest(http, request, resource);
@@ -5415,6 +5415,13 @@ create_local_bg_thread(
       }
       ippDelete(response2);
     }
+  }
+
+  // Validate response from printer...
+  if (!ippValidateAttributes(response))
+  {
+    send_ipp_status(con, IPP_STATUS_ERROR_DEVICE, _("Printer returned invalid data: %s"), cupsLastErrorString());
+    goto finish_response;
   }
 
   // TODO: Grab printer icon file...
