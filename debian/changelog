@@ -1,3 +1,9 @@
+cups (2.4.11-0ubuntu2) plucky; urgency=medium
+
+  * No-change rebuild for libpaper.
+
+ -- Sudip Mukherjee <sudipm.mukherjee@gmail.com>  Sun, 22 Dec 2024 11:02:49 +0000
+
 cups (2.4.11-0ubuntu1) plucky; urgency=medium
 
   * New upstream release 2.4.11
