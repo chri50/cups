@@ -11,11 +11,9 @@ Bug-Debian: https://bugs.debian.org/640124
  conf/Makefile   | 5 +++--
  2 files changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/cgi-bin/admin.c b/cgi-bin/admin.c
-index 1a4a61c..d2a573f 100644
 --- a/cgi-bin/admin.c
 +++ b/cgi-bin/admin.c
-@@ -1628,6 +1628,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
+@@ -1630,6 +1630,7 @@
      int		ch;			/* Character from file */
      char	filename[1024];		/* Filename */
      const char	*server_root;		/* Location of config files */
@@ -23,7 +21,7 @@ index 1a4a61c..d2a573f 100644
  
  
     /*
-@@ -1711,7 +1712,10 @@ do_config_server(http_t *http)		/* I - HTTP connection */
+@@ -1713,7 +1714,10 @@
      * well...
      */
  
@@ -35,11 +33,9 @@ index 1a4a61c..d2a573f 100644
  
      if (!stat(filename, &info) && info.st_size < (1024 * 1024) &&
          (cupsd = cupsFileOpen(filename, "r")) != NULL)
-diff --git a/conf/Makefile b/conf/Makefile
-index 62aa0c6..e387740 100644
 --- a/conf/Makefile
 +++ b/conf/Makefile
-@@ -71,7 +71,7 @@ install-data:
+@@ -71,7 +71,7 @@
  		else \
  			$(INSTALL_CONFIG) -g $(CUPS_GROUP) $$file $(SERVERROOT) ; \
  		fi ; \
@@ -48,7 +44,7 @@ index 62aa0c6..e387740 100644
  	done
  	$(INSTALL_DIR) -m 755 $(DATADIR)/mime
  	for file in $(REPLACE); do \
-@@ -119,9 +119,10 @@ install-libs:
+@@ -119,9 +119,10 @@
  #
  
  uninstall:

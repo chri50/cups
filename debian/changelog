@@ -1,3 +1,12 @@
+cups (2.4.12-0ubuntu1) plucky; urgency=medium
+
+  * New upstream bug fix release 2.4.12
+    - Another half year worth of bug fixes ...
+    - Last 2.4.x upstream release.
+  * Refreshed patches.
+
+ -- Till Kamppeter <till.kamppeter@gmail.com>  Tue, 08 Apr 2025 13:27:28 +0200
+
 cups (2.4.11-0ubuntu2) plucky; urgency=medium
 
   * No-change rebuild for libpaper.
