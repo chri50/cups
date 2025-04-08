@@ -1,7 +1,7 @@
 /*
  * User, system, and password routines for CUPS.
  *
- * Copyright © 2020-2024 by OpenPrinting.
+ * Copyright © 2020-2025 by OpenPrinting.
  * Copyright © 2007-2019 by Apple Inc.
  * Copyright © 1997-2006 by Easy Software Products.
  *
@@ -586,6 +586,7 @@ cupsSetUserAgent(const char *user_agent)/* I - User-Agent string or @code NULL@ 
 	  strlcpy(cg->user_agent, CUPS_MINIMAL " IPP/2.1", sizeof(cg->user_agent));
 	  break;
     }
+    return;
   }
 
 #ifdef _WIN32
@@ -1607,6 +1608,8 @@ cups_set_ssl_options(
       min_version = _HTTP_TLS_1_3;
     else if (!_cups_strcasecmp(start, "None"))
       options = _HTTP_TLS_NONE;
+    else if (!_cups_strcasecmp(start, "NoSystem"))
+      options |= _HTTP_TLS_NO_SYSTEM;
   }
 
   cc->ssl_options     = options;

@@ -17,11 +17,9 @@ Forwarded: not-needed
  man/mantohtml.c | 12 ++++++++----
  4 files changed, 21 insertions(+), 7 deletions(-)
 
-diff --git a/Makedefs.in b/Makedefs.in
-index 42c8f23..5d5d4fe 100644
 --- a/Makedefs.in
 +++ b/Makedefs.in
-@@ -23,6 +23,7 @@ CUPS_VERSION    =       @CUPS_VERSION@
+@@ -23,6 +23,7 @@
  AR		=	@AR@
  AWK		=	@AWK@
  CC		=	@LIBTOOL_CC@ @CC@
@@ -29,11 +27,9 @@ index 42c8f23..5d5d4fe 100644
  CHMOD		=	@CHMOD@
  CXX		=	@LIBTOOL_CXX@ @CXX@
  DSO		=	@DSO@
-diff --git a/configure.ac b/configure.ac
-index 3b5dd73..d29d876 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -25,6 +25,16 @@ sinclude(config-scripts/cups-opsys.m4)
+@@ -25,6 +25,16 @@
  sinclude(config-scripts/cups-common.m4)
  sinclude(config-scripts/cups-directories.m4)
  sinclude(config-scripts/cups-manpages.m4)
@@ -50,11 +46,9 @@ index 3b5dd73..d29d876 100644
  sinclude(config-scripts/cups-sharedlibs.m4)
  sinclude(config-scripts/cups-libtool.m4)
  sinclude(config-scripts/cups-compiler.m4)
-diff --git a/man/Makefile b/man/Makefile
-index d6e496a..d883fc2 100644
 --- a/man/Makefile
 +++ b/man/Makefile
-@@ -223,6 +223,5 @@ html:	$(MAN1) $(MAN5) $(MAN7) $(MAN8) mantohtml
+@@ -223,6 +223,5 @@
  		./mantohtml $$file >../doc/help/man-`basename $$file .8`.html; \
  	done
  
@@ -63,11 +57,9 @@ index d6e496a..d883fc2 100644
 -	$(CODE_SIGN) -s "$(CODE_SIGN_IDENTITY)" $@
 +mantohtml:	mantohtml.c
 +	$(CC_FOR_BUILD) -o $@ $<
-diff --git a/man/mantohtml.c b/man/mantohtml.c
-index a46b70e..16ac191 100644
 --- a/man/mantohtml.c
 +++ b/man/mantohtml.c
-@@ -11,8 +11,10 @@
+@@ -12,8 +12,10 @@
   * Include necessary headers.
   */
  
@@ -80,7 +72,7 @@ index a46b70e..16ac191 100644
  #include <unistd.h>
  
  
-@@ -811,7 +813,8 @@ main(int  argc,				/* I - Number of command-line args */
+@@ -812,7 +814,8 @@
          * Anchor for HTML output...
          */
  
@@ -90,7 +82,7 @@ index a46b70e..16ac191 100644
        }
        else if (strncmp(line, ".\\\"", 3))
        {
-@@ -944,7 +947,8 @@ html_alternate(const char *s,		/* I - String */
+@@ -945,7 +948,8 @@
  		manfile[1024],		// Man page filename
  		manurl[1024];		// Man page URL
  

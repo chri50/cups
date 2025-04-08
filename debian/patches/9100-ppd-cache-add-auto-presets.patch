@@ -1412,7 +1412,7 @@
  /*
 --- a/scheduler/job.c
 +++ b/scheduler/job.c
-@@ -3669,9 +3669,13 @@
+@@ -3666,9 +3666,13 @@
    cups_option_t		*pwgppds,	/* PWG->PPD options */
  			*pwgppd,	/* Current PWG->PPD option */
  			*preset;	/* Current preset option */
@@ -1428,7 +1428,7 @@
    const char		*ppd;		/* PPD option choice */
    int			exact;		/* Did we get an exact match? */
    static char		*options = NULL;/* Full list of options */
-@@ -3693,7 +3697,7 @@
+@@ -3690,7 +3694,7 @@
    if (pc &&
        !ippFindAttribute(job->attrs, "com.apple.print.DocumentTicket.PMSpoolFormat", IPP_TAG_ZERO) &&
        !ippFindAttribute(job->attrs, "APPrinterPreset", IPP_TAG_ZERO) &&
@@ -1437,7 +1437,7 @@
    {
     /*
      * Map print-color-mode and print-quality to a preset...
-@@ -3755,6 +3759,12 @@
+@@ -3752,6 +3756,12 @@
        }
      }
  
@@ -1450,7 +1450,7 @@
      if (pc->num_presets[print_color_mode][print_quality] > 0)
      {
       /*
-@@ -3769,7 +3779,72 @@
+@@ -3766,7 +3776,72 @@
        {
          if (!ippFindAttribute(job->attrs, preset->name, IPP_TAG_ZERO))
          {

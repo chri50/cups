@@ -1,7 +1,7 @@
 /*
  * PPD cache implementation for CUPS.
  *
- * Copyright © 2022-2024 by OpenPrinting.
+ * Copyright © 2022-2025 by OpenPrinting.
  * Copyright © 2010-2021 by Apple Inc.
  *
  * Licensed under Apache License v2.0.  See the file "LICENSE" for more
@@ -4348,6 +4348,8 @@ _ppdCreateFromIPP2(
       mptr --;
       if (*mptr == ' ')
 	*mptr = '\0';
+      else
+        break;
     }
 
     if (!make[0])
@@ -4597,7 +4599,7 @@ _ppdCreateFromIPP2(
     is_apple = ippContainsString(attr, "image/urf") && (ippFindAttribute(supported, "urf-supported", IPP_TAG_KEYWORD) != NULL);
     is_pdf   = ippContainsString(attr, "application/pdf");
     is_pwg   = ippContainsString(attr, "image/pwg-raster") && !is_apple &&
-	       (ippFindAttribute(supported, "pwg-raster-document-resolution-supported", IPP_TAG_KEYWORD) != NULL) &&
+	       (ippFindAttribute(supported, "pwg-raster-document-resolution-supported", IPP_TAG_RESOLUTION) != NULL) &&
 	       (ippFindAttribute(supported, "pwg-raster-document-type-supported", IPP_TAG_KEYWORD) != NULL);
 
     if (ippContainsString(attr, "image/jpeg"))
@@ -6732,11 +6734,6 @@ pwg_unppdize_name(const char *ppd,	/* I - PPD keyword */
 	*ptr++ = '-';
 	nodash = 1;
       }
-    }
-    else
-    {
-      *ptr++ = *ppd;
-      nodash = 0;
     }
 
     if (nodash == 0)
