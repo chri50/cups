@@ -12,3 +12,4 @@
 0012-add-pt.patch
 0013-CVE-2023-32324.patch
 0014-CVE-2024-47175-and-further-hardening.patch
+0015-Limit-the-maximum-number-of-file-descriptors-to-64k-.patch

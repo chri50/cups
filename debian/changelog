@@ -1,3 +1,10 @@
+cups (2.4.10-3) unstable; urgency=medium
+
+  * Fix FTBFS with huge file limit due to testsuite timeouts after 
+    changes in systemd (Closes: #1073046)
+
+ -- Thorsten Alteholz <debian@alteholz.de>  Sun, 01 Jun 2025 13:45:05 +0200
+
 cups (2.4.10-2) unstable; urgency=medium
 
   [ Helge Kreutzmann ]
