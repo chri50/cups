@@ -1,3 +1,15 @@
+cups (2.4.7-1.2ubuntu7.4) noble-security; urgency=medium
+
+  * SECURITY UPDATE: authorization bypass
+    - d/p/CVE-2025-58060.patch: only allow basic and kerberos authentication
+      if it is enabled.
+    - CVE-2025-58060
+  * SECURITY UPDATE: remote DoS
+    - d/p/CVE-2025-58364.patch: fix null dereference in ipp_read_io().
+    - CVE-2025-58364
+
+ -- Eduardo Barretto <eduardo.barretto@canonical.com>  Fri, 05 Sep 2025 17:58:36 +0200
+
 cups (2.4.7-1.2ubuntu7.3) noble-security; urgency=medium
 
   * SECURITY UPDATE: PPD injection issues (LP: #2082335)
