@@ -1,3 +1,12 @@
+cups (2.4.10-4) unstable; urgency=medium
+
+  * CVE-2025-58060
+    fix authentication bypass with AuthType Negotiate
+  * CVE-2025-58364
+    fix remote DoS via null dereference
+
+ -- Thorsten Alteholz <debian@alteholz.de>  Sun, 07 Sep 2025 19:45:05 +0200
+
 cups (2.4.10-3) unstable; urgency=medium
 
   * Fix FTBFS with huge file limit due to testsuite timeouts after 

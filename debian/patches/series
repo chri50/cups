@@ -13,3 +13,5 @@
 0013-CVE-2023-32324.patch
 0014-CVE-2024-47175-and-further-hardening.patch
 0015-Limit-the-maximum-number-of-file-descriptors-to-64k-.patch
+0016-CVE-2025-58060-authentication-bypass-with-AuthType-n.patch
+0017-CVE-2025-58364-remote-DoS-via-null-dereference.patch
