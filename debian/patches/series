@@ -28,3 +28,5 @@ sec-202409-2.patch
 sec-202409-3.patch
 sec-202409-4.patch
 sec-202409-5.patch
+CVE-2025-58060.patch
+CVE-2025-58364.patch
