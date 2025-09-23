@@ -85,9 +85,7 @@
   @{PROC}/*/auxv r,
   @{PROC}/sys/crypto/** r,
   /sys/** r,
-  /usr/bin/* ixr,
-  /usr/sbin/* ixr,
-  /{usr/,}bin/* ixr,
+  @{coreutil_dirs}* ixr,
   /{usr/,}sbin/* ixr,
   /usr/lib/** rm,
 
@@ -206,7 +204,7 @@
 
   /{usr/,}bin/dash ixr,
   /{usr/,}bin/bash ixr,
-  /{usr/,}bin/cp ixr,
+  @{coreutil_dirs}cp ixr,
   /etc/papersize r,
   /etc/cups/cups-pdf.conf r,
   /etc/cups/ppd/*.ppd r,
