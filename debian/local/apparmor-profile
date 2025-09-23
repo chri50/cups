@@ -206,6 +206,7 @@
   /{usr/,}bin/bash ixr,
   @{coreutil_dirs}cp ixr,
   /etc/papersize r,
+  /etc/paperspecs r,
   /etc/cups/cups-pdf.conf r,
   /etc/cups/ppd/*.ppd r,
   /usr/bin/gs ixr,
