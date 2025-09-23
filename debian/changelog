@@ -1,3 +1,11 @@
+cups (2.4.12-0ubuntu3) questing; urgency=medium
+
+  * debian/local/apparmor-profile:
+    - Update for new coreutil paths (LP: #2123870)
+    - Add rule for accessing /etc/paperspecs (LP: #2125520)
+
+ -- Ryan Lee <ryan.lee@canonical.com>  Mon, 22 Sep 2025 16:44:55 -0700
+
 cups (2.4.12-0ubuntu2) questing; urgency=medium
 
   * SECURITY UPDATE: authorization bypass
