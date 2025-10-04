@@ -259,7 +259,6 @@ USBQUIRKS	=	@USBQUIRKS@
 # Rules...
 #
 
-.SILENT:
 .SUFFIXES:	.a .c .cxx .h .o
 
 .c.o:
