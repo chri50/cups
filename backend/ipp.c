@@ -1,16 +1,12 @@
 /*
  * IPP backend for CUPS.
  *
- * Copyright © 2021-2024 by OpenPrinting
+ * Copyright © 2021-2025 by OpenPrinting
  * Copyright © 2007-2021 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
  * Licensed under Apache License v2.0.  See the file "LICENSE" for more
  * information.
- */
-
-/*
- * Include necessary headers.
  */
 
 #include "backend-private.h"
@@ -87,9 +83,9 @@ static int		job_canceled = 0,
 					/* Job cancelled? */
 			uri_credentials = 0;
 					/* Credentials supplied in URI? */
-static char		username[256] = "",
+static char		device_username[256] = "",
 					/* Username for device URI */
-			*password = NULL;
+			*device_password = NULL;
 					/* Password for device URI */
 static const char * const pattrs[] =	/* Printer attributes we want */
 {
@@ -202,6 +198,7 @@ main(int  argc,				/* I - Number of command-line args */
 		hostname[1024],		/* Hostname */
 		resource[1024],		/* Resource info (printer name) */
 		addrname[256],		/* Address name */
+		username[IPP_MAX_NAME],	/* Requesting user name */
 		*optptr,		/* Pointer to URI options */
 		*name,			/* Name of option */
 		*value,			/* Value of option */
@@ -330,6 +327,8 @@ main(int  argc,				/* I - Number of command-line args */
     return (CUPS_BACKEND_STOP);
   }
 
+  strlcpy(username, argv[2], sizeof(username));
+
  /*
   * Get the device URI...
   */
@@ -413,7 +412,7 @@ main(int  argc,				/* I - Number of command-line args */
   */
 
   httpSeparateURI(HTTP_URI_CODING_ALL, device_uri, scheme, sizeof(scheme),
-                  username, sizeof(username), hostname, sizeof(hostname), &port,
+                  device_username, sizeof(device_username), hostname, sizeof(hostname), &port,
 		  resource, sizeof(resource));
 
   if (!port)
@@ -638,16 +637,16 @@ main(int  argc,				/* I - Number of command-line args */
 
   cupsSetPasswordCB2((cups_password_cb2_t)password_cb, &password_tries);
 
-  if (username[0])
+  if (device_username[0])
   {
    /*
     * Use authentication information in the device URI...
     */
 
-    if ((password = strchr(username, ':')) != NULL)
-      *password++ = '\0';
+    if ((device_password = strchr(device_username, ':')) != NULL)
+      *device_password++ = '\0';
 
-    cupsSetUser(username);
+    cupsSetUser(device_username);
     uri_credentials = 1;
   }
   else
@@ -660,11 +659,11 @@ main(int  argc,				/* I - Number of command-line args */
 
     if (ptr)
     {
-      strlcpy(username, ptr, sizeof(username));
+      strlcpy(device_username, ptr, sizeof(device_username));
       cupsSetUser(ptr);
     }
 
-    password = getenv("AUTH_PASSWORD");
+    device_password = getenv("AUTH_PASSWORD");
   }
 
  /*
@@ -821,12 +820,12 @@ main(int  argc,				/* I - Number of command-line args */
 					/* Trust keywords */
     static const char	* const trust_msgs[] =
     {
-      "Credentials are OK/trusted",
-      "Credentials are invalid",
-      "Credentials have changed",
-      "Credentials are expired",
-      "Credentials have been renewed",
-      "Credentials are unknown/new"
+      _("Credentials are OK/trusted"),
+      _("Credentials are invalid"),
+      _("Credentials have changed"),
+      _("Credentials are expired"),
+      _("Credentials have been renewed"),
+      _("Credentials are unknown/new")
     };
 
     fputs("DEBUG: Connection is encrypted.\n", stderr);
@@ -851,6 +850,7 @@ main(int  argc,				/* I - Number of command-line args */
       if (trusts[trust])
       {
         update_reasons(NULL, trusts[trust]);
+	_cupsLangPrintFilter(stderr, "ALERT", "%s", trust_msgs[trust]);
         return (CUPS_BACKEND_STOP);
       }
 
@@ -1464,7 +1464,7 @@ main(int  argc,				/* I - Number of command-line args */
 
   monitor.uri           = uri;
   monitor.hostname      = hostname;
-  monitor.user          = argv[2];
+  monitor.user          = username;
   monitor.resource      = resource;
   monitor.port          = port;
   monitor.version       = version;
@@ -1501,7 +1501,7 @@ main(int  argc,				/* I - Number of command-line args */
 
   while (!job_canceled && validate_job)
   {
-    request = new_request(IPP_OP_VALIDATE_JOB, version, uri, argv[2],
+    request = new_request(IPP_OP_VALIDATE_JOB, version, uri, username,
                           monitor.job_name, num_options, options, compression,
 			  copies_sup ? copies : 1, document_format, pc, ppd,
 			  media_col_sup, doc_handling_sup, print_color_mode_sup, print_scaling_sup);
@@ -1540,6 +1540,28 @@ main(int  argc,				/* I - Number of command-line args */
           num_options = cupsAddOption("sides", "one-sided", num_options, &options);
         }
       }
+    }
+    else if ((ipp_status == IPP_STATUS_ERROR_BAD_REQUEST || ipp_status == IPP_STATUS_ERROR_INTERNAL) && !strcmp(username, argv[2]))
+    {
+     /*
+      * Issue #1145: Some printers have trouble with valid character in the
+      * requesting-user-name attribute.  Sanitize the username and try again
+      * if so...
+      */
+
+      char	*argptr = argv[2],	/* Pointer into local username */
+		*userptr = username;	/* Pointer into requesting-user-name value */
+
+      fputs("DEBUG: Trying sanitized requesting-user-name value.\n", stderr);
+
+      while (*argptr && userptr < (username + sizeof(username) - 1))
+      {
+        if (isalnum(*argptr & 255))
+          *userptr++ = *argptr;
+        argptr ++;
+      }
+
+      *userptr = '\0';
     }
 
     ippDelete(response);
@@ -1624,7 +1646,7 @@ main(int  argc,				/* I - Number of command-line args */
 
     request = new_request((num_files > 1 || create_job) ? IPP_OP_CREATE_JOB :
                                                           IPP_OP_PRINT_JOB,
-			  version, uri, argv[2], monitor.job_name, num_options,
+			  version, uri, username, monitor.job_name, num_options,
 			  options, compression, copies_sup ? copies : 1,
 			  document_format, pc, ppd, media_col_sup,
 			  doc_handling_sup, print_color_mode_sup, print_scaling_sup);
@@ -1836,9 +1858,9 @@ main(int  argc,				/* I - Number of command-line args */
         ippAddInteger(request, IPP_TAG_OPERATION, IPP_TAG_INTEGER, "job-id",
 	              job_id);
 
-	if (argv[2][0])
+	if (username[0])
 	  ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_NAME,
-                       "requesting-user-name", NULL, argv[2]);
+                       "requesting-user-name", NULL, username);
 
 	ippAddBoolean(request, IPP_TAG_OPERATION, "last-document",
         	      (i + 1) >= num_files);
@@ -1956,7 +1978,7 @@ main(int  argc,				/* I - Number of command-line args */
 
       fputs("JOBSTATE: cups-retry-as-raster\n", stderr);
       if (job_id > 0)
-	cancel_job(http, uri, job_id, resource, argv[2], version);
+	cancel_job(http, uri, job_id, resource, username, version);
 
       goto cleanup;
     }
@@ -1972,7 +1994,7 @@ main(int  argc,				/* I - Number of command-line args */
         */
 
 	if (job_id > 0)
-	  cancel_job(http, uri, job_id, resource, argv[2], version);
+	  cancel_job(http, uri, job_id, resource, username, version);
 
         goto cleanup;
       }
@@ -2011,7 +2033,7 @@ main(int  argc,				/* I - Number of command-line args */
       ipp_status = IPP_STATUS_ERROR_INTERNAL;
 
       if (job_id > 0)
-	cancel_job(http, uri, job_id, resource, argv[2], version);
+	cancel_job(http, uri, job_id, resource, username, version);
 
       goto cleanup;
     }
@@ -2059,7 +2081,7 @@ main(int  argc,				/* I - Number of command-line args */
       * Check printer state...
       */
 
-      check_printer_state(http, uri, resource, argv[2], version);
+      check_printer_state(http, uri, resource, username, version);
 
       if (cupsLastError() <= IPP_STATUS_OK_CONFLICTING)
         password_tries = 0;
@@ -2077,9 +2099,9 @@ main(int  argc,				/* I - Number of command-line args */
       ippAddInteger(request, IPP_TAG_OPERATION, IPP_TAG_INTEGER, "job-id",
         	    job_id);
 
-      if (argv[2][0])
+      if (username[0])
 	ippAddString(request, IPP_TAG_OPERATION, IPP_TAG_NAME,
-	             "requesting-user-name", NULL, argv[2]);
+	             "requesting-user-name", NULL, username);
 
       ippAddStrings(request, IPP_TAG_OPERATION, IPP_TAG_KEYWORD,
                     "requested-attributes", sizeof(jattrs) / sizeof(jattrs[0]),
@@ -2118,14 +2140,7 @@ main(int  argc,				/* I - Number of command-line args */
 	password_tries = 0;
       else
       {
-	if (ipp_status != IPP_STATUS_ERROR_SERVICE_UNAVAILABLE &&
-	    ipp_status != IPP_STATUS_ERROR_BUSY)
-	{
-	  ippDelete(response);
-          ipp_status = IPP_STATUS_OK;
-          break;
-	}
-	else if (ipp_status == IPP_STATUS_ERROR_INTERNAL)
+	if (ipp_status == IPP_STATUS_ERROR_INTERNAL)
 	{
 	  waitjob_tries ++;
 
@@ -2135,6 +2150,13 @@ main(int  argc,				/* I - Number of command-line args */
 	    ipp_status = IPP_STATUS_OK;
 	    break;
 	  }
+	}
+	else if (ipp_status != IPP_STATUS_ERROR_SERVICE_UNAVAILABLE &&
+	    ipp_status != IPP_STATUS_ERROR_BUSY)
+	{
+	  ippDelete(response);
+	  ipp_status = IPP_STATUS_OK;
+	  break;
 	}
       }
 
@@ -2206,7 +2228,7 @@ main(int  argc,				/* I - Number of command-line args */
 
   if (job_canceled > 0 && job_id > 0)
   {
-    cancel_job(http, uri, job_id, resource, argv[2], version);
+    cancel_job(http, uri, job_id, resource, username, version);
 
     if (cupsLastError() > IPP_STATUS_OK_CONFLICTING)
       _cupsLangPrintFilter(stderr, "ERROR", _("Unable to cancel print job."));
@@ -2216,7 +2238,7 @@ main(int  argc,				/* I - Number of command-line args */
   * Check the printer state and report it if necessary...
   */
 
-  check_printer_state(http, uri, resource, argv[2], version);
+  check_printer_state(http, uri, resource, username, version);
 
   if (cupsLastError() <= IPP_STATUS_OK_CONFLICTING)
     password_tries = 0;
@@ -2542,8 +2564,8 @@ monitor_printer(
   http = httpConnect2(monitor->hostname, monitor->port, NULL, AF_UNSPEC,
                       monitor->encryption, 1, 0, NULL);
   httpSetTimeout(http, 30.0, timeout_cb, NULL);
-  if (username[0])
-    cupsSetUser(username);
+  if (device_username[0])
+    cupsSetUser(device_username);
 
   cupsSetPasswordCB2((cups_password_cb2_t)password_cb, &password_tries);
 
@@ -2986,6 +3008,10 @@ new_request(
 
       fputs("DEBUG: Adding all operation/job attributes.\n", stderr);
       adjust_options(num_options, options);
+
+      if (format && (!strcmp(format, "image/pwg-raster") || !strcmp(format, "image/urf")))
+        num_options = cupsRemoveOption("copies", num_options, &options);
+
       cupsEncodeOptions2(request, num_options, options, IPP_TAG_OPERATION);
       cupsEncodeOptions2(request, num_options, options, IPP_TAG_JOB);
     }
@@ -3016,9 +3042,9 @@ password_cb(const char *prompt,		/* I - Prompt (not used) */
 
 
   fprintf(stderr, "DEBUG: password_cb(prompt=\"%s\", http=%p, method=\"%s\", "
-                  "resource=\"%s\", password_tries=%p(%d)), password=%p\n",
-          prompt, http, method, resource, password_tries, *password_tries,
-          password);
+                  "resource=\"%s\", password_tries=%p(%d)), device_password=%p\n",
+          prompt, (void *)http, method, resource, (void *)password_tries, *password_tries,
+          (void *)device_password);
 
   (void)prompt;
   (void)method;
@@ -3041,13 +3067,13 @@ password_cb(const char *prompt,		/* I - Prompt (not used) */
     }
   }
 
-  if (password && *password && *password_tries < 3)
+  if (device_password && *device_password && *password_tries < 3)
   {
     (*password_tries) ++;
 
-    cupsSetUser(username);
+    cupsSetUser(device_username);
 
-    return (password);
+    return (device_password);
   }
   else
   {

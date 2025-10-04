@@ -1,7 +1,7 @@
 /*
  * Configuration file for CUPS.
  *
- * Copyright © 2020-2023 by OpenPrinting
+ * Copyright © 2020-2025 by OpenPrinting
  * Copyright © 2007-2019 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products.
  *
@@ -381,6 +381,13 @@
 
 
 /*
+ * Do we have the timegm function?
+ */
+
+#undef HAVE_TIMEGM
+
+
+/*
  * Do we have rresvport_af()?
  */
 
@@ -650,13 +657,6 @@
 #undef HAVE_SYS_STATFS_H
 #undef HAVE_SYS_STATVFS_H
 #undef HAVE_SYS_VFS_H
-
-
-/*
- * Location of macOS localization bundle, if any.
- */
-
-#undef CUPS_BUNDLEDIR
 
 
 /*

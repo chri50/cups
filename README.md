@@ -1,4 +1,4 @@
-OpenPrinting CUPS v2.4.10
+OpenPrinting CUPS v2.4.14
 =========================
 
 ![Version](https://img.shields.io/github/v/release/openprinting/cups?include_prereleases)
@@ -153,7 +153,7 @@ This will prevent the filters from misinterpreting your print file.
 Legal Stuff
 -----------
 
-Copyright © 2020-2023 by OpenPrinting
+Copyright © 2020-2025 by OpenPrinting
 
 Copyright © 2007-2020 by Apple Inc.
 

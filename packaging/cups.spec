@@ -41,12 +41,12 @@
 
 Summary: CUPS
 Name: cups
-Version: 2.4.10
+Version: 2.4.14
 Release: 0
 Epoch: 1
 License: GPL
 Group: System Environment/Daemons
-Source: https://github.com/openprinting/cups/releases/download/v2.4.10/cups-2.4.10-source.tar.gz
+Source: https://github.com/openprinting/cups/releases/download/v2.4.14/cups-2.4.14-source.tar.gz
 Url: https://openprinting.github.io/cups
 Packager: Anonymous <anonymous@example.com>
 Vendor: OpenPrinting

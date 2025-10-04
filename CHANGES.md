@@ -1,8 +1,92 @@
-CHANGES - OpenPrinting CUPS 2.4.10 - (2024-06-18)
-================================================
+CHANGES - OpenPrinting CUPS
+===========================
+
+
+Changes in CUPS v2.4.14 (2025-09-11)
+------------------------------------
+
+- Fixed installation of localized index.html and templates (Issue #1362)
+
+
+Changes in CUPS v2.4.13 (2025-09-11)
+------------------------------------
+
+- Blocked authentication using alternate methods in cupsd (CVE-2025-58060)
+- Fixed extension tag handling in `ipp_read_io()` in libcups (CVE-2025-58364)
+- Added `print-as-raster` printer and job attributes for forcing rasterization
+  (Issue #1282)
+- Updated documentation (Issue #1086)
+- Updated IPP backend to try a sanitized user name if the printer/server does
+  not like the value (Issue #1145)
+- Updated the scheduler to send the "printer-added" or "printer-modified" events
+  whenever an IPP Everywhere PPD is installed (Issue #1244)
+- Updated the scheduler to send the "printer-modified" event whenever the system
+  default printer is changed (Issue #1246)
+- Fixed a memory leak in `httpClose` (Issue #1223)
+- Fixed missing commas in `ippCreateRequestedArray` (Issue #1234)
+- Fixed subscription issues in the scheduler and D-Bus notifier (Issue #1235)
+- Fixed media-default reporting for custom sizes (Issue #1238)
+- Fixed support for IPP/PPD options with periods or underscores (Issue #1249)
+- Fixed parsing of real numbers in PPD compiler source files (Issue #1263)
+- Fixed scheduler freezing with zombie clients (Issue #1264)
+- Fixed support for the server name in the ErrorLog filename (Issue #1277)
+- Fixed job cleanup after daemon restart (Issue #1315)
+- Fixed handling of buggy DYMO USB printer serial numbers (Issue #1338)
+- Fixed unreachable block in IPP backend (Issue #1351)
+- Fixed memory leak in _cupsConvertOptions (Issue #1354)
+
+
+Changes in CUPS v2.4.12 (2025-04-08)
+------------------------------------
+
+- GnuTLS follows system crypto policies now (Issue #1105)
+- Added `NoSystem` SSLOptions value (Issue #1130)
+- Now we raise alert for certificate issues (Issue #1194)
+- Added Kyocera USB quirk (Issue #1198)
+- The scheduler now logs a job's debugging history if the backend fails
+  (Issue #1205)
+- Fixed a potential timing issue with `cupsEnumDests` (Issue #1084)
+- Fixed a potential "lost PPD" condition in the scheduler (Issue #1109)
+- Fixed a compressed file error handling bug (Issue #1070)
+- Fixed a bug in the make-and-model whitespace trimming code (Issue #1096)
+- Fixed a removal of IPP Everywhere permanent queue if installation failed
+  (Issue #1102)
+- Fixed `ServerToken None` in scheduler (Issue #1111)
+- Fixed invalid IPP keyword values created from PPD option names (Issue #1118)
+- Fixed handling of "media" and "PageSize" in the same print request
+  (Issue #1125)
+- Fixed client raster printing from macOS (Issue #1143)
+- Fixed the default User-Agent string.
+- Fixed a recursion issue in `ippReadIO`.
+- Fixed handling incorrect radix in `scan_ps()` (Issue #1188)
+- Fixed validation of dateTime values with time zones more than UTC+11
+  (Issue #1201)
+- Fixed attributes returned by the Create-Xxx-Subscriptions requests
+  (Issue #1204)
+- Fixed `ippDateToTime` when using a non GMT/UTC timezone (Issue #1208)
+- Fixed `job-completed` event notifications for jobs that are cancelled before
+  started (Issue #1209)
+- Fixed DNS-SD discovery with `ippfind` (Issue #1211)
+
+
+Changes in CUPS v2.4.11 (2024-09-30)
+------------------------------------
+
+- Updated the maximum file descriptor limit for `cupsd` to 64k-1 (Issue #989)
+- Fixed `lpoptions -d` with a discovered but not added printer (Issue #833)
+- Fixed incorrect error message for HTTP/IPP errors (Issue #893)
+- Fixed JobPrivateAccess and SubscriptionPrivateAccess support for "all"
+  (Issue #990)
+- Fixed issues with cupsGetDestMediaByXxx (Issue #993)
+- Fixed adding and modifying of printers via the web interface (Issue #998)
+- Fixed HTTP PeerCred authentication for domain users (Issue #1001)
+- Fixed checkbox support (Issue #1008)
+- Fixed printer state notifications (Issue #1013)
+- Fixed IPP Everywhere printer setup (Issue #1033)
+
 
 Changes in CUPS v2.4.10 (2024-06-18)
------------------------------
+------------------------------------
 
 - Fixed error handling when reading a mixed `1setOf` attribute.
 - Fixed scheduler start if there is only domain socket to listen on (Issue #985)

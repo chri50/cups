@@ -1,16 +1,12 @@
 /*
  * Job management routines for the CUPS scheduler.
  *
- * Copyright © 2020-2024 by OpenPrinting.
+ * Copyright © 2020-2025 by OpenPrinting.
  * Copyright © 2007-2019 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
  * Licensed under Apache License v2.0.  See the file "LICENSE" for more
  * information.
- */
-
-/*
- * Include necessary headers...
  */
 
 #include "cupsd.h"
@@ -587,7 +583,7 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
 
     _cupsRWLockWrite(&MimeDatabase->lock);
 
-    if (job->retry_as_raster)
+    if (job->print_as_raster)
     {
      /*
       * Need to figure out whether the printer supports image/pwg-raster or
@@ -604,9 +600,9 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
       }
 
       if (dst)
-        cupsdLogJob(job, CUPSD_LOG_DEBUG, "Retrying job as \"%s\".", strchr(dst->type, '/') + 1);
+	cupsdLogJob(job, CUPSD_LOG_DEBUG, "%s job as \"%s\".", job->print_as_raster > 0 ? "Printing" : "Retrying", strchr(dst->type, '/') + 1);
       else
-        cupsdLogJob(job, CUPSD_LOG_ERROR, "Unable to retry job using a supported raster format.");
+	cupsdLogJob(job, CUPSD_LOG_ERROR, "Unable to print job using a supported raster format.");
     }
 
     filters = mimeFilter2(MimeDatabase, job->filetypes[job->current_file], (size_t)fileinfo.st_size, dst, &(job->cost));
@@ -869,6 +865,9 @@ cupsdContinueJob(cupsd_job_t *job)	/* I - Job */
 
     goto abort_job;
   }
+
+  if (banner_page || (!strcmp(job->filetypes[job->current_file]->super, "image") && (!strcmp(job->filetypes[job->current_file]->type, "pwg-raster") || !strcmp(job->filetypes[job->current_file]->type, "urf"))))
+    strlcpy(copies, "1", sizeof(copies));
 
  /*
   * Build the command-line arguments for the filters.  Each filter
@@ -3606,9 +3605,7 @@ finalize_job(cupsd_job_t *job,		/* I - Job */
 
   if (job->history)
   {
-    if (job->status &&
-        (job->state_value == IPP_JOB_ABORTED ||
-         job->state_value == IPP_JOB_STOPPED))
+    if (job->status)
       dump_job_history(job);
     else
       free_job_history(job);
@@ -4412,7 +4409,8 @@ load_job_cache(const char *filename)	/* I - job.cache filename */
 	cupsArrayAdd(ActiveJobs, job);
       else if (job->state_value > IPP_JOB_STOPPED)
       {
-        if (!job->completed_time || !job->creation_time || !job->name || !job->koctets)
+	if (!job->completed_time || !job->creation_time || !job->name || !job->koctets ||
+	    JobHistory < INT_MAX || (JobFiles < INT_MAX && job->num_files))
 	{
 	  cupsdLoadJob(job);
 	  unload_job(job);
@@ -5223,7 +5221,7 @@ update_job(cupsd_job_t *job)		/* I - Job to check */
       cupsdLogJob(job, CUPSD_LOG_DEBUG, "JOBSTATE: %s", message);
 
       if (!strcmp(message, "cups-retry-as-raster"))
-        job->retry_as_raster = 1;
+        job->print_as_raster = -1;
       else
         ippSetString(job->attrs, &job->reasons, 0, message);
     }

@@ -1,16 +1,12 @@
 /*
  * User-defined destination (and option) support for CUPS.
  *
- * Copyright © 2020-2024 by OpenPrinting.
+ * Copyright © 2020-2025 by OpenPrinting.
  * Copyright © 2007-2019 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products.
  *
  * Licensed under Apache License v2.0.  See the file "LICENSE" for more
  * information.
- */
-
-/*
- * Include necessary headers...
  */
 
 #include "cups-private.h"
@@ -119,7 +115,7 @@ typedef struct _cups_dnssd_device_s	/* Enumerated device */
 typedef struct _cups_dnssd_resolve_s	/* Data for resolving URI */
 {
   int			*cancel;	/* Pointer to "cancel" variable */
-  struct timeval	end_time;	/* Ending time */
+  double		end_time;	/* Ending time */
 } _cups_dnssd_resolve_t;
 #endif /* HAVE_DNSSD */
 
@@ -222,7 +218,7 @@ static const char	*cups_dnssd_resolve(cups_dest_t *dest, const char *uri,
 static int		cups_dnssd_resolve_cb(void *context);
 static void		cups_dnssd_unquote(char *dst, const char *src,
 			                   size_t dstsize);
-static int		cups_elapsed(struct timeval *t);
+static int		cups_elapsed(double *t);
 #endif /* HAVE_DNSSD */
 static int              cups_enum_dests(http_t *http, unsigned flags, int msec, int *cancel, cups_ptype_t type, cups_ptype_t mask, cups_dest_cb_t cb, void *user_data);
 static int		cups_find_dest(const char *name, const char *instance,
@@ -1784,7 +1780,11 @@ cupsGetNamedDest(http_t     *http,	/* I - Connection to server or @code CUPS_HTT
       else
         instance = NULL;
     }
+#if _WIN32
     else if (cg->home)
+#else
+    else if (cg->home && getuid() != 0)
+#endif
     {
      /*
       * No default in the environment, try the user's lpoptions files...
@@ -1899,7 +1899,11 @@ cupsGetNamedDest(http_t     *http,	/* I - Connection to server or @code CUPS_HTT
   snprintf(filename, sizeof(filename), "%s/lpoptions", cg->cups_serverroot);
   cups_get_dests(filename, dest_name, instance, 0, 1, 1, &dest);
 
+#if _WIN32
   if (cg->home)
+#else
+  if (cg->home && getuid() != 0)
+#endif // _WIN32
   {
 #if _WIN32
     snprintf(filename, sizeof(filename), "%s/AppData/Local/cups/lpoptions", cg->home);
@@ -2057,6 +2061,35 @@ cupsSetDests2(http_t      *http,	/* I - Connection to server or @code CUPS_HTTP_
 
   if (!num_dests || !dests)
     return (-1);
+
+ /*
+  * See if the default destination has a printer URI associated with it...
+  */
+
+  if ((dest = cupsGetDest(/*name*/NULL, /*instance*/NULL, num_dests, dests)) != NULL && !cupsGetOption("printer-uri-supported", dest->num_options, dest->options))
+  {
+   /*
+    * No, try adding it...
+    */
+
+    const char	*uri;			/* Device/printer URI */
+
+    if ((uri = cupsGetOption("device-uri", dest->num_options, dest->options)) != NULL)
+    {
+      char	tempresource[1024];	/* Temporary resource path */
+
+#ifdef HAVE_DNSSD
+      if (strstr(uri, "._tcp"))
+        uri = cups_dnssd_resolve(dest, uri, /*msec*/30000, /*cancel*/NULL, /*cb*/NULL, /*user_data*/NULL);
+#endif /* HAVE_DNSSD */
+
+      if (uri)
+	uri = _cupsCreateDest(dest->name, cupsGetOption("printer-info", dest->num_options, dest->options), NULL, uri, tempresource, sizeof(tempresource));
+
+      if (uri)
+	dest->num_options = cupsAddOption("printer-uri-supported", uri, dest->num_options, &dest->options);
+    }
+  }
 
  /*
   * Get the server destinations...
@@ -3148,8 +3181,7 @@ cups_dnssd_query_cb(
       }
       else if (!saw_printer_type)
       {
-	if (!_cups_strcasecmp(key, "air") &&
-		 !_cups_strcasecmp(value, "t"))
+	if (!_cups_strcasecmp(key, "air") && _cups_strcasecmp(value, "none"))
 	  type |= CUPS_PRINTER_AUTHENTICATED;
 	else if (!_cups_strcasecmp(key, "bind") &&
 		 !_cups_strcasecmp(value, "t"))
@@ -3254,21 +3286,12 @@ cups_dnssd_resolve(
   * Resolve the URI...
   */
 
-  resolve.cancel = cancel;
-  gettimeofday(&resolve.end_time, NULL);
+  resolve.cancel   = cancel;
+  resolve.end_time = _cupsGetClock();
   if (msec > 0)
-  {
-    resolve.end_time.tv_sec  += msec / 1000;
-    resolve.end_time.tv_usec += (msec % 1000) * 1000;
-
-    while (resolve.end_time.tv_usec >= 1000000)
-    {
-      resolve.end_time.tv_sec ++;
-      resolve.end_time.tv_usec -= 1000000;
-    }
-  }
+    resolve.end_time += 0.001 * msec;
   else
-    resolve.end_time.tv_sec += 75;
+    resolve.end_time += 75.0;
 
   if (cb)
     (*cb)(user_data, CUPS_DEST_FLAGS_UNCONNECTED | CUPS_DEST_FLAGS_RESOLVING, dest);
@@ -3302,7 +3325,7 @@ cups_dnssd_resolve_cb(void *context)	/* I - Resolve data */
 {
   _cups_dnssd_resolve_t	*resolve = (_cups_dnssd_resolve_t *)context;
 					/* Resolve data */
-  struct timeval	curtime;	/* Current time */
+  double	curtime;		/* Current time */
 
 
  /*
@@ -3319,13 +3342,11 @@ cups_dnssd_resolve_cb(void *context)	/* I - Resolve data */
   * Otherwise check the end time...
   */
 
-  gettimeofday(&curtime, NULL);
+  curtime = _cupsGetClock();
 
-  DEBUG_printf(("4cups_dnssd_resolve_cb: curtime=%d.%06d, end_time=%d.%06d", (int)curtime.tv_sec, (int)curtime.tv_usec, (int)resolve->end_time.tv_sec, (int)resolve->end_time.tv_usec));
+  DEBUG_printf(("4cups_dnssd_resolve_cb: curtime=%.6f, end_time=%.6f", curtime, resolve->end_time));
 
-  return (curtime.tv_sec < resolve->end_time.tv_sec ||
-          (curtime.tv_sec == resolve->end_time.tv_sec &&
-           curtime.tv_usec < resolve->end_time.tv_usec));
+  return (curtime < resolve->end_time);
 }
 
 
@@ -3368,15 +3389,15 @@ cups_dnssd_unquote(char       *dst,	/* I - Destination buffer */
  */
 
 static int				/* O  - Elapsed time in milliseconds */
-cups_elapsed(struct timeval *t)		/* IO - Previous time */
+cups_elapsed(double *t)			/* IO - Previous time */
 {
-  int			msecs;		/* Milliseconds */
-  struct timeval	nt;		/* New time */
+  int		msecs;			/* Milliseconds */
+  double	nt;			/* New time */
 
 
-  gettimeofday(&nt, NULL);
+  nt = _cupsGetClock();
 
-  msecs = (int)(1000 * (nt.tv_sec - t->tv_sec) + (nt.tv_usec - t->tv_usec) / 1000);
+  msecs = (int)(1000.0 * (nt - *t));
 
   *t = nt;
 
@@ -3410,7 +3431,7 @@ cups_enum_dests(
   int           count,                  /* Number of queries started */
                 completed,              /* Number of completed queries */
                 remaining;              /* Remainder of timeout */
-  struct timeval curtime;               /* Current time */
+  double	curtime;		/* Current time */
   _cups_dnssd_data_t data;		/* Data for callback */
   _cups_dnssd_device_t *device;         /* Current device */
 #  ifdef HAVE_MDNSRESPONDER
@@ -3465,7 +3486,11 @@ cups_enum_dests(
   snprintf(filename, sizeof(filename), "%s/lpoptions", cg->cups_serverroot);
   data.num_dests = cups_get_dests(filename, NULL, NULL, 1, user_default != NULL, data.num_dests, &data.dests);
 
+#if _WIN32
   if (cg->home)
+#else
+  if (cg->home && getuid() != 0)
+#endif // _WIN32
   {
 #if _WIN32
     snprintf(filename, sizeof(filename), "%s/AppData/Local/cups/lpoptions", cg->home);
@@ -3632,7 +3657,7 @@ cups_enum_dests(
   * Get Bonjour-shared printers...
   */
 
-  gettimeofday(&curtime, NULL);
+  curtime = _cupsGetClock();
 
 #  ifdef HAVE_MDNSRESPONDER
   if (DNSServiceCreateConnection(&data.main_ref) != kDNSServiceErr_NoError)
