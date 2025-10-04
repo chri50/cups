@@ -1,7 +1,7 @@
 /*
  * Printer routines for the CUPS scheduler.
  *
- * Copyright © 2020-2023 by OpenPrinting
+ * Copyright © 2020-2025 by OpenPrinting
  * Copyright © 2007-2019 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
@@ -563,6 +563,9 @@ cupsdCreateCommonData(void)
 
   /* pdl-override-supported */
   ippAddString(CommonData, IPP_TAG_PRINTER, IPP_CONST_TAG(IPP_TAG_KEYWORD), "pdl-override-supported", NULL, "attempted");
+
+  /* print-as-raster-supported */
+  ippAddBoolean(CommonData, IPP_TAG_PRINTER, "print-as-raster-supported", 1);
 
   /* print-scaling-supported */
   ippAddStrings(CommonData, IPP_TAG_PRINTER, IPP_CONST_TAG(IPP_TAG_KEYWORD), "print-scaling-supported", sizeof(print_scaling) / sizeof(print_scaling[0]), NULL, print_scaling);
@@ -2695,11 +2698,19 @@ cupsdSetPrinterState(
 
 
  /*
-  * Set the new state...
+  * Set the new state and clear/set the reasons and message...
   */
 
   old_state = p->state;
   p->state  = s;
+
+  if (s == IPP_PSTATE_STOPPED)
+    cupsdSetPrinterReasons(p, "+paused");
+  else
+    cupsdSetPrinterReasons(p, "-paused");
+
+  if (s == IPP_PSTATE_PROCESSING)
+    p->state_message[0] = '\0';
 
   if (old_state != s)
   {
@@ -2716,32 +2727,20 @@ cupsdSetPrinterState(
     p->state_time = time(NULL);
   }
 
- /*
-  * Set/clear the paused reason as needed...
-  */
-
-  if (s == IPP_PRINTER_STOPPED)
-    cupsdSetPrinterReasons(p, "+paused");
-  else
-    cupsdSetPrinterReasons(p, "-paused");
-
   if (old_state != s)
   {
-    for (job = (cupsd_job_t *)cupsArrayFirst(ActiveJobs);
-	 job;
-	 job = (cupsd_job_t *)cupsArrayNext(ActiveJobs))
+   /*
+    * Set/clear the printer-stopped reason as needed...
+    */
+
+    for (job = (cupsd_job_t *)cupsArrayFirst(ActiveJobs); job; job = (cupsd_job_t *)cupsArrayNext(ActiveJobs))
+    {
       if (job->reasons && job->state_value == IPP_JOB_PENDING &&
 	  !_cups_strcasecmp(job->dest, p->name))
 	ippSetString(job->attrs, &job->reasons, 0,
 		     s == IPP_PRINTER_STOPPED ? "printer-stopped" : "none");
+    }
   }
-
- /*
-  * Clear the message for the queue when going to processing...
-  */
-
-  if (s == IPP_PRINTER_PROCESSING)
-    p->state_message[0] = '\0';
 
  /*
   * Let the browse protocols reflect the change...
@@ -2798,8 +2797,7 @@ cupsdUpdatePrinterPPD(
   int		i;			/* Looping var */
   cups_file_t	*src,			/* Original file */
 		*dst;			/* New file */
-  char		srcfile[1024],		/* Original filename */
-		dstfile[1024],		/* New filename */
+  char		filename[1024],		/* PPD filename */
 		line[1024],		/* Line from file */
 		keystring[41];		/* Keyword from line */
   cups_option_t	*keyword;		/* Current keyword */
@@ -2809,37 +2807,21 @@ cupsdUpdatePrinterPPD(
                   p->name);
 
  /*
-  * Get the old and new PPD filenames...
+  * Get the base PPD filename...
   */
 
-  snprintf(srcfile, sizeof(srcfile), "%s/ppd/%s.ppd.O", ServerRoot, p->name);
-  snprintf(dstfile, sizeof(srcfile), "%s/ppd/%s.ppd", ServerRoot, p->name);
+  snprintf(filename, sizeof(filename), "%s/ppd/%s.ppd", ServerRoot, p->name);
 
  /*
-  * Rename the old file and open the old and new...
+  * Open the old and new PPDs...
   */
 
-  if (rename(dstfile, srcfile))
-  {
-    cupsdLogMessage(CUPSD_LOG_ERROR, "Unable to backup PPD file for %s: %s",
-                    p->name, strerror(errno));
+  if ((src = cupsdOpenConfFile(filename)) == NULL)
     return (0);
-  }
 
-  if ((src = cupsFileOpen(srcfile, "r")) == NULL)
+  if ((dst = cupsdCreateConfFile(filename, ConfigFilePerm)) == NULL)
   {
-    cupsdLogMessage(CUPSD_LOG_ERROR, "Unable to open PPD file \"%s\": %s",
-                    srcfile, strerror(errno));
-    rename(srcfile, dstfile);
-    return (0);
-  }
-
-  if ((dst = cupsFileOpen(dstfile, "w")) == NULL)
-  {
-    cupsdLogMessage(CUPSD_LOG_ERROR, "Unable to create PPD file \"%s\": %s",
-                    dstfile, strerror(errno));
     cupsFileClose(src);
-    rename(srcfile, dstfile);
     return (0);
   }
 
@@ -2849,11 +2831,9 @@ cupsdUpdatePrinterPPD(
 
   if (!cupsFileGets(src, line, sizeof(line)))
   {
-    cupsdLogMessage(CUPSD_LOG_ERROR, "Unable to read PPD file \"%s\": %s",
-                    srcfile, strerror(errno));
+    cupsdLogMessage(CUPSD_LOG_ERROR, "Unable to read PPD file \"%s\": %s", filename, strerror(errno));
     cupsFileClose(src);
     cupsFileClose(dst);
-    rename(srcfile, dstfile);
     return (0);
   }
 
@@ -2891,7 +2871,7 @@ cupsdUpdatePrinterPPD(
   */
 
   cupsFileClose(src);
-  cupsFileClose(dst);
+  cupsdCloseCreatedConfFile(dst, filename);
 
   return (1);
 }
@@ -3452,7 +3432,7 @@ add_printer_filter(
     }
 
     do
-    {	
+    {
       ptr ++;
     } while (_cups_isspace(*ptr));
 
@@ -4214,7 +4194,7 @@ load_ppd(cupsd_printer_t *p)		/* I - Printer */
       */
 
       if ((size = ppdPageSize(ppd, NULL)) != NULL)
-        pwgsize = _ppdCacheGetSize(p->pc, size->name);
+	pwgsize = _ppdCacheGetSize(p->pc, size->name, size);
       else
         pwgsize = NULL;
 

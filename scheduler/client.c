@@ -80,7 +80,7 @@ cupsdAcceptClient(cupsd_listener_t *lis)/* I - Listener socket */
   * Make sure we don't have a full set of clients already...
   */
 
-  if (cupsArrayCount(Clients) == MaxClients)
+  if (MaxClients > 0 && cupsArrayCount(Clients) >= MaxClients)
     return;
 
   cupsdSetBusyState(1);
@@ -331,6 +331,13 @@ cupsdAcceptClient(cupsd_listener_t *lis)/* I - Listener socket */
   }
 
  /*
+  * Apply ServerHeader if any
+  */
+
+  if (ServerHeader)
+    httpSetDefaultField(con->http, HTTP_FIELD_SERVER, ServerHeader);
+
+ /*
   * Add the connection to the array of active clients...
   */
 
@@ -456,7 +463,7 @@ cupsdCloseClient(cupsd_client_t *con)	/* I - Client to close */
       partial = 1;
 #endif /* HAVE_TLS */
 
-    if (partial)
+    if (partial && !httpError(con->http))
     {
      /*
       * Only do a partial close so that the encrypted client gets everything.
@@ -1145,8 +1152,8 @@ cupsdReadClient(cupsd_client_t *con)	/* I - Client to read from */
 		  {
 		    unsigned int i = 0;	// Array index
 
-		    for (char *start = con->uri + 9; *start && *start != '?' && i < sizeof(name);)
-		      name[i++] = *start++;
+		    for (ptr = con->uri + 9; *ptr && *ptr != '?' && i < sizeof(name);)
+		      name[i++] = *ptr++;
 
 		    name[i] = '\0';
 
@@ -1185,8 +1192,8 @@ cupsdReadClient(cupsd_client_t *con)	/* I - Client to read from */
 		  {
 		    unsigned int i = 0;	// Array index
 
-		    for (char *start = con->uri + 10; *start && *start != '?' && i < sizeof(name);)
-		      name[i++] = *start++;
+		    for (ptr = con->uri + 10; *ptr && *ptr != '?' && i < sizeof(name);)
+		      name[i++] = *ptr++;
 
 		    name[i] = '\0';
 
@@ -2145,9 +2152,6 @@ cupsdSendHeader(
 
     code = HTTP_STATUS_OK;
   }
-
-  if (ServerHeader)
-    httpSetField(con->http, HTTP_FIELD_SERVER, ServerHeader);
 
   if (code == HTTP_STATUS_METHOD_NOT_ALLOWED)
     httpSetField(con->http, HTTP_FIELD_ALLOW, "GET, HEAD, OPTIONS, POST, PUT");

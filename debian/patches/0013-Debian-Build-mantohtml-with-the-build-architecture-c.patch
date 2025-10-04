@@ -18,7 +18,7 @@ Forwarded: not-needed
  4 files changed, 21 insertions(+), 7 deletions(-)
 
 diff --git a/Makedefs.in b/Makedefs.in
-index 42c8f23..5d5d4fe 100644
+index aa6ec16..bb9615f 100644
 --- a/Makedefs.in
 +++ b/Makedefs.in
 @@ -23,6 +23,7 @@ CUPS_VERSION    =       @CUPS_VERSION@
@@ -30,7 +30,7 @@ index 42c8f23..5d5d4fe 100644
  CXX		=	@LIBTOOL_CXX@ @CXX@
  DSO		=	@DSO@
 diff --git a/configure.ac b/configure.ac
-index 3b5dd73..d29d876 100644
+index b818b05..09147ce 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -25,6 +25,16 @@ sinclude(config-scripts/cups-opsys.m4)
@@ -64,10 +64,10 @@ index d6e496a..d883fc2 100644
 +mantohtml:	mantohtml.c
 +	$(CC_FOR_BUILD) -o $@ $<
 diff --git a/man/mantohtml.c b/man/mantohtml.c
-index a46b70e..16ac191 100644
+index 354a80e..d163061 100644
 --- a/man/mantohtml.c
 +++ b/man/mantohtml.c
-@@ -11,8 +11,10 @@
+@@ -12,8 +12,10 @@
   * Include necessary headers.
   */
  
@@ -80,7 +80,7 @@ index a46b70e..16ac191 100644
  #include <unistd.h>
  
  
-@@ -811,7 +813,8 @@ main(int  argc,				/* I - Number of command-line args */
+@@ -812,7 +814,8 @@ main(int  argc,				/* I - Number of command-line args */
          * Anchor for HTML output...
          */
  
@@ -90,7 +90,7 @@ index a46b70e..16ac191 100644
        }
        else if (strncmp(line, ".\\\"", 3))
        {
-@@ -944,7 +947,8 @@ html_alternate(const char *s,		/* I - String */
+@@ -945,7 +948,8 @@ html_alternate(const char *s,		/* I - String */
  		manfile[1024],		// Man page filename
  		manurl[1024];		// Man page URL
  

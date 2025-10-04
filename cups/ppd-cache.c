@@ -1,7 +1,7 @@
 /*
  * PPD cache implementation for CUPS.
  *
- * Copyright © 2022-2024 by OpenPrinting.
+ * Copyright © 2022-2025 by OpenPrinting.
  * Copyright © 2010-2021 by Apple Inc.
  *
  * Licensed under Apache License v2.0.  See the file "LICENSE" for more
@@ -210,9 +210,9 @@ _cupsConvertOptions(
 
   media_source = _ppdCacheGetSource(pc, cupsGetOption("InputSlot", num_options, options));
   media_type   = _ppdCacheGetType(pc, cupsGetOption("MediaType", num_options, options));
-  size         = _ppdCacheGetSize(pc, keyword);
+  size         = _ppdCacheGetSize(pc, keyword, /*ppd_size*/NULL);
 
-  if (size || media_source || media_type)
+  if (media_col_sup && (size || media_source || media_type))
   {
    /*
     * Add a media-col value...
@@ -229,6 +229,7 @@ _cupsConvertOptions(
                     "y-dimension", size->length);
 
       ippAddCollection(media_col, IPP_TAG_ZERO, "media-size", media_size);
+      ippDelete(media_size);
     }
 
     for (i = 0; i < media_col_sup->num_values; i ++)
@@ -248,6 +249,7 @@ _cupsConvertOptions(
     }
 
     ippAddCollection(request, IPP_TAG_JOB, "media-col", media_col);
+    ippDelete(media_col);
   }
 
   if ((keyword = cupsGetOption("output-bin", num_options, options)) == NULL)
@@ -1067,7 +1069,8 @@ _ppdCacheCreateWithPPD(ppd_file_t *ppd)	/* I - PPD file */
 			ppd_name[PPD_MAX_NAME];
 					/* Normalized PPD name */
   const char		*pwg_name;	/* Standard PWG media name */
-  pwg_media_t		*pwg_media;	/* PWG media data */
+  pwg_media_t		*pwg_media,	/* PWG media data */
+			pwg_mediatemp;	/* Temporary PWG media data */
   _pwg_print_color_mode_t pwg_print_color_mode;
 					/* print-color-mode index */
   _pwg_print_quality_t	pwg_print_quality;
@@ -1187,9 +1190,7 @@ _ppdCacheCreateWithPPD(ppd_file_t *ppd)	/* I - PPD file */
       * dimensions that are <= 0...
       */
 
-      if ((pwg_media = _pwgMediaNearSize(PWG_FROM_POINTS(ppd_size->width),
-					PWG_FROM_POINTS(ppd_size->length),
-					0)) == NULL)
+      if ((pwg_media = _pwgMediaNearSize(&pwg_mediatemp, /*keyword*/NULL, /*keysize*/0, /*ppdname*/NULL, /*ppdsize*/0, PWG_FROM_POINTS(ppd_size->width), PWG_FROM_POINTS(ppd_size->length), /*epsilon*/0)) == NULL)
 	continue;
 
       new_width      = pwg_media->width;
@@ -2768,7 +2769,8 @@ _ppdCacheGetPageSize(
 pwg_size_t *				/* O - PWG size or NULL */
 _ppdCacheGetSize(
     _ppd_cache_t *pc,			/* I - PPD cache and mapping data */
-    const char   *page_size)		/* I - PPD PageSize */
+    const char   *page_size,		/* I - PPD PageSize */
+    ppd_size_t   *ppd_size)		/* I - PPD page size information */
 {
   int		i;			/* Looping var */
   pwg_media_t	*media;			/* Media */
@@ -2782,7 +2784,7 @@ _ppdCacheGetSize(
   if (!pc || !page_size)
     return (NULL);
 
-  if (!_cups_strncasecmp(page_size, "Custom.", 7))
+  if (!_cups_strcasecmp(page_size, "Custom") || !_cups_strncasecmp(page_size, "Custom.", 7))
   {
    /*
     * Custom size; size name can be one of the following:
@@ -2799,48 +2801,65 @@ _ppdCacheGetSize(
     char		*ptr;		/* Pointer into PageSize */
     struct lconv	*loc;		/* Locale data */
 
-    loc = localeconv();
-    w   = (float)_cupsStrScand(page_size + 7, &ptr, loc);
-    if (!ptr || *ptr != 'x')
-      return (NULL);
+    if (page_size[6])
+    {
+      loc = localeconv();
+      w   = (float)_cupsStrScand(page_size + 7, &ptr, loc);
+      if (!ptr || *ptr != 'x')
+	return (NULL);
 
-    l = (float)_cupsStrScand(ptr + 1, &ptr, loc);
-    if (!ptr)
-      return (NULL);
+      l = (float)_cupsStrScand(ptr + 1, &ptr, loc);
+      if (!ptr)
+	return (NULL);
 
-    if (!_cups_strcasecmp(ptr, "in"))
-    {
-      w *= 2540.0;
-      l *= 2540.0;
+      if (!_cups_strcasecmp(ptr, "in"))
+      {
+	w *= 2540.0;
+	l *= 2540.0;
+      }
+      else if (!_cups_strcasecmp(ptr, "ft"))
+      {
+	w *= 12.0 * 2540.0;
+	l *= 12.0 * 2540.0;
+      }
+      else if (!_cups_strcasecmp(ptr, "mm"))
+      {
+	w *= 100.0;
+	l *= 100.0;
+      }
+      else if (!_cups_strcasecmp(ptr, "cm"))
+      {
+	w *= 1000.0;
+	l *= 1000.0;
+      }
+      else if (!_cups_strcasecmp(ptr, "m"))
+      {
+	w *= 100000.0;
+	l *= 100000.0;
+      }
+      else
+      {
+	w *= 2540.0 / 72.0;
+	l *= 2540.0 / 72.0;
+      }
     }
-    else if (!_cups_strcasecmp(ptr, "ft"))
+    else if (ppd_size)
     {
-      w *= 12.0 * 2540.0;
-      l *= 12.0 * 2540.0;
-    }
-    else if (!_cups_strcasecmp(ptr, "mm"))
-    {
-      w *= 100.0;
-      l *= 100.0;
-    }
-    else if (!_cups_strcasecmp(ptr, "cm"))
-    {
-      w *= 1000.0;
-      l *= 1000.0;
-    }
-    else if (!_cups_strcasecmp(ptr, "m"))
-    {
-      w *= 100000.0;
-      l *= 100000.0;
+      w = ppd_size->width * 2540.0 / 72.0;
+      l = ppd_size->length * 2540.0 / 72.0;
     }
     else
     {
-      w *= 2540.0 / 72.0;
-      l *= 2540.0 / 72.0;
+      // No custom size information...
+      return (NULL);
     }
 
-    pc->custom_size.width  = (int)w;
-    pc->custom_size.length = (int)l;
+    pc->custom_size.map.ppd = (char *)page_size;
+    pc->custom_size.width   = (int)w;
+    pc->custom_size.length  = (int)l;
+
+    if ((media = pwgMediaForSize((int)w, (int)l)) != NULL)
+      pc->custom_size.map.pwg = (char *)media->pwg;
 
     return (&(pc->custom_size));
   }
@@ -2850,22 +2869,28 @@ _ppdCacheGetSize(
   */
 
   for (i = pc->num_sizes, size = pc->sizes; i > 0; i --, size ++)
+  {
     if (!_cups_strcasecmp(page_size, size->map.ppd) ||
         !_cups_strcasecmp(page_size, size->map.pwg))
       return (size);
+  }
 
  /*
   * Look up standard sizes...
   */
 
   if ((media = pwgMediaForPPD(page_size)) == NULL)
+  {
     if ((media = pwgMediaForLegacy(page_size)) == NULL)
       media = pwgMediaForPWG(page_size);
+  }
 
   if (media)
   {
-    pc->custom_size.width  = media->width;
-    pc->custom_size.length = media->length;
+    pc->custom_size.map.ppd = (char *)page_size;
+    pc->custom_size.map.pwg = (char *)media->pwg;
+    pc->custom_size.width   = media->width;
+    pc->custom_size.length  = media->length;
 
     return (&(pc->custom_size));
   }
@@ -3294,6 +3319,8 @@ _ppdCreateFromIPP2(
       mptr --;
       if (*mptr == ' ')
 	*mptr = '\0';
+      else
+        break;
     }
 
     if (!make[0])
@@ -3543,7 +3570,7 @@ _ppdCreateFromIPP2(
     is_apple = ippContainsString(attr, "image/urf") && (ippFindAttribute(supported, "urf-supported", IPP_TAG_KEYWORD) != NULL);
     is_pdf   = ippContainsString(attr, "application/pdf");
     is_pwg   = ippContainsString(attr, "image/pwg-raster") && !is_apple &&
-	       (ippFindAttribute(supported, "pwg-raster-document-resolution-supported", IPP_TAG_KEYWORD) != NULL) &&
+	       (ippFindAttribute(supported, "pwg-raster-document-resolution-supported", IPP_TAG_RESOLUTION) != NULL) &&
 	       (ippFindAttribute(supported, "pwg-raster-document-type-supported", IPP_TAG_KEYWORD) != NULL);
 
     if (ippContainsString(attr, "image/jpeg"))
@@ -5666,7 +5693,7 @@ pwg_unppdize_name(const char *ppd,	/* I - PPD keyword */
 
   for (ptr = name, end = name + namesize - 1; *ppd && ptr < end; ppd ++)
   {
-    if (_cups_isalnum(*ppd))
+    if (_cups_isalnum(*ppd) || *ppd == '.' || *ppd == '_')
     {
       *ptr++ = (char)tolower(*ppd & 255);
       nodash = 0;
@@ -5678,11 +5705,6 @@ pwg_unppdize_name(const char *ppd,	/* I - PPD keyword */
 	*ptr++ = '-';
 	nodash = 1;
       }
-    }
-    else
-    {
-      *ptr++ = *ppd;
-      nodash = 0;
     }
 
     if (nodash == 0)

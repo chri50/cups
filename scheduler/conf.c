@@ -1,7 +1,7 @@
 /*
  * Configuration routines for the CUPS scheduler.
  *
- * Copyright © 2020-2024 by OpenPrinting.
+ * Copyright © 2020-2025 by OpenPrinting.
  * Copyright © 2007-2018 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
@@ -154,6 +154,7 @@ static const cupsd_var_t	cupsfiles_vars[] =
 #endif /* HAVE_TLS */
   { "ServerRoot",		&ServerRoot,		CUPSD_VARTYPE_PATHNAME },
   { "StateDir",			&StateDir,		CUPSD_VARTYPE_STRING },
+  { "StripUserDomain",		&StripUserDomain,	CUPSD_VARTYPE_BOOLEAN },
   { "SyncOnClose",		&SyncOnClose,		CUPSD_VARTYPE_BOOLEAN },
 #ifdef HAVE_AUTHORIZATION_H
   { "SystemGroupAuthKey",	&SystemGroupAuthKey,	CUPSD_VARTYPE_STRING },
@@ -729,6 +730,7 @@ cupsdReadConfiguration(void)
   LogFilePerm              = CUPS_DEFAULT_LOG_FILE_PERM;
   LogFileGroup             = Group;
   LogLevel                 = CUPSD_LOG_WARN;
+  StripUserDomain          = FALSE;
   LogTimeFormat            = CUPSD_TIME_STANDARD;
   MaxClients               = 100;
   MaxClientsPerHost        = 0;
@@ -943,6 +945,17 @@ cupsdReadConfiguration(void)
   for (slash = ServerName; isdigit(*slash & 255) || *slash == '.'; slash ++);
 
   ServerNameIsIP = !*slash;
+
+ /*
+  * If the ErrorLog value contains "%s", close the current log file (if any)
+  * so that the proper ServerName value is used when logging.
+  */
+
+  if (ErrorLog && strstr(ErrorLog, "%s") && ErrorFile && ErrorFile != LogStderr)
+  {
+    cupsFileClose(ErrorFile);
+    ErrorFile = NULL;
+  }
 
  /*
   * Make sure ServerAdmin is initialized...
@@ -3054,6 +3067,8 @@ read_cupsd_conf(cups_file_t *fp)	/* I - File to read from */
 	    min_version = _HTTP_TLS_1_3;
 	  else if (!_cups_strcasecmp(start, "None"))
 	    options = _HTTP_TLS_NONE;
+	  else if (!_cups_strcasecmp(start, "NoSystem"))
+	    options |= _HTTP_TLS_NO_SYSTEM;
 	  else if (_cups_strcasecmp(start, "NoEmptyFragments"))
 	    cupsdLogMessage(CUPSD_LOG_WARN, "Unknown SSL option %s at line %d.", start, linenum);
         }

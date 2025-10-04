@@ -1,7 +1,7 @@
 /*
  * HTTP routines for CUPS.
  *
- * Copyright © 2022-2024 by OpenPrinting.
+ * Copyright © 2022-2025 by OpenPrinting.
  * Copyright © 2007-2021 by Apple Inc.
  * Copyright © 1997-2007 by Easy Software Products, all rights reserved.
  *
@@ -168,7 +168,7 @@ httpAcceptConnection(int fd,		/* I - Listen socket file descriptor */
   if ((http->fd = accept(fd, (struct sockaddr *)&(http->addrlist->addr),
 			 &addrlen)) < 0)
   {
-    _cupsSetHTTPError(HTTP_STATUS_ERROR);
+    _cupsSetError(IPP_STATUS_ERROR_INTERNAL, strerror(errno), 0);
     httpClose(http);
 
     return (NULL);
@@ -350,6 +350,7 @@ httpClearFields(http_t *http)		/* I - HTTP connection */
 void
 httpClose(http_t *http)			/* I - HTTP connection */
 {
+  http_field_t	field;			/* Current field */
 #ifdef HAVE_GSSAPI
   OM_uint32	minor_status;		/* Minor status code */
 #endif /* HAVE_GSSAPI */
@@ -392,7 +393,12 @@ httpClose(http_t *http)			/* I - HTTP connection */
     AuthorizationFree(http->auth_ref, kAuthorizationFlagDefaults);
 #endif /* HAVE_AUTHORIZATION_H */
 
-  httpClearFields(http);
+  for (field = HTTP_FIELD_ACCEPT_LANGUAGE; field < HTTP_FIELD_MAX; field ++)
+  {
+    free(http->default_fields[field]);
+    if (field >= HTTP_FIELD_ACCEPT_ENCODING || http->fields[field] != http->_fields[field])
+      free(http->fields[field]);
+  }
 
   if (http->authstring && http->authstring != http->_authstring)
     free(http->authstring);
@@ -4802,8 +4808,7 @@ http_write(http_t     *http,		/* I - HTTP connection */
 
         http->error = WSAGetLastError();
       }
-      else if (WSAGetLastError() != http->error &&
-               WSAGetLastError() != WSAECONNRESET)
+      else if (WSAGetLastError() != http->error)
       {
         http->error = WSAGetLastError();
 	continue;
@@ -4821,7 +4826,7 @@ http_write(http_t     *http,		/* I - HTTP connection */
 
         http->error = errno;
       }
-      else if (errno != http->error && errno != ECONNRESET)
+      else if (errno != http->error)
       {
         http->error = errno;
 	continue;

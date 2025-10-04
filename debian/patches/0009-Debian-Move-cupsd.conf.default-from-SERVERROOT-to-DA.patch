@@ -12,10 +12,10 @@ Bug-Debian: https://bugs.debian.org/640124
  2 files changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/cgi-bin/admin.c b/cgi-bin/admin.c
-index 1a4a61c..d2a573f 100644
+index 90f0e2b..c20fe59 100644
 --- a/cgi-bin/admin.c
 +++ b/cgi-bin/admin.c
-@@ -1628,6 +1628,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
+@@ -1630,6 +1630,7 @@ do_config_server(http_t *http)		/* I - HTTP connection */
      int		ch;			/* Character from file */
      char	filename[1024];		/* Filename */
      const char	*server_root;		/* Location of config files */
@@ -23,7 +23,7 @@ index 1a4a61c..d2a573f 100644
  
  
     /*
-@@ -1711,7 +1712,10 @@ do_config_server(http_t *http)		/* I - HTTP connection */
+@@ -1713,7 +1714,10 @@ do_config_server(http_t *http)		/* I - HTTP connection */
      * well...
      */
  
