@@ -1728,12 +1728,39 @@ cupsdReadConfiguration(void)
     snprintf(temp, sizeof(temp), "%s/banners", DataDir);
     cupsdLoadBanners(temp);
 
-   /*
+    /*
     * Load printers and classes...
     */
 
     cupsdLoadAllPrinters();
     cupsdLoadAllClasses();
+
+    /* Dump the MIME database again after loading printers so that
+     * printer-specific PPD filters (cupsFilter / cupsPreFilter) that
+     * were added during printer load are visible in the debug output.
+     */
+    if (LogLevel >= CUPSD_LOG_DEBUG)
+    {
+      mime_type_t *d_type;
+      mime_filter_t *d_filter;
+
+      cupsdLogMessage(CUPSD_LOG_DEBUG, "MIME dump after printers: %d types, %d filters",
+                      mimeNumTypes(MimeDatabase), mimeNumFilters(MimeDatabase));
+
+      for (d_type = mimeFirstType(MimeDatabase); d_type; d_type = mimeNextType(MimeDatabase))
+      {
+        cupsdLogMessage(CUPSD_LOG_DEBUG, "MIME type: %s/%s", d_type->super, d_type->type);
+      }
+
+      for (d_filter = mimeFirstFilter(MimeDatabase); d_filter; d_filter = mimeNextFilter(MimeDatabase))
+      {
+        cupsdLogMessage(CUPSD_LOG_DEBUG, "MIME filter: %s/%s -> %s/%s cost=%d program=%s maxsize=%zu",
+                        d_filter->src->super, d_filter->src->type,
+                        d_filter->dst->super, d_filter->dst->type,
+                        d_filter->cost, d_filter->filter ? d_filter->filter : "-",
+                        d_filter->maxsize);
+      }
+    }
 
     cupsdCreateCommonData();
 
