@@ -252,6 +252,7 @@ msink_reuse(mime_t *mime, mime_type_t *sink, cups_array_t **out_filetypes)
     if (!all) return 0;
 
     mime_filter_t *flt;
+    
     for (flt = mimeFirstFilter(mime); flt; flt = mimeNextFilter(mime))
     {
         if (flt->dst == sink)
@@ -335,6 +336,9 @@ msink_reuse(mime_t *mime, mime_type_t *sink, cups_array_t **out_filetypes)
             cupsdLogMessage(CUPSD_LOG_DEBUG2, 
                             "sink-pattern: cache hit signature=%u edges=%d (printer/* normalized)", 
                             sig, gcnt);
+            /* Also log a concise info line with mime DB counts for easier triage */
+            cupsdLogMessage(CUPSD_LOG_INFO, "sink-pattern: cache hit signature=%u edges=%d mime_types=%d mime_filters=%d",
+                            sig, gcnt, mimeNumTypes(mime), mimeNumFilters(mime));
             return 1;
         }
     }
@@ -458,6 +462,9 @@ msink_try_store(mime_t *mime, mime_type_t *sink, cups_array_t *filetypes)
     ent->next = msink_table[bucket];
     msink_table[bucket] = ent;
     cupsdLogMessage(CUPSD_LOG_INFO, "sink-pattern: store signature=%u edges=%d (printer/* normalized) supported=%d", sig, gcnt, cupsArrayCount(ent->filetypes));
+    /* Also log mime DB counts so we can correlate store events with DB size */
+    cupsdLogMessage(CUPSD_LOG_INFO, "sink-pattern: store signature=%u mime_types=%d mime_filters=%d",
+                    sig, mimeNumTypes(mime), mimeNumFilters(mime));
     
     /* Only log detailed edge info if debug level is high enough */
     if (LogLevel >= CUPSD_LOG_DEBUG)
