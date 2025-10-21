@@ -29,7 +29,14 @@ CUPSDOBJS =	\
 		log.o \
 		network.o \
 		policy.o \
-		mime-sink-patterns.o \
+
+# Allow selecting an alternate implementation of mime-sink-patterns
+ifdef USE_MSINK_ARRAY
+MSINK_OBJ = mime-sink-patterns-cupsarray.o
+else
+MSINK_OBJ = mime-sink-patterns.o
+endif
+		$(MSINK_OBJ) \
 		printers.o \
 		process.o \
 		quotas.o \
