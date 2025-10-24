@@ -29,7 +29,7 @@ CUPSDOBJS =	\
 		log.o \
 		network.o \
 		policy.o \
-		mime-sink-patterns.o \
+		mime-sink-patterns-cupsarray.o \
 		printers.o \
 		process.o \
 		quotas.o \
