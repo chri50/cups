@@ -56,21 +56,27 @@ typedef struct msink_edge_s
     const char *type;
     int cost;
     size_t maxsize;
-    const char *prog; /* filter program string */
+    const char *prog;
 } msink_edge_t;
 
 /* Entry stored in the cupsArray cache */
 typedef struct msink_entry_s
 {
-    int edge_count;
-    uint64_t signature;    /* compact signature for the sorted edge list */
-    cups_array_t *filetypes; /* mime_type_t* elements */
+    int edge_count;            /* edge count per filetype used */
+    uint64_t signature;        /* compact signature for the sorted edge list */
+    cups_array_t *filetypes;   /* mime_type_t* elements */
 } msink_entry_t;
 
 /* Global cups array for cache entries (lazily created) */
 static cups_array_t *msink_arr = NULL;
 static int msink_enabled_checked = 0;
 static int msink_enabled = 0;
+
+/* Forward declarations for cupsArray callbacks */
+static int  msink_arr_compare(void *a, void *b, void *user_data);
+static int  msink_arr_hash(void *elem, void *user_data);
+static void *msink_arr_copy(void *element, void *user_data);
+static void msink_arr_free(void *element, void *user_data);
 
 /*
  * msink_env_enabled() - read CUPS_MIME_SINK_REUSE environment switch
@@ -397,7 +403,7 @@ void
 msink_try_store(mime_t *mime, mime_type_t *sink, cups_array_t *filetypes)
 {
     if (!mime || !sink || !filetypes) return;
-    if (!msink_is_enabled()) return 0;
+    if (!msink_is_enabled()) return;
     
     /* Generating the edge signature */
     msink_entry_t *lookup_sink = build_msink_entry(mime, sink);
